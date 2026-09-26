@@ -1,0 +1,35 @@
+;; Unit model for EDB. Install before creating unit entities.
+;; Request :db/ensure [:unit/validate] when writing a unit.
+;; Course membership is stored through :course/units.
+[
+ {:db/ident :unit/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable unit identity assigned by our application, independent of Math Academy's identifier and the unit's order within its course."}
+
+ {:db/ident :unit/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Optional original Math Academy unit identifier, taken from unit-id in DATA/Units.csv. Omit for independently created units."}
+
+ {:db/ident :unit/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Unit title, taken from unit-name in DATA/Units.csv, for example Operations & Algebraic Thinking."}
+
+ {:db/ident :unit/index
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "1-based curriculum order within the unit's course: 1 is the first unit. Must be positive and unique within that course, not globally unique. This model assumes each unit belongs to one course; changing its index does not change its identity."}
+
+ {:db/ident :unit/modules
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Modules belonging to this unit. At least one is required when unit/validate is explicitly ensured. These references are unordered; module order and validation will be defined in the module schema."}
+
+ {:db/ident :unit/validate
+  :db.entity/attrs [:unit/id :unit/title :unit/index :unit/modules]
+  :db/doc "Requires our identity, a title, an index, and at least one module ref when explicitly ensured. The Math Academy identifier is optional. Nonempty titles, positive indexes, index uniqueness within a course, membership in exactly one course, and reference target types require additional validation. Referenced modules must be validated separately."}
+]

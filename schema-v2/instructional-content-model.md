@@ -62,13 +62,17 @@ If later requirements call for arbitrary reuse of the same problem across demons
 
 The readability review uses this presentation convention: enum declarations in a labeled section when needed, followed by identity, descriptive metadata, content and relationships, explanation, and validation. Attribute maps retain the order ident, value type, cardinality, uniqueness/component flags when relevant, and documentation. Topic difficulty now precedes knowledge-points, matching question difficulty before problem/fields. Field choices precede answer, presenting available options before identifying the correct one. Application validation requires choices for selection questions and omits them for blanks; the common field specification requires the correct-answer ref in both cases. The approved knowledge-point and example layouts are unchanged.
 
+Math Academy identifiers are optional source identifiers wherever modeled; our own entity IDs are required. Source identifiers remain unique when supplied, allowing independently created content alongside imported content.
+
 | Schema | Attribute presentation after any enum declarations |
 | --- | --- |
-| Topic | id, title, difficulty, knowledge-points, validate |
+| Course | id, math-academy-id, title, code, units, validate |
+| Unit | id, math-academy-id, title, index, modules, validate |
+| Topic | id, math-academy-id, title, difficulty, knowledge-points, validate |
 | Tutorial | id, title, content, validate |
-| Knowledge point | id, title, key-prerequisites, example, questions, question-generator, validate |
+| Knowledge point | id, math-academy-id, title, key-prerequisites, example, questions, question-generator, validate |
 | Example | id, problem, explanation, validate |
-| Question | id, type, difficulty, requires-calculator, problem, answer-fields, explanation, validate |
+| Question | id, math-academy-id, type, difficulty, requires-calculator, problem, answer-fields, explanation, validate |
 | Answer field | id, key, answer-choices, correct-answer, validate |
 | Answer | id, type, value, validate |
 

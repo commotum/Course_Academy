@@ -10,6 +10,12 @@
   :db/unique :db.unique/identity
   :db/doc "Stable identity of the knowledge point, independent of an individual learner's progress or question occurrences."}
 
+ {:db/ident :knowledge-point/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Optional original Math Academy knowledge-point identifier, populated only when the source mapping is verified. An observed activity KP link uses the associated example's content_id, not its lesson step_id. Steps.csv does not directly provide a KP identifier; do not substitute step-id. Omit for independently created KPs or unverified mappings."}
+
  {:db/ident :knowledge-point/title
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
