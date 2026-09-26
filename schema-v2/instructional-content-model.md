@@ -68,6 +68,7 @@ Math Academy identifiers are optional source identifiers wherever modeled; our o
 | --- | --- |
 | Course | id, math-academy-id, title, code, units, validate |
 | Unit | id, math-academy-id, title, index, modules, validate |
+| Module | id, math-academy-id, title, index, topics, validate |
 | Topic | id, math-academy-id, title, difficulty, knowledge-points, validate |
 | Tutorial | id, title, content, validate |
 | Knowledge point | id, math-academy-id, title, key-prerequisites, example, questions, question-generator, validate |
