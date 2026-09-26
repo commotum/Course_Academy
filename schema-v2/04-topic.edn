@@ -21,9 +21,9 @@
  {:db/ident :topic/knowledge-points
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Knowledge points taught within this topic. Their question pools are associated with the knowledge points. Instructional order will be defined separately; these references are unordered."}
+  :db/doc "Knowledge points taught within this topic; at least one is required when topic/validate is explicitly ensured. Their question pools are associated with the knowledge points. Instructional order will be defined separately; these references are unordered."}
 
  {:db/ident :topic/validate
-  :db.entity/attrs [:topic/id :topic/title]
-  :db/doc "A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure validates the required identity and title; reference targets and publication rules require application validation."}
+  :db.entity/attrs [:topic/id :topic/title :topic/knowledge-points]
+  :db/doc "A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure requires identity, title, and at least one knowledge-point reference. Referenced knowledge points must be validated separately."}
 ]

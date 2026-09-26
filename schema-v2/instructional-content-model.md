@@ -32,11 +32,11 @@ The implemented entities and relationships are:
 
 | Entity | Proposed content/refs | Reason |
 | --- | --- | --- |
-| [Tutorial](02-tutorial.edn) | id, title, content | Exposition in Markdown with mathematics and images; no required answer |
-| [Example](04-example.edn) | id, problem, explanation | The demonstrated problem and worked solution |
-| [Knowledge point](03-knowledge-point.edn) | id, title, example ref, questions refs, question-generator ref | The skill being practiced and the content teaching/assessing it |
-| [Question](05-question.edn) | Problem, type, fields, explanation, metadata | An item prepared for the learner to answer |
-| Answer field → answer | [Answer field](06-answer-field.edn) and [answer](07-answer.edn) | Expected values and selection options for each question field |
+| [Tutorial](tutorial.edn) | id, title, content | Exposition in Markdown with mathematics and images; no required answer |
+| [Example](06-example.edn) | id, problem, explanation | The demonstrated problem and worked solution |
+| [Knowledge point](05-knowledge-point.edn) | id, title, key-prerequisites refs, example ref, questions refs, question-generator ref | The skill being practiced, its key prerequisite topics, and the content teaching/assessing it |
+| [Question](07-question.edn) | Problem, type, fields, explanation, metadata | An item prepared for the learner to answer |
+| Answer field → answer | [Answer field](08-answer-field.edn) and [answer](09-answer.edn) | Expected values and selection options for each question field |
 
 `example/problem` is textual problem content, not a mandatory ref to a question entity. A title can stay on the KP in this initial design, matching how it currently names the demonstrated skill. Separating the example content makes its problem and explanation reviewable as a unit without duplicating the entire question hierarchy.
 
@@ -66,7 +66,7 @@ The readability review uses this presentation convention: enum declarations in a
 | --- | --- |
 | Topic | id, title, difficulty, knowledge-points, validate |
 | Tutorial | id, title, content, validate |
-| Knowledge point | id, title, example, questions, question-generator, validate |
+| Knowledge point | id, title, key-prerequisites, example, questions, question-generator, validate |
 | Example | id, problem, explanation, validate |
 | Question | id, type, difficulty, requires-calculator, problem, answer-fields, explanation, validate |
 | Answer field | id, key, answer-choices, correct-answer, validate |

@@ -1,0 +1,29 @@
+;; Course model for EDB. Install before creating course entities.
+;; Request :db/ensure [:course/validate] when writing a course.
+[
+ {:db/ident :course/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable course identity assigned by our application, independent of Math Academy's identifier."}
+
+ {:db/ident :course/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Original Math Academy course identifier, taken from course-id in DATA/Courses.csv."}
+
+ {:db/ident :course/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Course title, taken from course-name in DATA/Courses.csv, for example Algebra I."}
+
+ {:db/ident :course/code
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional short course code, taken from course-code in DATA/Courses.csv, for example AG1."}
+
+ {:db/ident :course/validate
+  :db.entity/attrs [:course/id :course/math-academy-id :course/title]
+  :db/doc "Requires our identity, the Math Academy course identifier, and a title when explicitly ensured. The course code is optional. Nonempty titles require additional validation."}
+]

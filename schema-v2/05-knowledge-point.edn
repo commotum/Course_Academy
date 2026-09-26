@@ -2,7 +2,7 @@
 ;; Request :db/ensure [:knowledge-point/validate] when writing a KP.
 ;; MA describes a KP as a worked example with associated active practice.
 ;; Topic membership is stored through :topic/knowledge-points.
-;; Instructional order and key prerequisites will be defined separately.
+;; Instructional order will be defined separately.
 [
  {:db/ident :knowledge-point/id
   :db/valueType :db.type/uuid
@@ -14,6 +14,11 @@
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "Name of the instructional skill or case demonstrated by the worked example, corresponding to captured example titles."}
+
+ {:db/ident :knowledge-point/key-prerequisites
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional references to prerequisite topics whose skills are most directly used in this KP, supporting targeted remedial reviews. Distinct from the containing topic's general prerequisites. These ordinary refs do not establish ownership; omit when no links are known."}
 
  {:db/ident :knowledge-point/example
   :db/valueType :db.type/ref
