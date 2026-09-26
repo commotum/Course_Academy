@@ -1,0 +1,167 @@
+;; Install after 01-attributes.edn, before writing application data.
+;; The kind entities are both kind identifiers and opt-in EDB entity specs.
+;; :spec/lesson-question is an additional presence check for items in a lesson pool.
+;; Tagging :entity/kinds does NOT enforce a spec: request :db/ensure on writes.
+;; Specs establish minimum presence, not complete publication or engine invariants.
+[
+ {:db/ident :kind/course
+  :db/doc "Catalog curriculum; ordered placements link units, topics, or lessons."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title]}
+
+ {:db/ident :kind/unit
+  :db/doc "Reusable curriculum grouping with ordered child placements."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title]}
+
+ {:db/ident :kind/topic
+  :db/doc "Concept in the curriculum and pedagogical graph, shared across courses."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title]}
+
+ {:db/ident :kind/knowledge-point
+  :db/doc "Independently assessable skill, not a synonym for an example or question."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title :knowledge-point/competency]}
+
+ {:db/ident :kind/lesson
+  :db/doc "Current instructional content with ordered section placements and target skills."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title]}
+
+ {:db/ident :kind/section
+  :db/doc "Instructional section with rich body or ordered example/question placements."
+  :db.entity/attrs [:entity/id :entity/kinds :section/role]}
+
+ {:db/ident :kind/example
+  :db/doc "Worked example prompt; solution may be rich text or ordered step sections."
+  :db.entity/attrs [:entity/id :entity/kinds :content/body]}
+
+ {:db/ident :kind/question
+  :db/doc "Identified question with response parts and grading rules. Lesson-pool items also ensure :spec/lesson-question; standalone school questions can exist before instructional assignment. Ready status requires full semantic validation."
+  :db.entity/attrs [:entity/id :entity/kinds :content/body :question/format]}
+
+ {:db/ident :spec/lesson-question
+  :db/doc "Supplementary check, used together with :kind/question, requiring one lesson and primary KP for a lesson-pool item. Writers must invoke it for lesson placements or either ownership field; membership and selection rules remain application validation."
+  :db.entity/attrs [:question/lesson :question/primary-knowledge-point]}
+
+ {:db/ident :kind/response-part
+  :db/doc "Owned answer slot, matching item, or dropdown in a question."
+  :db.entity/attrs [:entity/id :entity/kinds :response-part/position :response-part/key :response-part/input :response-part/grading-rule]}
+
+ {:db/ident :kind/option-bank
+  :db/doc "Shared within or across questions; owns its ordered choices."
+  :db.entity/attrs [:entity/id :entity/kinds :option-bank/choices]}
+
+ {:db/ident :kind/choice
+  :db/doc "Stable answer identity; its body may be text, math, or an image."
+  :db.entity/attrs [:entity/id :entity/kinds :content/body :choice/position]}
+
+ {:db/ident :kind/grading-rule
+  :db/doc "Current accepted answer and evaluator contract for a response part."
+  :db.entity/attrs [:entity/id :entity/kinds :grading-rule/method]}
+
+ {:db/ident :kind/asset
+  :db/doc "Current media asset; no captured-source or version archive."
+  :db.entity/attrs [:entity/id :entity/kinds :asset/uri :asset/media-type]}
+
+ {:db/ident :kind/placement
+  :db/doc "Ordered contextual membership. A placement does not change a question's instructional owner; nested lesson membership must agree with question/lesson."
+  :db.entity/attrs [:entity/id :entity/kinds :placement/parent :placement/content :placement/position]}
+
+ {:db/ident :kind/term
+  :db/doc "Academic term with optional actual calendar dates."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title]}
+
+ {:db/ident :kind/course-offering
+  :db/doc "A course taught in one term; descriptive institution and section are optional."
+  :db.entity/attrs [:entity/id :entity/kinds :offering/course :offering/term]}
+
+ {:db/ident :kind/assignment
+  :db/doc "School or self-authored assignment, quiz, exam, lab, or exercise set."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title :assignment/kind]}
+
+ {:db/ident :kind/problem
+  :db/doc "Real problem context; placements link ordered subproblems or answerable questions."
+  :db.entity/attrs [:entity/id :entity/kinds :content/body]}
+
+ {:db/ident :kind/study-collection
+  :db/doc "Ordered cross-topic study guide or practice collection."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title :collection/purpose]}
+
+ {:db/ident :kind/relation
+  :db/doc "Typed pedagogical graph edge, optionally weighted."
+  :db.entity/attrs [:entity/id :entity/kinds :relation/from :relation/to :relation/type]}
+
+ {:db/ident :kind/question-skill
+  :db/doc "Explicit assessed or incidental question coverage."
+  :db.entity/attrs [:entity/id :entity/kinds :question-skill/question :question-skill/skill :question-skill/role]}
+
+ {:db/ident :kind/policy
+  :db/doc "Named local engine/evaluator configuration, not a claim of recovered proprietary functions."
+  :db.entity/attrs [:entity/id :entity/kinds :policy/key :policy/algorithm :policy/parameters-edn]}
+
+ {:db/ident :kind/assessment
+  :db/doc "Reusable fixed-test or sampling blueprint, distinct from a learner task."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title :assessment/purpose :assessment/policy]}
+
+ {:db/ident :kind/generator
+  :db/doc "Current content production or retrieval definition."
+  :db.entity/attrs [:entity/id :entity/kinds :content/title :generator/method :generator/entrypoint]}
+
+ {:db/ident :kind/generation
+  :db/doc "One request to produce validated current content; generated items point back to it."
+  :db.entity/attrs [:entity/id :entity/kinds :generation/generator :generation/status]}
+
+ {:db/ident :kind/learner
+  :db/doc "Learner identity and preferences, independent of enrollment."
+  :db.entity/attrs [:entity/id :entity/kinds :learner/display-name :learner/time-zone]}
+
+ {:db/ident :kind/enrollment
+  :db/doc "One course in a learner's concurrent study scope; progress remains global."
+  :db.entity/attrs [:entity/id :entity/kinds :enrollment/learner :enrollment/course :enrollment/status]}
+
+ {:db/ident :kind/goal
+  :db/doc "Optional student priority or preparation target."
+  :db.entity/attrs [:entity/id :entity/kinds :goal/learner :goal/targets :goal/status]}
+
+ {:db/ident :kind/task
+  :db/doc "Concrete served or manually selected activity; origin does not create a separate engine."
+  :db.entity/attrs [:entity/id :entity/kinds :task/learner :task/type :task/origin :task/status :task/policy]}
+
+ {:db/ident :kind/attempt
+  :db/doc "One run through a task, with independent lifecycle and result."
+  :db.entity/attrs [:entity/id :entity/kinds :attempt/task :attempt/number :attempt/status :attempt/started-at]}
+
+ {:db/ident :kind/attempt-skill
+  :db/doc "Resumable within-task stage, distinct from global skill state."
+  :db.entity/attrs [:entity/id :entity/kinds :attempt-skill/attempt :attempt-skill/skill :attempt-skill/position :attempt-skill/status]}
+
+ {:db/ident :kind/task-item
+  :db/doc "One selected question occurrence, distinct from question identity and submissions. Keeping occurrences separate enables learner exposure checks; it is not a repeat-delivery policy."
+  :db.entity/attrs [:entity/id :entity/kinds :task-item/attempt :task-item/question :task-item/position :task-item/role]}
+
+ {:db/ident :kind/presented-choice
+  :db/doc "Actual option order in one question occurrence and response part."
+  :db.entity/attrs [:entity/id :entity/kinds :presented-choice/task-item :presented-choice/part :presented-choice/choice :presented-choice/position]}
+
+ {:db/ident :kind/submission
+  :db/doc "One submitted response set; several may occur before an item is terminal."
+  :db.entity/attrs [:entity/id :entity/kinds :submission/task-item :submission/number :submission/submitted-at :submission/final? :submission/outcome]}
+
+ {:db/ident :kind/response
+  :db/doc "Individual part response, optionally awaiting manual evaluation."
+  :db.entity/attrs [:entity/id :entity/kinds :response/submission :response/part :response/outcome]}
+
+ {:db/ident :kind/progress
+  :db/doc "Unique global learner-skill profile, including optional retention state and derived scheduling caches."
+  :db.entity/attrs [:entity/id :entity/kinds :progress/learner :progress/skill :progress/status :progress/policy]}
+
+ {:db/ident :kind/credit
+  :db/doc "Actual learning evidence applied by the engine; implicit and direct credit stay distinguishable."
+  :db.entity/attrs [:entity/id :entity/kinds :credit/learner :credit/skill :credit/attempt :credit/kind :credit/applied-at :credit/policy]}
+
+ {:db/ident :kind/requirement
+  :db/doc "Explicit remediation, reassessment, or retake obligation."
+  :db.entity/attrs [:entity/id :entity/kinds :requirement/learner :requirement/skill :requirement/kind :requirement/status :requirement/created-at :requirement/policy]}
+
+ {:db/ident :kind/xp-entry
+  :db/doc "Append-only signed award/penalty entry; total and daily XP are projections."
+  :db.entity/attrs [:entity/id :entity/kinds :xp-entry/learner :xp-entry/amount :xp-entry/reason :xp-entry/at :xp-entry/policy]}
+
+]

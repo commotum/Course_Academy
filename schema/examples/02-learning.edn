@@ -1,0 +1,354 @@
+;; Optional learning fixture: apply after 01-content.edn. This is an example state, not an executed learning engine.
+;; Synthetic examples only; values do not claim to reproduce MA scoring or FIRe formulas.
+[
+
+ ;; learner
+ {:db/id "learner"
+  :entity/id #uuid "79b762c3-6ac9-5bf9-afdb-d327ea605a11"
+  :entity/kinds [:kind/learner]
+  :learner/display-name "Example learner"
+  :learner/time-zone "America/Los_Angeles"
+  :learner/daily-xp-goal 50
+  :learner/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :db/ensure [:kind/learner]}
+
+ ;; calc-enrollment
+ {:db/id "calc-enrollment"
+  :entity/id #uuid "9af04e54-2d95-5e7c-a95e-6625174f626f"
+  :entity/kinds [:kind/enrollment]
+  :enrollment/learner "learner"
+  :enrollment/course [:entity/id #uuid "95ce025e-3334-59a7-b387-c253b4c0be3f"]
+  :enrollment/status :enrollment.status/active
+  :db/ensure [:kind/enrollment]}
+
+ ;; engineering-enrollment
+ {:db/id "engineering-enrollment"
+  :entity/id #uuid "d32ea2ec-352a-53bd-b6c2-5089515b0f48"
+  :entity/kinds [:kind/enrollment]
+  :enrollment/learner "learner"
+  :enrollment/course [:entity/id #uuid "dd886f55-197e-5e4b-b72d-9dc8e17e368f"]
+  :enrollment/status :enrollment.status/active
+  :db/ensure [:kind/enrollment]}
+
+ ;; homework-goal
+ {:db/id "homework-goal"
+  :entity/id #uuid "2a8fe2a5-7b20-5340-80b1-6177310e13db"
+  :entity/kinds [:kind/goal]
+  :goal/learner "learner"
+  :goal/targets [[:entity/id #uuid "269d6794-191f-5e4e-b3b8-d9ddb802b220"]]
+  :goal/status :goal.status/active
+  :goal/priority 1
+  :db/ensure [:kind/goal]}
+
+ ;; manual-task
+ {:db/id "manual-task"
+  :entity/id #uuid "13dca7f0-0f10-571e-9dc0-ea4a8d3e3fb7"
+  :entity/kinds [:kind/task]
+  :task/learner "learner"
+  :task/type :task.type/lesson
+  :task/origin :task.origin/learner
+  :task/status :task.status/completed
+  :task/lesson [:entity/id #uuid "13c915b3-4ffb-59cc-9b16-f994f50403d4"]
+  :task/targets [[:entity/id #uuid "994e913b-5c06-5001-9a2f-e6ca5f619a8d"] [:entity/id #uuid "63c6b31a-2a04-5c56-923e-ae3d22349029"]]
+  :task/context "homework-goal"
+  :task/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :task/nominal-xp 10
+  :db/ensure [:kind/task]}
+
+ ;; attempt
+ {:db/id "attempt"
+  :entity/id #uuid "a589f208-c586-5c47-8de4-701d33dfd68e"
+  :entity/kinds [:kind/attempt]
+  :attempt/task "manual-task"
+  :attempt/number 1
+  :attempt/status :attempt.status/completed
+  :attempt/started-at #inst "2026-09-26T16:00:00.000Z"
+  :attempt/ended-at #inst "2026-09-26T16:08:00.000Z"
+  :attempt/active-seconds 480.0
+  :attempt/result :result/passed
+  :attempt/end-reason :end/completed
+  :attempt/score 1.0
+  :db/ensure [:kind/attempt]}
+
+ ;; stage
+ {:db/id "stage"
+  :entity/id #uuid "f2bfae89-6ea6-5d9d-a942-d06065b04938"
+  :entity/kinds [:kind/attempt-skill]
+  :attempt-skill/attempt "attempt"
+  :attempt-skill/skill [:entity/id #uuid "994e913b-5c06-5001-9a2f-e6ca5f619a8d"]
+  :attempt-skill/position 0
+  :attempt-skill/status :stage.status/passed
+  :attempt-skill/question-count 1
+  :attempt-skill/consecutive-correct 1
+  :attempt-skill/incorrect-count 0
+  :db/ensure [:kind/attempt-skill]}
+
+ ;; item-blank
+ {:db/id "item-blank"
+  :entity/id #uuid "32f55f7b-28e3-5501-aae1-f82418c30828"
+  :entity/kinds [:kind/task-item]
+  :task-item/attempt "attempt"
+  :task-item/question [:entity/id #uuid "c4641df5-8c85-5e9d-9b9a-f168b6fd99c3"]
+  :task-item/stage "stage"
+  :task-item/position 0
+  :task-item/role :item.role/practice
+  :task-item/presented-at #inst "2026-09-26T16:06:00.000Z"
+  :task-item/finished-at #inst "2026-09-26T16:08:00.000Z"
+  :task-item/active-seconds 120.0
+  :task-item/outcome :answer/correct
+  :task-item/score 1.0
+  :task-item/hint-count 0
+  :task-item/answer-revealed? false
+  :db/ensure [:kind/task-item]}
+
+ ;; submission-first
+ {:db/id "submission-first"
+  :entity/id #uuid "6ea9e136-47b5-5fcf-993b-c32c03d1f943"
+  :entity/kinds [:kind/submission]
+  :submission/task-item "item-blank"
+  :submission/number 1
+  :submission/submitted-at #inst "2026-09-26T16:07:00.000Z"
+  :submission/final? false
+  :submission/outcome :answer/partial
+  :submission/score 0.5
+  :db/ensure [:kind/submission]}
+
+ ;; response-first-blank-u
+ {:db/id "response-first-blank-u"
+  :entity/id #uuid "9d09eece-4985-5acc-8c5f-4ca7fce2b435"
+  :entity/kinds [:kind/response]
+  :response/submission "submission-first"
+  :response/part [:entity/id #uuid "de1c01c2-6685-5c1e-be87-5f55bff4c8b6"]
+  :response/text "x**2"
+  :response/outcome :answer/correct
+  :response/score 1.0
+  :response/evaluated-at #inst "2026-09-26T16:07:00.000Z"
+  :response/grading-method :grading/symbolic
+  :db/ensure [:kind/response]}
+
+ ;; response-first-blank-du
+ {:db/id "response-first-blank-du"
+  :entity/id #uuid "231daa4c-7173-5b38-8398-2430145cb44b"
+  :entity/kinds [:kind/response]
+  :response/submission "submission-first"
+  :response/part [:entity/id #uuid "a62a70a2-c3e8-5ea6-9182-97f941836593"]
+  :response/text "x"
+  :response/outcome :answer/incorrect
+  :response/score 0.0
+  :response/evaluated-at #inst "2026-09-26T16:07:00.000Z"
+  :response/grading-method :grading/symbolic
+  :db/ensure [:kind/response]}
+
+ ;; submission-final
+ {:db/id "submission-final"
+  :entity/id #uuid "eef49fff-904f-58a3-a429-e827b9536182"
+  :entity/kinds [:kind/submission]
+  :submission/task-item "item-blank"
+  :submission/number 2
+  :submission/submitted-at #inst "2026-09-26T16:08:00.000Z"
+  :submission/final? true
+  :submission/outcome :answer/correct
+  :submission/score 1.0
+  :db/ensure [:kind/submission]}
+
+ ;; response-final-blank-u
+ {:db/id "response-final-blank-u"
+  :entity/id #uuid "5390d607-fbc7-5606-aafd-a89420921b25"
+  :entity/kinds [:kind/response]
+  :response/submission "submission-final"
+  :response/part [:entity/id #uuid "de1c01c2-6685-5c1e-be87-5f55bff4c8b6"]
+  :response/text "x**2"
+  :response/outcome :answer/correct
+  :response/score 1.0
+  :response/evaluated-at #inst "2026-09-26T16:08:00.000Z"
+  :response/grading-method :grading/symbolic
+  :db/ensure [:kind/response]}
+
+ ;; response-final-blank-du
+ {:db/id "response-final-blank-du"
+  :entity/id #uuid "e3b0c89f-55fb-538e-9be9-1dc79cc6c938"
+  :entity/kinds [:kind/response]
+  :response/submission "submission-final"
+  :response/part [:entity/id #uuid "a62a70a2-c3e8-5ea6-9182-97f941836593"]
+  :response/text "2*x"
+  :response/outcome :answer/correct
+  :response/score 1.0
+  :response/evaluated-at #inst "2026-09-26T16:08:00.000Z"
+  :response/grading-method :grading/symbolic
+  :db/ensure [:kind/response]}
+
+ ;; choose-u-progress
+ {:db/id "choose-u-progress"
+  :entity/id #uuid "45c88c93-e8d6-5a84-9cb2-db1996a2a230"
+  :entity/kinds [:kind/progress]
+  :progress/learner "learner"
+  :progress/skill [:entity/id #uuid "994e913b-5c06-5001-9a2f-e6ca5f619a8d"]
+  :progress/status :progress.status/mastered
+  :progress/readiness :readiness/ready
+  :progress/repetition 1.0
+  :progress/memory 1.0
+  :progress/memory-at #inst "2026-09-26T16:08:00.000Z"
+  :progress/interval-seconds 86400.0
+  :progress/review-due-at #inst "2026-09-27T16:08:00.000Z"
+  :progress/last-evidence-at #inst "2026-09-26T16:08:00.000Z"
+  :progress/computed-at #inst "2026-09-26T16:08:00.000Z"
+  :progress/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :db/ensure [:kind/progress]}
+
+ ;; power-rule-progress
+ {:db/id "power-rule-progress"
+  :entity/id #uuid "ea21f6e8-1e8b-556b-a255-6e1daf9dd8ce"
+  :entity/kinds [:kind/progress]
+  :progress/learner "learner"
+  :progress/skill [:entity/id #uuid "63c6b31a-2a04-5c56-923e-ae3d22349029"]
+  :progress/status :progress.status/mastered
+  :progress/readiness :readiness/ready
+  :progress/repetition 2.25
+  :progress/memory 0.9
+  :progress/memory-at #inst "2026-09-26T16:08:00.000Z"
+  :progress/interval-seconds 86400.0
+  :progress/review-due-at #inst "2026-09-27T16:08:00.000Z"
+  :progress/last-evidence-at #inst "2026-09-26T16:08:00.000Z"
+  :progress/computed-at #inst "2026-09-26T16:08:00.000Z"
+  :progress/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :db/ensure [:kind/progress]}
+
+ ;; direct-credit
+ {:db/id "direct-credit"
+  :entity/id #uuid "09cb16f9-4eed-57c9-862e-a58a9fa13bee"
+  :entity/kinds [:kind/credit]
+  :credit/learner "learner"
+  :credit/skill [:entity/id #uuid "994e913b-5c06-5001-9a2f-e6ca5f619a8d"]
+  :credit/attempt "attempt"
+  :credit/task-item "item-blank"
+  :credit/kind :credit.kind/direct
+  :credit/fraction 1.0
+  :credit/repetition-delta 1.0
+  :credit/applied-at #inst "2026-09-26T16:08:00.000Z"
+  :credit/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :db/ensure [:kind/credit]}
+
+ ;; implicit-credit
+ {:db/id "implicit-credit"
+  :entity/id #uuid "5ae174bd-c3aa-538c-b01d-671f1cb07f35"
+  :entity/kinds [:kind/credit]
+  :credit/learner "learner"
+  :credit/skill [:entity/id #uuid "63c6b31a-2a04-5c56-923e-ae3d22349029"]
+  :credit/attempt "attempt"
+  :credit/task-item "item-blank"
+  :credit/kind :credit.kind/implicit
+  :credit/from-skill [:entity/id #uuid "994e913b-5c06-5001-9a2f-e6ca5f619a8d"]
+  :credit/relation [:entity/id #uuid "594e542e-5553-5899-9933-0a91c8ddd72d"]
+  :credit/fraction 0.25
+  :credit/repetition-delta 0.25
+  :credit/applied-at #inst "2026-09-26T16:08:00.000Z"
+  :credit/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :db/ensure [:kind/credit]}
+
+ ;; xp
+ {:db/id "xp"
+  :entity/id #uuid "0173857f-a365-536a-ab14-c11b434c7357"
+  :entity/kinds [:kind/xp-entry]
+  :xp-entry/learner "learner"
+  :xp-entry/attempt "attempt"
+  :xp-entry/amount 12
+  :xp-entry/reason :xp.reason/completion
+  :xp-entry/at #inst "2026-09-26T16:08:00.000Z"
+  :xp-entry/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :db/ensure [:kind/xp-entry]}
+
+ ;; recommended-review
+ {:db/id "recommended-review"
+  :entity/id #uuid "a2307832-2e4c-5e72-8728-29a79c86c1ef"
+  :entity/kinds [:kind/task]
+  :task/learner "learner"
+  :task/type :task.type/review
+  :task/origin :task.origin/recommended
+  :task/status :task.status/ready
+  :task/targets [[:entity/id #uuid "994e913b-5c06-5001-9a2f-e6ca5f619a8d"]]
+  :task/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :task/available-at #inst "2026-09-27T16:08:00.000Z"
+  :db/ensure [:kind/task]}
+
+ ;; recommended-test
+ {:db/id "recommended-test"
+  :entity/id #uuid "9dd9e3af-4aa2-5b7d-ac62-aa03e608a56d"
+  :entity/kinds [:kind/task]
+  :task/learner "learner"
+  :task/type :task.type/assessment
+  :task/origin :task.origin/recommended
+  :task/status :task.status/active
+  :task/assessment [:entity/id #uuid "b456b1e4-6ca6-5e91-ae13-73401ce643e1"]
+  :task/targets [[:entity/id #uuid "994e913b-5c06-5001-9a2f-e6ca5f619a8d"] [:entity/id #uuid "63c6b31a-2a04-5c56-923e-ae3d22349029"]]
+  :task/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :db/ensure [:kind/task]}
+
+ ;; test-attempt
+ {:db/id "test-attempt"
+  :entity/id #uuid "d4e5fc11-3240-5ec5-93fc-71b92502b576"
+  :entity/kinds [:kind/attempt]
+  :attempt/task "recommended-test"
+  :attempt/number 1
+  :attempt/status :attempt.status/active
+  :attempt/started-at #inst "2026-09-26T16:10:00.000Z"
+  :attempt/time-limit-seconds 120
+  :attempt/calculator-policy :calculator/forbidden
+  :db/ensure [:kind/attempt]}
+
+ ;; item-radio
+ {:db/id "item-radio"
+  :entity/id #uuid "30f2e1a2-c7b9-5254-aaa0-d3d55c191542"
+  :entity/kinds [:kind/task-item]
+  :task-item/attempt "test-attempt"
+  :task-item/question [:entity/id #uuid "c9ff6ccb-2a61-54dc-acd7-be2a2f832a9c"]
+  :task-item/position 0
+  :task-item/role :item.role/test
+  :task-item/presented-at #inst "2026-09-26T16:10:00.000Z"
+  :db/ensure [:kind/task-item]}
+
+ ;; display-x-cubed
+ {:db/id "display-x-cubed"
+  :entity/id #uuid "05144f53-3c3d-5782-b1a5-9da018b36f49"
+  :entity/kinds [:kind/presented-choice]
+  :presented-choice/task-item "item-radio"
+  :presented-choice/part [:entity/id #uuid "522c5222-28b4-5011-be5f-9e8a4183ba2b"]
+  :presented-choice/choice [:entity/id #uuid "d20edbd5-77e0-5fc9-a662-aa1118db94fd"]
+  :presented-choice/position 0
+  :presented-choice/label "A"
+  :db/ensure [:kind/presented-choice]}
+
+ ;; display-four-x-cubed
+ {:db/id "display-four-x-cubed"
+  :entity/id #uuid "9d2e4f15-3867-5d6a-8089-93036c3a158e"
+  :entity/kinds [:kind/presented-choice]
+  :presented-choice/task-item "item-radio"
+  :presented-choice/part [:entity/id #uuid "522c5222-28b4-5011-be5f-9e8a4183ba2b"]
+  :presented-choice/choice [:entity/id #uuid "1d806ca1-8d94-5a3f-9c2e-5d2ed2ebb432"]
+  :presented-choice/position 1
+  :presented-choice/label "B"
+  :db/ensure [:kind/presented-choice]}
+
+ ;; display-four-x-squared
+ {:db/id "display-four-x-squared"
+  :entity/id #uuid "2175df4b-ff9b-5f8c-98d9-275197b5fa5d"
+  :entity/kinds [:kind/presented-choice]
+  :presented-choice/task-item "item-radio"
+  :presented-choice/part [:entity/id #uuid "522c5222-28b4-5011-be5f-9e8a4183ba2b"]
+  :presented-choice/choice [:entity/id #uuid "f2bbcd02-4615-5ee9-82af-1d9dcb8f3fd4"]
+  :presented-choice/position 2
+  :presented-choice/label "C"
+  :db/ensure [:kind/presented-choice]}
+
+ ;; assessment-requirement
+ {:db/id "assessment-requirement"
+  :entity/id #uuid "b7274ec3-d1ce-58a3-b9fb-e050b3c907d1"
+  :entity/kinds [:kind/requirement]
+  :requirement/learner "learner"
+  :requirement/skill [:entity/id #uuid "994e913b-5c06-5001-9a2f-e6ca5f619a8d"]
+  :requirement/kind :requirement.kind/assessment
+  :requirement/status :requirement.status/pending
+  :requirement/created-at #inst "2026-09-26T16:08:00.000Z"
+  :requirement/trigger-attempt "attempt"
+  :requirement/policy [:entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"]
+  :db/ensure [:kind/requirement]}
+]

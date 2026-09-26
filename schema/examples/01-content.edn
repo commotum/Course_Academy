@@ -1,0 +1,1078 @@
+;; Optional content fixture: install only into a disposable test database after both schema files.
+;; Synthetic examples only; values do not claim to reproduce MA scoring or FIRe formulas.
+[
+
+ ;; engine-policy
+ {:db/id "engine-policy"
+  :entity/id #uuid "853a689c-e59e-5579-89cb-ea961ec3a5c5"
+  :entity/kinds [:kind/policy]
+  :content/title "Illustrative engine policy"
+  :policy/key :policy/example-engine
+  :policy/algorithm :algorithm/example-only
+  :policy/parameters-edn "{:example-only true :selection {:exclude-answered-lesson-items true :fresh-quiz-items true :change-items-on-retake true :prefer-unseen true :on-exhaustion :generate-or-defer} :note \"Proposed settings only; selection and retention algorithms are not implemented.\"}"
+  :db/ensure [:kind/policy]}
+
+ ;; calc-course
+ {:db/id "calc-course"
+  :entity/id #uuid "95ce025e-3334-59a7-b387-c253b4c0be3f"
+  :entity/kinds [:kind/course]
+  :content/title "Calculus"
+  :course/code "CALC"
+  :course/subject [:subject/mathematics]
+  :db/ensure [:kind/course]}
+
+ ;; engineering-course
+ {:db/id "engineering-course"
+  :entity/id #uuid "dd886f55-197e-5e4b-b72d-9dc8e17e368f"
+  :entity/kinds [:kind/course]
+  :content/title "Engineering mathematics"
+  :course/code "ENG-MATH"
+  :db/ensure [:kind/course]}
+
+ ;; integration-unit
+ {:db/id "integration-unit"
+  :entity/id #uuid "4ae312bb-f8dc-5566-bb1b-dea4d76b99dc"
+  :entity/kinds [:kind/unit]
+  :content/title "Techniques of integration"
+  :db/ensure [:kind/unit]}
+
+ ;; derivative-topic
+ {:db/id "derivative-topic"
+  :entity/id #uuid "742a18c9-69cf-507d-9ef9-190269e9f4fb"
+  :entity/kinds [:kind/topic]
+  :content/title "Polynomial derivatives"
+  :db/ensure [:kind/topic]}
+
+ ;; substitution-topic
+ {:db/id "substitution-topic"
+  :entity/id #uuid "27c80190-744d-5b95-b07e-85da57628b60"
+  :entity/kinds [:kind/topic]
+  :content/title "Integration by substitution"
+  :db/ensure [:kind/topic]}
+
+ ;; power-rule
+ {:db/id "power-rule"
+  :entity/id #uuid "63c6b31a-2a04-5c56-923e-ae3d22349029"
+  :entity/kinds [:kind/knowledge-point]
+  :content/title "Differentiate a power"
+  :knowledge-point/competency "Differentiate x raised to an integer power."
+  :knowledge-point/topics ["derivative-topic"]
+  :db/ensure [:kind/knowledge-point]}
+
+ ;; choose-u
+ {:db/id "choose-u"
+  :entity/id #uuid "994e913b-5c06-5001-9a2f-e6ca5f619a8d"
+  :entity/kinds [:kind/knowledge-point]
+  :content/title "Choose a substitution"
+  :knowledge-point/competency "Choose an inner function and compute its differential."
+  :knowledge-point/topics ["substitution-topic"]
+  :db/ensure [:kind/knowledge-point]}
+
+ ;; substitution-lesson
+ {:db/id "substitution-lesson"
+  :entity/id #uuid "13c915b3-4ffb-59cc-9b16-f994f50403d4"
+  :entity/kinds [:kind/lesson]
+  :content/title "Recognize and use u-substitution"
+  :lesson/topics ["substitution-topic"]
+  :lesson/knowledge-points ["choose-u" "power-rule"]
+  :lesson/core-move "Replace an inner function and its differential with u and du."
+  :lesson/recognition-cue "A composite function appears with its inner derivative."
+  :lesson/expected-seconds 600
+  :db/ensure [:kind/lesson]}
+
+ ;; intro
+ {:db/id "intro"
+  :entity/id #uuid "150daeca-2f91-598b-9200-4a88adc7f954"
+  :entity/kinds [:kind/section]
+  :content/body "For $\\int 2x\\cos(x^2)\\,dx$, let $u=x^2$ and $du=2x\\,dx$."
+  :content/format :content.format/markdown
+  :section/role :section.role/tutorial
+  :section/knowledge-points ["choose-u"]
+  :db/ensure [:kind/section]}
+
+ ;; practice
+ {:db/id "practice"
+  :entity/id #uuid "da880a6f-c7f1-5188-adae-faa0e06226d1"
+  :entity/kinds [:kind/section]
+  :section/role :section.role/practice
+  :section/knowledge-points ["choose-u" "power-rule"]
+  :db/ensure [:kind/section]}
+
+ ;; worked-example
+ {:db/id "worked-example"
+  :entity/id #uuid "a1f4ff8c-15f6-5ffc-9b5f-9e63f043185e"
+  :entity/kinds [:kind/example]
+  :content/body "Evaluate $\\int 2x\\cos(x^2)\\,dx$."
+  :content/format :content.format/markdown
+  :example/knowledge-points ["choose-u"]
+  :example/solution "$u=x^2$, so the integral is $\\int\\cos(u)\\,du=\\sin(u)+C$."
+  :example/conclusion "$\\sin(x^2)+C$."
+  :db/ensure [:kind/example]}
+
+ ;; course-unit
+ {:db/id "course-unit"
+  :entity/id #uuid "c3c7c674-ed12-5b17-9783-2b13b8fe3160"
+  :entity/kinds [:kind/placement]
+  :placement/parent "calc-course"
+  :placement/content "integration-unit"
+  :placement/position 0
+  :placement/role :placement.role/unit
+  :db/ensure [:kind/placement]}
+
+ ;; unit-topic
+ {:db/id "unit-topic"
+  :entity/id #uuid "d36a21e7-843c-55b4-b0cc-28e6689269d6"
+  :entity/kinds [:kind/placement]
+  :placement/parent "integration-unit"
+  :placement/content "substitution-topic"
+  :placement/position 0
+  :placement/role :placement.role/topic
+  :db/ensure [:kind/placement]}
+
+ ;; unit-lesson
+ {:db/id "unit-lesson"
+  :entity/id #uuid "7a374300-14a5-5fed-8b94-81613453ec98"
+  :entity/kinds [:kind/placement]
+  :placement/parent "integration-unit"
+  :placement/content "substitution-lesson"
+  :placement/position 1
+  :placement/role :placement.role/lesson
+  :db/ensure [:kind/placement]}
+
+ ;; other-course-topic
+ {:db/id "other-course-topic"
+  :entity/id #uuid "aa72ce12-060b-5b35-a268-25c84ac98389"
+  :entity/kinds [:kind/placement]
+  :placement/parent "engineering-course"
+  :placement/content "substitution-topic"
+  :placement/position 0
+  :placement/role :placement.role/topic
+  :db/ensure [:kind/placement]}
+
+ ;; lesson-intro
+ {:db/id "lesson-intro"
+  :entity/id #uuid "f84b3fcd-7ed5-5b5e-b6f0-4846a90c4a3f"
+  :entity/kinds [:kind/placement]
+  :placement/parent "substitution-lesson"
+  :placement/content "intro"
+  :placement/position 0
+  :placement/role :placement.role/tutorial
+  :db/ensure [:kind/placement]}
+
+ ;; lesson-example
+ {:db/id "lesson-example"
+  :entity/id #uuid "259b56e0-24ab-529a-b8e7-98363d4fa188"
+  :entity/kinds [:kind/placement]
+  :placement/parent "substitution-lesson"
+  :placement/content "worked-example"
+  :placement/position 1
+  :placement/role :placement.role/example
+  :db/ensure [:kind/placement]}
+
+ ;; lesson-practice
+ {:db/id "lesson-practice"
+  :entity/id #uuid "5b194d8b-b32e-5302-acb4-48d6d4a128bd"
+  :entity/kinds [:kind/placement]
+  :placement/parent "substitution-lesson"
+  :placement/content "practice"
+  :placement/position 2
+  :placement/role :placement.role/practice
+  :db/ensure [:kind/placement]}
+
+ ;; topic-prerequisite
+ {:db/id "topic-prerequisite"
+  :entity/id #uuid "caa2070c-cc30-5921-83d1-dca9c6ee8182"
+  :entity/kinds [:kind/relation]
+  :relation/from "substitution-topic"
+  :relation/to "derivative-topic"
+  :relation/type :relation.type/prerequisite
+  :db/ensure [:kind/relation]}
+
+ ;; key-prerequisite
+ {:db/id "key-prerequisite"
+  :entity/id #uuid "da640f13-5aab-5817-a4f3-ea44819316d9"
+  :entity/kinds [:kind/relation]
+  :relation/from "choose-u"
+  :relation/to "power-rule"
+  :relation/type :relation.type/key-prerequisite
+  :db/ensure [:kind/relation]}
+
+ ;; encompassing
+ {:db/id "encompassing"
+  :entity/id #uuid "594e542e-5553-5899-9933-0a91c8ddd72d"
+  :entity/kinds [:kind/relation]
+  :relation/from "choose-u"
+  :relation/to "power-rule"
+  :relation/type :relation.type/encompasses
+  :relation/weight 0.25
+  :db/ensure [:kind/relation]}
+
+ ;; two-x
+ {:db/id "two-x"
+  :entity/id #uuid "a76c979a-6d75-57d0-9f3c-678b21a0e697"
+  :entity/kinds [:kind/choice]
+  :content/body "$2x$"
+  :content/format :content.format/markdown
+  :choice/position 0
+  :db/ensure [:kind/choice]}
+
+ ;; three-x-squared
+ {:db/id "three-x-squared"
+  :entity/id #uuid "a01ded22-564a-53c4-bde2-8e0c0e8a46d6"
+  :entity/kinds [:kind/choice]
+  :content/body "$3x^2$"
+  :content/format :content.format/markdown
+  :choice/position 1
+  :db/ensure [:kind/choice]}
+
+ ;; x
+ {:db/id "x"
+  :entity/id #uuid "e77e1002-a0b2-546a-a587-d8e25866d802"
+  :entity/kinds [:kind/choice]
+  :content/body "$x$"
+  :content/format :content.format/markdown
+  :choice/position 2
+  :db/ensure [:kind/choice]}
+
+ ;; derivatives-bank
+ {:db/id "derivatives-bank"
+  :entity/id #uuid "938061bd-6eda-5af5-8ae8-3ddd7cd42925"
+  :entity/kinds [:kind/option-bank]
+  :option-bank/choices ["two-x" "three-x-squared" "x"]
+  :db/ensure [:kind/option-bank]}
+
+ ;; twice-x
+ {:db/id "twice-x"
+  :entity/id #uuid "146b8dfb-035b-59ec-99cd-c747c8ce2375"
+  :entity/kinds [:kind/choice]
+  :content/body "$2x$"
+  :content/format :content.format/markdown
+  :choice/position 0
+  :db/ensure [:kind/choice]}
+
+ ;; x-plus-x
+ {:db/id "x-plus-x"
+  :entity/id #uuid "e9821c30-7a34-5cd4-a762-940d4bff00a0"
+  :entity/kinds [:kind/choice]
+  :content/body "$x+x$"
+  :content/format :content.format/markdown
+  :choice/position 1
+  :db/ensure [:kind/choice]}
+
+ ;; x-squared
+ {:db/id "x-squared"
+  :entity/id #uuid "2f1a0e15-1dd0-54ad-abd5-81c790ed37a3"
+  :entity/kinds [:kind/choice]
+  :content/body "$x^2$"
+  :content/format :content.format/markdown
+  :choice/position 2
+  :db/ensure [:kind/choice]}
+
+ ;; equivalent-bank
+ {:db/id "equivalent-bank"
+  :entity/id #uuid "620f96d1-aae3-5679-9bb6-5f1e78a4d803"
+  :entity/kinds [:kind/option-bank]
+  :option-bank/choices ["twice-x" "x-plus-x" "x-squared"]
+  :db/ensure [:kind/option-bank]}
+
+ ;; u-x-squared
+ {:db/id "u-x-squared"
+  :entity/id #uuid "68813467-a98a-5082-a308-5edb9d565c56"
+  :entity/kinds [:kind/choice]
+  :content/body "$x^2$"
+  :content/format :content.format/markdown
+  :choice/position 0
+  :db/ensure [:kind/choice]}
+
+ ;; u-x
+ {:db/id "u-x"
+  :entity/id #uuid "f804ff56-9cc6-504e-ab70-5d6536cf4419"
+  :entity/kinds [:kind/choice]
+  :content/body "$x$"
+  :content/format :content.format/markdown
+  :choice/position 1
+  :db/ensure [:kind/choice]}
+
+ ;; u-bank
+ {:db/id "u-bank"
+  :entity/id #uuid "a6cfff5f-a611-5706-8c79-a5f2d060135f"
+  :entity/kinds [:kind/option-bank]
+  :option-bank/choices ["u-x-squared" "u-x"]
+  :db/ensure [:kind/option-bank]}
+
+ ;; du-two-x
+ {:db/id "du-two-x"
+  :entity/id #uuid "830bed9b-20d6-503b-a424-656755559ee9"
+  :entity/kinds [:kind/choice]
+  :content/body "$2x$"
+  :content/format :content.format/markdown
+  :choice/position 0
+  :db/ensure [:kind/choice]}
+
+ ;; du-one
+ {:db/id "du-one"
+  :entity/id #uuid "ba77541f-ee84-55ea-b70e-da36d1fed117"
+  :entity/kinds [:kind/choice]
+  :content/body "$1$"
+  :content/format :content.format/markdown
+  :choice/position 1
+  :db/ensure [:kind/choice]}
+
+ ;; du-bank
+ {:db/id "du-bank"
+  :entity/id #uuid "61e9e9f2-1501-5d3b-9fce-c6d4ded02af7"
+  :entity/kinds [:kind/option-bank]
+  :option-bank/choices ["du-two-x" "du-one"]
+  :db/ensure [:kind/option-bank]}
+
+ ;; match-two-x
+ {:db/id "match-two-x"
+  :entity/id #uuid "677eaea2-7519-58e9-8deb-c50d4cdf3da1"
+  :entity/kinds [:kind/choice]
+  :content/body "$2x$"
+  :content/format :content.format/markdown
+  :choice/position 0
+  :db/ensure [:kind/choice]}
+
+ ;; match-three-x-squared
+ {:db/id "match-three-x-squared"
+  :entity/id #uuid "55608721-95df-5976-a1e8-d6a2df11a570"
+  :entity/kinds [:kind/choice]
+  :content/body "$3x^2$"
+  :content/format :content.format/markdown
+  :choice/position 1
+  :db/ensure [:kind/choice]}
+
+ ;; matching-bank
+ {:db/id "matching-bank"
+  :entity/id #uuid "8e554ad4-1a52-58a5-bf6a-a123f17ac785"
+  :entity/kinds [:kind/option-bank]
+  :option-bank/choices ["match-two-x" "match-three-x-squared"]
+  :db/ensure [:kind/option-bank]}
+
+ ;; derivative-rule
+ {:db/id "derivative-rule"
+  :entity/id #uuid "586234cf-ad96-57b7-8531-6fa8c296f067"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/choice-set
+  :grading-rule/accepted-choices ["two-x"]
+  :grading-rule/reference-answer "$2x$"
+  :db/ensure [:kind/grading-rule]}
+
+ ;; cube-rule
+ {:db/id "cube-rule"
+  :entity/id #uuid "549a3354-1049-55b4-8341-70596f00cc87"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/choice-set
+  :grading-rule/accepted-choices ["three-x-squared"]
+  :db/ensure [:kind/grading-rule]}
+
+ ;; equivalent-rule
+ {:db/id "equivalent-rule"
+  :entity/id #uuid "efe41abf-e8cb-5428-8640-f056f8fd85d0"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/choice-set
+  :grading-rule/accepted-choices ["twice-x" "x-plus-x"]
+  :db/ensure [:kind/grading-rule]}
+
+ ;; u-rule
+ {:db/id "u-rule"
+  :entity/id #uuid "b81a6090-7224-55a4-85af-083074a0fa9f"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/symbolic
+  :grading-rule/expected-expression "x**2"
+  :grading-rule/evaluator "example-symbolic-evaluator"
+  :grading-rule/reference-answer "$x^2$"
+  :db/ensure [:kind/grading-rule]}
+
+ ;; du-rule
+ {:db/id "du-rule"
+  :entity/id #uuid "8d4af01c-cf6e-586a-98f2-fcdff534ba85"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/symbolic
+  :grading-rule/expected-expression "2*x"
+  :grading-rule/evaluator "example-symbolic-evaluator"
+  :grading-rule/reference-answer "$2x$"
+  :db/ensure [:kind/grading-rule]}
+
+ ;; explain-rule
+ {:db/id "explain-rule"
+  :entity/id #uuid "32cf21e7-cef1-5b5c-b8cc-b9c9dffaee3f"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/manual
+  :grading-rule/reference-answer "The differential absorbs the factor $2x\\,dx$."
+  :grading-rule/rubric "Identify the inner function and connect its derivative to the differential."
+  :db/ensure [:kind/grading-rule]}
+
+ ;; u-choice-rule
+ {:db/id "u-choice-rule"
+  :entity/id #uuid "f8e0363b-a2f6-56b9-8fb3-7ffa23a97529"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/choice-set
+  :grading-rule/accepted-choices ["u-x-squared"]
+  :db/ensure [:kind/grading-rule]}
+
+ ;; du-choice-rule
+ {:db/id "du-choice-rule"
+  :entity/id #uuid "6068c09d-8656-5089-b335-0e5c908a5861"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/choice-set
+  :grading-rule/accepted-choices ["du-two-x"]
+  :db/ensure [:kind/grading-rule]}
+
+ ;; match-square-rule
+ {:db/id "match-square-rule"
+  :entity/id #uuid "3cbe6a4a-2283-59dd-8aab-2d7a3fbc21de"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/choice-set
+  :grading-rule/accepted-choices ["match-two-x"]
+  :db/ensure [:kind/grading-rule]}
+
+ ;; match-cube-rule
+ {:db/id "match-cube-rule"
+  :entity/id #uuid "0fcd1163-82d1-5a15-891b-f7704d742dbb"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/choice-set
+  :grading-rule/accepted-choices ["match-three-x-squared"]
+  :db/ensure [:kind/grading-rule]}
+
+ ;; radio-answer
+ {:db/id "radio-answer"
+  :entity/id #uuid "21f62a1e-c25c-5b8e-9f0a-98bec1887efa"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 0
+  :response-part/key "derivative"
+  :response-part/input :input/choice
+  :response-part/grading-rule "derivative-rule"
+  :db/ensure [:kind/response-part]}
+
+ ;; checkbox-answer
+ {:db/id "checkbox-answer"
+  :entity/id #uuid "39262ce9-7758-5a63-91ce-a98e0686bccd"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 0
+  :response-part/key "equivalent"
+  :response-part/input :input/choice
+  :response-part/grading-rule "equivalent-rule"
+  :db/ensure [:kind/response-part]}
+
+ ;; blank-u
+ {:db/id "blank-u"
+  :entity/id #uuid "de1c01c2-6685-5c1e-be87-5f55bff4c8b6"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 0
+  :response-part/key "u"
+  :response-part/input :input/math
+  :response-part/grading-rule "u-rule"
+  :db/ensure [:kind/response-part]}
+
+ ;; blank-du
+ {:db/id "blank-du"
+  :entity/id #uuid "a62a70a2-c3e8-5ea6-9182-97f941836593"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 1
+  :response-part/key "du"
+  :response-part/input :input/math
+  :response-part/grading-rule "du-rule"
+  :db/ensure [:kind/response-part]}
+
+ ;; free-answer
+ {:db/id "free-answer"
+  :entity/id #uuid "236a6870-8228-5d30-960f-a0a607f59fab"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 0
+  :response-part/key "explanation"
+  :response-part/input :input/text
+  :response-part/grading-rule "explain-rule"
+  :db/ensure [:kind/response-part]}
+
+ ;; select-square
+ {:db/id "select-square"
+  :entity/id #uuid "c601d8bd-a518-5292-a329-05182b06237c"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 0
+  :response-part/key "square"
+  :response-part/input :input/choice
+  :response-part/grading-rule "derivative-rule"
+  :content/body "$d(x^2)/dx$"
+  :content/format :content.format/markdown
+  :db/ensure [:kind/response-part]}
+
+ ;; select-cube
+ {:db/id "select-cube"
+  :entity/id #uuid "55fb6d45-8436-5b33-a6be-702346b9240f"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 1
+  :response-part/key "cube"
+  :response-part/input :input/choice
+  :response-part/grading-rule "cube-rule"
+  :content/body "$d(x^3)/dx$"
+  :content/format :content.format/markdown
+  :db/ensure [:kind/response-part]}
+
+ ;; multi-u
+ {:db/id "multi-u"
+  :entity/id #uuid "65e6637f-0d94-5f60-8f82-56c53281e90c"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 0
+  :response-part/key "u"
+  :response-part/input :input/choice
+  :response-part/grading-rule "u-choice-rule"
+  :content/body "Choose $u$."
+  :content/format :content.format/markdown
+  :response-part/option-bank "u-bank"
+  :db/ensure [:kind/response-part]}
+
+ ;; multi-du
+ {:db/id "multi-du"
+  :entity/id #uuid "0702adf8-ff57-5b67-ad4b-332e9d8944bf"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 1
+  :response-part/key "du"
+  :response-part/input :input/choice
+  :response-part/grading-rule "du-choice-rule"
+  :content/body "Choose $du/dx$."
+  :content/format :content.format/markdown
+  :response-part/option-bank "du-bank"
+  :db/ensure [:kind/response-part]}
+
+ ;; match-square
+ {:db/id "match-square"
+  :entity/id #uuid "bae9a766-b07e-5ea3-b6b5-0d529319c607"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 0
+  :response-part/key "square"
+  :response-part/input :input/choice
+  :response-part/grading-rule "match-square-rule"
+  :content/body "$x^2$"
+  :content/format :content.format/markdown
+  :db/ensure [:kind/response-part]}
+
+ ;; match-cube
+ {:db/id "match-cube"
+  :entity/id #uuid "903d2cab-6152-5188-b456-f6a31ab785c6"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 1
+  :response-part/key "cube"
+  :response-part/input :input/choice
+  :response-part/grading-rule "match-cube-rule"
+  :content/body "$x^3$"
+  :content/format :content.format/markdown
+  :db/ensure [:kind/response-part]}
+
+ ;; q-radio
+ {:db/id "q-radio"
+  :entity/id #uuid "1b6d3041-d305-5b68-a3f4-820588cc4158"
+  :entity/kinds [:kind/question]
+  :content/body "Differentiate $x^2$."
+  :content/format :content.format/markdown
+  :question/format :question.format/radio
+  :question/parts ["radio-answer"]
+  :question/expected-seconds 45
+  :question/lesson "substitution-lesson"
+  :question/primary-knowledge-point "power-rule"
+  :question/option-bank "derivatives-bank"
+  :question/difficulty-band :difficulty/easy
+  :db/ensure [:kind/question :spec/lesson-question]}
+
+ ;; practice-q-radio
+ {:db/id "practice-q-radio"
+  :entity/id #uuid "f61faa6d-6ee2-5c03-9b41-d4664732488a"
+  :entity/kinds [:kind/placement]
+  :placement/parent "practice"
+  :placement/content "q-radio"
+  :placement/position 0
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; coverage-q-radio
+ {:db/id "coverage-q-radio"
+  :entity/id #uuid "001b72fa-d6f1-50ab-802c-8a328e0afacf"
+  :entity/kinds [:kind/question-skill]
+  :question-skill/question "q-radio"
+  :question-skill/skill "power-rule"
+  :question-skill/role :coverage/assessed
+  :db/ensure [:kind/question-skill]}
+
+ ;; q-checkbox
+ {:db/id "q-checkbox"
+  :entity/id #uuid "ff65c86b-97f3-52cd-9659-e0f775fa3272"
+  :entity/kinds [:kind/question]
+  :content/body "Select every expression equal to $2x$ for all real $x$."
+  :content/format :content.format/markdown
+  :question/format :question.format/checkbox
+  :question/parts ["checkbox-answer"]
+  :question/expected-seconds 45
+  :question/lesson "substitution-lesson"
+  :question/primary-knowledge-point "power-rule"
+  :question/option-bank "equivalent-bank"
+  :db/ensure [:kind/question :spec/lesson-question]}
+
+ ;; practice-q-checkbox
+ {:db/id "practice-q-checkbox"
+  :entity/id #uuid "0b403b4e-faed-59f9-9cfb-ed3e5e080bb6"
+  :entity/kinds [:kind/placement]
+  :placement/parent "practice"
+  :placement/content "q-checkbox"
+  :placement/position 1
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; coverage-q-checkbox
+ {:db/id "coverage-q-checkbox"
+  :entity/id #uuid "fa5120cf-f944-5792-b7c0-379efbf6cec8"
+  :entity/kinds [:kind/question-skill]
+  :question-skill/question "q-checkbox"
+  :question-skill/skill "power-rule"
+  :question-skill/role :coverage/assessed
+  :db/ensure [:kind/question-skill]}
+
+ ;; q-blank
+ {:db/id "q-blank"
+  :entity/id #uuid "c4641df5-8c85-5e9d-9b9a-f168b6fd99c3"
+  :entity/kinds [:kind/question]
+  :content/body "For $\\int 2x\\cos(x^2)\\,dx$, choose $u=$ {{part:u}} and $du/dx=$ {{part:du}}."
+  :content/format :content.format/markdown
+  :question/format :question.format/blank
+  :question/parts ["blank-u" "blank-du"]
+  :question/expected-seconds 45
+  :question/lesson "substitution-lesson"
+  :question/primary-knowledge-point "choose-u"
+  :db/ensure [:kind/question :spec/lesson-question]}
+
+ ;; practice-q-blank
+ {:db/id "practice-q-blank"
+  :entity/id #uuid "0afd499a-7a37-5c75-9f11-be66bd8bd72b"
+  :entity/kinds [:kind/placement]
+  :placement/parent "practice"
+  :placement/content "q-blank"
+  :placement/position 2
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; coverage-q-blank
+ {:db/id "coverage-q-blank"
+  :entity/id #uuid "9325866c-ed4a-5e36-9c99-b4905c555796"
+  :entity/kinds [:kind/question-skill]
+  :question-skill/question "q-blank"
+  :question-skill/skill "choose-u"
+  :question-skill/role :coverage/assessed
+  :db/ensure [:kind/question-skill]}
+
+ ;; q-free
+ {:db/id "q-free"
+  :entity/id #uuid "4fb3d92b-6f17-5533-b23a-7d8efc981f81"
+  :entity/kinds [:kind/question]
+  :content/body "Explain why $u=x^2$ is useful here."
+  :content/format :content.format/markdown
+  :question/format :question.format/free
+  :question/parts ["free-answer"]
+  :question/expected-seconds 45
+  :question/lesson "substitution-lesson"
+  :question/primary-knowledge-point "choose-u"
+  :db/ensure [:kind/question :spec/lesson-question]}
+
+ ;; practice-q-free
+ {:db/id "practice-q-free"
+  :entity/id #uuid "aa31330a-dcfa-59e3-9297-5586affc5114"
+  :entity/kinds [:kind/placement]
+  :placement/parent "practice"
+  :placement/content "q-free"
+  :placement/position 3
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; coverage-q-free
+ {:db/id "coverage-q-free"
+  :entity/id #uuid "7f08544f-369c-5691-9976-2077cabc0995"
+  :entity/kinds [:kind/question-skill]
+  :question-skill/question "q-free"
+  :question-skill/skill "choose-u"
+  :question-skill/role :coverage/assessed
+  :db/ensure [:kind/question-skill]}
+
+ ;; q-select
+ {:db/id "q-select"
+  :entity/id #uuid "2c6063b5-907f-5689-858b-5d7137f417e8"
+  :entity/kinds [:kind/question]
+  :content/body "Select the derivative of each expression."
+  :content/format :content.format/markdown
+  :question/format :question.format/select
+  :question/parts ["select-square" "select-cube"]
+  :question/expected-seconds 45
+  :question/lesson "substitution-lesson"
+  :question/primary-knowledge-point "power-rule"
+  :question/option-bank "derivatives-bank"
+  :db/ensure [:kind/question :spec/lesson-question]}
+
+ ;; practice-q-select
+ {:db/id "practice-q-select"
+  :entity/id #uuid "e92673f2-c2d4-5e61-b9ea-e3107810b417"
+  :entity/kinds [:kind/placement]
+  :placement/parent "practice"
+  :placement/content "q-select"
+  :placement/position 4
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; coverage-q-select
+ {:db/id "coverage-q-select"
+  :entity/id #uuid "033d3b94-79e3-5728-b852-58937c4c86c1"
+  :entity/kinds [:kind/question-skill]
+  :question-skill/question "q-select"
+  :question-skill/skill "power-rule"
+  :question-skill/role :coverage/assessed
+  :db/ensure [:kind/question-skill]}
+
+ ;; q-multi
+ {:db/id "q-multi"
+  :entity/id #uuid "ff930e24-897e-5b0b-b052-d4e32e8daa1b"
+  :entity/kinds [:kind/question]
+  :content/body "Choose the substitution and its derivative."
+  :content/format :content.format/markdown
+  :question/format :question.format/multi-select
+  :question/parts ["multi-u" "multi-du"]
+  :question/expected-seconds 45
+  :question/lesson "substitution-lesson"
+  :question/primary-knowledge-point "choose-u"
+  :db/ensure [:kind/question :spec/lesson-question]}
+
+ ;; practice-q-multi
+ {:db/id "practice-q-multi"
+  :entity/id #uuid "49ac8d3c-c1ba-53fc-8e69-4d02c568ef1f"
+  :entity/kinds [:kind/placement]
+  :placement/parent "practice"
+  :placement/content "q-multi"
+  :placement/position 5
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; coverage-q-multi
+ {:db/id "coverage-q-multi"
+  :entity/id #uuid "4a5e15cd-8eee-562d-b73c-0fff585ce190"
+  :entity/kinds [:kind/question-skill]
+  :question-skill/question "q-multi"
+  :question-skill/skill "choose-u"
+  :question-skill/role :coverage/assessed
+  :db/ensure [:kind/question-skill]}
+
+ ;; q-noodle
+ {:db/id "q-noodle"
+  :entity/id #uuid "9d07447c-b221-5578-a901-2a5f44ef2794"
+  :entity/kinds [:kind/question]
+  :content/body "Match each expression to its derivative."
+  :content/format :content.format/markdown
+  :question/format :question.format/noodle
+  :question/parts ["match-square" "match-cube"]
+  :question/expected-seconds 45
+  :question/lesson "substitution-lesson"
+  :question/primary-knowledge-point "power-rule"
+  :question/option-bank "matching-bank"
+  :question/one-to-one? true
+  :db/ensure [:kind/question :spec/lesson-question]}
+
+ ;; practice-q-noodle
+ {:db/id "practice-q-noodle"
+  :entity/id #uuid "59ac634f-cc46-51d2-aa53-338c61c1fa97"
+  :entity/kinds [:kind/placement]
+  :placement/parent "practice"
+  :placement/content "q-noodle"
+  :placement/position 6
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; coverage-q-noodle
+ {:db/id "coverage-q-noodle"
+  :entity/id #uuid "3f506278-2fe6-5220-99a3-4e3a2c7ed384"
+  :entity/kinds [:kind/question-skill]
+  :question-skill/question "q-noodle"
+  :question-skill/skill "power-rule"
+  :question-skill/role :coverage/assessed
+  :db/ensure [:kind/question-skill]}
+
+ ;; term
+ {:db/id "term"
+  :entity/id #uuid "51ae0374-3992-5d61-8d70-ddfb3396eec7"
+  :entity/kinds [:kind/term]
+  :content/title "Illustrative fall term"
+  :term/starts-on "2026-09-21"
+  :term/ends-on "2026-12-11"
+  :db/ensure [:kind/term]}
+
+ ;; offering
+ {:db/id "offering"
+  :entity/id #uuid "d54b6288-d4f9-5130-acbf-1987c0becda6"
+  :entity/kinds [:kind/course-offering]
+  :offering/course "calc-course"
+  :offering/term "term"
+  :offering/time-zone "America/Los_Angeles"
+  :db/ensure [:kind/course-offering]}
+
+ ;; assignment
+ {:db/id "assignment"
+  :entity/id #uuid "269d6794-191f-5e4e-b3b8-d9ddb802b220"
+  :entity/kinds [:kind/assignment]
+  :content/title "Substitution practice"
+  :assignment/kind :assignment.kind/homework
+  :assignment/offering "offering"
+  :db/ensure [:kind/assignment]}
+
+ ;; problem
+ {:db/id "problem"
+  :entity/id #uuid "e3ef5f21-5664-5892-91fc-dfa497416e92"
+  :entity/kinds [:kind/problem]
+  :content/body "Evaluate $\\int 2x\\cos(x^2)\\,dx$ and explain the substitution."
+  :content/format :content.format/markdown
+  :problem/lessons ["substitution-lesson"]
+  :problem/knowledge-points ["choose-u"]
+  :db/ensure [:kind/problem]}
+
+ ;; assignment-problem
+ {:db/id "assignment-problem"
+  :entity/id #uuid "4af02fed-de76-5f06-a1f7-c9725a1b1fe4"
+  :entity/kinds [:kind/placement]
+  :placement/parent "assignment"
+  :placement/content "problem"
+  :placement/position 0
+  :placement/role :placement.role/part
+  :db/ensure [:kind/placement]}
+
+ ;; problem-check
+ {:db/id "problem-check"
+  :entity/id #uuid "6fe5e47a-53a6-5206-bdfb-b11e3944cbe8"
+  :entity/kinds [:kind/placement]
+  :placement/parent "problem"
+  :placement/content "q-blank"
+  :placement/position 0
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; study-guide
+ {:db/id "study-guide"
+  :entity/id #uuid "c1b4ae37-b583-5d38-8609-a1cb3050d5fe"
+  :entity/kinds [:kind/study-collection]
+  :content/title "Substitution preparation"
+  :collection/purpose :collection.purpose/exam-prep
+  :db/ensure [:kind/study-collection]}
+
+ ;; guide-lesson
+ {:db/id "guide-lesson"
+  :entity/id #uuid "a470a386-9710-5588-b33e-d34ae5dfee4e"
+  :entity/kinds [:kind/placement]
+  :placement/parent "study-guide"
+  :placement/content "substitution-lesson"
+  :placement/position 0
+  :placement/role :placement.role/lesson
+  :db/ensure [:kind/placement]}
+
+ ;; guide-problem
+ {:db/id "guide-problem"
+  :entity/id #uuid "5272f49c-7c1d-5075-b3bc-74e568a3981a"
+  :entity/kinds [:kind/placement]
+  :placement/parent "study-guide"
+  :placement/content "problem"
+  :placement/position 1
+  :placement/role :placement.role/part
+  :db/ensure [:kind/placement]}
+
+ ;; test-blueprint
+ {:db/id "test-blueprint"
+  :entity/id #uuid "b456b1e4-6ca6-5e91-ae13-73401ce643e1"
+  :entity/kinds [:kind/assessment]
+  :content/title "Substitution check"
+  :assessment/purpose :assessment.purpose/automaticity
+  :assessment/targets ["choose-u" "power-rule"]
+  :assessment/item-count 2
+  :assessment/time-limit-seconds 120
+  :assessment/pass-score 1.0
+  :assessment/policy "engine-policy"
+  :db/ensure [:kind/assessment]}
+
+ ;; four-x-cubed
+ {:db/id "four-x-cubed"
+  :entity/id #uuid "1d806ca1-8d94-5a3f-9c2e-5d2ed2ebb432"
+  :entity/kinds [:kind/choice]
+  :content/body "$4x^3$"
+  :content/format :content.format/markdown
+  :choice/position 0
+  :db/ensure [:kind/choice]}
+
+ ;; four-x-squared
+ {:db/id "four-x-squared"
+  :entity/id #uuid "f2bbcd02-4615-5ee9-82af-1d9dcb8f3fd4"
+  :entity/kinds [:kind/choice]
+  :content/body "$4x^2$"
+  :content/format :content.format/markdown
+  :choice/position 1
+  :db/ensure [:kind/choice]}
+
+ ;; x-cubed
+ {:db/id "x-cubed"
+  :entity/id #uuid "d20edbd5-77e0-5fc9-a662-aa1118db94fd"
+  :entity/kinds [:kind/choice]
+  :content/body "$x^3$"
+  :content/format :content.format/markdown
+  :choice/position 2
+  :db/ensure [:kind/choice]}
+
+ ;; fourth-power-bank
+ {:db/id "fourth-power-bank"
+  :entity/id #uuid "5fe1013e-15fd-5842-a226-5378b3b2e20c"
+  :entity/kinds [:kind/option-bank]
+  :option-bank/choices ["four-x-cubed" "four-x-squared" "x-cubed"]
+  :db/ensure [:kind/option-bank]}
+
+ ;; fourth-power-rule
+ {:db/id "fourth-power-rule"
+  :entity/id #uuid "43433696-9144-5bfd-ae97-48d6794626f5"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/choice-set
+  :grading-rule/accepted-choices ["four-x-cubed"]
+  :grading-rule/reference-answer "$4x^3$"
+  :db/ensure [:kind/grading-rule]}
+
+ ;; fresh-radio-answer
+ {:db/id "fresh-radio-answer"
+  :entity/id #uuid "522c5222-28b4-5011-be5f-9e8a4183ba2b"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 0
+  :response-part/key "derivative"
+  :response-part/input :input/choice
+  :response-part/grading-rule "fourth-power-rule"
+  :db/ensure [:kind/response-part]}
+
+ ;; linear-u-rule
+ {:db/id "linear-u-rule"
+  :entity/id #uuid "95623daf-dcbf-547a-92ff-901fb16e2761"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/symbolic
+  :grading-rule/expected-expression "5*x+1"
+  :grading-rule/evaluator "example-symbolic-evaluator"
+  :grading-rule/reference-answer "$5x+1$"
+  :db/ensure [:kind/grading-rule]}
+
+ ;; linear-du-rule
+ {:db/id "linear-du-rule"
+  :entity/id #uuid "e1aaaa2c-7478-5b49-9850-f6faca8eaf32"
+  :entity/kinds [:kind/grading-rule]
+  :grading-rule/method :grading/symbolic
+  :grading-rule/expected-expression "5"
+  :grading-rule/evaluator "example-symbolic-evaluator"
+  :grading-rule/reference-answer "$5$"
+  :db/ensure [:kind/grading-rule]}
+
+ ;; fresh-blank-u
+ {:db/id "fresh-blank-u"
+  :entity/id #uuid "4aaa17f0-b524-5404-81a9-cad15dfc0c34"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 0
+  :response-part/key "u"
+  :response-part/input :input/math
+  :response-part/grading-rule "linear-u-rule"
+  :db/ensure [:kind/response-part]}
+
+ ;; fresh-blank-du
+ {:db/id "fresh-blank-du"
+  :entity/id #uuid "d1f1d1c5-36ac-572e-afb6-1a21701f0f71"
+  :entity/kinds [:kind/response-part]
+  :response-part/position 1
+  :response-part/key "du"
+  :response-part/input :input/math
+  :response-part/grading-rule "linear-du-rule"
+  :db/ensure [:kind/response-part]}
+
+ ;; q-fresh-radio
+ {:db/id "q-fresh-radio"
+  :entity/id #uuid "c9ff6ccb-2a61-54dc-acd7-be2a2f832a9c"
+  :entity/kinds [:kind/question]
+  :content/body "Differentiate $x^4$."
+  :content/format :content.format/markdown
+  :question/format :question.format/radio
+  :question/parts ["fresh-radio-answer"]
+  :question/lesson "substitution-lesson"
+  :question/primary-knowledge-point "power-rule"
+  :question/option-bank "fourth-power-bank"
+  :db/ensure [:kind/question :spec/lesson-question]}
+
+ ;; coverage-q-fresh-radio
+ {:db/id "coverage-q-fresh-radio"
+  :entity/id #uuid "d7fc885a-eedd-5a0b-806c-689838bb0b81"
+  :entity/kinds [:kind/question-skill]
+  :question-skill/question "q-fresh-radio"
+  :question-skill/skill "power-rule"
+  :question-skill/role :coverage/assessed
+  :db/ensure [:kind/question-skill]}
+
+ ;; q-fresh-blank
+ {:db/id "q-fresh-blank"
+  :entity/id #uuid "934e2cc8-dcb5-51ed-8ea7-b5fe296f7352"
+  :entity/kinds [:kind/question]
+  :content/body "For $\\int 5(5x+1)^4\\,dx$, choose $u=$ {{part:u}} and $du/dx=$ {{part:du}}."
+  :content/format :content.format/markdown
+  :question/format :question.format/blank
+  :question/parts ["fresh-blank-u" "fresh-blank-du"]
+  :question/lesson "substitution-lesson"
+  :question/primary-knowledge-point "choose-u"
+  :db/ensure [:kind/question :spec/lesson-question]}
+
+ ;; coverage-q-fresh-blank
+ {:db/id "coverage-q-fresh-blank"
+  :entity/id #uuid "f7bfc50f-3c49-5081-9351-e811c993f016"
+  :entity/kinds [:kind/question-skill]
+  :question-skill/question "q-fresh-blank"
+  :question-skill/skill "choose-u"
+  :question-skill/role :coverage/assessed
+  :db/ensure [:kind/question-skill]}
+
+ ;; test-q0
+ {:db/id "test-q0"
+  :entity/id #uuid "fc7731ab-1ff7-5fe0-9299-0c29fb58736a"
+  :entity/kinds [:kind/placement]
+  :placement/parent "test-blueprint"
+  :placement/content "q-fresh-radio"
+  :placement/position 0
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; test-q1
+ {:db/id "test-q1"
+  :entity/id #uuid "8cbe0e40-fd15-515e-a24f-2c683f092a46"
+  :entity/kinds [:kind/placement]
+  :placement/parent "test-blueprint"
+  :placement/content "q-fresh-blank"
+  :placement/position 1
+  :placement/role :placement.role/question
+  :db/ensure [:kind/placement]}
+
+ ;; generator
+ {:db/id "generator"
+  :entity/id #uuid "4dc3d845-43c8-50ee-a14d-e1a62e308628"
+  :entity/kinds [:kind/generator]
+  :content/title "Polynomial derivative family"
+  :generator/method :generator.method/python
+  :generator/entrypoint "example_only.polynomial_derivative"
+  :generator/targets ["power-rule"]
+  :generator/formats [:question.format/blank]
+  :generator/parameter-schema-edn "{:exponent {:type :integer :min 2 :max 8}}"
+  :db/ensure [:kind/generator]}
+
+ ;; generation
+ {:db/id "generation"
+  :entity/id #uuid "1033309b-ba30-5d94-8c32-2cd1cb5aec38"
+  :entity/kinds [:kind/generation]
+  :generation/generator "generator"
+  :generation/status :generation.status/queued
+  :generation/requested-targets ["power-rule"]
+  :generation/parameters-edn "{:exponent 3}"
+  :generation/seed 42
+  :db/ensure [:kind/generation]}
+
+ ;; asset
+ {:db/id "asset"
+  :entity/id #uuid "34be281d-5664-5af3-b5ed-dcf27d209a8c"
+  :entity/kinds [:kind/asset]
+  :asset/uri #edb/uri "urn:example:course-academy:illustration"
+  :asset/media-type "image/svg+xml"
+  :asset/alt-text "Synthetic asset-location example; no bytes are supplied."
+  :db/ensure [:kind/asset]}
+]

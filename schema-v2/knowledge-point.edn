@@ -1,0 +1,44 @@
+;; Knowledge-point model for EDB. Install before creating KP entities.
+;; Request :db/ensure [:knowledge-point/validate] when writing a KP.
+;; MA describes a KP as a worked example with associated active practice.
+;; Topic membership is stored through :topic/knowledge-points.
+;; Instructional order and key prerequisites will be defined separately.
+[
+ {:db/ident :knowledge-point/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of the knowledge point, independent of an individual learner's progress or question occurrences."}
+
+ {:db/ident :knowledge-point/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Name of the instructional skill or case demonstrated by the worked example, corresponding to captured example titles."}
+
+ {:db/ident :knowledge-point/example-question
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Problem statement of the worked example, corresponding to captured example_question content. Stored as Markdown supporting LaTeX and image links."}
+
+ {:db/ident :knowledge-point/example-explanation
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Worked solution and instructional explanation, corresponding to captured example_explanation content. Stored as Markdown supporting LaTeX and image links."}
+
+ {:db/ident :knowledge-point/questions
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Question pool associated with this KP. Lesson practice, reviews, and assessments select appropriate items from the pool using learner history. This collection is unordered; question selection and avoidance of already-answered lesson items belong to the engine."}
+
+ {:db/ident :knowledge-point/question-generator
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional reference to a question-generator entity holding a Python script that produces new questions for this KP. The application invokes the generator when more questions are needed, validates its output, and adds accepted questions to the KP's pool."}
+
+ {:db/ident :knowledge-point/validate
+  :db.entity/attrs [:knowledge-point/id
+                    :knowledge-point/title
+                    :knowledge-point/example-question
+                    :knowledge-point/example-explanation]
+  :db/doc "Native EDB specification requiring KP identity, title, and worked-example content when explicitly ensured. Question reference targets, mathematical correctness, and selection rules require additional validation."}
+]

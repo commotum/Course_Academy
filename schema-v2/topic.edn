@@ -1,0 +1,29 @@
+;; Topic model for EDB. Install before creating topic entities.
+;; Request :db/ensure [:topic/validate] when writing a topic.
+;; Prerequisite and encompassing edges will be defined in the graph schema.
+[
+ {:db/ident :topic/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable topic identity, independent of its course memberships."}
+
+ {:db/ident :topic/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Name of the topic, for example Integration by Substitution."}
+
+ {:db/ident :topic/knowledge-points
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Knowledge points taught within this topic. Their question pools are associated with the knowledge points. Instructional order will be defined separately; these references are unordered."}
+
+ {:db/ident :topic/difficulty
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional derived topic difficulty. Math Academy describes measuring it from aggregate assessment accuracy among serious students, then using it to calibrate learner-topic review speed. Its private storage field and numeric scale are not established by our captures. Separate from question E/M/H labels; omit when unknown."}
+
+ {:db/ident :topic/validate
+  :db.entity/attrs [:topic/id :topic/title]
+  :db/doc "A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure validates the required identity and title; reference targets and publication rules require application validation."}
+]

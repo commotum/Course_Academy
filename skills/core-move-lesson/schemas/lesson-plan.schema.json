@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Core Move Lesson Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "core_move",
+    "prerequisites",
+    "sections"
+  ],
+  "properties": {
+    "title": { "type": "string", "minLength": 1 },
+    "core_move": { "type": "string", "minLength": 1 },
+    "prerequisites": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "section_title",
+          "step_type",
+          "learning_goal",
+          "worked_example_prompt",
+          "practice_question_model",
+          "distractor_strategy"
+        ],
+        "properties": {
+          "section_title": { "type": "string", "minLength": 1 },
+          "step_type": { "type": "string", "enum": ["tutorial", "example"] },
+          "learning_goal": { "type": "string", "minLength": 1 },
+          "variant_axis": { "type": "string" },
+          "worked_example_prompt": { "type": "string" },
+          "solution_step_plan": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "practice_question_model": { "type": "string" },
+          "distractor_strategy": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

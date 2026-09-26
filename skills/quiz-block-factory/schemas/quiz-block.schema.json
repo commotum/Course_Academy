@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Canonical Obsidian Quiz Block Authoring Schema",
+  "description": "Canonical lesson-authoring subset. It intentionally rejects legacy input aliases and applies stronger content/cardinality rules than the plugin runtime.",
+  "oneOf": [
+    { "$ref": "#/$defs/radio" },
+    { "$ref": "#/$defs/checkbox" },
+    { "$ref": "#/$defs/blank" },
+    { "$ref": "#/$defs/free" },
+    { "$ref": "#/$defs/select" },
+    { "$ref": "#/$defs/multiSelect" },
+    { "$ref": "#/$defs/noodle" }
+  ],
+  "$defs": {
+    "text": {
+      "type": ["string", "number", "boolean"],
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "content"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "content": { "$ref": "#/$defs/text" },
+        "correct": { "type": "boolean" },
+        "feedback": { "$ref": "#/$defs/text" }
+      }
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "content", "correct_option"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "content": { "$ref": "#/$defs/text" },
+        "correct_option": { "$ref": "#/$defs/id" },
+        "feedback": { "$ref": "#/$defs/text" }
+      }
+    },
+    "multiQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "content", "correct_option", "options"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "content": { "$ref": "#/$defs/text" },
+        "correct_option": { "$ref": "#/$defs/id" },
+        "feedback": { "$ref": "#/$defs/text" },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/option" }
+        }
+      }
+    },
+    "radio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "content", "shuffle", "options"],
+      "properties": {
+        "type": { "const": "radio" },
+        "id": { "$ref": "#/$defs/id" },
+        "content": { "$ref": "#/$defs/text" },
+        "gated": { "type": "boolean" },
+        "shuffle": { "const": true },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/option" },
+          "contains": {
+            "type": "object",
+            "required": ["correct"],
+            "properties": { "correct": { "const": true } }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    "checkbox": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "content", "options"],
+      "properties": {
+        "type": { "const": "checkbox" },
+        "id": { "$ref": "#/$defs/id" },
+        "content": { "$ref": "#/$defs/text" },
+        "gated": { "type": "boolean" },
+        "shuffle": { "type": "boolean" },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/option" },
+          "contains": {
+            "type": "object",
+            "required": ["correct"],
+            "properties": { "correct": { "const": true } }
+          },
+          "minContains": 1
+        }
+      }
+    },
+    "blank": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "content"],
+      "properties": {
+        "type": { "const": "blank" },
+        "id": { "$ref": "#/$defs/id" },
+        "input_mode": { "enum": ["text", "math"] },
+        "require_exact": { "type": "boolean" },
+        "content": { "$ref": "#/$defs/text" },
+        "gated": { "type": "boolean" },
+        "shuffle": { "type": "boolean" },
+        "feedback": { "$ref": "#/$defs/text" }
+      }
+    },
+    "free": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "content"],
+      "properties": {
+        "type": { "const": "free" },
+        "id": { "$ref": "#/$defs/id" },
+        "content": { "$ref": "#/$defs/text" },
+        "gated": { "type": "boolean" },
+        "shuffle": { "type": "boolean" },
+        "correct": { "$ref": "#/$defs/text" },
+        "feedback": { "$ref": "#/$defs/text" }
+      }
+    },
+    "select": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "content", "options", "questions"],
+      "properties": {
+        "type": { "const": "select" },
+        "id": { "$ref": "#/$defs/id" },
+        "content": { "$ref": "#/$defs/text" },
+        "gated": { "type": "boolean" },
+        "shuffle": { "type": "boolean" },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/option" }
+        },
+        "questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/question" }
+        }
+      }
+    },
+    "multiSelect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "content", "questions"],
+      "properties": {
+        "type": { "const": "multi-select" },
+        "id": { "$ref": "#/$defs/id" },
+        "content": { "$ref": "#/$defs/text" },
+        "gated": { "type": "boolean" },
+        "shuffle": { "type": "boolean" },
+        "questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/multiQuestion" }
+        }
+      }
+    },
+    "noodle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "content", "options", "questions"],
+      "properties": {
+        "type": { "const": "noodle" },
+        "id": { "$ref": "#/$defs/id" },
+        "content": { "$ref": "#/$defs/text" },
+        "gated": { "type": "boolean" },
+        "shuffle": { "type": "boolean" },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/option" }
+        },
+        "questions": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/question" }
+        }
+      }
+    }
+  }
+}
