@@ -1,7 +1,7 @@
 ;; Question model for EDB. Install before creating question entities.
 ;; Request :db/ensure [:question/validate] when writing a question.
 ;; KP question-bank membership is stored through :knowledge-point/questions.
-;; Fields are defined in 06-field.edn; answer values are defined in 07-answer.edn.
+;; Answer fields are defined in 06-answer-field.edn; answer values are defined in 07-answer.edn.
 ;; Learner answers, timing, outcomes, and exposure history belong to activity data.
 ;; Enum identities and attributes share one schema transaction.
 [
@@ -40,13 +40,13 @@
  {:db/ident :question/problem
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Problem statement, stored as Markdown supporting LaTeX and image links. Named field locations correspond to field/key on this question's fields."}
+  :db/doc "Problem statement, stored as Markdown supporting LaTeX and image links. Named field locations correspond to answer-field/key on this question's fields."}
 
- {:db/ident :question/fields
+ {:db/ident :question/answer-fields
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Required owned fields. Multiple choice has one field; blanks and dropdowns can have one or several. Field keys identify their locations in the problem; display order belongs to the application."}
+  :db/doc "Required owned answer fields. Multiple choice has one field; blanks and dropdowns can have one or several. Field keys identify their locations in the problem; display order belongs to the application."}
 
  {:db/ident :question/explanation
   :db/valueType :db.type/string
@@ -54,6 +54,6 @@
   :db/doc "Worked solution for the whole question, stored as Markdown supporting LaTeX and image links. Omit when unavailable."}
 
  {:db/ident :question/validate
-  :db.entity/attrs [:question/id :question/type :question/problem :question/fields]
-  :db/doc "Requires identity, interaction type, problem, and at least one field when explicitly ensured. Writers also ensure field/validate and answer/validate for child entities. Enum membership, field structure, and content correctness require application validation."}
+  :db.entity/attrs [:question/id :question/type :question/problem :question/answer-fields]
+  :db/doc "Requires identity, interaction type, problem, and at least one field when explicitly ensured. Writers also ensure answer-field/validate and answer/validate for child entities. Enum membership, field structure, and content correctness require application validation."}
 ]

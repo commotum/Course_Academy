@@ -36,7 +36,7 @@ The implemented entities and relationships are:
 | [Example](04-example.edn) | id, problem, explanation | The demonstrated problem and worked solution |
 | [Knowledge point](03-knowledge-point.edn) | id, title, example ref, questions refs, question-generator ref | The skill being practiced and the content teaching/assessing it |
 | [Question](05-question.edn) | Problem, type, fields, explanation, metadata | An item prepared for the learner to answer |
-| Field → answer | [Field](06-field.edn) and [answer](07-answer.edn) | Expected values and selection options for each question field |
+| Answer field → answer | [Answer field](06-answer-field.edn) and [answer](07-answer.edn) | Expected values and selection options for each question field |
 
 `example/problem` is textual problem content, not a mandatory ref to a question entity. A title can stay on the KP in this initial design, matching how it currently names the demonstrated skill. Separating the example content makes its problem and explanation reviewable as a unit without duplicating the entire question hierarchy.
 
@@ -47,7 +47,7 @@ Lesson sequence
   ├─ Tutorial
   ├─ Knowledge point
   │    ├─ Example: problem + explanation
-  │    └─ Questions → fields → answers
+  │    └─ Questions → answer fields → answers
   ├─ Another tutorial
   └─ Another knowledge point
 ```
@@ -56,7 +56,7 @@ A lesson sequence is a future placement/scheduling concern. Tutorials can preced
 
 We could instead reuse a question entity for an example, but the present question model requires an interaction type and at least one field with a correct answer. Importing a worked example into that model would require authoring a response interface and extracting/verifying a grading target from its explanation. That can be useful when deliberately turning an example into an exercise, but it is additional content creation, not a direct mapping of captured example data. Converting the demonstrated example into practice also does not mean it should automatically enter an assessment pool for a learner who has just seen its solution.
 
-The two KP example strings have been replaced with a required `knowledge-point/example` ref. The example and tutorial each have their own schema file. Writers explicitly ensure `knowledge-point/validate` and `example/validate` separately; the reference does not automatically validate its target. The example ref is noncomponent so instructional content can be reused without cascading deletion. Questions own fields and their overall explanation directly; field/correct-answer references the expected answer value. The example's explanation demonstrates its problem; question/explanation explains a separately authored practice question. These similar field names do not imply duplicated content or require a shared explanation entity.
+The two KP example strings have been replaced with a required `knowledge-point/example` ref. The example and tutorial each have their own schema file. Writers explicitly ensure `knowledge-point/validate` and `example/validate` separately; the reference does not automatically validate its target. The example ref is noncomponent so instructional content can be reused without cascading deletion. Questions own fields and their overall explanation directly; answer-field/correct-answer references the expected answer value. The example's explanation demonstrates its problem; question/explanation explains a separately authored practice question. These similar field names do not imply duplicated content or require a shared explanation entity.
 
 If later requirements call for arbitrary reuse of the same problem across demonstrations and assessment interfaces, a shared problem entity would be another option. It would require changing question/problem and defining ownership and explanation reuse carefully. The current captures do not require that extra abstraction.
 
@@ -68,10 +68,9 @@ The readability review uses this presentation convention: enum declarations in a
 | Tutorial | id, title, content, validate |
 | Knowledge point | id, title, example, questions, question-generator, validate |
 | Example | id, problem, explanation, validate |
-| Question | id, type, difficulty, requires-calculator, problem, fields, explanation, validate |
-| Field | id, key, answer-choices, correct-answer, validate |
-| Answer | id, type, value, image-value, validate |
-| Image | id, source, validate |
+| Question | id, type, difficulty, requires-calculator, problem, answer-fields, explanation, validate |
+| Answer field | id, key, answer-choices, correct-answer, validate |
+| Answer | id, type, value, validate |
 
 Tutorial content was checked against five concrete captures:
 

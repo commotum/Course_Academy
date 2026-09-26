@@ -1,30 +1,30 @@
-;; One response location owned by a question.
-;; Request :db/ensure [:field/validate] for every field.
+;; One answer field identifying a response location in a question.
+;; Request :db/ensure [:answer-field/validate] for every field.
 [
- {:db/ident :field/id
+ {:db/ident :answer-field/id
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
   :db/doc "Stable identity of a field owned by one question."}
 
- {:db/ident :field/key
+ {:db/ident :answer-field/key
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "Key unique within the question, binding the field to a problem location such as x or y. A single multiple-choice field can use selection without an inline placeholder."}
 
- {:db/ident :field/answer-choices
+ {:db/ident :answer-field/answer-choices
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Optional candidate answers owned by this field. Required for selection questions and omitted for blanks. Must include field/correct-answer; the application controls option order."}
+  :db/doc "Optional candidate answers owned by this field. Required for selection questions and omitted for blanks. Must include answer-field/correct-answer; the application controls option order."}
 
- {:db/ident :field/correct-answer
+ {:db/ident :answer-field/correct-answer
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/isComponent true
   :db/doc "Required expected answer owned by this field. For a selection, references a member of answer-choices. For a blank, references the expected value directly. Answer entities belong to one field."}
 
- {:db/ident :field/validate
-  :db.entity/attrs [:field/id :field/key :field/correct-answer]
+ {:db/ident :answer-field/validate
+  :db.entity/attrs [:answer-field/id :answer-field/key :answer-field/correct-answer]
   :db/doc "Requires identity, key, and correct-answer ref when explicitly ensured. Writers also ensure answer/validate. Unique keys, selection choice membership, and compatibility with question/type require application validation."}
 ]

@@ -21,14 +21,9 @@
  {:db/ident :answer/value
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Required for math or text answers: LaTeX without Markdown delimiters for math, plain textual content for text. Omit for image answers."}
-
- {:db/ident :answer/image-value
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Required for image answers: ref to an asset defined in 08-image.edn. Omit for math or text answers. This ordinary ref permits image reuse without cascading deletion."}
+  :db/doc "Answer content interpreted using answer/type: LaTeX without Markdown delimiters for math, plain textual content for text, or an image path or URI for image answers."}
 
  {:db/ident :answer/validate
-  :db.entity/attrs [:answer/id :answer/type]
-  :db/doc "Requires identity and type when explicitly ensured. Application validation must require exactly one of value or image-value, matching the type; native required-attribute specs cannot express that conditional rule. Image assets also ensure image/validate."}
+  :db.entity/attrs [:answer/id :answer/type :answer/value]
+  :db/doc "Requires identity, type, and a string value when explicitly ensured. Supported answer types, nonempty and correctly formatted values, and image availability require application validation."}
 ]

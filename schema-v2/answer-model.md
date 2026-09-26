@@ -1,35 +1,34 @@
 The content model follows this chain:
 
 ```text
-knowledge-point/questions → question/fields → field/correct-answer
-                                             field/answer-choices → answer entities
+knowledge-point/questions → question/answer-fields → answer-field/correct-answer
+                                             answer-field/answer-choices → answer entities
 ```
 
 The question owns its fields and worked explanation directly. Each field has a required correct-answer ref. Selection fields also have optional-in-schema answer-choices containing the correct answer; blanks have no choices. Multiple blanks are separate named fields. There is no intermediate response entity or separate choice entity.
 
 | File | Entity | Purpose |
 | --- | --- | --- |
-| [05-question.edn](05-question.edn) | Question | Interaction metadata, problem, fields, and overall explanation |
-| [06-field.edn](06-field.edn) | Field | A named response location, optional choices, and required correct answer |
-| [07-answer.edn](07-answer.edn) | Answer | Identity, representation type, and a string or image payload |
-| [08-image.edn](08-image.edn) | Image | Asset identity and source location |
+| [05-question.edn](05-question.edn) | Question | Interaction metadata, problem, answer fields, and overall explanation |
+| [06-answer-field.edn](06-answer-field.edn) | Answer field | A named response location, optional choices, and required correct answer |
+| [07-answer.edn](07-answer.edn) | Answer | Identity, representation type, and a required string value |
 
-The answer type is local to each answer, allowing a question or selection field to mix mathematical, textual, and image options. `answer/value` stores both mathematical LaTeX and plain text, interpreted using `answer/type`. Image answers instead use `answer/image-value`, an ordinary EDB ref to an image entity. Application validation must require exactly one payload appropriate to the answer type.
+The answer type is local to each answer, allowing a question or selection field to mix mathematical, textual, and image options. Every answer stores its content in the required string attribute `answer/value`, interpreted using `answer/type`: LaTeX without Markdown delimiters for math, plain text for text, and an image path or URI for images. There is no separate image entity. Image locations are strings, so resolving them and checking availability belong to the application, not EDB reference traversal.
 
 | Interaction | Fields | Application evaluation |
 | --- | --- | --- |
-| Multiple choice | One | Compare selected answer identity with field/correct-answer |
+| Multiple choice | One | Compare selected answer identity with answer-field/correct-answer |
 | Single blank | One | Parse and compare the entry with the expected answer value |
 | Multiple blanks | Several named fields | Evaluate each entry against its field's expected answer |
 | Dropdowns | One or several named fields | Each field has its own choices and correct-answer ref |
 
 There are no evaluation attributes or grading enums. Application code dispatches basic checking by question/type and answer/type. Mathematical parsing and comparison and text normalization are not implemented by these schemas. If questions later need differing tolerances, required mathematical forms, or other acceptance requirements, those requirements need an explicit content model; a generic evaluation enum does not solve them. Student submissions and their outcomes belong to future activity data.
 
-No positions are stored. The application controls option order. Each field/key is unique within its question and binds the expected answer to a problem location such as `{{field:x}}`. This is a proposed template convention, not recovered MA syntax.
+No positions are stored. The application controls option order. Each answer-field/key is unique within its question and binds the expected answer to a problem location such as `{{answer-field:x}}`. This is a proposed template convention, not recovered MA syntax.
 
 Question/type and question/difficulty enum entities are declared in the question file; answer/type enum entities are declared in the answer file. Categorical attributes are ordinary refs. Undeclared idents fail resolution, but refs to an existing entity outside the intended enum group still need membership validation. This follows the [documented Datomic enum pattern](https://docs.datomic.com/schema/schema-modeling.html).
 
-The question owns its fields through component refs. Each field owns its correct answer and choices through component refs; a selection's correct answer is reached by both refs from that same field. Answer entities must not be shared between fields. Ordinary image refs let assets survive deletion of a question. Enum refs are also ordinary refs.
+The question owns its fields through component refs. Each field owns its correct answer and choices through component refs; a selection's correct answer is reached by both refs from that same field. Answer entities must not be shared between fields. Deleting an image answer removes its stored location string, not the external image file. Enum refs are ordinary refs.
 
 The samples that motivated this structure were:
 
@@ -45,4 +44,4 @@ The samples that motivated this structure were:
 
 These captures establish interaction shapes and option content; they do not uniformly provide correct-answer keys. This is our proposed EDB model, not a recovered internal MA schema.
 
-Writers explicitly ensure question/validate, field/validate, and answer/validate for the corresponding entities; image assets ensure image/validate. Native checks require at least one question field, a field key and correct-answer ref, and an answer identity and type. They do not automatically validate referenced entities. Application validation must additionally enforce enum membership, field-key uniqueness, selection choice membership, the absence of choices for blanks, and exactly one answer payload matching its type. In particular, answer/validate alone does not reject a missing payload or two simultaneous payloads; native required-attribute lists cannot express the conditional content rule. Mathematical evaluation is a separate application responsibility.
+Writers explicitly ensure question/validate, answer-field/validate, and answer/validate for the corresponding entities. Native checks require at least one question field, a field key and correct-answer ref, and an answer identity, type, and string value. They do not automatically validate referenced entities. Application validation must additionally enforce enum membership, field-key uniqueness, selection choice membership, the absence of choices for blanks, and nonempty and correctly formatted values appropriate to each answer type. Image availability and mathematical evaluation are separate application responsibilities.
