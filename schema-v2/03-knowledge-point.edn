@@ -15,20 +15,15 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Name of the instructional skill or case demonstrated by the worked example, corresponding to captured example titles."}
 
- {:db/ident :knowledge-point/example-question
-  :db/valueType :db.type/string
+ {:db/ident :knowledge-point/example
+  :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Problem statement of the worked example, corresponding to captured example_question content. Stored as Markdown supporting LaTeX and image links."}
-
- {:db/ident :knowledge-point/example-explanation
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/doc "Worked solution and instructional explanation, corresponding to captured example_explanation content. Stored as Markdown supporting LaTeX and image links."}
+  :db/doc "Required reference to the worked example demonstrating this KP, with its problem and explanation stored together. This ordinary ref permits instructional content reuse without cascading deletion. Writers must also ensure example/validate; this reference does not make the example a practice question."}
 
  {:db/ident :knowledge-point/questions
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Question pool associated with this KP. Lesson practice, reviews, and assessments select appropriate items from the pool using learner history. This collection is unordered; question selection and avoidance of already-answered lesson items belong to the engine."}
+  :db/doc "Required question pool containing at least one question associated with this KP. Lesson practice, reviews, and assessments select appropriate items from the pool using learner history. This collection is unordered; question selection and avoidance of already-answered lesson items belong to the engine."}
 
  {:db/ident :knowledge-point/question-generator
   :db/valueType :db.type/ref
@@ -38,7 +33,7 @@
  {:db/ident :knowledge-point/validate
   :db.entity/attrs [:knowledge-point/id
                     :knowledge-point/title
-                    :knowledge-point/example-question
-                    :knowledge-point/example-explanation]
-  :db/doc "Native EDB specification requiring KP identity, title, and worked-example content when explicitly ensured. Question reference targets, mathematical correctness, and selection rules require additional validation."}
+                    :knowledge-point/example
+                    :knowledge-point/questions]
+  :db/doc "Native EDB specification requiring KP identity, title, an example ref, and at least one question ref when explicitly ensured. Writers must also ensure example/validate and question/validate for the referenced content, along with its child specifications. Reference target types, mathematical correctness, and question selection rules require additional validation."}
 ]

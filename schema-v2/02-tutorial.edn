@@ -1,0 +1,24 @@
+;; Expository instruction: concepts, definitions, derivations, and illustrations.
+;; Lesson placement and teaching sequence will be modeled separately.
+;; Request :db/ensure [:tutorial/validate] when writing a tutorial.
+[
+ {:db/ident :tutorial/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of instructional content, independent of its placement in a lesson."}
+
+ {:db/ident :tutorial/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Title of the instructional section, such as Introduction or A Note on Differentiability."}
+
+ {:db/ident :tutorial/content
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Complete tutorial body as Markdown with LaTeX, tables, lists, and image links at their intended locations. Document order preserves the sequence of explanation, equations, and illustrations. Tutorials have no fixed problem/solution structure and do not require a gradable response."}
+
+ {:db/ident :tutorial/validate
+  :db.entity/attrs [:tutorial/id :tutorial/title :tutorial/content]
+  :db/doc "Native EDB specification requiring identity, title, and instructional content when explicitly ensured. Nonempty content, valid assets, and mathematical correctness require additional validation."}
+]

@@ -1,0 +1,84 @@
+import { type App, type Component, type MarkdownPostProcessorContext, MarkdownRenderChild } from "obsidian";
+import { parseQuizBlock } from "./parse";
+import type { Quiz } from "./schemas";
+import { mount, unmount } from "svelte";
+import { type AppContext } from "./markdown";
+import QuizRenderer from "./ui/QuizRenderer.svelte";
+import { hash } from "./hash";
+import { shuffleOptions } from "./shuffle";
+import type { QuizSavedState, QuizStateStore } from "./persistence";
+
+type RenderArgs = {
+	app: App;
+	component: Component & QuizStateStore;
+	source: string;
+	el: HTMLElement;
+	ctx: MarkdownPostProcessorContext;
+};
+
+type Props = {
+	ctx: AppContext,
+	quiz: Quiz;
+	stableId: string;
+	savedState?: QuizSavedState;
+	onStateChange: (state: QuizSavedState) => void;
+	onStateReset: () => void;
+};
+
+class QuizSvelteChild extends MarkdownRenderChild {
+	private instance: unknown;
+	readonly props: Props;
+
+	constructor(containerEl: HTMLElement, props: Props) {
+		super(containerEl);
+		this.props = props;
+	}
+
+	onload() {
+		this.instance = mount(QuizRenderer, {
+			target: this.containerEl,
+			props: this.props,
+		});
+	}
+
+	onunload() {
+		if (this.instance) {
+			void unmount(this.instance);
+			this.instance = null;
+		}
+	}
+}
+
+export function renderQuiz({ app, component, source, el, ctx }: RenderArgs) {
+	el.empty();
+
+	let quiz: Quiz;
+	try {
+		const tabSize = Number(app.vault.getConfig("tabSize") ?? 4);
+		quiz = parseQuizBlock(source, tabSize);
+	} catch (e) {
+		const pre = el.createEl("pre", { cls: "quiz-block-error" });
+		pre.textContent = e instanceof Error ? e.message : String(e);
+		return;
+	}
+
+	const section = ctx.getSectionInfo(el);
+	const blockId = quiz.id
+		? `id:${quiz.id}`
+		: `block:${section?.lineStart ?? ""}:${section?.lineEnd ?? ""}:${hash(source)}`;
+	const stableId = [ctx.sourcePath, quiz.type, blockId].join();
+	const stateKey = `quiz-${hash(stableId)}`;
+
+	if (quiz.shuffle /* || global.shuffleByDefault */) shuffleOptions(quiz, el);
+
+	const props: Props = {
+		ctx: { app, component, sourcePath: ctx.sourcePath },
+		stableId: stateKey,
+		quiz,
+		savedState: component.getQuizState(stateKey),
+		onStateChange: (state) => component.setQuizState(stateKey, state),
+		onStateReset: () => component.clearQuizState(stateKey),
+	};
+
+	ctx.addChild(new QuizSvelteChild(el, props));
+}

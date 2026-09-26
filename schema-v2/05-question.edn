@@ -1,0 +1,59 @@
+;; Question model for EDB. Install before creating question entities.
+;; Request :db/ensure [:question/validate] when writing a question.
+;; KP question-bank membership is stored through :knowledge-point/questions.
+;; Fields are defined in 06-field.edn; answer values are defined in 07-answer.edn.
+;; Learner answers, timing, outcomes, and exposure history belong to activity data.
+;; Enum identities and attributes share one schema transaction.
+[
+ ;; Enum values: question interaction types.
+ {:db/ident :question.type/multiple-choice}
+ {:db/ident :question.type/fill-in-the-blank}
+ {:db/ident :question.type/select-list}
+
+ ;; Enum values: observed E/M/H difficulty categories.
+ {:db/ident :question.difficulty/easy}
+ {:db/ident :question.difficulty/moderate}
+ {:db/ident :question.difficulty/hard}
+
+ ;; Question attributes and validation.
+ {:db/ident :question/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of a question in a KP's pool. Individual presentations and submissions have separate identities; changing option order does not create a new question."}
+
+ {:db/ident :question/type
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Reference to an interaction-type enum entity. Captured lesson categories map to :question.type/multiple-choice, /fill-in-the-blank, or /select-list. MA's free-response label represents structured blanks in these captures. Additional client-supported formats are not established by the captured course content. The application validates supported values and matching answer structures."}
+
+ {:db/ident :question/difficulty
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional reference to an E/M/H difficulty enum entity observed in completed MA activity: :question.difficulty/easy, /moderate, or /hard. This is distinct from aggregate topic difficulty and learner ability. Omit when unknown; allowed values require validation."}
+
+ {:db/ident :question/requires-calculator
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Whether a calculator is required to answer the question. Captured MA instructions all express a requirement, sometimes specifying a scientific or graphing calculator. This boolean records the requirement only. False means not required, not forbidden; omit when unknown. Absence of a captured instruction alone does not establish false."}
+
+ {:db/ident :question/problem
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Problem statement, stored as Markdown supporting LaTeX and image links. Named field locations correspond to field/key on this question's fields."}
+
+ {:db/ident :question/fields
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Required owned fields. Multiple choice has one field; blanks and dropdowns can have one or several. Field keys identify their locations in the problem; display order belongs to the application."}
+
+ {:db/ident :question/explanation
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Worked solution for the whole question, stored as Markdown supporting LaTeX and image links. Omit when unavailable."}
+
+ {:db/ident :question/validate
+  :db.entity/attrs [:question/id :question/type :question/problem :question/fields]
+  :db/doc "Requires identity, interaction type, problem, and at least one field when explicitly ensured. Writers also ensure field/validate and answer/validate for child entities. Enum membership, field structure, and content correctness require application validation."}
+]

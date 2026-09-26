@@ -1,0 +1,34 @@
+;; An expected or candidate answer value owned by a field.
+;; Evaluation belongs to application code; this schema describes content.
+[
+ ;; Enum values: answer representation.
+ {:db/ident :answer.type/math}
+ {:db/ident :answer.type/text}
+ {:db/ident :answer.type/image}
+
+ ;; Answer attributes and validation.
+ {:db/ident :answer/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of an answer value owned by one field."}
+
+ {:db/ident :answer/type
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Representation: answer.type/math, answer.type/text, or answer.type/image."}
+
+ {:db/ident :answer/value
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Required for math or text answers: LaTeX without Markdown delimiters for math, plain textual content for text. Omit for image answers."}
+
+ {:db/ident :answer/image-value
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Required for image answers: ref to an asset defined in 08-image.edn. Omit for math or text answers. This ordinary ref permits image reuse without cascading deletion."}
+
+ {:db/ident :answer/validate
+  :db.entity/attrs [:answer/id :answer/type]
+  :db/doc "Requires identity and type when explicitly ensured. Application validation must require exactly one of value or image-value, matching the type; native required-attribute specs cannot express that conditional rule. Image assets also ensure image/validate."}
+]

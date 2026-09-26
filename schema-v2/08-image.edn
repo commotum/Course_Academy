@@ -1,0 +1,17 @@
+;; Image asset referenced by answer/image-value. May be used by several answer entities.
+[
+ {:db/ident :image/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of an image asset, independent of its storage location."}
+
+ {:db/ident :image/source
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Asset path or URI used to locate the image. Stores its location, not Markdown or encoded image bytes."}
+
+ {:db/ident :image/validate
+  :db.entity/attrs [:image/id :image/source]
+  :db/doc "Requires identity and source when explicitly ensured. A nonempty source and an available image asset require application validation."}
+]
