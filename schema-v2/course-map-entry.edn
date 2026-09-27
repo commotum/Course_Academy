@@ -1,0 +1,30 @@
+;; One ordered occurrence of a unit, module, or topic in a course map.
+;; The map or a parent entry owns this entry; content remains independently owned.
+;; Request :db/ensure [:course-map-entry/validate] when writing an entry.
+[
+ {:db/ident :course-map-entry/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of an entry in one course map, distinct from the identity of its referenced content."}
+
+ {:db/ident :course-map-entry/index
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "1-based order among sibling entries under the same map or parent entry. Must be positive and unique within that sibling set. Different occurrences of the same content can have different indexes."}
+
+ {:db/ident :course-map-entry/content
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Reference to the unit, module, or topic placed here. Root entries reference course/units members; their children reference that unit's unit/modules members; the next level references that module's module/topics members. This ordinary ref allows shared content and preserves it when the map is deleted."}
+
+ {:db/ident :course-map-entry/children
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned child entries, ordered by course-map-entry/index. Unit entries contain module entries; module entries contain topic entries; topic entries have no children. Each parent's children must cover its content's membership set exactly once. Writers must separately ensure course-map-entry/validate on each child."}
+
+ {:db/ident :course-map-entry/validate
+  :db.entity/attrs [:course-map-entry/id :course-map-entry/index :course-map-entry/content]
+  :db/doc "Requires identity, index, and content ref when explicitly ensured. Children are conditionally required for unit and module entries and forbidden for topic entries; application validation checks this, supported target types, positive and sibling-unique indexes, membership coverage, and tree ownership. Validate referenced curriculum entities separately."}
+]

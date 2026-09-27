@@ -66,10 +66,12 @@ Math Academy identifiers are optional source identifiers wherever modeled; our o
 
 | Schema | Attribute presentation after any enum declarations |
 | --- | --- |
-| Course | id, math-academy-id, title, code, description, overview, outcomes, units, validate |
+| Course | id, math-academy-id, title, code, description, overview, outcomes, units, map, validate |
 | Course outcome | id, index, category, text, validate |
-| Unit | id, math-academy-id, title, index, modules, validate |
-| Module | id, math-academy-id, title, index, topics, validate |
+| Course map | id, entries, validate |
+| Course map entry | id, index, content, children, validate |
+| Unit | id, math-academy-id, title, modules, validate |
+| Module | id, math-academy-id, title, topics, validate |
 | Topic | id, math-academy-id, title, difficulty, prerequisites, knowledge-points, validate |
 | Tutorial | id, title, content, validate |
 | Knowledge point | id, math-academy-id, title, key-prerequisites, example, questions, question-generator, validate |
@@ -77,6 +79,10 @@ Math Academy identifiers are optional source identifiers wherever modeled; our o
 | Question | id, math-academy-id, type, difficulty, requires-calculator, problem, answer-fields, explanation, validate |
 | Answer field | id, key, answer-choices, correct-answer, validate |
 | Answer | id, type, value, validate |
+
+Curriculum membership remains in `course/units`, `unit/modules`, and `module/topics`. Curriculum order belongs to the optional `course/map`, defined in [course-map.edn](course-map.edn), whose nested [course-map entries](course-map-entry.edn) reference existing units, modules, and topics. Root entries order units; their children order modules; the next level orders topics. Each entry has a 1-based index among siblings. Units and modules no longer carry indexes. Course-outcome indexes remain separate because they order explanatory outcome bullets, not curriculum members.
+
+The course owns its map, the map owns root entries, and entries own child entries through component refs. Entry content refs are ordinary refs, so deleting a map removes its entries without deleting curriculum content. A complete map covers each corresponding membership set exactly once. Application validation must check this coverage, supported content types at each level, positive sibling-unique indexes, and tree ownership with no cycles or shared entry nodes. These checks are documented requirements, not implemented validators; native entity specs require only the listed attributes and must be explicitly ensured for each entity. Writers should update membership and the corresponding map entries in the same transaction. Different maps may order shared content differently, but do not redefine its membership sets. Lesson sequencing within a topic remains separate future work.
 
 Course outcomes use one model for both observed formats: a bullet's text and an optional category heading. Of the 32 captured course maps, 16 use flat lists and 16 use categorized lists. The create-course-map guide explicitly allows both and does not equate outcome categories with curriculum units. Course-owned outcome entities are defined in [course-outcome.edn](course-outcome.edn); their 1-based index preserves order across the entire list, including category boundaries. The application renders bullets and optional headings and supplies the standard introductory sentence from the [skill](../skills/create-course-map/SKILL.md). No separate category entity is needed. Course description and overview retain their section bodies as Markdown strings.
 

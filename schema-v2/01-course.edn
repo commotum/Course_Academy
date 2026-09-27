@@ -42,9 +42,15 @@
  {:db/ident :course/units
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Units belonging to this course. At least one is required when course/validate is explicitly ensured. These references are unordered; sort units by unit/index for curriculum order. Referenced units must be validated separately."}
+  :db/doc "Units belonging to this course. At least one is required when course/validate is explicitly ensured. These references define unordered membership; course/map defines curriculum order. Referenced units must be validated separately."}
+
+ {:db/ident :course/map
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/isComponent true
+  :db/doc "Optional owned course map defining the order of this course's units, their modules, and their topics. Membership remains in course/units, unit/modules, and module/topics. Omit while sequencing is not yet defined. Writers must separately ensure course-map/validate and course-map-entry/validate for the map and its entries."}
 
  {:db/ident :course/validate
   :db.entity/attrs [:course/id :course/title :course/units]
-  :db/doc "Requires our identity, a title, and at least one unit ref when explicitly ensured. The Math Academy identifier, course code, description, overview, and outcomes are optional. Nonempty titles, reference target types, and unit and outcome indexes unique within this course require additional validation."}
+  :db/doc "Requires our identity, a title, and at least one unit ref when explicitly ensured. The Math Academy identifier, course code, description, overview, outcomes, and map are optional. Nonempty titles, reference target types, outcome indexes unique within this course, and map consistency with membership require additional validation."}
 ]

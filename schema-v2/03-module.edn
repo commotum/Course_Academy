@@ -19,17 +19,12 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Module title, taken from module-name in DATA/Modules.csv, for example Operations on Numbers."}
 
- {:db/ident :module/index
-  :db/valueType :db.type/long
-  :db/cardinality :db.cardinality/one
-  :db/doc "1-based curriculum order within the module's unit: 1 is the first module. Must be positive and unique within that unit, not globally unique. This model assumes each module belongs to one unit; changing its index does not change its identity."}
-
  {:db/ident :module/topics
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Topics belonging to this module. At least one is required when module/validate is explicitly ensured. These ordinary refs permit topic reuse across modules without cascading deletion. References are unordered; topic order within a module will be modeled separately. Referenced topics must also ensure topic/validate."}
+  :db/doc "Topics belonging to this module. At least one is required when module/validate is explicitly ensured. These ordinary refs permit topic reuse across modules without cascading deletion. References define unordered membership; the course map defines topic order within this module. Referenced topics must also ensure topic/validate."}
 
  {:db/ident :module/validate
-  :db.entity/attrs [:module/id :module/title :module/index :module/topics]
-  :db/doc "Requires our identity, a title, an index, and at least one topic ref when explicitly ensured. The Math Academy identifier is optional. Nonempty titles, positive indexes, index uniqueness within a unit, membership in exactly one unit, and reference target types require additional validation. Referenced topics must be validated separately."}
+  :db.entity/attrs [:module/id :module/title :module/topics]
+  :db/doc "Requires our identity, a title, and at least one topic ref when explicitly ensured. The Math Academy identifier is optional. Nonempty titles and reference target types require additional validation. Referenced topics must be validated separately."}
 ]

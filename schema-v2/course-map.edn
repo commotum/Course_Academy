@@ -1,0 +1,20 @@
+;; Curriculum sequence owned through :course/map.
+;; Membership remains in course/units, unit/modules, and module/topics.
+;; Request :db/ensure [:course-map/validate] when writing a map.
+[
+ {:db/ident :course-map/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of a curriculum map owned by one course."}
+
+ {:db/ident :course-map/entries
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned top-level entries referencing the course's units. Sort by course-map-entry/index. A complete map includes each member of course/units exactly once. Writers must separately ensure course-map-entry/validate on every entry."}
+
+ {:db/ident :course-map/validate
+  :db.entity/attrs [:course-map/id :course-map/entries]
+  :db/doc "Requires identity and at least one root entry when explicitly ensured. Application validation must check ownership by one course, the unit-to-module-to-topic hierarchy, exact membership coverage under every parent, positive indexes unique among siblings, and an acyclic entry tree with no shared entry nodes. Native required-attribute checks do not enforce these relationships."}
+]

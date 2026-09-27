@@ -19,17 +19,12 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Unit title, taken from unit-name in DATA/Units.csv, for example Operations & Algebraic Thinking."}
 
- {:db/ident :unit/index
-  :db/valueType :db.type/long
-  :db/cardinality :db.cardinality/one
-  :db/doc "1-based curriculum order within the unit's course: 1 is the first unit. Must be positive and unique within that course, not globally unique. This model assumes each unit belongs to one course; changing its index does not change its identity."}
-
  {:db/ident :unit/modules
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Modules belonging to this unit. At least one is required when unit/validate is explicitly ensured. These references are unordered; sort modules by module/index for curriculum order. Referenced modules must also ensure module/validate."}
+  :db/doc "Modules belonging to this unit. At least one is required when unit/validate is explicitly ensured. These references define unordered membership; the course map defines module order. Referenced modules must also ensure module/validate."}
 
  {:db/ident :unit/validate
-  :db.entity/attrs [:unit/id :unit/title :unit/index :unit/modules]
-  :db/doc "Requires our identity, a title, an index, and at least one module ref when explicitly ensured. The Math Academy identifier is optional. Nonempty titles, positive indexes, index uniqueness within a course, membership in exactly one course, and reference target types require additional validation. Referenced modules must be validated separately."}
+  :db.entity/attrs [:unit/id :unit/title :unit/modules]
+  :db/doc "Requires our identity, a title, and at least one module ref when explicitly ensured. The Math Academy identifier is optional. Nonempty titles and reference target types require additional validation. Referenced modules must be validated separately."}
 ]
