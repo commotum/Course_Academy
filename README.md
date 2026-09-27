@@ -13,6 +13,7 @@ python3 -m engine.fire demo
 python3 -m unittest discover -s tests -v
 ```
 
-Content schemas remain in [schema-v2](schema-v2/); FIRe additions are in
+The [schema index](schema-v2/README.md) groups curriculum and learner data separately
+from instructional content. Remaining FIRe prototypes are in
 [schema-v2/fire](schema-v2/fire/). The [reference index](reference/README.md)
 links the earlier research and source material.

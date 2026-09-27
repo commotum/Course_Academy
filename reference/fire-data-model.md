@@ -46,7 +46,7 @@ Install the existing content/data schemas and then the following files in numeri
 | File | Records | Why it exists |
 | --- | --- | --- |
 | [01-policy.edn](../schema-v2/fire/01-policy.edn) | `fire-policy` | Names the algorithm and retains its complete parameter map |
-| [03-learner.edn](../schema-v2/fire/03-learner.edn) | `fire-learner` | Global learner identity and accuracy across topics |
+| [6-learner.edn](../schema-v2/data/6-learner.edn) | `fire-learner` | Global learner identity and accuracy across topics |
 | [04-topic-progress.edn](../schema-v2/fire/04-topic-progress.edn) | `fire-state` | One retention and accuracy profile per learner-topic pair |
 | [05-topic-calibration.edn](../schema-v2/fire/05-topic-calibration.edn) | `fire-calibration`, `fire-difficulty` | Defines the aggregate topic difficulty inputs and their evidential basis |
 | [06-performance.edn](../schema-v2/fire/06-performance.edn) | `fire-event` | One observed, graded topic-level evidence unit before propagation |
@@ -54,7 +54,7 @@ Install the existing content/data schemas and then the following files in numeri
 
 Topic, KP, and question refs point to existing content entities. No new content identities, copies, or versions are introduced. The learner-topic uniqueness key contains no course: shared knowledge carries across concurrent courses. Course membership still controls curricular scope and prerequisite eligibility outside this retention transition.
 
-Encompassing relationships are defined in [encompassing.edn](../schema-v2/data/encompassing.edn) and owned through `topic/encompasses`. Each record contains a component topic, weight, and optional rationale; the parent topic supplies the source. There is no separate graph entity or graph reference on application receipts. Rust can assemble its runtime graph from these relationships and the existing topic records, including topics without encompassings.
+Encompassing relationships are defined in [4-2-encompassing.edn](../schema-v2/data/4-2-encompassing.edn) and owned through `topic/encompasses`. Each record contains a component topic, weight, and optional rationale; the parent topic supplies the source. There is no separate graph entity or graph reference on application receipts. Rust can assemble its runtime graph from these relationships and the existing topic records, including topics without encompassings.
 
 Policy IDs should match the engine's fingerprints. Their values are fixed once referenced by a receipt; changing an execution configuration gives it a new identity. A calibration set similarly identifies the exact difficulty inputs used. These remain prototype configuration records.
 

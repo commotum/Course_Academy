@@ -251,7 +251,7 @@ no XP-to-mastery substitution was made to make the replay appear complete.
 ## What we must track next
 
 The detailed [data-model report](fire-data-model.md) and
-[six EDN files](../schema-v2/fire/) provide the reviewable definitions. The main
+[current EDN schemas](../schema-v2/README.md) provide the reviewable definitions. The main
 new information is:
 
 - Expert-supported encompassing edges, weights, and rationale, separate from
