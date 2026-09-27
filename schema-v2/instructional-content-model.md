@@ -1,4 +1,4 @@
-This review distinguishes MA's captured content types from our proposed EDB entities. It rechecked all 2,964 normalized lesson captures under `/home/jake/Developer/MA/DATA/Lessons/*/Source/*.json`, the HTML for topic 14, the capture normalizer, the ECE generation schemas, and the current v2 EDN. The agreed tutorial/example separation is now implemented in the v2 EDN. Lesson placement and teaching sequence remain future work.
+This review distinguishes MA's captured content types from our proposed EDB entities. It rechecked all 2,964 normalized lesson captures under `/home/jake/Developer/MA/DATA/Lessons/*/Source/*.json`, the HTML for topic 14, the capture normalizer, the ECE generation schemas, and the current v2 EDN. The agreed tutorial/example separation is now implemented in the v2 EDN. Lesson and lesson-step schemas now represent instructional placement and teaching sequence; runtime question selection remains engine work.
 
 MA's reference captures contain two instructional step types and a separate question item type:
 
@@ -32,11 +32,11 @@ The implemented entities and relationships are:
 
 | Entity | Proposed content/refs | Reason |
 | --- | --- | --- |
-| [Tutorial](tutorial.edn) | id, title, content | Exposition in Markdown with mathematics and images; no required answer |
-| [Example](06-example.edn) | id, problem, explanation | The demonstrated problem and worked solution |
-| [Knowledge point](05-knowledge-point.edn) | id, title, key-prerequisites refs, example ref, questions refs, question-generator ref | The skill being practiced, its key prerequisite topics, and the content teaching/assessing it |
-| [Question](07-question.edn) | Problem, type, fields, explanation, metadata | An item prepared for the learner to answer |
-| Answer field → answer | [Answer field](08-answer-field.edn) and [answer](09-answer.edn) | Expected values and selection options for each question field |
+| [Tutorial](content/tutorial.edn) | id, title, content | Exposition in Markdown with mathematics and images; no required answer |
+| [Example](content/06-example.edn) | id, problem, explanation | The demonstrated problem and worked solution |
+| [Knowledge point](data/05-knowledge-point.edn) | id, title, key-prerequisites refs, example ref, questions refs, question-generator ref | The skill being practiced, its key prerequisite topics, and the content teaching/assessing it |
+| [Question](content/07-question.edn) | Problem, type, fields, explanation, metadata | An item prepared for the learner to answer |
+| Answer field → answer | [Answer field](content/08-answer-field.edn) and [answer](content/09-answer.edn) | Expected values and selection options for each question field |
 
 `example/problem` is textual problem content, not a mandatory ref to a question entity. A title can stay on the KP in this initial design, matching how it currently names the demonstrated skill. Separating the example content makes its problem and explanation reviewable as a unit without duplicating the entire question hierarchy.
 
@@ -52,7 +52,7 @@ Lesson sequence
   └─ Another knowledge point
 ```
 
-A lesson sequence is a future placement/scheduling concern. Tutorials can precede, occur between, and follow KP practice groups. Captured step IDs and content IDs are separate, so a content entity should not also be forced to represent its occurrence in a lesson. The previous decision to omit answer-choice positions remains appropriate; instructional sequencing is a different relationship, and should not be recovered by sorting arbitrary IDs or shuffling tutorial/KP refs.
+A lesson sequence is represented by lesson-owned step entities, with runtime delivery handled separately by the engine. Tutorials can precede, occur between, and follow KP practice groups. Captured step IDs and content IDs are separate, so a content entity should not also be forced to represent its occurrence in a lesson. The previous decision to omit answer-choice positions remains appropriate; instructional sequencing is a different relationship, and should not be recovered by sorting arbitrary IDs or shuffling tutorial/KP refs.
 
 We could instead reuse a question entity for an example, but the present question model requires an interaction type and at least one field with a correct answer. Importing a worked example into that model would require authoring a response interface and extracting/verifying a grading target from its explanation. That can be useful when deliberately turning an example into an exercise, but it is additional content creation, not a direct mapping of captured example data. Converting the demonstrated example into practice also does not mean it should automatically enter an assessment pool for a learner who has just seen its solution.
 
@@ -64,6 +64,8 @@ The readability review uses this presentation convention: enum declarations in a
 
 Math Academy identifiers are optional source identifiers wherever modeled; our own entity IDs are required. Source identifiers remain unique when supplied, allowing independently created content alongside imported content.
 
+The [lesson schema](data/lesson.edn) defines reusable instruction and staged practice for a topic, separate from a learner's lesson attempt. It references the topic and owns instructional step entities. The [lesson-step schema](data/lesson-step.edn) represents tutorial/KP placement, order, and optional captured step identity. Its type enums are tutorial and knowledge-point in our model; the latter maps from a captured example step only after verifying the KP/example association. Content refs are ordinary refs, so removing a lesson and its owned steps preserves instructional content. Native specs require step identity, type, index, and content; matching target types, positive and lesson-unique indexes, and topic/KP membership need additional validation. Questions served during an attempt belong to task history and are selected from the KP's question pool, rather than prescribed by the captured reference-page question sequence. No separate MA lesson identifier has been established for the captured lesson corpus, so topic and task IDs are not copied into a lesson source-ID field.
+
 | Schema | Attribute presentation after any enum declarations |
 | --- | --- |
 | Course | id, math-academy-id, title, code, description, overview, outcomes, units, map, validate |
@@ -73,6 +75,8 @@ Math Academy identifiers are optional source identifiers wherever modeled; our o
 | Unit | id, math-academy-id, title, modules, validate |
 | Module | id, math-academy-id, title, topics, validate |
 | Topic | id, math-academy-id, title, difficulty, prerequisites, knowledge-points, validate |
+| Lesson | id, topic, steps, validate |
+| Lesson step | id, math-academy-id, type, index, content, validate |
 | Tutorial | id, title, content, validate |
 | Knowledge point | id, math-academy-id, title, key-prerequisites, example, questions, question-generator, validate |
 | Example | id, problem, explanation, validate |
@@ -80,11 +84,11 @@ Math Academy identifiers are optional source identifiers wherever modeled; our o
 | Answer field | id, key, answer-choices, correct-answer, validate |
 | Answer | id, type, value, validate |
 
-Curriculum membership remains in `course/units`, `unit/modules`, and `module/topics`. Curriculum order belongs to the optional `course/map`, defined in [course-map.edn](course-map.edn), whose nested [course-map entries](course-map-entry.edn) reference existing units, modules, and topics. Root entries order units; their children order modules; the next level orders topics. Each entry has a 1-based index among siblings. Units and modules no longer carry indexes. Course-outcome indexes remain separate because they order explanatory outcome bullets, not curriculum members.
+Curriculum membership remains in `course/units`, `unit/modules`, and `module/topics`. Curriculum order belongs to the optional `course/map`, defined in [course-map.edn](data/course-map.edn), whose nested [course-map entries](data/course-map-entry.edn) reference existing units, modules, and topics. Root entries order units; their children order modules; the next level orders topics. Each entry has a 1-based index among siblings. Units and modules no longer carry indexes. Course-outcome indexes remain separate because they order explanatory outcome bullets, not curriculum members.
 
-The course owns its map, the map owns root entries, and entries own child entries through component refs. Entry content refs are ordinary refs, so deleting a map removes its entries without deleting curriculum content. A complete map covers each corresponding membership set exactly once. Application validation must check this coverage, supported content types at each level, positive sibling-unique indexes, and tree ownership with no cycles or shared entry nodes. These checks are documented requirements, not implemented validators; native entity specs require only the listed attributes and must be explicitly ensured for each entity. Writers should update membership and the corresponding map entries in the same transaction. Different maps may order shared content differently, but do not redefine its membership sets. Lesson sequencing within a topic remains separate future work.
+The course owns its map, the map owns root entries, and entries own child entries through component refs. Entry content refs are ordinary refs, so deleting a map removes its entries without deleting curriculum content. A complete map covers each corresponding membership set exactly once. Application validation must check this coverage, supported content types at each level, positive sibling-unique indexes, and tree ownership with no cycles or shared entry nodes. These checks are documented requirements, not implemented validators; native entity specs require only the listed attributes and must be explicitly ensured for each entity. Writers should update membership and the corresponding map entries in the same transaction. Different maps may order shared content differently, but do not redefine its membership sets. Lesson sequencing within a topic is handled separately by lesson/steps and lesson-step/index.
 
-Course outcomes use one model for both observed formats: a bullet's text and an optional category heading. Of the 32 captured course maps, 16 use flat lists and 16 use categorized lists. The create-course-map guide explicitly allows both and does not equate outcome categories with curriculum units. Course-owned outcome entities are defined in [course-outcome.edn](course-outcome.edn); their 1-based index preserves order across the entire list, including category boundaries. The application renders bullets and optional headings and supplies the standard introductory sentence from the [skill](../skills/create-course-map/SKILL.md). No separate category entity is needed. Course description and overview retain their section bodies as Markdown strings.
+Course outcomes use one model for both observed formats: a bullet's text and an optional category heading. Of the 32 captured course maps, 16 use flat lists and 16 use categorized lists. The create-course-map guide explicitly allows both and does not equate outcome categories with curriculum units. Course-owned outcome entities are defined in [course-outcome.edn](content/course-outcome.edn); their 1-based index preserves order across the entire list, including category boundaries. The application renders bullets and optional headings and supplies the standard introductory sentence from the [skill](../skills/create-course-map/SKILL.md). No separate category entity is needed. Course description and overview retain their section bodies as Markdown strings.
 
 Tutorial content was checked against five concrete captures:
 

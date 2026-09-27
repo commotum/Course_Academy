@@ -1,0 +1,25 @@
+;; Reusable instruction and staged practice for a topic.
+;; A learner's attempt, selected questions, results, and XP belong to task data.
+;; Request :db/ensure [:lesson/validate] when writing a lesson.
+[
+ {:db/ident :lesson/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of the instructional lesson, independent of a learner's attempts. Captured topic IDs and task IDs must not be substituted for a distinct Math Academy lesson identifier."}
+
+ {:db/ident :lesson/topic
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The topic taught by this lesson. This ordinary ref does not establish ownership of the topic. The lesson's knowledge-point steps must reference members of that topic's topic/knowledge-points set. Validate the topic separately."}
+
+ {:db/ident :lesson/steps
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned instructional placements of tutorials and knowledge points, defined in lesson-step.edn. At least one is required when lesson/validate is explicitly ensured. These references are unordered; sort by lesson-step/index for instructional order. Writers must separately ensure lesson-step/validate on each step. A knowledge-point step uses its worked example and question pool; the engine selects practice questions during an attempt rather than treating captured reference-page samples as a fixed runtime sequence."}
+
+ {:db/ident :lesson/validate
+  :db.entity/attrs [:lesson/id :lesson/topic :lesson/steps]
+  :db/doc "Requires identity, a topic ref, and at least one step ref when explicitly ensured. Referenced topics and steps require separate validation. Step types, ordering, ownership, and coverage of the topic's knowledge points require additional validation; this required-attribute spec does not enforce those relationships."}
+]
