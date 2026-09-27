@@ -66,16 +66,19 @@ Math Academy identifiers are optional source identifiers wherever modeled; our o
 
 | Schema | Attribute presentation after any enum declarations |
 | --- | --- |
-| Course | id, math-academy-id, title, code, units, validate |
+| Course | id, math-academy-id, title, code, description, overview, outcomes, units, validate |
+| Course outcome | id, index, category, text, validate |
 | Unit | id, math-academy-id, title, index, modules, validate |
 | Module | id, math-academy-id, title, index, topics, validate |
-| Topic | id, math-academy-id, title, difficulty, knowledge-points, validate |
+| Topic | id, math-academy-id, title, difficulty, prerequisites, knowledge-points, validate |
 | Tutorial | id, title, content, validate |
 | Knowledge point | id, math-academy-id, title, key-prerequisites, example, questions, question-generator, validate |
 | Example | id, problem, explanation, validate |
 | Question | id, math-academy-id, type, difficulty, requires-calculator, problem, answer-fields, explanation, validate |
 | Answer field | id, key, answer-choices, correct-answer, validate |
 | Answer | id, type, value, validate |
+
+Course outcomes use one model for both observed formats: a bullet's text and an optional category heading. Of the 32 captured course maps, 16 use flat lists and 16 use categorized lists. The create-course-map guide explicitly allows both and does not equate outcome categories with curriculum units. Course-owned outcome entities are defined in [course-outcome.edn](course-outcome.edn); their 1-based index preserves order across the entire list, including category boundaries. The application renders bullets and optional headings and supplies the standard introductory sentence from the [skill](../skills/create-course-map/SKILL.md). No separate category entity is needed. Course description and overview retain their section bodies as Markdown strings.
 
 Tutorial content was checked against five concrete captures:
 
