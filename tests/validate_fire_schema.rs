@@ -24,6 +24,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     for dir in [
         "schema-v2/data",
         "schema-v2/content",
+        "schema-v2/learner",
         "schema-v2/fire",
         "schema-v2/proposed",
     ] {
@@ -44,10 +45,13 @@ fn main() -> Result<(), Box<dyn Error>> {
  {:db/id "advanced" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001" :topic/title "Illustrative advanced topic" :topic/encompasses ["edge"]}
  {:db/id "component" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000002" :topic/title "Illustrative component topic"}
  {:db/id "learner" :learner/id "schema-check-learner"
-  :learner/assessment-accuracy 0.8 :learner/practice-accuracy 0.9
-  :learner/assessment-mass 0.0 :learner/practice-mass 4.0
+  :learner/performance "performance"
   :learner/knowledge-profile ["state" "unlearned-state"]
-  :db/ensure [:learner/validate :learner/ability-validate]}
+  :db/ensure :learner/validate}
+ {:db/id "performance"
+  :performance/assessment-accuracy 0.8 :performance/practice-accuracy 0.9
+  :performance/assessment-mass 0.0 :performance/practice-mass 4.0
+  :db/ensure :performance/validate}
  {:db/id "policy" :policy/id #uuid "b3d88ca6-d319-409b-bdb1-000000000003"
   :policy/name "Schema validation configuration" :policy/algorithm :policy.algorithm/fire-v1
   :policy/base-half-life-days 1.0 :policy/interval-growth 2.0 :policy/maximum-half-life-days 36500.0
@@ -98,6 +102,27 @@ fn main() -> Result<(), Box<dyn Error>> {
             .entity
     };
     let learner = find_string(&db, "learner", "id", "schema-check-learner");
+    let performance_attr = db.entid(&Keyword::new("learner", "performance")).unwrap() as u32;
+    let performance = match db.values(learner, performance_attr).as_slice() {
+        [Value::Ref(id)] => *id,
+        other => panic!("Expected one performance component, got {other:?}"),
+    };
+    let performance_owners = db.datoms_with_prefix(&edb_core::IndexPrefix::Vaet {
+        value: Value::Ref(performance),
+        attribute: Some(performance_attr),
+        entity: None,
+    })?;
+    assert_eq!(performance_owners.len(), 1);
+    assert_eq!(performance_owners[0].entity, learner);
+    let missing_performance_value = r#"[{:performance/assessment-accuracy 0.8
+      :performance/practice-accuracy 0.9 :performance/assessment-mass 0.0
+      :db/ensure :performance/validate}]"#;
+    assert_eq!(
+        transact(&db, missing_performance_value, 2050)
+            .unwrap_err()
+            .code,
+        "transaction/entity-spec"
+    );
     let topicattr = db.entid(&Keyword::new("progress", "topic")).unwrap() as u32;
     let topic = match db.values(state, topicattr).first().unwrap() {
         Value::Ref(id) => *id,
@@ -203,11 +228,22 @@ fn main() -> Result<(), Box<dyn Error>> {
     assert_eq!(owners[0].entity, learner);
     let removed = transact(&db, &format!("[[:db.fn/retractEntity {learner}]]"), 3100)?.db_after;
     assert!(removed.values(state, idattr).is_empty());
+    for name in [
+        "assessment-accuracy",
+        "practice-accuracy",
+        "assessment-mass",
+        "practice-mass",
+    ] {
+        let attr = db.entid(&Keyword::new("performance", name)).unwrap() as u32;
+        assert!(!db.values(performance, attr).is_empty());
+        assert!(removed.values(performance, attr).is_empty());
+    }
     let topicidattr = db.entid(&Keyword::new("topic", "id")).unwrap() as u32;
     assert!(!removed.values(topic, topicidattr).is_empty());
     edb_activity_checks::check(&db)?;
     println!("PASS all current content and FIRe schemas install; required-attribute specs accept topic-owned encompassing/difficulty/global ability/event/application/state fixtures, explicit zero coverage, optional rationale, quality 1.5 and unlearned ability.");
     println!("PASS progress updates preserve identity; reverse ownership resolves; duplicate topics, shared owners, orphaned records and duplicate-producing topic changes are rejected. Learner deletion cascades to progress and preserves shared topics. Event identity/type/cardinality checks pass.");
+    println!("PASS learner performance resolves through its owned ref, requires all four values, and cascades on learner deletion. Performance single-owner and range rules remain writer contracts.");
     println!("Scope: native EDB schema, policy and difficulty predicates, ownership and history semantics. Engine equations and embedded receipt payloads are checked separately.");
     Ok(())
 }

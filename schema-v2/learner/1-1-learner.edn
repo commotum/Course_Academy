@@ -1,0 +1,38 @@
+;; Learner identity, overall accuracy, knowledge profile, queue, and task history.
+;; Required-attribute specs are opt-in: request :db/ensure on each write.
+;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
+[
+ {:db/ident :learner/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable learner identity used by the FIRe engine; not a login credential."}
+
+ {:db/ident :learner/performance
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/isComponent true
+  :db/doc "Optional owned overall performance record, defined in 1-2-learner-performance.edn. Holds accuracy and evidence mass across topics. Find its learner through learner/_performance; no duplicate learner ref is needed. Ensure performance/validate separately on each performance write. Retracting the learner also retracts this record."}
+
+ {:db/ident :learner/knowledge-profile
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned, unordered collection of current progress records, one per topic. Find the learner through the reverse reference learner/_knowledge-profile. Ensure learner/validate when changing membership and progress/validate on each progress write. Retracting the learner also retracts these records, but not their shared topics."}
+
+ {:db/ident :learner/activity
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional history of the learner's task attempts. Each task references a shared activity definition such as a lesson or assessment and records its own status, timestamps, outcome, and XP. Tasks are defined in 2-1-learner-task.edn and own the presented items defined in 2-2-learner-task-item.edn. Order history by timestamps rather than reference order. Validate each task and its learner association separately. These ordinary refs do not establish component ownership."}
+
+ {:db/ident :learner/queue
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned entries describing what is up next and why, defined in 1-4-learner-queue.edn. Sort this unordered set by queue/index. Find the learner through learner/_queue; do not store a duplicate learner ref. Ensure each queue/validate spec separately. Retracting the learner also retracts these entries while preserving their shared content."}
+
+ {:db/ident :learner/validate
+  :db.entity/attrs [:learner/id]
+  :db.entity/preds course-academy.progress/valid-profile?
+  :db/doc "Learner identity and knowledge-profile ownership/uniqueness. Overall performance is optional and its child record must be separately ensured with performance/validate. This spec does not validate performance ownership or values."}
+]

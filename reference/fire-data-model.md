@@ -2,7 +2,7 @@
 
 For the simpler application integration proposal, start with [How the learning engine plugs into our schema](fire-schema-integration.md). The contract below describes the standalone Python prototype; its policy, calibration, and receipt entities are not all required in the final application model.
 
-This is the data contract for [our FIRe implementation](../engine/fire/core.py). It records the state and evidence our engine needs, drawing on the published mechanisms and observed behavior. The [learner and progress schemas](../schema-v2/data/) and remaining [FIRe schemas](../schema-v2/fire/) add retention and performance data without changing the existing course, topic, lesson, KP, question, or answer models. The separate [implementation explanation](fire-reconstruction.md) owns the executable equations and policy choices.
+This is the data contract for [our FIRe implementation](../engine/fire/core.py). It records the state and evidence our engine needs, drawing on the published mechanisms and observed behavior. The [learner and progress schemas](../schema-v2/learner/) and remaining [FIRe schemas](../schema-v2/fire/) add retention and performance data without changing the existing course, topic, lesson, KP, question, or answer models. The separate [implementation explanation](fire-reconstruction.md) owns the executable equations and policy choices.
 
 The smallest useful system needs an explicit encompassing graph, an initial learner-topic profile, actual graded work, and a specified policy. A prerequisite graph plus completed-task XP is insufficient. It is possible to run an honest direct-review baseline before any encompassing weights have been established.
 
@@ -41,15 +41,16 @@ The [primary article](https://www.justinmath.com/individualized-spaced-repetitio
 
 ## Schema files and ownership
 
-Install all content/data and engine schema files before transacting domain records; filename order is for navigation. These files contain attribute definitions and opt-in entity specs, not production MA weights or learner profiles.
+Install all content, data, learner, engine, and proposed activity schema files before transacting domain records; filename order is for navigation. These files contain attribute definitions and opt-in entity specs, not production MA weights or learner profiles.
 
 | File | Records | Why it exists |
 | --- | --- | --- |
 | [1-policy.edn](../schema-v2/fire/1-policy.edn) | `policy` | Names the executable algorithm and stores complete typed settings |
-| [6-1-learner.edn](../schema-v2/data/6-1-learner.edn) | `learner` | Global learner identity and accuracy across topics |
-| [6-2-learner-progress.edn](../schema-v2/data/6-2-learner-progress.edn) | `progress` | One retention and accuracy profile per learner-topic pair |
+| [1-1-learner.edn](../schema-v2/learner/1-1-learner.edn) | `learner` | Learner identity and refs to owned state, current queue, and task history |
+| [1-3-learner-progress.edn](../schema-v2/learner/1-3-learner-progress.edn) | `progress` | One retention and accuracy profile per learner-topic pair |
+| [1-2-learner-performance.edn](../schema-v2/learner/1-2-learner-performance.edn) | `performance` | One optional learner-owned global accuracy summary across topics |
 | [4-3-topic-difficulty.edn](../schema-v2/data/4-3-topic-difficulty.edn) | Additional `topic` attributes | Current difficulty estimate and optional qualifying assessment evidence |
-| [06-performance.edn](../schema-v2/fire/06-performance.edn) | `fire-event` | One observed, graded topic-level evidence unit before propagation |
+| [2-3-learner-task-performance.edn](../schema-v2/learner/2-3-learner-task-performance.edn) | `fire-event` | One graded topic-specific task performance result before propagation |
 | [07-application.edn](../schema-v2/fire/07-application.edn) | `fire-application`, `fire-update` | Records how one event changed or deliberately did not change state |
 
 Topic, KP, and question refs point to existing content entities. No new content identities, copies, or versions are introduced. Each learner owns one progress record per topic through `learner/knowledge-profile`. Entity predicates enforce ownership and topic uniqueness when the specs are ensured; no reverse learner attribute or learner/topic composite is stored. Shared knowledge carries across concurrent courses. Course membership still controls curricular scope and prerequisite eligibility outside this retention transition.
@@ -73,7 +74,7 @@ Policy UUIDs identify configurations; they are independent of the Python engine'
 | `learned` | `:progress/learned` | Admission to retention tracking, distinct from current recall |
 | `last_direct_at` | `:progress/last-direct-at` | Last direct practice, unaffected by receiving only implicit credit |
 
-The four ability fields also exist under `:learner/*` for the learner-global estimate. Global ability updates from directly observed answers once; propagating one answer to several topics must not count it several times globally. The effective accuracy is computed from the two channels rather than stored as an independently mutable third estimate. Failed initial lessons can produce an ability record with `learned=false`; they must not silently establish mastery.
+The four ability fields also exist under `:performance/*` on the learner-global summary referenced by `learner/performance`. This optional cardinality-one component has no separate domain ID; look it up through its learner. Ensure `performance/validate` on writes to require all four values. Single ownership and numeric ranges remain application contracts. Global ability updates from directly observed answers once; propagating one answer to several topics must not count it several times globally. The effective accuracy is computed from the two channels rather than stored as an independently mutable third estimate. Per-topic accuracy remains on `progress`; failed initial lessons can update it while `progress/learned=false`, without silently establishing mastery.
 
 The engine uses fractional elapsed days. The persistence adapter should map UTC instants to days from one fixed epoch, such as `unix_seconds / 86400`, and apply the same conversion to every event and state anchor. Local calendar dates and earned XP are not elapsed time. Simulated relative-day experiments remain simulations; do not invent calendar timestamps for them.
 
@@ -83,7 +84,7 @@ Memory at time `t` is derived from the anchored value and stored interval. Due t
 
 ## Performance and application receipts
 
-An event has one learner, one directly assessed topic, time, graded outcome, positive quality magnitude, activity kind, explicit assessment channel, initial-learning flag, ordered question outcomes when available, and source/context label. This mirrors `Event` in the core. Quality may exceed one; it is neither an accuracy percentage nor earned XP. A task adapter must define the grading and quality rule before emitting events.
+The file `learner/2-3-learner-task-performance.edn` names the role of the record: graded topic-specific performance prepared from task evidence. Its attributes retain the `fire-event/*` namespace and existing engine contract; no task ownership link is added by the move. An event has one learner, one directly assessed topic, time, graded outcome, positive quality magnitude, activity kind, explicit assessment channel, initial-learning flag, ordered question outcomes when available, and source/context label. This mirrors `Event` in the core. Quality may exceed one; it is neither an accuracy percentage nor earned XP. A task adapter must define the grading and quality rule before emitting events.
 
 Several questions can support one topic-level event. Conversely, an assessment spanning several topics can produce distinct topic events under an explicit aggregation rule. Do not award a full repetition per question merely because a task contained several questions. Unknown correctness is not converted into `false`; an unavailable sequence remains unavailable. When the engine falls back to the event's passed/failed outcome for ability updating, that is a declared approximation.
 

@@ -1,4 +1,4 @@
-;; Proposed reusable quiz or assessment definition; retakes are separate activities.
+;; Proposed reusable quiz or assessment activity; retakes are separate task attempts.
 ;; Entity specs check required attributes only and must be explicitly ensured.
 ;; Relationship, enum, range, and delivery rules below are application contracts.
 [
@@ -11,7 +11,7 @@
  {:db/ident :assessment/title
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Name of the assessment, such as Quiz 4. Attempt-specific Retake labels belong on activity/title."}
+  :db/doc "Name of the assessment, such as Quiz 4. Attempt-specific Retake labels belong on learner-task/title."}
 
  {:db/ident :assessment/course
   :db/valueType :db.type/ref
@@ -26,7 +26,7 @@
  {:db/ident :assessment/time-limit-seconds
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional positive finite time limit for this definition. Copy the applied limit to the activity. Do not infer a limit from XP or hard-code fifteen minutes for all assessments."}
+  :db/doc "Optional positive finite time limit for this definition. Copy the applied limit to the task attempt. Do not infer a limit from XP or hard-code fifteen minutes for all assessments."}
 
  {:db/ident :assessment/expected-seconds
   :db/valueType :db.type/double
@@ -35,5 +35,5 @@
 
  {:db/ident :assessment/validate
   :db.entity/attrs [:assessment/id :assessment/title :assessment/topics]
-  :db/doc "Requires identity, title, and scope. Validate topic/course targets and positive finite timings. Application code selects questions and determines grading and XP. Actual delivered tasks belong to the activity."}
+  :db/doc "Requires identity, title, and scope. Validate topic/course targets and positive finite timings. Application code selects questions and determines grading and XP. Each attempt is a task whose items record the questions actually presented."}
 ]

@@ -23,10 +23,7 @@ fn owners(db: &DatabaseValue, progress: u64) -> Result<Vec<u64>, SemanticError> 
 }
 
 pub fn valid_profile(db: &DatabaseValue, learner: u64) -> Result<bool, SemanticError> {
-    if db
-        .values(learner, attr(db, "learner", "id")?)?
-        .is_empty()
-    {
+    if db.values(learner, attr(db, "learner", "id")?)?.is_empty() {
         return Ok(false);
     }
     let mut topics = BTreeSet::new();

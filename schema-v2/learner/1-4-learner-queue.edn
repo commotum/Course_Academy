@@ -1,0 +1,48 @@
+;; One up-next entry owned through learner/queue. Find its learner through the reverse ref.
+;; Entries select shared activities; task records describe performed work.
+;; Entity specs check required attributes only and must be explicitly ensured.
+[
+ {:db/ident :queue.selection/required}
+ {:db/ident :queue.selection/recommended}
+ {:db/ident :queue.selection/self-selected}
+
+ {:db/ident :queue/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of this queue entry. Reordering updates the entry rather than creating a new one."}
+
+ {:db/ident :queue/activity
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Shared lesson, review, assessment, multistep, diagnostic, or supplemental-diagnostic definition proposed for study. Derive its category and intended topics from this activity. Validate that it is complete and eligible before creating a task attempt."}
+
+ {:db/ident :queue/index
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Positive position unique within this learner's current queue; smaller indexes come first. The application updates positions when priorities change. The learner/queue ref set itself is unordered."}
+
+ {:db/ident :queue/selection
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "How this work is served: queue.selection/required is mandatory under the engine's progression rules, queue.selection/recommended is an engine suggestion, and queue.selection/self-selected is a learner choice. Failure or XP thresholds that make work required belong to application policy. All three modes use the same grading and learning updates."}
+
+ {:db/ident :queue/reason
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Human-readable explanation of why this content is queued, such as required remediation after failures, an assessment after an XP threshold, a due review, or preparation for an assignment. Explains the scheduler's decision; application code does not parse this text to decide what to serve."}
+
+ {:db/ident :queue/course
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional course context that motivated this entry. Shared topics can support several courses, so this context cannot always be inferred from content membership. Omit for general study or when no single course motivated the choice."}
+
+ {:db/ident :queue/added-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional time this entry was added to the learner's queue. Reordering does not reset it."}
+
+ {:db/ident :queue/validate
+  :db.entity/attrs [:queue/id :queue/activity :queue/index :queue/selection :queue/reason]
+  :db/doc "Requires identity, activity, order, selection mode, and explanation. The writer separately checks exactly one learner owner, positive unique positions, supported selection values, nonblank reasons, and valid reference targets. Optional entries may be dismissed. Launching removes an entry from the queue, but does not satisfy a required obligation: the controller must carry or recompute it until the policy's completion condition is met, including after failure or abandonment. Required work cannot be bypassed by dismissal. This spec does not enforce scheduling, and the current queue is not a permanent decision record."}
+]

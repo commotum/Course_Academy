@@ -1,0 +1,42 @@
+;; One learner-specific presentation of a question, tutorial, or example.
+;; Owned through learner-task/items; content refers to the shared item presented.
+[
+ {:db/ident :task-item.result/correct}
+ {:db/ident :task-item.result/incorrect}
+
+ {:db/ident :task-item/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of this presentation, separate from the content ID."}
+
+ {:db/ident :task-item/index
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Order in the learner task."}
+
+ {:db/ident :task-item/content
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Question, tutorial, or example presented. May be absent when historical content identity is unknown."}
+
+ {:db/ident :task-item/result
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Observed final question result: correct or incorrect. Omit when unknown or not a question."}
+
+ {:db/ident :task-item/responses
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Responses supplied for this question, one per answer field."}
+
+ {:db/ident :task-item/elapsed-seconds
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Observed elapsed time for this presentation, when available."}
+
+ {:db/ident :task-item/validate
+  :db.entity/attrs [:task-item/id :task-item/index]
+  :db/doc "Requires presentation identity and order; historical records may have unknown content or results."}
+]

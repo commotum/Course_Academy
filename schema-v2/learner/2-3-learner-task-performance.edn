@@ -1,4 +1,7 @@
-;; One graded topic-level event, matching engine/fire/core.py. No separate Evidence entity.
+;; One topic's graded performance from a learner task, supplied to the FIRe engine.
+;; A task covering several topics can produce several performance records.
+;; The existing fire-event attributes match Event in engine/fire/core.py.
+;; Linking these results to their originating task is still to be modeled.
 ;; Request :db/ensure on writes; embedded EDN, ranges and reference targets require application validation.
 [
  {:db/ident :fire-event/id
@@ -72,7 +75,7 @@
  {:db/ident :fire-event/observations-edn
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional ordered question observations with occurrence identity, question/KP refs, outcome, exposure, hints/reveal and timing. This supports the task-to-event adapter; include only observed data."}
+  :db/doc "Optional ordered question observations with occurrence identity, question/KP refs, outcome, exposure, solution reveal, and timing. This supports the task-to-event adapter; include only observed data."}
 
  {:db/ident :fire-event/calibration-eligible
   :db/valueType :db.type/boolean

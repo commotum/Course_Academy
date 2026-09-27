@@ -1,0 +1,22 @@
+;; One value supplied for an answer field in a task item.
+;; Owned through task-item/responses.
+[
+ {:db/ident :learner-response/field
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Answer field being filled or selected."}
+
+ {:db/ident :learner-response/value
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Entered text or LaTeX for a blank; omit when an answer choice was selected."}
+
+ {:db/ident :learner-response/selected-answer
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Selected answer choice from the field; omit when a value was entered."}
+
+ {:db/ident :learner-response/validate
+  :db.entity/attrs [:learner-response/field]
+  :db/doc "Requires the answered field. The application checks that exactly one of value or selected-answer is present and that the field belongs to the presented question."}
+]
