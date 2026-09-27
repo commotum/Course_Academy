@@ -204,6 +204,6 @@ The EDB implementation is the authority for storage behavior:
 - [EDN transactions and in-memory execution](/home/jake/Developer/EDB/docs/01_tutorials/00_edn_workflow.md).
 - [Transaction assessment and entity-spec enforcement](/home/jake/Developer/EDB/src/transaction/assess/mod.rs).
 
-The pedagogical and engine distinctions come from the [engine analysis](../mathacademy_engine_analysis.md), [architecture analysis](../mathacademy_schema_architecture.md), the study [question authoring schema](/home/jake/Developer/study/util/skills/quiz-block-factory/references/quiz-block-schema.md), and the [lesson planning model](/home/jake/Developer/study/util/skills/core-move-lesson/schemas/lesson-plan.schema.json).
+The pedagogical and engine distinctions come from the [engine analysis](../reference/mathacademy_engine_analysis.md), [architecture analysis](../reference/mathacademy_schema_architecture.md), the study [question authoring schema](/home/jake/Developer/study/util/skills/quiz-block-factory/references/quiz-block-schema.md), and the [lesson planning model](/home/jake/Developer/study/util/skills/core-move-lesson/schemas/lesson-plan.schema.json).
 
 This is our proposed implementable schema, not a claim that these are Math Academy's private database fields. Publicly described behavior and observed content constrain the model; exact proprietary functions remain engine work. Source selection and migration planning can be handled after this model is reviewed.

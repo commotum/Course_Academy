@@ -1,0 +1,60 @@
+;; Aggregate assessment accuracy used to calibrate local topic difficulty.
+;; Required-attribute specs are opt-in: request :db/ensure on each write.
+;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
+[
+ {:db/ident :fire-calibration/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Identity of an exact calibration set. Do not mutate after use in an application receipt."}
+
+ {:db/ident :fire-calibration/entries
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned topic calibration entries. Absence invokes the policy's declared prior, not an invented observed value."}
+
+ {:db/ident :fire-difficulty/topic
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/index true
+  :db/doc "Existing topic whose assessment accuracy is estimated."}
+
+ {:db/ident :fire-difficulty/prior-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Explicit prior in [0,1] when no qualifying assessment answers exist. This is a local estimate, not recovered MA difficulty."}
+
+ {:db/ident :fire-difficulty/assessment-correct
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative qualifying correct assessment answers. Must not exceed assessment-total; implicit graph credit is never counted here."}
+
+ {:db/ident :fire-difficulty/assessment-total
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative count of qualifying direct assessment answers from the defined cohort. Difficulty accuracy is correct/total when total>0, otherwise prior-accuracy."}
+
+ {:db/ident :fire-difficulty/method
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc "Explicit basis such as :fire.calibration/prior, /expert-estimate, or /assessment-cohort."}
+
+ {:db/ident :fire-difficulty/cohort
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Eligibility definition for qualifying assessment evidence; makes any 'serious student' selection operational rather than implicit."}
+
+ {:db/ident :fire-difficulty/as-of
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Latest evidence cutoff represented in this estimate, when applicable."}
+
+ {:db/ident :fire-calibration/validate
+  :db.entity/attrs [:fire-calibration/id]
+  :db/doc "An empty set is valid only with an explicit policy prior."}
+
+ {:db/ident :fire-difficulty/validate
+  :db.entity/attrs [:fire-difficulty/topic :fire-difficulty/prior-accuracy :fire-difficulty/assessment-correct :fire-difficulty/assessment-total :fire-difficulty/method]
+  :db/doc "One entry per topic per calibration set; enforce that uniqueness and the numeric range in application validation. The existing topic/difficulty field is left untouched because its scale is not established."}
+]

@@ -165,7 +165,7 @@ The disclosed process includes:
 4. Stop with evidence covering the needed graph region and identify remaining knowledge gaps. Some positive but weak evidence produces conditional completion.
 5. Initialize repetition progress from placement evidence: the original diagnostic chapter states that positive balances become credited repetition counts.
 
-The balance-to-repetitions rule is particularly useful and is clearer in the [original chapter, line 66](</home/jake/Developer/MA/DATA/The Math Academy Way/V-TECHNICAL-DEEP-DIVES/30-Technical-Deep-Dive-on-Diagnostic-Exams/30-Technical-Deep-Dive-on-Diagnostic-Exams.md:66>) than in the excerpts. Exact distance weights, inference aggregation, timing penalties, and stopping thresholds remain unknown.
+The balance-to-repetitions rule is particularly useful and is clearer in the [original chapter, line 66](<The Math Academy Way/V-TECHNICAL-DEEP-DIVES/30-Technical-Deep-Dive-on-Diagnostic-Exams/30-Technical-Deep-Dive-on-Diagnostic-Exams.md:66>) than in the excerpts. Exact distance weights, inference aggregation, timing penalties, and stopping thresholds remain unknown.
 
 The text describes compressed diagnostic coverage requiring each covered topic to have both an ancestor and a progeny in the compressed diagnostic graph, each within three prerequisite edges of that topic. Treat that as a disclosed policy in that source version, not an eternal graph constant. The diagnostic frontier is described as conservative, while the frontier used to layer new learning can be more aggressive. Passing a lesson and demonstrating comprehensive placement-level fluency are not identical thresholds. [Diagnostic chapter][DIAG].
 
@@ -195,7 +195,7 @@ memory → max(0, memory + rawDelta) × (0.5)^(days / interval)
 | `failed` | One for a failed repetition, zero for a passed repetition |
 | `decay` | Backward-speed multiplier, starting at one and growing with severe overdue forgetting |
 
-Source: [FIRe chapter, high-level structure](</home/jake/Developer/MA/DATA/The Math Academy Way/V-TECHNICAL-DEEP-DIVES/29-Technical-Deep-Dive-on-Spaced-Repetition/29-Technical-Deep-Dive-on-Spaced-Repetition.md:133>).
+Source: [FIRe chapter, high-level structure](<The Math Academy Way/V-TECHNICAL-DEEP-DIVES/29-Technical-Deep-Dive-on-Spaced-Repetition/29-Technical-Deep-Dive-on-Spaced-Repetition.md:133>).
 
 These equations are explanatory, not executable specifications. They do not specify the interval function, due threshold, initial memory, update ordering, or how to refresh memory between events. Reapplying elapsed time to an already-decayed value without an explicit reference timestamp, for example, could incorrectly count forgetting twice. The displayed memory variable is not shown to be a calibrated probability with a mandatory upper bound of one.
 
@@ -260,10 +260,19 @@ There are several informative completion sequences:
 | --- | --- | --- |
 | Harmonic Series and p-Series, topic 860 | July 29: lesson `12034755`, 9/7 XP → August 5: review `12225753`, 0/4 → same day: lesson `12228527`, 9/7 → August 6: review `12253898`, 6/4 | Consistent with remedial relearning after weak retrieval, followed by renewed practice; the initiating decision is not logged |
 | August 5 quiz and retake | 12:01 Quiz 1 `12225370`, 0/11 → lesson → five reviews → lesson → 13:58 Quiz 1 (Retake) `12228526`, 13/13 | Practice occurred between quiz and retake; completion history does not prove every intervening task was mandatory |
-| September 24 quiz and retake | 11:25 Quiz 4 `13553418`, 10/15 → reviews `13675888`, `13675890`, `13675889` → 17:05 retake `13682227`, 18/15 | Repeats the practice-before-retake pattern; the latest retake lacks question-level features in the fitted sample |
+| September 24 quiz and retake | 11:25 Quiz 4 `13553418`, 10/15 → reviews `13675888`, `13675890`, `13675889` → 17:05 retake `13682227`, 18/15 | Live follow-up confirms the three quiz-error topics exactly match the three subsequent review topics; retake has eight correct answers across eight topics |
 | Riemann sums, topic 1042 | August 21: lesson `12601433`, −1/14 → August 22: lesson `12722019`, 18/14 → September 4: review `13124977`, 9/7 | A completed lesson can have poor performance and later reappear; completion cannot be equated with mastery |
 
 Source: [chronological activity records][CSV]. In the September sequence, task `13675890` completed before `13675889`: task IDs are identifiers, not reliable completion-order keys. Retakes have distinct task IDs; the pair relationship is inferred from labels and chronology, not an exposed `retake_of` field.
+
+The later [authorized live inspection](fire-live-account-analysis.md) recovered
+the question identities: original quiz errors were topics 88, 161 and 1610.
+The retake covers eight of the original ten topic/example pairs, including two
+of the three failed topics, with different question IDs. It omits topic 436
+(originally correct) and topic 161 (originally incorrect). This strengthens the
+targeted-remediation interpretation without establishing mandatory review status,
+the retake selection rule, or FIRe credit. The three intervening reviews should
+not be treated as ordinary due-time observations.
 
 The 53 reviews cover 40 topics. Thirty-six have an earlier observed lesson on that topic, while 17 do not. That does not mean the system reviewed unknown material: diagnostic credit, earlier history, or other evidence may account for eligibility. Among 42 reviews with an earlier same-topic lesson/review, observed completion gaps range from 24 minutes to 463.05 days, with a median of 12.67 days. **Those are completion gaps, not recovered review intervals.** They omit implicit practice, hidden due dates, and the effects of inactivity or incomplete history.
 
@@ -291,7 +300,7 @@ Let `B` be the displayed baseline, `p = correct / observed_questions`, and `R(x)
 | Review | Candidate upper award `B + 2` | 38/53 current review awards equal it; none exceed it; observed base values are too narrow to identify a universal bonus rule |
 | Diagnostic / Supplemental Diagnostic | Unresolved | No displayed denominator in inspected results; accuracy and elapsed time alone do not identify the awards |
 
-For current assessments, 4/13 equal the candidate perfect-score ceiling `R(1.2B)`; for multisteps, 5/10 equal `R(1.25B)`. Those aggregate matches do not establish perfect correctness for uninspected tasks. The newest retake's 18/15 award is a ceiling match, not a thirteenth question-level validation of the assessment formula.
+For assessments in the 217-row CSV, 4/13 equal the candidate perfect-score ceiling `R(1.2B)`; for multisteps, 5/10 equal `R(1.25B)`. Those aggregate matches do not establish perfect correctness for uninspected tasks. The subsequent live inspection does establish eight correct answers for retake `13682227`, independently confirming its 18/15 ceiling match at question level. That single additional observation supports the XP hypothesis; it does not uniquely determine the formula or establish FIRe credit.
 
 The exact rounding matters: the candidate uses `floor(x + 1/2)`, not Python's default ties-to-even `round`. Even exact matches leave competing formulas possible. The assessment zero-crossing is only constrained to a range around 35% by this sample, and the multistep slope is not uniquely determined by rounded observations. The low-accuracy regions are particularly weakly identified. [Model limits][X].
 
@@ -512,6 +521,11 @@ Completed-history replay can detect contradictions and reproduce observed XP fit
 
 The current reduced XP-feature JSON omits question IDs, so it cannot by itself measure item reuse against the catalog. Future observations should preserve question identity and occurrence identity together. Logging our own scheduler decisions will be more informative than trying to deduce them later from completion order.
 
+The [live follow-up](fire-live-account-analysis.md) now provides direct repeated
+delivery evidence: questions 79870 and 112044 occur in both diagnostics 11604423
+and 13469233, incorrect in July and correct in September. This proves repetition
+across these diagnostics, not a general policy for ordinary reviews.
+
 For the reference engine, meaningful checks include prerequisite eligibility, correct propagation direction, partial/early credit behavior under the chosen policy, disabling incoming implicit credit at the specified speed condition, targeted rather than indiscriminate remediation, and deterministic replay without duplicate evidence. Generated question checks should establish the mathematics and coverage needed for their intended activity. Matching observed XP alone is insufficient validation of the learning engine.
 
 The key product conclusion is that problem-derived content and graph-based scheduling are compatible. The graph supplies readiness and retention relationships; it need not dictate how every lesson is authored or prevent a student from choosing the next destination. Course Academy's opportunity is to connect the strong instruction already coming from real coursework to a persistent, inspectable learning loop with dependable question supply.
@@ -536,18 +550,18 @@ Prior XP-analysis progress snapshot, 214 tasks:
 69c8b4a0beebfa3df385ce29f554200af0ec3cb36463c3b997c3cfdd6f4cc7b8
 ```
 
-[P]: /home/jake/Developer/MA/WORKING-PROGRESS/Proprietary.md
-[N]: /home/jake/Developer/MA/WORKING-PROGRESS/Proprietary-Notes.md
-[E]: /home/jake/Developer/MA/WORKING-PROGRESS/explanation-format.md
-[ANS]: /home/jake/Developer/MA/WORKING-PROGRESS/answers.md
-[LOOP]: /home/jake/Developer/MA/Z/3-First-Attempt/Active-Learning-Loop.md
-[X]: /home/jake/Developer/study/vault/252/mathacademy-xp-analysis.md
-[A]: /home/jake/Developer/study/vault/252/mathacademy-activity-schema.md
-[CSV]: /home/jake/Developer/study/vault/252/progress.csv
-[PN]: /home/jake/Developer/study/vault/252/progress-notes.md
-[OBS]: /home/jake/Developer/study/vault/252/mathacademy-xp-observations.json
-[SCRIPT]: /home/jake/Developer/study/vault/252/analyze-mathacademy-xp.py
-[AS]: /home/jake/Developer/study/vault/252/mathacademy-activity.schema.json
-[FIRE]: </home/jake/Developer/MA/DATA/The Math Academy Way/V-TECHNICAL-DEEP-DIVES/29-Technical-Deep-Dive-on-Spaced-Repetition/29-Technical-Deep-Dive-on-Spaced-Repetition.md>
-[DIAG]: </home/jake/Developer/MA/DATA/The Math Academy Way/V-TECHNICAL-DEEP-DIVES/30-Technical-Deep-Dive-on-Diagnostic-Exams/30-Technical-Deep-Dive-on-Diagnostic-Exams.md>
-[FAQ]: </home/jake/Developer/MA/DATA/The Math Academy Way/VI-FREQUENTLY-ASKED-QUESTIONS/FAQ-The-Practice-Experience/FAQ-The-Practice-Experience.md>
+[P]: Proprietary.md
+[N]: Proprietary-Notes.md
+[E]: explanation-format.md
+[ANS]: answers.md
+[LOOP]: Active-Learning-Loop.md
+[X]: mathacademy-xp-analysis.md
+[A]: mathacademy-activity-schema.md
+[CSV]: progress.csv
+[PN]: progress-notes.md
+[OBS]: mathacademy-xp-observations.json
+[SCRIPT]: analyze-mathacademy-xp.py
+[AS]: mathacademy-activity.schema.json
+[FIRE]: <The Math Academy Way/V-TECHNICAL-DEEP-DIVES/29-Technical-Deep-Dive-on-Spaced-Repetition/29-Technical-Deep-Dive-on-Spaced-Repetition.md>
+[DIAG]: <The Math Academy Way/V-TECHNICAL-DEEP-DIVES/30-Technical-Deep-Dive-on-Diagnostic-Exams/30-Technical-Deep-Dive-on-Diagnostic-Exams.md>
+[FAQ]: <The Math Academy Way/VI-FREQUENTLY-ASKED-QUESTIONS/FAQ-The-Practice-Experience/FAQ-The-Practice-Experience.md>

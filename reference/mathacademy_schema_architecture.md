@@ -78,7 +78,12 @@ A unified ordered lesson-step table can reference a tutorial, example, or questi
 
 **Knowledge point, example, and step need careful mapping**
 
-There is now a verified cross-artifact join. Completed diagnostic questions 53708 and 53707 link to `/topics/491#2993`. The reference lesson identifies the corresponding example as content 2993 at step 9670. In this case, the KP fragment identifies **example content**, not the lesson-step ID. [Activity observation](/home/jake/Developer/study/vault/252/mathacademy-activity-schema.md:282); [matching source](/home/jake/Developer/MA/DATA/Lessons/491/Source/491.html:1571).
+There is now a verified cross-artifact join. Completed diagnostic questions 53708 and 53707 link to `/topics/491#2993`. The reference lesson identifies the corresponding example as content 2993 at step 9670. In this case, the KP fragment identifies **example content**, not the lesson-step ID. [Activity observation](mathacademy-activity-schema.md:282); [matching source](/home/jake/Developer/MA/DATA/Lessons/491/Source/491.html:1571).
+
+The later [live inspection](fire-live-account-analysis.md) extends this check to
+all 162 captured question occurrences: each topic/fragment pair uniquely resolves
+to example content in the local lesson JSON. For example, topic 161's fragment
+5085 resolves to example content 5085 at step 18562. Preserve both source IDs.
 
 The public reference-page client also navigates from a question's associated example to the matching lesson step, and consumes a lesson object containing a task identifier and ordered steps. This supports keeping example/KP identity separate from placement. Its reference context can submit answers; that alone does not establish normal lesson XP or mastery credit. [Public reference client](https://mathacademy.com/js/student-reference.js).
 
@@ -116,7 +121,14 @@ The same question ID and letter can refer to different answer content across pre
 
 The question CSV's association with the preceding example step is calculated from document order. Its answer-cardinality field counts response positions, not correct multiple-choice options. Its 19,646 rows are lesson samples, not MA's full assessment bank. [Question export implementation](</home/jake/Developer/MA/PIPELINE/Math-Academy/3-Capture/2-Lesson-Data/3-Questions/questions.py:131>).
 
-The existing completed-activity inspection supports a task ID plus an ordered question occurrence. It does not consistently expose submitted values, original choices, unique submission IDs, or per-part results. The reduced 34-task XP dataset does not retain question IDs at all. There are no full completed-page captures in the searched artifact trees to substitute for those missing fields. [Activity schema][activity]; [reduced observations](</home/jake/Developer/study/vault/252/mathacademy-xp-observations.json:11>).
+The existing completed-activity inspection supports a task ID plus an ordered question occurrence. It does not consistently expose submitted values, original choices, unique submission IDs, or per-part results. The reduced 34-task XP dataset does not retain question IDs at all. There are no full completed-page captures in the searched artifact trees to substitute for those missing fields. [Activity schema][activity]; [reduced observations](<mathacademy-xp-observations.json:11>).
+
+The subsequent [live result capture](fire-live-observations-2026-09-26.json)
+retains selected DOM fields for nine tasks and 162 occurrences. It also shows
+question IDs 79870 and 112044 delivered in both July and September diagnostics.
+Occurrence identity must therefore remain distinct from reusable question
+identity even within a single learner's history. These captures do not retain
+submitted values or complete presentations.
 
 **Proposed tables: curriculum and reusable content**
 
@@ -296,5 +308,5 @@ b3962af930f132c57b9882558a10ae2b0d04c04136fc351481f363cb914e90d1
 [steps]: /home/jake/Developer/MA/DATA/Lesson-Data/Steps.csv
 [questions]: /home/jake/Developer/MA/DATA/Lesson-Data/Questions.csv
 [keyprereqs]: /home/jake/Developer/MA/DATA/Lesson-Data/Key-Prerequisites.csv
-[activity]: /home/jake/Developer/study/vault/252/mathacademy-activity-schema.md
-[fire]: </home/jake/Developer/MA/DATA/The Math Academy Way/V-TECHNICAL-DEEP-DIVES/29-Technical-Deep-Dive-on-Spaced-Repetition/29-Technical-Deep-Dive-on-Spaced-Repetition.md>
+[activity]: mathacademy-activity-schema.md
+[fire]: <The Math Academy Way/V-TECHNICAL-DEEP-DIVES/29-Technical-Deep-Dive-on-Spaced-Repetition/29-Technical-Deep-Dive-on-Spaced-Repetition.md>

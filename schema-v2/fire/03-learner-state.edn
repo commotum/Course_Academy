@@ -1,0 +1,132 @@
+;; Global learner-topic retention state. No course membership appears in its key.
+;; Required-attribute specs are opt-in: request :db/ensure on each write.
+;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
+[
+ {:db/ident :fire-learner/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable learner identity used by the FIRe engine; not a login credential."}
+
+ {:db/ident :fire-learner/latest-event-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Latest accepted event time, even if every proposed update was skipped. Enforces chronological ingestion; inserting older evidence requires a controlled rebuild."}
+
+ {:db/ident :fire-learner/assessment-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global Assessment-only exponentially weighted accuracy in [0,1]. Equal averaging with practice accuracy is described publicly; the precise update rate and prior are local parameters. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :fire-learner/practice-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global Non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :fire-learner/assessment-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global Nonnegative effective assessment evidence mass under the local update, distinct from assessment accuracy. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :fire-learner/practice-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global Nonnegative effective non-assessment evidence mass under the local update. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :fire-state/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable state identity; update it rather than creating another profile for the same learner-topic pair."}
+
+ {:db/ident :fire-state/learner
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/index true
+  :db/doc "Learner whose profile this is."}
+
+ {:db/ident :fire-state/topic
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/index true
+  :db/doc "Existing topic entity, shared across course contexts."}
+
+ {:db/ident :fire-state/repetitions
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative fractional repetition position. Operational state is clamped at zero; it is not an integer count of reviews."}
+
+ {:db/ident :fire-state/memory
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative model memory value anchored at memory-at. It is not a probability and need not be at most one."}
+
+ {:db/ident :fire-state/memory-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Time at which the stored memory value applies. Compute elapsed days from this anchor once."}
+
+ {:db/ident :fire-state/interval-days
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Positive finite interval used to decay this anchored memory until the next update. The local interval function determines its value."}
+
+ {:db/ident :fire-state/assessment-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Assessment-only exponentially weighted accuracy in [0,1]. Equal averaging with practice accuracy is described publicly; the precise update rate and prior are local parameters."}
+
+ {:db/ident :fire-state/practice-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence."}
+
+ {:db/ident :fire-state/assessment-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative effective assessment evidence mass under the local update, distinct from assessment accuracy."}
+
+ {:db/ident :fire-state/practice-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative effective non-assessment evidence mass under the local update."}
+
+ {:db/ident :fire-state/learned
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Whether this topic is admitted to retention tracking after a mastery-learning or explicit initialization decision. True alone does not establish current recall."}
+
+ {:db/ident :fire-state/last-direct-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Last direct qualifying practice time, when known; implicit credit does not replace it."}
+
+ {:db/ident :fire-state/policy
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Policy under which this state was computed."}
+
+ {:db/ident :fire-state/last-application
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Latest application receipt that changed this state; omitted for explicit initialization."}
+
+ {:db/ident :fire-state/key
+  :db/valueType :db.type/tuple
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/value
+  :db/tupleAttrs [:fire-state/learner :fire-state/topic]
+  :db/doc "Derived uniqueness guard for the global learner-topic pair. Never assert it directly; ensure both constituent refs on every state write."}
+
+ {:db/ident :fire-learner/validate
+  :db.entity/attrs [:fire-learner/id]
+  :db/doc "Minimal engine learner identity; before recording global ability, also ensure fire-learner/ability-validate."}
+
+ {:db/ident :fire-learner/ability-validate
+  :db.entity/attrs [:fire-learner/id :fire-learner/assessment-accuracy :fire-learner/practice-accuracy :fire-learner/assessment-mass :fire-learner/practice-mass]
+  :db/doc "Complete global accuracy estimate. Its effective accuracy is the mean of the two accuracy fields; do not persist another independently mutable copy."}
+
+ {:db/ident :fire-state/validate
+  :db.entity/attrs [:fire-state/id :fire-state/learner :fire-state/topic :fire-state/repetitions :fire-state/memory :fire-state/memory-at :fire-state/interval-days :fire-state/assessment-accuracy :fire-state/practice-accuracy :fire-state/assessment-mass :fire-state/practice-mass :fire-state/learned :fire-state/policy]
+  :db/doc "Requires a complete operational state. Ability can exist while learned=false, including after failed initial lessons. Effective accuracy is the mean of the two accuracy strata. Initialization values are explicit local choices, not inferred from XP."}
+]

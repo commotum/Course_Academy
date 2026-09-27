@@ -30,6 +30,14 @@ All 2,964 current per-topic JSON files parsed successfully. The question objects
 
 Some identity relationships are also available but need careful import. A step is an ordered placement of typed tutorial/example content. Example content can correspond to a KP; a verified completed-task KP link maps to example 2993 at step 9670. Questions can be reused across placements, with different choice orders. The [schema report](mathacademy_schema_architecture.md) documents these distinctions.
 
+The later [authorized live inspection](fire-live-account-analysis.md) adds 162
+question occurrences with 160 distinct question IDs, E/M/H labels, outcomes,
+timing strings and exact topic/example links. All topic/example pairs resolve
+to saved lesson content; six of the question IDs occur in the reference-question
+CSV. Two IDs repeat across diagnostics. The new source also records one current
+360-topic graph-color snapshot and a five-lesson offered menu. These observations
+are outside `MA/DATA` and do not supply numeric FIRe state or complete banks.
+
 **Missing or partial data**
 
 | Needed data | Current status | Consequence |
@@ -51,7 +59,7 @@ Some identity relationships are also available but need careful import. A step i
 | MA question generators/templates | **Not recovered** | Reused questions do not establish a parameterized generation system |
 | Learner knowledge profile | **Not captured inside MA** | No exported diagnostic balances, conditional-credit state, or per-topic proficiency estimates |
 | Learner retention state | **Not captured** | No actual repetition progress, memory estimates, learning-speed values, or review due times |
-| Recommended menus and decision history | **Not captured** | Completed tasks cannot reveal all offered alternatives or the reason for selection |
+| Recommended menus and decision history | **One current five-lesson menu captured; historical decisions missing** | Availability at capture time does not reveal first offer times, rejected candidates, or selection reasons |
 | Full item/content/graph version history | **Not captured** | Current snapshots and generation logs are not the platform's historical database |
 
 **Question difficulty: what is missing, and what exists elsewhere**
@@ -135,10 +143,10 @@ This audit read structured data, relevant source HTML, code, and documentation. 
 [questions]: /home/jake/Developer/MA/DATA/Lesson-Data/Questions.csv
 [prereqs]: /home/jake/Developer/MA/DATA/Prerequisites.csv
 [keyprereqs]: /home/jake/Developer/MA/DATA/Lesson-Data/Key-Prerequisites.csv
-[proprietary]: /home/jake/Developer/MA/WORKING-PROGRESS/Proprietary.md
-[notes]: /home/jake/Developer/MA/WORKING-PROGRESS/Proprietary-Notes.md
-[answers]: /home/jake/Developer/MA/WORKING-PROGRESS/answers.md
-[progress]: /home/jake/Developer/study/vault/252/progress.csv
-[observations]: /home/jake/Developer/study/vault/252/mathacademy-xp-observations.json
-[activity]: /home/jake/Developer/study/vault/252/mathacademy-activity-schema.md
-[fire]: </home/jake/Developer/MA/DATA/The Math Academy Way/V-TECHNICAL-DEEP-DIVES/29-Technical-Deep-Dive-on-Spaced-Repetition/29-Technical-Deep-Dive-on-Spaced-Repetition.md>
+[proprietary]: Proprietary.md
+[notes]: Proprietary-Notes.md
+[answers]: answers.md
+[progress]: progress.csv
+[observations]: mathacademy-xp-observations.json
+[activity]: mathacademy-activity-schema.md
+[fire]: <The Math Academy Way/V-TECHNICAL-DEEP-DIVES/29-Technical-Deep-Dive-on-Spaced-Repetition/29-Technical-Deep-Dive-on-Spaced-Repetition.md>

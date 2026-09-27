@@ -71,7 +71,7 @@ A topic corresponds to a complete lesson; a step corresponds to a section within
 
 Topic-set preparation is a separate upstream dependency. A producer helper exists, but the stage runner does not invoke it. Its default output directory also differs from the topic-identification runner's default input directory.
 
-Sources: [top-level runner](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/electrical-and-computer-engineering.py:104), [course-data runner](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/1-Build-Course-Data/build-course-data.py:80), and [lesson-build documentation](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/2-Build-Lessons/build-lessons.md).
+Sources: [top-level runner](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/electrical-and-computer-engineering.py:104), [course-data runner](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/1-Build-Course-Data/build-course-data.py:80), and [lesson-build documentation](ece-build-lessons.md).
 
 ## Skill-to-stage mapping
 
@@ -139,7 +139,7 @@ ECE's artifact validation is stronger than a file-presence check, but neither sy
 
 The ECE cache policy is not uniform. Tutorial and question stages contain explicit stale-metadata handling, while the outline stage reuses structurally valid artifacts on metadata mismatch even without the stale-reuse flag. The documentation's broad claim of strict cache matching therefore needs qualification.
 
-Sources: [lesson-build contract](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/2-Build-Lessons/build-lessons.md), [outline reuse](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/2-Build-Lessons/1-Step-Outline/step-outline.py:1717), and [question reuse](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/2-Build-Lessons/3-Question-Generation/question-generation.py:2740).
+Sources: [lesson-build contract](ece-build-lessons.md), [outline reuse](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/2-Build-Lessons/1-Step-Outline/step-outline.py:1717), and [question reuse](/home/jake/Developer/MA/PIPELINE/Electrical-and-Computer-Engineering/2-Build-Lessons/3-Question-Generation/question-generation.py:2740).
 
 ## Assessment and feedback contracts
 

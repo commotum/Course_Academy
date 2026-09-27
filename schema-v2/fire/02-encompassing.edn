@@ -1,0 +1,75 @@
+;; Directed encompassing graph. Prerequisite refs remain in the content schema.
+;; Required-attribute specs are opt-in: request :db/ensure on each write.
+;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
+[
+ {:db/ident :fire-graph/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Identity of the exact graph used by an execution. Do not change edges or weights after its use in an application receipt."}
+
+ {:db/ident :fire-graph/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Name describing graph scope; may explicitly identify a demonstration graph."}
+
+ {:db/ident :fire-graph/edges
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned encompassing edges. An empty/absent collection is a valid independent-topic baseline, not proof that no encompassings exist."}
+
+ {:db/ident :fire-graph/topics
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Complete topic set for this graph configuration, including isolated topics. Retain it to reproduce the engine graph fingerprint and independent-topic baseline."}
+
+ {:db/ident :fire-edge/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable edge identity within this graph configuration."}
+
+ {:db/ident :fire-edge/advanced
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Existing topic entity whose practice can cover the component. Success flows advanced to component; failure may flow in reverse."}
+
+ {:db/ident :fire-edge/component
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Existing topic entity whose skill is practiced inside the advanced topic. A prerequisite path is not required."}
+
+ {:db/ident :fire-edge/weight
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Explicit finite fraction in [0,1]. Zero is a known zero; an absent edge is unknown in source data. The executable local policy determines how explicit pairs override inferred paths."}
+
+ {:db/ident :fire-edge/basis
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc "How the value was established, for example :fire.basis/illustration, /expert-estimate, or /calibrated. None should imply captured MA production weights."}
+
+ {:db/ident :fire-edge/rationale
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Concrete explanation of which component procedure advanced-topic problems exercise, and the sample or reasoning supporting the fraction."}
+
+ {:db/ident :fire-edge/sample-size
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional nonnegative number of inspected advanced-topic problems behind a coverage estimate."}
+
+ {:db/ident :fire-edge/confidence
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional epistemic confidence in [0,1]; distinct from practice fraction and never substituted for edge weight."}
+
+ {:db/ident :fire-graph/validate
+  :db.entity/attrs [:fire-graph/id]
+  :db/doc "A graph may have no edges; this supplies a direct-review baseline."}
+
+ {:db/ident :fire-edge/validate
+  :db.entity/attrs [:fire-edge/id :fire-edge/advanced :fire-edge/component :fire-edge/weight :fire-edge/basis]
+  :db/doc "Requires explicit directed endpoints and an explicit value, including zero. Application validates target types, finite range, distinct endpoints, and unique endpoint pairs within a graph."}
+]

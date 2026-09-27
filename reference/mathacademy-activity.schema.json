@@ -1,0 +1,1130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Proposed Math Academy completed-activity export",
+  "description": "Proposed export of one completed Math Academy activity, based on 17 inspected examples across all six activity types. See the companion data dictionary for observed per-type layouts and field availability.",
+  "$comment": "Based on authenticated rendered-DOM inspection on 2026-09-24. Diagnostic and Supplemental Diagnostic share the observed testAnswers result layout; preserve their distinct activity types. This is an export schema, not the internal platform schema. No schema assertion proves availability of a field for every type. JSON Schema cannot verify DOM completeness, source truth, timezone inference, question-index uniqueness, or group-reference integrity; check those separately.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Version of this proposed export format, not a platform schema version."
+    },
+    "task_id": {
+      "type": "string",
+      "description": "Observed task identifier; preserve as a string.",
+      "minLength": 1
+    },
+    "url": {
+      "type": "string",
+      "description": "Observed completed-task source URL.",
+      "format": "uri"
+    },
+    "activity_type": {
+      "type": "string",
+      "enum": [
+        "Lesson",
+        "Review",
+        "Assessment",
+        "Multistep",
+        "Diagnostic",
+        "Supplemental Diagnostic"
+      ],
+      "description": "Literal activity-type distinction requested for this export. A shared result layout does not merge types."
+    },
+    "task_name": {
+      "type": "string",
+      "description": "Displayed task title; not necessarily a catalog topic name."
+    },
+    "status_raw": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Displayed status/completion label."
+    },
+    "status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Normalized status if supported by observation. Completed is observed; other statuses are not restricted by this schema."
+    },
+    "completed_date_raw": {
+      "type": ["string", "null"],
+      "description": "Date heading from the completed feed or another explicit source. Usually unavailable in the detail header; cite the source in completed_at_provenance."
+    },
+    "completed_at_local": {
+      "type": ["string", "null"],
+      "description": "Normalized local date and time, without claiming a verified timezone/UTC instant. Preserve provenance, especially when joined from the CSV."
+    },
+    "completed_time_raw": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Raw displayed completion time, which may omit date, year, and timezone."
+    },
+    "completed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Normalized completion instant only with supported date/year/zone; otherwise null or absent. Retain raw display.",
+      "format": "date-time"
+    },
+    "completed_at_provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "xp_raw": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Exact XP display, retaining whether a denominator and unit were shown."
+    },
+    "xp_earned": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Signed earned XP; may be negative, zero, or greater than xp_possible. Not a correctness count."
+    },
+    "xp_possible": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Displayed XP denominator only; null if no denominator is shown. Do not infer from question count."
+    },
+    "xp_unit": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Displayed unit, usually XP."
+    },
+    "course_label_raw": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Task-specific optional course label. Do not substitute global current-course sidebar state."
+    },
+    "course_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Explicitly observed or documented derived course identifier.",
+      "minLength": 1
+    },
+    "course_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Catalog/course code if joined, with provenance; not assumed to be exposed by the task result."
+    },
+    "course_provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "topic_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Main task topic ID only if supported by a main task-topic link or a documented join.",
+      "minLength": 1
+    },
+    "topic_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Observed main task-topic link, when available.",
+      "format": "uri"
+    },
+    "topic_provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "prerequisites": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/$defs/topicLink"
+      },
+      "description": "Ordered task prerequisite links. Empty means verified absence; null means unavailable or not inspected."
+    },
+    "context": {
+      "$ref": "#/$defs/richContent",
+      "description": "Shared scenario/setup only if present; null when unavailable. Do not reconstruct unshown context without provenance."
+    },
+    "context_provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "result_layout": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Observed layout/container name. Suggested descriptions: lesson_groups, review_flat, test_flat, multistep_flat; extensible for new evidence."
+    },
+    "question_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Derived count of question occurrences, independent of XP and correctness.",
+      "minimum": 0
+    },
+    "knowledge_point_group_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Derived lesson-group count; null for no applicable grouping or unknown grouping.",
+      "minimum": 0
+    },
+    "knowledge_point_groups": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/$defs/knowledgePointGroup"
+      },
+      "description": "Optional ordered lesson groups referring to question occurrence indices; null for ungrouped or unknown layout. Do not duplicate question records here."
+    },
+    "question_results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/questionResult"
+      },
+      "description": "All observed question occurrences in source order. Array may be empty only if that is the observed record; capture completeness must be stated."
+    },
+    "derived_result_counts": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Optional derived counts keyed by observed result label. Labels are extensible and separate from XP.",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "source_observation": {
+      "$ref": "#/$defs/sourceObservation"
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/provenance"
+      },
+      "description": "Additional field-level source and normalization notes."
+    },
+    "unavailable_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/missingField"
+      },
+      "description": "Explicitly unavailable or uninspected fields; distinguish absence from empty content."
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "task_id",
+    "url",
+    "activity_type",
+    "task_name",
+    "question_results",
+    "source_observation"
+  ],
+  "$defs": {
+    "sourceObservation": {
+      "type": "object",
+      "description": "Evidence for a capture. Capture timestamp is required; schema validity alone does not establish completeness.",
+      "properties": {
+        "captured_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Exporter capture instant including a timezone offset."
+        },
+        "source_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Page URL captured; may repeat activity URL.",
+          "format": "uri"
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed container selector or scoped locator."
+        },
+        "capture_method": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "For example rendered_dom; describe the actual method used."
+        },
+        "capture_scope": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "What was inspected: header, all loaded question/explanation elements, expanded samples, etc."
+        },
+        "capture_complete": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Whether all content in the stated scope was captured; not a claim that all possible platform fields are known."
+        },
+        "expanded_question_indices": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": "Occurrence indices whose explanation expansion was verified."
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Capture caveats, unloaded content, or sampling limits."
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "captured_at"
+      ]
+    },
+    "provenance": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Field-level observation, inference, join, or normalization evidence. Suggested labels are not platform enums.",
+      "properties": {
+        "field": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Field name or JSON Pointer in this export."
+        },
+        "source_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed source URL if web-based.",
+          "format": "uri"
+        },
+        "source_path": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Local evidence path if using a documented file/catalog join."
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Element/attribute or scoped selector providing the source value."
+        },
+        "raw_value": {
+          "description": "Raw source value before normalization; may be any JSON value."
+        },
+        "basis": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "For example observed, parsed, derived, inferred, or unknown."
+        },
+        "method": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "How a value was parsed, computed, or joined."
+        },
+        "timezone": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Named or numeric timezone used, if any."
+        },
+        "timezone_verified": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Whether timezone came from verified source evidence, rather than an assumption."
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Evidence limits or ambiguity."
+        }
+      },
+      "additionalProperties": true
+    },
+    "missingField": {
+      "type": "object",
+      "description": "A missingness record distinguishes unavailable, not applicable, uninspected, and explicitly empty data.",
+      "properties": {
+        "field": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Field name or JSON Pointer."
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Extensible reason, such as not_shown, not_inspected, not_applicable, or empty_display."
+        },
+        "evidence": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "How absence/unknown state was established."
+        }
+      },
+      "additionalProperties": true
+    },
+    "topicLink": {
+      "type": "object",
+      "description": "An observed topic link, or documented derived topic relation.",
+      "properties": {
+        "topic_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Topic identifier, distinct from task/question/knowledge-point IDs.",
+          "minLength": 1
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Displayed link text, not assumed to equal a canonical topic title."
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Resolved link URL.",
+          "format": "uri"
+        },
+        "href_raw": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Original observed href."
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Scoped source locator."
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "additionalProperties": true
+    },
+    "knowledgePointGroup": {
+      "type": "object",
+      "description": "An ordered lesson KP group. The result title alone may expose no numeric KP ID.",
+      "properties": {
+        "group_index": {
+          "type": "integer",
+          "description": "One-based group order.",
+          "minimum": 1
+        },
+        "title_raw": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Displayed group title, including KP prefix/number if shown."
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Parsed subskill name, retaining raw title separately."
+        },
+        "knowledge_point_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Only when independently observed or verified; do not derive from displayed KP 1 ordinal.",
+          "minLength": 1
+        },
+        "knowledge_point_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed link if present; usually absent in inspected lesson group titles.",
+          "format": "uri"
+        },
+        "topic_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Topic reference if supported by evidence.",
+          "minLength": 1
+        },
+        "question_indices": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": "Ordered references to activity question_results[].occurrence_index, not question IDs."
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed group selector/locator."
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "group_index"
+      ]
+    },
+    "questionResult": {
+      "type": "object",
+      "description": "One displayed question occurrence. Its primary export key is task_id plus occurrence_index; question_id may repeat across tasks or occurrences.",
+      "properties": {
+        "occurrence_index": {
+          "type": "integer",
+          "description": "One-based ordered occurrence within this task; use as task-local primary key.",
+          "minimum": 1
+        },
+        "question_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed question content ID; not assumed globally unique as an attempt identifier.",
+          "minLength": 1
+        },
+        "question_number_raw": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Displayed question number and punctuation."
+        },
+        "question_number": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Parsed displayed question number, if unambiguous.",
+          "minimum": 0
+        },
+        "group_index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Parent lesson KP-group index when applicable.",
+          "minimum": 1
+        },
+        "knowledge_point_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Displayed subskill/KP link or group name; not necessarily topic title."
+        },
+        "knowledge_point_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "ID from an observed topic-link fragment; null if unavailable.",
+          "minLength": 1
+        },
+        "knowledge_point_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed per-question knowledge-point link.",
+          "format": "uri"
+        },
+        "knowledge_point_href_raw": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Original observed href, including topic path and KP fragment."
+        },
+        "topic_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Topic ID from the per-question link, separate from the fragment KP ID.",
+          "minLength": 1
+        },
+        "prompt": {
+          "$ref": "#/$defs/richContent"
+        },
+        "prompt_graphics": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/asset"
+          },
+          "description": "Ordered graphics in prompt or adjacent question graphic frame."
+        },
+        "difficulty_raw": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Displayed difficulty letter or label."
+        },
+        "difficulty": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Normalized difficulty only if observed class/label supports it; leave vocabulary extensible."
+        },
+        "difficulty_class": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed DOM class, e.g. difficultyModerate."
+        },
+        "answered_at_raw": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Exact answerCreated display; may omit year/timezone, and may equal completion time for every assessment question."
+        },
+        "answered_at_local": {
+          "type": ["string", "null"],
+          "description": "Normalized local answer date/time only if the year is supported. Task 4748206 demonstrates that the task completion year cannot be assigned automatically."
+        },
+        "answered_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Normalized timestamp only with adequate evidence; not automatically an individually measured answer instant.",
+          "format": "date-time"
+        },
+        "answered_at_provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "elapsed_raw": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Exact elapsed display from .timeElpased, preserving format."
+        },
+        "elapsed_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Parsed displayed duration when unambiguous.",
+          "minimum": 0
+        },
+        "result_raw": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Literal result label; do not infer from answer-region presence."
+        },
+        "result": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Normalized result; Correct/Incorrect observed, but labels remain extensible."
+        },
+        "explanation": {
+          "$ref": "#/$defs/richContent"
+        },
+        "explanation_present": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Whether paired explanation element was loaded; hidden is still present."
+        },
+        "explanation_expanded": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Observed visibility during capture, independent of content presence."
+        },
+        "student_answer_present": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Whether separate studentAnswer region exists; null when uninspected."
+        },
+        "student_answer_state": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Exporter description such as not_shown, no_answer_label, shown, or unknown. Missing region and literal No answer are distinct."
+        },
+        "student_answer": {
+          "$ref": "#/$defs/richContent",
+          "description": "Separate displayed learner response only, not automatically an inline prompt blank."
+        },
+        "displayed_answer_parts": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/answerPart"
+          },
+          "description": "Ordered prompt textbox/answer positions. Multiple parts still have one question-level result; do not invent per-part grading."
+        },
+        "choices": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/choice"
+          },
+          "description": "Observed choice list only. Null/absent means original choices were not exposed or not inspected, not that no options originally existed."
+        },
+        "source_observation": {
+          "$ref": "#/$defs/sourceObservation"
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Question-scoped selector/locator."
+        },
+        "explanation_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Paired sibling explanation selector/locator."
+        },
+        "provenance": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/provenance"
+          },
+          "description": "Question-level observation/normalization evidence."
+        },
+        "unavailable_fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/missingField"
+          },
+          "description": "Explicit question-level unavailability."
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "occurrence_index"
+      ]
+    },
+    "richContent": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Ordered rich content, preserving mathematical/graphic structure. Null means unavailable; empty observed strings remain empty strings.",
+      "properties": {
+        "html": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Sanitized observed markup; preserve semantic math, content order, and answer positions."
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Searchable normalized text; document math conversion and avoid duplicating visual/assistive MathJax copies."
+        },
+        "math": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mathContent"
+          },
+          "description": "Ordered formula records."
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/asset"
+          },
+          "description": "Observed images/graphics in content order."
+        },
+        "tables": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/table"
+          },
+          "description": "Optional structured table representations; retain surrounding order via position metadata."
+        },
+        "answer_parts": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/answerPart"
+          },
+          "description": "Inline blank/select/answer positions scoped to this question/content."
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Source region or scoped selector."
+        },
+        "normalization": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Transformation applied to captured HTML/text/math."
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "additionalProperties": true
+    },
+    "mathContent": {
+      "type": "object",
+      "description": "One formula. Original TeX is optional and must not be claimed when only rendered MathML was observed.",
+      "properties": {
+        "index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "One-based occurrence in this rich content.",
+          "minimum": 1
+        },
+        "mathml": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed assistive MathML preserving fraction/matrix/script structure."
+        },
+        "tex": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Original or explicitly converted TeX, with provenance identifying which."
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Optional readable linear form."
+        },
+        "display": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Whether formula is displayed/block rather than inline if observed."
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Scoped source locator."
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "additionalProperties": true
+    },
+    "asset": {
+      "type": "object",
+      "description": "Observed graphic/image reference. Opaque filenames do not establish image meaning.",
+      "properties": {
+        "index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "One-based order within the relevant content.",
+          "minimum": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Resolved observed asset URL.",
+          "format": "uri"
+        },
+        "src_raw": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Original src/href, including relative /graphics paths."
+        },
+        "alt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed alternative text; preserve empty string if explicitly empty."
+        },
+        "media_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed or verified MIME type when available."
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Asset's scoped locator."
+        },
+        "context": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Region such as questionGraphicFrame, prompt, graphic, explanation, or student answer."
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "additionalProperties": true
+    },
+    "table": {
+      "type": "object",
+      "description": "Optional table extraction; cell content can contain math and graphics.",
+      "properties": {
+        "index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "One-based table order in rich content.",
+          "minimum": 1
+        },
+        "caption": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed caption if present."
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/richContent"
+            }
+          }
+        },
+        "html": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed table markup, preserving row/column spans."
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Scoped source locator."
+        }
+      },
+      "additionalProperties": true
+    },
+    "answerPart": {
+      "type": "object",
+      "description": "A question-local displayed answer position. A visible textbox value may be a correct answer or may remain empty; it is not necessarily the submitted answer.",
+      "properties": {
+        "index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "One-based answer-position order within the question.",
+          "minimum": 1
+        },
+        "dom_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed local ID such as freeResponseTextbox-1; IDs repeat across questions."
+        },
+        "widget_kind": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed field/widget type; no closed platform vocabulary is asserted."
+        },
+        "displayed_value": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Exact displayed value. Empty string does not prove no student response; null means value unavailable."
+        },
+        "displayed_content": {
+          "$ref": "#/$defs/richContent",
+          "description": "Optional rich value representation."
+        },
+        "value_role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Exporter interpretation only when verified, such as displayed_correct_answer, unfilled_result_field, or unknown."
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Question-scoped locator, never an unscoped repeated DOM ID."
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "additionalProperties": true
+    },
+    "choice": {
+      "type": "object",
+      "description": "Only an actually observed choice option, not a Roman-numbered statement in the prompt.",
+      "properties": {
+        "index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "One-based displayed choice order.",
+          "minimum": 1
+        },
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Observed choice letter/label."
+        },
+        "content": {
+          "$ref": "#/$defs/richContent"
+        },
+        "selected": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Only explicit visible selected-state evidence; null when unavailable."
+        },
+        "source_selector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Scoped source locator."
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

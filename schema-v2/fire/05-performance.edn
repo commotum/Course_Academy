@@ -1,0 +1,92 @@
+;; One graded topic-level event, matching engine/fire/core.py. No separate Evidence entity.
+;; Request :db/ensure on writes; embedded EDN, ranges and reference targets require application validation.
+[
+ {:db/ident :fire-event/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Stable Event.id within one learner. Same learner/id with changed payload is rejected; identical replay is a no-op."}
+
+ {:db/ident :fire-event/learner
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/index true
+  :db/doc "Learner who performed the work."}
+
+ {:db/ident :fire-event/topic
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/index true
+  :db/doc "Directly assessed topic. Propagated components belong in update traces, not additional input events."}
+
+ {:db/ident :fire-event/at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/index true
+  :db/doc "Actual event time. Adapter converts instants to fractional days from a fixed epoch; unresolved historical times must be reconciled first."}
+
+ {:db/ident :fire-event/kind
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Event.kind activity context, for example lesson, review, assessment, or diagnostic."}
+
+ {:db/ident :fire-event/passed
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Actual graded topic outcome, distinct from XP or task completion."}
+
+ {:db/ident :fire-event/assessment
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Explicit calibration channel matching Event.assessment. Selects assessment versus non-assessment accuracy; do not guess the channel from a diagnostic or task name."}
+
+ {:db/ident :fire-event/quality
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Finite positive performance magnitude. May exceed one. Task-to-quality mapping is an explicit local choice, never an inferred XP conversion."}
+
+ {:db/ident :fire-event/learned
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "True only for successful initial learning or explicit diagnostic admission. Learned=true with passed=false is invalid."}
+
+ {:db/ident :fire-event/question-results-edn
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Ordered vector of observed Boolean outcomes encoded as EDN text, matching Event.question_results. Cardinality-many booleans would erase repeats and order. Empty vector invokes the engine's explicit passed-outcome fallback; unknown answers must not be fabricated."}
+
+ {:db/ident :fire-event/source
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Event.source selection or observation context label. Selection origin does not change credit equations."}
+
+ {:db/ident :fire-event/questions
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional existing questions actually assessed; unordered, so cannot align individual outcomes. Does not alter KP pool membership."}
+
+ {:db/ident :fire-event/knowledge-points
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional directly assessed KPs, not all implicitly covered skills."}
+
+ {:db/ident :fire-event/observations-edn
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional ordered question observations with occurrence identity, question/KP refs, outcome, exposure, hints/reveal and timing. This supports the task-to-event adapter; include only observed data."}
+
+ {:db/ident :fire-event/calibration-eligible
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Whether direct assessment evidence meets the declared calibration cohort/context criteria. Absence is unknown; the flag does not calculate difficulty."}
+
+ {:db/ident :fire-event/key
+  :db/valueType :db.type/tuple
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/value
+  :db/tupleAttrs [:fire-event/learner :fire-event/id]
+  :db/doc "Derived uniqueness guard for (learner, event ID). Never assert manually. Does not replace payload-hash verification and atomic state application."}
+
+ {:db/ident :fire-event/validate
+  :db.entity/attrs [:fire-event/id :fire-event/learner :fire-event/topic :fire-event/at :fire-event/kind :fire-event/passed :fire-event/assessment :fire-event/quality :fire-event/learned :fire-event/question-results-edn :fire-event/source]
+  :db/doc "Complete direct Event contract. Application validates ordered Boolean outcomes, positive quality, chronological time, and learning admission. No outcome is reconstructed from XP."}
+]
