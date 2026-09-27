@@ -1,0 +1,138 @@
+;; Complete, named learning-engine configuration. Settings are ordinary typed facts.
+;; Request :db/ensure :policy/validate on every policy write.
+;; Once used by progress or an application, keep this configuration fixed and create
+;; a new policy identity for changed settings. The writer must enforce that lifecycle rule.
+[
+ ;; Supported executable algorithm and retention update orders.
+ {:db/ident :policy.algorithm/fire-v1}
+ {:db/ident :policy.retention-update/decay-before-add}
+ {:db/ident :policy.retention-update/add-before-decay}
+
+ ;; Identity.
+ {:db/ident :policy/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of this exact configuration. Independent of the engine runtime fingerprint."}
+
+ {:db/ident :policy/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Human-readable name for this configuration, also supplied as the prototype Policy name."}
+
+ {:db/ident :policy/algorithm
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Supported executable algorithm, currently policy.algorithm/fire-v1. The application resolves the ident to implementation code; EDB does not execute it."}
+
+ ;; Retention.
+ {:db/ident :policy/base-half-life-days
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Starting retention half-life in days before repetition credit increases it. Must be finite and positive."}
+
+ {:db/ident :policy/interval-growth
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Half-life multiplier per unit of repetition credit. Must be finite and greater than one."}
+
+ {:db/ident :policy/maximum-half-life-days
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Finite upper bound on retention half-life, at least base-half-life-days."}
+
+ {:db/ident :policy/review-threshold
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Retention score at or below which an established topic is due for review. Positive and below initial-retention; not a recall probability."}
+
+ {:db/ident :policy/initial-retention
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Retention score assigned on initial learning and reference level used to discount early practice. Positive and finite; later practice can produce a larger score."}
+
+ {:db/ident :policy/early-practice-discount-power
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Positive exponent controlling how repetition credit increases as retention falls toward the review threshold."}
+
+ ;; Performance.
+ {:db/ident :policy/initial-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Starting accuracy when learner evidence is unavailable; also the default topic difficulty and normalization baseline in fire-v1. Strictly between zero and one."}
+
+ {:db/ident :policy/accuracy-update-rate
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Weight assigned to a new direct answer in the accuracy estimate. Greater than zero and at most one; fractional evidence adjusts this rate in application code."}
+
+ {:db/ident :policy/speed-exponent
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative finite exponent controlling the effect of learner accuracy and topic difficulty on repetition credit."}
+
+ {:db/ident :policy/minimum-speed
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Positive lower bound on the repetition-credit multiplier; at most one."}
+
+ {:db/ident :policy/maximum-speed
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Finite upper bound on the repetition-credit multiplier; at least one."}
+
+ ;; Failure and implicit practice.
+ {:db/ident :policy/overdue-failure-slope
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative finite rate at which the failure penalty increases with overdue half-lives."}
+
+ {:db/ident :policy/maximum-failure-multiplier
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Finite upper bound on the failure penalty multiplier; at least one."}
+
+ {:db/ident :policy/gate-slow-implicit
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Whether positive implicit retention credit is withheld when the topic repetition-credit multiplier is below one."}
+
+ {:db/ident :policy/retention-update-order
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Supported update order: policy.retention-update/decay-before-add or /add-before-decay. The engine applies the selected ordering explicitly."}
+
+ ;; Review selection.
+ {:db/ident :policy/future-horizon-days
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative finite horizon used to compare how much candidate activities postpone upcoming reviews."}
+
+ ;; Explanation and validation.
+ {:db/ident :policy/description
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional explanation of the settings and their intended use."}
+
+ {:db/ident :policy/validate
+  :db.entity/attrs [:policy/id :policy/name :policy/algorithm
+                    :policy/base-half-life-days
+                    :policy/interval-growth
+                    :policy/maximum-half-life-days
+                    :policy/review-threshold
+                    :policy/initial-retention
+                    :policy/early-practice-discount-power
+                    :policy/initial-accuracy
+                    :policy/accuracy-update-rate
+                    :policy/speed-exponent
+                    :policy/minimum-speed
+                    :policy/maximum-speed
+                    :policy/overdue-failure-slope
+                    :policy/maximum-failure-multiplier
+                    :policy/gate-slow-implicit
+                    :policy/retention-update-order
+                    :policy/future-horizon-days]
+  :db.entity/preds course-academy.policy/valid?
+  :db/doc "Requires a complete configuration. The registered predicate checks supported enums, finite numeric ranges, and relationships between settings. Engine formulas and immutability after use remain application responsibilities."}
+]

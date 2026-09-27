@@ -1,6 +1,7 @@
 ;; Topic model for EDB. Install before creating topic entities.
 ;; Request :db/ensure [:topic/identity-validate] for an ID-only placeholder.
 ;; Request :db/ensure [:topic/validate] when its required data is ready.
+;; Difficulty attributes on this same entity are defined in 4-3-topic-difficulty.edn.
 ;; Owned encompassing relationships are defined in 4-2-encompassing.edn.
 [
  {:db/ident :topic/id
@@ -19,11 +20,6 @@
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "Name of the topic, for example Integration by Substitution."}
-
- {:db/ident :topic/difficulty
-  :db/valueType :db.type/double
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional derived topic difficulty. Math Academy describes measuring it from aggregate assessment accuracy among serious students, then using it to calibrate learner-topic review speed. Its private storage field and numeric scale are not established by our captures. Separate from question E/M/H labels; omit when unknown."}
 
  {:db/ident :topic/prerequisites
   :db/valueType :db.type/ref
@@ -47,5 +43,6 @@
 
  {:db/ident :topic/validate
   :db.entity/attrs [:topic/id :topic/title :topic/knowledge-points]
-  :db/doc "A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure requires identity, title, and at least one knowledge-point reference. Referenced knowledge points and encompassing records must be validated separately."}
+  :db.entity/preds course-academy.topic/valid-difficulty?
+  :db/doc "A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure requires identity, title, and at least one knowledge-point reference. The predicate checks difficulty and its evidence when present. Referenced knowledge points and encompassing records must be validated separately."}
 ]

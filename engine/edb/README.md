@@ -9,3 +9,51 @@ Register these callbacks with `register_progress_predicates` in a `TxFunctions` 
 On progress writes, request `:db/ensure :progress/validate`. On membership changes, request `:db/ensure :fire-learner/validate` for affected learners and `:progress/validate` for affected surviving progress records, including detached records. Create the learner link and progress in the same transaction. To remove progress, retract the component entity; to transfer it, retract the old link and assert the new link atomically. A learner deletion cascades to its progress.
 
 Specs are opt-in: bypassing `:db/ensure` bypasses these checks. The learner's minimal validation permits ID-only progress placeholders with a topic; ensure each progress record's complete spec before using it in the engine. Global accuracy still has its separate `fire-learner/ability-validate` spec. Activity history remains an ordinary reference collection pending its own schema.
+
+# Policy and topic difficulty
+
+[configuration.rs](configuration.rs) implements `course-academy.policy/valid?` and `course-academy.topic/valid-difficulty?`. Register these with `register_configuration_predicates` alongside the progress predicates. Like the progress checks, production writer deployment through EDB's native registry remains to be implemented.
+
+Ensure `policy/validate` for complete configurations. The predicate checks supported algorithm/order enums, finite numeric ranges, and cross-setting bounds. Policies use UUID identities. Once referenced by progress or an application, the writer must keep a configuration fixed and use a new identity for changed settings. The predicate sees db-after and checks validity; it does not enforce historical immutability. EDB history remains enabled.
+
+Ensure `topic/difficulty-validate` for every difficulty or evidence write. A starting/expert estimate needs a topic ID, difficulty in [0,1], and its method. Counts can be absent or both zero. Assessment-derived difficulty requires positive total, integer correct/total counts, a nonblank cohort definition, and agreement with correct/total within 1e-12. `topic/validate` invokes the same predicate, allowing completely unknown difficulty but rejecting partially populated estimates. Identity-only topic imports can still use `topic/identity-validate`.
+
+The application selects eligible direct assessment answers and avoids counting an observation twice. Persist both counts and the resulting difficulty atomically; use EDB CAS or a transaction computation for concurrent read-modify-write updates. A changed cohort definition requires recomputation from the intended evidence, not relabeling old counts. The evidence cutoff `topic/assessment-through` is separate from transaction time.
+
+The engine reads authoritative `topic/difficulty`; if absent, it uses `policy/initial-accuracy`. Read all inputs from one database value and record its logical `basis_t()` as `fire-application/basis-t` in the same database. Historical `as_of(basis_t)` reads recover earlier difficulty while that history remains retained. Preserve history on the relevant attributes. Basis T does not identify the event's occurrence time, enforce concurrency, or reproduce external code; policy/algorithm and the actual engine implementation still matter.
+
+The Python engine remains a standalone numerical prototype; there is no completed EDB persistence adapter. The database schema maps to its existing `Policy` fields as follows. All settings are explicit on a complete policy; do not silently fill omitted persisted fields from changing program defaults.
+
+| EDB policy attribute | Python `Policy` field |
+| --- | --- |
+| `name` | `name` |
+| `base-half-life-days` | `base_interval_days` |
+| `interval-growth` | `interval_growth` |
+| `maximum-half-life-days` | `maximum_interval_days` |
+| `review-threshold` | `due_threshold` |
+| `initial-retention` | `restored_memory` |
+| `early-practice-discount-power` | `discount_power` |
+| `initial-accuracy` | `prior_accuracy` |
+| `accuracy-update-rate` | `accuracy_alpha` |
+| `speed-exponent` | `speed_exponent` |
+| `minimum-speed` | `minimum_speed` |
+| `maximum-speed` | `maximum_speed` |
+| `overdue-failure-slope` | `failure_overdue_slope` |
+| `maximum-failure-multiplier` | `maximum_failure_multiplier` |
+| `gate-slow-implicit` | `gate_slow_implicit` |
+| `retention-update-order` | `memory_order`: `/decay-before-add` → `decay-before-add`; `/add-before-decay` → `literal-add-before-decay` |
+| `future-horizon-days` | `future_horizon_days` |
+
+`policy.algorithm/fire-v1` identifies the current executable formulas and graph rules. `policy/id` is a UUID, not the prototype's calculated `Policy.id` fingerprint. Prototype JSON snapshots and their difficulty-map fingerprints remain supported runtime artifacts, not EDB calibration-set entities. The future adapter must resolve enum entity IDs to their idents and preserve these explicit mappings.
+
+Run the EDB checks from the repository root:
+
+```bash
+rustc --edition=2021 tests/validate_fire_schema.rs \
+  --extern edb_core=/home/jake/Developer/EDB/target/debug/deps/libedb_core-a0676893826732bc.rlib \
+  -L dependency=/home/jake/Developer/EDB/target/debug/deps \
+  -o /tmp/course-academy-fire-schema-check
+/tmp/course-academy-fire-schema-check
+```
+
+The library filename is specific to the installed EDB build. Tests cover policy bounds and enums, topic evidence consistency, optional initial estimates, historical difficulty lookup, and existing progress/event behavior. They do not exercise a production writer or change a persistent database.

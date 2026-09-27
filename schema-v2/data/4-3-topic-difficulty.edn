@@ -1,0 +1,44 @@
+;; Difficulty and assessment evidence are attributes of the existing topic entity.
+;; Unknown difficulty is omitted; the engine uses policy/initial-accuracy.
+;; Request :db/ensure :topic/difficulty-validate on every difficulty/evidence write.
+;; Keep history: fire-application/basis-t refers to the exact database used for engine inputs.
+[
+ {:db/ident :difficulty.method/initial-estimate}
+ {:db/ident :difficulty.method/expert-estimate}
+ {:db/ident :difficulty.method/assessment-data}
+
+ {:db/ident :topic/difficulty
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional expected assessment accuracy in [0,1]; lower means harder. This is our engine scale, separate from question E/M/H. Authoritative engine input: set an explicit estimate initially, then update with correct/total atomically when assessment evidence exists."}
+
+ {:db/ident :topic/difficulty-method
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Basis of the current estimate: difficulty.method/initial-estimate, /expert-estimate, or /assessment-data. Required whenever difficulty is present."}
+
+ {:db/ident :topic/assessment-correct
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional nonnegative count of qualifying correct direct assessment answers. Present together with assessment-total; never counts implicit credit."}
+
+ {:db/ident :topic/assessment-total
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional nonnegative count of qualifying direct assessment answers. A positive total requires assessment-data method, a cohort definition, and difficulty equal to correct/total."}
+
+ {:db/ident :topic/assessment-cohort
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional description of the students and assessment conditions eligible for these counts. Required and nonblank when total is positive. Eligibility is implemented by application code."}
+
+ {:db/ident :topic/assessment-through
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional evidence cutoff: assessments included through this time. Different from the database transaction time; eligibility and cutoff handling belong to the application."}
+
+ {:db/ident :topic/difficulty-validate
+  :db.entity/attrs [:topic/id :topic/difficulty :topic/difficulty-method]
+  :db.entity/preds course-academy.topic/valid-difficulty?
+  :db/doc "Validates an explicit estimate or assessment-derived difficulty on the topic. Counts may be absent or both zero for estimates. Positive counts require assessment-data method and a nonblank cohort. The predicate checks ranges, count consistency, allowed methods, and ratio agreement within 1e-12. Does not require a fully populated curriculum topic."}
+]

@@ -20,12 +20,12 @@
  {:db/ident :fire-application/policy
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Exact immutable policy used; policy ID matches the engine fingerprint."}
+  :db/doc "Exact policy entity used, identified by policy/id. Its UUID is independent of the prototype runtime configuration fingerprint."}
 
- {:db/ident :fire-application/calibration
-  :db/valueType :db.type/ref
+ {:db/ident :fire-application/basis-t
+  :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
-  :db/doc "Exact topic-difficulty calibration set used; retain the map whose fingerprint is the engine receipt's difficulty_id."}
+  :db/doc "Logical EDB basis T of the database value used to read all inputs, including topic difficulty. Read that same database with as-of(T) for replay while history is retained. This identifies an input snapshot within this database, not an assessment cutoff or wall-clock time. The writer must supply the actual basis used."}
 
  {:db/ident :fire-application/applied-at
   :db/valueType :db.type/instant
@@ -54,7 +54,7 @@
   :db/doc "Exact engine update dictionary encoded as EDN text. Applied records include direct flag, coverage, memory-before-decay/now, discount, raw_delta, speed, failure multiplier, implicit gate, before/after state, due_at. Skipped records retain their explicit reason. Application parses/validates payload."}
 
  {:db/ident :fire-application/validate
-  :db.entity/attrs [:fire-application/id :fire-application/event :fire-application/event-hash :fire-application/policy :fire-application/calibration :fire-application/applied-at :fire-application/input-state-edn]
+  :db.entity/attrs [:fire-application/id :fire-application/event :fire-application/event-hash :fire-application/policy :fire-application/basis-t :fire-application/applied-at :fire-application/input-state-edn]
   :db/doc "Atomically apply receipt, learner clock, and state updates. An identical retry never credits twice; alternate-policy experiments use isolated state."}
 
  {:db/ident :fire-update/validate

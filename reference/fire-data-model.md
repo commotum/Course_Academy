@@ -41,14 +41,14 @@ The [primary article](https://www.justinmath.com/individualized-spaced-repetitio
 
 ## Schema files and ownership
 
-Install the existing content/data schemas and then the following files in numeric order. These files contain attribute definitions and opt-in entity specs, not production MA weights or learner profiles.
+Install all content/data and engine schema files before transacting domain records; filename order is for navigation. These files contain attribute definitions and opt-in entity specs, not production MA weights or learner profiles.
 
 | File | Records | Why it exists |
 | --- | --- | --- |
-| [01-policy.edn](../schema-v2/fire/01-policy.edn) | `fire-policy` | Names the algorithm and retains its complete parameter map |
+| [1-policy.edn](../schema-v2/fire/1-policy.edn) | `policy` | Names the executable algorithm and stores complete typed settings |
 | [6-1-learner.edn](../schema-v2/data/6-1-learner.edn) | `fire-learner` | Global learner identity and accuracy across topics |
 | [6-2-learner-progress.edn](../schema-v2/data/6-2-learner-progress.edn) | `progress` | One retention and accuracy profile per learner-topic pair |
-| [05-topic-calibration.edn](../schema-v2/fire/05-topic-calibration.edn) | `fire-calibration`, `fire-difficulty` | Defines the aggregate topic difficulty inputs and their evidential basis |
+| [4-3-topic-difficulty.edn](../schema-v2/data/4-3-topic-difficulty.edn) | Additional `topic` attributes | Current difficulty estimate and optional qualifying assessment evidence |
 | [06-performance.edn](../schema-v2/fire/06-performance.edn) | `fire-event` | One observed, graded topic-level evidence unit before propagation |
 | [07-application.edn](../schema-v2/fire/07-application.edn) | `fire-application`, `fire-update` | Records how one event changed or deliberately did not change state |
 
@@ -56,7 +56,7 @@ Topic, KP, and question refs point to existing content entities. No new content 
 
 Encompassing relationships are defined in [4-2-encompassing.edn](../schema-v2/data/4-2-encompassing.edn) and owned through `topic/encompasses`. Each record contains a component topic, weight, and optional rationale; the parent topic supplies the source. There is no separate graph entity or graph reference on application receipts. Rust can assemble its runtime graph from these relationships and the existing topic records, including topics without encompassings.
 
-Policy IDs should match the engine's fingerprints. Their values are fixed once referenced by a receipt; changing an execution configuration gives it a new identity. A calibration set similarly identifies the exact difficulty inputs used. These remain prototype configuration records.
+Policy UUIDs identify configurations; they are independent of the Python engine's runtime fingerprints. The writer keeps a policy fixed after it is used and creates a new identity for changed settings. Current topic difficulty and its evidence live directly on the topic. An application records the exact input database basis T, allowing historical reads of those values without copying them into calibration-set entities. Read all inputs from one database value and retain their history.
 
 ## State and time
 
@@ -79,7 +79,7 @@ The engine uses fractional elapsed days. The persistence adapter should map UTC 
 
 Memory at time `t` is derived from the anchored value and stored interval. Due time and learning speed are also derived from state, policy, and calibration, so they do not need separately mutable authoritative fields. The schema does not store a separate latest-event timestamp on the learner. The prototype's chronological processing checks remain in application code; incorporating older evidence may require recomputing progress in order.
 
-The existing `:topic/difficulty` attribute remains untouched because its scale was deliberately unspecified. This reconstruction uses `assessment_correct / assessment_total`, falling back to `prior_accuracy` only when no qualifying evidence exists. The result is an accuracy-like ease input to the speed function; it must not be confused with question-level easy/moderate/hard labels or expected solve time.
+`topic/difficulty` now has an explicit local scale: expected assessment accuracy in [0,1], with lower values meaning harder material. It is the authoritative engine input. Its method identifies an initial estimate, expert estimate, or assessment-derived value. Positive integer assessment counts require a nonblank cohort definition and a matching correct/total ratio; update the counts and difficulty atomically. Estimated values may omit counts or use two zero counts. When the value is absent, use `policy/initial-accuracy`. The schema does not claim this numeric scale was recovered from MA storage. It is distinct from question-level easy/moderate/hard labels or expected solve time.
 
 ## Performance and application receipts
 
@@ -91,7 +91,7 @@ Ordered Boolean outcomes are stored as an EDN vector inside a string. An EDB car
 
 `(learner, event ID)` is the observation identity. Native composite uniqueness prevents duplicate rows, but it does not prove identical payloads or prevent an application from crediting an existing event again. The writer must compare the complete event fingerprint and make identical retries no-ops while rejecting conflicting payloads.
 
-Each receipt links the event, event hash, policy, calibration set, processing time, pre-event input bundle, and per-target update traces. The input bundle includes topic states, global ability, latest accepted time, and any configured ability-neighborhood inputs. Topic states alone cannot reproduce a new topic's prior. Existing direct/key prerequisites and same-module membership can inform those neighborhoods; none is automatically an encompassing edge.
+Each receipt links the event, event hash, policy, input database basis T, processing time, pre-event input bundle, and per-target update traces. The input bundle includes topic states, global ability, latest accepted time, and any configured ability-neighborhood inputs. Topic states alone cannot reproduce a new topic's prior. Existing direct/key prerequisites and same-module membership can inform those neighborhoods; none is automatically an encompassing edge.
 
 The trace preserves the engine's update dictionary: direct/implicit direction, coverage, early discount, raw delta, speed, failure multiplier, gate result, state before/after, and derived due time. Unlearned targets retain their ability changes and an explicit retention-skip reason; they receive no retention credit. The schema no longer preserves immutable encompassing graph snapshots; the Python prototype's snapshots remain separate from this EDB model.
 
@@ -128,8 +128,8 @@ rustc --edition=2024 tests/validate_fire_schema.rs \
 The library hash is build-specific; use the matching `edb_core` artifact after
 rebuilding EDB.
 
-Native EDB validation installed every current content/data schema and all six FIRe schema files into an in-memory database, then transacted graph, calibration, learner-global ability, event, state, and application fixtures. Explicit zero, an empty graph, quality `1.5`, and ability evidence with `learned=false` were accepted. Learner-topic and learner-event composite keys were derived and resolved updates without adding rows. The same event ID was accepted for a different learner. Missing required state fields, duplicate learner-topic/event pairs, a wrong scalar type, and a vector assigned to a scalar attribute were rejected. No persistent database or existing content schema was changed.
+Native EDB checks install all current schemas and validate representative topic, policy, progress, event, and receipt records. The tests reject unsupported policy/method enums, missing settings, nonfinite numeric values, inconsistent policy bounds, fractional or inconsistent answer counts, stale difficulty ratios, missing assessment cohorts, duplicate learner-topic progress, shared progress ownership, and invalid event identities/types. They accept unknown topic difficulty and explicit initial/expert estimates. A historical read at the saved input basis retrieves the original difficulty after later evidence updates.
 
-This proves native schema/required-attribute/uniqueness behavior only. Range constraints, reference targets, ordered EDN payloads, hashes, chronological event handling, graph acyclicity, mathematical formulas, and atomic business operations require the application. The schema reference explains that [`:db/ensure`](edb-schema-reference.md#entity-specs) must be requested explicitly and does not install a permanent table-wide constraint.
+[Registered Rust predicates](../engine/edb/configuration.rs) enforce policy ranges and topic difficulty consistency when the specs are explicitly ensured. They do not implement mathematical correctness checks, production policy immutability, eligibility selection, duplicate assessment ingestion prevention, or the engine persistence transaction. Those are writer/application responsibilities. Deploy the predicates to the executing writer; local registry tests alone do not deploy them. The schema reference explains that [`:db/ensure`](edb-schema-reference.md#entity-specs) must be requested explicitly and does not install a permanent table-wide constraint.
 
 The Python engine currently persists its own JSON snapshots. These EDN files define the corresponding EDB data model; they do not implement a database adapter. The EDB receipt's exact pre-event input bundle is a future adapter requirement: current engine receipts retain updated targets, global ability changes, and configuration fingerprints, while a retained pre-event snapshot carries the additional configured neighborhood and state inputs needed for replay. A current receipt alone must not be presented as a standalone replay bundle. A future adapter must preserve the mappings and atomicity described above. The operational engine tests and the native schema smoke check establish different things and should be reported separately.
