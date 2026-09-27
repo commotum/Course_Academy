@@ -1,0 +1,175 @@
+## References
+
+- Agarwal, P. K., & Agostinelli, A. (2020). Interleaving in Math: A Research-Based Strategy to Boost Learning. American Educator, 44(1), 24.
+- Agarwal, P. K., D'Antonio, L., Roediger III, H. L., McDermott, K. B., & McDaniel, M. A. (2014). Classroom-based programs of retrieval practice reduce middle school and high school students' test anxiety. Journal of applied research in memory and cognition, 3(3), 131-139.
+- Agarwal, P. K., Roediger, H. L., McDaniel, M. A., & McDermott, K. B. (2013). How to use retrieval practice to improve learning. Washington University in St. Louis.
+- Allen-Lyall, B. (2018). Helping students to automatize multiplication facts: A pilot study. International Electronic Journal of Elementary Education, 10(4), 391-396.
+- Alloway, T. P., & Alloway, R. G. (2010). Investigating the predictive roles of working memory and IQ in academic attainment. Journal of experimental child psychology, 106(1), 20-29.
+- Anderson, J. R. (1987). Skill acquisition: Compilation of weak-method problem situations. Psychological review, 94(2), 192.
+- Anderson, J. R., Reder, L. M., Simon, H. A., Ericsson, K. A., & Glaser, R. (1998). Radical constructivism and cognitive psychology. Brookings papers on education policy, (1), 227-278.
+- Arzi, H. J., Ben-Zvi, R., & Ganiel, U. (1985). Proactive and retroactive facilitation of long-term retention by curriculum continuity. American educational research journal, 22(3), 369-388.
+- Atchison, K. (2020). True Mastery: The Benefits of Mixed Practice for Learning. EducationalRenaissance.com.
+- Ausubel, D. P., Robbins, L. C., & Blake Jr, E. (1957). Retroactive inhibition and facilitation in the learning of school materials. *Journal of Educational Psychology*, 48(6), 334.
+- Ayres, P. L. (2001). Systematic mathematical errors and cognitive load. Contemporary Educational Psychology, 26(2), 227-248.
+- Bacon, F. (1620). The new organon: Or true directions concerning the interpretation of nature.
+- Baddeley, A. D. (1983). Working memory. Philosophical Transactions of the Royal Society of London. B, Biological Sciences, 302(1110), 311-324.
+- Bahrick, H. P., Bahrick, L. E., Bahrick, A. S., & Bahrick, P. E. (1993). Maintenance of foreign language vocabulary and the spacing effect. *Psychological Science*, 4(5), 316-321.
+- Bai, S., Hew, K. F., & Huang, B. (2020). Does gamification improve student learning outcome? Evidence from a meta-analysis and synthesis of qualitative data in educational contexts. *Educational Research Review*, 30, 100322.
+- Baker, R. S. D., Corbett, A. T., Koedinger, K. R., Evenson, S., Roll, I., Wagner, A. Z., ... & Beck, J. E. (2006). Adapting to when students game an intelligent tutoring system. In Intelligent Tutoring Systems: 8th International Conference, ITS 2006, Jhongli, Taiwan, June 26-30, 2006. Proceedings 8 (pp. 392-401). Springer Berlin Heidelberg.
+- Bernstein, B. O., Lubinski, D., & Benbow, C. P. (2021). Academic acceleration in gifted youth and fruitless concerns regarding psychological well-being: A 35-year longitudinal study. *Journal of Educational Psychology*, 113(4), 830.
+- Berzsenyi, G. (2019). Talent search versus talent development. Notices of the American Mathematical Society, 66(9).
+- Betts, K., Miller, M., Tokuhama-Espinosa, T., Shewokis, P. A., Anderson, A., Borja, C., ... & Dekker, S. (2019). International Report: Neuromyths and Evidence-Based Practices in Higher Education. Online Learning Consortium.
+- Bjork, E. L., & Bjork, R. A. (2011). Making things hard on yourself, but in a good way: Creating desirable difficulties to enhance learning. *Psychology and the real world: Essays illustrating fundamental contributions to society*, 2(59-68).
+- Bjork, E. L., & Bjork, R. A. (2023). Introducing Desirable Difficulties Into Practice and Instruction: Obstacles and Opportunities. In C. Overson, C. M. Hakala, L. L. Kordonowy, & V. A. Benassi (Eds.), In Their Own Words: What Scholars and Teachers Want You to Know About Why and How to Apply the Science of Learning in Your Academic Setting (pp. 111-21). Society for the Teaching of Psychology.
+- Bjork, R. A. (1994). Memory and metamemory considerations in the training of human beings. In J. Metcalfe and A. Shimamura (Eds.), Metacognition: Knowing about knowing (pp.185-205).
+- Bloom, B. S. (1968). Learning for Mastery. Instruction and Curriculum. Regional Education Laboratory for the Carolinas and Virginia, Topical Papers and Reprints, Number 1. Evaluation comment, 1(2), n2.
+- Bloom, B. S. (1984). The 2 sigma problem: The search for methods of group instruction as effective as one-to-one tutoring. Educational researcher, 13(6), 4-16.
+- Bloom, B. S., ed. (1985). Developing Talent in Young People. New York: Ballantine Books.
+- Bloom, B. S. (1986). Automaticity: "The Hands and Feet of Genius." Educational leadership, *43*(5), 70-77.
+- Bloom, B. S., & Sosniak, L. A. (1981). Talent development vs. schooling. Educational Leadership, 39(2), 86-94.
+- Bloom, G. (2002). Role of the elite coach in the development of talent. Psychological foundations of sport, 466-483.
+- Borland, J. H. (1989). Planning and Implementing Programs for the Gifted. New York: Teachers College Press.
+- Brandt, R. S. (1985). On Talent Development: A Conversation with Benjamin Bloom. Educational Leadership, 43(1), 33-35.
+- Brown, J. (1958). Some tests of the decay theory of immediate memory. Quarterly journal of experimental psychology, 10(1), 12-21.
+- Brown, P. C., Roediger III, H. L., & McDaniel, M. A. (2014). *Make it stick: The science of successful learning.* Harvard University Press.
+- Buskist, W., Cush, D., & DeGrandpre, R. J. (1991). The life and times of PSI. Journal of Behavioral Education, 1, 215-234.
+- Cacciola, S. (2020). How Kobe Bryant Created His Own Olympic Dream Team. *New York Times*.
+- Calvo-Merino, B., Glaser, D. E., Grèzes, J., Passingham, R. E., & Haggard, P. (2005). Action observation and acquired motor skills: an FMRI study with expert dancers. *Cerebral cortex*, 15(8), 1243-1249.
+- Calvo-Merino, B., Grèzes, J., Glaser, D. E., Passingham, R. E., & Haggard, P. (2006). Seeing or doing? Influence of visual and motor familiarity in action observation. *Current biology*, 16(19), 1905-1910.
+- Campbell, J. I. (1987). The role of associative interference in learning and retrieving arithmetic facts. Cognitive processes in mathematics, 107-122.
+- Carpenter, S. K., & Agarwal, P. K. (2019). How to use spaced retrieval practice to boost learning. *Iowa State University*.
+- Catrambone, R. (1995). Aiding subgoal learning: Effects on transfer. *Journal of educational psychology*, 87(1), 5.
+- Cepeda, N. J., Coburn, N., Rohrer, D., Wixted, J. T., Mozer, M. C., & Pashler, H. (2009). Optimizing distributed practice: Theoretical analysis and practical implications. *Experimental psychology*, 56(4), 236-246.
+- Chase, W. G., & Ericsson, K. A. (1982). Skill and working memory. In *Psychology of learning and motivation* (Vol. 16, pp. 1-58). Academic Press.
+- Clark, R., Kirschner, P. A., & Sweller, J. (2012). Putting students on the path to learning: The case for fully guided instruction. American Educator, 36(1), 5-11.
+- Clear, J. The Beginner's Guide to Deliberate Practice. James Clear.com.
+- Codding, R. S., Peltier, C., & Campbell, J. (2023). Introducing the Science of Math. TEACHING Exceptional Children, 00400599221121721.
+- Codding, R. S., VanDerHeyden, A., & Chehayeb, R. (2023). Using Data to Intensify Math Instruction: An Evaluation of the Instructional Hierarchy. Remedial and Special Education, 07419325231194354.
+- Conway, A., Jarrold, C., Kane, M., Miyake, A., & Towse, J. (2007). Variation in Working Memory: An Introduction. In Conway, A., Jarrold, C., Kane, M., Miyake, A., & Towse, J. (Eds.), *Variation in working memory* (pp.3-17). Oxford University Press.
+- Coughlan, E. K., Williams, A. M., McRobert, A. P., & Ford, P. R. (2014). How experts practice: A novel test of deliberate practice theory. Journal of Experimental Psychology: Learning, Memory, and Cognition, 40(2), 449.
+- Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. Behavioral and brain sciences, 24(1), 87-114.
+- Cowan, N. (2008). What are the differences between long-term, short-term, and working memory? Progress in brain research, 169, 323-338.
+- Cross, K. P. (1999). Learning is about making connections. The Cross Papers; 3.
+- Dallimore, E. J., Hertenstein, J. H., & Platt, M. B. (2013). Impact of cold-calling on student voluntary participation. Journal of Management Education, 37(3), 305-341.
+- Deakin, J. M., & Cobley, S. (2003). A search for deliberate practice. Expert performance in *sports*, 115-36.
+- Debatin, T., Hopp, M. D., Vialle, W., & Ziegler, A. (2023). The meta-analyses of deliberate practice underestimate the effect size because they neglect the core characteristic of individualization - An analysis and empirical evidence. Current Psychology, 42(13), 10815-10825.
+- del Rosario Zavala, Maria, Ma Bernadette Andres-Salgarino, Zandra de Araujo, Amber G. Candela, Gladys Krause, and Erin Sylves (2020). The Mo(ve)ment to Prioritize Antiracist Mathematics: Planning for This and Every School Year. TODOS: Mathematics for All.
+- Deslauriers, L., McCarty, L. S., Miller, K., Callaghan, K., & Kestin, G. (2019). Measuring actual learning versus feeling of learning in response to being actively engaged in the classroom. *Proceedings of the National Academy of Sciences*, 116(39), 19251-19257.
+- D'Esposito, M. (2007). From cognitive to neural models of working memory. *Philosophical Transactions of the Royal Society B: Biological Sciences*, 362(1481), 761-772.
+- Dori, Y. J., & Belcher, J. (2005). How does technology-enabled active learning affect undergraduate students' understanding of electromagnetism concepts? *The journal of the learning sciences*, 14(2), 243-279.
+- Doz, D. (2021). Students' mathematics achievements: A comparison between pre-and post-COVID-19 pandemic. *Education and Self Development*, 16(4), 36-47.
+- Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J., & Willingham, D. T. (2013). Improving students' learning with effective learning techniques: Promising directions from cognitive and educational psychology. *Psychological Science in the Public Interest*, 14(1), 4-58.
+- Ebbinghaus, H. (1885). Memory: A contribution to experimental psychology, trans. HA Ruger & CE Bussenius. Teachers College, Columbia University.
+- Emeny, W. G., Hartwig, M. K., & Rohrer, D. (2021). Spaced mathematics practice improves test scores and reduces overconfidence. *Applied Cognitive Psychology*, 35(4), 1082-1089.
+- Engram, D. (1979). Bonus points as tokens: their effect on academic performance (Masters thesis).
+- Engström, M., Landtblom, A. M., & Karlsson, T. (2013). Brain and effort: brain activation and effort-related working memory in healthy participants and patients with working memory deficits. Frontiers in human neuroscience, 7, 140.
+- Ericsson, K. A. (2003). The acquisition of expert performance as problem solving: Construction and modification of mediating mechanisms through deliberate practice. *The psychology of problem solving,* 31-83.
+- Ericsson, K. A. (2006). The influence of experience and deliberate practice on the development of superior expert performance. The Cambridge handbook of expertise and expert performance, 38(685-705), 2-2.
+- Ericsson, K. A. (2008). Deliberate practice and acquisition of expert performance: a general overview. Academic emergency medicine, 15(11), 988-994.
+- Ericsson, K. A., Krampe, R. T., & Tesch-Römer, C. (1993). The role of deliberate practice in the acquisition of expert performance. Psychological review, 100(3), 363.
+- Ericsson, K. A., Prietula, M. J., & Cokely, E. T. (2007). The making of an expert. Harvard business review, 85(7/8), 114.
+- Freeman, S., Eddy, S. L., McDonough, M., Smith, M. K., Okoroafor, N., Jordt, H., & Wenderoth, M. P. (2014). Active learning increases student performance in science, engineering, and mathematics. Proceedings of the National Academy of Sciences, 111(23), 8410-8415.
+- Fuchs, L. S., Bucka, N., Clarke, B., Dougherty, B., Jordan, N. C., Karp, K. S., ... & Morgan, S. (2021). Assisting Students Struggling with Mathematics: Intervention in the Elementary Grades. Educator's Practice Guide. WWC 2021006. What Works Clearinghouse.
+- Gershenson, S. (2018). Grade Inflation in High Schools (2005-2016). Thomas B. Fordham Institute.
+- Gobet, F., & Simon, H. A. (1998). Expert chess memory: Revisiting the chunking hypothesis. *Memory*, 6(3), 225-255.
+- Goldhaber, D., & Young, M. G. (2023). Course Grades as a Signal of Student Achievement: Evidence on Grade Inflation Before and After COVID-19. CALDER Research Brief No. 35.
+- Gonzalez, J. (2017). Retrieval Practice: The Most Powerful Learning Strategy You're Not Using. CultOfPedagogy.com.
+- Grospietsch, F., & Lins, I. (2021). Review on the prevalence and persistence of neuromyths in education-Where we stand and what Is still needed. In *Frontiers in Education* (Vol. 6, p. 665752). Frontiers Media SA.
+- Guryan, J., Ludwig, J., Bhatt, M. P., Cook, P. J., Davis, J. M., Dodge, K., ... & Stoddard, G. (2023). Not too late: Improving academic outcomes among adolescents. *American Economic Review*, 113(3), 738-765.
+- Halpern, D. F., & Hakel, M. D. (2003). Applying the Science of Learning. Change, 37.
+- Hardt, O., Nader, K., & Nadel, L. (2013). Decay happens: the role of active forgetting in memory. Trends in cognitive sciences, 17(3), 111-120.
+- Hartwig, M. K., Rohrer, D., & Dedrick, R. F. (2022). Scheduling math practice: Students' underappreciation of spacing and interleaving. *Journal of Experimental Psychology: Applied*, 28(1), 100.
+- Hattie, J., & Yates, G. C. (2013). *Visible learning and the science of how we learn.* Routledge.
+- Hofstadter, D., & Carter, K. (2012). Some Reflections on Mathematics from a Mathematical Non-mathematician. *Mathematics in School*, 41(5), 2-4.
+- Iosup, A., & Epema, D. (2014). An experience report on using gamification in technical higher education. In *Proceedings of the 45th ACM technical symposium on Computer science education* (pp. 27-32).
+- Jonides, J., Lewis, R. L., Nee, D. E., Lustig, C. A., Berman, M. G., & Moore, K. S. (2008). The mind and brain of short-term memory. *Annu. Rev. Psychol.*, 59, 193-224.
+- Joy Cumming, J., & Elkins, J. (1999). Lack of automaticity in the basic addition facts as a characteristic of arithmetic learning problems and instructional needs. *Mathematical Cognition*, 5(2), 149-180.
+- Kang, S. H. (2016). Spaced repetition promotes efficient and effective learning: Policy implications for instruction. *Policy Insights from the Behavioral and Brain Sciences*, 3(1), 12-19.
+- Karpicke, J. D., Butler, A. C., & Roediger III, H. L. (2009). Metacognitive strategies in student learning: Do students practise retrieval when they study on their own? Memory, 17(4), 471-479.
+- Kellogg, R. T., & Whiteford, A. P. (2009). Training advanced writing skills: The case for deliberate practice. Educational Psychologist, 44(4), 250-266.
+- Kersey, A. J., & James, K. H. (2013). Brain activation patterns resulting from learning letter forms through active self-production and passive observation in young children. Frontiers in psychology, 4, 567.
+- Kirschner, P., & Hendrick, C. (2024). How learning happens: Seminal works in educational psychology and what they mean in practice. Routledge.
+- Kirschner, P. A., Sweller, J., & Clark, R. E. (2006). Why minimal guidance during instruction does not work: An analysis of the failure of constructivist, discovery, problem-based, experiential, and inquiry-based teaching. Educational psychologist, 41(2), 75-86.
+- Kornell, N., & Bjork, R. A. (2008). Learning concepts and categories: Is spacing the "enemy of induction"? Psychological science, 19(6), 585-592.
+- Kuhfeld, M., Soland, J., & Lewis, K. (2022). Test score patterns across three COVID-19-impacted school years. *Educational Researcher*, 51(7), 500-506.
+- Kulasegaram, K. M., Grierson, L. E., & Norman, G. R. (2013). The roles of deliberate practice and innate ability in developing expertise: evidence and implications. Medical education, 47(10), 979-989.
+- Kulik, C. L. C., Kulik, J. A., & Bangert-Drowns, R. L. (1990). Effectiveness of mastery learning programs: A meta-analysis. Review of educational research, 60(2), 265-299.
+- Kulik, J. A., & Kulik, C. L. C. (1984). Effects of accelerated instruction on students. Review of educational research, 54(3), 409-425.
+- Kyllonen, P. C., & Tirre, W. C. (1988). Individual differences in associative learning and forgetting. *Intelligence*, 12(4), 393-421.
+- Lehtinen, E., Hannula-Sormunen, M., McMullen, J., & Gruber, H. (2017). Cultivating mathematical skills: From drill-and-practice to deliberate practice. *ZDM*, 49, 625-636.
+- Lei, H., Wang, C., Chiu, M. M., & Chen, S. (2022). Do educational games affect students' achievement emotions? Evidence from a meta-analysis. Journal of Computer Assisted Learning, 38(4), 946-959.
+- Looyestyn, J., Kernot, J., Boshoff, K., Ryan, J., Edney, S., & Maher, C. (2017). Does gamification increase engagement with online programs? A systematic review. *PloS one*, 12(3), e0173403.
+- Luo, L., & Kiewra, K. A. (2021). Parents' roles in talent development. Gifted Education International, 37(1), 30-40.
+- Mayer, R. E. (2004). Should there be a three-strikes rule against pure discovery learning? *American psychologist*, 59(1), 14.
+- McDaniel, M. A., Anderson, J. L., Derbish, M. H., & Morrisette, N. (2007). Testing the testing effect in the classroom. *European journal of cognitive psychology*, 19(4-5), 494-513.
+- McDaniel, M. A., Cahill, M. J., Frey, R. F., Rauch, M., Doele, J., Ruvolo, D., & Daschbach, M. M. (2018). Individual differences in learning exemplars versus abstracting rules: Associations with exam performance in college science. *Journal of Applied Research in Memory and Cognition*, 7(2), 241-251.
+- McDaniel, M. A., Cahill, M. J., Robbins, M., & Wiener, C. (2014). Individual differences in learning and transfer: stable tendencies for learning exemplars versus abstracting rules. *Journal of Experimental Psychology: General*, 143(2), 668.
+- McDermott, K. B., & Zerr, C. L. (2019). Individual differences in learning efficiency. Current Directions in Psychological Science, 28(6), 607-613.
+- Meinz, E. J., & Hambrick, D. Z. (2010). Deliberate practice is necessary but not sufficient to explain individual differences in piano sight-reading skill: The role of working memory capacity. Psychological science, 21(7), 914-919.
+- Metcalfe, J., & Xu, J. (2016). People mind wander more during massed than spaced inductive learning. Journal of Experimental Psychology: Learning, Memory, and Cognition, 42(6), 978.
+- Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. Psychological review, 63(2), 81.
+- Nairne, J. S., & Neath, I. (2012). Sensory and working memory. Handbook of Psychology, Second Edition, 4.
+- National Council of Supervisors of Mathematics and TODOS: Mathematics for ALL. (2016). Mathematics education through the lens of social justice: Acknowledgment, actions, and accountability. Joint Position Paper.
+- Pan, S. C. (2015). The interleaving effect: mixing it up boosts learning. Scientific American, 313(2).
+- Pardo, A., Poquet, O., Martínez-Maldonado, R., & Dawson, S. (2017). Provision of data-driven student feedback in LA & EDM. Handbook of learning analytics, 163-174.
+- Park, G., Lubinski, D., & Benbow, C. P. (2013). When less is more: Effects of grade skipping on adult STEM productivity among mathematically precocious adolescents. *Journal of Educational Psychology*, 105(1), 176.
+- Parrish, S. The Ultimate Deliberate Practice Guide: How to Be the Best. FS.blog.
+- Pashler, H., Rohrer, D., Cepeda, N. J., & Carpenter, S. K. (2007). Enhancing learning and retarding forgetting: Choices and consequences. Psychonomic bulletin & review, 14(2), 187-193.
+- Pasquinelli, E. (2012). Neuromyths: Why do they exist and persist? Mind, Brain, and Education, 6(2), 89-96.
+- Pastötter, B., & Frings, C. (2019). The forward testing effect is reliable and independent of learners' working memory capacity. *Journal of cognition*, 2(1).
+- Pedersen, B., Makel, M. C., Rambo-Hernandez, K. E., Peters, S. J., & Plucker, J. (2023). Most mathematics classrooms contain wide-ranging achievement levels. *Gifted Child Quarterly*, 67(3), 220-234.
+- Plant, E. A., Ericsson, K. A., Hill, L., & Asberg, K. (2005). Why study time does not predict grade point average across college students: Implications of deliberate practice for academic performance. Contemporary educational psychology, 30(1), 96-116.
+- Qadir, J., & Imran, M. A. (2018). Learning 101: The untaught basics. *IEEE Potentials*, 37(3), 33-38.
+- Reber, P. J., & Kotovsky, K. (1997). Implicit learning in problem solving: The role of working memory capacity. *Journal of Experimental Psychology: General*, 126(2), 178.
+- Redick, T. S., Shipstead, Z., Wiemers, E. A., Melby-Lervåg, M., & Hulme, C. (2015). What's working in working memory training? An educational perspective. Educational Psychology Review, 27(4), 617-633.
+- Reeves, W. R. (2014). Creativity as a learned skill: The role of deliberate practice in the development of creativity (Doctoral dissertation).
+- Ricker, T. J., Vergauwe, E., & Cowan, N. (2016). Decay theory of immediate memory: From Brown (1958) to today (2014). Quarterly Journal of Experimental Psychology, 69(10), 1969-1995.
+- Rohrer, D. (2009). Research commentary: The effects of spacing and mixing practice problems. *Journal for Research in Mathematics Education*, 40(1), 4-17.
+- Rohrer, D. (2012). Interleaving helps students distinguish among similar concepts. *Educational Psychology Review*, 24, 355-367.
+- Rohrer, D., Dedrick, R. F., & Agarwal, P. K. (2017). Interleaved mathematics practice: giving students a chance to learn what they need to know. *Retrieval Practice.org*.
+- Rohrer, D., Dedrick, R. F., & Stershic, S. (2015). Interleaved practice improves mathematics learning. *Journal of Educational Psychology*, 107(3), 900.
+- Rohrer, D., & Hartwig, M. K. (2020). Unanswered questions about spaced interleaved mathematics practice. Journal of Applied Research in Memory and Cognition, 9(4), 433.
+- Rohrer, D., & Hartwig, M. K. (2023). Spaced and Interleaved Mathematics Practice. In C. Overson, C. M. Hakala, L. L. Kordonowy, & V. A. Benassi (Eds.), In Their Own Words: What Scholars and Teachers Want You to Know About Why and How to Apply the Science of Learning in Your Academic Setting (pp. 111-21). Society for the Teaching of Psychology.
+- Rohrer, D., & Pashler, H. (2007). Increasing retention without increasing study time. Current Directions in Psychological Science, 16(4), 183-186.
+- Ross, P. E. (2006). The expert mind. Scientific American, 295(2), 64-71.
+- Roth, J. K., & Courtney, S. M. (2007). Neural system for updating object working memory from different sources: sensory stimuli or long-term memory. Neuroimage, 38(3), 617-630.
+- Rowland, C. A. (2014). The effect of testing versus restudy on retention: a meta-analytic review of the testing effect. Psychological bulletin, 140(6), 1432.
+- Rudner, M., Lunner, T., Behrens, T., Thorén, E. S., & Rönnberg, J. (2012). Working memory capacity may influence perceived effort during aided speech recognition in noise. Journal of the American Academy of Audiology, 23(08), 577-589.
+- Pashler, H., Rohrer, D., & Cepeda, N. J. (2006). Temporal spacing and learning. APS Observer, 19.
+- Salomon, G., & Globerson, T. (1989). When teams do not function the way they ought to. International journal of Educational research, 13(1), 89-99.
+- Sanchez, E. I., & Moore, R. (2022). Grade Inflation Continues to Grow in the Past Decade. Research Report. ACT, Inc.
+- Schmidt, S., & Eisend, M. (2015). Advertising repetition: A meta-analysis on effective frequency in advertising. Journal of Advertising, 44(4), 415-428.
+- Shamloo, F., & Helie, S. (2016). Changes in default mode network as automaticity develops in a categorization task. Behavioural Brain Research, 313, 324-333.
+- Sherman, J. G. (1992). Reflections on PSI: Good news and bad. *Journal of Applied Behavior Analysis*, 25(1), 59.
+- Simonton, D. K. (2007). Talent and expertise: The empirical evidence for genetic endowment. *High Ability Studies*, 18(1), 83-84.
+- Simonton, D. K. (2013). If innate talent doesn't exist, where do the data disappear? The complexity of greatness: Beyond talent or practice, 17-26.
+- Sloboda, J. A. (1996). The acquisition of musical performance expertise: Deconstructing the "talent" account of individual differences in musical expressivity. In K. A. Ericsson (Ed.), The road to excellence: The acquisition of expert performance in the arts and sciences, sports, and games (pp. 112-114). Psychology Press.
+- Smith, C. D., & Scarf, D. (2017). Spacing repetitions over long timescales: a review and a reconsolidation explanation. *Frontiers in Psychology*, *8*, 962.
+- Steenbergen-Hu, S., Makel, M. C., & Olszewski-Kubilius, P. (2016). What one hundred years of research says about the effects of ability grouping and acceleration on K-12 students' academic achievement: Findings of two second-order meta-analyses. *Review of Educational Research*, 86(4), 849-899.
+- Sternberg, R. J. (2014). Costs of expertise. In K. A. Ericsson (Ed.), The road to excellence: The acquisition of expert performance in the arts and sciences, sports, and games (pp. 347-354). Psychology Press.
+- Subirana, B., Bagiati, A., & Sarma, S. (2017). On the Forgetting of College Academics: at "Ebbinghaus Speed"? Center for Brains, Minds and Machines (CBMM).
+- Swanson, H. L., & Beebe-Frankenberger, M. (2004). The relationship between working memory and mathematical problem solving in children at risk and not at risk for serious math difficulties. *Journal of educational psychology*, 96(3), 471.
+- Swanson, H. L., & Siegel, L. (2011). Learning disabilities as a working memory deficit. *Experimental Psychology*, 49(1), 5-28.
+- Sweller, J., Ayres, P. L., Kalyuga, S., & Chandler, P. (2003). The expertise reversal effect. Educational Psychologist, 38(1), 23-31.
+- Sweller, J. (2006). The worked example effect and human cognition. Learning and instruction.
+- Sweller, J., Clark, R., & Kirschner, P. (2010). Teaching general problem-solving skills is not a substitute for, or a viable addition to, teaching mathematics. Notices of the American *Mathematical Society*, 57(10), 1303-1304.
+- Sweller, J., Ayres, P., & Kalyuga, S. (2011). Cognitive Load Theory. Springer Science+Business Media.
+- Talcott, J. B. (2021). The neurodevelopmental underpinnings of children's learning: Connectivity is key.
+- Taylor, K., & Rohrer, D. (2010). The effects of interleaved practice. Applied cognitive psychology, 24(6), 837-848.
+- Tharayil, S., Borrego, M., Prince, M., Nguyen, K. A., Shekhar, P., Finelli, C. J., & Waters, C. (2018). Strategies to mitigate student resistance to active learning. International Journal of STEM Education, 5, 1-16.
+- TODOS: Mathematics for All (2020). Where Is Manuel? A Rejection of 'Learning Loss'.
+- Underwood, B. J., & Ekstrand, B. R. (1967). Studies of distributed practice: XXIV. Differentiation and proactive inhibition. *Journal of Experimental Psychology*, 74(4p1), 574.
+- Unsworth, N., & Engle, R. W. (2005). Individual differences in working memory capacity and learning: Evidence from the serial reaction time task. Memory & cognition, 33(2), 213-220.
+- VanDerHeyden, A. M., & Codding, R. S. (2020). Belief-Based versus Evidence-Based Math Assessment and Instruction. Communique, 48(5).
+- Vlach, H. A., Sandhofer, C. M., & Bjork, R. A. (2014). Equal spacing and expanding schedules in children's categorization and generalization. Journal of experimental child psychology, 123, 129-137.
+- Vogel, E. K., & Machizawa, M. G. (2004). Neural activity predicts individual differences in visual working memory capacity. *Nature*, 428(6984), 748-751.
+- Von Glasersfeld, E. (1984). An introduction to radical constructivism. *The invented reality*, 1740, 28.
+- Wai, J. (2015). Long-term effects of educational acceleration. A nation empowered: Evidence trumps the excuses holding back America's brightest students, 2, 73-83.
+- Weinstein, Y., Madan, C. R., & Sumeracki, M. A. (2018). Teaching the science of learning. Cognitive research: principles and implications, 3(1), 1-17.
+- Westervelt, Eric (2016). A Nobel Laureate's education plea: revolutionize teaching. NPR.
+- Wright, R. E. (1981). Aging, divided attention, and processing capacity. *Journal of Gerontology*, 36(5), 605-614.
+- Yang, C., Shanks, D. R., Zhao, W., Fan, T., & Luo, L. (2023a). Frequent Quizzing Accelerates Classroom Learning. In C. Overson, C. M. Hakala, L. L. Kordonowy, & V. A. Benassi (Eds.), In Their Own Words: What Scholars and Teachers Want You to Know About Why and How to Apply the Science of Learning in Your Academic Setting (pp. 252-62). Society for the Teaching of Psychology.
+- Yang, C., Li, J., Zhao, W., Luo, L., & Shanks, D. R. (2023b). Do practice tests (quizzes) reduce or provoke test anxiety? A meta-analytic review. Educational Psychology Review, 35(3), 87.
+- Y Combinator (2018). Peter Reinhardt on Finding Product Market Fit at Segment.
+- Zerr, C. L., Berg, J. J., Nelson, S. M., Fishell, A. K., Savalia, N. K., & McDermott, K. B. (2018). Learning efficiency: Identifying individual differences in learning rate and retention in healthy adults. *Psychological science*, 29(9), 1436-1450.
+- Zou, X., Ma, W., Ma, Z., & Baker, R. S. (2019). Towards helping teachers select optimal content for students. In Artificial Intelligence in Education: 20th International Conference, AIED 2019, Chicago, IL, USA, June 25-29, 2019, Proceedings, Part II 20 (pp. 413-417). Springer International Publishing.
