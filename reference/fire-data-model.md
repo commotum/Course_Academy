@@ -46,13 +46,13 @@ Install the existing content/data schemas and then the following files in numeri
 | File | Records | Why it exists |
 | --- | --- | --- |
 | [01-policy.edn](../schema-v2/fire/01-policy.edn) | `fire-policy` | Names the algorithm and retains its complete parameter map |
-| [6-learner.edn](../schema-v2/data/6-learner.edn) | `fire-learner` | Global learner identity and accuracy across topics |
-| [04-topic-progress.edn](../schema-v2/fire/04-topic-progress.edn) | `fire-state` | One retention and accuracy profile per learner-topic pair |
+| [6-1-learner.edn](../schema-v2/data/6-1-learner.edn) | `fire-learner` | Global learner identity and accuracy across topics |
+| [6-2-progress.edn](../schema-v2/data/6-2-progress.edn) | `progress` | One retention and accuracy profile per learner-topic pair |
 | [05-topic-calibration.edn](../schema-v2/fire/05-topic-calibration.edn) | `fire-calibration`, `fire-difficulty` | Defines the aggregate topic difficulty inputs and their evidential basis |
 | [06-performance.edn](../schema-v2/fire/06-performance.edn) | `fire-event` | One observed, graded topic-level evidence unit before propagation |
 | [07-application.edn](../schema-v2/fire/07-application.edn) | `fire-application`, `fire-update` | Records how one event changed or deliberately did not change state |
 
-Topic, KP, and question refs point to existing content entities. No new content identities, copies, or versions are introduced. The learner-topic uniqueness key contains no course: shared knowledge carries across concurrent courses. Course membership still controls curricular scope and prerequisite eligibility outside this retention transition.
+Topic, KP, and question refs point to existing content entities. No new content identities, copies, or versions are introduced. Each learner owns one progress record per topic through `learner/knowledge-profile`. Entity predicates enforce ownership and topic uniqueness when the specs are ensured; no reverse learner attribute or learner/topic composite is stored. Shared knowledge carries across concurrent courses. Course membership still controls curricular scope and prerequisite eligibility outside this retention transition.
 
 Encompassing relationships are defined in [4-2-encompassing.edn](../schema-v2/data/4-2-encompassing.edn) and owned through `topic/encompasses`. Each record contains a component topic, weight, and optional rationale; the parent topic supplies the source. There is no separate graph entity or graph reference on application receipts. Rust can assemble its runtime graph from these relationships and the existing topic records, including topics without encompassings.
 
@@ -62,16 +62,16 @@ Policy IDs should match the engine's fingerprints. Their values are fixed once r
 
 | Engine field | EDB attribute | Meaning |
 | --- | --- | --- |
-| `TopicState.repetitions` | `:fire-state/repetitions` | Nonnegative fractional repetition position, not a count of completed tasks |
-| `memory` | `:fire-state/memory` | Model memory at its anchor; not a probability and not constrained to be at most one |
-| `memory_at` | `:fire-state/memory-at` | Instant at which stored memory applies |
-| `interval_days` | `:fire-state/interval-days` | Positive interval used to decay that anchored memory |
-| `ability.assessment_accuracy` | `:fire-state/assessment-accuracy` | Assessment-channel accuracy estimate |
-| `ability.practice_accuracy` | `:fire-state/practice-accuracy` | Non-assessment accuracy estimate |
-| `ability.assessment_mass` | `:fire-state/assessment-mass` | Effective assessment evidence mass |
-| `ability.practice_mass` | `:fire-state/practice-mass` | Effective non-assessment evidence mass |
-| `learned` | `:fire-state/learned` | Admission to retention tracking, distinct from current recall |
-| `last_direct_at` | `:fire-state/last-direct-at` | Last direct practice, unaffected by receiving only implicit credit |
+| `TopicState.repetitions` | `:progress/repetitions` | Nonnegative fractional repetition position, not a count of completed tasks |
+| `memory` | `:progress/memory` | Model memory at its anchor; not a probability and not constrained to be at most one |
+| `memory_at` | `:progress/memory-at` | Instant at which stored memory applies |
+| `interval_days` | `:progress/interval-days` | Positive interval used to decay that anchored memory |
+| `ability.assessment_accuracy` | `:progress/assessment-accuracy` | Assessment-channel accuracy estimate |
+| `ability.practice_accuracy` | `:progress/practice-accuracy` | Non-assessment accuracy estimate |
+| `ability.assessment_mass` | `:progress/assessment-mass` | Effective assessment evidence mass |
+| `ability.practice_mass` | `:progress/practice-mass` | Effective non-assessment evidence mass |
+| `learned` | `:progress/learned` | Admission to retention tracking, distinct from current recall |
+| `last_direct_at` | `:progress/last-direct-at` | Last direct practice, unaffected by receiving only implicit credit |
 
 The four ability fields also exist under `:fire-learner/*` for the learner-global estimate. Global ability updates from directly observed answers once; propagating one answer to several topics must not count it several times globally. The effective accuracy is computed from the two channels rather than stored as an independently mutable third estimate. Failed initial lessons can produce an ability record with `learned=false`; they must not silently establish mastery.
 

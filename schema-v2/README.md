@@ -12,7 +12,8 @@ data/
   4-1-topic.edn
   4-2-encompassing.edn
   5-knowledge-point.edn
-  6-learner.edn
+  6-1-learner.edn
+  6-2-progress.edn
 
 content/
   1-1-course-map.edn
@@ -28,6 +29,8 @@ content/
 ```
 
 Course maps and entries belong in `content` as authored arrangements of the curriculum. Membership stays on courses, units, and modules in `data`. Course outcomes are authored explanatory content. Topics and knowledge points define skills, while their lessons, tutorials, examples, and questions provide the teaching material. Encompassing records describe weighted topic relationships. The learner schema belongs in `data`; its existing `fire-learner` attribute names are unchanged.
+
+The learner's `learner/knowledge-profile` owns current `progress` records, one per topic. The reverse reference `learner/_knowledge-profile` identifies a record's learner. `learner/activity` references activity history; the activity schema remains to be defined. Both collections are optional and unordered. See [progress validation](../engine/edb/README.md) for the Rust predicates and write requirements.
 
 Courses, units, modules, topics, and knowledge points have an `identity-validate` spec for ID-only placeholders and an existing `validate` spec for their required data. This supports loading one hierarchical level at a time, then filling in and linking the records through their stable IDs. Full validation checks each entity's own required attributes; referenced content must also be validated before it is served for study.
 

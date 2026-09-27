@@ -1,4 +1,4 @@
-;; Global learner identity and accuracy across topics.
+;; Learner identity, overall accuracy, knowledge profile, and activity history.
 ;; Required-attribute specs are opt-in: request :db/ensure on each write.
 ;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
 [
@@ -28,9 +28,21 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Learner-global Nonnegative effective non-assessment evidence mass under the local update. Update from direct observed answers once, not from every propagated topic update."}
 
+ {:db/ident :learner/knowledge-profile
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned, unordered collection of current progress records, one per topic. Find the learner through the reverse reference learner/_knowledge-profile. Ensure fire-learner/validate when changing membership and progress/validate on each progress write. Retracting the learner also retracts these records, but not their shared topics."}
+
+ {:db/ident :learner/activity
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional history of activities the learner has performed, including lesson, review, assessment, and diagnostic attempts. Activity records hold their status, timestamps, results, and XP; order history by those timestamps rather than reference order. The activity schema will be defined separately. Validate each activity and its learner association separately. These ordinary refs do not establish component ownership."}
+
  {:db/ident :fire-learner/validate
   :db.entity/attrs [:fire-learner/id]
-  :db/doc "Minimal engine learner identity; before recording global ability, also ensure fire-learner/ability-validate."}
+  :db.entity/preds course-academy.progress/valid-profile?
+  :db/doc "Learner identity and knowledge-profile ownership/uniqueness; before recording global ability, also ensure fire-learner/ability-validate."}
 
  {:db/ident :fire-learner/ability-validate
   :db.entity/attrs [:fire-learner/id :fire-learner/assessment-accuracy :fire-learner/practice-accuracy :fire-learner/assessment-mass :fire-learner/practice-mass]

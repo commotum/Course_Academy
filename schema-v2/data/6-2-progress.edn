@@ -1,94 +1,82 @@
-;; Retention and accuracy for each learner-topic pair.
-;; No course membership appears in its key.
+;; Current topic knowledge owned through learner/knowledge-profile.
+;; Find the learner through the reverse ref; topics remain shared across courses.
 ;; Required-attribute specs are opt-in: request :db/ensure on each write.
 ;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
 [
- {:db/ident :fire-state/id
+ {:db/ident :progress/id
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
   :db/doc "Stable state identity; update it rather than creating another profile for the same learner-topic pair."}
 
- {:db/ident :fire-state/learner
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/index true
-  :db/doc "Learner whose profile this is."}
-
- {:db/ident :fire-state/topic
+ {:db/ident :progress/topic
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/index true
   :db/doc "Existing topic entity, shared across course contexts."}
 
- {:db/ident :fire-state/repetitions
+ {:db/ident :progress/repetitions
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Nonnegative fractional repetition position. Operational state is clamped at zero; it is not an integer count of reviews."}
 
- {:db/ident :fire-state/memory
+ {:db/ident :progress/memory
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Nonnegative model memory value anchored at memory-at. It is not a probability and need not be at most one."}
 
- {:db/ident :fire-state/memory-at
+ {:db/ident :progress/memory-at
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one
   :db/doc "Time at which the stored memory value applies. Compute elapsed days from this anchor once."}
 
- {:db/ident :fire-state/interval-days
+ {:db/ident :progress/interval-days
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Positive finite interval used to decay this anchored memory until the next update. The local interval function determines its value."}
 
- {:db/ident :fire-state/assessment-accuracy
+ {:db/ident :progress/assessment-accuracy
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Assessment-only exponentially weighted accuracy in [0,1]. Equal averaging with practice accuracy is described publicly; the precise update rate and prior are local parameters."}
 
- {:db/ident :fire-state/practice-accuracy
+ {:db/ident :progress/practice-accuracy
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence."}
 
- {:db/ident :fire-state/assessment-mass
+ {:db/ident :progress/assessment-mass
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Nonnegative effective assessment evidence mass under the local update, distinct from assessment accuracy."}
 
- {:db/ident :fire-state/practice-mass
+ {:db/ident :progress/practice-mass
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Nonnegative effective non-assessment evidence mass under the local update."}
 
- {:db/ident :fire-state/learned
+ {:db/ident :progress/learned
   :db/valueType :db.type/boolean
   :db/cardinality :db.cardinality/one
   :db/doc "Whether this topic is admitted to retention tracking after a mastery-learning or explicit initialization decision. True alone does not establish current recall."}
 
- {:db/ident :fire-state/last-direct-at
+ {:db/ident :progress/last-direct-at
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one
   :db/doc "Last direct qualifying practice time, when known; implicit credit does not replace it."}
 
- {:db/ident :fire-state/policy
+ {:db/ident :progress/policy
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Policy under which this state was computed."}
 
- {:db/ident :fire-state/last-application
+ {:db/ident :progress/last-application
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Latest application receipt that changed this state; omitted for explicit initialization."}
 
- {:db/ident :fire-state/key
-  :db/valueType :db.type/tuple
-  :db/cardinality :db.cardinality/one
-  :db/unique :db.unique/value
-  :db/tupleAttrs [:fire-state/learner :fire-state/topic]
-  :db/doc "Derived uniqueness guard for the global learner-topic pair. Never assert it directly; ensure both constituent refs on every state write."}
-
- {:db/ident :fire-state/validate
-  :db.entity/attrs [:fire-state/id :fire-state/learner :fire-state/topic :fire-state/repetitions :fire-state/memory :fire-state/memory-at :fire-state/interval-days :fire-state/assessment-accuracy :fire-state/practice-accuracy :fire-state/assessment-mass :fire-state/practice-mass :fire-state/learned :fire-state/policy]
-  :db/doc "Requires a complete operational state. Ability can exist while learned=false, including after failed initial lessons. Effective accuracy is the mean of the two accuracy strata. Initialization values are explicit local choices, not inferred from XP."}
+ {:db/ident :progress/validate
+  :db.entity/attrs [:progress/id :progress/topic :progress/repetitions :progress/memory :progress/memory-at :progress/interval-days :progress/assessment-accuracy :progress/practice-accuracy :progress/assessment-mass :progress/practice-mass :progress/learned :progress/policy]
+  :db.entity/preds course-academy.progress/valid-progress?
+  :db/doc "Requires one learner owner, one record per topic in that profile, and complete operational state. Ability can exist while learned=false, including after failed initial lessons. Effective accuracy is the mean of the two accuracy strata. Initialization values are explicit local choices, not inferred from XP."}
 ]
