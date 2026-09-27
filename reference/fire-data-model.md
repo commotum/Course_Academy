@@ -1,5 +1,7 @@
 # FIRe data model and acquisition plan
 
+For the simpler application integration proposal, start with [How the learning engine plugs into our schema](fire-schema-integration.md). The contract below describes the standalone Python prototype; its policy, calibration, and receipt entities are not all required in the final application model.
+
 This is the data contract for [our FIRe implementation](../engine/fire/core.py). It records the state and evidence our engine needs, drawing on the published mechanisms and observed behavior. The new [FIRe schema directory](../schema-v2/fire/) adds retention and performance data without changing the existing course, topic, lesson, KP, question, or answer models. The separate [implementation explanation](fire-reconstruction.md) owns the executable equations and policy choices.
 
 The smallest useful system needs an explicit encompassing graph, an initial learner-topic profile, actual graded work, and a specified policy. A prerequisite graph plus completed-task XP is insufficient. It is possible to run an honest direct-review baseline before any encompassing weights have been established.
@@ -44,15 +46,17 @@ Install the existing content/data schemas and then the following files in numeri
 | File | Records | Why it exists |
 | --- | --- | --- |
 | [01-policy.edn](../schema-v2/fire/01-policy.edn) | `fire-policy` | Names the algorithm and retains its complete parameter map |
-| [02-encompassing.edn](../schema-v2/fire/02-encompassing.edn) | `fire-graph`, `fire-edge` | Stores exact topic set and directed weighted coverage, separately from prerequisites |
-| [03-learner-state.edn](../schema-v2/fire/03-learner-state.edn) | `fire-learner`, `fire-state` | Global learner identity/ability and one retention profile per learner-topic pair |
-| [04-topic-calibration.edn](../schema-v2/fire/04-topic-calibration.edn) | `fire-calibration`, `fire-difficulty` | Defines the aggregate topic difficulty inputs and their evidential basis |
-| [05-performance.edn](../schema-v2/fire/05-performance.edn) | `fire-event` | One observed, graded topic-level evidence unit before propagation |
-| [06-application.edn](../schema-v2/fire/06-application.edn) | `fire-application`, `fire-update` | Records how one event changed or deliberately did not change state |
+| [03-learner.edn](../schema-v2/fire/03-learner.edn) | `fire-learner` | Global learner identity and accuracy across topics |
+| [04-topic-progress.edn](../schema-v2/fire/04-topic-progress.edn) | `fire-state` | One retention and accuracy profile per learner-topic pair |
+| [05-topic-calibration.edn](../schema-v2/fire/05-topic-calibration.edn) | `fire-calibration`, `fire-difficulty` | Defines the aggregate topic difficulty inputs and their evidential basis |
+| [06-performance.edn](../schema-v2/fire/06-performance.edn) | `fire-event` | One observed, graded topic-level evidence unit before propagation |
+| [07-application.edn](../schema-v2/fire/07-application.edn) | `fire-application`, `fire-update` | Records how one event changed or deliberately did not change state |
 
 Topic, KP, and question refs point to existing content entities. No new content identities, copies, or versions are introduced. The learner-topic uniqueness key contains no course: shared knowledge carries across concurrent courses. Course membership still controls curricular scope and prerequisite eligibility outside this retention transition.
 
-Policy and graph IDs should match the engine's fingerprints. Their values are fixed once referenced by a receipt; changing an execution configuration gives it a new identity. A calibration set similarly identifies the exact difficulty inputs used. This is the minimum operational information needed to explain a calculation, not a content-version archive.
+Encompassing relationships are defined in [encompassing.edn](../schema-v2/data/encompassing.edn) and owned through `topic/encompasses`. Each record contains a component topic, weight, and optional rationale; the parent topic supplies the source. There is no separate graph entity or graph reference on application receipts. Rust can assemble its runtime graph from these relationships and the existing topic records, including topics without encompassings.
+
+Policy IDs should match the engine's fingerprints. Their values are fixed once referenced by a receipt; changing an execution configuration gives it a new identity. A calibration set similarly identifies the exact difficulty inputs used. These remain prototype configuration records.
 
 ## State and time
 
@@ -73,7 +77,7 @@ The four ability fields also exist under `:fire-learner/*` for the learner-globa
 
 The engine uses fractional elapsed days. The persistence adapter should map UTC instants to days from one fixed epoch, such as `unix_seconds / 86400`, and apply the same conversion to every event and state anchor. Local calendar dates and earned XP are not elapsed time. Simulated relative-day experiments remain simulations; do not invent calendar timestamps for them.
 
-Memory at time `t` is derived from the anchored value and stored interval. Due time and learning speed are also derived from state, policy, and calibration, so they do not need separately mutable authoritative fields. `:fire-learner/latest-event-at` records the chronological ingestion frontier even when an event produced only skipped updates. Older evidence requires rebuilding the intended trajectory rather than adding it to a later state.
+Memory at time `t` is derived from the anchored value and stored interval. Due time and learning speed are also derived from state, policy, and calibration, so they do not need separately mutable authoritative fields. The schema does not store a separate latest-event timestamp on the learner. The prototype's chronological processing checks remain in application code; incorporating older evidence may require recomputing progress in order.
 
 The existing `:topic/difficulty` attribute remains untouched because its scale was deliberately unspecified. This reconstruction uses `assessment_correct / assessment_total`, falling back to `prior_accuracy` only when no qualifying evidence exists. The result is an accuracy-like ease input to the speed function; it must not be confused with question-level easy/moderate/hard labels or expected solve time.
 
@@ -87,9 +91,9 @@ Ordered Boolean outcomes are stored as an EDN vector inside a string. An EDB car
 
 `(learner, event ID)` is the observation identity. Native composite uniqueness prevents duplicate rows, but it does not prove identical payloads or prevent an application from crediting an existing event again. The writer must compare the complete event fingerprint and make identical retries no-ops while rejecting conflicting payloads.
 
-Each receipt links the event, event hash, policy, graph, calibration set, processing time, exact pre-event input bundle, and per-target update traces. The input bundle includes topic states, global ability, latest accepted time, and any configured ability-neighborhood inputs. Topic states alone cannot reproduce a new topic's prior. Existing direct/key prerequisites and same-module membership can inform those neighborhoods; none is automatically an encompassing edge.
+Each receipt links the event, event hash, policy, calibration set, processing time, pre-event input bundle, and per-target update traces. The input bundle includes topic states, global ability, latest accepted time, and any configured ability-neighborhood inputs. Topic states alone cannot reproduce a new topic's prior. Existing direct/key prerequisites and same-module membership can inform those neighborhoods; none is automatically an encompassing edge.
 
-The trace preserves the engine's update dictionary: direct/implicit direction, coverage, early discount, raw delta, speed, failure multiplier, gate result, state before/after, and derived due time. Unlearned targets retain their ability changes and an explicit retention-skip reason; they receive no retention credit. The exact graph plus policy explains inferred paths; a recorded effective fraction alone would not preserve how it was calculated.
+The trace preserves the engine's update dictionary: direct/implicit direction, coverage, early discount, raw delta, speed, failure multiplier, gate result, state before/after, and derived due time. Unlearned targets retain their ability changes and an explicit retention-skip reason; they receive no retention credit. The schema no longer preserves immutable encompassing graph snapshots; the Python prototype's snapshots remain separate from this EDB model.
 
 Receipt insertion, learner-global ability, chronological frontier, and learner-topic state changes must commit atomically. Configuration experiments use isolated model state. Comparing another policy is not another successful repetition by the learner.
 

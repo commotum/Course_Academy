@@ -14,7 +14,7 @@ fn main() -> Result<(), Box<dyn Error>> {
   }
  }
  let fixture=r#"[
- {:db/id "advanced" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001" :topic/title "Illustrative advanced topic"}
+ {:db/id "advanced" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001" :topic/title "Illustrative advanced topic" :topic/encompasses ["edge"]}
  {:db/id "component" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000002" :topic/title "Illustrative component topic"}
  {:db/id "learner" :fire-learner/id "schema-check-learner"
   :fire-learner/assessment-accuracy 0.8 :fire-learner/practice-accuracy 0.9
@@ -22,10 +22,8 @@ fn main() -> Result<(), Box<dyn Error>> {
   :db/ensure [:fire-learner/validate :fire-learner/ability-validate]}
  {:db/id "policy" :fire-policy/id "schema-check-policy" :fire-policy/algorithm :fire.algorithm/schema-test
   :fire-policy/parameters-edn "{:base-days 1.0 :growth 2.0}" :db/ensure :fire-policy/validate}
- {:db/id "edge" :fire-edge/id "schema-check-edge" :fire-edge/advanced "advanced" :fire-edge/component "component"
-  :fire-edge/weight 0.0 :fire-edge/basis :fire.basis/illustration :db/ensure :fire-edge/validate}
- {:db/id "graph" :fire-graph/id "schema-check-graph" :fire-graph/edges ["edge"] :fire-graph/topics ["advanced" "component"] :db/ensure :fire-graph/validate}
- {:fire-graph/id "schema-check-no-edges" :db/ensure :fire-graph/validate}
+ {:db/id "edge" :encompassing/topic "component" :encompassing/weight 0.0
+  :encompassing/rationale "Illustrative explicit zero coverage for schema validation." :db/ensure :encompassing/validate}
  {:db/id "difficulty" :fire-difficulty/topic "advanced" :fire-difficulty/prior-accuracy 0.8
   :fire-difficulty/assessment-correct 3.0 :fire-difficulty/assessment-total 4.0
   :fire-difficulty/method :fire.calibration/assessment-cohort :fire-difficulty/cohort "Illustrative schema fixture"
@@ -46,7 +44,7 @@ fn main() -> Result<(), Box<dyn Error>> {
   :fire-state/learned false :fire-state/policy "policy" :db/ensure :fire-state/validate}
  {:db/id "update" :fire-update/topic "advanced" :fire-update/trace-edn "{:direct true :raw_delta 1.0 :before {:repetitions 0.5} :after {:repetitions 1.5}}" :db/ensure :fire-update/validate}
  {:fire-application/id "schema-check-application" :fire-application/event "event" :fire-application/event-hash "schema-test-payload" :fire-application/policy "policy"
-  :fire-application/graph "graph" :fire-application/calibration "calibration" :fire-application/input-state-edn "{}"
+  :fire-application/calibration "calibration" :fire-application/input-state-edn "{}"
   :fire-application/applied-at #inst "2026-09-26T00:00:01.000Z" :fire-application/updates ["update"] :db/ensure :fire-application/validate}
  ]"#;
  db=db.with_edn(fixture,2000)?.db_after;
@@ -88,7 +86,7 @@ fn main() -> Result<(), Box<dyn Error>> {
  assert_eq!(db.with_edn(missing,3000).unwrap_err().code,"transaction/entity-spec");
  let duplicate=r#"[{:fire-state/id "duplicate" :fire-state/learner [:fire-learner/id "schema-check-learner"] :fire-state/topic [:topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001"]}]"#;
  assert!(db.with_edn(duplicate,3000).is_err());
- println!("PASS all current content and FIRe schemas install; required-attribute specs accept graph/calibration/global ability/event/application/state fixtures, explicit zero edge, empty graph, quality 1.5 and unlearned ability.");
+ println!("PASS all current content and FIRe schemas install; required-attribute specs accept topic-owned encompassing/calibration/global ability/event/application/state fixtures, explicit zero coverage, optional rationale, quality 1.5 and unlearned ability.");
  println!("PASS state/event composites derive and resolve updates without new rows; event IDs are learner-scoped; missing state fields, duplicate state/event pairs, wrong scalar type and scalar-cardinality vector are rejected.");
  println!("Scope: schema shape/EDB semantics only; no engine equations, enum/range checks, or embedded EDN payload validation claimed.");
  Ok(())

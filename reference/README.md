@@ -22,6 +22,7 @@ still lead to their original locations.
 
 ## Current schema design
 
+- [How the learning engine plugs into the schema](fire-schema-integration.md): one-page proposal for Rust logic, ordinary activity records, and learner progress.
 - [Instructional content model](instructional-content-model.md): lessons, steps, knowledge points, examples, and tutorials.
 - [Answer model](answer-model.md): questions, answer fields, and answers.
 - [EDN schemas](../schema-v2/): current definitions, kept in their existing directory.

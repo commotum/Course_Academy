@@ -22,11 +22,6 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Exact immutable policy used; policy ID matches the engine fingerprint."}
 
- {:db/ident :fire-application/graph
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Exact immutable encompassing graph used; graph ID matches the engine fingerprint."}
-
  {:db/ident :fire-application/calibration
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
@@ -59,7 +54,7 @@
   :db/doc "Exact engine update dictionary encoded as EDN text. Applied records include direct flag, coverage, memory-before-decay/now, discount, raw_delta, speed, failure multiplier, implicit gate, before/after state, due_at. Skipped records retain their explicit reason. Application parses/validates payload."}
 
  {:db/ident :fire-application/validate
-  :db.entity/attrs [:fire-application/id :fire-application/event :fire-application/event-hash :fire-application/policy :fire-application/graph :fire-application/calibration :fire-application/applied-at :fire-application/input-state-edn]
+  :db.entity/attrs [:fire-application/id :fire-application/event :fire-application/event-hash :fire-application/policy :fire-application/calibration :fire-application/applied-at :fire-application/input-state-edn]
   :db/doc "Atomically apply receipt, learner clock, and state updates. An identical retry never credits twice; alternate-policy experiments use isolated state."}
 
  {:db/ident :fire-update/validate

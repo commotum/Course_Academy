@@ -1,0 +1,38 @@
+;; Global learner identity and accuracy across topics.
+;; Required-attribute specs are opt-in: request :db/ensure on each write.
+;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
+[
+ {:db/ident :fire-learner/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable learner identity used by the FIRe engine; not a login credential."}
+
+ {:db/ident :fire-learner/assessment-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global Assessment-only exponentially weighted accuracy in [0,1]. Equal averaging with practice accuracy is described publicly; the precise update rate and prior are local parameters. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :fire-learner/practice-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global Non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :fire-learner/assessment-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global Nonnegative effective assessment evidence mass under the local update, distinct from assessment accuracy. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :fire-learner/practice-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global Nonnegative effective non-assessment evidence mass under the local update. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :fire-learner/validate
+  :db.entity/attrs [:fire-learner/id]
+  :db/doc "Minimal engine learner identity; before recording global ability, also ensure fire-learner/ability-validate."}
+
+ {:db/ident :fire-learner/ability-validate
+  :db.entity/attrs [:fire-learner/id :fire-learner/assessment-accuracy :fire-learner/practice-accuracy :fire-learner/assessment-mass :fire-learner/practice-mass]
+  :db/doc "Complete global accuracy estimate. Its effective accuracy is the mean of the two accuracy fields; do not persist another independently mutable copy."}
+]
