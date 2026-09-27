@@ -1,5 +1,6 @@
 ;; Module model for EDB. Install before creating module entities.
-;; Request :db/ensure [:module/validate] when writing a module.
+;; Request :db/ensure [:module/identity-validate] for an ID-only placeholder.
+;; Request :db/ensure [:module/validate] when its required data is ready.
 ;; Unit membership is stored through :unit/modules.
 [
  {:db/ident :module/id
@@ -23,6 +24,10 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/doc "Topics belonging to this module. At least one is required when module/validate is explicitly ensured. These ordinary refs permit topic reuse across modules without cascading deletion. References define unordered membership; the course map defines topic order within this module. Referenced topics must also ensure topic/validate."}
+
+ {:db/ident :module/identity-validate
+  :db.entity/attrs [:module/id]
+  :db/doc "Requires only identity for a placeholder module when explicitly ensured. Use module/validate after filling in its required data."}
 
  {:db/ident :module/validate
   :db.entity/attrs [:module/id :module/title :module/topics]

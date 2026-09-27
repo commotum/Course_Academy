@@ -1,5 +1,6 @@
 ;; Unit model for EDB. Install before creating unit entities.
-;; Request :db/ensure [:unit/validate] when writing a unit.
+;; Request :db/ensure [:unit/identity-validate] for an ID-only placeholder.
+;; Request :db/ensure [:unit/validate] when its required data is ready.
 ;; Course membership is stored through :course/units.
 [
  {:db/ident :unit/id
@@ -23,6 +24,10 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/doc "Modules belonging to this unit. At least one is required when unit/validate is explicitly ensured. These references define unordered membership; the course map defines module order. Referenced modules must also ensure module/validate."}
+
+ {:db/ident :unit/identity-validate
+  :db.entity/attrs [:unit/id]
+  :db/doc "Requires only identity for a placeholder unit when explicitly ensured. Use unit/validate after filling in its required data."}
 
  {:db/ident :unit/validate
   :db.entity/attrs [:unit/id :unit/title :unit/modules]

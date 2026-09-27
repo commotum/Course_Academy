@@ -1,5 +1,6 @@
 ;; Knowledge-point model for EDB. Install before creating KP entities.
-;; Request :db/ensure [:knowledge-point/validate] when writing a KP.
+;; Request :db/ensure [:knowledge-point/identity-validate] for an ID-only placeholder.
+;; Request :db/ensure [:knowledge-point/validate] when its required data is ready.
 ;; MA describes a KP as a worked example with associated active practice.
 ;; Topic membership is stored through :topic/knowledge-points.
 ;; Instructional order is stored through lesson steps.
@@ -34,6 +35,10 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Optional reference to a question-generator entity holding a Python script that produces new questions for this KP. The application invokes the generator when more questions are needed, validates its output, and adds accepted questions to the KP's pool."}
+
+ {:db/ident :knowledge-point/identity-validate
+  :db.entity/attrs [:knowledge-point/id]
+  :db/doc "Requires only identity for a placeholder knowledge point when explicitly ensured. Use knowledge-point/validate after filling in its required data."}
 
  {:db/ident :knowledge-point/validate
   :db.entity/attrs [:knowledge-point/id
