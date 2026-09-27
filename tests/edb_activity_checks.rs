@@ -32,8 +32,8 @@ pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
     assert!(db
         .values(definition, attribute(&db, "assessment", "topics"))
         .is_empty());
-    let items_attr = attribute(&db, "activity", "items");
-    assert_eq!(db.values(activity, items_attr).len(), 8);
+    let tasks_attr = attribute(&db, "activity", "tasks");
+    assert_eq!(db.values(activity, tasks_attr).len(), 8);
     assert_eq!(
         db.values(activity, attribute(&db, "activity", "xp-earned")),
         vec![&Value::Long(18)]
@@ -50,12 +50,11 @@ pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
         .is_empty());
     let question = find(&db, "question", "math-academy-id", Value::Long(37713));
     let first = db
-        .values(activity, items_attr)
+        .values(activity, tasks_attr)
         .into_iter()
         .find_map(|v| match v {
             Value::Ref(id)
-                if db.values(*id, attribute(&db, "activity-item", "index"))
-                    == vec![&Value::Long(1)] =>
+                if db.values(*id, attribute(&db, "task", "index")) == vec![&Value::Long(1)] =>
             {
                 Some(*id)
             }
@@ -63,17 +62,17 @@ pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
         })
         .unwrap();
     assert_eq!(
-        db.values(first, attribute(&db, "activity-item", "content")),
+        db.values(first, attribute(&db, "task", "content")),
         vec![&Value::Ref(question)]
     );
     assert_eq!(
-        db.values(first, attribute(&db, "activity-item", "elapsed-seconds")),
+        db.values(first, attribute(&db, "task", "elapsed-seconds")),
         vec![&Value::Double(103.0)]
     );
     assert!(db
-        .values(first, attribute(&db, "activity-item", "completed-at"))
+        .values(first, attribute(&db, "task", "completed-at"))
         .is_empty());
-    let associated = match db.values(first, attribute(&db, "activity-item", "example"))[0] {
+    let associated = match db.values(first, attribute(&db, "task", "example"))[0] {
         Value::Ref(e) => *e,
         _ => panic!(),
     };
@@ -83,7 +82,7 @@ pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
     );
     let deleted = transact(&db, &format!("[[:db.fn/retractEntity {activity}]]"), 4100)?.db_after;
     assert!(deleted
-        .values(first, attribute(&db, "activity-item", "id"))
+        .values(first, attribute(&db, "task", "id"))
         .is_empty());
     assert!(!deleted
         .values(question, attribute(&db, "question", "id"))
@@ -133,7 +132,7 @@ pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
     assert!(transact(&db, r#"[{:activity/id #uuid "00000000-0000-4000-8000-000000000099" :db/ensure :activity/ready-validate}]"#,4301).is_err());
     assert!(transact(
         &db,
-        &format!("[{{:db/id {first} :activity-item/elapsed-seconds \"1:43\"}}]"),
+        &format!("[{{:db/id {first} :task/elapsed-seconds \"1:43\"}}]"),
         4300
     )
     .is_err());
@@ -152,18 +151,18 @@ pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
      {:db/id "review" :review/id #uuid "00000000-0000-4000-8000-000000000031"}
      {:db/id "activity" :activity/id #uuid "00000000-0000-4000-8000-000000000024"
       :activity/content "review" :activity/title "Synthetic retry example" :activity/status :activity.status/completed
-      :activity/items ["one" "two"] :db/ensure :activity/validate}
-     {:db/id "one" :activity-item/id #uuid "00000000-0000-4000-8000-000000000025"
-      :activity-item/index 1 :activity-item/type :activity-item.type/question :activity-item/content "q"
-      :activity-item/result :activity-item.result/correct :activity-item/response-state :activity-item.response/recorded
-      :activity-item/submissions ["s1" "s2"] :db/ensure :activity-item/ready-validate}
-     {:db/id "two" :activity-item/id #uuid "00000000-0000-4000-8000-000000000026"
-      :activity-item/index 2 :activity-item/type :activity-item.type/question :activity-item/content "q"
-      :activity-item/result :activity-item.result/incorrect :activity-item/response-state :activity-item.response/no-answer :db/ensure :activity-item/ready-validate}
+      :activity/tasks ["one" "two"] :db/ensure :activity/validate}
+     {:db/id "one" :task/id #uuid "00000000-0000-4000-8000-000000000025"
+      :task/index 1 :task/type :task.type/question :task/content "q"
+      :task/result :task.result/correct :task/response-state :task.response/recorded
+      :task/submissions ["s1" "s2"] :db/ensure :task/ready-validate}
+     {:db/id "two" :task/id #uuid "00000000-0000-4000-8000-000000000026"
+      :task/index 2 :task/type :task.type/question :task/content "q"
+      :task/result :task.result/incorrect :task/response-state :task.response/no-answer :db/ensure :task/ready-validate}
      {:db/id "s1" :submission/id #uuid "00000000-0000-4000-8000-000000000027" :submission/index 1
-      :submission/result :activity-item.result/incorrect :submission/fields ["a1"] :db/ensure :submission/validate}
+      :submission/result :task.result/incorrect :submission/fields ["a1"] :db/ensure :submission/validate}
      {:db/id "s2" :submission/id #uuid "00000000-0000-4000-8000-000000000028" :submission/index 2
-      :submission/result :activity-item.result/correct :submission/fields ["a2"] :db/ensure :submission/validate}
+      :submission/result :task.result/correct :submission/fields ["a2"] :db/ensure :submission/validate}
      {:db/id "a1" :submitted-answer/id #uuid "00000000-0000-4000-8000-000000000029"
       :submitted-answer/field "field" :submitted-answer/selected-answer "wrong" :db/ensure :submitted-answer/validate}
      {:db/id "a2" :submitted-answer/id #uuid "00000000-0000-4000-8000-000000000030"
@@ -195,6 +194,72 @@ pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
     assert!(!after
         .values(content, attribute(&db, "question", "id"))
         .is_empty());
-    println!("PASS activity drafts: six categories identifiable through content refs, summaries with unknown content, signed/above-base XP, unknown durations, eight real quiz occurrences, example ID mapping, repeated questions/submissions and component deletion preserving canonical content. Proposed enum/range/ownership-controller rules are not claimed to be enforced by required-attribute specs.");
+
+    // Queue entries belong to the learner; their content definitions remain shared.
+    // The queue records why and how content was selected independently of history.
+    let queued = r#"[
+     {:db/id "learner" :learner/id "synthetic-queue" :learner/queue ["recommended" "selected"] :db/ensure :learner/validate}
+     {:db/id "definition" :review/id #uuid "00000000-0000-4000-8000-000000000050"}
+     {:db/id "recommended" :queue/id #uuid "00000000-0000-4000-8000-000000000051"
+      :queue/content "definition" :queue/index 1 :queue/selection :queue.selection/recommended
+      :queue/reason "Review is due." :db/ensure :queue/validate}
+     {:db/id "selected" :queue/id #uuid "00000000-0000-4000-8000-000000000052"
+      :queue/content "definition" :queue/index 2 :queue/selection :queue.selection/self-selected
+      :queue/reason "Practice for this week's assignment." :db/ensure :queue/validate}
+    ]"#;
+    db = transact(&db, queued, 4600)?.db_after;
+    let owner = find(
+        &db,
+        "learner",
+        "id",
+        Value::String("synthetic-queue".into()),
+    );
+    let queue_attr = attribute(&db, "learner", "queue");
+    let shared = find(
+        &db,
+        "review",
+        "id",
+        Value::Uuid(0x00000000000040008000000000000050),
+    );
+    let entries: Vec<u64> = db
+        .values(owner, queue_attr)
+        .into_iter()
+        .map(|v| match v {
+            Value::Ref(id) => *id,
+            _ => panic!(),
+        })
+        .collect();
+    assert_eq!(entries.len(), 2);
+    for entry in &entries {
+        assert_eq!(
+            db.values(*entry, attribute(&db, "queue", "content")),
+            vec![&Value::Ref(shared)]
+        );
+        let owners = db.datoms_with_prefix(&edb_core::IndexPrefix::Vaet {
+            value: Value::Ref(*entry),
+            attribute: Some(queue_attr),
+            entity: None,
+        })?;
+        assert_eq!(owners.len(), 1);
+        assert_eq!(owners[0].entity, owner);
+    }
+    assert!(transact(
+        &db,
+        r#"[{:queue/id #uuid "00000000-0000-4000-8000-000000000053"
+         :queue/index 3 :queue/selection :queue.selection/recommended
+         :queue/reason "Missing content." :db/ensure :queue/validate}]"#,
+        4700
+    )
+    .is_err());
+    let removed = transact(&db, &format!("[[:db.fn/retractEntity {owner}]]"), 4800)?.db_after;
+    for entry in entries {
+        assert!(removed
+            .values(entry, attribute(&db, "queue", "id"))
+            .is_empty());
+    }
+    assert!(!removed
+        .values(shared, attribute(&db, "review", "id"))
+        .is_empty());
+    println!("PASS activity drafts: six categories identifiable through content refs, summaries with unknown content, signed/above-base XP, unknown durations, eight real quiz tasks, example ID mapping, repeated questions/submissions and component deletion preserving canonical content. Learner-owned queue entries support both selection reasons, resolve reverse ownership, require content and cascade on learner deletion while preserving shared definitions. Proposed enum/range/ownership-controller rules are not claimed to be enforced by required-attribute specs.");
     Ok(())
 }

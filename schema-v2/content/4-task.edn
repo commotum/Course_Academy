@@ -1,136 +1,137 @@
-;; One presented content occurrence owned through activity/items.
+;; One learner-specific presentation of a question, tutorial, or example.
+;; Owned through activity/tasks; task/content points to the reusable content.
 ;; Entity specs check required attributes only and must be explicitly ensured.
 ;; Relationship, enum, range, and delivery rules below are application contracts.
 [
- {:db/ident :activity-item.type/question}
- {:db/ident :activity-item.type/tutorial}
- {:db/ident :activity-item.type/example}
+ {:db/ident :task.type/question}
+ {:db/ident :task.type/tutorial}
+ {:db/ident :task.type/example}
 
- {:db/ident :activity-item.result/correct}
- {:db/ident :activity-item.result/incorrect}
- {:db/ident :activity-item.result/partial}
+ {:db/ident :task.result/correct}
+ {:db/ident :task.result/incorrect}
+ {:db/ident :task.result/partial}
 
- {:db/ident :activity-item.response/unavailable}
- {:db/ident :activity-item.response/no-answer}
- {:db/ident :activity-item.response/recorded}
+ {:db/ident :task.response/unavailable}
+ {:db/ident :task.response/no-answer}
+ {:db/ident :task.response/recorded}
 
- {:db/ident :activity-item/id
+ {:db/ident :task/id
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
   :db/doc "Stable local identity assigned by the application, independent of external source identifiers."}
 
- {:db/ident :activity-item/index
+ {:db/ident :task/index
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
   :db/doc "Positive presentation order unique within the activity. Distinguishes repeated occurrences of the same question."}
 
- {:db/ident :activity-item/type
+ {:db/ident :task/type
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Question, tutorial, or example presentation. Observed completed-history rows are questions; instructional presentation tracking is our application design."}
 
- {:db/ident :activity-item/content
+ {:db/ident :task/content
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Question, tutorial, or example presented here, matching type. Ordinary shared-content ref. Required before delivery, but can be absent in reduced historical observations without recovered content IDs."}
 
- {:db/ident :activity-item/topic
+ {:db/ident :task/topic
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Optional directly assessed topic for this occurrence. Preserve explicit topic links; this is activity context, not a second question-bank membership."}
 
- {:db/ident :activity-item/knowledge-point
+ {:db/ident :task/knowledge-point
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Optional verified KP practiced by this presentation. Omit when only a group label or example content anchor is known."}
 
- {:db/ident :activity-item/example
+ {:db/ident :task/example
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Optional associated example content, including the content ID in a captured /topics/660#4962 link. That fragment identifies an example, not a lesson-step ID or automatically a separate KP ID."}
 
- {:db/ident :activity-item/group
+ {:db/ident :task/group
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional activity-group within the same activity. Reverse lookup supplies group items; activity/items remains the sole component owner."}
+  :db/doc "Optional activity-group within the same activity. Reverse lookup supplies group tasks; activity/tasks remains the sole component owner."}
 
- {:db/ident :activity-item/multistep-step
+ {:db/ident :task/multistep-step
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Optional ordered placement within the multistep definition being attempted."}
 
- {:db/ident :activity-item/difficulty
+ {:db/ident :task/difficulty
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Optional observed question.difficulty enum at this presentation. Retains the E/M/H evidence used by the activity even if the reusable question metadata later changes."}
 
- {:db/ident :activity-item/result
+ {:db/ident :task/result
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Optional final question outcome: correct, incorrect, or explicitly graded partial. One result can cover multiple answer fields. Omit for unknown or ungraded instruction."}
 
- {:db/ident :activity-item/response-state
+ {:db/ident :task/response-state
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Whether the response is unavailable in the capture, explicitly No answer, or recorded. An absent studentAnswer block is unavailable; No answer does not establish intentional skipping. A correct result can have an unavailable response."}
 
- {:db/ident :activity-item/started-at
+ {:db/ident :task/started-at
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one
   :db/doc "Optional actual presentation start instant. Not inferred from a quiz completion label."}
 
- {:db/ident :activity-item/completed-at
+ {:db/ident :task/completed-at
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one
   :db/doc "Optional actual finalization instant for this presentation. Populate only with reliable timing evidence."}
 
- {:db/ident :activity-item/elapsed-seconds
+ {:db/ident :task/elapsed-seconds
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional nonnegative finite question elapsed time. Elapsed: 1:43 maps to 103.0. May include pauses and is not task-level duration."}
+  :db/doc "Optional nonnegative finite question elapsed time. Elapsed: 1:43 maps to 103.0. May include pauses; this is not the duration of the whole activity."}
 
- {:db/ident :activity-item/active-seconds
+ {:db/ident :task/active-seconds
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Optional nonnegative finite measured active engagement time for this presentation. Source elapsed time is not evidence of this measurement."}
 
- {:db/ident :activity-item/expected-seconds
+ {:db/ident :task/expected-seconds
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Optional positive finite expected solve time supplied by content calibration or the engine. Separate from actual elapsed time and E/M/H difficulty."}
 
- {:db/ident :activity-item/hints-used
+ {:db/ident :task/hints-used
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
   :db/doc "Optional nonnegative number of hints used before the final result; omit if not observed."}
 
- {:db/ident :activity-item/solution-revealed
+ {:db/ident :task/solution-revealed
   :db/valueType :db.type/boolean
   :db/cardinality :db.cardinality/one
   :db/doc "Optional indication that the solution was revealed before final answering. Expanding a completed-history explanation does not establish this."}
 
- {:db/ident :activity-item/prior-presentations
+ {:db/ident :task/prior-presentations
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
   :db/doc "Optional number of earlier presentations of this question to the learner, as known when served. Omit for incomplete imported exposure history."}
 
- {:db/ident :activity-item/submissions
+ {:db/ident :task/submissions
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Optional owned response submissions, ordered by submission/index. Preserve retries independently; a repeated question presentation is another activity-item. Absence does not prove no response."}
+  :db/doc "Optional owned response submissions, ordered by submission/index. Preserve retries independently; a repeated question presentation is another task. Absence does not prove no response."}
 
- {:db/ident :activity-item/source-time
+ {:db/ident :task/source-time
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "Optional literal answerCreated label. Quiz values may all equal activity completion time; do not treat these as verified individual submission instants."}
 
- {:db/ident :activity-item/validate
-  :db.entity/attrs [:activity-item/id :activity-item/index :activity-item/type]
+ {:db/ident :task/validate
+  :db.entity/attrs [:task/id :task/index :task/type]
   :db/doc "Requires identity, order, and presentation type. Validate exactly one activity owner, supported enums, unique indexes, context refs and timing ranges. Question result and response availability are independent. Ensure each submission separately; inferred grades and recovered content must not replace observations."}
 
- {:db/ident :activity-item/ready-validate
-  :db.entity/attrs [:activity-item/id :activity-item/index :activity-item/type :activity-item/content]
+ {:db/ident :task/ready-validate
+  :db.entity/attrs [:task/id :task/index :task/type :task/content]
   :db/doc "Requires resolved content before delivery. The controller separately validates ready question/tutorial/example content, context, ownership, and response compatibility."}
 ]

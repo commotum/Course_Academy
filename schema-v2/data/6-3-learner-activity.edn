@@ -11,9 +11,6 @@
  {:db/ident :activity.outcome/passed}
  {:db/ident :activity.outcome/failed}
 
- {:db/ident :activity.selection/recommended}
- {:db/ident :activity.selection/self-selected}
-
  {:db/ident :activity/id
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
@@ -35,16 +32,6 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Reference to the lesson, review, assessment, multistep, diagnostic, or supplemental-diagnostic definition being attempted. Derive the activity category from the target's identifying attribute, such as review/id or assessment/id. Incomplete imports may reference an identity-only content placeholder, or omit this ref when content is unknown. Local delivery requires complete, validated content."}
 
- {:db/ident :activity/course
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional course context for this attempt. Preserve the basis of inferred CSV course attribution in source-notes; never copy the current sidebar course onto historical work."}
-
- {:db/ident :activity/topic
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional main task topic, observed for lessons/reviews. Multi-topic activities use their item topic refs; do not invent a single topic from an exam or scenario title."}
-
  {:db/ident :activity/status
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
@@ -54,11 +41,6 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Optional explicit pass/fail decision from the activity controller. Omit when only completion or XP was observed; diagnostics need not have a pass/fail outcome."}
-
- {:db/ident :activity/selection
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional entry route, recommended or self-selected. Both use the same grading and learning updates. Historical captures do not establish the route."}
 
  {:db/ident :activity/retake
   :db/valueType :db.type/boolean
@@ -121,11 +103,11 @@
   :db/isComponent true
   :db/doc "Optional owned lesson KP groups, ordered by activity-group/index. Grouping is not a separate attempt and need not expose a recoverable KP ID."}
 
- {:db/ident :activity/items
+ {:db/ident :activity/tasks
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Owned presentation occurrences, ordered by activity-item/index. Questions can recur with separate occurrence IDs. Tutorial/example presentations can also be logged; question counts are derived by filtering item type."}
+  :db/doc "Owned task occurrences defined in ../content/4-task.edn, ordered by task/index. Each is one presentation of a question, tutorial, or example. Questions can recur with separate task IDs. Derive actual practiced topics from these tasks and intended scope from activity/content."}
 
  {:db/ident :activity/results-complete
   :db/valueType :db.type/boolean
@@ -149,7 +131,7 @@
 
  {:db/ident :activity/validate
   :db.entity/attrs [:activity/id :activity/title :activity/status]
-  :db/doc "Requires core attempt identity and lifecycle fields. Find the learner through learner/_activity; require exactly one owner and unique external task IDs within that history in the writer. Separately ensure groups/items/submissions. Validate supported enums, target types, nonnegative timings, chronological known instants, index uniqueness, retake ownership, and signed XP semantics. Partial historical imports may omit content, item details, timestamps, duration, and XP. This required-attribute spec does not enforce those relationships."}
+  :db/doc "Requires core attempt identity and lifecycle fields. Find the learner through learner/_activity; require exactly one owner and unique external task IDs within that history in the writer. Separately ensure groups/tasks/submissions. Validate supported enums, target types, nonnegative timings, chronological known instants, index uniqueness, retake ownership, and signed XP semantics. Partial historical imports may omit content, task details, timestamps, duration, and XP. This required-attribute spec does not enforce those relationships."}
 
  {:db/ident :activity/ready-validate
   :db.entity/attrs [:activity/id :activity/title :activity/status :activity/content]

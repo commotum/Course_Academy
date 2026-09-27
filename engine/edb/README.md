@@ -8,7 +8,7 @@ Register these callbacks with `register_progress_predicates` in a `TxFunctions` 
 
 On progress writes, request `:db/ensure :progress/validate`. On membership changes, request `:db/ensure :learner/validate` for affected learners and `:progress/validate` for affected surviving progress records, including detached records. Create the learner link and progress in the same transaction. To remove progress, retract the component entity; to transfer it, retract the old link and assert the new link atomically. A learner deletion cascades to its progress.
 
-Specs are opt-in: bypassing `:db/ensure` bypasses these checks. The learner's minimal validation permits ID-only progress placeholders with a topic; ensure each progress record's complete spec before using it in the engine. Global accuracy still has its separate `learner/ability-validate` spec. Activity history remains an ordinary reference collection; its common schema and supporting drafts are described in [the activity proposal](../../schema-v2/proposed/README.md). Activity domain guards are not implemented by these progress predicates.
+Specs are opt-in: bypassing `:db/ensure` bypasses these checks. The learner's minimal validation permits ID-only progress placeholders with a topic; ensure each progress record's complete spec before using it in the engine. Global accuracy still has its separate `learner/ability-validate` spec. Activity history remains an ordinary reference collection; its common schema and supporting drafts are described in [the activity proposal](../../schema-v2/proposed/README.md). Activity domain guards are not implemented by these progress predicates. `learner/queue` owns the current up-next entries, while `activity/tasks` owns individual learner presentations defined in `content/4-task.edn`. Queue ownership, index uniqueness, selection enums, and content validation likewise remain application contracts; these progress predicates do not check the queue or implement scheduling.
 
 # Policy and topic difficulty
 
@@ -58,4 +58,4 @@ rustc --edition=2021 tests/validate_fire_schema.rs \
 
 The library filename is specific to the installed EDB build. Tests cover policy bounds and enums, topic evidence consistency, optional initial estimates, historical difficulty lookup, and existing progress/event behavior. They do not exercise a production writer or change a persistent database.
 
-The schema harness also installs the proposed activity schemas and exercises `tests/edb_activity_checks.rs`. Those drafts currently enforce required attributes and native types/cardinalities only; their full domain rules are documented for the future activity controller.
+The schema harness also installs the queue, task, and proposed activity schemas and exercises `tests/edb_activity_checks.rs`. Those drafts currently enforce required attributes and native types/cardinalities only; their full domain rules are documented for the future activity controller.

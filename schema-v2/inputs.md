@@ -32,7 +32,7 @@ Defines the material the scheduler should consider—for example, all three cour
 
 ## An explicitly selected lesson
 
-Directs the engine to prepare that lesson, while still checking prerequisites and handling its completion normally.
+Directs the engine to prepare that lesson, while still checking prerequisites and handling its completion normally. `learner/queue` can record the selected content, its position, whether it was self-selected or recommended, and why it is next. An optional queue course ref records the motivating course.
 
 For our flexible scheduler, available study time, priorities, and assignment deadlines can also influence selection. Those are planned extensions; the current FIRe core does not use them.
 
@@ -49,4 +49,6 @@ The grading and completion rules turn that evidence into topic-level success or 
 
 The current FIRe core already uses time, learner progress, accuracy, topic difficulty, encompassing weights, and graded results. Its ranker also requires estimated duration. Prerequisite eligibility, question selection, study scope, and the full lesson/review/test scheduling rules still need application code.
 
-Schema-wise, the clearest missing inputs are therefore structured question attempts, activity records, and your study scope. The retention and encompassing attributes already exist in the prototype, but need a simpler home.
+The schema now has activity records in `data/6-3-learner-activity.edn`, individual presentation records in `content/4-task.edn`, and response details in the proposed submission schemas. `data/6-4-learner-queue.edn` records current up-next choices. Activity category and intended topic scope come from referenced content; task records hold the topics actually observed. `learner/knowledge-profile` owns the existing retention and accuracy records.
+
+Study scope, priorities, available time, and deadlines still need models where they are required. The scheduler and activity controller must turn these inputs into decisions, record measurements, and update progress. Queue entries describe current selections; they are removed when launched or dismissed and do not provide a permanent explanation of past scheduling decisions. A durable decision history is not modeled yet.
