@@ -2,7 +2,7 @@
 
 For the simpler application integration proposal, start with [How the learning engine plugs into our schema](fire-schema-integration.md). The contract below describes the standalone Python prototype; its policy, calibration, and receipt entities are not all required in the final application model.
 
-This is the data contract for [our FIRe implementation](../engine/fire/core.py). It records the state and evidence our engine needs, drawing on the published mechanisms and observed behavior. The new [FIRe schema directory](../schema-v2/fire/) adds retention and performance data without changing the existing course, topic, lesson, KP, question, or answer models. The separate [implementation explanation](fire-reconstruction.md) owns the executable equations and policy choices.
+This is the data contract for [our FIRe implementation](../engine/fire/core.py). It records the state and evidence our engine needs, drawing on the published mechanisms and observed behavior. The [learner and progress schemas](../schema-v2/data/) and remaining [FIRe schemas](../schema-v2/fire/) add retention and performance data without changing the existing course, topic, lesson, KP, question, or answer models. The separate [implementation explanation](fire-reconstruction.md) owns the executable equations and policy choices.
 
 The smallest useful system needs an explicit encompassing graph, an initial learner-topic profile, actual graded work, and a specified policy. A prerequisite graph plus completed-task XP is insufficient. It is possible to run an honest direct-review baseline before any encompassing weights have been established.
 
@@ -47,7 +47,7 @@ Install the existing content/data schemas and then the following files in numeri
 | --- | --- | --- |
 | [01-policy.edn](../schema-v2/fire/01-policy.edn) | `fire-policy` | Names the algorithm and retains its complete parameter map |
 | [6-1-learner.edn](../schema-v2/data/6-1-learner.edn) | `fire-learner` | Global learner identity and accuracy across topics |
-| [6-2-progress.edn](../schema-v2/data/6-2-progress.edn) | `progress` | One retention and accuracy profile per learner-topic pair |
+| [6-2-learner-progress.edn](../schema-v2/data/6-2-learner-progress.edn) | `progress` | One retention and accuracy profile per learner-topic pair |
 | [05-topic-calibration.edn](../schema-v2/fire/05-topic-calibration.edn) | `fire-calibration`, `fire-difficulty` | Defines the aggregate topic difficulty inputs and their evidential basis |
 | [06-performance.edn](../schema-v2/fire/06-performance.edn) | `fire-event` | One observed, graded topic-level evidence unit before propagation |
 | [07-application.edn](../schema-v2/fire/07-application.edn) | `fire-application`, `fire-update` | Records how one event changed or deliberately did not change state |
