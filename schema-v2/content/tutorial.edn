@@ -1,5 +1,5 @@
 ;; Expository instruction: concepts, definitions, derivations, and illustrations.
-;; Lesson placement and teaching sequence will be modeled separately.
+;; Lesson placement and teaching sequence are stored through lesson steps.
 ;; Request :db/ensure [:tutorial/validate] when writing a tutorial.
 [
  {:db/ident :tutorial/id
@@ -7,6 +7,12 @@
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
   :db/doc "Stable identity of instructional content, independent of its placement in a lesson."}
+
+ {:db/ident :tutorial/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Optional MA tutorial content ID: contentid on a tutorial step in source HTML, or content_id in lesson JSON."}
 
  {:db/ident :tutorial/title
   :db/valueType :db.type/string

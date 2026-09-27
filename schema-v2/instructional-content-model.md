@@ -32,8 +32,8 @@ The implemented entities and relationships are:
 
 | Entity | Proposed content/refs | Reason |
 | --- | --- | --- |
-| [Tutorial](content/tutorial.edn) | id, title, content | Exposition in Markdown with mathematics and images; no required answer |
-| [Example](content/06-example.edn) | id, problem, explanation | The demonstrated problem and worked solution |
+| [Tutorial](content/tutorial.edn) | id, optional MA content ID, title, content | Exposition in Markdown with mathematics and images; no required answer |
+| [Example](content/06-example.edn) | id, optional MA content ID, problem, explanation | The demonstrated problem and worked solution |
 | [Knowledge point](data/05-knowledge-point.edn) | id, title, key-prerequisites refs, example ref, questions refs, question-generator ref | The skill being practiced, its key prerequisite topics, and the content teaching/assessing it |
 | [Question](content/07-question.edn) | Problem, type, fields, explanation, metadata | An item prepared for the learner to answer |
 | Answer field → answer | [Answer field](content/08-answer-field.edn) and [answer](content/09-answer.edn) | Expected values and selection options for each question field |
@@ -64,7 +64,25 @@ The readability review uses this presentation convention: enum declarations in a
 
 Math Academy identifiers are optional source identifiers wherever modeled; our own entity IDs are required. Source identifiers remain unique when supplied, allowing independently created content alongside imported content.
 
-The [lesson schema](data/lesson.edn) defines reusable instruction and staged practice for a topic, separate from a learner's lesson attempt. It references the topic and owns instructional step entities. The [lesson-step schema](data/lesson-step.edn) represents tutorial/KP placement, order, and optional captured step identity. Its type enums are tutorial and knowledge-point in our model; the latter maps from a captured example step only after verifying the KP/example association. Content refs are ordinary refs, so removing a lesson and its owned steps preserves instructional content. Native specs require step identity, type, index, and content; matching target types, positive and lesson-unique indexes, and topic/KP membership need additional validation. Questions served during an attempt belong to task history and are selected from the KP's question pool, rather than prescribed by the captured reference-page question sequence. No separate MA lesson identifier has been established for the captured lesson corpus, so topic and task IDs are not copied into a lesson source-ID field.
+The source-to-schema mapping separates a captured placement from its instructional content:
+
+| Source | Schema attribute or relationship |
+| --- | --- |
+| Topic ID | topic/math-academy-id |
+| stepid / step-id | lesson-step/math-academy-id |
+| Instructional step order | lesson-step/index |
+| contentid with steptype=tutorial | tutorial/math-academy-id |
+| contentid with steptype=example | example/math-academy-id |
+| Example-step title and key-prerequisite links | knowledge-point/title and knowledge-point/key-prerequisites |
+| exampleQuestion and exampleExplanation sections | example/problem and example/explanation |
+| Separately identified following questions | question/math-academy-id and derived knowledge-point/questions membership |
+
+For topic 14, step 14286 references tutorial content 2787; step 14287 maps to a KP whose example content is 4031 and whose captured practice questions are 58 and 57. The example-step block contributes placement, KP metadata, and example content to separate local entities. Practice questions are sibling HTML elements; their association with the preceding step is derived by the exporter. They are not nested content IDs or a complete question bank.
+
+No independent MA ID is asserted on our KP entity. The verified activity link /topics/491#2993 resolves via example/math-academy-id 2993 and topic context, then the KP's example relationship. Other links require verification; missing or ambiguous matches must not be silently merged. Tutorial and example source IDs have separate uniqueness constraints because their numeric namespaces overlap. A source step ID must not be substituted for either content identity.
+
+
+The [lesson schema](data/lesson.edn) defines reusable instruction and staged practice for a topic, separate from a learner's lesson attempt. It references the topic and owns instructional step entities. The [lesson-step schema](data/lesson-step.edn) represents tutorial/KP placement, order, and optional captured step identity. Each step references a tutorial or a knowledge point; its target is identified from the referenced entity rather than a separate step-type attribute. A captured example step maps to a KP teaching placement, with its worked content stored in the KP’s example. Content refs are ordinary refs, so removing a lesson and its owned steps preserves instructional content. Native specs require step identity, index, and content. Additional validation must require a target that is a tutorial or KP, positive and lesson-unique indexes, and valid topic/KP membership. EDB refs alone do not restrict entity shapes, so missing or ambiguous target classifications must be rejected by that validator. Questions served during an attempt belong to task history and are selected from the KP's question pool, rather than prescribed by the captured reference-page question sequence. No separate MA lesson identifier has been established for the captured lesson corpus, so topic and task IDs are not copied into a lesson source-ID field.
 
 | Schema | Attribute presentation after any enum declarations |
 | --- | --- |
@@ -76,10 +94,10 @@ The [lesson schema](data/lesson.edn) defines reusable instruction and staged pra
 | Module | id, math-academy-id, title, topics, validate |
 | Topic | id, math-academy-id, title, difficulty, prerequisites, knowledge-points, validate |
 | Lesson | id, topic, steps, validate |
-| Lesson step | id, math-academy-id, type, index, content, validate |
-| Tutorial | id, title, content, validate |
-| Knowledge point | id, math-academy-id, title, key-prerequisites, example, questions, question-generator, validate |
-| Example | id, problem, explanation, validate |
+| Lesson step | id, math-academy-id, index, content, validate |
+| Tutorial | id, math-academy-id, title, content, validate |
+| Knowledge point | id, title, key-prerequisites, example, questions, question-generator, validate |
+| Example | id, math-academy-id, problem, explanation, validate |
 | Question | id, math-academy-id, type, difficulty, requires-calculator, problem, answer-fields, explanation, validate |
 | Answer field | id, key, answer-choices, correct-answer, validate |
 | Answer | id, type, value, validate |

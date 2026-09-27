@@ -1,39 +1,29 @@
 ;; An instructional placement owned through :lesson/steps.
 ;; Request :db/ensure [:lesson-step/validate] when writing a step.
 [
- ;; Enum values: instructional targets in our model.
- {:db/ident :lesson-step.type/tutorial}
- {:db/ident :lesson-step.type/knowledge-point}
-
- ;; Step attributes and validation.
  {:db/ident :lesson-step/id
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
-  :db/doc "Stable identity of an instructional placement in one lesson, distinct from its referenced content."}
+  :db/doc "Stable identity of an instructional placement in one lesson."}
 
  {:db/ident :lesson-step/math-academy-id
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
-  :db/doc "Optional original Math Academy step identifier, taken from step-id in DATA/Lesson-Data/Steps.csv or stepid in captured HTML. This is the placement ID, not the tutorial/example content ID or a learner task ID. Omit for independently created steps."}
-
- {:db/ident :lesson-step/type
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Instructional target: lesson-step.type/tutorial or lesson-step.type/knowledge-point. MA captures label instructional steps tutorial or example; an example placement maps to a knowledge-point step after verifying the associated KP/example mapping. These enum names describe our model."}
+  :db/doc "Optional MA placement ID: step-id in Steps.csv or stepid in source HTML."}
 
  {:db/ident :lesson-step/index
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
-  :db/doc "1-based instructional order within the lesson, interleaving tutorials and knowledge points. Must be positive and unique within that lesson. Derive from instructional step order, not numeric source IDs or the order of questions served during an attempt."}
+  :db/doc "1-based instructional order, positive and unique within the lesson."}
 
  {:db/ident :lesson-step/content
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "The tutorial or knowledge point placed here, matching lesson-step/type. A knowledge point supplies its example and question pool. This ordinary ref permits content reuse and preserves that content when the owning lesson or step is deleted. Validate the referenced tutorial or knowledge point separately."}
+  :db/doc "The tutorial or knowledge point placed here. This ordinary ref preserves content when the step is deleted. Validate the referenced entity separately."}
 
  {:db/ident :lesson-step/validate
-  :db.entity/attrs [:lesson-step/id :lesson-step/type :lesson-step/index :lesson-step/content]
-  :db/doc "Requires identity, type, index, and content ref when explicitly ensured. The Math Academy identifier is optional. Supported enum membership, matching content type, positive indexes unique within the lesson, ownership by one lesson, and KP membership in the lesson's topic require additional validation."}
+  :db.entity/attrs [:lesson-step/id :lesson-step/index :lesson-step/content]
+  :db/doc "Requires identity, index, and content when explicitly ensured. The MA ID is optional. Target type, ordering, ownership, and topic/KP membership require additional validation."}
 ]
