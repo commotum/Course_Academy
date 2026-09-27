@@ -1,0 +1,40 @@
+;; A response submission owned by one question occurrence, not reusable answer content.
+;; Entity specs check required attributes only and must be explicitly ensured.
+;; Relationship, enum, range, and delivery rules below are application contracts.
+[
+ {:db/ident :submission/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable local identity assigned by the application, independent of external source identifiers."}
+
+ {:db/ident :submission/index
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Positive order among recorded submissions, unique within the occurrence. Allows multiple tries; the first recovered submission need not be the first actual try."}
+
+ {:db/ident :submission/submitted-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional actual submission instant when reliably known. Do not assign quiz completion labels as individual submission timestamps."}
+
+ {:db/ident :submission/response
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional displayed learner response as Markdown with LaTeX/images when field mapping is unavailable, such as -4, 2. Preserve only actual learner-answer content; result-page answer keys are not submissions."}
+
+ {:db/ident :submission/fields
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Optional owned responses to canonical answer fields. At least response or one field is required. Use stable answer IDs for selections rather than shuffled letters."}
+
+ {:db/ident :submission/result
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional outcome of this particular submission using activity-item.result enums. The occurrence stores the final overall result."}
+
+ {:db/ident :submission/validate
+  :db.entity/attrs [:submission/id :submission/index]
+  :db/doc "Requires identity and submission order. The writer requires a displayed response or field values, exactly one occurrence owner, unique order, and compatible grading context. Historical final responses may be stored without reconstructing unseen prior retries; omit unknown individual timing."}
+]

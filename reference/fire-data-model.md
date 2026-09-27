@@ -46,7 +46,7 @@ Install all content/data and engine schema files before transacting domain recor
 | File | Records | Why it exists |
 | --- | --- | --- |
 | [1-policy.edn](../schema-v2/fire/1-policy.edn) | `policy` | Names the executable algorithm and stores complete typed settings |
-| [6-1-learner.edn](../schema-v2/data/6-1-learner.edn) | `fire-learner` | Global learner identity and accuracy across topics |
+| [6-1-learner.edn](../schema-v2/data/6-1-learner.edn) | `learner` | Global learner identity and accuracy across topics |
 | [6-2-learner-progress.edn](../schema-v2/data/6-2-learner-progress.edn) | `progress` | One retention and accuracy profile per learner-topic pair |
 | [4-3-topic-difficulty.edn](../schema-v2/data/4-3-topic-difficulty.edn) | Additional `topic` attributes | Current difficulty estimate and optional qualifying assessment evidence |
 | [06-performance.edn](../schema-v2/fire/06-performance.edn) | `fire-event` | One observed, graded topic-level evidence unit before propagation |
@@ -73,7 +73,7 @@ Policy UUIDs identify configurations; they are independent of the Python engine'
 | `learned` | `:progress/learned` | Admission to retention tracking, distinct from current recall |
 | `last_direct_at` | `:progress/last-direct-at` | Last direct practice, unaffected by receiving only implicit credit |
 
-The four ability fields also exist under `:fire-learner/*` for the learner-global estimate. Global ability updates from directly observed answers once; propagating one answer to several topics must not count it several times globally. The effective accuracy is computed from the two channels rather than stored as an independently mutable third estimate. Failed initial lessons can produce an ability record with `learned=false`; they must not silently establish mastery.
+The four ability fields also exist under `:learner/*` for the learner-global estimate. Global ability updates from directly observed answers once; propagating one answer to several topics must not count it several times globally. The effective accuracy is computed from the two channels rather than stored as an independently mutable third estimate. Failed initial lessons can produce an ability record with `learned=false`; they must not silently establish mastery.
 
 The engine uses fractional elapsed days. The persistence adapter should map UTC instants to days from one fixed epoch, such as `unix_seconds / 86400`, and apply the same conversion to every event and state anchor. Local calendar dates and earned XP are not elapsed time. Simulated relative-day experiments remain simulations; do not invent calendar timestamps for them.
 

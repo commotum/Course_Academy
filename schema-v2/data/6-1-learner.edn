@@ -2,28 +2,28 @@
 ;; Required-attribute specs are opt-in: request :db/ensure on each write.
 ;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
 [
- {:db/ident :fire-learner/id
+ {:db/ident :learner/id
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
   :db/doc "Stable learner identity used by the FIRe engine; not a login credential."}
 
- {:db/ident :fire-learner/assessment-accuracy
+ {:db/ident :learner/assessment-accuracy
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Learner-global Assessment-only exponentially weighted accuracy in [0,1]. Equal averaging with practice accuracy is described publicly; the precise update rate and prior are local parameters. Update from direct observed answers once, not from every propagated topic update."}
 
- {:db/ident :fire-learner/practice-accuracy
+ {:db/ident :learner/practice-accuracy
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Learner-global Non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence. Update from direct observed answers once, not from every propagated topic update."}
 
- {:db/ident :fire-learner/assessment-mass
+ {:db/ident :learner/assessment-mass
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Learner-global Nonnegative effective assessment evidence mass under the local update, distinct from assessment accuracy. Update from direct observed answers once, not from every propagated topic update."}
 
- {:db/ident :fire-learner/practice-mass
+ {:db/ident :learner/practice-mass
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Learner-global Nonnegative effective non-assessment evidence mass under the local update. Update from direct observed answers once, not from every propagated topic update."}
@@ -32,19 +32,19 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Owned, unordered collection of current progress records, one per topic. Find the learner through the reverse reference learner/_knowledge-profile. Ensure fire-learner/validate when changing membership and progress/validate on each progress write. Retracting the learner also retracts these records, but not their shared topics."}
+  :db/doc "Owned, unordered collection of current progress records, one per topic. Find the learner through the reverse reference learner/_knowledge-profile. Ensure learner/validate when changing membership and progress/validate on each progress write. Retracting the learner also retracts these records, but not their shared topics."}
 
  {:db/ident :learner/activity
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Optional history of activities the learner has performed, including lesson, review, assessment, and diagnostic attempts. Activity records hold their status, timestamps, results, and XP; order history by those timestamps rather than reference order. The activity schema will be defined separately. Validate each activity and its learner association separately. These ordinary refs do not establish component ownership."}
+  :db/doc "Optional history of activities the learner has performed, including lesson, review, assessment, and diagnostic attempts. Activity records hold their status, timestamps, results, and XP; order history by those timestamps rather than reference order. Activity records are defined in 6-3-learner-activity.edn, with proposed child records in ../proposed/. Validate each activity and its learner association separately. These ordinary refs do not establish component ownership."}
 
- {:db/ident :fire-learner/validate
-  :db.entity/attrs [:fire-learner/id]
+ {:db/ident :learner/validate
+  :db.entity/attrs [:learner/id]
   :db.entity/preds course-academy.progress/valid-profile?
-  :db/doc "Learner identity and knowledge-profile ownership/uniqueness; before recording global ability, also ensure fire-learner/ability-validate."}
+  :db/doc "Learner identity and knowledge-profile ownership/uniqueness; before recording global ability, also ensure learner/ability-validate."}
 
- {:db/ident :fire-learner/ability-validate
-  :db.entity/attrs [:fire-learner/id :fire-learner/assessment-accuracy :fire-learner/practice-accuracy :fire-learner/assessment-mass :fire-learner/practice-mass]
+ {:db/ident :learner/ability-validate
+  :db.entity/attrs [:learner/id :learner/assessment-accuracy :learner/practice-accuracy :learner/assessment-mass :learner/practice-mass]
   :db/doc "Complete global accuracy estimate. Its effective accuracy is the mean of the two accuracy fields; do not persist another independently mutable copy."}
 ]

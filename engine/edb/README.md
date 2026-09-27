@@ -6,9 +6,9 @@
 
 Register these callbacks with `register_progress_predicates` in a `TxFunctions` registry supplied to `Database::with_forms`. For a durable writer, register the same checks using EDB's `NativeRegistryBuilder::entity_predicate` with cooperative cancellation; that writer integration remains to be implemented.
 
-On progress writes, request `:db/ensure :progress/validate`. On membership changes, request `:db/ensure :fire-learner/validate` for affected learners and `:progress/validate` for affected surviving progress records, including detached records. Create the learner link and progress in the same transaction. To remove progress, retract the component entity; to transfer it, retract the old link and assert the new link atomically. A learner deletion cascades to its progress.
+On progress writes, request `:db/ensure :progress/validate`. On membership changes, request `:db/ensure :learner/validate` for affected learners and `:progress/validate` for affected surviving progress records, including detached records. Create the learner link and progress in the same transaction. To remove progress, retract the component entity; to transfer it, retract the old link and assert the new link atomically. A learner deletion cascades to its progress.
 
-Specs are opt-in: bypassing `:db/ensure` bypasses these checks. The learner's minimal validation permits ID-only progress placeholders with a topic; ensure each progress record's complete spec before using it in the engine. Global accuracy still has its separate `fire-learner/ability-validate` spec. Activity history remains an ordinary reference collection pending its own schema.
+Specs are opt-in: bypassing `:db/ensure` bypasses these checks. The learner's minimal validation permits ID-only progress placeholders with a topic; ensure each progress record's complete spec before using it in the engine. Global accuracy still has its separate `learner/ability-validate` spec. Activity history remains an ordinary reference collection; its common schema and supporting drafts are described in [the activity proposal](../../schema-v2/proposed/README.md). Activity domain guards are not implemented by these progress predicates.
 
 # Policy and topic difficulty
 
@@ -57,3 +57,5 @@ rustc --edition=2021 tests/validate_fire_schema.rs \
 ```
 
 The library filename is specific to the installed EDB build. Tests cover policy bounds and enums, topic evidence consistency, optional initial estimates, historical difficulty lookup, and existing progress/event behavior. They do not exercise a production writer or change a persistent database.
+
+The schema harness also installs the proposed activity schemas and exercises `tests/edb_activity_checks.rs`. Those drafts currently enforce required attributes and native types/cardinalities only; their full domain rules are documented for the future activity controller.

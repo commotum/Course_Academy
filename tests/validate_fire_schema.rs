@@ -2,6 +2,7 @@
 use edb_core::{Database, Keyword, SemanticError, TxFunctions, TxReport, Value};
 #[path = "../engine/edb/configuration.rs"]
 mod configuration;
+mod edb_activity_checks;
 mod edb_configuration_checks;
 #[path = "../engine/edb/progress.rs"]
 mod progress;
@@ -20,7 +21,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     let root = std::env::current_dir()?;
     let mut db = Database::bootstrap()?;
     let mut clock = 1000i64;
-    for dir in ["schema-v2/data", "schema-v2/content", "schema-v2/fire"] {
+    for dir in [
+        "schema-v2/data",
+        "schema-v2/content",
+        "schema-v2/fire",
+        "schema-v2/proposed",
+    ] {
         let mut paths = fs::read_dir(root.join(dir))?
             .filter_map(Result::ok)
             .map(|e| e.path())
@@ -37,11 +43,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     let fixture = r#"[
  {:db/id "advanced" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001" :topic/title "Illustrative advanced topic" :topic/encompasses ["edge"]}
  {:db/id "component" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000002" :topic/title "Illustrative component topic"}
- {:db/id "learner" :fire-learner/id "schema-check-learner"
-  :fire-learner/assessment-accuracy 0.8 :fire-learner/practice-accuracy 0.9
-  :fire-learner/assessment-mass 0.0 :fire-learner/practice-mass 4.0
+ {:db/id "learner" :learner/id "schema-check-learner"
+  :learner/assessment-accuracy 0.8 :learner/practice-accuracy 0.9
+  :learner/assessment-mass 0.0 :learner/practice-mass 4.0
   :learner/knowledge-profile ["state" "unlearned-state"]
-  :db/ensure [:fire-learner/validate :fire-learner/ability-validate]}
+  :db/ensure [:learner/validate :learner/ability-validate]}
  {:db/id "policy" :policy/id #uuid "b3d88ca6-d319-409b-bdb1-000000000003"
   :policy/name "Schema validation configuration" :policy/algorithm :policy.algorithm/fire-v1
   :policy/base-half-life-days 1.0 :policy/interval-growth 2.0 :policy/maximum-half-life-days 36500.0
@@ -91,7 +97,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             .unwrap()
             .entity
     };
-    let learner = find_string(&db, "fire-learner", "id", "schema-check-learner");
+    let learner = find_string(&db, "learner", "id", "schema-check-learner");
     let topicattr = db.entid(&Keyword::new("progress", "topic")).unwrap() as u32;
     let topic = match db.values(state, topicattr).first().unwrap() {
         Value::Ref(id) => *id,
@@ -140,7 +146,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         find_string(&db, "fire-event", "id", "schema-check-event")
     );
     let second_learner = r#"[
-  {:db/id "other" :fire-learner/id "schema-check-other" :db/ensure :fire-learner/validate}
+  {:db/id "other" :learner/id "schema-check-other" :db/ensure :learner/validate}
   {:fire-event/id "schema-check-event" :fire-event/learner "other" :fire-event/at #inst "2026-09-26T00:00:00.000Z"
    :fire-event/topic [:topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001"] :fire-event/kind "review"
    :fire-event/passed false :fire-event/assessment true :fire-event/quality 1.5 :fire-event/learned false
@@ -161,11 +167,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     let duplicate = format!(
         r#"[
   {{:db/id "duplicate" :progress/id "duplicate" :progress/topic {topic}}}
-  {{:db/id {learner} :learner/knowledge-profile "duplicate" :db/ensure :fire-learner/validate}}]"#
+  {{:db/id {learner} :learner/knowledge-profile "duplicate" :db/ensure :learner/validate}}]"#
     );
     assert!(transact(&db, &duplicate, 3000).is_err());
     let shared = format!(
-        r#"[{{:fire-learner/id "shared-owner" :learner/knowledge-profile {state} :db/ensure :fire-learner/validate}}]"#
+        r#"[{{:learner/id "shared-owner" :learner/knowledge-profile {state} :db/ensure :learner/validate}}]"#
     );
     assert!(transact(&db, &shared, 3000).is_err());
     let changed = format!(
@@ -177,11 +183,11 @@ fn main() -> Result<(), Box<dyn Error>> {
   {{:db/id {state} :db/ensure :progress/validate}}]"#
     );
     assert!(transact(&db, &detached, 3000).is_err());
-    let other = find_string(&db, "fire-learner", "id", "schema-check-other");
+    let other = find_string(&db, "learner", "id", "schema-check-other");
     let transfer = format!(
         r#"[[:db/retract {learner} :learner/knowledge-profile {state}]
-  {{:db/id {learner} :db/ensure :fire-learner/validate}}
-  {{:db/id {other} :learner/knowledge-profile {state} :db/ensure :fire-learner/validate}}
+  {{:db/id {learner} :db/ensure :learner/validate}}
+  {{:db/id {other} :learner/knowledge-profile {state} :db/ensure :learner/validate}}
   {{:db/id {state} :db/ensure :progress/validate}}]"#
     );
     assert!(transact(&db, &transfer, 3000).is_ok());
@@ -199,6 +205,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     assert!(removed.values(state, idattr).is_empty());
     let topicidattr = db.entid(&Keyword::new("topic", "id")).unwrap() as u32;
     assert!(!removed.values(topic, topicidattr).is_empty());
+    edb_activity_checks::check(&db)?;
     println!("PASS all current content and FIRe schemas install; required-attribute specs accept topic-owned encompassing/difficulty/global ability/event/application/state fixtures, explicit zero coverage, optional rationale, quality 1.5 and unlearned ability.");
     println!("PASS progress updates preserve identity; reverse ownership resolves; duplicate topics, shared owners, orphaned records and duplicate-producing topic changes are rejected. Learner deletion cascades to progress and preserves shared topics. Event identity/type/cardinality checks pass.");
     println!("Scope: native EDB schema, policy and difficulty predicates, ownership and history semantics. Engine equations and embedded receipt payloads are checked separately.");

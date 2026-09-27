@@ -1,0 +1,34 @@
+;; One submitted value for a question answer field, owned through submission/fields.
+;; Entity specs check required attributes only and must be explicitly ensured.
+;; Relationship, enum, range, and delivery rules below are application contracts.
+[
+ {:db/ident :submitted-answer/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable local identity assigned by the application, independent of external source identifiers."}
+
+ {:db/ident :submitted-answer/field
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Canonical answer-field answered here. Must belong to the question presented by the containing occurrence."}
+
+ {:db/ident :submitted-answer/selected-answer
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional selected answer entity from that field answer-choices. Stable identity survives choice shuffling. An ordinary ref; never mutate canonical correct-answer to store a learner response."}
+
+ {:db/ident :submitted-answer/value
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional entered value for a blank, preserved as submitted text or LaTeX. Supply this or selected-answer, but not both. Empty text can be an explicitly recorded blank; absence is unknown."}
+
+ {:db/ident :submitted-answer/result
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional explicitly established per-field result using activity-item.result enums. Whole-question correctness does not establish per-field grades."}
+
+ {:db/ident :submitted-answer/validate
+  :db.entity/attrs [:submitted-answer/id :submitted-answer/field]
+  :db/doc "Requires identity and target field. Validate exactly one submission owner, one response per field per submission, exactly one of selected-answer/value, and membership of selected answers. Multiple fields can receive one overall question grade without individual grades."}
+]

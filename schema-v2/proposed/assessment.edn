@@ -1,0 +1,39 @@
+;; Proposed reusable quiz or assessment definition; retakes are separate activities.
+;; Entity specs check required attributes only and must be explicitly ensured.
+;; Relationship, enum, range, and delivery rules below are application contracts.
+[
+ {:db/ident :assessment/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable local identity assigned by the application, independent of external source identifiers."}
+
+ {:db/ident :assessment/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Name of the assessment, such as Quiz 4. Attempt-specific Retake labels belong on activity/title."}
+
+ {:db/ident :assessment/course
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional curricular context. This is not a restriction against including prerequisite material from other courses."}
+
+ {:db/ident :assessment/topics
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Scope from which the engine selects assessment questions, including appropriate previously learned topics. At least one topic is required for a usable definition."}
+
+ {:db/ident :assessment/time-limit-seconds
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional positive finite time limit for this definition. Copy the applied limit to the activity. Do not infer a limit from XP or hard-code fifteen minutes for all assessments."}
+
+ {:db/ident :assessment/expected-seconds
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional positive expected workload used for assembly and scheduling. Distinct from the enforced limit and the learner actual elapsed time."}
+
+ {:db/ident :assessment/validate
+  :db.entity/attrs [:assessment/id :assessment/title :assessment/topics]
+  :db/doc "Requires identity, title, and scope. Validate topic/course targets and positive finite timings. Application code selects questions and determines grading and XP. Actual delivered items belong to the activity."}
+]

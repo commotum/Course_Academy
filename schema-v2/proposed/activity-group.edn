@@ -1,0 +1,39 @@
+;; A lesson knowledge-point grouping owned through activity/groups.
+;; Entity specs check required attributes only and must be explicitly ensured.
+;; Relationship, enum, range, and delivery rules below are application contracts.
+[
+ {:db/ident :activity-group/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable local identity assigned by the application, independent of external source identifiers."}
+
+ {:db/ident :activity-group/index
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Positive group order unique within the activity. Displayed KP 1 is an ordinal, not a source knowledge-point ID."}
+
+ {:db/ident :activity-group/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional displayed group title, useful when the KP identity has not been recovered."}
+
+ {:db/ident :activity-group/knowledge-point
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional verified local KP associated with this group."}
+
+ {:db/ident :activity-group/lesson-step
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional instructional placement identifying the KP stage in the delivered lesson."}
+
+ {:db/ident :activity-group/outcome
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional activity.outcome pass/fail decision for this KP stage. Only populate from an explicit controller decision; question sequences and completed headers alone do not establish it."}
+
+ {:db/ident :activity-group/validate
+  :db.entity/attrs [:activity-group/id :activity-group/index]
+  :db/doc "Requires identity and order. Check exactly one activity owner, unique group indexes, and compatible KP/lesson-step context. Questions refer to this group through activity-item/group; do not duplicate a questions collection here."}
+]

@@ -1,0 +1,24 @@
+;; A question placement owned by one multistep definition.
+;; Entity specs check required attributes only and must be explicitly ensured.
+;; Relationship, enum, range, and delivery rules below are application contracts.
+[
+ {:db/ident :multistep-step/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable local identity assigned by the application, independent of external source identifiers."}
+
+ {:db/ident :multistep-step/index
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Positive order unique within the containing multistep. Sequence carries the problem dependencies; multiple response fields stay within one question."}
+
+ {:db/ident :multistep-step/question
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Reusable question presented at this stage. An ordinary ref; removing this placement does not delete the question."}
+
+ {:db/ident :multistep-step/validate
+  :db.entity/attrs [:multistep-step/id :multistep-step/index :multistep-step/question]
+  :db/doc "Requires identity, order, and question. Validate exactly one multistep owner, sibling-unique positive indexes, question readiness, and shared-context completeness."}
+]

@@ -46,7 +46,7 @@ Component refs mean that deleting a parent entity also deletes its components. T
 | Question → answer fields | Components | Correct. A field belongs to one question. Add ownership and unique keys within a question. |
 | Answer field → choices and correct answer | Components | Correct under our current field-owned-answer model. Check owners across both attributes, treating two links from the same field as one owner. |
 | Learner → progress | Components | Correct; implemented ownership predicates now cover this relationship. |
-| Learner → activity | Ordinary refs | Leave pending the activity model. History retention and deletion behavior should determine whether activities become components. |
+| Learner → activity | Ordinary refs | Activity is now drafted. Retain ordinary learner/history membership; activity owns its presentation details. The writer must preserve its learner association while history is retained. |
 
 The current question-bank model expresses our intended design, not a claim that all captured MA question memberships have already been reconciled. The inventory notes reused placements; import must resolve their meaning before applying a single-bank rule.
 
@@ -91,8 +91,8 @@ In a selection field, the correct answer is reached through both attributes. An 
 - Ref-based enum members are correct. A ref value type alone does not restrict the attribute to the declared members; implement that check.
 - Keep cardinality-many relationships unordered. Entry indexes preserve authored sequence; field keys bind responses to problem locations. Neither belongs on a reusable topic or answer merely to preserve one presentation's order.
 - Do not add `noHistory` to progress by default. Historical state is useful while validating the engine, and it is a storage decision rather than a correctness mechanism.
-- Normalize learner naming eventually: `fire-learner/*` alongside `learner/*` is inconsistent, though valid EDB. A consistent `learner/*` namespace would be easier to read. This is separate from ownership.
-- `question-generator` and `activity` still need schemas. Existing refs do not define those target entities' structure.
+- Learner attributes and validation specs consistently use `learner/*`, including global accuracy, knowledge profile, and activity history. Naming does not change ownership semantics.
+- `question-generator` still needs a schema. Activity now has a common schema in `data/6-3-learner-activity.edn` and supporting drafts under `proposed/`; their detailed domain predicates remain pending.
 
 ## Recommended next work
 
