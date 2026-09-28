@@ -1,4 +1,4 @@
-//! Native EDB checks for typed policy settings and topic difficulty evidence.
+//! Native EDB checks for typed policy settings and optional topic difficulty.
 use edb_core::{DatabaseValue, Keyword, SemanticError, TxFunctions, Value};
 
 fn value(
@@ -89,46 +89,11 @@ pub fn valid_policy(db: &DatabaseValue, entity: u64) -> Result<bool, SemanticErr
 }
 
 pub fn valid_topic_difficulty(db: &DatabaseValue, entity: u64) -> Result<bool, SemanticError> {
-    let get = |name| value(db, entity, "topic", name);
-    let difficulty = get("difficulty")?;
-    let method = get("difficulty-method")?;
-    let correct = get("assessment-correct")?;
-    let total = get("assessment-total")?;
-    let cohort = get("assessment-cohort")?;
-    let through = get("assessment-through")?;
-    // General topic validation permits unknown difficulty. Partial estimates are invalid.
-    if difficulty.is_none() {
-        return Ok([method, correct, total, cohort, through]
-            .iter()
-            .all(Option::is_none));
-    }
-    let Some(Value::Double(difficulty)) = difficulty else {
-        return Ok(false);
-    };
-    if !difficulty.is_finite() || !(0.0..=1.0).contains(&difficulty) {
-        return Ok(false);
-    }
-    let observed = enum_is(db, &method, "difficulty.method", "assessment-data")?;
-    let estimated = enum_is(db, &method, "difficulty.method", "initial-estimate")?
-        || enum_is(db, &method, "difficulty.method", "expert-estimate")?;
-    if !observed && !estimated {
-        return Ok(false);
-    }
-    if cohort.is_some() && !nonblank(&cohort) {
-        return Ok(false);
-    }
-    match (correct, total) {
-        (None, None) => Ok(estimated),
-        (Some(Value::Long(correct)), Some(Value::Long(total)))
-            if correct >= 0 && total >= correct =>
-        {
-            if total == 0 {
-                Ok(estimated)
-            } else {
-                Ok(observed
-                    && nonblank(&cohort)
-                    && (difficulty - correct as f64 / total as f64).abs() <= 1e-12)
-            }
+    match value(db, entity, "topic", "difficulty")? {
+        // General topic validation permits unknown difficulty.
+        None => Ok(true),
+        Some(Value::Double(difficulty)) => {
+            Ok(difficulty.is_finite() && (0.0..=1.0).contains(&difficulty))
         }
         _ => Ok(false),
     }

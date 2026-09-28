@@ -12,9 +12,9 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Owned top-level entries referencing the course's units. Sort by course-map-entry/index. A complete map includes each member of course/units exactly once. Writers must separately ensure course-map-entry/validate on every entry."}
+  :db/doc "Owned flat sequence of unit, module, and topic entries. Sort by course-map-entry/index to read the course map. Writers must separately ensure course-map-entry/validate on every entry."}
 
  {:db/ident :course-map/validate
   :db.entity/attrs [:course-map/id :course-map/entries]
-  :db/doc "Requires identity and at least one root entry when explicitly ensured. Application validation must check ownership by one course, the unit-to-module-to-topic hierarchy, exact membership coverage under every parent, positive indexes unique among siblings, and an acyclic entry tree with no shared entry nodes. Native required-attribute checks do not enforce these relationships."}
+  :db/doc "Requires identity and at least one entry when explicitly ensured. Application validation checks positive indexes unique across this map, unit-to-module-to-topic sequence, and membership coverage through course/units, unit/modules, and module/topics."}
 ]

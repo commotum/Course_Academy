@@ -1,0 +1,24 @@
+;; A topic review containing selected practice questions.
+;; Learner results, timing, and XP belong to learner-task and task-item records.
+;; Request :db/ensure :review/validate when writing a review.
+[
+ {:db/ident :review/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable local identity assigned by the application, independent of external source identifiers."}
+
+ {:db/ident :review/topic
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Topic to retrieve and practice. This ordinary ref preserves shared curriculum when the definition is deleted."}
+
+ {:db/ident :review/questions
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Questions selected for this review from the topic's knowledge-point banks. Ordinary refs preserve the questions when the review is deleted. Presentation order belongs to the application; examples and tutorials are not review content."}
+
+ {:db/ident :review/validate
+  :db.entity/attrs [:review/id :review/topic :review/questions]
+  :db/doc "Requires identity, target topic, and question refs. The application checks that questions belong to the topic, assembles the five-question review, and determines when to stop. This spec checks presence, not question count or target types. Questions actually presented and their results are recorded on task items."}
+]

@@ -1,7 +1,7 @@
 ;; Topic model for EDB. Install before creating topic entities.
 ;; Request :db/ensure [:topic/identity-validate] for an ID-only placeholder.
 ;; Request :db/ensure [:topic/validate] when its required data is ready.
-;; Difficulty attributes on this same entity are defined in 4-3-topic-difficulty.edn.
+;; Request :db/ensure :topic/difficulty-validate for a difficulty-only update.
 ;; Owned encompassing relationships are defined in 4-2-encompassing.edn.
 [
  {:db/ident :topic/id
@@ -20,6 +20,11 @@
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "Name of the topic, for example Integration by Substitution."}
+
+ {:db/ident :topic/difficulty
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional finite expected assessment accuracy in [0,1]; lower means harder. This is our engine scale, separate from question E/M/H and learner-specific accuracy. Omit when unknown; the engine uses policy/initial-accuracy."}
 
  {:db/ident :topic/prerequisites
   :db/valueType :db.type/ref
@@ -41,8 +46,13 @@
   :db.entity/attrs [:topic/id]
   :db/doc "Requires only identity for a placeholder topic when explicitly ensured. Use topic/validate after filling in its required data."}
 
+ {:db/ident :topic/difficulty-validate
+  :db.entity/attrs [:topic/id :topic/difficulty]
+  :db.entity/preds course-academy.topic/valid-difficulty?
+  :db/doc "Requires a topic identity and finite difficulty in [0,1]. Does not require a fully populated curriculum topic."}
+
  {:db/ident :topic/validate
   :db.entity/attrs [:topic/id :topic/title :topic/knowledge-points]
   :db.entity/preds course-academy.topic/valid-difficulty?
-  :db/doc "A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure requires identity, title, and at least one knowledge-point reference. The predicate checks difficulty and its evidence when present. Referenced knowledge points and encompassing records must be validated separately."}
+  :db/doc "A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure requires identity, title, and at least one knowledge-point reference. The predicate checks difficulty when present. Referenced knowledge points and encompassing records must be validated separately."}
 ]

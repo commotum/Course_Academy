@@ -4,7 +4,7 @@ Initially reviewed all 18 EDN files in `content` and `data` against EDB's [schem
 
 The overall structure is sound. We already store relationships in one direction, distinguish reusable entities from owned records, use domain-specific unique identities, represent enums with ident entities and refs, and separate instructional content from learner evidence. The largest remaining improvement is to implement the relationship rules currently documented as application contracts. Required attributes alone cannot enforce those rules.
 
-This review records the initial recommendations. Since that review, typed policy validation and topic difficulty/evidence validation have been implemented; see `data/4-3-topic-difficulty.edn`, `fire/1-policy.edn`, and `../engine/edb/configuration.rs`. Other proposed ownership/content checks remain pending.
+This review records the initial recommendations. Since that review, typed policy validation and topic difficulty validation have been implemented; see `data/4-1-topic.edn`, `fire/1-policy.edn`, and `../engine/edb/configuration.rs`. Other proposed ownership/content checks remain pending.
 
 ## One direction is enough
 

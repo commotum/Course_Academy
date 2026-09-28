@@ -1,7 +1,6 @@
-;; One whole learner attempt, linked through learner/activity. No duplicate learner ref.
-;; learner-task/activity points to the shared lesson, review, assessment, or diagnostic definition.
-;; Entity specs check required attributes only and must be explicitly ensured.
-;; Relationship, enum, range, and delivery rules below are application contracts.
+;; One learner attempt at a shared activity, linked through learner/activity.
+;; Find the learner through the reverse reference.
+;; Required-attribute specs are opt-in; application code checks relationship and value rules.
 [
  {:db/ident :learner-task.status/planned}
  {:db/ident :learner-task.status/in-progress}
@@ -16,125 +15,55 @@
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
-  :db/doc "Stable local identity assigned by the application, independent of external source identifiers."}
+  :db/doc "Stable identity of this attempt, independent of external identifiers."}
 
  {:db/ident :learner-task/math-academy-id
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional taskId from the completed activity URL, not a question, topic, or test-definition ID. Imports reconcile it within the learner history; global uniqueness across learners is not assumed."}
-
- {:db/ident :learner-task/title
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/doc "Title of this attempt, including a displayed Retake label when present. Quiz and multistep titles are not topic names."}
+  :db/doc "Optional Math Academy taskId. Reconcile within the learner's history; global uniqueness across learners is not established."}
 
  {:db/ident :learner-task/activity
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Reference to the lesson, review, assessment, multistep, diagnostic, or supplemental-diagnostic definition being attempted. Derive the task category from the target's identifying attribute, such as review/id or assessment/id. Incomplete imports may reference an identity-only content placeholder, or omit this ref when content is unknown. Local delivery requires complete, validated content."}
+  :db/doc "Shared lesson, review, assessment, multistep, diagnostic, or supplemental diagnostic being attempted. Resolve its title, category, and intended scope through this reference."}
 
  {:db/ident :learner-task/status
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Lifecycle state. Completed is observed in all current CSV rows; the other status enum values are local runtime design. Completed does not mean passed or mastered."}
+  :db/doc "Lifecycle state: planned, in-progress, paused, completed, or abandoned. Completion does not establish success."}
 
  {:db/ident :learner-task/outcome
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional explicit pass/fail decision from the task controller. Omit when only completion or XP was observed; diagnostics need not have a pass/fail outcome."}
-
- {:db/ident :learner-task/retake
-  :db/valueType :db.type/boolean
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional explicit retake indicator, including a captured Retake label. Allows known retake status when the prior task cannot be identified."}
-
- {:db/ident :learner-task/retake-of
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional prior task being retaken by this learner. Validate same owner and compatible assessment scope; a new task has its own results and XP."}
-
- {:db/ident :learner-task/remediation-for
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional earlier task whose difficulty or errors caused this task to be assigned. Distinct from a retake; the engine supplies this causal relationship."}
+  :db/doc "Optional overall pass/fail decision. Individual question results remain separate; omit when no task-level decision applies or is known."}
 
  {:db/ident :learner-task/started-at
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional actual start instant when known. Do not reconstruct from the earliest displayed question label or from XP."}
+  :db/doc "Actual start time, when known. Together with completed-at, determines wall-clock duration including pauses."}
 
  {:db/ident :learner-task/completed-at
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional actual completion instant with a supported date and timezone. Completed imports can omit it when only a local clock time is known."}
-
- {:db/ident :learner-task/elapsed-seconds
-  :db/valueType :db.type/double
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional nonnegative finite wall-clock duration from start to finish, including pauses. Store only when measured or reliably derived from both instants; not the sum of question times."}
-
- {:db/ident :learner-task/active-seconds
-  :db/valueType :db.type/double
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional nonnegative finite measured engaged time, excluding tracked pauses/background time. Never relabel imported elapsed values as active time."}
-
- {:db/ident :learner-task/expected-seconds
-  :db/valueType :db.type/double
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional positive finite workload estimate when the task was assigned. Used for scheduling or workload calibration, not measured learner time."}
-
- {:db/ident :learner-task/time-limit-seconds
-  :db/valueType :db.type/double
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional positive finite limit actually applied to this attempt. A limit is not its elapsed duration, baseline XP, or proof that a missing answer was a timeout."}
+  :db/doc "Actual completion time, when known. Imported dates require a supported timezone."}
 
  {:db/ident :learner-task/xp-earned
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional signed XP actually awarded, including negative values, zero, and bonuses above the baseline. Absence is unknown, not zero. Record once per task; retries must not award it twice."}
+  :db/doc "XP awarded for this attempt, including penalties and bonuses. May be negative or exceed xp-base. Omit when unknown."}
 
  {:db/ident :learner-task/xp-base
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional nonnegative displayed baseline or engine-assigned base XP. The CSV calls this xp-possible, but it is not a maximum. Diagnostics in the current data omit it."}
-
- {:db/ident :learner-task/groups
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/many
-  :db/isComponent true
-  :db/doc "Optional owned lesson KP groups, ordered by task-group/index. Grouping is not a separate attempt and need not expose a recoverable KP ID."}
+  :db/doc "Optional nonnegative baseline XP for this attempt, before bonuses or penalties. The displayed denominator is not a maximum."}
 
  {:db/ident :learner-task/items
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Owned presentation occurrences defined in 2-2-learner-task-item.edn, ordered by task-item/index. Each item records a question, tutorial, or example encountered in this attempt. Repeated presentations have separate item IDs. Resolve practiced skills through the referenced content and its relationships when known; intended scope comes from learner-task/activity."}
-
- {:db/ident :learner-task/results-complete
-  :db/valueType :db.type/boolean
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional confirmation that all presented questions and their final outcomes are recorded. True requires known runtime or extraction completeness; absent means unknown. Does not require recorded submissions or tutorial-view logs. A completed header alone is not sufficient."}
-
- {:db/ident :learner-task/source-url
-  :db/valueType :db.type/uri
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional source activity URL, such as the Math Academy completed task page."}
-
- {:db/ident :learner-task/completed-local
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional source local completion date/time when a UTC instant is not justified, such as 2026-09-24 17:05 from progress.csv. Does not imply a timezone."}
-
- {:db/ident :learner-task/source-notes
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional compact provenance notes for inferred courses, timestamp ambiguity, extraction coverage, and missing data. Canonical task fields remain separate from source interpretations."}
+  :db/doc "Owned question, tutorial, and example presentations, ordered by task-item/index. Repeated presentations have separate item identities."}
 
  {:db/ident :learner-task/validate
-  :db.entity/attrs [:learner-task/id :learner-task/title :learner-task/status]
-  :db/doc "Requires core attempt identity and lifecycle fields. Find the learner through learner/_activity; require exactly one owner and unique external task IDs within that history in the writer. Separately ensure groups/items/submissions. Validate supported enums, target types, nonnegative timings, chronological known instants, index uniqueness, retake ownership, and signed XP semantics. Partial historical imports may omit content, item details, timestamps, duration, and XP. This required-attribute spec does not enforce those relationships."}
-
- {:db/ident :learner-task/ready-validate
-  :db.entity/attrs [:learner-task/id :learner-task/title :learner-task/status :learner-task/activity]
-  :db/doc "Requires a content ref in addition to the core record. Before local delivery, the controller separately validates that the target identifies exactly one supported activity definition category and satisfies that content schema's complete spec, plus ownership and scheduling rules. An identity-only placeholder is not ready to serve."}
+  :db.entity/attrs [:learner-task/id :learner-task/activity :learner-task/status]
+  :db/doc "Requires identity, activity, and lifecycle state. The application checks one learner association, valid content, enums, and timing; validate child records separately."}
 ]

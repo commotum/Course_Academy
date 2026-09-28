@@ -28,13 +28,17 @@
  {:db/ident :task-item/responses
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/isComponent true
-  :db/doc "Responses supplied for this question, one per answer field."}
+  :db/doc "Responses supplied for this question: learner-response records for entered values, or existing answer entities for selections. Each selected answer identifies its field through answer-field/answer-choices. The application checks field membership and one response per field. Ordinary refs preserve answer choices when a task item is deleted; entered response cleanup belongs to the application."}
 
  {:db/ident :task-item/elapsed-seconds
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Observed elapsed time for this presentation, when available."}
+
+ {:db/ident :task-item/performance
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Calculated performance magnitude used by the engine. Positive and finite; may exceed one. Distinct from correctness and XP. Omit until evaluated; the application checks the range."}
 
  {:db/ident :task-item/validate
   :db.entity/attrs [:task-item/id :task-item/index]
