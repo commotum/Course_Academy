@@ -4,7 +4,7 @@ These five drafts still need review and finalization. Keep them here until Jake 
 
 | File | Remaining model |
 | --- | --- |
-| [assessment.edn](assessment.edn) | A named assessment scope with optional timing settings. |
+| [assessment.edn](assessment.edn) | A named collection of selected questions with optional timing settings. |
 | [multistep.edn](multistep.edn) | A shared scenario with an ordered sequence of questions. |
 | [multistep-step.edn](multistep-step.edn) | One authored question placement in that sequence. |
 | [diagnostic.edn](diagnostic.edn) | A placement exam covering a course and its foundations. |

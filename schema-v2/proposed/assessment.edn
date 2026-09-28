@@ -13,15 +13,10 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Name of the assessment, such as Quiz 4 or Quiz 4 (Retake)."}
 
- {:db/ident :assessment/course
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Optional curricular context. This is not a restriction against including prerequisite material from other courses."}
-
- {:db/ident :assessment/topics
+ {:db/ident :assessment/questions
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Scope from which the engine selects assessment questions, including appropriate previously learned topics. At least one topic is required for a usable definition."}
+  :db/doc "Questions selected for this assessment. Ordinary refs preserve the questions when the assessment is deleted. Topics are available through question-bank membership; presentation order belongs to the application."}
 
  {:db/ident :assessment/time-limit-seconds
   :db/valueType :db.type/double
@@ -34,6 +29,6 @@
   :db/doc "Optional positive expected workload used for assembly and scheduling. Distinct from the enforced limit and the learner actual elapsed time."}
 
  {:db/ident :assessment/validate
-  :db.entity/attrs [:assessment/id :assessment/title :assessment/topics]
-  :db/doc "Requires identity, title, and scope. Validate topic/course targets and positive finite timings. Application code selects questions and determines grading and XP. Each attempt is a task whose items record the questions actually presented."}
+  :db.entity/attrs [:assessment/id :assessment/title :assessment/questions]
+  :db/doc "Requires identity, title, and at least one question ref. The application validates question targets and positive finite timings, assembles the assessment, and determines grading and XP. Each attempt is a task whose items record the questions actually presented and their results."}
 ]
