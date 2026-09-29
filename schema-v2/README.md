@@ -1,6 +1,6 @@
 # Schema organization
 
-`data` holds curriculum entities, course maps and outcomes, and skill relationships. `content` holds reusable activity definitions, instructional material, problems, and answer representations. `learner` holds learner identity, current state, the queue, task history, and item performance. `fire` holds engine policy settings and application receipts; `proposed` is reserved for schemas awaiting review.
+`data` holds curriculum entities, course maps and outcomes, and skill relationships. `content` holds reusable activity definitions, instructional material, problems, and answer representations. `learner` holds learner identity, current state, the queue, task history, and item performance. `engine` holds FIRe policy settings; `proposed` is reserved for schemas awaiting review. There are 30 current EDN schemas.
 
 Keep proposed schemas in `proposed` until Jake has personally reviewed them and explicitly requests their move. A schema's subject does not authorize moving it into `data`, `content`, or `learner`.
 
@@ -42,9 +42,8 @@ learner/
   2-2-learner-task-item.edn
   2-4-learner-response.edn
 
-fire/
-  1-policy.edn
-  07-application.edn
+engine/
+  1-fire-policy.edn
 
 proposed/
   README.md
@@ -64,7 +63,7 @@ The learner's `learner/knowledge-profile` owns current `progress` records, one p
 
 `learner/performance` optionally owns one global accuracy summary, defined in [1-2-learner-performance.edn](learner/1-2-learner-performance.edn). Its four `performance/*` attributes hold assessment/practice accuracy and evidence mass across topics; per-topic estimates remain on `progress`. The summary is found through the learner ref and needs no separate domain ID. Ensure `performance/validate` on the child when writing its values; `learner/validate` remains the minimal learner spec. Single ownership and numeric ranges remain application contracts.
 
-[Task items](learner/2-2-learner-task-item.edn) hold responses, results, elapsed time, and optional `task-item/performance`. Whole-task outcome and XP remain on the task. Application code will assemble runtime FIRe `Event` inputs from this evidence; the adapter is not yet implemented.
+[Task items](learner/2-2-learner-task-item.edn) hold responses, results, elapsed time, optional `task-item/completed-at`, and optional `task-item/performance`. Completion time identifies when practice occurred, separately from its duration and engine processing time. Whole-task outcome and XP remain on the task. The Python [completion handler](../engine/runtime.py) converts this evidence into separate accuracy and retention updates; the [schema adapter](../engine/schema.py) prepares their atomic EDB write.
 
 Courses, units, modules, topics, and knowledge points have an `identity-validate` spec for ID-only placeholders and an existing `validate` spec for their required data. This supports loading one hierarchical level at a time, then filling in and linking the records through their stable IDs. Full validation checks each entity's own required attributes; referenced content must also be validated before it is served for study.
 
@@ -72,8 +71,10 @@ These five placeholder specs cover the current curriculum-loading workflow. We c
 
 `data/4-1-topic.edn` includes optional `topic/difficulty`, a finite assessment-accuracy estimate in [0,1]. Ensure `topic/difficulty-validate` on difficulty-only updates. `topic/validate` also checks difficulty if present, while identity-only placeholders remain supported.
 
-`fire/1-policy.edn` defines complete named configurations with UUID identity, typed settings, and ref-based enums. Ensure `policy/validate`; create a new policy identity when changing a configuration already in use. Policy immutability is a writer contract. Applications record `fire-application/basis-t` instead of a calibration-set reference to identify the database value used to read topic difficulty and other inputs. Keep history for those inputs. See [native validation and engine mapping](../engine/edb/README.md).
+[1-fire-policy.edn](engine/1-fire-policy.edn) defines FIRe parameters under a stable `policy/id`. Ensure `policy/validate` when editing them. EDB history preserves earlier values: inspect past progress and its referenced policy in the same historical database value with `as_of`. Editing a policy leaves stored `progress/interval-days` unchanged until the engine recomputes it; it does not automatically reschedule every topic.
+
+The completion handler prepares one transaction containing the item result, responses, affected progress, overall performance, and any task completion/XP. EDB transaction history records these changes without a separate engine-update entity. Submission must use the returned exact-basis guard and request key; retain the original plan for retries. The Python adapter exists; wiring its callbacks to a production UI and durable EDB writer remains application work. See [native validation and engine mapping](../engine/edb/README.md).
 
 ## Activity models
 
-Lesson, review, assessment, diagnostic, and multistep schemas live in `content`. There are currently no schemas awaiting review in [proposed](proposed/README.md). Intended topic scope comes from the referenced activity; question ownership supplies the topic for observed answers. Selection mode and motivating course belong to queue entries. Required-attribute specs are executable, while their documented controller/domain checks remain to be implemented.
+Lesson, review, assessment, diagnostic, and multistep schemas live in `content`. There are currently no schemas awaiting review in [proposed](proposed/README.md). Intended topic scope comes from the referenced activity; question ownership supplies the topic for observed answers. Selection mode and motivating course belong to queue entries. The completion handler implements activity progression and engine-boundary checks. Required-attribute specs remain opt-in; the adapter is not a general validator for every curriculum-editing operation or a complete queue scheduler.

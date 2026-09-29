@@ -49,10 +49,33 @@ pub fn valid_profile(db: &DatabaseValue, learner: u64) -> Result<bool, SemanticE
 
 pub fn valid_progress(db: &DatabaseValue, progress: u64) -> Result<bool, SemanticError> {
     let parents = owners(db, progress)?;
-    match parents.as_slice() {
-        [learner] => valid_profile(db, *learner),
-        _ => Ok(false),
+    let [learner] = parents.as_slice() else {
+        return Ok(false);
+    };
+    if !valid_profile(db, *learner)? {
+        return Ok(false);
     }
+    for name in [
+        "repetitions", "memory", "interval-days", "assessment-accuracy",
+        "practice-accuracy", "assessment-mass", "practice-mass",
+    ] {
+        let values = db.values(progress, attr(db, "progress", name)?)?;
+        let [Value::Double(value)] = values.as_slice() else {
+            return Ok(false);
+        };
+        if !value.is_finite() || *value < 0.0
+            || (name == "interval-days" && *value == 0.0)
+            || (name.ends_with("accuracy") && *value > 1.0)
+        {
+            return Ok(false);
+        }
+    }
+    // The reference must identify a policy, not just any existing EDB entity.
+    let policies = db.values(progress, attr(db, "progress", "policy")?)?;
+    let [Value::Ref(policy)] = policies.as_slice() else {
+        return Ok(false);
+    };
+    Ok(!db.values(*policy, attr(db, "policy", "id")?)?.is_empty())
 }
 
 pub fn register_progress_predicates(functions: &mut TxFunctions) {

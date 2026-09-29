@@ -31,16 +31,9 @@ fn enum_is(
     Ok(value(db, *entity, "db", "ident")? == Some(Value::Keyword(Keyword::new(ns, name))))
 }
 
-fn nonblank(candidate: &Option<Value>) -> bool {
-    matches!(candidate, Some(Value::String(text)) if !text.trim().is_empty())
-}
-
 pub fn valid_policy(db: &DatabaseValue, entity: u64) -> Result<bool, SemanticError> {
     let get = |name| value(db, entity, "policy", name);
-    if !nonblank(&get("name")?)
-        || !enum_is(db, &get("algorithm")?, "policy.algorithm", "fire-v1")?
-        || !matches!(get("gate-slow-implicit")?, Some(Value::Bool(_)))
-    {
+    if !matches!(get("gate-slow-implicit")?, Some(Value::Bool(_))) {
         return Ok(false);
     }
     let order = get("retention-update-order")?;

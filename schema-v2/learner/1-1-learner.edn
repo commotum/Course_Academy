@@ -1,12 +1,17 @@
-;; Learner identity, overall accuracy, knowledge profile, queue, and task history.
+;; Learner identity, selected course, overall accuracy, knowledge profile, queue, and task history.
 ;; Required-attribute specs are opt-in: request :db/ensure on each write.
-;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
+;; Ranges, reference targets, and formulas are application contracts.
 [
  {:db/ident :learner/id
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
   :db/doc "Stable learner identity used by the FIRe engine; not a login credential."}
+
+ {:db/ident :learner/course
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional course currently selected in the UI. References a shared course entity."}
 
  {:db/ident :learner/performance
   :db/valueType :db.type/ref

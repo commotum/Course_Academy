@@ -3,7 +3,7 @@
 These verify operational behavior and disclosed algebra, NOT agreement with
 unobserved MA schedules. Unknown numeric policies are tested as explicit choices.
 """
-from dataclasses import replace
+from dataclasses import asdict, replace
 import json
 import math
 import unittest
@@ -171,6 +171,105 @@ class FireTests(unittest.TestCase):
         last.apply(self.event(question_results=(True, False)))
         self.assertGreater(first.states['learner']['A'].accuracy, last.states['learner']['A'].accuracy)
 
+    def test_answer_accuracy_propagates_without_changing_retention(self):
+        engine = self.make_engine([Edge('A', 'B', .5), Edge('C', 'A', .25)])
+        before = {topic: asdict(state) for topic, state in engine.states['learner'].items()}
+        engine.apply_accuracy(self.event(passed=False, assessment=True))
+        self.assertEqual(engine.global_ability['learner'].assessment_mass, 1)
+        self.assertEqual(engine.states['learner']['A'].ability.assessment_mass, 1)
+        self.assertEqual(engine.states['learner']['C'].ability.assessment_mass, .25)
+        self.assertEqual(engine.states['learner']['B'].evidence_mass, 0)
+        for topic, state in engine.states['learner'].items():
+            for field in ('repetitions', 'memory', 'memory_at', 'interval_days', 'learned'):
+                self.assertEqual(getattr(state, field), before[topic][field])
+        self.assertEqual(engine.states['learner']['A'].last_direct_at, 1)
+        self.assertIsNone(engine.states['learner']['C'].last_direct_at)
+
+    def test_answers_then_review_credit_do_not_double_count_accuracy(self):
+        engine = self.make_engine(topics=('A',))
+        for index, passed in enumerate((True, False, True)):
+            engine.apply_accuracy(self.event(id=f'item:{index}:answer', at=1 + index / 10,
+                                             passed=passed))
+        state = engine.states['learner']['A']
+        self.assertEqual(state.repetitions, 0)
+        expected_speed = engine.speed('A', state)
+        ability_before = asdict(state.ability)
+        global_before = asdict(engine.global_ability['learner'])
+        receipt = engine.apply_retention(self.event(id='unit:retention', at=1.3, quality=1.5,
+                                                   question_results=(True, False, True)))
+        state = engine.states['learner']['A']
+        self.assertAlmostEqual(state.repetitions, expected_speed * 1.5)
+        self.assertEqual(asdict(state.ability), ability_before)
+        self.assertEqual(asdict(engine.global_ability['learner']), global_before)
+        self.assertEqual(state.evidence_mass, 3)
+        self.assertEqual(receipt['updates'][0]['accuracy_evidence'], [])
+
+    def test_pending_lesson_answers_preserved_when_unit_establishes_learning(self):
+        engine = FireEngine(EncompassingGraph([Edge('A', 'B', 1)]))
+        engine.apply_accuracy(self.event(id='wrong', at=0, passed=False, kind='lesson'))
+        engine.apply_accuracy(self.event(id='right', at=.1, kind='lesson'))
+        state = engine.states['learner']['A']
+        self.assertFalse(state.learned)
+        self.assertEqual(state.repetitions, 0)
+        self.assertEqual(state.memory, 0)
+        expected_speed = engine.speed('A', state)
+        ability_before = asdict(state.ability)
+        receipt = engine.apply_retention(self.event(id='lesson:retention', at=.2,
+                                                   kind='lesson', learned=True))
+        state = engine.states['learner']['A']
+        self.assertTrue(state.learned)
+        self.assertEqual(state.memory, engine.policy.restored_memory)
+        self.assertAlmostEqual(state.repetitions, expected_speed)
+        self.assertEqual(asdict(state.ability), ability_before)
+        self.assertEqual(engine.global_ability['learner'].practice_mass, 2)
+        self.assertFalse(engine.states['learner']['B'].learned)
+        self.assertFalse(receipt['updates'][0]['before']['learned'])
+        before = engine.snapshot()
+        with self.assertRaises(ValueError):
+            engine.apply_accuracy(self.event(id='invalid-answer', at=1, learned=True))
+        self.assertEqual(engine.snapshot(), before)
+
+    def test_retention_only_initialization_does_not_invent_an_answer(self):
+        engine = FireEngine()
+        engine.apply_retention(self.event(at=0, learned=True, kind='lesson'))
+        self.assertTrue(engine.states['learner']['A'].learned)
+        self.assertEqual(engine.states['learner']['A'].evidence_mass, 0)
+        self.assertNotIn('learner', engine.global_ability)
+
+    def test_separate_update_modes_are_idempotent_and_cannot_share_an_id(self):
+        for method in ('apply_accuracy', 'apply_retention'):
+            with self.subTest(method=method):
+                engine = self.make_engine(topics=('A',))
+                event = self.event()
+                receipt = getattr(engine, method)(event)
+                before = deepcopy_json(engine.snapshot())
+                engine = FireEngine.restore(before)
+                self.assertEqual(getattr(engine, method)(event), receipt)
+                self.assertEqual(deepcopy_json(engine.snapshot()), before)
+                for other in {'apply', 'apply_accuracy', 'apply_retention'} - {method}:
+                    with self.assertRaises(ValueError): getattr(engine, other)(event)
+                self.assertEqual(deepcopy_json(engine.snapshot()), before)
+
+    def test_legacy_receipt_without_mode_still_retries(self):
+        engine = self.make_engine(topics=('A',))
+        event = self.event()
+        engine.apply(event)
+        snapshot = engine.snapshot()
+        receipt = next(iter(snapshot['receipts'].values()))
+        del receipt['mode']
+        restored = FireEngine.restore(snapshot)
+        self.assertEqual(restored.apply(event), receipt)
+        with self.assertRaises(ValueError): restored.apply_retention(event)
+
+    def test_each_update_mode_is_atomic_on_invalid_target_state(self):
+        for method in ('apply_accuracy', 'apply_retention'):
+            with self.subTest(method=method):
+                engine = self.make_engine([Edge('A', 'B', 1)])
+                engine.states['learner']['B'].memory_at = 3
+                before = engine.snapshot()
+                with self.assertRaises(ValueError): getattr(engine, method)(self.event())
+                self.assertEqual(engine.snapshot(), before)
+
     def test_memory_order_is_an_explicit_observable_difference(self):
         standard = self.make_engine()
         literal = self.make_engine(memory_order='literal-add-before-decay')
@@ -238,6 +337,19 @@ class FireTests(unittest.TestCase):
             engine.apply(self.event(at=1, learned=True))
         self.assertEqual(engine.snapshot(), before)
 
+    def test_restore_cannot_move_frontier_before_loaded_observations(self):
+        engine = FireEngine(neighborhoods={'A': ('B',)})
+        engine.seed('learner', 'B', TopicState(memory_at=5, last_direct_at=6,
+                                              accuracy=.3, evidence_mass=4))
+        snapshot = engine.snapshot()
+        snapshot['latest']['learner'] = 0
+        restored = FireEngine.restore(snapshot)
+        self.assertEqual(restored.latest['learner'], 6)
+        with self.assertRaises(ValueError):
+            restored.apply_accuracy(self.event(at=1))
+        snapshot['latest']['learner'] = math.nan
+        with self.assertRaises(ValueError): FireEngine.restore(snapshot)
+
     def test_student_selected_and_recommended_have_same_transition(self):
         engine = self.make_engine([Edge('A', 'B', 1)])
         other = FireEngine.restore(deepcopy_json(engine.snapshot()))
@@ -270,6 +382,62 @@ class FireTests(unittest.TestCase):
         for args in [{'quality': 0}, {'quality': float('nan')}, {'passed': 'true'},
                      {'learned': True, 'passed': False}, {'question_results': (None,)}]:
             with self.assertRaises(ValueError): self.event(**args)
+
+    def test_all_numeric_policy_fields_reject_nonnumeric_values(self):
+        for field in asdict(Policy()).keys() - {'name', 'gate_slow_implicit', 'memory_order'}:
+            for value in (True, False, None, '1', math.nan, math.inf, 10 ** 1000):
+                with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                    Policy(**{field: value})
+
+    def test_policy_bounds_apply_before_numeric_overflow(self):
+        policy = Policy(base_interval_days=1e-300, maximum_interval_days=1e300,
+                        interval_growth=1e300, speed_exponent=1e308)
+        self.assertAlmostEqual(policy.interval(1.5) / 1e150, 1)
+        self.assertEqual(policy.interval(1e308), 1e300)
+        self.assertEqual(policy.speed(.81, .8), policy.maximum_speed)
+        self.assertEqual(policy.speed(.79, .8), policy.minimum_speed)
+        self.assertEqual(policy.speed(0, .8), policy.minimum_speed)
+        self.assertEqual(Policy(speed_exponent=0).speed(0, 0), 1)
+        tiny = Policy(due_threshold=1e-310)
+        self.assertEqual(tiny.failure_multiplier(1e300), 1)
+        self.assertEqual(tiny.failure_multiplier(0), tiny.maximum_failure_multiplier)
+        self.assertTrue(math.isfinite(TopicState(memory=1e300).due_at(tiny)))
+
+    def test_due_tolerance_scales_with_configured_threshold(self):
+        engine = self.make_engine(topics=('A',), due_threshold=1e-20)
+        engine.states['learner']['A'].memory = 1e-13
+        self.assertEqual(engine.due('learner', 0), [])
+
+    def test_policy_change_preserves_stored_interval_until_retention_credit(self):
+        engine = self.make_engine(topics=('A',))
+        engine.policy = replace(engine.policy, base_interval_days=3)
+        engine.apply_accuracy(self.event())
+        self.assertEqual(engine.states['learner']['A'].interval_days, 1)
+        engine.apply_retention(self.event(id='unit', at=1))
+        state = engine.states['learner']['A']
+        self.assertEqual(state.interval_days, engine.policy.interval(state.repetitions))
+
+    def test_event_detaches_answer_list_and_rejects_unknown_outcomes(self):
+        answers = [True, False]
+        event = self.event(question_results=answers)
+        answers[:] = [None]
+        self.assertEqual(event.question_results, (True, False))
+        self.assertEqual(self.event(question_results=iter((True, False))).question_results, (True, False))
+        with self.assertRaises(ValueError): self.event(question_results=None)
+
+    def test_seed_rejects_invalid_channel_even_when_mean_is_valid(self):
+        state = TopicState()
+        state.ability.assessment_accuracy = -.2
+        self.assertGreater(state.accuracy, 0)
+        with self.assertRaises(ValueError): FireEngine().seed('learner', 'A', state)
+        state = TopicState()
+        state.ability.assessment_mass = -1
+        state.ability.practice_mass = 2
+        with self.assertRaises(ValueError): FireEngine().seed('learner', 'A', state)
+
+    def test_public_recurrence_rejects_nonfinite_result(self):
+        with self.assertRaises(ValueError):
+            public_recurrence(0, 1, 2, 1, False, 1e308, 0, 1)
 
 
 def deepcopy_json(value):

@@ -25,8 +25,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         "schema-v2/data",
         "schema-v2/content",
         "schema-v2/learner",
-        "schema-v2/fire",
-        "schema-v2/proposed",
+        "schema-v2/engine",
     ] {
         let mut paths = fs::read_dir(root.join(dir))?
             .filter_map(Result::ok)
@@ -53,7 +52,6 @@ fn main() -> Result<(), Box<dyn Error>> {
   :performance/assessment-mass 0.0 :performance/practice-mass 4.0
   :db/ensure :performance/validate}
  {:db/id "policy" :policy/id #uuid "b3d88ca6-d319-409b-bdb1-000000000003"
-  :policy/name "Schema validation configuration" :policy/algorithm :policy.algorithm/fire-v1
   :policy/base-half-life-days 1.0 :policy/interval-growth 2.0 :policy/maximum-half-life-days 36500.0
   :policy/review-threshold 0.5 :policy/initial-retention 1.0 :policy/early-practice-discount-power 1.0
   :policy/initial-accuracy 0.8 :policy/accuracy-update-rate 0.2 :policy/speed-exponent 2.0
@@ -63,12 +61,7 @@ fn main() -> Result<(), Box<dyn Error>> {
   :policy/future-horizon-days 7.0 :db/ensure :policy/validate}
  {:db/id "edge" :encompassing/topic "component" :encompassing/weight 0.0
   :encompassing/rationale "Illustrative explicit zero coverage for schema validation." :db/ensure :encompassing/validate}
- {:db/id "advanced" :topic/difficulty 0.75 :topic/difficulty-method :difficulty.method/assessment-data
-  :topic/assessment-correct 3 :topic/assessment-total 4 :topic/assessment-cohort "Illustrative schema fixture"
-  :topic/assessment-through #inst "2026-09-26T00:00:00.000Z" :db/ensure :topic/difficulty-validate}
- {:db/id "event" :fire-event/id "schema-check-event" :fire-event/learner "learner" :fire-event/at #inst "2026-09-26T00:00:00.000Z"
-  :fire-event/topic "advanced" :fire-event/kind "review" :fire-event/passed true :fire-event/assessment false :fire-event/quality 1.5
-  :fire-event/learned false :fire-event/question-results-edn "[true true true true]" :fire-event/source "direct" :db/ensure :fire-event/validate}
+ {:db/id "advanced" :topic/difficulty 0.75 :db/ensure :topic/difficulty-validate}
  {:db/id "state" :progress/id "schema-check-state" :progress/topic "advanced"
   :progress/repetitions 1.5 :progress/memory 1.0 :progress/memory-at #inst "2026-09-26T00:00:00.000Z"
   :progress/interval-days 2.8284271247461903 :progress/assessment-accuracy 0.8 :progress/practice-accuracy 0.8
@@ -128,36 +121,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         Value::Ref(id) => *id,
         other => panic!("Unexpected ref {other:?}"),
     };
-    let event = find_string(&db, "fire-event", "id", "schema-check-event");
     let input_basis = db.basis_t();
-    let receipt = r#"[ {:fire-application/id "schema-check-application" :fire-application/event EVENT_ID :fire-application/event-hash "schema-test-payload" :fire-application/policy [:policy/id #uuid "b3d88ca6-d319-409b-bdb1-000000000003"]
-  :fire-application/basis-t BASIS_T :fire-application/input-state-edn "{}"
-  :fire-application/applied-at #inst "2026-09-26T00:00:01.000Z"
-  :fire-application/updates [{:fire-update/topic [:topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001"]
-    :fire-update/trace-edn "{:direct true :raw_delta 1.0 :before {:repetitions 0.5} :after {:repetitions 1.5}}" :db/ensure :fire-update/validate}]
-  :db/ensure :fire-application/validate}
-]"#.replace("BASIS_T", &input_basis.to_string()).replace("EVENT_ID", &event.to_string());
-    db = transact(&db, &receipt, 2100)?.db_after;
-    let application = find_string(&db, "fire-application", "id", "schema-check-application");
-    let basis_attr = db
-        .entid(&Keyword::new("fire-application", "basis-t"))
-        .unwrap() as u32;
-    assert_eq!(
-        db.values(application, basis_attr),
-        vec![&Value::Long(input_basis as i64)]
-    );
     edb_configuration_checks::check(&db, topic, input_basis)?;
-    let eventkeyattr = db.entid(&Keyword::new("fire-event", "key")).unwrap() as u32;
-    assert_eq!(db.values(event, eventkeyattr).len(), 1);
     let state_count = db
         .datoms(edb_core::View::Current, edb_core::IndexOrder::Eavt)
         .iter()
         .filter(|d| d.attribute == idattr && d.added)
         .count();
-    let update = format!(
-        r#"[{{:db/id [:progress/id "schema-check-state"] :progress/memory 0.75 :db/ensure :progress/validate}}
-  {{:db/id [:fire-event/key [{learner} "schema-check-event"]] :fire-event/quality 1.5 :db/ensure :fire-event/validate}}]"#
-    );
+    let update = format!(r#"[{{:db/id {state} :progress/memory 0.75 :db/ensure :progress/validate}}]"#);
     db = transact(&db, &update, 2500)?.db_after;
     assert_eq!(
         state_count,
@@ -166,22 +137,16 @@ fn main() -> Result<(), Box<dyn Error>> {
             .filter(|d| d.attribute == idattr && d.added)
             .count()
     );
-    assert_eq!(
-        event,
-        find_string(&db, "fire-event", "id", "schema-check-event")
-    );
-    let second_learner = r#"[
-  {:db/id "other" :learner/id "schema-check-other" :db/ensure :learner/validate}
-  {:fire-event/id "schema-check-event" :fire-event/learner "other" :fire-event/at #inst "2026-09-26T00:00:00.000Z"
-   :fire-event/topic [:topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001"] :fire-event/kind "review"
-   :fire-event/passed false :fire-event/assessment true :fire-event/quality 1.5 :fire-event/learned false
-   :fire-event/question-results-edn "[false true]" :fire-event/source "direct" :db/ensure :fire-event/validate}]"#;
-    db = transact(&db, second_learner, 2600)?.db_after;
-    let duplicate_event =
-        format!(r#"[{{:fire-event/id "schema-check-event" :fire-event/learner {learner}}}]"#);
-    assert!(transact(&db, &duplicate_event, 3000).is_err());
-    let wrong_type = format!(r#"[{{:db/id {event} :fire-event/passed "true"}}]"#);
+    db = transact(&db, r#"[{:learner/id "schema-check-other" :db/ensure :learner/validate}]"#, 2600)?.db_after;
+    let wrong_type = format!(r#"[{{:db/id {state} :progress/learned "true"}}]"#);
     assert!(transact(&db, &wrong_type, 3000).is_err());
+    for invalid in [":progress/repetitions -0.1", ":progress/memory -0.1", ":progress/interval-days 0.0",
+        ":progress/assessment-accuracy 1.1", ":progress/practice-accuracy -0.1",
+        ":progress/assessment-mass -0.1", ":progress/practice-mass -0.1"] {
+        assert!(transact(&db, &format!("[{{:db/id {state} {invalid} :db/ensure :progress/validate}}]"), 3000).is_err());
+    }
+    assert!(transact(&db, &format!("[{{:db/id {state} :progress/memory 1.5 :db/ensure :progress/validate}}]"), 3000).is_ok());
+    assert!(transact(&db, &format!("[{{:db/id {state} :progress/policy {topic} :db/ensure :progress/validate}}]"), 3000).is_err());
     let wrong_cardinality = format!(r#"[{{:db/id {state} :progress/repetitions [1.0 2.0]}}]"#);
     assert!(transact(&db, &wrong_cardinality, 3000).is_err());
     let missing = r#"[{:progress/id "incomplete" :db/ensure :progress/validate}]"#;
@@ -241,9 +206,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let topicidattr = db.entid(&Keyword::new("topic", "id")).unwrap() as u32;
     assert!(!removed.values(topic, topicidattr).is_empty());
     edb_activity_checks::check(&db)?;
-    println!("PASS all current content and FIRe schemas install; required-attribute specs accept topic-owned encompassing/difficulty/global ability/event/application/state fixtures, explicit zero coverage, optional rationale, quality 1.5 and unlearned ability.");
-    println!("PASS progress updates preserve identity; reverse ownership resolves; duplicate topics, shared owners, orphaned records and duplicate-producing topic changes are rejected. Learner deletion cascades to progress and preserves shared topics. Event identity/type/cardinality checks pass.");
-    println!("PASS learner performance resolves through its owned ref, requires all four values, and cascades on learner deletion. Performance single-owner and range rules remain writer contracts.");
-    println!("Scope: native EDB schema, policy and difficulty predicates, ownership and history semantics. Engine equations and embedded receipt payloads are checked separately.");
+    println!("PASS all 30 current schemas install; policy/difficulty/progress predicates, single-owner topic progress, identity-preserving writes, required fields, component deletion and history checks pass.");
+    println!("Scope: in-memory native EDB transaction/CAS validation and Python-generated EDN. Durable writer basis-conflict/idempotency behavior is not exercised without a running transactor.");
     Ok(())
 }

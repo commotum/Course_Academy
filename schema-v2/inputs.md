@@ -41,14 +41,13 @@ Then, after you do the work, the engine needs new evidence:
 Which learner, task, activity definition, question, knowledge point, and topic were involved.
 What you submitted and whether it was correct.
 When it happened and how much active solving time you used.
-Whether you used hints or revealed the answer.
 Whether the work was lesson practice, review, assessment, or diagnostic.
 Whether you successfully completed the lesson or review.
 
 The grading and completion rules turn that evidence into topic-level success or failure. FIRe uses it to update retention and accuracy; the scheduler uses the updated state for its next decision. Several answers may support one review result—we wouldn’t award a full repetition for every question.
 
-The current FIRe core already uses time, learner progress, accuracy, topic difficulty, encompassing weights, and graded results. Its ranker also requires estimated duration. Prerequisite eligibility, question selection, study scope, and the full lesson/review/test scheduling rules still need application code.
+The current FIRe core already uses time, learner progress, accuracy, topic difficulty, encompassing weights, and graded results. Its ranker also requires estimated duration. The completion handler now checks lesson readiness, follows authored steps and diagnostic branches, and applies local stopping rules. Broad study priorities, queue creation, and scheduling cadence remain application work.
 
-Task items in `learner/2-2-learner-task-item.edn` hold responses, results, elapsed time, and optional `task-item/performance`. Whole-task outcome and XP remain on `learner-task`. Application code will assemble runtime FIRe `Event` inputs from this evidence; the adapter is not yet implemented.
+Task items in `learner/2-2-learner-task-item.edn` hold responses, results, optional completion timestamps, elapsed time, and optional `task-item/performance`. Whole-task outcome and XP remain on `learner-task`. The Python completion handler creates accuracy-only updates for submitted answers and separate retention updates for graded practice units. The schema adapter prepares one guarded EDB transaction; skips remain distinct from incorrect answers.
 
 Study scope, priorities, available time, and deadlines still need models where they are required. The scheduler and activity controller must turn these inputs into decisions, record measurements, and update progress. Optional queue entries can be dismissed; required work cannot be dismissed to clear its obligation. Launching a task can remove its queue entry but does not satisfy a requirement: the controller must carry or recompute the obligation until the policy completion condition is met, requeuing failed or abandoned work when necessary. The selection enum does not enforce this behavior. Queue entries do not provide a permanent explanation of past scheduling decisions; a durable decision history is not modeled yet.

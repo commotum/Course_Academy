@@ -26,10 +26,8 @@ pub fn check(db: &Database, topic: u64, input_basis: u64) -> Result<(), Box<dyn 
         ":policy/overdue-failure-slope -1.0",
         ":policy/early-practice-discount-power 0.0",
         ":policy/future-horizon-days -1.0",
-        ":policy/algorithm :question.type/multiple-choice",
-        ":policy/retention-update-order :policy.algorithm/fire-v1",
+        ":policy/retention-update-order :question.type/multiple-choice",
         ":policy/gate-slow-implicit \"true\"",
-        ":policy/name \" \"",
     ] {
         reject(&format!(
             "[{{:db/id {policy} {change} :db/ensure :policy/validate}}]"
@@ -41,53 +39,10 @@ pub fn check(db: &Database, topic: u64, input_basis: u64) -> Result<(), Box<dyn 
     ));
     assert!(transact(db, &format!("[{{:db/id {policy} :policy/retention-update-order :policy.retention-update/add-before-decay :db/ensure :policy/validate}}]"), 2200).is_ok());
 
-    for change in [
-        ":topic/difficulty 0.9", // Would no longer match 3/4.
-        ":topic/difficulty -0.1",
-        ":topic/assessment-correct 5",
-        ":topic/assessment-total -1",
-        ":topic/assessment-total 4.0", // Counts are integers.
-        ":topic/assessment-total 0 :topic/assessment-correct 0",
-        ":topic/difficulty-method :difficulty.method/expert-estimate",
-        ":topic/difficulty-method :question.difficulty/easy",
-        ":topic/assessment-cohort \" \"",
-    ] {
-        reject(&format!(
-            "[{{:db/id {topic} {change} :db/ensure :topic/difficulty-validate}}]"
-        ));
+    for invalid in [-0.1, 1.1] {
+        reject(&format!("[{{:db/id {topic} :topic/difficulty {invalid} :db/ensure :topic/difficulty-validate}}]"));
     }
-    reject(&format!("[[:db/retract {topic} :topic/assessment-total 4] {{:db/id {topic} :db/ensure :topic/difficulty-validate}}]"));
-    reject(&format!(
-        r#"[[:db/retract {topic} :topic/assessment-cohort "Illustrative schema fixture"]
-        {{:db/id {topic} :db/ensure :topic/difficulty-validate}}]"#
-    ));
-
-    let estimated = r#"[{:db/id "estimated" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000004"
-        :topic/difficulty 0.8 :topic/difficulty-method :difficulty.method/initial-estimate
-        :db/ensure :topic/difficulty-validate}]"#;
-    assert!(transact(db, estimated, 2200).is_ok());
-    assert!(transact(
-        db,
-        &estimated.replace(
-            ":topic/difficulty 0.8",
-            ":topic/assessment-correct 0 :topic/assessment-total 0 :topic/difficulty 0.8"
-        ),
-        2200
-    )
-    .is_ok());
-    assert!(transact(
-        db,
-        &estimated.replace("initial-estimate", "expert-estimate"),
-        2200
-    )
-    .is_ok());
-    reject(&estimated.replace("initial-estimate", "assessment-data"));
-    reject(&estimated.replace(":topic/difficulty 0.8", ":topic/difficulty 1.1"));
-    reject(&estimated.replace(
-        ":topic/difficulty 0.8",
-        ":topic/assessment-total 0 :topic/difficulty 0.8",
-    ));
-
+    assert!(transact(db, &format!("[{{:db/id {topic} :topic/difficulty 0.9 :db/ensure :topic/difficulty-validate}}]"), 2200).is_ok());
     // EDB's EDN reader does not expose nonfinite literals; exercise native values.
     let mut functions = TxFunctions::new();
     configuration::register_configuration_predicates(&mut functions);
@@ -129,16 +84,15 @@ pub fn check(db: &Database, topic: u64, input_basis: u64) -> Result<(), Box<dyn 
         {:topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000005" :topic/title "Uncalibrated topic"
          :topic/knowledge-points ["kp"] :db/ensure :topic/validate}]"#;
     assert!(transact(db, unknown, 2200).is_ok());
-    reject(&unknown.replace(":topic/title", ":topic/difficulty 0.8 :topic/title"));
+    assert!(transact(db, &unknown.replace(":topic/title", ":topic/difficulty 0.8 :topic/title"), 2200).is_ok());
 
-    // Counts and the authoritative value must change together. Retained history
-    // recovers the exact earlier input independently of later estimates.
-    let updated = transact(db, &format!("[{{:db/id {topic} :topic/assessment-correct 4 :topic/assessment-total 5 :topic/difficulty 0.8 :db/ensure :topic/difficulty-validate}}]"), 2200)?.db_after;
+    // History recovers the earlier estimate independently of later updates.
+    let updated = transact(db, &format!("[{{:db/id {topic} :topic/difficulty 0.8 :db/ensure :topic/difficulty-validate}}]"), 2200)?.db_after;
     let attr = updated.entid(&Keyword::new("topic", "difficulty")).unwrap() as u32;
     assert_eq!(updated.values(topic, attr), vec![&Value::Double(0.8)]);
     let previous = updated.database_value().as_of(input_basis);
     assert_eq!(previous.values(topic, attr)?, vec![Value::Double(0.75)]);
     assert!(configuration::valid_topic_difficulty(&previous, topic)?);
-    println!("PASS typed policies reject invalid enums, missing settings, nonfinite values and inconsistent bounds; topic estimates accept unknown/initial/expert states and reject inconsistent assessment evidence; basis T retrieves the original difficulty after later updates.");
+    println!("PASS typed policies reject invalid enums, missing settings, nonfinite values and inconsistent bounds; topic estimates preserve unknown values and reject invalid ranges; basis T retrieves the original difficulty after later updates.");
     Ok(())
 }

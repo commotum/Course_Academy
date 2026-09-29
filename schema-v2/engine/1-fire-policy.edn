@@ -1,10 +1,9 @@
-;; Complete, named learning-engine configuration. Settings are ordinary typed facts.
+;; Adjustable FIRe parameters. Settings are ordinary typed facts.
 ;; Request :db/ensure :policy/validate on every policy write.
-;; Once used by progress or an application, keep this configuration fixed and create
-;; a new policy identity for changed settings. The writer must enforce that lifecycle rule.
+;; Update settings under the same identity; EDB history preserves earlier values.
+;; Keep history enabled. Parameter changes do not themselves recompute progress.
 [
- ;; Supported executable algorithm and retention update orders.
- {:db/ident :policy.algorithm/fire-v1}
+ ;; Supported retention update orders.
  {:db/ident :policy.retention-update/decay-before-add}
  {:db/ident :policy.retention-update/add-before-decay}
 
@@ -13,17 +12,7 @@
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
-  :db/doc "Stable identity of this exact configuration. Independent of the engine runtime fingerprint."}
-
- {:db/ident :policy/name
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/doc "Human-readable name for this configuration, also supplied as the prototype Policy name."}
-
- {:db/ident :policy/algorithm
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Supported executable algorithm, currently policy.algorithm/fire-v1. The application resolves the ident to implementation code; EDB does not execute it."}
+  :db/doc "Stable identity of this parameter set. Edit its settings under this identity; retained EDB history records previous values. Independent of the engine runtime fingerprint."}
 
  ;; Retention.
  {:db/ident :policy/base-half-life-days
@@ -60,7 +49,7 @@
  {:db/ident :policy/initial-accuracy
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
-  :db/doc "Starting accuracy when learner evidence is unavailable; also the default topic difficulty and normalization baseline in fire-v1. Strictly between zero and one."}
+  :db/doc "Starting accuracy when learner evidence is unavailable; also the default topic difficulty and normalization baseline in the current FIRe model. Strictly between zero and one."}
 
  {:db/ident :policy/accuracy-update-rate
   :db/valueType :db.type/double
@@ -116,7 +105,7 @@
   :db/doc "Optional explanation of the settings and their intended use."}
 
  {:db/ident :policy/validate
-  :db.entity/attrs [:policy/id :policy/name :policy/algorithm
+  :db.entity/attrs [:policy/id
                     :policy/base-half-life-days
                     :policy/interval-growth
                     :policy/maximum-half-life-days
@@ -134,5 +123,5 @@
                     :policy/retention-update-order
                     :policy/future-horizon-days]
   :db.entity/preds course-academy.policy/valid?
-  :db/doc "Requires a complete configuration. The registered predicate checks supported enums, finite numeric ranges, and relationships between settings. Engine formulas and immutability after use remain application responsibilities."}
+  :db/doc "Requires identity and all engine settings. The registered predicate checks the update-order enum, finite numeric ranges, and relationships between settings. Formulas and applying changed settings to existing progress belong to application code."}
 ]

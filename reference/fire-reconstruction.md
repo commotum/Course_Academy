@@ -1,6 +1,6 @@
 # Our FIRe implementation: design, evidence, and validation
 
-Research and implementation date: September 26, 2026.
+Research snapshot: September 26, 2026. Schema integration updated September 28, 2026.
 
 We now have a working implementation of Fractional Implicit Repetition in
 [engine/fire](../engine/fire/). It implements the disclosed structure, including
@@ -14,16 +14,16 @@ evidence.** Recovering Math Academy's exact parameters or reproducing its
 numerical schedules is not an acceptance criterion. Unknown private values are
 design choices to resolve and evaluate, not blockers to this implementation.
 
-The FIRe core, research, data requirements, EDN definitions, and available-history
-analysis are complete for this implementation stage. Validation includes 67
-passing tests, native EDB schema checks, 32 history sensitivity scenarios, and
-the live-observation audit. The history checks identities, observed behavior,
-and consequences of alternative policies; it does not establish learning efficacy.
-Prospective retention measurements will guide tuning as the engine is used.
+The current application layer adds [schema hydration and transaction planning](../engine/schema.py),
+[activity helpers](../engine/activities.py), and [automatic item completion](../engine/runtime.py).
+The full Python suite passes (124 tests), and the native EDB check passes an actual
+entity capture → item completion → generated transaction round trip. Run `python3 -m unittest discover -s tests -v` for the current Python suite.
+Historical sensitivity scenarios check identities, observed behavior, and the
+consequences of alternative policies; they do not establish learning efficacy.
 
-Integrating the core with EDB persistence, a populated encompassing graph, and
-the broader activity-delivery application is the next product stage. It does
-not require additional access to Math Academy's private learner-state values.
+The adapter returns an atomic EDB transaction plan. A durable database writer,
+production UI, Rust numerical engine, and complete scheduler remain outside this
+implementation. Building those does not require MA's private learner-state values.
 
 ## What was investigated
 
@@ -37,7 +37,7 @@ published rules from interpretation and records what the searches did not find.
 The [history analysis](fire-history-analysis.md) examines the actual progress CSV,
 question observations, locally inferred knowledge profile, catalog identities,
 and supplementary captures. The [data model](fire-data-model.md) maps executable
-state to new EDN definitions and describes the missing inputs.
+state to the current EDN definitions and application boundary.
 
 An authorized [live-account follow-up](fire-live-account-analysis.md) subsequently
 recovered 162 question occurrences with exact topic/example links across nine
@@ -143,11 +143,13 @@ Cycles are rejected by this reconstruction. Graph traversal is computed before
 the per-target slow-speed gate, so a slow intermediate topic does not block
 credit to another eligible target; that transit behavior remains an assumption.
 
-The engine uses pre-event ability to calculate that event's speed and then
-updates accuracy from its ordered answers. Answer-level accuracy propagation is
-independent of the whole task's pass/fail result: a passed review containing an
-incorrect answer still sends negative *ability evidence* upward. Its retention
-credit is governed by the explicitly supplied task outcome and quality.
+The combined research `apply` call uses pre-event ability, then updates accuracy.
+The completion runtime instead calls `apply_accuracy` once per submitted answer
+and `apply_retention` when the relevant graded unit closes. Retention therefore
+uses the ability accumulated so far. A passed review containing an incorrect
+answer still sends negative ability evidence upward, while its retention credit
+uses the overall review outcome. Neither path counts an answer repeatedly just
+because it affects several topic profiles.
 
 Failed initial lessons retain accuracy evidence while `learned=false`. They
 do not start retention or establish mastery. Later successful admission preserves
@@ -156,11 +158,39 @@ encompassing neighbors, then learner-global accuracy or a declared prior. Direct
 and key prerequisites and same-module membership can inform those neighborhoods
 without being treated as encompassing edges.
 
-`DifficultyEstimate` separately accumulates actual direct assessment counts only
-when both assessment context and qualifying-student status are explicitly given.
-With no population data the engine uses a labeled prior. Its quality magnitude
-and pass/fail decision must come from an activity-specific grading adapter; the
-private MA answer-to-quality function has not been recovered.
+The research `DifficultyEstimate` helper separately analyzes qualifying direct
+assessment observations. Current schema-v2 stores only optional `topic/difficulty`,
+not calibration-count or cohort entities. The adapter uses that estimate or the
+policy prior. Grading and positive performance magnitudes are supplied by the
+application; the private MA answer-to-quality function has not been recovered.
+
+## Current activity rules
+
+These application rules use the current schemas and explicit local choices;
+they do not claim to recover every MA activity controller.
+
+| Activity | Implemented completion and evidence rule |
+| --- | --- |
+| Lesson | Follow ordered tutorials/KPs and use fresh questions from each KP bank. Two consecutive correct within five questions passes a KP; all topic KPs must pass to establish learning. Prerequisites must already be learned and not due, a conservative local readiness rule. |
+| Review | Five questions from one topic, stopping at three consecutive correct or five attempts. Answer order matters in the published FAQ; this precise stopping policy is local. |
+| Lesson/review retention | One aggregate unit at completion, scaled by mean supplied submitted performance. Answers have already updated accuracy individually, including failed initial work. |
+| Assessment/multistep retention | Each submitted item contributes `performance / questions_for_its_topic_in_the_definition`, a local allocation policy. Multistep placements retain authored order. |
+| Diagnostic | Follow the prepared probe graph; missing ordinary branches end the path. Offer an available alternate after any submitted wrong answer, without a timing gate, and require an explicit retry choice. Alternate probes do not offer another retry. |
+| Placement | Accumulate signed prerequisite-graph balances separately from FIRe: correct downward, wrong upward, once per reached topic. Supplied weights may reduce slow-correct credit. Final positive balances initialize previously unlearned topics; established retention history is preserved. |
+| Skip | A presented skip consumes a practice attempt and breaks its streak, but contributes no submitted-answer accuracy. The configurable local diagnostic default gives negative placement evidence. Unpresented questions create no items. |
+
+The [diagnostic chapter](<The Math Academy Way/V-TECHNICAL-DEEP-DIVES/30-Technical-Deep-Dive-on-Diagnostic-Exams/30-Technical-Deep-Dive-on-Diagnostic-Exams.md>)
+supports signed balances, directional propagation, reduced slow-correct credit,
+and positive balances becoming repetitions. Exact time weighting, path
+deduplication, and retry accounting remain local choices. The current accumulator
+retains both wrong and alternate answers; it does not silently cancel the first.
+
+XP is independent of mastery and retention. The [XP analysis](mathacademy-xp-analysis.md)
+supports observed perfect-lesson `R(1.25B)` and perfect-review `B+2` candidates.
+Assessment `max(0, R(1.2B(p−0.35)/0.65))` and multistep `R(B(2.25p−1))` are fitted
+hypotheses enabled by an explicit runtime switch, where `R(x)=floor(x+1/2)`.
+Partial lesson/review and diagnostic awards require a caller-supplied value or
+remain unknown. The runtime does not invent missing workload baselines.
 
 ## What runs
 
@@ -176,7 +206,7 @@ python3 -m engine.fire.history \
   --output engine/fire/fixtures/history-observations.json \
   --replay-output engine/fire/fixtures/history-replay-results.json
 
-# Core behavior, calibration, and history-integrity checks.
+# Core, activity, adapter, and history-integrity checks.
 python3 -m unittest discover -s tests -v
 ```
 
@@ -185,6 +215,7 @@ in-memory event application, idempotent retries, conflicting-ID rejection, and
 chronological ingestion. Receipts expose before/after state, coverage, discount,
 speed, failure multiplier, gated credit, and configuration fingerprints. Global
 accuracy counts a direct answer once even when it affects many topic profiles.
+These are runtime/debug receipts, not domain entities in schema-v2.
 
 An additional operational audit checked that exported snapshots cannot mutate
 live configuration, seeded observations cannot leak into earlier events, and
@@ -194,11 +225,28 @@ IDs cannot collide with real event IDs, JSON replay preserves neighborhood and
 isolated-topic inputs, and retry receipts remain equal after persistence.
 
 `rank` accepts candidates already cleared for prerequisites and content readiness.
-Its previews do not mutate learner state. Both student-selected and recommended
-events call `apply`; selection source is recorded and has no effect on retention.
-XP, question delivery, diagnostic admission, task grading, and the complete MA
-scheduler are adjacent application responsibilities, not silently implemented by
-this retention model.
+Its previews use retention-only simulation and do not create answer accuracy.
+The completion runtime applies the same grading and learning rules regardless of
+queue selection mode. It validates delivery against existing content definitions;
+it does not assemble assessments, generate diagnostic graphs, assign remediation,
+or implement a complete queue scheduler.
+
+`EntitySnapshot` reads a captured EDB entity map at one basis; the adapter is not
+a general EDN parser or database connection. `complete_item` produces an item
+completion compare-and-swap plus result/response, progress, performance, and
+applicable task/XP writes. The writer must submit the returned request key and
+exact basis guard and retain that plan for uncertain-outcome retries. No loaded
+engine state is mutated before commit. This protects the existing occurrence;
+fresh identities for duplicated real-world work still require application care.
+For timed assessments and diagnostics, `expire_task` closes the attempt using
+existing evidence without inventing unanswered items or partial-exam XP. The
+application owns the timer and submits the resulting guarded task transaction.
+
+Policy settings can change under the same `policy/id`; historical database views
+recover earlier values. Existing progress retains its stored interval until an
+engine update recomputes it. There is no automatic mass reschedule and no separate
+domain event or application receipt. `Policy.name` is a Python prototype label,
+not a persisted engine input.
 
 ## Verification against the available history
 
@@ -248,21 +296,21 @@ history joins. It does **not** turn guessed numerical constants into empirically
 verified MA parameters. No weights were invented from prerequisite edges, and
 no XP-to-mastery substitution was made to make the replay appear complete.
 
-## What we must track next
+## Inputs and verification boundary
 
 The detailed [data-model report](fire-data-model.md) and
-[current EDN schemas](../schema-v2/README.md) provide the reviewable definitions. The main
-new information is:
+[current EDN schemas](../schema-v2/README.md) provide the reviewable definitions.
+The engine consumes:
 
 - Expert-supported encompassing edges, weights, and rationale, separate from
   readiness prerequisites, with known zero distinguished from unknown.
 - Learner-topic repetition position, anchored memory and interval, learned
   admission, both accuracy channels and their evidence mass, and last direct work.
-- Learner-global accuracy channels and declared population topic calibration.
-- Actual ordered question outcomes with question/KP/topic identities, occurrence
-  time, assessment context, and the task grading/quality decision.
-- The exact policy, graph, calibration and prior-neighborhood inputs used for an
-  update, plus replayable observation identity and application receipt.
+- Learner-global accuracy channels and optional topic difficulty estimates.
+- Actual ordered task items, submitted responses, result, occurrence time, and
+  supplied performance. Question/KP/topic relationships come from shared content.
+- Policy, graph, and state from one database basis, with task-item identities and
+  EDB history supplying the durable observation and configuration context.
 
 For stronger verification, collect the served task menu and timestamps before
 and after work, any legitimately exposed due/profile values, diagnostic/reset
@@ -271,6 +319,8 @@ additional XP totals. Start authoring encompassing weights on a small active
 topic neighborhood, validating them against representative problems; expand as
 new topics enter study. The model can run direct reviews while that work proceeds.
 
-The EDN schemas have native EDB smoke validation. The Python implementation uses
-JSON snapshots; an atomic EDB persistence adapter has not been implemented.
-Neither the captured content nor an existing learner database was migrated.
+The EDN schemas have native EDB checks, and the Python adapter prepares guarded
+atomic writes verified through the native in-memory EDB transaction path. The durable writer still needs to
+submit those plans with registered predicates; this is separate from the core's
+JSON snapshot support. Neither captured content nor an existing learner database
+was migrated.

@@ -41,6 +41,15 @@ class AccuracyEstimateTests(unittest.TestCase):
         self.assertAlmostEqual(estimate.practice_accuracy, 0.672)
         self.assertEqual(estimate.practice_mass, 2)
 
+    def test_immediate_answers_match_ordered_batch_calibration(self):
+        answers = (False, True, True, False)
+        stream, batch = AccuracyEstimate(), AccuracyEstimate()
+        for answer in answers:
+            stream.update((answer,), assessment=True, weight=.25)
+        batch.update(answers, assessment=True, weight=.25)
+        self.assertEqual(stream, batch)
+        self.assertEqual(stream.assessment_mass, 1)
+
     def test_empty_and_zero_weight_are_no_ops(self):
         estimate = AccuracyEstimate()
         initial = asdict(estimate)
@@ -51,7 +60,8 @@ class AccuracyEstimateTests(unittest.TestCase):
     def test_invalid_constructor_values(self):
         for arguments in ({'assessment_accuracy': -0.1}, {'practice_accuracy': 1.1},
                           {'assessment_mass': -1}, {'practice_mass': math.inf},
-                          {'assessment_accuracy': True}, {'practice_accuracy': math.nan}):
+                          {'assessment_accuracy': True}, {'practice_accuracy': math.nan},
+                          {'assessment_mass': 10 ** 1000}):
             with self.subTest(arguments=arguments), self.assertRaises(ValueError):
                 AccuracyEstimate(**arguments)
 

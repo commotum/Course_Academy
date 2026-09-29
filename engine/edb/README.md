@@ -2,7 +2,7 @@
 
 `learner/knowledge-profile` owns progress records. Each record references a shared topic through `progress/topic`; its learner is available through the reverse reference `learner/_knowledge-profile`. Component ownership gives progress the learner's lifecycle, while deleting progress does not delete the topic.
 
-[progress.rs](progress.rs) implements the entity predicates named in the EDN. `valid-profile?` checks that every member has an ID, a real topic, exactly this learner as owner, and a distinct topic within the profile. An empty profile is valid. `valid-progress?` checks that the record has exactly one owner and checks that owner's profile. This also catches topic changes that create duplicates.
+[progress.rs](progress.rs) implements the entity predicates named in the EDN. `valid-profile?` checks that every member has an ID, a real topic, exactly this learner as owner, and a distinct topic within the profile. An empty profile is valid. `valid-progress?` checks that the record has exactly one owner, checks that owner's profile, validates finite retention/accuracy/mass values, and requires a real policy target. This also catches topic changes that create duplicates.
 
 Register these callbacks with `register_progress_predicates` in a `TxFunctions` registry supplied to `Database::with_forms`. For a durable writer, register the same checks using EDB's `NativeRegistryBuilder::entity_predicate` with cooperative cancellation; that writer integration remains to be implemented.
 
@@ -12,25 +12,26 @@ Specs are opt-in: bypassing `:db/ensure` bypasses these checks. The learner's mi
 
 Global accuracy lives on the optional component referenced by `learner/performance`, defined in [1-2-learner-performance.edn](../../schema-v2/learner/1-2-learner-performance.edn). Ensure `performance/validate` on that child when writing its four accuracy/mass values. Resolve it through the learner ref; the reverse ref is `learner/_performance`. No separate domain ID is needed. Cardinality one permits at most one summary per learner but does not prevent two learners from sharing a summary. Single ownership and numeric ranges remain application contracts; the progress predicates do not check them. Per-topic accuracy remains on `progress`.
 
-Task history through `learner/activity` remains an ordinary reference collection; its common schema is described in [the schema organization](../../schema-v2/README.md). Task domain guards are not implemented by these progress predicates. `learner/queue` owns the current up-next entries, while each task owns individual learner presentations through `learner-task/items`, defined in `learner/2-2-learner-task-item.edn`. `learner-task/activity` points to the shared activity definition; `task-item/content` points to the presented question, tutorial, or example. Optional `task-item/source-step` links to an authored lesson or multistep placement. The schema does not store duplicate task/item type enums. Queue ownership, index uniqueness, selection enums, and content validation likewise remain application contracts; these progress predicates do not check the queue or implement scheduling.
+Task history through `learner/activity` remains an ordinary reference collection; its common schema is described in [the schema organization](../../schema-v2/README.md). Task domain guards are not implemented by these progress predicates. `learner/queue` owns the current up-next entries, while each task owns individual learner presentations through `learner-task/items`, defined in `learner/2-2-learner-task-item.edn`. `learner-task/activity` points to the shared activity definition; `task-item/content` points to the presented question, tutorial, or example. The schema does not store duplicate task/item type enums. Queue ownership, index uniqueness, selection enums, and content validation likewise remain application contracts; these progress predicates do not check the queue or implement scheduling.
 
 # Policy and topic difficulty
 
 [configuration.rs](configuration.rs) implements `course-academy.policy/valid?` and `course-academy.topic/valid-difficulty?`. Register these with `register_configuration_predicates` alongside the progress predicates. Like the progress checks, production writer deployment through EDB's native registry remains to be implemented.
 
-Ensure `policy/validate` for complete configurations. The predicate checks supported algorithm/order enums, finite numeric ranges, and cross-setting bounds. Policies use UUID identities. Once referenced by progress or an application, the writer must keep a configuration fixed and use a new identity for changed settings. The predicate sees db-after and checks validity; it does not enforce historical immutability. EDB history remains enabled.
+Ensure `policy/validate` for complete configurations, defined in [1-fire-policy.edn](../../schema-v2/engine/1-fire-policy.edn). The predicate checks the two supported retention-update orders, finite numeric ranges, and cross-setting bounds. Parameters can be edited under the same UUID `policy/id`; EDB history preserves previous values.
 
-Ensure `topic/difficulty-validate` for every difficulty or evidence write. A starting/expert estimate needs a topic ID, difficulty in [0,1], and its method. Counts can be absent or both zero. Assessment-derived difficulty requires positive total, integer correct/total counts, a nonblank cohort definition, and agreement with correct/total within 1e-12. `topic/validate` invokes the same predicate, allowing completely unknown difficulty but rejecting partially populated estimates. Identity-only topic imports can still use `topic/identity-validate`.
+Ensure `topic/difficulty-validate` for a difficulty update: it requires topic identity and a finite value in [0,1]. `topic/validate` invokes the same predicate while allowing absent difficulty. Identity-only imports can use `topic/identity-validate`. Difficulty methods, counts, cohorts, and cutoff attributes were removed from the schema.
 
-The application selects eligible direct assessment answers and avoids counting an observation twice. Persist both counts and the resulting difficulty atomically; use EDB CAS or a transaction computation for concurrent read-modify-write updates. A changed cohort definition requires recomputation from the intended evidence, not relabeling old counts. The evidence cutoff `topic/assessment-through` is separate from transaction time.
+A future difficulty estimator must select eligible direct assessment evidence and avoid duplicate counting. Only its resulting topic difficulty is currently modeled. Use EDB CAS or a basis guard for read-compute-write updates; the estimator and durable writer are not implemented.
 
-The engine reads authoritative `topic/difficulty`; if absent, it uses `policy/initial-accuracy`. Read all inputs from one database value and record its logical `basis_t()` as `fire-application/basis-t` in the same database. Historical `as_of(basis_t)` reads recover earlier difficulty while that history remains retained. Preserve history on the relevant attributes. Basis T does not identify the event's occurrence time, enforce concurrency, or reproduce external code; policy/algorithm and the actual engine implementation still matter.
+The engine reads authoritative `topic/difficulty`; if absent, it uses `policy/initial-accuracy`. To inspect a past progress state, use `as_of` at the transaction that wrote it and resolve `progress/policy` and its parameters in that same historical database value. Reading the policy's current values would not recover the settings used then. Retain the relevant history. Editing policy parameters does not rewrite stored `progress/interval-days`; the interval remains in effect until the engine explicitly recomputes it, with no automatic bulk rescheduling.
 
-The Python engine remains a standalone numerical prototype; there is no completed EDB persistence adapter. The database schema maps to its existing `Policy` fields as follows. All settings are explicit on a complete policy; do not silently fill omitted persisted fields from changing program defaults.
+The intended item-completion operation grades the response and atomically writes the item result, responses, affected progress, and global performance. Compute against the transaction's authoritative input state, or guard an external calculation against a changed basis. EDB transaction history connects completion with its state changes without a separate engine-update record. Exact request retries use EDB's retry mechanism, while a one-time completion guard prevents fresh requests from crediting the same item again. The Python adapter prepares this transaction; wiring it to the production durable writer remains application work. Schema validation alone does not run the engine.
+
+The Python [schema adapter](../schema.py) loads a captured entity projection and prepares native EDN writes. The [completion handler](../runtime.py) runs after application grading and distinguishes answer accuracy from grouped retention credit. The database schema maps to its existing `Policy` fields as follows. All settings are explicit on a complete policy; do not silently fill omitted persisted fields from changing program defaults.
 
 | EDB policy attribute | Python `Policy` field |
 | --- | --- |
-| `name` | `name` |
 | `base-half-life-days` | `base_interval_days` |
 | `interval-growth` | `interval_growth` |
 | `maximum-half-life-days` | `maximum_interval_days` |
@@ -48,20 +49,23 @@ The Python engine remains a standalone numerical prototype; there is no complete
 | `retention-update-order` | `memory_order`: `/decay-before-add` → `decay-before-add`; `/add-before-decay` → `literal-add-before-decay` |
 | `future-horizon-days` | `future_horizon_days` |
 
-`policy.algorithm/fire-v1` identifies the current executable formulas and graph rules. `policy/id` is a UUID, not the prototype's calculated `Policy.id` fingerprint. Prototype JSON snapshots and their difficulty-map fingerprints remain supported runtime artifacts, not EDB calibration-set entities. The future adapter must resolve enum entity IDs to their idents and preserve these explicit mappings.
+`policy/id` is a UUID, not the prototype's calculated `Policy.id` fingerprint. Python `Policy.name` is only a prototype label, not a database input; there is no stored algorithm selector. The adapter resolves the retention-update enum refs with these explicit mappings.
 
-Run the EDB checks from the repository root:
+Run the Python checks and the native EDB boundary check from the repository root:
 
 ```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py'
 rustc --edition=2021 tests/validate_fire_schema.rs \
-  --extern edb_core=/home/jake/Developer/EDB/target/debug/deps/libedb_core-a0676893826732bc.rlib \
-  -L dependency=/home/jake/Developer/EDB/target/debug/deps \
-  -o /tmp/course-academy-fire-schema-check
-/tmp/course-academy-fire-schema-check
+  --extern edb_core=/home/jake/Developer/EDB/target/release/deps/libedb_core-2824b6ab39ee5756.rlib \
+  -L dependency=/home/jake/Developer/EDB/target/release/deps \
+  -o /tmp/course-academy-current-schema-check
+PYTHONDONTWRITEBYTECODE=1 /tmp/course-academy-current-schema-check
 ```
 
-The library filename is specific to the installed EDB build. Tests cover policy bounds and enums, topic evidence consistency, optional initial estimates, historical difficulty lookup, and existing progress/event behavior. They do not exercise a production writer or change a persistent database.
+The library filename is specific to the installed EDB build. The native harness installs all 30 current EDNs, captures actual EDB entity values for Python, and applies the resulting transaction EDN back through EDB. It checks policy history, numeric/ownership guards, item completion CAS, and protection of canonical answer choices during task deletion. `proposed` contains no EDNs.
 
-The schema harness also installs the `learner` folder, including queue, task, and task-item schemas, as well as the shared activity definitions and task-group/response drafts under `proposed`, and exercises `tests/edb_activity_checks.rs`. Those drafts currently enforce required attributes and native types/cardinalities only; their full domain rules are documented for the future activity controller.
+The plan's `compare_basis_t` must be submitted through `TransactionRequest::comparing_basis`, together with its stable `request_key`. Item CAS alone cannot detect a concurrently changed graph, policy, or another task's progress update. Retain the original plan for an uncertain submission or exact retry. The in-memory harness checks emitted transactions and native request construction; it does not exercise a deployed durable transactor's retry/basis-conflict path.
 
-[Task items](../../schema-v2/learner/2-2-learner-task-item.edn) hold responses, results, elapsed time, and optional `task-item/performance`. Whole-task outcome and XP remain on the task. Application code will assemble runtime FIRe `Event` inputs from this evidence; the adapter is not yet implemented.
+The application calls `engine.runtime.complete_item` automatically after grading, or `expire_task` from its timer. These functions return a transaction plan and speculative updated engine. Only adopt that state after a successful commit; reload and recompute after a confirmed conflicting write. No additional domain event or processing record is required. Grading, snapshot acquisition, production writer registration, UI callbacks and the full queue scheduler remain application integration work.
+
+[Task items](../../schema-v2/learner/2-2-learner-task-item.edn) hold responses, results, elapsed time, optional `task-item/completed-at`, and optional `task-item/performance`. Completion time identifies when practice occurred, separately from its duration and the engine transaction's commit time. Whole-task outcome and XP remain on the task. The completion handler uses these facts directly; no separate persisted event or update record is needed.

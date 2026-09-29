@@ -1,34 +1,31 @@
 # How the learning engine plugs into our schema
 
-The algorithm belongs in **Rust application code**. EDB stores the content, relationships, learner activity, and progress that the algorithm reads and updates. EDN defines those attributes and their constraints; it does not implement the algorithm. Formulas, grading rules, review scheduling, test selection, time limits, and XP calculations belong in code and configuration.
-
-The standalone [FIRe schemas](../schema-v2/fire/) grew around reproducing and inspecting calculations. That initially made policy records, calibration sets, and application receipts prominent in the proposed product model. Current schema-v2 keeps typed policy configurations, stores difficulty on topics, and uses the input database basis in receipts instead of calibration-set entities. We need the underlying learning data, but those research-oriented records do not all need to become permanent application entities.
-
-Our existing structure already provides the content:
+The current implementation is Python application code: [FIRe](../engine/fire/core.py) updates numerical state, [activity helpers](../engine/activities.py) evaluate practice and XP, and [the completion runtime](../engine/runtime.py) connects task items to those updates. [The adapter](../engine/schema.py) reads an EDB entity snapshot and prepares one guarded transaction. EDN defines stored facts and validation contracts; it does not execute the learning algorithm.
 
 ```text
-lesson → topic
-lesson → ordered steps → knowledge point or tutorial
-knowledge point → worked example + question bank
-question → answer fields → answers
+shared content → learner task → ordered task items and responses
+                                    ↓ complete_item
+                      updated progress + global performance
+                                    ↓
+                         one EDB transaction plan
 ```
 
-The engine selects questions from those banks. A learner's submitted answer is separate from the stored correct answer. The main additions are records describing someone using that content:
-
-| Where the data belongs | What the engine needs |
+| Stored facts | Role |
 | --- | --- |
-| **Existing content** | Topic and question identities, prerequisites, knowledge points, answers, and difficulty. `question/difficulty` already holds E/M/H; `topic/difficulty` is a separate expected-assessment-accuracy measure in [0,1], accompanied by its method and optional integer assessment counts. Learner ability belongs elsewhere. |
-| **Encompassing relationship** | A topic owns encompassing records through `topic/encompasses`. Each contains a component topic, fractional weight, and optional rationale; the parent supplies the source. Ordinary prerequisite refs do not tell FIRe how much practice transfers. |
-| **Activity** | Learner, activity kind (lesson, review, assessment, diagnostic), content refs, start/completion times, status, result, awarded XP, and whether selection was automatic or student-directed. A delivered activity can also record its assigned time budget. |
-| **Question attempt** | Activity and question refs, assessed knowledge point/topic, presentation order, submitted field values, correctness, timestamps, active solving duration, and assistance used. Each occurrence has its own identity, including repeat presentations of the same question. |
-| **Learner and learner-topic progress** | Global and topic-specific accuracy evidence; for each learner/topic pair, learned status, fractional repetitions, memory estimate and its timestamp, retention interval, and last direct practice. The learner owns these records through `learner/knowledge-profile`; `progress/topic` identifies the shared topic. Reverse lookup supplies the learner, and opt-in Rust predicates enforce ownership and one record per topic. Progress is shared across courses containing the same topic. |
+| Topics, KPs, questions, answers | Shared content. Resolve an answered question's topic through its KP bank and topic relationships; task items do not copy those refs. Lessons own ordered tutorial/KP placements; KPs link examples and question pools. |
+| Prerequisites and encompassings | Prerequisites constrain learning readiness. Separately weighted encompassing relationships determine FIRe practice transfer. |
+| Learner tasks and items | Attempt status, actual presentations, submitted responses, result, order, timing, and supplied performance magnitude. XP belongs to the task and is separate from correctness. |
+| Progress and performance | One learner-owned progress record per topic, shared across courses, plus the learner's global accuracy summary. Progress stores learned status, repetitions, anchored memory, interval, accuracy channels, and policy ref. |
+| Policy and difficulty | [Engine policy](../schema-v2/engine/1-fire-policy.edn) stores typed parameters. Optional `topic/difficulty` is expected assessment accuracy in `[0,1]`; question E/M/H labels have a different meaning. |
 
-Elapsed solving time belongs on the **question attempt**, not on the reusable question or lesson. It differs from elapsed calendar time since earlier practice: the current FIRe calculation uses the latter for memory decay. Capturing solving duration is useful, but its effect on grading or scheduling needs an explicit rule. XP is a separate reward calculation.
+Each submitted answer updates accuracy once. Lesson and review completion supplies one aggregate retention unit, scaled by supplied performance. Assessment and multistep answers divide that magnitude by the number of questions for the same topic in the definition. Diagnostic answers instead accumulate signed prerequisite-graph balances; positive final balances initialize previously unlearned topics. Explicit skips do not count as submitted-answer accuracy; the local diagnostic default treats them as negative placement evidence.
 
-At runtime, Rust grades submissions, applies the activity's completion rules, and groups the evidence by topic. Several questions can support one repetition; an assessment can produce evidence for several topics. FIRe then updates direct and implicit repetition credit, memory, and accuracy. A database transaction saves the completed result, affected progress, and XP together, with safeguards against crediting a retried completion twice. The scheduler reads that state to choose subsequent reviews, tests, remediation, or lessons. Due times and learning speed can be computed from stored state rather than maintained as additional authoritative values.
+The runtime checks authored membership and stopping rules. Its local readiness rule requires a lesson's prerequisites to be learned and not currently due. Required, recommended, and self-selected work use the same completion rules. The broader queue scheduler, remediation assignment, and assessment assembly are separate work; the completion adapter does not implement them.
 
-A student-selected lesson follows this same path. Selection changes how the activity begins; completion still feeds the ordinary retention, review, assessment, and XP mechanisms.
+An application timer can call `expire_task` for a configured assessment or diagnostic limit. It closes the task using recorded evidence, without inventing skipped answers for unpresented questions or guessing partial-exam XP.
 
-We can therefore integrate FIRe through normal activity records and progress attributes without requiring a second event log or a full calculation receipt for every action. Reusable review/test definitions are needed only where there is reusable authored structure; delivered questions and results belong to activities. Detailed traces can remain optional debugging output.
+The transaction plan saves item completion, responses, affected progress, global performance, and applicable task outcome/XP together. The writer must submit its exact request key and database-basis guard; an item completion compare-and-swap prevents applying the same item twice. Retry the original plan after an uncertain submission. A new item identity is new evidence, so transport retry protection does not deduplicate a semantically duplicated task.
 
-**Current status:** the runnable implementation is a [Python reference engine](../engine/fire/core.py). The Rust implementation, EDB persistence integration, and general activity/question-attempt schemas remain to be built. This page proposes the integration; it does not change any EDN schemas.
+Policy parameters can change under a stable `policy/id`. EDB history and historical database views recover earlier values; existing progress retains its stored interval until the engine recomputes it. Editing a policy does not automatically reschedule every topic. Python `Event` objects and debug receipts remain runtime tools, with no separate event or update-receipt entities in schema-v2.
+
+**Implementation boundary:** the Python adapter and completion runtime are implemented and verified by the Python suite and a native EDB transaction round trip. They return transaction plans; they do not connect to a database. Rust currently supplies EDB validation predicates and checks. A production UI, durable writer, and Rust numerical engine are not implemented. See [the data contract](fire-data-model.md) for ownership and [the reconstruction](fire-reconstruction.md) for evidence and local choices.

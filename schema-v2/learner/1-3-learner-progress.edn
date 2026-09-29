@@ -1,7 +1,7 @@
 ;; Current topic knowledge owned through learner/knowledge-profile.
 ;; Find the learner through the reverse ref; topics remain shared across courses.
 ;; Required-attribute specs are opt-in: request :db/ensure on each write.
-;; Ranges, reference targets, formulas, and immutable-use rules are application contracts.
+;; Ranges, reference targets, and formulas are application contracts.
 [
  {:db/ident :progress/id
   :db/valueType :db.type/string
@@ -68,12 +68,7 @@
  {:db/ident :progress/policy
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Policy entity under which this state was computed; identified by policy/id."}
-
- {:db/ident :progress/last-application
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "Latest application receipt that changed this state; omitted for explicit initialization."}
+  :db/doc "Policy used to compute this state, identified by policy/id. Historical reads at the state-change transaction recover the settings used then; current policy values may have been adjusted since."}
 
  {:db/ident :progress/validate
   :db.entity/attrs [:progress/id :progress/topic :progress/repetitions :progress/memory :progress/memory-at :progress/interval-days :progress/assessment-accuracy :progress/practice-accuracy :progress/assessment-mass :progress/practice-mass :progress/learned :progress/policy]

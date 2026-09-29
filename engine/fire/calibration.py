@@ -21,8 +21,11 @@ import math
 
 def _number(value: float, name: str, *, low: float = 0,
             high: float | None = None) -> None:
-    if (isinstance(value, bool) or not isinstance(value, (int, float))
-            or not math.isfinite(value)):
+    try:
+        valid = not isinstance(value, bool) and isinstance(value, (int, float)) and math.isfinite(value)
+    except OverflowError:
+        valid = False
+    if not valid:
         raise ValueError(f'{name} must be a finite number')
     if value < low or (high is not None and value > high):
         raise ValueError(f'{name} outside [{low}, {high}]')

@@ -18,7 +18,11 @@ from .calibration import AccuracyEstimate
 
 
 def finite(value: float, name: str, low: float | None = None, high: float | None = None) -> None:
-    if isinstance(value, bool) or not isinstance(value, (float, int)) or not math.isfinite(value):
+    try:
+        valid = not isinstance(value, bool) and isinstance(value, (float, int)) and math.isfinite(value)
+    except OverflowError:
+        valid = False
+    if not valid:
         raise ValueError(f'{name} must be finite')
     if low is not None and value < low or high is not None and value > high:
         raise ValueError(f'{name} outside [{low}, {high}]')
@@ -42,8 +46,11 @@ offers an explicit decay-before-add interpretation for event-time persistence.
     finite(raw_delta, 'raw_delta')
     if interval <= 0 or speed <= 0 or decay < 1 or type(failed) is not bool:
         raise ValueError('positive interval/speed, decay >= 1, and boolean failed required')
-    return (max(0.0, repetitions + speed * (decay if failed else 1.0) * raw_delta),
-            max(0.0, memory + raw_delta) * 2.0 ** (-days / interval))
+    updated = (max(0.0, repetitions + speed * (decay if failed else 1.0) * raw_delta),
+               max(0.0, memory + raw_delta) * 2.0 ** (-days / interval))
+    for name, value in zip(('updated repetitions', 'updated memory'), updated):
+        finite(value, name, 0)
+    return updated
 
 
 @dataclass(frozen=True)
@@ -119,7 +126,12 @@ Failure uses the transpose of exactly the same coverage relation.
 
 @dataclass(frozen=True)
 class Policy:
-    """All numeric defaults below are OUR starting assumptions, not recovered MA constants."""
+    """All numeric defaults are OUR assumptions, not recovered MA constants.
+
+    ``name`` is a legacy runtime label, not a required database attribute. ``id``
+    fingerprints the current configuration; it is not the stable EDB policy ID.
+    Replacing a policy does not retroactively recompute stored topic intervals.
+    """
     name: str = 'fire-reconstruction-v1'
     base_interval_days: float = 1.0
     interval_growth: float = 2.0
@@ -140,7 +152,7 @@ class Policy:
 
     def __post_init__(self):
         for name, value in asdict(self).items():
-            if isinstance(value, (float, int)) and not isinstance(value, bool):
+            if name not in {'name', 'gate_slow_implicit', 'memory_order'}:
                 finite(value, name, 0)
         if not (self.base_interval_days > 0 and self.interval_growth > 1 and
                 self.maximum_interval_days >= self.base_interval_days and
@@ -149,7 +161,7 @@ class Policy:
                 0 < self.minimum_speed <= 1 <= self.maximum_speed and
                 self.maximum_failure_multiplier >= 1 and self.discount_power > 0):
             raise ValueError('invalid FIRe policy bounds')
-        if self.memory_order not in {'decay-before-add', 'literal-add-before-decay'}:
+        if not isinstance(self.memory_order, str) or self.memory_order not in {'decay-before-add', 'literal-add-before-decay'}:
             raise ValueError('unknown memory timestamp convention')
         if type(self.gate_slow_implicit) is not bool:
             raise ValueError('gate_slow_implicit must be boolean')
@@ -159,21 +171,50 @@ class Policy:
         return fingerprint(asdict(self))
 
     def interval(self, repetitions: float) -> float:
-        ceiling = math.log(self.maximum_interval_days / self.base_interval_days, self.interval_growth)
-        return self.base_interval_days * self.interval_growth ** min(repetitions, ceiling)
+        finite(repetitions, 'repetitions', 0)
+        log_base, log_growth = math.log(self.base_interval_days), math.log(self.interval_growth)
+        ceiling = (math.log(self.maximum_interval_days) - log_base) / log_growth
+        if repetitions >= ceiling:
+            return self.maximum_interval_days
+        try:
+            interval = self.base_interval_days * self.interval_growth ** repetitions
+        except OverflowError:
+            # The power can overflow even when multiplying by a small base
+            # yields an ordinary, representable half-life.
+            interval = math.exp(log_base + repetitions * log_growth)
+        return min(self.maximum_interval_days, interval)
 
     def speed(self, accuracy: float, difficulty_accuracy: float) -> float:
-        speedup = (accuracy / self.prior_accuracy) ** self.speed_exponent
-        slowdown = (self.prior_accuracy / max(difficulty_accuracy, 1e-12)) ** self.speed_exponent
-        return min(self.maximum_speed, max(self.minimum_speed, speedup / slowdown))
+        finite(accuracy, 'accuracy', 0, 1)
+        finite(difficulty_accuracy, 'difficulty accuracy', 0, 1)
+        if self.speed_exponent == 0:
+            return 1.0
+        if accuracy == 0:
+            return self.minimum_speed
+        # Same ratio of powers as before, in log space to avoid overflow or
+        # division by zero before applying the configured speed bounds.
+        baseline = math.log(self.prior_accuracy)
+        log_speed = self.speed_exponent * (math.log(accuracy) - baseline +
+                                          math.log(max(difficulty_accuracy, 1e-12)) - baseline)
+        if log_speed <= math.log(self.minimum_speed):
+            return self.minimum_speed
+        if log_speed >= math.log(self.maximum_speed):
+            return self.maximum_speed
+        return min(self.maximum_speed, max(self.minimum_speed, math.exp(log_speed)))
 
     def discount(self, memory_now: float) -> float:
+        finite(memory_now, 'memory_now', 0)
         # No new spaced credit at restored memory; full credit at/below due.
         return min(1.0, max(0.0, (self.restored_memory - memory_now) /
                             (self.restored_memory - self.due_threshold))) ** self.discount_power
 
     def failure_multiplier(self, memory_now: float) -> float:
-        overdue_intervals = max(0.0, math.log2(self.due_threshold / max(memory_now, 1e-300)))
+        finite(memory_now, 'memory_now', 0)
+        if memory_now >= self.due_threshold or self.failure_overdue_slope == 0:
+            return 1.0
+        if memory_now == 0:
+            return self.maximum_failure_multiplier
+        overdue_intervals = math.log2(self.due_threshold) - math.log2(memory_now)
         return min(self.maximum_failure_multiplier, 1 + self.failure_overdue_slope * overdue_intervals)
 
 
@@ -212,6 +253,9 @@ class TopicState:
         return self.ability.assessment_mass + self.ability.practice_mass
 
     def __post_init__(self):
+        if not isinstance(self.ability, AccuracyEstimate):
+            raise ValueError('ability must be an AccuracyEstimate or its field mapping')
+        self.ability.__post_init__()
         for name in ['repetitions', 'memory', 'interval_days', 'evidence_mass']:
             finite(getattr(self, name), name, 0)
         finite(self.memory_at, 'memory_at')
@@ -230,17 +274,19 @@ class TopicState:
     def due_at(self, policy: Policy) -> float:
         if self.memory <= policy.due_threshold:
             return self.memory_at
-        return self.memory_at + self.interval_days * math.log2(self.memory / policy.due_threshold)
+        return self.memory_at + self.interval_days * (math.log2(self.memory) - math.log2(policy.due_threshold))
 
 
 @dataclass(frozen=True)
 class Event:
-    """One graded topic-level evidence unit, with externally determined outcome.
+    """Runtime input for one answer or one graded topic-level unit.
 
     quality is a positive magnitude, not accuracy or earned XP. Its mapping from
     task answers is deliberately outside FIRe. question_results, when retained,
     are used for ability updates, independently of repetition credit. learned
     marks a successful first lesson or explicitly supplied diagnostic placement.
+    This is not a persisted schema entity. Use apply_accuracy for submitted
+    answers and apply_retention when the controller closes a graded unit.
     """
     id: str
     learner: str
@@ -265,8 +311,13 @@ class Event:
             raise ValueError('failed evidence cannot initialize learned status')
         if type(self.assessment) is not bool:
             raise ValueError('assessment channel must be explicitly boolean')
-        if any(type(x) is not bool for x in self.question_results):
+        try:
+            outcomes = tuple(self.question_results)
+        except TypeError as error:
+            raise ValueError('question outcomes must contain booleans') from error
+        if any(type(x) is not bool for x in outcomes):
             raise ValueError('question outcomes must be boolean, not unknown')
+        object.__setattr__(self, 'question_results', outcomes)
 
 
 class FireEngine:
@@ -315,34 +366,66 @@ class FireEngine:
         return self.policy.speed(state.accuracy, self.difficulty_accuracy.get(topic, self.policy.prior_accuracy))
 
     def due(self, learner: str, at: float) -> list[str]:
+        finite(at, 'at')
         return sorted(t for t, s in self.states.get(learner, {}).items()
-                      if s.learned and s.memory_now(at) <= self.policy.due_threshold + 1e-12)
+                      if s.learned and (s.memory_now(at) <= self.policy.due_threshold or
+                                       math.isclose(s.memory_now(at), self.policy.due_threshold,
+                                                    rel_tol=1e-12, abs_tol=0)))
 
     def apply(self, event: Event) -> dict:
+        """Legacy combined update, using ability from before this event.
+
+        Kept for historical replays and research inputs. A controller that has
+        already submitted answer evidence must close the unit with
+        apply_retention instead, so those answers are not counted twice.
+        """
+        return self._apply(event, 'combined')
+
+    def apply_accuracy(self, event: Event) -> dict:
+        """Apply submitted answers immediately, without awarding retention.
+
+        Missing topics get unlearned ability states. Existing retention values
+        and their observation timestamps stay unchanged. An empty results tuple
+        denotes one answer with outcome ``passed``; it never denotes a skip.
+        """
+        if event.learned:
+            raise ValueError('accuracy evidence cannot establish learned status')
+        return self._apply(event, 'accuracy')
+
+    def apply_retention(self, event: Event) -> dict:
+        """Apply one graded unit's retention credit without counting answers.
+
+        Speed uses the currently accumulated ability, including any answers
+        previously applied by the controller. Unit grading and grouping remain
+        outside FIRe. Use a distinct event ID from its constituent answers.
+        """
+        return self._apply(event, 'retention')
+
+    def _apply(self, event: Event, mode: str) -> dict:
+        update_accuracy, update_retention = mode != 'retention', mode != 'accuracy'
         key = json.dumps([event.learner, event.id], separators=(',', ':'))
-        digest = fingerprint(asdict(event))
+        # Keep legacy combined-event hashes readable in existing snapshots.
+        digest = fingerprint(asdict(event) if mode == 'combined' else {'mode': mode, 'event': asdict(event)})
         if key in self.receipts:
-            if self.receipts[key]['event_hash'] != digest:
-                raise ValueError('event ID reused with different evidence')
+            if self.receipts[key]['event_hash'] != digest or self.receipts[key].get('mode', 'combined') != mode:
+                raise ValueError('event ID reused with different evidence or update mode')
             return deepcopy(self.receipts[key])
         if event.at < self.latest.get(event.learner, -math.inf):
             raise ValueError('events must be chronological; rebuild to insert older evidence')
         working = deepcopy(self.states.get(event.learner, {}))
         p = self.policy
         global_before = deepcopy(self.global_ability.get(event.learner, AccuracyEstimate(p.prior_accuracy, p.prior_accuracy)))
+        global_before.__post_init__()
         global_after = deepcopy(global_before)
-        global_after.update(event.question_results or (event.passed,), assessment=event.assessment, alpha=p.accuracy_alpha)
-        initializing = event.learned and not working.get(event.topic, TopicState(learned=False)).learned
-        if initializing:
-            # Preserve evidence accumulated while the topic was unlearned.
-            if event.topic not in working:
-                working[event.topic] = TopicState(memory=0, memory_at=event.at, learned=False,
-                                                 interval_days=p.base_interval_days,
-                                                 accuracy=self._prior(event.learner, event.topic, working))
+        answers = event.question_results or (event.passed,)
+        if update_accuracy:
+            global_after.update(answers, assessment=event.assessment, alpha=p.accuracy_alpha)
+        initializing = (update_retention and event.learned and
+                        (event.topic not in working or not working[event.topic].learned))
         updates = []
-        retention_coverage = self.graph.affected(event.topic, event.passed)
+        retention_coverage = self.graph.affected(event.topic, event.passed) if update_retention else {}
         accuracy_evidence: dict[str, list[tuple[bool, float]]] = {}
-        for correct in event.question_results or (event.passed,):
+        for correct in answers if update_accuracy else ():
             for target, weight in self.graph.affected(event.topic, correct).items():
                 accuracy_evidence.setdefault(target, []).append((correct, weight))
         for topic in sorted(retention_coverage.keys() | accuracy_evidence.keys()):
@@ -353,6 +436,7 @@ class FireEngine:
                                    interval_days=p.base_interval_days,
                                    accuracy=self._prior(event.learner, topic, self.states.get(event.learner, {})))
                 working[topic] = state
+            state.__post_init__()
             before = asdict(state)
             if event.at < state.memory_at:
                 raise ValueError('event predates the topic state')
@@ -361,12 +445,13 @@ class FireEngine:
                 state.learned = True
             # Even failed first lessons inform ability. Retention starts only
             # after an explicit learned/placement decision from the caller.
-            if not state.learned:
+            if not update_retention or not state.learned:
                 for correct, weight in accuracy_evidence.get(topic, []):
                     state.ability.update((correct,), assessment=event.assessment, alpha=p.accuracy_alpha, weight=weight)
                 if topic == event.topic:
                     state.last_direct_at = event.at
-                updates.append({'topic': topic, 'coverage': coverage, 'skipped': 'not-learned',
+                updates.append({'topic': topic, 'coverage': coverage,
+                                'skipped': 'accuracy-only' if not update_retention else 'not-learned',
                                 'created': created,
                                 'accuracy_evidence': accuracy_evidence.get(topic, []),
                                 'before': before, 'after': asdict(state)})
@@ -411,7 +496,7 @@ class FireEngine:
                             'accuracy_evidence': accuracy_evidence.get(topic, []),
                             'failure_multiplier': decay, 'implicit_gated': gated,
                             'before': before, 'after': asdict(state), 'due_at': state.due_at(p)})
-        receipt = {'event': asdict(event), 'event_hash': digest, 'policy_id': p.id,
+        receipt = {'event': asdict(event), 'event_hash': digest, 'mode': mode, 'policy_id': p.id,
                    'graph_id': self.graph.id, 'updates': updates,
                    'global_ability_before': asdict(global_before), 'global_ability_after': asdict(global_after),
                    'difficulty_id': fingerprint(self.difficulty_accuracy), 'neighborhood_id': fingerprint(self.neighborhoods)}
@@ -419,7 +504,8 @@ class FireEngine:
         # persistence, so a retried event returns the same logical and Python value.
         receipt = json.loads(json.dumps(receipt, allow_nan=False))
         self.states[event.learner] = working
-        self.global_ability[event.learner] = global_after
+        if update_accuracy:
+            self.global_ability[event.learner] = global_after
         self.latest[event.learner] = event.at
         self.receipts[key] = receipt
         return deepcopy(receipt)
@@ -447,7 +533,7 @@ class FireEngine:
                 preview_id = f'preview:{topic}:{suffix}'
             event = Event(preview_id, learner, topic, at, True,
                           learned=candidate.get('kind') == 'lesson', kind=candidate.get('kind', 'review'))
-            trial.apply(event)
+            trial.apply_retention(event)
             removed = sorted(due - set(trial.due(learner, at)))
             future_gain = 0.0
             for t, before in self.states.get(learner, {}).items():
@@ -476,9 +562,14 @@ class FireEngine:
             raise ValueError('unsupported snapshot format')
         result = cls(EncompassingGraph((Edge(**e) for e in data['graph']), data['topics']),
                      Policy(**data['policy']), data['difficulty_accuracy'], data.get('neighborhoods'))
-        result.states = {learner: {topic: TopicState(**s) for topic, s in states.items()}
-                         for learner, states in data['states'].items()}
+        for learner, states in data['states'].items():
+            for topic, state in states.items():
+                result.seed(learner, topic, TopicState(**state))
         result.receipts = deepcopy(data['receipts'])
-        result.latest = dict(data['latest'])
+        for learner, at in data['latest'].items():
+            if not isinstance(learner, str) or not learner:
+                raise ValueError('learner IDs must be nonempty strings')
+            finite(at, 'latest observation time')
+            result.latest[learner] = max(at, result.latest.get(learner, -math.inf))
         result.global_ability = {learner: AccuracyEstimate(**value) for learner, value in data.get('global_ability', {}).items()}
         return result
