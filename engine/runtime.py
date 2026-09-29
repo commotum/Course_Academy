@@ -193,7 +193,12 @@ def _lesson_delivery(snapshot, activity, items):
     return Delivery(True, True)
 
 
-def _diagnostic_delivery(snapshot, activity, items, take_retry):
+def _diagnostic_path(snapshot, activity, items, take_retry):
+    """Return delivery and indices replaced by completed silly-mistake retries.
+
+    Question identities distinguish retry edges from ordinary continuations.
+    A merely offered or unanswered retry does not replace the original result.
+    """
     probes = set(snapshot.refs(activity, 'diagnostic/probes'))
     start = snapshot.ref(activity, 'diagnostic/start')
     if not probes or start not in probes:
@@ -221,7 +226,7 @@ def _diagnostic_delivery(snapshot, activity, items, take_retry):
                     or snapshot.ref(alternate, 'diagnostic-probe/on-silly-mistake', required=False) is not None):
                 raise ValueError('retry must be one different same-topic/same-difficulty question')
             ordinary = snapshot.ref(probe, 'diagnostic-probe/on-incorrect', required=False)
-            if (ordinary is not None and ordinary != alternate and
+            if (ordinary is not None and
                     snapshot.ref(ordinary, 'diagnostic-probe/question') == other):
                 raise ValueError('incorrect and retry branches must be distinguishable from recorded question identity')
     active, finished = set(), set()
@@ -239,7 +244,7 @@ def _diagnostic_delivery(snapshot, activity, items, take_retry):
         finished.add(probe)
     for probe in probes:
         visit(probe)
-    probe = start
+    probe, superseded = start, set()
     for index, item in enumerate(items):
         if probe is None or item.get('task-item/content') != snapshot.ref(probe, 'diagnostic-probe/question'):
             raise ValueError('item does not follow the diagnostic graph')
@@ -254,23 +259,26 @@ def _diagnostic_delivery(snapshot, activity, items, take_retry):
             if len(choices) != 1:
                 raise ValueError('recorded diagnostic continuation is ambiguous or invalid')
             probe = choices[0]
+            if probe == retry:
+                superseded.add(index)
         else:
             if retry is not None and take_retry is None:
                 raise ValueError('choose whether to accept the offered retry before completing this item')
             if take_retry and retry is None:
                 raise ValueError('no retry is available for this result')
             selected = retry if take_retry else ordinary
-            return Delivery(selected is None, next_content=() if selected is None else
-                            (snapshot.ref(selected, 'diagnostic-probe/question'),),
-                            retry_question=None if retry is None else snapshot.ref(retry, 'diagnostic-probe/question'))
-    return Delivery(False, next_content=(snapshot.ref(start, 'diagnostic-probe/question'),))
+            return (Delivery(selected is None, next_content=() if selected is None else
+                             (snapshot.ref(selected, 'diagnostic-probe/question'),),
+                             retry_question=None if retry is None else snapshot.ref(retry, 'diagnostic-probe/question')),
+                    superseded)
+    return Delivery(False, next_content=(snapshot.ref(start, 'diagnostic-probe/question'),)), superseded
 
 
 def _delivery(snapshot, activity, kind, items, take_retry=False):
     if kind == 'lesson':
         return _lesson_delivery(snapshot, activity, items)
     if kind == 'diagnostic':
-        return _diagnostic_delivery(snapshot, activity, items, take_retry)
+        return _diagnostic_path(snapshot, activity, items, take_retry)[0]
     if any(not _question(snapshot, item) for item in items):
         raise ValueError(f'{kind} contains only questions')
     questions = [item['task-item/content'] for item in items]
@@ -296,12 +304,15 @@ def _delivery(snapshot, activity, kind, items, take_retry=False):
     return Delivery(not remaining, next_content=remaining)
 
 
-def _place_diagnostic(loaded, engine, items, at, rules):
+def _place_diagnostic(loaded, engine, activity, items, at, rules):
     snapshot = loaded.snapshot
+    _, superseded = _diagnostic_path(snapshot, activity, items, take_retry=False)
     prerequisites = {t: tuple(loaded.topic_eid_to_id[p] for p in snapshot.refs(e, 'topic/prerequisites'))
                      for e, t in loaded.topic_eid_to_id.items()}
     balance = DiagnosticBalance(prerequisites, skip_policy=rules.diagnostic_skip_policy)
-    for observed in items:
+    for index, observed in enumerate(items):
+        if index in superseded:
+            continue  # Keep both attempts in history/accuracy; only the retry places knowledge.
         t = loaded.topic_eid_to_id[snapshot.topic_for_question(observed['task-item/content'])]
         correct = _result(snapshot, observed)
         # The application may supply a reduced correct-answer weight. Neither
@@ -467,7 +478,7 @@ def complete_item(loaded: LoadedRuntime, item_eid: int, *, completed_at: datetim
                                      loaded.topic_eid_to_id[target], at, bool(delivery.passed),
                                      quality=quality, learned=kind == 'lesson' and bool(delivery.passed), kind=kind))
     if kind == 'diagnostic' and delivery.complete:
-        _place_diagnostic(loaded, engine, items, at, rules)
+        _place_diagnostic(loaded, engine, activity, items, at, rules)
     changes = [dict(entity) for entity in response_entities] + [item_change]
     if delivery.complete:
         change = {'db/id': task_eid, 'learner-task/status': Keyword('learner-task.status/completed'),
@@ -535,7 +546,7 @@ def expire_task(loaded: LoadedRuntime, task_eid: int, *, completed_at: datetime,
     _delivery(snapshot, activity, kind, items, take_retry=False)
     engine = deepcopy(loaded.engine)
     if kind == 'diagnostic':
-        _place_diagnostic(loaded, engine, items, at, rules)
+        _place_diagnostic(loaded, engine, activity, items, at, rules)
     engine.latest[loaded.learner] = at
     change = {'db/id': task_eid, 'learner-task/completed-at': completed_at}
     if xp_award is not None:

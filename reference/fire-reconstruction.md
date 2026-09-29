@@ -182,8 +182,10 @@ they do not claim to recover every MA activity controller.
 The [diagnostic chapter](<The Math Academy Way/V-TECHNICAL-DEEP-DIVES/30-Technical-Deep-Dive-on-Diagnostic-Exams/30-Technical-Deep-Dive-on-Diagnostic-Exams.md>)
 supports signed balances, directional propagation, reduced slow-correct credit,
 and positive balances becoming repetitions. Exact time weighting, path
-deduplication, and retry accounting remain local choices. The current accumulator
-retains both wrong and alternate answers; it does not silently cancel the first.
+deduplication remain local choices. For frontier placement, a completed accepted
+retry replaces the original incorrect answer, including its propagated effects.
+Both presentations remain in history and submitted-answer accuracy. An offered
+but unanswered retry does not replace the original result.
 
 XP is independent of mastery and retention. The [XP analysis](mathacademy-xp-analysis.md)
 supports observed perfect-lesson `R(1.25B)` and perfect-review `B+2` candidates.

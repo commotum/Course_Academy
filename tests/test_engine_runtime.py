@@ -296,13 +296,12 @@ class RuntimeTests(unittest.TestCase):
             complete_item(loaded, eid, completed_at=START + timedelta(seconds=1),
                           result=False, take_retry=True)
         self.assertEqual(loaded.engine.snapshot(), before)
-        # Two labels can point to the same probe without creating two possible
-        # interpretations of the next recorded question.
+        # Sharing the same probe would hide whether the original result should
+        # be replaced for placement, even though delivery itself is unambiguous.
         fixture = RuntimeFixture('diagnostic')
         fixture.entities[300]['diagnostic-probe/on-incorrect'] = 303
-        fixture.answer(100, False, take_retry=True)
-        next_answer = fixture.answer(101, True)
-        self.assertEqual(next_answer.delivery.next_content, (120,))
+        with self.assertRaisesRegex(ValueError, 'must be distinguishable'):
+            fixture.answer(100, False, take_retry=True)
 
     def test_diagnostic_retry_needs_choice_and_preserves_both_submitted_answers(self):
         fixture = RuntimeFixture('diagnostic')
@@ -320,7 +319,8 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual(retry.delivery.next_content, (120,))
         completed = fixture.answer(120, True)
         self.assertTrue(completed.delivery.complete)
-        self.assertFalse(fixture.state(20).learned)  # -1 + 1 is not positive placement.
+        self.assertTrue(fixture.state(20).learned)
+        self.assertEqual(fixture.state(20).repetitions, 1)  # Retry replaces the original -1.
         self.assertEqual(fixture.state(20).evidence_mass, 2)
         self.assertEqual(fixture.state(21).repetitions, 1)  # Implied prerequisite evidence.
         self.assertEqual(fixture.state(22).repetitions, 1)
@@ -328,6 +328,43 @@ class RuntimeTests(unittest.TestCase):
         self.assertNotIn(loaded.topic_eid_to_id[23], loaded.engine.states['learner'])
         self.assertEqual(loaded.engine.global_ability['learner'].practice_mass, 3)
         self.assertEqual(len(fixture.entities[3]['learner-task/items']), 3)
+
+    def test_diagnostic_retry_uses_its_own_weight_for_the_whole_frontier(self):
+        fixture = RuntimeFixture('diagnostic')
+        fixture.entities[22]['topic/prerequisites'] = [20]
+        fixture.answer(100, False, take_retry=True)
+        fixture.answer(101, True, performance=.25)
+        fixture.answer(120, True, performance=.5)
+        # The original wrong answer must not keep penalizing postrequisites.
+        self.assertEqual(fixture.state(20).repetitions, .75)
+        self.assertEqual(fixture.state(21).repetitions, .75)
+        self.assertEqual(fixture.state(22).repetitions, .5)
+
+    def test_same_topic_ordinary_continuation_does_not_replace_original(self):
+        fixture = RuntimeFixture('diagnostic')
+        fixture.entities[302]['diagnostic-probe/question'] = 102
+        fixture.answer(100, False, take_retry=False)
+        fixture.answer(102, True)
+        self.assertFalse(fixture.state(20).learned)  # Ordinary -1 + 1 still balances to zero.
+        self.assertEqual(fixture.state(20).evidence_mass, 2)
+
+    def test_incorrect_or_skipped_retry_contributes_one_negative_not_two(self):
+        for result in (False, None):
+            with self.subTest(result=result):
+                fixture = RuntimeFixture('diagnostic')
+                fixture.entities[23]['topic/prerequisites'] = [20]
+                fixture.entities[304] = {'diagnostic-probe/id': UUID(int=304),
+                                         'diagnostic-probe/question': 131}
+                fixture.entities[4]['diagnostic/probes'].append(304)
+                fixture.entities[302]['diagnostic-probe/on-correct'] = 304
+                fixture.answer(100, False, take_retry=True)
+                fixture.answer(101, result)
+                fixture.answer(130, True)
+                fixture.answer(131, True)
+                # Two subsequent positives outweigh one retry negative. Keeping
+                # the original negative too would incorrectly leave balance zero.
+                self.assertEqual(fixture.state(20).repetitions, 1)
+                self.assertEqual(fixture.state(23).repetitions, 1)
 
     def test_declined_retry_and_explicit_skip_follow_their_real_branches(self):
         for result, options, answer_count in ((False, {'take_retry': False}, 2), (None, {}, 1)):
@@ -453,6 +490,17 @@ class RuntimeTests(unittest.TestCase):
         reloaded = fixture.load()
         self.assertNotIn(reloaded.topic_eid_to_id[22], reloaded.engine.states['learner'])
         self.assertEqual(reloaded.engine.global_ability['learner'].practice_mass, 1)
+        self.assertNotIn('task-item/result', fixture.entities[pending])
+
+    def test_unanswered_diagnostic_retry_does_not_erase_original_evidence(self):
+        fixture = RuntimeFixture('diagnostic')
+        fixture.entities[4]['diagnostic/time-limit-seconds'] = 60.
+        fixture.answer(100, False, take_retry=True)
+        pending = fixture.present(101)
+        completed = expire_task(fixture.load(), 3, completed_at=START + timedelta(seconds=60))
+        fixture.apply(completed.transaction)
+        self.assertFalse(fixture.state(20).learned)
+        self.assertEqual(fixture.state(20).evidence_mass, 1)
         self.assertNotIn('task-item/result', fixture.entities[pending])
 
 
