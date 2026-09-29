@@ -20,7 +20,8 @@ from .activities import (DiagnosticBalance, assessment_xp_candidate,
                          review_xp_candidate)
 from .fire import Event, TopicState
 from .fire.core import finite
-from .schema import Keyword, LoadedRuntime, completion_transaction, instant, task_transaction
+from .schema import (Keyword, LoadedRuntime, completion_transaction, instant, task_transaction,
+                     _check_task, _writeback, _uuid)
 
 
 @dataclass(frozen=True)
@@ -77,15 +78,52 @@ def _ordered(snapshot, ids, index):
     return sorted(ids, key=lambda e: snapshot.entity(e)[index])
 
 
+def _task_items(snapshot, task):
+    """Follow the single next-linked chain owned by a learner task."""
+    members = set(snapshot.refs(task, 'learner-task/items'))
+    if not members:
+        return ()
+    next_items, incoming = {}, {}
+    for item in members:
+        if (snapshot.owners(item, 'learner-task/items') != (task,)
+                or 'task-item' not in snapshot.types(item)):
+            raise ValueError('task items must belong exclusively to their task')
+        if any(previous not in members for previous in snapshot.owners(item, 'task-item/next')):
+            raise ValueError('task-item next links must stay within their task')
+        following = snapshot.ref(item, 'task-item/next', required=False)
+        if following is None:
+            continue
+        if following not in members:
+            raise ValueError('task-item next links must stay within their task')
+        if following in incoming:
+            raise ValueError('task-item next links cannot merge')
+        next_items[item] = following
+        incoming[following] = item
+    heads = members - incoming.keys()
+    if len(heads) != 1:
+        raise ValueError('task items must have one head in a single chain')
+    ordered, seen = [], set()
+    item = next(iter(heads))
+    while item is not None:
+        if item in seen:
+            raise ValueError('task-item next links cannot cycle')
+        seen.add(item)
+        ordered.append(item)
+        item = next_items.get(item)
+    if seen != members:
+        raise ValueError('task items must form one connected chain')
+    return tuple(ordered)
+
+
 def _result(snapshot, entity):
-    value = entity.get('task-item/result')
+    value = entity.get('task-item/status')
     if value is None:
         return None
     ident = str(snapshot.ident(value)).lstrip(':')
-    if ident not in {'task-item.result/correct', 'task-item.result/incorrect', 'task-item.result/skipped'}:
+    if ident not in {'task-item.status/correct', 'task-item.status/incorrect', 'task-item.status/skipped'}:
         raise ValueError('unknown question result')
-    return {'task-item.result/correct': True, 'task-item.result/incorrect': False,
-            'task-item.result/skipped': None}[ident]
+    return {'task-item.status/correct': True, 'task-item.status/incorrect': False,
+            'task-item.status/skipped': None}[ident]
 
 
 def _question(snapshot, item):
@@ -121,7 +159,7 @@ def scope_topics(snapshot, scope):
     pending = list(topics)
     while pending:
         topic = pending.pop()
-        for prerequisite in snapshot.refs(topic, 'topic/prerequisites'):
+        for prerequisite in snapshot.owners(topic, 'topic/next'):
             if _kind(snapshot, prerequisite, ('topic',)) != 'topic':
                 raise ValueError('prerequisite must be a topic')
             if prerequisite not in topics:
@@ -307,7 +345,7 @@ def _delivery(snapshot, activity, kind, items, take_retry=False):
 def _place_diagnostic(loaded, engine, activity, items, at, rules):
     snapshot = loaded.snapshot
     _, superseded = _diagnostic_path(snapshot, activity, items, take_retry=False)
-    prerequisites = {t: tuple(loaded.topic_eid_to_id[p] for p in snapshot.refs(e, 'topic/prerequisites'))
+    prerequisites = {t: tuple(loaded.topic_eid_to_id[p] for p in snapshot.owners(e, 'topic/next'))
                      for e, t in loaded.topic_eid_to_id.items()}
     balance = DiagnosticBalance(prerequisites, skip_policy=rules.diagnostic_skip_policy)
     for index, observed in enumerate(items):
@@ -335,7 +373,7 @@ def _place_diagnostic(loaded, engine, activity, items, at, rules):
 
 
 def complete_item(loaded: LoadedRuntime, item_eid: int, *, completed_at: datetime,
-                  result: bool | None = None, elapsed_seconds: float | None = None,
+                  result: bool | None = None,
                   performance: float = 1.0, response_refs: tuple[int | str, ...] = (),
                   response_entities: tuple[Mapping, ...] = (), take_retry: bool | None = None,
                   xp_award: int | None = None, rules: ActivityRules | None = None) -> Completion:
@@ -361,14 +399,12 @@ def complete_item(loaded: LoadedRuntime, item_eid: int, *, completed_at: datetim
         raise ValueError('retry selection must be boolean or unspecified')
     if xp_award is not None and (type(xp_award) is not int):
         raise ValueError('XP award must be an integer')
-    if elapsed_seconds is not None:
-        finite(elapsed_seconds, 'elapsed seconds', 0)
     finite(performance, 'performance', 0)
     if performance <= 0:
         raise ValueError('performance must be positive')
     item = dict(snapshot.entity(item_eid))
-    if item.get('task-item/completed-at') is not None or item.get('task-item/result') is not None:
-        raise ValueError('item already has completion evidence')
+    if snapshot.ident(snapshot.ref(item_eid, 'task-item/status')) != 'task-item.status/started':
+        raise ValueError('only a started item can accept completion')
     owners = _owners(snapshot, 'learner-task/items', item_eid)
     if len(owners) != 1:
         raise ValueError('item must have one learner-task owner')
@@ -377,9 +413,9 @@ def complete_item(loaded: LoadedRuntime, item_eid: int, *, completed_at: datetim
     if _owners(snapshot, 'learner/activity', task_eid) != [loaded.learner_eid]:
         raise ValueError('task must belong to the loaded learner')
     status = str(snapshot.ident(snapshot.ref(task_eid, 'learner-task/status'))).lstrip(':')
-    if status != 'learner-task.status/in-progress':
-        raise ValueError('only an in-progress task can accept completion')
-    started = instant(task['learner-task/started-at']) if 'learner-task/started-at' in task else None
+    if status != 'learner-task.status/started':
+        raise ValueError('only a started task can accept completion')
+    started = snapshot.first_started(task_eid)
     if started is not None and completed_at < started:
         raise ValueError('completion predates task start')
     activity = snapshot.ref(task_eid, 'learner-task/activity')
@@ -391,27 +427,29 @@ def complete_item(loaded: LoadedRuntime, item_eid: int, *, completed_at: datetim
         # currently due. The queue origin cannot bypass this mastery boundary.
         target = snapshot.ref(activity, 'lesson/topic')
         states = loaded.engine.states.get(loaded.learner, {})
-        for prerequisite in snapshot.refs(target, 'topic/prerequisites'):
+        for prerequisite in snapshot.owners(target, 'topic/next'):
             state = states.get(loaded.topic_eid_to_id[prerequisite])
             if (state is None or not state.learned or
                     state.memory_now(completed_at.timestamp() / 86400) <= loaded.engine.policy.due_threshold):
                 raise ValueError('lesson prerequisite is not currently ready')
     if take_retry and kind != 'diagnostic':
         raise ValueError('retry branching applies only to diagnostics')
-    item_ids = _ordered(snapshot, snapshot.refs(task_eid, 'learner-task/items'), 'task-item/index')
+    item_ids = _task_items(snapshot, task_eid)
     prefix = []
     for eid in item_ids:
         if eid == item_eid:
             break
         previous = snapshot.entity(eid)
-        if previous.get('task-item/completed-at') is None:
+        previous_at = snapshot.item_completed_at(eid)
+        if previous_at is None:
             raise ValueError('previous presentation has not completed')
-        if instant(previous['task-item/completed-at']) > completed_at:
+        if previous_at > completed_at:
             raise ValueError('item completion order must be chronological')
-        if _question(snapshot, previous) and previous.get('task-item/result') is None:
+        if _question(snapshot, previous) and snapshot.ident(previous['task-item/status']) not in {
+                'task-item.status/correct', 'task-item.status/incorrect', 'task-item.status/skipped'}:
             raise ValueError('previous question result is unknown')
         prefix.append(previous)
-    if any(snapshot.entity(e).get('task-item/completed-at') is not None for e in item_ids[item_ids.index(item_eid)+1:]):
+    if any(snapshot.item_completed_at(e) is not None for e in item_ids[item_ids.index(item_eid)+1:]):
         raise ValueError('cannot insert evidence before completed presentations')
     question = _question(snapshot, item)
     if not question and (result is not None or response_refs or response_entities):
@@ -419,19 +457,19 @@ def complete_item(loaded: LoadedRuntime, item_eid: int, *, completed_at: datetim
     content = item.get('task-item/content')
     if content is None:
         raise ValueError('new presentation needs known content')
-    item_change = {'db/id': item_eid}
-    if elapsed_seconds is not None:
-        item_change['task-item/elapsed-seconds'] = float(elapsed_seconds)
+    item_change = {'db/id': item_eid, 'task-item/status': Keyword('task-item.status/completed')}
+    if not question:
+        item['task-item/status'] = snapshot.eid('task-item.status/completed')
     if question:
         name = 'correct' if result is True else 'incorrect' if result is False else 'skipped'
         # For replay through snapshot helpers, find the installed enum entity.
-        ident = 'task-item.result/' + name
+        ident = 'task-item.status/' + name
         matches = [eid for eid, entity in snapshot.entities.items()
                    if str(entity.get('db/ident', '')).lstrip(':') == ident]
         if len(matches) != 1:
             raise ValueError('result enum must be installed exactly once')
-        item['task-item/result'] = matches[0]
-        item_change['task-item/result'] = Keyword(ident)
+        item['task-item/status'] = matches[0]
+        item_change['task-item/status'] = Keyword(ident)
         if result is not None:
             item_change['task-item/performance'] = float(performance)
             item['task-item/performance'] = float(performance)
@@ -481,10 +519,8 @@ def complete_item(loaded: LoadedRuntime, item_eid: int, *, completed_at: datetim
         _place_diagnostic(loaded, engine, activity, items, at, rules)
     changes = [dict(entity) for entity in response_entities] + [item_change]
     if delivery.complete:
-        change = {'db/id': task_eid, 'learner-task/status': Keyword('learner-task.status/completed'),
-                  'learner-task/completed-at': completed_at}
-        if delivery.passed is not None:
-            change['learner-task/outcome'] = Keyword('learner-task.outcome/' + ('passed' if delivery.passed else 'failed'))
+        status = 'failed' if delivery.passed is False else 'completed'
+        change = {'db/id': task_eid, 'learner-task/status': Keyword('learner-task.status/' + status)}
         outcomes = [_result(snapshot, i) for i in items if _question(snapshot, i)]
         award = xp_award
         base = task.get('learner-task/xp-base')
@@ -520,27 +556,28 @@ def expire_task(loaded: LoadedRuntime, task_eid: int, *, completed_at: datetime,
     task = snapshot.entity(task_eid)
     if _owners(snapshot, 'learner/activity', task_eid) != [loaded.learner_eid]:
         raise ValueError('task must belong to the loaded learner')
-    if snapshot.ident(snapshot.ref(task_eid, 'learner-task/status')) != 'learner-task.status/in-progress':
-        raise ValueError('only an in-progress task can expire')
+    if snapshot.ident(snapshot.ref(task_eid, 'learner-task/status')) not in {'learner-task.status/started', 'learner-task.status/paused'}:
+        raise ValueError('only a started or paused task can expire')
     activity = snapshot.ref(task_eid, 'learner-task/activity')
     kind = _kind(snapshot, activity, ('assessment', 'diagnostic'))
     limit = snapshot.entity(activity).get(kind + '/time-limit-seconds')
     finite(limit, 'time limit', 0)
-    if limit <= 0 or 'learner-task/started-at' not in task:
+    if limit <= 0:
         raise ValueError('expiry requires a positive limit and known start')
-    if (completed_at - instant(task['learner-task/started-at'])).total_seconds() < limit:
+    if (completed_at - snapshot.first_started(task_eid)).total_seconds() < limit:
         raise ValueError('task time limit has not expired')
     if at < loaded.engine.latest.get(loaded.learner, float('-inf')):
         raise ValueError('expiry predates accepted learner evidence')
     if xp_award is not None and type(xp_award) is not int:
         raise ValueError('XP award must be an integer')
     items, pending = [], False
-    for eid in _ordered(snapshot, snapshot.refs(task_eid, 'learner-task/items'), 'task-item/index'):
+    for eid in _task_items(snapshot, task_eid):
         item = snapshot.entity(eid)
-        if 'task-item/completed-at' not in item:
+        if snapshot.item_completed_at(eid) is None:
             pending = True
             continue
-        if pending or not _question(snapshot, item) or 'task-item/result' not in item:
+        if pending or not _question(snapshot, item) or snapshot.ident(item['task-item/status']) not in {
+                'task-item.status/correct', 'task-item.status/incorrect', 'task-item.status/skipped'}:
             raise ValueError('timed activity has an incomplete or invalid answer history')
         items.append(item)
     _delivery(snapshot, activity, kind, items, take_retry=False)
@@ -548,8 +585,46 @@ def expire_task(loaded: LoadedRuntime, task_eid: int, *, completed_at: datetime,
     if kind == 'diagnostic':
         _place_diagnostic(loaded, engine, activity, items, at, rules)
     engine.latest[loaded.learner] = at
-    change = {'db/id': task_eid, 'learner-task/completed-at': completed_at}
+    change = {'db/id': task_eid}
     if xp_award is not None:
         change['learner-task/xp-earned'] = xp_award
     transaction = task_transaction(loaded, task_eid, completed_at, [change], engine)
     return Completion(transaction, engine, Delivery(True))
+
+
+def transition_item(loaded: LoadedRuntime, item_eid: int, status: str, at: datetime):
+    """Pause or resume the current presentation without grading or FIRe credit."""
+    snapshot = loaded.snapshot
+    at = instant(at)
+    status = str(status).removeprefix(':').removeprefix('task-item.status/')
+    if status not in {'started', 'paused'}:
+        raise ValueError('item transition must start or pause')
+    task = snapshot.item_task(item_eid, loaded.learner_eid)
+    _check_task(loaded, task, at)
+    old = snapshot.ref(item_eid, 'task-item/status')
+    expected = 'paused' if status == 'started' else 'started'
+    if snapshot.ident(old) != 'task-item.status/' + expected:
+        raise ValueError('item transitions alternate started and paused')
+    active = snapshot.active_items(loaded.learner_eid)
+    if active != (() if status == 'started' else (item_eid,)):
+        raise ValueError('only one item may be actively timed per learner')
+    items = _task_items(snapshot, task)
+    position = items.index(item_eid)
+    if any(snapshot.item_completed_at(item) is None for item in items[:position]):
+        raise ValueError('previous presentation has not completed')
+    if any(snapshot.item_completed_at(item) is not None for item in items[position + 1:]):
+        raise ValueError('cannot insert evidence before completed presentations')
+    activity = snapshot.ref(task, 'learner-task/activity')
+    kind = _kind(snapshot, activity, ('lesson', 'review', 'assessment', 'multistep', 'diagnostic'))
+    limit = snapshot.entity(activity).get(kind + '/time-limit-seconds')
+    if limit is not None:
+        finite(limit, 'time limit', 0)
+        if limit <= 0:
+            raise ValueError('timed task requires a positive limit')
+        if (at - snapshot.first_started(task)).total_seconds() > limit:
+            raise ValueError('task time limit has expired')
+    forms = [[Keyword('db/cas'), item_eid, Keyword('task-item/status'), old, Keyword('task-item.status/' + status)],
+             {'db/id': item_eid, 'task-item/elapsed-seconds': snapshot.item_elapsed(item_eid, at), 'db/ensure': Keyword('task-item/validate')},
+             {'db/id': task, 'learner-task/elapsed-seconds': snapshot.task_elapsed(task, at), 'db/ensure': Keyword('learner-task/validate')}]
+    return _writeback(loaded, loaded.engine, forms, f'transition-item-{status}-{snapshot.basis_t}',
+                      _uuid(snapshot.entity(item_eid), 'task-item/id'), at)

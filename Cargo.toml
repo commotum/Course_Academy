@@ -1,0 +1,28 @@
+[package]
+name = "course-academy-engine"
+version = "0.1.0"
+edition = "2024"
+publish = false
+# Existing tests/*.rs form a standalone EDB harness, run by check_rust_edb.sh.
+# Engine unit tests live with their modules and run normally under cargo test.
+autotests = false
+
+[lib]
+path = "engine/rust/lib.rs"
+
+[[bin]]
+name = "fire"
+path = "engine/rust/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["float_roundtrip"] }
+sha2 = "0.10"
+chrono = { version = "0.4", features = ["serde"] }
+csv = "1"
+regex = "1"
+num-bigint = "0.4"
+num-rational = "0.4"
+num-traits = "0.2"
+uuid = { version = "1", features = ["serde"] }
+roxmltree = "0.21"

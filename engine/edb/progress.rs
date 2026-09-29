@@ -56,14 +56,20 @@ pub fn valid_progress(db: &DatabaseValue, progress: u64) -> Result<bool, Semanti
         return Ok(false);
     }
     for name in [
-        "repetitions", "memory", "interval-days", "assessment-accuracy",
-        "practice-accuracy", "assessment-mass", "practice-mass",
+        "repetitions",
+        "memory",
+        "interval-days",
+        "assessment-accuracy",
+        "practice-accuracy",
+        "assessment-mass",
+        "practice-mass",
     ] {
         let values = db.values(progress, attr(db, "progress", name)?)?;
         let [Value::Double(value)] = values.as_slice() else {
             return Ok(false);
         };
-        if !value.is_finite() || *value < 0.0
+        if !value.is_finite()
+            || *value < 0.0
             || (name == "interval-days" && *value == 0.0)
             || (name.ends_with("accuracy") && *value > 1.0)
         {

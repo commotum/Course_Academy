@@ -77,7 +77,7 @@ class EntitySnapshot:
     UUID objects or UUID strings; instants accept aware datetime, ISO text, or
     integer epoch milliseconds. Missing facts stay absent.
     """
-    def __init__(self, entities: Mapping[int, Mapping], basis_t: int):
+    def __init__(self, entities: Mapping[int, Mapping], basis_t: int, status_history=()):
         if type(basis_t) is not int or basis_t < 0:
             raise ValueError('basis_t must be a nonnegative integer')
         records = {}
@@ -97,6 +97,36 @@ class EntitySnapshot:
                 if ident in self._idents:
                     raise ValueError(f'duplicate ident {ident}')
                 self._idents[ident] = eid
+        history, seen, tx_times = [], set(), {}
+        for raw in status_history:
+            if not isinstance(raw, Mapping) or set(raw) != {'entity', 'attribute', 'value', 't', 'at'}:
+                raise ValueError('status history needs entity, attribute, value, t, and at')
+            eid = self.eid(raw['entity'])
+            attr = str(raw['attribute']).removeprefix(':')
+            choices = {'learner-task/status': {'locked', 'unlocked', 'started', 'paused', 'completed', 'failed'},
+                       'task-item/status': {'started', 'paused', 'completed', 'skipped', 'correct', 'incorrect'}}
+            if attr not in choices or attr.split('/')[0] not in self.types(eid):
+                raise ValueError('status history attribute must match its entity')
+            value = self.eid(raw['value'])
+            if self.ident(value) not in {attr.replace('/', '.') + '/' + name for name in choices[attr]}:
+                raise ValueError('invalid status history value')
+            t = raw['t']
+            if type(t) is not int or not 0 <= t <= basis_t or (eid, attr, t) in seen:
+                raise ValueError('status history needs unique assertions within the captured basis')
+            at = instant(raw['at'])
+            if t in tx_times and tx_times[t] != at:
+                raise ValueError('one transaction must have one timestamp')
+            seen.add((eid, attr, t)); tx_times[t] = at
+            history.append({'entity': eid, 'attribute': attr, 'value': value, 't': t, 'at': at})
+        times = [at for _, at in sorted(tx_times.items())]
+        if times != sorted(times):
+            raise ValueError('status history timestamps must follow transaction order')
+        history.sort(key=lambda row: (row['t'], row['entity'], row['attribute']))
+        self.status_history = _freeze(history)
+        for eid, attr, _ in seen:
+            events = self.status_events(eid, attr)
+            if self.ref(eid, attr) != events[-1]['value']:
+                raise ValueError('current status must match its latest history assertion')
 
     def eid(self, reference: int | str) -> int:
         if isinstance(reference, str):
@@ -170,6 +200,58 @@ class EntitySnapshot:
         if self.owners(task, 'learner/activity') != (self.eid(learner_eid),):
             raise ValueError('task must belong exclusively to this learner')
         return task
+
+    def status_events(self, eid, attr):
+        return tuple(event for event in self.status_history
+                     if event['entity'] == eid and event['attribute'] == attr)
+
+    def first_started(self, task):
+        events = self.status_events(task, 'learner-task/status')
+        starts = [e['at'] for e in events if self.ident(e['value']) == 'learner-task.status/started']
+        if not starts:
+            raise ValueError('task timing requires its started status history')
+        return starts[0]
+
+    def item_completed_at(self, item):
+        events = self.status_events(item, 'task-item/status')
+        if events and self.ident(events[-1]['value']) in {
+                'task-item.status/' + name for name in ('completed', 'skipped', 'correct', 'incorrect')}:
+            return events[-1]['at']
+        return None
+
+    def item_elapsed(self, item, at):
+        at = instant(at)
+        events = self.status_events(item, 'task-item/status')
+        if not events:
+            raise ValueError('item timing requires its status history')
+        previous, active, total = None, None, 0.0
+        for event in events:
+            status = self.ident(event['value']).split('/')[-1]
+            if event['at'] > at:
+                raise ValueError('operation predates status history')
+            if (previous is None and status != 'started'
+                    or previous == 'started' and status not in {'paused', 'completed', 'skipped', 'correct', 'incorrect'}
+                    or previous == 'paused' and status != 'started'
+                    or previous in {'completed', 'skipped', 'correct', 'incorrect'}):
+                raise ValueError('invalid item status history transition')
+            if active is not None:
+                total += (event['at'] - active).total_seconds()
+                active = None
+            if status == 'started':
+                active = event['at']
+            previous = status
+        if active is not None:
+            total += (at - active).total_seconds()
+        return total
+
+    def task_elapsed(self, task, at):
+        self.first_started(task)
+        return sum(self.item_elapsed(item, at) for item in self.refs(task, 'learner-task/items'))
+
+    def active_items(self, learner):
+        return tuple(item for task in self.refs(learner, 'learner/activity')
+                     for item in self.refs(task, 'learner-task/items')
+                     if self.ident(self.ref(item, 'task-item/status')) == 'task-item.status/started')
 
 
 POLICY_FIELDS = {
@@ -255,7 +337,9 @@ def load_runtime(snapshot: EntitySnapshot, learner_eid: int, policy_eid: int) ->
     # These are priors from curriculum neighbors, not inferred encompassing edges.
     neighborhoods = {}
     for eid, identity in topic_eid_to_id.items():
-        neighbors = set(snapshot.refs(eid, 'topic/prerequisites'))
+        if any(target not in topic_eid_to_id for target in snapshot.refs(eid, 'topic/next')):
+            raise ValueError('curriculum neighbors must reference known topics')
+        neighbors = set(snapshot.owners(eid, 'topic/next'))
         for kp in snapshot.refs(eid, 'topic/knowledge-points'):
             if 'knowledge-point' not in snapshot.types(kp):
                 raise ValueError('topic knowledge-points must reference knowledge points')
@@ -299,16 +383,13 @@ def load_runtime(snapshot: EntitySnapshot, learner_eid: int, policy_eid: int) ->
         progress_by_topic[topic_id] = progress
     # No separate event clock is invented. Available task/item history and the
     # stored state anchors bound chronological processing after a restart.
-    times = []
+    observed = set()
     for task in snapshot.refs(learner_eid, 'learner/activity'):
         if snapshot.owners(task, 'learner/activity') != (learner_eid,):
             raise ValueError('learner task has multiple learner associations')
-        record = snapshot.entity(task)
-        if 'learner-task/completed-at' in record:
-            times.append(instant_days(record['learner-task/completed-at']))
-        for item in snapshot.refs(task, 'learner-task/items'):
-            if 'task-item/completed-at' in snapshot.entity(item):
-                times.append(instant_days(snapshot.entity(item)['task-item/completed-at']))
+        observed.add(task)
+        observed.update(snapshot.refs(task, 'learner-task/items'))
+    times = [instant_days(event['at']) for event in snapshot.status_history if event['entity'] in observed]
     if times:
         engine.latest[learner] = max(engine.latest.get(learner, -math.inf), *times)
     return LoadedRuntime(snapshot, engine, learner_eid, learner, policy_eid,
@@ -348,39 +429,34 @@ class TransactionPlan:
     forms: tuple
 
 
-def _check_task(loaded, task, completed_at):
+def _check_task(loaded, task, completed_at, *, allow_paused=False):
     snapshot = loaded.snapshot
     if snapshot.owners(task, 'learner/activity') != (loaded.learner_eid,):
         raise ValueError('task must belong exclusively to this learner')
-    record = snapshot.entity(task)
     status = snapshot.ident(snapshot.ref(task, 'learner-task/status'))
-    if status not in {'learner-task.status/planned', 'learner-task.status/in-progress', 'learner-task.status/paused'}:
-        raise ValueError('cannot complete a terminal or invalid task')
-    if 'learner-task/completed-at' in record:
-        raise ValueError('task already has a completion timestamp')
+    allowed = {'learner-task.status/started'}
+    if allow_paused:
+        allowed.add('learner-task.status/paused')
+    if status not in allowed:
+        raise ValueError('only a started task can accept completion')
     at = instant_days(completed_at)
     if at < loaded.engine.latest.get(loaded.learner, -math.inf):
         raise ValueError('completion predates accepted learner evidence')
-    if 'learner-task/started-at' in record and completed_at < instant(record['learner-task/started-at']):
+    if completed_at < snapshot.first_started(task):
         raise ValueError('completion predates its task start')
 
 
 def _task_change(snapshot, raw, task, completed_at):
     change = {str(k).removeprefix(':'): deepcopy(v) for k, v in raw.items()}
-    allowed = {'db/id', 'learner-task/status', 'learner-task/outcome', 'learner-task/completed-at',
+    allowed = {'db/id', 'learner-task/status',
                'learner-task/xp-earned', 'learner-task/xp-base'}
     if type(change.get('db/id')) is not int or change['db/id'] != task or not set(change) <= allowed:
         raise ValueError('task changes contain an unsupported target or attribute')
-    for name, options in {
-        'learner-task/status': {'planned', 'in-progress', 'paused', 'completed', 'abandoned'},
-        'learner-task/outcome': {'passed', 'failed'},
-    }.items():
-        if name in change and snapshot.ident(change[name]) not in {name.replace('/', '.') + '/' + option for option in options}:
-            raise ValueError(f'invalid {name}')
-    if 'learner-task/completed-at' in change:
-        change['learner-task/completed-at'] = instant(change['learner-task/completed-at'])
-        if change['learner-task/completed-at'] != completed_at:
-            raise ValueError('task and item completion times must agree')
+    if ('learner-task/status' in change
+            and snapshot.ident(change['learner-task/status']) not in {
+                'learner-task.status/' + status for status in
+                ('locked', 'unlocked', 'started', 'paused', 'completed', 'failed')}):
+        raise ValueError('invalid learner-task/status')
     for name in ('learner-task/xp-earned', 'learner-task/xp-base'):
         if name in change and type(change[name]) is not int:
             raise ValueError(f'{name} must be an integer')
@@ -436,11 +512,18 @@ def completion_transaction(loaded: LoadedRuntime, item_eid: int, completed_at: d
     item_eid = snapshot.eid(item_eid)
     task = snapshot.item_task(item_eid, loaded.learner_eid)
     item = snapshot.entity(item_eid)
-    if 'task-item/completed-at' in item:
-        raise ValueError('item already completed; retry its original transaction plan')
+    old_status = snapshot.ref(item_eid, 'task-item/status')
+    if snapshot.ident(old_status) != 'task-item.status/started':
+        raise ValueError('only a started item can accept completion')
+    if snapshot.active_items(loaded.learner_eid) != (item_eid,):
+        raise ValueError('only one item may be actively timed per learner')
     completed_at = instant(completed_at)
     _check_task(loaded, task, completed_at)
-    forms = [[Keyword('db/cas'), item_eid, Keyword('task-item/completed-at'), None, completed_at]]
+    forms = []
+    terminal_status = None
+    task_change = None
+    elapsed = snapshot.item_elapsed(item_eid, completed_at)
+    task_elapsed = snapshot.task_elapsed(task, completed_at)
     new_responses, responses, seen_targets = {}, [], set()
     for raw in changes:
         change = {str(k).removeprefix(':'): deepcopy(v) for k, v in raw.items()}
@@ -449,17 +532,22 @@ def completion_transaction(loaded: LoadedRuntime, item_eid: int, completed_at: d
             raise ValueError('change targets must be distinct numeric EIDs or response tempids')
         seen_targets.add(target)
         if target == item_eid:
-            allowed = {'db/id', 'task-item/result', 'task-item/responses', 'task-item/elapsed-seconds', 'task-item/performance'}
+            allowed = {'db/id', 'task-item/status', 'task-item/responses', 'task-item/performance'}
             if not set(change) <= allowed:
                 raise ValueError('item changes contain an unsupported attribute')
-            if 'task-item/result' in change and snapshot.ident(change['task-item/result']) not in {
-                'task-item.result/correct', 'task-item.result/incorrect', 'task-item.result/skipped'}:
-                raise ValueError('invalid task item result')
-            for attr in ('task-item/elapsed-seconds', 'task-item/performance'):
-                if attr in change:
-                    change[attr] = _number(change[attr], attr, 0)
-                    if attr == 'task-item/performance' and change[attr] == 0:
-                        raise ValueError('task-item/performance must be positive')
+            terminal_status = change.pop('task-item/status', None)
+            ident = snapshot.ident(terminal_status) if terminal_status is not None else None
+            question = 'question' in snapshot.types(snapshot.ref(item_eid, 'task-item/content'))
+            valid = {'task-item.status/' + s for s in ('correct', 'incorrect', 'skipped')} if question else {'task-item.status/completed'}
+            if ident not in valid:
+                raise ValueError('completion requires an appropriate terminal item status')
+            if 'task-item/performance' in change:
+                change['task-item/performance'] = _number(change['task-item/performance'], 'performance', 0)
+                if change['task-item/performance'] == 0:
+                    raise ValueError('task-item/performance must be positive')
+            if ident == 'task-item.status/skipped' and (change.get('task-item/responses') or snapshot.refs(item_eid, 'task-item/responses')):
+                raise ValueError('a skipped question cannot contain submitted responses')
+            change['task-item/elapsed-seconds'] = elapsed
             if 'task-item/responses' in change:
                 if not isinstance(change['task-item/responses'], (list, tuple)):
                     raise ValueError('responses must be a collection of references')
@@ -467,6 +555,8 @@ def completion_transaction(loaded: LoadedRuntime, item_eid: int, completed_at: d
             change['db/ensure'] = Keyword('task-item/validate')
         elif target == task:
             change = _task_change(snapshot, change, task, completed_at)
+            change['learner-task/elapsed-seconds'] = task_elapsed
+            task_change = change
         elif (type(target) is str and target and not target.startswith((':', 'engine-'))
               and target != 'edb.tx'):
             if set(change) != {'db/id', 'learner-response/field', 'learner-response/value'}:
@@ -479,41 +569,51 @@ def completion_transaction(loaded: LoadedRuntime, item_eid: int, completed_at: d
         else:
             raise ValueError('changes may target this item, its task, or a new entered response')
         forms.append(change)
+    if terminal_status is None:
+        raise ValueError('completion requires an explicit terminal item status')
+    forms.insert(0, [Keyword('db/cas'), item_eid, Keyword('task-item/status'), old_status, terminal_status])
+    if task_change is None:
+        forms.append({'db/id': task, 'learner-task/elapsed-seconds': task_elapsed, 'db/ensure': Keyword('learner-task/validate')})
     _check_responses(snapshot, item_eid, responses, new_responses)
     forms.append({'db/id': item_eid, 'db/ensure': Keyword('task-item/validate')})
     identity = _uuid(item, 'task-item/id')
-    return _writeback(loaded, updated_engine, forms, 'complete-item', identity)
+    return _writeback(loaded, updated_engine, forms, 'complete-item', identity, completed_at)
 
 
 def task_transaction(loaded: LoadedRuntime, task_eid: int, completed_at: datetime,
                      changes: Sequence[Mapping], updated_engine: FireEngine) -> TransactionPlan:
     """Close an expired active task without fabricating a question completion.
 
-    ``changes`` contains a single map for this task, normally outcome and XP.
+    ``changes`` contains a single map for this task, normally XP.
     This boundary owns the completed status and timestamp. The numerical state
     must have been derived solely from the task's already accepted observations.
     """
     snapshot = loaded.snapshot
     task = snapshot.eid(task_eid)
     completed_at = instant(completed_at)
-    _check_task(loaded, task, completed_at)
+    _check_task(loaded, task, completed_at, allow_paused=True)
     status = snapshot.ref(task, 'learner-task/status')
-    if snapshot.ident(status) != 'learner-task.status/in-progress':
-        raise ValueError('timer expiry requires an in-progress task')
     if len(changes) > 1:
         raise ValueError('task expiry accepts one task change map')
     change = _task_change(snapshot, changes[0] if changes else {'db/id': task}, task, completed_at)
     if 'learner-task/status' in change and snapshot.ident(change['learner-task/status']) != 'learner-task.status/completed':
         raise ValueError('timer expiry must complete its task')
     change.pop('learner-task/status', None)
-    change['learner-task/completed-at'] = completed_at
+    change['learner-task/elapsed-seconds'] = snapshot.task_elapsed(task, completed_at)
     forms = [[Keyword('db/cas'), task, Keyword('learner-task/status'), status,
               Keyword('learner-task.status/completed')], change]
+    active = snapshot.active_items(loaded.learner_eid)
+    if len(active) > 1:
+        raise ValueError('only one item may be actively timed per learner')
+    for item in snapshot.refs(task, 'learner-task/items'):
+        if item in active:
+            forms.append([Keyword('db/cas'), item, Keyword('task-item/status'), snapshot.ref(item, 'task-item/status'), Keyword('task-item.status/paused')])
+            forms.append({'db/id': item, 'task-item/elapsed-seconds': snapshot.item_elapsed(item, completed_at), 'db/ensure': Keyword('task-item/validate')})
     return _writeback(loaded, updated_engine, forms, 'expire-task',
-                      _uuid(snapshot.entity(task), 'learner-task/id'))
+                      _uuid(snapshot.entity(task), 'learner-task/id'), completed_at)
 
 
-def _writeback(loaded, updated_engine, forms, operation, identity):
+def _writeback(loaded, updated_engine, forms, operation, identity, at):
     if (asdict(updated_engine.policy) != asdict(loaded.engine.policy)
             or updated_engine.graph.id != loaded.engine.graph.id
             or updated_engine.difficulty_accuracy != loaded.engine.difficulty_accuracy
@@ -571,5 +671,6 @@ def _writeback(loaded, updated_engine, forms, operation, identity):
         if loaded.performance_eid is None:
             learner_change['learner/performance'] = target
     forms.append(learner_change)
+    forms.append({'db/id': 'edb.tx', 'db/txInstant': instant(at)})
     request_key = operation + '-' + hashlib.sha256(json.dumps([loaded.learner, identity], separators=(',', ':')).encode()).hexdigest()
     return TransactionPlan(request_key, loaded.snapshot.basis_t, edn(forms), _freeze(forms))

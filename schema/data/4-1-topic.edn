@@ -26,10 +26,10 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Optional finite expected assessment accuracy in [0,1]; lower means harder. This is our engine scale, separate from question E/M/H and learner-specific accuracy. Omit when unknown; the engine uses policy/initial-accuracy."}
 
- {:db/ident :topic/prerequisites
+ {:db/ident :topic/next
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Optional references to topics that are direct prerequisites of this topic. Distinct from knowledge-point/key-prerequisites used for targeted remediation. These ordinary refs do not establish ownership. Reference target types and prevention of self-dependencies and cycles require additional validation."}
+  :db/doc "Direct downstream topics that require this topic. A next C means A is a direct prerequisite of C; reverse lookup of topics pointing to C supplies C's prerequisites. This is the authoritative topic dependency graph across all courses. Store direct edges; derive transitive dependencies by traversal. These ordinary refs do not establish ownership. Reference target types and prevention of self-dependencies and cycles require application validation. Distinct from encompassing weights and knowledge-point/key-prerequisites used for targeted remediation."}
 
  {:db/ident :topic/encompasses
   :db/valueType :db.type/ref

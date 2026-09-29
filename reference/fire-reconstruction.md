@@ -1,9 +1,9 @@
 # Our FIRe implementation: design, evidence, and validation
 
-Research snapshot: September 26, 2026. Schema integration updated September 28, 2026.
+Research snapshot: September 26, 2026. Schema integration updated September 28, 2026; Rust port September 29, 2026.
 
 We now have a working implementation of Fractional Implicit Repetition in
-[engine/fire](../engine/fire/). It implements the disclosed structure, including
+[engine/rust](../engine/rust/). It implements the disclosed structure, including
 fractional multihop practice credit, reverse failure propagation, individualized
 learning speed, early-repetition discounts, overdue failure penalties, and
 review compression. Where the sources leave numerical functions unspecified,
@@ -14,15 +14,14 @@ evidence.** Recovering Math Academy's exact parameters or reproducing its
 numerical schedules is not an acceptance criterion. Unknown private values are
 design choices to resolve and evaluate, not blockers to this implementation.
 
-The current application layer adds [schema hydration and transaction planning](../engine/schema.py),
-[activity helpers](../engine/activities.py), and [automatic item completion](../engine/runtime.py).
-The full Python suite passes (124 tests), and the native EDB check passes an actual
-entity capture → item completion → generated transaction round trip. Run `python3 -m unittest discover -s tests -v` for the current Python suite.
+The current application layer adds [schema hydration and transaction planning](../engine/rust/schema.rs),
+[activity helpers](../engine/rust/activities.rs), and [automatic item completion](../engine/rust/runtime.rs).
+The Rust implementation is checked with native unit tests, differential comparisons against the preserved Python implementation, and an actual EDB entity capture → item completion → generated transaction round trip. Run `cargo test`, `cargo build && python3 tests/rust_parity.py`, and `bash tests/check_rust_edb.sh`.
 Historical sensitivity scenarios check identities, observed behavior, and the
 consequences of alternative policies; they do not establish learning efficacy.
 
 The adapter returns an atomic EDB transaction plan. A durable database writer,
-production UI, Rust numerical engine, and complete scheduler remain outside this
+production UI and complete scheduler remain outside this
 implementation. Building those does not require MA's private learner-state values.
 
 ## What was investigated
@@ -198,21 +197,21 @@ remain unknown. The runtime does not invent missing workload baselines.
 
 ```bash
 # Published multiplication example: one review can satisfy three due topics.
-python3 -m engine.fire demo
+cargo run -- demo
 
 # Apply a JSON scenario, retaining state and per-topic receipts.
-python3 -m engine.fire replay engine/fire/fixtures/example-input.json
+cargo run -- replay engine/fire/fixtures/example-input.json
 
 # Rebuild the local history audit and execute the sensitivity scenarios.
-python3 -m engine.fire.history \
+cargo run -- history \
   --output engine/fire/fixtures/history-observations.json \
   --replay-output engine/fire/fixtures/history-replay-results.json
 
 # Core, activity, adapter, and history-integrity checks.
-python3 -m unittest discover -s tests -v
+cargo test
 ```
 
-The core is standard-library Python. It supports JSON snapshot/restore, atomic
+The core is Rust; the previous Python implementation remains a regression oracle. It supports JSON snapshot/restore, atomic
 in-memory event application, idempotent retries, conflicting-ID rejection, and
 chronological ingestion. Receipts expose before/after state, coverage, discount,
 speed, failure multiplier, gated credit, and configuration fingerprints. Global
@@ -247,7 +246,7 @@ application owns the timer and submits the resulting guarded task transaction.
 Policy settings can change under the same `policy/id`; historical database views
 recover earlier values. Existing progress retains its stored interval until an
 engine update recomputes it. There is no automatic mass reschedule and no separate
-domain event or application receipt. `Policy.name` is a Python prototype label,
+domain event or application receipt. `Policy.name` remains a runtime label,
 not a persisted engine input.
 
 ## Verification against the available history
@@ -321,7 +320,7 @@ additional XP totals. Start authoring encompassing weights on a small active
 topic neighborhood, validating them against representative problems; expand as
 new topics enter study. The model can run direct reviews while that work proceeds.
 
-The EDN schemas have native EDB checks, and the Python adapter prepares guarded
+The EDN schemas have native EDB checks, and the Rust adapter prepares guarded
 atomic writes verified through the native in-memory EDB transaction path. The durable writer still needs to
 submit those plans with registered predicates; this is separate from the core's
 JSON snapshot support. Neither captured content nor an existing learner database

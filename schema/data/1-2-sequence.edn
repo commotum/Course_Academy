@@ -1,0 +1,23 @@
+;; A named collection of courses for a learning objective or audience.
+;; Courses remain shared; their next refs supply navigation.
+[
+ {:db/ident :sequence/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of this course sequence."}
+
+ {:db/ident :sequence/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Name of the sequence, for example Traditional Math Sequence or Electrical Engineering Preparation."}
+
+ {:db/ident :sequence/courses
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Courses included in this sequence. These ordinary refs define unordered membership and allow a course to appear in multiple sequences. Course/next supplies navigation; topic/next remains the underlying prerequisite graph. Validate referenced courses separately."}
+
+ {:db/ident :sequence/validate
+  :db.entity/attrs [:sequence/id :sequence/title :sequence/courses]
+  :db/doc "Requires identity, title, and at least one course ref when explicitly ensured. Nonempty titles and reference target types require application validation."}
+]

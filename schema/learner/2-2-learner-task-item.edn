@@ -1,9 +1,12 @@
 ;; One learner-specific presentation of a question, tutorial, or example.
 ;; Owned through learner-task/items; content refers to the shared item presented.
 [
- {:db/ident :task-item.result/correct}
- {:db/ident :task-item.result/incorrect}
- {:db/ident :task-item.result/skipped}
+ {:db/ident :task-item.status/started}
+ {:db/ident :task-item.status/paused}
+ {:db/ident :task-item.status/completed}
+ {:db/ident :task-item.status/skipped}
+ {:db/ident :task-item.status/correct}
+ {:db/ident :task-item.status/incorrect}
 
  {:db/ident :task-item/id
   :db/valueType :db.type/uuid
@@ -11,42 +14,37 @@
   :db/unique :db.unique/identity
   :db/doc "Stable identity of this presentation, separate from the content ID."}
 
- {:db/ident :task-item/index
-  :db/valueType :db.type/long
-  :db/cardinality :db.cardinality/one
-  :db/doc "Order in the learner task."}
-
  {:db/ident :task-item/content
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Question, tutorial, or example presented. May be absent when historical content identity is unknown."}
 
- {:db/ident :task-item/result
+ {:db/ident :task-item/status
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Observed final question result: correct, incorrect, or explicitly skipped after presentation. Omit when unknown or not a question. Questions the engine never selects do not create task items or skipped results."}
+  :db/doc "Started means actively working; paused suspends the working timer. Completed ends a tutorial or example; correct, incorrect, and skipped end a question attempt. Retained status transaction history supplies start, pause, resume, and finish timestamps. Questions never presented do not create task items. Reference targets and valid transitions require application validation."}
 
  {:db/ident :task-item/responses
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/doc "Responses supplied for this question: learner-response records for entered values, or existing answer entities for selections. Each selected answer identifies its field through answer-field/answer-choices. The application checks field membership and one response per field. Ordinary refs preserve answer choices when a task item is deleted; entered response cleanup belongs to the application."}
 
- {:db/ident :task-item/completed-at
-  :db/valueType :db.type/instant
-  :db/cardinality :db.cardinality/one
-  :db/doc "When the learner finished or explicitly skipped this presentation, when known. For a question, use the observed answer time. Distinct from elapsed solving time and the later engine transaction time; leave unknown historical timestamps absent."}
-
  {:db/ident :task-item/elapsed-seconds
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
-  :db/doc "Observed elapsed time for this presentation, when available."}
+  :db/doc "Accumulated seconds spent in started, calculated from this item's status transaction history. Paused intervals are excluded. The application updates this value and the parent task's elapsed total together, with at most one actively timed item per learner. Imported observed durations may be retained when their status history is unavailable."}
 
  {:db/ident :task-item/performance
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Calculated performance magnitude used by the engine. Positive and finite; may exceed one. Distinct from correctness and XP. Omit until evaluated; the application checks the range."}
 
+ {:db/ident :task-item/next
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional next presentation in the same learner task. Omit on the last item. This ordinary ref orders the task's existing members; learner-task/items remains their component owner. Derive the first item from the member with no incoming next link. The application checks that all members form one chain without cycles, merges, or links outside the task."}
+
  {:db/ident :task-item/validate
-  :db.entity/attrs [:task-item/id :task-item/index]
-  :db/doc "Requires presentation identity and order; historical records may have unknown content or results."}
+  :db.entity/attrs [:task-item/id :task-item/status]
+  :db/doc "Requires presentation identity and status. The next link is optional; historical content may be unknown. Task membership, chain consistency, status transitions, and derived elapsed totals require application validation."}
 ]

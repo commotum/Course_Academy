@@ -1,15 +1,13 @@
-;; One learner attempt at a shared activity, linked through learner/activity.
+;; One learner-specific task at a shared activity, linked through learner/activity.
 ;; Find the learner through the reverse reference.
 ;; Required-attribute specs are opt-in; application code checks relationship and value rules.
 [
- {:db/ident :learner-task.status/planned}
- {:db/ident :learner-task.status/in-progress}
+ {:db/ident :learner-task.status/locked}
+ {:db/ident :learner-task.status/unlocked}
+ {:db/ident :learner-task.status/started}
  {:db/ident :learner-task.status/paused}
  {:db/ident :learner-task.status/completed}
- {:db/ident :learner-task.status/abandoned}
-
- {:db/ident :learner-task.outcome/passed}
- {:db/ident :learner-task.outcome/failed}
+ {:db/ident :learner-task.status/failed}
 
  {:db/ident :learner-task/id
   :db/valueType :db.type/uuid
@@ -25,27 +23,17 @@
  {:db/ident :learner-task/activity
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Shared lesson, review, assessment, multistep, or diagnostic being attempted. Resolve its title, category, and intended scope through this reference."}
+  :db/doc "Shared lesson, review, assessment, multistep, or diagnostic for this learner task. Resolve its title, category, and intended scope through this reference."}
 
  {:db/ident :learner-task/status
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Lifecycle state: planned, in-progress, paused, completed, or abandoned. Completion does not establish success."}
+  :db/doc "Locked means not yet eligible to start; unlocked means eligible but not started; started means in progress; paused means suspended and unfinished. Completed means finished under the activity's completion rules; failed means an explicit task-level failure condition ended the attempt. Status transaction history supplies calendar timestamps, including the first start and terminal transition. Pausing does not extend a timed exam's deadline. Question correctness is recorded by task-item/status; no separate task outcome is stored."}
 
- {:db/ident :learner-task/outcome
-  :db/valueType :db.type/ref
+ {:db/ident :learner-task/elapsed-seconds
+  :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional overall pass/fail decision. Individual question results remain separate; omit when no task-level decision applies or is known."}
-
- {:db/ident :learner-task/started-at
-  :db/valueType :db.type/instant
-  :db/cardinality :db.cardinality/one
-  :db/doc "Actual start time, when known. Together with completed-at, determines wall-clock duration including pauses."}
-
- {:db/ident :learner-task/completed-at
-  :db/valueType :db.type/instant
-  :db/cardinality :db.cardinality/one
-  :db/doc "Actual completion time, when known. Imported dates require a supported timezone."}
+  :db/doc "Accumulated working seconds, calculated by summing task-item/elapsed-seconds across this task's items. The application updates this total with the item durations; it is not an independently edited value or the timed-exam deadline. Omit when durations are unknown."}
 
  {:db/ident :learner-task/xp-earned
   :db/valueType :db.type/long
@@ -61,7 +49,7 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Owned question, tutorial, and example presentations, ordered by task-item/index. Repeated presentations have separate item identities."}
+  :db/doc "Owned question, tutorial, and example presentations, linked in order through task-item/next. The reference collection itself is unordered. Repeated presentations have separate item identities."}
 
  {:db/ident :learner-task/validate
   :db.entity/attrs [:learner-task/id :learner-task/activity :learner-task/status]

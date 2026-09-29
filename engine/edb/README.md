@@ -12,7 +12,7 @@ Specs are opt-in: bypassing `:db/ensure` bypasses these checks. The learner's mi
 
 Global accuracy lives on the optional component referenced by `learner/performance`, defined in [1-2-learner-performance.edn](../../schema/learner/1-2-learner-performance.edn). Ensure `performance/validate` on that child when writing its four accuracy/mass values. Resolve it through the learner ref; the reverse ref is `learner/_performance`. No separate domain ID is needed. Cardinality one permits at most one summary per learner but does not prevent two learners from sharing a summary. Single ownership and numeric ranges remain application contracts; the progress predicates do not check them. Per-topic accuracy remains on `progress`.
 
-Task history through `learner/activity` remains an ordinary reference collection; its common schema is described in [the schema organization](../../schema/README.md). Task domain guards are not implemented by these progress predicates. `learner/queue` owns the current up-next entries, while each task owns individual learner presentations through `learner-task/items`, defined in `learner/2-2-learner-task-item.edn`. `learner-task/activity` points to the shared activity definition; `task-item/content` points to the presented question, tutorial, or example. The schema does not store duplicate task/item type enums. Queue ownership, index uniqueness, selection enums, and content validation likewise remain application contracts; these progress predicates do not check the queue or implement scheduling.
+Task history through `learner/activity` remains an ordinary reference collection; its common schema is described in [the schema organization](../../schema/README.md). Task domain guards are not implemented by these progress predicates. `learner/queue` owns an unordered set of unlocked activity entries, while each task owns individual learner presentations through `learner-task/items`, defined in `learner/2-2-learner-task-item.edn`. `learner-task/activity` points to the shared activity definition; `task-item/content` points to the presented question, tutorial, or example. The schema does not store duplicate task/item type enums. Queue ownership, selection enums, and content validation likewise remain application contracts; these progress predicates do not check the queue or implement scheduling.
 
 # Policy and topic difficulty
 
@@ -26,11 +26,11 @@ A future difficulty estimator must select eligible direct assessment evidence an
 
 The engine reads authoritative `topic/difficulty`; if absent, it uses `policy/initial-accuracy`. To inspect a past progress state, use `as_of` at the transaction that wrote it and resolve `progress/policy` and its parameters in that same historical database value. Reading the policy's current values would not recover the settings used then. Retain the relevant history. Editing policy parameters does not rewrite stored `progress/interval-days`; the interval remains in effect until the engine explicitly recomputes it, with no automatic bulk rescheduling.
 
-The intended item-completion operation grades the response and atomically writes the item result, responses, affected progress, and global performance. Compute against the transaction's authoritative input state, or guard an external calculation against a changed basis. EDB transaction history connects completion with its state changes without a separate engine-update record. Exact request retries use EDB's retry mechanism, while a one-time completion guard prevents fresh requests from crediting the same item again. The Python adapter prepares this transaction; wiring it to the production durable writer remains application work. Schema validation alone does not run the engine.
+The intended item-completion operation grades the response and atomically writes the item status, responses, elapsed totals, affected progress, and global performance. Compute against the transaction's authoritative input state, or guard an external calculation against a changed basis. EDB transaction history connects completion with its state changes without a separate engine-update record. Exact request retries use EDB's retry mechanism, while a status compare-and-swap prevents fresh requests from crediting the same item again. The Rust adapter prepares this transaction; wiring it to the production durable writer remains application work. Schema validation alone does not run the engine.
 
-The Python [schema adapter](../schema.py) loads a captured entity projection and prepares native EDN writes. The [completion handler](../runtime.py) runs after application grading and distinguishes answer accuracy from grouped retention credit. The database schema maps to its existing `Policy` fields as follows. All settings are explicit on a complete policy; do not silently fill omitted persisted fields from changing program defaults.
+The Rust [schema adapter](../rust/schema.rs) loads captured entities and their status transaction history, then prepares native EDN writes. The [completion handler](../rust/runtime.rs) runs after application grading and distinguishes answer accuracy from grouped retention credit. The database schema maps to its existing `Policy` fields as follows. All settings are explicit on a complete policy; do not silently fill omitted persisted fields from changing program defaults.
 
-| EDB policy attribute | Python `Policy` field |
+| EDB policy attribute | Rust `Policy` field |
 | --- | --- |
 | `base-half-life-days` | `base_interval_days` |
 | `interval-growth` | `interval_growth` |
@@ -49,23 +49,19 @@ The Python [schema adapter](../schema.py) loads a captured entity projection and
 | `retention-update-order` | `memory_order`: `/decay-before-add` → `decay-before-add`; `/add-before-decay` → `literal-add-before-decay` |
 | `future-horizon-days` | `future_horizon_days` |
 
-`policy/id` is a UUID, not the prototype's calculated `Policy.id` fingerprint. Python `Policy.name` is only a prototype label, not a database input; there is no stored algorithm selector. The adapter resolves the retention-update enum refs with these explicit mappings.
+`policy/id` is a UUID, not the prototype's calculated `Policy.id` fingerprint. Runtime `Policy.name` is only a prototype label, not a database input; there is no stored algorithm selector. The adapter resolves the retention-update enum refs with these explicit mappings.
 
-Run the Python checks and the native EDB boundary check from the repository root:
+Run the Rust checks and native EDB boundary check from the repository root:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py'
-rustc --edition=2021 tests/validate_fire_schema.rs \
-  --extern edb_core=/home/jake/Developer/EDB/target/release/deps/libedb_core-2824b6ab39ee5756.rlib \
-  -L dependency=/home/jake/Developer/EDB/target/release/deps \
-  -o /tmp/course-academy-current-schema-check
-PYTHONDONTWRITEBYTECODE=1 /tmp/course-academy-current-schema-check
+cargo test
+bash tests/check_rust_edb.sh
 ```
 
-The library filename is specific to the installed EDB build. The native harness installs all 30 current EDNs, captures actual EDB entity values for Python, and applies the resulting transaction EDN back through EDB. It checks policy history, numeric/ownership guards, item completion CAS, and protection of canonical answer choices during task deletion.
+The native harness uses the sibling EDB release build (or `EDB_ROOT`). It installs all 29 current EDNs, captures actual EDB entities and status history, runs the Rust completion handler directly, and applies its transaction EDN back through EDB. It checks policy history, numeric/ownership guards, status completion CAS, pause/resume timing, and protection of canonical answer choices during task deletion. No Python process participates in this path.
 
 The plan's `compare_basis_t` must be submitted through `TransactionRequest::comparing_basis`, together with its stable `request_key`. Item CAS alone cannot detect a concurrently changed graph, policy, or another task's progress update. Retain the original plan for an uncertain submission or exact retry. The in-memory harness checks emitted transactions and native request construction; it does not exercise a deployed durable transactor's retry/basis-conflict path.
 
-The application calls `engine.runtime.complete_item` automatically after grading, or `expire_task` from its timer. These functions return a transaction plan and speculative updated engine. Only adopt that state after a successful commit; reload and recompute after a confirmed conflicting write. No additional domain event or processing record is required. Grading, snapshot acquisition, production writer registration, UI callbacks and the full queue scheduler remain application integration work.
+The application calls `runtime::complete_item` automatically after grading, or `expire_task` from its timer. These functions return a transaction plan and speculative updated engine. `transition_item` prepares pause/resume transactions without applying learning credit. Only adopt speculative state after a successful commit; reload and recompute after a confirmed conflicting write. No additional domain event or processing record is required. Grading, snapshot acquisition, production writer registration, UI callbacks and the full queue scheduler remain application integration work.
 
-[Task items](../../schema/learner/2-2-learner-task-item.edn) hold responses, results, elapsed time, optional `task-item/completed-at`, and optional `task-item/performance`. Completion time identifies when practice occurred, separately from its duration and the engine transaction's commit time. Whole-task outcome and XP remain on the task. The completion handler uses these facts directly; no separate persisted event or update record is needed.
+[Task items](../../schema/learner/2-2-learner-task-item.edn) hold responses, status, derived elapsed time, and optional `task-item/performance`. Join historical status assertions to their transaction's `db/txInstant`, ordered by transaction basis. Intervals spent in `started` supply working duration; the first task start and terminal transitions supply calendar timing. The adapter writes item and summed task durations together, with an explicit transaction instant matching the time used in its calculation. Retain status history and record transitions when they happen. Pausing does not extend a timed exam's deadline; timer expiry pauses any active unanswered item without inventing an answer verdict. Whole-task status and XP remain on the task.

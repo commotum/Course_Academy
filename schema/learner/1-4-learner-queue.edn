@@ -1,4 +1,5 @@
-;; One up-next entry owned through learner/queue. Find its learner through the reverse ref.
+;; One unlocked activity entry owned through the unordered learner/queue collection.
+;; Find its learner through the reverse ref.
 ;; Entries select shared activities; task records describe performed work.
 ;; Entity specs check required attributes only and must be explicitly ensured.
 [
@@ -10,17 +11,12 @@
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
-  :db/doc "Stable identity of this queue entry. Reordering updates the entry rather than creating a new one."}
+  :db/doc "Stable identity of this unlocked activity entry."}
 
  {:db/ident :queue/activity
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Shared lesson, review, assessment, multistep, or diagnostic definition proposed for study. Derive its category and intended scope from this activity. Validate that it is complete and eligible before creating a task attempt."}
-
- {:db/ident :queue/index
-  :db/valueType :db.type/long
-  :db/cardinality :db.cardinality/one
-  :db/doc "Positive position unique within this learner's current queue; smaller indexes come first. The application updates positions when priorities change. The learner/queue ref set itself is unordered."}
+  :db/doc "Shared lesson, review, assessment, multistep, or diagnostic definition unlocked for study. Derive its category and intended scope from this activity. Validate that it is complete and eligible before starting a task attempt."}
 
  {:db/ident :queue/selection
   :db/valueType :db.type/ref
@@ -40,9 +36,9 @@
  {:db/ident :queue/added-at
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional time this entry was added to the learner's queue. Reordering does not reset it."}
+  :db/doc "Optional time this entry was added to the learner's queue."}
 
  {:db/ident :queue/validate
-  :db.entity/attrs [:queue/id :queue/activity :queue/index :queue/selection :queue/reason]
-  :db/doc "Requires identity, activity, order, selection mode, and explanation. The writer separately checks exactly one learner owner, positive unique positions, supported selection values, nonblank reasons, and valid reference targets. Optional entries may be dismissed. Launching removes an entry from the queue, but does not satisfy a required obligation: the controller must carry or recompute it until the policy's completion condition is met, including after failure or abandonment. Required work cannot be bypassed by dismissal. This spec does not enforce scheduling, and the current queue is not a permanent decision record."}
+  :db.entity/attrs [:queue/id :queue/activity :queue/selection :queue/reason]
+  :db/doc "Requires identity, activity, selection mode, and explanation. Entries form an unordered set with no stored position or priority weight. The writer separately checks exactly one learner owner, supported selection values, nonblank reasons, and valid reference targets. Optional entries may be dismissed. Launching removes an entry from the queue, but does not satisfy a required obligation: the controller must carry or recompute it until the policy's completion condition is met, including after unsuccessful or unfinished work. Required work cannot be bypassed by dismissal. This spec does not enforce scheduling, and the current queue is not a permanent decision record."}
 ]

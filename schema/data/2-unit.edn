@@ -23,7 +23,12 @@
  {:db/ident :unit/modules
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Modules belonging to this unit. At least one is required when unit/validate is explicitly ensured. These references define unordered membership; the course map defines module order. Referenced modules must also ensure module/validate."}
+  :db/doc "Modules belonging to this unit. At least one is required when unit/validate is explicitly ensured. These ordinary refs define unordered membership; module/next supplies navigation between modules. Referenced modules must also ensure module/validate."}
+
+ {:db/ident :unit/next
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional direct downstream units for curriculum navigation. Ordinary refs preserve shared units; reverse lookup supplies preceding units. These links present progression between topic collections. Topic/next remains the authoritative prerequisite graph; unit links do not impose additional completion requirements."}
 
  {:db/ident :unit/identity-validate
   :db.entity/attrs [:unit/id]
@@ -31,5 +36,5 @@
 
  {:db/ident :unit/validate
   :db.entity/attrs [:unit/id :unit/title :unit/modules]
-  :db/doc "Requires our identity, a title, and at least one module ref when explicitly ensured. The Math Academy identifier is optional. Nonempty titles and reference target types require additional validation. Referenced modules must be validated separately."}
+  :db/doc "Requires our identity, a title, and at least one module ref when explicitly ensured. The Math Academy identifier and next units are optional. Nonempty titles, reference target types, and prevention of self-links and cycles require application validation. Referenced modules must be validated separately."}
 ]

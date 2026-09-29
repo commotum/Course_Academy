@@ -1,0 +1,793 @@
+{
+  "basis_t": 10,
+  "entities": {
+    "9000": {
+      "db/ident": {
+        "$keyword": "policy.retention-update/decay-before-add"
+      }
+    },
+    "9001": {
+      "db/ident": {
+        "$keyword": "task-item.status/correct"
+      }
+    },
+    "9002": {
+      "db/ident": {
+        "$keyword": "task-item.status/incorrect"
+      }
+    },
+    "9003": {
+      "db/ident": {
+        "$keyword": "task-item.status/skipped"
+      }
+    },
+    "9004": {
+      "db/ident": {
+        "$keyword": "learner-task.status/started"
+      }
+    },
+    "9005": {
+      "db/ident": {
+        "$keyword": "learner-task.status/completed"
+      }
+    },
+    "9006": {
+      "db/ident": {
+        "$keyword": "learner-task.status/locked"
+      }
+    },
+    "9007": {
+      "db/ident": {
+        "$keyword": "learner-task.status/failed"
+      }
+    },
+    "9008": {
+      "db/ident": {
+        "$keyword": "question.type/fill-in-the-blank"
+      }
+    },
+    "9009": {
+      "db/ident": {
+        "$keyword": "question.difficulty/moderate"
+      }
+    },
+    "9010": {
+      "db/ident": {
+        "$keyword": "answer.type/math"
+      }
+    },
+    "9011": {
+      "db/ident": {
+        "$keyword": "learner-task.status/unlocked"
+      }
+    },
+    "2": {
+      "policy/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000002"
+      },
+      "policy/base-half-life-days": 1.0,
+      "policy/interval-growth": 2.0,
+      "policy/maximum-half-life-days": 36500.0,
+      "policy/review-threshold": 0.5,
+      "policy/initial-retention": 1.0,
+      "policy/early-practice-discount-power": 1.0,
+      "policy/initial-accuracy": 0.8,
+      "policy/accuracy-update-rate": 0.2,
+      "policy/speed-exponent": 2.0,
+      "policy/minimum-speed": 0.25,
+      "policy/maximum-speed": 4.0,
+      "policy/overdue-failure-slope": 1.0,
+      "policy/maximum-failure-multiplier": 4.0,
+      "policy/gate-slow-implicit": true,
+      "policy/retention-update-order": 9000,
+      "policy/future-horizon-days": 7.0
+    },
+    "1": {
+      "learner/id": "learner",
+      "learner/activity": [
+        3
+      ]
+    },
+    "3": {
+      "learner-task/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000003"
+      },
+      "learner-task/activity": 4,
+      "learner-task/status": 9004,
+      "learner-task/items": []
+    },
+    "10": {
+      "course/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000000a"
+      },
+      "course/title": "Course",
+      "course/units": [
+        11
+      ]
+    },
+    "11": {
+      "unit/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000000b"
+      },
+      "unit/title": "Unit",
+      "unit/modules": [
+        12
+      ]
+    },
+    "12": {
+      "module/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000000c"
+      },
+      "module/title": "Module",
+      "module/topics": [
+        20,
+        22,
+        23
+      ]
+    },
+    "20": {
+      "topic/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000014"
+      },
+      "topic/title": "Topic 20",
+      "topic/knowledge-points": [
+        40
+      ]
+    },
+    "40": {
+      "knowledge-point/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000028"
+      },
+      "knowledge-point/title": "Skill 40",
+      "knowledge-point/example": 200,
+      "knowledge-point/questions": [
+        100,
+        101,
+        102,
+        103,
+        104
+      ]
+    },
+    "200": {
+      "example/id": {
+        "$uuid": "00000000-0000-0000-0000-0000000000c8"
+      },
+      "example/problem": "Solve $x+1=2$.",
+      "example/explanation": "Subtract one: $x=1$."
+    },
+    "100": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000064"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+100=0$; x = {x}.",
+      "question/answer-fields": [
+        2100
+      ],
+      "question/difficulty": 9009
+    },
+    "2100": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000834"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3100
+    },
+    "3100": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c1c"
+      },
+      "answer/type": 9010,
+      "answer/value": "-100"
+    },
+    "101": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000065"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+101=0$; x = {x}.",
+      "question/answer-fields": [
+        2101
+      ],
+      "question/difficulty": 9009
+    },
+    "2101": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000835"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3101
+    },
+    "3101": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c1d"
+      },
+      "answer/type": 9010,
+      "answer/value": "-101"
+    },
+    "102": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000066"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+102=0$; x = {x}.",
+      "question/answer-fields": [
+        2102
+      ],
+      "question/difficulty": 9009
+    },
+    "2102": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000836"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3102
+    },
+    "3102": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c1e"
+      },
+      "answer/type": 9010,
+      "answer/value": "-102"
+    },
+    "103": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000067"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+103=0$; x = {x}.",
+      "question/answer-fields": [
+        2103
+      ],
+      "question/difficulty": 9009
+    },
+    "2103": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000837"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3103
+    },
+    "3103": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c1f"
+      },
+      "answer/type": 9010,
+      "answer/value": "-103"
+    },
+    "104": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000068"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+104=0$; x = {x}.",
+      "question/answer-fields": [
+        2104
+      ],
+      "question/difficulty": 9009
+    },
+    "2104": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000838"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3104
+    },
+    "3104": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c20"
+      },
+      "answer/type": 9010,
+      "answer/value": "-104"
+    },
+    "21": {
+      "topic/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000015"
+      },
+      "topic/title": "Topic 21",
+      "topic/knowledge-points": [
+        41
+      ]
+    },
+    "41": {
+      "knowledge-point/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000029"
+      },
+      "knowledge-point/title": "Skill 41",
+      "knowledge-point/example": 201,
+      "knowledge-point/questions": [
+        110,
+        111,
+        112,
+        113,
+        114
+      ]
+    },
+    "201": {
+      "example/id": {
+        "$uuid": "00000000-0000-0000-0000-0000000000c9"
+      },
+      "example/problem": "Solve $x+1=2$.",
+      "example/explanation": "Subtract one: $x=1$."
+    },
+    "110": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000006e"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+110=0$; x = {x}.",
+      "question/answer-fields": [
+        2110
+      ],
+      "question/difficulty": 9009
+    },
+    "2110": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000083e"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3110
+    },
+    "3110": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c26"
+      },
+      "answer/type": 9010,
+      "answer/value": "-110"
+    },
+    "111": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000006f"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+111=0$; x = {x}.",
+      "question/answer-fields": [
+        2111
+      ],
+      "question/difficulty": 9009
+    },
+    "2111": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000083f"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3111
+    },
+    "3111": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c27"
+      },
+      "answer/type": 9010,
+      "answer/value": "-111"
+    },
+    "112": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000070"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+112=0$; x = {x}.",
+      "question/answer-fields": [
+        2112
+      ],
+      "question/difficulty": 9009
+    },
+    "2112": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000840"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3112
+    },
+    "3112": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c28"
+      },
+      "answer/type": 9010,
+      "answer/value": "-112"
+    },
+    "113": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000071"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+113=0$; x = {x}.",
+      "question/answer-fields": [
+        2113
+      ],
+      "question/difficulty": 9009
+    },
+    "2113": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000841"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3113
+    },
+    "3113": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c29"
+      },
+      "answer/type": 9010,
+      "answer/value": "-113"
+    },
+    "114": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000072"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+114=0$; x = {x}.",
+      "question/answer-fields": [
+        2114
+      ],
+      "question/difficulty": 9009
+    },
+    "2114": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000842"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3114
+    },
+    "3114": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c2a"
+      },
+      "answer/type": 9010,
+      "answer/value": "-114"
+    },
+    "22": {
+      "topic/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000016"
+      },
+      "topic/title": "Topic 22",
+      "topic/knowledge-points": [
+        42
+      ]
+    },
+    "42": {
+      "knowledge-point/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000002a"
+      },
+      "knowledge-point/title": "Skill 42",
+      "knowledge-point/example": 202,
+      "knowledge-point/questions": [
+        120,
+        121,
+        122,
+        123,
+        124
+      ]
+    },
+    "202": {
+      "example/id": {
+        "$uuid": "00000000-0000-0000-0000-0000000000ca"
+      },
+      "example/problem": "Solve $x+1=2$.",
+      "example/explanation": "Subtract one: $x=1$."
+    },
+    "120": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000078"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+120=0$; x = {x}.",
+      "question/answer-fields": [
+        2120
+      ],
+      "question/difficulty": 9009
+    },
+    "2120": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000848"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3120
+    },
+    "3120": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c30"
+      },
+      "answer/type": 9010,
+      "answer/value": "-120"
+    },
+    "121": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000079"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+121=0$; x = {x}.",
+      "question/answer-fields": [
+        2121
+      ],
+      "question/difficulty": 9009
+    },
+    "2121": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000849"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3121
+    },
+    "3121": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c31"
+      },
+      "answer/type": 9010,
+      "answer/value": "-121"
+    },
+    "122": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000007a"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+122=0$; x = {x}.",
+      "question/answer-fields": [
+        2122
+      ],
+      "question/difficulty": 9009
+    },
+    "2122": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000084a"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3122
+    },
+    "3122": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c32"
+      },
+      "answer/type": 9010,
+      "answer/value": "-122"
+    },
+    "123": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000007b"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+123=0$; x = {x}.",
+      "question/answer-fields": [
+        2123
+      ],
+      "question/difficulty": 9009
+    },
+    "2123": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000084b"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3123
+    },
+    "3123": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c33"
+      },
+      "answer/type": 9010,
+      "answer/value": "-123"
+    },
+    "124": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000007c"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+124=0$; x = {x}.",
+      "question/answer-fields": [
+        2124
+      ],
+      "question/difficulty": 9009
+    },
+    "2124": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000084c"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3124
+    },
+    "3124": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c34"
+      },
+      "answer/type": 9010,
+      "answer/value": "-124"
+    },
+    "23": {
+      "topic/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000017"
+      },
+      "topic/title": "Topic 23",
+      "topic/knowledge-points": [
+        43
+      ]
+    },
+    "43": {
+      "knowledge-point/id": {
+        "$uuid": "00000000-0000-0000-0000-00000000002b"
+      },
+      "knowledge-point/title": "Skill 43",
+      "knowledge-point/example": 203,
+      "knowledge-point/questions": [
+        130,
+        131,
+        132,
+        133,
+        134
+      ]
+    },
+    "203": {
+      "example/id": {
+        "$uuid": "00000000-0000-0000-0000-0000000000cb"
+      },
+      "example/problem": "Solve $x+1=2$.",
+      "example/explanation": "Subtract one: $x=1$."
+    },
+    "130": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000082"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+130=0$; x = {x}.",
+      "question/answer-fields": [
+        2130
+      ],
+      "question/difficulty": 9009
+    },
+    "2130": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000852"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3130
+    },
+    "3130": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c3a"
+      },
+      "answer/type": 9010,
+      "answer/value": "-130"
+    },
+    "131": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000083"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+131=0$; x = {x}.",
+      "question/answer-fields": [
+        2131
+      ],
+      "question/difficulty": 9009
+    },
+    "2131": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000853"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3131
+    },
+    "3131": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c3b"
+      },
+      "answer/type": 9010,
+      "answer/value": "-131"
+    },
+    "132": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000084"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+132=0$; x = {x}.",
+      "question/answer-fields": [
+        2132
+      ],
+      "question/difficulty": 9009
+    },
+    "2132": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000854"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3132
+    },
+    "3132": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c3c"
+      },
+      "answer/type": 9010,
+      "answer/value": "-132"
+    },
+    "133": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000085"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+133=0$; x = {x}.",
+      "question/answer-fields": [
+        2133
+      ],
+      "question/difficulty": 9009
+    },
+    "2133": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000855"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3133
+    },
+    "3133": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c3d"
+      },
+      "answer/type": 9010,
+      "answer/value": "-133"
+    },
+    "134": {
+      "question/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000086"
+      },
+      "question/type": 9008,
+      "question/problem": "Solve $x+134=0$; x = {x}.",
+      "question/answer-fields": [
+        2134
+      ],
+      "question/difficulty": 9009
+    },
+    "2134": {
+      "answer-field/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000856"
+      },
+      "answer-field/key": "x",
+      "answer-field/correct-answer": 3134
+    },
+    "3134": {
+      "answer/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000c3e"
+      },
+      "answer/type": 9010,
+      "answer/value": "-134"
+    },
+    "4": {
+      "review/id": {
+        "$uuid": "00000000-0000-0000-0000-000000000004"
+      },
+      "review/topic": 20,
+      "review/questions": [
+        100,
+        101,
+        102,
+        103,
+        104
+      ]
+    },
+    "9012": {
+      "db/ident": {
+        "$keyword": "task-item.status/started"
+      }
+    },
+    "9013": {
+      "db/ident": {
+        "$keyword": "task-item.status/paused"
+      }
+    },
+    "9014": {
+      "db/ident": {
+        "$keyword": "task-item.status/completed"
+      }
+    },
+    "9015": {
+      "db/ident": {
+        "$keyword": "learner-task.status/paused"
+      }
+    }
+  },
+  "status_history": [
+    {
+      "entity": 3,
+      "attribute": "learner-task/status",
+      "value": 9004,
+      "t": 10,
+      "at": {
+        "$instant": "2026-09-28T00:00:00.000Z"
+      }
+    }
+  ]
+}

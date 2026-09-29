@@ -23,7 +23,12 @@
  {:db/ident :module/topics
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Topics belonging to this module. At least one is required when module/validate is explicitly ensured. These ordinary refs permit topic reuse across modules without cascading deletion. References define unordered membership; the course map defines topic order within this module. Referenced topics must also ensure topic/validate."}
+  :db/doc "Topics belonging to this module. At least one is required when module/validate is explicitly ensured. These ordinary refs permit topic reuse across modules without cascading deletion. References define unordered membership; topic/next supplies direct downstream dependencies across the shared topic graph. Referenced topics must also ensure topic/validate."}
+
+ {:db/ident :module/next
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional direct downstream modules for curriculum navigation. Ordinary refs preserve shared modules; reverse lookup supplies preceding modules. These links present progression between topic collections. Topic/next remains the authoritative prerequisite graph; module links do not impose additional completion requirements."}
 
  {:db/ident :module/identity-validate
   :db.entity/attrs [:module/id]
@@ -31,5 +36,5 @@
 
  {:db/ident :module/validate
   :db.entity/attrs [:module/id :module/title :module/topics]
-  :db/doc "Requires our identity, a title, and at least one topic ref when explicitly ensured. The Math Academy identifier is optional. Nonempty titles and reference target types require additional validation. Referenced topics must be validated separately."}
+  :db/doc "Requires our identity, a title, and at least one topic ref when explicitly ensured. The Math Academy identifier and next modules are optional. Nonempty titles, reference target types, and prevention of self-links and cycles require application validation. Referenced topics must be validated separately."}
 ]

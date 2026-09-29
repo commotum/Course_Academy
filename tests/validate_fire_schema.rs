@@ -21,6 +21,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let root = std::env::current_dir()?;
     let mut db = Database::bootstrap()?;
     let mut clock = 1000i64;
+    let mut schema_count = 0usize;
     for dir in [
         "schema/data",
         "schema/content",
@@ -38,11 +39,12 @@ fn main() -> Result<(), Box<dyn Error>> {
                 .map_err(|e| format!("{}: {e}", path.display()))?
                 .db_after;
             clock += 1;
+            schema_count += 1;
         }
     }
     let fixture = r#"[
  {:db/id "advanced" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001" :topic/title "Illustrative advanced topic" :topic/encompasses ["edge"]}
- {:db/id "component" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000002" :topic/title "Illustrative component topic"}
+ {:db/id "component" :topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000002" :topic/title "Illustrative component topic" :topic/next ["advanced"]}
  {:db/id "learner" :learner/id "schema-check-learner"
   :learner/performance "performance"
   :learner/knowledge-profile ["state" "unlearned-state"]
@@ -128,7 +130,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         .iter()
         .filter(|d| d.attribute == idattr && d.added)
         .count();
-    let update = format!(r#"[{{:db/id {state} :progress/memory 0.75 :db/ensure :progress/validate}}]"#);
+    let update =
+        format!(r#"[{{:db/id {state} :progress/memory 0.75 :db/ensure :progress/validate}}]"#);
     db = transact(&db, &update, 2500)?.db_after;
     assert_eq!(
         state_count,
@@ -137,16 +140,48 @@ fn main() -> Result<(), Box<dyn Error>> {
             .filter(|d| d.attribute == idattr && d.added)
             .count()
     );
-    db = transact(&db, r#"[{:learner/id "schema-check-other" :db/ensure :learner/validate}]"#, 2600)?.db_after;
+    db = transact(
+        &db,
+        r#"[{:learner/id "schema-check-other" :db/ensure :learner/validate}]"#,
+        2600,
+    )?
+    .db_after;
     let wrong_type = format!(r#"[{{:db/id {state} :progress/learned "true"}}]"#);
     assert!(transact(&db, &wrong_type, 3000).is_err());
-    for invalid in [":progress/repetitions -0.1", ":progress/memory -0.1", ":progress/interval-days 0.0",
-        ":progress/assessment-accuracy 1.1", ":progress/practice-accuracy -0.1",
-        ":progress/assessment-mass -0.1", ":progress/practice-mass -0.1"] {
-        assert!(transact(&db, &format!("[{{:db/id {state} {invalid} :db/ensure :progress/validate}}]"), 3000).is_err());
+    for invalid in [
+        ":progress/repetitions -0.1",
+        ":progress/memory -0.1",
+        ":progress/interval-days 0.0",
+        ":progress/assessment-accuracy 1.1",
+        ":progress/practice-accuracy -0.1",
+        ":progress/assessment-mass -0.1",
+        ":progress/practice-mass -0.1",
+    ] {
+        assert!(
+            transact(
+                &db,
+                &format!("[{{:db/id {state} {invalid} :db/ensure :progress/validate}}]"),
+                3000
+            )
+            .is_err()
+        );
     }
-    assert!(transact(&db, &format!("[{{:db/id {state} :progress/memory 1.5 :db/ensure :progress/validate}}]"), 3000).is_ok());
-    assert!(transact(&db, &format!("[{{:db/id {state} :progress/policy {topic} :db/ensure :progress/validate}}]"), 3000).is_err());
+    assert!(
+        transact(
+            &db,
+            &format!("[{{:db/id {state} :progress/memory 1.5 :db/ensure :progress/validate}}]"),
+            3000
+        )
+        .is_ok()
+    );
+    assert!(
+        transact(
+            &db,
+            &format!("[{{:db/id {state} :progress/policy {topic} :db/ensure :progress/validate}}]"),
+            3000
+        )
+        .is_err()
+    );
     let wrong_cardinality = format!(r#"[{{:db/id {state} :progress/repetitions [1.0 2.0]}}]"#);
     assert!(transact(&db, &wrong_cardinality, 3000).is_err());
     let missing = r#"[{:progress/id "incomplete" :db/ensure :progress/validate}]"#;
@@ -206,7 +241,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     let topicidattr = db.entid(&Keyword::new("topic", "id")).unwrap() as u32;
     assert!(!removed.values(topic, topicidattr).is_empty());
     edb_activity_checks::check(&db)?;
-    println!("PASS all 30 current schemas install; policy/difficulty/progress predicates, single-owner topic progress, identity-preserving writes, required fields, component deletion and history checks pass.");
-    println!("Scope: in-memory native EDB transaction/CAS validation and Python-generated EDN. Durable writer basis-conflict/idempotency behavior is not exercised without a running transactor.");
+    println!(
+        "PASS all {schema_count} current schemas install; policy/difficulty/progress predicates, single-owner topic progress, identity-preserving writes, required fields, component deletion and history checks pass."
+    );
+    println!(
+        "Scope: in-memory native EDB transaction/CAS validation and Rust-generated EDN. Durable writer basis-conflict/idempotency behavior is not exercised without a running transactor."
+    );
     Ok(())
 }
