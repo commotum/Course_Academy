@@ -1,4 +1,4 @@
-"""Automatic item-completion boundary for the current schema-v2 records.
+"""Automatic item-completion boundary for the current schema records.
 
 Call ``complete_item`` after application grading, then submit its transaction
 through EDB with the returned request key and exact basis guard. Nothing is

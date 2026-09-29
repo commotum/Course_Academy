@@ -22,10 +22,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut db = Database::bootstrap()?;
     let mut clock = 1000i64;
     for dir in [
-        "schema-v2/data",
-        "schema-v2/content",
-        "schema-v2/learner",
-        "schema-v2/engine",
+        "schema/data",
+        "schema/content",
+        "schema/learner",
+        "schema/engine",
     ] {
         let mut paths = fs::read_dir(root.join(dir))?
             .filter_map(Result::ok)

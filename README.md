@@ -13,7 +13,7 @@ python3 -m engine.fire demo
 python3 -m unittest discover -s tests -v
 ```
 
-The [schema index](schema-v2/README.md) groups curriculum and learner data separately
-from instructional content. Remaining FIRe prototypes are in
-[schema-v2/fire](schema-v2/fire/). The [reference index](reference/README.md)
+The [schema index](schema/README.md) groups curriculum and learner data separately
+from instructional content. FIRe policy settings are in
+[schema/engine](schema/engine/). The [reference index](reference/README.md)
 links the earlier research and source material.

@@ -25,7 +25,7 @@ still lead to their original locations.
 - [How the learning engine plugs into the schema](fire-schema-integration.md): one-page proposal for Rust logic, ordinary activity records, and learner progress.
 - [Instructional content model](instructional-content-model.md): lessons, steps, knowledge points, examples, and tutorials.
 - [Answer model](answer-model.md): questions, answer fields, and answers.
-- [EDN schema index](../schema-v2/README.md): grouped definitions for curriculum data, instructional content, learner state/history, and remaining FIRe prototypes.
+- [EDN schema index](../schema/README.md): grouped definitions for curriculum data, instructional content, learner state/history, and remaining FIRe prototypes.
 - [EDB schema reference](edb-schema-reference.md): supported database schema features.
 
 The current EDN and its companion notes supersede conflicting design proposals

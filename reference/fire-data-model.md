@@ -1,18 +1,18 @@
 # FIRe data contract
 
-[The integration overview](fire-schema-integration.md) explains the completion flow. This document maps the current [schema-v2](../schema-v2/README.md) to [the Python adapter](../engine/schema.py); [the reconstruction](fire-reconstruction.md) explains the numerical choices. The adapter and runtime pass the Python suite and a native EDB transaction round trip; this does not imply a deployed database writer.
+[The integration overview](fire-schema-integration.md) explains the completion flow. This document maps the current [schema](../schema/README.md) to [the Python adapter](../engine/schema.py); [the reconstruction](fire-reconstruction.md) explains the numerical choices. The adapter and runtime pass the Python suite and a native EDB transaction round trip; this does not imply a deployed database writer.
 
 The engine needs an explicit encompassing graph, learner state, graded work, and a policy. Prerequisites and task XP cannot recover practice-transfer weights or hidden retention state. Direct practice works when encompassing weights are not yet available.
 
 | Records | Ownership and identity |
 | --- | --- |
-| [Policy](../schema-v2/engine/1-fire-policy.edn) | UUID identity and typed FIRe parameters. No persisted algorithm/name selector; `Policy.name` is only a Python prototype label. |
-| [Topic](../schema-v2/data/4-1-topic.edn), [encompassing](../schema-v2/data/4-2-encompassing.edn) | Shared topic identity across courses. A topic owns its encompassing records; each names a component topic and weight. Prerequisite refs are separate. |
-| [Learner](../schema-v2/learner/1-1-learner.edn) | Owns progress, optional global performance, and queue entries; references retained task history through ordinary refs. Reverse relationships identify the learner. |
-| [Progress](../schema-v2/learner/1-3-learner-progress.edn) | One record per learner/topic, with its own identity, shared topic ref, and policy ref. Ownership and uniqueness are explicitly validated. |
-| [Global performance](../schema-v2/learner/1-2-learner-performance.edn) | Optional single learner-owned component; no independent domain identity. |
-| [Task](../schema-v2/learner/2-1-learner-task.edn), [task item](../schema-v2/learner/2-2-learner-task-item.edn) | A task references its shared activity and owns ordered presentations. Each occurrence has its own UUID, including repeated presentations of the same question. |
-| [Response](../schema-v2/learner/2-4-learner-response.edn) | Entered values identify their answer fields. Item response refs can instead select canonical answer entities; canonical answers are never rewritten as learner submissions. |
+| [Policy](../schema/engine/1-fire-policy.edn) | UUID identity and typed FIRe parameters. No persisted algorithm/name selector; `Policy.name` is only a Python prototype label. |
+| [Topic](../schema/data/4-1-topic.edn), [encompassing](../schema/data/4-2-encompassing.edn) | Shared topic identity across courses. A topic owns its encompassing records; each names a component topic and weight. Prerequisite refs are separate. |
+| [Learner](../schema/learner/1-1-learner.edn) | Owns progress, optional global performance, and queue entries; references retained task history through ordinary refs. Reverse relationships identify the learner. |
+| [Progress](../schema/learner/1-3-learner-progress.edn) | One record per learner/topic, with its own identity, shared topic ref, and policy ref. Ownership and uniqueness are explicitly validated. |
+| [Global performance](../schema/learner/1-2-learner-performance.edn) | Optional single learner-owned component; no independent domain identity. |
+| [Task](../schema/learner/2-1-learner-task.edn), [task item](../schema/learner/2-2-learner-task-item.edn) | A task references its shared activity and owns ordered presentations. Each occurrence has its own UUID, including repeated presentations of the same question. |
+| [Response](../schema/learner/2-4-learner-response.edn) | Entered values identify their answer fields. Item response refs can instead select canonical answer entities; canonical answers are never rewritten as learner submissions. |
 
 The adapter resolves question → KP bank → topic and requires one KP bank and one topic. An unresolved or ambiguous mapping is an error for live updates, not permission to invent task-item topic refs. Historical source captures may preserve external topic/example IDs independently; an external example anchor does not establish an authored lesson-step identity.
 
@@ -29,7 +29,7 @@ The adapter resolves question → KP bank → topic and requires one KP bank and
 
 The four accuracy fields also exist under `performance/*` for learner-global evidence. Effective accuracy, learning speed, and due time are derived. Failed initial work can update accuracy while the topic remains unlearned. Global accuracy receives each directly submitted answer once, regardless of how many topic profiles it affects.
 
-`topic/difficulty` is an optional finite expected assessment accuracy in `[0,1]`, with lower values meaning harder material. Missing values use `policy/initial-accuracy`. Current schema-v2 stores no difficulty method, calibration-count, or cohort entities. The Python research estimator can still analyze qualifying population observations independently. Question E/M/H and actual solving duration are not substitutes for topic difficulty.
+`topic/difficulty` is an optional finite expected assessment accuracy in `[0,1]`, with lower values meaning harder material. Missing values use `policy/initial-accuracy`. Current schema stores no difficulty method, calibration-count, or cohort entities. The Python research estimator can still analyze qualifying population observations independently. Question E/M/H and actual solving duration are not substitutes for topic difficulty.
 
 The adapter normalizes aware instants to UTC milliseconds and converts them to fractional epoch days for FIRe. Item elapsed seconds measure solving duration, while memory decay uses elapsed calendar time. XP measures a separate reward. The loader reconstructs chronological bounds from progress anchors and available task/item completion history; it does not manufacture missing historical timestamps.
 

@@ -1,6 +1,6 @@
 # Schema and engine review — 2026-09-28
 
-Initially reviewed 31 `schema-v2` EDN files. After the approved cleanup there are 30: 9 data, 13 content, 7 learner, and 1 engine schema. `proposed` contains no EDNs. This replaces the earlier review, which still described deleted groups, submissions, course-map children, and topic-calibration fields. Legacy `schema/` is outside this review.
+The current `schema/` contains 30 EDN files: 9 data, 13 content, 7 learner, and 1 engine schema. It replaces the deleted legacy schema; the proposed folder has also been removed. This review covers the current definitions, including the cleanup of groups, submissions, course-map children, and topic-calibration fields.
 
 Basis: EDB [best practices](/home/jake/Developer/EDB/docs/02_core_concepts/05_best_practices.md), [schema reference](/home/jake/Developer/EDB/docs/03_schema/02_schema_reference.md), and [transaction data](/home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md), compared with the actual schemas and engine implementation.
 

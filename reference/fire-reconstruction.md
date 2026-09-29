@@ -159,7 +159,7 @@ and key prerequisites and same-module membership can inform those neighborhoods
 without being treated as encompassing edges.
 
 The research `DifficultyEstimate` helper separately analyzes qualifying direct
-assessment observations. Current schema-v2 stores only optional `topic/difficulty`,
+assessment observations. Current schema stores only optional `topic/difficulty`,
 not calibration-count or cohort entities. The adapter uses that estimate or the
 policy prior. Grading and positive performance magnitudes are supplied by the
 application; the private MA answer-to-quality function has not been recovered.
@@ -215,7 +215,7 @@ in-memory event application, idempotent retries, conflicting-ID rejection, and
 chronological ingestion. Receipts expose before/after state, coverage, discount,
 speed, failure multiplier, gated credit, and configuration fingerprints. Global
 accuracy counts a direct answer once even when it affects many topic profiles.
-These are runtime/debug receipts, not domain entities in schema-v2.
+These are runtime/debug receipts, not domain entities in schema.
 
 An additional operational audit checked that exported snapshots cannot mutate
 live configuration, seeded observations cannot leak into earlier events, and
@@ -299,7 +299,7 @@ no XP-to-mastery substitution was made to make the replay appear complete.
 ## Inputs and verification boundary
 
 The detailed [data-model report](fire-data-model.md) and
-[current EDN schemas](../schema-v2/README.md) provide the reviewable definitions.
+[current EDN schemas](../schema/README.md) provide the reviewable definitions.
 The engine consumes:
 
 - Expert-supported encompassing edges, weights, and rationale, separate from
