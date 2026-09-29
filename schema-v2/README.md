@@ -27,6 +27,9 @@ content/
   2-2-answer-field.edn
   2-3-answer.edn
   3-review.edn
+  4-assessment.edn
+  5-1-diagnostic.edn
+  5-2-diagnostic-probe.edn
 
 learner/
   1-1-learner.edn
@@ -42,20 +45,19 @@ fire/
   07-application.edn
 
 proposed/
-  assessment.edn
   multistep.edn
   multistep-step.edn
-  diagnostic.edn
-  supplemental-diagnostic.edn
 ```
 
 Course maps, their entries, and course outcomes sit beside the course schema in `data`. Membership stays on courses, units, and modules; the map supplies ordering. Topics and knowledge points define skills, while lessons, tutorials, examples, and questions provide teaching material. Encompassing records describe weighted topic relationships.
 
-A **learner task** is one learner's attempt at a lesson, review, assessment, multistep activity, diagnostic, or supplemental diagnostic. [2-1-learner-task.edn](learner/2-1-learner-task.edn) records its status, outcome, XP, and timing using `learner-task/*` attributes. Its `learner-task/activity` ref points to the shared activity definition, which contains no learner results. `learner/activity` is the learner's activity history: a collection of learner-task records, not shared activity definitions.
+A **learner task** is one learner's attempt at a lesson, review, assessment, multistep activity, or diagnostic. Initial and supplemental diagnosis use the same diagnostic schema. [2-1-learner-task.edn](learner/2-1-learner-task.edn) records its status, outcome, XP, and timing using `learner-task/*` attributes. Its `learner-task/activity` ref points to the shared activity definition, which contains no learner results. `learner/activity` is the learner's activity history: a collection of learner-task records, not shared activity definitions.
 
 A task owns its presentation records through `learner-task/items`, defined in [2-2-learner-task-item.edn](learner/2-2-learner-task-item.edn). Each item records its own timing, result, and responses and references shared instructional content. Responses point directly to selected answer entities or to [learner-response](learner/2-4-learner-response.edn) records for entered values. The application derives both the activity category and item content kind from their targets; neither needs a duplicate type attribute.
 
 `lesson-step` remains authored lesson structure: an ordered tutorial or knowledge-point placement. The proposed `multistep-step` describes an authored question placement within a scenario. Task items record actual presentations during a learner's attempt. Draft activity definitions and multistep placements remain in [proposed](proposed/README.md) pending personal review and an explicit move request.
+
+[Diagnostics](content/5-1-diagnostic.edn) own [probes](content/5-2-diagnostic-probe.edn) and reference a starting probe. Each probe references a question and optional next probes for correct, incorrect, skipped, or accepted silly-mistake retry outcomes. Probe topics and assessment topic coverage are derived through question-bank and knowledge-point membership. Missing ordinary branches end that path; a missing retry branch means no retry is offered. Application code offers one available alternate after a submitted incorrect answer, without a timing gate. Actual presentations remain learner task items.
 
 The learner's `learner/knowledge-profile` owns current `progress` records, one per topic. The reverse reference `learner/_knowledge-profile` identifies a record's learner. `learner/queue` owns up-next entries defined in [1-4-learner-queue.edn](learner/1-4-learner-queue.edn); each records an activity ref, order, selection mode (`required`, `recommended`, or `self-selected`), and reason, with optional course context and addition time. All three learner collections are optional and unordered in EDB; queue order comes from `queue/index`. Optional entries can be dismissed; required work remains an obligation until the application policy's completion condition is met. Launching a task does not itself satisfy that requirement: the controller must carry or recompute it, requeuing when needed. Task history is retained separately; the queue is not a permanent scheduling-decision log. See [progress validation](../engine/edb/README.md) for the Rust predicates and write requirements.
 
@@ -73,4 +75,4 @@ These five placeholder specs cover the current curriculum-loading workflow. We c
 
 ## Proposed activity models
 
-[proposed/README.md](proposed/README.md) lists the remaining content models awaiting review. Lesson and review schemas live in `content`; assessment, multistep, diagnostic, and supplemental-diagnostic definitions remain under `proposed`, along with multistep question placements. Intended topic scope comes from the referenced activity; question ownership supplies the topic for observed answers. Selection mode and motivating course belong to queue entries. Draft required-attribute specs are executable, while their documented controller/domain checks remain to be implemented.
+[proposed/README.md](proposed/README.md) lists the remaining content models awaiting review. Lesson, review, assessment, and diagnostic schemas live in `content`; multistep definitions and their question placements remain under `proposed`. Intended topic scope comes from the referenced activity; question ownership supplies the topic for observed answers. Selection mode and motivating course belong to queue entries. Draft required-attribute specs are executable, while their documented controller/domain checks remain to be implemented.

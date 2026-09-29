@@ -1,4 +1,4 @@
-;; Proposed quiz or assessment definition; learner results belong on task records.
+;; Quiz or assessment definition; learner results belong on task records.
 ;; Entity specs check required attributes only and must be explicitly ensured.
 ;; Relationship, enum, range, and delivery rules below are application contracts.
 [
@@ -16,7 +16,7 @@
  {:db/ident :assessment/questions
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Questions selected for this assessment. Ordinary refs preserve the questions when the assessment is deleted. Topics are available through question-bank membership; presentation order belongs to the application."}
+  :db/doc "Questions selected for this assessment. Derive covered topics through knowledge-point/questions and topic/knowledge-points. Ordinary refs preserve the questions when the assessment is deleted; presentation order belongs to the application."}
 
  {:db/ident :assessment/time-limit-seconds
   :db/valueType :db.type/double
@@ -30,5 +30,5 @@
 
  {:db/ident :assessment/validate
   :db.entity/attrs [:assessment/id :assessment/title :assessment/questions]
-  :db/doc "Requires identity, title, and at least one question ref. The application validates question targets and positive finite timings, assembles the assessment, and determines grading and XP. Each attempt is a task whose items record the questions actually presented and their results."}
+  :db/doc "Requires identity, title, and question refs. The application checks that each question resolves to one topic, validates reference targets and positive finite timings, and determines grading and XP. Each attempt is a task whose items record the questions actually presented and their results."}
 ]

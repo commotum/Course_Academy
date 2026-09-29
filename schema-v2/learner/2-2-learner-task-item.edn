@@ -3,6 +3,7 @@
 [
  {:db/ident :task-item.result/correct}
  {:db/ident :task-item.result/incorrect}
+ {:db/ident :task-item.result/skipped}
 
  {:db/ident :task-item/id
   :db/valueType :db.type/uuid
@@ -23,7 +24,7 @@
  {:db/ident :task-item/result
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Observed final question result: correct or incorrect. Omit when unknown or not a question."}
+  :db/doc "Observed final question result: correct, incorrect, or explicitly skipped after presentation. Omit when unknown or not a question. Questions the engine never selects do not create task items or skipped results."}
 
  {:db/ident :task-item/responses
   :db/valueType :db.type/ref

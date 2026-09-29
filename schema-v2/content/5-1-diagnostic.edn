@@ -1,0 +1,40 @@
+;; Diagnostic graph within a curricular scope, including supplemental diagnosis.
+;; Learner responses, results, and timing belong on task items.
+;; Request :db/ensure [:diagnostic/validate] when writing a diagnostic.
+[
+ {:db/ident :diagnostic/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable local identity assigned by the application, independent of external source identifiers."}
+
+ {:db/ident :diagnostic/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Name of the exam definition. This title is not a catalog topic identity."}
+
+ {:db/ident :diagnostic/scope
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Curriculum entity defining the area to diagnose, such as a course, unit, module, or topic. The application resolves its topics and relevant prerequisite foundations. This ordinary ref does not own the curriculum entity."}
+
+ {:db/ident :diagnostic/probes
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Probes owned by this diagnostic, defined in 5-2-diagnostic-probe.edn. The application builds the graph from the scope and selects representative questions. These refs are unordered; the start and outcome branches determine the path. Validate each probe separately."}
+
+ {:db/ident :diagnostic/start
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "First probe to present. Must reference a member of diagnostic/probes; this ordinary ref does not establish a second ownership relationship."}
+
+ {:db/ident :diagnostic/time-limit-seconds
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional positive finite limit if this exam is actually configured with one. The captures do not establish a universal diagnostic timer."}
+
+ {:db/ident :diagnostic/validate
+  :db.entity/attrs [:diagnostic/id :diagnostic/title :diagnostic/scope :diagnostic/probes :diagnostic/start]
+  :db/doc "Requires identity, title, scope, probes, and a starting probe when explicitly ensured. The application checks probe ownership, start and branch membership, question eligibility, and termination. Graph generation, evidence updates, retry policy, placement, and XP belong in application code. Unpresented probes do not create skipped task items."}
+]
