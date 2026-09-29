@@ -18,11 +18,6 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Optional shared setup in Markdown with LaTeX and image links. Required before delivery if the questions rely on it; some captured results omit this setup."}
 
- {:db/ident :multistep/topics
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/many
-  :db/doc "Topics exercised by the scenario, potentially spanning several parts of a course."}
-
  {:db/ident :multistep/steps
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
@@ -30,6 +25,6 @@
   :db/doc "Owned ordered question placements. Sort by multistep-step/index; the set itself is unordered. Validate each placement separately."}
 
  {:db/ident :multistep/validate
-  :db.entity/attrs [:multistep/id :multistep/title :multistep/topics :multistep/steps]
-  :db/doc "Requires identity, title, target topics, and ordered placements. Check single ownership and unique positive step indexes. Preserve shared questions with ordinary refs and do not treat multiple blanks as separate multistep stages."}
+  :db.entity/attrs [:multistep/id :multistep/title :multistep/steps]
+  :db/doc "Requires identity, title, and ordered placements. Derive covered topics through each step's question and its knowledge-point membership. Check single ownership and unique positive step indexes. Preserve shared questions with ordinary refs and do not treat multiple blanks as separate multistep stages."}
 ]

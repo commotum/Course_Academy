@@ -1,6 +1,6 @@
 # Schema organization
 
-`data` holds curriculum entities, course maps and outcomes, and skill relationships. `content` holds reusable lesson definitions, instructional material, problems, and answer representations. `learner` holds learner identity, current state, the queue, task history, and item performance. `fire` holds engine policy settings and application receipts; `proposed` holds the remaining draft activity definitions and multistep question placements awaiting review.
+`data` holds curriculum entities, course maps and outcomes, and skill relationships. `content` holds reusable activity definitions, instructional material, problems, and answer representations. `learner` holds learner identity, current state, the queue, task history, and item performance. `fire` holds engine policy settings and application receipts; `proposed` is reserved for schemas awaiting review.
 
 Keep proposed schemas in `proposed` until Jake has personally reviewed them and explicitly requests their move. A schema's subject does not authorize moving it into `data`, `content`, or `learner`.
 
@@ -30,6 +30,8 @@ content/
   4-assessment.edn
   5-1-diagnostic.edn
   5-2-diagnostic-probe.edn
+  6-1-multistep.edn
+  6-2-multistep-step.edn
 
 learner/
   1-1-learner.edn
@@ -45,8 +47,7 @@ fire/
   07-application.edn
 
 proposed/
-  multistep.edn
-  multistep-step.edn
+  README.md
 ```
 
 Course maps, their entries, and course outcomes sit beside the course schema in `data`. Membership stays on courses, units, and modules; the map supplies ordering. Topics and knowledge points define skills, while lessons, tutorials, examples, and questions provide teaching material. Encompassing records describe weighted topic relationships.
@@ -55,7 +56,7 @@ A **learner task** is one learner's attempt at a lesson, review, assessment, mul
 
 A task owns its presentation records through `learner-task/items`, defined in [2-2-learner-task-item.edn](learner/2-2-learner-task-item.edn). Each item records its own timing, result, and responses and references shared instructional content. Responses point directly to selected answer entities or to [learner-response](learner/2-4-learner-response.edn) records for entered values. The application derives both the activity category and item content kind from their targets; neither needs a duplicate type attribute.
 
-`lesson-step` remains authored lesson structure: an ordered tutorial or knowledge-point placement. The proposed `multistep-step` describes an authored question placement within a scenario. Task items record actual presentations during a learner's attempt. Draft activity definitions and multistep placements remain in [proposed](proposed/README.md) pending personal review and an explicit move request.
+`lesson-step` remains authored lesson structure: an ordered tutorial or knowledge-point placement. A [multistep](content/6-1-multistep.edn) owns [multistep-step](content/6-2-multistep-step.edn) question placements within a scenario. Both use step indexes for authored order. Task items record actual presentations during a learner's attempt.
 
 [Diagnostics](content/5-1-diagnostic.edn) own [probes](content/5-2-diagnostic-probe.edn) and reference a starting probe. Each probe references a question and optional next probes for correct, incorrect, skipped, or accepted silly-mistake retry outcomes. Probe topics and assessment topic coverage are derived through question-bank and knowledge-point membership. Missing ordinary branches end that path; a missing retry branch means no retry is offered. Application code offers one available alternate after a submitted incorrect answer, without a timing gate. Actual presentations remain learner task items.
 
@@ -73,6 +74,6 @@ These five placeholder specs cover the current curriculum-loading workflow. We c
 
 `fire/1-policy.edn` defines complete named configurations with UUID identity, typed settings, and ref-based enums. Ensure `policy/validate`; create a new policy identity when changing a configuration already in use. Policy immutability is a writer contract. Applications record `fire-application/basis-t` instead of a calibration-set reference to identify the database value used to read topic difficulty and other inputs. Keep history for those inputs. See [native validation and engine mapping](../engine/edb/README.md).
 
-## Proposed activity models
+## Activity models
 
-[proposed/README.md](proposed/README.md) lists the remaining content models awaiting review. Lesson, review, assessment, and diagnostic schemas live in `content`; multistep definitions and their question placements remain under `proposed`. Intended topic scope comes from the referenced activity; question ownership supplies the topic for observed answers. Selection mode and motivating course belong to queue entries. Draft required-attribute specs are executable, while their documented controller/domain checks remain to be implemented.
+Lesson, review, assessment, diagnostic, and multistep schemas live in `content`. There are currently no schemas awaiting review in [proposed](proposed/README.md). Intended topic scope comes from the referenced activity; question ownership supplies the topic for observed answers. Selection mode and motivating course belong to queue entries. Required-attribute specs are executable, while their documented controller/domain checks remain to be implemented.
