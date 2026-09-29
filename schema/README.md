@@ -73,3 +73,9 @@ The completion handler prepares one transaction containing the item result, resp
 ## Activity models
 
 Lesson, review, assessment, diagnostic, and multistep schemas live in `content`. Intended topic scope comes from the referenced activity; question ownership supplies the topic for observed answers. Selection mode and motivating course belong to queue entries. The completion handler implements activity progression and engine-boundary checks. Required-attribute specs remain opt-in; the adapter is not a general validator for every curriculum-editing operation or a complete queue scheduler.
+
+## Remaining work
+
+`knowledge-point/question-generator` still needs its target schema and generator interface. Application rules also need decisions on mandatory-work thresholds, assessment assembly, expected-duration estimates, mathematical answer equivalence, and XP for partial or failed work. Current diagnostic placement defaults count both the original wrong answer and a successful retry; whether that is the desired treatment of a confirmed silly mistake remains a policy question.
+
+`learner/course` records the course selected in the UI. It does not yet represent the broader scope for scheduling across concurrent courses. Queue scheduling and the production UI/EDB connection remain implementation work. Preventing repeat questions uses the existing learner activity history; serving must atomically select and reserve an unseen question before displaying it. Cross-task no-repeat enforcement is not yet implemented and needs no duplicate `question/seen-by` attribute.
