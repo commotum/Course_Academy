@@ -9,9 +9,9 @@ The question owns its fields and worked explanation directly. Each field has a r
 
 | File | Entity | Purpose |
 | --- | --- | --- |
-| [2-1-question.edn](../schema/content/2-1-question.edn) | Question | Interaction metadata, problem, answer fields, and overall explanation |
-| [2-2-answer-field.edn](../schema/content/2-2-answer-field.edn) | Answer field | A named response location, optional choices, and required correct answer |
-| [2-3-answer.edn](../schema/content/2-3-answer.edn) | Answer | Identity, representation type, and a required string value |
+| [4-question.edn](../schema/content/4-question.edn) | Question | Interaction metadata, problem, answer fields, and overall explanation |
+| [5-answer-field.edn](../schema/content/5-answer-field.edn) | Answer field | A named response location, optional choices, and required correct answer |
+| [6-answer.edn](../schema/content/6-answer.edn) | Answer | Identity, representation type, and a required string value |
 
 The answer type is local to each answer, allowing a question or selection field to mix mathematical, textual, and image options. Every answer stores its content in the required string attribute `answer/value`, interpreted using `answer/type`: LaTeX without Markdown delimiters for math, plain text for text, and an image path or URI for images. There is no separate image entity. Image locations are strings, so resolving them and checking availability belong to the application, not EDB reference traversal.
 

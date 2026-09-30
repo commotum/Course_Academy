@@ -1,0 +1,23 @@
+;; External assignment problem presented through step/content.
+;; Topic coverage belongs to this problem and can be mapped after import.
+[
+ {:db/ident :assigned-problem/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of an externally supplied problem, independent of its placement in an assignment."}
+
+ {:db/ident :assigned-problem/topic-coverage
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional mapped topics needed for this problem. The scheduler combines these targets with the enclosing assignment's deadline and learner progress to prioritize preparation. Derive prerequisites from topic/next. Absent coverage means the problem is not yet mapped; coverage does not establish question-bank membership or award mastery."}
+
+ {:db/ident :assigned-problem/content
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Question or multistep containing the problem itself. This ordinary ref preserves reusable content when the assigned-problem entity is removed."}
+
+ {:db/ident :assigned-problem/validate
+  :db.entity/attrs [:assigned-problem/id :assigned-problem/content]
+  :db/doc "Requires identity and content when explicitly ensured. Coverage may be added later. The application checks that content references a question or multistep and coverage references topics; validate the referenced content separately."}
+]
