@@ -32,6 +32,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             .filter_map(Result::ok)
             .map(|e| e.path())
             .filter(|p| p.extension().is_some_and(|e| e == "edn"))
+            // Proposed seed transactions are reviewed separately from schema installation.
+            .filter(|p| p.file_name().is_none_or(|n| n != "1-2-sequences.edn"))
             .collect::<Vec<_>>();
         paths.sort();
         for path in paths {

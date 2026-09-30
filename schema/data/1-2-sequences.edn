@@ -1,0 +1,242 @@
+;; Proposed transaction data for review; exclude this file from schema installation.
+;; Install the schemas and import these courses from /home/jake/Developer/MA/DATA/Courses.csv first.
+;; Source comparison: https://www.mathacademy.com/courses and sequences-graphs/.
+;;
+;; These ten learner-facing sequences group existing courses without duplicating them.
+;; 6th Grade Math and Mathematics for Machine Learning remain courses outside these groups.
+;; 7th and 8th Grade Math have no entries in our local course CSV; this draft omits them.
+;; No course level or placeholder courses are needed.
+;; Vector order aids reading; EDB stores sequence/courses as an unordered set.
+;; course/next supplies navigation; topic/next remains the prerequisite graph.
+[
+
+ ;; 4th Grade Math -> 5th Grade Math -> Prealgebra.
+ {:sequence/id #uuid "f9bfb1f6-2f0d-4823-8c41-b0d6fae46cd1"
+  :sequence/title "Early Math"
+  :sequence/courses [[:course/math-academy-id 75]            ; 4th Grade Math
+                    [:course/math-academy-id 30]             ; 5th Grade Math
+                    [:course/math-academy-id 99]]            ; Prealgebra
+  :db/ensure :sequence/validate}
+
+ ;; Algebra I -> Geometry -> Algebra II -> Precalculus.
+ {:sequence/id #uuid "5ae78dec-46f8-40ad-b2f4-70f6c1b6a570"
+  :sequence/title "Traditional Math Sequence"
+  :sequence/courses [[:course/math-academy-id 44]            ; Algebra I
+                    [:course/math-academy-id 126]            ; Geometry
+                    [:course/math-academy-id 51]             ; Algebra II
+                    [:course/math-academy-id 43]]            ; Precalculus
+  :db/ensure :sequence/validate}
+
+ ;; Integrated Math I -> II -> III -> shared Precalculus.
+ {:sequence/id #uuid "cfaf6e8b-f402-4c5d-a690-3a4c7c818377"
+  :sequence/title "Integrated Math Sequence"
+  :sequence/courses [[:course/math-academy-id 132]           ; Integrated Math I
+                    [:course/math-academy-id 133]            ; Integrated Math II
+                    [:course/math-academy-id 134]            ; Integrated Math III
+                    [:course/math-academy-id 43]]            ; Precalculus
+  :db/ensure :sequence/validate}
+
+ ;; Honors I -> II -> III. The last course includes precalculus content.
+ {:sequence/id #uuid "eb022b36-d6be-40f3-9450-a4261d40f4b8"
+  :sequence/title "Integrated Math (Honors) Sequence"
+  :sequence/courses [[:course/math-academy-id 127]           ; Integrated Math I (Honors)
+                    [:course/math-academy-id 128]            ; Integrated Math II (Honors)
+                    [:course/math-academy-id 101]]           ; Integrated Math III (Honors)
+  :db/ensure :sequence/validate}
+
+ ;; Foundations I -> II -> III.
+ {:sequence/id #uuid "4dfdb3b5-9088-4687-8b8e-3e6a83d67353"
+  :sequence/title "Mathematical Foundations Sequence"
+  :sequence/courses [[:course/math-academy-id 113]           ; Mathematical Foundations I
+                    [:course/math-academy-id 111]            ; Mathematical Foundations II
+                    [:course/math-academy-id 136]]           ; Mathematical Foundations III
+  :db/ensure :sequence/validate}
+
+ ;; SAT Math Fundamentals -> SAT Math Prep.
+ {:sequence/id #uuid "882dd844-5c2c-4238-bb73-f4b39a918906"
+  :sequence/title "Test Preparation"
+  :sequence/courses [[:course/math-academy-id 120]           ; SAT Math Fundamentals
+                    [:course/math-academy-id 143]]           ; SAT Math Prep
+  :db/ensure :sequence/validate}
+
+ ;; Calculus I -> Calculus II.
+ {:sequence/id #uuid "f9755bbf-cbf7-450a-9111-99878a5aafa7"
+  :sequence/title "Calculus"
+  :sequence/courses [[:course/math-academy-id 105]           ; Calculus I
+                    [:course/math-academy-id 106]]           ; Calculus II
+  :db/ensure :sequence/validate}
+
+ ;; AB and BC belong to this sequence; BC allows direct entry, so AB is optional.
+ {:sequence/id #uuid "ac4e59ea-b8a3-4675-95f4-c6d422d642fa"
+  :sequence/title "AP Calculus"
+  :sequence/courses [[:course/math-academy-id 24]            ; AP Calculus AB
+                    [:course/math-academy-id 21]]            ; AP Calculus BC
+  :db/ensure :sequence/validate}
+
+ ;; Physical Sciences I -> II.
+ {:sequence/id #uuid "ec165fd0-dafc-4636-b1b6-19cdee8aef30"
+  :sequence/title "Mathematical Methods for the Physical Sciences"
+  :sequence/courses [[:course/math-academy-id 154]           ; Mathematical Methods for the Physical Sciences I
+                    [:course/math-academy-id 155]]           ; Mathematical Methods for the Physical Sciences II
+  :db/ensure :sequence/validate}
+
+ ;; Linear Algebra -> Multivariable Calculus -> {Differential Equations, Probability & Statistics}.
+ ;; Methods of Proof -> Discrete Mathematics is another branch.
+ {:sequence/id #uuid "d8c4b174-8797-4f4d-86b7-0f7b33df061b"
+  :sequence/title "University Math"
+  :sequence/courses [[:course/math-academy-id 55]            ; Linear Algebra
+                    [:course/math-academy-id 54]             ; Multivariable Calculus
+                    [:course/math-academy-id 76]             ; Methods of Proof
+                    [:course/math-academy-id 109]            ; Discrete Mathematics
+                    [:course/math-academy-id 73]             ; Probability & Statistics
+                    [:course/math-academy-id 61]]            ; Differential Equations
+  :db/ensure :sequence/validate}
+
+ ;; Direct course navigation, including routes between sequences.
+ ;; A next edge suggests a useful continuation; it is not a whole-course readiness gate.
+ ;; AP Calculus BC can be entered directly from Precalculus or Honors III.
+ ;; Multiple destinations are alternatives or branches, not required in sequence.
+ ;; These assertions add refs without clearing existing links.
+
+ ;; 4th Grade Math
+ {:db/id [:course/math-academy-id 75]
+  :course/next [[:course/math-academy-id 30]]                ; 5th Grade Math
+  }
+
+ ;; 5th Grade Math
+ {:db/id [:course/math-academy-id 30]
+  :course/next [[:course/math-academy-id 99]]                ; Prealgebra
+  }
+
+ ;; Prealgebra
+ {:db/id [:course/math-academy-id 99]
+  :course/next [[:course/math-academy-id 44]                 ; Algebra I
+               [:course/math-academy-id 132]                 ; Integrated Math I
+               [:course/math-academy-id 127]]                ; Integrated Math I (Honors)
+  }
+
+ ;; Algebra I
+ {:db/id [:course/math-academy-id 44]
+  :course/next [[:course/math-academy-id 126]]               ; Geometry
+  }
+
+ ;; Geometry
+ {:db/id [:course/math-academy-id 126]
+  :course/next [[:course/math-academy-id 51]]                ; Algebra II
+  }
+
+ ;; Algebra II
+ {:db/id [:course/math-academy-id 51]
+  :course/next [[:course/math-academy-id 43]                 ; Precalculus
+               [:course/math-academy-id 120]]                ; SAT Math Fundamentals
+  }
+
+ ;; Precalculus
+ {:db/id [:course/math-academy-id 43]
+  :course/next [[:course/math-academy-id 24]                 ; AP Calculus AB
+               [:course/math-academy-id 21]                  ; AP Calculus BC
+               [:course/math-academy-id 105]]                ; Calculus I
+  }
+
+ ;; Integrated Math I
+ {:db/id [:course/math-academy-id 132]
+  :course/next [[:course/math-academy-id 133]]               ; Integrated Math II
+  }
+
+ ;; Integrated Math II
+ {:db/id [:course/math-academy-id 133]
+  :course/next [[:course/math-academy-id 134]                ; Integrated Math III
+               [:course/math-academy-id 120]]                ; SAT Math Fundamentals
+  }
+
+ ;; Integrated Math III
+ {:db/id [:course/math-academy-id 134]
+  :course/next [[:course/math-academy-id 43]]                ; Precalculus
+  }
+
+ ;; Integrated Math I (Honors)
+ {:db/id [:course/math-academy-id 127]
+  :course/next [[:course/math-academy-id 128]]               ; Integrated Math II (Honors)
+  }
+
+ ;; Integrated Math II (Honors)
+ {:db/id [:course/math-academy-id 128]
+  :course/next [[:course/math-academy-id 101]                ; Integrated Math III (Honors)
+               [:course/math-academy-id 120]]                ; SAT Math Fundamentals
+  }
+
+ ;; Integrated Math III (Honors)
+ {:db/id [:course/math-academy-id 101]
+  :course/next [[:course/math-academy-id 24]                 ; AP Calculus AB
+               [:course/math-academy-id 21]                  ; AP Calculus BC
+               [:course/math-academy-id 105]]                ; Calculus I
+  }
+
+ ;; Mathematical Foundations I
+ {:db/id [:course/math-academy-id 113]
+  :course/next [[:course/math-academy-id 111]]               ; Mathematical Foundations II
+  }
+
+ ;; Mathematical Foundations II
+ {:db/id [:course/math-academy-id 111]
+  :course/next [[:course/math-academy-id 136]]               ; Mathematical Foundations III
+  }
+
+ ;; Mathematical Foundations III
+ {:db/id [:course/math-academy-id 136]
+  :course/next [[:course/math-academy-id 55]                 ; Linear Algebra
+               [:course/math-academy-id 76]                  ; Methods of Proof
+               [:course/math-academy-id 154]]                ; Mathematical Methods for the Physical Sciences I
+  }
+
+ ;; SAT Math Fundamentals
+ {:db/id [:course/math-academy-id 120]
+  :course/next [[:course/math-academy-id 143]]               ; SAT Math Prep
+  }
+
+ ;; Calculus I
+ {:db/id [:course/math-academy-id 105]
+  :course/next [[:course/math-academy-id 106]                ; Calculus II
+               [:course/math-academy-id 55]                  ; Linear Algebra
+               [:course/math-academy-id 76]]                 ; Methods of Proof
+  }
+
+ ;; Calculus II
+ {:db/id [:course/math-academy-id 106]
+  :course/next [[:course/math-academy-id 154]]               ; Mathematical Methods for the Physical Sciences I
+  }
+
+ ;; AP Calculus AB
+ {:db/id [:course/math-academy-id 24]
+  :course/next [[:course/math-academy-id 21]                 ; AP Calculus BC
+               [:course/math-academy-id 106]]                ; Calculus II
+  }
+
+ ;; AP Calculus BC
+ {:db/id [:course/math-academy-id 21]
+  :course/next [[:course/math-academy-id 55]                 ; Linear Algebra
+               [:course/math-academy-id 76]                  ; Methods of Proof
+               [:course/math-academy-id 154]]                ; Mathematical Methods for the Physical Sciences I
+  }
+
+ ;; Mathematical Methods for the Physical Sciences I
+ {:db/id [:course/math-academy-id 154]
+  :course/next [[:course/math-academy-id 155]]               ; Mathematical Methods for the Physical Sciences II
+  }
+
+ ;; Linear Algebra
+ {:db/id [:course/math-academy-id 55]
+  :course/next [[:course/math-academy-id 54]]                ; Multivariable Calculus
+  }
+
+ ;; Multivariable Calculus
+ {:db/id [:course/math-academy-id 54]
+  :course/next [[:course/math-academy-id 61]                 ; Differential Equations
+               [:course/math-academy-id 73]]                 ; Probability & Statistics
+  }
+
+ ;; Methods of Proof
+ {:db/id [:course/math-academy-id 76]
+  :course/next [[:course/math-academy-id 109]]               ; Discrete Mathematics
+  }
+]

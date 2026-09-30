@@ -1,4 +1,4 @@
-;; Learner identity, selected course, overall accuracy, knowledge profile, queue, and task history.
+;; Learner identity, selected course, overall accuracy, knowledge profile, and task history.
 ;; Required-attribute specs are opt-in: request :db/ensure on each write.
 ;; Ranges, reference targets, and formulas are application contracts.
 [
@@ -34,12 +34,6 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/doc "Optional collection of learner-specific tasks, including attempts and their history. Each task references a shared activity definition and records its status, elapsed working time, and XP. Status includes completed and failed; there is no separate task outcome. Tasks are defined in 2-1-learner-task.edn and own the items defined in 2-2-learner-task-item.edn. Calendar timestamps and history order come from status transactions. Validate each task and its learner association separately. These ordinary refs do not establish component ownership."}
-
- {:db/ident :learner/queue
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/many
-  :db/isComponent true
-  :db/doc "Owned, unordered collection of unlocked activity entries and their reasons, defined in 1-4-learner-queue.edn. No position, next link, or priority weight is stored. Find the learner through learner/_queue; do not store a duplicate learner ref. Ensure each queue/validate spec separately. Retracting the learner also retracts these entries while preserving their shared content."}
 
  {:db/ident :learner/validate
   :db.entity/attrs [:learner/id]

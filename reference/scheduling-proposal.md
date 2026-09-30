@@ -18,9 +18,9 @@ The central recommendation is a dynamic menu: finish any current task, resolve r
 | Assessment size follows workload rather than a fixed count. | The [XP investigation](mathacademy-xp-analysis.md#how-base-xp-is-assigned) records the published 15-minute quiz explanation and differing elementary/calculus question counts. Fifteen minutes is a useful initial default, not a universal historical fact. |
 | A 150-XP cadence is supported; its precise counter is not. | The [engine analysis](mathacademy_engine_analysis.md) records the public 150-XP availability statement. The [completed-task CSV](progress.csv) contains both 120 and 181 routine XP between particular consecutive quizzes. Completion gaps do not identify the offer time or counter reset. |
 
-## 1. Eligibility and the three queue modes
+## 1. Eligibility and required work
 
-**Recommended** means the scheduler thinks the task is useful now. **Self-selected** means the learner requested it. **Required** means a specific assessment, remediation, or due explicit-review obligation must be resolved. The selection label changes priority, never answer grading, mastery requirements, XP, or FIRe credit. These meanings already fit [learner-queue](../schema/learner/1-4-learner-queue.edn).
+**Recommended** means the scheduler thinks the task is useful now. **Self-selected** means the learner requested it. **Required** means a specific assessment, remediation, or due explicit-review obligation must be resolved. These are serving decisions, not separately stored queue modes. The current [learner-task model](../schema/learner/2-1-learner-task.edn) uses status for eligibility and priority for ordering and the required-work threshold. The displayed queue is derived from these tasks. Selection does not change answer grading, mastery requirements, XP, or FIRe credit.
 
 For a new lesson, require complete instructional content, sufficient fresh questions, and learned direct prerequisites whose current memory is above the FIRe due threshold. If a selected lesson is not ready, show the small missing prerequisite set and offer its available lessons/reviews. Preserve the selected destination while those prerequisites are completed. Do not mark the destination mastered because the learner selected it.
 
@@ -30,7 +30,7 @@ Check this readiness at task start. Once an attempt starts, a clock crossing a p
 
 **Recommended initial meaning of required:** required work comes before starting another ordinary graded task, including a self-selected lesson. The selected lesson stays queued; viewing instructional content remains possible. This preserves the existing meaning of mandatory assessments/remediation, but it is a product tradeoff: if we later want a learner override, it should be an explicit change to this rule, not an accidentally dismissible queue row. Never interrupt an in-progress task to enforce a newly created obligation.
 
-Launching a required task does not satisfy it. An abandoned assessment stays required; a failed required review creates appropriate further support. Recompute the obligation from activity history and current progress instead of parsing `queue/reason`. Only one unresolved obligation per purpose/topic should produce a visible entry.
+Launching a required task does not satisfy it. An abandoned assessment stays required; a failed required review creates appropriate further support. Recompute the obligation from activity history and current progress rather than inferring it from display text. Only one unresolved obligation per purpose/topic should produce a visible entry.
 
 ## 2. Reviews and recommendation order
 

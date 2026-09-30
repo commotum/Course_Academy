@@ -7,7 +7,7 @@ The engine needs an explicit encompassing graph, learner state, graded work, and
 | Records | Ownership and identity |
 | --- | --- |
 | [Policy](../schema/engine/1-fire-policy.edn) | UUID identity and typed FIRe parameters. No persisted algorithm/name selector; `Policy.name` is only a runtime label. |
-| [Topic](../schema/data/4-1-topic.edn), [encompassing](../schema/data/4-2-encompassing.edn) | Shared topic identity across courses. A topic owns its encompassing records; each names a component topic and weight. Prerequisite refs are separate. |
+| [Topic](../schema/data/5-1-topic.edn), [encompassing](../schema/data/5-2-encompassing.edn) | Shared topic identity across courses. A topic owns its encompassing records; each names a component topic and weight. Prerequisite refs are separate. |
 | [Learner](../schema/learner/1-1-learner.edn) | Owns progress, optional global performance, and queue entries; references retained task history through ordinary refs. Reverse relationships identify the learner. |
 | [Progress](../schema/learner/1-3-learner-progress.edn) | One record per learner/topic, with its own identity, shared topic ref, and policy ref. Ownership and uniqueness are explicitly validated. |
 | [Global performance](../schema/learner/1-2-learner-performance.edn) | Optional single learner-owned component; no independent domain identity. |

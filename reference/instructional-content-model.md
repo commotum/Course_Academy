@@ -34,7 +34,7 @@ The implemented entities and relationships are:
 | --- | --- | --- |
 | [Tutorial](../schema/content/2-tutorial.edn) | id, optional MA content ID, title, content | Exposition in Markdown with mathematics and images; no required answer |
 | [Example](../schema/content/3-example.edn) | id, optional MA content ID, problem, explanation | The demonstrated problem and worked solution |
-| [Knowledge point](../schema/data/5-knowledge-point.edn) | id, title, key-prerequisites refs, example ref, questions refs, question-generator ref | The skill being practiced, its key prerequisite topics, and the content teaching/assessing it |
+| [Knowledge point](../schema/data/6-knowledge-point.edn) | id, title, key-prerequisites refs, example ref, questions refs, question-generator ref | The skill being practiced, its key prerequisite topics, and the content teaching/assessing it |
 | [Question](../schema/content/4-question.edn) | Problem, type, fields, explanation, metadata | An item prepared for the learner to answer |
 | Answer field → answer | [Answer field](../schema/content/5-answer-field.edn) and [answer](../schema/content/6-answer.edn) | Expected values and selection options for each question field |
 
@@ -102,11 +102,11 @@ The [activity schema](../schema/content/0-activity.edn) represents a lesson usin
 | Answer field | id, key, answer-choices, correct-answer, validate |
 | Answer | id, type, value, validate |
 
-Curriculum membership remains in `course/units`, `unit/modules`, and `module/topics`; [sequences](../schema/data/1-2-sequence.edn) group shared courses. `topic/next` stores direct prerequisite-to-dependent edges across the single topic graph. Reverse lookup supplies prerequisites, and traversal supplies more distant dependencies. `course/next`, `unit/next`, and `module/next` provide navigation between topic collections without imposing extra engine readiness requirements. The course-map and course-map-entry schemas have been removed. Course-outcome indexes remain separate because they order explanatory outcome bullets, not curriculum members.
+Curriculum membership remains in `course/units`, `unit/modules`, and `module/topics`; [sequences](../schema/data/1-sequence.edn) group shared courses. `topic/next` stores direct prerequisite-to-dependent edges across the single topic graph. Reverse lookup supplies prerequisites, and traversal supplies more distant dependencies. `course/next`, `unit/next`, and `module/next` provide navigation between topic collections without imposing extra engine readiness requirements. The course-map and course-map-entry schemas have been removed. Course-outcome indexes remain separate because they order explanatory outcome bullets, not curriculum members.
 
 Membership and next links are ordinary refs, preserving shared curriculum entities. Lesson sequencing within a topic is still handled separately by lesson/steps and lesson-step/index.
 
-Course outcomes use one model for both observed formats: a bullet's text and an optional category heading. Of the 32 captured course maps, 16 use flat lists and 16 use categorized lists. The create-course-map guide explicitly allows both and does not equate outcome categories with curriculum units. Course-owned outcome entities are defined in [1-4-course-outcome.edn](../schema/data/1-4-course-outcome.edn); their 1-based index preserves order across the entire list, including category boundaries. The application renders bullets and optional headings and supplies the standard introductory sentence from the [skill](../skills/create-course-map/SKILL.md). No separate category entity is needed. Course description and overview retain their section bodies as Markdown strings.
+Course outcomes use one model for both observed formats: a bullet's text and an optional category heading. Of the 32 captured course maps, 16 use flat lists and 16 use categorized lists. The create-course-map guide explicitly allows both and does not equate outcome categories with curriculum units. Course-owned outcome entities are defined in [2-2-course-outcome.edn](../schema/data/2-2-course-outcome.edn); their 1-based index preserves order across the entire list, including category boundaries. The application renders bullets and optional headings and supplies the standard introductory sentence from the [skill](../skills/create-course-map/SKILL.md). No separate category entity is needed. Course description and overview retain their section bodies as Markdown strings.
 
 Tutorial content was checked against five concrete captures:
 

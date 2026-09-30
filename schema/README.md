@@ -1,19 +1,20 @@
 # Schema organization
 
-`data` holds curriculum entities, course sequences and outcomes, and skill relationships. `content` holds reusable activity definitions, instructional material, problems, and answer representations. `learner` holds learner identity, current state, the queue, task history, and item performance. `engine` holds FIRe policy settings. Generic activity and step drafts replace the type-specific content schemas; the runtime still needs migration to that shared model.
+`data` holds curriculum entities, course sequences and outcomes, and skill relationships. `content` holds reusable activity definitions, instructional material, problems, and answer representations. `learner` holds learner identity, current state, task history, and item performance. `engine` holds FIRe policy settings. Generic activity and step drafts replace the type-specific content schemas; the runtime still needs migration to that shared model.
 
-Each folder has its own numbering; content starts at 0 for the generic activity definition. Single-file groups use `group-name`; groups with multiple files use `group-item-name`. Within a folder, the first number groups related schemas and the second gives their reading order. Numbers do not connect groups across folders; EDB references define the relationships. This is a navigation aid rather than a required transaction order. Install all schema definitions before creating application data.
+Each folder has its own numbering; content starts at 0 for the generic activity definition. Single-file groups use `group-name`; groups with multiple files use `group-item-name`. Within a folder, the first number groups related schemas and the second gives their reading order. Numbers do not connect groups across folders; EDB references define the relationships. This is a navigation aid rather than a required transaction order. Install all schema definitions before creating application data. `data/1-2-sequences.edn` is proposed transaction data: exclude it from schema installation and apply it only after its referenced courses exist.
 
 ```text
 data/
-  1-1-course.edn
-  1-2-sequence.edn
-  1-4-course-outcome.edn
-  2-unit.edn
-  3-module.edn
-  4-1-topic.edn
-  4-2-encompassing.edn
-  5-knowledge-point.edn
+  1-sequence.edn
+  1-2-sequences.edn       # proposed transaction data, not schema
+  2-1-course.edn
+  2-2-course-outcome.edn
+  3-unit.edn
+  4-module.edn
+  5-1-topic.edn
+  5-2-encompassing.edn
+  6-knowledge-point.edn
 
 content/
   0-activity.edn
@@ -30,7 +31,6 @@ learner/
   1-1-learner.edn
   1-2-learner-performance.edn
   1-3-learner-progress.edn
-  1-4-learner-queue.edn
   2-1-learner-task.edn
   2-2-learner-task-item.edn
   2-4-learner-response.edn
@@ -38,6 +38,8 @@ learner/
 engine/
   1-fire-policy.edn
 ```
+
+The proposed [sequence transactions](data/1-2-sequences.edn) group existing courses into ten study routes and add course navigation links. Sequence membership does not change topic prerequisites or learner progress.
 
 Sequences group shared courses through `sequence/courses`; courses, units, and modules hold their members through `course/units`, `unit/modules`, and `module/topics`. These collections are unordered. `topic/next` stores the single prerequisite graph with edges pointing from a prerequisite to its direct dependents. Reverse lookup supplies a topic's prerequisites; traversal supplies transitive dependencies. The engine uses these incoming edges for readiness and diagnostic scope. `course/next`, `unit/next`, and `module/next` support navigation between collections and do not introduce additional readiness requirements. Course maps and map entries are no longer needed. Topics and knowledge points define skills, while lessons, tutorials, examples, and questions provide teaching material. Encompassing records describe weighted practice coverage, separately from prerequisites.
 
@@ -49,7 +51,7 @@ The shared [step schema](content/1-step.edn) replaces lesson-step and multistep-
 
 Diagnostic routing now belongs to [generic steps](content/1-step.edn), through the optional `diagnostic-probe/on-*` attributes on those same entities. The separate diagnostic-probe schema has been removed. Runtime diagnostic traversal still requires migration to activity/steps and step/content. Actual presentations remain learner task items.
 
-The learner's `learner/knowledge-profile` owns current `progress` records, one per topic. The reverse reference `learner/_knowledge-profile` identifies a record's learner. `learner/queue` owns unlocked activity entries defined in [1-4-learner-queue.edn](learner/1-4-learner-queue.edn); each records an activity ref, selection mode (`required`, `recommended`, or `self-selected`), and reason, with optional course context and addition time. All three learner collections are optional and unordered in EDB. The queue stores no position, next link, or priority weight. Optional entries can be dismissed; required work remains an obligation until the application policy's completion condition is met. Launching a task does not itself satisfy that requirement: the controller must carry or recompute it, requeuing when needed. Task history is retained separately; the queue is not a permanent scheduling-decision log. See [progress validation](../engine/edb/README.md) for the Rust predicates and write requirements.
+The learner's `learner/knowledge-profile` owns current `progress` records, one per topic. The reverse reference `learner/_knowledge-profile` identifies a record's learner. The displayed queue is derived from eligible, unfinished tasks in `learner/activity`, ordered by `learner-task/priority`; the application's priority threshold determines required work. There is no separate queue entity or learner/queue attribute. Starting required work does not satisfy it: the scheduler retains the obligation until its completion condition is met. See [progress validation](../engine/edb/README.md) for the Rust predicates and write requirements.
 
 `learner/performance` optionally owns one global accuracy summary, defined in [1-2-learner-performance.edn](learner/1-2-learner-performance.edn). Its four `performance/*` attributes hold assessment/practice accuracy and evidence mass across topics; per-topic estimates remain on `progress`. The summary is found through the learner ref and needs no separate domain ID. Ensure `performance/validate` on the child when writing its values; `learner/validate` remains the minimal learner spec. Single ownership and numeric ranges remain application contracts.
 
@@ -59,7 +61,7 @@ Courses, units, modules, topics, and knowledge points have an `identity-validate
 
 These five placeholder specs cover the current curriculum-loading workflow. We can add the same option to lessons, questions, examples, or tutorials when staged content generation needs it.
 
-`data/4-1-topic.edn` includes optional `topic/difficulty`, a finite assessment-accuracy estimate in [0,1]. Ensure `topic/difficulty-validate` on difficulty-only updates. `topic/validate` also checks difficulty if present, while identity-only placeholders remain supported.
+`data/5-1-topic.edn` includes optional `topic/difficulty`, a finite assessment-accuracy estimate in [0,1]. Ensure `topic/difficulty-validate` on difficulty-only updates. `topic/validate` also checks difficulty if present, while identity-only placeholders remain supported.
 
 [1-fire-policy.edn](engine/1-fire-policy.edn) defines FIRe parameters under a stable `policy/id`. Ensure `policy/validate` when editing them. EDB history preserves earlier values: inspect past progress and its referenced policy in the same historical database value with `as_of`. Editing a policy leaves stored `progress/interval-days` unchanged until the engine recomputes it; it does not automatically reschedule every topic.
 
@@ -67,7 +69,7 @@ The completion handler prepares one transaction containing the item status, resp
 
 ## Activity models
 
-Lessons, reviews, assessments, diagnostics, and assignments use the shared activity schema and its activity/type enum. Multistep is reusable problem content; standalone multistep practice is an assignment containing one multistep problem. Intended topic scope comes from the referenced activity; question ownership supplies the topic for observed answers. Selection mode and motivating course belong to queue entries. The completion handler implements activity progression and engine-boundary checks. Required-attribute specs remain opt-in; the adapter is not a general validator for every curriculum-editing operation or a complete queue scheduler.
+Lessons, reviews, assessments, diagnostics, and assignments use the shared activity schema and its activity/type enum. Multistep is reusable problem content; standalone multistep practice is an assignment containing one multistep problem. Intended topic scope comes from the referenced activity; question ownership supplies the topic for observed answers. Task status and priority supply queue eligibility and required-work priority. The completion handler implements activity progression and engine-boundary checks. Required-attribute specs remain opt-in; the adapter is not a general validator for every curriculum-editing operation or a complete queue scheduler.
 
 ## Remaining work
 
