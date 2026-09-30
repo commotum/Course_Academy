@@ -6,8 +6,9 @@ edb_root="${EDB_ROOT:-/home/jake/Developer/EDB}"
 pg_ctl="${PG_CTL:-/usr/local/MATLAB/R2025b/sys/postgresql/glnxa64/PostgreSQL/bin/pg_ctl}"
 data_dir="$root/.local/edb/postgres"
 run_dir="$root/.local/edb/run"
-endpoint_dir="/tmp/course-academy-edb"
-endpoint="$endpoint_dir/writer.sock"
+database="${EDB_DATABASE:-course-academy-v2}"
+endpoint="${EDB_ENDPOINT:-/tmp/course-academy-edb-v2/writer.sock}"
+endpoint_dir="$(dirname "$endpoint")"
 
 if ! "$pg_ctl" -D "$data_dir" status >/dev/null 2>&1; then
     "$pg_ctl" -D "$data_dir" -l "$root/.local/edb/postgres.log" start
@@ -27,4 +28,4 @@ rustc --edition=2024 "$root/engine/edb/transactor.rs" \
 mkdir -p "$endpoint_dir"
 chmod 700 "$endpoint_dir"
 export EDB_POSTGRES_URL="host=$run_dir dbname=course_academy user=edb_writer sslmode=disable"
-exec "$root/.local/edb/course-academy-transactor" course-academy "$endpoint"
+exec "$root/.local/edb/course-academy-transactor" "$database" "$endpoint"

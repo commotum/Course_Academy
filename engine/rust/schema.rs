@@ -694,7 +694,7 @@ fn check_responses(
     item: u64,
     additions: &[Value],
     new: &BTreeMap<String, Record>,
-) -> Result<()> {
+) -> Result<Vec<Value>> {
     let mut responses: Vec<Value> = s
         .refs(item, "task-item/responses")?
         .into_iter()
@@ -702,54 +702,56 @@ fn check_responses(
         .collect();
     responses.extend_from_slice(additions);
     if responses.is_empty() && new.is_empty() {
-        return Ok(());
+        return Ok(vec![]);
     }
     let q = s.reference(item, "task-item/content")?;
-    if !s.types(q)?.contains("question") {
-        return Err("only question items carry responses".into());
+    if !s.types(q)?.contains("question")
+        || s.entity(q)?.get("question/is-example") == Some(&json!(true))
+    {
+        return Err("only ordinary question items carry responses".into());
     }
     let fields = s.refs(q, "question/answer-fields")?;
     let mut seen = BTreeSet::new();
     let mut used = BTreeSet::new();
+    let mut ownership = vec![];
     for response in responses {
         let field =
             if let Some((temp, r)) = response.as_str().and_then(|x| new.get(x).map(|r| (x, r))) {
                 used.insert(temp.to_owned());
-                let field = s.eid(&r["learner-response/field"])?;
-                if !s.refs(field, "answer-field/answer-choices")?.is_empty() {
-                    return Err("selection fields require canonical choice".into());
+                let field = s.eid(&r["field"])?;
+                if s.ident(&json!(s.reference(field, "answer-field/type")?))?
+                    != "answer-field.type/blank"
+                {
+                    return Err("new entered answers require a blank field".into());
                 }
+                let answer_type = s.eid(&r["answer/type"])?;
+                for prior in s.refs(field, "answer-field/choices")? {
+                    let old = s.entity(prior)?;
+                    if s.eid(&old["answer/type"])? == answer_type
+                        && old["answer/value"] == r["answer/value"]
+                    {
+                        return Err("reuse the existing answer value in this field".into());
+                    }
+                }
+                ownership.push(json!({"db/id":field,"answer-field/choices":[temp],
+                                      "db/ensure":keyword("answer-field/validate")}));
                 field
             } else {
                 let id = s.eid(&response)?;
-                let r = s.entity(id)?;
-                if r.contains_key("learner-response/field") {
-                    let field = s.reference(id, "learner-response/field")?;
-                    if !s.refs(field, "answer-field/answer-choices")?.is_empty() {
-                        return Err("selection fields require canonical choice".into());
-                    }
-                    field
-                } else {
-                    let mut owners = vec![];
-                    for &f in &fields {
-                        if s.refs(f, "answer-field/answer-choices")?.contains(&id) {
-                            owners.push(f);
-                        }
-                    }
-                    if owners.len() != 1 || !s.types(id)?.contains("answer") {
-                        return Err("selected answer must belong to one field".into());
-                    }
-                    owners[0]
+                let owners = s.owners(id, "answer-field/choices")?;
+                if owners.len() != 1 || !s.types(id)?.contains("answer") {
+                    return Err("answer must belong to exactly one field".into());
                 }
+                owners[0]
             };
         if !fields.contains(&field) || !seen.insert(field) {
             return Err("response field outside question or answered twice".into());
         }
     }
     if used != new.keys().cloned().collect() {
-        return Err("new entered responses must attach to this item".into());
+        return Err("new answers must attach to this item".into());
     }
-    Ok(())
+    Ok(ownership)
 }
 pub fn completion_transaction(
     loaded: &LoadedRuntime,
@@ -777,7 +779,9 @@ pub fn completion_transaction(
         return Err("completion requires terminal item status".into());
     }
     let content = s.reference(item, "task-item/content")?;
-    if s.types(content)?.contains("question") == (terminal_name == "task-item.status/completed") {
+    let is_gradable = s.types(content)?.contains("question")
+        && s.entity(content)?.get("question/is-example") != Some(&json!(true));
+    if is_gradable == (terminal_name == "task-item.status/completed") {
         return Err("item terminal status does not match its content".into());
     }
     let mut forms = vec![json!([
@@ -790,6 +794,12 @@ pub fn completion_transaction(
     let mut targets = BTreeSet::new();
     let mut responses = vec![];
     let mut new = BTreeMap::new();
+    let mut answer_ids = BTreeSet::new();
+    for record in s.entities.values() {
+        if record.contains_key("answer/id") {
+            answer_ids.insert(uuid(record, "answer/id")?);
+        }
+    }
     for raw in changes {
         let mut change = normalize(raw.as_object().ok_or("change must be map")?)?;
         let target = change.get("db/id").ok_or("change needs db/id")?.clone();
@@ -808,6 +818,12 @@ pub fn completion_transaction(
             }
             change.remove("task-item/status");
             change.insert("task-item/elapsed-seconds".into(), json!(elapsed));
+            if change.contains_key("task-item/performance")
+                && !["task-item.status/correct", "task-item.status/incorrect"]
+                    .contains(&terminal_name.as_str())
+            {
+                return Err("only graded question attempts carry performance".into());
+            }
             if terminal_name == "task-item.status/skipped"
                 && (change
                     .get("task-item/responses")
@@ -836,25 +852,38 @@ pub fn completion_transaction(
             !t.is_empty() && !t.starts_with(':') && !t.starts_with("engine-") && *t != "edb.tx"
         }) {
             if change.keys().map(String::as_str).collect::<BTreeSet<_>>()
-                != ["db/id", "learner-response/field", "learner-response/value"]
+                != ["db/id", "field", "answer/id", "answer/type", "answer/value"]
                     .into_iter()
                     .collect()
             {
-                return Err("response requires tempid, field, value".into());
+                return Err("new answer requires tempid, field, UUID, type, value".into());
             }
-            if !change["learner-response/value"].is_string() {
-                return Err("entered response must be text".into());
+            if !change["answer/value"].is_string() {
+                return Err("entered answer value must be exact text".into());
             }
-            let f = s.eid(&change["learner-response/field"])?;
-            change.insert("learner-response/field".into(), json!(f));
-            new.insert(t.to_owned(), change.clone());
-            change.insert("db/ensure".into(), keyword("learner-response/validate"));
+            if !answer_ids.insert(uuid(&change, "answer/id")?) {
+                return Err(
+                    "new answer UUID already belongs to another answer; reuse its reference".into(),
+                );
+            }
+            let f = s.eid(&change.remove("field").ok_or("new answer requires field")?)?;
+            let answer_type = s.eid(&change["answer/type"])?;
+            if !["answer.type/math", "answer.type/text", "answer.type/image"]
+                .contains(&s.ident(&json!(answer_type))?.as_str())
+            {
+                return Err("unsupported answer type".into());
+            }
+            change.insert("answer/type".into(), json!(answer_type));
+            let mut record = change.clone();
+            record.insert("field".into(), json!(f));
+            new.insert(t.to_owned(), record);
+            change.insert("db/ensure".into(), keyword("answer/validate"));
         } else {
-            return Err("changes may target item, its task, or new response".into());
+            return Err("changes may target item, its task, or new answer".into());
         }
         forms.push(Value::Object(change));
     }
-    check_responses(s, item, &responses, &new)?;
+    forms.extend(check_responses(s, item, &responses, &new)?);
     if !targets.contains(&task.to_string()) {
         forms.push(Value::Object(task_change(
             s,

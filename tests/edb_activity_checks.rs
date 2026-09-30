@@ -115,19 +115,21 @@ fn capture(db: &Database) -> String {
 pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
     let fixture = r#"[
      {:db/id "q" :question/id #uuid "00000000-0000-4000-8000-000000000020"
-      :question/type :question.type/multiple-choice :question/problem "Select 2."
+      :question/is-example false :question/problem "Select 2."
       :question/answer-fields ["field"] :db/ensure :question/validate}
      {:db/id "field" :answer-field/id #uuid "00000000-0000-4000-8000-000000000021"
-      :answer-field/key "selection" :answer-field/answer-choices ["right" "wrong"]
-      :answer-field/correct-answer "right" :db/ensure :answer-field/validate}
+      :answer-field/key "selection" :answer-field/type :answer-field.type/radio
+      :answer-field/choices ["right" "wrong"]
+      :answer-field/correct "right" :db/ensure :answer-field/validate}
      {:db/id "right" :answer/id #uuid "00000000-0000-4000-8000-000000000022"
       :answer/type :answer.type/math :answer/value "2" :db/ensure :answer/validate}
      {:db/id "wrong" :answer/id #uuid "00000000-0000-4000-8000-000000000023"
       :answer/type :answer.type/math :answer/value "3" :db/ensure :answer/validate}
-     {:db/id "example" :example/id #uuid "00000000-0000-4000-8000-000000000030"
-      :example/problem "Recognize 2." :example/explanation "Two is written 2." :db/ensure :example/validate}
+     {:db/id "example" :question/id #uuid "00000000-0000-4000-8000-000000000030"
+      :question/is-example true :question/problem "Recognize 2."
+      :question/worked-solution "Two is written 2." :db/ensure :question/validate}
      {:db/id "kp" :knowledge-point/id #uuid "00000000-0000-4000-8000-000000000031"
-      :knowledge-point/title "Recognize two" :knowledge-point/example "example"
+      :knowledge-point/title "Recognize two" :knowledge-point/canonical-example "example"
       :knowledge-point/questions ["q"] :db/ensure :knowledge-point/validate}
      {:db/id [:topic/id #uuid "b3d88ca6-d319-409b-bdb1-000000000001"]
       :topic/knowledge-points ["kp"] :db/ensure :topic/validate}

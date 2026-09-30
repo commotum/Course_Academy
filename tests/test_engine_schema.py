@@ -29,9 +29,11 @@ def records():
         5: {'task-item/id': identity(5), 'task-item/content': 8, 'task-item/status': 108},
         6: {'topic/id': identity(6), 'topic/knowledge-points': [7], 'topic/encompasses': [12]},
         7: {'knowledge-point/id': identity(7), 'knowledge-point/questions': [8]},
-        8: {'question/id': identity(8), 'question/answer-fields': [9]},
-        9: {'answer-field/id': identity(9), 'answer-field/key': 'answer', 'answer-field/answer-choices': [10, 11]},
-        10: {'answer/id': identity(10)}, 11: {'answer/id': identity(11)},
+        8: {'question/id': identity(8), 'question/is-example': False, 'question/answer-fields': [9]},
+        9: {'answer-field/id': identity(9), 'answer-field/key': 'answer', 'answer-field/type': 113,
+            'answer-field/choices': [10, 11], 'answer-field/correct': 10},
+        10: {'answer/id': identity(10), 'answer/type': 114, 'answer/value': 'x^2'},
+        11: {'answer/id': identity(11), 'answer/type': 114, 'answer/value': 'x^3'},
         12: {'encompassing/topic': 13, 'encompassing/weight': .25},
         13: {'topic/id': identity(13)},
         100: {'db/ident': Keyword('policy.retention-update/decay-before-add')},
@@ -47,6 +49,9 @@ def records():
         110: {'db/ident': Keyword('task-item.status/completed')},
         111: {'db/ident': Keyword('task-item.status/skipped')},
         112: {'db/ident': Keyword('learner-task.status/paused')},
+        113: {'db/ident': Keyword('answer-field.type/radio')},
+        114: {'db/ident': Keyword('answer.type/math')},
+        115: {'db/ident': Keyword('answer-field.type/blank')},
     }
 
 
@@ -237,15 +242,51 @@ class SchemaTests(unittest.TestCase):
         for responses in [[10, 11], [13], [True]]:
             with self.subTest(responses=responses), self.assertRaises(ValueError):
                 completion_transaction(runtime, 5, AT, [{'db/id': 5, 'task-item/status': Keyword('task-item.status/correct'), 'task-item/responses': responses}], deepcopy(runtime.engine))
-        data = records(); del data[9]['answer-field/answer-choices']; runtime = loaded(data)
+        data = records(); data[9]['answer-field/type'] = 115; runtime = loaded(data)
         valid = [{'db/id': 5, 'task-item/status': Keyword('task-item.status/correct'), 'task-item/responses': ['typed']},
-                 {'db/id': 'typed', 'learner-response/field': 9, 'learner-response/value': 'x^2'}]
+                 {'db/id': 'typed', 'field': 9, 'answer/id': identity(15),
+                  'answer/type': 114, 'answer/value': '\\frac{'}]
         plan = completion_transaction(runtime, 5, AT, valid, deepcopy(runtime.engine))
-        self.assertIn(':learner-response/validate', plan.edn)
-        for changes in [valid[1:], [valid[0], dict(valid[1], **{'learner-response/field': 13})],
-                        [dict(valid[1], **{'db/id': 'engine-global-performance'})]]:
+        self.assertIn(':answer/validate', plan.edn)
+        self.assertIn(':answer-field/choices ["typed"]', plan.edn)
+        self.assertIn('\\\\frac{', plan.edn)
+        for changes in [valid[1:], [valid[0], dict(valid[1], **{'field': 13})],
+                        [dict(valid[1], **{'db/id': 'engine-global-performance'})],
+                        [valid[0], dict(valid[1], **{'answer/value': 'x^2'})]]:
             with self.subTest(changes=changes), self.assertRaises(ValueError):
                 completion_transaction(runtime, 5, AT, changes, deepcopy(runtime.engine))
+
+    def test_new_answer_identity_cannot_upsert_existing_or_duplicate_new_value(self):
+        data = records()
+        data[9]['answer-field/type'] = 115
+        runtime = loaded(data)
+        item = {'db/id': 5, 'task-item/status': Keyword('task-item.status/incorrect'),
+                'task-item/responses': ['typed']}
+        answer = {'db/id': 'typed', 'field': 9, 'answer/id': identity(10),
+                  'answer/type': 114, 'answer/value': 'malformed {'}
+        with self.assertRaisesRegex(ValueError, 'UUID already belongs'):
+            completion_transaction(runtime, 5, AT, [item, answer], deepcopy(runtime.engine))
+        answer['answer/id'] = identity(15)
+        duplicate = dict(answer, **{'db/id': 'other'})
+        with self.assertRaisesRegex(ValueError, 'UUID already belongs'):
+            completion_transaction(runtime, 5, AT, [item, answer, duplicate], deepcopy(runtime.engine))
+        plan = completion_transaction(runtime, 5, AT, [item, answer], deepcopy(runtime.engine))
+        self.assertIn('malformed {', plan.edn)
+
+    def test_worked_example_completion_cannot_carry_score_or_responses(self):
+        data = records()
+        data[8]['question/is-example'] = True
+        data[8]['question/worked-solution'] = 'Demonstration.'
+        runtime = loaded(data)
+        for extra in ({'task-item/performance': 1.0}, {'task-item/responses': [10]}):
+            with self.subTest(extra=extra), self.assertRaises(ValueError):
+                completion_transaction(runtime, 5, AT,
+                    [dict({'db/id': 5, 'task-item/status': Keyword('task-item.status/completed')}, **extra)],
+                    deepcopy(runtime.engine))
+        plan = completion_transaction(runtime, 5, AT,
+            [{'db/id': 5, 'task-item/status': Keyword('task-item.status/completed')}],
+            deepcopy(runtime.engine))
+        self.assertIn(':task-item.status/completed', plan.edn)
 
     def test_expiry_guards_task_without_fabricating_item(self):
         runtime = loaded()

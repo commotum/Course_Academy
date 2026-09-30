@@ -209,7 +209,11 @@ fn content_id(snapshot: &EntitySnapshot, item: &Entity) -> Result<Option<u64>> {
 }
 fn question(snapshot: &EntitySnapshot, item: &Entity) -> Result<bool> {
     Ok(match content_id(snapshot, item)? {
-        Some(content) => snapshot.entity(content)?.contains_key("question/id"),
+        Some(content) => {
+            let record = snapshot.entity(content)?;
+            record.contains_key("question/id")
+                && record.get("question/is-example") != Some(&json!(true))
+        }
         None => false,
     })
 }
@@ -287,7 +291,7 @@ fn lesson_delivery(snapshot: &EntitySnapshot, activity: u64, items: &[Entity]) -
             if !members.contains(&content) || !seen_kps.insert(content) {
                 return Err("lesson knowledge-point membership is invalid or repeated".into());
             }
-            snapshot.reference(content, "knowledge-point/example")?
+            snapshot.reference(content, "knowledge-point/canonical-example")?
         } else {
             content
         };
@@ -1530,11 +1534,7 @@ mod tests {
         assert_eq!(f.state(20).evidence_mass(), 0.0);
         assert!(!f.entities[&1001].contains_key("task-item/performance"));
         let eid = f.present(101);
-        f.put(
-            800,
-            json!({"learner-response/field":2101,"learner-response/value":"-101"}),
-        );
-        f.set(eid, "task-item/responses", json!([800]));
+        f.set(eid, "task-item/responses", json!([3101]));
         let l = f.load();
         assert!(
             complete_item(

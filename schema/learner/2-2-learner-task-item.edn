@@ -1,4 +1,4 @@
-;; One learner-specific presentation of a question, tutorial, or example.
+;; One learner-specific presentation of a question (including a worked example) or tutorial.
 ;; Owned through learner-task/items; content refers to the shared item presented.
 [
  {:db/ident :task-item.status/started}
@@ -17,17 +17,17 @@
  {:db/ident :task-item/content
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Question, tutorial, or example presented. May be absent when historical content identity is unknown."}
+  :db/doc "Question, worked example question, or tutorial presented. May be absent when historical content identity is unknown."}
 
  {:db/ident :task-item/status
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Started means actively working; paused suspends the working timer. Completed ends a tutorial or example; correct, incorrect, and skipped end a question attempt. Retained status transaction history supplies start, pause, resume, and finish timestamps. Questions never presented do not create task items. Reference targets and valid transitions require application validation."}
+  :db/doc "Started means actively working; paused suspends the working timer. Completed ends a tutorial or worked example question; correct, incorrect, and skipped end an ordinary question attempt. Retained status transaction history supplies start, pause, resume, and finish timestamps. Questions never presented do not create task items. Reference targets and valid transitions require application validation."}
 
  {:db/ident :task-item/responses
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Responses supplied for this question: learner-response records for entered values, or existing answer entities for selections. Each selected answer identifies its field through answer-field/answer-choices. The application checks field membership and one response per field. Ordinary refs preserve answer choices when a task item is deleted; entered response cleanup belongs to the application."}
+  :db/doc "Answer entities supplied for this question, for both entered blank values and selected radio/select options. Recover each answer's field through the reverse answer-field/choices ownership ref. The application checks field membership and at most one response per field, deduplicates entered values within their field, and preserves referenced answer values. These ordinary refs do not own answers."}
 
  {:db/ident :task-item/elapsed-seconds
   :db/valueType :db.type/double

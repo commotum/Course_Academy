@@ -1,5 +1,5 @@
-;; An expected or candidate answer value owned by a field.
-;; Evaluation belongs to application code; this schema describes content.
+;; An answer value owned by exactly one field through answer-field/choices.
+;; The same entity can serve as an authored option or an entered blank response.
 [
  ;; Enum values: answer representation.
  {:db/ident :answer.type/math}
@@ -11,7 +11,7 @@
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
-  :db/doc "Stable identity of an answer value owned by one field."}
+  :db/doc "Stable identity of a field-scoped answer value. Reuse this entity for repeated identical values within its field; do not share it across fields."}
 
  {:db/ident :answer/type
   :db/valueType :db.type/ref
@@ -21,9 +21,14 @@
  {:db/ident :answer/value
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Answer content interpreted using answer/type: LaTeX without Markdown delimiters for math, plain textual content for text, or an image path or URI for image answers."}
+  :db/doc "Exact answer content: learner-entered strings are retained verbatim, including empty or malformed math input. Authored math values may use LaTeX without Markdown delimiters; text and image values hold their respective content. Evaluation and normalization are separate from storage."}
+
+ {:db/ident :answer/feedback
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional feedback associated with this answer value, such as an explanation for a radio or select option."}
 
  {:db/ident :answer/validate
   :db.entity/attrs [:answer/id :answer/type :answer/value]
-  :db/doc "Requires identity, type, and a string value when explicitly ensured. Supported answer types, nonempty and correctly formatted values, and image availability require application validation."}
+  :db/doc "Requires identity, type, and a string value when explicitly ensured. The application checks supported answer types and field-scoped deduplication, keeps referenced values immutable, and may validate authored image availability. Do not reject an entered value solely because its math syntax is malformed."}
 ]

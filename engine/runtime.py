@@ -128,7 +128,8 @@ def _result(snapshot, entity):
 
 def _question(snapshot, item):
     content = item.get('task-item/content')
-    return content is not None and 'question/id' in snapshot.entity(content)
+    return (content is not None and 'question/id' in snapshot.entity(content)
+            and snapshot.entity(content).get('question/is-example') is not True)
 
 
 def _question_pool(snapshot, activity, attr):
@@ -182,7 +183,7 @@ def _lesson_delivery(snapshot, activity, items):
             if content not in members or content in seen_kps:
                 raise ValueError('lesson knowledge-point membership is invalid or repeated')
             seen_kps.add(content)
-            presentation = snapshot.ref(content, 'knowledge-point/example')
+            presentation = snapshot.ref(content, 'knowledge-point/canonical-example')
         else:
             presentation = content
         placements.append((content, kind, presentation))
@@ -379,9 +380,10 @@ def complete_item(loaded: LoadedRuntime, item_eid: int, *, completed_at: datetim
                   xp_award: int | None = None, rules: ActivityRules | None = None) -> Completion:
     """Handle a newly completed presentation using authoritative app grading.
 
-    ``None`` is an explicit skip for a question and simple completion for
-    instruction. Typed responses are explicit-tempid maps; selected responses
-    reference canonical answers. The grader owns answer verification. Selection
+    ``None`` is an explicit skip for an ordinary question and simple completion
+    for instruction or a worked example. New blank values are answer maps with
+    a tempid and builder-only ``field`` EID; authored selections and repeated
+    blank values reference existing field-owned answers. The grader owns verification. Selection
     from the learner queue never changes these credit rules.
 
     ``take_retry`` records the learner's choice made with an incorrect diagnostic

@@ -464,40 +464,43 @@ def _task_change(snapshot, raw, task, completed_at):
     return change
 
 
-def _check_responses(snapshot, item, additions, new_responses):
+def _check_responses(snapshot, item, additions, new_answers):
     existing = snapshot.refs(item, 'task-item/responses')
     responses = tuple(existing) + tuple(additions)
-    if not responses and not new_responses:
-        return
+    if not responses and not new_answers:
+        return []
     question = snapshot.ref(item, 'task-item/content')
-    if 'question' not in snapshot.types(question):
-        raise ValueError('only question items can carry responses')
+    if 'question' not in snapshot.types(question) or snapshot.entity(question).get('question/is-example') is True:
+        raise ValueError('only ordinary question items can carry responses')
     fields = set(snapshot.refs(question, 'question/answer-fields'))
     seen_fields, used_tempids = set(), set()
+    ownership = []
     for response in responses:
-        if isinstance(response, str) and not isinstance(response, Keyword) and response in new_responses:
-            record = new_responses[response]
-            field = snapshot.eid(record['learner-response/field'])
+        if isinstance(response, str) and not isinstance(response, Keyword) and response in new_answers:
+            record = new_answers[response]
+            field = snapshot.eid(record['field'])
             used_tempids.add(response)
-            if snapshot.refs(field, 'answer-field/answer-choices'):
-                raise ValueError('selection fields require a canonical answer choice')
+            if snapshot.ident(snapshot.ref(field, 'answer-field/type')) != 'answer-field.type/blank':
+                raise ValueError('new entered answers require a blank field')
+            for prior in snapshot.refs(field, 'answer-field/choices'):
+                old = snapshot.entity(prior)
+                if (snapshot.eid(old['answer/type']) == snapshot.eid(record['answer/type'])
+                        and old['answer/value'] == record['answer/value']):
+                    raise ValueError('reuse the existing answer value in this field')
+            ownership.append({'db/id': field, 'answer-field/choices': [response],
+                              'db/ensure': Keyword('answer-field/validate')})
         else:
             response = snapshot.eid(response)
-            record = snapshot.entity(response)
-            if 'learner-response/field' in record:
-                field = snapshot.ref(response, 'learner-response/field')
-                if snapshot.refs(field, 'answer-field/answer-choices'):
-                    raise ValueError('selection fields require a canonical answer choice')
-            else:
-                owners = [field for field in fields if response in snapshot.refs(field, 'answer-field/answer-choices')]
-                if len(owners) != 1 or 'answer' not in snapshot.types(response):
-                    raise ValueError('selected answer must belong to exactly one field of this question')
-                field = owners[0]
+            owners = snapshot.owners(response, 'answer-field/choices')
+            if len(owners) != 1 or 'answer' not in snapshot.types(response):
+                raise ValueError('answer must belong to exactly one field')
+            field = owners[0]
         if field not in fields or field in seen_fields:
             raise ValueError('response field is outside this question or answered more than once')
         seen_fields.add(field)
-    if used_tempids != set(new_responses):
-        raise ValueError('new entered responses must be attached to this task item')
+    if used_tempids != set(new_answers):
+        raise ValueError('new answers must be attached to this task item')
+    return ownership
 
 
 def completion_transaction(loaded: LoadedRuntime, item_eid: int, completed_at: datetime,
@@ -524,7 +527,9 @@ def completion_transaction(loaded: LoadedRuntime, item_eid: int, completed_at: d
     task_change = None
     elapsed = snapshot.item_elapsed(item_eid, completed_at)
     task_elapsed = snapshot.task_elapsed(task, completed_at)
-    new_responses, responses, seen_targets = {}, [], set()
+    new_answers, responses, seen_targets = {}, [], set()
+    answer_ids = {_uuid(record, 'answer/id') for record in snapshot.entities.values()
+                  if 'answer/id' in record}
     for raw in changes:
         change = {str(k).removeprefix(':'): deepcopy(v) for k, v in raw.items()}
         target = change.get('db/id')
@@ -537,11 +542,15 @@ def completion_transaction(loaded: LoadedRuntime, item_eid: int, completed_at: d
                 raise ValueError('item changes contain an unsupported attribute')
             terminal_status = change.pop('task-item/status', None)
             ident = snapshot.ident(terminal_status) if terminal_status is not None else None
-            question = 'question' in snapshot.types(snapshot.ref(item_eid, 'task-item/content'))
+            content = snapshot.ref(item_eid, 'task-item/content')
+            question = ('question' in snapshot.types(content)
+                        and snapshot.entity(content).get('question/is-example') is not True)
             valid = {'task-item.status/' + s for s in ('correct', 'incorrect', 'skipped')} if question else {'task-item.status/completed'}
             if ident not in valid:
                 raise ValueError('completion requires an appropriate terminal item status')
             if 'task-item/performance' in change:
+                if ident not in {'task-item.status/correct', 'task-item.status/incorrect'}:
+                    raise ValueError('only graded question attempts carry performance')
                 change['task-item/performance'] = _number(change['task-item/performance'], 'performance', 0)
                 if change['task-item/performance'] == 0:
                     raise ValueError('task-item/performance must be positive')
@@ -559,22 +568,29 @@ def completion_transaction(loaded: LoadedRuntime, item_eid: int, completed_at: d
             task_change = change
         elif (type(target) is str and target and not target.startswith((':', 'engine-'))
               and target != 'edb.tx'):
-            if set(change) != {'db/id', 'learner-response/field', 'learner-response/value'}:
-                raise ValueError('new response needs a unique tempid, field, and value')
-            if not isinstance(change['learner-response/value'], str):
-                raise ValueError('entered response value must be text')
-            change['learner-response/field'] = snapshot.eid(change['learner-response/field'])
-            new_responses[target] = change
-            change['db/ensure'] = Keyword('learner-response/validate')
+            if set(change) != {'db/id', 'field', 'answer/id', 'answer/type', 'answer/value'}:
+                raise ValueError('new answer needs a tempid, field, UUID, type, and value')
+            if not isinstance(change['answer/value'], str):
+                raise ValueError('entered answer value must be exact text')
+            answer_id = _uuid(change, 'answer/id')
+            if answer_id in answer_ids:
+                raise ValueError('new answer UUID already belongs to another answer; reuse its reference')
+            answer_ids.add(answer_id)
+            field = snapshot.eid(change.pop('field'))
+            change['answer/type'] = snapshot.eid(change['answer/type'])
+            if snapshot.ident(change['answer/type']) not in {'answer.type/math', 'answer.type/text', 'answer.type/image'}:
+                raise ValueError('unsupported answer type')
+            new_answers[target] = dict(change, field=field)
+            change['db/ensure'] = Keyword('answer/validate')
         else:
-            raise ValueError('changes may target this item, its task, or a new entered response')
+            raise ValueError('changes may target this item, its task, or a new answer')
         forms.append(change)
     if terminal_status is None:
         raise ValueError('completion requires an explicit terminal item status')
     forms.insert(0, [Keyword('db/cas'), item_eid, Keyword('task-item/status'), old_status, terminal_status])
+    forms.extend(_check_responses(snapshot, item_eid, responses, new_answers))
     if task_change is None:
         forms.append({'db/id': task, 'learner-task/elapsed-seconds': task_elapsed, 'db/ensure': Keyword('learner-task/validate')})
-    _check_responses(snapshot, item_eid, responses, new_responses)
     forms.append({'db/id': item_eid, 'db/ensure': Keyword('task-item/validate')})
     identity = _uuid(item, 'task-item/id')
     return _writeback(loaded, updated_engine, forms, 'complete-item', identity, completed_at)

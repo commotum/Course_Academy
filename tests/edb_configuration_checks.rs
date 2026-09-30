@@ -26,7 +26,7 @@ pub fn check(db: &Database, topic: u64, input_basis: u64) -> Result<(), Box<dyn 
         ":policy/overdue-failure-slope -1.0",
         ":policy/early-practice-discount-power 0.0",
         ":policy/future-horizon-days -1.0",
-        ":policy/retention-update-order :question.type/multiple-choice",
+        ":policy/retention-update-order :answer-field.type/radio",
         ":policy/gate-slow-implicit \"true\"",
     ] {
         reject(&format!(

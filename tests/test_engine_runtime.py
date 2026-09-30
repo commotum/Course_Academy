@@ -31,7 +31,7 @@ class RuntimeFixture:
             'learner-task.status/locked', 'learner-task.status/unlocked',
             'learner-task.status/started', 'learner-task.status/paused', 'learner-task.status/completed',
             'learner-task.status/failed',
-            'question.type/fill-in-the-blank', 'question.difficulty/moderate', 'answer.type/math',
+            'answer-field.type/blank', 'question.difficulty/moderate', 'answer.type/math',
         ), 9000):
             self.enums[name] = index
             self.entities[index] = {'db/ident': Keyword(name)}
@@ -55,19 +55,22 @@ class RuntimeFixture:
             self.entities[topic] = {'topic/id': UUID(int=topic), 'topic/title': f'Topic {topic}',
                                     'topic/knowledge-points': [kp]}
             self.entities[kp] = {'knowledge-point/id': UUID(int=kp), 'knowledge-point/title': f'Skill {kp}',
-                                'knowledge-point/example': example,
+                                'knowledge-point/canonical-example': example,
                                 'knowledge-point/questions': questions}
-            self.entities[example] = {'example/id': UUID(int=example), 'example/problem': 'Solve $x+1=2$.',
-                                      'example/explanation': 'Subtract one: $x=1$.'}
+            self.entities[example] = {'question/id': UUID(int=example), 'question/is-example': True,
+                                      'question/problem': 'Solve $x+1=2$.',
+                                      'question/worked-solution': 'Subtract one: $x=1$.'}
             for question in questions:
                 self.entities[question] = {'question/id': UUID(int=question),
-                                           'question/type': self.enums['question.type/fill-in-the-blank'],
+                                           'question/is-example': False,
                                            'question/problem': f'Solve $x+{question}=0$; x = {{x}}.',
                                            'question/answer-fields': [2000 + question],
                                            'question/difficulty': self.enums['question.difficulty/moderate']}
                 self.entities[2000 + question] = {'answer-field/id': UUID(int=2000 + question),
                                                   'answer-field/key': 'x',
-                                                  'answer-field/correct-answer': 3000 + question}
+                                                  'answer-field/type': self.enums['answer-field.type/blank'],
+                                                  'answer-field/choices': [3000 + question],
+                                                  'answer-field/correct': 3000 + question}
                 self.entities[3000 + question] = {'answer/id': UUID(int=3000 + question),
                                                   'answer/type': self.enums['answer.type/math'],
                                                   'answer/value': str(-question)}
@@ -482,8 +485,7 @@ class RuntimeTests(unittest.TestCase):
         fixture = RuntimeFixture('review')
         fixture.seed(20)
         eid = fixture.present(100)
-        fixture.entities[800] = {'learner-response/field': 2100, 'learner-response/value': '-100'}
-        fixture.entities[eid]['task-item/responses'] = [800]
+        fixture.entities[eid]['task-item/responses'] = [3100]
         loaded = fixture.load()
         before = loaded.engine.snapshot()
         with self.assertRaisesRegex(ValueError, 'skipped question cannot contain submitted responses'):

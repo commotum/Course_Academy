@@ -32,6 +32,12 @@ fn main() -> Result<(), Box<dyn Error>> {
             .filter_map(Result::ok)
             .map(|e| e.path())
             .filter(|p| p.extension().is_some_and(|e| e == "edn"))
+            // Review drafts live beside the current content schemas but are not installed.
+            .filter(|p| {
+                p.file_name()
+                    .and_then(|n| n.to_str())
+                    .is_none_or(|n| !n.starts_with("proposed-"))
+            })
             // Seed transactions are applied after schema installation.
             .filter(|p| {
                 let seed_files = [

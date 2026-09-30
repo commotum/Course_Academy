@@ -2,6 +2,7 @@
 """Generate staged EDB lesson imports from the captured MA JSON and Markdown."""
 
 import collections
+import argparse
 import csv
 import json
 import re
@@ -153,50 +154,55 @@ def question_form(question, markdown, topic, duplicates):
     q_uuid = ident("question", qkey)
     problem, markdown_options = question_parts(markdown, question, topic)
     kind = question["question_format"]
-    types = {
-        "multiple-choice": "multiple-choice",
-        "free-response": "fill-in-the-blank",
-        "select-list": "select-list",
-    }
-    assert kind in types
+    assert kind in {"multiple-choice", "free-response", "select-list"}
     fields = []
     if kind == "multiple-choice":
         sources = question["choices"]
         choices = []
+        seen = set()
         for index, source in enumerate(sources, 1):
             md = markdown_options[index - 1] if markdown_options else None
             representation, value = answer_value(source, md, topic)
+            if (representation, value) in seen:
+                continue
+            seen.add((representation, value))
             choices.append(answer_map(ident("answer", f"{qkey}:1:{index}"), representation, value))
         fields.append(
             f'{{:answer-field/id {uuid_edn(ident("field", f"{qkey}:1"))} '
-            f':answer-field/key "selection" :answer-field/answer-choices [{" ".join(choices)}]}}'
+            f':answer-field/key "selection" :answer-field/type :answer-field.type/radio '
+            f':answer-field/choices [{" ".join(choices)}]}}'
         )
     elif kind == "free-response":
         for index, _ in enumerate(question["free_entry_blanks"], 1):
             fields.append(
                 f'{{:answer-field/id {uuid_edn(ident("field", f"{qkey}:{index}"))} '
-                f':answer-field/key "field-{index}"}}'
+                f':answer-field/key "field-{index}" :answer-field/type :answer-field.type/blank}}'
             )
     else:
         for index, select in enumerate(question["select_lists"], 1):
             choices = []
+            seen = set()
             for cindex, option in enumerate(select["options"], 1):
                 representation, value = readable_value(option["readable_text"], topic)
+                if (representation, value) in seen:
+                    continue
+                seen.add((representation, value))
                 choices.append(answer_map(ident("answer", f"{qkey}:{index}:{cindex}"), representation, value))
             fields.append(
                 f'{{:answer-field/id {uuid_edn(ident("field", f"{qkey}:{index}"))} '
-                f':answer-field/key "field-{index}" :answer-field/answer-choices [{" ".join(choices)}]}}'
+                f':answer-field/key "field-{index}" :answer-field/type :answer-field.type/select '
+                f':answer-field/choices [{" ".join(choices)}]}}'
             )
     assert fields, (topic, qid)
     pieces = [
         f':db/id {ref("question", qkey)}',
         f':question/id {uuid_edn(q_uuid)}',
-        f':question/type :question.type/{types[kind]}',
+        ':question/is-example false',
         f':question/problem {string(problem)}',
         f':question/answer-fields [{" ".join(fields)}]',
     ]
     if qid not in duplicates:
-        pieces.insert(2, f':question/math-academy-id {qid}')
+        pieces.insert(2, f':question/math-academy-id {string("q-" + qid)}')
     if question["calculator_instructions"]["readable_text"].strip():
         pieces.insert(-1, ':question/requires-calculator true')
     # The source does not establish correct answers, so field/question specs are
@@ -214,7 +220,11 @@ def step_blocks(markdown, steps):
 
 
 def main():
-    OUTPUT.mkdir(parents=True, exist_ok=True)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, default=OUTPUT)
+    args = parser.parse_args()
+    output = args.output
+    output.mkdir(parents=True, exist_ok=True)
     sources = sorted(LESSONS.glob("*/Source/*.json"), key=lambda path: int(path.stem))
     assert len(sources) == 2964
     all_questions = source_rows("Lesson-Data/Questions.csv")
@@ -270,17 +280,20 @@ def main():
                 assert match and match[1].strip() and match[2].strip(), (topic, sid)
                 problem, explanation = (markdown_images(part.strip(), topic) for part in match.groups())
                 key = sid if ("example", cid) in duplicate_contents else cid
-                fields = [f':db/id {ref("example", key)}', f':example/id {uuid_edn(ident("example", key))}']
+                fields = [f':db/id {ref("example", key)}', f':question/id {uuid_edn(ident("example", key))}']
                 if ("example", cid) not in duplicate_contents:
-                    fields.append(f":example/math-academy-id {cid}")
-                fields.extend([f':example/problem {string(problem)}', f':example/explanation {string(explanation)}', ':db/ensure :example/validate'])
+                    fields.append(f':question/math-academy-id {string("e-" + cid)}')
+                fields.extend([':question/is-example true', f':question/problem {string(problem)}',
+                               f':question/worked-solution {string(explanation)}', ':db/ensure :question/validate'])
                 chunk.append(" {" + " ".join(fields) + "}")
                 totals["examples"] += 1
         for question, block in zip(questions, qblocks):
-            chunk.append(question_form(question, block, topic, duplicate_questions))
+            form = question_form(question, block, topic, duplicate_questions)
+            chunk.append(form)
             totals["questions"] += 1
             totals["fields"] += 1 if question["question_format"] == "multiple-choice" else len(question["free_entry_blanks"] or question["select_lists"])
             totals["choices"] += len(question["choices"]) + sum(len(s["options"]) for s in question["select_lists"])
+            totals["emitted_choices"] += form.count(':answer/id ')
         kp_refs = []
         for step in steps:
             if step["step_type"] != "example":
@@ -298,7 +311,7 @@ def main():
                 f':db/id {ref("knowledge-point", sid)}',
                 f':knowledge-point/id {uuid_edn(ident("kp", sid))}',
                 f':knowledge-point/title {string(step["title"])}',
-                f':knowledge-point/example {ref("example", key)}',
+                f':knowledge-point/canonical-example {ref("example", key)}',
                 f':knowledge-point/questions [{" ".join(qrefs)}]',
                 ':db/ensure :knowledge-point/identity-validate',
             ]
@@ -334,7 +347,7 @@ def main():
         totals["lessons"] += 1
         if position % CHUNK_TOPICS == 0 or position == len(sources):
             filename = f"lessons-{len(batches) + 1:04d}.edn"
-            path_out = OUTPUT / filename
+            path_out = output / filename
             path_out.write_text(
                 ";; Staged MA lesson import: answers are unverified; question/field specs are not ensured.\n[\n"
                 + "\n".join(chunk)
@@ -347,7 +360,7 @@ def main():
     assert totals["examples"] == totals["knowledge_points"] == 9636
     assert totals["questions"] == 19646
     assert totals["steps"] == 15652 and totals["lessons"] == 2964
-    (OUTPUT / "manifest.json").write_text(json.dumps({"totals": totals, "batches": batches, "duplicate_content_ids": sorted(map(str, duplicate_contents)), "duplicate_question_ids": sorted(duplicate_questions)}, indent=2) + "\n")
+    (output / "manifest.json").write_text(json.dumps({"totals": totals, "batches": batches, "duplicate_content_ids": sorted(map(str, duplicate_contents)), "duplicate_question_ids": sorted(duplicate_questions)}, indent=2) + "\n")
     print(dict(totals), "batches", len(batches), "largest", max(batch["bytes"] for batch in batches))
 
 
