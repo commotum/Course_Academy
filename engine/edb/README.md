@@ -4,7 +4,7 @@
 
 [progress.rs](progress.rs) implements the entity predicates named in the EDN. `valid-profile?` checks that every member has an ID, a real topic, exactly this learner as owner, and a distinct topic within the profile. An empty profile is valid. `valid-progress?` checks that the record has exactly one owner, checks that owner's profile, validates finite retention/accuracy/mass values, and requires a real policy target. This also catches topic changes that create duplicates.
 
-Register these callbacks with `register_progress_predicates` in a `TxFunctions` registry supplied to `Database::with_forms`. For a durable writer, register the same checks using EDB's `NativeRegistryBuilder::entity_predicate` with cooperative cancellation; that writer integration remains to be implemented.
+Register these callbacks with `register_progress_predicates` in a `TxFunctions` registry supplied to `Database::with_forms`. The durable [Course Academy transactor](transactor.rs) registers the same checks in EDB's native registry.
 
 On progress writes, request `:db/ensure :progress/validate`. On membership changes, request `:db/ensure :learner/validate` for affected learners and `:progress/validate` for affected surviving progress records, including detached records. Create the learner link and progress in the same transaction. To remove progress, retract the component entity; to transfer it, retract the old link and assert the new link atomically. A learner deletion cascades to its progress.
 
@@ -22,7 +22,7 @@ Ensure `policy/validate` for complete configurations, defined in [1-fire-policy.
 
 Ensure `topic/difficulty-validate` for a difficulty update: it requires topic identity and a finite value in [0,1]. `topic/validate` invokes the same predicate while allowing absent difficulty. Identity-only imports can use `topic/identity-validate`. Difficulty methods, counts, cohorts, and cutoff attributes were removed from the schema.
 
-A future difficulty estimator must select eligible direct assessment evidence and avoid duplicate counting. Only its resulting topic difficulty is currently modeled. Use EDB CAS or a basis guard for read-compute-write updates; the estimator and durable writer are not implemented.
+A future difficulty estimator must select eligible direct assessment evidence and avoid duplicate counting. Only its resulting topic difficulty is currently modeled. Use EDB CAS or a basis guard for read-compute-write updates; the estimator is not implemented.
 
 The engine reads authoritative `topic/difficulty`; if absent, it uses `policy/initial-accuracy`. To inspect a past progress state, use `as_of` at the transaction that wrote it and resolve `progress/policy` and its parameters in that same historical database value. Reading the policy's current values would not recover the settings used then. Retain the relevant history. Editing policy parameters does not rewrite stored `progress/interval-days`; the interval remains in effect until the engine explicitly recomputes it, with no automatic bulk rescheduling.
 
@@ -58,7 +58,7 @@ cargo test
 bash tests/check_rust_edb.sh
 ```
 
-The native harness uses the sibling EDB release build (or `EDB_ROOT`). It installs current schema EDNs, excluding proposed sequence transaction data, captures actual EDB entities and status history, runs the Rust completion handler directly, and applies its transaction EDN back through EDB. It checks policy history, numeric/ownership guards, status completion CAS, pause/resume timing, and protection of canonical answer choices during task deletion. No Python process participates in this path.
+The native harness uses the sibling EDB release build (or `EDB_ROOT`). It installs current schema EDNs, excluding curriculum seed transactions, and checks policy history and numeric/ownership guards. Its activity fixture still uses the retired `assessment/*` schema and currently stops there with `schema/unknown-attribute`. Migrating that fixture and the runtime to generic `activity/*` and `step/*` is separate engine work; do not treat this harness as passing until then. No Python process participates in this path.
 
 The plan's `compare_basis_t` must be submitted through `TransactionRequest::comparing_basis`, together with its stable `request_key`. Item CAS alone cannot detect a concurrently changed graph, policy, or another task's progress update. Retain the original plan for an uncertain submission or exact retry. The in-memory harness checks emitted transactions and native request construction; it does not exercise a deployed durable transactor's retry/basis-conflict path.
 

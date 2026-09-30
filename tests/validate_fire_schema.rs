@@ -32,8 +32,24 @@ fn main() -> Result<(), Box<dyn Error>> {
             .filter_map(Result::ok)
             .map(|e| e.path())
             .filter(|p| p.extension().is_some_and(|e| e == "edn"))
-            // Proposed seed transactions are reviewed separately from schema installation.
-            .filter(|p| p.file_name().is_none_or(|n| n != "1-2-sequences.edn"))
+            // Seed transactions are applied after schema installation.
+            .filter(|p| {
+                let seed_files = [
+                    "1-2-sequences.edn",
+                    "2-3-courses.edn",
+                    "2-4-self-directed-course.edn",
+                    "3-2-units.edn",
+                    "3-3-course-units.edn",
+                    "4-2-modules.edn",
+                    "4-3-unit-modules.edn",
+                    "5-3-topics.edn",
+                    "5-4-module-topics.edn",
+                    "5-5-prerequisites.edn",
+                ];
+                p.file_name()
+                    .and_then(|n| n.to_str())
+                    .is_none_or(|n| !seed_files.contains(&n))
+            })
             .collect::<Vec<_>>();
         paths.sort();
         for path in paths {
