@@ -7,7 +7,10 @@ python3 scripts/serve_graph_explorer.py
 ```
 
 Open [Study](http://127.0.0.1:8765/home) for the next five eligible lessons, or
-the [knowledge graph](http://127.0.0.1:8765/). Lessons present one item at a time
+the [course outline and progress](http://127.0.0.1:8765/course), or the
+[knowledge graph](http://127.0.0.1:8765/). Course pages read curriculum metadata
+and repetition values from EDB; browsing them leaves the study course unchanged.
+Lessons present one item at a time
 and save responses, active elapsed time, XP, and FIRe progress to EDB. The current
 queue serves lessons; review and assessment scheduling is not yet connected to
 this interface. Content without a supported grader or sufficient practice is

@@ -7,6 +7,8 @@ The native reader is built against EDB_ROOT (defaults to the adjacent EDB repo)
 and existing serde_json build artifacts from this repository or EDB_ROOT.
 The learner helper uses the release engine and the existing local EDB writer.
 Open /home for the queue and /learn?taskId=... for a saved lesson attempt.
+Open /course?course=... for a course outline and the learner's topic progress.
+Open /topic?topic=... for tutorials and worked examples without starting a lesson.
 """
 
 from __future__ import annotations
@@ -150,8 +152,9 @@ def build_reader(edb_root: Path) -> Path:
             break
     if serde is None:
         raise RuntimeError("Missing serde_json build artifact; run `cargo build --lib --offline` in this repository first.")
-    inputs = (SOURCE, libraries[0], serde)
-    fingerprint = hashlib.sha256(b"optimized-reader-v1" + SOURCE.read_bytes() + repr([
+    sources = (SOURCE, ROOT / "scripts/topic_reader.rs")
+    inputs = (*sources, libraries[0], serde)
+    fingerprint = hashlib.sha256(b"optimized-reader-v1" + b"".join(path.read_bytes() for path in sources) + repr([
         (str(path), path.stat().st_size, path.stat().st_mtime_ns) for path in inputs
     ]).encode()).hexdigest()[:16]
     output = ROOT / ".local" / "graph-explorer" / f"reader-{fingerprint}"
@@ -280,20 +283,42 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     self.send_bytes(200, asset.read_bytes(), IMAGE_TYPES[asset.suffix.lower()], cache=True)
             elif path in ("/home", "/learn"):
                 self.send_bytes(200, (ROOT / "ui/Learning.html").read_bytes(), "text/html; charset=utf-8")
+            elif path in ("/course", "/courses"):
+                self.send_bytes(200, (ROOT / "ui/Course.html").read_bytes(), "text/html; charset=utf-8")
+            elif path == "/topic":
+                self.send_bytes(200, (ROOT / "ui/Topic.html").read_bytes(), "text/html; charset=utf-8")
             elif path.startswith("/ui/") and path != "/ui/Math-Academy-Graph-Explorer.html":
                 asset = (ROOT / path.lstrip("/")).resolve()
-                allowed = {"learning.js", "learning.css", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "navigation.js", "navigation.css"}
+                allowed = {"learning.js", "learning.css", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css"}
                 if not asset.is_relative_to((ROOT / "ui").resolve()) or not asset.is_file() or not (asset.name in allowed or asset.is_relative_to((ROOT / "ui/vendor").resolve())):
                     self.send_bytes(404, b"Not found", "text/plain")
                 else:
                     self.send_bytes(200, asset.read_bytes(), mimetypes.guess_type(asset)[0] or "application/octet-stream", cache=True)
-            elif path == "/api/graph-explorer":
+            elif path in ("/api/graph-explorer", "/api/course", "/api/topic"):
                 if self.headers.get("Sec-Fetch-Site") == "cross-site":
                     self.send_bytes(403, b"Forbidden", "text/plain; charset=utf-8")
                     return
                 try:
-                    result = graph_worker.request({})
+                    request = {}
+                    if path == "/api/course":
+                        request["action"] = "course"
+                        if "course" in query:
+                            if len(query["course"]) != 1 or len(query["course"][0]) > 128:
+                                self.send_bytes(400, b'{"error":"Provide one course identifier."}', "application/json; charset=utf-8")
+                                return
+                            request["courseId"] = query["course"][0]
+                    elif path == "/api/topic":
+                        identifiers = parse_qs(urlsplit(self.path).query, keep_blank_values=True).get("topic", [])
+                        if len(identifiers) != 1 or not identifiers[0] or len(identifiers[0]) > 128:
+                            self.send_bytes(400, b'{"error":"Provide one topic identifier."}', "application/json; charset=utf-8")
+                            return
+                        request = {"action": "topic", "topicId": identifiers[0]}
+                    result = graph_worker.request(request)
                     if not result.get("ok"):
+                        if result.get("code") == "not-found":
+                            label = "Topic" if path == "/api/topic" else "Course"
+                            self.send_bytes(404, json.dumps({"error": f"{label} not found.", "code": "not-found"}).encode(), "application/json; charset=utf-8")
+                            return
                         raise OSError("The graph reader could not capture current data")
                     self.send_bytes(200, json.dumps(result["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8", cache=True)
                 except (subprocess.SubprocessError, OSError, ValueError) as error:

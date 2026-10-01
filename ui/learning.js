@@ -57,6 +57,7 @@ function updateHeader(data) {
     $('courseTitle').textContent = data.course.title;
     $('courseLevel').textContent = levelName(data.course.level) || 'Your current course';
     $('graphLink').href = '/?course=' + encodeURIComponent(data.course.id);
+    $('courseLink').href = '/course?course=' + encodeURIComponent(data.course.id);
   }
 }
 async function api(path, body, options = {}) {
@@ -452,10 +453,10 @@ async function renderTask(data) {
 $('retryButton').addEventListener('click', () => retryOperation?.());
 $('homeLink').addEventListener('click', leaveTask);
 document.querySelector('.brand').addEventListener('click', leaveTask);
-$('graphLink').addEventListener('click', async event => {
+for (const link of [$('graphLink'), $('courseLink')]) link.addEventListener('click', async event => {
   event.preventDefault();
-  try { await explore($('graphLink').href); }
-  catch (error) { showError(error, () => $('graphLink').click()); }
+  try { await explore(link.href); }
+  catch (error) { showError(error, () => link.click()); }
 });
 createCoursePicker({
   getSnapshot: async () => {

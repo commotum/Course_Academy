@@ -246,7 +246,7 @@ button,input,select { font:inherit; }
 <div class="app">
 <header class="topbar site-header">
 <a class="brand" href="/home" aria-label="Study home"><img class="brand-logo" src="/ui/MA-Logo.svg" alt="" width="28" height="28"><span class="brand-copy"><b id="courseTitle">Loading courses</b><small id="courseLevel">Knowledge graph</small></span></a>
-<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/" id="graphLink" aria-current="page">Explore</a><button id="courseBrowse" class="course-trigger" type="button" aria-haspopup="dialog" disabled><span>Search</span><kbd>⌘ K</kbd></button></nav>
+<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/course" id="courseLink">Course</a><a href="/" id="graphLink" aria-current="page">Explore</a><button id="courseBrowse" class="course-trigger" type="button" aria-haspopup="dialog" disabled><span>Search</span><kbd>⌘ K</kbd></button></nav>
 <span id="learnerName" class="learner-name"></span>
 </header>
 <div class="main">
@@ -1511,6 +1511,8 @@ import { createCoursePicker } from "/ui/navigation.js";
     $('courseTitle').textContent=course?.title||'All topics';
     $('courseTitle').title=course?.title||'All topics';
     $('courseLevel').textContent=course?levelLabel(course.level):'Knowledge graph';
+    $('courseLink').href=course?'/course?course='+encodeURIComponent(course.id):'/course';
+    $('graphLink').href='/?course='+encodeURIComponent(courseId||'all');
     document.title=(course?.title||'All topics')+' · Course Explorer';
     $('overviewBtn').textContent=course?'Course overview':'Full graph';
     const startersHost=$('starterButtons');titleReaderboards.clear(startersHost);startersHost.replaceChildren();
@@ -1521,7 +1523,7 @@ import { createCoursePicker } from "/ui/navigation.js";
       const btn=document.createElement('button');btn.className='pill';titleReaderboards.set(btn,n.name);
       btn.setAttribute('aria-label',n.name);btn.onclick=event=>setSelected(n.id,true,event.shiftKey);startersHost.appendChild(btn);
     });
-    if(starters.length){state.selected=starters[0].id;state.activeIds.add(state.selected);state.mode='both';remember();}
+    remember();
     if(updateURL){const url=new URL(location.href);url.searchParams.set('course',courseId||'all');url.searchParams.delete('topic');history.replaceState(null,'',url);}
     resize();redraw(true);
   }
