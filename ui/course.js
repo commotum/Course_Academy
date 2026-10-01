@@ -374,7 +374,7 @@ function renderCourse(data, focus, previousView) {
   $('courseTitle').textContent = course.title; $('courseTitle').title = course.title;
   $('courseLevel').textContent = levelName(course.level) || 'Course';
   $('learnerName').textContent = data.learner?.name || '';
-  $('courseLink').href = courseURL(course.id); $('graphLink').href = graphURL(course.id);
+  $('courseLink').href = courseURL(course.id);
   document.title = `Progress · ${course.title} · Course Academy`;
   const stats = statistics(course.units.flatMap(unitTopics));
   const unitIds = course.units.map((unit, index) => 'unit-' + (index + 1));
@@ -422,7 +422,7 @@ async function loadCourse(focus = false) {
   if (window.MathJax?.typesetClear) MathJax.typesetClear([$('main')]);
   $('main').replaceChildren(el('p', 'loading', 'Loading progress…'));
   $('courseTitle').textContent = 'Course Academy'; $('courseTitle').removeAttribute('title');
-  $('courseLevel').textContent = 'Progress'; $('graphLink').href = '/'; $('courseLink').href = '/progress';
+  $('courseLevel').textContent = 'Progress'; $('courseLink').href = '/progress';
   document.title = 'Progress · Course Academy';
   try {
     if (id !== null && !/^(?:[1-9]\d*|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i.test(id)) {
@@ -445,7 +445,7 @@ const picker = createCoursePicker({
     return curriculumSnapshot;
   },
   getCourseId: () => currentCourseId,
-  onSelectCourse: course => course.id ? navigate(course.id) : location.assign(graphURL(null)),
+  onSelectCourse: course => navigate(course.id),
   onSelectTopic: async topic => {
     const snapshot = await curriculumSnapshot;
     const containing = snapshot.courses.filter(course => course.topicIds.includes(Number(topic.id)));

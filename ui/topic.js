@@ -214,7 +214,7 @@ function renderTopic(data) {
   $('courseTitle').textContent = course?.title || 'Course Academy'; $('courseTitle').title = course?.title || 'Course Academy';
   $('courseLevel').textContent = course ? levelName(course.level) : 'Topic';
   $('learnerName').textContent = data.learner?.name || '';
-  $('courseLink').href = courseURL(currentCourseId); $('graphLink').href = graphURL(currentCourseId);
+  $('courseLink').href = courseURL(currentCourseId);
   document.title = `Topic · ${data.topic.title} · Course Academy`;
   let exampleNumber = 0;
   const sections = data.sections.filter(section => ['tutorial', 'example'].includes(section.kind)).map((section, index) => {
@@ -280,7 +280,7 @@ const picker = createCoursePicker({
     return curriculumSnapshot;
   },
   getCourseId: () => currentCourseId,
-  onSelectCourse: course => location.assign(course.id ? courseURL(course.id) : graphURL(null)),
+  onSelectCourse: course => location.assign(courseURL(course.id)),
   onSelectTopic: async topic => {
     const snapshot = await curriculumSnapshot;
     const containing = snapshot.courses.filter(course => course.topicIds.some(id => String(id) === String(topic.id)));

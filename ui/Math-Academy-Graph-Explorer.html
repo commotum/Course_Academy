@@ -247,7 +247,7 @@ button,input,select { font:inherit; }
 <div class="app">
 <header class="topbar site-header">
 <a class="brand" href="/home" aria-label="Study home"><img class="brand-logo" src="/ui/MA-Logo.svg" alt="" width="28" height="28"><span class="brand-copy"><b id="courseTitle">Loading courses</b><small id="courseLevel">Knowledge graph</small></span></a>
-<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/progress" id="courseLink">Progress</a><a href="/" id="graphLink" aria-current="page">Explore</a><button id="courseBrowse" class="course-trigger" type="button" aria-haspopup="dialog" disabled><span>Search</span><kbd>⌘ K</kbd></button></nav>
+<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/progress" id="courseLink">Progress</a><button id="courseBrowse" class="explore-trigger" type="button" aria-haspopup="dialog">Explore</button></nav>
 <span id="learnerName" class="learner-name"></span>
 </header>
 <div class="main">
@@ -306,7 +306,7 @@ button,input,select { font:inherit; }
 <button id="manualNodeDone" class="pill" type="button">Done</button>
 </dialog>
 <script type="module">
-import { createCoursePicker } from "/ui/navigation.js";
+import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
 
 (() => {
   const NODES = [], LINKS = [];
@@ -1513,7 +1513,6 @@ import { createCoursePicker } from "/ui/navigation.js";
     $('courseTitle').title=course?.title||'All topics';
     $('courseLevel').textContent=course?levelLabel(course.level):'Knowledge graph';
     $('courseLink').href=course?'/progress?course='+encodeURIComponent(course.id):'/progress';
-    $('graphLink').href='/?course='+encodeURIComponent(courseId||'all');
     document.title='Explore · '+(course?.title||'All topics')+' · Course Academy';
     $('overviewBtn').textContent=course?'Course overview':'Full graph';
     const startersHost=$('starterButtons');titleReaderboards.clear(startersHost);startersHost.replaceChildren();
@@ -1543,8 +1542,8 @@ import { createCoursePicker } from "/ui/navigation.js";
       return snapshot;
     },
     getCourseId: () => courseId,
-    onSelectCourse: course => changeCourse(course.id),
-    onSelectTopic: exploreTopic,
+    onSelectCourse: course => location.assign('/progress?course=' + encodeURIComponent(course.id)),
+    onSelectTopic: topic => location.assign(topicReferenceURL(snapshot, topic, courseId)),
   });
 
   let loading=false;

@@ -73,6 +73,10 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
         "course/code",
         "course/level",
         "course/units",
+        "course/next",
+        "sequence/id",
+        "sequence/title",
+        "sequence/courses",
         "unit/modules",
         "module/topics",
         "learner/id",
@@ -87,7 +91,13 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
             // Optional schema additions may not yet be installed.
             if matches!(
                 attr,
-                "course/level" | "course/code" | "topic/math-academy-id"
+                "course/level"
+                    | "course/code"
+                    | "topic/math-academy-id"
+                    | "sequence/id"
+                    | "sequence/title"
+                    | "sequence/courses"
+                    | "course/next"
             ) {
                 continue;
             }
@@ -168,6 +178,7 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
             .map(|ident| ident.qualified_name());
         courses.push(json!({
             "id": id,
+            "kind": "course",
             "title": text(&facts, eid, "course/title").unwrap_or_else(|| format!("Untitled course {eid}")),
             "level": level,
             "code": text(&facts, eid, "course/code"),
@@ -180,6 +191,33 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
             .cmp(&b["title"].as_str())
             .then_with(|| a["id"].as_str().cmp(&b["id"].as_str()))
     });
+    let mut sequences = Vec::new();
+    for eid in facts.keys().copied() {
+        let Some(id) = uuid(&facts, eid, "sequence/id") else {
+            continue;
+        };
+        let members = ordered_members(&facts, refs(&facts, eid, "sequence/courses"), "course")?;
+        let course_ids = members
+            .iter()
+            .map(|course| required_uuid(&facts, *course, "course/id"))
+            .collect::<Result<Vec<_>>>()?;
+        let membership: BTreeSet<_> = courses
+            .iter()
+            .filter(|course| {
+                course["id"]
+                    .as_str()
+                    .is_some_and(|id| course_ids.iter().any(|member| member == id))
+            })
+            .filter_map(|course| course["topicIds"].as_array())
+            .flatten()
+            .filter_map(Json::as_u64)
+            .collect();
+        sequences.push(json!({
+            "id": id, "kind": "sequence", "title": title(&facts, eid, "sequence"),
+            "courseIds": course_ids, "topicIds": membership,
+        }));
+    }
+    sequences.sort_by(|a, b| a["title"].as_str().cmp(&b["title"].as_str()));
     let mut repetitions = BTreeMap::new();
     for progress in refs(&facts, learner_eid, "learner/knowledge-profile") {
         let Some(Value::Ref(topic)) = scalar(&facts, progress, "progress/topic") else {
@@ -205,22 +243,20 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
         .first()
         .and_then(|eid| uuid(&facts, *eid, "course/id"));
     Ok(json!({
-        "basis": db.basis_t(), "courses": courses, "nodes": nodes, "links": links,
+        "basis": db.basis_t(), "courses": courses, "sequences": sequences, "nodes": nodes, "links": links,
         "learner": {"id": learner_id, "name": text(&facts, learner_eid, "learner/name"), "courseId": course_id},
         "repetitions": repetitions,
     }))
 }
 
 fn course_facts(db: &DatabaseValue) -> Result<Facts> {
-    // Keep the graph's existing projection and cold-read cost unchanged. Course
-    // requests read only curriculum metadata and the learner's current profile.
+    // Add course-page metadata to the shared curriculum projection.
     let mut facts = project(db)?;
     for attr in [
         "course/math-academy-id",
         "course/description",
         "course/overview",
         "course/outcomes",
-        "course/next",
         "course-outcome/id",
         "course-outcome/index",
         "course-outcome/category",
@@ -231,9 +267,6 @@ fn course_facts(db: &DatabaseValue) -> Result<Facts> {
         "module/id",
         "module/title",
         "module/next",
-        "sequence/id",
-        "sequence/title",
-        "sequence/courses",
         "progress/learned",
     ] {
         let (ns, name) = attr.split_once('/').unwrap();
@@ -721,7 +754,12 @@ mod tests {
             fact(&mut facts, unit, "unit/modules", Value::Ref(module));
         }
         for (module, topic) in [
-            (20, 101), (20, 102), (21, 101), (21, 103), (21, 104), (21, 105),
+            (20, 101),
+            (20, 102),
+            (21, 101),
+            (21, 103),
+            (21, 104),
+            (21, 105),
         ] {
             fact(&mut facts, module, "module/topics", Value::Ref(topic));
         }

@@ -1,5 +1,5 @@
 import { marked } from './vendor/marked/marked.esm.js';
-import { createCoursePicker } from './navigation.js';
+import { createCoursePicker, topicReferenceURL } from './navigation.js';
 
 const $ = id => document.getElementById(id);
 const terminal = status => ['completed', 'failed'].includes(status);
@@ -60,10 +60,8 @@ function updateHeader(data) {
     currentCourseId = data.course.id;
     setText('courseTitle', data.course.title);
     setText('courseLevel', levelName(data.course.level) || 'Your current course');
-    for (const [id, path] of [['graphLink', '/?course='], ['courseLink', '/progress?course=']]) {
-      const href = path + encodeURIComponent(data.course.id);
-      if ($(id).getAttribute('href') !== href) $(id).setAttribute('href', href);
-    }
+    const href = '/progress?course=' + encodeURIComponent(data.course.id);
+    if ($('courseLink').getAttribute('href') !== href) $('courseLink').setAttribute('href', href);
     // Only learning responses supply this cache: browsing another course must
     // never replace the learner's designated study-course header.
     try {
@@ -485,10 +483,10 @@ async function renderTask(data) {
 $('retryButton').addEventListener('click', () => retryOperation?.());
 $('homeLink').addEventListener('click', leaveTask);
 document.querySelector('.brand').addEventListener('click', leaveTask);
-for (const link of [$('graphLink'), $('courseLink')]) link.addEventListener('click', async event => {
+$('courseLink').addEventListener('click', async event => {
   event.preventDefault();
-  try { await explore(link.href); }
-  catch (error) { showError(error, () => link.click()); }
+  try { await explore($('courseLink').href); }
+  catch (error) { showError(error, () => $('courseLink').click()); }
 });
 createCoursePicker({
   getSnapshot: async () => {
@@ -496,8 +494,8 @@ createCoursePicker({
     return curriculumSnapshot;
   },
   getCourseId: () => currentCourseId,
-  onSelectCourse: course => explore('/?course=' + encodeURIComponent(course.id || 'all')),
-  onSelectTopic: topic => explore('/?course=all&topic=' + encodeURIComponent(topic.id)),
+  onSelectCourse: course => explore('/progress?course=' + encodeURIComponent(course.id)),
+  onSelectTopic: async topic => explore(topicReferenceURL(await curriculumSnapshot, topic, currentCourseId)),
 });
 window.addEventListener('popstate', () => {
   const id = new URL(location.href).searchParams.get('taskId');

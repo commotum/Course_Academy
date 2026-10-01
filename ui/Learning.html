@@ -15,7 +15,7 @@
 <body>
   <header class="topbar site-header">
     <a class="brand" href="/home" aria-label="Study home"><img class="brand-logo" src="/ui/MA-Logo.svg" alt="" width="28" height="28"><span class="brand-copy"><b id="courseTitle">Course Academy</b><small id="courseLevel">Study</small></span></a>
-    <nav aria-label="Main navigation"><a href="/home" id="homeLink" aria-current="page">Study</a><a href="/progress" id="courseLink">Progress</a><a href="/" id="graphLink">Explore</a><button id="courseBrowse" class="course-trigger" type="button" aria-haspopup="dialog"><span>Search</span><kbd>⌘ K</kbd></button></nav>
+    <nav aria-label="Main navigation"><a href="/home" id="homeLink" aria-current="page">Study</a><a href="/progress" id="courseLink">Progress</a><button id="courseBrowse" class="explore-trigger" type="button" aria-haspopup="dialog">Explore</button></nav>
     <span id="learnerName" class="learner-name"></span>
   </header>
   <script>
@@ -24,7 +24,6 @@
       const header = JSON.parse(sessionStorage.getItem('course-academy.study-header'));
       if (header && ['courseId', 'courseTitle', 'courseLevel', 'learnerName'].every(key => typeof header[key] === 'string')) {
         for (const id of ['courseTitle', 'courseLevel', 'learnerName']) document.getElementById(id).textContent = header[id];
-        document.getElementById('graphLink').href = '/?course=' + encodeURIComponent(header.courseId);
         document.getElementById('courseLink').href = '/progress?course=' + encodeURIComponent(header.courseId);
       }
     } catch { /* Storage can be unavailable; the normal API response fills the header. */ }
