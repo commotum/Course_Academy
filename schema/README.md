@@ -11,7 +11,6 @@ data/
   2-1-course.edn
   2-2-course-outcome.edn
   2-3-courses.edn         # Math Academy course seed data
-  2-4-self-directed-course.edn # locally authored course seed data
   3-unit.edn
   3-2-units.edn          # seed data
   3-3-course-units.edn   # membership links
@@ -46,7 +45,7 @@ engine/
   1-fire-policy.edn
 ```
 
-The [course transactions](data/2-3-courses.edn) import all 32 identities from `MA/DATA/Courses.csv` and their descriptions, overviews, and outcomes from `MA/DATA/Course-Maps`. [Course-unit links](data/3-3-course-units.edn) complete their required membership. The [sequence transactions](data/1-2-sequences.edn) group courses into ten study routes and add navigation links. Sequence membership does not change topic prerequisites or learner progress. [Self-Directed](data/2-4-self-directed-course.edn) is a locally authored course record without an invented unit hierarchy; it currently uses the identity spec.
+The [course transactions](data/2-3-courses.edn) import all 32 identities from `MA/DATA/Courses.csv` and their descriptions, overviews, and outcomes from `MA/DATA/Course-Maps`. [Course-unit links](data/3-3-course-units.edn) complete their required membership. The [sequence transactions](data/1-2-sequences.edn) group courses into eleven study routes and add navigation links. Sequence membership does not change topic prerequisites or learner progress. The Self-Directed sequence groups Mathematical Foundations I, II, and III, Linear Algebra, Multivariable Calculus, and Differential Equations.
 
 The PostgreSQL-backed EDB database `course-academy-v2` uses the revised content model. It was built from the current reconciled records in `course-academy` at basis 143, preserving corrected content and answer keys. The original database and its backup remain intact. It contains 315 units, 1,122 modules, 2,971 named MA topics plus four prerequisite-only placeholders, 9,636 knowledge points, 6,016 tutorials, 9,636 worked examples, 19,646 practice questions, and 2,964 lesson activities. Worked examples and practice questions share `question/id`; `question/is-example` distinguishes them. Their optional `question/math-academy-id` values use `e-` and `q-` prefixes. Seven catalog topics have no captured lesson.
 

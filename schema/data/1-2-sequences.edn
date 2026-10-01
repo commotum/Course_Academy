@@ -2,7 +2,7 @@
 ;; Install the schemas and import these courses from /home/jake/Developer/MA/DATA/Courses.csv first.
 ;; Source comparison: https://www.mathacademy.com/courses and sequences-graphs/.
 ;;
-;; These ten learner-facing sequences group existing courses without duplicating them.
+;; These eleven learner-facing sequences group existing courses without duplicating them.
 ;; 6th Grade Math and Mathematics for Machine Learning remain courses outside these groups.
 ;; 7th and 8th Grade Math have no entries in our local course CSV; this draft omits them.
 ;; No course level or placeholder courses are needed.
@@ -50,6 +50,17 @@
   :sequence/courses [[:course/math-academy-id 113]           ; Mathematical Foundations I
                     [:course/math-academy-id 111]            ; Mathematical Foundations II
                     [:course/math-academy-id 136]]           ; Mathematical Foundations III
+ :db/ensure :sequence/validate}
+
+ ;; Foundations I -> II -> III -> Linear Algebra -> Multivariable Calculus -> Differential Equations.
+ {:sequence/id #uuid "c3114cbf-27f6-4780-9cab-02358ba26fbe"
+  :sequence/title "Self-Directed"
+  :sequence/courses [[:course/math-academy-id 113]           ; Mathematical Foundations I
+                    [:course/math-academy-id 111]            ; Mathematical Foundations II
+                    [:course/math-academy-id 136]            ; Mathematical Foundations III
+                    [:course/math-academy-id 55]             ; Linear Algebra
+                    [:course/math-academy-id 54]             ; Multivariable Calculus
+                    [:course/math-academy-id 61]]            ; Differential Equations
   :db/ensure :sequence/validate}
 
  ;; SAT Math Fundamentals -> SAT Math Prep.
