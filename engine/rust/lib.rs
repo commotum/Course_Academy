@@ -6,6 +6,7 @@ pub mod calibration;
 pub mod core;
 pub mod graph_snapshots;
 pub mod history;
+pub mod learning;
 pub mod live_history;
 pub mod replay;
 pub mod runtime;

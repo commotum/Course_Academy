@@ -20,12 +20,16 @@ if ((${#libraries[@]} != 1)); then
     echo "Expected one release edb_core library under $edb_root/target/release/deps" >&2
     exit 1
 fi
-rustc --edition=2024 "$root/engine/edb/transactor.rs" \
+writer_binary="$root/.local/edb/course-academy-transactor"
+writer_staging="$writer_binary.tmp.$$"
+trap 'rm -f "$writer_staging"' EXIT
+rustc --edition=2024 -O "$root/engine/edb/transactor.rs" \
     --extern "edb_core=${libraries[0]}" \
     -L "dependency=$edb_root/target/release/deps" \
-    -o "$root/.local/edb/course-academy-transactor"
+    -o "$writer_staging"
+mv -f "$writer_staging" "$writer_binary"
 
 mkdir -p "$endpoint_dir"
 chmod 700 "$endpoint_dir"
 export EDB_POSTGRES_URL="host=$run_dir dbname=course_academy user=edb_writer sslmode=disable"
-exec "$root/.local/edb/course-academy-transactor" "$database" "$endpoint"
+exec "$writer_binary" "$database" "$endpoint"

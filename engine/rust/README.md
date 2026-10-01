@@ -4,7 +4,10 @@
 run without Python. The port preserves the existing engine's rules, including
 two correct answers in a row for lesson KPs, three for reviews, opt-in fitted XP,
 and completed diagnostic retries replacing the original placement evidence.
-The newer scheduling, XP, and grading proposals remain proposals.
+The study app uses `learning` for the current generic activity/step schema,
+lesson eligibility, response grading, lesson XP, and per-answer FIRe updates.
+Its durable EDB integration is in `scripts/learning_api.rs`. Review and
+assessment scheduling for that interface remains to be connected.
 
 ```bash
 cargo test
@@ -24,7 +27,10 @@ The library separates these responsibilities:
 - `schema`: hydrate an `EntitySnapshot` into a `LoadedRuntime` and construct
   guarded EDN transaction plans.
 - `runtime`: `complete_item`, `transition_item`, and `expire_task` validate activity progression and
-  prepare the corresponding state changes without changing the loaded input.
+  prepare the corresponding state changes for the older activity-specific
+  schemas without changing the loaded input.
+- `learning`: the current generic lesson delivery and grading path used by the
+  study app, including finite question banks and partial imported progress.
 - `replay`, `history`, `live_history`, and `graph_snapshots`: the existing local
   replay and evidence-analysis tools.
 
@@ -43,8 +49,8 @@ unanswered item and completes the task.
 Submit the returned `TransactionPlan.edn` with its `request_key` and
 `compare_basis_t` through EDB. Adopt the returned engine state only after a
 successful commit. A conflict requires reloading and recalculating; an uncertain
-submission requires retrying the original plan. Production writer integration
-and the full queue scheduler are unchanged application work.
+submission requires retrying the original plan. The study app's writer bridge
+implements these protections; the full queue scheduler remains application work.
 
 `fire request FILE` exposes the same boundary as JSON. Requests contain `op`
 (`complete_item`, `transition_item`, `expire_task`, or a numerical operation), an entity `snapshot`

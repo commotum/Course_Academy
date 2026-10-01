@@ -3,9 +3,9 @@ mod configuration;
 mod progress;
 
 use edb_core::{
-    postgres_config_from_env, BackgroundIndexingConfig, LocalTransactionServer,
-    LocalTransportConfig, NativeRegistry, RuntimeValue, SemanticError, Symbol,
-    TransactionExecutionOptions, TransactionService, TransactionServiceConfig, Value,
+    BackgroundIndexingConfig, LocalTransactionServer, LocalTransportConfig, NativeRegistry,
+    RuntimeValue, SemanticError, Symbol, TransactionExecutionOptions, TransactionService,
+    TransactionServiceConfig, Value, postgres_config_from_env,
 };
 use std::{error::Error, io::Write, time::Duration};
 
@@ -78,6 +78,18 @@ fn run() -> Result<(), Box<dyn Error>> {
         LocalTransportConfig::default(),
         endpoint,
     )?;
+    // Imports below EDB's automatic indexing threshold can still leave a large
+    // replay tail on every exact transaction-receipt read. Compact that tail
+    // in the normal background indexer when bringing this application online.
+    // This is physical maintenance; it does not create a learner transaction.
+    let backlog = service.background_indexing_stats();
+    if backlog.memory_index_bytes > 1024 * 1024 {
+        let requested = service.client().request_index()?;
+        println!(
+            "INDEX target={} scheduled={} backlog_bytes={}",
+            requested.target_t, requested.scheduled, backlog.memory_index_bytes
+        );
+    }
     println!("READY endpoint={}", server.endpoint().display());
     std::io::stdout().flush()?;
     let mut stop = String::new();

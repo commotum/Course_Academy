@@ -165,6 +165,39 @@ impl EntitySnapshot {
         crate::timing::validate_history(&mut snapshot)?;
         Ok(snapshot)
     }
+    /// Advance a captured projection with complete replacement records from a
+    /// newer database value. Callers must include every changed entity; this
+    /// is used after reading the authoritative transaction-log suffix.
+    pub fn replace_records(
+        &mut self,
+        replacements: BTreeMap<u64, Record>,
+        basis_t: u64,
+    ) -> Result<()> {
+        if basis_t < self.basis_t {
+            return Err("snapshot cannot move backwards".into());
+        }
+        let normalized = replacements
+            .into_iter()
+            .map(|(eid, record)| Ok((eid, normalize(&record)?)))
+            .collect::<Result<BTreeMap<_, _>>>()?;
+        // Enum/schema changes are rare and use a complete reconstruction.
+        // Refuse them here so the existing ident dictionary cannot go stale.
+        for (&eid, record) in &normalized {
+            if record.get("db/ident") != self.entities.get(&eid).and_then(|old| old.get("db/ident"))
+            {
+                return Err("ident changes require a complete snapshot".into());
+            }
+        }
+        for (eid, record) in normalized {
+            if record.is_empty() {
+                self.entities.remove(&eid);
+            } else {
+                self.entities.insert(eid, record);
+            }
+        }
+        self.basis_t = basis_t;
+        Ok(())
+    }
     pub fn eid(&self, v: &Value) -> Result<u64> {
         let v = v.get("$keyword").unwrap_or(v);
         let id = if let Some(s) = v.as_str() {
@@ -396,6 +429,33 @@ pub fn load_runtime(
     let mut edges = vec![];
     let mut difficulty = BTreeMap::new();
     let mut neighborhoods = BTreeMap::new();
+    // Snapshot hydration runs on the full content catalog. Build the few
+    // reverse relationships it needs once instead of scanning every answer and
+    // question again for each topic and progress record.
+    let mut reverse: BTreeMap<(&str, u64), Vec<u64>> = BTreeMap::new();
+    for (&owner, record) in &snapshot.entities {
+        for attr in [
+            "topic/encompasses",
+            "topic/next",
+            "module/topics",
+            "learner/performance",
+            "learner/knowledge-profile",
+            "learner/activity",
+        ] {
+            if record.contains_key(attr) {
+                let targets = if attr == "learner/performance" {
+                    snapshot.optional_ref(owner, attr)?.into_iter().collect()
+                } else {
+                    snapshot.refs(owner, attr)?
+                };
+                for target in targets {
+                    reverse.entry((attr, target)).or_default().push(owner);
+                }
+            }
+        }
+    }
+    let owners =
+        |target: u64, attr: &str| reverse.get(&(attr, target)).cloned().unwrap_or_default();
     for (&eid, id) in &topic_eid_to_id {
         if snapshot
             .refs(eid, "topic/next")?
@@ -411,7 +471,7 @@ pub fn load_runtime(
             );
         }
         for e in snapshot.refs(eid, "topic/encompasses")? {
-            if snapshot.owners(e, "topic/encompasses")? != vec![eid] {
+            if owners(e, "topic/encompasses") != vec![eid] {
                 return Err("encompassing record must have one source topic".into());
             }
             let target = snapshot.reference(e, "encompassing/topic")?;
@@ -432,18 +492,15 @@ pub fn load_runtime(
                 )?,
             });
         }
-        let mut neighbors: BTreeSet<_> = snapshot
-            // topic/next points from each prerequisite to its direct dependents.
-            .owners(eid, "topic/next")?
-            .into_iter()
-            .collect();
+        // topic/next points from each prerequisite to its direct dependents.
+        let mut neighbors: BTreeSet<_> = owners(eid, "topic/next").into_iter().collect();
         for kp in snapshot.refs(eid, "topic/knowledge-points")? {
             if !snapshot.types(kp)?.contains("knowledge-point") {
                 return Err("topic knowledge-points must reference knowledge points".into());
             }
             neighbors.extend(snapshot.refs(kp, "knowledge-point/key-prerequisites")?);
         }
-        for m in snapshot.owners(eid, "module/topics")? {
+        for m in owners(eid, "module/topics") {
             if !snapshot.types(m)?.contains("module") {
                 return Err("topic module owner must be module".into());
             }
@@ -471,7 +528,7 @@ pub fn load_runtime(
     )?;
     let performance_eid = snapshot.optional_ref(learner_eid, "learner/performance")?;
     if let Some(p) = performance_eid {
-        if snapshot.owners(p, "learner/performance")? != vec![learner_eid] {
+        if owners(p, "learner/performance") != vec![learner_eid] {
             return Err("global performance needs one learner owner".into());
         }
         engine.global_ability.insert(
@@ -481,7 +538,7 @@ pub fn load_runtime(
     }
     let mut progress_by_topic = BTreeMap::new();
     for p in snapshot.refs(learner_eid, "learner/knowledge-profile")? {
-        if snapshot.owners(p, "learner/knowledge-profile")? != vec![learner_eid] {
+        if owners(p, "learner/knowledge-profile") != vec![learner_eid] {
             return Err("progress needs one learner owner".into());
         }
         let state = snapshot.entity(p)?;
@@ -536,7 +593,7 @@ pub fn load_runtime(
         engine.seed(&learner, id, s)?;
     }
     for task in snapshot.refs(learner_eid, "learner/activity")? {
-        if snapshot.owners(task, "learner/activity")? != vec![learner_eid] {
+        if owners(task, "learner/activity") != vec![learner_eid] {
             return Err("learner task has multiple associations".into());
         }
         let members = snapshot.refs(task, "learner-task/items")?;
@@ -1046,7 +1103,7 @@ fn hash_pair(a: &str, b: &str) -> String {
     }
     format!("{:x}", Sha256::digest(escaped.as_bytes()))
 }
-fn writeback(
+pub(crate) fn writeback(
     loaded: &LoadedRuntime,
     engine: &FireEngine,
     mut forms: Vec<Value>,
@@ -1190,6 +1247,47 @@ fn writeback(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn replacing_projection_records_removes_retracted_attributes_and_deleted_entities() {
+        let mut snapshot = EntitySnapshot::from_json(&json!({
+            "basis_t": 10,
+            "entities": {
+                "1": {"db/ident": "task-item.status/started"},
+                "2": {"task-item/id": "two", "task-item/status": 1, "task-item/responses": [3]},
+                "3": {"answer/value": "old"}
+            }
+        }))
+        .unwrap();
+        snapshot
+            .replace_records(
+                BTreeMap::from([
+                    (
+                        2,
+                        json!({"task-item/id": "two", "task-item/status": 1})
+                            .as_object()
+                            .unwrap()
+                            .clone(),
+                    ),
+                    (3, Record::new()),
+                ]),
+                11,
+            )
+            .unwrap();
+        assert_eq!(snapshot.basis_t, 11);
+        assert!(!snapshot.entities[&2].contains_key("task-item/responses"));
+        assert!(!snapshot.entities.contains_key(&3));
+        assert_eq!(
+            snapshot.ident(&json!(1)).unwrap(),
+            "task-item.status/started"
+        );
+        assert!(
+            snapshot
+                .replace_records(BTreeMap::from([(1, Record::new())]), 12)
+                .is_err()
+        );
+        assert_eq!(snapshot.basis_t, 11);
+        assert!(snapshot.replace_records(BTreeMap::new(), 9).is_err());
+    }
     #[test]
     fn eid_and_basis_use_the_native_edb_unsigned_range() {
         let snapshot = EntitySnapshot::from_json(&json!({
