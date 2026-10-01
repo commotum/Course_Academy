@@ -8,6 +8,11 @@
   :db/unique :db.unique/identity
   :db/doc "Stable learner identity used by the FIRe engine; not a login credential."}
 
+ {:db/ident :learner/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "The learner's display name."}
+
  {:db/ident :learner/course
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
@@ -28,7 +33,7 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Owned, unordered collection of current progress records, one per topic. Find the learner through the reverse reference learner/_knowledge-profile. Ensure learner/validate when changing membership and progress/validate on each progress write. Retracting the learner also retracts these records, but not their shared topics."}
+  :db/doc "Owned, unordered collection of current progress records, one per topic. Find the learner through the reverse reference learner/_knowledge-profile. Ensure learner/validate when changing membership. Partial imports may contain only known progress facts; ensure progress/validate when writing complete operational state for the engine. Retracting the learner also retracts these records, but not their shared topics."}
 
  {:db/ident :learner/activity
   :db/valueType :db.type/ref
