@@ -19,13 +19,15 @@ main:focus { outline: none; }
 .course-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 64px; }
 .course-body { min-width: 0; max-width: 950px; }
 .course-sidebar { min-width: 0; }
-.sidebar-content { position: sticky; top: 28px; max-height: calc(100dvh - 56px); overflow: auto; scrollbar-width: thin; scrollbar-color: #444 transparent; padding: 0 10px 20px 0; }
+.sidebar-content { position: sticky; top: calc(var(--site-header-height) + 28px); max-height: calc(100dvh - var(--site-header-height) - 56px); overflow: auto; scrollbar-width: thin; scrollbar-color: #444 transparent; padding: 0 10px 20px 0; }
 .sidebar-label, .eyebrow, .section-label { color: var(--muted); font-size: 10px; font-weight: 400; text-transform: uppercase; letter-spacing: .14em; }
 .sidebar-label { margin: 0 0 16px; }
 .sequence { border-bottom: 1px solid var(--line); }
 summary::-webkit-details-marker { display: none; }
 .sequence-links { list-style: none; margin: 0 0 13px; padding: 0; }
-.sequence-links a { display: block; padding: 8px 10px 8px 13px; border-left: 1px solid #333; color: #999; font-size: 11px; line-height: 1.65; }
+.sequence-links a { display: grid; grid-template-columns: minmax(0, 1fr) max-content; align-items: start; gap: 10px; padding: 8px 10px 8px 13px; border-left: 1px solid #333; color: #999; font-size: 11px; line-height: 1.65; }
+.sequence-course-title { min-width: 0; }
+.sequence-course-percent { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .sequence-links a:hover { color: white; border-color: #aaa; }
 .sequence-links a[aria-current="page"] { color: white; border-color: white; background: #151515; }
 .unit-nav { margin-top: 33px; }
@@ -91,7 +93,7 @@ h1 { margin: 0 0 23px; font-size: clamp(30px, 3.5vw, 47px); line-height: 1.17; f
 .topic-filter { width: min(410px, 100%); background: #0c0c0c; border: 1px solid #3d3d3d; color: white; border-radius: 0; padding: 11px 13px; font-size: 11px; }
 .topic-filter::-webkit-search-cancel-button { filter: grayscale(1) brightness(2); }
 .filter-count { color: #999; font-size: 10px; white-space: nowrap; }
-.unit { border-top: 1px solid #4a4a4a; scroll-margin-top: 24px; }
+.unit { border-top: 1px solid #4a4a4a; scroll-margin-top: calc(var(--site-header-height) + 24px); }
 .unit:last-child { border-bottom: 1px solid #4a4a4a; }
 .unit > summary { display: grid; grid-template-columns: 32px minmax(0, 1fr) 15px; align-items: start; gap: 17px; padding: 25px 0; list-style: none; }
 .unit > summary:hover .unit-title { color: white; }

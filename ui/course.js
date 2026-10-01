@@ -46,11 +46,12 @@ function statistics(topics) {
   const completed = bands[6];
   return { total: unique.length, completed, tracked: unique.length - unknown, unknown, bands };
 }
-function completionLabel(stats) {
+function completionPercent(stats) {
   // Round down to one decimal so only an entirely completed group shows 100%.
   const percent = stats.total ? Math.floor(stats.completed * 1000 / stats.total) / 10 : 0;
-  return `${formatNumber(percent)}% complete`;
+  return `${formatNumber(percent)}%`;
 }
+function completionLabel(stats) { return `${completionPercent(stats)} complete`; }
 function completionSummary(stats) {
   return `${completionLabel(stats)} · ${formatNumber(stats.completed)} / ${formatNumber(stats.total)} topics`;
 }
@@ -151,7 +152,7 @@ async function api(path, signal) {
   }
   return result;
 }
-function courseURL(id) { return '/course' + (id ? '?course=' + encodeURIComponent(id) : ''); }
+function courseURL(id) { return '/progress' + (id ? '?course=' + encodeURIComponent(id) : ''); }
 function topicURL(topic, courseId) {
   return '/topic?topic=' + encodeURIComponent(topic.uuid || topic.mathAcademyId) + (courseId ? '&course=' + encodeURIComponent(courseId) : '');
 }
@@ -159,7 +160,14 @@ function graphURL(courseId, topicId) {
   return '/?course=' + encodeURIComponent(courseId || 'all') + (topicId === undefined ? '' : '&topic=' + encodeURIComponent(topicId));
 }
 function courseLink(course, className = '') {
-  const node = link(course.title, courseURL(course.id), className);
+  const node = link('', courseURL(course.id), className);
+  node.append(el('span', 'sequence-course-title', course.title));
+  if (course.completion) {
+    const percent = el('span', 'sequence-course-percent', completionPercent(course.completion));
+    percent.title = completionSummary(course.completion);
+    percent.setAttribute('aria-label', completionSummary(course.completion));
+    node.append(percent);
+  }
   if (course.id === currentCourseId) node.setAttribute('aria-current', 'page');
   node.addEventListener('click', event => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -177,8 +185,8 @@ function sidebar(data, unitIds) {
   const content = el('div', 'sidebar-content');
   const matchingSequences = (data.sequences || []).filter(sequence => sequence.courses.some(course => course.id === data.course.id));
   if (matchingSequences.length) {
-    const sequences = el('nav'); sequences.setAttribute('aria-label', 'Course sequences');
-    sequences.append(el('h2', 'sidebar-label', 'Course sequences'));
+    const sequences = el('nav'); sequences.setAttribute('aria-label', 'Course Sequence');
+    sequences.append(el('h2', 'sidebar-label', 'Course Sequence'));
     for (const sequence of matchingSequences) {
       const group = el('div', 'sequence');
       const list = el('ul', 'sequence-links');
@@ -367,7 +375,7 @@ function renderCourse(data, focus, previousView) {
   $('courseLevel').textContent = levelName(course.level) || 'Course';
   $('learnerName').textContent = data.learner?.name || '';
   $('courseLink').href = courseURL(course.id); $('graphLink').href = graphURL(course.id);
-  document.title = `${course.title} · Course Academy`;
+  document.title = `Progress · ${course.title} · Course Academy`;
   const stats = statistics(course.units.flatMap(unitTopics));
   const unitIds = course.units.map((unit, index) => 'unit-' + (index + 1));
   const layout = el('div', 'course-layout');
@@ -390,10 +398,10 @@ function renderCourse(data, focus, previousView) {
 }
 function renderError(error) {
   const section = el('section', 'empty-state'); section.setAttribute('role', 'alert');
-  section.append(el('h1', '', error.status === 404 || error.status === 400 ? 'Course not found' : 'Unable to load this course'), el('p', '', error.message));
+  section.append(el('h1', '', error.status === 404 || error.status === 400 ? 'Course not found' : 'Unable to load progress'), el('p', '', error.message));
   const actions = el('div', 'error-actions');
   if (error.status !== 400 && error.status !== 404) actions.append(button('Try again', 'small-button', () => loadCourse()));
-  const ownCourse = link('Your study course', '/course', 'small-button');
+  const ownCourse = link('Your study course', '/progress', 'small-button');
   ownCourse.addEventListener('click', event => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault(); void navigate(null);
@@ -412,10 +420,10 @@ async function loadCourse(focus = false) {
   currentCourseId = null;
   $('main').setAttribute('aria-busy', 'true');
   if (window.MathJax?.typesetClear) MathJax.typesetClear([$('main')]);
-  $('main').replaceChildren(el('p', 'loading', 'Loading course…'));
+  $('main').replaceChildren(el('p', 'loading', 'Loading progress…'));
   $('courseTitle').textContent = 'Course Academy'; $('courseTitle').removeAttribute('title');
-  $('courseLevel').textContent = 'Course'; $('graphLink').href = '/'; $('courseLink').href = '/course';
-  document.title = 'Course · Course Academy';
+  $('courseLevel').textContent = 'Progress'; $('graphLink').href = '/'; $('courseLink').href = '/progress';
+  document.title = 'Progress · Course Academy';
   try {
     if (id !== null && !/^(?:[1-9]\d*|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i.test(id)) {
       const error = new Error('The course address is invalid. Choose a course below or search the curriculum.'); error.status = 400; throw error;

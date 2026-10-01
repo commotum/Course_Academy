@@ -344,6 +344,25 @@ fn course_progress(facts: &Facts, learner_eid: u64) -> Result<TopicProgress> {
     Ok(progress)
 }
 
+fn course_completion(facts: &Facts, course_eid: u64, progress: &TopicProgress) -> (usize, usize) {
+    let mut topics = BTreeSet::new();
+    for unit in refs(facts, course_eid, "course/units") {
+        for module in refs(facts, unit, "unit/modules") {
+            topics.extend(refs(facts, module, "module/topics"));
+        }
+    }
+    let completed = topics
+        .iter()
+        .filter(|topic| {
+            progress
+                .get(topic)
+                .and_then(|(repetitions, _)| *repetitions)
+                .is_some_and(|repetitions| repetitions >= 6.0)
+        })
+        .count();
+    (completed, topics.len())
+}
+
 fn course(db: &DatabaseValue, learner_id: &str, selector: Option<&str>) -> Result<Option<Json>> {
     let facts = course_facts(db)?;
     let learner_eid = facts
@@ -434,14 +453,19 @@ fn course(db: &DatabaseValue, learner_id: &str, selector: Option<&str>) -> Resul
         )
     });
     let mut sequences = Vec::new();
+    let mut completions = BTreeMap::new();
     for sequence in sequence_ids {
         let courses =
             ordered_members(&facts, refs(&facts, sequence, "sequence/courses"), "course")?
                 .into_iter()
                 .map(|eid| -> Result<Json> {
+                    let (completed, total) = *completions
+                        .entry(eid)
+                        .or_insert_with(|| course_completion(&facts, eid, &progress));
                     Ok(json!({
                         "id": required_uuid(&facts, eid, "course/id")?,
                         "title": title(&facts, eid, "course"),
+                        "completion": {"completed": completed, "total": total},
                     }))
                 })
                 .collect::<Result<Vec<_>>>()?;
@@ -685,5 +709,30 @@ mod tests {
         let progress = course_progress(&facts, 20).unwrap();
         assert_eq!(progress[&1], (Some(0.0), Some(false)));
         assert_eq!(progress[&2], (None, None));
+    }
+
+    #[test]
+    fn course_completion_counts_unique_topics_at_the_raw_repetition_threshold() {
+        let mut facts = Facts::new();
+        for unit in [10, 11] {
+            fact(&mut facts, 1, "course/units", Value::Ref(unit));
+        }
+        for (unit, module) in [(10, 20), (10, 21), (11, 21)] {
+            fact(&mut facts, unit, "unit/modules", Value::Ref(module));
+        }
+        for (module, topic) in [
+            (20, 101), (20, 102), (21, 101), (21, 103), (21, 104), (21, 105),
+        ] {
+            fact(&mut facts, module, "module/topics", Value::Ref(topic));
+        }
+        let progress = BTreeMap::from([
+            (101, (Some(6.0), Some(false))),
+            (102, (Some(7.0), None)),
+            (103, (Some(5.99), Some(true))),
+            (104, (None, Some(true))),
+            (999, (Some(6.0), Some(true))),
+        ]);
+        assert_eq!(course_completion(&facts, 1, &progress), (2, 5));
+        assert_eq!(course_completion(&facts, 2, &progress), (0, 0));
     }
 }

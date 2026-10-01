@@ -16,6 +16,9 @@ let pendingPause = null;
 let refreshAfterVisibility = false;
 let currentCourseId = null;
 let curriculumSnapshot = null;
+let homeRendered = false;
+let homeRequest = null;
+let homeController = null;
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -51,13 +54,23 @@ function levelName(level) {
   return { 'early-math': 'Early Math', 'high-school-math': 'High School Math', 'university-math': 'University Math' }[short(level)] || '';
 }
 function updateHeader(data) {
-  if (data.learner?.name) $('learnerName').textContent = data.learner.name;
+  const setText = (id, value) => { if ($(id).textContent !== value) $(id).textContent = value; };
+  if (data.learner) setText('learnerName', data.learner.name || '');
   if (data.course) {
     currentCourseId = data.course.id;
-    $('courseTitle').textContent = data.course.title;
-    $('courseLevel').textContent = levelName(data.course.level) || 'Your current course';
-    $('graphLink').href = '/?course=' + encodeURIComponent(data.course.id);
-    $('courseLink').href = '/course?course=' + encodeURIComponent(data.course.id);
+    setText('courseTitle', data.course.title);
+    setText('courseLevel', levelName(data.course.level) || 'Your current course');
+    for (const [id, path] of [['graphLink', '/?course='], ['courseLink', '/progress?course=']]) {
+      const href = path + encodeURIComponent(data.course.id);
+      if ($(id).getAttribute('href') !== href) $(id).setAttribute('href', href);
+    }
+    // Only learning responses supply this cache: browsing another course must
+    // never replace the learner's designated study-course header.
+    try {
+      const header = JSON.stringify({ courseId: data.course.id, courseTitle: data.course.title,
+        courseLevel: $('courseLevel').textContent, learnerName: $('learnerName').textContent });
+      if (sessionStorage.getItem('course-academy.study-header') !== header) sessionStorage.setItem('course-academy.study-header', header);
+    } catch { /* The app works normally when browser storage is unavailable. */ }
   }
 }
 async function api(path, body, options = {}) {
@@ -200,21 +213,33 @@ function typeset(element) {
   return typesetting;
 }
 function resetMain(className) {
+  homeRendered = false;
   if (window.MathJax?.typesetClear) MathJax.typesetClear([$('main')]);
   $('main').replaceChildren();
   $('main').className = className || '';
   renderGeneration++;
 }
 
-async function home() {
+function home() {
+  if (homeRequest) return homeRequest;
+  const controller = new AbortController();
+  homeController = controller;
+  const request = loadHome(controller.signal).finally(() => {
+    if (homeRequest === request) { homeRequest = null; homeController = null; }
+  });
+  homeRequest = request;
+  return request;
+}
+async function loadHome(signal) {
   task = null; clock.running = false;
   resetMain();
   $('main').append(el('div', 'loading', 'Loading your next activities…'));
   setBusy(true); clearError();
   try {
-    const data = await api('/api/home');
+    const data = await api('/api/home', undefined, { signal });
+    if (signal.aborted) return;
     updateHeader(data); resetMain();
-    document.title = `${data.course?.title || 'Study'} · Course Academy`;
+    document.title = 'Study · Course Academy';
     const head = el('div', 'page-heading');
     const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Next up'), el('p', 'subheading', 'Pick an activity to continue building your knowledge.'));
     head.append(intro, actionButton('Refresh ↻', 'small-button', home));
@@ -247,10 +272,13 @@ async function home() {
     foot.append(el('span', '', `${activities.length} ${activities.length === 1 ? 'activity' : 'activities'} ready`), el('span', '', 'Your progress is saved as you work.'));
     $('main').append(foot);
     if (data.practiceNotice || data.notice) $('main').append(el('p', 'notice', data.practiceNotice || data.notice));
-  } catch (error) { showError(error, home); }
-  finally { setBusy(false); }
+    homeRendered = true;
+  } catch (error) { if (!signal.aborted) showError(error, home); }
+  finally { if (!signal.aborted) setBusy(false); }
 }
 async function openTask(id) {
+  homeController?.abort(); homeController = null; homeRequest = null;
+  homeRendered = false;
   clearError(); setBusy(true);
   void loadMath().catch(() => {});
   try {
@@ -264,6 +292,10 @@ async function openTask(id) {
 async function leaveTask(event) {
   event?.preventDefault();
   if (busy) return;
+  if (!task && homeRendered && $('errorBanner').hidden) {
+    history.replaceState(null, '', '/home');
+    return;
+  }
   if (task && !terminal(short(task.status))) {
     setBusy(true);
     try { await api('/api/pause', { taskId: task.taskId, requestId: crypto.randomUUID() }); }
@@ -348,7 +380,7 @@ async function renderTask(data) {
   const generation = renderGeneration;
   const status = short(data.status);
   clock = { at: Date.now(), elapsed: Number(data.elapsedSeconds) || 0, running: status === 'started' && short(data.step?.status) === 'started' };
-  document.title = `${data.title || 'Lesson'} · Course Academy`;
+  document.title = `Lesson${data.title ? ' · ' + data.title : ''} · Course Academy`;
   const top = el('div', 'lesson-topline');
   top.append(actionButton('← Back to study', 'text-button', leaveTask));
   if (!terminal(status)) top.append(actionButton(status === 'paused' ? 'Resume' : 'Pause', 'text-button', () => mutation(status === 'paused' ? '/api/resume' : '/api/pause', { taskId: data.taskId })));

@@ -6,8 +6,21 @@ Run the local study app against the existing EDB database and writer:
 python3 scripts/serve_graph_explorer.py
 ```
 
+The local installation also runs in the background at startup through the user
+service `course-academy.service`. It starts PostgreSQL and the EDB writer first.
+It does not open a browser. The service definitions are in
+[scripts/systemd](scripts/systemd/).
+
+```bash
+systemctl --user status course-academy.service
+systemctl --user restart course-academy.service
+journalctl --user -u course-academy.service -f
+# Turn off automatic startup:
+systemctl --user disable course-academy.service
+```
+
 Open [Study](http://127.0.0.1:8765/home) for the next five eligible lessons, or
-the [course outline and progress](http://127.0.0.1:8765/course), or the
+the [Progress](http://127.0.0.1:8765/progress), or the
 [knowledge graph](http://127.0.0.1:8765/). Course pages read curriculum metadata
 and repetition values from EDB; browsing them leaves the study course unchanged.
 Lessons present one item at a time

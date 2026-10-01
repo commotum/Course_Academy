@@ -1,0 +1,17 @@
+[Unit]
+Description=Course Academy local PostgreSQL
+StartLimitIntervalSec=0
+
+[Service]
+Type=forking
+WorkingDirectory=%h/Developer/Course_Academy
+PIDFile=%h/Developer/Course_Academy/.local/edb/postgres/postmaster.pid
+ExecStartPre=/usr/bin/install -d -m 0700 %h/Developer/Course_Academy/.local/edb/run
+ExecStart=/usr/local/MATLAB/R2025b/sys/postgresql/glnxa64/PostgreSQL/bin/pg_ctl -D %h/Developer/Course_Academy/.local/edb/postgres -l %h/Developer/Course_Academy/.local/edb/postgres.log -w -t 60 start
+ExecStop=/usr/local/MATLAB/R2025b/sys/postgresql/glnxa64/PostgreSQL/bin/pg_ctl -D %h/Developer/Course_Academy/.local/edb/postgres -m fast -w -t 60 stop
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=75
+TimeoutStopSec=75
+KillMode=mixed
+UMask=0077

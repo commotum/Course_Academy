@@ -4,7 +4,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Course Explorer</title>
+<title>Explore · Course Academy</title>
+<link rel="icon" href="/ui/favicon.svg?v=2" type="image/svg+xml"/>
 <style>
 @font-face {
   font-family: "New Science Mono";
@@ -246,7 +247,7 @@ button,input,select { font:inherit; }
 <div class="app">
 <header class="topbar site-header">
 <a class="brand" href="/home" aria-label="Study home"><img class="brand-logo" src="/ui/MA-Logo.svg" alt="" width="28" height="28"><span class="brand-copy"><b id="courseTitle">Loading courses</b><small id="courseLevel">Knowledge graph</small></span></a>
-<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/course" id="courseLink">Course</a><a href="/" id="graphLink" aria-current="page">Explore</a><button id="courseBrowse" class="course-trigger" type="button" aria-haspopup="dialog" disabled><span>Search</span><kbd>⌘ K</kbd></button></nav>
+<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/progress" id="courseLink">Progress</a><a href="/" id="graphLink" aria-current="page">Explore</a><button id="courseBrowse" class="course-trigger" type="button" aria-haspopup="dialog" disabled><span>Search</span><kbd>⌘ K</kbd></button></nav>
 <span id="learnerName" class="learner-name"></span>
 </header>
 <div class="main">
@@ -1511,9 +1512,9 @@ import { createCoursePicker } from "/ui/navigation.js";
     $('courseTitle').textContent=course?.title||'All topics';
     $('courseTitle').title=course?.title||'All topics';
     $('courseLevel').textContent=course?levelLabel(course.level):'Knowledge graph';
-    $('courseLink').href=course?'/course?course='+encodeURIComponent(course.id):'/course';
+    $('courseLink').href=course?'/progress?course='+encodeURIComponent(course.id):'/progress';
     $('graphLink').href='/?course='+encodeURIComponent(courseId||'all');
-    document.title=(course?.title||'All topics')+' · Course Explorer';
+    document.title='Explore · '+(course?.title||'All topics')+' · Course Academy';
     $('overviewBtn').textContent=course?'Course overview':'Full graph';
     const startersHost=$('starterButtons');titleReaderboards.clear(startersHost);startersHost.replaceChildren();
     const members=NODES.filter(n=>courseTopics.has(n.id));

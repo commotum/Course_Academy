@@ -27,7 +27,7 @@ function short(value) { return String(value || '').split('/').at(-1); }
 function levelName(value) {
   return { 'early-math': 'Early Math', 'high-school-math': 'High School Math', 'university-math': 'University Math' }[short(value)] || 'Course';
 }
-function courseURL(id) { return '/course' + (id ? '?course=' + encodeURIComponent(id) : ''); }
+function courseURL(id) { return '/progress' + (id ? '?course=' + encodeURIComponent(id) : ''); }
 function topicURL(topic, courseId) {
   return '/topic?topic=' + encodeURIComponent(topic.uuid || topic.mathAcademyId || topic.id) + (courseId ? '&course=' + encodeURIComponent(courseId) : '');
 }
@@ -215,7 +215,7 @@ function renderTopic(data) {
   $('courseLevel').textContent = course ? levelName(course.level) : 'Topic';
   $('learnerName').textContent = data.learner?.name || '';
   $('courseLink').href = courseURL(currentCourseId); $('graphLink').href = graphURL(currentCourseId);
-  document.title = `${data.topic.title} · Course Academy`;
+  document.title = `Topic · ${data.topic.title} · Course Academy`;
   let exampleNumber = 0;
   const sections = data.sections.filter(section => ['tutorial', 'example'].includes(section.kind)).map((section, index) => {
     if (section.kind === 'example') exampleNumber++;
@@ -248,7 +248,7 @@ function renderError(error) {
   section.append(el('h1', '', error.status === 400 || error.status === 404 ? 'Topic not found' : 'Unable to load this topic'), el('p', '', error.message));
   const actions = el('div', 'error-actions');
   if (error.status !== 400 && error.status !== 404) actions.append(button('Try again', 'small-button', () => loadTopic()));
-  actions.append(link('Your study course', '/course', 'small-button'), button('Browse topics', 'small-button', () => picker.open()));
+  actions.append(link('Your study course', '/progress', 'small-button'), button('Browse topics', 'small-button', () => picker.open()));
   section.append(actions); $('main').replaceChildren(section);
   $('announcement').textContent = error.message;
 }

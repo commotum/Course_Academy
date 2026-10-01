@@ -7,7 +7,7 @@ The native reader is built against EDB_ROOT (defaults to the adjacent EDB repo)
 and existing serde_json build artifacts from this repository or EDB_ROOT.
 The learner helper uses the release engine and the existing local EDB writer.
 Open /home for the queue and /learn?taskId=... for a saved lesson attempt.
-Open /course?course=... for a course outline and the learner's topic progress.
+Open /progress?course=... for a course outline and the learner's topic progress.
 Open /topic?topic=... for tutorials and worked examples without starting a lesson.
 """
 
@@ -283,13 +283,13 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     self.send_bytes(200, asset.read_bytes(), IMAGE_TYPES[asset.suffix.lower()], cache=True)
             elif path in ("/home", "/learn"):
                 self.send_bytes(200, (ROOT / "ui/Learning.html").read_bytes(), "text/html; charset=utf-8")
-            elif path in ("/course", "/courses"):
+            elif path in ("/progress", "/course", "/courses"):
                 self.send_bytes(200, (ROOT / "ui/Course.html").read_bytes(), "text/html; charset=utf-8")
             elif path == "/topic":
                 self.send_bytes(200, (ROOT / "ui/Topic.html").read_bytes(), "text/html; charset=utf-8")
             elif path.startswith("/ui/") and path != "/ui/Math-Academy-Graph-Explorer.html":
                 asset = (ROOT / path.lstrip("/")).resolve()
-                allowed = {"learning.js", "learning.css", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css"}
+                allowed = {"learning.js", "learning.css", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css"}
                 if not asset.is_relative_to((ROOT / "ui").resolve()) or not asset.is_file() or not (asset.name in allowed or asset.is_relative_to((ROOT / "ui/vendor").resolve())):
                     self.send_bytes(404, b"Not found", "text/plain")
                 else:

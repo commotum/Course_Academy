@@ -1,3 +1,13 @@
+// Keep sticky sidebars and anchor targets below the header, including when
+// its navigation wraps onto another row on narrow screens.
+const siteHeader = document.querySelector('.site-header');
+if (siteHeader) {
+  const measureHeader = () => document.documentElement.style.setProperty('--site-header-height', `${Math.ceil(siteHeader.getBoundingClientRect().height)}px`);
+  measureHeader();
+  if ('ResizeObserver' in window) new ResizeObserver(measureHeader).observe(siteHeader);
+  else window.addEventListener('resize', measureHeader);
+}
+
 function node(tag, className, text) {
   const element = document.createElement(tag);
   if (className) element.className = className;

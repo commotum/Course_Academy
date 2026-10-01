@@ -10,6 +10,8 @@ database="${EDB_DATABASE:-course-academy-v2}"
 endpoint="${EDB_ENDPOINT:-/tmp/course-academy-edb-v2/writer.sock}"
 endpoint_dir="$(dirname "$endpoint")"
 
+mkdir -p "$run_dir"
+chmod 700 "$run_dir"
 if ! "$pg_ctl" -D "$data_dir" status >/dev/null 2>&1; then
     "$pg_ctl" -D "$data_dir" -l "$root/.local/edb/postgres.log" start
 fi
