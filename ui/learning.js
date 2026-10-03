@@ -28,6 +28,8 @@ let targetRevision = 0;
 let previewStepIndex = 0;
 let modeChanging = false;
 let settingsRevision = 0;
+let lessonView = null;
+const seenTaskSteps = new Map();
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -229,10 +231,135 @@ function typeset(element) {
 }
 function resetMain(className) {
   homeRendered = false;
+  lessonView = null;
   if (window.MathJax?.typesetClear) MathJax.typesetClear([$('main')]);
   $('main').replaceChildren();
   $('main').className = className || '';
   renderGeneration++;
+}
+
+function stopClock() {
+  if (clock.running) clock.elapsed += (Date.now() - clock.at) / 1000;
+  clock.running = false;
+}
+
+// Cache only presentations already returned by the task API. Earlier steps are
+// review material, never an input to grading or to the current presentation.
+function rememberTaskStep(data) {
+  const key = `course-academy.lesson-history.${data.learner?.id || 'learner'}.${data.taskId}`;
+  let seen = seenTaskSteps.get(key);
+  if (!seen) {
+    seen = new Map();
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(key));
+      if (Array.isArray(saved)) for (const entry of saved) {
+        if (entry?.step?.itemId && Number.isInteger(entry.order) && entry.order > 0) seen.set(String(entry.step.itemId), entry);
+      }
+    } catch { /* Review history can still be kept in memory. */ }
+    seenTaskSteps.set(key, seen);
+  }
+  if (data.step?.itemId) {
+    const id = String(data.step.itemId);
+    const order = data.progress?.presented || seen.get(id)?.order || seen.size + 1;
+    for (const [item, entry] of seen) if (entry.order > order) seen.delete(item);
+    seen.set(id, {
+      order, step: data.step,
+      number: data.progress?.stepNumber ?? data.step.stepNumber,
+      total: data.progress?.totalSteps ?? data.step.totalSteps,
+    });
+    try { sessionStorage.setItem(key, JSON.stringify([...seen.values()])); } catch { /* Storage may be full or unavailable. */ }
+  }
+  return [...seen.values()].sort((a, b) => a.order - b.order);
+}
+
+function lessonCompletedSteps(number, total, complete = false) {
+  const maximum = Number(total) || 1;
+  return complete ? maximum : Math.min(maximum, Math.max(0, (Number(number) || 1) - 1));
+}
+
+function lessonShell(data, { preview = false, number, total, complete = false } = {}) {
+  const key = `${preview ? 'preview' : 'task'}:${data.learner?.id || 'learner'}:${preview ? data.activityId : data.taskId}`;
+  if (lessonView?.key !== key) {
+    resetMain('lesson-main');
+    const heading = el('h1', 'sr-only', data.title || 'Lesson');
+    const toolbar = el('div', 'lesson-toolbar');
+    const exit = actionButton('←', 'lesson-exit text-button', leaveTask);
+    exit.setAttribute('aria-label', 'Exit lesson and return to Study');
+    exit.title = 'Back to Study';
+    const track = el('div', 'progress-track'), fill = el('div', 'progress-fill');
+    track.setAttribute('role', 'progressbar'); track.setAttribute('aria-label', 'Lesson progress');
+    track.setAttribute('aria-valuemin', '0'); track.append(fill);
+    const position = el('span', 'lesson-position');
+    const timer = el('span', 'timer', preview ? 'Preview' : duration(clock.elapsed));
+    if (!preview) { timer.id = 'taskTimer'; timer.setAttribute('aria-label', 'Working time'); }
+    else timer.title = 'Developer mode · Nothing recorded';
+    toolbar.append(exit, track, position, timer);
+    const feed = el('div', 'lesson-feed');
+    $('main').append(heading, toolbar, feed);
+    lessonView = { key, feed, track, fill, position, timer, current: null, currentId: null, history: new Map() };
+  }
+  const maximum = Number(total) || 1;
+  const completed = lessonCompletedSteps(number, total, complete);
+  lessonView.track.hidden = !total;
+  lessonView.track.setAttribute('aria-valuemax', String(maximum));
+  lessonView.track.setAttribute('aria-valuenow', String(completed));
+  lessonView.track.setAttribute('aria-valuetext', complete ? 'Lesson complete' : `Step ${number || 1} of ${maximum}`);
+  lessonView.fill.style.width = `${completed / maximum * 100}%`;
+  lessonView.position.textContent = total ? `${String(number || 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}` : '';
+  lessonView.timer.textContent = preview ? 'Preview' : duration(clock.elapsed);
+  return lessonView;
+}
+
+function archiveLessonContent(content) {
+  content.dataset.history = 'true';
+  const meta = content.querySelector('.step-meta');
+  if (meta && content.dataset.stepNumber && !meta.querySelector('.history-position')) {
+    const position = el('span', 'history-position', `Step ${content.dataset.stepNumber}${content.dataset.totalSteps ? ' / ' + content.dataset.totalSteps : ''}`);
+    meta.insertBefore(position, meta.firstChild);
+  }
+  for (const control of content.querySelectorAll('.lesson-controls, .answer-actions')) control.remove();
+  for (const input of content.querySelectorAll('[data-answer-input]')) {
+    input.disabled = true; input.dataset.readOnly = 'true';
+  }
+}
+
+async function showLessonStep(view, identity, earlier, content, buildEarlier) {
+  const generation = ++renderGeneration;
+  const changedStep = view.currentId !== identity;
+  if (changedStep) view.needsFocus = true;
+  if (view.current) {
+    if (changedStep && earlier.some(entry => entry.id === view.currentId)) {
+      archiveLessonContent(view.current);
+      view.history.set(view.currentId, view.current);
+    } else {
+      if (window.MathJax?.typesetClear) MathJax.typesetClear([view.current]);
+      view.current.remove();
+    }
+  }
+  const visible = new Set(earlier.map(entry => entry.id));
+  for (const [id, node] of view.history) if (!visible.has(id)) {
+    if (window.MathJax?.typesetClear) MathJax.typesetClear([node]);
+    node.remove(); view.history.delete(id);
+  }
+  const additions = [];
+  for (const entry of earlier) {
+    let node = view.history.get(entry.id);
+    if (!node) {
+      node = buildEarlier(entry); archiveLessonContent(node);
+      view.history.set(entry.id, node); additions.push(node);
+    }
+    view.feed.append(node);
+  }
+  view.current = content; view.currentId = identity;
+  content.tabIndex = -1;
+  view.feed.append(content);
+  for (const node of [...additions, content]) await typeset(node);
+  if (generation !== renderGeneration || document.hidden || lessonView !== view) return;
+  if (view.needsFocus) {
+    content.scrollIntoView({ block: 'start', behavior: 'instant' });
+    content.focus({ preventScroll: true });
+    view.needsFocus = false;
+  }
 }
 
 function home({ preserve = false } = {}) {
@@ -285,6 +412,24 @@ async function loadHome(signal, preserve) {
       info.append(meta, el('h2', '', activity.title));
       if (activity.reason) info.append(el('p', 'queue-reason', activity.reason));
       const resume = Boolean(activity.taskId) && ['started', 'paused'].includes(short(activity.status));
+      const total = activity.progress?.totalSteps;
+      const number = activity.progress?.stepNumber;
+      if (!isDeveloperMode() && resume && Number.isInteger(total) && total > 0 && Number.isInteger(number) && number > 0) {
+        const completed = lessonCompletedSteps(number, total);
+        const percentage = Math.round(completed / total * 100);
+        const progress = el('div', 'queue-progress');
+        const track = el('div', 'queue-progress-track'), fill = el('div', 'queue-progress-fill');
+        track.setAttribute('role', 'progressbar');
+        track.setAttribute('aria-label', `${activity.title} progress`);
+        track.setAttribute('aria-valuemin', '0');
+        track.setAttribute('aria-valuemax', String(total));
+        track.setAttribute('aria-valuenow', String(completed));
+        track.setAttribute('aria-valuetext', `${percentage}% complete`);
+        fill.style.width = `${completed / total * 100}%`;
+        track.append(fill);
+        progress.append(track, el('span', 'queue-progress-value', `${percentage}%`));
+        info.append(progress);
+      }
       row.append(el('span', 'queue-number', String(index + 1).padStart(2, '0')), info,
         actionButton(isDeveloperMode() ? 'Preview →' : resume ? 'Resume →' : 'Begin →', 'primary', () => isDeveloperMode() ? openPreview({ activityId: activity.activityId }) : resume ? openTask(activity.taskId) : mutation('/api/start', { activityId: activity.activityId })));
       queue.append(row);
@@ -315,11 +460,15 @@ async function openTask(id) {
   void loadMath().catch(() => {});
   const revision = settingsRevision;
   try {
-    const data = await api('/api/task?taskId=' + encodeURIComponent(id));
+    let data = await api('/api/task?taskId=' + encodeURIComponent(id));
     if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
     if (data.assignment?.id) {
       location.replace('/assignments?assignment=' + encodeURIComponent(data.assignment.id));
       return;
+    }
+    if (!document.hidden && short((data.task || data).status) === 'paused') {
+      data = await api('/api/resume', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() });
+      if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
     }
     task = data.task || data;
     history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(id));
@@ -335,8 +484,12 @@ async function leaveTask(event) {
     return;
   }
   if (!isDeveloperMode() && task && !terminal(short(task.status))) {
+    stopClock();
     setBusy(true);
-    try { await api('/api/pause', { taskId: task.taskId, requestId: crypto.randomUUID() }); }
+    try {
+      if (pendingPause) await pendingPause;
+      if (short(task.status) === 'started') await api('/api/pause', { taskId: task.taskId, requestId: crypto.randomUUID() });
+    }
     catch (error) { showError(error, () => leaveTask()); setBusy(false); return; }
     setBusy(false);
   }
@@ -351,6 +504,7 @@ async function explore(url) {
   try {
     if (pendingPause) await pendingPause;
     if (task && short(task.status) === 'started') {
+      stopClock();
       await api('/api/pause', { taskId: task.taskId, requestId: crypto.randomUUID() });
       task.status = 'paused';
     }
@@ -429,34 +583,19 @@ async function openPreview(query) {
     }
     task = data;
     previewStepIndex = 0;
+    lessonView = null;
     history.replaceState(null, '', '/learn?activityId=' + encodeURIComponent(data.activityId));
     await renderPreview();
   } catch (error) { if (revision === settingsRevision) showError(error, () => openPreview(query)); }
   finally { if (revision === settingsRevision) setBusy(false); }
 }
 
-async function renderPreview() {
-  if (!isDeveloperMode() || modeChanging || !task) return;
-  const data = task;
-  updateHeader(data);
-  resetMain('lesson-main');
-  const generation = renderGeneration;
-  document.title = `Preview${data.title ? ' · ' + data.title : ''} · Course Academy`;
-  const top = el('div', 'lesson-topline');
-  top.append(actionButton('← Back to study', 'text-button', leaveTask), el('span', '', 'Developer mode · Nothing recorded'));
-  $('main').append(top);
-  const heading = el('div', 'lesson-heading'), headingText = el('div');
-  headingText.append(el('p', 'eyebrow', short(data.type) || 'Activity'), el('h1', '', data.title || 'Activity preview'));
-  heading.append(headingText); $('main').append(heading);
-  const steps = data.steps || [], step = steps[previewStepIndex];
-  if (!step) {
-    $('main').append(el('p', 'notice', 'This activity has no content available to preview.'));
-    return;
-  }
+function previewContent(data, step, index, archived = false) {
   const content = el('section', 'lesson-content'), meta = el('div', 'step-meta');
+  content.dataset.stepNumber = String(index + 1); content.dataset.totalSteps = String(data.steps.length);
   attachStepMenu(content, step.stepId);
   const kind = short(step.kind), fields = step.fields || [];
-  meta.append(el('span', '', `Step ${previewStepIndex + 1} / ${steps.length}`));
+  if (archived) meta.append(el('span', 'history-position', `Step ${index + 1} / ${data.steps.length}`));
   if (kind !== 'example') meta.append(el('span', 'step-tag', { question: 'Practice', tutorial: 'Tutorial' }[kind] || kind));
   if (step.requiresCalculator) meta.append(el('span', '', 'Calculator required'));
   if (step.difficulty) meta.append(el('span', '', short(step.difficulty)));
@@ -466,7 +605,7 @@ async function renderPreview() {
   card.append(markdown(step.markdown ?? step.problem ?? '', 'prose', fields));
   if (fields.length) {
     const form = el('form'), fieldList = el('div', 'answer-fields');
-    const readOnly = kind === 'example';
+    const readOnly = archived || kind === 'example' || answered(short(step.status));
     fields.forEach(field => fieldList.append(fieldControl(field, readOnly, step.contentId)));
     form.append(fieldList);
     if (!readOnly) {
@@ -480,13 +619,13 @@ async function renderPreview() {
       form.addEventListener('input', refresh); form.addEventListener('change', refresh);
       form.addEventListener('submit', async event => {
         event.preventDefault(); refresh();
-        if (check.disabled || !isDeveloperMode()) return;
+        if (check.disabled || !isDeveloperMode() || lessonView?.current !== content) return;
         setBusy(true); clearError();
         try {
           const result = await api('/api/preview-answer', { activityId: data.activityId, questionId: step.contentId, responses: collectResponses(form, fields) });
-          if (generation !== renderGeneration || !isDeveloperMode()) return;
+          if (lessonView?.current !== content || !isDeveloperMode()) return;
           const checked = result.step || result;
-          steps[previewStepIndex] = { ...step, ...checked };
+          data.steps[index] = { ...step, ...checked };
           await renderPreview();
           announce(checked.status === 'correct' ? 'Correct. Preview only; nothing recorded.' : 'Incorrect. Preview only; nothing recorded.');
         } catch (error) { showError(error); }
@@ -505,7 +644,7 @@ async function renderPreview() {
   }
   if (step.solution || fields.some(field => field.correctAnswer)) {
     const solution = el('details', 'worked-solution');
-    solution.open = kind === 'example';
+    solution.open = kind === 'example' || answered(short(step.status));
     solution.append(el('summary', 'solution-heading', 'Solution:'));
     for (const field of fields) {
       if (field.correctAnswer) {
@@ -518,68 +657,35 @@ async function renderPreview() {
     card.append(solution);
   }
   content.append(card);
-  const controls = el('div', 'lesson-controls');
-  controls.append(actionButton('← Previous', 'secondary', async () => {
-    if (previewStepIndex > 0) { previewStepIndex--; clearError(); await renderPreview(); }
-  }, previewStepIndex > 0));
-  controls.append(el('p', 'continue-hint', 'Explore freely. No timing, answers, XP, or progress are saved.'));
-  controls.append(previewStepIndex + 1 < steps.length
-    ? actionButton('Next →', 'primary', async () => { previewStepIndex++; clearError(); await renderPreview(); })
-    : actionButton('Back to study →', 'primary', leaveTask));
-  content.append(controls); $('main').append(content);
-  await typeset(content);
-  if (generation === renderGeneration && !document.hidden) $('main').focus({ preventScroll: true });
+  if (!archived) {
+    const controls = el('div', 'lesson-controls');
+    controls.append(index + 1 < data.steps.length
+      ? actionButton('Next step →', 'primary', async () => { previewStepIndex++; clearError(); await renderPreview(); })
+      : actionButton('Back to study →', 'primary', leaveTask));
+    content.append(controls);
+  }
+  return content;
 }
 
-async function renderTask(data) {
-  if (modeChanging) return;
-  if (isDeveloperMode()) return openPreview({ taskId: data.taskId });
+async function renderPreview() {
+  if (!isDeveloperMode() || modeChanging || !task) return;
+  const data = task, steps = data.steps || [], step = steps[previewStepIndex];
   updateHeader(data);
-  resetMain('lesson-main');
-  const generation = renderGeneration;
-  const status = short(data.status);
-  clock = { at: Date.now(), elapsed: Number(data.elapsedSeconds) || 0, running: status === 'started' && short(data.step?.status) === 'started' };
-  document.title = `Lesson${data.title ? ' · ' + data.title : ''} · Course Academy`;
-  const top = el('div', 'lesson-topline');
-  top.append(actionButton('← Back to study', 'text-button', leaveTask));
-  if (!terminal(status)) top.append(actionButton(status === 'paused' ? 'Resume' : 'Pause', 'text-button', () => mutation(status === 'paused' ? '/api/resume' : '/api/pause', { taskId: data.taskId })));
-  $('main').append(top);
-  const heading = el('div', 'lesson-heading');
-  const headingText = el('div'); headingText.append(el('p', 'eyebrow', short(data.type) || 'Lesson'), el('h1', '', data.title || 'Lesson'));
-  const timer = el('span', 'timer', duration(clock.elapsed)); timer.id = 'taskTimer'; timer.setAttribute('aria-label', 'Working time');
-  heading.append(headingText, timer); $('main').append(heading);
-  if (data.queueNotice) $('main').append(el('p', 'notice', data.queueNotice));
-  if (terminal(status)) {
-    const done = el('section', 'completion');
-    done.append(el('div', 'completion-mark', status === 'completed' ? '✓' : '↗'), el('h2', '', status === 'completed' ? 'Activity complete' : 'More practice needed'));
-    done.append(el('p', '', status === 'completed' ? 'Your answers and progress have been saved.' : 'Your answers are saved. This attempt did not establish mastery. Return to study to continue.'));
-    const earned = data.xpEarned ?? data.xp?.earned ?? (typeof data.xp === 'number' ? data.xp : null);
-    if (earned !== null && earned !== undefined) {
-      const xp = el('div', 'completion-xp', `${earned >= 0 ? '+' : ''}${earned} `); xp.append(el('small', '', 'XP')); done.append(xp);
-    }
-    done.append(el('p', '', `${duration(data.elapsedSeconds)} working time`), actionButton('Back to study →', 'primary', leaveTask));
-    $('main').append(done); return;
-  }
-  if (status === 'paused') {
-    const pause = el('section', 'pause-panel'), text = el('div');
-    text.append(el('h2', '', 'Session paused'), el('p', '', 'Your place is saved. The working timer is stopped.'));
-    pause.append(text, actionButton('Resume lesson →', 'primary', () => mutation('/api/resume', { taskId: data.taskId })));
-    $('main').append(pause);
-    return;
-  }
-  const step = data.step;
-  if (!step) { $('main').append(el('p', 'notice', 'No current step is available. Return to study and try again.')); return; }
-  const number = data.progress?.stepNumber ?? step.stepNumber;
-  const total = data.progress?.totalSteps ?? step.totalSteps;
-  if (number && total) {
-    const track = el('div', 'progress-track'), fill = el('div', 'progress-fill');
-    track.setAttribute('role', 'progressbar'); track.setAttribute('aria-label', 'Lesson progress'); track.setAttribute('aria-valuemin', '0'); track.setAttribute('aria-valuemax', String(total)); track.setAttribute('aria-valuenow', String(number - 1));
-    fill.style.width = `${Math.min(100, Math.max(0, (number - 1) / total * 100))}%`; track.append(fill); $('main').append(track);
-  }
+  document.title = `Preview${data.title ? ' · ' + data.title : ''} · Course Academy`;
+  const view = lessonShell(data, { preview: true, number: previewStepIndex + 1, total: steps.length });
+  if (!step) { view.feed.replaceChildren(el('p', 'notice', 'This activity has no content available to preview.')); return; }
+  const earlier = steps.slice(0, previewStepIndex).map((step, index) => ({ id: `preview:${index}`, step, index }));
+  await showLessonStep(view, `preview:${previewStepIndex}`, earlier,
+    previewContent(data, step, previewStepIndex), entry => previewContent(data, entry.step, entry.index, true));
+}
+
+function taskContent(data, step, number, total, archived = false) {
   const content = el('section', 'lesson-content');
+  if (number) content.dataset.stepNumber = String(number);
+  if (total) content.dataset.totalSteps = String(total);
   attachStepMenu(content, step.stepId);
   const meta = el('div', 'step-meta');
-  if (number) meta.append(el('span', '', `Step ${number}${total ? ' / ' + total : ''}`));
+  if (number && archived) meta.append(el('span', 'history-position', `Step ${number}${total ? ' / ' + total : ''}`));
   const kind = short(step.kind);
   if (kind !== 'example') meta.append(el('span', 'step-tag', { question: 'Practice', tutorial: 'Tutorial' }[kind] || kind));
   if (step.requiresCalculator) meta.append(el('span', '', 'Calculator required'));
@@ -590,6 +696,7 @@ async function renderTask(data) {
   appendStepHeading(card, step, kind);
   card.append(markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []));
   const isAnswered = answered(short(step.status));
+  const readOnly = archived || isAnswered || short(data.status) === 'paused';
   const fields = step.fields || [];
   if (kind === 'question' && fields.length) {
     const form = el('form'); form.noValidate = false;
@@ -597,10 +704,10 @@ async function renderTask(data) {
     const draft = drafts.get(step.itemId) || [];
     fields.forEach(field => {
       const saved = draft.find(response => response.fieldId === field.id);
-      fieldList.append(fieldControl(!isAnswered && saved ? { ...field, response: saved } : field, isAnswered, step.itemId));
+      fieldList.append(fieldControl(!readOnly && saved ? { ...field, response: saved } : field, readOnly, step.itemId));
     });
     form.append(fieldList);
-    if (!isAnswered) {
+    if (!readOnly) {
       const actions = el('div', 'answer-actions');
       const submit = el('button', 'primary', 'Check answer'); submit.type = 'submit'; submit.dataset.action = 'true';
       const refresh = () => {
@@ -611,7 +718,7 @@ async function renderTask(data) {
       };
       form.addEventListener('input', refresh); form.addEventListener('change', refresh);
       form.addEventListener('submit', event => {
-        event.preventDefault(); refresh(); if (submit.disabled) return;
+        event.preventDefault(); refresh(); if (submit.disabled || lessonView?.current !== content) return;
         mutation('/api/answer', { taskId: data.taskId, itemId: step.itemId, responses: collectResponses(form, fields) });
       });
       actions.append(submit); form.append(actions); refresh();
@@ -635,13 +742,47 @@ async function renderTask(data) {
     solution.append(el('h3', 'solution-heading', 'Solution:'), markdown(step.solution)); card.append(solution);
   }
   content.append(card);
-  const controls = el('div', 'lesson-controls');
-  const canContinue = Boolean(step.canContinue);
-  const hint = kind === 'question' && !isAnswered ? 'Answer every field and check your answer to continue.' : kind === 'example' ? 'Read through the worked solution, then try it yourself.' : kind === 'tutorial' ? 'Continue when you have finished reading.' : 'Your answer has been saved.';
-  controls.append(el('p', 'continue-hint', hint), actionButton('Continue →', 'primary', () => mutation('/api/continue', { taskId: data.taskId, itemId: step.itemId }), canContinue));
-  content.append(controls); $('main').append(content);
-  await typeset(content);
-  if (generation === renderGeneration && !document.hidden) $('main').focus({ preventScroll: true });
+  if (!archived) {
+    const controls = el('div', 'lesson-controls');
+    if (short(data.status) === 'paused') {
+      controls.append(actionButton('Resume →', 'primary', () => mutation('/api/resume', { taskId: data.taskId })));
+    } else if (step.canContinue) {
+      controls.append(actionButton('Next step →', 'primary', () => mutation('/api/continue', { taskId: data.taskId, itemId: step.itemId })));
+    }
+    if (controls.childElementCount) content.append(controls);
+  }
+  return content;
+}
+
+async function renderTask(data) {
+  if (modeChanging) return;
+  if (isDeveloperMode()) return openPreview({ taskId: data.taskId });
+  updateHeader(data);
+  const status = short(data.status);
+  clock = { at: Date.now(), elapsed: Number(data.elapsedSeconds) || 0, running: !document.hidden && status === 'started' && short(data.step?.status) === 'started' };
+  document.title = `Lesson${data.title ? ' · ' + data.title : ''} · Course Academy`;
+  const seen = rememberTaskStep(data);
+  const number = data.progress?.stepNumber ?? data.step?.stepNumber;
+  const total = data.progress?.totalSteps ?? data.step?.totalSteps;
+  const view = lessonShell(data, { number, total, complete: status === 'completed' });
+  const buildEarlier = entry => taskContent(data, entry.step, entry.number, entry.total, true);
+  if (terminal(status)) {
+    const done = el('section', 'lesson-content completion');
+    done.append(el('div', 'completion-mark', status === 'completed' ? '✓' : '↗'), el('h2', '', status === 'completed' ? 'Activity complete' : 'More practice needed'));
+    done.append(el('p', '', status === 'completed' ? 'Your answers and progress have been saved.' : 'Your answers are saved. This attempt did not establish mastery. Return to study to continue.'));
+    const earned = data.xpEarned ?? data.xp?.earned ?? (typeof data.xp === 'number' ? data.xp : null);
+    if (earned !== null && earned !== undefined) {
+      const xp = el('div', 'completion-xp', `${earned >= 0 ? '+' : ''}${earned} `); xp.append(el('small', '', 'XP')); done.append(xp);
+    }
+    done.append(el('p', '', `${duration(data.elapsedSeconds)} working time`), actionButton('Back to study →', 'primary', leaveTask));
+    await showLessonStep(view, 'complete', seen.map(entry => ({ ...entry, id: String(entry.step.itemId) })), done, buildEarlier);
+    return;
+  }
+  const step = data.step;
+  if (!step) { view.feed.replaceChildren(el('p', 'notice', 'No current step is available. Return to study and try again.')); return; }
+  const identity = String(step.itemId);
+  const earlier = seen.filter(entry => String(entry.step.itemId) !== identity).map(entry => ({ ...entry, id: String(entry.step.itemId) }));
+  await showLessonStep(view, identity, earlier, taskContent(data, step, number, total), buildEarlier);
 }
 
 $('retryButton').addEventListener('click', () => retryOperation?.());
@@ -674,21 +815,26 @@ setInterval(() => {
 async function syncAfterVisibility() {
   if (isDeveloperMode() || modeChanging) return;
   if (pendingPause) await pendingPause;
-  if (document.hidden || busy || !refreshAfterVisibility || !task) return;
+  if (busy || !task) return;
+  if (document.hidden) { void pauseWhenHidden(); return; }
+  if (!refreshAfterVisibility) return;
   refreshAfterVisibility = false;
   await openTask(task.taskId);
 }
-function pauseWhenHidden() {
+function pauseWhenHidden({ unloading = false } = {}) {
   if (isDeveloperMode() || modeChanging) return;
   if (pendingPause) return pendingPause;
   if (!task || short(task.status) !== 'started') return;
   const taskId = task.taskId;
-  clock.elapsed += clock.running ? (Date.now() - clock.at) / 1000 : 0; clock.running = false;
+  stopClock();
   refreshAfterVisibility = true;
+  // A hidden page waits for an in-flight answer or continuation before pausing
+  // the resulting current item, rather than racing the two writes.
+  if (busy && !unloading) return;
   pendingPause = api('/api/pause', { taskId, requestId: crypto.randomUUID() }, { keepalive: true })
     .then(() => { if (task?.taskId === taskId) task.status = 'paused'; })
     .catch(() => { /* Re-read authoritative state when the page becomes visible. */ })
-    .finally(() => { pendingPause = null; void syncAfterVisibility(); });
+    .finally(() => { pendingPause = null; if (!document.hidden) void syncAfterVisibility(); });
   return pendingPause;
 }
 document.addEventListener('visibilitychange', () => {
@@ -697,7 +843,10 @@ document.addEventListener('visibilitychange', () => {
   else if (task) { refreshAfterVisibility = true; void syncAfterVisibility(); }
   else if (!homeRendered && !busy) void home();
 });
-window.addEventListener('pagehide', pauseWhenHidden);
+window.addEventListener('pagehide', () => pauseWhenHidden({ unloading: true }));
+window.addEventListener('pageshow', event => {
+  if (event.persisted && task && !isDeveloperMode()) { refreshAfterVisibility = true; void syncAfterVisibility(); }
+});
 
 const initialParams = new URL(location.href).searchParams;
 if (isDeveloperMode() && initialParams.has('activityId')) openPreview({ activityId: initialParams.get('activityId') });

@@ -1,0 +1,56 @@
+// Arrows point from inputs to calculated values or decisions.
+// Intended design includes components not yet wired into the live application.
+// Render: dot -Tpng -Gdpi=160 engine-dependencies.dots -o engine-dependencies.png
+digraph EngineDependencies {
+  graph [label="Course Academy — Engine Dependencies", labelloc=t,
+    labeljust=l, fontname="DejaVu Sans", fontsize=23, bgcolor="white",
+    rankdir=TB, nodesep=0.38, ranksep=0.64, pad=0.35,
+    splines=polyline, outputorder=edgesfirst];
+  node [shape=box, style=filled, fillcolor="#f3f4f6", color="#374151",
+    fontcolor="#111827", fontname="DejaVu Sans", fontsize=13,
+    margin="0.18,0.13", penwidth=1.1];
+  edge [color="#64748b", arrowsize=0.7, penwidth=1.1];
+
+  Content [label="Content + correct answers"];
+  Results [label="Graded learner results"];
+  Times [label="Authored reference times"];
+  Workload [label="Expected activity workload"];
+  Base [label="Base XP"];
+  Earned [label="Earned XP"];
+  Cadence [label="Assessment cadence"];
+  Accuracy [label="Learner accuracy"];
+  Difficulty [label="Topic difficulty"];
+  Speed [label="FIRe learning-speed multiplier"];
+  Coverage [label="Authored encompassing weights"];
+  Credit [label="Fractional repetition credit"];
+  Retention [label="Repetitions + retention state"];
+  Clock [label="Calendar time"];
+  Reviews [label="Due reviews + readiness"];
+  Prerequisites [label="Prerequisite graph"];
+  Readiness [label="Eligible lessons +\npaths to targets"];
+  Goals [label="Targets + assignment mappings\n+ deadlines"];
+  Priority [label="Queue priority", fillcolor="#111827", fontcolor="white", fontsize=16];
+
+  Content -> Results;
+  Times -> Workload;
+  Workload -> Base;
+  Base -> Earned;
+  Results -> Earned;
+  Earned -> Cadence;
+  Results -> Accuracy;
+  Difficulty -> Speed;
+  Accuracy -> Speed;
+  Coverage -> Credit;
+  Results -> Credit;
+  Speed -> Credit;
+  Credit -> Retention;
+  Clock -> Retention;
+  Retention -> Reviews;
+  Prerequisites -> Readiness;
+  Reviews -> Readiness;
+  Goals -> Priority;
+  Readiness -> Priority;
+  Reviews -> Priority;
+  Workload -> Priority;
+  Cadence -> Priority;
+}

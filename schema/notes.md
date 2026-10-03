@@ -1,3 +1,17 @@
+Topics:
+    - Topic Difficulty (Initial Estimate), (What determines a topic's difficulty)
+    - Topic Encompassing
+
+
+
+
+
+
+
+
+
+
+
 The overall schema is sound, but the engine is not yet compatible with the current content model. I would keep the generic activity/step design and migrate the engine to it. The remaining issues are mostly application behavior, plus a few unresolved schema decisions.
 
 I reviewed all 25 EDN files, the Rust and Python engines, EDB’s best practices, and the recorded evidence and proposals. No files changed.

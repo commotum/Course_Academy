@@ -527,9 +527,14 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
         let expected = if expected > 0.0 { expected } else {
             s.refs(a, "activity/steps")?.into_iter().map(|step| number(s, step, "step/expected-seconds")).sum()
         };
+        let progress = if matches!(state.as_str(), "started" | "paused") {
+            lesson_progress(s, &learning::lesson_steps(s, a)?, &items(s, task)?)?
+        } else {
+            Json::Null
+        };
         activities.push(json!({"activityId":a,"title":text(s,a,"activity/title"),"type":"lesson","taskId":task,"status":state,
             "priority":number(s,task,"learner-task/priority"),"reason":candidate.reason,"targetCount":candidate.target_count,
-            "targetTopics":candidate.target_topics,"expectedSeconds":if expected>0.0{Some(expected)}else{None}}));
+            "targetTopics":candidate.target_topics,"progress":progress,"expectedSeconds":if expected>0.0{Some(expected)}else{None}}));
         if activities.len() == 5 { break; }
     }
     Ok(
@@ -601,6 +606,28 @@ fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json
     }
     Ok(forms)
 }
+fn authored_step(steps: &[learning::LessonStep], content: u64) -> Option<(usize, &learning::LessonStep)> {
+    steps.iter().enumerate().find(|(_, entry)| {
+        entry.content == content
+            || entry.example == Some(content)
+            || entry.questions.contains(&content)
+    })
+}
+
+/// Presentations within an adaptive skill share one authored step. Study and
+/// the player report the same position rather than counting practice questions.
+fn lesson_progress(s: &EntitySnapshot, steps: &[learning::LessonStep], chain: &[u64]) -> Result<Json> {
+    let step_number = if let Some(&item) = chain.last() {
+        authored_step(steps, s.reference(item, "task-item/content")?)
+            .map(|(index, _)| index + 1)
+            .unwrap_or(1)
+    } else {
+        1
+    };
+    Ok(json!({"stepNumber":step_number,"totalSteps":steps.len(),"presented":chain.len(),
+        "answered":chain.iter().filter(|i|matches!(status(s,**i,"task-item/status").as_deref(),Ok("correct"|"incorrect"))).count()}))
+}
+
 fn task_json(s: &EntitySnapshot, l: u64, t: u64) -> Result<Json> {
     owned(s, l, t)?;
     let a = s.reference(t, "learner-task/activity")?;
@@ -608,7 +635,7 @@ fn task_json(s: &EntitySnapshot, l: u64, t: u64) -> Result<Json> {
     let chain = items(s, t)?;
     let at = Utc::now();
     let steps = learning::lesson_steps(s, a)?;
-    let mut step_number = 1;
+    let progress = lesson_progress(s, &steps, &chain)?;
     let mut step = Json::Null;
     if let Some(&i) = chain.last() {
         let content = s.reference(i, "task-item/content")?;
@@ -618,14 +645,7 @@ fn task_json(s: &EntitySnapshot, l: u64, t: u64) -> Result<Json> {
         let tutorial = e.contains_key("tutorial/id");
         let example = e.get("question/is-example") == Some(&json!(true));
         let reveal = example || terminal;
-        let authored = steps.iter().enumerate().find(|(_, entry)| {
-            entry.content == content
-                || entry.example == Some(content)
-                || entry.questions.contains(&content)
-        });
-        if let Some((index, _)) = authored {
-            step_number = index + 1;
-        }
+        let authored = authored_step(&steps, content);
         let title = if tutorial {
             text(s, content, "tutorial/title")
         } else if let Some((_, entry)) =
@@ -670,7 +690,7 @@ fn task_json(s: &EntitySnapshot, l: u64, t: u64) -> Result<Json> {
         }
     }
     Ok(
-        json!({"basis":s.basis_t,"taskId":t,"activityId":a,"learner":learner_json(s,l),"course":course_json(s,l)?,"title":text(s,a,"activity/title"),"status":task_state,"xp":number(s,t,"learner-task/xp-earned"),"xpBase":number(s,t,"learner-task/xp-base"),"elapsedSeconds":if matches!(task_state.as_str(),"unlocked"|"locked"){number(s,t,"learner-task/elapsed-seconds")}else{timing::task_elapsed(s,t,at)?},"step":step,"progress":{"stepNumber":step_number,"totalSteps":steps.len(),"presented":chain.len(),"answered":chain.iter().filter(|i|matches!(status(s,**i,"task-item/status").as_deref(),Ok("correct"|"incorrect"))).count()}}),
+        json!({"basis":s.basis_t,"taskId":t,"activityId":a,"learner":learner_json(s,l),"course":course_json(s,l)?,"title":text(s,a,"activity/title"),"status":task_state,"xp":number(s,t,"learner-task/xp-earned"),"xpBase":number(s,t,"learner-task/xp-base"),"elapsedSeconds":if matches!(task_state.as_str(),"unlocked"|"locked"){number(s,t,"learner-task/elapsed-seconds")}else{timing::task_elapsed(s,t,at)?},"step":step,"progress":progress}),
     )
 }
 fn add(e: Json, a: &str, v: Json) -> Json {
@@ -1234,6 +1254,46 @@ fn main() {
             println!("{}", envelope(Err(error)));
             std::process::exit(1);
         }
+    }
+}
+
+#[cfg(test)]
+mod lesson_progress_tests {
+    use super::*;
+
+    #[test]
+    fn saved_position_uses_authored_steps_even_with_multiple_practice_presentations() {
+        let steps = vec![
+            learning::LessonStep { step: 10, content: 100, kind: "tutorial".into(), example: None, questions: vec![] },
+            learning::LessonStep { step: 20, content: 200, kind: "knowledge-point".into(), example: Some(201), questions: vec![202, 203] },
+            learning::LessonStep { step: 30, content: 300, kind: "tutorial".into(), example: None, questions: vec![] },
+            learning::LessonStep { step: 40, content: 400, kind: "tutorial".into(), example: None, questions: vec![] },
+        ];
+        let records: BTreeMap<_, _> = [
+            (100, json!({})), (200, json!({})), (201, json!({})),
+            (202, json!({})), (203, json!({})), (300, json!({})), (400, json!({})),
+            (900, json!({"db/ident":kw("task-item.status/correct")})),
+            (901, json!({"db/ident":kw("task-item.status/paused")})),
+            (1, json!({"task-item/content":100,"task-item/status":900})),
+            (2, json!({"task-item/content":201,"task-item/status":900})),
+            (3, json!({"task-item/content":202,"task-item/status":900})),
+            (4, json!({"task-item/content":203,"task-item/status":900})),
+            (5, json!({"task-item/content":300,"task-item/status":901})),
+        ].into_iter().map(|(id, record)| (id, record.as_object().unwrap().clone())).collect();
+        let s = EntitySnapshot::new(records, 42).unwrap();
+        let before = s.entities.clone();
+        for chain in [&[1, 2][..], &[1, 2, 3][..], &[1, 2, 3, 4][..]] {
+            let progress = lesson_progress(&s, &steps, chain).unwrap();
+            assert_eq!(progress["stepNumber"], 2);
+            assert_eq!(progress["totalSteps"], 4);
+        }
+        let halfway = lesson_progress(&s, &steps, &[1, 2, 3, 4, 5]).unwrap();
+        assert_eq!(halfway, json!({"stepNumber":3,"totalSteps":4,"presented":5,"answered":4}));
+        assert_eq!(lesson_progress(&s, &steps, &[]).unwrap()["stepNumber"], 1);
+        assert_eq!(lesson_progress(&s, &steps, &[1]).unwrap()["stepNumber"], 1);
+        assert_eq!(authored_step(&steps, 200).unwrap().0, 1);
+        assert_eq!(s.entities, before);
+        assert_eq!(s.basis_t, 42);
     }
 }
 
