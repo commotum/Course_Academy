@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script>
+    try {
+      document.documentElement.dataset.theme = localStorage.getItem('course-academy.theme') === 'light' ? 'light' : 'dark';
+    } catch { document.documentElement.dataset.theme = 'dark'; }
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>Assignments · Course Academy</title>
+  <link rel="icon" href="/ui/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="stylesheet" href="/ui/learning.css">
+  <link rel="stylesheet" href="/ui/assignments.css">
+  <link rel="stylesheet" href="/ui/navigation.css">
+  <script src="/ui/vendor/dompurify/purify.min.js" defer></script>
+  <script src="/ui/mathjax-config.js" defer></script>
+  <script src="/ui/assignments.js" type="module"></script>
+</head>
+<body>
+  <header class="topbar site-header">
+    <a class="brand" href="/home" aria-label="Study home"><img class="brand-logo" src="/ui/MA-Logo.svg" alt="" width="28" height="28"></a>
+    <nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/assignments" id="assignmentsLink" aria-current="page">Assignments</a><a href="/progress" id="courseLink">Progress</a><a href="/?view=targets" id="targetsLink">Targets</a><button id="courseBrowse" class="explore-trigger" type="button" aria-haspopup="dialog">Explore</button></nav>
+    <button id="learnerName" class="learner-name" type="button" aria-haspopup="dialog" aria-controls="userProfile" aria-expanded="false">Profile</button>
+  </header>
+  <script>
+    // Restore presentation before the first paint; the assignments response remains authoritative.
+    try {
+      const header = JSON.parse(sessionStorage.getItem('course-academy.study-header'));
+      if (header && ['courseId', 'learnerName'].every(key => typeof header[key] === 'string')) {
+        document.getElementById('learnerName').textContent = header.learnerName || 'Profile';
+        document.getElementById('courseLink').href = '/progress?course=' + encodeURIComponent(header.courseId);
+      }
+    } catch { /* Storage can be unavailable; the normal API response fills the header. */ }
+  </script>
+  <div class="error-banner" id="errorBanner" role="alert" hidden><span id="errorText"></span><button id="retryButton" type="button">Try again</button></div>
+  <main id="main" tabindex="-1" aria-busy="true"><div class="loading" role="status"><span class="pulse"></span>Loading your assignments…</div></main>
+  <div class="sr-only" id="announcement" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

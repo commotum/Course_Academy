@@ -2,6 +2,11 @@
 
 <html lang="en">
 <head>
+  <script>
+    try {
+      document.documentElement.dataset.theme = localStorage.getItem('course-academy.theme') === 'light' ? 'light' : 'dark';
+    } catch { document.documentElement.dataset.theme = 'dark'; }
+  </script>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Explore · Course Academy</title>
@@ -19,28 +24,28 @@
 }
 * { box-sizing: border-box; }
 :root {
-  --bg:#030303;
-  --panel:#090909ee;
-  --panel-2:#0e0e0e;
-  --line:#191919;
-  --line-2:#262626;
-  --ink:#fafafa;
-  --muted:#8b8b8b;
-  --soft:#cfcfcf;
-  --edge:rgba(255,255,255,.18);
-  --edge-active:rgba(255,255,255,.74);
-  --node:#000000;
-  --node-text:#ffffff;
-  --node-border:#ffffff;
-  --node-hover:#000000;
-  --focus:rgba(255,255,255,.1);
+  --bg:var(--tone-03);
+  --panel:var(--tone-09-ee);
+  --panel-2:var(--tone-0e);
+  --line:var(--tone-19);
+  --line-2:var(--tone-26);
+  --ink:var(--tone-fa);
+  --muted:var(--tone-8b);
+  --soft:var(--tone-cf);
+  --edge:var(--ink-alpha-18);
+  --edge-active:var(--ink-alpha-74);
+  --node:var(--tone-00);
+  --node-text:var(--tone-ff);
+  --node-border:var(--tone-ff);
+  --node-hover:var(--tone-00);
+  --focus:var(--ink-alpha-1);
   --shadow:0 18px 48px rgba(0,0,0,.4);
   --font:"New Science Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 html,body { margin:0; width:100%; height:100%; overflow:hidden; background:var(--bg); color:var(--ink); font-family:var(--font); letter-spacing:.01em; }
 body::before { content:""; position:fixed; inset:0; background-image:
-  linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  linear-gradient(var(--ink-alpha-035) 1px, transparent 1px),
+  linear-gradient(90deg, var(--ink-alpha-03) 1px, transparent 1px);
   background-size: 24px 24px, 24px 24px; opacity:.24; pointer-events:none; }
 button,input,select { font:inherit; }
 .app { position:relative; width:100%; height:100%; display:grid; grid-template-rows:68px 1fr; }
@@ -58,9 +63,9 @@ button,input,select { font:inherit; }
 
 
 .segmented,.compact-row { display:flex; align-items:center; gap:6px; }
-.segmented button,.pill,select.compact,input.compact { height:36px; padding:0 12px; border:1px solid var(--line-2); background:#0a0a0a; color:var(--soft); cursor:pointer; border-radius:0; white-space:nowrap; }
-.segmented button.active,.pill.active { background:#fff; color:#000; border-color:#fff; }
-.segmented button:hover,.pill:hover,select.compact:hover { border-color:#5f5f5f; color:var(--ink); }
+.segmented button,.pill,select.compact,input.compact { height:36px; padding:0 12px; border:1px solid var(--line-2); background:var(--tone-0a); color:var(--soft); cursor:pointer; border-radius:0; white-space:nowrap; }
+.segmented button.active,.pill.active { background:var(--tone-ff); color:var(--tone-00); border-color:var(--tone-ff); }
+.segmented button:hover,.pill:hover,select.compact:hover { border-color:var(--tone-5f); color:var(--ink); }
 .selectors { margin-left:auto; display:flex; align-items:center; gap:8px; }
 .main { position:relative; min-height:0; }
 .viewport { position:absolute; inset:0; overflow:hidden; cursor:grab; }
@@ -69,7 +74,7 @@ button,input,select { font:inherit; }
 #svg { width:100%; height:100%; display:block; }
 #edges, #edges path { pointer-events:none; }
 .edge-base { fill:none; stroke:var(--edge); stroke-width:1.2; stroke-linecap:round; pointer-events:none; }
-.edge-fade { fill:none; stroke:rgba(255,255,255,.06); stroke-width:1.2; stroke-linecap:round; pointer-events:none; }
+.edge-fade { fill:none; stroke:var(--ink-alpha-06); stroke-width:1.2; stroke-linecap:round; pointer-events:none; }
 .edge-active { fill:none; stroke:var(--edge-active); stroke-width:1.45; stroke-linecap:round; pointer-events:none; }
 .layer-guide { display:none; }
 .node .node-shape { fill:var(--node); stroke:var(--node-border); stroke-width:1; rx:0; ry:0; }
@@ -82,7 +87,7 @@ button,input,select { font:inherit; }
 /* A hit target is interactive, but never paints over the title. */
 .node > rect.node-hit { fill:none; stroke:none; stroke-width:0; pointer-events:all; cursor:pointer; }
 .node > text { pointer-events:none; user-select:none; }
-.node:focus-visible .node-shape { stroke:#ffffff; stroke-width:1; }
+.node:focus-visible .node-shape { stroke:var(--tone-ff); stroke-width:1; }
 .hud { position:absolute; top:18px; left:18px; display:flex; flex-direction:column; gap:12px; z-index:5; max-width:min(420px, calc(100vw - 36px)); }
 .info-panel,.mini-panel,.footer-panel { background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow); backdrop-filter: blur(10px); }
 .info-panel { padding:14px 14px 12px; }
@@ -95,12 +100,12 @@ button,input,select { font:inherit; }
 .footer-panel { position:absolute; right:18px; bottom:18px; padding:10px 12px; z-index:5; font-size:10px; color:var(--muted); display:flex; align-items:center; gap:12px; }
 .mini-panel { position:absolute; right:18px; top:18px; padding:10px; width:220px; z-index:5; }
 .minimap-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.14em; }
-.minimap { width:100%; aspect-ratio: 220 / 140; border:1px solid var(--line); background:#050505; display:block; cursor:pointer; }
+.minimap { width:100%; aspect-ratio: 220 / 140; border:1px solid var(--line); background:var(--tone-05); display:block; cursor:pointer; }
 .legend-line { display:flex; gap:8px; align-items:center; color:var(--muted); font-size:10px; margin-top:8px; }
-.legend-swatch { width:18px; height:1px; background:rgba(255,255,255,.32); }
+.legend-swatch { width:18px; height:1px; background:var(--ink-alpha-32); }
 .breadcrumbs { display:flex; align-items:center; gap:6px; margin-top:8px; min-width:0; flex-wrap:wrap; }
-.crumb { height:24px; display:inline-flex; align-items:center; padding:0 8px; border:1px solid var(--line-2); color:var(--muted); background:#0b0b0b; font-size:10px; text-transform:uppercase; letter-spacing:.12em; }
-.crumb.current { color:#000; background:#fff; border-color:#fff; }
+.crumb { height:24px; display:inline-flex; align-items:center; padding:0 8px; border:1px solid var(--line-2); color:var(--muted); background:var(--tone-0b); font-size:10px; text-transform:uppercase; letter-spacing:.12em; }
+.crumb.current { color:var(--tone-00); background:var(--tone-ff); border-color:var(--tone-ff); }
 .empty-note { color:var(--muted); font-size:11px; line-height:1.5; }
 .hidden { display:none !important; }
 @media (max-width: 1200px) { .selectors { display:none; } .mini-panel { width:180px; } }
@@ -139,13 +144,13 @@ button,input,select { font:inherit; }
 .node .title-marquee-wrap{display:none;pointer-events:none}
 .node.is-marquee-hover .title-marquee-wrap{display:block}
 .node .title-marquee-track{will-change:transform}
-.edge-base{stroke:rgba(255,255,255,.78)}
-.edge-base.edge-direct{stroke:rgba(255,255,255,.78);stroke-width:1.2}
+.edge-base{stroke:var(--ink-alpha-78)}
+.edge-base.edge-direct{stroke:var(--ink-alpha-78);stroke-width:1.2}
 #badgeNote[hidden]{display:none}
 .hud{width:min(330px,calc(100% - 36px));max-width:min(330px,calc(100% - 36px))}
 .info-actions#selectedActions{flex-wrap:nowrap;gap:5px}.info-actions#selectedActions .pill{font-size:10px;height:28px;padding:0 8px}.breadcrumbs{flex-wrap:nowrap;overflow:hidden}.breadcrumbs .crumb{font-size:8px;flex-shrink:1}.info-title{font-size:16px}.info-copy{font-size:10px;line-height:1.6}.meta-line{font-size:9px;letter-spacing:.06em;line-height:1.5}
-#jumpTopics{margin-top:11px;border-top:1px solid #202020;padding-top:8px;font-size:10px;color:#a0a0a0}#jumpTopics summary{cursor:pointer;list-style-position:inside}
-#badgeNote{margin-top:8px;color:#a0a0a0;font-size:9px;line-height:1.55;letter-spacing:0;text-transform:none}
+#jumpTopics{margin-top:11px;border-top:1px solid var(--tone-20);padding-top:8px;font-size:10px;color:var(--tone-a0)}#jumpTopics summary{cursor:pointer;list-style-position:inside}
+#badgeNote{margin-top:8px;color:var(--tone-a0);font-size:9px;line-height:1.55;letter-spacing:0;text-transform:none}
 .selectors{display:flex}.viewport{touch-action:none}
 @media(max-width:1300px){
 
@@ -193,62 +198,65 @@ button,input,select { font:inherit; }
 @media(max-width:1000px){.mini-panel{display:block;width:170px}}
 @media(max-width:570px){.mini-panel{display:block;top:auto;bottom:55px;right:12px;width:142px;padding:8px}.minimap-stats{font-size:9px;letter-spacing:.07em}.info-actions#viewActions .pill{height:26px;font-size:9px}}
 </style>
-<style id="node-context-style">/* A node-only context action. Connections remain completely non-interactive. */
-#nodeContextMenu{position:fixed;z-index:100;min-width:224px;max-width:calc(100vw - 16px);padding:4px;background:#0b0b0b;border:1px solid #666;box-shadow:0 8px 25px #000b;color:#fff;font-family:var(--font)}
+<style id="node-context-style">/* Node-only context actions. Connections remain completely non-interactive. */
+#nodeContextMenu{position:fixed;z-index:100;min-width:224px;max-width:calc(100vw - 16px);padding:4px;background:var(--tone-0b);border:1px solid var(--tone-66);box-shadow:0 8px 25px #000b;color:var(--tone-ff);font-family:var(--font)}
 #nodeContextMenu[hidden],#copyNodeNotice[hidden]{display:none}
-#copyNodeButton{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:11px 12px;font:inherit;font-size:12px;letter-spacing:0;cursor:pointer;white-space:nowrap}
-#copyNodeButton:hover,#copyNodeButton:focus-visible{background:#fff;color:#000;outline:none}
-#copyNodeButton:disabled{opacity:.55;cursor:wait}
-#copyNodeNotice{position:fixed;z-index:101;bottom:60px;left:50%;transform:translateX(-50%);max-width:calc(100vw - 32px);padding:10px 14px;background:#111;border:1px solid #777;color:#fff;font:11px var(--font);box-shadow:0 6px 20px #0008;pointer-events:none}
-#manualNodeCopy{background:#0b0b0b;color:#fff;border:1px solid #777;padding:20px;width:min(540px,calc(100vw - 32px));font:12px var(--font)}
+#nodeContextMenu [role="menuitem"]{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:11px 12px;font:inherit;font-size:12px;letter-spacing:0;cursor:pointer;white-space:nowrap;text-decoration:none;box-sizing:border-box}
+#nodeContextMenu [role="menuitem"]:hover,#nodeContextMenu [role="menuitem"]:focus-visible{background:var(--tone-ff);color:var(--tone-00);outline:none}
+#nodeContextMenu [role="menuitem"]:disabled{opacity:.55;cursor:wait}
+#nodeContextMenu .target-control{display:flex;width:100%;gap:0}
+#nodeContextMenu .target-status:not(:empty){padding:0 12px 10px}
+#copyNodeNotice{position:fixed;z-index:101;bottom:60px;left:50%;transform:translateX(-50%);max-width:calc(100vw - 32px);padding:10px 14px;background:var(--tone-11);border:1px solid var(--tone-77);color:var(--tone-ff);font:11px var(--font);box-shadow:0 6px 20px #0008;pointer-events:none}
+#manualNodeCopy{background:var(--tone-0b);color:var(--tone-ff);border:1px solid var(--tone-77);padding:20px;width:min(540px,calc(100vw - 32px));font:12px var(--font)}
 #manualNodeCopy::backdrop{background:#000a}
 #manualNodeCopy h2{font:500 15px var(--font);margin:0 0 12px}
-#manualNodeCopy p{color:#bbb;line-height:1.6;margin:0 0 12px}
-#manualNodeText{display:block;width:100%;min-height:110px;resize:vertical;padding:10px;background:#050505;color:#fff;border:1px solid #555;font:12px var(--font);line-height:1.6}
+#manualNodeCopy p{color:var(--tone-bb);line-height:1.6;margin:0 0 12px}
+#manualNodeText{display:block;width:100%;min-height:110px;resize:vertical;padding:10px;background:var(--tone-05);color:var(--tone-ff);border:1px solid var(--tone-55);font:12px var(--font);line-height:1.6}
 #manualNodeDone{margin-top:12px;float:right}
 
 </style><style id="competency-styles">
 /* Fill encodes only learner repetitions. Selection uses separate corner marks. */
 #nodes .node .title-shape{fill:var(--node);stroke:var(--node-border);stroke-dasharray:var(--competency-dash,none)}
 #nodes .node .title-text{fill:var(--node-text)}
-#nodes .node .layer-badge{fill:#000;stroke:#fff;stroke-dasharray:none}
-#nodes .node .badge-text{fill:#fff}
+#nodes .node .layer-badge{fill:var(--tone-00);stroke:var(--tone-ff);stroke-dasharray:none}
+#nodes .node .badge-text{fill:var(--tone-ff)}
 #nodes .node:focus-visible .title-shape{stroke-width:2}
 #selectionMarks,#selectionMarks *{pointer-events:none}
-.selection-underlay{fill:none;stroke:#000;stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;vector-effect:non-scaling-stroke}
-.selection-brackets{fill:none;stroke:#fff;stroke-width:1.4;stroke-linecap:square;stroke-linejoin:miter;vector-effect:non-scaling-stroke}
-#competencyLegend{margin-top:12px;padding-top:10px;border-top:1px solid var(--line-2);font-size:10px;color:#ccc;line-height:1.5}
+.selection-underlay{fill:none;stroke:var(--tone-00);stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;vector-effect:non-scaling-stroke}
+.selection-brackets{fill:none;stroke:var(--tone-ff);stroke-width:1.4;stroke-linecap:square;stroke-linejoin:miter;vector-effect:non-scaling-stroke}
+#competencyLegend{margin-top:12px;padding-top:10px;border-top:1px solid var(--line-2);font-size:10px;color:var(--tone-cc);line-height:1.5}
 .competency-heading{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:7px}
-.competency-heading>span:first-child{letter-spacing:.05em;color:#bbb}
-#competencyReadout{font-size:10px;color:#fff;font-variant-numeric:tabular-nums}
+.competency-heading>span:first-child{letter-spacing:.05em;color:var(--tone-bb)}
+#competencyReadout{font-size:10px;color:var(--tone-ff);font-variant-numeric:tabular-nums}
 .competency-ramp{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
-.competency-cell{display:block;background:var(--swatch-fill);color:var(--swatch-text);border:1px solid #aaa;height:20px;text-align:center;line-height:18px;font-size:9px;font-variant-numeric:tabular-nums}
-.competency-endpoints{display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:#b5b5b5}
-.competency-keys{display:flex;gap:18px;align-items:center;margin-top:9px;font-size:9px;color:#ddd}
+.competency-cell{display:block;background:var(--swatch-fill);color:var(--swatch-text);border:1px solid var(--tone-aa);height:20px;text-align:center;line-height:18px;font-size:9px;font-variant-numeric:tabular-nums}
+.competency-endpoints{display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--tone-b5)}
+.competency-keys{display:flex;gap:18px;align-items:center;margin-top:9px;font-size:9px;color:var(--tone-dd)}
 .competency-keys>span{display:inline-flex;gap:7px;align-items:center;white-space:nowrap}
 .competency-active-example{display:block;width:28px;height:18px;flex:0 0 28px}
-.competency-unknown-example{display:inline-block;width:24px;height:12px;background:#000;border:1px dashed #8c8c8c}
-#competencyDetails{margin-top:8px;font-size:9px;line-height:1.6;color:#bbb}
-#competencyDetails>summary{cursor:pointer;list-style-position:inside;color:#aaa}
+.competency-unknown-example{display:inline-block;width:24px;height:12px;background:var(--tone-00);border:1px dashed var(--tone-8c)}
+#competencyDetails{margin-top:8px;font-size:9px;line-height:1.6;color:var(--tone-bb)}
+#competencyDetails>summary{cursor:pointer;list-style-position:inside;color:var(--tone-aa)}
 #competencyDetails p{margin:8px 0 0;overflow-wrap:anywhere}
-#competencyDetails .competency-source-heading{color:#eee}
-#competencySelectionDetail{color:#ddd}
+#competencyDetails .competency-source-heading{color:var(--tone-ee)}
+#competencySelectionDetail{color:var(--tone-dd)}
 @media(max-width:570px){#competencyLegend{margin-top:9px;padding-top:8px;font-size:9px}.competency-heading{margin-bottom:5px}.competency-cell{height:17px;line-height:15px;font-size:8px}.competency-keys{margin-top:6px;gap:14px}#competencyDetails{margin-top:6px}}
 </style>
 
 <style id="load-state-styles">
-#refreshData{border:0;border-left:1px solid #444;padding:0 0 0 12px;background:none;color:#aaa;font:9px var(--font);cursor:pointer;text-transform:uppercase;letter-spacing:.07em}#refreshData:hover{color:#fff}
-.load-state{position:absolute;z-index:7;left:50%;top:50%;transform:translate(-50%,-50%);max-width:min(480px,calc(100% - 36px));padding:24px;border:1px solid #444;background:#080808;font-size:12px;line-height:1.7;text-align:center}.load-state[hidden]{display:none}.load-state .pill,.load-state a{display:block;margin:16px auto 0;color:#fff;font-size:10px}.load-state .pill[hidden],.load-state a[hidden]{display:none}
+#refreshData{border:0;border-left:1px solid var(--tone-44);padding:0 0 0 12px;background:none;color:var(--tone-aa);font:9px var(--font);cursor:pointer;text-transform:uppercase;letter-spacing:.07em}#refreshData:hover{color:var(--tone-ff)}
+.load-state{position:absolute;z-index:7;left:50%;top:50%;transform:translate(-50%,-50%);max-width:min(480px,calc(100% - 36px));padding:24px;border:1px solid var(--tone-44);background:var(--tone-08);font-size:12px;line-height:1.7;text-align:center}.load-state[hidden]{display:none}.load-state .pill,.load-state a{display:block;margin:16px auto 0;color:var(--tone-ff);font-size:10px}.load-state .pill[hidden],.load-state a[hidden]{display:none}
 @media(max-width:680px){.load-state{top:65%}}
 </style>
 <link rel="stylesheet" href="/ui/navigation.css">
+<link rel="stylesheet" href="/ui/targets.css">
 </head>
 <body>
 <div class="app">
 <header class="topbar site-header">
-<a class="brand" href="/home" aria-label="Study home"><img class="brand-logo" src="/ui/MA-Logo.svg" alt="" width="28" height="28"><span class="brand-copy"><b id="courseTitle">Loading courses</b><small id="courseLevel">Knowledge graph</small></span></a>
-<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/progress" id="courseLink">Progress</a><button id="courseBrowse" class="explore-trigger" type="button" aria-haspopup="dialog">Explore</button></nav>
-<span id="learnerName" class="learner-name"></span>
+<a class="brand" href="/home" aria-label="Study home"><img class="brand-logo" src="/ui/MA-Logo.svg" alt="" width="28" height="28"></a>
+<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/assignments" id="assignmentsLink">Assignments</a><a href="/progress" id="courseLink">Progress</a><a href="/?view=targets" id="targetsLink">Targets</a><button id="courseBrowse" class="explore-trigger" type="button" aria-haspopup="dialog">Explore</button></nav>
+<button id="learnerName" class="learner-name" type="button" aria-haspopup="dialog" aria-controls="userProfile" aria-expanded="false">Profile</button>
 </header>
 <div class="main">
 <div id="loadState" class="load-state" role="status"><span id="loadMessage">Connecting to your knowledge graph…</span><button id="retryLoad" class="pill" hidden>Retry</button><a id="localServerLink" href="http://127.0.0.1:8765/" hidden>Open local explorer ↗</a></div>
@@ -271,14 +279,14 @@ button,input,select { font:inherit; }
 <button class="pill" id="backBtn">Back</button>
 <button class="pill" id="forwardBtn">Forward</button>
 <button class="pill" id="overviewBtn">Course overview</button>
-</div><div class="info-actions" id="viewActions"><button class="pill" id="fitBtn">Fit</button><button class="pill" id="resetBtn">Reset</button></div>
+</div><div class="info-actions hidden" id="targetActions"></div><div class="info-actions" id="viewActions"><button class="pill" id="fitBtn">Fit</button><button class="pill" id="resetBtn">Reset</button></div>
 
 <div class="meta-line" id="metaLine"></div><div id="badgeNote">Global layer badges · prerequisite order</div>
 <section id="competencyLegend" aria-label="Progress and selection legend">
 <div class="competency-heading"><span>Repetitions</span><span id="competencyReadout" aria-live="polite"></span></div>
-<div class="competency-ramp" aria-label="Repetition bands zero through six, from lower to higher"><span class="competency-cell" style="--swatch-fill:#000000;--swatch-text:#FFFFFF" aria-label="Repetition band 0 of 6">0</span><span class="competency-cell" style="--swatch-fill:#303030;--swatch-text:#FFFFFF" aria-label="Repetition band 1 of 6">1</span><span class="competency-cell" style="--swatch-fill:#5A5A5A;--swatch-text:#FFFFFF" aria-label="Repetition band 2 of 6">2</span><span class="competency-cell" style="--swatch-fill:#858585;--swatch-text:#000000" aria-label="Repetition band 3 of 6">3</span><span class="competency-cell" style="--swatch-fill:#AEAEAE;--swatch-text:#000000" aria-label="Repetition band 4 of 6">4</span><span class="competency-cell" style="--swatch-fill:#D6D6D6;--swatch-text:#000000" aria-label="Repetition band 5 of 6">5</span><span class="competency-cell" style="--swatch-fill:#FFFFFF;--swatch-text:#000000" aria-label="Repetition band 6 of 6">6</span></div>
+<div class="competency-ramp" aria-label="Repetition bands zero through six, from lower to higher"><span class="competency-cell" style="--swatch-fill:var(--mastery-0);--swatch-text:var(--mastery-text-0)" aria-label="Repetition band 0 of 6">0</span><span class="competency-cell" style="--swatch-fill:var(--mastery-1);--swatch-text:var(--mastery-text-1)" aria-label="Repetition band 1 of 6">1</span><span class="competency-cell" style="--swatch-fill:var(--mastery-2);--swatch-text:var(--mastery-text-2)" aria-label="Repetition band 2 of 6">2</span><span class="competency-cell" style="--swatch-fill:var(--mastery-3);--swatch-text:var(--mastery-text-3)" aria-label="Repetition band 3 of 6">3</span><span class="competency-cell" style="--swatch-fill:var(--mastery-4);--swatch-text:var(--mastery-text-4)" aria-label="Repetition band 4 of 6">4</span><span class="competency-cell" style="--swatch-fill:var(--mastery-5);--swatch-text:var(--mastery-text-5)" aria-label="Repetition band 5 of 6">5</span><span class="competency-cell" style="--swatch-fill:var(--mastery-6);--swatch-text:var(--mastery-text-6)" aria-label="Repetition band 6 of 6">6</span></div>
 <div class="competency-endpoints"><span>Lower</span><span>Higher</span></div>
-<div class="competency-keys"><span><svg class="competency-active-example" viewBox="0 0 28 18" aria-hidden="true"><rect x="5" y="5" width="18" height="8" fill="#858585"/><path d="M7 2H2V7 M21 2H26V7 M2 11V16H7 M21 16H26V11" fill="none" stroke="#fff" stroke-width="1"/></svg>Active selection</span><span><i class="competency-unknown-example" aria-hidden="true"></i>No data</span></div>
+<div class="competency-keys"><span><svg class="competency-active-example" viewBox="0 0 28 18" aria-hidden="true"><rect x="5" y="5" width="18" height="8" fill="var(--mastery-3)"/><path d="M7 2H2V7 M21 2H26V7 M2 11V16H7 M21 16H26V11" fill="none" stroke="var(--tone-ff)" stroke-width="1"/></svg>Active selection</span><span><i class="competency-unknown-example" aria-hidden="true"></i>No data</span></div>
 <details id="competencyDetails"><summary id="profileSummary">Knowledge profile</summary>
 <p id="competencySelectionDetail"></p>
 <p>Fill shows accumulated repetitions. Bands use the whole-number part of the value, capped at 6. A dashed outline means no progress record.</p>
@@ -296,6 +304,8 @@ button,input,select { font:inherit; }
 </div>
 </div>
 <div id="nodeContextMenu" role="menu" aria-label="Topic actions" hidden>
+<div id="nodeTargetAction" role="none"></div>
+<a id="goToTopicLink" role="menuitem" href="/topic">Go to topic</a>
 <button id="copyNodeButton" type="button" role="menuitem">Copy node to clipboard</button>
 </div>
 <div id="copyNodeNotice" role="status" aria-live="polite" hidden></div>
@@ -307,6 +317,8 @@ button,input,select { font:inherit; }
 </dialog>
 <script type="module">
 import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
+import { createTargetControls } from "/ui/targets.js";
+import { isLightTheme, themeColor } from "/ui/profile.js";
 
 (() => {
   const NODES = [], LINKS = [];
@@ -314,6 +326,23 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
   const STARTER_TOPIC_IDS = [735,487,1422,433,1745,1491];
   const PALETTE = ['#000000','#303030','#5A5A5A','#858585','#AEAEAE','#D6D6D6','#FFFFFF'];
   let snapshot = null, courseId = null, courseTopics = new Set(), repetitions = {};
+  let targetsView = false;
+  let targetTopicId = null;
+  const targetControls = createTargetControls({
+    readLearner: async () => {
+      const response = await fetch('/api/graph-explorer', { cache: 'no-store' });
+      if (!response.ok) throw new Error('Unable to refresh targets.');
+      return (await response.json()).learner;
+    },
+    onChange: learner => {
+      const previous = new Set(snapshot?.learner.targets || []);
+      const next = new Set(learner?.targets || []);
+      const changed = previous.size !== next.size || [...next].some(id => !previous.has(id));
+      if (snapshot) snapshot.learner = { ...snapshot.learner, ...learner };
+      if (targetsView && changed && !loading) changeCourse(null, true, 'targets');
+      document.getElementById('targetActions').classList.toggle('hidden', targetTopicId === null || learner?.selfDirected !== true);
+    },
+  });
   let dependencyOrder = [];
   const $ = (id) => document.getElementById(id);
   const svg = $('svg');
@@ -357,6 +386,7 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
     nodeById.clear(); inMap.clear(); outMap.clear();
     for (const n of nodes) {nodeById.set(n.id,n);inMap.set(n.id,incoming.get(n.id));outMap.set(n.id,outgoing.get(n.id));}
     dependencyOrder=order; snapshot=data; repetitions=data.repetitions;
+    targetControls.setLearner(data.learner);
     META.nodeCount=nodes.length;META.edgeCount=data.links.length;
     META.layerCount=Math.max(1,...nodes.map(n=>n.layer+1));META.maxLayerSize=Math.max(0,...[...layers.values()].map(a=>a.length));
     MAX_DEPTH=Math.max(1,META.layerCount-1);
@@ -424,6 +454,12 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
   // prerequisite order, compacted around the selection; badges keep global ranks.
   function layerLabel(node) { return 'L' + String(node.layer + 1).padStart(2, '0'); }
   function isScoped() { return state.activeIds.size>0 && state.mode !== 'overview'; }
+  function selectionMode() { return state.activeIds.size ? (targetsView ? 'upstream' : 'both') : 'overview'; }
+  function resetSelection() {
+    state.activeIds = targetsView ? new Set(courseTopics) : new Set();
+    state.selected = [...state.activeIds][0] ?? null;
+    state.mode = selectionMode();
+  }
   function titleWrap(text, maximum = constants.maxNodeWidth) {
     const clean = String(text || '').replace(/\s+/g, ' ').trim() || 'Untitled';
     const inner = maximum - constants.textPadX * 2;
@@ -452,6 +488,20 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
   // just because a traversal can turn around at a shared prerequisite.
   function assignScopedColumns(nodeIds, upstream, downstream, selected) {
     const ranks = new Map();
+    if (targetsView) {
+      // Work backwards from the target group, keeping every prerequisite to
+      // its left. A target can itself be a prerequisite of another target.
+      for (let i = dependencyOrder.length - 1; i >= 0; i--) {
+        const id = dependencyOrder[i];
+        if (!nodeIds.has(id)) continue;
+        let rank = state.activeIds.has(id) ? 0 : Infinity;
+        for (const next of outMap.get(id)) {
+          if (nodeIds.has(next) && ranks.has(next)) rank = Math.min(rank, ranks.get(next) - 1);
+        }
+        if (!Number.isFinite(rank)) throw new Error('Unplaced prerequisite topic: ' + id);
+        ranks.set(id, rank);
+      }
+    } else {
     for (const id of dependencyOrder) {
       if (!nodeIds.has(id)) continue;
       let rank = state.activeIds.has(id) ? 0 : -Infinity;
@@ -470,9 +520,10 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
       if (!Number.isFinite(rank)) throw new Error('Unplaced scoped topic: ' + id);
       ranks.set(id, rank);
     }
+    }
     const ordered = [...new Set(ranks.values())].sort((a,b) => a-b);
     const index = new Map(ordered.map((rank,i) => [rank,i]));
-    const origin = index.get(ranks.get(selected));
+    const origin = targetsView ? ordered.length - 1 : index.get(ranks.get(selected));
     const columns = new Map([...ranks].map(([id,rank]) => [id,index.get(rank)-origin]));
     for (const id of nodeIds) {
       if (!Number.isInteger(columns.get(id))) throw new Error('No column for topic ' + id);
@@ -501,8 +552,8 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
         for (const next of adj.get(id)) if (!result.has(next)) {result.set(next,d+1);queue.push(next);}
       }
     };
-    if (['neighbors','upstream','both'].includes(state.mode)) bfs(inMap,upstream);
-    if (['neighbors','downstream','both'].includes(state.mode)) bfs(outMap,downstream);
+    if (targetsView || ['neighbors','upstream','both'].includes(state.mode)) bfs(inMap,upstream);
+    if (!targetsView && ['neighbors','downstream','both'].includes(state.mode)) bfs(outMap,downstream);
     const nodeIds=new Set([...state.activeIds,...upstream.keys(),...downstream.keys()]);
     columns = assignScopedColumns(nodeIds, upstream, downstream, state.selected);
     // Source-defined edges between the visible topics are retained exactly once.
@@ -940,15 +991,16 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
 
   function selectedTitle() {
     const n = state.selected && nodeById.get(state.selected);
-    return n ? n.name : (courseTopics.size ? 'Select a topic' : 'No topics yet');
+    return n ? n.name : (targetsView ? (courseTopics.size ? 'Your targets' : 'No targets yet') : (courseTopics.size ? 'Select a topic' : 'No topics yet'));
   }
 
   function competencyFor(nodeOrId) {
     const id=typeof nodeOrId==='object'?nodeOrId.id:Number(nodeOrId);
     const value=repetitions[id];
-    if(!Number.isFinite(value)||value<0)return {known:false,level:null,repetitions:null,fill:'#000000',text:'#FFFFFF',border:'#8C8C8C',dash:'4 3',label:'No progress data'};
+    if(!Number.isFinite(value)||value<0)return {known:false,level:null,repetitions:null,fill:themeColor('#000000'),text:themeColor('#FFFFFF'),border:themeColor('#8C8C8C'),dash:'4 3',label:'No progress data'};
     const level=Math.min(6,Math.floor(value));
-    return {known:true,level,repetitions:value,fill:PALETTE[level],text:level<3?'#FFFFFF':'#000000',border:'#FFFFFF',dash:'none',label:value.toLocaleString(undefined,{maximumFractionDigits:3})+(value===1?' repetition':' repetitions')};
+    const light=isLightTheme();
+    return {known:true,level,repetitions:value,fill:PALETTE[light?6-level:level],text:(light?level<=3:level>=3)?'#000000':'#FFFFFF',border:themeColor('#FFFFFF'),dash:'none',label:value.toLocaleString(undefined,{maximumFractionDigits:3})+(value===1?' repetition':' repetitions')};
   }
   function updateCompetencyReadout() {
     const current=state.selected!==null?competencyFor(state.selected):null;
@@ -981,15 +1033,27 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
     titleReaderboards.set($('infoTitle'), selectedTitle(), { focusable:true });
     const selectedNode = state.selected ? nodeById.get(state.selected) : null;
     $('selectedActions').classList.toggle('hidden', !selectedNode);
+    $('targetActions').classList.toggle('hidden', !selectedNode || snapshot?.learner.selfDirected !== true);
+    if (targetTopicId !== (selectedNode?.id ?? null)) {
+      targetTopicId = selectedNode?.id ?? null;
+      for (const host of $('targetActions').children) targetControls.remove(host);
+      $('targetActions').replaceChildren();
+      if (selectedNode) {
+        const target = targetControls.createToggle(selectedNode);
+        if (target) $('targetActions').append(target);
+      }
+    }
     $('metaLine').textContent = selectedNode
       ? `Topic ${selectedNode.mathAcademyId ?? selectedNode.id} · global layer ${selectedNode.layer + 1} · ${inMap.get(selectedNode.id).length} incoming · ${outMap.get(selectedNode.id).length} outgoing`
       : `${courseTopics.size} topics in this view · ${META.nodeCount} in the knowledge graph`;
     if(state.activeIds.size>1)$('metaLine').textContent+=' · '+state.activeIds.size+' active';
     const copy = selectedNode
       ? (state.mode === 'overview'
-          ? 'You are seeing the course overview. Click a topic to explore its prerequisites and dependents.'
-          : 'Explore prerequisites and dependents across the knowledge graph, including topics outside this course. Shift + scroll changes depth.')
-      : (courseTopics.size ? 'Select a topic to explore its prerequisites and dependents. Shift + click adds another topic to the selection.' : 'This course does not have topics assigned yet. Browse another course or open all topics.');
+          ? 'Click a topic to explore its prerequisites and dependents.'
+          : targetsView
+            ? 'Hold Shift and scroll to change prerequisite depth. Expansion follows prerequisites only.'
+            : 'Explore prerequisites and dependents across the knowledge graph, including topics outside this course. Shift + scroll changes depth.')
+      : (courseTopics.size ? 'Select a topic to explore its prerequisites and dependents. Shift + click adds another topic to the selection.' : targetsView ? 'Add topics to your targets from a lesson or the graph to see them here.' : 'This course does not have topics assigned yet. Browse another course or open all topics.');
     $('infoCopy').textContent = copy;
     const crumbs = $('breadcrumbs');
     titleReaderboards.clear(crumbs);
@@ -1000,7 +1064,7 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
         const nid = state.history[i].selected;
         const el = document.createElement('div');
         el.className = 'crumb' + (i === state.historyIndex ? ' current' : '');
-        titleReaderboards.set(el, nodeById.get(nid)?.name || 'Full map', { focusable:true });
+        titleReaderboards.set(el, nodeById.get(nid)?.name || (targetsView ? 'Your targets' : 'Full map'), { focusable:true });
         el.setAttribute('role', 'button');
         el.onclick = () => jumpHistory(i);
         el.addEventListener('keydown', event => {
@@ -1037,7 +1101,7 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
     const snapshot=state.history[idx];
     state.selected=snapshot.selected;
     state.activeIds=new Set(snapshot.activeIds);
-    state.mode=state.activeIds.size?'both':'overview';
+    state.mode=selectionMode();
     redraw(true);
   }
 
@@ -1051,7 +1115,8 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
     } else {
       state.activeIds.add(id);state.selected=id;
     }
-    state.mode=state.activeIds.size?'both':'overview';
+    if(targetsView && !state.activeIds.size)resetSelection();
+    state.mode=selectionMode();
     resetDepthWheel();
     remember();
     redraw(center);
@@ -1070,7 +1135,7 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
       // topic at the same on-screen position as its surroundings expand.
       const before=state.layout?.pos.get(state.selected);
       const anchor=before?{x:(before.x+before.w/2)*state.view.k+state.view.x,y:(before.y+before.h/2)*state.view.k+state.view.y}:null;
-      state.mode='both';
+      state.mode=selectionMode();
       redraw(false);
       const after=state.layout.pos.get(state.selected);
       if(anchor&&after){state.view.x=anchor.x-(after.x+after.w/2)*state.view.k;state.view.y=anchor.y-(after.y+after.h/2)*state.view.k;applyView();drawMinimap();}
@@ -1080,11 +1145,11 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
   function setDepth(value, fit=false) {
     const n=value==='all'?MAX_DEPTH:Number(value);
     if(!Number.isFinite(n))return;
-    const next=String(Math.max(1,Math.min(MAX_DEPTH,Math.round(n))));
+    const next=String(Math.max(targetsView?0:1,Math.min(MAX_DEPTH,Math.round(n))));
     if(next===state.depth)return;
     state.depth=next;
     $('depthReadout').textContent='Depth: '+next;
-    if(fit){if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;if(state.activeIds.size)state.mode='both';redraw(true);}
+    if(fit){if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;if(state.activeIds.size)state.mode=selectionMode();redraw(true);}
     else scheduleDepthLayout();
   }
 
@@ -1101,15 +1166,16 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
   }
 
   function fitCurrentView() {
-    if(pendingDepthFrame){cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;state.mode=state.activeIds.size?'both':'overview';redraw(false);}
+    if(pendingDepthFrame){cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;state.mode=selectionMode();redraw(false);}
     fitToBounds(state.layout.bounds);applyView();drawMinimap();updateUI();
   }
 
   function resetView() {
     if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;
-    resetDepthWheel();state.selected=null;state.activeIds.clear();state.mode='overview';
-    // Keep the source iteration's Reset semantics: clear selection and fit the
-    // whole map, while retaining history and the current depth setting.
+    resetDepthWheel();resetSelection();
+    if(targetsView)state.depth='0';
+    // Targets return to all saved topics at depth zero; course views clear
+    // the selection while retaining their current depth setting.
     redraw(true);
   }
 
@@ -1192,22 +1258,31 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
     }
   }
 
-  // Right-clicking inspects/copies one node; it never changes the active set.
+  // Right-clicking opens actions for one node without changing the active set.
   const nodeContextMenu = (() => {
     const menu=$('nodeContextMenu'),button=$('copyNodeButton'),notice=$('copyNodeNotice');
+    const targetAction=$('nodeTargetAction'),topicLink=$('goToTopicLink');
     const fallback=$('manualNodeCopy'),fallbackText=$('manualNodeText');
     let topic=null,opener=null,noticeTimer=0;
     function close(restoreFocus=false) {
       menu.hidden=true;
+      for(const host of targetAction.children)targetControls.remove(host);
+      targetAction.replaceChildren();
       if(opener?.isConnected){
         opener.setAttribute('aria-expanded','false');
         if(restoreFocus)opener.focus({preventScroll:true});
       }
       topic=null;opener=null;
     }
+    function menuItems() {
+      return [...menu.querySelectorAll('[role="menuitem"]')].filter(item=>!item.disabled&&!item.closest('[hidden]'));
+    }
     function open(node,event,element) {
       event.preventDefault();event.stopPropagation();close();
       topic=node;opener=element;button.disabled=false;
+      const target=targetControls.createToggle(node,{menuItem:true});
+      if(target)targetAction.append(target);
+      topicLink.href=topicReferenceURL(snapshot,node,courseId);
       menu.setAttribute('aria-label','Actions for '+node.name);
       element.setAttribute('aria-expanded','true');
       menu.hidden=false;
@@ -1217,7 +1292,7 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
       const y=keyboard?box.bottom+5:event.clientY;
       menu.style.left=Math.max(8,Math.min(window.innerWidth-menu.offsetWidth-8,x))+'px';
       menu.style.top=Math.max(8,Math.min(window.innerHeight-menu.offsetHeight-8,y))+'px';
-      button.focus({preventScroll:true});
+      menuItems()[0]?.focus({preventScroll:true});
     }
     function legacyCopy(value) {
       const prior=document.activeElement,area=document.createElement('textarea');
@@ -1266,13 +1341,20 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
       if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close(true);}
       else if(event.key==='Tab'){close(false);}
       else if(['ArrowUp','ArrowDown','Home','End'].includes(event.key)){
-        event.preventDefault();event.stopPropagation();button.focus({preventScroll:true});
+        event.preventDefault();event.stopPropagation();
+        const items=menuItems(),current=items.indexOf(document.activeElement);
+        const index=event.key==='Home'?0:event.key==='End'?items.length-1:
+          (current+(event.key==='ArrowDown'?1:-1)+items.length)%items.length;
+        items[index]?.focus({preventScroll:true});
       }
+      else if(event.key===' '&&event.target===topicLink){event.preventDefault();topicLink.click();}
     });
     document.addEventListener('pointerdown',event=>{if(!menu.hidden&&!menu.contains(event.target))close(false);},true);
     document.addEventListener('wheel',()=>close(false),{capture:true,passive:true});
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!menu.hidden)close(true);});
     window.addEventListener('blur',()=>close(false));
+    window.addEventListener('resize',()=>close(false));
+    window.addEventListener('course-academy:targets-changed',()=>{if(!menu.hidden)close(true);});
     return {open,close};
   })();
 
@@ -1444,8 +1526,8 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
     if (minimapLayout !== state.layout || minimapBase.width !== W || minimapBase.height !== H) {
     minimapBase.width = W; minimapBase.height = H;
     const ctx = minimapBase.getContext('2d');
-    ctx.fillStyle = '#050505'; ctx.fillRect(0,0,W,H);
-    ctx.save();ctx.translate(ox,oy);ctx.scale(k,k);ctx.strokeStyle='rgba(255,255,255,.18)';ctx.lineWidth=.7/k;
+    ctx.fillStyle = themeColor('#050505'); ctx.fillRect(0,0,W,H);
+    ctx.save();ctx.translate(ox,oy);ctx.scale(k,k);ctx.strokeStyle=themeColor('rgba(255,255,255,.18)');ctx.lineWidth=.7/k;
     for(const e of state.layout.activeLinks){ctx.beginPath();for(const [i,q] of e.segments.entries()){if(i===0)ctx.moveTo(...q.p0);ctx.bezierCurveTo(...q.c1,...q.c2,...q.p1);}ctx.stroke();}ctx.restore();
     for (const n of state.layout.activeNodes) {
       const p = state.layout.pos.get(n.id);
@@ -1459,8 +1541,8 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
     for(const id of state.activeIds){
       const p=state.layout.pos.get(id);if(!p)continue;
       const x=p.x*k+ox-2,y=p.y*k+oy-2,w=Math.max(2,p.w*k)+4,h=Math.max(2,p.h*k)+4;
-      ctx.save();ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
-      ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.strokeRect(x,y,w,h);ctx.restore();
+      ctx.save();ctx.strokeStyle=themeColor('#000');ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
+      ctx.strokeStyle=themeColor('#fff');ctx.lineWidth=1;ctx.strokeRect(x,y,w,h);ctx.restore();
     }
     minimapLayout = state.layout;
     }
@@ -1471,7 +1553,7 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
     const vy1 = (-state.view.y) / state.view.k;
     const vx2 = vx1 + state.width / state.view.k;
     const vy2 = vy1 + state.height / state.view.k;
-    ctx.strokeStyle = '#ffffff';
+    ctx.strokeStyle = themeColor('#ffffff');
     ctx.lineWidth = 1.2;
     ctx.strokeRect(vx1*k + ox, vy1*k + oy, (vx2-vx1)*k, (vy2-vy1)*k);
     minimap._proj = { k, ox, oy };
@@ -1496,25 +1578,23 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
   $('backBtn').addEventListener('click', () => jumpHistory(state.historyIndex - 1));
   $('forwardBtn').addEventListener('click', () => jumpHistory(state.historyIndex + 1));
 
-  function levelLabel(level) {
-    if(!level)return 'Level not set';
-    return level.split('/').at(-1).replaceAll('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
-  }
   function selectedCourse() {return snapshot?.courses.find(c=>c.id===courseId)||null;}
-  function changeCourse(id, updateURL=true) {
+  function changeCourse(id, updateURL=true, view='course') {
     if(!snapshot)return;
-    courseId=snapshot.courses.some(c=>c.id===id)?id:null;
+    targetsView=view==='targets';
+    courseId=!targetsView&&snapshot.courses.some(c=>c.id===id)?id:null;
     const course=selectedCourse();
-    courseTopics=new Set(course?course.topicIds:NODES.map(n=>n.id));
+    courseTopics=new Set(targetsView
+      ? (snapshot.learner.targets || []).filter(id=>nodeById.has(id))
+      : course?course.topicIds:NODES.map(n=>n.id));
     if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;
-    resetDepthWheel();state.depth='1';state.selected=null;state.activeIds.clear();state.history=[];state.historyIndex=-1;state.mode='overview';
+    resetDepthWheel();state.depth=targetsView?'0':'1';resetSelection();state.history=[];state.historyIndex=-1;
     stackOrderCache.clear();
-    $('courseTitle').textContent=course?.title||'All topics';
-    $('courseTitle').title=course?.title||'All topics';
-    $('courseLevel').textContent=course?levelLabel(course.level):'Knowledge graph';
     $('courseLink').href=course?'/progress?course='+encodeURIComponent(course.id):'/progress';
-    document.title='Explore · '+(course?.title||'All topics')+' · Course Academy';
-    $('overviewBtn').textContent=course?'Course overview':'Full graph';
+    document.title=targetsView?'Targets · Course Academy':'Explore · '+(course?.title||'All topics')+' · Course Academy';
+    if(targetsView)$('targetsLink').setAttribute('aria-current','page');
+    else $('targetsLink').removeAttribute('aria-current');
+    $('overviewBtn').textContent=targetsView?'All targets':course?'Course overview':'Full graph';
     const startersHost=$('starterButtons');titleReaderboards.clear(startersHost);startersHost.replaceChildren();
     const members=NODES.filter(n=>courseTopics.has(n.id));
     const preferred=STARTER_TOPIC_IDS.map(id=>members.find(n=>n.mathAcademyId===id)).filter(Boolean);
@@ -1524,15 +1604,21 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
       btn.setAttribute('aria-label',n.name);btn.onclick=event=>setSelected(n.id,true,event.shiftKey);startersHost.appendChild(btn);
     });
     remember();
-    if(updateURL){const url=new URL(location.href);url.searchParams.set('course',courseId||'all');url.searchParams.delete('topic');history.replaceState(null,'',url);}
+    if(updateURL){
+      const url=new URL(location.href);
+      if(targetsView){url.searchParams.set('view','targets');url.searchParams.delete('course');}
+      else {url.searchParams.delete('view');url.searchParams.set('course',courseId||'all');}
+      url.searchParams.delete('topic');history.replaceState(null,'',url);
+    }
     resize();redraw(true);
   }
   function exploreTopic(topic) {
     if (!nodeById.has(Number(topic.id))) return;
+    if (targetsView && !courseTopics.has(Number(topic.id))) return;
     if (!courseTopics.has(Number(topic.id))) changeCourse(null);
     setSelected(Number(topic.id), true);
     const url = new URL(location.href);
-    url.searchParams.set('course', courseId || 'all');
+    if (!targetsView) url.searchParams.set('course', courseId || 'all');
     url.searchParams.set('topic', topic.id);
     history.replaceState(null, '', url);
   }
@@ -1556,11 +1642,12 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
       const response=await fetch('/api/graph-explorer',{cache:'no-cache'});
       if(!response.ok)throw new Error('The database could not be loaded. Check the local explorer server and retry.');
       const data=await response.json();installSnapshot(data);
-      const requested=new URL(location.href).searchParams.get('course');
+      const params=new URL(location.href).searchParams;
+      const requested=params.get('course');
       // Browsing is URL state only. Never assign or change learner/course here.
       const initial=requested==='all'?null:requested||data.learner.courseId||null;
-      changeCourse(initial,false);
-      $('learnerName').textContent=data.learner.name||'';
+      changeCourse(initial,false,params.get('view')==='targets'?'targets':'course');
+      $('learnerName').textContent=data.learner.name||'Profile';
       const requestedTopic=Number(new URL(location.href).searchParams.get('topic'));
       if(nodeById.has(requestedTopic))exploreTopic(nodeById.get(requestedTopic));
       $('loadState').hidden=true;$('courseBrowse').disabled=false;
@@ -1568,13 +1655,16 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
       $('loadMessage').textContent=error.message;
       $('retryLoad').hidden=location.protocol==='file:';
       $('localServerLink').hidden=location.protocol!=='file:';
-      if(!snapshot){$('courseTitle').textContent='Course Explorer';$('courseLevel').textContent='Connection unavailable';}
       if(snapshot)$('courseBrowse').disabled=false;
     } finally {loading=false;$('refreshData').disabled=false;}
   }
   $('retryLoad').onclick=loadData;$('refreshData').onclick=loadData;
 
   window.addEventListener('resize', () => { resize(); redraw(false); });
+  window.addEventListener('course-academy:theme-changed', () => {
+    minimapLayout=null;
+    renderNodes();applyView();drawMinimap();updateUI();
+  });
   document.addEventListener('keydown', (e) => {
     if (document.querySelector('dialog[open]') || e.defaultPrevented) return;
     const typing = ['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName) || document.activeElement?.isContentEditable;
@@ -1601,7 +1691,7 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
     getCourses:()=>snapshot?.courses.map(c=>({...c}))||[],
     changeCourse,
     refresh:loadData,
-    getState:()=>({courseId,basis:snapshot?.basis,mode:state.mode,selected:state.selected,activeIds:[...state.activeIds],history:state.history.map(s=>({selected:s.selected,activeIds:[...s.activeIds]})),historyIndex:state.historyIndex,maxDepth:MAX_DEPTH,depth:state.depth,view:{...state.view},visibleNodes:state.layout.activeNodes.length,visibleLinks:state.layout.activeLinks.length,bounds:{...state.layout.bounds},scoped:state.layout.scoped,columnRule:'dependency-order',rowOrdering:{...state.layout.rowOrdering},columns:state.layout.layers.map(l=>({localColumn:l.layer,x:l.x,width:l.width,ids:l.nodes.map(n=>n.id)})),routes:{...state.layout.routeSummary},globalLayerRange:[1,META.layerCount]}),
+    getState:()=>({courseId,targetsView,basis:snapshot?.basis,mode:state.mode,selected:state.selected,activeIds:[...state.activeIds],history:state.history.map(s=>({selected:s.selected,activeIds:[...s.activeIds]})),historyIndex:state.historyIndex,maxDepth:MAX_DEPTH,depth:state.depth,view:{...state.view},visibleNodes:state.layout.activeNodes.length,visibleLinks:state.layout.activeLinks.length,bounds:{...state.layout.bounds},scoped:state.layout.scoped,columnRule:'dependency-order',rowOrdering:{...state.layout.rowOrdering},columns:state.layout.layers.map(l=>({localColumn:l.layer,x:l.x,width:l.width,ids:l.nodes.map(n=>n.id)})),routes:{...state.layout.routeSummary},globalLayerRange:[1,META.layerCount]}),
     getNodes:()=>state.layout.activeNodes.map(n=>{const p=state.layout.pos.get(n.id);return {id:n.id,name:n.name,active:state.activeIds.has(n.id),globalLayer:n.layer+1,badge:p.geometry.badge,x:p.x,y:p.y,w:p.w,h:p.h,badgeWidth:p.geometry.badgeWidth,titleX:p.geometry.titleX,label:p.geometry.lines[0],localColumn:p.col};}),
     getEdges:()=>state.layout.activeLinks.map(e=>({source:e.source,target:e.target,d:e.d,kind:e.kind,segments:e.segments,sourceSide:e.sourceSide,targetSide:e.targetSide})),
     select:(id,additive=false)=>setSelected(Number(id),true,additive),

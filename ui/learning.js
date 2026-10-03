@@ -1,5 +1,9 @@
 import { marked } from './vendor/marked/marked.esm.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
+import { developerModeReady, isDeveloperMode } from './developer-mode.js';
+import { attachStepMenu } from './step-menu.js';
+
+await developerModeReady;
 
 const $ = id => document.getElementById(id);
 const terminal = status => ['completed', 'failed'].includes(status);
@@ -8,7 +12,7 @@ let task = null;
 let busy = false;
 let retryOperation = null;
 let renderGeneration = 0;
-let clock = { at: Date.now(), elapsed: 0, running: false };
+let clock = { at: 0, elapsed: 0, running: false };
 let typesetting = Promise.resolve();
 let mathLoader = null;
 const drafts = new Map();
@@ -19,6 +23,11 @@ let curriculumSnapshot = null;
 let homeRendered = false;
 let homeRequest = null;
 let homeController = null;
+let queueRequest = null;
+let targetRevision = 0;
+let previewStepIndex = 0;
+let modeChanging = false;
+let settingsRevision = 0;
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -33,6 +42,13 @@ function button(text, className, action) {
   return node;
 }
 function short(value) { return String(value || '').split('/').at(-1); }
+function appendStepHeading(content, step, kind) {
+  if (!step.title && kind !== 'example') return;
+  const heading = el('h2', 'step-title');
+  if (kind === 'example') heading.append(el('strong', '', 'Example:'));
+  if (step.title) heading.append((kind === 'example' ? ' ' : '') + step.title);
+  content.append(heading);
+}
 function fieldLabel(key) {
   if (!key || key === 'selection') return 'Answer';
   const numbered = /^field-(\d+)$/.exec(key);
@@ -50,28 +66,25 @@ function duration(seconds) {
   const n = Math.max(0, Math.floor(Number(seconds) || 0));
   return `${Math.floor(n / 60)}:${String(n % 60).padStart(2, '0')}`;
 }
-function levelName(level) {
-  return { 'early-math': 'Early Math', 'high-school-math': 'High School Math', 'university-math': 'University Math' }[short(level)] || '';
-}
 function updateHeader(data) {
   const setText = (id, value) => { if ($(id).textContent !== value) $(id).textContent = value; };
-  if (data.learner) setText('learnerName', data.learner.name || '');
+  if (data.learner) setText('learnerName', data.learner.name || 'Profile');
   if (data.course) {
     currentCourseId = data.course.id;
-    setText('courseTitle', data.course.title);
-    setText('courseLevel', levelName(data.course.level) || 'Your current course');
     const href = '/progress?course=' + encodeURIComponent(data.course.id);
     if ($('courseLink').getAttribute('href') !== href) $('courseLink').setAttribute('href', href);
     // Only learning responses supply this cache: browsing another course must
     // never replace the learner's designated study-course header.
     try {
-      const header = JSON.stringify({ courseId: data.course.id, courseTitle: data.course.title,
-        courseLevel: $('courseLevel').textContent, learnerName: $('learnerName').textContent });
+      const header = JSON.stringify({ courseId: data.course.id, learnerName: $('learnerName').textContent });
       if (sessionStorage.getItem('course-academy.study-header') !== header) sessionStorage.setItem('course-academy.study-header', header);
     } catch { /* The app works normally when browser storage is unavailable. */ }
   }
 }
 async function api(path, body, options = {}) {
+  if (body && (modeChanging || isDeveloperMode() && path !== '/api/preview-answer')) {
+    throw new Error('Developer mode does not record activity.');
+  }
   const response = await fetch(path, {
     method: body ? 'POST' : 'GET',
     headers: body ? { 'Content-Type': 'application/json' } : {},
@@ -106,24 +119,28 @@ function actionButton(text, className, action, enabled = true) {
   return node;
 }
 async function mutation(path, values) {
+  if (isDeveloperMode() || modeChanging) return;
   if (busy) return;
   if (path === '/api/start') void loadMath().catch(() => {});
   const body = { ...values, requestId: crypto.randomUUID() };
+  const revision = settingsRevision;
   const run = async () => {
     clearError();
     setBusy(true);
     try {
       const result = await api(path, body);
+      if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
       task = result.task || result;
       history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(task.taskId));
       await renderTask(task);
       announce(answered(task.step?.status) ? (task.step.status === 'correct' ? 'Correct.' : 'Answer recorded.') : task.step?.title || 'Progress saved.');
     } catch (error) {
+      if (revision !== settingsRevision) return;
       // Only a confirmed rejection may get a fresh request identity. An uncertain
       // network failure must replay the original request to avoid duplicate credit.
       if (error.code === 'basis-conflict') body.requestId = crypto.randomUUID();
       showError(error, run);
-    } finally { setBusy(false); void syncAfterVisibility(); }
+    } finally { if (revision === settingsRevision) { setBusy(false); void syncAfterVisibility(); } }
   };
   await run();
 }
@@ -218,28 +235,40 @@ function resetMain(className) {
   renderGeneration++;
 }
 
-function home() {
+function home({ preserve = false } = {}) {
   if (homeRequest) return homeRequest;
+  const revision = targetRevision;
   const controller = new AbortController();
   homeController = controller;
-  const request = loadHome(controller.signal).finally(() => {
-    if (homeRequest === request) { homeRequest = null; homeController = null; }
+  const request = loadHome(controller.signal, preserve).finally(() => {
+    if (homeRequest === request) {
+      homeRequest = null; homeController = null;
+      if (!task && !document.hidden && revision !== targetRevision) void home();
+    }
   });
   homeRequest = request;
   return request;
 }
-async function loadHome(signal) {
+async function loadHome(signal, preserve) {
+  const revision = targetRevision;
   task = null; clock.running = false;
-  resetMain();
-  $('main').append(el('div', 'loading', 'Loading your next activities…'));
+  if (!preserve) {
+    resetMain();
+    $('main').append(el('div', 'loading', 'Loading your next activities…'));
+  }
   setBusy(true); clearError();
   try {
-    const data = await api('/api/home', undefined, { signal });
-    if (signal.aborted) return;
+    // Reuse an uncertain request so a retry cannot create duplicate pending tasks.
+    if (!isDeveloperMode()) queueRequest ||= { requestId: crypto.randomUUID() };
+    const data = isDeveloperMode()
+      ? await api('/api/preview-home', undefined, { signal })
+      : await api('/api/queue', queueRequest, { signal });
+    queueRequest = null;
+    if (signal.aborted || modeChanging) return;
     updateHeader(data); resetMain();
     document.title = 'Study · Course Academy';
     const head = el('div', 'page-heading');
-    const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Next up'), el('p', 'subheading', 'Pick an activity to continue building your knowledge.'));
+    const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Next up'), el('p', 'subheading', isDeveloperMode() ? 'Preview activities without starting an attempt or recording progress.' : 'Pick an activity to continue building your knowledge.'));
     head.append(intro, actionButton('Refresh ↻', 'small-button', home));
     $('main').append(head);
     const queue = el('section', 'queue'); queue.setAttribute('aria-label', 'Next five activities');
@@ -251,13 +280,13 @@ async function loadHome(signal) {
       const type = short(activity.type) || 'lesson';
       meta.append(el('span', '', type));
       if (['started', 'paused'].includes(short(activity.status))) meta.append(el('span', '', 'In progress'));
-      if (activity.expectedSeconds) meta.append(el('span', '', `About ${Math.round(activity.expectedSeconds / 60)} min`));
-      if (Number.isFinite(activity.xpBase)) meta.append(el('span', '', `${activity.xpBase} XP`));
+      if (!isDeveloperMode() && activity.expectedSeconds) meta.append(el('span', '', `About ${Math.round(activity.expectedSeconds / 60)} min`));
+      if (!isDeveloperMode() && Number.isFinite(activity.xpBase)) meta.append(el('span', '', `${activity.xpBase} XP`));
       info.append(meta, el('h2', '', activity.title));
       if (activity.reason) info.append(el('p', 'queue-reason', activity.reason));
-      const resume = Boolean(activity.taskId);
+      const resume = Boolean(activity.taskId) && ['started', 'paused'].includes(short(activity.status));
       row.append(el('span', 'queue-number', String(index + 1).padStart(2, '0')), info,
-        actionButton(resume ? 'Resume →' : 'Begin →', 'primary', () => resume ? openTask(activity.taskId) : mutation('/api/start', { activityId: activity.activityId })));
+        actionButton(isDeveloperMode() ? 'Preview →' : resume ? 'Resume →' : 'Begin →', 'primary', () => isDeveloperMode() ? openPreview({ activityId: activity.activityId }) : resume ? openTask(activity.taskId) : mutation('/api/start', { activityId: activity.activityId })));
       queue.append(row);
     });
     if (!activities.length) {
@@ -267,34 +296,45 @@ async function loadHome(signal) {
     }
     $('main').append(queue);
     const foot = el('div', 'queue-foot');
-    foot.append(el('span', '', `${activities.length} ${activities.length === 1 ? 'activity' : 'activities'} ready`), el('span', '', 'Your progress is saved as you work.'));
+    foot.append(el('span', '', `${activities.length} ${activities.length === 1 ? 'activity' : 'activities'} ready`), el('span', '', isDeveloperMode() ? 'Developer mode · Nothing recorded' : 'Your progress is saved as you work.'));
     $('main').append(foot);
     if (data.practiceNotice || data.notice) $('main').append(el('p', 'notice', data.practiceNotice || data.notice));
-    homeRendered = true;
-  } catch (error) { if (!signal.aborted) showError(error, home); }
+    homeRendered = revision === targetRevision;
+  } catch (error) {
+    if (error.code === 'basis-conflict') queueRequest = null;
+    if (!signal.aborted) showError(error, home);
+  }
   finally { if (!signal.aborted) setBusy(false); }
 }
 async function openTask(id) {
+  if (modeChanging) return;
+  if (isDeveloperMode()) return openPreview({ taskId: id });
   homeController?.abort(); homeController = null; homeRequest = null;
   homeRendered = false;
   clearError(); setBusy(true);
   void loadMath().catch(() => {});
+  const revision = settingsRevision;
   try {
-    task = await api('/api/task?taskId=' + encodeURIComponent(id));
-    task = task.task || task;
+    const data = await api('/api/task?taskId=' + encodeURIComponent(id));
+    if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
+    if (data.assignment?.id) {
+      location.replace('/assignments?assignment=' + encodeURIComponent(data.assignment.id));
+      return;
+    }
+    task = data.task || data;
     history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(id));
     await renderTask(task);
-  } catch (error) { showError(error, () => openTask(id)); }
-  finally { setBusy(false); void syncAfterVisibility(); }
+  } catch (error) { if (revision === settingsRevision) showError(error, () => openTask(id)); }
+  finally { if (revision === settingsRevision) { setBusy(false); void syncAfterVisibility(); } }
 }
 async function leaveTask(event) {
   event?.preventDefault();
-  if (busy) return;
+  if (busy || modeChanging) return;
   if (!task && homeRendered && $('errorBanner').hidden) {
     history.replaceState(null, '', '/home');
     return;
   }
-  if (task && !terminal(short(task.status))) {
+  if (!isDeveloperMode() && task && !terminal(short(task.status))) {
     setBusy(true);
     try { await api('/api/pause', { taskId: task.taskId, requestId: crypto.randomUUID() }); }
     catch (error) { showError(error, () => leaveTask()); setBusy(false); return; }
@@ -304,6 +344,8 @@ async function leaveTask(event) {
   await home();
 }
 async function explore(url) {
+  if (modeChanging) return;
+  if (isDeveloperMode()) { location.assign(url); return; }
   if (busy) throw new Error('Your progress is being saved. Try again in a moment.');
   setBusy(true);
   try {
@@ -372,7 +414,126 @@ function collectResponses(form, fields) {
   });
 }
 
+async function openPreview(query) {
+  if (!isDeveloperMode() || modeChanging) return;
+  homeController?.abort(); homeController = null; homeRequest = null;
+  homeRendered = false; clock.running = false;
+  drafts.clear(); clearError(); setBusy(true);
+  const revision = settingsRevision;
+  try {
+    const data = await api('/api/preview?' + new URLSearchParams(query));
+    if (revision !== settingsRevision || modeChanging || !isDeveloperMode()) return;
+    if (short(data.type) === 'assignment' && data.activityUuid) {
+      location.replace('/assignments?assignment=' + encodeURIComponent(data.activityUuid));
+      return;
+    }
+    task = data;
+    previewStepIndex = 0;
+    history.replaceState(null, '', '/learn?activityId=' + encodeURIComponent(data.activityId));
+    await renderPreview();
+  } catch (error) { if (revision === settingsRevision) showError(error, () => openPreview(query)); }
+  finally { if (revision === settingsRevision) setBusy(false); }
+}
+
+async function renderPreview() {
+  if (!isDeveloperMode() || modeChanging || !task) return;
+  const data = task;
+  updateHeader(data);
+  resetMain('lesson-main');
+  const generation = renderGeneration;
+  document.title = `Preview${data.title ? ' · ' + data.title : ''} · Course Academy`;
+  const top = el('div', 'lesson-topline');
+  top.append(actionButton('← Back to study', 'text-button', leaveTask), el('span', '', 'Developer mode · Nothing recorded'));
+  $('main').append(top);
+  const heading = el('div', 'lesson-heading'), headingText = el('div');
+  headingText.append(el('p', 'eyebrow', short(data.type) || 'Activity'), el('h1', '', data.title || 'Activity preview'));
+  heading.append(headingText); $('main').append(heading);
+  const steps = data.steps || [], step = steps[previewStepIndex];
+  if (!step) {
+    $('main').append(el('p', 'notice', 'This activity has no content available to preview.'));
+    return;
+  }
+  const content = el('section', 'lesson-content'), meta = el('div', 'step-meta');
+  attachStepMenu(content, step.stepId);
+  const kind = short(step.kind), fields = step.fields || [];
+  meta.append(el('span', '', `Step ${previewStepIndex + 1} / ${steps.length}`));
+  if (kind !== 'example') meta.append(el('span', 'step-tag', { question: 'Practice', tutorial: 'Tutorial' }[kind] || kind));
+  if (step.requiresCalculator) meta.append(el('span', '', 'Calculator required'));
+  if (step.difficulty) meta.append(el('span', '', short(step.difficulty)));
+  content.append(meta);
+  const card = el('div', 'content-card');
+  appendStepHeading(card, step, kind);
+  card.append(markdown(step.markdown ?? step.problem ?? '', 'prose', fields));
+  if (fields.length) {
+    const form = el('form'), fieldList = el('div', 'answer-fields');
+    const readOnly = kind === 'example';
+    fields.forEach(field => fieldList.append(fieldControl(field, readOnly, step.contentId)));
+    form.append(fieldList);
+    if (!readOnly) {
+      const actions = el('div', 'answer-actions');
+      const check = el('button', 'primary', 'Check preview answer'); check.type = 'submit'; check.dataset.action = 'true';
+      const refresh = () => {
+        const responses = collectResponses(form, fields);
+        const valid = responses.every(response => response.choiceId || typeof response.value === 'string' && response.value.trim());
+        check.dataset.unavailable = String(!valid); check.disabled = busy || !valid;
+      };
+      form.addEventListener('input', refresh); form.addEventListener('change', refresh);
+      form.addEventListener('submit', async event => {
+        event.preventDefault(); refresh();
+        if (check.disabled || !isDeveloperMode()) return;
+        setBusy(true); clearError();
+        try {
+          const result = await api('/api/preview-answer', { activityId: data.activityId, questionId: step.contentId, responses: collectResponses(form, fields) });
+          if (generation !== renderGeneration || !isDeveloperMode()) return;
+          const checked = result.step || result;
+          steps[previewStepIndex] = { ...step, ...checked };
+          await renderPreview();
+          announce(checked.status === 'correct' ? 'Correct. Preview only; nothing recorded.' : 'Incorrect. Preview only; nothing recorded.');
+        } catch (error) { showError(error); }
+        finally { setBusy(false); }
+      });
+      actions.append(check); form.append(actions); refresh();
+    }
+    card.append(form);
+  }
+  if (answered(short(step.status))) {
+    const feedback = el('div', 'feedback');
+    feedback.append(el('div', 'feedback-heading', short(step.status) === 'correct' ? '✓ Correct · Preview only' : 'Incorrect · Preview only'));
+    if (step.feedback) feedback.append(markdown(step.feedback));
+    for (const field of fields) if (field.response?.feedback) feedback.append(markdown(field.response.feedback));
+    card.append(feedback);
+  }
+  if (step.solution || fields.some(field => field.correctAnswer)) {
+    const solution = el('details', 'worked-solution');
+    solution.open = kind === 'example';
+    solution.append(el('summary', 'solution-heading', 'Solution:'));
+    for (const field of fields) {
+      if (field.correctAnswer) {
+        solution.append(el('p', 'response-summary', `${fieldLabel(field.key)} · correct value:`), answerValue(field.correctAnswer));
+        if (field.correctAnswer.feedback) solution.append(markdown(field.correctAnswer.feedback));
+      }
+    }
+    if (step.solution) solution.append(markdown(step.solution));
+    solution.addEventListener('toggle', () => { if (solution.open) void typeset(solution); });
+    card.append(solution);
+  }
+  content.append(card);
+  const controls = el('div', 'lesson-controls');
+  controls.append(actionButton('← Previous', 'secondary', async () => {
+    if (previewStepIndex > 0) { previewStepIndex--; clearError(); await renderPreview(); }
+  }, previewStepIndex > 0));
+  controls.append(el('p', 'continue-hint', 'Explore freely. No timing, answers, XP, or progress are saved.'));
+  controls.append(previewStepIndex + 1 < steps.length
+    ? actionButton('Next →', 'primary', async () => { previewStepIndex++; clearError(); await renderPreview(); })
+    : actionButton('Back to study →', 'primary', leaveTask));
+  content.append(controls); $('main').append(content);
+  await typeset(content);
+  if (generation === renderGeneration && !document.hidden) $('main').focus({ preventScroll: true });
+}
+
 async function renderTask(data) {
+  if (modeChanging) return;
+  if (isDeveloperMode()) return openPreview({ taskId: data.taskId });
   updateHeader(data);
   resetMain('lesson-main');
   const generation = renderGeneration;
@@ -387,6 +548,7 @@ async function renderTask(data) {
   const headingText = el('div'); headingText.append(el('p', 'eyebrow', short(data.type) || 'Lesson'), el('h1', '', data.title || 'Lesson'));
   const timer = el('span', 'timer', duration(clock.elapsed)); timer.id = 'taskTimer'; timer.setAttribute('aria-label', 'Working time');
   heading.append(headingText, timer); $('main').append(heading);
+  if (data.queueNotice) $('main').append(el('p', 'notice', data.queueNotice));
   if (terminal(status)) {
     const done = el('section', 'completion');
     done.append(el('div', 'completion-mark', status === 'completed' ? '✓' : '↗'), el('h2', '', status === 'completed' ? 'Activity complete' : 'More practice needed'));
@@ -415,16 +577,18 @@ async function renderTask(data) {
     fill.style.width = `${Math.min(100, Math.max(0, (number - 1) / total * 100))}%`; track.append(fill); $('main').append(track);
   }
   const content = el('section', 'lesson-content');
+  attachStepMenu(content, step.stepId);
   const meta = el('div', 'step-meta');
   if (number) meta.append(el('span', '', `Step ${number}${total ? ' / ' + total : ''}`));
   const kind = short(step.kind);
-  meta.append(el('span', 'step-tag', { question: 'Practice', example: 'Worked example', tutorial: 'Tutorial' }[kind] || kind));
+  if (kind !== 'example') meta.append(el('span', 'step-tag', { question: 'Practice', tutorial: 'Tutorial' }[kind] || kind));
   if (step.requiresCalculator) meta.append(el('span', '', 'Calculator required'));
   if (step.difficulty) meta.append(el('span', '', short(step.difficulty)));
   if (step.attempt) meta.append(el('span', '', `Question ${step.attempt}`));
   content.append(meta);
-  if (step.title) content.append(el('h2', 'step-title', step.title));
-  const card = el('div', 'content-card'); card.append(markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []));
+  const card = el('div', 'content-card');
+  appendStepHeading(card, step, kind);
+  card.append(markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []));
   const isAnswered = answered(short(step.status));
   const fields = step.fields || [];
   if (kind === 'question' && fields.length) {
@@ -468,7 +632,7 @@ async function renderTask(data) {
   }
   if (step.solution && (kind === 'example' || isAnswered)) {
     const solution = el('section', 'worked-solution');
-    solution.append(el('div', 'section-label', 'Worked solution'), markdown(step.solution)); card.append(solution);
+    solution.append(el('h3', 'solution-heading', 'Solution:'), markdown(step.solution)); card.append(solution);
   }
   content.append(card);
   const controls = el('div', 'lesson-controls');
@@ -498,20 +662,24 @@ createCoursePicker({
   onSelectTopic: async topic => explore(topicReferenceURL(await curriculumSnapshot, topic, currentCourseId)),
 });
 window.addEventListener('popstate', () => {
-  const id = new URL(location.href).searchParams.get('taskId');
-  if (id) openTask(id); else leaveTask();
+  const params = new URL(location.href).searchParams;
+  if (isDeveloperMode() && params.has('activityId')) openPreview({ activityId: params.get('activityId') });
+  else if (params.has('taskId')) openTask(params.get('taskId')); else leaveTask();
 });
 setInterval(() => {
+  if (isDeveloperMode() || modeChanging) return;
   const timer = $('taskTimer');
   if (timer) timer.textContent = duration(clock.elapsed + (clock.running ? (Date.now() - clock.at) / 1000 : 0));
 }, 1000);
 async function syncAfterVisibility() {
+  if (isDeveloperMode() || modeChanging) return;
   if (pendingPause) await pendingPause;
   if (document.hidden || busy || !refreshAfterVisibility || !task) return;
   refreshAfterVisibility = false;
   await openTask(task.taskId);
 }
 function pauseWhenHidden() {
+  if (isDeveloperMode() || modeChanging) return;
   if (pendingPause) return pendingPause;
   if (!task || short(task.status) !== 'started') return;
   const taskId = task.taskId;
@@ -524,10 +692,52 @@ function pauseWhenHidden() {
   return pendingPause;
 }
 document.addEventListener('visibilitychange', () => {
+  if (isDeveloperMode() || modeChanging) return;
   if (document.hidden) pauseWhenHidden();
   else if (task) { refreshAfterVisibility = true; void syncAfterVisibility(); }
+  else if (!homeRendered && !busy) void home();
 });
 window.addEventListener('pagehide', pauseWhenHidden);
 
-const initialTask = new URL(location.href).searchParams.get('taskId');
-if (initialTask) openTask(initialTask); else home();
+const initialParams = new URL(location.href).searchParams;
+if (isDeveloperMode() && initialParams.has('activityId')) openPreview({ activityId: initialParams.get('activityId') });
+else if (initialParams.has('taskId')) openTask(initialParams.get('taskId')); else home();
+
+for (const event of ['course-academy:developer-mode-changing', 'course-academy:profile-changing']) window.addEventListener(event, () => {
+  modeChanging = true;
+  settingsRevision++;
+  clock.running = false;
+  drafts.clear(); retryOperation = null;
+  homeController?.abort();
+  homeController = null; homeRequest = null;
+  setBusy(true);
+  renderGeneration++;
+});
+window.addEventListener('course-academy:developer-mode-settled', event => {
+  modeChanging = false;
+  // Enter inspection at the same activity; leaving it never starts a real attempt.
+  if (event.detail.enabled && task?.activityId) void openPreview({ activityId: task.activityId });
+  else {
+    history.replaceState(null, '', '/home');
+    void home({ preserve: true });
+  }
+});
+window.addEventListener('course-academy:profile-changed', event => {
+  modeChanging = false; curriculumSnapshot = null; queueRequest = null;
+  refreshAfterVisibility = false;
+  updateHeader(event.detail);
+  history.replaceState(null, '', '/home');
+  void home({ preserve: true });
+});
+
+// Changes made while browsing should refresh the study queue without interrupting a lesson.
+function targetsChanged() {
+  if (task) return;
+  targetRevision++;
+  homeRendered = false;
+  if (!busy && document.visibilityState === 'visible') void home();
+}
+window.addEventListener('course-academy:targets-changed', targetsChanged);
+window.addEventListener('storage', event => {
+  if (event.key === 'course-academy-targets-changed') targetsChanged();
+});

@@ -1,5 +1,7 @@
 import { marked } from './vendor/marked/marked.esm.js';
 import { createCoursePicker } from './navigation.js';
+import { createTargetControls } from './targets.js';
+import { attachStepMenu } from './step-menu.js';
 
 const $ = id => document.getElementById(id);
 let currentCourseId = null;
@@ -9,6 +11,12 @@ let generation = 0;
 let mathLoader = null;
 let typesetting = Promise.resolve();
 let sectionObserver = null;
+const targetControls = createTargetControls({
+  readLearner: async () => (await api('/api/topic?topic=' + encodeURIComponent(new URL(location.href).searchParams.get('topic') || ''))).learner,
+  onChange: learner => {
+    if (curriculumSnapshot) void curriculumSnapshot.then(snapshot => { snapshot.learner = { ...snapshot.learner, ...learner }; }).catch(() => {});
+  },
+});
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -24,9 +32,6 @@ function button(text, className, action) {
   node.type = 'button'; node.addEventListener('click', action); return node;
 }
 function short(value) { return String(value || '').split('/').at(-1); }
-function levelName(value) {
-  return { 'early-math': 'Early Math', 'high-school-math': 'High School Math', 'university-math': 'University Math' }[short(value)] || 'Course';
-}
 function courseURL(id) { return '/progress' + (id ? '?course=' + encodeURIComponent(id) : ''); }
 function topicURL(topic, courseId) {
   return '/topic?topic=' + encodeURIComponent(topic.uuid || topic.mathAcademyId || topic.id) + (courseId ? '&course=' + encodeURIComponent(courseId) : '');
@@ -114,9 +119,16 @@ async function api(path, signal) {
 function sidebar(data, sections, course) {
   const aside = el('aside', 'topic-sidebar'); aside.setAttribute('aria-label', 'Topic navigation');
   const content = el('div', 'sidebar-content');
+  const header = el('header', 'sidebar-heading');
+  header.append(el('h1', 'sidebar-title', data.topic.title));
+  const actions = el('nav', 'sidebar-actions'); actions.setAttribute('aria-label', 'Topic actions');
+  if (course) actions.append(link(course.title, courseURL(course.id), 'sidebar-course-link'));
+  const tools = el('div', 'sidebar-tools');
+  tools.append(link('View in graph ↗', graphURL(course?.id, data.topic.id), 'sidebar-tool'));
+  const target = targetControls.createToggle(data.topic); if (target) tools.append(target);
+  actions.append(tools); header.append(actions); content.append(header);
   if (sections.length) {
     const nav = el('nav'); nav.setAttribute('aria-label', 'In this topic');
-    nav.append(el('h2', 'sidebar-label', 'In this topic'));
     const list = el('ol', 'topic-toc');
     sections.forEach(section => {
       const item = el('li'); const anchor = link(section.title, '#' + section.anchor);
@@ -133,10 +145,7 @@ function sidebar(data, sections, course) {
     }
     nav.append(list); content.append(nav);
   }
-  const links = el('div', 'sidebar-links');
-  if (course) links.append(link('← ' + course.title, courseURL(course.id), 'sidebar-link'));
-  links.append(link('View topic in graph ↗', graphURL(course?.id, data.topic.id), 'sidebar-link'));
-  content.append(links); aside.append(content); return aside;
+  aside.append(content); return aside;
 }
 function canonicalAnswers(fields) {
   const answers = el('div', 'canonical-answers');
@@ -160,11 +169,13 @@ function canonicalAnswers(fields) {
 }
 function instructionalSection(section) {
   const article = el('section', 'topic-section'); article.id = section.anchor;
+  attachStepMenu(article, section.stepId);
   article.setAttribute('aria-labelledby', section.anchor + '-title');
   const header = el('div', 'section-heading');
   const label = el('div');
-  if (section.kind === 'example') label.append(el('div', 'section-label', 'Worked example ' + section.exampleNumber));
-  const heading = el('h2', '', section.title); heading.id = section.anchor + '-title';
+  const heading = el('h2'); heading.id = section.anchor + '-title';
+  if (section.kind === 'example') heading.append(el('strong', '', 'Example: '));
+  heading.append(section.title);
   label.append(heading); header.append(label);
   if (section.requiresCalculator) header.append(el('span', 'calculator-note', 'Calculator example'));
   article.append(header);
@@ -172,7 +183,7 @@ function instructionalSection(section) {
   if (section.markdown?.trim()) article.append(markdown(section.markdown, 'prose', fields));
   if (section.workedSolution?.trim()) {
     const solution = el('div', 'worked-solution');
-    solution.append(el('h3', 'section-label', 'Worked solution'), markdown(section.workedSolution, 'prose', fields));
+    solution.append(el('h3', 'solution-heading', 'Solution:'), markdown(section.workedSolution, 'prose', fields));
     article.append(solution);
   }
   if (section.kind === 'example') {
@@ -183,37 +194,75 @@ function instructionalSection(section) {
 function revealHash() {
   const target = document.getElementById(location.hash.slice(1));
   if (target?.classList.contains('topic-section')) target.scrollIntoView({ block: 'start' });
+  sectionObserver?.refresh();
+}
+// Bounds are viewport-relative and ordered as the sections appear in the lesson.
+function activeSection(bounds, viewportTop, viewportBottom, atBottom, anchorId) {
+  const visible = bounds.filter(section => section.bottom > viewportTop && section.top < viewportBottom);
+  if (!visible.length || viewportBottom <= viewportTop) return null;
+  const last = bounds.at(-1);
+  if (atBottom && visible.includes(last)) return last.id;
+  const anchored = visible.find(section => section.id === anchorId && Math.abs(section.top - viewportTop) <= 2);
+  if (anchored) return anchored.id;
+  const readingLine = viewportTop + (viewportBottom - viewportTop) * .25;
+  // A section appearing at the bottom of the screen is not yet the reading position.
+  return visible.filter(section => section.top <= readingLine).at(-1)?.id ?? null;
 }
 function observeSections(sections) {
   sectionObserver?.disconnect();
   if (!sections.length) return;
   const links = [...document.querySelectorAll('.topic-toc a')];
-  const visible = new Set();
+  const elements = sections.map(section => $(section.anchor));
+  const header = document.querySelector('.site-header');
+  let selected = null;
+  let frame = null;
   const select = id => {
+    if (id === selected) return;
+    selected = id;
     for (const anchor of links) {
       if (anchor.hash === '#' + id) anchor.setAttribute('aria-current', 'location');
       else anchor.removeAttribute('aria-current');
     }
   };
-  select(sections[0].anchor);
-  if (!('IntersectionObserver' in window)) return;
-  sectionObserver = new IntersectionObserver(entries => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) visible.add(entry.target.id); else visible.delete(entry.target.id);
-    }
-    const active = sections.find(section => visible.has(section.anchor));
-    if (active) select(active.anchor);
-  }, { rootMargin: '-10% 0px -55% 0px' });
-  for (const section of sections) sectionObserver.observe($(section.anchor));
+  const update = () => {
+    frame = null;
+    const gap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--layout-gap')) || 0;
+    const viewportTop = (header?.getBoundingClientRect().bottom || 0) + gap;
+    const viewportBottom = document.documentElement.clientHeight;
+    const scroller = document.scrollingElement;
+    const atBottom = scroller.scrollTop > 0 && scroller.scrollTop + viewportBottom >= scroller.scrollHeight - 2;
+    const bounds = elements.map(element => {
+      const { top, bottom } = element.getBoundingClientRect();
+      return { id: element.id, top, bottom };
+    });
+    select(activeSection(bounds, viewportTop, viewportBottom, atBottom, location.hash.slice(1)));
+  };
+  // Coalesce scroll and layout notifications into one read per frame.
+  const refresh = () => { if (frame === null) frame = requestAnimationFrame(update); };
+  window.addEventListener('scroll', refresh, { passive: true });
+  window.addEventListener('resize', refresh);
+  const resizeObserver = 'ResizeObserver' in window ? new ResizeObserver(refresh) : null;
+  for (const element of [...elements, header, $('main')].filter(Boolean)) resizeObserver?.observe(element);
+  $('main').addEventListener('load', refresh, true);
+  sectionObserver = {
+    refresh,
+    disconnect() {
+      if (frame !== null) cancelAnimationFrame(frame);
+      resizeObserver?.disconnect();
+      window.removeEventListener('scroll', refresh);
+      window.removeEventListener('resize', refresh);
+      $('main').removeEventListener('load', refresh, true);
+    },
+  };
+  refresh();
 }
 function renderTopic(data) {
+  targetControls.clear(); targetControls.setLearner(data.learner);
   const requestedCourse = new URL(location.href).searchParams.get('course');
   const courses = data.courses || [];
   const course = courses.find(course => course.id === requestedCourse) || courses.find(course => course.id === data.learner?.courseId) || courses[0];
   currentCourseId = course?.id || null;
-  $('courseTitle').textContent = course?.title || 'Course Academy'; $('courseTitle').title = course?.title || 'Course Academy';
-  $('courseLevel').textContent = course ? levelName(course.level) : 'Topic';
-  $('learnerName').textContent = data.learner?.name || '';
+  $('learnerName').textContent = data.learner?.name || 'Profile';
   $('courseLink').href = courseURL(currentCourseId);
   document.title = `Topic · ${data.topic.title} · Course Academy`;
   let exampleNumber = 0;
@@ -222,14 +271,7 @@ function renderTopic(data) {
     return { ...section, anchor: 'section-' + (index + 1), exampleNumber, title: section.title?.trim() || (section.kind === 'example' ? 'Example ' + exampleNumber : 'Introduction') };
   });
   const layout = el('div', 'topic-layout'); const body = el('article', 'topic-body');
-  const header = el('header', 'topic-heading');
-  header.append(el('p', 'eyebrow', 'Topic'), el('h1', '', data.topic.title));
-  const facts = el('div', 'topic-facts');
   const tutorials = sections.filter(section => section.kind === 'tutorial').length;
-  if (tutorials) facts.append(el('span', '', `${tutorials} ${tutorials === 1 ? 'tutorial' : 'tutorials'}`));
-  if (exampleNumber) facts.append(el('span', '', `${exampleNumber} worked ${exampleNumber === 1 ? 'example' : 'examples'}`));
-  if (course) facts.append(link(course.title, courseURL(course.id)));
-  header.append(facts); body.append(header);
   if (sections.length) sections.forEach(section => body.append(instructionalSection(section)));
   else {
     const empty = el('section', 'empty-state');
@@ -240,7 +282,11 @@ function renderTopic(data) {
   observeSections(sections);
   revealHash();
   const initialHash = location.hash;
-  void typeset(body).then(() => { if (body.isConnected && initialHash && location.hash === initialHash) revealHash(); });
+  void typeset(body).then(() => {
+    if (!body.isConnected) return;
+    if (initialHash && location.hash === initialHash) revealHash();
+    sectionObserver?.refresh();
+  });
   $('announcement').textContent = `${data.topic.title}. ${tutorials} tutorials and ${exampleNumber} worked examples.`;
 }
 function renderError(error) {

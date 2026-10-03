@@ -9,6 +9,7 @@ The learner helper uses the release engine and the existing local EDB writer.
 Open /home for the queue and /learn?taskId=... for a saved lesson attempt.
 Open /progress?course=... for a course outline and the learner's topic progress.
 Open /topic?topic=... for tutorials and worked examples without starting a lesson.
+Open /assignments for schoolwork and /assignments?assignment=... for its problems.
 """
 
 from __future__ import annotations
@@ -37,6 +38,60 @@ SOURCE = ROOT / "scripts" / "graph_explorer_reader.rs"
 DEFAULT_LEARNER = "59d5cf13-351c-4114-be19-4c3bb64ee051"
 ASSET_ROOTS = (ROOT.parent / "MA/DATA/Lessons", ROOT.parent / "study/vault")
 IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml"}
+MUTATING_ACTIONS = {"start", "answer", "continue", "pause", "resume", "target", "queue",
+                    "assignment-focus", "assignment-answer", "assignment-pause"}
+
+
+def developer_mode(path: Path) -> bool:
+    try:
+        value = json.loads(path.read_text())
+    except FileNotFoundError:
+        return False
+    if not isinstance(value, dict) or type(value.get("enabled")) is not bool:
+        raise ValueError("Invalid developer mode setting; recording remains blocked")
+    return value["enabled"]
+
+
+def save_developer_mode(path: Path, enabled: bool) -> None:
+    save_json(path, {"enabled": enabled})
+
+
+def save_json(path: Path, value: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    staging = path.with_suffix(".tmp")
+    with staging.open("w") as stream:
+        json.dump(value, stream)
+        stream.flush()
+        os.fsync(stream.fileno())
+    staging.replace(path)
+    fd = os.open(path.parent, os.O_RDONLY)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def assignment_request(body: dict, directory: Path, learner: str) -> dict:
+    """Under api.lock, let an unload pause cancel a focus that arrives later."""
+    action = body.get("action")
+    request = body.get("cancelFocusRequestId") if action == "assignment-pause" else body.get("requestId")
+    if action not in {"assignment-focus", "assignment-pause"} or request is None:
+        return body
+    if not isinstance(request, str) or not 8 <= len(request) <= 100 or not all(c.isascii() and (c.isalnum() or c == "-") for c in request):
+        raise ValueError("Invalid assignment focus request ID")
+    key = hashlib.sha256(json.dumps([learner, request]).encode()).hexdigest()
+    marker = directory / f"assignment-focus-cancel-{key}.json"
+    if action == "assignment-pause":
+        assignment = body.get("assignmentId")
+        if not isinstance(assignment, str) or not assignment:
+            raise ValueError("Canceling a focus requires its assignment ID")
+        save_json(marker, {"assignmentId": assignment})
+    elif marker.exists():
+        canceled = json.loads(marker.read_text())
+        if not isinstance(canceled, dict) or canceled.get("assignmentId") != body.get("assignmentId"):
+            raise ValueError("Canceled focus assignment does not match")
+        return {"action": "assignment", "assignmentId": body["assignmentId"], "preview": False}
+    return body
 
 
 class NativeWorker:
@@ -120,7 +175,11 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     libraries = {}
     for name, directory in (("edb_core", edb_deps), ("serde_json", deps), ("chrono", deps), ("course_academy_engine", deps)):
         libraries[name] = max(directory.glob(f"lib{name}-*.rlib"), key=lambda p: p.stat().st_mtime_ns)
-    fingerprint = hashlib.sha256(source.read_bytes() + repr((test, [(str(p), p.stat().st_mtime_ns) for p in libraries.values()])).encode()).hexdigest()[:16]
+    sources = (source, ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
+               ROOT / "scripts/developer_preview.rs")
+    if test:
+        sources += (ROOT / "scripts/assignment_interaction_tests.rs",)
+    fingerprint = hashlib.sha256(b"".join(p.read_bytes() for p in sources) + repr((test, [(str(p), p.stat().st_mtime_ns) for p in libraries.values()])).encode()).hexdigest()[:16]
     output = ROOT / ".local/graph-explorer" / f"learning-{fingerprint}"
     if not output.exists():
         output.parent.mkdir(parents=True, exist_ok=True)
@@ -139,7 +198,7 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     return output
 
 
-def build_reader(edb_root: Path) -> Path:
+def build_reader(edb_root: Path, *, test: bool = False) -> Path:
     edb_deps = edb_root / "target" / "release" / "deps"
     libraries = sorted(edb_deps.glob("libedb_core-*.rlib"))
     if len(libraries) != 1:
@@ -154,7 +213,7 @@ def build_reader(edb_root: Path) -> Path:
         raise RuntimeError("Missing serde_json build artifact; run `cargo build --lib --offline` in this repository first.")
     sources = (SOURCE, ROOT / "scripts/topic_reader.rs")
     inputs = (*sources, libraries[0], serde)
-    fingerprint = hashlib.sha256(b"optimized-reader-v1" + b"".join(path.read_bytes() for path in sources) + repr([
+    fingerprint = hashlib.sha256(str(test).encode() + b"optimized-reader-v1" + b"".join(path.read_bytes() for path in sources) + repr([
         (str(path), path.stat().st_size, path.stat().st_mtime_ns) for path in inputs
     ]).encode()).hexdigest()[:16]
     output = ROOT / ".local" / "graph-explorer" / f"reader-{fingerprint}"
@@ -164,6 +223,7 @@ def build_reader(edb_root: Path) -> Path:
         try:
             subprocess.run([
                 "rustc", "--edition=2024", "-O", str(SOURCE),
+                *(["--test"] if test else []),
                 "--extern", f"edb_core={libraries[0]}", "--extern", f"serde_json={serde}",
                 "-L", f"dependency={edb_deps}", "-L", f"dependency={serde.parent}",
                 "-o", str(staging),
@@ -177,6 +237,8 @@ def build_reader(edb_root: Path) -> Path:
 def handler(reader: Path, database: str, learner: str, environment: dict[str, str], learning: Path | None = None):
     graph_worker = NativeWorker([str(reader), database, learner, "--serve"], environment, "graph-worker")
     learning_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "learning-worker") if learning else None
+    request_directory = Path(environment["LEARNING_REQUEST_DIR"])
+    mode_path = request_directory / "developer-mode.json"
 
     class Handler(BaseHTTPRequestHandler):
         def send_bytes(self, status: int, body: bytes, content_type: str, *, cache: bool = False) -> None:
@@ -231,6 +293,14 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 # compare the EDB basis, covering writers outside this application.
                 with (directory / "api.lock").open("a") as lock:
                     fcntl.flock(lock, fcntl.LOCK_EX)
+                    if body.get("action") in MUTATING_ACTIONS and developer_mode(mode_path):
+                        self.send_bytes(409, b'{"error":"Developer mode is on. No activity or learner changes are recorded.","code":"developer-mode"}', "application/json")
+                        return
+                    if body.get("action") == "assignment":
+                        # The server setting selects inspection-only answer keys;
+                        # a request cannot promote itself into developer mode.
+                        body = {**body, "preview": developer_mode(mode_path)}
+                    body = assignment_request(body, directory, learner)
                     response = learning_worker.request(body)
                 if response.get("ok"):
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
@@ -241,11 +311,44 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.log_error("Learning request failed (%s)", type(error).__name__)
                 self.send_bytes(503, b'{"error":"Could not reach the local learning database. Retry the same request."}', "application/json")
 
+        def mode_request(self, body: dict | None = None) -> None:
+            try:
+                request_directory.mkdir(parents=True, exist_ok=True)
+                with (request_directory / "api.lock").open("a") as lock:
+                    fcntl.flock(lock, fcntl.LOCK_EX)
+                    enabled = developer_mode(mode_path)
+                    paused = []
+                    if body is not None:
+                        desired = body.get("enabled")
+                        request = body.get("requestId", "")
+                        if type(desired) is not bool or not isinstance(request, str) or not (8 <= len(request) <= 60) or not all(c.isascii() and (c.isalnum() or c == "-") for c in request):
+                            self.send_bytes(400, b'{"error":"A boolean enabled value and stable requestId are required."}', "application/json")
+                            return
+                        if desired and not enabled:
+                            if learning_worker is None:
+                                raise ValueError("Learning API is unavailable")
+                            active = learning_worker.request({"action": "preview-active-tasks"})
+                            if not active.get("ok"):
+                                raise ValueError("Unable to check running activity")
+                            for task in active["data"]["taskIds"]:
+                                response = learning_worker.request({"action": "pause", "taskId": task, "requestId": f"dev-{request}-{task}"})
+                                if not response.get("ok"):
+                                    self.send_bytes(409, json.dumps({"error": response.get("error", "Pause the running lesson before enabling developer mode."), "code": response.get("code", "validation")}).encode(), "application/json")
+                                    return
+                                paused.append(task)
+                        if desired != enabled:
+                            save_developer_mode(mode_path, desired)
+                            enabled = desired
+                    self.send_bytes(200, json.dumps({"enabled": enabled, "pausedTasks": paused}).encode(), "application/json")
+            except (OSError, ValueError, KeyError, TypeError):
+                self.send_bytes(503, b'{"error":"Developer mode could not be confirmed. Activity recording is unavailable until the setting can be read."}', "application/json")
+
         def do_POST(self) -> None:
             if not self.trusted():
                 return
             action = urlsplit(self.path).path.removeprefix("/api/")
-            if action not in {"start", "answer", "continue", "pause", "resume"}:
+            # Profile preferences remain editable in inspection mode; study writes do not.
+            if action not in MUTATING_ACTIONS | {"developer-mode", "preview-answer", "profile-settings"}:
                 self.send_bytes(404, b"Not found", "text/plain")
                 return
             try:
@@ -259,15 +362,41 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
             except (ValueError, TypeError) as error:
                 self.send_bytes(400, json.dumps({"error": str(error)}).encode(), "application/json")
                 return
-            self.learning_request(body)
+            if action == "developer-mode":
+                self.mode_request(body)
+            else:
+                self.learning_request(body)
 
         def do_GET(self) -> None:
             if not self.trusted():
                 return
             path = urlsplit(self.path).path
             query = parse_qs(urlsplit(self.path).query)
-            if path == "/api/home":
+            if path == "/api/developer-mode":
+                self.mode_request()
+            elif path == "/api/profile":
+                self.learning_request({"action": "profile"})
+            elif path == "/api/preview-home":
+                self.learning_request({"action": "preview-home"})
+            elif path == "/api/preview":
+                try:
+                    selectors = {key: int(query[key][0]) for key in ("activityId", "taskId") if key in query and len(query[key]) == 1}
+                    if len(selectors) != 1 or any(value <= 0 for value in selectors.values()):
+                        raise ValueError("One activityId or taskId is required")
+                except ValueError:
+                    self.send_bytes(400, b'{"error":"One activityId or taskId is required."}', "application/json")
+                    return
+                self.learning_request({"action": "preview", **selectors})
+            elif path == "/api/home":
                 self.learning_request({"action": "home"})
+            elif path == "/api/assignments":
+                self.learning_request({"action": "assignments"})
+            elif path == "/api/assignment":
+                identifiers = parse_qs(urlsplit(self.path).query, keep_blank_values=True).get("assignment", [])
+                if len(identifiers) != 1 or not identifiers[0] or len(identifiers[0]) > 128:
+                    self.send_bytes(400, b'{"error":"Provide one assignment identifier."}', "application/json")
+                    return
+                self.learning_request({"action": "assignment", "assignmentId": identifiers[0]})
             elif path == "/api/task":
                 try:
                     task = int(query.get("taskId", [""])[0])
@@ -281,15 +410,23 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     self.send_bytes(404, b"Image not found", "text/plain")
                 else:
                     self.send_bytes(200, asset.read_bytes(), IMAGE_TYPES[asset.suffix.lower()], cache=True)
+            elif path == "/api/source":
+                source = Path(query.get("path", [""])[0]).resolve()
+                if source.suffix.lower() != ".pdf" or not any(source.is_relative_to(root.resolve()) for root in ASSET_ROOTS) or not source.is_file():
+                    self.send_bytes(404, b"Source PDF not found", "text/plain")
+                else:
+                    self.send_bytes(200, source.read_bytes(), "application/pdf", cache=True)
             elif path in ("/home", "/learn"):
                 self.send_bytes(200, (ROOT / "ui/Learning.html").read_bytes(), "text/html; charset=utf-8")
             elif path in ("/progress", "/course", "/courses"):
                 self.send_bytes(200, (ROOT / "ui/Course.html").read_bytes(), "text/html; charset=utf-8")
             elif path == "/topic":
                 self.send_bytes(200, (ROOT / "ui/Topic.html").read_bytes(), "text/html; charset=utf-8")
+            elif path == "/assignments":
+                self.send_bytes(200, (ROOT / "ui/Assignments.html").read_bytes(), "text/html; charset=utf-8")
             elif path.startswith("/ui/") and path != "/ui/Math-Academy-Graph-Explorer.html":
                 asset = (ROOT / path.lstrip("/")).resolve()
-                allowed = {"learning.js", "learning.css", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css"}
+                allowed = {"learning.js", "learning.css", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "profile.js", "course-catalog.js", "course-catalog.css"}
                 if not asset.is_relative_to((ROOT / "ui").resolve()) or not asset.is_file() or not (asset.name in allowed or asset.is_relative_to((ROOT / "ui/vendor").resolve())):
                     self.send_bytes(404, b"Not found", "text/plain")
                 else:

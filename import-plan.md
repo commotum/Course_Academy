@@ -39,6 +39,22 @@ Ambiguous identity matches, conflicting keys, uncertain mathematical changes, un
 
 ## Status
 
+### Remaining-course import — October 2, 2026
+
+The deferred source-backed enrichment is committed to `course-academy-v2`, advancing from basis 210 to 248. All 32 MA course identities and all 2,964 captured lessons were already present; this pass reconciled the remaining 1,292 captured topics against their vault copies and original captures. No files were moved, and no duplicate courses, lessons, questions, or fields were created.
+
+Recovered canonical correct answers for **1,615 questions**, adding **1,625 field-to-answer links** and one verified missing answer choice. Repaired 110 practice prompts, 589 existing answer values, and 417 answer representation types. Five radio rewrites were mapped back to their original dropdown fields; four probability questions retained the complete original table headings and columns. Source classifications are preserved: 1,557 manual keys, 57 previously marked image-derived keys, and one recorded mathematical repair. No new feedback was available in the matched copies.
+
+Reviewed 2,014 vault instruction copies comprising 11,020 components. They contained no substantive improvements over the captured instruction text. Original MathML supported repairs to **210 components** across 119 topics: 73 tutorials, 131 worked solutions, and six example problems. All 278 changed math expressions passed rendering checks. Partial SVG fragments, ambiguous expressions, unsupported brace glyphs, and components whose changed expressions still failed rendering were excluded.
+
+Post-import database verification confirmed every planned value, all 187,625 existing UUID identities, unchanged learner facts and curriculum relationships, and correct-answer membership without new duplicate answer values. The catalog has **19,646 captured practice questions: 12,378 fully keyed and 7,268 still missing a canonical correct answer**. Of those gaps, 6,910 belong to this remaining-course pass; the other 358 belong to the earlier scope. Missing answers were not synthesized.
+
+Seven sixth-grade topics still have no captured lesson: 555, 2383, 2384, 2385, 2386, 2387, and 2520. Their vault entries explicitly record missing source material. Instruction review also retains 104 known malformed components and 45 unsupported/ambiguous source components; these sets overlap and remain repair work.
+
+The [course coverage CSV](.local/edb/remaining-courses/after-courses.csv), [remaining-pass question gaps](.local/edb/remaining-courses/remaining-question-gaps.csv), [question evidence](.local/edb/remaining-courses/questions/manifest.json), [instruction evidence](.local/edb/remaining-courses/instruction/report.json), and [database verification](.local/edb/remaining-courses/verification.json) record the result. Backup points 210 and 248 remain in `.local/edb/backups/remaining-courses-before/`; the matching before/after exports and transaction receipts are under `.local/edb/remaining-courses/`.
+
+### Earlier eight-course import
+
 Existing answer-key recovery for the eight selected courses is committed to the durable `course-academy` database. The database advanced from basis 64 to 140 across 76 batches: 51 in the first pass, then 25 corrective follow-up batches. GPT-6-sol agents at high reasoning prepared the reconciliations; the main agent reviewed and applied them in the requested course order. Source vaults were not modified, and no Git commit was made.
 
 The user subsequently selected the original `MA/DATA/Lessons/296` versions of questions 48557 and 48616. Their original prompts and choices were retained; a stray Markdown navigation fragment was removed from one choice at basis 141. At basis 142, both received verified keys and explanations. The farmer question requires tons squared per dollar, so that missing choice was added while retaining its original five options. The circle question uses its existing rate-of-change answer (B), also confirmed in a CA1 vault copy whose Markdown question ID had shifted to `ma-48615`.

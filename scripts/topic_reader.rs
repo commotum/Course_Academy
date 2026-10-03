@@ -271,6 +271,7 @@ fn lesson_sections(db: &DatabaseValue, facts: &mut Facts, topic: u64) -> Result<
         }
         let mut section = json!({
             "id": display_id(facts, step, "step/id"),
+            "stepId": step.to_string(),
             "kind": kind, "title": heading, "markdown": markdown,
         });
         if kind == "example" {
@@ -324,7 +325,7 @@ pub(super) fn topic(db: &DatabaseValue, learner_id: &str, selector: &str) -> Res
             courses.push(json!({
                 "id": id,
                 "title": title(&facts, eid, "course"),
-                "level": enum_name(db, &facts, eid, "course/level"),
+                "groups": course_groups(&facts, eid),
             }));
         }
     }
@@ -345,12 +346,9 @@ pub(super) fn topic(db: &DatabaseValue, learner_id: &str, selector: &str) -> Res
         .map(|eid| topic_identity(&facts, eid))
         .collect::<Result<Vec<_>>>()?;
     let sections = lesson_sections(db, &mut facts, topic_eid)?;
-    let course_id = refs(&facts, learner_eid, "learner/course")
-        .first()
-        .and_then(|eid| uuid(&facts, *eid, "course/id"));
     Ok(Some(json!({
         "basis": db.basis_t(),
-        "learner": {"id": learner_id, "name": text(&facts, learner_eid, "learner/name"), "courseId": course_id},
+        "learner": learner_json(&facts, learner_eid, learner_id),
         "topic": topic_identity(&facts, topic_eid)?,
         "courses": courses,
         "prerequisites": prerequisites,

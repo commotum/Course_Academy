@@ -14,7 +14,7 @@ use num_rational::BigRational;
 use num_traits::{One, ToPrimitive, Zero};
 use serde::Serialize;
 use serde_json::{Value, json};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::{BTreeMap, BTreeSet, VecDeque};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct LessonStep {
@@ -412,14 +412,43 @@ pub fn continuation(
     Ok((p.next, passed, xp))
 }
 
-/// Deterministic eligible lesson ordering. Imported positive repetitions count
-/// only as evidence of previous prerequisite practice, never as a retention
-/// timestamp or a current-memory estimate. Missing prerequisites remain locked.
-pub fn candidates(s: &EntitySnapshot, learner: u64, course: u64) -> Result<Vec<u64>> {
+/// An eligible lesson and the evidence behind its position in the learner queue.
+/// Larger priority values sort first; ties use topic and activity entity IDs.
+#[derive(Clone, Debug, Serialize)]
+pub struct PlannedActivity {
+    pub activity: u64,
+    pub topic: u64,
+    pub priority: f64,
+    pub target_count: usize,
+    pub target_topics: Vec<u64>,
+    /// Smallest unfinished prerequisite closure among the supported targets,
+    /// including that target itself. Zero for ordinary course work.
+    pub remaining_topics: usize,
+    pub nearest_target_steps: Option<usize>,
+    pub due: Option<DateTime<Utc>>,
+    pub reason: String,
+}
+
+/// Plan against one explicit clock instant. Self-directed targets broaden the
+/// course scope, but never bypass prerequisites, FIRe readiness, or fresh-bank
+/// checks. Started/paused lessons remain resumable after scope changes.
+pub fn plan_candidates(
+    s: &EntitySnapshot,
+    learner: u64,
+    course: u64,
+    at: DateTime<Utc>,
+) -> Result<Vec<PlannedActivity>> {
     // Captured lesson banks currently contain two or three questions per KP.
-    // Permit finite-bank practice; exhaustion without a passing streak ends as
-    // failed, preserving observed answers without awarding mastery or XP.
-    candidates_with_supply(s, learner, course, 2, true)
+    // Exhaustion without a passing streak ends as failed without mastery or XP.
+    plan_candidates_with_supply(s, learner, course, at, 2, true)
+}
+
+/// Compatibility wrapper for callers that only need the ordered activity IDs.
+pub fn candidates(s: &EntitySnapshot, learner: u64, course: u64) -> Result<Vec<u64>> {
+    Ok(plan_candidates(s, learner, course, Utc::now())?
+        .into_iter()
+        .map(|p| p.activity)
+        .collect())
 }
 
 fn candidates_with_supply(
@@ -429,6 +458,138 @@ fn candidates_with_supply(
     minimum_fresh: usize,
     exclude_practiced: bool,
 ) -> Result<Vec<u64>> {
+    Ok(plan_candidates_with_supply(
+        s,
+        learner,
+        course,
+        Utc::now(),
+        minimum_fresh,
+        exclude_practiced,
+    )?
+    .into_iter()
+    .map(|p| p.activity)
+    .collect())
+}
+
+/// Collect mapped topics without assuming assignment steps are linear lessons.
+/// The visited set also bounds traversal of malformed cyclic containment.
+fn assignment_targets(s: &EntitySnapshot, assignment: u64) -> Result<BTreeSet<u64>> {
+    let mut pending = vec![];
+    for step in s.refs(assignment, "activity/steps")? {
+        pending.push(s.reference(step, "step/content")?);
+    }
+    let mut visited = BTreeSet::new();
+    let mut targets = BTreeSet::new();
+    while let Some(content) = pending.pop() {
+        if !visited.insert(content) {
+            continue;
+        }
+        let record = s.entity(content)?;
+        if record.contains_key("assigned-problem/id") {
+            targets.extend(s.refs(content, "assigned-problem/topic-coverage")?);
+            pending.push(s.reference(content, "assigned-problem/content")?);
+        }
+        if record.contains_key("multistep/id") {
+            for step in s.refs(content, "multistep/steps")? {
+                pending.push(s.reference(step, "step/content")?);
+            }
+        }
+    }
+    Ok(targets)
+}
+
+#[derive(Default)]
+struct TargetSupport {
+    targets: BTreeSet<u64>,
+    remaining: Option<usize>,
+    distance: Option<usize>,
+    due: Option<DateTime<Utc>>,
+}
+
+fn target_support(
+    s: &EntitySnapshot,
+    learner: u64,
+    prerequisites: &BTreeMap<u64, BTreeSet<u64>>,
+    ready: &BTreeSet<u64>,
+) -> Result<BTreeMap<u64, TargetSupport>> {
+    if s.entity(learner)?.get("learner/self-directed") != Some(&json!(true)) {
+        return Ok(BTreeMap::new());
+    }
+    let mut targets: BTreeMap<u64, Option<DateTime<Utc>>> = s
+        .refs(learner, "learner/targets")?
+        .into_iter()
+        .map(|topic| (topic, None))
+        .collect();
+    let mut completed = BTreeSet::new();
+    for task in s.refs(learner, "learner/activity")? {
+        if ident(s, task, "learner-task/status")? == "learner-task.status/completed" {
+            completed.insert(s.reference(task, "learner-task/activity")?);
+        }
+    }
+    for assignment in s.refs(learner, "learner/assignments")? {
+        if ident(s, assignment, "activity/type")? != "activity.type/assignment" {
+            return Err("learner/assignments must reference assignment activities".into());
+        }
+        // A completed assignment no longer calls for preparation. Failed
+        // attempts retain their mapping and deadline for another attempt.
+        if completed.contains(&assignment) {
+            continue;
+        }
+        let due = s
+            .entity(assignment)?
+            .get("activity/due")
+            .map(crate::schema::parse_instant)
+            .transpose()?;
+        for topic in assignment_targets(s, assignment)? {
+            let entry = targets.entry(topic).or_default();
+            if let Some(due) = due {
+                *entry = Some(entry.map_or(due, |previous| previous.min(due)));
+            }
+        }
+    }
+    let mut support: BTreeMap<u64, TargetSupport> = BTreeMap::new();
+    for (target, due) in targets {
+        if !s.entity(target)?.contains_key("topic/id") {
+            return Err("study targets and assignment coverage must reference topics".into());
+        }
+        // One breadth-first traversal per distinct target counts a shared
+        // ancestor once, even through diamonds or cycles. Ready topics close
+        // that branch: their own prerequisites need no new preparation now.
+        let mut distances = BTreeMap::new();
+        let mut pending = VecDeque::from([(target, 0)]);
+        while let Some((topic, distance)) = pending.pop_front() {
+            if distances.contains_key(&topic) {
+                continue;
+            }
+            distances.insert(topic, distance);
+            if !ready.contains(&topic) {
+                for prerequisite in prerequisites.get(&topic).into_iter().flatten() {
+                    pending.push_back((*prerequisite, distance + 1));
+                }
+            }
+        }
+        let remaining = distances.keys().filter(|t| !ready.contains(t)).count();
+        for (topic, distance) in distances {
+            let entry = support.entry(topic).or_default();
+            entry.targets.insert(target);
+            entry.remaining = Some(entry.remaining.map_or(remaining, |n| n.min(remaining)));
+            entry.distance = Some(entry.distance.map_or(distance, |n| n.min(distance)));
+            if let Some(due) = due {
+                entry.due = Some(entry.due.map_or(due, |previous| previous.min(due)));
+            }
+        }
+    }
+    Ok(support)
+}
+
+fn plan_candidates_with_supply(
+    s: &EntitySnapshot,
+    learner: u64,
+    course: u64,
+    at: DateTime<Utc>,
+    minimum_fresh: usize,
+    exclude_practiced: bool,
+) -> Result<Vec<PlannedActivity>> {
     let mut scope = BTreeSet::new();
     for unit in s.refs(course, "course/units")? {
         for module in s.refs(unit, "unit/modules")? {
@@ -449,7 +610,7 @@ fn candidates_with_supply(
     } else {
         None
     };
-    let now = timestamp_days(Utc::now());
+    let now = timestamp_days(at);
     for progress in s.refs(learner, "learner/knowledge-profile")? {
         let topic = s.reference(progress, "progress/topic")?;
         let r = s.entity(progress)?;
@@ -506,6 +667,8 @@ fn candidates_with_supply(
             }
         }
     }
+    let support = target_support(s, learner, &prerequisites, &ready)?;
+    scope.extend(support.keys().copied());
     let seen = seen_questions(s, learner)?;
     let mut finished = BTreeSet::new();
     let mut active = BTreeSet::new();
@@ -531,13 +694,13 @@ fn candidates_with_supply(
         let Some(topic) = s.optional_ref(activity, "activity/scope")? else {
             continue;
         };
-        if !scope.contains(&topic) {
-            continue;
-        }
         if active.contains(&activity) {
             if lesson_steps(s, activity).is_ok() {
                 result.push((activity, topic));
             }
+            continue;
+        }
+        if !scope.contains(&topic) {
             continue;
         }
         if (exclude_practiced && practiced.contains(&topic))
@@ -571,20 +734,67 @@ fn candidates_with_supply(
         }
         result.push((activity, topic));
     }
-    result.sort_by(|(a, ta), (b, tb)| {
-        active
-            .contains(b)
-            .cmp(&active.contains(a))
-            .then_with(|| {
-                repetitions
-                    .get(ta)
-                    .unwrap_or(&0.0)
-                    .total_cmp(repetitions.get(tb).unwrap_or(&0.0))
-            })
-            .then_with(|| ta.cmp(tb))
-            .then_with(|| a.cmp(b))
+    let mut result: Vec<_> = result
+        .into_iter()
+        .map(|(activity, topic)| {
+            let target = support.get(&topic);
+            let target_topics: Vec<_> = target
+                .map(|t| t.targets.iter().copied().collect())
+                .unwrap_or_default();
+            let target_count = target_topics.len();
+            let remaining_topics = target.and_then(|t| t.remaining).unwrap_or(0);
+            let nearest_target_steps = target.and_then(|t| t.distance);
+            let due = target.and_then(|t| t.due);
+            // Bounded, inspectable score: 0..1000 for distinct target reach,
+            // 0..100 each for remaining work and graph proximity, 0..250 for
+            // deadline urgency (overdue is capped), and <=1 for course ordering.
+            // Ongoing work adds 10000, so it always precedes new lessons.
+            let mut priority = 1.0 / (1.0 + repetitions.get(&topic).copied().unwrap_or(0.0));
+            if target_count > 0 {
+                priority += 1000.0 * target_count as f64 / (1.0 + target_count as f64)
+                    + 100.0 / (1.0 + remaining_topics as f64)
+                    + 100.0 / (1.0 + nearest_target_steps.unwrap_or(0) as f64);
+            }
+            if let Some(due) = due {
+                // Whole hours avoid a priority write on every queue refresh.
+                let days = (due - at).num_hours().max(0) as f64 / 24.0;
+                priority += 250.0 / (1.0 + days);
+            }
+            let mut reason = if active.contains(&activity) {
+                priority += 10000.0;
+                "Continue your lesson".into()
+            } else if target_count > 1 {
+                format!("Supports {target_count} study targets")
+            } else if nearest_target_steps == Some(0) {
+                "One of your study targets".into()
+            } else if target_count == 1 {
+                "Prerequisite for a study target".into()
+            } else {
+                "Ready for your course".into()
+            };
+            if let Some(due) = due {
+                reason.push_str(&format!(". Assignment due {}", due.format("%b %-d, %Y")));
+            }
+            PlannedActivity {
+                activity,
+                topic,
+                priority,
+                target_count,
+                target_topics,
+                remaining_topics,
+                nearest_target_steps,
+                due,
+                reason,
+            }
+        })
+        .collect();
+    result.sort_by(|a, b| {
+        b.priority
+            .total_cmp(&a.priority)
+            .then_with(|| a.topic.cmp(&b.topic))
+            .then_with(|| a.activity.cmp(&b.activity))
     });
-    Ok(result.into_iter().map(|(a, _)| a).collect())
+    Ok(result)
 }
 
 /// Read-only serving diagnostics, including ready lessons whose captured banks
@@ -1163,6 +1373,7 @@ mod tests {
             "learner-task.status/completed",
             "learner-task.status/failed",
             "policy.retention-update/decay-before-add",
+            "activity.type/assignment",
         ]
         .iter()
         .enumerate()
@@ -1309,6 +1520,341 @@ mod tests {
     }
     fn items(s: &EntitySnapshot) -> Vec<u64> {
         s.refs(9, "learner-task/items").unwrap()
+    }
+
+    fn planning_fixture(targets: &[u64]) -> EntitySnapshot {
+        let mut s = fixture();
+        s.entities
+            .get_mut(&21)
+            .unwrap()
+            .insert("progress/repetitions".into(), json!(0.0));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(true));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/targets".into(), json!(targets));
+        s
+    }
+
+    fn planning_lesson(s: &mut EntitySnapshot, topic: u64, next: &[u64]) -> u64 {
+        let activity = 10000 + topic;
+        let question = 20000 + topic;
+        let step = 30000 + topic;
+        put(
+            &mut s.entities,
+            topic,
+            json!({"topic/id":id(topic), "topic/next":next}),
+        );
+        put(
+            &mut s.entities,
+            activity,
+            json!({"activity/id":id(activity),"activity/type":"activity.type/lesson","activity/scope":topic,"activity/steps":[step],"activity/first-step":step}),
+        );
+        put(
+            &mut s.entities,
+            step,
+            json!({"step/id":id(step),"step/content":question}),
+        );
+        put(
+            &mut s.entities,
+            question,
+            json!({"question/id":id(question),"question/is-example":false,"question/problem":"$2x=1$","question/answer-fields":[200]}),
+        );
+        activity
+    }
+
+    fn planning_time() -> DateTime<Utc> {
+        DateTime::from_timestamp_millis(1_790_760_000_000).unwrap()
+    }
+
+    #[test]
+    fn planner_counts_distinct_targets_through_diamonds_and_keeps_course_work() {
+        let mut s = planning_fixture(&[90, 90, 91, 92]);
+        let shared = planning_lesson(&mut s, 80, &[81, 82, 91]);
+        planning_lesson(&mut s, 81, &[90]);
+        planning_lesson(&mut s, 82, &[90]);
+        let single = planning_lesson(&mut s, 83, &[92]);
+        for topic in [90, 91, 92] {
+            planning_lesson(&mut s, topic, &[]);
+        }
+        let plan = plan_candidates(&s, 1, 5, planning_time()).unwrap();
+        assert_eq!(
+            plan.iter().map(|p| p.activity).collect::<Vec<_>>(),
+            [shared, single, 20]
+        );
+        assert_eq!(plan[0].target_topics, [90, 91]);
+        assert_eq!(plan[0].target_count, 2);
+        assert_eq!(plan[0].nearest_target_steps, Some(1));
+        assert_eq!(plan[0].remaining_topics, 2);
+        assert_eq!(plan[2].target_count, 0);
+        assert!(plan.iter().all(|p| p.priority.is_finite()));
+        assert_eq!(
+            serde_json::to_value(&plan).unwrap(),
+            serde_json::to_value(plan_candidates(&s, 1, 5, planning_time()).unwrap()).unwrap()
+        );
+    }
+
+    #[test]
+    fn planner_gates_cross_course_targets_and_preserves_started_work_after_removal() {
+        let mut s = planning_fixture(&[80]);
+        let cross_course = planning_lesson(&mut s, 80, &[]);
+        let plan = plan_candidates(&s, 1, 5, planning_time()).unwrap();
+        assert_eq!(plan[0].activity, cross_course);
+        assert_eq!(plan[0].nearest_target_steps, Some(0));
+        assert_eq!(plan[0].remaining_topics, 1);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(false));
+        assert_eq!(candidates(&s, 1, 5).unwrap(), [20]);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(true));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/targets".into(), json!([]));
+        assert_eq!(candidates(&s, 1, 5).unwrap(), [20]);
+        put(
+            &mut s.entities,
+            600,
+            json!({"learner-task/id":id(600),"learner-task/activity":cross_course,"learner-task/status":"learner-task.status/paused","learner-task/items":[]}),
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([600]));
+        let plan = plan_candidates(&s, 1, 5, planning_time()).unwrap();
+        assert_eq!(plan[0].activity, cross_course);
+        assert_eq!(plan[0].target_count, 0);
+        assert!(plan[0].priority >= 10000.0);
+    }
+
+    #[test]
+    fn planner_uses_nested_assignment_coverage_and_earliest_deadline_without_requiring_work() {
+        let at = planning_time();
+        let mut s = planning_fixture(&[80, 83]);
+        let later = planning_lesson(&mut s, 80, &[]);
+        let sooner = planning_lesson(&mut s, 83, &[]);
+        put(
+            &mut s.entities,
+            700,
+            json!({"activity/id":id(700),"activity/type":"activity.type/assignment","activity/due":at + chrono::Duration::days(7),"activity/steps":[701]}),
+        );
+        put(
+            &mut s.entities,
+            701,
+            json!({"step/id":id(701),"step/content":702}),
+        );
+        put(
+            &mut s.entities,
+            702,
+            json!({"assigned-problem/id":id(702),"assigned-problem/topic-coverage":[80,83],"assigned-problem/content":20080}),
+        );
+        put(
+            &mut s.entities,
+            710,
+            json!({"activity/id":id(710),"activity/type":"activity.type/assignment","activity/due":at + chrono::Duration::hours(25),"activity/steps":[711]}),
+        );
+        put(
+            &mut s.entities,
+            711,
+            json!({"step/id":id(711),"step/content":712}),
+        );
+        put(
+            &mut s.entities,
+            712,
+            json!({"multistep/id":id(712),"multistep/steps":[713]}),
+        );
+        put(
+            &mut s.entities,
+            713,
+            json!({"step/id":id(713),"step/content":714}),
+        );
+        put(
+            &mut s.entities,
+            714,
+            json!({"assigned-problem/id":id(714),"assigned-problem/topic-coverage":[83],"assigned-problem/content":715}),
+        );
+        put(
+            &mut s.entities,
+            715,
+            json!({"multistep/id":id(715),"multistep/steps":[716]}),
+        );
+        // A containment cycle must neither hang nor count the mapped target twice.
+        put(
+            &mut s.entities,
+            716,
+            json!({"step/id":id(716),"step/content":712}),
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/assignments".into(), json!([700, 710]));
+        let plan = plan_candidates(&s, 1, 5, at + chrono::Duration::minutes(1)).unwrap();
+        assert_eq!(
+            plan.iter().map(|p| p.activity).collect::<Vec<_>>(),
+            [sooner, later, 20]
+        );
+        assert_eq!(plan[0].target_count, 1);
+        assert_eq!(plan[0].due, Some(at + chrono::Duration::hours(25)));
+        assert!(!plan[0].reason.contains("required"));
+        assert_eq!(
+            plan[0].priority,
+            plan_candidates(&s, 1, 5, at + chrono::Duration::minutes(2)).unwrap()[0].priority
+        );
+        let overdue = plan_candidates(&s, 1, 5, at + chrono::Duration::days(10)).unwrap();
+        assert!(overdue.iter().all(|p| p.priority.is_finite()));
+        assert_eq!(overdue[0].activity, later); // equal scores use topic IDs
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/targets".into(), json!([]));
+        assert_eq!(plan_candidates(&s, 1, 5, at).unwrap()[0].activity, sooner);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(false));
+        assert_eq!(candidates(&s, 1, 5).unwrap(), [20]);
+    }
+
+    #[test]
+    fn completed_assignments_stop_preparation_but_explicit_targets_and_failed_attempts_remain() {
+        let at = planning_time();
+        let mut s = planning_fixture(&[80]);
+        let lesson = planning_lesson(&mut s, 80, &[]);
+        put(
+            &mut s.entities,
+            700,
+            json!({"activity/id":id(700),"activity/type":"activity.type/assignment","activity/due":at - chrono::Duration::days(1),"activity/steps":[701]}),
+        );
+        put(
+            &mut s.entities,
+            701,
+            json!({"step/id":id(701),"step/content":702}),
+        );
+        put(
+            &mut s.entities,
+            702,
+            json!({"assigned-problem/id":id(702),"assigned-problem/topic-coverage":[80],"assigned-problem/content":20080}),
+        );
+        put(
+            &mut s.entities,
+            600,
+            json!({"learner-task/id":id(600),"learner-task/activity":700,"learner-task/status":"learner-task.status/completed","learner-task/items":[]}),
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/assignments".into(), json!([700]));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([600]));
+
+        let plan = plan_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(plan[0].activity, lesson);
+        assert_eq!(plan[0].target_count, 1);
+        assert_eq!(plan[0].due, None);
+        assert_eq!(plan[0].reason, "One of your study targets");
+
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/targets".into(), json!([]));
+        let plan = plan_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(plan.iter().map(|p| p.activity).collect::<Vec<_>>(), [20]);
+
+        s.entities.get_mut(&600).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/failed"),
+        );
+        let plan = plan_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(plan[0].activity, lesson);
+        assert_eq!(plan[0].due, Some(at - chrono::Duration::days(1)));
+    }
+
+    #[test]
+    fn planner_keeps_prerequisite_fire_and_seen_question_guards() {
+        let at = planning_time();
+        let mut s = planning_fixture(&[81]);
+        let prerequisite = planning_lesson(&mut s, 80, &[81]);
+        let target = planning_lesson(&mut s, 81, &[]);
+        let key_prerequisite = planning_lesson(&mut s, 82, &[]);
+        put(
+            &mut s.entities,
+            900,
+            json!({"knowledge-point/id":id(900),"knowledge-point/key-prerequisites":[82]}),
+        );
+        s.entities
+            .get_mut(&81)
+            .unwrap()
+            .insert("topic/knowledge-points".into(), json!([900]));
+        let plan = plan_candidates(&s, 1, 5, at).unwrap();
+        assert!(plan.iter().any(|p| p.activity == prerequisite));
+        assert!(plan.iter().any(|p| p.activity == key_prerequisite));
+        assert!(!plan.iter().any(|p| p.activity == target));
+        put(
+            &mut s.entities,
+            600,
+            json!({"learner-task/id":id(600),"learner-task/activity":prerequisite,"learner-task/status":"learner-task.status/failed","learner-task/items":[601]}),
+        );
+        put(
+            &mut s.entities,
+            601,
+            json!({"task-item/id":id(601),"task-item/content":20080,"task-item/status":"task-item.status/incorrect"}),
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([600]));
+        assert!(
+            !plan_candidates(&s, 1, 5, at)
+                .unwrap()
+                .iter()
+                .any(|p| p.activity == prerequisite)
+        );
+
+        let mut s = planning_fixture(&[3]);
+        put(
+            &mut s.entities,
+            22,
+            json!({"progress/id":"known-prerequisite","progress/topic":4,"progress/policy":2,"progress/repetitions":1.0,"progress/learned":true,"progress/memory":1.0,"progress/memory-at":at,"progress/interval-days":1.0,"progress/assessment-accuracy":0.5,"progress/practice-accuracy":0.5,"progress/assessment-mass":0.0,"progress/practice-mass":0.0}),
+        );
+        assert_eq!(plan_candidates(&s, 1, 5, at).unwrap()[0].activity, 20);
+        assert!(
+            plan_candidates(&s, 1, 5, at + chrono::Duration::days(10))
+                .unwrap()
+                .is_empty()
+        );
+        assert!(
+            plan_candidates(&s, 1, 5, at - chrono::Duration::hours(1))
+                .unwrap()
+                .is_empty()
+        );
+    }
+
+    #[test]
+    fn planner_cycles_remain_locked_and_shorter_remaining_work_ranks_first() {
+        let mut s = planning_fixture(&[90, 91, 180]);
+        let long = planning_lesson(&mut s, 80, &[81]);
+        planning_lesson(&mut s, 81, &[90]);
+        planning_lesson(&mut s, 90, &[]);
+        let short = planning_lesson(&mut s, 83, &[91]);
+        planning_lesson(&mut s, 91, &[]);
+        planning_lesson(&mut s, 180, &[181]);
+        planning_lesson(&mut s, 181, &[180]);
+        let plan = plan_candidates(&s, 1, 5, planning_time()).unwrap();
+        assert_eq!(
+            plan.iter().map(|p| p.activity).collect::<Vec<_>>(),
+            [short, long, 20]
+        );
+        assert_eq!(plan[0].remaining_topics, 2);
+        assert_eq!(plan[1].remaining_topics, 3);
     }
 
     #[test]

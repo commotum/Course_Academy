@@ -1,8 +1,9 @@
 import { marked } from './vendor/marked/marked.esm.js';
 import { createCoursePicker } from './navigation.js';
+import { createCourseCatalog } from './course-catalog.js';
+import { createTargetControls } from './targets.js';
 
 const $ = id => document.getElementById(id);
-const palette = ['#000000', '#303030', '#5A5A5A', '#858585', '#AEAEAE', '#D6D6D6', '#FFFFFF'];
 let currentCourseId = null;
 let curriculumSnapshot = null;
 let requestController = null;
@@ -12,6 +13,12 @@ let mathLoader = null;
 let typesetting = Promise.resolve();
 let lastLoadedAt = 0;
 let refreshNeeded = false;
+const targetControls = createTargetControls({
+  readLearner: async () => (await api('/api/course' + (currentCourseId ? '?course=' + encodeURIComponent(currentCourseId) : ''))).learner,
+  onChange: learner => {
+    if (curriculumSnapshot) void curriculumSnapshot.then(snapshot => { snapshot.learner = { ...snapshot.learner, ...learner }; }).catch(() => {});
+  },
+});
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -27,10 +34,6 @@ function button(text, className, action) {
 function link(text, href, className = '') {
   const node = el('a', className, text); node.href = href; return node;
 }
-function levelName(value) {
-  const key = String(value || '').split('/').at(-1);
-  return { 'early-math': 'Early Math', 'high-school-math': 'High School Math', 'university-math': 'University Math' }[key] || key.replaceAll('-', ' ').replace(/\b\w/g, c => c.toUpperCase());
-}
 function topicKey(topic) { return String(topic.uuid || topic.id); }
 function uniqueTopics(topics) { return [...new Map(topics.map(topic => [topicKey(topic), topic])).values()]; }
 function unitTopics(unit) { return uniqueTopics((unit.modules || []).flatMap(module => module.topics || [])); }
@@ -43,7 +46,7 @@ function statistics(topics) {
   const bands = Array(7).fill(0);
   let unknown = 0;
   for (const topic of unique) { const value = band(topic); if (value === null) unknown++; else bands[value]++; }
-  const completed = bands[6];
+  const completed = bands.slice(1).reduce((sum, count) => sum + count, 0);
   return { total: unique.length, completed, tracked: unique.length - unknown, unknown, bands };
 }
 function completionPercent(stats) {
@@ -57,7 +60,7 @@ function completionSummary(stats) {
 }
 function swatch(value) {
   const node = el('span', 'band-swatch' + (value === null ? ' unknown' : ''));
-  if (value !== null) node.style.backgroundColor = palette[value];
+  if (value !== null) node.style.backgroundColor = `var(--mastery-${value})`;
   node.setAttribute('aria-hidden', 'true');
   return node;
 }
@@ -74,7 +77,7 @@ function distribution(stats) {
     const segment = el('span', 'distribution-segment' + (value === null ? ' unknown' : ''));
     segment.style.flexGrow = String(count);
     segment.style.flexBasis = '0';
-    if (value !== null) segment.style.backgroundColor = palette[value];
+    if (value !== null) segment.style.backgroundColor = `var(--mastery-${value})`;
     segment.title = `${bandLabel(value)}${value === null ? '' : ' repetitions'} · ${count} ${count === 1 ? 'topic' : 'topics'}`;
     bar.append(segment);
   }
@@ -161,9 +164,9 @@ function graphURL(courseId, topicId) {
 }
 function courseLink(course, className = '') {
   const node = link('', courseURL(course.id), className);
-  node.append(el('span', 'sequence-course-title', course.title));
+  node.append(el('span', 'course-group-course-title', course.title));
   if (course.completion) {
-    const percent = el('span', 'sequence-course-percent', completionPercent(course.completion));
+    const percent = el('span', 'course-group-course-percent', completionPercent(course.completion));
     percent.title = completionSummary(course.completion);
     percent.setAttribute('aria-label', completionSummary(course.completion));
     node.append(percent);
@@ -183,22 +186,22 @@ async function navigate(id) {
 function sidebar(data, unitIds) {
   const aside = el('aside', 'course-sidebar'); aside.setAttribute('aria-label', 'Course navigation');
   const content = el('div', 'sidebar-content');
-  const matchingSequences = (data.sequences || []).filter(sequence => sequence.courses.some(course => course.id === data.course.id));
-  if (matchingSequences.length) {
-    const sequences = el('nav'); sequences.setAttribute('aria-label', 'Course Sequence');
-    sequences.append(el('h2', 'sidebar-label', 'Course Sequence'));
-    for (const sequence of matchingSequences) {
-      const group = el('div', 'sequence');
-      const list = el('ul', 'sequence-links');
-      list.setAttribute('aria-label', sequence.title);
-      for (const course of sequence.courses) { const item = el('li'); item.append(courseLink(course)); list.append(item); }
-      group.append(list); sequences.append(group);
+  const matchingGroups = (data.courseGroups || []).filter(group => group.courses.some(course => course.id === data.course.id));
+  if (matchingGroups.length) {
+    const groups = el('nav'); groups.setAttribute('aria-label', 'Course groups');
+    for (const courseGroup of matchingGroups) {
+      const group = el('div', 'course-group');
+      group.append(el('h2', 'sidebar-label', courseGroup.title));
+      const list = el('ul', 'course-group-links');
+      list.setAttribute('aria-label', courseGroup.title);
+      for (const course of courseGroup.courses) { const item = el('li'); item.append(courseLink(course)); list.append(item); }
+      group.append(list); groups.append(group);
     }
-    content.append(sequences);
+    content.append(groups);
   }
   if (data.course.units.length) {
     const nav = el('nav', 'unit-nav'); nav.setAttribute('aria-label', 'Units in this course');
-    nav.append(el('h2', 'sidebar-label', 'In this course'));
+    nav.append(el('h2', 'sidebar-label', 'Units of Study'));
     const list = el('ol');
     data.course.units.forEach((unit, index) => {
       const item = el('li');
@@ -213,30 +216,43 @@ function sidebar(data, unitIds) {
     });
     nav.append(list); content.append(nav);
   }
-  content.append(button('Browse all courses ↗', 'text-button sidebar-browse', () => picker.open()));
-  content.append(link('Explore this course ↗', graphURL(data.course.id), 'sidebar-link'));
+  const browseCourses = button('Browse all courses ↗', 'sidebar-browse', () => catalog.open(data.courseGroups || []));
+  browseCourses.setAttribute('aria-haspopup', 'dialog');
+  browseCourses.setAttribute('aria-controls', 'courseCatalog');
+  const tools = el('div', 'sidebar-tools');
+  tools.append(browseCourses, link('View Course Graph', graphURL(data.course.id), 'course-graph-button'));
+  content.append(tools);
   aside.append(content); return aside;
 }
-function courseHeading(data, topicCount) {
+function courseHeading(data) {
   const course = data.course;
   const header = el('section', 'course-heading'); header.setAttribute('aria-labelledby', 'pageTitle');
-  const eyebrow = el('div', 'eyebrow', levelName(course.level) || 'Course');
-  if (course.id === data.learner?.courseId) eyebrow.append(el('span', 'study-course-tag', 'Your study course'));
   const heading = el('h1', '', course.title); heading.id = 'pageTitle';
-  header.append(eyebrow, heading);
-  if (course.description?.trim()) header.append(markdown(course.description, 'prose course-description'));
-  const facts = el('div', 'course-facts');
-  if (course.code) facts.append(el('span', '', course.code));
-  facts.append(el('span', '', `${course.units.length} ${course.units.length === 1 ? 'unit' : 'units'}`), el('span', '', `${formatNumber(topicCount)} ${topicCount === 1 ? 'topic' : 'topics'}`), link('View in graph ↗', graphURL(course.id)));
-  header.append(facts);
+  header.append(heading);
+  const reading = courseReadingLink(course); if (reading) header.append(reading);
   return header;
 }
-function courseReading(course) {
+function courseReadingLink(course) {
   const outcomes = (course.outcomes || []).filter(outcome => outcome.text?.trim());
-  if (!course.overview?.trim() && !outcomes.length) return null;
-  const details = el('details', 'course-reading');
-  details.append(el('summary', '', course.overview?.trim() && outcomes.length ? 'Overview & learning outcomes' : outcomes.length ? 'Learning outcomes' : 'Course overview'));
+  if (!course.description?.trim() && !course.overview?.trim() && !outcomes.length) return null;
+  const label = course.overview?.trim() && outcomes.length ? 'Overview & learning outcomes' : outcomes.length ? 'Learning outcomes' : 'Course overview';
+  const trigger = button(label, 'course-reading-link', () => openCourseReading(course, outcomes));
+  trigger.setAttribute('aria-haspopup', 'dialog');
+  return trigger;
+}
+function openCourseReading(course, outcomes) {
+  if ($('courseOverview')) return;
+  const returnFocus = document.activeElement;
+  const dialog = el('dialog', 'course-overview-dialog'); dialog.id = 'courseOverview'; dialog.dataset.courseId = course.id;
+  dialog.setAttribute('aria-labelledby', 'courseOverviewTitle');
+  const head = el('div', 'course-overview-head');
+  const title = el('h2', '', course.title); title.id = 'courseOverviewTitle';
+  const close = button('×', 'course-overview-close', () => dialog.close());
+  close.setAttribute('aria-label', 'Close course overview');
+  head.append(title, close);
   const body = el('div', 'reading-body');
+  body.tabIndex = 0; body.setAttribute('aria-label', 'Course overview and learning outcomes');
+  if (course.description?.trim()) body.append(el('h2', '', 'Course description'), markdown(course.description));
   if (course.overview?.trim()) body.append(el('h2', '', 'Course overview'), markdown(course.overview));
   if (outcomes.length) {
     body.append(el('h2', '', 'Learning outcomes'));
@@ -254,24 +270,38 @@ function courseReading(course) {
       group.append(list); body.append(group);
     }
   }
-  details.append(body);
-  details.addEventListener('toggle', () => { if (details.open) typeset(body); });
-  return details;
+  dialog.append(head, body); document.body.append(dialog);
+  dialog.addEventListener('click', event => {
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+  });
+  dialog.addEventListener('close', () => {
+    if (window.MathJax?.typesetClear) MathJax.typesetClear([body]);
+    dialog.remove();
+    const target = returnFocus?.isConnected ? returnFocus : document.querySelector('.course-reading-link');
+    target?.focus({ preventScroll: true });
+  });
+  dialog.showModal(); close.focus({ preventScroll: true }); typeset(body);
 }
-function progressSection(stats) {
-  const section = el('section', 'progress-section'); section.setAttribute('aria-labelledby', 'progressTitle');
+function progressSection(course, stats) {
+  const section = el('section', 'progress-section'); section.setAttribute('aria-label', 'Course progress');
   const heading = el('div', 'progress-heading');
-  const title = el('h2', '', 'Your progress'); title.id = 'progressTitle';
+  const moduleCount = new Set(course.units.flatMap(unit => unit.modules.map(module => module.id))).size;
+  const facts = el('div', 'course-facts');
+  facts.append(
+    el('span', '', `${formatNumber(course.units.length)} ${course.units.length === 1 ? 'Unit' : 'Units'}`),
+    el('span', '', `${formatNumber(moduleCount)} ${moduleCount === 1 ? 'Module' : 'Modules'}`),
+    el('span', '', `${formatNumber(stats.total)} ${stats.total === 1 ? 'Topic' : 'Topics'}`),
+  );
   const completion = el('p', 'completion-summary');
   completion.append(el('strong', '', completionLabel(stats)), document.createTextNode(` · ${formatNumber(stats.completed)} / ${formatNumber(stats.total)} topics`));
-  const actions = el('div', 'progress-actions');
-  actions.append(completion, button('Refresh', 'text-button', () => loadCourse()));
-  heading.append(title, actions);
-  section.append(heading, distribution(stats), breakdown(stats), el('p', 'progress-note', 'A topic is complete at 6 or more repetitions. Completion is the share of topics completed. Shades show repetition bands; dashed markers mean no recorded value.'));
+  heading.append(facts, completion);
+  section.append(heading, distribution(stats));
   return section;
 }
 function topicRow(topic, courseId) {
-  const item = el('li'); item.dataset.topicKey = topicKey(topic);
+  const item = el('li', 'topic-row'); item.dataset.topicKey = topicKey(topic);
   item.dataset.search = [topic.title, topic.mathAcademyId, topic.id, topic.uuid].filter(value => value != null).join(' ').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
   const anchor = link('', topicURL(topic, courseId), 'topic-link');
   const title = el('span', 'topic-title', topic.title);
@@ -284,25 +314,26 @@ function topicRow(topic, courseId) {
   const progress = el('span', 'topic-progress' + (value === null ? ' unknown' : ''));
   progress.append(swatch(band(topic)), document.createTextNode(label));
   progress.setAttribute('aria-label', value === null ? 'No repetition data' : `${formatNumber(value)} ${value === 1 ? 'repetition' : 'repetitions'}`);
-  anchor.append(progress); item.append(anchor); return item;
+  anchor.append(progress); item.append(anchor);
+  const target = targetControls.createToggle(topic); if (target) item.append(target);
+  return item;
 }
 function outline(course, unitIds, stats) {
-  const section = el('section', 'course-outline'); section.setAttribute('aria-labelledby', 'outlineTitle');
+  const section = el('section', 'course-outline'); section.setAttribute('aria-label', 'Course outline');
   const heading = el('div', 'outline-heading');
-  const title = el('h2', '', 'Course outline'); title.id = 'outlineTitle';
   const controls = el('div', 'outline-controls');
   const units = [];
   controls.append(button('Expand all', 'text-button', () => units.forEach(unit => { if (!unit.hidden) unit.open = true; })), button('Collapse all', 'text-button', () => units.forEach(unit => { unit.open = false; })));
-  heading.append(title, controls); section.append(heading);
   const filterRow = el('div', 'filter-row');
   const input = el('input', 'topic-filter'); input.type = 'search'; input.id = 'topicFilter'; input.placeholder = 'Filter topics in this course…'; input.autocomplete = 'off';
   input.setAttribute('aria-label', 'Filter topics in this course'); input.setAttribute('aria-controls', 'courseUnits');
   const count = el('span', 'filter-count'); count.setAttribute('role', 'status');
-  filterRow.append(input, count); section.append(filterRow);
+  filterRow.append(input, count);
+  heading.append(filterRow, controls); section.append(heading);
   const unitHost = el('div'); unitHost.id = 'courseUnits';
   course.units.forEach((unit, index) => {
     const unitStats = statistics(unitTopics(unit));
-    const details = el('details', 'unit'); details.id = unitIds[index]; details.open = index === 0;
+    const details = el('details', 'unit'); details.id = unitIds[index];
     const summary = el('summary');
     const label = el('span');
     label.append(el('span', 'unit-title', unit.title), el('span', 'unit-stat', completionSummary(unitStats)), distribution(unitStats));
@@ -364,30 +395,29 @@ function captureView() {
   return {
     openUnits: [...document.querySelectorAll('.unit')].map(unit => unit.open),
     filter: $('topicFilter')?.value || '',
-    readingOpen: document.querySelector('.course-reading')?.open || false,
     scrollY: window.scrollY,
   };
 }
 function renderCourse(data, focus, previousView) {
+  targetControls.clear(); targetControls.setLearner(data.learner);
   const course = data.course;
+  const readingDialog = $('courseOverview');
+  if (readingDialog && readingDialog.dataset.courseId !== course.id) readingDialog.close();
   currentCourseId = course.id;
-  $('courseTitle').textContent = course.title; $('courseTitle').title = course.title;
-  $('courseLevel').textContent = levelName(course.level) || 'Course';
-  $('learnerName').textContent = data.learner?.name || '';
+  $('learnerName').textContent = data.learner?.name || 'Profile';
   $('courseLink').href = courseURL(course.id);
   document.title = `Progress · ${course.title} · Course Academy`;
   const stats = statistics(course.units.flatMap(unitTopics));
   const unitIds = course.units.map((unit, index) => 'unit-' + (index + 1));
   const layout = el('div', 'course-layout');
   const body = el('div', 'course-body');
-  const header = courseHeading(data, stats.total); body.append(header);
-  const reading = courseReading(course); if (reading) body.append(reading);
-  body.append(progressSection(stats), outline(course, unitIds, stats));
+  const header = courseHeading(data); body.append(header);
+  body.append(progressSection(course, stats));
+  body.append(outline(course, unitIds, stats));
   layout.append(sidebar(data, unitIds), body);
   $('main').replaceChildren(layout);
   if (previousView) {
     document.querySelectorAll('.unit').forEach((unit, index) => { unit.open = previousView.openUnits[index] ?? false; });
-    const reading = document.querySelector('.course-reading'); if (reading) reading.open = previousView.readingOpen;
     const input = $('topicFilter'); if (input && previousView.filter) { input.value = previousView.filter; input.dispatchEvent(new Event('input')); }
     window.scrollTo({ top: previousView.scrollY });
   }
@@ -410,7 +440,7 @@ function renderError(error) {
   section.append(actions); $('main').replaceChildren(section);
   $('announcement').textContent = error.message;
 }
-async function loadCourse(focus = false) {
+async function loadCourse(focus = false, preserve = false) {
   const route = location.pathname + location.search;
   const previousView = !focus && currentCourseId && loadedRoute === route ? captureView() : null;
   const request = ++generation;
@@ -419,10 +449,11 @@ async function loadCourse(focus = false) {
   const id = new URL(location.href).searchParams.get('course');
   currentCourseId = null;
   $('main').setAttribute('aria-busy', 'true');
-  if (window.MathJax?.typesetClear) MathJax.typesetClear([$('main')]);
-  $('main').replaceChildren(el('p', 'loading', 'Loading progress…'));
-  $('courseTitle').textContent = 'Course Academy'; $('courseTitle').removeAttribute('title');
-  $('courseLevel').textContent = 'Progress'; $('courseLink').href = '/progress';
+  if (!preserve) {
+    if (window.MathJax?.typesetClear) MathJax.typesetClear([$('main')]);
+    $('main').replaceChildren(el('p', 'loading', 'Loading progress…'));
+  }
+  $('courseLink').href = '/progress';
   document.title = 'Progress · Course Academy';
   try {
     if (id !== null && !/^(?:[1-9]\d*|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i.test(id)) {
@@ -431,6 +462,7 @@ async function loadCourse(focus = false) {
     const data = await api('/api/course' + (id ? '?course=' + encodeURIComponent(id) : ''), requestController.signal);
     if (request !== generation) return;
     if (!data.course?.id || !Array.isArray(data.course.units)) throw new Error('The course data is unavailable. Try again.');
+    if (window.MathJax?.typesetClear) MathJax.typesetClear([$('main')]);
     renderCourse(data, focus, previousView);
     lastLoadedAt = Date.now(); refreshNeeded = false;
   } catch (error) {
@@ -439,6 +471,11 @@ async function loadCourse(focus = false) {
     if (request === generation) $('main').setAttribute('aria-busy', 'false');
   }
 }
+const catalog = createCourseCatalog({
+  getCourseId: () => currentCourseId,
+  getCourseURL: course => courseURL(course.id),
+  onSelectCourse: course => navigate(course.id),
+});
 const picker = createCoursePicker({
   getSnapshot: async () => {
     if (!curriculumSnapshot) curriculumSnapshot = api('/api/graph-explorer').catch(error => { curriculumSnapshot = null; throw error; });
@@ -466,4 +503,10 @@ document.addEventListener('visibilitychange', () => {
 });
 window.addEventListener('blur', () => { refreshNeeded = true; });
 window.addEventListener('focus', refreshOnReturn);
+window.addEventListener('course-academy:profile-changed', event => {
+  if (!event.detail.changedCourse) return;
+  curriculumSnapshot = null;
+  history.replaceState(null, '', courseURL(event.detail.course.id));
+  void loadCourse(false, true);
+});
 void loadCourse();

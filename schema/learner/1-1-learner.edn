@@ -1,4 +1,4 @@
-;; Learner identity, selected course, overall accuracy, knowledge profile, and task history.
+;; Learner identity, study preferences, overall accuracy, knowledge profile, and task history.
 ;; Required-attribute specs are opt-in: request :db/ensure on each write.
 ;; Ranges, reference targets, and formulas are application contracts.
 [
@@ -17,6 +17,16 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Optional course currently selected in the UI. References a shared course entity."}
+
+ {:db/ident :learner/self-directed
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Whether self-directed study controls should be available for this learner. Applications should treat an absent value as false."}
+
+ {:db/ident :learner/targets
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Topics the learner has selected as study targets. These ordinary refs point to shared topics across courses. In self-directed mode, the scheduler prioritizes eligible work supporting these targets and their prerequisites. Removing a target preserves its topic and all learner history."}
 
  {:db/ident :learner/assignments
   :db/valueType :db.type/ref

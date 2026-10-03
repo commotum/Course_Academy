@@ -2,10 +2,6 @@
 ;; Request :db/ensure [:course/identity-validate] for an ID-only placeholder.
 ;; Request :db/ensure [:course/validate] when its required data is ready.
 [
- {:db/ident :course.level/early-math}
- {:db/ident :course.level/high-school-math}
- {:db/ident :course.level/university-math}
-
  {:db/ident :course/id
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
@@ -21,17 +17,17 @@
  {:db/ident :course/title
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Course title, taken from course-name in DATA/Courses.csv, for example Algebra I."}
+  :db/doc "Course title without its code, for example Algebra I or Vector Calculus II."}
 
  {:db/ident :course/code
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional short course code, taken from course-code in DATA/Courses.csv, for example AG1."}
+  :db/doc "Optional short course code, for example AG1 or MTH 255."}
 
- {:db/ident :course/level
-  :db/valueType :db.type/ref
+ {:db/ident :course/school
+  :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional course classification from sequences-graphs/levels.md: course.level/early-math, course.level/high-school-math, or course.level/university-math. The application validates enum membership. Omit when no single level applies."}
+  :db/doc "Optional name of the school offering the course, for example Oregon State University."}
 
  {:db/ident :course/description
   :db/valueType :db.type/string
@@ -65,5 +61,5 @@
 
  {:db/ident :course/validate
   :db.entity/attrs [:course/id :course/title :course/units]
-  :db/doc "Requires our identity, a title, and at least one unit ref when explicitly ensured. The Math Academy identifier, course code, level, description, overview, outcomes, and next courses are optional. Nonempty titles, reference target types, outcome indexes unique within this course, and prevention of self-links and cycles require application validation."}
+  :db/doc "Requires our identity, a title, and at least one unit ref when explicitly ensured. The Math Academy identifier, course code, school, description, overview, outcomes, and next courses are optional. Nonempty titles, reference target types, outcome indexes unique within this course, and prevention of self-links and cycles require application validation."}
 ]

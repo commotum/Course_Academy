@@ -61,6 +61,19 @@ fn uuid(facts: &Facts, eid: u64, attr: &str) -> Option<String> {
     }
 }
 
+fn learner_json(facts: &Facts, learner_eid: u64, learner_id: &str) -> Json {
+    let course_id = refs(facts, learner_eid, "learner/course")
+        .first()
+        .and_then(|eid| uuid(facts, *eid, "course/id"));
+    json!({
+        "id": learner_id,
+        "name": text(facts, learner_eid, "learner/name"),
+        "courseId": course_id,
+        "selfDirected": scalar(facts, learner_eid, "learner/self-directed") == Some(&Value::Bool(true)),
+        "targets": refs(facts, learner_eid, "learner/targets"),
+    })
+}
+
 fn project(db: &DatabaseValue) -> Result<Facts> {
     let mut facts = Facts::new();
     for attr in [
@@ -71,17 +84,17 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
         "course/id",
         "course/title",
         "course/code",
-        "course/level",
+        "course-group/id",
+        "course-group/title",
+        "course-group/courses",
         "course/units",
-        "course/next",
-        "sequence/id",
-        "sequence/title",
-        "sequence/courses",
         "unit/modules",
         "module/topics",
         "learner/id",
         "learner/name",
         "learner/course",
+        "learner/self-directed",
+        "learner/targets",
         "learner/knowledge-profile",
         "progress/topic",
         "progress/repetitions",
@@ -91,13 +104,10 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
             // Optional schema additions may not yet be installed.
             if matches!(
                 attr,
-                "course/level"
-                    | "course/code"
+                "course/code"
                     | "topic/math-academy-id"
-                    | "sequence/id"
-                    | "sequence/title"
-                    | "sequence/courses"
-                    | "course/next"
+                    | "learner/self-directed"
+                    | "learner/targets"
             ) {
                 continue;
             }
@@ -172,15 +182,10 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
                 }
             }
         }
-        let level = refs(&facts, eid, "course/level")
-            .first()
-            .and_then(|eid| db.ident(*eid))
-            .map(|ident| ident.qualified_name());
         courses.push(json!({
             "id": id,
-            "kind": "course",
             "title": text(&facts, eid, "course/title").unwrap_or_else(|| format!("Untitled course {eid}")),
-            "level": level,
+            "groups": course_groups(&facts, eid),
             "code": text(&facts, eid, "course/code"),
             "topicIds": membership,
         }));
@@ -191,33 +196,6 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
             .cmp(&b["title"].as_str())
             .then_with(|| a["id"].as_str().cmp(&b["id"].as_str()))
     });
-    let mut sequences = Vec::new();
-    for eid in facts.keys().copied() {
-        let Some(id) = uuid(&facts, eid, "sequence/id") else {
-            continue;
-        };
-        let members = ordered_members(&facts, refs(&facts, eid, "sequence/courses"), "course")?;
-        let course_ids = members
-            .iter()
-            .map(|course| required_uuid(&facts, *course, "course/id"))
-            .collect::<Result<Vec<_>>>()?;
-        let membership: BTreeSet<_> = courses
-            .iter()
-            .filter(|course| {
-                course["id"]
-                    .as_str()
-                    .is_some_and(|id| course_ids.iter().any(|member| member == id))
-            })
-            .filter_map(|course| course["topicIds"].as_array())
-            .flatten()
-            .filter_map(Json::as_u64)
-            .collect();
-        sequences.push(json!({
-            "id": id, "kind": "sequence", "title": title(&facts, eid, "sequence"),
-            "courseIds": course_ids, "topicIds": membership,
-        }));
-    }
-    sequences.sort_by(|a, b| a["title"].as_str().cmp(&b["title"].as_str()));
     let mut repetitions = BTreeMap::new();
     for progress in refs(&facts, learner_eid, "learner/knowledge-profile") {
         let Some(Value::Ref(topic)) = scalar(&facts, progress, "progress/topic") else {
@@ -239,12 +217,9 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
             return Err("Learner has duplicate progress records for one topic".into());
         }
     }
-    let course_id = refs(&facts, learner_eid, "learner/course")
-        .first()
-        .and_then(|eid| uuid(&facts, *eid, "course/id"));
     Ok(json!({
-        "basis": db.basis_t(), "courses": courses, "sequences": sequences, "nodes": nodes, "links": links,
-        "learner": {"id": learner_id, "name": text(&facts, learner_eid, "learner/name"), "courseId": course_id},
+        "basis": db.basis_t(), "courses": courses, "nodes": nodes, "links": links,
+        "learner": learner_json(&facts, learner_eid, learner_id),
         "repetitions": repetitions,
     }))
 }
@@ -253,6 +228,7 @@ fn course_facts(db: &DatabaseValue) -> Result<Facts> {
     // Add course-page metadata to the shared curriculum projection.
     let mut facts = project(db)?;
     for attr in [
+        "course/next",
         "course/math-academy-id",
         "course/description",
         "course/overview",
@@ -304,6 +280,24 @@ fn required_uuid(facts: &Facts, eid: u64, attr: &str) -> Result<String> {
 
 fn title(facts: &Facts, eid: u64, kind: &str) -> String {
     text(facts, eid, &format!("{kind}/title")).unwrap_or_else(|| format!("Untitled {kind} {eid}"))
+}
+
+fn course_group_ids(facts: &Facts) -> Vec<u64> {
+    let mut groups: Vec<_> = facts.keys().copied()
+        .filter(|eid| uuid(facts, *eid, "course-group/id").is_some())
+        .collect();
+    groups.sort_by_key(|eid| (title(facts, *eid, "course-group"), uuid(facts, *eid, "course-group/id"), *eid));
+    groups
+}
+
+fn course_groups(facts: &Facts, course: u64) -> Vec<Json> {
+    course_group_ids(facts).into_iter()
+        .filter(|group| refs(facts, *group, "course-group/courses").contains(&course))
+        .map(|group| json!({
+            "id": uuid(facts, group, "course-group/id"),
+            "title": title(facts, group, "course-group"),
+        }))
+        .collect()
 }
 
 fn ordered_members(facts: &Facts, members: Vec<u64>, kind: &str) -> Result<Vec<u64>> {
@@ -390,7 +384,7 @@ fn course_completion(facts: &Facts, course_eid: u64, progress: &TopicProgress) -
             progress
                 .get(topic)
                 .and_then(|(repetitions, _)| *repetitions)
-                .is_some_and(|repetitions| repetitions >= 6.0)
+                .is_some_and(|repetitions| repetitions >= 1.0)
         })
         .count();
     (completed, topics.len())
@@ -473,23 +467,11 @@ fn course(db: &DatabaseValue, learner_id: &str, selector: Option<&str>) -> Resul
             }))
         })
         .collect::<Result<Vec<_>>>()?;
-    let mut sequence_ids: Vec<_> = facts
-        .keys()
-        .copied()
-        .filter(|eid| uuid(&facts, *eid, "sequence/id").is_some())
-        .collect();
-    sequence_ids.sort_by_key(|eid| {
-        (
-            title(&facts, *eid, "sequence"),
-            uuid(&facts, *eid, "sequence/id"),
-            *eid,
-        )
-    });
-    let mut sequences = Vec::new();
+    let mut course_groups_view = Vec::new();
     let mut completions = BTreeMap::new();
-    for sequence in sequence_ids {
+    for group in course_group_ids(&facts) {
         let courses =
-            ordered_members(&facts, refs(&facts, sequence, "sequence/courses"), "course")?
+            ordered_members(&facts, refs(&facts, group, "course-group/courses"), "course")?
                 .into_iter()
                 .map(|eid| -> Result<Json> {
                     let (completed, total) = *completions
@@ -498,39 +480,32 @@ fn course(db: &DatabaseValue, learner_id: &str, selector: Option<&str>) -> Resul
                     Ok(json!({
                         "id": required_uuid(&facts, eid, "course/id")?,
                         "title": title(&facts, eid, "course"),
+                        "mathAcademyId": long(&facts, eid, "course/math-academy-id"),
                         "completion": {"completed": completed, "total": total},
                     }))
                 })
                 .collect::<Result<Vec<_>>>()?;
-        sequences.push(json!({
-            "id": required_uuid(&facts, sequence, "sequence/id")?,
-            "title": title(&facts, sequence, "sequence"),
+        course_groups_view.push(json!({
+            "id": required_uuid(&facts, group, "course-group/id")?,
+            "title": title(&facts, group, "course-group"),
             "courses": courses,
         }));
     }
-    let level = refs(&facts, course_eid, "course/level")
-        .first()
-        .and_then(|eid| db.ident(*eid))
-        .map(|ident| ident.qualified_name());
     Ok(Some(json!({
         "basis": db.basis_t(),
-        "learner": {
-            "id": learner_id,
-            "name": text(&facts, learner_eid, "learner/name"),
-            "courseId": learner_course.and_then(|eid| uuid(&facts, eid, "course/id")),
-        },
+        "learner": learner_json(&facts, learner_eid, learner_id),
         "course": {
             "id": required_uuid(&facts, course_eid, "course/id")?,
             "title": title(&facts, course_eid, "course"),
             "code": text(&facts, course_eid, "course/code"),
-            "level": level,
+            "groups": course_groups(&facts, course_eid),
             "mathAcademyId": long(&facts, course_eid, "course/math-academy-id"),
             "description": text(&facts, course_eid, "course/description"),
             "overview": text(&facts, course_eid, "course/overview"),
             "outcomes": outcomes,
             "units": units,
         },
-        "sequences": sequences,
+        "courseGroups": course_groups_view,
     })))
 }
 
@@ -692,6 +667,49 @@ mod tests {
     }
 
     #[test]
+    fn course_labels_use_all_explicit_groups_and_keep_their_titles() {
+        let mut facts = Facts::new();
+        for (group, name, members) in [
+            (10, "University", vec![1, 2]),
+            (11, "Advanced Placement", vec![1]),
+            (12, "Mathematical Foundations", vec![3]),
+        ] {
+            fact(&mut facts, group, "course-group/id", Value::Uuid(group as u128));
+            fact(&mut facts, group, "course-group/title", Value::String(name.into()));
+            for course in members {
+                fact(&mut facts, group, "course-group/courses", Value::Ref(course));
+            }
+        }
+        // Navigation between courses does not grant membership in a group.
+        fact(&mut facts, 1, "course/next", Value::Ref(3));
+        let titles = |course| course_groups(&facts, course).into_iter().map(|g| g["title"].clone()).collect::<Vec<_>>();
+        assert_eq!(titles(1), vec![json!("Advanced Placement"), json!("University")]);
+        assert_eq!(titles(2), vec![json!("University")]);
+        assert_eq!(titles(3), vec![json!("Mathematical Foundations")]);
+        assert!(course_groups(&facts, 4).is_empty());
+    }
+
+    #[test]
+    fn learner_target_projection_defaults_to_course_mode_and_preserves_saved_targets() {
+        let mut facts = Facts::new();
+        let learner = learner_json(&facts, 20, "learner");
+        assert_eq!(learner["selfDirected"], false);
+        assert_eq!(learner["targets"], json!([]));
+
+        fact(&mut facts, 20, "learner/targets", Value::Ref(101));
+        fact(&mut facts, 20, "learner/targets", Value::Ref(102));
+        for mode in [false, true] {
+            facts
+                .get_mut(&20)
+                .unwrap()
+                .insert("learner/self-directed", vec![Value::Bool(mode)]);
+            let learner = learner_json(&facts, 20, "learner");
+            assert_eq!(learner["selfDirected"], mode);
+            assert_eq!(learner["targets"], json!([101, 102]));
+        }
+    }
+
+    #[test]
     fn order_honors_dependencies_and_stable_ties_within_membership() {
         let mut facts = Facts::new();
         for (eid, name) in [
@@ -745,7 +763,7 @@ mod tests {
     }
 
     #[test]
-    fn course_completion_counts_unique_topics_at_the_raw_repetition_threshold() {
+    fn course_completion_counts_unique_topics_with_at_least_one_repetition() {
         let mut facts = Facts::new();
         for unit in [10, 11] {
             fact(&mut facts, 1, "course/units", Value::Ref(unit));
@@ -760,17 +778,21 @@ mod tests {
             (21, 103),
             (21, 104),
             (21, 105),
+            (21, 106),
+            (21, 107),
         ] {
             fact(&mut facts, module, "module/topics", Value::Ref(topic));
         }
         let progress = BTreeMap::from([
-            (101, (Some(6.0), Some(false))),
+            (101, (Some(1.0), Some(false))),
             (102, (Some(7.0), None)),
-            (103, (Some(5.99), Some(true))),
+            (103, (Some(0.99), Some(true))),
             (104, (None, Some(true))),
+            (106, (Some(0.0), Some(true))),
+            (107, (Some(1.5), Some(false))),
             (999, (Some(6.0), Some(true))),
         ]);
-        assert_eq!(course_completion(&facts, 1, &progress), (2, 5));
+        assert_eq!(course_completion(&facts, 1, &progress), (3, 7));
         assert_eq!(course_completion(&facts, 2, &progress), (0, 0));
     }
 }

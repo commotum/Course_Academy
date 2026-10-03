@@ -26,7 +26,7 @@
  {:db/ident :question/is-example
   :db/valueType :db.type/boolean
   :db/cardinality :db.cardinality/one
-  :db/doc "True for a demonstrated worked example; false for an ordinary gradable question. Worked examples require a worked solution but may have no answer fields. The application checks this flag and excludes examples from practice pools."}
+  :db/doc "True for a demonstrated worked example; false for a practice question or externally supplied assignment problem. Worked examples require a worked solution but may have no answer fields. Assignment prompts can be displayed before answer fields are authored; only questions with complete answer fields are eligible for automatic grading. The application excludes examples from practice pools."}
 
  {:db/ident :question/difficulty
   :db/valueType :db.type/ref
@@ -47,7 +47,7 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Owned answer fields, required for ordinary gradable questions and optional for worked examples. A question may mix radio, blank, and select fields. Field keys identify their locations in the problem; example fields are read-only."}
+  :db/doc "Owned answer fields, required for automatic grading and optional for worked examples or externally supplied assignment prompts. A question may mix radio, blank, and select fields. Field keys identify their locations in the problem; example fields are read-only. Fieldless assignment prompts do not enter practice banks or produce correctness evidence."}
 
  {:db/ident :question/worked-solution
   :db/valueType :db.type/string
@@ -56,5 +56,5 @@
 
  {:db/ident :question/validate
   :db.entity/attrs [:question/id :question/is-example :question/problem]
-  :db/doc "Requires identity, example flag, and problem when explicitly ensured. The application conditionally requires answer fields for ordinary questions or a worked solution for examples, validates any present fields and answer values, and excludes examples from practice pools."}
+  :db/doc "Requires identity, example flag, and problem when explicitly ensured. The application requires complete answer fields before automatic grading, or a worked solution for examples, validates any present fields and answer values, and excludes examples from practice pools. A fieldless school problem may be displayed through assigned-problem without grading or awarding mastery."}
 ]

@@ -1,98 +1,112 @@
-;; Proposed transaction data for review; exclude this file from schema installation.
-;; Install the schemas and import these courses from /home/jake/Developer/MA/DATA/Courses.csv first.
-;; Source comparison: https://www.mathacademy.com/courses and sequences-graphs/.
-;;
-;; These ten learner-facing sequences group existing courses without duplicating them.
-;; 6th Grade Math and Mathematics for Machine Learning remain courses outside these groups.
-;; 7th and 8th Grade Math have no entries in our local course CSV; this draft omits them.
-;; No course level or placeholder courses are needed.
-;; Vector order aids reading; EDB stores sequence/courses as an unordered set.
-;; course/next supplies navigation; topic/next remains the prerequisite graph.
+;; Catalog group transaction data; install 1-1-course-group.edn first.
+;; Apply after the Math Academy (2-3) and Oregon State (2-4) course transactions.
+;; Nine groups follow the Math Academy course picker; University also includes our OSU courses.
+;; 7th and 8th Grade Math are omitted until those courses are imported.
+;; Vector order is for readability only. Membership is unordered; course/next supplies progression.
 [
 
- ;; 4th Grade Math -> 5th Grade Math -> Prealgebra.
- {:sequence/id #uuid "f9bfb1f6-2f0d-4823-8c41-b0d6fae46cd1"
-  :sequence/title "Early Math"
-  :sequence/courses [[:course/math-academy-id 75]            ; 4th Grade Math
-                    [:course/math-academy-id 30]             ; 5th Grade Math
-                    [:course/math-academy-id 99]]            ; Prealgebra
-  :db/ensure :sequence/validate}
+ ;; Elementary School
+ {:course-group/id #uuid "f9bfb1f6-2f0d-4823-8c41-b0d6fae46cd1"
+  :course-group/title "Elementary School"
+  :course-group/courses [
+    [:course/math-academy-id 75] ; 4th Grade Math
+    [:course/math-academy-id 30] ; 5th Grade Math
+  ]
+  :db/ensure :course-group/validate}
 
- ;; Algebra I -> Geometry -> Algebra II -> Precalculus.
- {:sequence/id #uuid "5ae78dec-46f8-40ad-b2f4-70f6c1b6a570"
-  :sequence/title "Traditional Math Sequence"
-  :sequence/courses [[:course/math-academy-id 44]            ; Algebra I
-                    [:course/math-academy-id 126]            ; Geometry
-                    [:course/math-academy-id 51]             ; Algebra II
-                    [:course/math-academy-id 43]]            ; Precalculus
-  :db/ensure :sequence/validate}
+ ;; Middle School
+ {:course-group/id #uuid "874e333e-54e0-578c-a497-bbb57a1e0f68"
+  :course-group/title "Middle School"
+  :course-group/courses [
+    [:course/math-academy-id 99] ; Prealgebra
+    [:course/math-academy-id 31] ; 6th Grade Math
+  ]
+  :db/ensure :course-group/validate}
 
- ;; Integrated Math I -> II -> III -> shared Precalculus.
- {:sequence/id #uuid "cfaf6e8b-f402-4c5d-a690-3a4c7c818377"
-  :sequence/title "Integrated Math Sequence"
-  :sequence/courses [[:course/math-academy-id 132]           ; Integrated Math I
-                    [:course/math-academy-id 133]            ; Integrated Math II
-                    [:course/math-academy-id 134]            ; Integrated Math III
-                    [:course/math-academy-id 43]]            ; Precalculus
-  :db/ensure :sequence/validate}
+ ;; High School - Traditional
+ {:course-group/id #uuid "5ae78dec-46f8-40ad-b2f4-70f6c1b6a570"
+  :course-group/title "High School - Traditional"
+  :course-group/courses [
+    [:course/math-academy-id 44] ; Algebra I
+    [:course/math-academy-id 126] ; Geometry
+    [:course/math-academy-id 51] ; Algebra II
+    [:course/math-academy-id 43] ; Precalculus
+  ]
+  :db/ensure :course-group/validate}
 
- ;; Honors I -> II -> III. The last course includes precalculus content.
- {:sequence/id #uuid "eb022b36-d6be-40f3-9450-a4261d40f4b8"
-  :sequence/title "Integrated Math (Honors) Sequence"
-  :sequence/courses [[:course/math-academy-id 127]           ; Integrated Math I (Honors)
-                    [:course/math-academy-id 128]            ; Integrated Math II (Honors)
-                    [:course/math-academy-id 101]]           ; Integrated Math III (Honors)
-  :db/ensure :sequence/validate}
+ ;; High School - Integrated Math
+ {:course-group/id #uuid "cfaf6e8b-f402-4c5d-a690-3a4c7c818377"
+  :course-group/title "High School - Integrated Math"
+  :course-group/courses [
+    [:course/math-academy-id 132] ; Integrated Math I
+    [:course/math-academy-id 133] ; Integrated Math II
+    [:course/math-academy-id 134] ; Integrated Math III
+  ]
+  :db/ensure :course-group/validate}
 
- ;; Foundations I -> II -> III.
- {:sequence/id #uuid "4dfdb3b5-9088-4687-8b8e-3e6a83d67353"
-  :sequence/title "Mathematical Foundations Sequence"
-  :sequence/courses [[:course/math-academy-id 113]           ; Mathematical Foundations I
-                    [:course/math-academy-id 111]            ; Mathematical Foundations II
-                    [:course/math-academy-id 136]]           ; Mathematical Foundations III
-  :db/ensure :sequence/validate}
+ ;; High School - Integrated Math (Honors)
+ {:course-group/id #uuid "eb022b36-d6be-40f3-9450-a4261d40f4b8"
+  :course-group/title "High School - Integrated Math (Honors)"
+  :course-group/courses [
+    [:course/math-academy-id 127] ; Integrated Math I (Honors)
+    [:course/math-academy-id 128] ; Integrated Math II (Honors)
+    [:course/math-academy-id 101] ; Integrated Math III (Honors)
+  ]
+  :db/ensure :course-group/validate}
 
- ;; SAT Math Fundamentals -> SAT Math Prep.
- {:sequence/id #uuid "882dd844-5c2c-4238-bb73-f4b39a918906"
-  :sequence/title "Test Preparation"
-  :sequence/courses [[:course/math-academy-id 120]           ; SAT Math Fundamentals
-                    [:course/math-academy-id 143]]           ; SAT Math Prep
-  :db/ensure :sequence/validate}
+ ;; Test Prep
+ {:course-group/id #uuid "882dd844-5c2c-4238-bb73-f4b39a918906"
+  :course-group/title "Test Prep"
+  :course-group/courses [
+    [:course/math-academy-id 120] ; SAT Math Fundamentals
+    [:course/math-academy-id 143] ; SAT Math Prep
+  ]
+  :db/ensure :course-group/validate}
 
- ;; Calculus I -> Calculus II.
- {:sequence/id #uuid "f9755bbf-cbf7-450a-9111-99878a5aafa7"
-  :sequence/title "Calculus"
-  :sequence/courses [[:course/math-academy-id 105]           ; Calculus I
-                    [:course/math-academy-id 106]]           ; Calculus II
-  :db/ensure :sequence/validate}
+ ;; Advanced Placement
+ {:course-group/id #uuid "ac4e59ea-b8a3-4675-95f4-c6d422d642fa"
+  :course-group/title "Advanced Placement"
+  :course-group/courses [
+    [:course/math-academy-id 24] ; AP Calculus AB
+    [:course/math-academy-id 21] ; AP Calculus BC
+  ]
+  :db/ensure :course-group/validate}
 
- ;; AB and BC belong to this sequence; BC allows direct entry, so AB is optional.
- {:sequence/id #uuid "ac4e59ea-b8a3-4675-95f4-c6d422d642fa"
-  :sequence/title "AP Calculus"
-  :sequence/courses [[:course/math-academy-id 24]            ; AP Calculus AB
-                    [:course/math-academy-id 21]]            ; AP Calculus BC
-  :db/ensure :sequence/validate}
+ ;; Mathematical Foundations
+ {:course-group/id #uuid "4dfdb3b5-9088-4687-8b8e-3e6a83d67353"
+  :course-group/title "Mathematical Foundations"
+  :course-group/courses [
+    [:course/math-academy-id 113] ; Mathematical Foundations I
+    [:course/math-academy-id 111] ; Mathematical Foundations II
+    [:course/math-academy-id 136] ; Mathematical Foundations III
+  ]
+  :db/ensure :course-group/validate}
 
- ;; Physical Sciences I -> II.
- {:sequence/id #uuid "ec165fd0-dafc-4636-b1b6-19cdee8aef30"
-  :sequence/title "Mathematical Methods for the Physical Sciences"
-  :sequence/courses [[:course/math-academy-id 154]           ; Mathematical Methods for the Physical Sciences I
-                    [:course/math-academy-id 155]]           ; Mathematical Methods for the Physical Sciences II
-  :db/ensure :sequence/validate}
+ ;; University
+ {:course-group/id #uuid "d8c4b174-8797-4f4d-86b7-0f7b33df061b"
+  :course-group/title "University"
+  :course-group/courses [
+    [:course/math-academy-id 105] ; Calculus I
+    [:course/math-academy-id 106] ; Calculus II
+    [:course/math-academy-id 55] ; Linear Algebra
+    [:course/math-academy-id 54] ; Multivariable Calculus
+    [:course/math-academy-id 76] ; Methods of Proof
+    [:course/math-academy-id 61] ; Differential Equations
+    [:course/math-academy-id 109] ; Discrete Mathematics
+    [:course/math-academy-id 73] ; Probability & Statistics
+    [:course/math-academy-id 145] ; Mathematics for Machine Learning
+    [:course/math-academy-id 154] ; Mathematical Methods for the Physical Sciences I
+    [:course/math-academy-id 155] ; Mathematical Methods for the Physical Sciences II
+    [:course/id #uuid "b2e5af5c-39d0-53ab-8fc6-a2a70c44d25e"] ; MTH 251 - Differential Calculus
+    [:course/id #uuid "72faeb91-1b34-5252-b9a7-456659fc2b8c"] ; MTH 252 - Integral Calculus
+    [:course/id #uuid "e9dc19ff-a53b-51f7-bd17-d1b14351322a"] ; MTH 254 - Vector Calculus I
+    [:course/id #uuid "c37c596e-77c4-5554-8295-443fb5da076b"] ; MTH 255 - Vector Calculus II
+    [:course/id #uuid "fa274c9b-ca65-5fde-b8ed-49681698e235"] ; MTH 256 - Applied Differential Equations
+    [:course/id #uuid "3ace2150-672f-50e7-9c2c-027b6d4272d7"] ; MTH 341 - Linear Algebra I
+  ]
+  :db/ensure :course-group/validate}
 
- ;; Linear Algebra -> Multivariable Calculus -> {Differential Equations, Probability & Statistics}.
- ;; Methods of Proof -> Discrete Mathematics is another branch.
- {:sequence/id #uuid "d8c4b174-8797-4f4d-86b7-0f7b33df061b"
-  :sequence/title "University Math"
-  :sequence/courses [[:course/math-academy-id 55]            ; Linear Algebra
-                    [:course/math-academy-id 54]             ; Multivariable Calculus
-                    [:course/math-academy-id 76]             ; Methods of Proof
-                    [:course/math-academy-id 109]            ; Discrete Mathematics
-                    [:course/math-academy-id 73]             ; Probability & Statistics
-                    [:course/math-academy-id 61]]            ; Differential Equations
-  :db/ensure :sequence/validate}
-
- ;; Direct course navigation, including routes between sequences.
+ ;; Direct course navigation, including routes between catalog groups.
  ;; A next edge suggests a useful continuation; it is not a whole-course readiness gate.
  ;; AP Calculus BC can be entered directly from Precalculus or Honors III.
  ;; Multiple destinations are alternatives or branches, not required in sequence.
