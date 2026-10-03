@@ -283,8 +283,11 @@ fn position_after(
             }
             "question" => {
                 let Some(item) = items.get(cursor) else {
+                    if seen.contains(&step.content) {
+                        return Err("This authored question was already presented. Fresh content is needed; the lesson is not failed.".into());
+                    }
                     return Ok(Position {
-                        next: (!seen.contains(&step.content)).then_some(step.content),
+                        next: Some(step.content),
                         passed: false,
                     });
                 };
@@ -346,13 +349,31 @@ fn position_after(
                         seen.insert(content);
                         cursor += 1;
                     } else {
-                        let next = step
+                        let candidates = step
                             .questions
                             .iter()
                             .copied()
-                            .find(|q| !seen.contains(q) && validate_question(s, *q).is_ok());
+                            .filter(|q| !seen.contains(q) && validate_question(s, *q).is_ok())
+                            .collect::<Vec<_>>();
+                        let policy = crate::question_selection::active_policy(s)?;
+                        let weights = crate::question_selection::weights(
+                            s,
+                            policy,
+                            "lesson",
+                            outcomes.len(),
+                        )?;
+                        let task = items
+                            .first()
+                            .map(|item| s.owners(*item, "learner-task/items"))
+                            .transpose()?
+                            .and_then(|owners| owners.first().copied())
+                            .unwrap_or(activity);
+                        let seed =
+                            format!("task-{task}/kp-{}/slot-{}", step.content, outcomes.len());
+                        let next = crate::question_selection::select(s, &candidates, weights, &seed)?
+                            .ok_or("More fresh questions are needed for this knowledge point. Your lesson remains unfinished; this is not a failed attempt.")?;
                         return Ok(Position {
-                            next,
+                            next: Some(next),
                             passed: false,
                         });
                     }
@@ -374,6 +395,19 @@ fn position_after(
 /// The caller reserves a returned new question atomically before displaying it.
 pub fn next_content(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<Option<u64>> {
     Ok(position(s, activity, items)?.next)
+}
+
+/// The first presentation has no task owner yet. Check its learner history
+/// explicitly; later adaptive draws recover ownership from existing items.
+pub fn first_content(s: &EntitySnapshot, activity: u64, learner: u64) -> Result<Option<u64>> {
+    let next = next_content(s, activity, &[])?;
+    if let Some(q) = next
+        && s.entity(q)?.get("question/is-example") == Some(&json!(false))
+        && seen_questions(s, learner)?.contains(&q)
+    {
+        return Err("This authored question was already presented. Fresh content is needed; the lesson is not failed.".into());
+    }
+    Ok(next)
 }
 
 pub fn lesson_passed(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<bool> {
@@ -1189,6 +1223,7 @@ fn learning_runtime(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>) -> Resu
         "progress/",
         "performance/",
         "policy/",
+        "question-weights/",
         "learner-task/",
         "task-item/",
     ];
@@ -1897,6 +1932,63 @@ mod tests {
     }
 
     #[test]
+    fn configured_selection_switches_phase_and_never_reshuffles_an_active_question() {
+        let mut s = fixture();
+        for (eid, band) in [(1100, "easy"), (1101, "moderate"), (1102, "hard")] {
+            put(
+                &mut s.entities,
+                eid,
+                json!({"db/ident":format!("question.difficulty/{band}")}),
+            );
+        }
+        for (q, difficulty) in [
+            (100, 1100),
+            (101, 1100),
+            (102, 1101),
+            (103, 1102),
+            (104, 1101),
+        ] {
+            s.entities
+                .get_mut(&q)
+                .unwrap()
+                .insert("question/difficulty".into(), json!(difficulty));
+        }
+        put(
+            &mut s.entities,
+            1200,
+            json!({"question-weights/activity-type":"activity.type/lesson",
+            "question-weights/initial-easy":1.0,"question-weights/initial-moderate":0.0,"question-weights/initial-hard":0.0,
+            "question-weights/remedial-easy":0.0,"question-weights/remedial-moderate":1.0,"question-weights/remedial-hard":0.0}),
+        );
+        s.entities
+            .get_mut(&2)
+            .unwrap()
+            .insert("policy/question-selection-weights".into(), json!([1200]));
+        s = EntitySnapshot::new(s.entities, s.basis_t).unwrap();
+        present(&mut s, 40, "completed");
+        present(&mut s, 42, "completed");
+        for slot in 0..4 {
+            let q = next_content(&s, 20, &items(&s)).unwrap().unwrap();
+            assert_eq!(
+                s.reference(q, "question/difficulty").unwrap(),
+                if slot < 2 { 1100 } else { 1101 }
+            );
+            let item = present(&mut s, q, "started");
+            assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(q));
+            assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(q));
+            s.entities.get_mut(&item).unwrap().insert(
+                "task-item/status".into(),
+                json!(if slot < 2 {
+                    "task-item.status/incorrect"
+                } else {
+                    "task-item.status/correct"
+                }),
+            );
+        }
+        assert!(lesson_passed(&s, 20, &items(&s)).unwrap());
+    }
+
+    #[test]
     fn adaptive_practice_fails_at_five_and_never_reuses_other_task_questions() {
         let mut s = fixture();
         present(&mut s, 40, "completed");
@@ -1917,15 +2009,13 @@ mod tests {
         present(&mut short_bank, 42, "completed");
         present(&mut short_bank, 100, "incorrect");
         present(&mut short_bank, 101, "correct");
-        assert_eq!(
-            next_content(&short_bank, 20, &items(&short_bank)).unwrap(),
-            None
+        assert!(
+            next_content(&short_bank, 20, &items(&short_bank))
+                .unwrap_err()
+                .contains("not a failed attempt")
         );
-        assert!(!lesson_passed(&short_bank, 20, &items(&short_bank)).unwrap());
-        assert_eq!(
-            lesson_xp(&short_bank, 20, &items(&short_bank), 12).unwrap(),
-            0
-        );
+        assert!(continuation(&short_bank, 20, &items(&short_bank), false, 12).is_err());
+        assert!(lesson_xp(&short_bank, 20, &items(&short_bank), 12).is_err());
 
         let mut s = fixture();
         present(&mut s, 40, "completed");

@@ -538,7 +538,7 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
         if activities.len() == 5 { break; }
     }
     Ok(
-        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"queueDescription":"Ready activities prioritized by current work, study targets, assignment deadlines, and prerequisite readiness.","practiceNotice":"These imported lessons have a finite practice bank. Each skill needs two correct answers in a row; if its questions run out first, the attempt ends with more practice needed."}),
+        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"queueDescription":"Ready activities prioritized by current work, study targets, assignment deadlines, and prerequisite readiness.","practiceNotice":"Each skill needs two correct answers in a row, with up to five questions. If fresh questions run out, more content is needed and the lesson remains unfinished."}),
     )
 }
 
@@ -835,7 +835,7 @@ fn mutate(
                     ));
                 }
                 let content =
-                    learning::next_content(s, a, &[])?.ok_or("Lesson has no available content")?;
+                    learning::first_content(s, a, l)?.ok_or("Lesson has no available content")?;
                 append_item(json!(t), None, content, &mut forms)?;
             }
             return Ok((forms, json!({"taskId":t})));
@@ -853,7 +853,7 @@ fn mutate(
         forms.push(json!({"db/id":"new-task","learner-task/id":{"$uuid":id},"learner-task/activity":a,"learner-task/status":kw("learner-task.status/started"),"learner-task/priority":1.0,"learner-task/elapsed-seconds":0.0,"learner-task/xp-base":xp_base,"learner-task/xp-earned":0,"db/ensure":kw("learner-task/validate")}));
         forms.push(add(json!(l), "learner/activity", json!("new-task")));
         let content =
-            learning::next_content(s, a, &[])?.ok_or("Lesson has no available content")?;
+            learning::first_content(s, a, l)?.ok_or("Lesson has no available content")?;
         append_item(json!("new-task"), None, content, &mut forms)?;
         return Ok((forms, json!({"taskUuid":id})));
     }

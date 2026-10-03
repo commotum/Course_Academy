@@ -1,6 +1,9 @@
-;; Explicit local starting FIRe policy, matching engine/rust/core.rs Policy::default.
+;; Explicit local starting FIRe policy and question-selection distributions.
 ;; These reconstruction defaults are not claimed to be Math Academy parameters.
-;; Install once before local learning; later policy edits retain this identity.
+;; Install once before local learning; later edits update the existing owned records.
+;; Selection weights are relative E/M/H counts from
+;; reference/question-difficulty-observations-2026-10-03.json, not recovered MA parameters.
+;; Initial: first two questions per lesson KP; first three per review.
 ;; This transaction creates configuration only, never learner history or progress.
 [
  {:policy/id #uuid "f6218cf2-e157-5240-93c6-faafa321cfcd"
@@ -20,5 +23,22 @@
   :policy/gate-slow-implicit true
   :policy/retention-update-order :policy.retention-update/decay-before-add
   :policy/future-horizon-days 7.0
+  :policy/question-selection-weights
+  [{:question-weights/activity-type :activity.type/lesson
+    :question-weights/initial-easy 86.0
+    :question-weights/initial-moderate 45.0
+    :question-weights/initial-hard 13.0
+    :question-weights/remedial-easy 13.0
+    :question-weights/remedial-moderate 15.0
+    :question-weights/remedial-hard 0.0
+    :db/ensure :question-weights/validate}
+   {:question-weights/activity-type :activity.type/review
+    :question-weights/initial-easy 24.0
+    :question-weights/initial-moderate 24.0
+    :question-weights/initial-hard 12.0
+    :question-weights/remedial-easy 8.0
+    :question-weights/remedial-moderate 1.0
+    :question-weights/remedial-hard 0.0
+    :db/ensure :question-weights/validate}]
   :db/ensure :policy/validate}
 ]

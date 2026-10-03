@@ -268,7 +268,44 @@ pub fn scope_topics(snapshot: &EntitySnapshot, scope: u64) -> Result<BTreeSet<u6
     Ok(topics)
 }
 
-fn lesson_delivery(snapshot: &EntitySnapshot, activity: u64, items: &[Entity]) -> Result<Delivery> {
+struct SelectionContext {
+    policy: u64,
+    learner: u64,
+    task: u64,
+}
+fn selected_questions(
+    snapshot: &EntitySnapshot,
+    context: &SelectionContext,
+    activity_type: &str,
+    bank: u64,
+    answered: usize,
+    remaining: Vec<u64>,
+) -> Result<Vec<u64>> {
+    let seen =
+        crate::question_selection::seen_before_task(snapshot, context.learner, context.task)?;
+    let remaining: Vec<_> = remaining
+        .into_iter()
+        .filter(|q| !seen.contains(q))
+        .collect();
+    let weights =
+        crate::question_selection::weights(snapshot, context.policy, activity_type, answered)?;
+    if weights.is_none() {
+        return Ok(remaining);
+    }
+    let seed = format!("task-{}/kp-{bank}/slot-{answered}", context.task);
+    Ok(
+        crate::question_selection::select(snapshot, &remaining, weights, &seed)?
+            .into_iter()
+            .collect(),
+    )
+}
+
+fn lesson_delivery(
+    snapshot: &EntitySnapshot,
+    activity: u64,
+    items: &[Entity],
+    context: &SelectionContext,
+) -> Result<Delivery> {
     let topic = snapshot.reference(activity, "lesson/topic")?;
     let members: BTreeSet<_> = snapshot
         .refs(topic, "topic/knowledge-points")?
@@ -338,6 +375,14 @@ fn lesson_delivery(snapshot: &EntitySnapshot, activity: u64, items: &[Entity]) -
         let decision = evaluate_kp_prefix(&outcomes)?;
         if !decision.complete() {
             let remaining: Vec<_> = pool.into_iter().filter(|q| !used.contains(q)).collect();
+            let remaining = selected_questions(
+                snapshot,
+                context,
+                "lesson",
+                content,
+                outcomes.len(),
+                remaining,
+            )?;
             if cursor != items.len() {
                 return Err("cannot advance before knowledge-point mastery".into());
             }
@@ -553,9 +598,10 @@ fn delivery(
     kind: &str,
     items: &[Entity],
     take_retry: Option<bool>,
+    context: &SelectionContext,
 ) -> Result<Delivery> {
     if kind == "lesson" {
-        return lesson_delivery(snapshot, activity, items);
+        return lesson_delivery(snapshot, activity, items, context);
     }
     if kind == "diagnostic" {
         return Ok(diagnostic_path(snapshot, activity, items, take_retry)?.0);
@@ -607,14 +653,24 @@ fn delivery(
             .map(|i| result(snapshot, i))
             .collect::<Result<Vec<_>>>()?;
         let decision = evaluate_review_prefix(&outcomes)?;
+        let remaining = if decision.complete() {
+            vec![]
+        } else {
+            selected_questions(
+                snapshot,
+                context,
+                "review",
+                activity,
+                outcomes.len(),
+                remaining,
+            )?
+        };
+        let needs_questions_for = (!decision.complete() && remaining.is_empty()).then_some(topic);
         return Ok(Delivery {
             complete: decision.complete(),
             passed: decision.passed(),
-            next_content: if decision.complete() {
-                vec![]
-            } else {
-                remaining
-            },
+            next_content: remaining,
+            needs_questions_for,
             ..Default::default()
         });
     }
@@ -879,7 +935,12 @@ pub fn complete_item(
             item_change.insert("task-item/responses".into(), json!(response_refs));
         }
     }
-    let before = delivery(snapshot, activity, &kind, &prefix, Some(false))?;
+    let selection = SelectionContext {
+        policy: loaded.policy_eid,
+        learner: loaded.learner_eid,
+        task: task_eid,
+    };
+    let before = delivery(snapshot, activity, &kind, &prefix, Some(false), &selection)?;
     if (before.complete || !before.next_content.contains(&content))
         && Some(content) != before.retry_question
     {
@@ -887,7 +948,7 @@ pub fn complete_item(
     }
     let mut items = prefix;
     items.push(item.clone());
-    let mut delivered = delivery(snapshot, activity, &kind, &items, take_retry)?;
+    let mut delivered = delivery(snapshot, activity, &kind, &items, take_retry, &selection)?;
     if let Some(limit) = snapshot
         .entity(activity)?
         .get(&format!("{kind}/time-limit-seconds"))
@@ -1120,7 +1181,12 @@ pub fn expire_task(
         }
         items.push(item.clone());
     }
-    delivery(snapshot, activity, &kind, &items, Some(false))?;
+    let selection = SelectionContext {
+        policy: loaded.policy_eid,
+        learner: loaded.learner_eid,
+        task: task_eid,
+    };
+    delivery(snapshot, activity, &kind, &items, Some(false), &selection)?;
     let mut engine = loaded.engine.clone();
     if kind == "diagnostic" {
         place_diagnostic(loaded, &mut engine, activity, &items, at, &rules)?;
@@ -1424,6 +1490,60 @@ mod tests {
                 result,
                 CompletionOptions::new(start() + Duration::seconds(n as i64)),
             )
+        }
+    }
+
+    #[test]
+    fn review_delivery_uses_its_own_initial_and_remedial_weights() {
+        let mut f = Fixture::new("review");
+        f.put(
+            9502,
+            json!({"db/ident":{"$keyword":"question.difficulty/easy"}}),
+        );
+        f.put(
+            9500,
+            json!({"db/ident":{"$keyword":"activity.type/review"}}),
+        );
+        f.put(9501,json!({"question-weights/activity-type":9500,
+            "question-weights/initial-easy":1.0,"question-weights/initial-moderate":0.0,"question-weights/initial-hard":0.0,
+            "question-weights/remedial-easy":0.0,"question-weights/remedial-moderate":1.0,"question-weights/remedial-hard":0.0}));
+        f.set(2, "policy/question-selection-weights", json!([9501]));
+        let pool = f.entities[&4]["review/questions"]
+            .as_array()
+            .unwrap()
+            .clone();
+        let mut easy = vec![];
+        let mut moderate = vec![];
+        for (i, q) in pool.iter().enumerate() {
+            let q = q.as_u64().unwrap();
+            if i < 3 {
+                easy.push(q);
+            } else {
+                moderate.push(q);
+            }
+            f.set(q,"question/difficulty",json!({"$keyword":if i < 3 {"question.difficulty/easy"} else {"question.difficulty/moderate"}}));
+        }
+        let s = f.load().snapshot;
+        let context = SelectionContext {
+            policy: 2,
+            learner: 1,
+            task: 3,
+        };
+        let mut prefix = vec![];
+        for slot in 0..4 {
+            let d = delivery(&s, 4, "review", &prefix, None, &context).unwrap();
+            assert_eq!(d.next_content.len(), 1);
+            let q = d.next_content[0];
+            assert!(if slot < 3 {
+                easy.contains(&q)
+            } else {
+                moderate.contains(&q)
+            });
+            assert_eq!(
+                delivery(&s, 4, "review", &prefix, None, &context).unwrap(),
+                d
+            );
+            prefix.push(json!({"task-item/content":q,"task-item/status":{"$keyword":"task-item.status/incorrect"}}).as_object().unwrap().clone());
         }
     }
 

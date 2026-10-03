@@ -8,6 +8,7 @@ pub mod graph_snapshots;
 pub mod history;
 pub mod learning;
 pub mod live_history;
+pub mod question_selection;
 pub mod replay;
 pub mod runtime;
 pub mod schema;
