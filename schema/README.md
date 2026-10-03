@@ -43,6 +43,8 @@ learner/
 
 engine/
   1-fire-policy.edn
+  2-question-weights.edn
+  3-default-fire-policy.edn   # seed transaction data
 ```
 
 The [course transactions](data/2-3-courses.edn) import all 32 identities from `MA/DATA/Courses.csv` and their descriptions, overviews, and outcomes from `MA/DATA/Course-Maps`. [Course-unit links](data/3-3-course-units.edn) complete their required membership. The [course-group transactions](data/1-2-course-groups.edn) organize courses into nine catalog groups and retain course navigation links. University includes both Math Academy and Oregon State courses. Group membership does not change topic prerequisites or learner progress. Course level is no longer part of the model; group titles supply catalog labels.

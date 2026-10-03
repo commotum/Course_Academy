@@ -1,4 +1,5 @@
-;; Adjustable FIRe parameters. Settings are ordinary typed facts.
+;; Adjustable FIRe parameters and owned question-selection settings.
+;; Settings are ordinary typed facts.
 ;; Request :db/ensure :policy/validate on every policy write.
 ;; Update settings under the same identity; EDB history preserves earlier values.
 ;; Keep history enabled. Parameter changes do not themselves recompute progress.
@@ -98,6 +99,13 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Nonnegative finite horizon used to compare how much candidate activities postpone upcoming reviews."}
 
+ ;; Question selection.
+ {:db/ident :policy/question-selection-weights
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Optional owned question-weight records, defined in 2-question-weights.edn. Each record supplies initial and remedial difficulty distributions for one activity type. Keep at most one record per activity type in this policy; find the policy through the reverse ref. Ensure question-weights/validate on each child. Selection and missing-configuration handling belong to application code."}
+
  ;; Explanation and validation.
  {:db/ident :policy/description
   :db/valueType :db.type/string
@@ -123,5 +131,5 @@
                     :policy/retention-update-order
                     :policy/future-horizon-days]
   :db.entity/preds course-academy.policy/valid?
-  :db/doc "Requires identity and all engine settings. The registered predicate checks the update-order enum, finite numeric ranges, and relationships between settings. Formulas and applying changed settings to existing progress belong to application code."}
+  :db/doc "Requires identity and all FIRe retention settings. The registered predicate checks the update-order enum, finite numeric ranges, and relationships between those settings. Optional question-selection records require their own validation; the application checks their ownership and unique activity types. Formulas and applying changed settings to existing progress belong to application code."}
 ]
