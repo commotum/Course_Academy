@@ -73,8 +73,13 @@ def take_assessment(reader, state, directory):
     if set(order) != set(observed):
         raise ValueError('Restored assessment served different question IDs')
     navigator = by_id(page,'questionNavigator').locator('.questionButton')
-    if navigator.count() != len(observed):
-        raise ValueError('Unknown assessment navigation layout')
+    # Questions attach before asynchronous free-response/MathJax initialization
+    # finishes and renders the navigator. Wait for the complete expected set.
+    from playwright.sync_api import expect
+    try:
+        expect(navigator).to_have_count(len(observed),timeout=reader.args.timeout_ms)
+    except AssertionError as exc:
+        raise ValueError('Unknown assessment navigation layout') from exc
     save()
     for qid in order:
         reader.check()

@@ -51,6 +51,20 @@ class SessionTests(unittest.TestCase):
         atomic_json(root/'state.json',state)
         return root,state
 
+    def test_prompt_preserves_displayed_unicode_and_rejects_corrupted_choice(self):
+        root,_=self.activity('100','lesson')
+        item=self.question(1)
+        choice=item['fields'][0]['choices'][0]
+        choice['value']='{11}^{x}ln\u206111-\\frac{5}{x}'
+        with patch('solver.run_cli',side_effect=self.fake_cli) as cli:
+            result=Solver(self.args).solve(item,None,root/'q-1')
+        prompt=cli.call_args.kwargs['input']
+        self.assertIn('ln\u206111',prompt)
+        self.assertNotIn(r'\u2061',prompt)
+        result['answers'][0]['correct_value']=choice['value'].replace('\u2061','\x06')
+        with self.assertRaisesRegex(ValueError,'exact displayed choice'):
+            Solver.validate(item,result)
+
     def test_one_session_for_entire_activity_including_verification_and_restart(self):
         for kind in ('lesson','review'):
             root,state = self.activity('100' if kind=='lesson' else '200',kind)

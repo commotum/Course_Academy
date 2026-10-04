@@ -1,5 +1,6 @@
 """Structural identities for common displayed math notation, without algebra."""
 import re
+from fractions import Fraction
 
 
 # Use the same symbol spellings as the live MathML extractor. ASCII letters
@@ -57,7 +58,7 @@ def tokens(value):
             name = token[1:]
             if name in LAYOUT or name in (',',';','!',':',' '):
                 continue
-            token = '\\' + ALIASES.get(name,name)
+            token = '|' if name in ('mid','vert','lvert','rvert') else '\\' + ALIASES.get(name,name)
         elif token.isspace() and not literal_depth:
             continue
         result.append(token)
@@ -66,14 +67,49 @@ def tokens(value):
 
 def sequence_identity(nodes):
     nodes = tuple(nodes)
+    # A whole quotient whose two arguments are explicitly fenced has the same
+    # scope as a stacked fraction. Leave unfenced slash expressions untouched.
+    if (len(nodes) == 3 and nodes[1] == ('char','/') and
+        all(n[0] == 'fence' and n[1] == '(' and n[3] == ')' for n in (nodes[0],nodes[2]))):
+        return (('frac',fraction_argument((nodes[0],)),fraction_argument((nodes[2],))),)
     # Convert only a whole numeric ratio, including one used as an exponent.
     # Do not change x^1/3, 1/(3x), or a fraction's argument boundaries.
     if all(n[0] == 'char' for n in nodes):
         ratio = re.fullmatch(r'([+-]?\d+)/([+-]?\d+)', ''.join(n[1] for n in nodes))
         if ratio:
-            return (('frac', tuple(('char',c) for c in ratio[1]),
-                     tuple(('char',c) for c in ratio[2])),)
+            return (('frac', tuple(('char',c) for c in re.findall(r'[+-]|\d+',ratio[1])),
+                     tuple(('char',c) for c in re.findall(r'[+-]|\d+',ratio[2]))),)
     return nodes
+
+
+def fraction_argument(nodes):
+    # Fraction braces already group the entire numerator/denominator. Fencing
+    # that whole argument adds no scope; fences around only part still matter.
+    while len(nodes) == 1 and nodes[0][0] == 'fence' and nodes[0][1] == '(' and nodes[0][3] == ')':
+        nodes = nodes[0][2]
+    return nodes
+
+
+def scalar_identity(nodes):
+    """Exact numeric literals only; no symbolic algebra or rounding tolerance."""
+    def number(parts):
+        if not all(n[0] == 'char' for n in parts):
+            return None
+        value = ''.join(n[1] for n in parts)
+        return Fraction(value) if re.fullmatch(r'[+-]?(?:\d+(?:\.\d*)?|\.\d+)', value) else None
+    value = number(nodes)
+    if value is None:
+        sign = 1
+        if len(nodes) == 2 and nodes[0] in (('char','-'),('char','+')):
+            sign = -1 if nodes[0][1] == '-' else 1
+            nodes = nodes[1:]
+        if len(nodes) != 1 or nodes[0][0] != 'frac':
+            return None
+        numerator, denominator = number(nodes[0][1]), number(nodes[0][2])
+        if numerator is None or denominator is None or not denominator:
+            return None
+        value = sign * numerator / denominator
+    return ('number',value.numerator,value.denominator)
 
 
 class Parser:
@@ -91,7 +127,9 @@ class Parser:
         if self.position < len(self.source) and self.source[self.position] == '{':
             self.position += 1
             return self.sequence('}')
-        return (self.atom(),)
+        # An unbraced TeX argument consumes one token: x^23 means x^2 then 3,
+        # and \frac12 has separate numerator and denominator arguments.
+        return (self.atom(combine_digits=False),)
 
     def sequence(self, closing=None):
         nodes = []
@@ -134,8 +172,14 @@ class Parser:
             raise ValueError('Unclosed mathematical group')
         return sequence_identity(nodes)
 
-    def atom(self):
+    def atom(self, combine_digits=True):
         token = self.take()
+        if token.isascii() and token.isdigit():
+            # A displayed multi-digit base is one numeric atom: 11^{x} and
+            # {11}^{x} must attach the exponent to the same complete number.
+            while combine_digits and self.position < len(self.source) and self.source[self.position].isascii() and self.source[self.position].isdigit():
+                token += self.take()
+            return ('char',token)
         if token == '{':
             content = self.sequence('}')
             return content[0] if len(content) == 1 else ('group',content)
@@ -143,8 +187,8 @@ class Parser:
             end = {'(':')','[':']',r'\{':r'\}'}[token]
             return ('fence',token,self.sequence(end),end)
         if token == r'\frac':
-            numerator = self.argument()
-            denominator = self.argument()
+            numerator = fraction_argument(self.argument())
+            denominator = fraction_argument(self.argument())
             return ('frac',numerator,denominator)
         if token == r'\sqrt':
             index = ()
@@ -181,7 +225,8 @@ def identity(value):
         return repr(quantity)
     source = tokens(value)
     try:
-        return repr(('math',Parser(source).sequence()))
+        nodes = Parser(source).sequence()
+        return repr(scalar_identity(nodes) or ('math',nodes))
     except ValueError:
         # Unsupported/unbalanced notation still has a stable token identity.
         # It cannot collide with a successfully parsed expression.

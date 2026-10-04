@@ -5,6 +5,11 @@ add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
 apart from Playwright, the EDB CLI, and a solver command.
 
+MA can include the identical `/js/math-editor.js` tag twice in a page, causing
+its `const OPERATIONS` declaration to fail on the second execution. Navigation
+keeps the first tag and removes only repeated tags for that exact script URL.
+The editor code and answer interactions remain the site's original code.
+
 The runner:
 
 1. Reads existing lesson scores without filtering personal task status, and
@@ -28,8 +33,10 @@ The runner:
    time limit, question count, exact Notes text, and the remaining optional-XP
    allowance. An optional quiz stays queued while other activities continue.
    A required assessment takes precedence and runs automatically. A notice with
-   zero XP remaining or explicit required wording establishes that requirement;
-   unknown or missing requirement text stops before starting an assessment.
+   zero XP remaining or explicit required wording establishes that requirement.
+   Required quizzes can also omit Notes: a sole queued assessment with complete
+   question-count and time-limit details and no Notes row is treated as required.
+   This is checked again before Start; other unknown layouts stop before starting.
    Multisteps are supported in the remaining queue order, including their task
    and multistep IDs and original queue card HTML.
    in-progress captures require explicit recovery. Reviews use queue order, not
@@ -335,10 +342,13 @@ without retaking it. The usual 70/30 lesson/review patterns do not apply to quiz
 Checkpoints preserve chosen patterns, captured questions, grades, and pending
 Continue actions. A restored graded question is advanced without being answered
 again. Completed solver results are reused and rematched by value if the site
-reshuffles choice letters. Solver events stream to disk; Ctrl+C and SIGTERM stop
-its process group and preserve the activity session ID for restart. A confirmed
-completed turn can be recovered without another model call. An incomplete
-read-only solver prompt can be repeated in that same session.
+reshuffles choice letters. Solver events stream to disk. Ctrl+C and SIGTERM request
+a stop at a safe capture checkpoint instead of raising inside a Playwright wait;
+a read-only solver turn may finish before the stop. The saved activity session ID
+is retained. The supervision launcher allows 60 seconds for shutdown, then stops
+only its isolated capture process group if needed. A confirmed completed turn can
+be recovered without another model call. An incomplete read-only solver prompt
+can be repeated in that same session.
 
 If submission may have occurred, resume reads its grading result rather than
 sending the answer again. If the site cannot establish the result, the checkpoint

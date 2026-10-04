@@ -85,6 +85,38 @@ def by_id(scope, identifier):
     return scope.locator('[id=' + json.dumps(identifier) + ']')
 
 
+def deduplicate_math_editor(html):
+    """Keep the first identical editor script tag; preserve all other page HTML."""
+    seen = set()
+    def keep_first(match):
+        source = match['source']
+        if source in seen:
+            return ''
+        seen.add(source)
+        return match[0]
+    return re.sub(r'''<script\b(?=[^>]*\bsrc=["'](?P<source>/js/math-editor\.js(?:\?[^"']*)?)["'])[^>]*>\s*</script\s*>''',
+                  keep_first,html,flags=re.I)
+
+
+def repair_math_editor_document(route):
+    # Browsers can fetch one script once but execute it for both tags, so
+    # deduplicate the HTML rather than counting network requests.
+    if route.request.resource_type != 'document' or route.request.method != 'GET':
+        return route.continue_()
+    # Let the browser follow redirects so page scripts see the destination URL.
+    # Fetching the final document and fulfilling /learn leaves its URL unchanged.
+    response = route.fetch(max_redirects=0)
+    if response.status in (301,302,303,307,308):
+        return route.fulfill(response=response)
+    if 'text/html' not in response.headers.get('content-type','').lower():
+        return route.fulfill(response=response)
+    original = response.text()
+    cleaned = deduplicate_math_editor(original)
+    if cleaned != original:
+        logging.info('Removed duplicate math-editor.js tag from %s',route.request.url)
+    route.fulfill(response=response,body=cleaned)
+
+
 def answer_control(scope, field):
     if field.get('dom_id'):
         return by_id(scope,field['dom_id'])
@@ -97,11 +129,16 @@ class AccessBlocked(RuntimeError):
     """An authentication/access failure that affects the entire browser session."""
 
 
+def kp_title_identity(title):
+    # Legacy imported titles use this older spelling; live MA uses Leibniz.
+    return re.sub(r'\bLeibnitz\b', 'Leibniz', title)
+
+
 def kp_for_example(topic, mid, name, allow_new=False):
     points = topic[':topic/knowledge-points']
     exact = [k for k in points if k.get(':knowledge-point/canonical-example',{}).get(':question/math-academy-id') == mid]
     title = re.sub(r'^Example:\s*', '', name or '')
-    matches = exact or [k for k in points if k[':knowledge-point/title'] == title]
+    matches = exact or [k for k in points if kp_title_identity(k[':knowledge-point/title']) == kp_title_identity(title)]
     if not matches and allow_new and title and (name or '').startswith('Example:') and re.fullmatch(r'e-\d+',mid):
         return {':knowledge-point/id':stable_id('knowledge-point',str(topic[':topic/math-academy-id'])+':'+mid),
                 ':knowledge-point/title':title,'captured_new':True}
@@ -142,6 +179,9 @@ class CaptureBrowser:
             self.image_responses[response.url] = response
 
     def check(self):
+        stop = getattr(self.args, 'stop_event', None)
+        if stop is not None and stop.is_set():
+            raise KeyboardInterrupt('Stopped; saved checkpoints are retained')
         if self.http_block:
             raise AccessBlocked('Math Academy returned HTTP ' + str(self.http_block) + '; stop and review before another run')
         if re.search(r'/(login|signin|session-expired)(?:/|\?|$)', self.page.url):
@@ -161,6 +201,12 @@ class CaptureBrowser:
             self.pacer.wait('event', 'page navigation')
             try:
                 response = self.page.goto(url, wait_until='domcontentloaded')
+                if response and response.request.redirected_from:
+                    # Playwright routes only the first request of a redirect
+                    # chain. Load the destination once directly so its document
+                    # receives the same editor-tag repair as other navigations.
+                    self.pacer.wait('event','initialize redirected page')
+                    response = self.page.goto(self.page.url, wait_until='domcontentloaded')
             except PlaywrightTimeout:
                 self.check()
                 if attempt == 3:
@@ -173,7 +219,9 @@ class CaptureBrowser:
                     raise RuntimeError('Repeated server failure: ' + str(response.status))
                 self.pacer.backoff(attempt)
                 continue
-            self.page.locator('body').wait_for(state='visible')
+            # Positioned assessment content can leave the body with zero height.
+            # Require a visible body or child; hidden pages still fail.
+            self.page.locator('body:visible, body > :visible').first.wait_for(state='visible')
             return
 
     def queue(self):
@@ -211,7 +259,7 @@ class CaptureBrowser:
         queue = cards.evaluate_all(EXTRACT_QUEUE)
         for item in queue:
             if item['task_type'] == 'assessment':
-                item.update(assessment_requirement(item['assessment_details']))
+                item.update(assessment_requirement(item['assessment_details'], only_activity=len(queue) == 1))
         return queue
 
     def start(self, activity):
@@ -220,8 +268,9 @@ class CaptureBrowser:
             raise ValueError('Activity is recorded but unsupported by the capture player')
         if kind == 'assessment':
             card = by_id(self.page,activity['card_id'])
-            current = card.evaluate_all(EXTRACT_QUEUE)[0]
-            current.update(assessment_requirement(current['assessment_details']))
+            queue = self.page.locator('#incompleteTasks .taskUnlocked').evaluate_all(EXTRACT_QUEUE)
+            current = next(item for item in queue if item['card_id'] == activity['card_id'])
+            current.update(assessment_requirement(current['assessment_details'], only_activity=len(queue) == 1))
             if current['assessment_requirement'] != 'required':
                 raise ValueError('Assessment is optional or its requirement is unknown; stop before Start')
         else:
@@ -255,6 +304,9 @@ class CaptureBrowser:
         index = 0
         for asset in candidates:
             included = asset.evaluate('''n => {
+              if(n.localName==='svg' && n.closest('.mjpage, mjx-container, .MathJax') &&
+                 n.getAttribute('width')==='0' && n.getAttribute('viewBox')?.trim().split(/\\s+/)[2]==='0' &&
+                 !n.textContent.trim() && !n.querySelector('path,use,text,line,polyline,polygon,circle,ellipse,rect,image,foreignObject')) return false;
               if(n.closest('.questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') ||
                  n.parentElement?.closest('svg')) return false;
               const formula=n.closest('.mjpage, mjx-container, .MathJax');
@@ -508,6 +560,16 @@ class CaptureBrowser:
             token = kind + number
             scope = by_id(self.page, 'step-' + token)
             scope.wait_for(state='visible')
+            if kind == 'q':
+                record = state['questions'].get('q-' + number)
+                if record and record.get('finalized'):
+                    # Graded blanks are rendered as static math on reload;
+                    # their editable answer widget has already been removed.
+                    result = scope.locator('.questionWidget-result')
+                    if not result.count() or result.inner_text().strip() != record['actual_result']:
+                        raise ValueError('Restored page does not confirm the saved grade for q-' + number)
+                    self.advance(state, directory, token)
+                    continue
             if kind in ('e','q'):
                 self.page.wait_for_function('''({id,kind}) => {
                   const e=document.getElementById(id); if(!e) return false;
@@ -547,12 +609,6 @@ class CaptureBrowser:
                 raise ValueError('Question has no captured canonical example/KP')
             mid = 'q-' + number
             record = state['questions'].get(mid)
-            if record and record.get('finalized'):
-                result = scope.locator('.questionWidget-result')
-                if not result.count() or result.inner_text().strip() != record['actual_result']:
-                    raise ValueError('Restored page does not confirm the saved grade for ' + mid)
-                self.advance(state, directory, token)
-                continue
             if not record:
                 item, screenshot = self.read(scope,directory,mid + '-before')
                 if not item['problem'] or not item['fields']:
@@ -683,7 +739,7 @@ class CaptureBrowser:
         # Math Academy hides the previous editor's toolbox after 100 ms.
         # Wait out overlapping toolboxes before choosing a visible button.
         symbol_just_inserted = False
-        for part in re.split(r'(\\(?:pi|theta|alpha|beta|gamma|delta|lambda|mu|rho|sigma|phi|omega|infty)\b\s*)', text):
+        for part in re.split(r'(\\(?:pi|theta|alpha|beta|gamma|delta|lambda|mu|rho|sigma|phi|omega|infty|ln)\b\s*)', text):
             if not part:
                 continue
             symbol = re.fullmatch(r'\\([a-z]+)\s*', part)
@@ -710,6 +766,10 @@ class CaptureBrowser:
                     # Finish the active root command while keeping its cursor
                     # inside the radicand; ArrowRight would immediately exit it.
                     editor.press('Enter' if name == 'sqrt' else 'ArrowRight')
+                    if name in ('ln','sin','cos','tan','sec','csc','cot'):
+                        # Match a function button's empty argument when the
+                        # current field has no button for this named function.
+                        editor.press_sequentially('(', delay=self.pacer.rng.uniform(60,140))
             else:
                 symbol_just_inserted = False
                 editor.press_sequentially(part, delay=self.pacer.rng.uniform(60,140))
@@ -785,15 +845,15 @@ class CaptureBrowser:
                 source = re.fullmatch(r'/topics/(\d+)#(\d+)', q['kp_href'] or '')
                 if not source or int(source[1]) != state['topic_id'] or topic is None:
                     raise ValueError('Review activity has no valid topic/KP source link: ' + mid)
-                matches = [kp for kp in topic[':topic/knowledge-points'] if kp[':knowledge-point/title'] == title]
+                matches = [kp for kp in topic[':topic/knowledge-points'] if kp_title_identity(kp[':knowledge-point/title']) == kp_title_identity(title)]
                 if len(matches) != 1:
                     raise ValueError('Review KP title cannot be matched uniquely within the topic: ' + mid)
                 kp_id = str(matches[0][':knowledge-point/id'])
                 record['kp_id'] = kp_id
-                record['content'].update(knowledge_point_id=kp_id, knowledge_point=title)
-                state['kps'].setdefault(kp_id, {'id':kp_id, 'title':title})
+                record['content'].update(knowledge_point_id=kp_id, knowledge_point=matches[0][':knowledge-point/title'])
+                state['kps'].setdefault(kp_id, {'id':kp_id, 'title':matches[0][':knowledge-point/title']})
                 record['content']['knowledge_point_source_id'] = int(source[2])
-            elif record['content']['knowledge_point'] != title:
+            elif kp_title_identity(record['content']['knowledge_point']) != kp_title_identity(title):
                 raise ValueError('Activity KP title contradicts live example mapping: ' + mid)
             if q['result'] and q['result'] != record['actual_result']:
                 raise ValueError('Activity grade contradicts captured live result: ' + mid)

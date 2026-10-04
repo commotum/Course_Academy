@@ -30,7 +30,7 @@ class MultistepRunnerTests(unittest.TestCase):
             def history(self,state,*args):return {'task_id':1,'task_type':'multistep','questions':[]}
         db=Mock();db.priorities.return_value={};db.import_content.return_value={'previewed':True}
         runtime=Mock();runtime.__enter__=Mock(return_value=runtime);runtime.__exit__=Mock(return_value=False)
-        runtime.chromium.launch_persistent_context.return_value=SimpleNamespace(pages=[Mock()],close=Mock())
+        runtime.chromium.launch_persistent_context.return_value=SimpleNamespace(pages=[Mock()],close=Mock(),route=Mock())
         with tempfile.TemporaryDirectory() as work:
             args=arguments(['run','--preview','--state-dir',work+'/state','--output',work+'/captures'])
             with patch('capture.Database',return_value=db), patch('browser.CaptureBrowser',FixtureBrowser), \

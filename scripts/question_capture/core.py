@@ -55,6 +55,7 @@ class Pacer:
         self.args, self.rng, self.sleeper = args, rng or random.Random(), sleeper
 
     def wait(self, kind, reason, elapsed=0):
+        self.check_stop()
         low, high = getattr(self.args, kind + '_min'), getattr(self.args, kind + '_max')
         if not math.isfinite(elapsed) or elapsed < 0:
             raise ValueError('Elapsed pacing credit must be finite and nonnegative')
@@ -63,13 +64,26 @@ class Pacer:
         logging.info('Waiting %.1fs (%s)%s', delay, reason,
                      ' [%.1fs budget, %.1fs solver time]' % (budget, elapsed) if kind == 'answer' else '')
         if delay:
-            self.sleeper(delay)
+            self.sleep(delay)
         return delay
 
     def backoff(self, attempt, retry_after=0):
         delay = max(retry_after, min(30 * attempt, 180)) + self.rng.uniform(0, 5)
         logging.info('Backing off %.1fs before a read-only retry', delay)
-        self.sleeper(delay)
+        self.sleep(delay)
+
+    def check_stop(self):
+        stop = getattr(self.args, 'stop_event', None)
+        if stop is not None and stop.is_set():
+            raise KeyboardInterrupt('Stopped; saved checkpoints are retained')
+
+    def sleep(self, delay):
+        stop = getattr(self.args, 'stop_event', None)
+        if stop is not None and self.sleeper is time.sleep:
+            stop.wait(delay)
+            self.check_stop()
+        else:
+            self.sleeper(delay)
 
 
 def choose_sequence(rng, weight=0.7):
@@ -119,7 +133,7 @@ def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
     return None
 
 
-def assessment_requirement(details):
+def assessment_requirement(details, *, only_activity=False):
     """Keep the source notice; only start assessments with known requirements."""
     notes = next((value for key, value in details.items() if key.lower() == 'notes'), None)
     count = re.search(r'optional\s+until\s+([\d,]+)\s+more\s+XP\s+have\s+been\s+earned', notes or '', re.I)
@@ -129,6 +143,15 @@ def assessment_requirement(details):
                 'assessment_requirement': 'optional' if remaining else 'required'}
     if notes is not None and re.search(r'\brequired\b|\bmust\b.{0,30}\b(?:take|complete)\b', notes, re.I):
         return {'assessment_notice': notes, 'optional_xp_remaining': 0, 'assessment_requirement': 'required'}
+    fields = {key.lower(): value for key, value in details.items()}
+    # Required quizzes omit the optional Notes row. Recognize this only when
+    # the expanded details are complete and the quiz is the sole offered task.
+    if (notes is None and only_activity and
+            re.fullmatch(r'[1-9]\d*', fields.get('questions') or '') and
+            re.fullmatch(r'[1-9]\d*\s+minutes?', fields.get('time limit') or '', re.I)):
+        return {'assessment_notice': None, 'optional_xp_remaining': 0,
+                'assessment_requirement': 'required',
+                'assessment_requirement_evidence': 'sole_queue_activity_without_optional_notice'}
     return {'assessment_notice': notes, 'optional_xp_remaining': None, 'assessment_requirement': 'unknown'}
 
 

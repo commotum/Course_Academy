@@ -83,11 +83,13 @@ mathematical space, which can change fraction grouping. The runner uses the visi
 symbol menu when available. To create a square root, type "\\\\sqrt" as a separate
 text action, then type its radicand; the runner finishes the command and leaves
 the cursor inside the root. ArrowRight exits the root after its radicand.
-Trig function buttons create parentheses around their argument. Use explicit
+Trig and logarithm function buttons create parentheses around their argument. Use explicit
 parentheses in correct_value and wrong_value, for example "\\\\cos(x)+x^3".
 Type "\\\\cos" as one action, then "x", then ArrowRight to leave its argument,
 then "+x^3", then ArrowRight to leave the exponent. Never put a separate sum
 term inside the function's argument. The entered expression must match the value.
+For "\\\\ln(5)+4", type "\\\\ln" as one action, then "5", then ArrowRight,
+then "+4". Do not type another opening parenthesis inside the button's argument.
 For 11*pi/6, type "11", then "\\\\pi", then "/6",
 ArrowRight. Available keys are ArrowLeft, ArrowRight,
 ArrowUp, ArrowDown, Space, Home, End. Do not use Enter, Tab, or submission shortcuts.
@@ -137,7 +139,7 @@ class Solver:
         payload['activity_context'] = context
         atomic_json(directory / (phase + '-input.json'), payload)
         if self.args.solver_command:
-            process = subprocess.run(shlex.split(self.args.solver_command), input=json.dumps({**payload,'screenshot':str(screenshot)}),
+            process = subprocess.run(shlex.split(self.args.solver_command), input=json.dumps({**payload,'screenshot':str(screenshot)},ensure_ascii=False),
                                      text=True, capture_output=True, timeout=self.args.solver_timeout, check=True)
             result = json.loads(process.stdout)
         else:
@@ -301,7 +303,7 @@ class Solver:
             atomic_json(session_file,session)
         events_path, diagnostics_path = directory/(phase+'-events.jsonl'), directory/(phase+'-stderr.txt')
         try:
-            process = run_cli(command + ['-'], input=INSTRUCTIONS + '\n' + json.dumps(payload),
+            process = run_cli(command + ['-'], input=INSTRUCTIONS + '\n' + json.dumps(payload,ensure_ascii=False),
                               timeout=self.args.solver_timeout,events_path=events_path,
                               diagnostics_path=diagnostics_path,started=started)
         except BaseException as exc:

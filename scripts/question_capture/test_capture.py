@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch
 from pathlib import Path
 from types import SimpleNamespace
 
-from browser import EXTRACT, AccessBlocked, CaptureBrowser, kp_for_example, normalize_mathquill
+from browser import EXTRACT, AccessBlocked, CaptureBrowser, kp_for_example, kp_title_identity, normalize_mathquill
 from core import ROOT, ALLOWED, Pacer, atomic_json, build_transaction, choose_activity, choose_lesson, choose_sequence, choose_review_sequence, normalize, stable_id
 from database import Database
 from edn import dumps, loads, kw
@@ -28,6 +28,56 @@ REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_absolute_bars_and_fenced_quotients_preserve_argument_scope(self):
+        self.assertEqual(normalize(r'\frac{1}{9}\ln \mid x \mid + C'),
+                         normalize('\\frac{1}{9}ln\u2061|x|+C'))
+        self.assertNotEqual(normalize(r'\ln |x|'),normalize(r'\ln x'))
+        self.assertNotEqual(normalize(r'\ln |x|'),normalize(r'\ln ||x||'))
+        self.assertEqual(normalize('(8)/((4x - 9)^{2})'),normalize(r'\frac{8}{{(4x-9)}^{2}}'))
+        self.assertNotEqual(normalize('(8)/((4x-9)^{2})'),normalize(r'\frac{8}{4x-9^{2}}'))
+        self.assertNotEqual(normalize('1/3x'),normalize(r'\frac{1}{3x}'))
+        self.assertEqual(normalize('x^{11/3}'),normalize(r'x^{\frac{11}{3}}'))
+        self.assertNotEqual(normalize('x^11/3'),normalize(r'x^{\frac{11}{3}}'))
+
+    def test_kp_title_spelling_alias_does_not_merge_different_skills(self):
+        title='Computing Second Order Derivatives Using Leibniz Notation'
+        old=title.replace('Leibniz','Leibnitz')
+        self.assertEqual(kp_title_identity(old),kp_title_identity(title))
+        self.assertNotEqual(kp_title_identity(old),kp_title_identity(title.replace('Second','Third')))
+        point={':knowledge-point/title':old,':knowledge-point/id':uuid.uuid4()}
+        topic={':topic/knowledge-points':[point]}
+        self.assertEqual(kp_for_example(topic,'e-3654','Example: '+title),point)
+        with self.assertRaisesRegex(ValueError,'unambiguously'):
+            kp_for_example({':topic/knowledge-points':[point,dict(point)]},'e-3654','Example: '+title)
+
+    def test_multi_digit_exponent_base_matches_displayed_mathml_grouping(self):
+        self.assertEqual(normalize(r'11^{x}\ln 11 - \frac{5}{x}'),
+                         normalize('{11}^{x}ln\u206111-\\frac{5}{x}'))
+        self.assertEqual(normalize('12^{3}'),normalize('{12}^{3}'))
+        self.assertNotEqual(normalize('11^{x}'),normalize('1{1}^{x}'))
+        self.assertNotEqual(normalize('11^{x}'),normalize('{11}^{x+1}'))
+        self.assertNotEqual(normalize('11^{x}'),normalize('{1}^{x}'))
+        self.assertNotEqual(normalize('xy^{2}'),normalize('{xy}^{2}'))
+
+    def test_scalar_comparison_is_exact_across_fraction_and_decimal_notation(self):
+        self.assertEqual(normalize(r'\frac{43}{2}'),normalize('21.5'))
+        self.assertEqual(normalize(r'-\frac{3}{4}'),normalize('-0.75'))
+        self.assertEqual(normalize('1/2'),normalize('0.5'))
+        self.assertEqual(normalize(r'\frac{2}{4}'),normalize('.5'))
+        for value in ('21.500000000000001',r'\frac{43}{3}',r'\frac{43}{0}',
+                      r'\frac{43x}{2}',r'\frac{1}{3}','NaN','Infinity'):
+            self.assertNotEqual(normalize(r'\frac{43}{2}'),normalize(value))
+        self.assertNotEqual(normalize(r'\frac{1}{3}'),normalize('0.3333333333333333'))
+        self.assertNotEqual(normalize(r'\frac{x}{2}'),normalize('0.5x'))
+        self.assertNotEqual(normalize('21.5','text'),normalize('43/2','text'))
+
+    def test_fraction_argument_fences_are_redundant_only_for_the_whole_argument(self):
+        self.assertEqual(normalize(r'\frac{\left(x-7\right)}{3}'), normalize(r'\frac{x-7}{3}'))
+        self.assertEqual(normalize(r'\frac{x-7}{(3)}'), normalize(r'\frac{x-7}{3}'))
+        self.assertNotEqual(normalize(r'\frac{(x-7)y}{3}'), normalize(r'\frac{x-7y}{3}'))
+        self.assertNotEqual(normalize(r'\frac{x-7}{3}'), normalize(r'x-\frac{7}{3}'))
+        self.assertNotEqual(normalize(r'\ln(5)+4'), normalize(r'\ln((5)+4)'))
+
     def test_scripted_closing_fences_preserve_exponent_scope(self):
         self.assertEqual(normalize('y=(x+3)(x+1{)}^{2}(x-2)'),
                          normalize('y = (x + 3)(x + 1)^{2}(x - 2)'))
@@ -384,7 +434,7 @@ class RunnerTests(unittest.TestCase):
                     if content['task_id']==1 and failure_phase=='import': raise ValueError('Correct answer conflict')
                     return {'previewed':True}
                 db.import_content.side_effect=import_content
-                context=SimpleNamespace(pages=[page],close=Mock())
+                context=SimpleNamespace(pages=[page],close=Mock(),route=Mock())
                 runtime=Mock()
                 runtime.__enter__=Mock(return_value=runtime);runtime.__exit__=Mock(return_value=False)
                 runtime.chromium.launch_persistent_context.return_value=context
@@ -470,7 +520,7 @@ class RunnerTests(unittest.TestCase):
         db.priorities.return_value={2084:10}
         db.topic.return_value={}
         db.import_content.return_value={'previewed':True,'database_writes':0}
-        context=SimpleNamespace(pages=[SimpleNamespace()],close=Mock())
+        context=SimpleNamespace(pages=[SimpleNamespace()],close=Mock(),route=Mock())
         runtime=Mock()
         runtime.__enter__=Mock(return_value=runtime)
         runtime.__exit__=Mock(return_value=False)
@@ -512,7 +562,7 @@ class RunnerTests(unittest.TestCase):
         db.priorities.return_value={}
         db.topic.return_value={}
         db.import_content.return_value={'previewed':True}
-        context=SimpleNamespace(pages=[SimpleNamespace()],close=Mock())
+        context=SimpleNamespace(pages=[SimpleNamespace()],close=Mock(),route=Mock())
         runtime=Mock()
         runtime.__enter__=Mock(return_value=runtime)
         runtime.__exit__=Mock(return_value=False)
@@ -533,6 +583,67 @@ class RunnerTests(unittest.TestCase):
 
 
 class DOMTests(unittest.TestCase):
+    def test_empty_zero_width_mathjax_formula_is_not_a_missing_visual_asset(self):
+        for wrapper in ('span class="mjpage"','mjx-container'):
+            tag=wrapper.split()[0]
+            self.page.set_content('<div id="test"><div class="exampleQuestion">'
+                '<table><tr><td>x</td><td>f(x)</td></tr><tr><td>0</td><td>1</td></tr></table>'
+                '<'+wrapper+'><svg width="0" height="0.343ex" viewBox="0 -73.8 0 147.5">'
+                '<title>\n</title><defs></defs><g></g></svg></'+tag+'>Find the derivative.</div>'
+                '<div class="exampleExplanation">The result is -6.</div></div>')
+            scope=self.page.locator('#test')
+            reader=CaptureBrowser(self.page,SimpleNamespace(timeout_ms=500),None,None)
+            with tempfile.TemporaryDirectory() as work:
+                item,_=reader.read(scope,work,'empty-formula')
+                self.assertFalse(item['errors']);self.assertEqual(item['assets'],[])
+                self.assertIn('| x | f(x) |',item['problem'])
+                self.assertNotIn('@asset-',item['problem'])
+                self.assertIn('Find the derivative.',item['problem'])
+            self.page.locator('svg g').evaluate("n => n.innerHTML='<path d=\"M0 0 L1 1\" />'")
+            with tempfile.TemporaryDirectory() as work:
+                with self.assertRaisesRegex(ValueError,'Visual asset is not rendered'):
+                    reader.read(scope,work,'nonempty-unrendered-formula')
+
+    def test_sec_without_a_visible_button_still_groups_its_argument_before_power(self):
+        scope,record=self.mathquill_fixture()
+        record['decision']['answers'][0].update(correct_value=r'\sqrt{x}\sec(x)^2',
+            correct_keys=[{'text':r'\sqrt','key':None},{'text':'x','key':None},
+                {'text':None,'key':'ArrowRight'},{'text':r'\sec','key':None},
+                {'text':'x','key':None},{'text':None,'key':'ArrowRight'},
+                {'text':'^2','key':None},{'text':None,'key':'ArrowRight'}])
+        args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+        reader=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        reader.enter(scope,record);reader.verify_entered(scope,record)
+        field=record['before']['fields'][0]
+        self.assertEqual(field['observed_mathquill_latex'],r'\sqrt{x}\sec\left(x\right)^2')
+        field['submitted_value']=r'\sqrt{x}\sec(x^2)'
+        with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):
+            reader.verify_entered(scope,record)
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_finalized_blank_resume_needs_grade_confirmation_not_an_editable_widget(self):
+        state={'task_type':'review','review_sequence':'CWCWC','questions':{
+            'q-246716':{'status':'graded','finalized':True,'actual_result':'Incorrect'}},
+            'kps':{},'examples':{}}
+        for grade in ('Incorrect','Correct',''):
+            self.page.set_content('<div id="step-q246716" class="step questionWidget">'
+                '<div class="questionWidget-text">Variance = 43/3</div>'
+                '<div class="questionWidget-result">'+grade+'</div>'
+                '</div><button id="continueButton-q246716">Continue</button>')
+            solver=Mock();reader=CaptureBrowser(self.page,SimpleNamespace(timeout_ms=500),None,solver)
+            reader.advance=Mock(side_effect=RuntimeError('Resume advanced'))
+            reader.read=Mock(side_effect=AssertionError('Already captured graded content must be reused'))
+            with tempfile.TemporaryDirectory() as work:
+                if grade=='Incorrect':
+                    with self.assertRaisesRegex(RuntimeError,'Resume advanced'):
+                        reader.review(copy.deepcopy(state),work,{})
+                    reader.advance.assert_called_once()
+                else:
+                    with self.assertRaisesRegex(ValueError,'does not confirm the saved grade'):
+                        reader.review(copy.deepcopy(state),work,{})
+                    reader.advance.assert_not_called()
+            reader.read.assert_not_called();solver.solve.assert_not_called()
+
     def test_only_fresh_unanswered_radio_submission_can_be_recovered(self):
         html=('<div id="test"><div class="questionWidget-text">Find x.</div>'
               '<div class="questionWidget-choiceLetterCircle">a</div>'
@@ -606,6 +717,32 @@ class DOMTests(unittest.TestCase):
             field=record['before']['fields'][0]
             self.assertEqual(field['observed_mathquill_latex'],r'\frac{5}{4}'+'\\'+operator+r'\left(x\right)+x^3')
             field['submitted_value']=r'\frac{5}{4}'+'\\'+operator+r'(x+x^3)'
+            with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):
+                reader.verify_entered(scope,record)
+            self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_log_entry_leaves_the_function_before_a_separate_sum_term(self):
+        for menu in (False, True):
+            scope,record=self.mathquill_fixture()
+            if menu:
+                self.page.evaluate(r'''() => {
+                  const field=MathQuill.getInterface(2)(document.querySelector('#mq'));
+                  const box=document.createElement('div');box.id='mathEditorToolbox';
+                  const button=document.createElement('button');button.className='mathIcon lnIcon';
+                  button.textContent='ln';button.onmousedown=e=>e.preventDefault();
+                  button.onclick=()=>{field.write('\\ln\\left({}\\right)');field.focus();field.keystroke('Left')};
+                  box.append(button);document.body.append(box);
+                }''')
+            record['decision']['answers'][0].update(correct_value=r'\ln(5)+4',
+                correct_keys=[{'text':r'\ln','key':None},{'text':'5','key':None},
+                              {'text':None,'key':'ArrowRight'},{'text':'+4','key':None}])
+            args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+            reader=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+            reader.enter(scope,record);reader.verify_entered(scope,record)
+            field=record['before']['fields'][0]
+            self.assertEqual(field['observed_mathquill_latex'],r'\ln\left(5\right)+4')
+            self.assertEqual(bool(field.get('clicked_symbols')),menu)
+            field['submitted_value']=r'\ln((5)+4)'
             with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):
                 reader.verify_entered(scope,record)
             self.assertEqual(self.page.evaluate('window.submissions'),0)

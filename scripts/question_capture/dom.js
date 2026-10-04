@@ -1,7 +1,11 @@
 // Pure DOM extraction. No application state, answer keys, or network calls.
 element => {
   const errors = [];
+  const emptyFormula = n => n?.localName === 'svg' && n.closest('.mjpage, mjx-container, .MathJax') &&
+    n.getAttribute('width') === '0' && n.getAttribute('viewBox')?.trim().split(/\s+/)[2] === '0' &&
+    !n.textContent.trim() && !n.querySelector('path,use,text,line,polyline,polygon,circle,ellipse,rect,image,foreignObject');
   const assets = [...element.querySelectorAll('img, canvas, svg')].filter(n => {
+    if (emptyFormula(n)) return false;
     if (n.closest('.questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') ||
         n.parentElement?.closest('svg')) return false;
     const formula = n.closest('.mjpage, mjx-container, .MathJax');
@@ -83,6 +87,7 @@ element => {
     if (n.nodeType === 3) return n.textContent;
     if (n.nodeType !== 1) return '';
     const t = n.localName.toLowerCase();
+    if (emptyFormula(n)) return '';
     if (['script','style','mjx-assistive-mml'].includes(t)) return '';
     if (n.matches('.studentAnswer, .studentAnswerHeader')) return '';
     if (fieldNodes.has(n)) return '{{' + fieldNodes.get(n) + '}}';
@@ -96,6 +101,7 @@ element => {
     }
     if (t === 'mjx-container' || t === 'math') {
       const math = t === 'math' ? n : n.querySelector('mjx-assistive-mml math');
+      if (!math && emptyFormula(n.querySelector('svg'))) return '';
       if (!math && assets.includes(n.querySelector('svg'))) return render(n.querySelector('svg'));
       if (!math) { errors.push('MathJax formula has no assistive MathML'); return ''; }
       const tex = m(math);

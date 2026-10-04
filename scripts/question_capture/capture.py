@@ -11,6 +11,7 @@ import shutil
 import signal
 import sys
 import time
+import threading
 import traceback
 import uuid
 from pathlib import Path
@@ -268,7 +269,7 @@ def run(args):
                           'captured_questions':len(state.get('questions',{}))},indent=2))
         return
     from playwright.sync_api import sync_playwright
-    from browser import AccessBlocked, CaptureBrowser, LEARN
+    from browser import AccessBlocked, CaptureBrowser, LEARN, repair_math_editor_document
     from solver import Solver
     rng = random.Random(args.seed)
     pacer = Pacer(args,rng)
@@ -279,6 +280,7 @@ def run(args):
         try:
             import_cookies(args,context)
             page = context.pages[0] if context.pages else context.new_page()
+            context.route('https://mathacademy.com/**',repair_math_editor_document)
             browser = CaptureBrowser(page,args,pacer,Solver(args))
             if args.command=='login':
                 page.goto(LEARN,wait_until='domcontentloaded')
@@ -304,6 +306,7 @@ def run(args):
                 logging.info('Skipping deferred activities until explicit --resume: %s',deferred)
             queue_observation = None
             for n in range(args.limit):
+                pacer.check_stop()
                 directory, state, phase = None, None, 'queue'
                 try:
                     if resume_directory and n==0:
@@ -328,6 +331,7 @@ def run(args):
                                      ': priority %.6f' % activity['priority'] if activity['selection_reason'] == 'priority'
                                      else ': assessment is required' if activity['selection_reason'] == 'required_assessment'
                                      else ': review queue order' if activity['selection_reason'] == 'review_queue_order'
+                                     else ': assessment requirement needs inspection' if activity['selection_reason'] == 'assessment_requires_inspection'
                                      else ': next available activity in queue order')
                         if args.dry_run:
                             print(json.dumps(activity,indent=2))
@@ -345,7 +349,7 @@ def run(args):
                                  'previous_activity_snapshot':previous_activity_snapshot(args)}
                         if state['task_type'] == 'assessment':
                             state.update({key:activity.get(key) for key in
-                                          ('test_id','assessment_details','assessment_notice','optional_xp_remaining','assessment_requirement')})
+                                          ('test_id','assessment_details','assessment_notice','optional_xp_remaining','assessment_requirement','assessment_requirement_evidence')})
                             atomic_json(directory/'assessment-queue.json',activity)
                         elif state['task_type'] == 'multistep':
                             state.update(multistep_id=activity['multistep_id'],title=activity['title'],answer_policy='all_correct')
@@ -433,17 +437,24 @@ def main(argv=None):
         run_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
         logging.getLogger().addHandler(run_handler)
         logging.info('Run log: %s',run_handler.baseFilename)
+    args.stop_event = threading.Event()
     def interrupted(*_):
-        raise KeyboardInterrupt('Stopped; saved checkpoints are retained')
+        # Raising inside Playwright's event-loop/greenlet wait can strand its
+        # shutdown. Request a stop; normal capture checkpoints perform it.
+        args.stop_event.set()
     original_sigterm = signal.signal(signal.SIGTERM,interrupted)
+    original_sigint = signal.signal(signal.SIGINT,interrupted)
     try:
         with locked(args.state_dir):
             run(args)
+            if args.stop_event.is_set():
+                raise KeyboardInterrupt('Stopped; saved checkpoints are retained')
     except (Exception,KeyboardInterrupt) as exc:
         logging.error('%s: %s',type(exc).__name__,exc)
         return 1
     finally:
         signal.signal(signal.SIGTERM,original_sigterm)
+        signal.signal(signal.SIGINT,original_sigint)
         if run_handler is not None:
             logging.getLogger().removeHandler(run_handler)
             run_handler.close()
