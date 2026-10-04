@@ -1,5 +1,6 @@
-//! Application stopping, exact XP candidates, and diagnostic placement.
+//! Application stopping, accepted earned-XP rules, and diagnostic placement.
 //! These local policies are separate from FIRe retention and persistence.
+//! XP version one is documented in schema/engine/3-xp-weights.edn.
 use crate::Result;
 use num_bigint::BigInt;
 use num_rational::BigRational;
@@ -147,26 +148,72 @@ fn xp_inputs(base: impl ExactNumber, outcomes: &[Outcome]) -> Result<BigRational
     }
     Ok(base)
 }
-fn accuracy(outcomes: &[Outcome]) -> BigRational {
-    BigRational::new(
-        outcomes.iter().filter(|v| **v == Some(true)).count().into(),
-        outcomes.len().into(),
-    )
+/// Equal-weight whole-task accuracy, rounded once with half ties upward.
+/// Quiz total includes all assigned questions; delivery/mastery remains separate.
+pub fn earned_xp(
+    kind: &str,
+    base: impl ExactNumber,
+    correct: usize,
+    total: usize,
+    final_correct: Option<bool>,
+) -> Result<BigInt> {
+    let base = base.exact()?;
+    if base.is_negative() {
+        return Err("base XP must be nonnegative".into());
+    }
+    if total == 0 || correct > total {
+        return Err("XP requires total > 0 and correct <= total".into());
+    }
+    let p = BigRational::new(correct.into(), total.into());
+    let half = BigRational::new(1.into(), 2.into());
+    match kind {
+        "lesson" if p < half => Ok((-1).into()),
+        "lesson" if correct == total => round_half_up(base * BigRational::new(5.into(), 4.into())),
+        "lesson" => round_half_up(
+            base * (BigRational::new(3.into(), 2.into()) * p
+                - BigRational::new(3.into(), 10.into()))
+            .min(BigRational::one()),
+        ),
+        "review" if p < half => Ok((-1).into()),
+        "review" if correct == total => round_half_up(base + BigRational::from_integer(2.into())),
+        "review" if p >= BigRational::new(2.into(), 3.into()) => round_half_up(base),
+        "review" => match final_correct {
+            Some(true) => round_half_up(base * p),
+            Some(false) => Ok(BigInt::zero()),
+            None => Err("Partial-credit review needs final_correct".into()),
+        },
+        "assessment" | "quiz" if p < BigRational::new(1.into(), 5.into()) => Ok((-1).into()),
+        "assessment" | "quiz" => Ok(round_half_up(
+            base * BigRational::new(6.into(), 5.into())
+                * (p - BigRational::new(7.into(), 20.into()))
+                / BigRational::new(13.into(), 20.into()),
+        )?
+        .max(BigInt::zero())),
+        "multistep" => Ok(round_half_up(
+            base * (BigRational::new(9.into(), 4.into()) * p - BigRational::one()),
+        )?
+        .max(BigInt::from(-1))),
+        _ => Err(format!("No base-relative XP formula for {kind}")),
+    }
 }
 pub fn assessment_xp_candidate(base: impl ExactNumber, outcomes: &[Outcome]) -> Result<BigInt> {
     let baseline = xp_inputs(base, outcomes)?;
-    let award = round_half_up(
-        baseline
-            * BigRational::new(6.into(), 5.into())
-            * (accuracy(outcomes) - BigRational::new(7.into(), 20.into()))
-            / BigRational::new(13.into(), 20.into()),
-    )?;
-    Ok(award.max(BigInt::zero()))
+    earned_xp(
+        "assessment",
+        baseline,
+        outcomes.iter().filter(|v| **v == Some(true)).count(),
+        outcomes.len(),
+        None,
+    )
 }
 pub fn multistep_xp_candidate(base: impl ExactNumber, outcomes: &[Outcome]) -> Result<BigInt> {
     let baseline = xp_inputs(base, outcomes)?;
-    round_half_up(
-        baseline * (BigRational::new(9.into(), 4.into()) * accuracy(outcomes) - BigRational::one()),
+    earned_xp(
+        "multistep",
+        baseline,
+        outcomes.iter().filter(|v| **v == Some(true)).count(),
+        outcomes.len(),
+        None,
     )
 }
 pub fn lesson_xp_candidate(
@@ -178,10 +225,13 @@ pub fn lesson_xp_candidate(
     if let Some(award) = award {
         return Ok(award);
     }
-    if !outcomes.iter().all(|v| *v == Some(true)) {
-        return Err("partial lesson XP is unresolved; supply an explicit award".into());
-    }
-    round_half_up(baseline * BigRational::new(5.into(), 4.into()))
+    earned_xp(
+        "lesson",
+        baseline,
+        outcomes.iter().filter(|v| **v == Some(true)).count(),
+        outcomes.len(),
+        None,
+    )
 }
 pub fn review_xp_candidate(
     base: impl ExactNumber,
@@ -192,10 +242,13 @@ pub fn review_xp_candidate(
     if let Some(award) = award {
         return Ok(award);
     }
-    if !outcomes.iter().all(|v| *v == Some(true)) {
-        return Err("partial review XP is unresolved; supply an explicit award".into());
-    }
-    round_half_up(baseline + BigRational::from_integer(2.into()))
+    earned_xp(
+        "review",
+        baseline,
+        outcomes.iter().filter(|v| **v == Some(true)).count(),
+        outcomes.len(),
+        Some(outcomes.last() == Some(&Some(true))),
+    )
 }
 
 /// Signed placement evidence on a prerequisite DAG. Each answer contributes
@@ -409,7 +462,7 @@ mod tests {
         }
         assert_eq!(
             multistep_xp_candidate(7, &[None]).unwrap(),
-            BigInt::from(-7)
+            BigInt::from(-1)
         );
         assert_eq!(
             lesson_xp_candidate(16, &[Some(true); 8], None).unwrap(),
@@ -419,7 +472,10 @@ mod tests {
             review_xp_candidate(7, &[Some(true); 3], None).unwrap(),
             BigInt::from(9)
         );
-        assert!(lesson_xp_candidate(7, &[Some(false)], None).is_err());
+        assert_eq!(
+            lesson_xp_candidate(7, &[Some(false)], None).unwrap(),
+            BigInt::from(-1)
+        );
         assert_eq!(
             lesson_xp_candidate(7, &[Some(false)], Some((-1).into())).unwrap(),
             BigInt::from(-1)
@@ -427,6 +483,52 @@ mod tests {
         assert!(assessment_xp_candidate(-1, &[Some(true)]).is_err());
         assert!(assessment_xp_candidate(f64::NAN, &[Some(true)]).is_err());
         assert!(review_xp_candidate(1, &[], None).is_err());
+    }
+    #[test]
+    fn all_frozen_observed_awards_and_boundaries() {
+        let observations: serde_json::Value = serde_json::from_str(include_str!(
+            "../../reference/mathacademy-earned-xp/observations.json"
+        ))
+        .unwrap();
+        let rows = observations["rows"].as_array().unwrap();
+        assert_eq!(rows.len(), 168);
+        for row in rows {
+            let outcomes: Vec<_> = row["questions"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|q| Some(q["correct"].as_bool().unwrap()))
+                .collect();
+            let base = row["base"].as_i64().unwrap();
+            let award = match row["type"].as_str().unwrap() {
+                "lesson" => lesson_xp_candidate(base, &outcomes, None),
+                "review" => review_xp_candidate(base, &outcomes, None),
+                "assessment" => assessment_xp_candidate(base, &outcomes),
+                "multistep" => multistep_xp_candidate(base, &outcomes),
+                _ => unreachable!(),
+            }
+            .unwrap();
+            assert_eq!(
+                award,
+                BigInt::from(row["earned"].as_i64().unwrap()),
+                "task {}",
+                row["task_id"]
+            );
+        }
+        assert_eq!(
+            earned_xp("lesson", 20, 1, 2, None).unwrap(),
+            BigInt::from(9)
+        );
+        assert_eq!(
+            earned_xp("lesson", 10, 1, 2, None).unwrap(),
+            BigInt::from(5)
+        );
+        assert_eq!(
+            earned_xp("assessment", 15, 1, 5, None).unwrap(),
+            BigInt::zero()
+        );
+        assert_eq!(earned_xp("review", 6, 2, 3, None).unwrap(), BigInt::from(6));
+        assert!(earned_xp("review", 6, 3, 5, None).is_err());
     }
     fn diamond(policy: &str) -> DiagnosticBalance {
         DiagnosticBalance::new(

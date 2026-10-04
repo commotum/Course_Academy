@@ -5,13 +5,13 @@
 //! with a basis guard and item-status CAS. No function here mutates a database.
 use crate::{
     Result,
-    activities::{decimal_number, evaluate_kp_prefix, round_half_up},
+    activities::{decimal_number, evaluate_kp_prefix, lesson_xp_candidate},
     core::{Event, TopicState},
     schema::{EntitySnapshot, LoadedRuntime, load_runtime, timestamp_days, writeback},
 };
 use chrono::{DateTime, Utc};
 use num_rational::BigRational;
-use num_traits::{One, ToPrimitive, Zero};
+use num_traits::{ToPrimitive, Zero};
 use serde::Serialize;
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
@@ -437,8 +437,8 @@ pub fn continuation(
     };
     let p = position_after(s, activity, items, completed)?;
     let passed = p.next.is_none() && p.passed;
-    let xp = if passed {
-        passed_lesson_xp(s, activity, items, base)?
+    let xp = if p.next.is_none() {
+        completed_lesson_xp(s, items, base)?
     } else {
         0
     };
@@ -1130,43 +1130,34 @@ pub fn grade(s: &EntitySnapshot, question: u64, responses: &BTreeMap<u64, String
     Ok(correct)
 }
 
-/// Final lesson award from the local XP proposal: perfect 1.25x, one mistake
-/// earns base, subsequent mistakes reduce by 0.4/K with a 0.6 floor. Failed or
-/// unfinished work earns zero. Tutorials and examples are never answer evidence.
+/// Final lesson XP uses the shared whole-task accuracy rule, including failures.
+/// Unfinished work has no award. Tutorials/examples are never answer evidence.
 pub fn lesson_xp(s: &EntitySnapshot, activity: u64, items: &[u64], base: i64) -> Result<i64> {
     if base < 0 {
         return Err("base XP must be nonnegative".into());
     }
-    if !lesson_passed(s, activity, items)? {
+    if position(s, activity, items)?.next.is_some() {
         return Ok(0);
     }
-    passed_lesson_xp(s, activity, items, base)
+    completed_lesson_xp(s, items, base)
 }
-fn passed_lesson_xp(s: &EntitySnapshot, activity: u64, items: &[u64], base: i64) -> Result<i64> {
+fn completed_lesson_xp(s: &EntitySnapshot, items: &[u64], base: i64) -> Result<i64> {
     if base < 0 {
         return Err("base XP must be nonnegative".into());
     }
-    let k = lesson_steps(s, activity)?
-        .iter()
-        .filter(|v| matches!(v.kind.as_str(), "knowledge-point" | "question"))
-        .count();
-    if k == 0 {
-        return Ok(0);
-    }
-    let mut errors = 0usize;
+    let mut outcomes = vec![];
     for item in items {
         let content = s.reference(*item, "task-item/content")?;
-        if s.is_ordinary_question(content)? && question_outcome(s, *item)? != Some(Some(true)) {
-            errors += 1;
+        if s.is_ordinary_question(content)? {
+            outcomes.push(
+                question_outcome(s, *item)?.ok_or("XP requires completed question outcomes")?,
+            );
         }
     }
-    let factor = if errors == 0 {
-        BigRational::new(5.into(), 4.into())
-    } else {
-        (BigRational::one() - BigRational::new((2 * (errors - 1)).into(), (5 * k).into()))
-            .max(BigRational::new(3.into(), 5.into()))
-    };
-    round_half_up(BigRational::from_integer(base.into()) * factor)?
+    if outcomes.is_empty() {
+        return Ok(0);
+    }
+    lesson_xp_candidate(base, &outcomes, None)?
         .to_i64()
         .ok_or_else(|| "XP outside supported range".into())
 }
@@ -2559,9 +2550,10 @@ mod tests {
     fn finalized_xp_counts_errors_separately_from_mastery() {
         for (outcomes, expected) in [
             (vec![true, true], 15),
-            (vec![false, true, true], 12),
-            (vec![false, false, true, true], 7),
-            (vec![false; 5], 0),
+            (vec![false, true, true], 8),
+            (vec![false, false, true, true], 5),
+            (vec![false; 5], -1),
+            (vec![true, false, true, false, true], 7),
         ] {
             let mut s = fixture();
             present(&mut s, 40, "completed");
@@ -2575,6 +2567,10 @@ mod tests {
                 );
             }
             assert_eq!(lesson_xp(&s, 20, &items(&s), 12).unwrap(), expected);
+            let (next, passed, xp) = continuation(&s, 20, &items(&s), false, 12).unwrap();
+            assert_eq!(next, None);
+            assert_eq!(xp, expected);
+            assert_eq!(passed, lesson_passed(&s, 20, &items(&s)).unwrap());
         }
     }
 

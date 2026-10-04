@@ -2,12 +2,34 @@
 
 `course-academy-engine` is the library; `fire` is the command-line binary. Both
 run without Python. The port preserves the existing engine's rules, including
-two correct answers in a row for lesson KPs, three for reviews, opt-in fitted XP,
+two correct answers in a row for lesson KPs, three for reviews, accepted earned-XP rules,
 and completed diagnostic retries replacing the original placement evidence.
 The study app uses `learning` for the current generic activity/step schema,
 lesson eligibility, response grading, lesson XP, and per-answer FIRe updates.
 Its durable EDB integration is in `scripts/learning_api.rs`. Review and
 assessment scheduling for that interface remains to be connected.
+
+Earned XP uses the fixed version-one rules documented in
+[3-xp-weights.edn](../../schema/engine/3-xp-weights.edn) and the
+[formula report](../../reference/xp-docs/earned-xp-formula-report.md).
+`activities::earned_xp` is the shared calculation for lesson, review, assessment,
+and multistep awards. It takes base XP and whole-task correct/total counts, with
+the final outcome required for partial-credit reviews. Question difficulty and
+answer-field count do not weight accuracy. Rounding is `floor(x + 0.5)`, once
+at the end; intermediate coefficients use exact rational arithmetic.
+
+Both `runtime` completion and the study app's `learning::continuation` use these
+rules. A finished failed lesson/review still receives its calculated XP, while
+its mastery/status decision remains separate. Unfinished work receives no final
+award. Assessment completion and expiry use every assigned question in the XP
+denominator, without creating responses or FIRe evidence for unanswered work.
+Diagnostics retain their separate placement rules. Explicit observed/imported
+awards remain authoritative, and stored history is not recalculated.
+
+`ActivityRules::use_fitted_xp` is retained for replay compatibility and now
+defaults to `true`. Setting it to `false` suppresses automatic partial awards
+in the older `runtime` API; the current study app always uses the accepted rules.
+Base XP is supplied separately; these changes concern the earned/base adjustment.
 
 ```bash
 cargo test

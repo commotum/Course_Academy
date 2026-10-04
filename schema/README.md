@@ -1,6 +1,6 @@
 # Schema organization
 
-`data` holds curriculum entities, course groups and outcomes, and skill relationships. `content` holds reusable activity definitions, instructional material, problems, and answer representations. `learner` holds learner identity, current state, task history, and item performance. `engine` holds FIRe policy settings. Generic activities and steps replace the type-specific content schemas; the runtime still needs migration to that shared model.
+`data` holds curriculum entities, course groups and outcomes, and skill relationships. `content` holds reusable activity definitions, instructional material, problems, and answer representations. `learner` holds learner identity, current state, task history, and item performance. `engine` holds FIRe policy settings and fixed earned-XP rule documentation. Generic activities and steps replace the type-specific content schemas; the runtime still needs migration to that shared model.
 
 Each folder has its own numbering; content starts at 0 for the generic activity definition. Single-file groups use `group-name`; groups with multiple files use `group-item-name`. Within a folder, the first number groups related schemas and the second gives their reading order. Numbers do not connect groups across folders; EDB references define the relationships. This is a navigation aid rather than a required transaction order. Install schema definitions before seed transaction data.
 
@@ -44,6 +44,7 @@ learner/
 engine/
   1-fire-policy.edn
   2-question-weights.edn
+  3-xp-weights.edn           # fixed earned-XP rule identities and formulas
   3-default-fire-policy.edn   # seed transaction data
 ```
 
@@ -87,6 +88,8 @@ These five placeholder specs cover the current curriculum-loading workflow. We c
 `data/5-1-topic.edn` includes optional `topic/difficulty`, a finite assessment-accuracy estimate in [0,1]. Ensure `topic/difficulty-validate` on difficulty-only updates. `topic/validate` also checks difficulty if present, while identity-only placeholders remain supported.
 
 [1-fire-policy.edn](engine/1-fire-policy.edn) defines FIRe parameters under a stable `policy/id`. Ensure `policy/validate` when editing them. EDB history preserves earlier values: inspect past progress and its referenced policy in the same historical database value with `as_of`. Editing a policy leaves stored `progress/interval-days` unchanged until the engine recomputes it; it does not automatically reschedule every topic.
+
+[3-xp-weights.edn](engine/3-xp-weights.edn) installs documentation identities for the fixed version-one earned-XP rules. It is a valid EDB transaction containing `db/ident` and `db/doc` records, not a set of mutable coefficient attributes. Both engine implementations calculate these rules by default; the Rust study player uses the same shared calculator. Keep changes to a rule's equations, engine code, examples, and regression expectations together. Base XP and question-selection distributions remain separate from the earned/base adjustment. See the [earned-XP report](../reference/xp-docs/earned-xp-formula-report.md) for the complete formulas and denominator rules.
 
 The completion handler prepares one transaction containing the item status, responses, item/task elapsed totals, affected progress, overall performance, and any task completion/XP. It uses the same transaction instant for timing and recorded history, and guards completion with an item-status compare-and-swap. Submission must use the returned exact-basis guard and request key; retain the original plan for retries. The Rust adapter exists; wiring its callbacks to a production UI and durable EDB writer remains application work. See [native validation and engine mapping](../engine/edb/README.md).
 

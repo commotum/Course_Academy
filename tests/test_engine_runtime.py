@@ -673,12 +673,45 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual(fixture.entities[3]['learner-task/status'], fixture.enums['learner-task.status/completed'])
         self.assertEqual(fixture.entities[pending]['task-item/status'], fixture.enums['task-item.status/paused'])
         self.assertIsNone(fixture.load().snapshot.item_completed_at(pending))
-        self.assertNotIn('learner-task/xp-earned', fixture.entities[3])
+        self.assertEqual(fixture.entities[3]['learner-task/xp-earned'], 0)
         self.assertEqual(fixture.state(20).evidence_mass, 1)
         self.assertEqual(fixture.state(21).evidence_mass, 0)
         self.assertEqual(fixture.load().engine.global_ability['learner'].assessment_mass, 1)
         with self.assertRaises(ValueError):
             expire_task(fixture.load(), 3, completed_at=START + timedelta(seconds=60))
+
+    def test_default_xp_on_failed_lessons_and_reviews_preserves_mastery_decision(self):
+        for kind, outcomes, expected in [
+            ('lesson', [True, False, True, False, True], 4),
+            ('lesson', [False] * 5, -1),
+            ('review', [True, False, True, False, True], 4),
+            ('review', [True, True, False, True, False], 0),
+            ('review', [True, False, True, False, False], -1),
+        ]:
+            with self.subTest(kind=kind, outcomes=outcomes):
+                fixture = RuntimeFixture(kind)
+                fixture.entities[3]['learner-task/xp-base'] = 7
+                if kind == 'lesson':
+                    fixture.answer(210)
+                    fixture.answer(200)
+                for n, outcome in enumerate(outcomes):
+                    completion = fixture.answer(100 + n, outcome)
+                self.assertTrue(completion.delivery.complete)
+                self.assertFalse(completion.delivery.passed)
+                self.assertEqual(fixture.entities[3]['learner-task/xp-earned'], expected)
+                self.assertEqual(fixture.entities[3]['learner-task/status'], fixture.enums['learner-task.status/failed'])
+
+    def test_unanswered_quiz_expiry_scores_without_creating_answer_evidence(self):
+        fixture = RuntimeFixture('assessment')
+        fixture.entities[4]['assessment/time-limit-seconds'] = 60.
+        fixture.entities[3]['learner-task/xp-base'] = 15
+        pending = fixture.present(100)
+        completion = expire_task(fixture.load(), 3, completed_at=START + timedelta(seconds=60))
+        fixture.apply(completion.transaction)
+        self.assertEqual(fixture.entities[3]['learner-task/xp-earned'], -1)
+        self.assertEqual(fixture.entities[pending]['task-item/status'], fixture.enums['task-item.status/paused'])
+        self.assertIsNone(fixture.load().snapshot.item_completed_at(pending))
+        self.assertNotIn('learner', fixture.load().engine.global_ability)
 
     def test_diagnostic_timer_places_only_observed_positive_evidence(self):
         fixture = RuntimeFixture('diagnostic')

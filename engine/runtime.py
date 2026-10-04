@@ -30,11 +30,12 @@ class ActivityRules:
 
     Assessment/multistep questions share at most one base retention unit per
     topic in a task. Diagnostic skips affect placement but not answer accuracy.
-    XP candidates are opt-in because the non-perfect equations are inferred.
+    Accepted XP rules are enabled by default; the legacy switch permits callers
+    replaying older evidence to suppress inferred partial awards explicitly.
     """
     diagnostic_skip_policy: str = 'negative'
     diagnostic_uses_assessment_accuracy: bool = False
-    use_fitted_xp: bool = False
+    use_fitted_xp: bool = True
 
     def __post_init__(self):
         if self.diagnostic_skip_policy not in {'negative', 'neutral'}:
@@ -529,8 +530,9 @@ def complete_item(loaded: LoadedRuntime, item_eid: int, *, completed_at: datetim
         if award is None and base is not None and kind in {'lesson', 'review', 'assessment', 'multistep'}:
             calculators = {'lesson': lesson_xp_candidate, 'review': review_xp_candidate,
                            'assessment': assessment_xp_candidate, 'multistep': multistep_xp_candidate}
-            # Perfect-work observations are supported; partial fitted awards require opt-in.
-            if kind in {'lesson', 'review'} and all(o is True for o in outcomes) or rules.use_fitted_xp and kind in {'assessment', 'multistep'}:
+            if kind == 'assessment':
+                outcomes += [None] * (len(snapshot.refs(activity, 'assessment/questions')) - len(outcomes))
+            if rules.use_fitted_xp or kind in {'lesson', 'review'} and all(o is True for o in outcomes):
                 award = calculators[kind](base, outcomes)
         if award is not None:
             change['learner-task/xp-earned'] = award
@@ -547,8 +549,8 @@ def expire_task(loaded: LoadedRuntime, task_eid: int, *, completed_at: datetime,
     """Timer callback for an assessment or diagnostic; invent no answer results.
 
     Already submitted answers keep their one-time accuracy/retention effects.
-    Diagnostic placement uses only observed answers. No XP formula is guessed
-    for a partially delivered timed exam; pass an explicit award when defined.
+    Diagnostic placement uses only observed answers. Assessment XP uses the full
+    assigned denominator, without recording responses for unanswered questions.
     The application owns the actual timer and submits the returned guarded plan.
     """
     rules = rules or ActivityRules()
@@ -588,6 +590,11 @@ def expire_task(loaded: LoadedRuntime, task_eid: int, *, completed_at: datetime,
         _place_diagnostic(loaded, engine, activity, items, at, rules)
     engine.latest[loaded.learner] = at
     change = {'db/id': task_eid}
+    base = task.get('learner-task/xp-base')
+    if xp_award is None and kind == 'assessment' and base is not None and rules.use_fitted_xp:
+        outcomes = [_result(snapshot, i) for i in items]
+        outcomes += [None] * (len(snapshot.refs(activity, 'assessment/questions')) - len(outcomes))
+        xp_award = assessment_xp_candidate(base, outcomes)
     if xp_award is not None:
         change['learner-task/xp-earned'] = xp_award
     transaction = task_transaction(loaded, task_eid, completed_at, [change], engine)

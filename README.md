@@ -33,6 +33,10 @@ Our FIRe implementation is in [engine/rust](engine/rust/). It combines the
 published mechanisms with configurable policies chosen for Course Academy.
 The goal is a reliable engine of our own, informed by the available evidence;
 matching Math Academy's private numerical values is not a requirement.
+Earned XP uses our accepted [version-one rules](schema/engine/3-xp-weights.edn):
+whole-task accuracy, simple task-specific multipliers, and bonus/penalty bands.
+The [XP formula report](reference/xp-docs/earned-xp-formula-report.md) documents
+the equations, rounding, examples, and fit to all 168 retained activities.
 Start with the [research and implementation report](reference/fire-reconstruction.md),
 [history verification](reference/fire-history-analysis.md), and
 [data model](reference/fire-data-model.md).

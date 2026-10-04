@@ -1,12 +1,14 @@
 """Activity transitions and observed XP examples, not assertions of MA parity."""
 from decimal import Decimal
 from fractions import Fraction
+import json
+from pathlib import Path
 import unittest
 
 from engine.activities import (
     DiagnosticBalance, assessment_xp_candidate, evaluate_kp_prefix,
     evaluate_review_prefix, lesson_xp_candidate, multistep_xp_candidate,
-    review_xp_candidate, round_half_up,
+    review_xp_candidate, round_half_up, earned_xp,
 )
 
 
@@ -67,18 +69,46 @@ class XpTests(unittest.TestCase):
         ]:
             self.assertEqual(multistep_xp_candidate(base, [True] * correct +
                                                    [False] * (count - correct)), award)
-        # Documented extrapolation is signed; no silent clamp was invented.
-        self.assertEqual(multistep_xp_candidate(7, [None]), -7)
+        self.assertEqual(multistep_xp_candidate(7, [None]), -1)
 
     def test_perfect_bonus_and_explicit_partial_awards(self):
         self.assertEqual(lesson_xp_candidate(16, [True] * 8), 20)
         self.assertEqual(review_xp_candidate(7, [True] * 3), 9)
         for scorer in [lesson_xp_candidate, review_xp_candidate]:
             for outcomes in [[True, False], [True, None]]:
-                with self.assertRaisesRegex(ValueError, 'explicit award'): scorer(7, outcomes)
+                self.assertEqual(scorer(7, outcomes), 3 if scorer is lesson_xp_candidate else 0)
                 self.assertEqual(scorer(7, outcomes, award=0), 0)
                 self.assertEqual(scorer(7, outcomes, award=-1), -1)
             with self.assertRaises(ValueError): scorer(7, [True], award=True)
+
+    def test_accepted_boundaries_and_review_ending(self):
+        self.assertEqual(earned_xp('lesson', 20, 1, 4), -1)
+        self.assertEqual(earned_xp('lesson', 20, 1, 2), 9)
+        self.assertEqual(earned_xp('lesson', 20, 3, 5), 12)
+        self.assertEqual(earned_xp('lesson', 20, 9, 10), 20)
+        self.assertEqual(earned_xp('lesson', 20, 10, 10), 25)
+        self.assertEqual(earned_xp('assessment', 15, 0, 9), -1)
+        self.assertEqual(earned_xp('assessment', 15, 1, 5), 0)
+        self.assertEqual(earned_xp('review', 6, 2, 5, final_correct=False), -1)
+        self.assertEqual(earned_xp('review', 6, 3, 5, final_correct=False), 0)
+        self.assertEqual(earned_xp('review', 6, 3, 5, final_correct=True), 4)
+        self.assertEqual(earned_xp('review', 6, 2, 3), 6)
+        with self.assertRaisesRegex(ValueError, 'final_correct'):
+            earned_xp('review', 6, 3, 5)
+        # Final ties use half-up rounding, including arbitrary precision bases.
+        self.assertEqual(earned_xp('lesson', 10, 1, 2), 5)
+        self.assertEqual(earned_xp('lesson', 10**30, 1, 2), 45 * 10**28)
+
+    def test_all_frozen_observed_awards(self):
+        path = Path(__file__).resolve().parents[1] / 'reference/mathacademy-earned-xp/observations.json'
+        rows = json.loads(path.read_text())['rows']
+        self.assertEqual(len(rows), 168)
+        calculators = {'lesson': lesson_xp_candidate, 'review': review_xp_candidate,
+                       'assessment': assessment_xp_candidate, 'multistep': multistep_xp_candidate}
+        for row in rows:
+            with self.subTest(task=row['task_id']):
+                self.assertEqual(calculators[row['type']](row['base'], [q['correct'] for q in row['questions']]),
+                                 row['earned'])
 
     def test_invalid_xp_inputs(self):
         for scorer in [assessment_xp_candidate, multistep_xp_candidate,

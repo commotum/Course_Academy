@@ -2,8 +2,8 @@
 
 Published practice/diagnostic structure is described in The Math Academy Way's
 Practice FAQ and diagnostic technical chapter. Streak stopping and propagation
-deduplication below are explicit local policies. XP candidates come from
-reference/mathacademy-xp-analysis.md; they are fits, not recovered MA formulas.
+deduplication below are explicit local policies. The accepted earned-XP rules
+are documented in schema/engine/3-xp-weights.edn and the earned-XP report.
 """
 from __future__ import annotations
 
@@ -107,27 +107,62 @@ def _xp_inputs(base: Number, outcomes: Iterable[Outcome]) -> tuple[Fraction, tup
     return baseline, values
 
 
-def assessment_xp_candidate(base: Number, outcomes: Iterable[Outcome]) -> int:
-    """Observed fit: max(0, R(1.2 B (p - .35)/.65)); not an MA guarantee.
+def earned_xp(kind: str, base: Number, correct: int, total: int, *,
+              final_correct: bool | None = None) -> int:
+    """Version-one earned XP; equal question weights, exact final rounding.
 
-    Explicit skips count in the denominator with no correct credit. Unpresented
-    questions must not be supplied. The caller determines activity completion.
+    Quizzes include all assigned questions in total, including unanswered ones.
+    Partial reviews require their final outcome (a skip counts as not correct).
+    Delivery/mastery decisions are separate: a finished failed task still scores.
+    Integer bases use integer arithmetic; exact fractional bases remain supported.
     """
+    if type(correct) is not int or type(total) is not int or total <= 0 or not 0 <= correct <= total:
+        raise ValueError('Require integer counts with total > 0 and 0 <= correct <= total')
+    if final_correct is not None and type(final_correct) is not bool:
+        raise ValueError('final_correct must be boolean or None')
+    baseline = base if type(base) is int else _number(base, 'base XP')
+    if baseline < 0:
+        raise ValueError('base XP must be nonnegative')
+    b, d = (baseline, 1) if type(baseline) is int else (baseline.numerator, baseline.denominator)
+    def scaled(numerator, denominator):
+        n, den = b * numerator, d * denominator
+        return (2 * n + den) // (2 * den)
+    kind = kind.lower()
+    if kind == 'lesson':
+        if 2 * correct < total:
+            return -1
+        if correct == total:
+            return scaled(5, 4)
+        return scaled(min(10 * total, 15 * correct - 3 * total), 10 * total)
+    if kind == 'review':
+        if 2 * correct < total:
+            return -1
+        if correct == total:
+            return (2 * b + d) // (2 * d) + 2
+        if 3 * correct >= 2 * total:
+            return scaled(1, 1)
+        if final_correct is None:
+            raise ValueError('Partial-credit review needs final_correct')
+        return scaled(correct, total) if final_correct else 0
+    if kind in {'assessment', 'quiz'}:
+        if 5 * correct < total:
+            return -1
+        return max(0, scaled(6 * (20 * correct - 7 * total), 65 * total))
+    if kind == 'multistep':
+        return max(-1, scaled(9 * correct - 4 * total, 4 * total))
+    raise ValueError('No base-relative XP formula for ' + kind)
+
+
+def assessment_xp_candidate(base: Number, outcomes: Iterable[Outcome]) -> int:
+    """Quiz rule; include unanswered assigned questions as None for XP only."""
     baseline, values = _xp_inputs(base, outcomes)
-    accuracy = Fraction(sum(value is True for value in values), len(values))
-    return max(0, round_half_up(baseline * Fraction(6, 5) *
-                                (accuracy - Fraction(7, 20)) / Fraction(13, 20)))
+    return earned_xp('assessment', baseline, sum(v is True for v in values), len(values))
 
 
 def multistep_xp_candidate(base: Number, outcomes: Iterable[Outcome]) -> int:
-    """Observed fit R(B (2.25 p - 1)); no invented negative/history clamp.
-
-    Explicit skips count as attempted without correct credit. Negative outputs
-    extrapolate beyond the observed sample; they are not verified MA penalties.
-    """
+    """Multistep rule, with the accepted -1 floor; skips receive no credit."""
     baseline, values = _xp_inputs(base, outcomes)
-    accuracy = Fraction(sum(value is True for value in values), len(values))
-    return round_half_up(baseline * (Fraction(9, 4) * accuracy - 1))
+    return earned_xp('multistep', baseline, sum(v is True for v in values), len(values))
 
 
 def _explicit_award(award: int | None) -> int | None:
@@ -137,7 +172,7 @@ def _explicit_award(award: int | None) -> int | None:
 
 
 def lesson_xp_candidate(base: Number, outcomes: Iterable[Outcome], *, award: int | None = None) -> int:
-    """Perfect-lesson hypothesis R(1.25 B); partial work requires caller award.
+    """Accepted whole-lesson accuracy rule, including partial and failed work.
 
     The caller must already have established completion of the whole lesson.
     An explicit award is authoritative, including zero or negative XP.
@@ -146,25 +181,20 @@ def lesson_xp_candidate(base: Number, outcomes: Iterable[Outcome], *, award: int
     explicit = _explicit_award(award)
     if explicit is not None:
         return explicit
-    if not all(value is True for value in values):
-        raise ValueError('partial lesson XP is unresolved; supply an explicit award')
-    return round_half_up(baseline * Fraction(5, 4))
+    return earned_xp('lesson', baseline, sum(v is True for v in values), len(values))
 
 
 def review_xp_candidate(base: Number, outcomes: Iterable[Outcome], *, award: int | None = None) -> int:
-    """Perfect-review hypothesis B+2; partial work requires caller award.
+    """Accepted review rule, including low-score and final-outcome bands.
 
-    B+2 is observed only over bases 4–7, not established as a universal bonus.
-    The caller establishes review completion; integer rounding of other bases
-    is a local extension of the observed candidate.
+    An explicit caller award remains authoritative for imported/observed XP.
     """
     baseline, values = _xp_inputs(base, outcomes)
     explicit = _explicit_award(award)
     if explicit is not None:
         return explicit
-    if not all(value is True for value in values):
-        raise ValueError('partial review XP is unresolved; supply an explicit award')
-    return round_half_up(baseline + 2)
+    return earned_xp('review', baseline, sum(v is True for v in values), len(values),
+                     final_correct=values[-1] is True)
 
 
 class DiagnosticBalance:

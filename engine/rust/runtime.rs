@@ -29,7 +29,7 @@ impl Default for ActivityRules {
         Self {
             diagnostic_skip_policy: "negative".into(),
             diagnostic_uses_assessment_accuracy: false,
-            use_fitted_xp: false,
+            use_fitted_xp: true,
         }
     }
 }
@@ -1084,12 +1084,19 @@ pub fn complete_item(
                 outcomes.push(result(snapshot, i)?);
             }
         }
+        if kind == "assessment" {
+            outcomes.resize(snapshot.refs(activity, "assessment/questions")?.len(), None);
+        }
         let mut award = xp_award;
         if award.is_none()
             && let Some(base) = task.get("learner-task/xp-base")
-            && (matches!(kind.as_str(), "lesson" | "review")
-                && outcomes.iter().all(|o| *o == Some(true))
-                || rules.use_fitted_xp && matches!(kind.as_str(), "assessment" | "multistep"))
+            && (rules.use_fitted_xp
+                && matches!(
+                    kind.as_str(),
+                    "lesson" | "review" | "assessment" | "multistep"
+                )
+                || matches!(kind.as_str(), "lesson" | "review")
+                    && outcomes.iter().all(|o| *o == Some(true)))
         {
             // Preserve integer bases exactly before evaluating rational formulas.
             let base = if let Some(i) = base.as_i64() {
@@ -1192,7 +1199,29 @@ pub fn expire_task(
     }
     engine.latest.insert(loaded.learner.clone(), at);
     let mut change = Map::from_iter([("db/id".into(), json!(task_eid))]);
-    if let Some(award) = xp_award {
+    let mut award = xp_award;
+    if award.is_none()
+        && kind == "assessment"
+        && rules.use_fitted_xp
+        && let Some(base) = snapshot.entity(task_eid)?.get("learner-task/xp-base")
+    {
+        let base = if let Some(i) = base.as_i64() {
+            BigRational::from_integer(i.into())
+        } else {
+            number(base, "base XP")?.exact()?
+        };
+        let mut outcomes = items
+            .iter()
+            .map(|i| result(snapshot, i))
+            .collect::<Result<Vec<_>>>()?;
+        outcomes.resize(snapshot.refs(activity, "assessment/questions")?.len(), None);
+        award = Some(
+            assessment_xp_candidate(base, &outcomes)?
+                .to_i64()
+                .ok_or("XP award exceeds EDB long range")?,
+        );
+    }
+    if let Some(award) = award {
         change.insert("learner-task/xp-earned".into(), json!(award));
     }
     let transaction = task_transaction(
@@ -1800,7 +1829,7 @@ mod tests {
             f.entities[&pending]["task-item/status"],
             f.enums["task-item.status/paused"]
         );
-        assert!(!f.entities[&3].contains_key("learner-task/xp-earned"));
+        assert_eq!(f.entities[&3]["learner-task/xp-earned"], 0);
         assert_eq!(f.state(21).evidence_mass(), 0.0);
         for outcome in [Some(true), Some(false)] {
             let mut f = Fixture::new("diagnostic");
@@ -1879,6 +1908,54 @@ mod tests {
             }
             assert!(complete_item(&f.load(), eid, o).is_err());
         }
+    }
+    #[test]
+    fn default_xp_scores_failed_practice_without_changing_mastery() {
+        for (kind, outcomes, expected) in [
+            ("lesson", [true, false, true, false, true], 4),
+            ("lesson", [false; 5], -1),
+            ("review", [true, false, true, false, true], 4),
+            ("review", [true, true, false, true, false], 0),
+            ("review", [true, false, true, false, false], -1),
+        ] {
+            let mut f = Fixture::new(kind);
+            f.set(3, "learner-task/xp-base", json!(7));
+            if kind == "lesson" {
+                f.answer(210, None);
+                f.answer(200, None);
+            }
+            for (n, outcome) in outcomes.into_iter().enumerate() {
+                f.answer(100 + n as u64, Some(outcome));
+            }
+            assert_eq!(f.entities[&3]["learner-task/xp-earned"], expected);
+            assert_eq!(
+                f.entities[&3]["learner-task/status"],
+                f.enums["learner-task.status/failed"]
+            );
+        }
+    }
+
+    #[test]
+    fn unanswered_quiz_expiry_scores_without_creating_answer_evidence() {
+        let mut f = Fixture::new("assessment");
+        f.set(4, "assessment/time-limit-seconds", json!(60.0));
+        f.set(3, "learner-task/xp-base", json!(15));
+        let pending = f.present(100);
+        let done = expire_task(
+            &f.load(),
+            3,
+            start() + Duration::seconds(60),
+            None,
+            ActivityRules::default(),
+        )
+        .unwrap();
+        f.apply(&done.transaction);
+        assert_eq!(f.entities[&3]["learner-task/xp-earned"], -1);
+        assert_eq!(
+            f.entities[&pending]["task-item/status"],
+            f.enums["task-item.status/paused"]
+        );
+        assert!(!f.load().engine.global_ability.contains_key("learner"));
     }
 
     #[test]
