@@ -91,8 +91,14 @@ def choose_lesson(queue, priorities, completed_topics=()):
 
 
 def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
-    """Prefer ranked lessons, then reviews, then the next uncaptured queue item."""
-    available = [item for item in queue if item.get('task_type','lesson') in ('lesson','review') and
+    """Required assessments first; otherwise ranked lessons, reviews, then queue order."""
+    tests = [item for item in queue if item.get('task_type') == 'assessment' and
+             not item.get('in_progress') and item['task_id'] not in captured_tasks]
+    required = next((item for item in tests if item.get('assessment_requirement') == 'required' and
+                     item.get('capture_supported')), None)
+    if required:
+        return {**required, 'selection_reason': 'required_assessment'}
+    available = [item for item in queue if item.get('task_type','lesson') in ('lesson','review','multistep') and
                  item.get('capture_supported',True) and not item.get('in_progress',False) and
                  item['task_id'] not in captured_tasks and
                  not (item.get('task_type', 'lesson') == 'lesson' and item['topic_id'] in completed_topics)]
@@ -106,7 +112,23 @@ def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
     if available:
         return {**available[0], 'task_type': available[0].get('task_type', 'lesson'),
                 'selection_reason': 'queue_fallback'}
+    unknown = next((item for item in tests if item.get('assessment_requirement') != 'optional'), None)
+    if unknown:
+        return {**unknown, 'selection_reason': 'assessment_requires_inspection', 'stop_before_start': True}
     return None
+
+
+def assessment_requirement(details):
+    """Keep the source notice; only start assessments with known requirements."""
+    notes = next((value for key, value in details.items() if key.lower() == 'notes'), None)
+    count = re.search(r'optional\s+until\s+([\d,]+)\s+more\s+XP\s+have\s+been\s+earned', notes or '', re.I)
+    if count:
+        remaining = int(count[1].replace(',', ''))
+        return {'assessment_notice': notes, 'optional_xp_remaining': remaining,
+                'assessment_requirement': 'optional' if remaining else 'required'}
+    if notes is not None and re.search(r'\brequired\b|\bmust\b.{0,30}\b(?:take|complete)\b', notes, re.I):
+        return {'assessment_notice': notes, 'optional_xp_remaining': 0, 'assessment_requirement': 'required'}
+    return {'assessment_notice': notes, 'optional_xp_remaining': None, 'assessment_requirement': 'unknown'}
 
 
 def choose_review_sequence(rng, weight=0.7):
@@ -274,4 +296,22 @@ def build_transaction(content, topic, existing):
         forbidden = {str(a)[1:] for a in item} - ALLOWED - {'db/id', 'db/ensure'}
         if forbidden:
             raise ValueError('Forbidden transaction attributes: ' + repr(forbidden))
+    return transaction, report
+
+
+def build_content_transaction(content, topics, existing):
+    """Assessments and multisteps span topics in one guarded content transaction."""
+    records = content['questions'] + content.get('canonical_examples', [])
+    if len({q['math_academy_id'] for q in records}) != len(records):
+        raise ValueError('Duplicate question identities in capture')
+    if content.get('task_type') not in ('assessment','multistep'):
+        return build_transaction(content,topics[content['topic_id']],existing)
+    transaction, report = [], []
+    if content.get('canonical_examples'):
+        raise ValueError('Unexpected assessment canonical examples')
+    for topic_id in sorted({q['topic_id'] for q in records}):
+        group = {**content,'topic_id':topic_id,'questions':[q for q in records if q['topic_id']==topic_id]}
+        changes, matches = build_transaction(group,topics[topic_id],existing)
+        transaction.extend(changes)
+        report.extend(matches)
     return transaction, report

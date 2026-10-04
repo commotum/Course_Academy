@@ -1,0 +1,140 @@
+// Arrows show conceptual input dependencies, not recovered production code.
+// Scope: the accuracy-based FIRe implementation described publicly, together
+// with documented workload estimation, diagnostic timing and task selection.
+// Does not claim an audit of the currently deployed Math Academy version.
+// Excludes proposed solve-time/reference-reliance adjustments to ordinary FIRe,
+// and Course Academy's self-directed targets and assignment-deadline policies.
+// Keep engine-dependencies.dots as the original Course Academy design comparison.
+//
+// Sources:
+// [1] https://www.justinmath.com/golden-nuggets-podcast-39/ (2024-10-30)
+//     Expected question times, workload/XP calibration, diagnostic timing,
+//     and accuracy-only ordinary practice credit versus planned extra signals.
+// [2] https://www.mathacademy.com/how-our-ai-works
+//     Diagnostic compression/inference, prerequisite readiness, repetition
+//     compression, topic-specific pacing, quiz selection and remediation.
+// [3] The Math Academy Way, chapter 29, sections "Ratio of Student Ability and
+//     Topic Difficulty", "Measuring Student Ability at the Level of Individual
+//     Topics", "Measuring Topic Difficulty" and "High-Level Structure".
+//     Local file: reference/The Math Academy Way/V-TECHNICAL-DEEP-DIVES/
+//     29-Technical-Deep-Dive-on-Spaced-Repetition/
+//     29-Technical-Deep-Dive-on-Spaced-Repetition.md
+//     https://www.justinmath.com/individualized-spaced-repetition-in-hierarchical-knowledge-structures/
+// [4] https://www.mathacademy.com/faq
+//     Approximately 150 XP per quiz, timed quiz evaluation and remedial reviews.
+// [5] https://www.justinmath.com/the-vision-for-version-2-of-math-academys-spaced-repetition-system/
+//     2025-10-22 roadmap: timing/reference reliance still described as future.
+// Exact estimator formulas, XP counter/reset rules, diagnostic initialization,
+// quiz timing treatment, and scheduler ranking formulas are not established here.
+// Render: dot -Tpng -Gdpi=160 engine-dependencies-ma-implemented.dots -o engine-dependencies-ma-implemented.png
+
+digraph MathAcademyImplementedDependencies {
+  graph [label="Math Academy — Documented Implemented Dependencies\nAccuracy-based FIRe · timing-aware diagnostics", labelloc=t,
+    labeljust=l, fontname="DejaVu Sans", fontsize=23, bgcolor="white",
+    rankdir=TB, nodesep=0.38, ranksep=0.64, pad=0.35,
+    splines=polyline, outputorder=edgesfirst];
+  node [shape=box, style=filled, fillcolor="#f3f4f6", color="#374151",
+    fontcolor="#111827", fontname="DejaVu Sans", fontsize=13,
+    margin="0.18,0.13", penwidth=1.1];
+  edge [color="#64748b", arrowsize=0.7, penwidth=1.1,
+    fontname="DejaVu Sans", fontsize=10, fontcolor="#475569"];
+
+  Content [label="Content + correct answers"];
+  Results [label="Lesson/review/quiz\ncorrectness + task outcomes"];
+  ObservedTimes [label="Recorded answer times"];
+  AuthoredTimes [label="Writer-estimated question times"];
+  Times [label="Calibrated reference times"];
+  Structure [label="Tutorials + knowledge points\n+ expected question counts"];
+  Workload [label="Expected activity workload"];
+  Base [label="Base XP"];
+  Earned [label="Earned XP"];
+  Cadence [label="Quiz availability\napproximately every 150 XP"];
+
+  Accuracy [label="Recent learner-topic accuracy"];
+  Cohort [label="Assessment accuracy across\nserious students, by topic"];
+  Difficulty [label="Topic difficulty"];
+  Speed [label="Learner-topic repetition multiplier\n(accuracy + difficulty)"];
+  Coverage [label="Encompassing relationships\n+ coverage weights"];
+  Spacing [label="Time since previous practice\nrelative to repetition interval"];
+  Credit [label="Fractional repetition credit\npositive / negative + propagated"];
+  Retention [label="Current knowledge profile\nrepetitions + retention state"];
+  Clock [label="Calendar time"];
+  Previous [label="Previous topic repetition\n+ retention state"];
+  Reviews [label="Due reviews + explicit-review needs"];
+
+  Prerequisites [label="Topic graph + prerequisites"];
+  Course [label="Enrolled course + its foundations"];
+  Compressed [label="Compressed diagnostic topic graph"];
+  DiagnosticAnswers [label="Diagnostic correctness\n+ actual answer times"];
+  Diagnostic [label="Timing-weighted diagnostic\nevidence + graph inference"];
+  Placement [label="Initial knowledge profile\n+ conditional placement"];
+
+  Readiness [label="Prerequisite-ready lessons"];
+  History [label="Quiz history + prior quiz accuracy"];
+  Quiz [label="Quiz topic/question selection\n+ timing constraints"];
+  FailureHistory [label="Quiz errors + repeated lesson\nfailure at the same skill"];
+  KeyPrerequisites [label="Key prerequisites\nfor the point of struggle"];
+  Remediation [label="Remedial review / lesson needs"];
+  Interference [label="Related-topic interference\n+ recent task history"];
+  Priority [label="Dynamic task menu\nlearning efficiency + review compression",
+    fillcolor="#111827", fontcolor="white", fontsize=16];
+
+  // Workload times do not directly scale ordinary lesson/review FIRe credit.
+  AuthoredTimes -> Times;
+  ObservedTimes -> Times [label="calibration"];
+  Times -> Workload;
+  Structure -> Workload;
+  Workload -> Base;
+  Base -> Earned;
+  Content -> Results;
+  Results -> Earned;
+  Earned -> Cadence;
+
+  // The repetition multiplier is not the learner's stopwatch speed.
+  Results -> Accuracy;
+  Cohort -> Difficulty;
+  Accuracy -> Speed;
+  Difficulty -> Speed;
+  Coverage -> Credit;
+  Results -> Credit;
+  Speed -> Credit;
+  Previous -> Spacing;
+  Clock -> Spacing;
+  Spacing -> Credit [label="early discount / overdue failure"];
+  Previous -> Retention;
+  Clock -> Retention [label="forgetting"];
+  Credit -> Retention;
+  Retention -> Reviews;
+  Speed -> Reviews [label="explicit-review requirement"];
+
+  // Diagnostic time weighting is separate from ordinary practice credit.
+  Prerequisites -> Compressed;
+  Course -> Compressed;
+  Compressed -> Diagnostic;
+  DiagnosticAnswers -> Diagnostic;
+  Times -> Diagnostic;
+  Diagnostic -> Placement;
+  Placement -> Retention [label="initialization; exact values unspecified"];
+
+  // XP affects quiz cadence, not fractional repetition credit directly.
+  Prerequisites -> Readiness;
+  Retention -> Readiness;
+  Course -> Readiness;
+  Cadence -> Quiz;
+  Retention -> Quiz [label="previously learned topics"];
+  History -> Quiz [label="coverage + question difficulty"];
+  Course -> Quiz;
+  FailureHistory -> Remediation;
+  KeyPrerequisites -> Remediation;
+  Reviews -> Priority;
+  Readiness -> Priority;
+  Coverage -> Priority [label="implicit-review coverage"];
+  Workload -> Priority;
+  Quiz -> Priority;
+  Remediation -> Priority;
+  Interference -> Priority;
+
+  Note [shape=plaintext, style="", fontsize=11, fontcolor="#475569",
+    label="Published implementation description, not a production-code specification.\nOrdinary FIRe has no direct answer-duration or reference-reliance input here.\nRecorded times still support workload calibration, diagnostics and timed quizzes."];
+  Priority -> Note [style=invis];
+}

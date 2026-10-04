@@ -2,10 +2,10 @@
 element => {
   const errors = [];
   const assets = [...element.querySelectorAll('img, canvas, svg')].filter(n =>
-    !n.closest('.mjpage, mjx-container, .MathJax, .questionWidget-header, .questionWidget-result, .stepHeader') &&
+    !n.closest('.mjpage, mjx-container, .MathJax, .questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') &&
     !n.parentElement?.closest('svg'));
   const fields = [], fieldNodes = new Map();
-  const rows = [...element.querySelectorAll('.questionWidget-choicesTable tr')];
+  const rows = [...element.querySelectorAll('.questionWidget-choicesTable tr, tr:has(.choiceLetterCircle)')];
   if (rows.length) fields.push({key:'selection', type:'radio', choices:[]});
   const nodes = [...element.querySelectorAll('.matheditor-wrapper-answer, .selectList, input:not([type="hidden"]), textarea, select, [contenteditable="true"]')]
     .filter(n => !n.closest('.questionWidget-explanation, .exampleExplanation') &&
@@ -20,6 +20,7 @@ element => {
     const f = {key, type, dom_id:n.id, tag:n.tagName.toLowerCase(), choices:[]};
     if (n.matches('.matheditor-wrapper-answer')) {
       f.tag = 'mathquill';
+      f.dom_index = [...element.querySelectorAll('.matheditor-wrapper-answer')].indexOf(n);
       f.input_html = n.outerHTML;
       f.rendered_text = n.querySelector('.mq-root-block')?.textContent || '';
       if (!n.querySelector('.mq-editable-field .mq-textarea textarea')) errors.push('Unsupported math editor: ' + n.id);
@@ -89,6 +90,16 @@ element => {
       const tex = m(math);
       return n.getAttribute('display') === 'true' ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';
     }
+    if (t === 'table') {
+      const rows = [...n.querySelectorAll('tr')].map(row => [...row.children]
+        .filter(c => ['td','th'].includes(c.localName)).map(c => text(c)));
+      const width = Math.max(0,...rows.map(r => r.length));
+      if (width) {
+        const lines = rows.map(row => '| ' + row.concat(Array(width-row.length).fill('')).join(' | ') + ' |');
+        lines.splice(1,0,'| ' + Array(width).fill('---').join(' | ') + ' |');
+        return '\n\n' + lines.join('\n') + '\n\n';
+      }
+    }
     const children = [...n.childNodes].map(render).join('');
     if (t === 'br') return '\n';
     if (t === 'li') return '- ' + children.trim() + '\n';
@@ -106,9 +117,9 @@ element => {
       value:mathOnly?value.slice(1,-1):imageOnly?value.slice(4,-1):value, html:n.innerHTML};
   }
   if (rows.length) fields[0].choices = rows.map(row => {
-    const circle = row.querySelector('.questionWidget-choiceLetterCircle, [id^="questionWidget-choiceLetterCircle-"]');
+    const circle = row.querySelector('.questionWidget-choiceLetterCircle, [id^="questionWidget-choiceLetterCircle-"], .choiceLetterCircle');
     if (!circle?.id) errors.push('Choice circle has no observed ID');
-    return choice(row.querySelector('.questionWidget-choiceText'), circle?.textContent.trim(), circle?.id);
+    return choice(row.querySelector('.questionWidget-choiceText, .choiceText'), circle?.textContent.trim(), circle?.id);
   });
   for (const [node,key] of fieldNodes) {
     const f = fields.find(f => f.key === key);
@@ -116,14 +127,15 @@ element => {
       .filter(n => n.textContent.trim() && !(n.localName === 'option' && n.disabled))
       .map((n,i) => choice(n, n.localName === 'option' ? n.value : String(i), n.id || null));
   }
-  const prompt = element.querySelector('.exampleQuestion, .questionWidget-text, .questionText');
-  const graphic = element.querySelector('.questionWidget-graphic');
-  const instructions = element.querySelector('.questionWidget-calculatorInstructions');
-  const solution = element.matches('.questionExplanation') ? element : element.querySelector('.exampleExplanation, .questionWidget-explanation');
+  const prompt = element.querySelector('.exampleQuestion, .questionWidget-text, .questionText') ||
+    (element.matches('#steps > .step:not(:has(.question))') ? element : null);
+  const graphic = element.querySelector('.questionWidget-graphic, #questionGraphic, .questionGraphicFrame');
+  const instructions = element.querySelector('.questionWidget-calculatorInstructions, .calculatorInstructions');
+  const solution = element.matches('.questionExplanation') ? element : element.querySelector('.exampleExplanation, .questionWidget-explanation, .questionExplanation');
   return {dom_id:element.id, name:element.querySelector('.stepName,.questionWidget-title')?.textContent.trim(),
     problem:[text(graphic),text(prompt)].filter(Boolean).join('\n\n'), worked_solution:text(solution),
     calculator_instructions:text(instructions), fields,
-    result:element.querySelector('.questionWidget-result')?.textContent.trim(),
+    result:element.querySelector('.questionWidget-result, .correctAnswerText, .incorrectAnswerText')?.textContent.trim(),
     html:element.outerHTML, errors:[...new Set(errors)],
     assets:assets.map((n,index) => ({index, tag:n.localName, html:n.outerHTML,
       source_url:n.localName==='img' ? n.currentSrc || n.src : null}))};

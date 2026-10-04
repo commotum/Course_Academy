@@ -1,6 +1,7 @@
 # Question capture
 
-Run sequential Math Academy lessons and reviews and add captured **content only** to EDB.
+Run sequential Math Academy lessons, reviews, multisteps, and required quizzes/assessments;
+add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
 apart from Playwright, the EDB CLI, and a solver command.
 
@@ -23,7 +24,14 @@ The runner:
    last activity allowed by `--limit`, and uses that observation for the next
    selection. Assessments, including quizzes, and in-progress tasks are also
    logged, with their observed URLs, IDs, progress, and assessment details.
-   Assessments are recorded without being started by the lesson/review player;
+   Assessments have their queue details expanded and saved, including test ID,
+   time limit, question count, exact Notes text, and the remaining optional-XP
+   allowance. An optional quiz stays queued while other activities continue.
+   A required assessment takes precedence and runs automatically. A notice with
+   zero XP remaining or explicit required wording establishes that requirement;
+   unknown or missing requirement text stops before starting an assessment.
+   Multisteps are supported in the remaining queue order, including their task
+   and multistep IDs and original queue card HTML.
    in-progress captures require explicit recovery. Reviews use queue order, not
    lesson priority ratings. `selection/capture-priorities.json` records score
    components and the snapshot/configuration basis used.
@@ -38,6 +46,15 @@ The runner:
    KPs. If the site continues beyond five questions, that same pattern repeats;
    `--review-question-limit 20` bounds unexpected continuation. Site completion
    remains authoritative. An interrupted activity keeps its already chosen patterns.
+   A negative-XP lesson or review overrides this policy on its next offered
+   attempt: every answer is intended to be correct. The runner reads negative-XP
+   cards from activity history as well as completion messages, and persists the
+   obligation in `.local/question_capture/perfect-retakes.json`. Only a completed
+   all-correct retake clears it; rereading the old failure does not re-arm it.
+   Lessons can then finish after two correct answers per KP, and reviews after
+   two correct answers overall. This favors progression over question quantity.
+   The rule applies separately to each topic's lesson/review attempts and does
+   not change personal learner state in EDB.
 3. Opens the completed activity, expands the explanations, and joins all question
    IDs to KP titles and source E/M/H difficulty labels. It checks that the live
    and activity question sets and KP mappings agree.
@@ -46,6 +63,22 @@ The runner:
    its title must match exactly one of that topic's database KPs. It captures
    whatever questions were served; reviews do not require five per KP or a live
    canonical example. An unknown review tutorial/example layout defers the activity for inspection.
+   Assessments use their fixed question count, with correct answers throughout
+   and one whole-test submission. All live fields, displayed choice ordering,
+   images, calculator instructions, and entered answers are captured before
+   submission. Their history supplies explanations, difficulty, and per-question
+   topic/KP links. Each KP title is matched within that question's source topic;
+   assessments can span several topics and import in one guarded transaction.
+   No canonical examples were presented by the observed Quiz 5 layout.
+   Multisteps answer every ordered part correctly. They save shared setup and
+   diagrams before answering, support multiple unnamed MathQuill blanks, and
+   capture each grade and explanation before Continue. Their activity records
+   supply topic/KP links and difficulty just like assessments. All parts use one
+   solver session. Each imported question includes the setup and earlier parts
+   with confirmed answers, so references such as “part 5” remain understandable;
+   the capture also keeps each original stem and its order separately. The
+   existing question/KP import is reused; no activity or learner entities are
+   created. Unrecognized intervening context layouts stop for inspection.
 4. Matches `q-N` and `e-N` globally in EDB. Adds missing attributes and choices,
    reuses existing owned answer entities, and links new practice to the correct
    `knowledge-point/questions`. Existing populated attributes are preserved.
@@ -102,7 +135,7 @@ optional and depends on that helper's browser/decryption dependencies.
 `run` **answers questions on Math Academy and commits EDB content by default**.
 `--dry-run` only inspects the queue and priorities. `--preview` still takes the
 activity but previews its database transaction without committing. Default limit
-is one activity; use `--limit N` for a bounded sequential batch. A required review
+is one activity; use `--limit N` for a bounded sequential batch. A required review or assessment
 counts toward that limit. For example, `--limit 2` permits a review followed by a
 lesson if completing the review makes a ranked lesson available. The queue and
 EDB priorities are read afresh between activities. Each observation prints the
@@ -122,7 +155,7 @@ All paths work when invoked from this repository root.
 ## Solver
 
 The default adapter keeps **one Codex session per activity**, for both lessons
-and reviews, including verification turns. The first question starts `codex exec`;
+reviews, multisteps, and assessments, including verification turns. The first question starts `codex exec`;
 subsequent calls use `codex exec resume <SESSION_ID>` with that explicit saved ID.
 The CLI process exits between calls, but its persisted conversation carries forward.
 It never uses `--last` or silently starts over if a resumed session has a different ID.
@@ -228,6 +261,9 @@ Artifacts go to `reference/mathacademy/question-capture/<taskId>/` by default:
   one file. Canvas, inline SVG, or an unavailable original response uses a rendered
   capture, explicitly marked in the manifest. No extra image requests are issued.
 - Canonical examples, activity metadata, and `content.json` for import.
+- Assessment queue notice/eligibility, start instructions, fixed question IDs,
+  filled test HTML, and completion result. These source facts are saved in the
+  queue observation, `assessment-queue.json`, and assessment `content.json`.
 - `state.json` with chosen sequences and a checkpoint before every submission.
 - `solver-session/state.json` with the activity's Codex session ID, delivered
   context, and pending turn checkpoint; question directories retain solver events
@@ -275,6 +311,14 @@ Use `--resume reference/mathacademy/question-capture/TASK_ID` to select a run
 explicitly. If several unfinished runs exist, they are left for explicit recovery
 while the runner selects new activities.
 `run --dry-run` reports a pending capture without starting a browser or answering.
+
+Assessment recovery retains one solver session and reuses solved answers,
+matching them to current displayed options before refilling the unsubmitted test.
+The site's timer continues during an interruption. An uncertain whole-test
+submission is inspected for a completion screen and is never blindly confirmed
+again. Unknown question counts, navigation layouts, and requirement wording stop
+before starting or submitting. A completed assessment's snapshot/import can resume
+without retaking it. The usual 70/30 lesson/review patterns do not apply to quizzes.
 
 Checkpoints preserve chosen patterns, captured questions, grades, and pending
 Continue actions. A restored graded question is advanced without being answered
@@ -331,6 +375,17 @@ and its process stops. Grading and selected-option mismatches prevent another
 submission in that activity. Runner tests inject start, capture, history, and
 import failures, verify diagnostic preservation and selection of the next task,
 and check that access blocks and interruptions stop the batch. Fixture tests never make model calls.
+The real six-part pool multistep fixture covers shared diagrams and context,
+seven unnamed MathQuill fields, square-root entry, source explanations and
+synthetic-division tables, six topic/KP mappings, and one content transaction.
+Prepared-answer and post-submission interruptions resume without replaying grades;
+completion recovery does not take the activity again.
+The saved Quiz 5 fixture also covers eight-question assessment capture, radio
+images whose filename order differs from displayed letters, two real MathQuill
+blanks, all source explanations, original images, multi-topic content planning,
+optional-XP notes loaded on queue expansion, and uncertain-submission recovery.
+Perfect-retake tests cover two correct answers per lesson KP and per review,
+negative-XP discovery, persistence, and clearing only after a successful retake.
 
 No live activity or database commit is performed by these fixture tests. The
 standalone automator completed live lesson **13831128**, Determining Continuity

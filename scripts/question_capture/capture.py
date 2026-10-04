@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture queued lessons and required reviews and import their question content."""
+"""Capture lessons, reviews, multisteps, and required assessments; import content only."""
 import argparse
 import contextlib
 import fcntl
@@ -17,6 +17,7 @@ from pathlib import Path
 
 from core import ROOT, Pacer, atomic_json, choose_activity, journal
 from database import Database
+from retry_policy import apply_policy, update_policy
 
 
 def arguments(argv=None):
@@ -31,7 +32,7 @@ def arguments(argv=None):
     parser.add_argument('--profile',type=Path,help='Dedicated Playwright profile; defaults to STATE_DIR/browser-profile')
     parser.add_argument('--content',type=Path,help='Saved content.json for import-saved')
     parser.add_argument('--resume',type=Path,help='Select a saved run, including a deferred failure; otherwise a single non-deferred unfinished run resumes automatically')
-    parser.add_argument('--limit',type=int,default=1,help='Maximum attempted activities (lessons or reviews) per invocation; default 1')
+    parser.add_argument('--limit',type=int,default=1,help='Maximum attempted activities (lessons, reviews, multisteps, or required assessments); default 1')
     parser.add_argument('--preview',action='store_true',help='Preview EDB writes. With run, MA answers are still submitted.')
     parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting an activity')
     parser.add_argument('--headless',action='store_true',help='Default is a visible Chromium window')
@@ -165,11 +166,14 @@ def read_journal(path):
 
 def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=None, directory=None):
     queue = browser.queue()
+    retry_policy = update_policy(args.state_dir,getattr(browser,'completed_outcomes',()))
     priorities = db.priorities(args.learner_id,args.state_dir/'selection',
                               topic_ids=[i['topic_id'] for i in queue if i['task_type']=='lesson' and i['topic_id'] is not None],
                               knowledge_snapshot=previous_activity_snapshot(args))
-    selected = choose_activity(queue, priorities, completed, captured_tasks)
-    observation = {'queue':queue, 'selected':selected,
+    retry_topics = {int(key.split(':')[1]) for key in retry_policy['pending'] if key.startswith('lesson:')}
+    selected = apply_policy(choose_activity(queue, priorities,set(completed)-retry_topics,captured_tasks),retry_policy)
+    observation = {'queue':queue, 'selected':selected,'completed_outcomes':getattr(browser,'completed_outcomes',[]),
+                   'perfect_retakes_pending':retry_policy['pending'],
                    'unranked_topics':[i['topic_id'] for i in queue
                                       if i['task_type'] == 'lesson' and i['topic_id'] not in priorities],
                    'after_task_id':after_task_id,
@@ -188,6 +192,10 @@ def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=No
                      ', priority ' + str(priority) if priority is not None else '',
                      ' [in progress; explicit resume]' if item.get('in_progress') else
                      ' [recorded; capture unsupported]' if not item.get('capture_supported',True) else '')
+        if item['task_type'] == 'assessment':
+            logging.info('     Assessment: %s; optional XP remaining: %s; notice: %s',
+                         item.get('assessment_requirement','unknown'),item.get('optional_xp_remaining'),
+                         item.get('assessment_notice'))
     return observation
 
 
@@ -305,23 +313,29 @@ def run(args):
                         state.setdefault('task_type', 'lesson')
                         state.setdefault('previous_activity_snapshot',previous_activity_snapshot(args))
                         phase = 'topic'
-                        topic = db.topic(state['topic_id'],directory/'selection')
+                        topic = db.topic if state['task_type'] in ('assessment','multistep') else db.topic(state['topic_id'],directory/'selection')
                         if not state.get('activity_complete') and not state.get(state['task_type'] + '_complete'):
                             phase = 'navigation'
-                            browser.navigate(state.get('activity_url') or state['lesson_url'])
+                            browser.navigate(state.get('activity_url') or state['lesson_url'],
+                                             force=state['task_type'] in ('assessment','multistep'))
                     else:
                         if queue_observation is None:
                             queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
                         activity = queue_observation['selected']
                         if not activity:
-                            logging.info('No new available lesson or review. Deferred/in-progress tasks require explicit --resume.')
+                            logging.info('No eligible activity. Optional assessments remain queued; deferred/in-progress tasks require explicit --resume.')
                             break
                         logging.info('Selected %s %s%s',activity['task_type'],activity['title'],
                                      ': priority %.6f' % activity['priority'] if activity['selection_reason'] == 'priority'
+                                     else ': assessment is required' if activity['selection_reason'] == 'required_assessment'
                                      else ': review queue order' if activity['selection_reason'] == 'review_queue_order'
                                      else ': next available activity in queue order')
                         if args.dry_run:
                             print(json.dumps(activity,indent=2))
+                            break
+                        if activity.get('stop_before_start'):
+                            logging.info('Stopped before assessment task %s: requirement or layout needs inspection. Queue details are saved.',activity['task_id'])
+                            journal(log,'assessment_not_started',task_id=activity['task_id'],activity=activity)
                             break
                         directory = args.output/str(activity['task_id'])
                         if (directory/'state.json').exists():
@@ -330,9 +344,18 @@ def run(args):
                                  'activity_url':'https://mathacademy.com'+activity['href'],
                                  'selected_priority':activity.get('priority'),'kps':{},'examples':{},'questions':{},
                                  'previous_activity_snapshot':previous_activity_snapshot(args)}
+                        if state['task_type'] == 'assessment':
+                            state.update({key:activity.get(key) for key in
+                                          ('test_id','assessment_details','assessment_notice','optional_xp_remaining','assessment_requirement')})
+                            atomic_json(directory/'assessment-queue.json',activity)
+                        elif state['task_type'] == 'multistep':
+                            state.update(multistep_id=activity['multistep_id'],title=activity['title'],answer_policy='all_correct')
+                            atomic_json(directory/'multistep-queue.json',activity)
+                        else:
+                            state.update({key:activity[key] for key in ('answer_policy','perfect_retake_of') if key in activity})
                         atomic_json(directory/'state.json',state)
                         phase = 'topic'
-                        topic = db.topic(activity['topic_id'],directory/'selection')
+                        topic = db.topic if state['task_type'] in ('assessment','multistep') else db.topic(activity['topic_id'],directory/'selection')
                         (directory/'selection').mkdir(parents=True,exist_ok=True)
                         for name in ('queue.json','priorities.edn','priorities-query.edn','priorities-inputs.edn','capture-priorities.json'):
                             source = args.state_dir/'selection'/name
@@ -342,6 +365,7 @@ def run(args):
                         browser.start(activity)
                     phase = 'activity'
                     browser.activity(state,directory,topic)
+                    update_policy(args.state_dir,completed_state=state)
                     phase = 'history'
                     if state.get('history_complete') and (directory/'content.json').exists():
                         content = json.loads((directory/'content.json').read_text())
@@ -366,6 +390,8 @@ def run(args):
                     journal(log,'content_imported' if not args.preview else 'content_previewed',task_id=state['task_id'],**result)
                     print(json.dumps({'run_directory':str(directory),'database':result},indent=2),flush=True)
                 except (Exception,KeyboardInterrupt) as error:
+                    if state is not None:
+                        update_policy(args.state_dir,completed_state=state)
                     diagnostics = record_failure(args,browser,state,directory,phase,error)
                     blocking = isinstance(error,(AccessBlocked,KeyboardInterrupt))
                     if state is not None:
@@ -386,7 +412,7 @@ def run(args):
                     logging.info('Deferred task %s; continuing with other available activities. Retry with --resume %s',
                                  state['task_id'],directory)
                 if queue_observation is not None and not queue_observation['selected']:
-                    logging.info('No new available lesson or review. Deferred/in-progress tasks require explicit --resume.')
+                    logging.info('No eligible activity. Optional assessments remain queued; deferred/in-progress tasks require explicit --resume.')
                     break
                 if n+1<args.limit:
                     pacer.wait('lesson','between activities')

@@ -8,7 +8,7 @@ from collections import deque
 from pathlib import Path
 from urllib.parse import urlparse
 
-from core import atomic_json, choose_sequence, choose_review_sequence, journal, normalize
+from core import atomic_json, assessment_requirement, choose_sequence, choose_review_sequence, journal, normalize
 from progress import COURSES, capture as capture_progress
 
 EXTRACT = (Path(__file__).parent / 'dom.js').read_text()
@@ -30,9 +30,10 @@ EXTRACT_QUEUE = r'''nodes => nodes.filter(e => e.getClientRects().length).map(e 
   const a=e.querySelector('a.taskStartButton'), href=a?.getAttribute('href') || '';
   const lesson=href.match(/^\/tasks\/(\d+)\/topics\/(\d+)\/(lesson|review)$/);
   const task=e.id.match(/^task-(\d+)$/), test=href.match(/^\/tasks\/(\d+)\/tests\/(\d+)\/start$/);
+  const multistep=href.match(/^\/tasks\/(\d+)\/multisteps\/(\d+)$/);
   const kind=e.querySelector('.taskTypeUnlocked')?.textContent.trim().toLowerCase() || 'unknown';
   const progress=Number(e.getAttribute('progress'));
-  const supported=!!lesson && kind === lesson[3];
+  const supported=(!!lesson && kind === lesson[3]) || (!!test && kind === 'assessment') || (!!multistep && kind === 'multistep');
   const details={};
   for (const row of e.querySelectorAll('.testDetails tr')) {
     const name=row.querySelector('.testFieldName')?.textContent.trim().replace(/:$/,'');
@@ -43,7 +44,10 @@ EXTRACT_QUEUE = r'''nodes => nodes.filter(e => e.getClientRects().length).map(e 
     title:e.querySelector('[id^="taskName-"], .taskNameUnlocked')?.textContent.trim() || '',
     capture_supported:supported,progress:Number.isFinite(progress) ? progress : null,
     in_progress:Number.isFinite(progress) && progress>0,
-    ...(test ? {test_id:Number(test[2]),assessment_details:details} : {})};
+    ...(kind === 'multistep' ? {multistep_id:multistep ? Number(multistep[2]) : null,
+      multistep_card_html:e.outerHTML} : {}),
+    ...(kind === 'assessment' ? {test_id:test ? Number(test[2]) : null,assessment_details:details,
+      assessment_card_html:e.outerHTML} : {})};
 })'''
 
 MATHQUILL_VALUE = r'''n => {
@@ -79,6 +83,14 @@ def by_id(scope, identifier):
     if not identifier:
         raise ValueError('Missing observed DOM identifier')
     return scope.locator('[id=' + json.dumps(identifier) + ']')
+
+
+def answer_control(scope, field):
+    if field.get('dom_id'):
+        return by_id(scope,field['dom_id'])
+    if field.get('tag') == 'mathquill' and isinstance(field.get('dom_index'),int) and field['dom_index'] >= 0:
+        return scope.locator('.matheditor-wrapper-answer').nth(field['dom_index'])
+    raise ValueError('Answer control has no observed locator')
 
 
 class AccessBlocked(RuntimeError):
@@ -167,21 +179,65 @@ class CaptureBrowser:
         # Wait for the asynchronous task list, allowing an empty queue.
         self.page.wait_for_timeout(self.args.settle_ms)
         self.check()
-        return self.page.locator('#incompleteTasks .taskUnlocked').evaluate_all(EXTRACT_QUEUE)
+        self.completed_outcomes = self.page.locator('#completedTasks .taskCompleted').evaluate_all(r'''nodes => nodes.flatMap(e => {
+          const kind=e.querySelector('.taskTypeLocked')?.textContent.trim().toLowerCase();
+          const xp=e.querySelector('.taskPoints')?.textContent.trim().match(/^(-?\d+)\s*\//);
+          const topic=e.querySelector('a[id^="taskTopicLink-"]')?.getAttribute('href')?.match(/^\/topics\/(\d+)/);
+          const task=e.id.match(/^task-(\d+)$/);
+          return xp && topic && task && ['lesson','review'].includes(kind) ?
+            [{task_id:Number(task[1]),topic_id:Number(topic[1]),task_type:kind,earned_xp:Number(xp[1])}] : [];
+        })''')
+        cards = self.page.locator('#incompleteTasks .taskUnlocked')
+        initial = cards.evaluate_all(EXTRACT_QUEUE)
+        for item in initial:
+            if item['task_type'] == 'multistep' and not item['in_progress'] and not item['href']:
+                self.pacer.wait('event','expand multistep queue details')
+                card = by_id(self.page,item['card_id'])
+                card.click()
+                card.locator('a.taskStartButton').wait_for(state='visible')
+                continue
+            if item['task_type'] != 'assessment' or item['in_progress']:
+                continue
+            card = by_id(self.page,item['card_id'])
+            if not card.locator('.testDetails').is_visible():
+                self.pacer.wait('event','expand assessment eligibility details')
+                card.click()
+                card.locator('.testDetails').wait_for(state='visible')
+                card.locator('a.taskStartButton').wait_for(state='visible')
+        self.check()
+        queue = cards.evaluate_all(EXTRACT_QUEUE)
+        for item in queue:
+            if item['task_type'] == 'assessment':
+                item.update(assessment_requirement(item['assessment_details']))
+        return queue
 
     def start(self, activity):
         kind = activity.get('task_type', 'lesson')
-        if kind not in ('lesson','review') or not activity.get('capture_supported',True):
-            raise ValueError('Activity is recorded but unsupported by the lesson/review capture player')
-        self.pacer.wait('event', 'expand the selected ' + kind)
-        by_id(self.page, activity['card_id']).click()
+        if kind not in ('lesson','review','assessment','multistep') or not activity.get('capture_supported',True):
+            raise ValueError('Activity is recorded but unsupported by the capture player')
+        if kind == 'assessment':
+            card = by_id(self.page,activity['card_id'])
+            current = card.evaluate_all(EXTRACT_QUEUE)[0]
+            current.update(assessment_requirement(current['assessment_details']))
+            if current['assessment_requirement'] != 'required':
+                raise ValueError('Assessment is optional or its requirement is unknown; stop before Start')
+        else:
+            card = by_id(self.page, activity['card_id'])
+            if kind != 'multistep' or not card.locator('.taskDetails').is_visible():
+                self.pacer.wait('event', 'expand the selected ' + kind)
+                card.click()
         button = by_id(self.page, activity['start_id'])
         button.wait_for(state='visible')
         if button.get_attribute('href') != activity['href']:
             raise ValueError('Queue activity changed before starting')
         self.pacer.wait('event', 'start the selected ' + kind)
         button.click()
-        self.page.wait_for_url('**/tasks/' + str(activity['task_id']) + '/topics/' + str(activity['topic_id']) + '/' + kind)
+        expected = ('**/tasks/' + str(activity['task_id']) + '/tests/' + str(activity['test_id']) + '/start'
+                    if kind == 'assessment' else
+                    '**/tasks/' + str(activity['task_id']) + '/multisteps/' + str(activity['multistep_id'])
+                    if kind == 'multistep' else
+                    '**/tasks/' + str(activity['task_id']) + '/topics/' + str(activity['topic_id']) + '/' + kind)
+        self.page.wait_for_url(expected)
         self.check()
 
     def read(self, scope, directory, stem):
@@ -195,7 +251,7 @@ class CaptureBrowser:
         candidates = scope.locator('img, canvas, svg').all()
         index = 0
         for asset in candidates:
-            included = asset.evaluate('''n => !n.closest('.mjpage, mjx-container, .MathJax, .questionWidget-header, .questionWidget-result, .stepHeader') && !n.parentElement?.closest('svg')''')
+            included = asset.evaluate('''n => !n.closest('.mjpage, mjx-container, .MathJax, .questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') && !n.parentElement?.closest('svg')''')
             if not included:
                 continue
             try:
@@ -310,9 +366,16 @@ class CaptureBrowser:
         return self.page.evaluate(ACTIVE_STEP)
 
     def activity(self, state, directory, topic):
+        if state.get('task_type') == 'multistep':
+            from multistep import take_multistep
+            return take_multistep(self,state,directory)
+        if state.get('task_type') == 'assessment':
+            from assessment import take_assessment
+            return take_assessment(self,state,directory)
         directory = Path(directory)
         kind_name = state.get('task_type', 'lesson')
         is_review = kind_name == 'review'
+        perfect = state.get('answer_policy') == 'all_correct'
         completed_event = kind_name + '-completed'
         save = lambda: atomic_json(directory / 'state.json', state)
         if state.get('activity_complete') or state.get(kind_name + '_complete'):
@@ -326,13 +389,13 @@ class CaptureBrowser:
             state.setdefault('pending_continue', {'source_step':legacy_pending['source_step']})
             save()
         if is_review and 'review_sequence' not in state:
-            state['review_sequence'] = choose_review_sequence(self.pacer.rng, self.args.cwcwc_weight)
+            state['review_sequence'] = 'CCCCC' if perfect else choose_review_sequence(self.pacer.rng, self.args.cwcwc_weight)
             save()
         if is_review and state['review_sequence'] == 'CWCWCC':
             state['legacy_review_sequence'] = state['review_sequence']
             state['review_sequence'] = 'CWCWC'
             save()
-        if is_review and state['review_sequence'] not in ('CWCWC','WCWCC'):
+        if is_review and state['review_sequence'] not in (('CCCCC',) if perfect else ('CWCWC','WCWCC')):
             raise ValueError('Saved review sequence does not match the configured lesson policy')
         pending = state.get('pending_continue')
         if pending:
@@ -365,6 +428,9 @@ class CaptureBrowser:
             self.wait_activity_ready()
             if self.page.locator('#finalScreen').is_visible():
                 completion = self.page.locator('#finalScreen').inner_text()
+                from retry_policy import earned_xp
+                state['earned_xp'] = earned_xp(completion)
+                save()  # Even a failed completion must trigger a perfect retake.
                 if 'completed the ' + kind_name not in completion.lower():
                     raise ValueError(kind_name.title() + ' ended without completion: ' + completion)
                 if not state['questions'] or not all(q.get('finalized') for q in state['questions'].values()):
@@ -374,7 +440,8 @@ class CaptureBrowser:
                         raise ValueError('Lesson completed without captured knowledge points')
                     for kp in state['kps'].values():
                         count = sum(q['kp_id'] == kp['id'] and q.get('finalized') for q in state['questions'].values())
-                        if count != 5:
+                        if (not perfect and count != 5) or (perfect and (count < 1 or any(
+                            q['actual_result'] != 'Correct' for q in state['questions'].values()))):
                             raise ValueError('Knowledge point did not serve five questions: ' + kp['title'])
                 self.page.screenshot(path=str(directory / (completed_event + '.png')))
                 state['completion'], state['activity_complete'], state[kind_name + '_complete'] = completion, True, True
@@ -418,7 +485,7 @@ class CaptureBrowser:
                     raise ValueError('Example exposes interactive fields; review this new example layout')
                 state['current_kp'] = kp_id
                 state['kps'].setdefault(kp_id,{'id':kp_id,'title':kp[':knowledge-point/title'],
-                                             'sequence':choose_sequence(self.pacer.rng,self.args.cwcwc_weight)})
+                                             'sequence':'CCCCC' if perfect else choose_sequence(self.pacer.rng,self.args.cwcwc_weight)})
                 state['examples'][mid] = {'math_academy_id':mid,'is_example':True,'knowledge_point_id':kp_id,
                     'knowledge_point':kp[':knowledge-point/title'],'problem':item['problem'],'worked_solution':item['worked_solution'],
                     'difficulty':None,'answer_fields':[], 'missing_source_fields':['difficulty','answer_fields']}
@@ -538,7 +605,7 @@ class CaptureBrowser:
                 field['submitted_option'] = chosen['option']
             else:
                 value = answer['wrong_value'] if wrong else answer['correct_value']
-                control = by_id(scope,field['dom_id'])
+                control = answer_control(scope,field)
                 if field['tag'] == 'mathquill':
                     control.locator('.mq-editable-field').click()
                     editor = control.locator('.mq-textarea textarea')
@@ -582,7 +649,9 @@ class CaptureBrowser:
                     editor.press_sequentially('\\' + name, delay=self.pacer.rng.uniform(60,140))
                     # In MA's distribution Space inserts a mathematical space,
                     # splitting the numerator; ArrowRight preserves its grouping.
-                    editor.press('ArrowRight')
+                    # Finish the active root command while keeping its cursor
+                    # inside the radicand; ArrowRight would immediately exit it.
+                    editor.press('Enter' if name == 'sqrt' else 'ArrowRight')
             else:
                 symbol_just_inserted = False
                 editor.press_sequentially(part, delay=self.pacer.rng.uniform(60,140))
@@ -591,8 +660,9 @@ class CaptureBrowser:
     def verify_entered(self, scope, record):
         for field in record['before']['fields']:
             if field['type'] == 'radio':
-                selected = scope.locator('.questionWidget-choiceLetterCircle').evaluate_all('''nodes => nodes.filter(n =>
-                  n.style.backgroundColor === 'rgb(64, 64, 64)' && n.style.color === 'white').map(n => n.textContent.trim())''')
+                selected = scope.locator('.questionWidget-choiceLetterCircle, .choiceLetterCircle').evaluate_all('''nodes => nodes.filter(n =>
+                  n.classList.contains('selectedChoice') || (n.style.backgroundColor === 'rgb(64, 64, 64)' &&
+                  n.style.color === 'white')).map(n => n.textContent.trim())''')
                 if selected != [field['submitted_option']]:
                     raise ValueError('Actual selected radio option differs from intended option; stop before Submit')
                 field['observed_selected_option'] = selected[0]
@@ -603,7 +673,7 @@ class CaptureBrowser:
                 if by_id(scope,field['dom_id']).input_value() != field['submitted_value']:
                     raise ValueError('Actual blank value differs from intended value; stop before Submit')
             elif field['tag'] == 'mathquill':
-                observed = by_id(scope,field['dom_id']).evaluate(MATHQUILL_VALUE)
+                observed = answer_control(scope,field).evaluate(MATHQUILL_VALUE)
                 field['observed_mathquill_latex'] = observed
                 if not isinstance(observed, str) or normalize_mathquill(observed) != normalize_mathquill(field['submitted_value']):
                     raise ValueError('Actual MathQuill value differs from intended value; stop before Submit: '
@@ -631,6 +701,9 @@ class CaptureBrowser:
         return result
 
     def history(self, state, directory, topic=None):
+        if state.get('task_type') in ('assessment','multistep'):
+            from assessment import assessment_history
+            return assessment_history(self,state,directory,topic)
         directory = Path(directory)
         task_type = state.get('task_type', 'lesson')
         self.navigate(LEARN + '?taskId=' + str(state['task_id']))
@@ -693,5 +766,7 @@ class CaptureBrowser:
             content['sequence_policy'] = {'scope':'whole review','CWCWC':self.args.cwcwc_weight,
                 'WCWCC':1-self.args.cwcwc_weight,'sequence':state['review_sequence'],
                 'continuation':'repeat saved pattern until site completion'}
+        if state.get('answer_policy') == 'all_correct':
+            content['sequence_policy'] = {'answer_policy':'all_correct','perfect_retake_of':state['perfect_retake_of']}
         atomic_json(directory / 'content.json',content)
         return content

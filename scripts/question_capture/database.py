@@ -8,7 +8,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-from core import ALLOWED, atomic_json, build_transaction, journal
+from core import ALLOWED, atomic_json, build_content_transaction, journal
 from edn import dumps, kw, loads
 
 QUESTION_PULL = '''[* {:question/difficulty [:db/ident]}
@@ -162,6 +162,14 @@ class Database:
             if row[1] not in allowed or row[-1] is not True:
                 raise ValueError('Preview/receipt contains a retraction or non-content attribute')
 
+    def content_topics(self, content, directory, basis):
+        if content.get('task_type') in ('assessment','multistep'):
+            ids = {q['topic_id'] for q in content['questions']}
+            if not ids or any(not isinstance(t,int) or t < 1 for t in ids):
+                raise ValueError('Assessment questions require source topic IDs')
+            return {tid:self.topic(tid,Path(directory)/'topics'/str(tid),basis) for tid in sorted(ids)}
+        return {content['topic_id']:self.topic(content['topic_id'],directory,basis)}
+
     def import_content(self, content, directory, apply=True):
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
@@ -181,10 +189,10 @@ class Database:
             receipt = self._commit(intent, tx_path, directory)
             return self._verify(receipt, content, directory)
         basis = self.basis()
-        topic = self.topic(content['topic_id'], directory, basis)
+        topics = self.content_topics(content, directory, basis)
         ids = [q['math_academy_id'] for q in content['questions'] + content.get('canonical_examples', [])]
         existing = self.questions(ids, directory, basis=basis)
-        transaction, report = build_transaction(content, topic, existing)
+        transaction, report = build_content_transaction(content, topics, existing)
         atomic_json(directory / 'matching-report.json', report)
         if not transaction:
             result = {'database_writes': 0, 'already_complete': True}
@@ -235,10 +243,10 @@ class Database:
         protected_after = self.protected(attributes, directory, 'protected-after', after)
         if fingerprint(protected_before) != fingerprint(protected_after):
             raise ValueError('Protected learner/engine facts changed in the committed transaction')
-        topic_after = self.topic(content['topic_id'], directory / 'after', after)
+        topics_after = self.content_topics(content, directory / 'after', after)
         ids = [q['math_academy_id'] for q in content['questions'] + content.get('canonical_examples', [])]
         questions_after = self.questions(ids, directory, 'questions-after', after)
-        remaining, _ = build_transaction(content, topic_after, questions_after)
+        remaining, _ = build_content_transaction(content, topics_after, questions_after)
         if remaining:
             raise ValueError('Committed content still has missing captured facts')
         result = {'committed': True, 'basis_before': before, 'basis_after': after,

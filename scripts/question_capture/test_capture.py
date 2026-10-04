@@ -58,7 +58,7 @@ class PolicyTests(unittest.TestCase):
         quiz={'task_id':1,'topic_id':None,'task_type':'assessment','capture_supported':False}
         lesson={'task_id':2,'topic_id':2082,'task_type':'lesson'}
         self.assertEqual(choose_activity([quiz,lesson],{2082:1218.4})['task_id'],2)
-        self.assertIsNone(choose_activity([quiz],{}))
+        self.assertTrue(choose_activity([quiz],{})['stop_before_start'])
         self.assertIsNone(choose_activity([{**lesson,'in_progress':True}],{2082:1218.4}))
     def test_math_notation_equivalents_and_symbol_identity(self):
         pairs = [('± 3',r'\pm 3'),('π',r'\pi'),('α',r'\alpha'),('∞',r'\infty'),
@@ -582,10 +582,12 @@ class DOMTests(unittest.TestCase):
         self.assertEqual((quiz['task_id'],quiz['test_id'],quiz['title']),(13930620,589340,'Quiz 5'))
         self.assertEqual(quiz['task_type'],'assessment')
         self.assertIsNone(quiz['topic_id'])
-        self.assertFalse(quiz['capture_supported'])
+        self.assertTrue(quiz['capture_supported'])
         self.assertEqual(quiz['assessment_details']['Questions'],'8')
+        self.assertEqual(quiz['assessment_notice'],'This quiz is optional until 26 more XP have been earned.')
+        self.assertEqual(quiz['optional_xp_remaining'],26)
         self.assertIsNone(choose_activity(queue,{}))
-        with self.assertRaisesRegex(ValueError,'unsupported'):
+        with self.assertRaisesRegex(ValueError,'optional'):
             browser.start(quiz)
         self.assertEqual(self.page.url,'https://mathacademy.com/learn')
 
@@ -849,13 +851,17 @@ class DOMTests(unittest.TestCase):
                 self.assertNotIn('Your Answer',item['worked_solution'])
                 self.assertFalse(item['errors'])
 
-    def lesson_fixture(self):
+    def lesson_fixture(self, perfect=False):
         live = json.loads((FIXTURE/'live-capture.json').read_text())
         content = json.loads((FIXTURE/'content.json').read_text())
         correct = {q['math_academy_id'][2:]:q['answer_fields'][0]['correct_letter'] for q in content['questions']}
         before = {s['dom_id']:s for s in live['steps']}
         after = {r['question_id']:r['after']['html'] for r in live['responses']}
-        order = ['e371'] + ['q'+q['math_academy_id'][2:] for q in content['questions'][:5]] + ['e372'] + ['q'+q['math_academy_id'][2:] for q in content['questions'][5:10]] + ['e373'] + ['q'+q['math_academy_id'][2:] for q in content['questions'][10:]]
+        groups=[content['questions'][:5],content['questions'][5:10],content['questions'][10:]]
+        if perfect:
+            groups=[group[:2] for group in groups]
+        order=[token for example,group in zip(('e371','e372','e373'),groups)
+               for token in [example]+['q'+q['math_academy_id'][2:] for q in group]]
         raw = '\n'.join(before['step-'+token]['html'] for token in order)
         setup = '''const order=ORDER, after=AFTER, correct=CORRECT; let position=0, selected={};
         localStorage.setItem("fixture-submissions","0");localStorage.setItem("fixture-results","{}");
@@ -911,7 +917,9 @@ class DOMTests(unittest.TestCase):
             else:
                 body = lesson if '/lesson' in url else activity if '?taskId=' in url else '<div id="incompleteTasks"></div>'
                 if '?taskId=' in url:
-                    body += '<script>const results='+json.dumps(results)+''';document.querySelectorAll('.question').forEach(q=>q.querySelector('.answerResult').textContent=results[q.id.slice(9)]);</script>'''
+                    body += '<script>const results='+json.dumps(results)+''';document.querySelectorAll('.question').forEach(q=>{
+                      if(results[q.id.slice(9)])q.querySelector('.answerResult').textContent=results[q.id.slice(9)];
+                      else {document.getElementById(q.id.replace('question-','questionExplanation-'))?.remove();q.remove();}});</script>'''
             route.fulfill(status=200,content_type='text/html; charset=utf-8',body=body)
         self.context.unroute('https://mathacademy.com/**')
         self.context.route('https://mathacademy.com/**',respond)
@@ -1033,6 +1041,35 @@ class DOMTests(unittest.TestCase):
                 self.assertEqual(list(state['knowledge_snapshots']),['review-completed'])
                 transaction,_=build_transaction(content,topic,{})
                 self.assertEqual(sum(':knowledge-point/questions' in row for row in transaction),len(served))
+
+    def test_perfect_review_retake_stops_after_two_correct_and_reports_override(self):
+        correct=self.review_fixture()
+        args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=0,settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),self.fixture_solver(correct))
+        self.page.goto('https://mathacademy.com/tasks/13925710/topics/2084/review')
+        state={'task_id':13925710,'topic_id':2084,'kps':{},'examples':{},'questions':{},
+               'answer_policy':'all_correct','perfect_retake_of':1}
+        topic=loads((REVIEW_FIXTURE/'database/topic.edn').read_text())[0][0]
+        with tempfile.TemporaryDirectory() as work:
+            browser.review(state,work,topic)
+            self.assertEqual(''.join(q['intended'] for q in state['questions'].values()),'CC')
+            self.assertTrue(all(q['actual_result']=='Correct' for q in state['questions'].values()))
+            content=browser.history(state,work,topic)
+            self.assertEqual(content['sequence_policy'],{'answer_policy':'all_correct','perfect_retake_of':1})
+
+    def test_perfect_lesson_retake_accepts_two_correct_per_kp(self):
+        correct=self.lesson_fixture(perfect=True)
+        args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=0,settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),self.fixture_solver(correct))
+        state={'task_id':13925458,'topic_id':3769,'kps':{},'examples':{},'questions':{},
+               'answer_policy':'all_correct','perfect_retake_of':1}
+        topic=loads((FIXTURE/'database-before.edn').read_text())[0][0]
+        with tempfile.TemporaryDirectory() as work:
+            browser.lesson(state,work,topic)
+            self.assertEqual(len(state['questions']),6)
+            self.assertTrue(state['activity_complete'])
+            self.assertTrue(all(q['actual_result']=='Correct' for q in state['questions'].values()))
+            self.assertEqual(len(browser.history(state,work,topic)['questions']),6)
 
     def test_actual_radio_selection_mismatch_stops_before_submit(self):
         correct=self.review_fixture(misselect=True)

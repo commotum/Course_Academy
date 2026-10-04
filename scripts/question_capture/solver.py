@@ -80,7 +80,10 @@ use ArrowRight to leave exponents/fractions. For named symbols type a backslash 
 for pi, type "\\\\pi". Plain "pi" means the two variables p and i; never assume
 automatic conversion. Do not add Space after a symbol: this editor inserts a
 mathematical space, which can change fraction grouping. The runner uses the visible
-symbol menu when available. For 11*pi/6, type "11", then "\\\\pi", then "/6",
+symbol menu when available. To create a square root, type "\\\\sqrt" as a separate
+text action, then type its radicand; the runner finishes the command and leaves
+the cursor inside the root. ArrowRight exits the root after its radicand.
+For 11*pi/6, type "11", then "\\\\pi", then "/6",
 ArrowRight. Available keys are ArrowLeft, ArrowRight,
 ArrowUp, ArrowDown, Space, Home, End. Do not use Enter, Tab, or submission shortcuts.
 For other fields those arrays may be empty. Explain the math in explanation.
@@ -144,6 +147,12 @@ class Solver:
         state = json.loads(source.read_text()) if source.exists() else {}
         context = {k:state[k] for k in ('task_id','task_type','topic_id') if k in state}
         context['examples'], context['feedback'], keys = [], [], []
+        context['shared_contexts'] = []
+        for shared in state.get('shared_contexts', []):
+            key = 'shared-context:' + shared['id']
+            if key not in delivered:
+                context['shared_contexts'].append({k:shared[k] for k in ('id','problem','screenshot') if k in shared})
+                keys.append(key)
         for mid, example in state.get('examples',{}).items():
             key = 'example:' + mid
             if key not in delivered:
@@ -271,6 +280,7 @@ class Solver:
                     '--output-schema',str(schema),'--output-last-message',str(output)]
         images = [Path(screenshot).resolve()] if screenshot and Path(screenshot).is_file() else []
         images += [Path(example['screenshot']) for example in payload['activity_context']['examples'] if example.get('screenshot')]
+        images += [Path(shared['screenshot']) for shared in payload['activity_context'].get('shared_contexts', []) if shared.get('screenshot')]
         for image in dict.fromkeys(images):
             command += ['--image',str(image)]
         if self.args.solver_model:
