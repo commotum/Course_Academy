@@ -1,0 +1,11 @@
+[:find ?topic-id ?title ?priority
+ :in $ ?learner-id
+ :where [?learner :learner/id ?learner-id]
+ [?learner :learner/activity ?task]
+ [?task :learner-task/status :learner-task.status/unlocked]
+ [?task :learner-task/priority ?priority]
+ [?task :learner-task/activity ?activity]
+ [?activity :activity/type :activity.type/lesson]
+ [?activity :activity/scope ?topic]
+ [?topic :topic/math-academy-id ?topic-id]
+ [?topic :topic/title ?title]]
