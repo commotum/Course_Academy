@@ -3,7 +3,7 @@
 use super::*;
 
 pub(super) fn home(s: &EntitySnapshot, learner: u64) -> Result<Json> {
-    let activities = learning::plan_candidates(s, learner, course(s, learner)?, Utc::now())?
+    let activities = learning::study_candidates(s, learner, course(s, learner)?, Utc::now())?
         .into_iter()
         .take(5)
         .map(|candidate| {

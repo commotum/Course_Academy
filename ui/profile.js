@@ -75,7 +75,7 @@ if (trigger) {
   directed.setAttribute('aria-checked', 'false');
   fields.append(
     modeRow('Developer mode', 'Inspect lessons without recording answers, time, or progress.', developerModeControl),
-    modeRow('Self-directed mode', 'Choose target topics to guide your study queue.', directed),
+    modeRow('Self-directed mode', 'Study topics from your selected queue.', directed),
   );
   const themeSwitch = node('button', 'profile-switch'); themeSwitch.type = 'button'; themeSwitch.id = 'lightModeToggle';
   themeSwitch.setAttribute('role', 'switch'); themeSwitch.setAttribute('aria-label', 'Light mode');

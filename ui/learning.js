@@ -396,7 +396,8 @@ async function loadHome(signal, preserve) {
     updateHeader(data); resetMain();
     document.title = 'Study · Course Academy';
     const head = el('div', 'page-heading');
-    const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Next up'), el('p', 'subheading', isDeveloperMode() ? 'Preview activities without starting an attempt or recording progress.' : 'Pick an activity to continue building your knowledge.'));
+    const selfDirected = data.learner?.selfDirected === true;
+    const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', selfDirected ? 'Your queue' : 'Next up'), el('p', 'subheading', isDeveloperMode() ? 'Preview activities without starting an attempt or recording progress.' : selfDirected ? 'Lessons from the topics you selected.' : 'Eligible lessons interleaved across your course modules.'));
     head.append(intro);
     $('main').append(head);
     const queue = el('section', 'queue'); queue.setAttribute('aria-label', 'Next five activities');
@@ -437,7 +438,8 @@ async function loadHome(signal, preserve) {
     });
     if (!activities.length) {
       const empty = el('div', 'empty-state');
-      empty.append(el('h2', '', 'No ready activities yet'), el('p', '', data.message || 'There are no eligible activities with enough available questions.'));
+      const queueEmpty = selfDirected && !(data.learner?.queue || []).length;
+      empty.append(el('h2', '', queueEmpty ? 'Your queue is empty' : 'No ready activities yet'), el('p', '', data.message || (queueEmpty ? 'Add topics to your queue, or turn off self-directed mode for course recommendations.' : selfDirected ? 'Your queued topics have no unfinished lessons with enough available questions.' : 'There are no eligible activities with enough available questions.')));
       queue.append(empty);
     }
     $('main').append(queue);

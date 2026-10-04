@@ -128,6 +128,7 @@ def unfinished_run(args):
     if args.resume:
         return args.resume.resolve()
     candidates = []
+    assessments = []
     for source in sorted(args.output.glob('*/state.json')):
         state = json.loads(source.read_text())
         directory = source.parent.resolve()
@@ -136,8 +137,25 @@ def unfinished_run(args):
         finished = state.get('import_complete') or receipt.get('committed') or receipt.get('already_complete')
         if args.preview:
             finished = finished or state.get('preview_complete')
+        if (not finished and state.get('task_type') == 'assessment' and
+                state.get('assessment_started') and not state.get('activity_complete') and
+                state.get('test_submission_status') != 'confirming' and
+                state.get('assessment_recovery_attempts',0) < 2):
+            deferred = state.get('deferred_error')
+            recoverable = not deferred
+            if deferred and deferred.get('phase') == 'activity':
+                diagnostic = Path(deferred.get('diagnostics',''))/'error.json'
+                if diagnostic.is_file():
+                    recoverable = json.loads(diagnostic.read_text()).get('exception_type') == 'TimeoutError'
+            if recoverable:
+                assessments.append(directory)
         if not finished and not state.get('deferred_error'):
             candidates.append(directory)
+    if len(assessments) == 1:
+        return assessments[0]
+    if len(assessments) > 1:
+        logging.warning('Multiple interrupted assessments require explicit --resume: %s',assessments)
+        return None
     if len(candidates) > 1:
         logging.warning('Multiple unfinished captures are left for explicit --resume: %s',
                         ', '.join(map(str,candidates)))
@@ -423,6 +441,9 @@ def run(args):
                         raise
                     if state is None:
                         logging.error('Cannot read/select another activity; saved diagnostics and stopped this batch.')
+                        break
+                    if state.get('task_type') == 'assessment' and not state.get('activity_complete'):
+                        logging.error('Assessment could not be safely recovered; saved answers need inspection before queue selection: --resume %s',directory)
                         break
                     queue_observation = None
                     logging.info('Deferred task %s; continuing with other available activities. Retry with --resume %s',

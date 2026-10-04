@@ -478,7 +478,8 @@ fn course(s: &EntitySnapshot, l: u64) -> Result<u64> {
 fn learner_json(s: &EntitySnapshot, l: u64) -> Json {
     json!({"id":text(s,l,"learner/id"),"name":text(s,l,"learner/name"),
         "selfDirected":s.entities.get(&l).and_then(|r|r.get("learner/self-directed")).and_then(Json::as_bool).unwrap_or(false),
-        "targets":s.refs(l,"learner/targets").unwrap_or_default()})
+        "targets":s.refs(l,"learner/targets").unwrap_or_default(),
+        "queue":s.refs(l,"learner/queue").unwrap_or_default()})
 }
 fn course_json(s: &EntitySnapshot, l: u64) -> Result<Json> {
     let c = course(s, l)?;
@@ -525,7 +526,7 @@ fn another_started_task(s: &EntitySnapshot, learner: u64, current: Option<u64>) 
 }
 fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
     let c = course(s, l)?;
-    let candidates = learning::plan_candidates(s, l, c, Utc::now())?;
+    let candidates = learning::study_candidates(s, l, c, Utc::now())?;
     let mut activities = vec![];
     for candidate in candidates {
         let a = candidate.activity;
@@ -558,14 +559,14 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
         }
     }
     Ok(
-        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"queueDescription":"Ready activities prioritized by current work, study targets, assignment deadlines, and prerequisite readiness.","practiceNotice":"Each skill needs two correct answers in a row, with up to five questions. If fresh questions run out, more content is needed and the lesson remains unfinished."}),
+        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"queueDescription":"Engine recommendations interleave eligible lessons across course modules; self-directed study uses your selected topic queue.","practiceNotice":"Each skill needs two correct answers in a row, with up to five questions. If fresh questions run out, more content is needed and the lesson remains unfinished."}),
     )
 }
 
 /// Materialize available work without recording any presentation or starting a clock.
 /// The caller journals this transaction and submits it with an exact basis guard.
 fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json>> {
-    let plan = learning::plan_candidates(s, l, course(s, l)?, at)?;
+    let plan = learning::study_candidates(s, l, course(s, l)?, at)?;
     let mut pending = BTreeMap::new();
     let mut terminal_assignments = BTreeSet::new();
     for task in s.refs(l, "learner/activity")? {
@@ -900,7 +901,10 @@ fn mutate(
     }
     if action == "start" {
         let a = required(body, "activityId")?;
-        if !learning::candidates(s, l, course(s, l)?)?.contains(&a) {
+        if !learning::study_candidates(s, l, course(s, l)?, at)?
+            .iter()
+            .any(|p| p.activity == a)
+        {
             return Err("Activity is not eligible or its content is unavailable".into());
         }
         if let Some(t) = task_for(s, l, a)? {
@@ -1440,6 +1444,138 @@ mod lesson_progress_tests {
 }
 
 #[cfg(test)]
+mod study_queue_tests {
+    use super::*;
+
+    fn fixture() -> EntitySnapshot {
+        let mut records = BTreeMap::new();
+        for (eid, record) in [
+            (
+                1,
+                json!({"learner/id":"queue-test","learner/course":2,"learner/self-directed":true,"learner/queue":[6],"learner/activity":[80,81]}),
+            ),
+            (
+                2,
+                json!({"course/id":{"$uuid":"00000000-0000-0000-0000-000000000002"},"course/title":"Test course","course/units":[3]}),
+            ),
+            (3, json!({"unit/modules":[4]})),
+            (4, json!({"module/topics":[5]})),
+            (5, json!({"topic/id":"course-topic"})),
+            (6, json!({"topic/id":"queued-topic"})),
+            (
+                7,
+                json!({"topic/id":"unlearned-prerequisite","topic/next":[6]}),
+            ),
+            (
+                50,
+                json!({"activity/id":"course-lesson","activity/type":"activity.type/lesson","activity/scope":5,"activity/title":"Course lesson","activity/steps":[60],"activity/first-step":60}),
+            ),
+            (
+                51,
+                json!({"activity/id":"queued-lesson","activity/type":"activity.type/lesson","activity/scope":6,"activity/title":"Queued lesson","activity/steps":[61],"activity/first-step":61}),
+            ),
+            (60, json!({"step/content":70})),
+            (61, json!({"step/content":71})),
+            (
+                70,
+                json!({"question/id":"course-question","question/problem":"Find x.","question/answer-fields":[90]}),
+            ),
+            (
+                71,
+                json!({"question/id":"queued-question","question/problem":"Find x.","question/answer-fields":[90]}),
+            ),
+            (
+                80,
+                json!({"learner-task/activity":50,"learner-task/status":"learner-task.status/unlocked","learner-task/priority":1.0}),
+            ),
+            (
+                81,
+                json!({"learner-task/activity":51,"learner-task/status":"learner-task.status/unlocked","learner-task/priority":1.0}),
+            ),
+            (
+                90,
+                json!({"answer-field/key":"x","answer-field/type":"answer-field.type/blank","answer-field/choices":[91],"answer-field/correct":91}),
+            ),
+            (
+                91,
+                json!({"answer/type":"answer.type/math","answer/value":"2"}),
+            ),
+        ] {
+            records.insert(eid, record.as_object().unwrap().clone());
+        }
+        for (index, ident) in [
+            "activity.type/lesson",
+            "answer-field.type/blank",
+            "answer.type/math",
+            "learner-task.status/unlocked",
+            "learner-task.status/locked",
+            "learner-task.status/started",
+            "task-item.status/started",
+        ]
+        .iter()
+        .enumerate()
+        {
+            records.insert(
+                1000 + index as u64,
+                json!({"db/ident":kw(ident)}).as_object().unwrap().clone(),
+            );
+        }
+        EntitySnapshot::new(records, 42).unwrap()
+    }
+
+    #[test]
+    fn study_display_materialization_start_and_preview_share_queue_selection() {
+        let mut s = fixture();
+        let at = Utc::now();
+        let before = s.entities.clone();
+        let view = home(&s, 1).unwrap();
+        assert_eq!(view["learner"]["queue"], json!([6]));
+        assert_eq!(view["activities"].as_array().unwrap().len(), 1);
+        assert_eq!(view["activities"][0]["activityId"], 51);
+        assert_eq!(
+            developer_preview::home(&s, 1).unwrap()["activities"][0]["activityId"],
+            51
+        );
+        assert_eq!(
+            queue_forms(&s, 1, at).unwrap(),
+            vec![
+                cas(&s, 80, "learner-task/status", "learner-task.status/locked").unwrap(),
+                add(json!(80), "learner-task/priority", json!(0.0)),
+            ]
+        );
+        assert!(mutate(&s, 1, "start", &json!({"activityId":50}), at).is_err());
+        let (forms, started) = mutate(&s, 1, "start", &json!({"activityId":51}), at).unwrap();
+        assert_eq!(started["taskId"], 81);
+        assert!(
+            forms.contains(
+                &cas(&s, 81, "learner-task/status", "learner-task.status/started").unwrap()
+            )
+        );
+        assert_eq!(s.entities, before); // Fixture tests never commit transactions.
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(false));
+        assert_eq!(home(&s, 1).unwrap()["activities"][0]["activityId"], 50);
+        assert!(mutate(&s, 1, "start", &json!({"activityId":51}), at).is_err());
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(true));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([]));
+        assert!(
+            home(&s, 1).unwrap()["activities"]
+                .as_array()
+                .unwrap()
+                .is_empty()
+        );
+    }
+}
+
+#[cfg(test)]
 mod integration {
     use super::*;
 
@@ -1494,7 +1630,7 @@ mod integration {
             progress.push(json!(name));
             forms.push(json!({"db/id":name,"progress/id":uid()?,"progress/topic":source.reference(*p,"progress/topic")?,"progress/repetitions":number(&source,*p,"progress/repetitions")}));
         }
-        forms.push(json!({"db/id":"test-learner","learner/id":id,"learner/name":"Temporary learner API integration test","learner/course":c,"learner/self-directed":true,"learner/knowledge-profile":progress,"db/ensure":kw("learner/validate")}));
+        forms.push(json!({"db/id":"test-learner","learner/id":id,"learner/name":"Temporary learner API integration test","learner/course":c,"learner/self-directed":false,"learner/knowledge-profile":progress,"db/ensure":kw("learner/validate")}));
         let mut s = commit(
             &conn,
             &endpoint,
@@ -1510,10 +1646,11 @@ mod integration {
             .unwrap();
         eprintln!("Temporary integration learner: {id}");
         let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| -> Result<()> {
-            let activity = *learning::candidates(&s, l, c)?
-                .first()
-                .ok_or("no eligible test lesson")?;
             let at = Utc::now();
+            let activity = learning::study_candidates(&s, l, c, at)?
+                .first()
+                .ok_or("no eligible test lesson")?
+                .activity;
             let forms = queue_forms(&s, l, at)?;
             assert!(
                 !forms.is_empty(),

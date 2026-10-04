@@ -60,6 +60,7 @@ def pace_before_answer(reader, state, index):
     remaining_questions = state['assessment_question_count'] - index - 1
     while True:
         reader.check()
+        check_request_error(reader.page)
         now = time.time()
         remaining = plan['started_at'] + plan['time_limit_seconds'] - now
         timer = reader.page.locator('#timeRemaining')
@@ -103,7 +104,60 @@ def finish(reader, state, directory):
     reader.knowledge_snapshot(state,directory,'assessment-completed')
 
 
+class AssessmentRequestError(RuntimeError):
+    pass
+
+
+def request_error_message(page):
+    message = page.locator('#messageBox-message')
+    if not message.is_visible():
+        return None
+    text = ' '.join(message.inner_text().split())
+    known = 'Oops, there was an error processing your request. Please check your internet connection.'
+    return text if text == known else None
+
+
+def check_request_error(page):
+    if request_error_message(page):
+        raise AssessmentRequestError('Math Academy displayed its request-processing error dialog')
+
+
 def take_assessment(reader, state, directory):
+    """Recover request errors/timeouts without restarting or resubmitting a quiz."""
+    from playwright.sync_api import TimeoutError as PlaywrightTimeout
+    directory = Path(directory)
+    while True:
+        try:
+            return _take_assessment(reader, state, directory)
+        except (AssessmentRequestError, PlaywrightTimeout) as error:
+            reader.check()
+            message = request_error_message(reader.page)
+            if state.get('test_submission_status') == 'confirming':
+                raise
+            if reader.page.locator('#messageBox-message').is_visible() and not message:
+                raise  # Unknown dialogs require inspection, not dismissal.
+            if not message and not state.get('assessment_started'):
+                raise
+            if not state.get('activity_url'):
+                raise
+            attempts = state.get('assessment_recovery_attempts', 0)
+            if attempts >= 2:
+                raise AssessmentRequestError('Assessment could not recover after two reloads; saved answers require inspection') from error
+            attempt = attempts + 1
+            state['assessment_recovery_attempts'] = attempt
+            state.setdefault('assessment_recovery_errors', []).append(
+                {'attempt': attempt, 'message': message or str(error), 'time': time.time()})
+            atomic_json(directory/'state.json',state)
+            (directory/('request-error-'+str(attempt)+'.html')).write_text(reader.page.content())
+            try:
+                reader.page.screenshot(path=str(directory/('request-error-'+str(attempt)+'.png')),timeout=5000)
+            except Exception:
+                logging.warning('Assessment recovery screenshot unavailable')
+            logging.warning('Restoring the same assessment (attempt %d/2), retaining saved answers and timer',attempt)
+            reader.navigate(state['activity_url'],force=True)
+
+
+def _take_assessment(reader, state, directory):
     from browser import by_id, LEARN
     from solver import Solver
     directory = Path(directory)
@@ -120,6 +174,7 @@ def take_assessment(reader, state, directory):
     # never replayed, even if restoring the page displays the old questions.
     if state.get('test_submission_status') == 'confirming':
         raise ValueError('Assessment submission is unconfirmed; inspect its result before another submission')
+    check_request_error(page)
     state.setdefault('assessment_correct_weight',reader.args.assessment_correct_weight)
     state['answer_policy'] = 'independent_weighted'
     if not state.get('assessment_started'):
@@ -159,13 +214,21 @@ def take_assessment(reader, state, directory):
         expect(navigator).to_have_count(len(observed),timeout=reader.args.timeout_ms)
     except AssertionError as exc:
         raise ValueError('Unknown assessment navigation layout') from exc
+    # Preserve initialized widgets for every question, including unvisited
+    # ones, before pacing or navigation can fail.
+    source = directory/'assessment-live.html'
+    if not source.exists():
+        source.write_text(page.content())
     save()
     for index, qid in enumerate(order):
         reader.check()
+        check_request_error(page)
         scope = by_id(page,qid)
         if not scope.is_visible():
             reader.pacer.wait('event','navigate assessment question')
-            navigator.nth(observed.index(qid)).click()
+            check_request_error(page)
+            navigator.nth(observed.index(qid)).click(timeout=min(reader.args.timeout_ms,5000))
+            check_request_error(page)
         scope.wait_for(state='visible')
         page.wait_for_function('''id => {
           const q=document.getElementById(id);
@@ -197,6 +260,7 @@ def take_assessment(reader, state, directory):
         # has a separate durable intent and is never blindly repeated.
         if record.get('status') != 'filled':
             pace_before_answer(reader,state,index)
+        check_request_error(page)
         reader.enter(scope,record)
         try:
             reader.verify_entered(scope,record)
@@ -208,9 +272,11 @@ def take_assessment(reader, state, directory):
         logging.info('%s: assessment answer filled (intended %s); %d/%d questions captured',
                      mid,record['intended'],len(state['questions']),len(order))
     reader.check()
+    check_request_error(page)
     (directory/'assessment-answered.html').write_text(page.content())
     reader.pacer.wait('answer','before submitting assessment',elapsed=sum(
         q.get('solver_elapsed_seconds',0) for q in state['questions'].values()))
+    check_request_error(page)
     button = by_id(page,'submitTestButton')
     if 'disabledButton' in (button.get_attribute('class') or ''):
         raise ValueError('Assessment Submit Test remains disabled after filling answers')

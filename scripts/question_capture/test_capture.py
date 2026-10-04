@@ -518,6 +518,24 @@ class ProgressTests(unittest.TestCase):
 
 
 class RunnerTests(unittest.TestCase):
+    def test_deferred_quiz_timeout_resumes_before_other_unfinished_activity(self):
+        with tempfile.TemporaryDirectory() as work:
+            root=Path(work); quiz=root/'1'; lesson=root/'2'
+            quiz.mkdir();lesson.mkdir();diagnostic=quiz/'diagnostics';diagnostic.mkdir()
+            (diagnostic/'error.json').write_text(json.dumps({'exception_type':'TimeoutError'}))
+            state={'task_id':1,'task_type':'assessment','assessment_started':True,
+                   'deferred_error':{'phase':'activity','diagnostics':str(diagnostic)}}
+            (quiz/'state.json').write_text(json.dumps(state))
+            (lesson/'state.json').write_text(json.dumps({'task_id':2,'task_type':'lesson'}))
+            args=arguments(['run','--output',work])
+            self.assertEqual(unfinished_run(args),quiz.resolve())
+            for changes in ({'test_submission_status':'confirming'}, {'assessment_recovery_attempts':2}):
+                (quiz/'state.json').write_text(json.dumps({**state,**changes}))
+                self.assertEqual(unfinished_run(args),lesson.resolve())
+            (diagnostic/'error.json').write_text(json.dumps({'exception_type':'ValueError'}))
+            (quiz/'state.json').write_text(json.dumps(state))
+            self.assertEqual(unfinished_run(args),lesson.resolve())
+
     def test_failure_report_survives_browser_artifact_failures(self):
         with tempfile.TemporaryDirectory() as work:
             args=arguments(['run','--state-dir',work])

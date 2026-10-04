@@ -130,6 +130,13 @@ The runner:
    across that exact transaction. It also verifies that a repeated import would
    produce no further changes.
 
+Recoverable assessment request errors and timeouts reload the same quiz at most
+twice, preserving saved answers, decisions, solver session, and original timer.
+A saved assessment interrupted by a recoverable timeout resumes before queue
+selection. Once it finishes, the batch continues. Unknown dialogs, uncertain
+final submissions, authentication blocks, and persistent failures require inspection.
+The full question DOM is saved before answering, including unvisited questions.
+
 It saves one snapshot of all three course progress pages **after each completed
 activity**. There are no new baseline or mid-activity checks. The snapshot is
 compared with the preceding completed activity's snapshot when available.

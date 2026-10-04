@@ -234,6 +234,31 @@ test('Study shows saved lesson progress with the same fraction as the player', a
   assert.equal(f.calls[0].path, '/api/queue');
 });
 
+test('Study identifies the selected queue mode and distinguishes empty from unavailable work', async () => {
+  const f = fixture();
+  const main = f.document.getElementById('main');
+  f.server = { learner: { selfDirected: true, queue: [6] }, activities: [activity(1, 1)] };
+  await f.h.home();
+  assert.equal(main.querySelector('h1').textContent, 'Your queue');
+  assert.match(main.querySelector('.subheading').textContent, /topics you selected/);
+  f.server.activities = [];
+  await f.h.home();
+  assert.equal(main.querySelector('.empty-state').querySelector('h2').textContent, 'No ready activities yet');
+  assert.match(main.querySelector('.empty-state').textContent, /queued topics/);
+  f.server.learner.queue = [];
+  await f.h.home();
+  assert.equal(main.querySelector('.empty-state').querySelector('h2').textContent, 'Your queue is empty');
+  f.server.learner.selfDirected = false;
+  await f.h.home();
+  assert.equal(main.querySelector('h1').textContent, 'Next up');
+  assert.match(main.querySelector('.subheading').textContent, /interleaved/);
+  f.dev = true;
+  f.server.learner.selfDirected = true;
+  await f.h.home();
+  assert.equal(main.querySelector('h1').textContent, 'Your queue');
+  assert.equal(f.calls.at(-1).path, '/api/preview-home');
+});
+
 test('Study progress is only shown for real started or paused lessons with valid saved positions', async () => {
   const f = fixture();
   f.server = { activities: [

@@ -21,6 +21,38 @@ QUIZ = json.loads((FIXTURES/'quiz-5-assessment.json').read_text())
 
 
 class AssessmentPolicyTests(unittest.TestCase):
+    def test_started_quiz_timeout_reloads_same_activity_and_keeps_session_and_clock(self):
+        from assessment import take_assessment
+        from playwright.sync_api import TimeoutError
+        with tempfile.TemporaryDirectory() as work:
+            reader=Mock();reader.page.locator.return_value.is_visible.return_value=False
+            reader.page.content.return_value='<html>Saved source</html>'
+            state={'assessment_started':True,'activity_url':'https://mathacademy.com/tasks/1/tests/2',
+                   'assessment_pacing':{'started_at':123},'questions':{'q-1':{'intended':'W','status':'filled'}},
+                   'solver_session':'saved-session'}
+            with patch('assessment._take_assessment',side_effect=[TimeoutError('transient navigation'),None]) as take:
+                take_assessment(reader,state,Path(work))
+            self.assertEqual(take.call_count,2)
+            reader.navigate.assert_called_once_with(state['activity_url'],force=True)
+            self.assertEqual(state['assessment_pacing']['started_at'],123)
+            self.assertEqual(state['questions']['q-1']['intended'],'W')
+            self.assertEqual(state['solver_session'],'saved-session')
+
+    def test_quiz_recovery_is_bounded_and_never_reloads_unknown_dialog_or_final_submission(self):
+        from assessment import take_assessment,AssessmentRequestError
+        from playwright.sync_api import TimeoutError
+        for mode in ('persistent','unknown-dialog','confirming'):
+            with self.subTest(mode=mode),tempfile.TemporaryDirectory() as work:
+                reader=Mock();reader.page.content.return_value='<html></html>'
+                reader.page.locator.return_value.is_visible.return_value=(mode=='unknown-dialog')
+                reader.page.locator.return_value.inner_text.return_value='Unrecognized error'
+                state={'assessment_started':True,'activity_url':'https://mathacademy.com/tasks/1/tests/2'}
+                if mode=='confirming':state['test_submission_status']='confirming'
+                with patch('assessment._take_assessment',side_effect=TimeoutError('navigation')):
+                    with self.assertRaises(AssessmentRequestError if mode=='persistent' else TimeoutError):
+                        take_assessment(reader,state,Path(work))
+                self.assertEqual(reader.navigate.call_count,2 if mode=='persistent' else 0)
+
     def test_quiz_intent_probability_threshold_and_sampling(self):
         from assessment import choose_quiz_intent
         self.assertEqual(arguments(['run']).assessment_correct_weight,0.8717)
@@ -653,7 +685,34 @@ class AssessmentDOMTests(unittest.TestCase):
             reader.verify_entered(scope,record)
         self.assertEqual(self.submissions,0)
 
-    def assert_whole_quiz_capture(self, retake=False, fallback=False):
+    def test_request_error_before_eighth_question_recovers_complete_quiz(self):
+        # Reproduce the site's request-error cover, triggered on the final
+        # navigator button. Reloading serves the same questions without it.
+        html=self.live_html+'''<div id="messageBox-message" style="display:none">Oops, there was an error processing your request. Please check your internet connection.</div>
+        <script>document.querySelectorAll('.questionButton')[7].onclick=()=>{
+          document.querySelector('#messageBox-message').style.display='block';
+          const cover=document.createElement('div');cover.className='screenCover';
+          cover.style='position:fixed;inset:0;z-index:10000';document.body.append(cover);
+        };</script>'''
+        def first_document(route):
+            self.context.unroute('https://mathacademy.com/tasks/13930620/tests/589340',first_document)
+            self.starts+=1
+            route.fulfill(status=200,content_type='text/html; charset=utf-8',body=html)
+        self.context.route('https://mathacademy.com/tasks/13930620/tests/589340',first_document)
+        self.assert_whole_quiz_capture(reloads=1)
+
+    def test_queue_redirect_to_active_quiz_does_not_reload_or_wait_for_queue(self):
+        reader=self.reader()
+        self.page.goto('https://mathacademy.com/tasks/13930620/tests/589340')
+        # Playwright routes intercept only the initial request of redirects;
+        # emulate its destination response while retaining the real quiz DOM.
+        response=SimpleNamespace(request=SimpleNamespace(redirected_from=True))
+        with patch.object(self.page,'goto',return_value=response) as navigate:
+            with self.assertRaisesRegex(ValueError,'unfinished assessment'):
+                reader.queue()
+        navigate.assert_called_once_with('https://mathacademy.com/learn',wait_until='domcontentloaded')
+
+    def assert_whole_quiz_capture(self, retake=False, fallback=False, reloads=0):
         reader=self.reader()
         quiz=choose_activity(reader.queue(),{10:999})
         self.assertEqual(quiz['assessment_notice'],
@@ -675,7 +734,11 @@ class AssessmentDOMTests(unittest.TestCase):
             except Exception as error:
                 raise AssertionError(list(reader.diagnostic_events)) from error
             self.assertTrue(state['activity_complete'])
-            self.assertEqual((self.starts,self.submissions),(1,1))
+            self.assertEqual((self.starts,self.submissions),(1+reloads,1))
+            self.assertEqual(state.get('assessment_recovery_attempts',0),reloads)
+            self.assertEqual(self.instruction_pages,1)
+            self.assertEqual(len(state['questions']),8)
+            self.assertIn('question-82938',(directory/'assessment-live.html').read_text())
             reader.knowledge_snapshot.assert_called_once()
             def topic(tid,*args):
                 q=next(q for q in QUIZ['questions'] if q['topic_id']==tid)

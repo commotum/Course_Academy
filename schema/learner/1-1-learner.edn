@@ -21,12 +21,17 @@
  {:db/ident :learner/self-directed
   :db/valueType :db.type/boolean
   :db/cardinality :db.cardinality/one
-  :db/doc "Whether self-directed study controls should be available for this learner. Applications should treat an absent value as false."}
+  :db/doc "Whether Study uses the learner's explicitly selected topic queue instead of engine recommendations. Applications should treat an absent value as false."}
+
+ {:db/ident :learner/queue
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Unordered topics explicitly selected by the learner for self-directed study. References shared topics across courses. Study serves eligible activities for these topics when learner/self-directed is true; an empty queue does not fall back to engine recommendations. These ordinary refs do not establish ownership. Removing a queued topic preserves the topic and all learner history. Distinct from learner/targets, which records longer-term study destinations."}
 
  {:db/ident :learner/targets
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Topics the learner has selected as study targets. These ordinary refs point to shared topics across courses. In self-directed mode, the scheduler prioritizes eligible work supporting these targets and their prerequisites. Removing a target preserves its topic and all learner history."}
+  :db/doc "Longer-term study destinations selected by the learner, displayed with their prerequisite graph. These ordinary refs point to shared topics across courses. Immediate self-directed activities come from learner/queue. Removing a target preserves its topic and all learner history."}
 
  {:db/ident :learner/assignments
   :db/valueType :db.type/ref

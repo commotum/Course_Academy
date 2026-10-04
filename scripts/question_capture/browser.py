@@ -206,6 +206,9 @@ class CaptureBrowser:
             try:
                 response = self.page.goto(url, wait_until='domcontentloaded')
                 if response and response.request.redirected_from:
+                    if url == LEARN and re.search(r'/tasks/\d+/tests/\d+(?:[/?#]|$)',self.page.url):
+                        self.check()
+                        return  # The queue caller reports the forced active assessment.
                     # Playwright routes only the first request of a redirect
                     # chain. Load the destination once directly so its document
                     # receives the same editor-tag repair as other navigations.
@@ -230,6 +233,8 @@ class CaptureBrowser:
 
     def queue(self):
         self.navigate(LEARN, force=True)
+        if re.search(r'/tasks/\d+/tests/\d+(?:[/?#]|$)',self.page.url):
+            raise ValueError('Math Academy redirected the queue to an unfinished assessment: '+self.page.url+'; explicitly resume its saved capture')
         self.page.locator('#incompleteTasks').wait_for(state='attached')
         # Wait for the asynchronous task list, allowing an empty queue.
         self.page.wait_for_timeout(self.args.settle_ms)

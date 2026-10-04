@@ -9,20 +9,38 @@ export function inlinePrompt(value, fields) {
   const slot = key => `<span class="field-location" data-field-key="${htmlText(key)}"></span>`;
   // Separate simple equation fragments around an authored field so the control
   // stays outside MathJax's SVG. Ordinary TeX without fields is untouched.
-  let source = String(value || '').replace(mathBlock, match => {
+  const code = [], codePrefix = 'CAQUIZCODE' + crypto.randomUUID().replaceAll('-', '');
+  let source = String(value || '').replace(/```[\s\S]*?```|`[^`\n]*`/g, match => {
+    code.push(match); return codePrefix + (code.length - 1) + 'END';
+  });
+  source = source.replace(mathBlock, match => {
     const display = match.startsWith('$$') || match.startsWith('\\[');
     const edge = match.startsWith('$') && !display ? 1 : 2;
     const body = match.slice(edge, -edge);
     if (![...body.matchAll(fieldMarker)].some(marker => keys.has(marker[1]))) return match;
-    const parts = body.split(fieldMarker).map((part, index) => index % 2
+    const fragments = body.split(fieldMarker);
+    const balanced = fragment => {
+      let depth = 0;
+      for (const char of fragment.replace(/\\[{}]/g, '')) {
+        if (char === '{') depth++; else if (char === '}') depth--;
+        if (depth < 0) return false;
+      }
+      return depth === 0 && (fragment.match(/\\left\b/g)?.length || 0) === (fragment.match(/\\right\b/g)?.length || 0);
+    };
+    // A field inside a fraction/root argument cannot split into independent TeX
+    // runs. Preserve that formula and keep its answer controls beside it.
+    if (fragments.some((part, index) => index % 2 === 0 && !balanced(part))) {
+      return match.replace(fieldMarker, (whole, key) => keys.has(key) ? '\\underline{\\phantom{xxxx}}' : whole)
+        + [...body.matchAll(fieldMarker)].filter(marker => keys.has(marker[1])).map(marker => slot(marker[1])).join('');
+    }
+    const parts = fragments.map((part, index) => index % 2
       ? keys.has(part) ? slot(part) : htmlText(`{{${part}}}`)
       : part.trim() ? `\\(${part.trim()}\\)` : '').join('');
     return display ? `\n\n<div class="question-equation">${parts}</div>\n\n` : parts;
   });
   // Code examples must not acquire interactive controls.
-  source = source.replace(/```[\s\S]*?```|`[^`\n]*`|\{\{(?:answer-field:)?([^}]+)\}\}/g,
-    (whole, key) => key && keys.has(key) ? slot(key) : whole);
-  return source;
+  source = source.replace(fieldMarker, (whole, key) => keys.has(key) ? slot(key) : whole);
+  return source.replace(new RegExp(codePrefix + '(\\d+)END', 'g'), (_, index) => code[Number(index)]);
 }
 
 export function mountInlineFields(prompt, fieldList, fields, makeControl, idOf = field => field.id) {
@@ -38,6 +56,12 @@ export function mountInlineFields(prompt, fieldList, fields, makeControl, idOf =
       if (child.tagName.toLowerCase() !== 'legend' && !child.classList.contains('input-help')) inline.append(child);
     }
     slots[0].replaceChildren(inline);
+    const blank = inline.querySelector('input');
+    if (fieldType(field) === 'blank' && blank) {
+      blank.placeholder = '…';
+      const fit = () => { blank.style.width = `${Math.min(30, Math.max(8, String(blank.value || '').length + 2))}ch`; };
+      blank.addEventListener('input', fit); fit();
+    }
     // Repeated references show the same answer without creating a second field.
     const sync = () => {
       const input = inline.querySelector('input,select');
@@ -66,6 +90,7 @@ export function richSelect(select, choices, renderAnswer, idOf = answer => answe
   const update = () => {
     const chosen = choices.find(choice => String(idOf(choice)) === select.value);
     value.replaceChildren(chosen ? renderAnswer(chosen) : document.createTextNode('Select…'));
+    trigger.setAttribute('aria-label', `${select.getAttribute('aria-label') || 'Answer'}: ${chosen?.value || 'Select an answer'}`);
     buttons.forEach((button, index) => button.setAttribute('aria-selected', String(String(idOf(choices[index])) === select.value)));
   };
   const close = (restore = false) => {
@@ -77,6 +102,7 @@ export function richSelect(select, choices, renderAnswer, idOf = answer => answe
   const open = (last = false) => {
     if (select.disabled || trigger.disabled || !buttons.length) return;
     menu.hidden = false; trigger.setAttribute('aria-expanded', 'true');
+    void typeset(menu);
     document.addEventListener('pointerdown', outside);
     const selected = choices.findIndex(choice => String(idOf(choice)) === select.value);
     buttons[selected >= 0 ? selected : last ? buttons.length - 1 : 0].focus({ preventScroll: true });

@@ -476,6 +476,88 @@ pub fn plan_candidates(
     plan_candidates_with_supply(s, learner, course, at, 2, true)
 }
 
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum StudyScope {
+    Targets,
+    Course,
+    Queue,
+}
+
+/// Study has two independent sources. Explicit selections may cross courses
+/// and bypass the engine's mastery/prerequisite gates, but never content checks.
+/// Engine suggestions rotate eligible lessons across modules, keeping ongoing
+/// lessons first. A cardinality-many queue is a set, not a user-defined ordering.
+pub fn study_candidates(
+    s: &EntitySnapshot,
+    learner: u64,
+    course: u64,
+    at: DateTime<Utc>,
+) -> Result<Vec<PlannedActivity>> {
+    let queued = s.entity(learner)?.get("learner/self-directed") == Some(&json!(true));
+    let mut plan = plan_candidates_in_scope(
+        s,
+        learner,
+        course,
+        at,
+        2,
+        !queued,
+        if queued {
+            StudyScope::Queue
+        } else {
+            StudyScope::Course
+        },
+    )?;
+    if queued {
+        for candidate in &mut plan {
+            if candidate.priority < 10000.0 {
+                candidate.reason = "Selected for your queue".into();
+            }
+        }
+        return Ok(plan);
+    }
+
+    // Preserve engine ranking inside each module. Visit modules in the order
+    // of their first ranked candidate, then take one lesson from each per round.
+    let mut modules = BTreeMap::new();
+    for unit in s.refs(course, "course/units")? {
+        for module in s.refs(unit, "unit/modules")? {
+            for topic in s.refs(module, "module/topics")? {
+                modules.entry(topic).or_insert(module);
+            }
+        }
+    }
+    let mut ongoing = vec![];
+    let mut lanes: Vec<std::collections::VecDeque<PlannedActivity>> = vec![];
+    let mut lane_indices = BTreeMap::new();
+    for candidate in plan {
+        if candidate.priority >= 10000.0 {
+            ongoing.push(candidate);
+            continue;
+        }
+        let module = modules
+            .get(&candidate.topic)
+            .copied()
+            .unwrap_or(candidate.topic);
+        let index = *lane_indices.entry(module).or_insert_with(|| {
+            lanes.push(std::collections::VecDeque::new());
+            lanes.len() - 1
+        });
+        lanes[index].push_back(candidate);
+    }
+    loop {
+        let before = ongoing.len();
+        for lane in &mut lanes {
+            if let Some(candidate) = lane.pop_front() {
+                ongoing.push(candidate);
+            }
+        }
+        if ongoing.len() == before {
+            break;
+        }
+    }
+    Ok(ongoing)
+}
+
 /// Compatibility wrapper for callers that only need the ordered activity IDs.
 pub fn candidates(s: &EntitySnapshot, learner: u64, course: u64) -> Result<Vec<u64>> {
     Ok(plan_candidates(s, learner, course, Utc::now())?
@@ -623,10 +705,39 @@ fn plan_candidates_with_supply(
     minimum_fresh: usize,
     exclude_practiced: bool,
 ) -> Result<Vec<PlannedActivity>> {
+    plan_candidates_in_scope(
+        s,
+        learner,
+        course,
+        at,
+        minimum_fresh,
+        exclude_practiced,
+        StudyScope::Targets,
+    )
+}
+
+fn plan_candidates_in_scope(
+    s: &EntitySnapshot,
+    learner: u64,
+    course: u64,
+    at: DateTime<Utc>,
+    minimum_fresh: usize,
+    exclude_practiced: bool,
+    selection: StudyScope,
+) -> Result<Vec<PlannedActivity>> {
     let mut scope = BTreeSet::new();
-    for unit in s.refs(course, "course/units")? {
-        for module in s.refs(unit, "unit/modules")? {
-            scope.extend(s.refs(module, "module/topics")?);
+    if selection == StudyScope::Queue {
+        for topic in s.refs(learner, "learner/queue")? {
+            if !s.entity(topic)?.contains_key("topic/id") {
+                return Err("learner/queue must reference topics".into());
+            }
+            scope.insert(topic);
+        }
+    } else {
+        for unit in s.refs(course, "course/units")? {
+            for module in s.refs(unit, "unit/modules")? {
+                scope.extend(s.refs(module, "module/topics")?);
+            }
         }
     }
     let mut practiced = BTreeSet::new();
@@ -655,6 +766,9 @@ fn plan_candidates_with_supply(
             return Err("invalid imported repetition position".into());
         }
         repetitions.insert(topic, reps);
+        if selection == StudyScope::Queue {
+            continue;
+        }
         // A complete local state explicitly records whether learning has been
         // established. Partial historical records may only report repetitions.
         if r.get("progress/learned")
@@ -700,7 +814,11 @@ fn plan_candidates_with_supply(
             }
         }
     }
-    let support = target_support(s, learner, &prerequisites, &ready)?;
+    let support = if selection == StudyScope::Targets {
+        target_support(s, learner, &prerequisites, &ready)?
+    } else {
+        BTreeMap::new()
+    };
     scope.extend(support.keys().copied());
     let seen = seen_questions(s, learner)?;
     let mut finished = BTreeSet::new();
@@ -728,7 +846,9 @@ fn plan_candidates_with_supply(
             continue;
         };
         if active.contains(&activity) {
-            if lesson_steps(s, activity).is_ok() {
+            if (selection != StudyScope::Queue || scope.contains(&topic))
+                && lesson_steps(s, activity).is_ok()
+            {
                 result.push((activity, topic));
             }
             continue;
@@ -737,9 +857,10 @@ fn plan_candidates_with_supply(
             continue;
         }
         if (exclude_practiced && practiced.contains(&topic))
-            || prerequisites
-                .get(&topic)
-                .is_some_and(|required| !required.is_subset(&ready))
+            || (selection != StudyScope::Queue
+                && prerequisites
+                    .get(&topic)
+                    .is_some_and(|required| !required.is_subset(&ready)))
         {
             continue;
         }
@@ -760,7 +881,9 @@ fn plan_candidates_with_supply(
                     .count()
                     < minimum_fresh
             }
-            "question" => seen.contains(&step.content),
+            "question" => {
+                seen.contains(&step.content) || validate_question(s, step.content).is_err()
+            }
             _ => false,
         }) {
             continue;
@@ -1600,6 +1723,150 @@ mod tests {
 
     fn planning_time() -> DateTime<Utc> {
         DateTime::from_timestamp_millis(1_790_760_000_000).unwrap()
+    }
+
+    #[test]
+    fn study_queue_is_explicit_cross_course_and_does_not_fall_back() {
+        let mut s = planning_fixture(&[90]);
+        let queued = planning_lesson(&mut s, 80, &[]);
+        planning_lesson(&mut s, 81, &[80]); // Unlearned prerequisite.
+        planning_lesson(&mut s, 90, &[]); // Long-term target is not queued.
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([80]));
+        let plan = study_candidates(&s, 1, 5, planning_time()).unwrap();
+        assert_eq!(
+            plan.iter().map(|p| p.activity).collect::<Vec<_>>(),
+            [queued]
+        );
+        assert_eq!(plan[0].reason, "Selected for your queue");
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([]));
+        assert!(
+            study_candidates(&s, 1, 5, planning_time())
+                .unwrap()
+                .is_empty()
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([9]));
+        assert!(
+            study_candidates(&s, 1, 5, planning_time())
+                .unwrap()
+                .is_empty()
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([3]));
+        assert_eq!(
+            study_candidates(&s, 1, 5, planning_time()).unwrap()[0].activity,
+            20
+        );
+        assert_eq!(
+            study_candidates(&s, 1, 5, planning_time()).unwrap()[0].reason,
+            "Continue your lesson"
+        );
+    }
+
+    #[test]
+    fn study_queue_keeps_content_checks_and_rejects_non_topic_refs() {
+        let mut s = planning_fixture(&[]);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([3]));
+        s.entities
+            .get_mut(&41)
+            .unwrap()
+            .insert("knowledge-point/questions".into(), json!([100]));
+        assert!(
+            study_candidates(&s, 1, 5, planning_time())
+                .unwrap()
+                .is_empty()
+        );
+        let lesson = planning_lesson(&mut s, 80, &[]);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([80]));
+        s.entities
+            .get_mut(&(20000 + 80))
+            .unwrap()
+            .remove("question/answer-fields");
+        assert!(
+            study_candidates(&s, 1, 5, planning_time())
+                .unwrap()
+                .is_empty()
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([lesson]));
+        assert!(
+            study_candidates(&s, 1, 5, planning_time())
+                .unwrap_err()
+                .contains("must reference topics")
+        );
+    }
+
+    #[test]
+    fn study_engine_interleaves_modules_and_ignores_queue_and_targets() {
+        let mut s = planning_fixture(&[90]);
+        let a = planning_lesson(&mut s, 80, &[]);
+        let b = planning_lesson(&mut s, 81, &[]);
+        let c = planning_lesson(&mut s, 82, &[]);
+        let d = planning_lesson(&mut s, 83, &[]);
+        planning_lesson(&mut s, 90, &[]);
+        planning_lesson(&mut s, 91, &[83]); // Blocks d in engine mode.
+        s.entities
+            .get_mut(&7)
+            .unwrap()
+            .insert("module/topics".into(), json!([80, 81]));
+        put(
+            &mut s.entities,
+            8,
+            json!({"module/id":id(8),"module/topics":[82,83]}),
+        );
+        s.entities
+            .get_mut(&6)
+            .unwrap()
+            .insert("unit/modules".into(), json!([8, 7]));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([90]));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(false));
+        let ids = |s: &EntitySnapshot| {
+            study_candidates(s, 1, 5, planning_time())
+                .unwrap()
+                .iter()
+                .map(|p| p.activity)
+                .collect::<Vec<_>>()
+        };
+        assert_eq!(ids(&s), [a, c, b]);
+        s.entities
+            .get_mut(&91)
+            .unwrap()
+            .insert("topic/next".into(), json!([]));
+        assert_eq!(ids(&s), [a, c, b, d]);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([9]));
+        assert_eq!(ids(&s), [20, a, c, b, d]);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .remove("learner/self-directed");
+        assert_eq!(ids(&s), [20, a, c, b, d]);
     }
 
     #[test]
