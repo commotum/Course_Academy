@@ -2,6 +2,7 @@ import { marked } from './vendor/marked/marked.esm.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
 import { developerModeReady, isDeveloperMode } from './developer-mode.js';
 import { attachStepMenu } from './step-menu.js';
+import { inlinePrompt, mountInlineFields, richSelect, questionFeedback } from './question-fields.js';
 
 await developerModeReady;
 
@@ -135,7 +136,7 @@ async function mutation(path, values) {
       task = result.task || result;
       history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(task.taskId));
       await renderTask(task);
-      announce(answered(task.step?.status) ? (task.step.status === 'correct' ? 'Correct.' : 'Answer recorded.') : task.step?.title || 'Progress saved.');
+      announce(answered(task.step?.status) ? (task.step.status === 'correct' ? 'Correct.' : task.step.status === 'incorrect' ? 'Incorrect.' : 'Skipped.') : task.step?.title || 'Progress saved.');
     } catch (error) {
       if (revision !== settingsRevision) return;
       // Only a confirmed rejection may get a fresh request identity. An uncertain
@@ -160,7 +161,7 @@ function markdown(value, className = 'prose', fields = []) {
   const prefix = 'CAMATH' + crypto.randomUUID().replaceAll('-', '') + 'TOKEN';
   const fieldKeys = new Set(fields.map(field => field.key));
   const placeholder = /\{\{(?:answer-field:)?([^}]+)\}\}/g;
-  let source = String(value || '').replace(/\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\.|[^$\\])*?(?<!\\)\$/g, match => {
+  let source = inlinePrompt(value, fields).replace(/\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\.|[^$\\])*?(?<!\\)\$/g, match => {
     math.push(match.replace(placeholder, (whole, key) => fieldKeys.has(key)
       ? `\\underbrace{\\qquad}_{\\text{answer ${fields.findIndex(field => field.key === key) + 1}}}` : whole));
     return prefix + (math.length - 1) + 'END';
@@ -541,27 +542,24 @@ function fieldControl(field, readOnly, itemId) {
     }
     set.append(list);
   } else if (type === 'select') {
-    // Native option elements cannot contain typeset math; lettered previews keep the dropdown accessible.
-    const previews = el('div', 'select-options');
     const select = el('select', 'answer-select'); select.name = String(field.id); select.disabled = readOnly;
     select.setAttribute('aria-label', label);
     const placeholder = el('option', '', 'Select an answer…'); placeholder.value = ''; select.append(placeholder);
-    choices.forEach((choice, index) => {
-      const letter = String.fromCharCode(65 + index);
-      const preview = el('div', 'option-preview'); preview.append(el('div', 'option-label', letter), answerValue(choice)); previews.append(preview);
-      const option = el('option', '', `${letter}${short(choice.type) === 'text' ? ' · ' + choice.value : ''}`);
+    choices.forEach(choice => {
+      const option = el('option', '', choice.value);
       option.value = String(choice.id); option.selected = String(responseId) === String(choice.id); select.append(option);
     });
-    set.append(previews, select);
+    select.value = responseId == null ? '' : String(responseId);
+    set.append(richSelect(select, choices, answerValue, answer => answer.id, typeset));
   }
-  for (const input of set.querySelectorAll('input,select')) {
+  for (const input of set.querySelectorAll('input,select,.answer-select-trigger')) {
     input.dataset.answerInput = 'true'; input.dataset.readOnly = String(readOnly);
   }
   return set;
 }
 function collectResponses(form, fields) {
   return fields.map(field => {
-    const set = [...form.querySelectorAll('fieldset')].find(node => node.dataset.fieldId === String(field.id));
+    const set = [...form.querySelectorAll('[data-field-id]')].find(node => node.dataset.fieldId === String(field.id));
     if (short(field.type) === 'blank') return { fieldId: field.id, value: set.querySelector('input').value };
     const input = set.querySelector('input:checked, select');
     return { fieldId: field.id, choiceId: input?.value ? Number(input.value) : '' };
@@ -602,12 +600,13 @@ function previewContent(data, step, index, archived = false) {
   content.append(meta);
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
-  card.append(markdown(step.markdown ?? step.problem ?? '', 'prose', fields));
+  const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', fields);
+  card.append(prompt);
   if (fields.length) {
     const form = el('form'), fieldList = el('div', 'answer-fields');
     const readOnly = archived || kind === 'example' || answered(short(step.status));
-    fields.forEach(field => fieldList.append(fieldControl(field, readOnly, step.contentId)));
-    form.append(fieldList);
+    mountInlineFields(prompt, fieldList, fields, field => fieldControl(field, readOnly, step.contentId));
+    form.append(prompt, fieldList);
     if (!readOnly) {
       const actions = el('div', 'answer-actions');
       const check = el('button', 'primary', 'Check preview answer'); check.type = 'submit'; check.dataset.action = 'true';
@@ -636,8 +635,8 @@ function previewContent(data, step, index, archived = false) {
     card.append(form);
   }
   if (answered(short(step.status))) {
-    const feedback = el('div', 'feedback');
-    feedback.append(el('div', 'feedback-heading', short(step.status) === 'correct' ? '✓ Correct · Preview only' : 'Incorrect · Preview only'));
+    const feedback = el('div', 'feedback'); questionFeedback(feedback, step.status); feedback.setAttribute('role', 'status');
+    feedback.append(el('div', 'feedback-heading', short(step.status) === 'correct' ? '✓ Correct · Preview only' : short(step.status) === 'skipped' ? 'Skipped · Preview only' : '✕ Incorrect · Preview only'));
     if (step.feedback) feedback.append(markdown(step.feedback));
     for (const field of fields) if (field.response?.feedback) feedback.append(markdown(field.response.feedback));
     card.append(feedback);
@@ -694,7 +693,8 @@ function taskContent(data, step, number, total, archived = false) {
   content.append(meta);
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
-  card.append(markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []));
+  const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []);
+  card.append(prompt);
   const isAnswered = answered(short(step.status));
   const readOnly = archived || isAnswered || short(data.status) === 'paused';
   const fields = step.fields || [];
@@ -702,11 +702,11 @@ function taskContent(data, step, number, total, archived = false) {
     const form = el('form'); form.noValidate = false;
     const fieldList = el('div', 'answer-fields');
     const draft = drafts.get(step.itemId) || [];
-    fields.forEach(field => {
+    mountInlineFields(prompt, fieldList, fields, field => {
       const saved = draft.find(response => response.fieldId === field.id);
-      fieldList.append(fieldControl(!readOnly && saved ? { ...field, response: saved } : field, readOnly, step.itemId));
+      return fieldControl(!readOnly && saved ? { ...field, response: saved } : field, readOnly, step.itemId);
     });
-    form.append(fieldList);
+    form.append(prompt, fieldList);
     if (!readOnly) {
       const actions = el('div', 'answer-actions');
       const submit = el('button', 'primary', 'Check answer'); submit.type = 'submit'; submit.dataset.action = 'true';
@@ -726,8 +726,8 @@ function taskContent(data, step, number, total, archived = false) {
     card.append(form);
   }
   if (isAnswered) {
-    const feedback = el('div', 'feedback');
-    feedback.append(el('div', 'feedback-heading', step.status === 'correct' ? '✓ Correct' : step.status === 'skipped' ? 'Skipped' : 'Answer recorded · Incorrect'));
+    const feedback = el('div', 'feedback'); questionFeedback(feedback, step.status); feedback.setAttribute('role', 'status');
+    feedback.append(el('div', 'feedback-heading', short(step.status) === 'correct' ? '✓ Correct' : short(step.status) === 'skipped' ? 'Skipped' : '✕ Incorrect'));
     if (step.feedback) feedback.append(markdown(step.feedback));
     for (const field of fields) {
       if (field.response?.feedback) feedback.append(markdown(field.response.feedback));

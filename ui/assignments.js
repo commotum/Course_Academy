@@ -1,6 +1,7 @@
 import { marked } from './vendor/marked/marked.esm.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
 import { developerModeReady, isDeveloperMode } from './developer-mode.js';
+import { inlinePrompt, mountInlineFields, richSelect, questionFeedback } from './question-fields.js';
 
 await developerModeReady;
 
@@ -86,7 +87,7 @@ function markdown(value, fields = []) {
   const prefix = 'CAMATH' + crypto.randomUUID().replaceAll('-', '') + 'TOKEN';
   const placeholder = /\{\{(?:answer-field:)?([^}]+)\}\}/g;
   const fieldIndex = key => fields.findIndex(field => field.key === key);
-  let source = String(value || '').replace(/\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\.|[^$\\])*?(?<!\\)\$/g, match => {
+  let source = inlinePrompt(value, fields).replace(/\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\.|[^$\\])*?(?<!\\)\$/g, match => {
     math.push(match.replace(placeholder, (whole, key) => fieldIndex(key) < 0 ? whole : `\\underbrace{\\qquad}_{\\text{answer ${fieldIndex(key) + 1}}}`));
     return prefix + (math.length - 1) + 'END';
   });
@@ -144,24 +145,21 @@ function fieldControl(field, question, index) {
     }
     set.append(choices);
   } else if (type === 'select') {
-    const previews = el('div', 'select-options');
     const select = el('select', 'answer-select'); select.name = name; select.setAttribute('aria-label', label);
     const placeholder = el('option', '', 'Select an answer…'); placeholder.value = ''; select.append(placeholder);
-    (field.choices || []).forEach((choice, optionIndex) => {
-      const letter = String.fromCharCode(65 + optionIndex);
-      const preview = el('div', 'option-preview');
-      preview.append(el('div', 'option-label', letter), answerValue(choice)); previews.append(preview);
-      const option = el('option', '', letter + (short(choice.type) === 'text' ? ' · ' + choice.value : ''));
+    (field.choices || []).forEach(choice => {
+      const option = el('option', '', choice.value);
       option.value = String(entityId(choice)); option.selected = String(responseId) === option.value;
       select.append(option);
     });
-    set.append(previews, select);
+    select.value = responseId == null ? '' : String(responseId);
+    set.append(richSelect(select, field.choices || [], answerValue, entityId, typeset));
   }
   return set;
 }
 function collectResponses(view) {
   return (view.question.fields || []).map(field => {
-    const set = [...view.form.querySelectorAll('fieldset')].find(node => node.dataset.fieldId === String(entityId(field)));
+    const set = [...view.form.querySelectorAll('[data-field-id]')].find(node => node.dataset.fieldId === String(entityId(field)));
     if (short(field.type) === 'blank') return { fieldId: entityId(field), value: set?.querySelector('input')?.value || '' };
     const control = set?.querySelector('input:checked, select');
     return { fieldId: entityId(field), choiceId: control?.value ? Number(control.value) : '' };
@@ -177,7 +175,7 @@ function refreshControls() {
     const question = view.question;
     const editable = question.gradable === true && !question.isExample && (assignmentData?.preview || !answered(question));
     const disabled = modeChanging || !editable || view.submitting;
-    for (const input of view.form?.querySelectorAll('input,select') || []) input.disabled = disabled;
+    for (const input of view.form?.querySelectorAll('input,select,.answer-select-trigger') || []) input.disabled = disabled;
     if (view.check) {
       const valid = collectResponses(view).every(response => response.choiceId || typeof response.value === 'string' && response.value.trim());
       view.check.disabled = disabled || Boolean(mutationPending || pendingPause || retryOperation) || !valid || (!assignmentData?.preview && !activeQuestion(question));
@@ -205,8 +203,8 @@ function renderQuestionFeedback(view) {
   const question = view.question;
   view.result.replaceChildren();
   if (answered(question)) {
-    const feedback = el('div', 'feedback'); feedback.setAttribute('role', 'status');
-    const label = short(question.status) === 'correct' ? '✓ Correct' : short(question.status) === 'skipped' ? 'Skipped' : 'Incorrect';
+    const feedback = el('div', 'feedback'); questionFeedback(feedback, question.status); feedback.setAttribute('role', 'status');
+    const label = short(question.status) === 'correct' ? '✓ Correct' : short(question.status) === 'skipped' ? 'Skipped' : '✕ Incorrect';
     feedback.append(el('div', 'feedback-heading', label + (assignmentData.preview ? ' · Preview only' : '')));
     if (question.feedback) feedback.append(markdown(question.feedback));
     for (const field of question.fields || []) if (field.response?.feedback) feedback.append(markdown(field.response.feedback));
@@ -237,14 +235,15 @@ function questionView(question) {
   if (question.requiresCalculator) meta.append(el('span', '', 'Calculator required'));
   if (question.difficulty) meta.append(el('span', '', short(question.difficulty)));
   if (meta.childElementCount) node.append(meta);
-  node.append(markdown(question.problem, question.fields || []));
-  const view = { key, question, node, form: null, result: el('div', 'assignment-result'), submitting: false };
+  const prompt = markdown(question.problem, question.fields || []);
+  node.append(prompt);
+  const view = { key, question, node, prompt, form: null, result: el('div', 'assignment-result'), submitting: false };
   const fields = question.fields || [];
   if (fields.length && fields.every(field => ['blank', 'radio', 'select'].includes(short(field.type)))) {
     const form = el('form'); view.form = form;
     const fieldList = el('div', 'answer-fields'); view.fieldList = fieldList;
-    fields.forEach((field, index) => fieldList.append(fieldControl(field, question, index)));
-    form.append(fieldList);
+    mountInlineFields(prompt, fieldList, fields, field => fieldControl(field, question, fields.indexOf(field)), entityId);
+    form.append(prompt, fieldList);
     if (question.gradable && !question.isExample) {
       const actions = el('div', 'answer-actions assignment-question-actions');
       if (!assignmentData.preview) {
@@ -258,7 +257,7 @@ function questionView(question) {
       const check = el('button', 'primary', assignmentData.preview ? 'Check preview answer' : 'Check answer');
       check.type = 'submit'; view.check = check; actions.append(check); form.append(actions);
       form.addEventListener('focusin', event => {
-        if (!event.target.matches('input,select') || assignmentData.preview || modeChanging || answered(view.question)) return;
+        if (!event.target.matches('input,select,.answer-select-trigger') || assignmentData.preview || modeChanging || answered(view.question)) return;
         wantedFocus = key; void focusWantedQuestion();
       });
       form.addEventListener('input', refreshControls); form.addEventListener('change', refreshControls);
@@ -290,8 +289,8 @@ function applyAssignment(data, requestGeneration) {
     view.question = question;
     // Keep every other form mounted, including unsent values and keyboard focus.
     if (responseChanged && view.fieldList) {
-      view.fieldList.replaceChildren(...question.fields.map((field, index) => fieldControl(field, question, index)));
-      void typeset(view.fieldList);
+      mountInlineFields(view.prompt, view.fieldList, question.fields, field => fieldControl(field, question, question.fields.indexOf(field)), entityId);
+      void typeset(view.form);
     }
     if (feedbackChanged) renderQuestionFeedback(view);
   }

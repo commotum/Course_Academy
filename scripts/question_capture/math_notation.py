@@ -79,6 +79,17 @@ def sequence_identity(nodes):
         if ratio:
             return (('frac', tuple(('char',c) for c in re.findall(r'[+-]|\d+',ratio[1])),
                      tuple(('char',c) for c in re.findall(r'[+-]|\d+',ratio[2]))),)
+    # MathQuill places a numerator's leading minus outside a whole fraction.
+    # Move it only for a product, never across a sum or an exponent on the
+    # fraction itself. Argument boundaries and function inputs stay intact.
+    if len(nodes) == 1 and nodes[0][0] == 'frac':
+        numerator, denominator = nodes[0][1:]
+        factors = numerator[1:]
+        if (numerator[:1] == (('char','-'),) and factors and all(
+                (n[0] == 'char' and re.fullmatch(r'[A-Za-z0-9.]+',n[1])) or
+                n[0] in ('script','root','frac','fence','group','operator','operatorname')
+                for n in factors)):
+            return (('char','-'),('frac',factors,denominator))
     return nodes
 
 

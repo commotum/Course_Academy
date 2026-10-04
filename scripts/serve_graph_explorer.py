@@ -426,7 +426,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.send_bytes(200, (ROOT / "ui/Assignments.html").read_bytes(), "text/html; charset=utf-8")
             elif path.startswith("/ui/") and path != "/ui/Math-Academy-Graph-Explorer.html":
                 asset = (ROOT / path.lstrip("/")).resolve()
-                allowed = {"learning.js", "learning.css", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "profile.js", "course-catalog.js", "course-catalog.css"}
+                allowed = {"learning.js", "learning.css", "question-fields.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "profile.js", "course-catalog.js", "course-catalog.css"}
                 if not asset.is_relative_to((ROOT / "ui").resolve()) or not asset.is_file() or not (asset.name in allowed or asset.is_relative_to((ROOT / "ui/vendor").resolve())):
                     self.send_bytes(404, b"Not found", "text/plain")
                 else:

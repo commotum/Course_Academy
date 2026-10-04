@@ -124,7 +124,7 @@ def take_assessment(reader, state, directory):
     state['answer_policy'] = 'independent_weighted'
     if not state.get('assessment_started'):
         if not assessment_can_start(state):
-            raise ValueError('Assessment is not an eligible retake or required quiz; stop before the timer starts')
+            raise ValueError('Assessment is not eligible under its saved selection policy; stop before the timer starts')
         count = state.get('assessment_details',{}).get('Questions','')
         if not re.fullmatch(r'[1-9]\d*',count):
             raise ValueError('Assessment question count is missing; stop before the timer starts')
@@ -309,6 +309,7 @@ def assessment_history(reader, state, directory, load_topic):
         content.update(test_id=state['test_id'],assessment_details=state['assessment_details'],
                        assessment_notice=state.get('assessment_notice'),optional_xp_remaining=state.get('optional_xp_remaining'),
                        assessment_is_retake=state.get('assessment_is_retake',False),
+                       assessment_optional_fallback=state.get('assessment_optional_fallback',False),
                        assessment_correct_weight=state.get('assessment_correct_weight',1.0))
     atomic_json(directory/'content.json',content)
     state['history_complete'] = True

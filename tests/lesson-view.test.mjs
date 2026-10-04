@@ -8,6 +8,7 @@ import vm from 'node:vm';
 const source = await readFile(new URL('../ui/learning.js', import.meta.url), 'utf8');
 const controllers = source.slice(source.indexOf('const $'), source.indexOf("$('retryButton').addEventListener"));
 const visibility = source.slice(source.indexOf('async function syncAfterVisibility()'), source.indexOf("document.addEventListener('visibilitychange'"));
+const fieldUI = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replaceAll('export ', '');
 
 function fixture(storage = new Map()) {
   const f = { storage, calls: [], scrolls: [], focused: [], cleared: [], dev: false, now: 10000 };
@@ -16,6 +17,7 @@ function fixture(storage = new Map()) {
     get children() { return this.childNodes.filter(node => node.tagName !== '#text'); }
     get childElementCount() { return this.children.length; }
     get firstChild() { return this.childNodes[0] || null; }
+    get classList() { return { contains: name => this.className.split(' ').includes(name) }; }
     get textContent() { return (this.text || '') + this.childNodes.map(node => node.textContent).join(''); }
     set textContent(value) { this.replaceChildren(); this.text = String(value); }
     get isConnected() { return document.body.contains(this); }
@@ -43,7 +45,10 @@ function fixture(storage = new Map()) {
     scrollIntoView(options) { f.scrolls.push({ node: this, options }); }
     click() { if (!this.disabled) this.dispatchEvent(new Event('click')); }
   }
-  const document = { body: new Element('body'), hidden: false, createElement: tag => new Element(tag) };
+  const document = { body: new Element('body'), hidden: false, createElement: tag => new Element(tag),
+    createTextNode: text => { const node = new Element('#text'); node.textContent = text; return node; },
+    addEventListener() {}, removeEventListener() {},
+  };
   document.querySelectorAll = selector => document.body.querySelectorAll(selector);
   document.getElementById = id => [document.body, ...document.body.querySelectorAll('main,button,a,span,div')].find(node => node.id === id) || null;
   for (const id of ['main', 'learnerName', 'courseLink', 'errorText', 'errorBanner', 'retryButton', 'announcement']) {
@@ -68,9 +73,16 @@ function fixture(storage = new Map()) {
     },
   });
   f.h = vm.runInContext(`(() => {
+    ${fieldUI}
     ${controllers}
     ${visibility}
-    markdown = (value, className = 'prose') => el('div', className, value || '');
+    markdown = (value, className = 'prose', fields = []) => {
+      const node = el('div', className, value || '');
+      for (const match of inlinePrompt(value, fields).matchAll(/data-field-key="([^"]+)"/g)) {
+        const slot = el('span', 'field-location'); slot.dataset.fieldKey = match[1]; node.append(slot);
+      }
+      return node;
+    };
     typeset = async () => {};
     loadMath = async () => {};
     return {
@@ -240,6 +252,29 @@ test('Study progress is only shown for real started or paused lessons with valid
   await f.h.home();
   assert.equal(f.document.getElementById('main').querySelectorAll('.queue-progress-track').length, 0);
   assert.equal(f.calls.at(-1).path, '/api/preview-home');
+});
+
+test('inline lesson fields stay inside the submitting form and preserve saved answers and feedback', async () => {
+  const f = fixture();
+  const step = { itemId: 42, kind: 'question', title: 'Fill in', status: 'correct', canContinue: true,
+    markdown: "$y=$ {{blank-1}}, then choose {{term}}.", fields: [
+      { id: 11, key: 'blank-1', type: 'blank', response: { value: '2x' } },
+      { id: 12, key: 'term', type: 'select', choices: [{ id: 91, type: 'text', value: 'derivative' }], response: { choiceId: 91 } },
+    ] };
+  await f.h.render(activity(42, 2, { step }));
+  const current = f.h.view.current;
+  assert.equal(current.querySelectorAll('.answer-inline').length, 2);
+  assert.equal(current.querySelector('.answer-fields').hidden, true);
+  const form = current.querySelector('form');
+  assert.equal(form.querySelector('input').value, '2x');
+  assert.equal(form.querySelector('select').value, '91');
+  assert.equal(form.querySelector('.answer-select-value').textContent, 'derivative');
+  assert.equal(form.querySelector('.answer-select-trigger').disabled, true);
+  assert.equal(current.querySelector('.feedback').dataset.feedback, 'correct');
+  assert.match(current.querySelector('.feedback-heading').textContent, /✓ Correct/);
+  await f.h.render(activity(43, 2, { step: { ...step, itemId: 43, status: 'incorrect' } }));
+  assert.equal(f.h.view.current.querySelector('.feedback').dataset.feedback, 'incorrect');
+  assert.match(f.h.view.current.querySelector('.feedback-heading').textContent, /✕ Incorrect/);
 });
 
 test('returning to Study refreshes its queue without a Refresh button or a loading flash', async () => {

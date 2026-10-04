@@ -28,6 +28,16 @@ REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_mathquill_negative_quotient_preserves_sign_and_scope(self):
+        evidence = json.loads((Path(__file__).parent/'fixtures/negative-trig-quotient.json').read_text())
+        self.assertEqual(normalize_mathquill(evidence['observed']),normalize_mathquill(evidence['intended']))
+        for wrong in (r'\frac{6x^2}{\sin(2x^3)^2}',r'-\frac{6x^2}{\sin(2x)^2}',
+                      r'-\frac{6x^2}{\sin(2x^3)^3}',r'-\frac{6x}{\sin(2x^3)^2}'):
+            self.assertNotEqual(normalize_mathquill(evidence['intended']),normalize_mathquill(wrong))
+        self.assertNotEqual(normalize(r'\frac{-x+1}{y}'),normalize(r'-\frac{x+1}{y}'))
+        self.assertNotEqual(normalize(r'\frac{-x}{y}^2'),normalize(r'-\frac{x}{y}^2'))
+        self.assertNotEqual(normalize(r'\frac{-x}{\sin(y)}'),normalize(r'\frac{x}{\sin(-y)}'))
+
     def test_explicit_mathml_function_boundaries_keep_adjacent_factors(self):
         self.assertEqual(normalize(r'2x+6\csc x\cot x'),
                          normalize('2x+6\\operatorname{csc}\u2061x\\operatorname{cot}\u2061x'))

@@ -277,8 +277,21 @@ class CaptureBrowser:
             current = next(item for item in queue if item['card_id'] == activity['card_id'])
             current.update(assessment_requirement(current['assessment_details'], only_activity=len(queue) == 1,
                                                   title=current['title']))
+            excluded = set(activity.get('assessment_fallback_excluded_tasks',[]))
+            alternatives = [item for item in queue
+                if item['task_type'] in ('lesson','review','multistep') and
+                item.get('capture_supported',True) and not item.get('in_progress') and
+                item['task_id'] not in excluded]
+            for item in queue:
+                if (item['task_type'] == 'assessment' and item['task_id'] != current['task_id'] and
+                    item.get('capture_supported') and not item.get('in_progress') and item['task_id'] not in excluded):
+                    details = assessment_requirement(item['assessment_details'], only_activity=len(queue) == 1,
+                                                     title=item['title'])
+                    if assessment_can_start({**item,**details}):
+                        alternatives.append(item)
+            current['assessment_optional_fallback'] = bool(activity.get('assessment_optional_fallback') and not alternatives)
             if not assessment_can_start(current):
-                raise ValueError('Assessment is not an eligible retake or required quiz; stop before Start')
+                raise ValueError('Assessment is not required, an eligible retake, or the only eligible activity; stop before Start')
         else:
             card = by_id(self.page, activity['card_id'])
             if kind != 'multistep' or not card.locator('.taskDetails').is_visible():

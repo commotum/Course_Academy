@@ -139,6 +139,15 @@ def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
     if available:
         return {**available[0], 'task_type': available[0].get('task_type', 'lesson'),
                 'selection_reason': 'queue_fallback'}
+    optional = next((item for item in tests if item.get('assessment_requirement') == 'optional' and
+                     item.get('capture_supported') and assessment_can_start(
+                         {**item,'assessment_optional_fallback':True})), None)
+    if optional:
+        excluded = set(captured_tasks) | {item['task_id'] for item in queue
+            if item.get('task_type','lesson') == 'lesson' and item.get('topic_id') in completed_topics}
+        return {**optional,'assessment_optional_fallback':True,
+                'assessment_fallback_excluded_tasks':sorted(excluded),
+                'selection_reason':'optional_assessment_fallback'}
     unknown = next((item for item in tests if item.get('assessment_requirement') != 'optional'), None)
     if unknown:
         return {**unknown, 'selection_reason': 'assessment_requires_inspection', 'stop_before_start': True}
@@ -170,11 +179,13 @@ def assessment_requirement(details, *, only_activity=False, title=''):
 
 
 def assessment_can_start(activity):
-    """Retakes run immediately with complete details; other quizzes must be required."""
+    """Optional quizzes need a selected no-alternative fallback and complete details."""
     if activity.get('assessment_requirement') == 'required':
         return True
     fields = {key.lower(): value for key, value in activity.get('assessment_details', {}).items()}
-    return bool(activity.get('assessment_is_retake') and
+    allowed = (activity.get('assessment_is_retake') or
+               (activity.get('assessment_optional_fallback') and activity.get('assessment_requirement') == 'optional'))
+    return bool(allowed and
                 re.fullmatch(r'[1-9]\d*', fields.get('questions') or '') and
                 re.fullmatch(r'[1-9]\d*\s+minutes?', fields.get('time limit') or '', re.I))
 

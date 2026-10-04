@@ -116,7 +116,10 @@ class AssessmentPolicyTests(unittest.TestCase):
     def test_normal_runner_takes_retake_and_persists_metadata(self):
         self.assert_runner_assessment('XP earned from a quiz retake are in addition to the XP earned from the original quiz.',retake=True)
 
-    def assert_runner_assessment(self, notice, retake=False):
+    def test_normal_runner_takes_optional_fallback_and_saves_actual_notice(self):
+        self.assert_runner_assessment('This quiz is optional until 13 more XP have been earned.',fallback=True)
+
+    def assert_runner_assessment(self, notice, retake=False, fallback=False):
         title='Quiz 7 (Retake)' if retake else 'Quiz'
         details={'Notes':notice,'Questions':'8','Time Limit':'15 minutes'}
         quiz={'task_id':1,'topic_id':None,'test_id':10,'task_type':'assessment','title':title,
@@ -137,13 +140,15 @@ class AssessmentPolicyTests(unittest.TestCase):
             with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',FixtureBrowser), \
                  patch('playwright.sync_api.sync_playwright',return_value=runtime),contextlib.redirect_stdout(io.StringIO()):
                 run(args)
-            self.assertEqual(selected[0]['selection_reason'],'quiz_retake' if retake else 'required_assessment')
+            self.assertEqual(selected[0]['selection_reason'],'quiz_retake' if retake else
+                             'optional_assessment_fallback' if fallback else 'required_assessment')
             state=json.loads((args.output/'1/state.json').read_text())
             self.assertEqual(state['assessment_notice'],notice)
             self.assertTrue(state['preview_complete'])
             recorded=json.loads((args.output/'1/assessment-queue.json').read_text())
-            self.assertEqual(recorded['optional_xp_remaining'],None if retake else 0)
+            self.assertEqual(recorded['optional_xp_remaining'],None if retake else 13 if fallback else 0)
             self.assertEqual(state['assessment_is_retake'],retake)
+            self.assertEqual(bool(state['assessment_optional_fallback']),fallback)
             db.topic.assert_not_called()  # No single-topic lookup before the assessment is taken.
             db.import_content.assert_called_once()
 
@@ -184,6 +189,31 @@ class AssessmentPolicyTests(unittest.TestCase):
         self.assertTrue(choose_activity([{**quiz,**assessment_requirement({'Notes':'Optional under another rule'})}],{})['stop_before_start'])
         self.assertTrue(choose_activity([{**quiz,**assessment_requirement({})}],{})['stop_before_start'])
         self.assertEqual(assessment_requirement({'Notes':'This assessment is required.'})['assessment_requirement'],'required')
+
+    def test_optional_quiz_fallback_when_only_other_task_is_deferred_or_in_progress(self):
+        details = {'Questions':'8','Time Limit':'15 minutes',
+                   'Notes':'This quiz is optional until 13 more XP have been earned.'}
+        quiz = {'task_id':13939908,'topic_id':None,'task_type':'assessment','capture_supported':True,
+                'assessment_details':details,**assessment_requirement(details)}
+        lesson = {'task_id':13941097,'topic_id':305,'task_type':'lesson'}
+        self.assertEqual(choose_activity([lesson,quiz],{305:1293})['task_id'],lesson['task_id'])
+        for queue, captured in [([quiz],[]),([{**lesson,'in_progress':True},quiz],[]),
+                                ([lesson,quiz],[lesson['task_id']])]:
+            selected = choose_activity(queue,{305:1293},captured_tasks=captured)
+            self.assertEqual(selected['selection_reason'],'optional_assessment_fallback')
+            self.assertEqual(selected['assessment_requirement'],'optional')
+            self.assertEqual(selected['optional_xp_remaining'],13)
+            self.assertTrue(assessment_can_start(selected))
+        self.assertFalse(assessment_can_start(quiz))
+        self.assertIsNone(choose_activity([{**quiz,'in_progress':True}],{}))
+        self.assertIsNone(choose_activity([quiz],{},captured_tasks=[quiz['task_id']]))
+
+    def test_optional_quiz_fallback_requires_complete_details(self):
+        for details in ({'Questions':'8'},{'Time Limit':'15 minutes'},{'Questions':'0','Time Limit':'15 minutes'}):
+            details['Notes'] = 'This quiz is optional until 13 more XP have been earned.'
+            quiz = {'task_id':1,'topic_id':None,'task_type':'assessment','capture_supported':True,
+                    'assessment_details':details,**assessment_requirement(details)}
+            self.assertIsNone(choose_activity([quiz],{}))
 
     def test_negative_xp_retake_survives_restart_and_only_clears_after_perfect_attempt(self):
         with tempfile.TemporaryDirectory() as work:
@@ -574,6 +604,12 @@ class AssessmentDOMTests(unittest.TestCase):
             status=200,content_type='text/html',body='<div id="incompleteTasks">'+card+lesson+'</div>'))
         self.assert_whole_quiz_capture(retake=True)
 
+    def test_optional_fallback_uses_normal_quiz_capture_and_retains_optional_notice(self):
+        card=(FIXTURES/'quiz-5-card.html').read_text().replace('26 more XP','13 more XP')
+        self.context.route('https://mathacademy.com/learn',lambda r:r.fulfill(
+            status=200,content_type='text/html',body='<div id="incompleteTasks">'+card+'</div>'))
+        self.assert_whole_quiz_capture(fallback=True)
+
     def test_start_rechecks_retake_marker_before_navigating(self):
         card=(FIXTURES/'quiz-7-retake-card.html').read_text().replace('13938136','13930620').replace('589650','589340')
         self.context.route('https://mathacademy.com/learn',lambda r:r.fulfill(
@@ -585,19 +621,53 @@ class AssessmentDOMTests(unittest.TestCase):
             reader.start(quiz)
         self.assertEqual(self.instruction_pages,0)
 
-    def assert_whole_quiz_capture(self, retake=False):
+    def test_optional_fallback_rechecks_live_alternatives_before_start(self):
+        card=(FIXTURES/'quiz-5-card.html').read_text()
+        lesson='<div id="task-2" class="taskUnlocked" progress="1"><span class="taskTypeUnlocked">Lesson</span><div class="taskNameUnlocked">Lesson</div><a class="taskStartButton" href="/tasks/2/topics/10/lesson">Start</a></div>'
+        self.context.route('https://mathacademy.com/learn',lambda r:r.fulfill(
+            status=200,content_type='text/html',body='<div id="incompleteTasks">'+card+lesson+'</div>'))
+        reader=self.reader()
+        selected=choose_activity(reader.queue(),{10:999})
+        self.assertEqual(selected['selection_reason'],'optional_assessment_fallback')
+        self.page.locator('#task-2').evaluate("n=>n.setAttribute('progress','0')")
+        with self.assertRaisesRegex(ValueError,'stop before Start'):
+            reader.start(selected)
+        self.assertEqual(self.instruction_pages,0)
+        self.page.locator('#task-2').evaluate("n=>n.setAttribute('progress','1')")
+        reader.start(selected)
+        self.assertEqual(self.instruction_pages,1)
+
+    def test_actual_mathquill_negative_quotient_is_verified_without_submit(self):
+        reader=self.reader()
+        self.page.goto('https://mathacademy.com/tasks/13930620/tests/589340')
+        scope=self.page.locator('#question-288831')
+        editor=scope.locator('.mq-editable-field')
+        evidence=json.loads((FIXTURES/'negative-trig-quotient.json').read_text())
+        editor.evaluate('(n,tex)=>MathQuill.getInterface(2).MathField(n).latex(tex)',evidence['observed'])
+        field=scope.evaluate(EXTRACT)['fields'][0]
+        field['submitted_value']=evidence['intended']
+        record={'before':{'fields':[field]}}
+        reader.verify_entered(scope,record)
+        field['submitted_value']=evidence['intended'].replace('-6','6')
+        with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):
+            reader.verify_entered(scope,record)
+        self.assertEqual(self.submissions,0)
+
+    def assert_whole_quiz_capture(self, retake=False, fallback=False):
         reader=self.reader()
         quiz=choose_activity(reader.queue(),{10:999})
         self.assertEqual(quiz['assessment_notice'],
                          'XP earned from a quiz retake are in addition to the XP earned from the original quiz.' if retake
+                         else 'This quiz is optional until 13 more XP have been earned.' if fallback
                          else 'This quiz is optional until 0 more XP have been earned.')
-        self.assertEqual(quiz['assessment_requirement'],'unknown' if retake else 'required')
+        self.assertEqual(quiz['assessment_requirement'],'unknown' if retake else 'optional' if fallback else 'required')
         with tempfile.TemporaryDirectory() as work:
             directory=Path(work)
             state={'task_id':quiz['task_id'],'task_type':'assessment','test_id':quiz['test_id'],'topic_id':None,
                    'assessment_details':quiz['assessment_details'],'assessment_requirement':quiz['assessment_requirement'],
                    'assessment_notice':quiz['assessment_notice'],'optional_xp_remaining':quiz['optional_xp_remaining'],
                    'assessment_is_retake':quiz['assessment_is_retake'],
+                   'assessment_optional_fallback':quiz.get('assessment_optional_fallback',False),
                    'questions':{},'examples':{},'kps':{}}
             reader.start(quiz)
             try:
@@ -616,6 +686,7 @@ class AssessmentDOMTests(unittest.TestCase):
             self.assertTrue(all(q['worked_solution'] and q['difficulty'] and q['knowledge_point_id'] for q in content['questions']))
             self.assertEqual(content['assessment_notice'],quiz['assessment_notice'])
             self.assertEqual(content['assessment_is_retake'],retake)
+            self.assertEqual(content['assessment_optional_fallback'],fallback)
             q=next(q for q in state['questions'].values() if q['before']['dom_id']=='question-82938')
             self.assertEqual(q['before']['fields'][0]['observed_selected_option'],'c')
             self.assertTrue(q['before']['fields'][0]['choices'][2]['value'].endswith('.png'))
