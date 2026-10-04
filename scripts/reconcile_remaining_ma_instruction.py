@@ -303,11 +303,14 @@ def main():
     scope = json.loads(args.scope.read_text())
     current = collections.defaultdict(dict)
     identities = {}
+    canonical_examples = set()
     for line in args.snapshot.open():
         row = json.loads(line)
+        if row['a'] == 'knowledge-point/canonical-example':
+            canonical_examples.add(row['ref_eid'])
         if row['a'] in ('tutorial/id', 'question/id'):
             identities[(row['a'].split('/')[0], row['uuid'])] = row['e']
-        if row['a'] in ('tutorial/content', 'question/problem', 'question/worked-solution', 'question/is-example'):
+        if row['a'] in ('tutorial/content', 'question/problem', 'question/worked-solution'):
             current[row['e']][row['a']] = row['raw_string'] if row['raw_string'] is not None else row['value_edn']
     content_counts = collections.Counter()
     for path in original.DATA.glob('*/Source/*.json'):
@@ -363,7 +366,7 @@ def main():
             entity = 'tutorial' if kind == 'tutorial' else 'question'
             eid = identities[(entity, uid)]
             if kind == 'example':
-                assert current[eid].get('question/is-example') == 'true', (topic, sid, eid)
+                assert eid in canonical_examples, (topic, sid, eid)
             for field in (('content',) if kind == 'tutorial' else ('problem', 'explanation')):
                 attr = entity + '/' + ('worked-solution' if field == 'explanation' else field)
                 before = current[eid].get(attr)

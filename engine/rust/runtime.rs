@@ -212,7 +212,7 @@ fn question(snapshot: &EntitySnapshot, item: &Entity) -> Result<bool> {
         Some(content) => {
             let record = snapshot.entity(content)?;
             record.contains_key("question/id")
-                && record.get("question/is-example") != Some(&json!(true))
+                && !snapshot.is_example(content)
         }
         None => false,
     })

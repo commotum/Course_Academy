@@ -197,7 +197,6 @@ def question_form(question, markdown, topic, duplicates):
     pieces = [
         f':db/id {ref("question", qkey)}',
         f':question/id {uuid_edn(q_uuid)}',
-        ':question/is-example false',
         f':question/problem {string(problem)}',
         f':question/answer-fields [{" ".join(fields)}]',
     ]
@@ -283,7 +282,7 @@ def main():
                 fields = [f':db/id {ref("example", key)}', f':question/id {uuid_edn(ident("example", key))}']
                 if ("example", cid) not in duplicate_contents:
                     fields.append(f':question/math-academy-id {string("e-" + cid)}')
-                fields.extend([':question/is-example true', f':question/problem {string(problem)}',
+                fields.extend([f':question/problem {string(problem)}',
                                f':question/worked-solution {string(explanation)}', ':db/ensure :question/validate'])
                 chunk.append(" {" + " ".join(fields) + "}")
                 totals["examples"] += 1

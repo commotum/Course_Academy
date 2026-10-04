@@ -182,7 +182,7 @@ class Builder:
             raise ValueError(f'Unsupported quiz structure at {path}#{qid}: {kind}, {set(quiz) - allowed.get(kind, set())}')
         prompt = self.render_text(quiz['content'], path, qid + '/content')
         fields, field_audit = [], []
-        attrs = {'question__is_example': False}
+        attrs = {}
         worked = ''
         if kind == 'radio':
             options = quiz['options']
@@ -334,7 +334,7 @@ class Builder:
                     assert child in records, (uid, attr, child)
                     owners[child].append((uid, attr))
             if ':question/id' in row:
-                assert row[':question/problem'] and row[':question/is-example'] is False
+                assert row[':question/problem']
                 fields = [records[f] for f in row.get(':question/answer-fields', [])]
                 keys = [f[':answer-field/key'] for f in fields]
                 assert len(keys) == len(set(keys))

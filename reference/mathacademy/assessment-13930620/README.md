@@ -1,3 +1,5 @@
+Import update (2026-10-04): saved content was committed at EDB basis 412 → 413. The normalized payload is `content-import.json`; `edb-import/verification.json` confirms completeness, a no-op reimport, and unchanged learner/engine facts. `content.json` and the original capture evidence remain preserved. Earlier statements below about no database writes describe the original capture.
+
 # Quiz 5 assessment capture — 13930620
 
 Completed October 3, 2026 at 8:51 PM America/Los_Angeles. Test ID 589340, course Mathematical Foundations II (111). Eight questions, 15-minute limit. All eight answers were correct: 100%, 15 XP plus 3 bonus XP. No canonical examples were presented.

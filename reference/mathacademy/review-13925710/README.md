@@ -1,3 +1,5 @@
+Import update (2026-10-04): saved content was committed at EDB basis 411 → 412. The normalized payload is `content-import.json`; `edb-import/verification.json` confirms completeness, a no-op reimport, and unchanged learner/engine facts. `content.json` and the original capture evidence remain preserved. Earlier statements below about no database writes describe the original capture.
+
 # Completed review capture: 13925710
 
 Topic: Graphing Cubic Curves Containing One Distinct Real Root (2084).

@@ -57,12 +57,10 @@ class RuntimeFixture:
             self.entities[kp] = {'knowledge-point/id': UUID(int=kp), 'knowledge-point/title': f'Skill {kp}',
                                 'knowledge-point/canonical-example': example,
                                 'knowledge-point/questions': questions}
-            self.entities[example] = {'question/id': UUID(int=example), 'question/is-example': True,
-                                      'question/problem': 'Solve $x+1=2$.',
+            self.entities[example] = {'question/id': UUID(int=example), 'question/problem': 'Solve $x+1=2$.',
                                       'question/worked-solution': 'Subtract one: $x=1$.'}
             for question in questions:
                 self.entities[question] = {'question/id': UUID(int=question),
-                                           'question/is-example': False,
                                            'question/problem': f'Solve $x+{question}=0$; x = {{x}}.',
                                            'question/answer-fields': [2000 + question],
                                            'question/difficulty': self.enums['question.difficulty/moderate']}

@@ -543,7 +543,7 @@ pub(super) fn mutate(
     let complete = route
         .iter()
         .filter(|entry| {
-            s.entity(entry.question).unwrap().get("question/is-example") != Some(&json!(true))
+            !s.is_example(entry.question)
         })
         .all(|entry| {
             gradable(s, entry.question)

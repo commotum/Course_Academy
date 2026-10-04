@@ -1,13 +1,15 @@
+/home/jake/Developer/MA/.venv/bin/python scripts/question_capture run --headless --limit 60
+
 Topics:
     - Topic Difficulty (Initial Estimate), (What determines a topic's difficulty)
-    - Topic Encompassing
+    - Topic Encompasses (Initial Estimates), (What determines whether a topic is encompassed)
+    - 
 
 
 
 
 
-
-
+In reference/engine-dependencies.dots you modeled earned xp as dependent on graded learner results. Let's check our verified progress to see which is the better model, dependent on graded learner results, or dependent on learner accuracy. Same for the fractional repetition credit.
 
 
 

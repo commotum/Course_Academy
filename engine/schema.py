@@ -89,6 +89,8 @@ class EntitySnapshot:
                 raise ValueError('duplicate normalized attribute name')
             records[eid] = _freeze(record)
         self.entities = MappingProxyType(records)
+        self._canonical_examples = frozenset(record['knowledge-point/canonical-example']
+            for record in records.values() if 'knowledge-point/canonical-example' in record)
         self.basis_t = basis_t
         self._idents = {}
         for eid, record in self.entities.items():
@@ -171,9 +173,15 @@ class EntitySnapshot:
     def types(self, eid: int) -> frozenset[str]:
         return frozenset(name[:-3] for name in self.entity(eid) if name.endswith('/id') and name != 'db/id')
 
+    def is_example(self, question: int) -> bool:
+        """Requires all canonical-example references in this captured projection."""
+        return question in self._canonical_examples
+
     def knowledge_points_for_question(self, question: int) -> tuple[int, ...]:
         if 'question' not in self.types(question):
             raise ValueError('content is not a question')
+        if self.is_example(question):
+            raise ValueError('canonical examples cannot belong to practice banks')
         owners = self.owners(question, 'knowledge-point/questions')
         if len(owners) != 1 or 'knowledge-point' not in self.types(owners[0]):
             raise ValueError('question needs exactly one knowledge-point bank')
@@ -470,7 +478,7 @@ def _check_responses(snapshot, item, additions, new_answers):
     if not responses and not new_answers:
         return []
     question = snapshot.ref(item, 'task-item/content')
-    if 'question' not in snapshot.types(question) or snapshot.entity(question).get('question/is-example') is True:
+    if 'question' not in snapshot.types(question) or snapshot.is_example(question):
         raise ValueError('only ordinary question items can carry responses')
     fields = set(snapshot.refs(question, 'question/answer-fields'))
     seen_fields, used_tempids = set(), set()
@@ -544,7 +552,7 @@ def completion_transaction(loaded: LoadedRuntime, item_eid: int, completed_at: d
             ident = snapshot.ident(terminal_status) if terminal_status is not None else None
             content = snapshot.ref(item_eid, 'task-item/content')
             question = ('question' in snapshot.types(content)
-                        and snapshot.entity(content).get('question/is-example') is not True)
+                        and not snapshot.is_example(content))
             valid = {'task-item.status/' + s for s in ('correct', 'incorrect', 'skipped')} if question else {'task-item.status/completed'}
             if ident not in valid:
                 raise ValueError('completion requires an appropriate terminal item status')

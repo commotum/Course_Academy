@@ -187,7 +187,7 @@ fn append_content(
         }
     } else if record.contains_key("tutorial/id") || record.contains_key("question/id") {
         let tutorial = record.contains_key("tutorial/id");
-        let example = record.get("question/is-example") == Some(&json!(true));
+        let example = s.is_example(content);
         let kind = if tutorial {
             "tutorial"
         } else if example {
@@ -358,15 +358,15 @@ mod tests {
             ),
             (
                 300,
-                json!({"question/id":"example","question/is-example":true,"question/problem":"Worked problem.","question/worked-solution":"Worked solution."}),
+                json!({"question/id":"example","question/problem":"Worked problem.","question/worked-solution":"Worked solution."}),
             ),
             (
                 301,
-                json!({"question/id":"practice","question/is-example":false,"question/problem":"Enter one half.","question/answer-fields":[400],"question/worked-solution":"Divide one by two."}),
+                json!({"question/id":"practice","question/problem":"Enter one half.","question/answer-fields":[400],"question/worked-solution":"Divide one by two."}),
             ),
             (
                 302,
-                json!({"question/id":"unkeyed","question/is-example":false,"question/problem":"Imported question awaiting a key."}),
+                json!({"question/id":"unkeyed","question/problem":"Imported question awaiting a key."}),
             ),
             (
                 400,

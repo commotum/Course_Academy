@@ -129,7 +129,7 @@ def _result(snapshot, entity):
 def _question(snapshot, item):
     content = item.get('task-item/content')
     return (content is not None and 'question/id' in snapshot.entity(content)
-            and snapshot.entity(content).get('question/is-example') is not True)
+            and not snapshot.is_example(content))
 
 
 def _question_pool(snapshot, activity, attr):

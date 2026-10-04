@@ -1,3 +1,5 @@
+Import update (2026-10-04): saved content was committed at EDB basis 410 → 411. The normalized payload is `content-import.json`; `edb-import/verification.json` confirms completeness, a no-op reimport, and unchanged learner/engine facts. `content.json` and the original capture evidence remain preserved. Earlier statements below about no database writes describe the original capture.
+
 # The Sum Rule for Indefinite Integrals — live capture
 
 Math Academy task **13925458**, topic **3769**, completed October 3, 2026.

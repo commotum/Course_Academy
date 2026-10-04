@@ -29,7 +29,7 @@ def records():
         5: {'task-item/id': identity(5), 'task-item/content': 8, 'task-item/status': 108},
         6: {'topic/id': identity(6), 'topic/knowledge-points': [7], 'topic/encompasses': [12]},
         7: {'knowledge-point/id': identity(7), 'knowledge-point/questions': [8]},
-        8: {'question/id': identity(8), 'question/is-example': False, 'question/answer-fields': [9]},
+        8: {'question/id': identity(8), 'question/answer-fields': [9]},
         9: {'answer-field/id': identity(9), 'answer-field/key': 'answer', 'answer-field/type': 113,
             'answer-field/choices': [10, 11], 'answer-field/correct': 10},
         10: {'answer/id': identity(10), 'answer/type': 114, 'answer/value': 'x^2'},
@@ -275,7 +275,8 @@ class SchemaTests(unittest.TestCase):
 
     def test_worked_example_completion_cannot_carry_score_or_responses(self):
         data = records()
-        data[8]['question/is-example'] = True
+        data[7]['knowledge-point/canonical-example'] = 8
+        data[7]['knowledge-point/questions'] = []
         data[8]['question/worked-solution'] = 'Demonstration.'
         runtime = loaded(data)
         for extra in ({'task-item/performance': 1.0}, {'task-item/responses': [10]}):

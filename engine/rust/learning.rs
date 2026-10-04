@@ -73,8 +73,8 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
         } else if r.contains_key("knowledge-point/id") {
             entry.kind = "knowledge-point".into();
             let example = s.reference(content, "knowledge-point/canonical-example")?;
-            if s.entity(example)?.get("question/is-example") != Some(&json!(true)) {
-                return Err("KP canonical example must be a worked example".into());
+            if !s.entity(example)?.contains_key("question/id") {
+                return Err("KP canonical example must reference a question".into());
             }
             nonempty(s, example, "question/problem")?;
             nonempty(s, example, "question/worked-solution")?;
@@ -82,12 +82,12 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
             entry.questions = s.refs(content, "knowledge-point/questions")?;
             entry.questions.sort_unstable();
             entry.questions.dedup();
-            if entry.questions.is_empty() || entry.questions.contains(&example) {
+            if entry.questions.is_empty() || entry.questions.iter().any(|q| s.is_example(*q)) {
                 return Err("KP needs a practice pool separate from its worked example".into());
             }
         } else if r.contains_key("question/id") {
             nonempty(s, content, "question/problem")?;
-            entry.kind = if r.get("question/is-example") == Some(&json!(true)) {
+            entry.kind = if s.is_example(content) {
                 nonempty(s, content, "question/worked-solution")?;
                 "example"
             } else {
@@ -109,7 +109,7 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
 
 fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()> {
     nonempty(s, question, "question/problem")?;
-    if s.entity(question)?.get("question/is-example") != Some(&json!(false)) {
+    if !s.is_ordinary_question(question)? {
         return Err("practice needs an ordinary question".into());
     }
     let fields = s.refs(question, "question/answer-fields")?;
@@ -171,7 +171,7 @@ fn seen_questions(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
     for task in s.refs(learner, "learner/activity")? {
         for item in s.refs(task, "learner-task/items")? {
             if let Some(content) = s.optional_ref(item, "task-item/content")? {
-                if s.entity(content)?.get("question/is-example") == Some(&json!(false)) {
+                if s.is_ordinary_question(content)? {
                     seen.insert(content);
                 }
             }
@@ -402,7 +402,7 @@ pub fn next_content(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<
 pub fn first_content(s: &EntitySnapshot, activity: u64, learner: u64) -> Result<Option<u64>> {
     let next = next_content(s, activity, &[])?;
     if let Some(q) = next
-        && s.entity(q)?.get("question/is-example") == Some(&json!(false))
+        && s.is_ordinary_question(q)?
         && seen_questions(s, learner)?.contains(&q)
     {
         return Err("This authored question was already presented. Fresh content is needed; the lesson is not failed.".into());
@@ -426,9 +426,10 @@ pub fn continuation(
 ) -> Result<(Option<u64>, bool, i64)> {
     let completed = if complete_instruction {
         let item = *items.last().ok_or("instruction presentation required")?;
-        let content = s.entity(s.reference(item, "task-item/content")?)?;
+        let content_id = s.reference(item, "task-item/content")?;
+        let content = s.entity(content_id)?;
         if !content.contains_key("tutorial/id")
-            && content.get("question/is-example") != Some(&json!(true))
+            && !s.is_example(content_id)
         {
             return Err("ordinary questions require a submitted answer".into());
         }
@@ -966,7 +967,7 @@ fn passed_lesson_xp(s: &EntitySnapshot, activity: u64, items: &[u64], base: i64)
     let mut errors = 0usize;
     for item in items {
         let content = s.reference(*item, "task-item/content")?;
-        if s.entity(content)?.get("question/is-example") == Some(&json!(false))
+        if s.is_ordinary_question(content)?
             && question_outcome(s, *item)? != Some(Some(true))
         {
             errors += 1;
@@ -1506,13 +1507,13 @@ mod tests {
         put(
             &mut entities,
             42,
-            json!({"question/id":id(42),"question/is-example":true,"question/problem":"$2x=1$","question/worked-solution":"$x=1/2$"}),
+            json!({"question/id":id(42),"question/problem":"$2x=1$","question/worked-solution":"$x=1/2$"}),
         );
         for n in 0..5 {
             put(
                 &mut entities,
                 100 + n,
-                json!({"question/id":id(100+n),"question/is-example":false,"question/problem":"$2x=1$","question/answer-fields":[200+n]}),
+                json!({"question/id":id(100+n),"question/problem":"$2x=1$","question/answer-fields":[200+n]}),
             );
             put(
                 &mut entities,
@@ -1596,7 +1597,7 @@ mod tests {
         put(
             &mut s.entities,
             question,
-            json!({"question/id":id(question),"question/is-example":false,"question/problem":"$2x=1$","question/answer-fields":[200]}),
+            json!({"question/id":id(question),"question/problem":"$2x=1$","question/answer-fields":[200]}),
         );
         activity
     }

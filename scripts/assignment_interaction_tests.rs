@@ -50,10 +50,10 @@ impl Fixture {
           {:db/id "assignment" :activity/id #uuid "00000000-0000-4000-8000-000000000010" :activity/type :activity.type/assignment :activity/title "Test assignment" :activity/steps ["first" "second"] :activity/first-step "first"}
           {:db/id "first" :step/id #uuid "00000000-0000-4000-8000-000000000011" :step/content "question-one" :step/next "second"}
           {:db/id "second" :step/id #uuid "00000000-0000-4000-8000-000000000012" :step/content "question-two"}
-          {:db/id "question-one" :question/id #uuid "00000000-0000-4000-8000-000000000013" :question/problem "Enter two." :question/is-example false :question/worked-solution "One plus one is two." :question/answer-fields ["first-field"]}
+          {:db/id "question-one" :question/id #uuid "00000000-0000-4000-8000-000000000013" :question/problem "Enter two." :question/worked-solution "One plus one is two." :question/answer-fields ["first-field"]}
           {:db/id "first-field" :answer-field/id #uuid "00000000-0000-4000-8000-000000000014" :answer-field/type :answer-field.type/blank :answer-field/key "answer" :answer-field/choices ["two"] :answer-field/correct "two"}
           {:db/id "two" :answer/id #uuid "00000000-0000-4000-8000-000000000015" :answer/type :answer.type/math :answer/value "2" :answer/feedback "Two is correct."}
-          {:db/id "question-two" :question/id #uuid "00000000-0000-4000-8000-000000000016" :question/problem "Select four." :question/is-example false :question/worked-solution "Two plus two is four." :question/answer-fields ["second-field"]}
+          {:db/id "question-two" :question/id #uuid "00000000-0000-4000-8000-000000000016" :question/problem "Select four." :question/worked-solution "Two plus two is four." :question/answer-fields ["second-field"]}
           {:db/id "second-field" :answer-field/id #uuid "00000000-0000-4000-8000-000000000017" :answer-field/type :answer-field.type/select :answer-field/key "selection" :answer-field/choices ["right" "wrong"] :answer-field/correct "right"}
           {:db/id "right" :answer/id #uuid "00000000-0000-4000-8000-000000000018" :answer/type :answer.type/text :answer/value "four"}
           {:db/id "wrong" :answer/id #uuid "00000000-0000-4000-8000-000000000019" :answer/type :answer.type/text :answer/value "five"}

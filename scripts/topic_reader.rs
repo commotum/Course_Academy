@@ -119,7 +119,7 @@ fn section_content(facts: &Facts, content: u64) -> Result<Option<(&'static str, 
         else {
             return Ok(None); // An identity-only KP has no imported example yet.
         };
-        if scalar(facts, example, "question/is-example") != Some(&Value::Bool(true)) {
+        if scalar(facts, example, "question/id").is_none() {
             return Err("Knowledge point canonical example is not a worked example".into());
         }
         return Ok(Some((
@@ -128,7 +128,7 @@ fn section_content(facts: &Facts, content: u64) -> Result<Option<(&'static str, 
             title(facts, content, "knowledge-point"),
         )));
     }
-    if scalar(facts, content, "question/is-example") == Some(&Value::Bool(true)) {
+    if facts.keys().any(|kp| refs(facts, *kp, "knowledge-point/canonical-example").contains(&content)) {
         return Ok(Some(("example", content, "Worked example".into())));
     }
     if scalar(facts, content, "question/id").is_some() {
@@ -199,7 +199,6 @@ const CONTENT_ATTRS: &[&str] = &[
     "knowledge-point/title",
     "knowledge-point/canonical-example",
     "question/id",
-    "question/is-example",
     "question/problem",
     "question/worked-solution",
     "question/requires-calculator",
@@ -242,6 +241,11 @@ fn lesson_sections(db: &DatabaseValue, facts: &mut Facts, topic: u64) -> Result<
             .copied()
             .ok_or("Lesson step has no content")?;
         load_attrs(db, facts, content, CONTENT_ATTRS)?;
+        if scalar(facts, content, "question/id").is_some() {
+            for kp in referrers(db, content, "knowledge-point/canonical-example")? {
+                load_attrs(db, facts, kp, &["knowledge-point/canonical-example"])?;
+            }
+        }
         if let Some(example) = refs(facts, content, "knowledge-point/canonical-example")
             .first()
             .copied()
@@ -403,9 +407,8 @@ mod tests {
             "knowledge-point/canonical-example",
             Value::Ref(2),
         );
-        fact(&mut facts, 2, "question/is-example", Value::Bool(true));
+        fact(&mut facts, 2, "question/id", Value::Uuid(2));
         fact(&mut facts, 3, "question/id", Value::Uuid(3));
-        fact(&mut facts, 3, "question/is-example", Value::Bool(false));
         assert_eq!(
             section_content(&facts, 1).unwrap(),
             Some(("example", 2, "Example title".into()))
@@ -415,10 +418,7 @@ mod tests {
             Some(("example", 2, "Worked example".into()))
         );
         assert_eq!(section_content(&facts, 3).unwrap(), None);
-        facts
-            .get_mut(&2)
-            .unwrap()
-            .insert("question/is-example", vec![Value::Bool(false)]);
+        facts.get_mut(&2).unwrap().remove("question/id");
         assert!(section_content(&facts, 1).is_err());
     }
 }

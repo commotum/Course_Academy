@@ -185,14 +185,14 @@ class Import:
                 questions = []
                 for j, part in enumerate(parts):
                     statement = tidy(body[part.end():parts[j+1].start() if j+1 < len(parts) else len(body)])
-                    questions.append(self.entity(relative, f'problem-{number}/part-{part[1]}', 'question', question__is_example=False, question__problem=f'**({part[1]})** {statement}'))
+                    questions.append(self.entity(relative, f'problem-{number}/part-{part[1]}', 'question', question__problem=f'**({part[1]})** {statement}'))
                 inner = self.sequence(relative, [f'problem-{number}/part-{p[1]}/step' for p in parts], questions)
                 attrs = {'multistep__steps': inner, 'multistep__first_step': inner[0]}
                 if context:
                     attrs['multistep__context'] = context
                 content = self.entity(relative, f'problem-{number}/multistep', 'multistep', **attrs)
             else:
-                content = self.entity(relative, f'problem-{number}/question', 'question', question__is_example=False, question__problem=body)
+                content = self.entity(relative, f'problem-{number}/question', 'question', question__problem=body)
             topics = sorted(set(mapping['direct'] + mapping['supporting']))
             attrs = {'assigned_problem__content': content}
             if topics:
@@ -228,7 +228,6 @@ class Import:
                     owners[child].append(eid)
             if ':question/id' in row:
                 assert row[':question/problem'].strip()
-                assert row[':question/is-example'] is False
                 assert ':question/answer-fields' not in row
                 assert ':question/math-academy-id' not in row
         for eid, row in records.items():

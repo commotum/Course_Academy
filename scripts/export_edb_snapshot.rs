@@ -1,11 +1,11 @@
-//! Export domain facts from an offline EDB backup as lossless EDN-valued JSONL.
+//! Export domain facts from a captured live EDB value or offline backup as JSONL.
 //!
 //! Build this small standalone program against the local edb-core and serde_json
 //! rlibs. It never opens a writer or changes the backup repository.
 
 use edb_core::edn::write_edn;
 use edb_core::edn_value::value_to_edn;
-use edb_core::{BackupConnection, IndexOrder, Value};
+use edb_core::{BackupConnection, IndexOrder, Peer, Value, postgres_config_from_env};
 use serde_json::{json, to_writer};
 use std::collections::BTreeMap;
 use std::env;
@@ -21,15 +21,21 @@ fn uuid_string(value: u128) -> String {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut args = env::args_os().skip(1);
-    let backup = PathBuf::from(args.next().ok_or("usage: export_edb_snapshot BACKUP_DIR OUTPUT.jsonl")?);
+    let source = args.next().ok_or("usage: export_edb_snapshot [--database NAME | BACKUP_DIR] OUTPUT.jsonl")?;
+    let live = source == "--database";
+    let source = if live { args.next().ok_or("database name required")? } else { source };
+    let backup = PathBuf::from(&source);
     let output = PathBuf::from(args.next().ok_or("usage: export_edb_snapshot BACKUP_DIR OUTPUT.jsonl")?);
     if args.next().is_some() {
         return Err("usage: export_edb_snapshot BACKUP_DIR OUTPUT.jsonl".into());
     }
     let manifest = output.with_extension("manifest.json");
     let staging = output.with_extension("jsonl.tmp");
-    let connection = BackupConnection::open(&backup)?;
-    let db = connection.db();
+    let db = if live {
+        Peer::connect_configured(&postgres_config_from_env()?, source.to_str().ok_or("invalid database name")?, 256)?.db()
+    } else {
+        BackupConnection::open(&backup)?.db()
+    };
     let basis_t = db.basis_t();
     let datoms = db.collect_datoms(IndexOrder::Eavt)?;
     let mut writer = BufWriter::new(File::create(&staging)?);
@@ -80,7 +86,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     fs::write(
         &manifest,
         serde_json::to_vec_pretty(&json!({
-            "backup": backup,
+            "backup": if live { None } else { Some(&backup) },
+            "database": if live { source.to_str() } else { None },
             "basis_t": basis_t,
             "domain_datoms": exported,
             "skipped_builtin_datoms": skipped_builtin,

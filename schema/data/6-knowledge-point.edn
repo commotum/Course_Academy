@@ -24,12 +24,12 @@
  {:db/ident :knowledge-point/canonical-example
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Required reference to the canonical worked example question demonstrating this KP. Its question/is-example flag must be true and it must have a worked solution. This ordinary ref permits content reuse without cascading deletion. The canonical example is not a member of the practice question pool."}
+  :db/doc "Required reference to the canonical worked example question demonstrating this KP. The target must have question/id, a problem, and a nonempty worked solution. This reference establishes its worked-example role. This ordinary ref permits content reuse without cascading deletion. Canonical-example targets cannot belong to any KP practice question pool."}
 
  {:db/ident :knowledge-point/questions
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Required pool containing at least one ordinary gradable question associated with this KP. Worked example questions are excluded. Lesson practice, reviews, and assessments select appropriate items from the pool using learner history. This collection is unordered; question selection and avoidance of already-answered lesson items belong to the engine."}
+  :db/doc "Required pool containing at least one ordinary gradable question associated with this KP. Any question referenced through knowledge-point/canonical-example is excluded, including examples of other KPs. Lesson practice, reviews, and assessments select appropriate items from the pool using learner history. This collection is unordered; question selection and avoidance of already-answered lesson items belong to the engine."}
 
  {:db/ident :knowledge-point/question-generator
   :db/valueType :db.type/ref
@@ -45,5 +45,5 @@
                     :knowledge-point/title
                     :knowledge-point/canonical-example
                     :knowledge-point/questions]
-  :db/doc "Native EDB specification requiring KP identity, title, a canonical example question ref, and at least one practice question ref when explicitly ensured. Writers ensure question/validate for both examples and practice questions, along with child specifications. The application checks target types, example flags, disjointness from the practice pool, mathematical correctness, and selection rules."}
+  :db/doc "Native EDB specification requiring KP identity, title, a canonical example question ref, and at least one practice question ref when explicitly ensured. Writers ensure question/validate for both examples and practice questions, along with child specifications. The application checks target types, nonempty canonical worked solutions, disjointness of all canonical targets from every practice pool, mathematical correctness, and selection rules."}
 ]

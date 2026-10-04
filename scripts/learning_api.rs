@@ -643,7 +643,7 @@ fn task_json(s: &EntitySnapshot, l: u64, t: u64) -> Result<Json> {
         let state = status(s, i, "task-item/status")?;
         let terminal = timing::terminal(&format!("task-item.status/{state}"));
         let tutorial = e.contains_key("tutorial/id");
-        let example = e.get("question/is-example") == Some(&json!(true));
+        let example = s.is_example(content);
         let reveal = example || terminal;
         let authored = authored_step(&steps, content);
         let title = if tutorial {
@@ -911,7 +911,7 @@ fn mutate(
         }
         let e = s.entity(content)?;
         let instruction =
-            e.contains_key("tutorial/id") || e.get("question/is-example") == Some(&json!(true));
+            e.contains_key("tutorial/id") || s.is_example(content);
         if action == "answer" {
             if instruction {
                 return Err("This step does not accept an answer".into());

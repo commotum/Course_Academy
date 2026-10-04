@@ -1,3 +1,5 @@
+Import update (2026-10-04): saved content was committed at EDB basis 413 → 414. The normalized payload is `content-import.json`; `edb-import/verification.json` confirms completeness, a no-op reimport, and unchanged learner/engine facts. `content.json` and the original capture evidence remain preserved. Earlier statements below about no database writes describe the original capture.
+
 # Manual multistep capture: 13931219
 
 Radical Functions and Polynomials in Geometrical Settings, multistep 1780,

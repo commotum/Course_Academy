@@ -107,6 +107,7 @@ pub struct EntitySnapshot {
     pub basis_t: u64,
     pub status_history: Vec<StatusAssertion>,
     idents: BTreeMap<String, u64>,
+    canonical_examples: BTreeSet<u64>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -138,11 +139,13 @@ impl EntitySnapshot {
             }
             records.insert(eid, record);
         }
+        let canonical_examples = Self::example_targets(&records);
         Ok(Self {
             entities: records,
             basis_t,
             status_history: vec![],
             idents,
+            canonical_examples,
         })
     }
     pub fn from_json(value: &Value) -> Result<Self> {
@@ -196,7 +199,21 @@ impl EntitySnapshot {
             }
         }
         self.basis_t = basis_t;
+        self.canonical_examples = Self::example_targets(&self.entities);
         Ok(())
+    }
+    fn example_targets(entities: &BTreeMap<u64, Record>) -> BTreeSet<u64> {
+        entities.values()
+            .filter_map(|record| record.get("knowledge-point/canonical-example").and_then(Value::as_u64))
+            .collect()
+    }
+    /// The projection must include every canonical-example reference at this basis.
+    /// Refresh curriculum records through replace_records to update this derived index.
+    pub fn is_example(&self, question: u64) -> bool {
+        self.canonical_examples.contains(&question)
+    }
+    pub fn is_ordinary_question(&self, content: u64) -> Result<bool> {
+        Ok(self.entity(content)?.contains_key("question/id") && !self.is_example(content))
     }
     pub fn eid(&self, v: &Value) -> Result<u64> {
         let v = v.get("$keyword").unwrap_or(v);
@@ -280,6 +297,9 @@ impl EntitySnapshot {
     pub fn knowledge_points_for_question(&self, q: u64) -> Result<Vec<u64>> {
         if !self.types(q)?.contains("question") {
             return Err("content is not a question".into());
+        }
+        if self.is_example(q) {
+            return Err("canonical examples cannot belong to practice banks".into());
         }
         let owners = self.owners(q, "knowledge-point/questions")?;
         if owners.len() != 1 || !self.types(owners[0])?.contains("knowledge-point") {
@@ -763,7 +783,7 @@ fn check_responses(
     }
     let q = s.reference(item, "task-item/content")?;
     if !s.types(q)?.contains("question")
-        || s.entity(q)?.get("question/is-example") == Some(&json!(true))
+        || s.is_example(q)
     {
         return Err("only ordinary question items carry responses".into());
     }
@@ -837,7 +857,7 @@ pub fn completion_transaction(
     }
     let content = s.reference(item, "task-item/content")?;
     let is_gradable = s.types(content)?.contains("question")
-        && s.entity(content)?.get("question/is-example") != Some(&json!(true));
+        && !s.is_example(content);
     if is_gradable == (terminal_name == "task-item.status/completed") {
         return Err("item terminal status does not match its content".into());
     }

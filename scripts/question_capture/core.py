@@ -15,7 +15,7 @@ from math_notation import identity as math_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 ALLOWED = {
-    'question/id', 'question/math-academy-id', 'question/is-example', 'question/problem',
+    'question/id', 'question/math-academy-id', 'question/problem',
     'question/worked-solution', 'question/difficulty', 'question/requires-calculator',
     'question/answer-fields', 'answer-field/id', 'answer-field/key', 'answer-field/type',
     'answer-field/choices', 'answer-field/correct', 'answer/id', 'answer/type',
@@ -283,8 +283,10 @@ def build_transaction(content, topic, existing):
         canonical = kp.get(':knowledge-point/canonical-example')
         if example and canonical and canonical[':question/math-academy-id'] != mid:
             raise ValueError('Live example differs from this KP canonical ID; review ' + mid)
-        if old and old.get(':question/is-example', example) != example:
-            raise ValueError('Existing example flag conflicts: ' + mid)
+        if old and old.get(':knowledge-point/_canonical-example') and not example:
+            raise ValueError('Canonical example cannot enter a practice pool: ' + mid)
+        if old and old.get(':knowledge-point/_questions') and example:
+            raise ValueError('Practice question cannot become a canonical example: ' + mid)
         if old:
             owners = old.get(':knowledge-point/_canonical-example' if example else ':knowledge-point/_questions', [])
             if any(str(o[':knowledge-point/id']) != kp_id for o in owners):
@@ -292,7 +294,7 @@ def build_transaction(content, topic, existing):
         target = ref('question/math-academy-id', mid) if old else mid
         update = {kw('db/id'): target}
         candidates = {'question/id': stable_id('question', mid), 'question/math-academy-id': mid,
-                      'question/is-example': example, 'question/problem': question['problem'],
+                      'question/problem': question['problem'],
                       'question/worked-solution': question['worked_solution']}
         if question.get('difficulty'):
             candidates['question/difficulty'] = kw('question.difficulty/' + question['difficulty'])
