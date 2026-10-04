@@ -69,7 +69,14 @@ element => {
       case 'mspace': return '\\,';
       case 'mtext': return '\\text{' + n.textContent + '}';
       case 'mo': return ops[n.textContent] || greek[n.textContent] || n.textContent;
-      case 'mi': return greek[n.textContent] || n.textContent;
+      case 'mi':
+        // The local MathML application marker identifies this whole node as
+        // a function name. Keep its boundary when adjacent factors share no space.
+        if (/^[A-Za-z]+$/.test(n.textContent) &&
+            n.nextElementSibling?.localName === 'mo' && n.nextElementSibling.textContent === '\u2061') {
+          return '\\operatorname{' + n.textContent + '}';
+        }
+        return greek[n.textContent] || n.textContent;
       case 'mtable': return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
       case 'mtr': case 'mlabeledtr': return cs.join(' & ');
       case 'menclose':

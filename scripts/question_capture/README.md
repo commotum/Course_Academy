@@ -78,8 +78,19 @@ The runner:
    its title must match exactly one of that topic's database KPs. It captures
    whatever questions were served; reviews do not require five per KP or a live
    canonical example. An unknown review tutorial/example layout defers the activity for inspection.
-   Assessments use their fixed question count, with correct answers throughout
-   and one whole-test submission. All live fields, displayed choice ordering,
+   Assessments use their fixed question count and one whole-test submission.
+   Each new question independently selects an intended correct response with
+   probability **0.8717** and an incorrect response with probability **0.1283**.
+   This also applies to quiz retakes. A wrong radio/select response chooses a
+   distinct displayed distractor; a blank uses the solver's validated incorrect
+   value. Questions with several fields make one field wrong. The correct/wrong
+   intent and chosen distractor are saved before entry and retained on resume,
+   even if options move. `--assessment-correct-weight` changes the probability;
+   `1` restores all-correct quizzes. The weight is saved per activity, and it
+   determines probabilities rather than guaranteeing a particular final score.
+   The solver continues to identify the correct answer. Incorrect graded answers
+   are checked against the revealed worked solution before importing content.
+   All live fields, displayed choice ordering,
    images, calculator instructions, and entered answers are captured before
    submission. Their history supplies explanations, difficulty, and per-question
    topic/KP links. Each KP title is matched within that question's source topic;
@@ -337,6 +348,19 @@ while the runner selects new activities.
 
 Assessment recovery retains one solver session and reuses solved answers,
 matching them to current displayed options before refilling the unsubmitted test.
+New quizzes, assessments, and quiz retakes target a random **70–85% of their
+time limit** by default: about **10.5–12.75 minutes for a 15-minute quiz**.
+One saved schedule allocates uneven time to each question. The runner waits
+before entering each new answer, counting actual solving, navigation, and entry
+time toward the total. These are real waits; recorded durations are not edited.
+It shortens or skips extra waits when the visible countdown or remaining question
+count leaves too little time. It keeps a final submission margin and checks for
+shutdown every 30 seconds during longer waits. Slow solving can exceed the
+target, so this is pacing rather than a guaranteed completion time.
+Use `--assessment-time-min` and `--assessment-time-max` to change those fractions;
+set both to `0` to disable added quiz pacing. A saved plan survives interruption,
+and already filled questions do not wait again. Older in-progress captures
+without a pacing plan continue under their original timing policy.
 The site's timer continues during an interruption. An uncertain whole-test
 submission is inspected for a completion screen and is never blindly confirmed
 again. Unknown question counts, navigation layouts, and requirement wording stop

@@ -700,7 +700,17 @@ class CaptureBrowser:
                 choices = [c for c in field['choices'] if c['option'] != answer['correct_option']] if wrong else [c for c in field['choices'] if c['option'] == answer['correct_option']]
                 if not choices:
                     raise ValueError('Cannot choose a distinct incorrect option')
-                chosen = self.pacer.rng.choice(choices)
+                saved = record.get('wrong_choice') if wrong else None
+                if saved:
+                    if saved['key'] != field['key']:
+                        raise ValueError('Saved incorrect choice belongs to a different field')
+                    choices = [c for c in choices if c['type'] == saved['type'] and
+                               normalize(c['value'],c['type']) == normalize(saved['value'],saved['type'])]
+                    if len(choices) != 1:
+                        raise ValueError('Saved incorrect choice does not match exactly one restored option')
+                    chosen = choices[0]
+                else:
+                    chosen = self.pacer.rng.choice(choices)
                 if field['type'] == 'radio':
                     by_id(scope,chosen['dom_id']).click()
                 elif field['tag'] == 'select':

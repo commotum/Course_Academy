@@ -28,6 +28,14 @@ REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_explicit_mathml_function_boundaries_keep_adjacent_factors(self):
+        self.assertEqual(normalize(r'2x+6\csc x\cot x'),
+                         normalize('2x+6\\operatorname{csc}\u2061x\\operatorname{cot}\u2061x'))
+        for wrong in (r'2x-6\csc x\cot x', r'2x+6\csc x\tan x',
+                      r'2x+6\csc xcot x', r'2x+6\csc x\cot y'):
+            self.assertNotEqual(normalize(r'2x+6\csc x\cot x'),normalize(wrong))
+        self.assertNotEqual(normalize(r'\operatorname{xcot}x'),normalize(r'x\cot x'))
+
     def test_absolute_bars_and_fenced_quotients_preserve_argument_scope(self):
         self.assertEqual(normalize(r'\frac{1}{9}\ln \mid x \mid + C'),
                          normalize('\\frac{1}{9}ln\u2061|x|+C'))
@@ -249,6 +257,21 @@ class PolicyTests(unittest.TestCase):
 
 
 class ReconciliationTests(unittest.TestCase):
+    def test_saved_trig_operator_capture_reuses_existing_answers(self):
+        fixture=Path(__file__).parent/'fixtures/reciprocal-trig-operators'
+        content=json.loads((fixture/'content.json').read_text())
+        topic=loads((fixture/'topic.edn').read_text())[0][0]
+        existing={r[0][':question/math-academy-id']:r[0] for r in loads((fixture/'questions.edn').read_text())}
+        original=copy.deepcopy(existing)
+        transaction,report=build_transaction(content,topic,existing)
+        self.assertTrue(report[0]['existing'])
+        self.assertFalse(any(':answer/value' in row or ':answer-field/correct' in row or
+                             ':answer-field/choices' in row for row in transaction))
+        self.assertEqual(existing,original)
+        existing['q-31283'][':question/answer-fields'][0][':answer-field/correct'][':answer/value']=r'2x-6\csc x\cot x'
+        with self.assertRaisesRegex(ValueError,'Correct answer conflict'):
+            build_transaction(content,topic,existing)
+
     def new_kp_fixture(self):
         source='e-999998';title='A newly observed skill'
         kp_id=str(stable_id('knowledge-point',str(self.content['topic_id'])+':'+source))
@@ -583,6 +606,23 @@ class RunnerTests(unittest.TestCase):
 
 
 class DOMTests(unittest.TestCase):
+    def test_local_mathml_operator_nodes_preserve_adjacent_function_names(self):
+        fixture=Path(__file__).parent/'fixtures/reciprocal-trig-operators'
+        self.page.set_content((fixture/'question.html').read_text())
+        captured=self.page.locator('#step-q31283').evaluate(EXTRACT)
+        self.assertEqual(captured['errors'],[])
+        expected=[r'2x^{2}-6\csc x\cot x',r'-2+6\csc x\cot x',
+                  r'2x+6\csc x\cot x',r'x+6\csc x\cot x',r'2+6\csc x\cot x']
+        self.assertEqual([normalize(c['value']) for c in captured['fields'][0]['choices']],
+                         [normalize(v) for v in expected])
+        for name in ('xcot','cot'):
+            self.page.set_content('<div id="q"><div class="questionText"><mjx-container><mjx-assistive-mml>'
+                '<math><mi>'+name+'</mi><mo>⁡</mo><mi>x</mi></math>'
+                '</mjx-assistive-mml></mjx-container></div></div>')
+            item=self.page.locator('#q').evaluate(EXTRACT)
+            self.assertIn('\\operatorname{'+name+'}',item['problem'])
+            if name=='xcot':self.assertNotEqual(normalize(item['problem'].strip('$')),normalize(r'x\cot x'))
+
     def test_empty_zero_width_mathjax_formula_is_not_a_missing_visual_asset(self):
         for wrapper in ('span class="mjpage"','mjx-container'):
             tag=wrapper.split()[0]
@@ -869,7 +909,7 @@ class DOMTests(unittest.TestCase):
         self.assertEqual(quiz['assessment_notice'],'This quiz is optional until 26 more XP have been earned.')
         self.assertEqual(quiz['optional_xp_remaining'],26)
         self.assertIsNone(choose_activity(queue,{}))
-        with self.assertRaisesRegex(ValueError,'optional'):
+        with self.assertRaisesRegex(ValueError,'stop before Start'):
             browser.start(quiz)
         self.assertEqual(self.page.url,'https://mathacademy.com/learn')
 

@@ -51,6 +51,12 @@ def arguments(argv=None):
     parser.add_argument('--codex-bin',default='codex')
     parser.add_argument('--solver-model',help='Optional explicit Codex model for the solver')
     parser.add_argument('--solver-timeout',type=int,default=300)
+    parser.add_argument('--assessment-correct-weight',type=float,default=0.8717,
+                        help='Independent probability of a correct quiz question; default 0.8717')
+    parser.add_argument('--assessment-time-min',type=float,default=0.7,
+                        help='Minimum fraction of a quiz time limit targeted by pacing; default 0.7')
+    parser.add_argument('--assessment-time-max',type=float,default=0.85,
+                        help='Maximum fraction of a quiz time limit targeted by pacing; default 0.85; set both to 0 to disable')
     for kind, low, high in [('event',0.8,2.5),('answer',5.0,12.0),('lesson',10.0,25.0),('rest',120.0,360.0)]:
         parser.add_argument('--'+kind+'-min',type=float,default=low)
         parser.add_argument('--'+kind+'-max',type=float,default=high)
@@ -67,6 +73,11 @@ def arguments(argv=None):
             parser.error('Invalid '+kind+' wait range')
     if not math.isfinite(args.cwcwc_weight) or not 0<=args.cwcwc_weight<=1:
         parser.error('--cwcwc-weight must be in [0,1]')
+    if not math.isfinite(args.assessment_correct_weight) or not 0<=args.assessment_correct_weight<=1:
+        parser.error('--assessment-correct-weight must be in [0,1]')
+    if (not math.isfinite(args.assessment_time_min) or not math.isfinite(args.assessment_time_max) or
+            not 0<=args.assessment_time_min<=args.assessment_time_max<=0.95):
+        parser.error('Assessment time fractions must satisfy 0 <= min <= max <= 0.95')
     if args.limit<1 or args.review_question_limit<1 or args.rest_every<0 or args.timeout_ms<1 or args.solver_timeout<1 or args.settle_ms<0:
         parser.error('Invalid limit, timeout, or rest frequency')
     if args.command=='import-saved' and not args.content:

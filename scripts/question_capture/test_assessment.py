@@ -6,13 +6,14 @@ import tempfile
 import unittest
 import contextlib
 import io
+import threading
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 from browser import CaptureBrowser, EXTRACT, deduplicate_math_editor, repair_math_editor_document
 from capture import arguments, observe_queue, run
-from core import Pacer, assessment_can_start, assessment_requirement, build_content_transaction, choose_activity
+from core import Pacer, assessment_can_start, assessment_requirement, build_content_transaction, choose_activity, normalize
 from retry_policy import apply_policy, earned_xp, update_policy
 
 FIXTURES = Path(__file__).parent/'fixtures'
@@ -20,6 +21,88 @@ QUIZ = json.loads((FIXTURES/'quiz-5-assessment.json').read_text())
 
 
 class AssessmentPolicyTests(unittest.TestCase):
+    def test_quiz_intent_probability_threshold_and_sampling(self):
+        from assessment import choose_quiz_intent
+        self.assertEqual(arguments(['run']).assessment_correct_weight,0.8717)
+        rng=Mock();rng.random.side_effect=[0,0.87169,0.8717,0.99999]
+        self.assertEqual([choose_quiz_intent(rng,0.8717) for _ in range(4)],['C','C','W','W'])
+        rng=random.Random(17)
+        rate=sum(choose_quiz_intent(rng,0.8717)=='C' for _ in range(20000))/20000
+        self.assertTrue(0.865<rate<0.878,rate)
+        for weight in ('-0.1','1.1','nan'):
+            with contextlib.redirect_stderr(io.StringIO()),self.assertRaises(SystemExit):
+                arguments(['run','--assessment-correct-weight',weight])
+
+    def test_prepared_wrong_choice_is_distinct_and_preserves_correct_answer(self):
+        from assessment import prepare_wrong_choice
+        record={'intended':'W','before':{'fields':[{'key':'selection','type':'radio','choices':[
+            {'option':'a','type':'math','value':'1/2'},
+            {'option':'b','type':'math','value':'0.5'},
+            {'option':'c','type':'math','value':'1/3'}]}]},
+            'decision':{'answers':[{'key':'selection','correct_option':'a','value_type':'math','correct_value':'1/2'}]}}
+        prepare_wrong_choice(record,random.Random(1))
+        self.assertEqual(record['wrong_choice'],{'key':'selection','type':'math','value':'1/3'})
+        self.assertEqual(record['decision']['answers'][0]['correct_value'],'1/2')
+
+    def test_quiz_pacing_credits_solver_time_and_reuses_saved_schedule(self):
+        from assessment import begin_pacing, pace_before_answer
+        args=arguments(['run','--assessment-time-min','0.8','--assessment-time-max','0.8'])
+        clock=[1000.0];sleeps=[]
+        def sleep(seconds):sleeps.append(seconds);clock[0]+=seconds
+        rng=Mock();rng.uniform.side_effect=[0.8]+[1]*8
+        pacer=Pacer(args,rng,sleeper=sleep)
+        reader=SimpleNamespace(pacer=pacer,check=Mock(),page=Mock())
+        reader.page.locator.return_value.is_visible.return_value=True
+        reader.page.locator.return_value.inner_text.return_value='15 minutes remaining'
+        state={'assessment_details':{'Time Limit':'15 minutes'},'assessment_question_count':8}
+        with patch('assessment.time.time',side_effect=lambda:clock[0]):
+            begin_pacing(state,pacer)
+            plan=json.loads(json.dumps(state['assessment_pacing']))
+            clock[0]+=20  # Time spent solving counts toward the first 90-second slot.
+            pace_before_answer(reader,state,0)
+            self.assertAlmostEqual(sum(sleeps),70)
+            self.assertTrue(all(s<=30 for s in sleeps))
+            begin_pacing(state,pacer)
+            self.assertEqual(state['assessment_pacing'],plan)
+            sleeps.clear();pace_before_answer(reader,state,0)
+            self.assertEqual(sleeps,[])  # Elapsed slots are not replayed after resume.
+            clock[0]+=100;pace_before_answer(reader,state,1)
+            self.assertEqual(sleeps,[])  # Slow solving does not add redundant waits.
+
+    def test_quiz_pacing_shortens_waits_near_expiry_and_honors_shutdown(self):
+        from assessment import pace_before_answer
+        clock=[840.0];sleeps=[]
+        args=arguments(['run']);args.stop_event=threading.Event()
+        def sleep(seconds):sleeps.append(seconds);clock[0]+=seconds
+        pacer=Pacer(args,sleeper=sleep)
+        reader=SimpleNamespace(pacer=pacer,check=pacer.check_stop,page=Mock())
+        reader.page.locator.return_value.is_visible.return_value=True
+        reader.page.locator.return_value.inner_text.return_value='1 minute remaining'
+        state={'assessment_question_count':8,'assessment_pacing':{
+            'started_at':0,'time_limit_seconds':900,'answer_offsets_seconds':[900]*8}}
+        with patch('assessment.time.time',side_effect=lambda:clock[0]):
+            pace_before_answer(reader,state,0)
+            self.assertEqual(sleeps,[])
+            reader.page.locator.return_value.inner_text.return_value='55 seconds remaining'
+            pace_before_answer(reader,state,7)
+            self.assertEqual(sum(sleeps),15)  # 45-second margin remains on the actual clock.
+            clock[0]=0
+            reader.page.locator.return_value.inner_text.return_value='15 minutes remaining'
+            pacer.sleeper=lambda seconds:args.stop_event.set()
+            with self.assertRaises(KeyboardInterrupt):pace_before_answer(reader,state,0)
+
+    def test_old_started_quizzes_do_not_acquire_a_new_pacing_plan(self):
+        from assessment import begin_pacing
+        state={'assessment_started':True,'assessment_details':{'Time Limit':'15 minutes'},
+               'assessment_question_count':8}
+        begin_pacing(state,Pacer(arguments(['run'])))
+        self.assertNotIn('assessment_pacing',state)
+
+    def test_quiz_pacing_fractions_reject_invalid_ranges(self):
+        for lo,hi in (('-1','0.8'),('0.9','0.7'),('0.8','1'),('nan','0.8')):
+            with self.subTest(lo=lo,hi=hi),contextlib.redirect_stderr(io.StringIO()),self.assertRaises(SystemExit):
+                arguments(['run','--assessment-time-min',lo,'--assessment-time-max',hi])
+
     def test_duplicate_editor_tags_removed_without_changing_other_markup(self):
         tag='<script type="text/javascript" src="/js/math-editor.js"></script>'
         html='<head>'+tag+'</head><body><script src="/js/core.js"></script>'+tag+'</body>'
@@ -222,7 +305,9 @@ class AssessmentDOMTests(unittest.TestCase):
         self.context.close()
 
     def reader(self):
-        args=arguments(['run','--event-min','0','--event-max','0','--answer-min','0','--answer-max','0','--settle-ms','0','--timeout-ms','5000'])
+        args=arguments(['run','--event-min','0','--event-max','0','--answer-min','0','--answer-max','0',
+                        '--assessment-time-min','0','--assessment-time-max','0','--assessment-correct-weight','1',
+                        '--settle-ms','0','--timeout-ms','5000'])
         records={q['math_academy_id']:q for q in QUIZ['questions']}
         class FixtureSolver:
             def solve(self,item,*args):
@@ -372,6 +457,116 @@ class AssessmentDOMTests(unittest.TestCase):
     def test_whole_quiz_capture_preserves_choices_blanks_images_metadata_and_single_submission(self):
         self.assert_whole_quiz_capture()
 
+    def test_quiz_pacing_occurs_before_entry_and_records_real_elapsed_time(self):
+        reader=self.reader();quiz,=reader.queue()
+        reader.args.assessment_time_min=reader.args.assessment_time_max=0.8
+        clock=[1000.0];entered=[]
+        reader.pacer.sleeper=lambda seconds:clock.__setitem__(0,clock[0]+seconds)
+        original_enter=reader.enter
+        def enter(*args):entered.append(clock[0]);return original_enter(*args)
+        reader.enter=enter
+        solve=reader.solver.solve
+        def slower_solver(*args):clock[0]+=5;return solve(*args)
+        reader.solver.solve=slower_solver
+        state={'task_id':quiz['task_id'],'task_type':'assessment','test_id':quiz['test_id'],'topic_id':None,
+               'assessment_details':quiz['assessment_details'],'assessment_requirement':'required',
+               'questions':{},'examples':{},'kps':{}}
+        reader.start(quiz)
+        with tempfile.TemporaryDirectory() as work,patch('assessment.time.time',side_effect=lambda:clock[0]):
+            reader.activity(state,Path(work),None)
+            saved=json.loads((Path(work)/'state.json').read_text())
+        plan=state['assessment_pacing']
+        self.assertAlmostEqual(plan['actual_elapsed_seconds'],720)
+        self.assertEqual(saved['assessment_pacing'],plan)
+        self.assertEqual(self.submissions,1)
+        for actual,offset in zip(entered,plan['answer_offsets_seconds']):
+            self.assertAlmostEqual(actual-plan['started_at'],offset)
+        durations=[entered[0]-plan['started_at']]+[b-a for a,b in zip(entered,entered[1:])]
+        self.assertGreater(max(durations)-min(durations),10)
+
+    def test_weighted_wrong_quiz_still_imports_verified_correct_answers(self):
+        reader=self.reader();quiz,=reader.queue()
+        reader.args.assessment_correct_weight=0
+        reader.solver.solve=Mock(wraps=reader.solver.solve)
+        history=''.join(q['history_html'] for q in QUIZ['questions'])
+        history=history.replace('class="answerResult"><span style="color: green;">Correct</span>',
+                                'class="answerResult"><span style="color: red;">Incorrect</span>')
+        history+='<script>document.querySelectorAll(".answerDetails").forEach(n=>n.onclick=()=>n.closest(".question").nextElementSibling.style.display="block")</script>'
+        self.context.route('https://mathacademy.com/learn?taskId=13930620',lambda r:r.fulfill(
+            status=200,content_type='text/html',body=history))
+        state={'task_id':quiz['task_id'],'task_type':'assessment','test_id':quiz['test_id'],'topic_id':None,
+               'assessment_details':quiz['assessment_details'],'assessment_requirement':'required',
+               'questions':{},'examples':{},'kps':{}}
+        reader.start(quiz)
+        with tempfile.TemporaryDirectory() as work:
+            directory=Path(work);reader.activity(state,directory,None)
+            def topic(tid,*args):
+                q=next(q for q in QUIZ['questions'] if q['topic_id']==tid)
+                return {':topic/knowledge-points':[{
+                    ':knowledge-point/title':q['knowledge_point'],':knowledge-point/id':q['knowledge_point_id']}]}
+            content=reader.history(state,directory,topic)
+            self.assertEqual(reader.solver.solve.call_count,16)  # Eight solutions and eight graded verifications.
+            self.assertEqual(content['answer_policy'],'independent_weighted')
+            self.assertEqual(content['assessment_correct_weight'],0)
+            self.assertEqual(len(content['questions']),8)
+            self.assertTrue(all(q['intended']=='W' and q['actual_result']=='Incorrect' for q in state['questions'].values()))
+            for q in content['questions']:
+                original=next(v for v in QUIZ['questions'] if v['math_academy_id']==q['math_academy_id'])
+                field=q['answer_fields'][0]
+                original_field=original['answer_fields'][0]
+                kind=next((c['type'] for c in original_field['choices'] if c['value']==original_field['correct_value']),'math')
+                self.assertEqual(normalize(field['correct_value'],kind),normalize(original_field['correct_value'],kind))
+                submitted=state['questions'][q['math_academy_id']]['before']['fields'][0]['submitted_value']
+                self.assertNotEqual(normalize(submitted,kind),normalize(field['correct_value'],kind))
+                self.assertIn(submitted,[c['value'] for c in field['choices']])
+
+    def test_wrong_multifield_question_changes_only_one_field(self):
+        reader=self.reader()
+        self.page.set_content('<div id="q"><input id="first"><input id="second"></div>')
+        record={'intended':'W','before':{'fields':[
+            {'key':'field-'+str(i),'type':'blank','tag':'input','dom_id':name,'choices':[]}
+            for i,name in [(1,'first'),(2,'second')]]},'decision':{'answers':[
+            {'key':'field-'+str(i),'correct_value':str(i),'wrong_value':'0',
+             'correct_keys':[],'wrong_keys':[],'value_type':'math'} for i in (1,2)]}}
+        reader.enter(self.page.locator('#q'),record)
+        reader.verify_entered(self.page.locator('#q'),record)
+        self.assertEqual([f['submitted_value'] for f in record['before']['fields']],['0','2'])
+
+    def test_unexpected_correct_grade_for_wrong_response_requires_consistent_solution(self):
+        reader=self.reader();quiz,=reader.queue();reader.args.assessment_correct_weight=0
+        state={'task_id':quiz['task_id'],'task_type':'assessment','test_id':quiz['test_id'],'topic_id':None,
+               'assessment_details':quiz['assessment_details'],'assessment_requirement':'required',
+               'questions':{},'examples':{},'kps':{}}
+        reader.start(quiz)
+        with tempfile.TemporaryDirectory() as work:
+            directory=Path(work);reader.activity(state,directory,None)
+            def topic(tid,*args):
+                q=next(q for q in QUIZ['questions'] if q['topic_id']==tid)
+                return {':topic/knowledge-points':[{
+                    ':knowledge-point/title':q['knowledge_point'],':knowledge-point/id':q['knowledge_point_id']}]}
+            # The original fixture grades every response correct, contradicting
+            # the deliberately wrong input and unchanged worked solution.
+            with self.assertRaisesRegex(ValueError,'Graded correct answer contradicts'):
+                reader.history(state,directory,topic)
+            self.assertFalse((directory/'content.json').exists())
+
+    def test_saved_wrong_choice_follows_value_when_display_order_changes(self):
+        reader=self.reader()
+        self.page.set_content('<div id="q">'+''.join(
+            '<button id="choice-'+option+'">'+option+'</button>' for option in ('a','b','c'))+'</div>')
+        field={'key':'selection','type':'radio','choices':[
+            {'option':option,'dom_id':'choice-'+option,'type':'math','value':value}
+            for option,value in [('a','2'),('b','4'),('c','3')]]}
+        record={'intended':'W','before':{'fields':[field]},
+                'decision':{'answers':[{'key':'selection','correct_option':'a','correct_value':'2'}]},
+                'wrong_choice':{'key':'selection','type':'math','value':'3'}}
+        reader.enter(self.page.locator('#q'),record)
+        self.assertEqual(field['submitted_option'],'c')
+        self.assertEqual(field['submitted_value'],'3')
+        field['choices'][2]['value']='5'
+        with self.assertRaisesRegex(ValueError,'Saved incorrect choice does not match exactly one'):
+            reader.enter(self.page.locator('#q'),record)
+
     def test_observed_retake_among_other_tasks_uses_normal_quiz_capture(self):
         card=(FIXTURES/'quiz-7-retake-card.html').read_text().replace('13938136','13930620').replace('589650','589340')
         lesson='<div id="task-2" class="taskUnlocked" progress="0"><span class="taskTypeUnlocked">Lesson</span><div class="taskNameUnlocked">Lesson</div><a class="taskStartButton" href="/tasks/2/topics/10/lesson">Start</a></div>'
@@ -443,7 +638,14 @@ class AssessmentDOMTests(unittest.TestCase):
         self.assertEqual(self.submissions,0)
 
     def test_interrupted_unsubmitted_quiz_reuses_answers_and_resumes_without_starting_again(self):
+        self.assert_interrupted_quiz_resumes()
+
+    def test_interrupted_wrong_quiz_keeps_intents_and_selected_distractor(self):
+        self.assert_interrupted_quiz_resumes(wrong=True)
+
+    def assert_interrupted_quiz_resumes(self, wrong=False):
         reader=self.reader();quiz,=reader.queue()
+        if wrong:reader.args.assessment_correct_weight=0
         with tempfile.TemporaryDirectory() as work:
             directory=Path(work)
             state={'task_id':quiz['task_id'],'task_type':'assessment','test_id':quiz['test_id'],'topic_id':None,
@@ -460,6 +662,7 @@ class AssessmentDOMTests(unittest.TestCase):
             with self.assertRaises(KeyboardInterrupt):reader.activity(state,directory,None)
             self.assertEqual(len(state['questions']),2)
             self.assertTrue(all(q['status']=='filled' for q in state['questions'].values()))
+            submitted={mid:[f['submitted_value'] for f in q['before']['fields']] for mid,q in state['questions'].items()}
             self.assertEqual(self.submissions,0)
             # A restored live page can lose UI selections; reuse saved values and fill them again.
             resumed=self.reader();resumed.solver.solve=Mock(wraps=resumed.solver.solve)
@@ -469,6 +672,10 @@ class AssessmentDOMTests(unittest.TestCase):
             self.assertEqual(self.instruction_pages,1)
             self.assertEqual(self.submissions,1)
             self.assertTrue(state['activity_complete'])
+            for mid,values in submitted.items():
+                self.assertEqual([f['submitted_value'] for f in state['questions'][mid]['before']['fields']],values)
+            self.assertEqual(state['assessment_correct_weight'],0 if wrong else 1)
+            self.assertTrue(all(q['intended']==('W' if wrong else 'C') for q in state['questions'].values()))
 
 
 if __name__=='__main__':

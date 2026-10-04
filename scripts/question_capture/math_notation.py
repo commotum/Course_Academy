@@ -158,6 +158,10 @@ class Parser:
                 nodes.append(tuple(parts))
             elif token == '⁡':
                 self.position += 1
+                if nodes and nodes[-1][0] in ('operator', 'operatorname'):
+                    # Explicitly serialized MathML function names already carry
+                    # the application boundary; do not append a second marker.
+                    continue
                 start = len(nodes)
                 while start and nodes[start-1][0] == 'char' and nodes[start-1][1].isalpha():
                     start -= 1
