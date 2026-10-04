@@ -28,6 +28,11 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Activity-type enum selecting the application's lesson, review, assessment, diagnostic, or assignment rules. An assignment may contain one multistep problem or several problems."}
 
+ {:db/ident :activity/course
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional course this activity belongs to, such as the school course assigning homework. References a course entity. Independent of the content targeted by activity/scope and assigned-problem/topic-coverage; does not restrict supporting topics to this course."}
+
  {:db/ident :activity/due
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one
@@ -36,7 +41,7 @@
  {:db/ident :activity/scope
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional intended curriculum scope. Lessons and reviews target a topic; diagnostics may target a course, unit, module, or topic. Omit when scope is fully described by the selected content. This ordinary ref preserves shared curriculum."}
+  :db/doc "Optional curriculum content targeted by this activity. Lessons and reviews target a topic; diagnostics may target a course, unit, module, or topic. Omit when scope is fully described by the selected content. Course affiliation belongs on activity/course; assignment problem coverage belongs on assigned-problem/topic-coverage. This ordinary ref preserves shared curriculum."}
 
  {:db/ident :activity/time-limit-seconds
   :db/valueType :db.type/double

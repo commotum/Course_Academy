@@ -54,7 +54,7 @@ CONTENT_LINKS = (
     'assigned-problem/content', 'question/answer-fields', 'answer-field/choices',
 )
 OPTIONAL_MANAGED = {
-    'activity': ('activity/due', 'activity/scope'),
+    'activity': ('activity/due', 'activity/course', 'activity/scope'),
     'step': ('step/next',),
     'multistep': ('multistep/context',),
     'assigned-problem': ('assigned-problem/topic-coverage',),

@@ -187,10 +187,18 @@ fn assignment(s: &EntitySnapshot, learner: u64, activity: u64, detail: bool) -> 
     // Prefer the latest real status assertion. Merely opening this view never
     // manufactures a status, task, answer, or learner timing record.
     let task = super::assignment_interaction::latest_task(s, learner, activity)?;
+    let course = s.optional_ref(activity, "activity/course")?.map(|course| -> Result<Json> {
+        Ok(json!({
+            "id": identity(s, course, "course/id")?,
+            "entityId": course,
+            "title": text(s, course, "course/title"),
+        }))
+    }).transpose()?;
     let mut value = json!({
         "id": identity(s, activity, "activity/id")?,
         "entityId": activity,
         "title": text(s, activity, "activity/title"),
+        "course": course,
         "due": due.map(|at| at.to_rfc3339_opts(chrono::SecondsFormat::Millis, true)),
         "problemCount": summary.problem_count,
         "questionCount": summary.question_count,
@@ -270,8 +278,9 @@ mod tests {
             "3": {"db/ident":"activity.type/assignment"},
             "4": {"db/ident":"answer-field.type/blank"},
             "5": {"db/ident":"answer.type/text"},
-            "10": {"activity/id":{"$uuid":"later"}, "activity/type":3, "activity/title":"Later", "activity/due":{"$instant":"2026-10-05T23:59:59-07:00"}, "activity/steps":[20], "activity/first-step":20},
-            "11": {"activity/id":{"$uuid":"earlier"}, "activity/type":3, "activity/title":"Earlier", "activity/due":{"$instant":"2026-10-02T23:59:59-07:00"}, "activity/steps":[21], "activity/first-step":21},
+            "6": {"course/id":{"$uuid":"science"}, "course/title":"Science"},
+            "10": {"activity/id":{"$uuid":"later"}, "activity/type":3, "activity/title":"Later", "activity/course":2, "activity/due":{"$instant":"2026-10-05T23:59:59-07:00"}, "activity/steps":[20], "activity/first-step":20},
+            "11": {"activity/id":{"$uuid":"earlier"}, "activity/type":3, "activity/title":"Earlier", "activity/course":6, "activity/due":{"$instant":"2026-10-02T23:59:59-07:00"}, "activity/steps":[21], "activity/first-step":21},
             "12": {"activity/id":{"$uuid":"undated"}, "activity/type":3, "activity/title":"Undated", "activity/steps":[22], "activity/first-step":22},
             "20": {"step/id":{"$uuid":"step-20"}, "step/content":30},
             "21": {"step/id":{"$uuid":"step-21"}, "step/content":30},
@@ -302,10 +311,14 @@ mod tests {
             ["earlier", "later", "undated"]
         );
         assert_eq!(list["assignments"][0]["due"], "2026-10-03T06:59:59.000Z");
+        assert_eq!(list["assignments"][0]["course"], json!({"id":"science","entityId":6,"title":"Science"}));
+        assert_eq!(list["assignments"][1]["course"]["id"], "course");
+        assert!(list["assignments"][2]["course"].is_null());
         assert_eq!(list["assignments"][0]["problemCount"], 1);
         assert_eq!(list["assignments"][0]["questionCount"], 2);
         assert!(list["assignments"][0]["status"].is_null());
         let detail = detail(&s, 1, "earlier").unwrap();
+        assert_eq!(detail["assignment"]["course"]["id"], "science");
         let problem = &detail["assignment"]["steps"][0]["content"];
         assert_eq!(problem["topicCoverage"][0]["mathAcademyId"], 42);
         assert_eq!(problem["content"]["context"], "Shared setup");

@@ -521,10 +521,41 @@ async function leaveAssignment(url, pauseBody = null) {
   try { await api('/api/assignment-pause', body, { keepalive: true }); confirmFocusCancellation(body); location.assign(url); }
   catch (error) { showError(error, () => leaveAssignment(url, body)); refreshControls(); }
 }
-function assignmentRow(assignment, index) {
+function assignmentSortPreference() {
+  try { return localStorage.getItem('course-academy.assignment-sort') === 'date' ? 'date' : 'course'; }
+  catch { return 'course'; }
+}
+function compareAssignmentDates(a, b) {
+  const deadline = assignment => {
+    const value = assignment.due ? Date.parse(assignment.due) : NaN;
+    return Number.isFinite(value) ? value : Infinity;
+  };
+  const first = deadline(a), second = deadline(b);
+  return (first === second ? 0 : first < second ? -1 : 1)
+    || String(a.title || '').localeCompare(String(b.title || ''))
+    || String(a.id).localeCompare(String(b.id));
+}
+function assignmentGroups(assignments, sort) {
+  const ordered = [...assignments].sort(compareAssignmentDates);
+  if (sort === 'date') return [{ course: null, assignments: ordered }];
+  const groups = new Map();
+  for (const assignment of ordered) {
+    const course = assignment.course;
+    const key = course?.id ?? course?.entityId ?? null;
+    if (!groups.has(key)) groups.set(key, { course: key === null ? null : course, assignments: [] });
+    groups.get(key).assignments.push(assignment);
+  }
+  return [...groups.values()].sort((a, b) => {
+    if (!a.course || !b.course) return a.course ? -1 : b.course ? 1 : 0;
+    return String(a.course.title || '').localeCompare(String(b.course.title || ''))
+      || String(a.course.id ?? a.course.entityId).localeCompare(String(b.course.id ?? b.course.entityId));
+  });
+}
+function assignmentRow(assignment, index, showCourse = false) {
   const row = el('article', 'queue-card');
   const info = el('div');
   const meta = el('div', 'queue-meta'); meta.append(dueBadge(assignment.due), el('span', '', problemCount(assignment.problemCount)));
+  if (showCourse && assignment.course?.title) meta.append(el('span', 'assignment-course-name', assignment.course.title));
   if (assignment.status && ['completed', 'failed'].includes(short(assignment.status))) meta.append(el('span', '', short(assignment.status)));
   const heading = el('h2'); heading.append(link(assignment.title, assignmentURL(assignment.id)));
   info.append(meta, heading);
@@ -535,26 +566,52 @@ function renderList(data) {
   document.title = 'Assignments · Course Academy';
   const head = el('div', 'page-heading');
   const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Assignments'), el('p', 'subheading', 'Your schoolwork, with the topics you need to prepare.'));
-  head.append(intro, button('Refresh ↻', 'small-button', load));
-  const queue = el('section', 'queue assignment-queue'); queue.setAttribute('aria-label', 'Assignments by due date');
+  const controls = el('div', 'assignment-list-controls');
+  const sortLabel = el('label', 'assignment-sort', 'Sort by');
+  const sort = el('select'); sort.id = 'assignmentSort';
+  for (const [value, title] of [['course', 'Course, then date'], ['date', 'Date']]) {
+    const option = el('option', '', title); option.value = value; sort.append(option);
+  }
+  sort.value = assignmentSortPreference(); sortLabel.htmlFor = sort.id; sortLabel.append(sort);
+  controls.append(sortLabel, button('Refresh ↻', 'small-button', load)); head.append(intro, controls);
+  const content = el('div', 'assignment-list-content');
   const assignments = data.assignments || [];
   const pending = assignments.filter(assignment => short(assignment.status) !== 'completed');
   const completed = assignments.filter(assignment => short(assignment.status) === 'completed');
-  pending.forEach((assignment, index) => queue.append(assignmentRow(assignment, index)));
-  if (!pending.length) {
-    const empty = el('div', 'empty-state');
-    empty.append(el('h2', '', completed.length ? 'All assignments completed' : 'No assignments yet'), el('p', '', completed.length ? 'Completed assignments are available below.' : 'Your imported assignments will appear here.'));
-    queue.append(empty);
-  }
-  $('main').append(head, queue);
-  if (assignments.length) {
-    const foot = el('div', 'queue-foot'); foot.append(el('span', '', `${pending.length} ${pending.length === 1 ? 'assignment' : 'assignments'}`), el('span', '', 'Earliest deadlines first · Undated assignments last')); $('main').append(foot);
-  }
-  if (completed.length) {
-    const section = el('section', 'assignment-completed'); section.append(el('h2', '', 'Completed'));
-    const list = el('div', 'queue'); completed.forEach((assignment, index) => list.append(assignmentRow(assignment, index))); section.append(list); $('main').append(section);
-  }
-  $('announcement').textContent = `${pending.length} assignments.`;
+  const appendGroups = (parent, entries) => {
+    for (const group of assignmentGroups(entries, sort.value)) {
+      const section = el('section', 'assignment-course-group');
+      const title = sort.value === 'course' ? group.course?.title || 'No course' : 'Assignments by due date';
+      section.setAttribute('aria-label', title);
+      if (sort.value === 'course') section.append(el('h2', 'assignment-course-heading', title));
+      const queue = el('div', 'queue assignment-queue');
+      group.assignments.forEach((assignment, index) => queue.append(assignmentRow(assignment, index, sort.value === 'date')));
+      section.append(queue); parent.append(section);
+    }
+  };
+  const renderContents = () => {
+    content.replaceChildren();
+    if (pending.length) appendGroups(content, pending);
+    else {
+      const empty = el('div', 'empty-state');
+      empty.append(el('h2', '', completed.length ? 'All assignments completed' : 'No assignments yet'), el('p', '', completed.length ? 'Completed assignments are available below.' : 'Your imported assignments will appear here.'));
+      content.append(empty);
+    }
+    if (assignments.length) {
+      const foot = el('div', 'queue-foot'); foot.append(el('span', '', `${pending.length} ${pending.length === 1 ? 'assignment' : 'assignments'}`), el('span', '', 'Earliest deadlines first · Undated assignments last')); content.append(foot);
+    }
+    if (completed.length) {
+      const section = el('section', 'assignment-completed'); section.append(el('h2', '', 'Completed'));
+      appendGroups(section, completed); content.append(section);
+    }
+    $('announcement').textContent = `${pending.length} assignments. Sorted by ${sort.value === 'course' ? 'course, then due date' : 'due date'}.`;
+  };
+  sort.addEventListener('change', () => {
+    try { localStorage.setItem('course-academy.assignment-sort', sort.value); }
+    catch { /* Sorting remains available when browser storage is blocked. */ }
+    renderContents();
+  });
+  $('main').append(head, content); renderContents();
 }
 function renderAssignment(data) {
   assignmentData = data; receivedAt = Date.now(); questionViews.clear();

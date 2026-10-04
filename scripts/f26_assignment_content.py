@@ -309,7 +309,7 @@ class Builder:
         steps = self.sequence(source, ['instructions/step'] + [f'problem-{m[1]}/step' for m in markers], contents)
         attrs = {'activity__title': title, 'activity__type': ':activity.type/assignment',
                  'activity__steps': steps, 'activity__first_step': steps[0],
-                 'activity__scope': {'$ref': [':course/id', {'$uuid': COURSES[path.parent.name]}]}}
+                 'activity__course': {'$ref': [':course/id', {'$uuid': COURSES[path.parent.name]}]}}
         due_match = re.search(r'^Due:\s*(\d{4}-\d{2}-\d{2})\s*$', raw, re.M)
         due = None
         if due_match:
