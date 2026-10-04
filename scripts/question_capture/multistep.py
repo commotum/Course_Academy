@@ -64,8 +64,11 @@ def take_multistep(reader, state, directory):
                 if part['question']:
                     break  # Only the initial shared setup belongs before every part.
                 scope = by_id(page, part['step'])
-                if not scope.is_visible():
-                    raise ValueError('Shared multistep context is not visible; stop before answering')
+                # Question markup arrives before Math Academy reveals its page.
+                # Attachment alone cannot establish that shared setup is ready.
+                scope.wait_for(state='visible')
+                page.wait_for_function('''id => [...document.getElementById(id)
+                  .querySelectorAll('mjx-container')].every(n=>!!n.querySelector('math, svg'))''',arg=part['step'])
                 item, screenshot = reader.read(scope, directory, 'context-' + part['step'])
                 if not item['problem'] or item['fields']:
                     raise ValueError('Shared multistep context is incomplete')

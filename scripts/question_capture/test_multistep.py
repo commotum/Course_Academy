@@ -185,6 +185,22 @@ class MultistepTests(unittest.TestCase):
             reader.activity(state,directory,None)
             self.assertEqual(self.submissions,list(range(6)))
 
+    def test_shared_context_waits_for_page_initialization_before_answering(self):
+        original=self.activity_html
+        def delayed_page():
+            return original().replace('<div id="steps">','<div id="steps" style="display:none">',1)+(
+                '<script>setTimeout(()=>document.getElementById("steps").style.display="block",500)</script>')
+        self.activity_html=delayed_page
+        reader=self.reader();activity,=reader.queue();state=self.state(activity)
+        with tempfile.TemporaryDirectory() as work:
+            reader.start(activity)
+            self.assertFalse(self.page.locator('#steps > .step').first.is_visible())
+            reader.activity(state,Path(work),None)
+            self.assertTrue(state['activity_complete'])
+            self.assertEqual(self.submissions,list(range(6)))
+            self.assertEqual(len(state['shared_contexts']),1)
+            self.assertTrue(state['shared_contexts'][0]['assets'])
+
     def test_resume_reuses_prepared_answer_after_solver_interruption(self):
         reader = self.reader(); activity, = reader.queue(); state=self.state(activity)
         with tempfile.TemporaryDirectory() as work:
