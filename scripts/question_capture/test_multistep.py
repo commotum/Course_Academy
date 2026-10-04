@@ -44,6 +44,7 @@ class MultistepRunnerTests(unittest.TestCase):
             self.assertEqual(selected[0]['selection_reason'],'queue_fallback')
             db.topic.assert_not_called()
             db.import_content.assert_called_once()
+            self.assertEqual(runtime.chromium.launch_persistent_context.call_args.kwargs['slow_mo'],500)
 
 
 class MultistepTests(unittest.TestCase):
@@ -243,6 +244,78 @@ class MultistepTests(unittest.TestCase):
         self.assertTrue(activity['capture_supported'])
         reader.start(activity)
         self.assertIn('/multisteps/1780',self.page.url)
+
+    def submit_poll_fixture(self, mode='enable'):
+        evidence=json.loads((FIXTURES/'multistep-submit-poll.json').read_text())
+        self.page.set_content('<div id="steps"><div id="step-2" class="step">'
+            '<div id="question-167566" class="question"><span class="correctAnswerText">Correct</span></div>'
+            '<div id="continueButton-2" style="display:none">Continue</div></div>'
+            '<div id="step-3" class="step">'+evidence['question_html']+
+            '<div id="continueButton-3" style="display:none">Continue</div></div></div>'
+            '<div id="finalScreen" style="display:none">Congratulations! You have completed the task.'
+            '<a id="finalScreen-doneButton" href="https://mathacademy.com/learn">Continue</a></div>')
+        for script in ('jquery-3.7.1.min.js','mathquill-ma.v2.1.min.js','math-editor-ma.js'):
+            self.page.add_script_tag(path=str(FIXTURES/'vendor'/script))
+        self.page.add_style_tag(path=str(FIXTURES/'vendor/mathquill-0.10.1.css'))
+        self.page.add_style_tag(content='.mathIcon {width:25px;height:25px;background:#ddd}')
+        self.page.expose_function('record_submission',lambda:self.submissions.append('q-167567'))
+        self.page.evaluate(r'''mode => {
+          window.Core={getHeight:n=>n.getBoundingClientRect().height};
+          window.submissions=0;
+          const wrapper=document.querySelector('#question-167567 .matheditor-wrapper-answer');
+          const editor=new MathEditor(wrapper,['infty']);
+          // Keep the real editor's 500ms initial / 200ms repeating poll. Delay
+          // its callback enough to reproduce the saved race deterministically.
+          editor.onChange=response=>setTimeout(()=>{
+            if(mode==='disabled') return;
+            if(mode==='changed') editor.mathField.latex('0');
+            document.getElementById('submitButton-3').className='submitButton enabledButton';
+          },500);
+          document.getElementById('submitButton-3').onclick=()=>{
+            window.submissions++;
+            window.record_submission();
+            document.getElementById('question-167567').insertAdjacentHTML('beforeend',
+              '<div class="correctAnswerText">Correct</div><div class="questionExplanation">'
+              +'As sin(t) approaches zero, 2 / sin²(t) increases without bound.</div>');
+            document.getElementById('submitButton-3').style.display='none';
+            document.getElementById('continueButton-3').style.display='block';
+          };
+          document.getElementById('continueButton-3').onclick=()=>{
+            document.getElementById('steps').style.display='none';
+            document.getElementById('finalScreen').style.display='block';
+          };
+        }''',mode)
+        reader=self.reader();reader.args.timeout_ms=1800
+        reader.solver.solve=Mock(side_effect=AssertionError('Prepared answer must be reused'))
+        return reader,evidence['state']
+
+    def test_saved_infinity_waits_for_site_editor_poll_and_reuses_prior_grade(self):
+        reader,state=self.submit_poll_fixture()
+        with tempfile.TemporaryDirectory() as work:
+            reader.activity(state,Path(work),None)
+        self.assertTrue(state['activity_complete'])
+        self.assertEqual(self.submissions,['q-167567'])
+        q=state['questions']['q-167567']
+        self.assertEqual(q['before']['fields'][0]['observed_mathquill_latex'],r'\infty')
+        self.assertEqual(q['before']['fields'][0]['clicked_symbols'][0]['symbol'],'infty')
+        self.assertEqual(q['status'],'graded')
+        reader.solver.solve.assert_not_called()
+
+    def test_disabled_multistep_still_stops_without_submission(self):
+        reader,state=self.submit_poll_fixture('disabled')
+        with tempfile.TemporaryDirectory() as work:
+            with self.assertRaisesRegex(ValueError,'Multistep Submit is disabled'):
+                reader.activity(state,Path(work),None)
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
+        self.assertEqual(state['questions']['q-167567']['status'],'prepared')
+
+    def test_multistep_rechecks_value_after_waiting_for_submit(self):
+        reader,state=self.submit_poll_fixture('changed')
+        with tempfile.TemporaryDirectory() as work:
+            with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):
+                reader.activity(state,Path(work),None)
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
+        self.assertEqual(state['questions']['q-167567']['status'],'prepared')
 
 
 if __name__ == '__main__':

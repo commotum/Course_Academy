@@ -169,6 +169,20 @@ class Parser:
                 nodes.append(tuple(parts))
             elif token == '⁡':
                 self.position += 1
+                # MathML places a function's application marker AFTER its
+                # exponent: {sec}^{2}⁡(x). It marks the scripted name, not the
+                # preceding variable factors. Plain sec^2 without this local
+                # evidence remains a product of variables.
+                if nodes and nodes[-1][0] == 'script':
+                    base = nodes[-1][1]
+                    parts = base[1] if base[0] == 'group' else (base,)
+                    if all(n[0] == 'char' and n[1].isalpha() for n in parts):
+                        name = ''.join(n[1] for n in parts)
+                        if name in OPERATORS:
+                            nodes[-1] = ('script',('operator',name),*nodes[-1][2:])
+                            continue
+                    if base[0] in ('operator','operatorname'):
+                        continue
                 if nodes and nodes[-1][0] in ('operator', 'operatorname'):
                     # Explicitly serialized MathML function names already carry
                     # the application boundary; do not append a second marker.

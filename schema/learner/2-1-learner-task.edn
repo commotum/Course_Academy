@@ -28,7 +28,7 @@
  {:db/ident :learner-task/status
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Locked means not yet eligible to start; unlocked means eligible but not started; started means in progress; paused means suspended and unfinished. Completed means finished under the activity's completion rules; failed means an explicit task-level failure condition ended the attempt. Status transaction history supplies calendar timestamps, including the first start and terminal transition. Pausing does not extend a timed exam's deadline. Question correctness is recorded by task-item/status; no separate task outcome is stored."}
+  :db/doc "Locked means not yet eligible for an engine-selected start; unlocked means engine-eligible but not started. Explicit self-directed queue selections may start a prepared locked task directly without an intermediate unlock. Preparation does not start a clock or establish mastery. Started means in progress; paused means suspended and unfinished. Completed means finished under the activity's completion rules; failed means an explicit task-level failure condition ended the attempt. Status transaction history supplies calendar timestamps, including the first start and terminal transition. Pausing does not extend a timed exam's deadline. Question correctness is recorded by task-item/status; no separate task outcome is stored."}
 
  {:db/ident :learner-task/priority
   :db/valueType :db.type/double

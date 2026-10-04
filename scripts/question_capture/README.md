@@ -130,6 +130,53 @@ The runner:
    across that exact transaction. It also verifies that a repeated import would
    produce no further changes.
 
+After a complete activity and history capture, a failed import automatically
+calls a dedicated headless Codex repair session. Its ID is saved in
+`.local/question_capture/import-repair/session.json` and reused across lessons,
+reviews, quizzes, and multisteps. This is separate from each activity's math
+solver session. The capture worker keeps its lock and pauses at the import
+boundary while the repair session inspects saved evidence in read-only mode.
+It can propose a minimal `math_notation.py` comparison fix. The runner checks
+the actual failing pair, nearby incorrect expressions, and the existing offline
+comparison/import tests before applying it and retrying the original content
+through all normal database guards. It can also request an unchanged retry when
+the comparison is already fixed or the database basis changed. Genuine answer
+conflicts, unsupported data repairs, and pending commit intents remain deferred
+with an explanation. Each activity gets at most two repair turns; model output,
+diagnosis, candidates, and test logs are retained under the repair directory.
+Use `--no-import-repair` to disable this behavior, or `--import-repair-timeout`
+to change its default 600-second limit. Session reuse follows the
+[Codex non-interactive workflow](https://developers.openai.com/codex/noninteractive).
+
+Browser interactions also use a 500 ms delay, including button clicks and answer
+entry, in addition to the existing randomized waits. Change it with
+`--ui-delay-ms` (for example, `1000` for one second). Multistep submissions wait
+for the site's editor polling to enable Submit, then re-check the entered value;
+a persistently disabled button or changed answer still stops before submission.
+
+During periodic cooldowns (every 20 attempted activities when the batch continues),
+a separate persistent capture repair session examines outstanding capture diagnostics.
+It handles one targeted source fix per break, with at most two attempts per failure.
+Resolved or blocked diagnoses are recorded rather than repeatedly revisited. Import
+failures and authentication/rate-limit blocks are excluded from this session.
+
+The session proposes a patch to one capture source file and a new offline regression
+test. The runner stages it in an isolated copy, requires the regression to fail by
+assertion before the fix, and runs the complete offline capture suite afterward.
+Existing tests, capture policies, import checks, saved activity data and learner state
+are preserved. Only passing fixes are applied. The browser closes and the worker
+restarts in the same process, reacquiring the capture lock and loading a checkpoint
+that retains its attempted count, total limit, topic/task exclusions and RNG state.
+A safely resumable affected capture is selected using its existing checkpoint and
+solver session; uncertain submissions and active quizzes are left for inspection.
+
+Repair time counts toward the randomized 2–6 minute cooldown; diagnosis and testing
+can extend a break when needed. With no outstanding capture failures the usual
+pause runs without a model call. Artifacts and the dedicated session ID are saved
+under `.local/question_capture/capture-repair`. Use `--no-capture-repair` to keep
+ordinary pauses, or `--capture-repair-timeout` to change the 180-second model limit.
+Import repair continues immediately after complete captures as described above.
+
 Recoverable assessment request errors and timeouts reload the same quiz at most
 twice, preserving saved answers, decisions, solver session, and original timer.
 A saved assessment interrupted by a recoverable timeout resumes before queue

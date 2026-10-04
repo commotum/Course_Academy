@@ -259,6 +259,20 @@ test('Study identifies the selected queue mode and distinguishes empty from unav
   assert.equal(f.calls.at(-1).path, '/api/preview-home');
 });
 
+test('self-directed Study offers Begin for prepared locked lessons and selections without a task', async () => {
+  const f = fixture();
+  f.server = { learner: { selfDirected: true, queue: [6] }, activities: [
+    activity(1, 1, { status: 'locked', taskId: 81, progress: null }),
+    activity(2, 1, { status: 'selected', taskId: null, progress: null }),
+  ] };
+  await f.h.home();
+  const rows = f.document.getElementById('main').querySelectorAll('.queue-card');
+  assert.equal(rows.length, 2);
+  assert.equal(rows.every(row => row.querySelector('button').textContent === 'Begin →'), true);
+  assert.equal(rows.every(row => !row.querySelector('button').disabled), true);
+  assert.equal(rows.every(row => row.querySelector('.queue-progress-track') === null), true);
+});
+
 test('Study progress is only shown for real started or paused lessons with valid saved positions', async () => {
   const f = fixture();
   f.server = { activities: [

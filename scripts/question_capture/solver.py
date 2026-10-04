@@ -22,14 +22,28 @@ def process_token(pid):
         return None
 
 
-def run_cli(command, *, input, timeout, events_path, diagnostics_path, started):
+def run_cli(command, *, input, timeout, events_path, diagnostics_path, started, stop_event=None):
     """Stream durable diagnostics; stop the entire solver process group on exit."""
     with events_path.open('w') as output, diagnostics_path.open('w') as errors:
         process = subprocess.Popen(command,stdin=subprocess.PIPE,stdout=output,stderr=errors,
                                    text=True,start_new_session=True)
         try:
             started(process.pid)
-            process.communicate(input=input,timeout=timeout)
+            if stop_event is None:
+                process.communicate(input=input,timeout=timeout)
+            else:
+                deadline = time.monotonic()+timeout
+                while True:
+                    if stop_event.is_set():
+                        raise KeyboardInterrupt('Stopped; headless session checkpoint is retained')
+                    remaining = deadline-time.monotonic()
+                    if remaining <= 0:
+                        raise subprocess.TimeoutExpired(command,timeout)
+                    try:
+                        process.communicate(input=input,timeout=min(.5,remaining))
+                        break
+                    except subprocess.TimeoutExpired:
+                        input = None  # Send the prompt once, then wait interruptibly.
         except BaseException as exc:
             if process.poll() is None:
                 os.killpg(process.pid,signal.SIGTERM)

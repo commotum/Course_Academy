@@ -26,7 +26,7 @@
  {:db/ident :learner/queue
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Unordered topics explicitly selected by the learner for self-directed study. References shared topics across courses. Study serves eligible activities for these topics when learner/self-directed is true; an empty queue does not fall back to engine recommendations. These ordinary refs do not establish ownership. Removing a queued topic preserves the topic and all learner history. Distinct from learner/targets, which records longer-term study destinations."}
+  :db/doc "Unordered topics explicitly selected by the learner for self-directed study. References shared topics across courses. Adding a topic requests preparation from its existing database lesson content regardless of the selected Study mode. When learner/self-directed is true, Study serves these prepared activities even without engine prerequisite eligibility, without marking them unlocked. Ongoing attempts come first, followed by lower global topic/next layers and then higher scheduling priority within a layer. An empty queue does not fall back to engine recommendations. These ordinary refs do not establish ownership. Removing a queued topic preserves the topic and all learner history. Distinct from learner/targets, which records longer-term study destinations."}
 
  {:db/ident :learner/targets
   :db/valueType :db.type/ref

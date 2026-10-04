@@ -45,12 +45,19 @@ def arguments(argv=None):
     parser.add_argument('--seed',type=int,help='Optional reproducible sequence/pacing seed')
     parser.add_argument('--timeout-ms',type=int,default=45000)
     parser.add_argument('--settle-ms',type=int,default=1000)
+    parser.add_argument('--ui-delay-ms',type=int,default=500,
+                        help='Small delay for browser interactions, in addition to randomized waits; default 500 ms')
     parser.add_argument('--progress-course-id', dest='progress_course_ids', action='append', type=int,
                         help='Course progress to snapshot after each completed activity; repeat to override defaults 113,111,136')
     parser.add_argument('--solver-command',help='Command receiving JSON on stdin and returning solver JSON on stdout; no shell')
     parser.add_argument('--codex-bin',default='codex')
     parser.add_argument('--solver-model',help='Optional explicit Codex model for the solver')
     parser.add_argument('--solver-timeout',type=int,default=300)
+    parser.add_argument('--no-import-repair',action='store_true',help='Defer failed imports without the persistent Codex repair session')
+    parser.add_argument('--import-repair-timeout',type=int,default=600,help='Maximum seconds per completed-activity import repair turn')
+    parser.add_argument('--no-capture-repair',action='store_true',help='Take ordinary cooldowns without inspecting capture failures')
+    parser.add_argument('--capture-repair-timeout',type=int,default=180,help='Maximum seconds per capture repair diagnosis during a cooldown')
+    parser.add_argument('--batch-checkpoint',type=Path,help=argparse.SUPPRESS)
     parser.add_argument('--assessment-correct-weight',type=float,default=0.8717,
                         help='Independent probability of a correct quiz question; default 0.8717')
     parser.add_argument('--assessment-time-min',type=float,default=0.7,
@@ -78,12 +85,14 @@ def arguments(argv=None):
     if (not math.isfinite(args.assessment_time_min) or not math.isfinite(args.assessment_time_max) or
             not 0<=args.assessment_time_min<=args.assessment_time_max<=0.95):
         parser.error('Assessment time fractions must satisfy 0 <= min <= max <= 0.95')
-    if args.limit<1 or args.review_question_limit<1 or args.rest_every<0 or args.timeout_ms<1 or args.solver_timeout<1 or args.settle_ms<0:
+    if args.limit<1 or args.review_question_limit<1 or args.rest_every<0 or args.timeout_ms<1 or args.solver_timeout<1 or args.import_repair_timeout<1 or args.capture_repair_timeout<1 or args.settle_ms<0 or args.ui_delay_ms<0:
         parser.error('Invalid limit, timeout, or rest frequency')
     if args.command=='import-saved' and not args.content:
         parser.error('import-saved requires --content')
     if args.resume and (args.command!='run' or args.dry_run):
         parser.error('--resume requires run without --dry-run')
+    if args.batch_checkpoint and (args.command!='run' or args.dry_run):
+        parser.error('Maintenance checkpoints require run without --dry-run')
     args.profile = (args.profile or args.state_dir/'browser-profile').resolve()
     return args
 
@@ -239,7 +248,7 @@ def record_failure(args, browser, state, directory, phase, error):
               'exception_type':type(error).__name__, 'message':str(error),
               'traceback':''.join(traceback.format_exception(type(error),error,error.__traceback__)),
               'configuration':{k:getattr(args,k,None) for k in
-                               ('limit','preview','timeout_ms','solver_timeout','solver_model','seed')},
+                               ('limit','preview','timeout_ms','solver_timeout','solver_model','seed','ui_delay_ms')},
               'source_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest()
                                for p in Path(__file__).parent.iterdir() if p.suffix in ('.py','.js')},
               'artifact_errors':[]}
@@ -283,14 +292,31 @@ def record_failure(args, browser, state, directory, phase, error):
 def run(args):
     if args.command=='import-saved':
         content = json.loads(args.content.read_text())
-        print(json.dumps(Database(args).import_content(content,args.content.parent/'edb-import',not args.preview),indent=2))
+        from import_repair import import_with_repair
+        directory = args.content.parent
+        source = directory/'state.json'
+        state = json.loads(source.read_text()) if source.exists() else {}
+        result = import_with_repair(Database(args),content,directory,state,args)
+        if state:
+            state['preview_complete' if args.preview else 'import_complete'] = True
+            state.pop('deferred_error',None)
+            atomic_json(source,state)
+        print(json.dumps(result,indent=2))
         return
     db = Database(args)
     if args.command=='priorities':
         priorities = db.priorities(args.learner_id,args.state_dir/'selection')
         print(json.dumps(sorted(priorities.items(),key=lambda p:p[1],reverse=True),indent=2))
         return
-    resume_directory = unfinished_run(args) if args.command=='run' else None
+    batch = json.loads(args.batch_checkpoint.read_text()) if args.batch_checkpoint else {}
+    start_n = batch.get('attempted',0)
+    if batch and (batch.get('limit')!=args.limit or not 0<=start_n<=args.limit):
+        raise ValueError('Maintenance checkpoint does not match the batch limit')
+    if batch and start_n==args.limit:
+        logging.info('Maintenance checkpoint reached the activity limit; batch is complete.')
+        return
+    resume_directory = (Path(batch['next_resume']) if batch.get('next_resume') else None) if batch else (
+        unfinished_run(args) if args.command=='run' else None)
     if resume_directory and args.dry_run:
         state = json.loads((resume_directory/'state.json').read_text())
         print(json.dumps({'resume_directory':str(resume_directory),'task_id':state['task_id'],
@@ -301,11 +327,15 @@ def run(args):
     from browser import AccessBlocked, CaptureBrowser, LEARN, repair_math_editor_document
     from solver import Solver
     rng = random.Random(args.seed)
+    if batch.get('rng_state'):
+        from capture_repair import tuple_tree
+        rng.setstate(tuple_tree(batch['rng_state']))
     pacer = Pacer(args,rng)
     args.profile.mkdir(parents=True,exist_ok=True)
     os.chmod(args.profile,0o700)
     with sync_playwright() as playwright:
-        context = playwright.chromium.launch_persistent_context(str(args.profile),headless=args.headless if args.command!='login' else False)
+        context = playwright.chromium.launch_persistent_context(str(args.profile),
+            headless=args.headless if args.command!='login' else False,slow_mo=args.ui_delay_ms)
         try:
             import_cookies(args,context)
             page = context.pages[0] if context.pages else context.new_page()
@@ -317,8 +347,8 @@ def run(args):
                 browser.check()
                 logging.info('Session retained in the dedicated private profile')
                 return
-            completed = set()
-            captured_tasks = set()
+            completed = set(batch.get('completed_topics',[]))
+            captured_tasks = set(batch.get('captured_tasks',[]))
             log = args.state_dir/'journal.jsonl'
             for entry in read_journal(log):
                 if entry['event'] in ('lesson_captured','activity_captured'):
@@ -334,11 +364,11 @@ def run(args):
             if deferred:
                 logging.info('Skipping deferred activities until explicit --resume: %s',deferred)
             queue_observation = None
-            for n in range(args.limit):
+            for n in range(start_n,args.limit):
                 pacer.check_stop()
                 directory, state, phase = None, None, 'queue'
                 try:
-                    if resume_directory and n==0:
+                    if resume_directory and n==start_n:
                         directory = resume_directory
                         logging.info('Resuming saved activity %s',directory)
                         state = json.loads((directory/'state.json').read_text())
@@ -417,7 +447,8 @@ def run(args):
                     queue_observation = observe_queue(args,db,browser,completed,captured_tasks,
                                                       state['task_id'],directory)
                     phase = 'import'
-                    result = db.import_content(content,directory/'edb-import',not args.preview)
+                    from import_repair import import_with_repair
+                    result = import_with_repair(db,content,directory,state,args)
                     state['preview_complete' if args.preview else 'import_complete'] = True
                     state.pop('deferred_error',None)
                     atomic_json(directory/'state.json',state)
@@ -454,7 +485,10 @@ def run(args):
                 if n+1<args.limit:
                     pacer.wait('lesson','between activities')
                     if args.rest_every and (n+1)%args.rest_every==0:
-                        pacer.wait('rest','periodic cooldown')
+                        from capture_repair import cooldown
+                        cooldown(args,pacer,{'attempted':n+1,'limit':args.limit,
+                                            'completed_topics':sorted(completed),
+                                            'captured_tasks':sorted(captured_tasks)})
         finally:
             context.close()
 
@@ -463,6 +497,8 @@ def main(argv=None):
     args = arguments(argv)
     logging.basicConfig(level=logging.INFO,format='%(asctime)s %(message)s')
     run_handler = None
+    restart = None
+    from capture_repair import RestartWorker
     if args.command == 'run':
         log_directory = args.state_dir/'logs'
         log_directory.mkdir(parents=True,exist_ok=True)
@@ -483,6 +519,11 @@ def main(argv=None):
             run(args)
             if args.stop_event.is_set():
                 raise KeyboardInterrupt('Stopped; saved checkpoints are retained')
+    except RestartWorker as request:
+        if args.stop_event.is_set():
+            logging.info('Stopped before maintenance restart; checkpoint: %s',request.checkpoint)
+            return 1
+        restart = request.checkpoint
     except (Exception,KeyboardInterrupt) as exc:
         logging.error('%s: %s',type(exc).__name__,exc)
         return 1
@@ -492,6 +533,14 @@ def main(argv=None):
         if run_handler is not None:
             logging.getLogger().removeHandler(run_handler)
             run_handler.close()
+    if restart:
+        values = list(sys.argv[1:] if argv is None else argv)
+        if '--batch-checkpoint' in values:
+            index = values.index('--batch-checkpoint');del values[index:index+2]
+        values = [v for v in values if not v.startswith('--batch-checkpoint=')]
+        logging.info('Restarting capture worker with the remaining batch limit and saved sessions')
+        os.execv(sys.executable,[sys.executable,str(Path(__file__).parent),*values,
+                                '--batch-checkpoint',str(restart)])
     return 0
 
 

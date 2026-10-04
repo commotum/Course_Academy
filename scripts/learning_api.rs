@@ -526,15 +526,18 @@ fn another_started_task(s: &EntitySnapshot, learner: u64, current: Option<u64>) 
 }
 fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
     let c = course(s, l)?;
+    let self_directed = learner_json(s, l)["selfDirected"] == true;
     let candidates = learning::study_candidates(s, l, c, Utc::now())?;
     let mut activities = vec![];
     for candidate in candidates {
         let a = candidate.activity;
-        let Some(task) = task_for(s, l, a)? else {
-            continue;
+        let task = task_for(s, l, a)?;
+        let state = match task {
+            Some(task) => status(s, task, "learner-task/status")?,
+            None if self_directed => "selected".into(),
+            None => continue,
         };
-        let state = status(s, task, "learner-task/status")?;
-        if state == "locked" {
+        if state == "locked" && !self_directed {
             continue;
         }
         let expected = number(s, a, "activity/expected-seconds");
@@ -546,13 +549,14 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
                 .map(|step| number(s, step, "step/expected-seconds"))
                 .sum()
         };
-        let progress = if matches!(state.as_str(), "started" | "paused") {
-            lesson_progress(s, &learning::lesson_steps(s, a)?, &items(s, task)?)?
-        } else {
-            Json::Null
-        };
+        let progress =
+            if let Some(task) = task.filter(|_| matches!(state.as_str(), "started" | "paused")) {
+                lesson_progress(s, &learning::lesson_steps(s, a)?, &items(s, task)?)?
+            } else {
+                Json::Null
+            };
         activities.push(json!({"activityId":a,"title":text(s,a,"activity/title"),"type":"lesson","taskId":task,"status":state,
-            "priority":number(s,task,"learner-task/priority"),"reason":candidate.reason,"targetCount":candidate.target_count,
+            "priority":candidate.priority,"reason":candidate.reason,"targetCount":candidate.target_count,
             "targetTopics":candidate.target_topics,"progress":progress,"expectedSeconds":if expected>0.0{Some(expected)}else{None}}));
         if activities.len() == 5 {
             break;
@@ -563,10 +567,18 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
     )
 }
 
-/// Materialize available work without recording any presentation or starting a clock.
+/// Prepare selected and recommended work without recording a presentation or clock.
+/// Self-directed selections get a prepared locked task, preserving engine eligibility.
 /// The caller journals this transaction and submits it with an exact basis guard.
 fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json>> {
-    let plan = learning::study_candidates(s, l, course(s, l)?, at)?;
+    let c = course(s, l)?;
+    let mut plan = BTreeMap::new();
+    for candidate in learning::queue_candidates(s, l, c, at)? {
+        plan.insert(candidate.activity, (candidate, false));
+    }
+    for candidate in learning::engine_candidates(s, l, c, at)? {
+        plan.insert(candidate.activity, (candidate, true));
+    }
     let mut pending = BTreeMap::new();
     let mut terminal_assignments = BTreeSet::new();
     for task in s.refs(l, "learner/activity")? {
@@ -585,7 +597,7 @@ fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json
     }
     let mut forms = vec![];
     let mut eligible = BTreeSet::new();
-    for candidate in plan {
+    for (_, (candidate, engine_eligible)) in plan {
         let activity = candidate.activity;
         eligible.insert(activity);
         let priority = candidate.priority;
@@ -593,12 +605,20 @@ fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json
             return Err("Task priority must be finite".into());
         }
         if let Some(&task) = pending.get(&activity) {
-            if status(s, task, "learner-task/status")? == "locked" {
+            let state = status(s, task, "learner-task/status")?;
+            if engine_eligible && state == "locked" {
                 forms.push(cas(
                     s,
                     task,
                     "learner-task/status",
                     "learner-task.status/unlocked",
+                )?);
+            } else if !engine_eligible && state == "unlocked" {
+                forms.push(cas(
+                    s,
+                    task,
+                    "learner-task/status",
+                    "learner-task.status/locked",
                 )?);
             }
             if s.entity(task)?
@@ -611,7 +631,7 @@ fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json
         } else {
             let temp = format!("queue-task-{activity}");
             forms.push(json!({"db/id":temp,"learner-task/id":{"$uuid":uid()?},"learner-task/activity":activity,
-                "learner-task/status":kw("learner-task.status/unlocked"),"learner-task/priority":priority,"db/ensure":kw("learner-task/validate")}));
+                "learner-task/status":kw(if engine_eligible { "learner-task.status/unlocked" } else { "learner-task.status/locked" }),"learner-task/priority":priority,"db/ensure":kw("learner-task/validate")}));
             forms.push(add(json!(l), "learner/activity", json!(temp)));
         }
     }
@@ -860,6 +880,39 @@ fn mutate(
     }
     if action == "queue" {
         return Ok((queue_forms(s, l, at)?, json!({"queue":true})));
+    }
+    if action == "queue-topic" {
+        let topic = required(body, "topicId")?;
+        if !s.entity(topic)?.contains_key("topic/id") {
+            return Err("A queue selection must reference a topic".into());
+        }
+        let selected = body["selected"]
+            .as_bool()
+            .ok_or("selected must be a boolean")?;
+        let mut queue: BTreeSet<_> = s.refs(l, "learner/queue")?.into_iter().collect();
+        let changed = if selected {
+            queue.insert(topic)
+        } else {
+            queue.remove(&topic)
+        };
+        if changed {
+            forms.push(json!([
+                kw(if selected { "db/add" } else { "db/retract" }),
+                l,
+                kw("learner/queue"),
+                topic
+            ]));
+        }
+        let mut prospective = s.clone();
+        prospective
+            .entities
+            .get_mut(&l)
+            .unwrap()
+            .insert("learner/queue".into(), json!(queue));
+        // Selection and preparation commit atomically. Exact retries replay this
+        // transaction; they do not create a second pending attempt or unlock it.
+        forms.extend(queue_forms(&prospective, l, at)?);
+        return Ok((forms, json!({"queueTopic":true})));
     }
     if action == "target" {
         if s.entity(l)?
@@ -1265,7 +1318,7 @@ impl Application {
         if let Some(id) = result["assignmentId"].as_str() {
             return assignment_reader::detail(s, l, id);
         }
-        if action == "target" {
+        if matches!(action, "target" | "queue-topic") {
             return Ok(json!({"basis":s.basis_t,"learner":learner_json(s,l)}));
         }
         if action == "queue" {
@@ -1490,7 +1543,7 @@ mod study_queue_tests {
             ),
             (
                 81,
-                json!({"learner-task/activity":51,"learner-task/status":"learner-task.status/unlocked","learner-task/priority":1.0}),
+                json!({"learner-task/activity":51,"learner-task/status":"learner-task.status/locked","learner-task/priority":1.0}),
             ),
             (
                 90,
@@ -1536,13 +1589,8 @@ mod study_queue_tests {
             developer_preview::home(&s, 1).unwrap()["activities"][0]["activityId"],
             51
         );
-        assert_eq!(
-            queue_forms(&s, 1, at).unwrap(),
-            vec![
-                cas(&s, 80, "learner-task/status", "learner-task.status/locked").unwrap(),
-                add(json!(80), "learner-task/priority", json!(0.0)),
-            ]
-        );
+        assert_eq!(view["activities"][0]["status"], "locked");
+        assert!(queue_forms(&s, 1, at).unwrap().is_empty());
         assert!(mutate(&s, 1, "start", &json!({"activityId":50}), at).is_err());
         let (forms, started) = mutate(&s, 1, "start", &json!({"activityId":51}), at).unwrap();
         assert_eq!(started["taskId"], 81);
@@ -1550,6 +1598,11 @@ mod study_queue_tests {
             forms.contains(
                 &cas(&s, 81, "learner-task/status", "learner-task.status/started").unwrap()
             )
+        );
+        assert!(
+            !schema::edn(&json!(forms))
+                .unwrap()
+                .contains("learner-task.status/unlocked")
         );
         assert_eq!(s.entities, before); // Fixture tests never commit transactions.
         s.entities
@@ -1571,6 +1624,152 @@ mod study_queue_tests {
                 .as_array()
                 .unwrap()
                 .is_empty()
+        );
+    }
+
+    #[test]
+    fn self_selected_lessons_prepare_locked_and_start_directly() {
+        let mut s = fixture();
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([]));
+        let at = Utc::now();
+        let view = home(&s, 1).unwrap();
+        assert_eq!(view["activities"][0]["activityId"], 51);
+        assert!(view["activities"][0]["taskId"].is_null());
+        assert_eq!(view["activities"][0]["status"], "selected");
+        let prepared = queue_forms(&s, 1, at).unwrap();
+        let task = prepared
+            .iter()
+            .find(|f| f.get("learner-task/activity") == Some(&json!(51)))
+            .unwrap();
+        assert_eq!(
+            task["learner-task/status"],
+            kw("learner-task.status/locked")
+        );
+        assert!(
+            !prepared
+                .iter()
+                .any(|f| f.get("learner-task/activity") == Some(&json!(51))
+                    && f.get("learner-task/status") == Some(&kw("learner-task.status/unlocked")))
+        );
+        let (forms, _) = mutate(&s, 1, "start", &json!({"activityId":51}), at).unwrap();
+        let task = forms
+            .iter()
+            .find(|f| f.get("learner-task/activity") == Some(&json!(51)))
+            .unwrap();
+        assert_eq!(
+            task["learner-task/status"],
+            kw("learner-task.status/started")
+        );
+        assert!(
+            !schema::edn(&json!(forms))
+                .unwrap()
+                .contains("learner-task.status/unlocked")
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(false));
+        assert!(mutate(&s, 1, "start", &json!({"activityId":51}), at).is_err());
+        assert!(
+            queue_forms(&s, 1, at)
+                .unwrap()
+                .iter()
+                .any(|f| f.get("learner-task/status") == Some(&kw("learner-task.status/unlocked")))
+        );
+    }
+
+    #[test]
+    fn adding_a_queue_topic_prepares_its_activity_even_when_self_directed_is_off() {
+        let mut s = fixture();
+        for (key, value) in [
+            ("learner/activity", json!([])),
+            ("learner/queue", json!([])),
+            ("learner/self-directed", json!(false)),
+        ] {
+            s.entities.get_mut(&1).unwrap().insert(key.into(), value);
+        }
+        let before = s.entities.clone();
+        let at = Utc::now();
+        let (forms, _) = mutate(
+            &s,
+            1,
+            "queue-topic",
+            &json!({"topicId":6,"selected":true}),
+            at,
+        )
+        .unwrap();
+        assert!(forms.contains(&add(json!(1), "learner/queue", json!(6))));
+        let prepared = forms
+            .iter()
+            .find(|f| f.get("learner-task/activity") == Some(&json!(51)))
+            .unwrap();
+        assert_eq!(
+            prepared["learner-task/status"],
+            kw("learner-task.status/locked")
+        );
+        assert!(!forms.iter().any(|f| f.get("task-item/content").is_some()));
+        assert_eq!(s.entities, before);
+        assert!(
+            mutate(
+                &s,
+                1,
+                "queue-topic",
+                &json!({"topicId":51,"selected":true}),
+                at
+            )
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn engine_unlocking_and_manual_selection_prepare_independently_without_duplicates() {
+        let mut s = fixture();
+        let at = Utc::now();
+        assert!(queue_forms(&s, 1, at).unwrap().is_empty());
+        // An engine-eligible queued lesson can unlock through the engine itself.
+        s.entities
+            .get_mut(&4)
+            .unwrap()
+            .insert("module/topics".into(), json!([5, 6]));
+        s.entities.insert(
+            23,
+            json!({"progress/topic":7,"progress/repetitions":1.0})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/knowledge-profile".into(), json!([23]));
+        assert_eq!(
+            queue_forms(&s, 1, at).unwrap(),
+            vec![
+                cas(
+                    &s,
+                    81,
+                    "learner-task/status",
+                    "learner-task.status/unlocked"
+                )
+                .unwrap()
+            ]
+        );
+        s.entities.get_mut(&81).unwrap().insert(
+            "learner-task/status".into(),
+            kw("learner-task.status/unlocked"),
+        );
+        assert!(queue_forms(&s, 1, at).unwrap().is_empty());
+        // Explicit selection alone must not maintain a false engine unlock.
+        s.entities
+            .get_mut(&23)
+            .unwrap()
+            .insert("progress/repetitions".into(), json!(0.0));
+        assert_eq!(
+            queue_forms(&s, 1, at).unwrap(),
+            vec![cas(&s, 81, "learner-task/status", "learner-task.status/locked").unwrap()]
         );
     }
 }

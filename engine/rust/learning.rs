@@ -483,10 +483,57 @@ enum StudyScope {
     Queue,
 }
 
+/// Zero-based global prerequisite layers, matching the graph's L01… badges.
+/// A topic's layer is the longest path from any root, using topic/next only.
+fn topic_layers(s: &EntitySnapshot) -> Result<BTreeMap<u64, usize>> {
+    let mut layers: BTreeMap<_, _> = s
+        .entities
+        .iter()
+        .filter(|(_, record)| record.contains_key("topic/id"))
+        .map(|(&topic, _)| (topic, 0usize))
+        .collect();
+    let mut remaining: BTreeMap<_, _> = layers.keys().map(|&topic| (topic, 0usize)).collect();
+    let mut outgoing = BTreeMap::new();
+    for &topic in layers.keys() {
+        let next = s.refs(topic, "topic/next")?;
+        for &dependent in &next {
+            *remaining
+                .get_mut(&dependent)
+                .ok_or("topic/next must reference topics")? += 1;
+        }
+        outgoing.insert(topic, next);
+    }
+    let mut roots: VecDeque<_> = remaining
+        .iter()
+        .filter_map(|(&topic, &count)| (count == 0).then_some(topic))
+        .collect();
+    let mut visited = 0;
+    while let Some(topic) = roots.pop_front() {
+        visited += 1;
+        let next_layer = layers[&topic] + 1;
+        for &dependent in &outgoing[&topic] {
+            let layer = layers.get_mut(&dependent).unwrap();
+            *layer = (*layer).max(next_layer);
+            let count = remaining.get_mut(&dependent).unwrap();
+            *count -= 1;
+            if *count == 0 {
+                roots.push_back(dependent);
+            }
+        }
+    }
+    if visited != layers.len() {
+        return Err(
+            "The prerequisite graph contains a cycle; queue layers cannot be determined".into(),
+        );
+    }
+    Ok(layers)
+}
+
 /// Study has two independent sources. Explicit selections may cross courses
 /// and bypass the engine's mastery/prerequisite gates, but never content checks.
-/// Engine suggestions rotate eligible lessons across modules, keeping ongoing
-/// lessons first. A cardinality-many queue is a set, not a user-defined ordering.
+/// Engine suggestions rotate eligible lessons across modules. Both modes keep
+/// ongoing work first; explicit requests then use global layer and priority.
+/// A cardinality-many queue is a set, not a user-defined ordering.
 pub fn study_candidates(
     s: &EntitySnapshot,
     learner: u64,
@@ -494,27 +541,48 @@ pub fn study_candidates(
     at: DateTime<Utc>,
 ) -> Result<Vec<PlannedActivity>> {
     let queued = s.entity(learner)?.get("learner/self-directed") == Some(&json!(true));
-    let mut plan = plan_candidates_in_scope(
-        s,
-        learner,
-        course,
-        at,
-        2,
-        !queued,
-        if queued {
-            StudyScope::Queue
-        } else {
-            StudyScope::Course
-        },
-    )?;
     if queued {
-        for candidate in &mut plan {
-            if candidate.priority < 10000.0 {
-                candidate.reason = "Selected for your queue".into();
-            }
-        }
-        return Ok(plan);
+        queue_candidates(s, learner, course, at)
+    } else {
+        engine_candidates(s, learner, course, at)
     }
+}
+
+/// Explicit requests remain preparable independently of the displayed Study mode.
+pub fn queue_candidates(
+    s: &EntitySnapshot,
+    learner: u64,
+    course: u64,
+    at: DateTime<Utc>,
+) -> Result<Vec<PlannedActivity>> {
+    let mut plan = plan_candidates_in_scope(s, learner, course, at, 2, false, StudyScope::Queue)?;
+    if !plan.is_empty() {
+        let layers = topic_layers(s)?;
+        plan.sort_by(|a, b| {
+            (b.priority >= 10000.0)
+                .cmp(&(a.priority >= 10000.0))
+                .then_with(|| layers[&a.topic].cmp(&layers[&b.topic]))
+                .then_with(|| b.priority.total_cmp(&a.priority))
+                .then_with(|| a.topic.cmp(&b.topic))
+                .then_with(|| a.activity.cmp(&b.activity))
+        });
+    }
+    for candidate in &mut plan {
+        if candidate.priority < 10000.0 {
+            candidate.reason = "Selected for your queue".into();
+        }
+    }
+    Ok(plan)
+}
+
+/// Engine eligibility is independent of explicit queue membership and mode.
+pub fn engine_candidates(
+    s: &EntitySnapshot,
+    learner: u64,
+    course: u64,
+    at: DateTime<Utc>,
+) -> Result<Vec<PlannedActivity>> {
+    let plan = plan_candidates_in_scope(s, learner, course, at, 2, true, StudyScope::Course)?;
 
     // Preserve engine ranking inside each module. Visit modules in the order
     // of their first ranked candidate, then take one lesson from each per round.
@@ -1723,6 +1791,83 @@ mod tests {
 
     fn planning_time() -> DateTime<Utc> {
         DateTime::from_timestamp_millis(1_790_760_000_000).unwrap()
+    }
+
+    #[test]
+    fn global_queue_layers_use_longest_topic_next_paths_and_reject_cycles() {
+        let mut s = planning_fixture(&[]);
+        planning_lesson(&mut s, 80, &[81, 83]);
+        planning_lesson(&mut s, 81, &[82]);
+        planning_lesson(&mut s, 82, &[83]);
+        planning_lesson(&mut s, 83, &[]);
+        let layers = topic_layers(&s).unwrap();
+        assert_eq!(
+            [layers[&80], layers[&81], layers[&82], layers[&83]],
+            [0, 1, 2, 3]
+        );
+        // No learner state, course filter, or selected target changes graph ranks.
+        assert_eq!(layers[&4], 0);
+        assert_eq!(layers[&3], 1);
+        s.entities
+            .get_mut(&83)
+            .unwrap()
+            .insert("topic/next".into(), json!([80]));
+        assert!(topic_layers(&s).unwrap_err().contains("cycle"));
+    }
+
+    #[test]
+    fn self_directed_queue_orders_global_layer_then_priority_and_resumes_first() {
+        let mut s = planning_fixture(&[]);
+        let foundation = planning_lesson(&mut s, 80, &[82]);
+        let practiced_root = planning_lesson(&mut s, 81, &[]);
+        let later = planning_lesson(&mut s, 82, &[]);
+        // A prerequisite outside the queue still contributes to the global rank.
+        planning_lesson(&mut s, 83, &[80]);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([82, 80, 81]));
+        put(
+            &mut s.entities,
+            600,
+            json!({"progress/topic":81,"progress/repetitions":3.0}),
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/knowledge-profile".into(), json!([600]));
+        let ids = |s: &EntitySnapshot| {
+            study_candidates(s, 1, 5, planning_time())
+                .unwrap()
+                .iter()
+                .map(|p| p.activity)
+                .collect::<Vec<_>>()
+        };
+        // The practiced root outranks practiced_root later layers despite its lower score.
+        assert_eq!(ids(&s), [practiced_root, foundation, later]);
+        s.entities
+            .get_mut(&83)
+            .unwrap()
+            .insert("topic/next".into(), json!([]));
+        assert_eq!(ids(&s), [foundation, practiced_root, later]);
+        put(
+            &mut s.entities,
+            601,
+            json!({"learner-task/activity":later,"learner-task/status":"learner-task.status/paused"}),
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([601]));
+        assert_eq!(ids(&s), [later, foundation, practiced_root]);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(false));
+        assert_eq!(
+            queue_candidates(&s, 1, 5, planning_time()).unwrap()[0].activity,
+            later
+        );
     }
 
     #[test]

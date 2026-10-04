@@ -119,12 +119,21 @@ def take_multistep(reader, state, directory):
                     save()
                     reader.enter(scope, record)
                     reader.pacer.wait('answer', 'before submitting a multistep part', elapsed=record['solver_elapsed_seconds'])
+                    submit = by_id(page,part['step'].replace('step-', 'submitButton-'))
+                    # MathEditor polls changes every 200ms. A symbol click can
+                    # finish before the site's callback enables Submit.
+                    from playwright.sync_api import expect
+                    try:
+                        expect(submit).not_to_have_class(re.compile(r'\bdisabledButton\b'),timeout=reader.args.timeout_ms)
+                    except AssertionError as exc:
+                        raise ValueError('Multistep Submit is disabled; stop before submitting') from exc
+                    # The editor may sanitize a value while updating the button.
+                    # Verify after that update, before recording submission intent.
                     try:
                         reader.verify_entered(scope, record)
                     finally:
                         save()
                     page.screenshot(path=str(directory / (mid + '-entered.png')))
-                    submit = by_id(page,part['step'].replace('step-', 'submitButton-'))
                     if 'disabledButton' in (submit.get_attribute('class') or ''):
                         raise ValueError('Multistep Submit is disabled; stop before submitting')
                     reader.check()

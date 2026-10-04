@@ -28,6 +28,17 @@ REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_powered_mathml_function_marker_preserves_factors_and_power_scope(self):
+        stored=r'(7x\sec^{2} (7x - 2) - \tan (7x - 2))/(4x^{2})'
+        captured='\\frac{7x{sec}^{2}\u2061(7x-2)-\\operatorname{tan}\u2061(7x-2)}{4{x}^{2}}'
+        self.assertEqual(normalize(stored),normalize(captured))
+        for wrong in (captured.replace('7x{sec}','8x{sec}'),captured.replace('{sec}^{2}','{sec}^{3}'),
+                      captured.replace('4{x}','16{x}'),captured.replace('-2','+2')):
+            self.assertNotEqual(normalize(stored),normalize(wrong))
+        self.assertNotEqual(normalize(r'sec^2(x)'),normalize(r'\sec^2(x)'))
+        self.assertNotEqual(normalize(r'\sec^2(x)'),normalize(r'\sec(x^2)'))
+        self.assertEqual(normalize('7x{sec}^{2}\u2061(x)'),normalize(r'7x\sec^2(x)'))
+
     def test_mathquill_negative_quotient_preserves_sign_and_scope(self):
         evidence = json.loads((Path(__file__).parent/'fixtures/negative-trig-quotient.json').read_text())
         self.assertEqual(normalize_mathquill(evidence['observed']),normalize_mathquill(evidence['intended']))
@@ -601,7 +612,7 @@ class RunnerTests(unittest.TestCase):
                 runtime.__enter__=Mock(return_value=runtime);runtime.__exit__=Mock(return_value=False)
                 runtime.chromium.launch_persistent_context.return_value=context
                 args=arguments(['run','--limit','2','--preview','--state-dir',work+'/state','--output',work+'/capture',
-                                '--lesson-min','0','--lesson-max','0'])
+                                '--lesson-min','0','--lesson-max','0','--no-import-repair'])
                 with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',FixtureBrowser), \
                      patch('playwright.sync_api.sync_playwright',return_value=runtime), \
                      contextlib.redirect_stdout(io.StringIO()),self.assertLogs(level='INFO'):
@@ -1031,7 +1042,7 @@ class DOMTests(unittest.TestCase):
             browser.start(activity)
             self.assertEqual(self.page.url,'https://mathacademy.com'+activity['href'])
 
-    def test_real_quiz_card_is_logged_with_metadata_and_never_started(self):
+    def test_optional_quiz_card_preserves_metadata_and_requires_selection_policy(self):
         html=(Path(__file__).parent/'fixtures/quiz-5-card.html').read_text()
         self.context.unroute('https://mathacademy.com/**')
         self.context.route('https://mathacademy.com/**',lambda route:route.fulfill(
@@ -1047,7 +1058,11 @@ class DOMTests(unittest.TestCase):
         self.assertEqual(quiz['assessment_details']['Questions'],'8')
         self.assertEqual(quiz['assessment_notice'],'This quiz is optional until 26 more XP have been earned.')
         self.assertEqual(quiz['optional_xp_remaining'],26)
-        self.assertIsNone(choose_activity(queue,{}))
+        selected=choose_activity(queue,{})
+        self.assertTrue(selected['assessment_optional_fallback'])
+        self.assertEqual(selected['optional_xp_remaining'],26)
+        review={'task_id':1,'topic_id':2021,'task_type':'review','title':'Review'}
+        self.assertEqual(choose_activity([quiz,review],{2021:5})['task_id'],1)
         with self.assertRaisesRegex(ValueError,'stop before Start'):
             browser.start(quiz)
         self.assertEqual(self.page.url,'https://mathacademy.com/learn')

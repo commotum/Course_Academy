@@ -5,6 +5,7 @@ import tempfile
 import unittest
 import uuid
 import sys
+import threading
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -149,6 +150,17 @@ class SessionTests(unittest.TestCase):
         with self.assertRaises(subprocess.TimeoutExpired):
             run_cli(command,input='',timeout=.3,events_path=events,diagnostics_path=errors,started=started.append)
         self.assertEqual(Solver.event_session_id(events.read_text()),sid)
+        self.assertIsNone(process_token(started[0]))
+
+    def test_headless_repair_stop_request_terminates_child_group_promptly(self):
+        events,errors=self.root/'repair-events.jsonl',self.root/'repair-errors.txt'
+        stop=threading.Event();started=[]
+        timer=threading.Timer(.2,stop.set);timer.start()
+        try:
+            with self.assertRaises(KeyboardInterrupt):
+                run_cli([sys.executable,'-c','import time;time.sleep(30)'],input='',timeout=30,
+                        events_path=events,diagnostics_path=errors,started=started.append,stop_event=stop)
+        finally:timer.cancel()
         self.assertIsNone(process_token(started[0]))
 
     def test_timeout_repeats_solver_prompt_in_same_session_without_website_submission(self):
