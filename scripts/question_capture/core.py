@@ -21,6 +21,7 @@ ALLOWED = {
     'answer-field/choices', 'answer-field/correct', 'answer/id', 'answer/type',
     'answer/value', 'answer/feedback', 'knowledge-point/questions',
     'knowledge-point/canonical-example',
+    'knowledge-point/id', 'knowledge-point/title', 'topic/knowledge-points',
 }
 
 
@@ -144,6 +145,14 @@ def normalize(value, representation='math'):
         if path.is_file():
             return 'sha256:' + hashlib.sha256(path.read_bytes()).hexdigest()
         return value
+    if representation == 'text':
+        # Preserve prose exactly, but compare explicitly delimited inline math
+        # structurally (for example "$x = 0$ only" versus "$x=0$ only").
+        parts = re.split(r'(?<![\\$])\$(?!\$)([^$\n]+?)(?<!\\)\$(?!\$)', value)
+        if len(parts) > 1:
+            return repr(tuple(('math', math_identity(part)) if i % 2 else ('text', part)
+                              for i, part in enumerate(parts)))
+        return value
     if representation != 'math':
         return value
     return math_identity(value)
@@ -201,6 +210,30 @@ def build_transaction(content, topic, existing):
     records = content['questions'] + content.get('canonical_examples', [])
     if len({q['math_academy_id'] for q in records}) != len(records):
         raise ValueError('Duplicate question identities in capture')
+    for point in content.get('new_knowledge_points', []):
+        kp_id, title, source = point['id'], point['title'], point['source_example_id']
+        expected = str(stable_id('knowledge-point',str(content['topic_id'])+':'+source))
+        example = [q for q in content.get('canonical_examples', []) if q['math_academy_id']==source
+                   and str(q['knowledge_point_id'])==kp_id and q.get('knowledge_point')==title]
+        practice = [q for q in content['questions'] if str(q['knowledge_point_id'])==kp_id]
+        if (content.get('task_type')!='lesson' or kp_id!=expected or not title or
+            len(example)!=1 or not practice or any(q.get('knowledge_point')!=title for q in practice)):
+            raise ValueError('New KP needs its observed lesson example and matching practice pool')
+        if kp_id in kps:
+            if kps[kp_id][':knowledge-point/title']!=title:
+                raise ValueError('Captured KP title conflicts with existing identity')
+            continue
+        if any(k[':knowledge-point/title']==title for k in kps.values()):
+            raise ValueError('New KP duplicates an existing topic skill')
+        identity = uuid.UUID(kp_id)
+        target = 'kp-' + kp_id
+        kps[kp_id] = {':knowledge-point/id':identity, ':knowledge-point/title':title, '_capture_target':target}
+        transaction.append(ensured('knowledge-point', **{'db/id':target,
+            'knowledge-point/id':identity,'knowledge-point/title':title}))
+        # This only adds membership to an existing topic; its identity and
+        # difficulty are unchanged. Validate the complete new KP separately.
+        transaction.append({kw('db/id'):ref('topic/math-academy-id',content['topic_id']),
+                            kw('topic/knowledge-points'):[target]})
     for question in records:
         validate_question(question)
         mid, kp_id = question['math_academy_id'], str(question['knowledge_point_id'])
@@ -287,7 +320,7 @@ def build_transaction(content, topic, existing):
         relation = 'knowledge-point/canonical-example' if example else 'knowledge-point/questions'
         linked = canonical is not None if example else mid in {q[':question/math-academy-id'] for q in kp.get(':knowledge-point/questions', [])}
         if not linked:
-            transaction.append(ensured('knowledge-point', **{'db/id': ref('knowledge-point/id', uuid.UUID(kp_id)),
+            transaction.append(ensured('knowledge-point', **{'db/id': kp.get('_capture_target',ref('knowledge-point/id', uuid.UUID(kp_id))),
                                 relation: target if example else [target]}))
         report.append({'math_academy_id': mid, 'existing': bool(old), 'knowledge_point_id': kp_id,
                        'added_question_attributes': [str(a)[1:] for a in update if a not in (':db/id', ':db/ensure')],

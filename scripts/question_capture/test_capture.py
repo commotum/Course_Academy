@@ -14,7 +14,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from browser import EXTRACT, AccessBlocked, CaptureBrowser, kp_for_example, normalize_mathquill
-from core import ROOT, ALLOWED, Pacer, atomic_json, build_transaction, choose_activity, choose_lesson, choose_sequence, choose_review_sequence, normalize
+from core import ROOT, ALLOWED, Pacer, atomic_json, build_transaction, choose_activity, choose_lesson, choose_sequence, choose_review_sequence, normalize, stable_id
 from database import Database
 from edn import dumps, loads, kw
 from solver import Solver
@@ -28,6 +28,27 @@ REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_scripted_closing_fences_preserve_exponent_scope(self):
+        self.assertEqual(normalize('y=(x+3)(x+1{)}^{2}(x-2)'),
+                         normalize('y = (x + 3)(x + 1)^{2}(x - 2)'))
+        self.assertEqual(normalize('18(4+6x{)}^{2}'), normalize('18(4 + 6x)^{2}'))
+        self.assertNotEqual(normalize('(x+1{)}^{2}'), normalize('(x+1^{2})'))
+        self.assertNotEqual(normalize('(x+1{)}^{2}'), normalize('(x+1)^{3}'))
+        self.assertNotEqual(normalize(r'\frac{1}{23}'), normalize(r'\frac{12}{3}'))
+
+    def test_mixed_text_answers_normalize_only_inline_math(self):
+        self.assertEqual(normalize('$x = 0$ only','text'), normalize('$x=0$ only','text'))
+        for value in ('$x=1$ only', '$x=0$ sometimes', '$x=0$only', 'x=0 only'):
+            self.assertNotEqual(normalize('$x=0$ only','text'), normalize(value,'text'))
+        self.assertNotEqual(normalize('a b','text'),normalize('ab','text'))
+        self.assertNotEqual(normalize(r'$\text{a b}$ only','text'),normalize(r'$\text{ab}$ only','text'))
+
+    def test_roman_graph_labels_reconcile_without_erasing_literal_spaces(self):
+        self.assertEqual(normalize('IV'),normalize(r'\text{IV}'))
+        self.assertEqual(normalize('III'),normalize(r'\mathrm{III}'))
+        self.assertNotEqual(normalize('IV'),normalize(r'\text{VI}'))
+        self.assertNotEqual(normalize('IV'),normalize(r'\text{I V}'))
+
     def test_unit_formatting_preserves_dimensions_and_text_identity(self):
         for value in (r'32\,{\text{ft}}^{2}',r'32\,\mathrm{ft}^{2}','32ft²'):
             self.assertEqual(normalize('32ft^{2}'),normalize(value))
@@ -178,6 +199,45 @@ class PolicyTests(unittest.TestCase):
 
 
 class ReconciliationTests(unittest.TestCase):
+    def new_kp_fixture(self):
+        source='e-999998';title='A newly observed skill'
+        kp_id=str(stable_id('knowledge-point',str(self.content['topic_id'])+':'+source))
+        q=copy.deepcopy(self.content['questions'][0]);e=copy.deepcopy(self.content['canonical_examples'][0])
+        q.update(math_academy_id='q-999999',knowledge_point_id=kp_id,knowledge_point=title)
+        e.update(math_academy_id=source,knowledge_point_id=kp_id,knowledge_point=title)
+        return {'task_type':'lesson','topic_id':self.content['topic_id'],'questions':[q],
+                'canonical_examples':[e],'new_knowledge_points':[{'id':kp_id,'title':title,'source_example_id':source}]}
+
+    def test_new_lesson_kp_has_example_pool_and_topic_membership(self):
+        content=self.new_kp_fixture();point=content['new_knowledge_points'][0]
+        kp=kp_for_example(self.topic,point['source_example_id'],'Example: '+point['title'],allow_new=True)
+        self.assertEqual(str(kp[':knowledge-point/id']),point['id'])
+        transaction,_=build_transaction(content,self.topic,{})
+        self.assertTrue(any(':knowledge-point/title' in row for row in transaction))
+        self.assertTrue(any(':knowledge-point/canonical-example' in row for row in transaction))
+        self.assertTrue(any(':knowledge-point/questions' in row for row in transaction))
+        self.assertTrue(any(':topic/knowledge-points' in row for row in transaction))
+        topic=copy.deepcopy(self.topic)
+        topic[':topic/knowledge-points'].append({':knowledge-point/id':uuid.UUID(point['id']),
+            ':knowledge-point/title':point['title'],
+            ':knowledge-point/canonical-example':{':question/math-academy-id':point['source_example_id']}})
+        again,_=build_transaction(content,topic,{})
+        self.assertFalse(any(':topic/knowledge-points' in row or ':knowledge-point/title' in row for row in again))
+
+    def test_new_kp_requires_source_example_pool_and_unambiguous_title(self):
+        for key in ['questions','canonical_examples']:
+            content=self.new_kp_fixture();content[key]=[]
+            with self.assertRaisesRegex(ValueError,'New KP needs'):
+                build_transaction(content,self.topic,{})
+        content=self.new_kp_fixture();content['task_type']='review'
+        with self.assertRaisesRegex(ValueError,'New KP needs'):
+            build_transaction(content,self.topic,{})
+        topic=copy.deepcopy(self.topic)
+        topic[':topic/knowledge-points'][0][':knowledge-point/title']=content['new_knowledge_points'][0]['title']
+        content['task_type']='lesson'
+        with self.assertRaisesRegex(ValueError,'duplicates an existing'):
+            build_transaction(content,topic,{})
+
     def test_real_unicode_plus_minus_conflict_reuses_existing_answers_without_rewriting(self):
         fixture = Path(__file__).parent/'fixtures/distance-answer-conflict'
         content = json.loads((fixture/'content.json').read_text())
@@ -473,6 +533,91 @@ class RunnerTests(unittest.TestCase):
 
 
 class DOMTests(unittest.TestCase):
+    def test_only_fresh_unanswered_radio_submission_can_be_recovered(self):
+        html=('<div id="test"><div class="questionWidget-text">Find x.</div>'
+              '<div class="questionWidget-choiceLetterCircle">a</div>'
+              '<div class="questionWidget-submitButton disabledButton">Submit</div>'
+              '<div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner"></div></div></div>')
+        self.page.set_content(html)
+        scope=self.page.locator('#test')
+        before=scope.evaluate(EXTRACT)
+        before['fields']=[{'type':'radio'}]
+        reader=CaptureBrowser(self.page,SimpleNamespace(resume='saved-run',timeout_ms=3000),None,None)
+        record={'before':before,'status':'submitting'}
+        self.assertTrue(reader.restore_unanswered_submission(scope,record))
+        self.assertEqual(record['status'],'prepared')
+        self.assertEqual(record['submission_recoveries'][0]['reason'],'server_restored_unanswered')
+        for alteration in [
+            "document.querySelector('.questionWidget-spinner').style.display='block'",
+            "document.querySelector('.questionWidget-spinner').innerHTML='<div>Loading</div>'",
+            "document.querySelector('#test').insertAdjacentHTML('beforeend','<div class=questionWidget-result>Correct</div>')",
+            "document.querySelector('.questionWidget-choiceLetterCircle').classList.add('selectedChoice')",
+            "document.querySelector('.questionWidget-text').textContent='Find y.'",
+        ]:
+            self.page.set_content(html);self.page.evaluate(alteration)
+            record={'before':before,'status':'submitting'}
+            self.assertFalse(reader.restore_unanswered_submission(scope,record))
+            self.assertEqual(record['status'],'submitting')
+        self.page.set_content(html);reader.args.resume=None
+        self.assertFalse(reader.restore_unanswered_submission(scope,record))
+
+    def test_svg_only_formulas_are_saved_in_prompt_and_solution(self):
+        self.page.set_content('<div id="test"><div class="stepName">Example: SVG</div>'
+            '<div class="exampleQuestion">Find <mjx-container jax="SVG"><svg width="80" height="30">'
+            '<text x="2" y="20">x + 1</text></svg></mjx-container>.</div>'
+            '<div class="exampleExplanation">Use <mjx-container jax="SVG"><svg width="80" height="30">'
+            '<text x="2" y="20">x = 2</text></svg></mjx-container>.</div></div>')
+        scope=self.page.locator('#test')
+        args=SimpleNamespace(timeout_ms=3000)
+        reader=CaptureBrowser(self.page,args,None,None)
+        with tempfile.TemporaryDirectory() as work:
+            item,_=reader.read(scope,work,'example')
+            self.assertFalse(item['errors'])
+            self.assertEqual(len(item['assets']),2)
+            self.assertTrue(all(Path(a['path']).is_file() for a in item['assets']))
+            self.assertIn(item['assets'][0]['path'],item['problem'])
+            self.assertIn(item['assets'][1]['path'],item['worked_solution'])
+
+    def test_trig_entry_leaves_the_function_before_a_separate_sum_term(self):
+        for intended,operator in [('C','cos'),('W','sin')]:
+            scope,record=self.mathquill_fixture()
+            self.page.evaluate(r'''() => {
+              const field=MathQuill.getInterface(2)(document.querySelector('#mq'));
+              const box=document.createElement('div');box.id='mathEditorToolbox';
+              for(const name of ['cos','sin']) {
+                const button=document.createElement('button');button.className='mathIcon '+name+'Icon';
+                button.textContent=name;button.onmousedown=e=>e.preventDefault();
+                button.onclick=()=>{field.write('\\'+name+'\\left({}\\right)');field.focus();field.keystroke('Left')};
+                box.append(button);
+              }
+              document.body.append(box);
+            }''')
+            answer=record['decision']['answers'][0]
+            keys=lambda name:[{'text':'5/4','key':None},{'text':None,'key':'ArrowRight'},
+                              {'text':'\\'+name,'key':None},{'text':'x','key':None},
+                              {'text':None,'key':'ArrowRight'},{'text':'+x^3','key':None},
+                              {'text':None,'key':'ArrowRight'}]
+            answer.update(correct_value=r'\frac{5}{4}\cos(x)+x^3',wrong_value=r'\frac{5}{4}\sin(x)+x^3',
+                          correct_keys=keys('cos'),wrong_keys=keys('sin'))
+            record['intended']=intended
+            args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+            reader=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+            reader.enter(scope,record);reader.verify_entered(scope,record)
+            field=record['before']['fields'][0]
+            self.assertEqual(field['observed_mathquill_latex'],r'\frac{5}{4}'+'\\'+operator+r'\left(x\right)+x^3')
+            field['submitted_value']=r'\frac{5}{4}'+'\\'+operator+r'(x+x^3)'
+            with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):
+                reader.verify_entered(scope,record)
+            self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_scripted_closing_fence_extracts_the_whole_power(self):
+        self.page.set_content('<div id="test"><div class="questionWidget-text">'
+            '<math><mn>18</mn><mo>(</mo><mn>4</mn><mo>+</mo><mn>6</mn><mi>x</mi>'
+            '<msup><mo>)</mo><mn>2</mn></msup></math></div></div>')
+        item=self.page.locator('#test').evaluate(EXTRACT)
+        self.assertEqual(item['problem'],'$18(4+6x)^{2}$')
+        self.assertFalse(item['errors'])
+
     @classmethod
     def setUpClass(cls):
         try:

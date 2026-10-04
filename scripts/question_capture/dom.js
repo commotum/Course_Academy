@@ -1,9 +1,16 @@
 // Pure DOM extraction. No application state, answer keys, or network calls.
 element => {
   const errors = [];
-  const assets = [...element.querySelectorAll('img, canvas, svg')].filter(n =>
-    !n.closest('.mjpage, mjx-container, .MathJax, .questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') &&
-    !n.parentElement?.closest('svg'));
+  const assets = [...element.querySelectorAll('img, canvas, svg')].filter(n => {
+    if (n.closest('.questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') ||
+        n.parentElement?.closest('svg')) return false;
+    const formula = n.closest('.mjpage, mjx-container, .MathJax');
+    if (!formula) return true;
+    // Some server-rendered formulas have only SVG paths, with no local TeX or
+    // assistive MathML. Preserve their visible rendering as a formula image.
+    return n.localName === 'svg' && !formula.querySelector('mjx-assistive-mml math') &&
+      !n.querySelector('title')?.textContent.trim();
+  });
   const fields = [], fieldNodes = new Map();
   const rows = [...element.querySelectorAll('.questionWidget-choicesTable tr, tr:has(.choiceLetterCircle)')];
   if (rows.length) fields.push({key:'selection', type:'radio', choices:[]});
@@ -42,11 +49,14 @@ element => {
     // Phantom content only reserves space; none of its descendants are visible.
     if (t === 'mphantom') return '';
     const cs = [...n.childNodes].map(m);
+    // MathJax may attach a script to just the closing fence glyph. Wrapping
+    // that glyph in braces obscures the fence boundary in extracted LaTeX.
+    const scriptBase = [')',']','}'].includes(cs[0]) ? cs[0] : '{' + cs[0] + '}';
     switch(t) {
       case 'mfrac': return '\\frac{' + cs[0] + '}{' + cs[1] + '}';
-      case 'msup': return '{' + cs[0] + '}^{' + cs[1] + '}';
-      case 'msub': return '{' + cs[0] + '}_{' + cs[1] + '}';
-      case 'msubsup': return '{' + cs[0] + '}_{' + cs[1] + '}^{' + cs[2] + '}';
+      case 'msup': return scriptBase + '^{' + cs[1] + '}';
+      case 'msub': return scriptBase + '_{' + cs[1] + '}';
+      case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';
       case 'munder': return '{' + cs[0] + '}_{' + cs[1] + '}';
       case 'mover': return '\\overset{' + cs[1] + '}{' + cs[0] + '}';
       case 'munderover': return '{' + cs[0] + '}_{' + cs[1] + '}^{' + cs[2] + '}';
@@ -86,6 +96,7 @@ element => {
     }
     if (t === 'mjx-container' || t === 'math') {
       const math = t === 'math' ? n : n.querySelector('mjx-assistive-mml math');
+      if (!math && assets.includes(n.querySelector('svg'))) return render(n.querySelector('svg'));
       if (!math) { errors.push('MathJax formula has no assistive MathML'); return ''; }
       const tex = m(math);
       return n.getAttribute('display') === 'true' ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';

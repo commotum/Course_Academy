@@ -316,8 +316,7 @@ def run(args):
                         topic = db.topic if state['task_type'] in ('assessment','multistep') else db.topic(state['topic_id'],directory/'selection')
                         if not state.get('activity_complete') and not state.get(state['task_type'] + '_complete'):
                             phase = 'navigation'
-                            browser.navigate(state.get('activity_url') or state['lesson_url'],
-                                             force=state['task_type'] in ('assessment','multistep'))
+                            browser.navigate(state.get('activity_url') or state['lesson_url'], force=True)
                     else:
                         if queue_observation is None:
                             queue_observation = observe_queue(args,db,browser,completed,captured_tasks)

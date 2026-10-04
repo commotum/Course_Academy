@@ -97,6 +97,11 @@ class Parser:
         nodes = []
         while self.position < len(self.source):
             token = self.source[self.position]
+            # Older MathML captures put the closing glyph of a scripted fence
+            # in a TeX group: (x+1{)}^2. It still closes the displayed fence.
+            if closing in (')', ']', r'\}') and self.source[self.position:self.position+3] == ('{', closing, '}'):
+                self.position += 3
+                return sequence_identity(nodes)
             if token == closing:
                 self.position += 1
                 return sequence_identity(nodes)
@@ -166,6 +171,11 @@ class Parser:
 
 
 def identity(value):
+    # Whole Roman-numeral graph labels have been imported both bare and as
+    # typeset text. Do not strip styling or spaces from arbitrary text.
+    label = re.fullmatch(r'\\(?:text|mathrm)\{([IVXLCDM]+)\}', value.strip().strip('$'))
+    if label:
+        value = label[1]
     quantity = quantity_identity(value)
     if quantity is not None:
         return repr(quantity)

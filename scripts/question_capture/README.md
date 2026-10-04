@@ -41,6 +41,10 @@ The runner:
    It captures each practice problem and locally observed answer widgets before
    submitting, then captures the result and revealed worked solution. It checks
    every grading result before continuing.
+   If a live lesson introduces a new KP title, its example establishes a stable
+   identity within that topic. The content import adds the KP and topic membership
+   only with that captured example and a nonempty matching practice pool. Existing
+   example identities and ambiguous titles remain guarded.
    Reviews use the same `C-W-C-W-C` / `W-C-W-C-C` patterns and 70/30 weights,
    with one saved pattern across the whole review because questions can switch
    KPs. If the site continues beyond five questions, that same pattern repeats;
@@ -214,7 +218,9 @@ then clicks the single visible button. Persistent ambiguity stops before Submit;
 keyboard commands are a fallback only when no matching button is visible.
 The existing editor's value must still verify before Submit.
 Unknown widgets, unreadable formulas, and unrendered graphical assets defer the
-activity for review. Invisible MathML `mphantom` content is omitted. Graphics are allowed to
+activity for review. Formulas supplied only as SVG paths are preserved as rendered
+formula images in the problem and worked solution. Invisible MathML `mphantom`
+content is omitted. Graphics are allowed to
 become visible and images must finish loading within `--timeout-ms` before capture;
 an asset that never renders saves diagnostics and defers that activity.
 Radio extraction is validated against all fifteen actual Sum Rule
@@ -271,7 +277,9 @@ Artifacts go to `reference/mathacademy/question-capture/<taskId>/` by default:
   context, and pending turn checkpoint; question directories retain solver events
   and inputs/outputs. Completed answers are reused on restart. An interrupted
   solver prompt resumes in the same confirmed activity session; uncertain website
-  submissions are never replayed.
+  submissions are never replayed unless an explicit resume reloads the activity
+  and confirms the same radio question is unanswered, with no selected choice,
+  no pending request, and a disabled Submit button. That evidence is journaled.
 - `knowledge-state/` with a full displayed course profile after activity completion.
 - EDB reads, `transaction.edn`, preview, exact commit intent, receipt, matching
   report, and verification under `edb-import/`.

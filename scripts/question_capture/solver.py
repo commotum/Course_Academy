@@ -83,6 +83,11 @@ mathematical space, which can change fraction grouping. The runner uses the visi
 symbol menu when available. To create a square root, type "\\\\sqrt" as a separate
 text action, then type its radicand; the runner finishes the command and leaves
 the cursor inside the root. ArrowRight exits the root after its radicand.
+Trig function buttons create parentheses around their argument. Use explicit
+parentheses in correct_value and wrong_value, for example "\\\\cos(x)+x^3".
+Type "\\\\cos" as one action, then "x", then ArrowRight to leave its argument,
+then "+x^3", then ArrowRight to leave the exponent. Never put a separate sum
+term inside the function's argument. The entered expression must match the value.
 For 11*pi/6, type "11", then "\\\\pi", then "/6",
 ArrowRight. Available keys are ArrowLeft, ArrowRight,
 ArrowUp, ArrowDown, Space, Home, End. Do not use Enter, Tab, or submission shortcuts.

@@ -8,7 +8,7 @@ from collections import deque
 from pathlib import Path
 from urllib.parse import urlparse
 
-from core import atomic_json, assessment_requirement, choose_sequence, choose_review_sequence, journal, normalize
+from core import atomic_json, assessment_requirement, choose_sequence, choose_review_sequence, journal, normalize, stable_id
 from progress import COURSES, capture as capture_progress
 
 EXTRACT = (Path(__file__).parent / 'dom.js').read_text()
@@ -97,11 +97,14 @@ class AccessBlocked(RuntimeError):
     """An authentication/access failure that affects the entire browser session."""
 
 
-def kp_for_example(topic, mid, name):
+def kp_for_example(topic, mid, name, allow_new=False):
     points = topic[':topic/knowledge-points']
     exact = [k for k in points if k.get(':knowledge-point/canonical-example',{}).get(':question/math-academy-id') == mid]
     title = re.sub(r'^Example:\s*', '', name or '')
     matches = exact or [k for k in points if k[':knowledge-point/title'] == title]
+    if not matches and allow_new and title and (name or '').startswith('Example:') and re.fullmatch(r'e-\d+',mid):
+        return {':knowledge-point/id':stable_id('knowledge-point',str(topic[':topic/math-academy-id'])+':'+mid),
+                ':knowledge-point/title':title,'captured_new':True}
     if len(matches) != 1:
         raise ValueError('Cannot unambiguously map live example to a database KP: ' + mid)
     return matches[0]
@@ -251,7 +254,13 @@ class CaptureBrowser:
         candidates = scope.locator('img, canvas, svg').all()
         index = 0
         for asset in candidates:
-            included = asset.evaluate('''n => !n.closest('.mjpage, mjx-container, .MathJax, .questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') && !n.parentElement?.closest('svg')''')
+            included = asset.evaluate('''n => {
+              if(n.closest('.questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') ||
+                 n.parentElement?.closest('svg')) return false;
+              const formula=n.closest('.mjpage, mjx-container, .MathJax');
+              return !formula || (n.localName==='svg' && !formula.querySelector('mjx-assistive-mml math') &&
+                !n.querySelector('title')?.textContent.trim());
+            }''')
             if not included:
                 continue
             try:
@@ -365,6 +374,39 @@ class CaptureBrowser:
     def current_step(self):
         return self.page.evaluate(ACTIVE_STEP)
 
+    def restore_unanswered_submission(self, scope, record):
+        # Only a fresh, explicit --resume navigation may prove a failed radio
+        # submission was not graded. Never replay a submission in its live page.
+        if not getattr(self.args, 'resume', None):
+            return False
+        fields = record['before']['fields']
+        if len(fields) != 1 or fields[0]['type'] != 'radio':
+            return False
+        evidence = scope.evaluate('''n => {
+          const visible=e=>!!e?.getClientRects().length && getComputedStyle(e).visibility!=='hidden';
+          const submit=n.querySelector('.questionWidget-submitButton');
+          const spinner=n.querySelector('.questionWidget-spinner');
+          const circles=[...n.querySelectorAll('.questionWidget-choiceLetterCircle, .choiceLetterCircle')];
+          return {unanswered:!n.querySelector('.questionWidget-result')?.textContent.trim(),
+            submit_visible:visible(submit),submit_disabled:!!submit?.classList.contains('disabledButton'),
+            pending:visible(spinner) && (spinner.style.display==='block' ||
+              [...spinner.children].some(visible)),
+            choices_unselected:circles.length>0 && circles.every(e=>!e.classList.contains('selectedChoice') &&
+              !(e.style.backgroundColor==='rgb(64, 64, 64)' && e.style.color==='white'))};
+        }''')
+        if not (evidence['unanswered'] and evidence['submit_visible'] and evidence['submit_disabled']
+                and evidence['choices_unselected'] and not evidence['pending']):
+            return False
+        fresh = scope.evaluate(EXTRACT)
+        for asset in record['before'].get('assets', []):
+            fresh['problem'] = fresh['problem'].replace('@asset-' + str(asset['index']) + '@', asset['path'])
+        if fresh['errors'] or normalize(fresh['problem']) != normalize(record['before']['problem']):
+            return False
+        record.setdefault('submission_recoveries', []).append({'reason':'server_restored_unanswered',
+                                                              'observed':evidence,'time':time.time()})
+        record['status'] = 'prepared'
+        return True
+
     def activity(self, state, directory, topic):
         if state.get('task_type') == 'multistep':
             from multistep import take_multistep
@@ -408,6 +450,11 @@ class CaptureBrowser:
         if any(q.get('status') == 'submitting' for q in state['questions'].values()):
             self.wait_activity_ready()
         for mid, record in state['questions'].items():
+            if record.get('status') == 'submitting' and self.current_step() == 'stepButton-' + mid.replace('-', ''):
+                scope = by_id(self.page, 'step-' + mid.replace('-', ''))
+                if self.restore_unanswered_submission(scope, record):
+                    save()
+                    journal(directory / 'events.jsonl', 'submission_recovered_unanswered', question=mid)
             if record.get('status') == 'submitting' and self.current_step() != 'stepButton-' + mid.replace('-', ''):
                 # A restored activity may open on the next question. Reconcile the
                 # saved result before answering it, rather than orphaning a grade.
@@ -448,7 +495,7 @@ class CaptureBrowser:
                 save()
                 self.pacer.wait('event', 'finish ' + kind_name)
                 by_id(self.page,'finalScreen-doneButton').click()
-                self.page.wait_for_url('**/learn')
+                self.page.wait_for_url('**/learn', wait_until='domcontentloaded')
                 self.knowledge_snapshot(state, directory, completed_event)
                 return
             current = self.current_step()
@@ -468,7 +515,7 @@ class CaptureBrowser:
                   if(!prompt?.textContent.trim() && !prompt?.querySelector('img,canvas,svg')) return false;
                   if(kind==='e' && !e.querySelector('.exampleExplanation')?.textContent.trim()) return false;
                   if(kind==='q' && !e.querySelector('.questionWidget-choicesTable tr,.matheditor-wrapper-answer,.selectList,input,textarea,select,[contenteditable="true"]')) return false;
-                  return [...e.querySelectorAll('mjx-container')].every(n=>!!n.querySelector('mjx-assistive-mml math'));
+                  return [...e.querySelectorAll('mjx-container')].every(n=>!!n.querySelector('mjx-assistive-mml math, svg'));
                 }''',arg={'id':'step-'+token,'kind':kind})
             if kind == 't':
                 (directory / ('tutorial-' + number + '.html')).write_text(scope.evaluate('e => e.outerHTML'))
@@ -477,7 +524,7 @@ class CaptureBrowser:
             if kind == 'e':
                 item, screenshot = self.read(scope,directory,'example-' + number)
                 mid = 'e-' + number
-                kp = kp_for_example(topic, mid, item['name'])
+                kp = kp_for_example(topic, mid, item['name'], allow_new=True)
                 kp_id = str(kp[':knowledge-point/id'])
                 if not item['problem'] or not item['worked_solution']:
                     raise ValueError('Canonical example is incomplete: ' + mid)
@@ -486,6 +533,8 @@ class CaptureBrowser:
                 state['current_kp'] = kp_id
                 state['kps'].setdefault(kp_id,{'id':kp_id,'title':kp[':knowledge-point/title'],
                                              'sequence':'CCCCC' if perfect else choose_sequence(self.pacer.rng,self.args.cwcwc_weight)})
+                if kp.get('captured_new'):
+                    state['kps'][kp_id]['source_example_id'] = mid
                 state['examples'][mid] = {'math_academy_id':mid,'is_example':True,'knowledge_point_id':kp_id,
                     'knowledge_point':kp[':knowledge-point/title'],'problem':item['problem'],'worked_solution':item['worked_solution'],
                     'difficulty':None,'answer_fields':[], 'missing_source_fields':['difficulty','answer_fields']}
@@ -768,6 +817,10 @@ class CaptureBrowser:
                    'source_url':self.page.url,'sequence_policy':{'CWCWC':self.args.cwcwc_weight,'WCWCC':1-self.args.cwcwc_weight},
                    'questions':[q['content'] for q in state['questions'].values()],
                    'canonical_examples':list(state['examples'].values())}
+        new_points=[{'id':kp['id'],'title':kp['title'],'source_example_id':kp['source_example_id']}
+                    for kp in state['kps'].values() if kp.get('source_example_id')]
+        if new_points:
+            content['new_knowledge_points'] = new_points
         if task_type == 'review':
             content['sequence_policy'] = {'scope':'whole review','CWCWC':self.args.cwcwc_weight,
                 'WCWCC':1-self.args.cwcwc_weight,'sequence':state['review_sequence'],
