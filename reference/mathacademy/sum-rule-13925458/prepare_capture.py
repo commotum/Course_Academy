@@ -51,7 +51,7 @@ def main():
             correct = next(c for c in choices if c['letter'] == CORRECT[number])
             record = matches.get(mid)
             questions.append({
-                'math_academy_id': mid, 'is_example': False,
+                'math_academy_id': mid,
                 'knowledge_point_id': kp[':knowledge-point/id'], 'knowledge_point': title,
                 'problem': before['prompt']['markdown'],
                 'difficulty': {'E': 'easy', 'M': 'moderate', 'H': 'hard'}[hq['difficulty']],
@@ -80,7 +80,7 @@ def main():
         example = steps['step-e' + mid[2:]]
         record = matches[mid]
         assert kp[':knowledge-point/canonical-example'][':question/math-academy-id'] == mid
-        examples.append({'math_academy_id': mid, 'is_example': True,
+        examples.append({'math_academy_id': mid,
                          'knowledge_point_id': kp[':knowledge-point/id'], 'knowledge_point': title,
                          'problem': example['prompt']['markdown'],
                          'worked_solution': example['worked_solution']['markdown'],

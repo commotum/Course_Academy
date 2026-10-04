@@ -74,7 +74,7 @@ def main():
             assert correct['value'] in live_solution
             assert re.fullmatch(r'/topics/2084#\d+', record['kp_href'])
             content['questions'].append({
-                'math_academy_id': 'q-' + qid, 'is_example': False,
+                'math_academy_id': 'q-' + qid,
                 'knowledge_point_id': kps[record['kp_title']],
                 'difficulty': {'E': 'easy', 'M': 'moderate', 'H': 'hard'}[record['difficulty']],
                 'problem': prompt, 'worked_solution': solution,

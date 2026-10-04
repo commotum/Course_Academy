@@ -167,7 +167,7 @@ for index, h in enumerate(load('activity-questions.json'), 1):
     tid, kid = map(int, re.fullmatch(r'/topics/(\d+)#(\d+)', h['kp_href']).groups())
     difficulty = history.select_one('.questionDifficulty').get_text(strip=True)
     solution = BeautifulSoup(solutions[h['id']]['html'], 'html.parser')
-    questions.append({'math_academy_id': qid, 'is_example': False,
+    questions.append({'math_academy_id': qid,
                       'sequence_position': index, 'topic_id': tid,
                       'knowledge_point_source_id': kid, 'knowledge_point': h['kp_title'].strip(),
                       'difficulty': {'E': 'easy', 'M': 'moderate', 'H': 'hard'}[difficulty],

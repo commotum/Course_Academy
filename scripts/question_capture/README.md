@@ -113,6 +113,14 @@ The runner:
    `knowledge-point/questions`. Existing populated attributes are preserved.
    Conflicting correct answers, field types, KP ownership, or canonical example
    IDs stop the import for review.
+   Worked-example roles come from `knowledge-point/canonical-example` references,
+   and canonical targets are excluded from every KP practice pool. `q-N` / `e-N`
+   distinguish MA source ID namespaces, not database roles. Captures omit
+   `is_example`; saved payloads and checkpoints have been migrated, and imports
+   reject that retired field. Captured `canonical_examples` supply the observed canonical references,
+   while `questions` supply practice membership. The retired `question/is-example`
+   attribute is never written. Having a worked solution alone does not make a
+   practice question canonical.
 5. Previews a content-only transaction, commits with a basis guard and stable
    request key, and verifies that all learner and engine facts are unchanged
    across that exact transaction. It also verifies that a repeated import would

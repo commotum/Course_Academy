@@ -156,7 +156,7 @@ for h in history:
     topic_id, source_kp = map(int, re.fullmatch(r'/topics/(\d+)#(\d+)', h['kp_href']).groups())
     graphic = dom.select_one('img#questionGraphic')
     problem = '\n\n'.join(filter(None, [text(graphic), text(dom.select_one('.questionText'))]))
-    q = {'math_academy_id': h['id'].replace('question-', 'q-'), 'is_example': False,
+    q = {'math_academy_id': h['id'].replace('question-', 'q-'),
          'topic_id': topic_id, 'knowledge_point_source_id': source_kp, 'knowledge_point': h['kp_title'],
          'difficulty': {'E': 'easy', 'M': 'moderate', 'H': 'hard'}[h['difficulty']],
          'problem': problem, 'worked_solution': text(solution), 'answer_fields': fields,

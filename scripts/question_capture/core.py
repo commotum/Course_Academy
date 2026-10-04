@@ -217,21 +217,21 @@ def ensured(kind, **attrs):
     return {**{kw(k): v for k, v in attrs.items()}, kw('db/ensure'): [kw(kind + '/validate')]}
 
 
-def validate_question(question):
+def validate_question(question, *, canonical=False):
+    if 'is_example' in question:
+        raise ValueError('Retired capture field is_example; migrate saved content')
     mid = question['math_academy_id']
     if not re.fullmatch(r'[qe]-\d+', mid):
         raise ValueError('Invalid Math Academy ID: ' + mid)
-    if question['is_example'] != mid.startswith('e-'):
-        raise ValueError('Example flag/ID mismatch: ' + mid)
     uuid.UUID(str(question['knowledge_point_id']))
     if not question.get('problem') or not question.get('worked_solution'):
         raise ValueError('Missing problem or solution: ' + mid)
     if question.get('difficulty') not in (None, 'easy', 'moderate', 'hard'):
         raise ValueError('Invalid difficulty: ' + mid)
-    if not question['is_example'] and not question.get('difficulty'):
+    if not canonical and not question.get('difficulty'):
         raise ValueError('Practice needs activity difficulty metadata: ' + mid)
     fields = question.get('answer_fields', [])
-    if not fields and not question['is_example']:
+    if not fields and not canonical:
         raise ValueError('Practice needs locally observed answer fields: ' + mid)
     if len({f['key'] for f in fields}) != len(fields):
         raise ValueError('Duplicate field keys: ' + mid)
@@ -254,9 +254,19 @@ def build_transaction(content, topic, existing):
         raise ValueError('Topic mismatch')
     kps = {str(k[':knowledge-point/id']): k for k in topic[':topic/knowledge-points']}
     transaction, report = [], []
-    records = content['questions'] + content.get('canonical_examples', [])
-    if len({q['math_academy_id'] for q in records}) != len(records):
+    # Collections describe the observed lesson role. Prefixes identify MA's
+    # source ID namespace; canonical refs establish the database role.
+    records = [(q, False) for q in content['questions']] + [
+        (q, True) for q in content.get('canonical_examples', [])]
+    if len({q['math_academy_id'] for q, _ in records}) != len(records):
         raise ValueError('Duplicate question identities in capture')
+    canonical_ids = {q['math_academy_id'] for q, canonical in records if canonical}
+    canonical_ids.update(k[':knowledge-point/canonical-example'][':question/math-academy-id']
+                         for k in kps.values() if k.get(':knowledge-point/canonical-example'))
+    canonical_ids.update(mid for mid, q in existing.items() if q.get(':knowledge-point/_canonical-example'))
+    practice_ids = {q[':question/math-academy-id'] for k in kps.values()
+                    for q in k.get(':knowledge-point/questions', [])}
+    practice_ids.update(mid for mid, q in existing.items() if q.get(':knowledge-point/_questions'))
     for point in content.get('new_knowledge_points', []):
         kp_id, title, source = point['id'], point['title'], point['source_example_id']
         expected = str(stable_id('knowledge-point',str(content['topic_id'])+':'+source))
@@ -281,22 +291,21 @@ def build_transaction(content, topic, existing):
         # difficulty are unchanged. Validate the complete new KP separately.
         transaction.append({kw('db/id'):ref('topic/math-academy-id',content['topic_id']),
                             kw('topic/knowledge-points'):[target]})
-    for question in records:
-        validate_question(question)
+    for question, example in records:
+        validate_question(question, canonical=example)
         mid, kp_id = question['math_academy_id'], str(question['knowledge_point_id'])
         if kp_id not in kps:
             raise ValueError('KP is not a member of the selected topic: ' + kp_id)
         kp, old = kps[kp_id], existing.get(mid)
-        example = question['is_example']
         canonical = kp.get(':knowledge-point/canonical-example')
         if example and canonical and canonical[':question/math-academy-id'] != mid:
             raise ValueError('Live example differs from this KP canonical ID; review ' + mid)
-        if old and old.get(':knowledge-point/_canonical-example') and not example:
+        if not example and mid in canonical_ids:
             raise ValueError('Canonical example cannot enter a practice pool: ' + mid)
-        if old and old.get(':knowledge-point/_questions') and example:
+        if example and mid in practice_ids:
             raise ValueError('Practice question cannot become a canonical example: ' + mid)
-        if old:
-            owners = old.get(':knowledge-point/_canonical-example' if example else ':knowledge-point/_questions', [])
+        if old and not example:
+            owners = old.get(':knowledge-point/_questions', [])
             if any(str(o[':knowledge-point/id']) != kp_id for o in owners):
                 raise ValueError('Existing question belongs to another KP: ' + mid)
         target = ref('question/math-academy-id', mid) if old else mid

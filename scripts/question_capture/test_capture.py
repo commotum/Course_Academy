@@ -385,6 +385,70 @@ class ReconciliationTests(unittest.TestCase):
         self.assertEqual(sum(':answer/id' in r for r in transaction),60)
         self.assertEqual(loads(dumps(transaction)),transaction)
 
+    def test_capture_roles_use_references_and_reject_retired_flags(self):
+        expected, _ = build_transaction(self.content,self.topic,self.existing)
+        content = copy.deepcopy(self.content)
+        for q in content['questions'] + content['canonical_examples']:
+            self.assertNotIn('is_example',q)
+        self.assertNotIn('question/is-example',ALLOWED)
+        self.assertFalse(any(':question/is-example' in row for row in expected))
+        for key, value in [('questions',True),('canonical_examples',False)]:
+            bad = copy.deepcopy(content)
+            bad[key][0]['is_example'] = value
+            with self.assertRaisesRegex(ValueError,'Retired capture field'):
+                build_transaction(bad,self.topic,self.existing)
+
+    def test_source_id_namespace_does_not_determine_canonical_role(self):
+        content = self.new_kp_fixture()
+        point = content['new_knowledge_points'][0]
+        point['source_example_id'] = 'q-999998'
+        point['id'] = str(stable_id('knowledge-point',str(content['topic_id'])+':q-999998'))
+        content['canonical_examples'][0]['math_academy_id'] = 'q-999998'
+        content['questions'][0]['math_academy_id'] = 'e-999999'
+        for q in content['questions'] + content['canonical_examples']:
+            q['knowledge_point_id'] = point['id']
+            q.pop('is_example',None)
+        transaction, _ = build_transaction(content,self.topic,{})
+        self.assertEqual([row[':knowledge-point/canonical-example'] for row in transaction
+                          if ':knowledge-point/canonical-example' in row],['q-999998'])
+        self.assertEqual([row[':knowledge-point/questions'] for row in transaction
+                          if ':knowledge-point/questions' in row],[['e-999999']])
+
+    def test_canonical_target_of_another_kp_cannot_enter_practice(self):
+        content = {**self.content,'questions':[self.content['questions'][0]],'canonical_examples':[]}
+        mid = content['questions'][0]['math_academy_id']
+        existing = {mid:{':knowledge-point/_canonical-example':[
+            {':knowledge-point/id':uuid.uuid4()}]}}
+        with self.assertRaisesRegex(ValueError,'Canonical example cannot enter a practice pool'):
+            build_transaction(content,self.topic,existing)
+        topic = copy.deepcopy(self.topic)
+        topic[':topic/knowledge-points'][1][':knowledge-point/canonical-example'][':question/math-academy-id'] = mid
+        with self.assertRaisesRegex(ValueError,'Canonical example cannot enter a practice pool'):
+            build_transaction(content,topic,{})
+
+    def test_existing_practice_cannot_be_promoted_by_capture(self):
+        content = self.new_kp_fixture()
+        example = content['canonical_examples'][0]
+        existing = {example['math_academy_id']:{':knowledge-point/_questions':[
+            {':knowledge-point/id':uuid.uuid4()}]}}
+        with self.assertRaisesRegex(ValueError,'Practice question cannot become a canonical example'):
+            build_transaction(content,self.topic,existing)
+
+    def test_canonical_reference_can_reuse_existing_canonical_content(self):
+        content = self.new_kp_fixture()
+        example = content['canonical_examples'][0]
+        mid = example['math_academy_id']
+        existing = {mid:{':question/id':stable_id('question',mid),
+                         ':question/math-academy-id':mid,':question/problem':example['problem'],
+                         ':question/worked-solution':example['worked_solution'],
+                         ':knowledge-point/_canonical-example':[{':knowledge-point/id':uuid.uuid4()}]}}
+        original = copy.deepcopy(existing)
+        transaction, _ = build_transaction(content,self.topic,existing)
+        self.assertEqual(existing,original)
+        self.assertEqual([row[':knowledge-point/canonical-example'] for row in transaction
+                          if ':knowledge-point/canonical-example' in row],
+                         [[kw('question/math-academy-id'),mid]])
+
     def test_correct_answer_conflict_aborts(self):
         content = copy.deepcopy(self.content)
         q = next(q for q in content['questions'] if q['math_academy_id']=='q-29828')
@@ -400,15 +464,26 @@ class ReconciliationTests(unittest.TestCase):
 
     def test_retractions_and_learner_writes_rejected(self):
         db = Database(SimpleNamespace())
-        attrs = [(1,kw('question/problem')),(2,kw('learner/id')),(3,kw('db/txInstant'))]
+        attrs = [(1,kw('question/problem')),(2,kw('learner/id')),(3,kw('db/txInstant')),
+                 (4,kw('question/is-example'))]
         db.validate_datoms({':edb/tx-data':[[10,1,'problem',100,True]]},attrs)
-        for row in ([10,2,uuid.uuid4(),100,True],[10,1,'problem',100,False]):
+        for row in ([10,2,uuid.uuid4(),100,True],[10,1,'problem',100,False],
+                    [10,4,True,100,True],[10,4,False,100,True]):
             with self.assertRaises(ValueError):
                 db.validate_datoms({':edb/tx-data':[row]},attrs)
 
     def test_kp_mapping_uses_example_id_before_title(self):
         kp = kp_for_example(self.topic,'e-371','Example: Changed display title')
         self.assertEqual(kp[':knowledge-point/title'],'Computing an Integral Using the Sum Rule')
+
+    def test_shared_canonical_reference_needs_unambiguous_observed_title(self):
+        topic = copy.deepcopy(self.topic)
+        first, second = topic[':topic/knowledge-points'][:2]
+        mid = first[':knowledge-point/canonical-example'][':question/math-academy-id']
+        second[':knowledge-point/canonical-example'][':question/math-academy-id'] = mid
+        self.assertEqual(kp_for_example(topic,mid,'Example: '+second[':knowledge-point/title']),second)
+        with self.assertRaisesRegex(ValueError,'Cannot unambiguously map'):
+            kp_for_example(topic,mid,'Example: Unknown skill',allow_new=True)
 
 
 class ProgressTests(unittest.TestCase):
@@ -1461,6 +1536,7 @@ class DOMTests(unittest.TestCase):
                 self.assertEqual(len(content['questions']),len(served))
                 self.assertEqual(len(state['kps']),3)
                 self.assertEqual(content['canonical_examples'],[])
+                self.assertTrue(all('is_example' not in q for q in content['questions']))
                 self.assertTrue(all(q['difficulty'] and q['knowledge_point_id'] and q['worked_solution'] for q in content['questions']))
                 images=json.loads((Path(work)/'assets/manifest.json').read_text())
                 self.assertTrue(all(a['representation']=='original' for a in images.values()))
@@ -1538,6 +1614,10 @@ class DOMTests(unittest.TestCase):
             self.assertTrue(state['history_complete'])
             self.assertEqual(len(content['questions']),15)
             self.assertEqual(len(content['canonical_examples']),3)
+            self.assertTrue(all('is_example' not in q for q in content['questions'] + content['canonical_examples']))
+            self.assertEqual({e['math_academy_id'] for e in content['canonical_examples']},
+                             {k[':knowledge-point/canonical-example'][':question/math-academy-id']
+                              for k in topic[':topic/knowledge-points']})
             self.assertTrue(all(q['difficulty'] for q in content['questions']))
             self.assertTrue((Path(work)/'lesson-completed.png').is_file())
             self.assertEqual(list(state['knowledge_snapshots']),['lesson-completed'])

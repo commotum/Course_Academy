@@ -139,7 +139,11 @@ def kp_for_example(topic, mid, name, allow_new=False):
     exact = [k for k in points if k.get(':knowledge-point/canonical-example',{}).get(':question/math-academy-id') == mid]
     title = re.sub(r'^Example:\s*', '', name or '')
     matches = exact or [k for k in points if kp_title_identity(k[':knowledge-point/title']) == kp_title_identity(title)]
-    if not matches and allow_new and title and (name or '').startswith('Example:') and re.fullmatch(r'e-\d+',mid):
+    if len(exact) > 1:
+        # Canonical refs permit reuse. The observed title must disambiguate
+        # multiple KPs referencing the same content; never pick by list order.
+        matches = [k for k in exact if kp_title_identity(k[':knowledge-point/title']) == kp_title_identity(title)]
+    if not matches and not exact and allow_new and title and (name or '').startswith('Example:') and re.fullmatch(r'e-\d+',mid):
         return {':knowledge-point/id':stable_id('knowledge-point',str(topic[':topic/math-academy-id'])+':'+mid),
                 ':knowledge-point/title':title,'captured_new':True}
     if len(matches) != 1:
@@ -599,7 +603,7 @@ class CaptureBrowser:
                                              'sequence':'CCCCC' if perfect else choose_sequence(self.pacer.rng,self.args.cwcwc_weight)})
                 if kp.get('captured_new'):
                     state['kps'][kp_id]['source_example_id'] = mid
-                state['examples'][mid] = {'math_academy_id':mid,'is_example':True,'knowledge_point_id':kp_id,
+                state['examples'][mid] = {'math_academy_id':mid,'knowledge_point_id':kp_id,
                     'knowledge_point':kp[':knowledge-point/title'],'problem':item['problem'],'worked_solution':item['worked_solution'],
                     'difficulty':None,'answer_fields':[], 'missing_source_fields':['difficulty','answer_fields']}
                 save()
@@ -823,7 +827,7 @@ class CaptureBrowser:
                     choices.append({'type':answer['value_type'],'value':submitted})
             fields.append({'key':f['key'],'type':f['type'],'choices':choices,'correct_value':answer['correct_value']})
         instructions = record['before'].get('calculator_instructions','')
-        result = {'math_academy_id':mid,'is_example':False,'knowledge_point_id':kp['id'],
+        result = {'math_academy_id':mid,'knowledge_point_id':kp['id'],
                   'knowledge_point':kp['title'],'problem':record['before']['problem'],
                   'worked_solution':record['after']['worked_solution'],'answer_fields':fields}
         if instructions and not re.search(r'not|without|forbidden',instructions,re.I):
