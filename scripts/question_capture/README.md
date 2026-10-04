@@ -151,6 +151,9 @@ backslash commands as a fallback. The runner checks the existing editor's value
 through MathQuill's public read-only `.latex()` getter before Submit; it never
 sets answers through the widget API. The checkpoint retains observed LaTeX,
 typing actions, and any symbol buttons used.
+Verification accepts editor formatting such as `\left`/`\right`, fraction-style
+commands, and numeric rational exponents written as `^{1/3}` or
+`^{\frac{1}{3}}`, while preserving fraction and exponent grouping and symbol identity.
 Unknown widgets, unreadable formulas, and unrendered graphical assets stop for
 review. Invisible MathML `mphantom` content is omitted. Graphics are allowed to
 become visible and images must finish loading within `--timeout-ms` before capture;

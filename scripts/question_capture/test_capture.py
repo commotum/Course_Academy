@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 from pathlib import Path
 from types import SimpleNamespace
 
-from browser import EXTRACT, CaptureBrowser, kp_for_example
+from browser import EXTRACT, CaptureBrowser, kp_for_example, normalize_mathquill
 from core import ROOT, ALLOWED, Pacer, build_transaction, choose_activity, choose_lesson, choose_sequence, choose_review_sequence, normalize
 from database import Database
 from edn import dumps, loads, kw
@@ -87,6 +87,16 @@ class PolicyTests(unittest.TestCase):
     def test_normalization_preserves_fraction_grouping(self):
         self.assertEqual(normalize(r'\frac{{x}^{3}}{3}'),normalize(r'\frac{x^{3}}{3}'))
         self.assertNotEqual(normalize(r'\frac{1}{23}'),normalize(r'\frac{12}{3}'))
+
+    def test_mathquill_normalization_accepts_rational_exponent_notation_and_keeps_grouping(self):
+        expected = normalize_mathquill('(x+8)^{1/3}')
+        self.assertEqual(expected,normalize_mathquill(r'\left(x+8\right)^{\frac{1}{3}}'))
+        self.assertEqual(expected,normalize_mathquill(r'\left(x+8\right)^{\tfrac{1}{3}}'))
+        for different in ('(x+8)^1/3','(x+8)^{1}/3','(x+8)^{3}',
+                          '(x+8)^{1/23}','(x+8)^{12/3}',r'(x+8)^{\frac{1}{3x}}'):
+            self.assertNotEqual(expected,normalize_mathquill(different))
+        self.assertNotEqual(normalize_mathquill(r'\frac{11\pi}{6}'),
+                            normalize_mathquill(r'\frac{11pi}{6}'))
 
     def test_image_identity_reuses_identical_local_bytes_across_captures(self):
         with tempfile.TemporaryDirectory() as work:
@@ -455,6 +465,36 @@ class DOMTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):
                 browser.verify_entered(scope,record)
             self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_real_two_field_answer_accepts_mathquill_fraction_inside_exponent(self):
+        scope, record = self.mathquill_fixture()
+        self.page.evaluate('''() => {
+          const wrapper = document.createElement('div'); wrapper.id = 'answer2';
+          wrapper.className = 'matheditor-wrapper-answer';
+          const node = document.createElement('span'); wrapper.append(node);
+          document.querySelector('#test').append(wrapper);
+          MathQuill.getInterface(2).MathField(node);
+        }''')
+        record['before'] = scope.evaluate(EXTRACT)
+        record['decision']['answers'] = [
+            {'key':'field-1','correct_value':'(x+8)^{1/3}','wrong_value':'(x+8)^3',
+             'correct_keys':[{'text':'(x+8)^1/3','key':None},
+                             {'text':None,'key':'ArrowRight'},{'text':None,'key':'ArrowRight'}],
+             'wrong_keys':[{'text':'(x+8)^3','key':None},{'text':None,'key':'ArrowRight'}]},
+            {'key':'field-2','correct_value':'2','wrong_value':'3',
+             'correct_keys':[{'text':'2','key':None}],
+             'wrong_keys':[{'text':'3','key':None}]}]
+        args = SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+        browser = CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        browser.enter(scope,record)
+        browser.verify_entered(scope,record)
+        first,second = record['before']['fields']
+        self.assertEqual(first['observed_mathquill_latex'],r'\left(x+8\right)^{\frac{1}{3}}')
+        self.assertEqual(second['observed_mathquill_latex'],'2')
+        first['submitted_value'] = '(x+8)^3'
+        with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):
+            browser.verify_entered(scope,record)
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
 
     def test_moved_past_submission_reconciles_saved_grade_before_next_question(self):
         scope, _ = self.complex_argument_fixture()

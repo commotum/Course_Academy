@@ -49,6 +49,16 @@ def mathquill_keys(value, actions):
     return result
 
 
+def normalize_mathquill(value):
+    """Compare editor notation without treating differently grouped math as equal."""
+    value = re.sub(r'\\(?:tfrac|dfrac)\b', lambda _: r'\frac', value)
+    # A numeric rational exponent has the same structure whether written with
+    # an inline slash or a stacked fraction. Match only the entire exponent.
+    value = re.sub(r'\^\{\s*([+-]?\d+)\s*/\s*([+-]?\d+)\s*\}',
+                   lambda m: '^{\\frac{' + m[1] + '}{' + m[2] + '}}', value)
+    return normalize(value)
+
+
 def by_id(scope, identifier):
     if not identifier:
         raise ValueError('Missing observed DOM identifier')
@@ -431,7 +441,10 @@ class CaptureBrowser:
                 self.enter(scope,record)
                 self.pacer.wait('answer','before submitting an answer',elapsed=record.get('solver_elapsed_seconds',0))
                 self.check()
-                self.verify_entered(scope, record)
+                try:
+                    self.verify_entered(scope, record)
+                finally:
+                    save()  # Retain the observed input even when verification stops.
                 self.page.screenshot(path=str(directory / (mid + '-entered.png')))
                 record['status'] = 'submitting'
                 save()
@@ -560,7 +573,7 @@ class CaptureBrowser:
             elif field['tag'] == 'mathquill':
                 observed = by_id(scope,field['dom_id']).evaluate(MATHQUILL_VALUE)
                 field['observed_mathquill_latex'] = observed
-                if not isinstance(observed, str) or normalize(observed) != normalize(field['submitted_value']):
+                if not isinstance(observed, str) or normalize_mathquill(observed) != normalize_mathquill(field['submitted_value']):
                     raise ValueError('Actual MathQuill value differs from intended value; stop before Submit: '
                                      + repr(observed) + ' != ' + repr(field['submitted_value']))
 
