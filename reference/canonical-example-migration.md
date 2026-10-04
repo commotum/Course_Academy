@@ -4,7 +4,7 @@ On 2026-10-04, `course-academy-v2` retired `question/is-example` in one atomic t
 
 The transaction retracted all 30,452 current flag facts, removed the flag from the installed `question/validate` required attributes, and marked its installed definition retired. EDB retains that definition and historical assertions. Fresh schema files omit the attribute. The schema readback confirms that `question/validate` requires only `question/id` and `question/problem`.
 
-The Rust and Python readers, lesson delivery and completion handlers, assignment and topic views, capture reconciliation, seed generators, and importers use canonical references. The API's `isExample` property remains a derived presentation value. Saved capture payloads, checkpoints, and test fixtures were subsequently normalized to remove `is_example`; their `canonical_examples` collections retain the observed canonical references. Imports reject the retired capture field. Actual transaction receipts remain unchanged.
+The application readers, lesson delivery and completion handlers, assignment and topic views, capture reconciliation, seed generators, and importers use canonical references. The API's `isExample` property remains a derived presentation value. Saved capture payloads, checkpoints, and test fixtures were subsequently normalized to remove `is_example`; their `canonical_examples` collections retain the observed canonical references. Imports reject the retired capture field. Actual transaction receipts remain unchanged.
 
 Completed import plans affected by the payload normalization are retained with their original transaction and receipt under `edb-import/committed-before-capture-format-migration/`. Subsequent imports plan against the current database rather than replaying those historical transactions. Completion checkpoints and import verification records are retained. The local capture-format migration report is `.local/question_capture/canonical-reference-check/capture-format-migration.json`.
 
@@ -42,7 +42,7 @@ Readers must capture canonical references with their question records. Curriculu
 
 ## Application checks
 
-All 66 Rust engine tests, 142 Python engine tests, and 136 capture tests passed. The native learning helper passed 13 tests and the native graph/topic reader passed eight. The lesson view JavaScript check passed.
+All 66 Rust engine tests and 136 capture tests passed. The native learning helper passed 13 tests and the native graph/topic reader passed eight. The lesson view JavaScript check passed.
 
 The live home, assignments, topic, and lesson preview routes returned successfully. A lesson preview contained four canonical examples with worked solutions and 11 ordinary practice questions; topic sections also displayed worked solutions.
 

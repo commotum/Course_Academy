@@ -58,7 +58,7 @@ cargo test
 bash tests/check_rust_edb.sh
 ```
 
-The native harness uses the sibling EDB release build (or `EDB_ROOT`). It installs current schema EDNs, excluding curriculum seed transactions, and checks policy history and numeric/ownership guards. Its activity fixture still uses the retired `assessment/*` schema and currently stops there with `schema/unknown-attribute`. Migrating that fixture and the runtime to generic `activity/*` and `step/*` is separate engine work; do not treat this harness as passing until then. No Python process participates in this path.
+The native harness uses the sibling EDB release build (or `EDB_ROOT`). It installs current schema EDNs, excluding curriculum seed transactions, and checks policy history and numeric/ownership guards. Its activity fixture still uses the retired `assessment/*` schema and currently stops there with `schema/unknown-attribute`. Migrating that fixture and the runtime to generic `activity/*` and `step/*` is separate engine work; do not treat this harness as passing until then.
 
 The plan's `compare_basis_t` must be submitted through `TransactionRequest::comparing_basis`, together with its stable `request_key`. Item CAS alone cannot detect a concurrently changed graph, policy, or another task's progress update. Retain the original plan for an uncertain submission or exact retry. The in-memory harness checks emitted transactions and native request construction; it does not exercise a deployed durable transactor's retry/basis-conflict path.
 

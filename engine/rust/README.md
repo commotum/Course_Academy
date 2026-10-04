@@ -1,7 +1,7 @@
 # FIRe engine in Rust
 
 `course-academy-engine` is the library; `fire` is the command-line binary. Both
-run without Python. The port preserves the existing engine's rules, including
+implement FIRe and activity completion, including
 two correct answers in a row for lesson KPs, three for reviews, accepted earned-XP rules,
 and completed diagnostic retries replacing the original placement evidence.
 The study app uses `learning` for the current generic activity/step schema,
@@ -34,7 +34,7 @@ Base XP is supplied separately; these changes concern the earned/base adjustment
 ```bash
 cargo test
 cargo run -- demo
-cargo run -- replay engine/fire/fixtures/example-input.json
+cargo run -- replay engine/rust/fixtures/example-input.json
 cargo run -- history --output /tmp/history.json --replay-output /tmp/replay.json
 cargo run -- live-history --output /tmp/live-history.json
 cargo run -- graph-snapshots --ma-root ../MA --without-git --output /tmp/graphs.json
@@ -98,19 +98,16 @@ for read-only snapshots, but timing updates require the relevant recorded starts
 and transitions. Every transaction plan includes an explicit `db/txInstant`
 matching the time used to calculate durations.
 
-Numerical FIRe snapshots retain the Python format and can be restored by Rust. Rust normalizes
-integer/float representations in typed numerical fields, so debug fingerprints
-can differ; replay protection compares the stored event evidence when reading
-older receipts. EDB UUIDs, progress identities, and request keys remain stable.
+Numerical FIRe snapshots use format 1 with two-channel `ability` state.
+Receipt fingerprints cover the event and update mode; retries must match both.
+EDB UUIDs, progress identities, and request keys use deterministic encodings.
 
-To compare actual calls from the existing Python tests with Rust, run:
+To check the native EDB boundary, run:
 
 ```bash
-cargo build
-PYTHONDONTWRITEBYTECODE=1 python3 tests/rust_parity.py
 bash tests/check_rust_edb.sh
 ```
 
-The last command uses the sibling EDB release library, or `EDB_ROOT`, to install
-all current schemas and exercise Rust completion transactions through native
-EDB, including their completion CAS and ownership predicates.
+The command uses the sibling EDB release library, or `EDB_ROOT`, for the native
+schema/predicate harness. Its obsolete activity fixture currently prevents a
+complete run; see [the validation notes](../edb/README.md).

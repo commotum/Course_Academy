@@ -44,15 +44,11 @@ Start with the [research and implementation report](reference/fire-reconstructio
 ```bash
 cargo run -- demo
 cargo test
-# Optional comparison against the preserved Python implementation:
-cargo build
-PYTHONDONTWRITEBYTECODE=1 python3 tests/rust_parity.py
 # Native EDB boundary (requires the sibling EDB release build):
 bash tests/check_rust_edb.sh
 ```
 
-The Rust library and `fire` binary run without Python. The original Python files
-remain as the reference implementation used by differential tests. See the
+The Rust library and `fire` binary are the sole FIRe implementation. See the
 [Rust API and commands](engine/rust/README.md).
 
 The [schema index](schema/README.md) groups curriculum and learner data separately

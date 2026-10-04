@@ -16,7 +16,7 @@ design choices to resolve and evaluate, not blockers to this implementation.
 
 The current application layer adds [schema hydration and transaction planning](../engine/rust/schema.rs),
 [activity helpers](../engine/rust/activities.rs), and [automatic item completion](../engine/rust/runtime.rs).
-The Rust implementation is checked with native unit tests, differential comparisons against the preserved Python implementation, and an actual EDB entity capture → item completion → generated transaction round trip. Run `cargo test`, `cargo build && python3 tests/rust_parity.py`, and `bash tests/check_rust_edb.sh`.
+Native unit tests check the numerical engine, adapter, runtime, and audit tools. Run `cargo test`. The separate EDB harness (`bash tests/check_rust_edb.sh`) installs the current schemas, but its obsolete activity fixture currently fails with `schema/unknown-attribute`; see [the validation notes](../engine/edb/README.md).
 Historical sensitivity scenarios check identities, observed behavior, and the
 consequences of alternative policies; they do not establish learning efficacy.
 
@@ -200,18 +200,18 @@ remain unknown. The runtime does not invent missing workload baselines.
 cargo run -- demo
 
 # Apply a JSON scenario, retaining state and per-topic receipts.
-cargo run -- replay engine/fire/fixtures/example-input.json
+cargo run -- replay engine/rust/fixtures/example-input.json
 
 # Rebuild the local history audit and execute the sensitivity scenarios.
 cargo run -- history \
-  --output engine/fire/fixtures/history-observations.json \
-  --replay-output engine/fire/fixtures/history-replay-results.json
+  --output engine/rust/fixtures/history-observations.json \
+  --replay-output engine/rust/fixtures/history-replay-results.json
 
 # Core, activity, adapter, and history-integrity checks.
 cargo test
 ```
 
-The core is Rust; the previous Python implementation remains a regression oracle. It supports JSON snapshot/restore, atomic
+The Rust engine supports JSON snapshot/restore, atomic
 in-memory event application, idempotent retries, conflicting-ID rejection, and
 chronological ingestion. Receipts expose before/after state, coverage, discount,
 speed, failure multiplier, gated credit, and configuration fingerprints. Global
@@ -261,7 +261,7 @@ for their task's topic is itself an explicit mapping assumption. The other
 238 answers lack retained question-topic identities. They cannot be propagated
 through a graph merely from their difficulty labels or task titles.
 
-The saved [replay results](../engine/fire/fixtures/history-replay-results.json)
+The saved [replay results](../engine/rust/fixtures/history-replay-results.json)
 contain actual executions under alternative outcome granularity, initial
 repetition position, interval growth, clock assumptions, and memory update
 ordering. An elapsed-question-time clock is included only as a sensitivity
@@ -277,7 +277,7 @@ the renderer was retrieved later. These are conditional, categorical snapshot
 constraints. The display field's relationship to continuous FIRe `repNum` is
 unknown. The [source review](fire-source-evidence.md#recovered-display-mappings)
 also distinguishes a newer renderer's `stability` field from those legacy colors.
-The [extracted graph observations](../engine/fire/fixtures/graph-snapshot-observations.json)
+The [extracted graph observations](../engine/rust/fixtures/graph-snapshot-observations.json)
 cover 2,590 distinct topics, including all 129 topic IDs in the progress history.
 However, 217 topics have conflicting colors across course snapshots. Without
 resolving course context, capture identity, time, and display semantics, those

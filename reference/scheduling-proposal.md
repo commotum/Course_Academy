@@ -34,7 +34,7 @@ Launching a required task does not satisfy it. An abandoned assessment stays req
 
 ## 2. Reviews and recommendation order
 
-Retain the engine's FIRe due criterion: a learned topic is due when its decayed memory reaches the configured threshold. Do not add a parallel fixed schedule such as “every topic every seven days.” Review timing follows the learner-topic state and encompassing credit already modeled in [core.py](../engine/fire/core.py).
+Retain the engine's FIRe due criterion: a learned topic is due when its decayed memory reaches the configured threshold. Do not add a parallel fixed schedule such as “every topic every seven days.” Review timing follows the learner-topic state and encompassing credit already modeled in [core.rs](../engine/rust/core.rs).
 
 Build candidates from ready lessons, due topic reviews, useful early reviews that cover due component topics, and eligible authored multisteps. Simulate successful retention updates with the real encompassing graph and slow-learning restrictions. This is a ranking estimate, not actual credit. The existing `FireEngine.rank` already computes due topics removed per expected minute and future due-date gains; these are suitable initial ranking signals.
 

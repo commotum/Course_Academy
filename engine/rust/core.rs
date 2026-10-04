@@ -22,16 +22,14 @@ pub fn finite(value: f64, name: &str, low: Option<f64>, high: Option<f64>) -> Re
 }
 
 /// Deterministic SHA-256 of compact, sorted JSON. Rust's typed floating-point
-/// inputs normalize numeric spellings; restore/retry compares original event
-/// evidence semantically as well, accepting historical Python snapshots.
+/// inputs normalize numeric spellings before hashing.
 pub fn fingerprint<T: Serialize>(value: &T) -> String {
     let value = serde_json::to_value(value).expect("serializable engine value");
     let encoded = ascii_json(&value);
     format!("{:x}", Sha256::digest(encoded))
 }
 
-// Python json.dumps defaults to ensure_ascii=True, including surrogate pairs.
-// Receipt keys must preserve that spelling to retry existing Unicode identities.
+// Receipt keys use ASCII escapes, including surrogate pairs, for stable identities.
 fn ascii_json<T: Serialize>(value: &T) -> String {
     let raw = serde_json::to_string(value).expect("serializable engine value");
     let mut encoded = String::with_capacity(raw.len());
@@ -412,8 +410,7 @@ impl Default for TopicState {
     }
 }
 
-// Python accepts legacy `accuracy`/`evidence_mass` seeds as well as the two-channel
-// ability format. Preserve that input compatibility without duplicate storage.
+// Validate deserialized state before it can enter the engine.
 impl<'de> Deserialize<'de> for TopicState {
     fn deserialize<D: serde::Deserializer<'de>>(
         deserializer: D,
@@ -425,9 +422,7 @@ impl<'de> Deserialize<'de> for TopicState {
             memory: f64,
             memory_at: f64,
             interval_days: f64,
-            ability: Option<AccuracyEstimate>,
-            accuracy: f64,
-            evidence_mass: f64,
+            ability: AccuracyEstimate,
             learned: bool,
             last_direct_at: Option<f64>,
         }
@@ -438,27 +433,19 @@ impl<'de> Deserialize<'de> for TopicState {
                     memory: 1.0,
                     memory_at: 0.0,
                     interval_days: 1.0,
-                    ability: None,
-                    accuracy: 0.8,
-                    evidence_mass: 0.0,
+                    ability: AccuracyEstimate::default(),
                     learned: true,
                     last_direct_at: None,
                 }
             }
         }
         let fields = Fields::deserialize(deserializer)?;
-        let ability = fields.ability.unwrap_or(AccuracyEstimate {
-            assessment_accuracy: fields.accuracy,
-            practice_accuracy: fields.accuracy,
-            assessment_mass: 0.0,
-            practice_mass: fields.evidence_mass,
-        });
         let result = Self {
             repetitions: fields.repetitions,
             memory: fields.memory,
             memory_at: fields.memory_at,
             interval_days: fields.interval_days,
-            ability,
+            ability: fields.ability,
             learned: fields.learned,
             last_direct_at: fields.last_direct_at,
         };
@@ -757,18 +744,10 @@ impl FireEngine {
             fingerprint(&json!({"mode": mode, "event": event}))
         };
         if let Some(receipt) = self.receipts.get(&key) {
-            let same_mode = receipt
-                .get("mode")
-                .and_then(Value::as_str)
-                .unwrap_or("combined")
-                == mode;
+            let same_mode = receipt.get("mode").and_then(Value::as_str) == Some(mode);
             let same_hash =
                 receipt.get("event_hash").and_then(Value::as_str) == Some(digest.as_str());
-            let same_evidence = receipt
-                .get("event")
-                .and_then(|v| serde_json::from_value::<Event>(v.clone()).ok())
-                .is_some_and(|previous| previous == *event);
-            if !same_mode || (!same_hash && !same_evidence) {
+            if !same_mode || !same_hash {
                 return Err("event ID reused with different evidence or update mode".into());
             }
             return Ok(receipt.clone());
@@ -920,7 +899,7 @@ impl FireEngine {
                 state.last_direct_at = Some(event.at);
             }
             let due_at = state.due_at(p);
-            // Python rejects nonfinite receipt data before committing the event.
+            // Reject nonfinite receipt data before committing the event.
             finite(due_at, "due_at", None, None)?;
             finite(raw, "raw_delta", None, None)?;
             updates.push(json!({"topic": topic, "direct": direct, "coverage": coverage, "created": created,
@@ -1385,24 +1364,24 @@ mod tests {
     }
 
     #[test]
-    fn python_receipt_legacy_numeric_spellings_retry_semantically() {
+    fn receipt_fingerprints_and_modes_are_required_for_retries() {
         let mut engine = engine(&[]);
         let event = event("e", "A", 1.0, true);
         engine.apply(&event).unwrap();
-        let mut snapshot = engine.snapshot();
-        let receipt = snapshot["receipts"]
-            .as_object_mut()
-            .unwrap()
-            .values_mut()
-            .next()
-            .unwrap();
-        receipt.as_object_mut().unwrap().remove("mode");
-        receipt["event"]["at"] = json!(1);
-        receipt["event_hash"] = json!("python-int-spelling");
-        let expected = receipt.clone();
-        let mut restored = FireEngine::restore(snapshot).unwrap();
-        assert_eq!(restored.apply(&event).unwrap(), expected);
-        assert!(restored.apply(Event { at: 2.0, ..event }).is_err());
+        for field in ["mode", "event_hash"] {
+            let mut snapshot = engine.snapshot();
+            let receipt = snapshot["receipts"]
+                .as_object_mut()
+                .unwrap()
+                .values_mut()
+                .next()
+                .unwrap();
+            receipt.as_object_mut().unwrap().remove(field);
+            let mut restored = FireEngine::restore(snapshot).unwrap();
+            let before = restored.snapshot();
+            assert!(restored.apply(&event).is_err());
+            assert_eq!(restored.snapshot(), before);
+        }
         let mut engine = FireEngine::default();
         let unicode = Event {
             learner: "élève🧑".into(),
@@ -1482,10 +1461,14 @@ mod tests {
                 .apply_accuracy(event("old", "A", 1.0, true))
                 .is_err()
         );
-        let state: TopicState =
-            serde_json::from_value(json!({"accuracy": 0.4, "evidence_mass": 2})).unwrap();
+        let state: TopicState = serde_json::from_value(json!({"ability": {
+            "assessment_accuracy": 0.4, "practice_accuracy": 0.4, "practice_mass": 2
+        }}))
+        .unwrap();
         assert_eq!(state.accuracy(), 0.4);
         assert_eq!(state.evidence_mass(), 2.0);
+        assert!(serde_json::from_value::<TopicState>(json!({"accuracy": 0.4})).is_err());
+        assert!(serde_json::from_value::<TopicState>(json!({"evidence_mass": 2})).is_err());
     }
 
     #[test]

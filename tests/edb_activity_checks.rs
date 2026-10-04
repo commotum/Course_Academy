@@ -31,7 +31,7 @@ fn json(value: &Value) -> String {
     }
 }
 // Capture actual native values and cardinalities; no assumed EID allocation and
-// no parallel Python-only version of this fixture can hide an unsupported attr.
+// the native fixture must expose unsupported attributes directly.
 fn capture(db: &Database) -> String {
     let mut entities: BTreeMap<u64, BTreeMap<String, (bool, Vec<String>)>> = BTreeMap::new();
     for d in db.datoms(View::Current, IndexOrder::Eavt) {

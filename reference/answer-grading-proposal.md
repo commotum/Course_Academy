@@ -81,7 +81,7 @@ This follows EDB's recommendations to [model a relationship once, query through 
 
 ## Completion-engine integration
 
-The existing [`complete_item`](../engine/runtime.py) accepts an already graded `result`, selected answer refs or entered response entities, and elapsed time. Implement the grader directly before that boundary:
+The existing [`complete_item`](../engine/rust/runtime.rs) accepts an already graded `result` and selected answer refs or entered response entities. It derives elapsed time from status history. Implement the grader directly before that boundary:
 
 ```text
 question + expected answers + explicit requirements + learner responses

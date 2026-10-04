@@ -16,7 +16,7 @@ In reference/engine-dependencies.dots you modeled earned xp as dependent on grad
 
 The overall schema is sound, but the engine is not yet compatible with the current content model. I would keep the generic activity/step design and migrate the engine to it. The remaining issues are mostly application behavior, plus a few unresolved schema decisions.
 
-I reviewed all 25 EDN files, the Rust and Python engines, EDB’s best practices, and the recorded evidence and proposals. No files changed.
+I reviewed all 25 EDN files, the Rust engine, EDB’s best practices, and the recorded evidence and proposals. No files changed.
 
 The engine still expects the deleted activity-specific schemas.
 
@@ -111,8 +111,6 @@ Some older reasoning is therefore superseded: the diagnostic timing gate, course
 Verification reflected that split:
 
 45 Rust tests passed.
-
-139 Python tests passed.
 
 The native EDB check installed all 25 current schemas, then failed on an obsolete assessment fixture with schema/unknown-attribute.
 

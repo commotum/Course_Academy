@@ -1,6 +1,6 @@
 # FIRe data contract
 
-[The integration overview](fire-schema-integration.md) explains the completion flow. This document maps the current [schema](../schema/README.md) to [the Rust adapter](../engine/rust/schema.rs); [the reconstruction](fire-reconstruction.md) explains the numerical choices. The Rust adapter and runtime have native tests, Python differential comparisons, and a native EDB transaction round trip; this does not imply a deployed database writer.
+[The integration overview](fire-schema-integration.md) explains the completion flow. This document maps the current [schema](../schema/README.md) to [the Rust adapter](../engine/rust/schema.rs); [the reconstruction](fire-reconstruction.md) explains the numerical choices. Native tests cover the Rust adapter and runtime. The separate EDB harness still has an obsolete activity fixture; see [the validation notes](../engine/edb/README.md).
 
 The engine needs an explicit encompassing graph, learner state, graded work, and a policy. Prerequisites and task XP cannot recover practice-transfer weights or hidden retention state. Direct practice works when encompassing weights are not yet available.
 
@@ -59,4 +59,4 @@ Policy parameters may be edited under the existing UUID. `progress/policy` ident
 
 ## Verification boundary
 
-Run Rust checks with `cargo test`, and compare against Python with `cargo build && python3 tests/rust_parity.py`. [Native EDB checks](../tests/validate_fire_schema.rs) and the [Rust validation notes](../engine/edb/README.md) cover the separate schema/predicate boundary. Specs apply only when explicitly ensured; writers must register the predicates. Current work verifies hydration, application transitions, numerical updates, and generated transaction plans. The production writer, UI, and complete scheduler remain outside this implementation. Captured content and existing learner databases have not been migrated.
+Run Rust checks with `cargo test`. [Native EDB checks](../tests/validate_fire_schema.rs) and the [Rust validation notes](../engine/edb/README.md) cover the separate schema/predicate boundary. Specs apply only when explicitly ensured; writers must register the predicates. Current work verifies hydration, application transitions, numerical updates, and generated transaction plans. The production writer, UI, and complete scheduler remain outside this implementation. Captured content and existing learner databases have not been migrated.

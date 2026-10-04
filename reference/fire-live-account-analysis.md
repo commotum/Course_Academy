@@ -173,18 +173,19 @@ sensitivity experiments remain in [fire-history-analysis.md](fire-history-analys
 
 ## Reproduce the audit
 
-[The audit program](../engine/fire/live_history.py) verifies captured-row
+[The audit program](../engine/rust/live_history.rs) verifies captured-row
 checksums, compares both original sources, checks catalog namespaces, and
-produces [resolved observations and traces](../engine/fire/fixtures/live-history-audit.json).
+produces [resolved observations and traces](../engine/rust/fixtures/live-history-audit.json).
 The output records the input and implementation SHA-256 hashes.
 
 ```bash
-python3 -m engine.fire.live_history \
-  --catalog-root /home/jake/Developer/MA/DATA
-python3 -m unittest discover -s tests
+cargo run -- live-history \
+  --catalog-root /home/jake/Developer/MA/DATA \
+  --output engine/rust/fixtures/live-history-audit.json
+cargo test live_history::tests
 ```
 
-The full suite passes 67 tests. The new checks cover transcription corruption,
+The native audit tests cover transcription corruption,
 source disagreements, ambiguous ID mappings, repeated item occurrences, and
 separation of diagnostic evidence from ordinary answer accuracy.
 

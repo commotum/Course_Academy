@@ -1,4 +1,4 @@
-//! JSON boundary for command-line clients and Python-to-Rust differential checks.
+//! JSON boundary for command-line clients.
 use crate::{
     Result,
     core::{Event, FireEngine},

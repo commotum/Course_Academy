@@ -12,7 +12,7 @@ FIRe state transitions or due timestamps; that bounds what retrospective
 comparisons can establish, without blocking our implementation. Its chosen
 parameters can be tuned against future observations of actual retention.
 
-The implementation in `engine/fire/history.py` joins records by exact task ID,
+The implementation in `engine/rust/history.rs` joins records by exact task ID,
 checks agreement, preserves unknown outcomes, and runs explicitly labelled
 alternative assumptions through `FireEngine`. It never converts earned XP,
 Completed status, prerequisite edges, or inferred profile labels into FIRe truth.
@@ -143,8 +143,8 @@ encompassing edges or repetition credit.
 An additional local artifact audit recovered **31 saved course graph HTML
 files**, with **6,627 topic-node occurrences covering 2,590 unique topic IDs**.
 Every one of the history's 129 topic IDs occurs in those graphs. The parser and
-full per-course observations are in `engine/fire/graph_snapshots.py` and
-`engine/fire/fixtures/graph-snapshot-observations.json`.
+full per-course observations are in `engine/rust/graph_snapshots.rs` and
+`engine/rust/fixtures/graph-snapshot-observations.json`.
 
 These files preserve `#graph` SVG node IDs, ellipse fill attributes and zero
 stroke widths. Their seven-color palette matches the legacy public
@@ -259,16 +259,14 @@ intervals or bounds on Math Academy's actual state.
 Run from the repository root:
 
 ```sh
-python3 -m engine.fire.history \
-  --profile /home/jake/Developer/study/vault/252/knowledge_profile.csv \
-  --catalog /home/jake/Developer/MA/DATA/Topics.csv \
-  --output engine/fire/fixtures/history-observations.json \
-  --replay-output engine/fire/fixtures/history-replay-results.json
-python3 -m unittest discover -s tests -p test_fire_history.py -v
-python3 -m engine.fire.graph_snapshots \
+cargo run -- history \
+  --output engine/rust/fixtures/history-observations.json \
+  --replay-output engine/rust/fixtures/history-replay-results.json
+cargo test history::tests
+cargo run -- graph-snapshots \
   --ma-root /home/jake/Developer/MA \
-  --output engine/fire/fixtures/graph-snapshot-observations.json
-python3 -m unittest discover -s tests -p test_fire_graph_snapshots.py -v
+  --output engine/rust/fixtures/graph-snapshot-observations.json
+cargo test graph_snapshots::tests
 ```
 
 The external profile and catalog flags are optional; without them the audit and

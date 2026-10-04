@@ -128,7 +128,9 @@ mod tests {
         assert_eq!(output["due_after"], json!([]));
         assert_eq!(output["slow_component"]["due_after"], json!(["addition"]));
         let output = replay(json!({"topics":["A","B","isolated"], "neighborhoods":{"A":["B"]},
-            "initial_states":[{"learner":"learner","topic":"B","state":{"accuracy":0.4,"evidence_mass":1}}],
+            "initial_states":[{"learner":"learner","topic":"B","state":{"ability":{
+                "assessment_accuracy":0.4,"practice_accuracy":0.4,"practice_mass":1
+            }}}],
             "events":[{"id":"learn","learner":"learner","topic":"A","at":1,"passed":true,"kind":"lesson","learned":true}]})).unwrap();
         assert_eq!(output["snapshot"]["topics"], json!(["A", "B", "isolated"]));
         assert_eq!(output["receipts"].as_array().unwrap().len(), 1);

@@ -1110,7 +1110,7 @@ pub fn transition_transaction(
     )
 }
 fn hash_pair(a: &str, b: &str) -> String {
-    // Python's default json.dumps escapes non-ASCII before hashing identities.
+    // Escape non-ASCII code units consistently before hashing identities.
     let raw = serde_json::to_string(&[a, b]).unwrap();
     let mut escaped = String::new();
     for ch in raw.chars() {

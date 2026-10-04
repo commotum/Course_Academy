@@ -182,6 +182,6 @@ XP does not become FIRe repetitions, memory, evidence mass, or mastery. Individu
 
 ## Changes implied by accepting this proposal
 
-The current [activity helpers](../engine/activities.py) only calculate perfect lesson/review candidates, while assessment/multistep fits are opt-in. [The runtime](../engine/runtime.py) still leaves other awards to an explicit caller and does not implement this proposal's complete scoring policy.
+The [activity helpers](../engine/rust/activities.rs) implement the accepted version-one earned-XP rules for lessons, reviews, assessments, and multisteps. [Runtime completion](../engine/rust/runtime.rs) calculates awards when base XP is available; the [formula report](xp-docs/earned-xp-formula-report.md) records the implemented equations. Duration estimates and assessment cadence remain scheduling work.
 
-Implementation would replace those gaps with these task calculators, freeze base XP at task launch, use the prepared-question denominator for timed assessment scoring, and share reference duration estimates and reward eligibility with scheduling. Keep the coefficients in ordinary application configuration initially. They are not FIRe retention parameters, and no new XP ledger or additional EDN schema is required for the rules above.
+Scheduling must freeze base XP at task launch and share reference duration estimates and reward eligibility. Timed assessment scoring already uses the assigned-question denominator. XP coefficients are application rules rather than FIRe retention parameters; the rules above require no new XP ledger.

@@ -304,15 +304,51 @@ mod tests {
     #[test]
     fn colors_do_not_become_retention() {
         let path = std::env::temp_dir().join(format!("fire-graph-{}.html", std::process::id()));
-        fs::write(&path,r#"<div id="graph"><svg><g class="node"><title>42</title><ellipse fill="rgb(23, 107, 181)" stroke-width="0"/></g></svg></div>"#).unwrap();
-        let result = parse_saved_graph(&path).unwrap();
-        assert_eq!(
-            result["nodes"][0]["legacy_display_category"],
-            "truthy-default-not-numeric-1-through-5"
-        );
-        assert!(result["nodes"][0].get("repetitions").is_none());
+        for (root, color, category, compatible) in [
+            (
+                "graph",
+                "rgb(23, 107, 181)",
+                "truthy-default-not-numeric-1-through-5",
+                true,
+            ),
+            ("graph", "rgb(165, 207, 243)", "numeric-case-2", true),
+            (
+                "knowledgeGraph",
+                "hsl(208, 77%, 80%)",
+                "unrecognized-color",
+                false,
+            ),
+            (
+                "graph",
+                "rgb(242, 242, 242)",
+                "gray-no-numeric-constraint",
+                true,
+            ),
+        ] {
+            fs::write(&path, format!(r#"<div id="{root}"><svg><g class="node"><title>42</title><ellipse fill="{color}" stroke-width="0"/></g></svg></div>"#)).unwrap();
+            let result = parse_saved_graph(&path).unwrap();
+            assert_eq!(result["nodes"][0]["legacy_display_category"], category);
+            assert_eq!(result["legacy_renderer_compatible"], compatible);
+            assert!(result["nodes"][0].get("repetitions").is_none());
+        }
         fs::write(&path,r#"<svg><g class="node"><title>42</title><ellipse/></g><g class="node"><title>42</title><ellipse/></g></svg>"#).unwrap();
         assert!(parse_saved_graph(&path).is_err());
         fs::remove_file(path).unwrap();
+    }
+
+    #[test]
+    fn retained_graph_audit_preserves_conflicts_and_unknown_state() {
+        let audit: Value =
+            serde_json::from_str(include_str!("fixtures/graph-snapshot-observations.json"))
+                .unwrap();
+        for (key, expected) in [
+            ("saved_graphs", 31),
+            ("node_occurrences", 6627),
+            ("conflicting_color_topic_count", 217),
+            ("history_topic_overlap_count", 129),
+            ("verified_numeric_fire_states", 0),
+        ] {
+            assert_eq!(audit["summary"][key], expected, "{key}");
+        }
     }
 }

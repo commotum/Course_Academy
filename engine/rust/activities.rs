@@ -64,7 +64,7 @@ pub fn evaluate_review_prefix(outcomes: &[Outcome]) -> Result<PracticeDecision> 
 }
 
 /// Convert numeric inputs to an exact rational. Floats use their decimal
-/// representation, matching Python Fraction(str(value)), not their binary ratio.
+/// representation rather than their binary floating-point ratio.
 pub trait ExactNumber {
     fn exact(self) -> Result<BigRational>;
 }
