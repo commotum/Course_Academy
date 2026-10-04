@@ -17,7 +17,7 @@ from database import Database
 from edn import dumps, loads, kw
 from solver import Solver
 from progress import changes, normalize_course
-from capture import arguments, run
+from capture import arguments, run, unfinished_run, read_journal, previous_activity_snapshot
 
 FIXTURE = ROOT/'reference/mathacademy/sum-rule-13925458'
 REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
@@ -76,16 +76,12 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(choose_activity(queue,{10:4},captured_tasks=[1])['task_id'],3)
         self.assertIsNone(choose_activity(queue,{},captured_tasks=[1,2]))
 
-    def test_review_sequences_finish_with_two_correct_across_the_review(self):
-        rng = random.Random(42)
-        sequences = [choose_review_sequence(rng) for _ in range(10000)]
-        self.assertEqual(set(sequences),{'CWCWCC','WCWCC'})
-        self.assertLess(abs(sequences.count('CWCWCC')/len(sequences)-0.7),0.02)
-        for sequence in set(sequences):
-            self.assertTrue(sequence.endswith('CC'))
-            self.assertNotIn('WW',sequence)
-            self.assertNotIn('CC',sequence[:-1])
-        self.assertEqual(choose_review_sequence(rng,policy='correct'),'CC')
+    def test_reviews_and_lessons_draw_identical_sequences_with_same_weights(self):
+        lesson_rng,review_rng=random.Random(42),random.Random(42)
+        lessons=[choose_sequence(lesson_rng) for _ in range(10000)]
+        reviews=[choose_review_sequence(review_rng) for _ in range(10000)]
+        self.assertEqual(lessons,reviews)
+        self.assertEqual(set(reviews),{'CWCWC','WCWCC'})
 
     def test_normalization_preserves_fraction_grouping(self):
         self.assertEqual(normalize(r'\frac{{x}^{3}}{3}'),normalize(r'\frac{x^{3}}{3}'))
@@ -298,6 +294,7 @@ class DOMTests(unittest.TestCase):
         order = ['e371'] + ['q'+q['math_academy_id'][2:] for q in content['questions'][:5]] + ['e372'] + ['q'+q['math_academy_id'][2:] for q in content['questions'][5:10]] + ['e373'] + ['q'+q['math_academy_id'][2:] for q in content['questions'][10:]]
         raw = '\n'.join(before['step-'+token]['html'] for token in order)
         setup = '''const order=ORDER, after=AFTER, correct=CORRECT; let position=0, selected={};
+        localStorage.setItem("fixture-submissions","0");localStorage.setItem("fixture-results","{}");
         const bar=document.createElement('div'); document.body.prepend(bar);
         for(const token of order){const b=document.createElement('div');b.id='stepButton-'+token;b.className='stepButton';bar.append(b);
           if(token[0]==='e'&&!document.getElementById('continueButton-'+token)){const c=document.createElement('button');c.id='continueButton-'+token;c.textContent='Continue';document.body.append(c);}}
@@ -321,7 +318,10 @@ class DOMTests(unittest.TestCase):
             const node=document.getElementById('step-'+token);node.outerHTML=after[number];
             document.getElementById('step-'+token).querySelector('.questionWidget-result').textContent=selected[token]===correct[number]?'Correct':'Incorrect';
             if(!document.getElementById('continueButton-'+token)){const b=document.createElement('button');b.id='continueButton-'+token;b.textContent='Continue';document.getElementById('step-'+token).append(b);}
-            document.body.dataset.submissions=String(Number(document.body.dataset.submissions||0)+1);}
+            document.body.dataset.submissions=String(Number(document.body.dataset.submissions||0)+1);
+            localStorage.setItem('fixture-submissions',document.body.dataset.submissions);
+            const outcomes=JSON.parse(localStorage.getItem('fixture-results'));outcomes[number]=document.getElementById('step-q'+number).querySelector('.questionWidget-result').textContent;
+            localStorage.setItem('fixture-results',JSON.stringify(outcomes));}
         });move();'''
         setup = setup.replace('ORDER',json.dumps(order)).replace('AFTER',json.dumps(after)).replace('CORRECT',json.dumps(correct)).replace('</script','<\\/script')
         lesson = raw+'<script>'+setup+'</script>'
@@ -338,12 +338,9 @@ class DOMTests(unittest.TestCase):
             url = route.request.url
             if '/courses/' in url:
                 course = int(url.split('/courses/')[1].split('/')[0])
-                submissions = int(self.page.locator('body').get_attribute('data-submissions') or 0)
+                submissions = self.page.evaluate("Number(localStorage.getItem('fixture-submissions')||0)")
                 submitted_count = max(submitted_count, submissions)
-                for token in order:
-                    if token[0] == 'q':
-                        node=self.page.locator('#step-'+token+' .questionWidget-result')
-                        if node.count() and node.inner_text().strip(): results[token[1:]]=node.inner_text().strip()
+                results.update(self.page.evaluate("JSON.parse(localStorage.getItem('fixture-results')||'{}')"))
                 body = progress[course]
                 if course == 111 and submitted_count:
                     body += '''<script>document.querySelector('.topicLink[href="/topics/3769?courseId=111"]').closest('tr').querySelector('.topicCircle').style.background='rgb(165, 207, 243)';</script>'''
@@ -384,6 +381,7 @@ class DOMTests(unittest.TestCase):
             if wrong_kp:
                 activity[number] = activity[number].replace('/topics/2084#','/topics/9999#')
         setup = '''const numbers=NUMBERS, after=AFTER, correct=CORRECT; let position=0, selected={},streak=0;
+        localStorage.setItem("fixture-submissions","0");localStorage.setItem("fixture-results","{}");
         const bar=document.createElement('div');document.body.prepend(bar);
         for(const number of numbers){const b=document.createElement('div');b.id='stepButton-q'+number;b.className='stepButton';bar.append(b);}
         const final=document.createElement('div');final.id='finalScreen';final.style.display='none';
@@ -410,7 +408,10 @@ class DOMTests(unittest.TestCase):
               if(c.textContent.trim()===selected[number]){c.style.background='rgb(64, 64, 64)';c.style.color='white';}});
             streak=result==='Correct'?streak+1:0;
             if(!document.getElementById('continueButton-q'+number)){const b=document.createElement('button');b.id='continueButton-q'+number;b.textContent='Continue';root.append(b);}
-            document.body.dataset.submissions=String(Number(document.body.dataset.submissions||0)+1);}
+            document.body.dataset.submissions=String(Number(document.body.dataset.submissions||0)+1);
+            localStorage.setItem('fixture-submissions',document.body.dataset.submissions);
+            const outcomes=JSON.parse(localStorage.getItem('fixture-results'));outcomes[number]=document.getElementById('step-q'+number).querySelector('.questionWidget-result').textContent;
+            localStorage.setItem('fixture-results',JSON.stringify(outcomes));}
         });move();'''
         setup = setup.replace('NUMBERS',json.dumps(numbers)).replace('AFTER',json.dumps(after)).replace('CORRECT',json.dumps(correct)).replace('MISSELECT',str(misselect).lower()).replace('</script','<\\/script')
         review = ''.join(before.values())+'<script>'+setup+'</script>'
@@ -425,10 +426,8 @@ class DOMTests(unittest.TestCase):
                 route.fulfill(status=200 if asset else 404,content_type='image/png',body=Path(asset['path']).read_bytes() if asset else b'')
                 return
             if '/courses/' in url:
-                served = max(served,int(self.page.locator('body').get_attribute('data-submissions') or 0))
-                for number in numbers[:served]:
-                    node=self.page.locator('#step-q'+number+' .questionWidget-result')
-                    if node.count(): results[number]=node.inner_text()
+                served = max(served,self.page.evaluate("Number(localStorage.getItem('fixture-submissions')||0)"))
+                results.update(self.page.evaluate("JSON.parse(localStorage.getItem('fixture-results')||'{}')"))
             if '/courses/' in url:
                 course = int(url.split('/courses/')[1].split('/')[0]); body=progress[course]
             elif '/review' in url:
@@ -445,35 +444,21 @@ class DOMTests(unittest.TestCase):
         self.context.route('https://mathacademy.com/**',respond)
         return correct
 
-    def test_reviews_capture_global_sequences_map_mixed_kps_and_original_images(self):
-        for weight, expected_sequence in [(0,'WCWCC'),(1,'CWCWCC')]:
+    def test_reviews_capture_shared_sequences_map_mixed_kps_and_original_images(self):
+        for weight, base, served in [(0,'WCWCC','WCWCC'),(1,'CWCWC','CWCWCC')]:
             correct=self.review_fixture()
-            args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=weight,review_policy='maximize',settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
+            args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=weight,settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
             browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),self.fixture_solver(correct))
             self.page.goto('https://mathacademy.com/tasks/13925710/topics/2084/review')
             state={'task_id':13925710,'topic_id':2084,'kps':{},'examples':{},'questions':{}}
             topic=loads((REVIEW_FIXTURE/'database/topic.edn').read_text())[0][0]
             with tempfile.TemporaryDirectory() as work:
-                if weight == 0:
-                    original = browser.knowledge_snapshot
-                    def fail_once(state,directory,event,**kwargs):
-                        if event == 'after-q28197': raise RuntimeError('Simulated review snapshot interruption')
-                        return original(state,directory,event,**kwargs)
-                    browser.knowledge_snapshot = fail_once
-                    with self.assertRaisesRegex(RuntimeError,'review snapshot interruption'):
-                        browser.review(state,work,topic)
-                    self.assertEqual(self.page.locator('body').get_attribute('data-submissions'),'1')
-                    browser.knowledge_snapshot = original
-                    args.cwcwc_weight = 1  # Resume must retain its already chosen sequence.
                 browser.review(state,work,topic)
-                if weight == 0:
-                    recovered=json.loads((Path(work)/'knowledge-state/after-q28197.json').read_text())
-                    self.assertTrue(recovered['recovered_after_interruption'])
-                self.assertEqual(state['review_sequence'],expected_sequence)
-                self.assertEqual(''.join(q['intended'] for q in state['questions'].values()),expected_sequence)
+                self.assertEqual(state['review_sequence'],base)
+                self.assertEqual(''.join(q['intended'] for q in state['questions'].values()),served)
                 self.assertTrue(state['review_complete'])
                 content=browser.history(state,work,topic)
-                self.assertEqual(len(content['questions']),len(expected_sequence))
+                self.assertEqual(len(content['questions']),len(served))
                 self.assertEqual(len(state['kps']),3)
                 self.assertEqual(content['canonical_examples'],[])
                 self.assertTrue(all(q['difficulty'] and q['knowledge_point_id'] and q['worked_solution'] for q in content['questions']))
@@ -481,9 +466,9 @@ class DOMTests(unittest.TestCase):
                 self.assertTrue(all(a['representation']=='original' for a in images.values()))
                 source='https://mathacademy.com/graphics/q-28197-'
                 self.assertEqual(images[source+'a-1']['path'],images[source+'e-0']['path'])
-                self.assertEqual(len(state['knowledge_snapshots']),len(expected_sequence)+2)
+                self.assertEqual(list(state['knowledge_snapshots']),['review-completed'])
                 transaction,_=build_transaction(content,topic,{})
-                self.assertEqual(sum(':knowledge-point/questions' in row for row in transaction),len(expected_sequence))
+                self.assertEqual(sum(':knowledge-point/questions' in row for row in transaction),len(served))
 
     def test_actual_radio_selection_mismatch_stops_before_submit(self):
         correct=self.review_fixture(misselect=True)
@@ -525,44 +510,36 @@ class DOMTests(unittest.TestCase):
             self.assertEqual(len(content['canonical_examples']),3)
             self.assertTrue(all(q['difficulty'] for q in content['questions']))
             self.assertTrue((Path(work)/'lesson-completed.png').is_file())
-            self.assertEqual(len(state['knowledge_snapshots']),20)  # baseline, 18 steps, completion
-            snapshots = [json.loads((Path(work)/s['path']).read_text()) for s in state['knowledge_snapshots'].values()]
-            self.assertTrue(all(sum(len(c['topics']) for c in s['courses'])==1040 for s in snapshots))
-            first_question = next(s for s in snapshots if s['event'].startswith('after-q'))
-            self.assertEqual([(d['topic_id'],d['before_band'],d['after_band']) for d in first_question['changes']],[(3769,0,2)])
-            self.assertEqual(snapshots[-1]['changes'],[])
-            # Durable snapshots are reused when restoring the same event, without refreshing history.
-            before_count = len(state['knowledge_snapshots'])
-            browser.knowledge_snapshot(state,work,first_question['event'])
-            self.assertEqual(len(state['knowledge_snapshots']),before_count)
+            self.assertEqual(list(state['knowledge_snapshots']),['lesson-completed'])
+            snapshot=json.loads((Path(work)/'knowledge-state/lesson-completed.json').read_text())
+            self.assertEqual(sum(len(c['topics']) for c in snapshot['courses']),1040)
+            browser.knowledge_snapshot(state,work,'lesson-completed')
+            self.assertEqual(len(state['knowledge_snapshots']),1)
             self.assertEqual(self.page.url,'https://mathacademy.com/learn?taskId=13925458')
             existing = {r[0][':question/math-academy-id']:r[0] for r in loads((FIXTURE/'id-matches.edn').read_text())}
             transaction,_ = build_transaction(content,topic,existing)
             self.assertTrue(transaction)
 
-    def test_snapshot_failure_resumes_without_resubmitting_answer(self):
+    def test_completion_snapshot_failure_resumes_without_resubmitting_answer(self):
         correct = self.lesson_fixture()
         args = SimpleNamespace(timeout_ms=5000,cwcwc_weight=0.7,settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
         browser = CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),self.fixture_solver(correct))
         state = {'task_id':13925458,'topic_id':3769,'kps':{},'examples':{},'questions':{}}
         topic = loads((FIXTURE/'database-before.edn').read_text())[0][0]
         original = browser.knowledge_snapshot
-        def fail_once(state,directory,event,**kwargs):
-            if event == 'after-q71168': raise RuntimeError('Simulated snapshot interruption')
-            return original(state,directory,event,**kwargs)
-        browser.knowledge_snapshot = fail_once
+        browser.knowledge_snapshot = Mock(side_effect=RuntimeError('Simulated snapshot interruption'))
         with tempfile.TemporaryDirectory() as work:
-            with self.assertRaisesRegex(RuntimeError,'Simulated snapshot interruption'):
+            with self.assertRaisesRegex(RuntimeError,'snapshot interruption'):
                 browser.lesson(state,work,topic)
-            self.assertEqual(self.page.locator('body').get_attribute('data-submissions'),'1')
-            self.assertEqual(state['pending_knowledge_snapshot']['event'],'after-q71168')
+            self.assertEqual(len(state['questions']),15)
+            self.assertTrue(state['activity_complete'])
+            self.assertTrue(all(q['finalized'] for q in state['questions'].values()))
             browser.knowledge_snapshot = original
             browser.lesson(state,work,topic)
-            saved = json.loads((Path(work)/'knowledge-state/after-q71168.json').read_text())
+            saved=json.loads((Path(work)/'knowledge-state/lesson-completed.json').read_text())
             self.assertTrue(saved['recovered_after_interruption'])
-            self.assertTrue(state['lesson_complete'])
             self.assertEqual(len(state['questions']),15)
-            self.assertNotIn('pending_knowledge_snapshot',state)
+            self.assertEqual(list(state['knowledge_snapshots']),['lesson-completed'])
 
     def test_unexpected_wrong_answer_stops_before_second_submission(self):
         self.lesson_fixture()
@@ -580,7 +557,7 @@ class DOMTests(unittest.TestCase):
                 browser.lesson(state,work,topic)
             self.assertEqual(self.page.locator('body').get_attribute('data-submissions'),'1')
             self.assertEqual(len(state['questions']),1)
-            self.assertIn('unexpected-grade-q71168',state['knowledge_snapshots'])
+            self.assertFalse(state.get('knowledge_snapshots'))
 
 
 if __name__=='__main__':

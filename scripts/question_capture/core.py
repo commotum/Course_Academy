@@ -99,13 +99,8 @@ def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
     return next((item for item in available if item.get('task_type') == 'review'), None)
 
 
-def choose_review_sequence(rng, weight=0.7, policy='maximize'):
-    if policy == 'correct':
-        return 'CC'
-    if policy != 'maximize':
-        raise ValueError('Unknown review answer policy: ' + policy)
-    sequence = choose_sequence(rng, weight)
-    return sequence + ('C' if sequence == 'CWCWC' else '')
+def choose_review_sequence(rng, weight=0.7):
+    return choose_sequence(rng, weight)
 
 
 def normalize(value, representation='math'):

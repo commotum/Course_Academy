@@ -8,6 +8,7 @@ import logging
 import os
 import random
 import shutil
+import signal
 import sys
 import uuid
 from pathlib import Path
@@ -27,7 +28,7 @@ def arguments(argv=None):
     parser.add_argument('--state-dir',type=Path,default=ROOT/'.local/question_capture')
     parser.add_argument('--profile',type=Path,help='Dedicated Playwright profile; defaults to STATE_DIR/browser-profile')
     parser.add_argument('--content',type=Path,help='Saved content.json for import-saved')
-    parser.add_argument('--resume',type=Path,help='Resume a run directory containing state.json')
+    parser.add_argument('--resume',type=Path,help='Select a saved run explicitly; otherwise unfinished runs resume automatically')
     parser.add_argument('--limit',type=int,default=1,help='Maximum activities (lessons or reviews) per invocation; default 1')
     parser.add_argument('--preview',action='store_true',help='Preview EDB writes. With run, MA answers are still submitted.')
     parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting an activity')
@@ -35,15 +36,13 @@ def arguments(argv=None):
     parser.add_argument('--browser-spec',help='Optional existing browser cookie source, using the original MA cookiekit syntax')
     parser.add_argument('--ma-root',type=Path,default=Path('/home/jake/Developer/MA'))
     parser.add_argument('--cwcwc-weight',type=float,default=0.7)
-    parser.add_argument('--review-policy',choices=['maximize','correct'],default='maximize',
-                        help='Reviews: weighted capture sequence, or correct answers throughout')
     parser.add_argument('--review-question-limit',type=int,default=20,
                         help='Stop a review before submitting more than this many questions')
     parser.add_argument('--seed',type=int,help='Optional reproducible sequence/pacing seed')
     parser.add_argument('--timeout-ms',type=int,default=45000)
     parser.add_argument('--settle-ms',type=int,default=1000)
     parser.add_argument('--progress-course-id', dest='progress_course_ids', action='append', type=int,
-                        help='Course progress to snapshot after every step; repeat to override defaults 113,111,136')
+                        help='Course progress to snapshot after each completed activity; repeat to override defaults 113,111,136')
     parser.add_argument('--solver-command',help='Command receiving JSON on stdin and returning solver JSON on stdout; no shell')
     parser.add_argument('--codex-bin',default='codex')
     parser.add_argument('--solver-model',help='Optional explicit Codex model for the solver')
@@ -109,6 +108,57 @@ def import_cookies(args, context):
     logging.info('Imported Math Academy session cookies; cookie values are never logged')
 
 
+def unfinished_run(args):
+    """Recover captures and incomplete imports before consuming another live task."""
+    if args.resume:
+        return args.resume.resolve()
+    candidates = []
+    for source in sorted(args.output.glob('*/state.json')):
+        state = json.loads(source.read_text())
+        directory = source.parent.resolve()
+        verification = directory/'edb-import/verification.json'
+        receipt = json.loads(verification.read_text()) if verification.exists() else {}
+        finished = state.get('import_complete') or receipt.get('committed') or receipt.get('already_complete')
+        if args.preview:
+            finished = finished or state.get('preview_complete')
+        if not finished:
+            candidates.append(directory)
+    if len(candidates) > 1:
+        raise RuntimeError('Multiple unfinished captures; choose one with --resume: ' + ', '.join(map(str,candidates)))
+    return candidates[0] if candidates else None
+
+
+def previous_activity_snapshot(args):
+    sources = list(args.output.glob('*/knowledge-state/*-completed.json'))
+    if not sources:
+        return None
+    return str(max(sources,key=lambda p:json.loads(p.read_text())['finished_at']).resolve())
+
+
+def read_journal(path):
+    if not path.exists():
+        return []
+    source = path.read_text()
+    lines = source.splitlines(keepends=True)
+    entries, complete = [], ''
+    for number, line in enumerate(lines):
+        try:
+            entries.append(json.loads(line))
+        except json.JSONDecodeError:
+            if number != len(lines)-1:
+                raise
+            # Preserve a torn final append, then restore a valid append boundary.
+            path.with_suffix('.interrupted-tail.txt').write_text(line)
+            logging.warning('Recovered interrupted final journal entry in %s',path)
+            path.write_text(complete)
+            break
+        complete += line
+    else:
+        if source and not source.endswith('\n'):
+            path.write_text(source+'\n')
+    return entries
+
+
 def run(args):
     if args.command=='import-saved':
         content = json.loads(args.content.read_text())
@@ -118,6 +168,13 @@ def run(args):
     if args.command=='priorities':
         priorities = db.priorities(args.learner_id,args.state_dir/'selection')
         print(json.dumps(sorted(priorities.items(),key=lambda p:p[1],reverse=True),indent=2))
+        return
+    resume_directory = unfinished_run(args) if args.command=='run' else None
+    if resume_directory and args.dry_run:
+        state = json.loads((resume_directory/'state.json').read_text())
+        print(json.dumps({'resume_directory':str(resume_directory),'task_id':state['task_id'],
+                          'task_type':state.get('task_type','lesson'),
+                          'captured_questions':len(state.get('questions',{}))},indent=2))
         return
     from playwright.sync_api import sync_playwright
     from browser import CaptureBrowser, LEARN
@@ -141,18 +198,18 @@ def run(args):
             completed = set()
             captured_tasks = set()
             log = args.state_dir/'journal.jsonl'
-            if log.exists():
-                for line in log.read_text().splitlines():
-                    entry = json.loads(line)
-                    if entry['event'] in ('lesson_captured','activity_captured'):
-                        captured_tasks.add(entry['task_id'])
-                        if entry.get('task_type','lesson') == 'lesson':
-                            completed.add(entry['topic_id'])
+            for entry in read_journal(log):
+                if entry['event'] in ('lesson_captured','activity_captured'):
+                    captured_tasks.add(entry['task_id'])
+                    if entry.get('task_type','lesson') == 'lesson':
+                        completed.add(entry['topic_id'])
             for n in range(args.limit):
-                if args.resume and n==0:
-                    directory = args.resume.resolve()
+                if resume_directory and n==0:
+                    directory = resume_directory
+                    logging.info('Resuming saved activity %s',directory)
                     state = json.loads((directory/'state.json').read_text())
                     state.setdefault('task_type', 'lesson')
+                    state.setdefault('previous_activity_snapshot',previous_activity_snapshot(args))
                     topic = db.topic(state['topic_id'],directory/'selection')
                     if not state.get('activity_complete') and not state.get(state['task_type'] + '_complete'):
                         browser.navigate(state.get('activity_url') or state['lesson_url'])
@@ -180,9 +237,9 @@ def run(args):
                             shutil.copy2(source, directory/'selection'/source.name)
                     state = {'task_id':activity['task_id'],'topic_id':activity['topic_id'],'task_type':activity['task_type'],
                              'activity_url':'https://mathacademy.com'+activity['href'],
-                             'selected_priority':activity.get('priority'),'kps':{},'examples':{},'questions':{}}
+                             'selected_priority':activity.get('priority'),'kps':{},'examples':{},'questions':{},
+                             'previous_activity_snapshot':previous_activity_snapshot(args)}
                     atomic_json(directory/'state.json',state)
-                    browser.knowledge_snapshot(state,directory,'baseline')
                     browser.start(activity)
                 try:
                     browser.activity(state,directory,topic)
@@ -197,6 +254,8 @@ def run(args):
                     if state['task_type'] == 'lesson':
                         completed.add(state['topic_id'])
                     result = db.import_content(content,directory/'edb-import',not args.preview)
+                    state['preview_complete' if args.preview else 'import_complete'] = True
+                    atomic_json(directory/'state.json',state)
                     journal(log,'content_imported' if not args.preview else 'content_previewed',task_id=state['task_id'],**result)
                     print(json.dumps({'run_directory':str(directory),'database':result},indent=2),flush=True)
                 except BaseException:
@@ -218,12 +277,17 @@ def run(args):
 def main(argv=None):
     args = arguments(argv)
     logging.basicConfig(level=logging.INFO,format='%(asctime)s %(message)s')
+    def interrupted(*_):
+        raise KeyboardInterrupt('Stopped; saved checkpoints are retained')
+    original_sigterm = signal.signal(signal.SIGTERM,interrupted)
     try:
         with locked(args.state_dir):
             run(args)
     except (Exception,KeyboardInterrupt) as exc:
         logging.error('%s: %s',type(exc).__name__,exc)
         return 1
+    finally:
+        signal.signal(signal.SIGTERM,original_sigterm)
     return 0
 
 

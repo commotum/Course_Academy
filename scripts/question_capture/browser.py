@@ -175,6 +175,8 @@ class CaptureBrowser:
           !!document.querySelector('#finalScreen')?.getClientRects().length''', arg=current)
 
     def knowledge_snapshot(self, state, directory, event, recovered=False):
+        if event != state.get('task_type','lesson') + '-completed':
+            raise ValueError('Knowledge snapshots are only captured after completed activities')
         directory = Path(directory)
         courses = tuple(getattr(self.args, 'progress_course_ids', COURSES))
         snapshots = state.setdefault('knowledge_snapshots', {})
@@ -185,8 +187,12 @@ class CaptureBrowser:
                 raise ValueError('Saved knowledge snapshot has a different task or course scope')
         else:
             previous = None
-            if snapshots:
-                previous = json.loads((directory / list(snapshots.values())[-1]['path']).read_text())
+            previous_path = state.get('previous_activity_snapshot')
+            if previous_path:
+                previous = json.loads(Path(previous_path).read_text())
+            elif 'baseline' in snapshots:
+                # Existing runs may already have a baseline; never fetch a new one.
+                previous = json.loads((directory / snapshots['baseline']['path']).read_text())
             if self.progress_reader is None:
                 # Keep the live lesson loaded and its widgets untouched in the original tab.
                 page = self.page.context.new_page()
@@ -200,12 +206,10 @@ class CaptureBrowser:
                      sum(len(c['topics']) for c in snapshot['courses']), len(snapshot['changes']))
 
     def advance(self, state, directory, token):
-        event = 'after-' + token
-        state['pending_knowledge_snapshot'] = {'event': event, 'source_step': 'stepButton-' + token}
+        state['pending_continue'] = {'source_step': 'stepButton-' + token}
         atomic_json(Path(directory) / 'state.json', state)
         self._continue('continueButton-' + token)
-        self.knowledge_snapshot(state, directory, event)
-        state.pop('pending_knowledge_snapshot', None)
+        state.pop('pending_continue', None)
         atomic_json(Path(directory) / 'state.json', state)
 
     def lesson(self, state, directory, topic):
@@ -232,19 +236,31 @@ class CaptureBrowser:
                 self.navigate(LEARN)
                 self.knowledge_snapshot(state, directory, completed_event, recovered=True)
             return
-        self.knowledge_snapshot(state, directory, 'baseline')
-        if is_review and 'review_sequence' not in state:
-            state['review_policy'] = getattr(self.args, 'review_policy', 'maximize')
-            state['review_sequence'] = choose_review_sequence(self.pacer.rng, self.args.cwcwc_weight,
-                                                              state['review_policy'])
+        # Preserve old source files but retire any interrupted per-step scrape.
+        legacy_pending = state.pop('pending_knowledge_snapshot', None)
+        if legacy_pending:
+            state.setdefault('pending_continue', {'source_step':legacy_pending['source_step']})
             save()
-        pending = state.get('pending_knowledge_snapshot')
+        if is_review and 'review_sequence' not in state:
+            state['review_sequence'] = choose_review_sequence(self.pacer.rng, self.args.cwcwc_weight)
+            save()
+        if is_review and state['review_sequence'] == 'CWCWCC':
+            state['legacy_review_sequence'] = state['review_sequence']
+            state['review_sequence'] = 'CWCWC'
+            save()
+        if is_review and state['review_sequence'] not in ('CWCWC','WCWCC'):
+            raise ValueError('Saved review sequence does not match the configured lesson policy')
+        pending = state.get('pending_continue')
         if pending:
             self.wait_activity_ready()
             current = self.page.locator('.stepButton.current').get_attribute('id') if self.page.locator('.stepButton.current').count() else None
             if current != pending['source_step'] or self.page.locator('#finalScreen').is_visible():
-                self.knowledge_snapshot(state, directory, pending['event'], recovered=True)
-                state.pop('pending_knowledge_snapshot', None)
+                state.pop('pending_continue', None)
+                save()
+        # A saved grade can be finalized even if Continue already advanced the UI.
+        for mid, record in state['questions'].items():
+            if record.get('status') == 'graded' and not record.get('finalized'):
+                self.finalize_question(state,directory,mid,record)
                 save()
         while True:
             self.check()
@@ -318,6 +334,9 @@ class CaptureBrowser:
             mid = 'q-' + number
             record = state['questions'].get(mid)
             if record and record.get('finalized'):
+                result = scope.locator('.questionWidget-result')
+                if not result.count() or result.inner_text().strip() != record['actual_result']:
+                    raise ValueError('Restored page does not confirm the saved grade for ' + mid)
                 self.advance(state, directory, token)
                 continue
             if not record:
@@ -329,7 +348,7 @@ class CaptureBrowser:
                     if count >= getattr(self.args, 'review_question_limit', 20):
                         raise ValueError('Review question limit reached; capture saved before another submission')
                     sequence = state['review_sequence']
-                    intended = sequence[min(count, len(sequence)-1)]
+                    intended = sequence[count % len(sequence)]
                 else:
                     if count >= 5:
                         raise ValueError('KP unexpectedly served a sixth question')
@@ -343,6 +362,15 @@ class CaptureBrowser:
                 save()
             button = by_id(self.page,'continueButton-' + token)
             if record['status'] == 'prepared':
+                # Choice letters may be shuffled on a restored page. Reuse the
+                # solved value, then match it to today's observed DOM option.
+                fresh, _ = self.read(scope,directory,mid + '-before')
+                if normalize(fresh['problem']) != normalize(record['before']['problem']):
+                    raise ValueError('Restored question problem changed: ' + mid)
+                from solver import Solver
+                record['decision'] = Solver.reuse_answer(fresh,record['decision'])
+                record['before'] = fresh
+                save()
                 self.enter(scope,record)
                 self.pacer.wait('answer','before submitting an answer',elapsed=record.get('solver_elapsed_seconds',0))
                 self.check()
@@ -363,27 +391,29 @@ class CaptureBrowser:
             record['after'], record['actual_result'] = item, actual
             record['status'] = 'graded'
             save()
-            if actual != expected:
-                self.knowledge_snapshot(state, directory, 'unexpected-grade-' + token)
-                raise ValueError(mid + ' expected ' + expected + ', received ' + actual + '; stop before another answer')
-            if not item['worked_solution']:
-                raise ValueError('Revealed worked solution is missing: ' + mid)
-            decision = record['decision']
-            if actual == 'Incorrect':
-                verified = self.solver.solve(item,screenshot,directory / mid,'verify')
-                original = {a['key']:a for a in decision['answers']}
-                for answer in verified['answers']:
-                    first = original[answer['key']]
-                    if normalize(first['correct_value'],first['value_type']) != normalize(answer['correct_value'],answer['value_type']):
-                        raise ValueError('Worked solution contradicts predicted correct answer: ' + mid)
-                record['verification'] = verified
-            # Reviews do not show canonical examples to establish the KP live.
-            # The activity's per-question KP link supplies the mapping later.
-            record['content'] = self.question_content(mid,record,{'id':None,'title':None} if is_review else state['kps'][kp_id])
-            record['finalized'] = True
+            self.finalize_question(state,directory,mid,record)
             save()
             logging.info('%s: %s, captured %d fields',mid,actual,len(record['content']['answer_fields']))
             self.advance(state, directory, token)
+
+    def finalize_question(self, state, directory, mid, record):
+        expected = 'Correct' if record['intended'] == 'C' else 'Incorrect'
+        actual, item = record['actual_result'], record['after']
+        if actual != expected:
+            raise ValueError(mid + ' expected ' + expected + ', received ' + actual + '; stop before another answer')
+        if not item['worked_solution']:
+            raise ValueError('Revealed worked solution is missing: ' + mid)
+        if actual == 'Incorrect' and not record.get('verification'):
+            verified = self.solver.solve(item,Path(directory)/(mid+'-after.png'),Path(directory)/mid,'verify')
+            original = {a['key']:a for a in record['decision']['answers']}
+            for answer in verified['answers']:
+                first = original[answer['key']]
+                if normalize(first['correct_value'],first['value_type']) != normalize(answer['correct_value'],answer['value_type']):
+                    raise ValueError('Worked solution contradicts predicted correct answer: ' + mid)
+            record['verification'] = verified
+        kp = {'id':None,'title':None} if state.get('task_type') == 'review' else state['kps'][record['kp_id']]
+        record['content'] = self.question_content(mid,record,kp)
+        record['finalized'] = True
 
     def enter(self, scope, record):
         answers = {a['key']:a for a in record['decision']['answers']}
@@ -511,6 +541,7 @@ class CaptureBrowser:
             record['history'] = item
             record['content']['worked_solution'] = item['worked_solution']
             record['content']['provenance'] = {'activity_question':q['id'], 'kp_title':title, 'kp_href':q['kp_href']}
+            atomic_json(directory/'state.json',state)
         atomic_json(directory / 'activity-metadata.json',metadata)
         state['history_complete'] = True
         atomic_json(directory / 'state.json',state)
