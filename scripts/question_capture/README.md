@@ -9,8 +9,12 @@ The runner:
 1. Reads unlocked lesson priorities for the selected learner from EDB. Intersects
    them with new lessons actually available in Math Academy's visible queue, then
    takes the highest priority. When no eligible lesson is available, it takes the
-   first new review in the visible queue, then checks the queue again if the batch
-   has remaining capacity. Reviews use queue order, not lesson priority ratings.
+   first new review in the visible queue. If neither is available, it takes the
+   first remaining activity in visible queue order, including an unranked lesson.
+   Already captured tasks and completed lesson topics are skipped.
+   It refreshes and logs the queue after every completed activity, including the
+   last activity allowed by `--limit`, and uses that observation for the next
+   selection. Reviews use queue order, not lesson priority ratings.
    It does not change EDB task priorities or statuses.
 2. Captures each canonical example live. For each KP it randomly chooses
    `C-W-C-W-C` with probability **0.7**, or `W-C-W-C-C` with probability **0.3**.
@@ -89,7 +93,10 @@ activity but previews its database transaction without committing. Default limit
 is one activity; use `--limit N` for a bounded sequential batch. A required review
 counts toward that limit. For example, `--limit 2` permits a review followed by a
 lesson if completing the review makes a ranked lesson available. The queue and
-EDB priorities are read afresh between activities.
+EDB priorities are read afresh between activities. Each observation prints the
+activity titles, types, task/topic IDs, and any lesson priorities. Post-activity
+observations are saved as `queue-after.json` in that activity's capture directory;
+all observations are appended as `queue_observed` events in the local journal.
 
 To use a different Python environment, install `requirements.txt` there and
 install its Playwright Chromium browser if needed. No dependencies were added to

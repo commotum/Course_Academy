@@ -159,6 +159,28 @@ def read_journal(path):
     return entries
 
 
+def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=None, directory=None):
+    priorities = db.priorities(args.learner_id, args.state_dir/'selection')
+    queue = browser.queue()
+    selected = choose_activity(queue, priorities, completed, captured_tasks)
+    observation = {'queue':queue, 'selected':selected,
+                   'unranked_topics':[i['topic_id'] for i in queue
+                                      if i['task_type'] == 'lesson' and i['topic_id'] not in priorities],
+                   'after_task_id':after_task_id}
+    atomic_json(args.state_dir/'selection/queue.json', observation)
+    if directory is not None:
+        atomic_json(directory/'queue-after.json', observation)
+    journal(args.state_dir/'journal.jsonl', 'queue_observed', **observation)
+    logging.info('Available queue%s: %d activities',
+                 ' after task ' + str(after_task_id) if after_task_id is not None else '', len(queue))
+    for position, item in enumerate(queue, 1):
+        priority = priorities.get(item['topic_id']) if item['task_type'] == 'lesson' else None
+        logging.info('  %d. %s %s (task %s, topic %s%s)', position, item['task_type'],
+                     item['title'], item['task_id'], item['topic_id'],
+                     ', priority ' + str(priority) if priority is not None else '')
+    return observation
+
+
 def run(args):
     if args.command=='import-saved':
         content = json.loads(args.content.read_text())
@@ -203,6 +225,7 @@ def run(args):
                     captured_tasks.add(entry['task_id'])
                     if entry.get('task_type','lesson') == 'lesson':
                         completed.add(entry['topic_id'])
+            queue_observation = None
             for n in range(args.limit):
                 if resume_directory and n==0:
                     directory = resume_directory
@@ -214,15 +237,16 @@ def run(args):
                     if not state.get('activity_complete') and not state.get(state['task_type'] + '_complete'):
                         browser.navigate(state.get('activity_url') or state['lesson_url'])
                 else:
-                    priorities = db.priorities(args.learner_id,args.state_dir/'selection')
-                    queue = browser.queue()
-                    activity = choose_activity(queue,priorities,completed,captured_tasks)
-                    atomic_json(args.state_dir/'selection/queue.json',{'queue':queue,'selected':activity,'unranked_topics':[i['topic_id'] for i in queue if i['task_type'] == 'lesson' and i['topic_id'] not in priorities]})
+                    if queue_observation is None:
+                        queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
+                    activity = queue_observation['selected']
                     if not activity:
-                        logging.info('No new ranked lesson or queued review is available. In-progress tasks require explicit --resume.')
+                        logging.info('No new available lesson or review. In-progress tasks require explicit --resume.')
                         break
                     logging.info('Selected %s %s%s',activity['task_type'],activity['title'],
-                                 ': priority %.6f' % activity['priority'] if 'priority' in activity else ': review queue order')
+                                 ': priority %.6f' % activity['priority'] if activity['selection_reason'] == 'priority'
+                                 else ': review queue order' if activity['selection_reason'] == 'review_queue_order'
+                                 else ': next available activity in queue order')
                     if args.dry_run:
                         print(json.dumps(activity,indent=2))
                         break
@@ -253,6 +277,10 @@ def run(args):
                     captured_tasks.add(state['task_id'])
                     if state['task_type'] == 'lesson':
                         completed.add(state['topic_id'])
+                    # Inspect even after the last allowed activity, and retain
+                    # this fresh observation for selecting the next one.
+                    queue_observation = observe_queue(args,db,browser,completed,captured_tasks,
+                                                      state['task_id'],directory)
                     result = db.import_content(content,directory/'edb-import',not args.preview)
                     state['preview_complete' if args.preview else 'import_complete'] = True
                     atomic_json(directory/'state.json',state)
@@ -266,6 +294,9 @@ def run(args):
                         pass
                     journal(log,'stopped',task_id=state['task_id'],directory=str(directory))
                     raise
+                if not queue_observation['selected']:
+                    logging.info('No new available lesson or review. In-progress tasks require explicit --resume.')
+                    break
                 if n+1<args.limit:
                     pacer.wait('lesson','between activities')
                     if args.rest_every and (n+1)%args.rest_every==0:

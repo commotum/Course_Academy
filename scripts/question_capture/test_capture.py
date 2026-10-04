@@ -75,7 +75,20 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(choose_activity(queue,{})['task_id'],1)
         self.assertEqual(choose_activity(queue,{},captured_tasks=[1])['task_id'],2)
         self.assertEqual(choose_activity(queue,{10:4},captured_tasks=[1])['task_id'],3)
-        self.assertIsNone(choose_activity(queue,{},captured_tasks=[1,2]))
+        self.assertEqual(choose_activity(queue,{},captured_tasks=[1,2])['task_id'],3)
+        self.assertIsNone(choose_activity(queue,{},completed_topics=[10],captured_tasks=[1,2]))
+
+    def test_queue_fallback_uses_visible_order_and_skips_completed_captures(self):
+        queue = [{'task_id':1,'topic_id':10,'task_type':'lesson'},
+                 {'task_id':2,'topic_id':20,'task_type':'lesson'},
+                 {'task_id':3,'topic_id':30,'task_type':'lesson'}]
+        selected = choose_activity(queue,{})
+        self.assertEqual((selected['task_id'],selected['selection_reason']),(1,'queue_fallback'))
+        self.assertEqual(choose_activity(queue,{},captured_tasks=[1])['task_id'],2)
+        self.assertEqual(choose_activity(queue,{},completed_topics=[10])['task_id'],2)
+        self.assertEqual(choose_activity(queue,{30:9})['task_id'],3)
+        self.assertIsNone(choose_activity([],{}))
+        self.assertIsNone(choose_activity(queue,{},captured_tasks=[1,2,3]))
 
     def test_reviews_and_lessons_draw_identical_sequences_with_same_weights(self):
         lesson_rng,review_rng=random.Random(42),random.Random(42)
@@ -194,7 +207,7 @@ class RunnerTests(unittest.TestCase):
     def test_required_review_then_lesson_refreshes_queue_and_keeps_lesson_eligible(self):
         selected = []
         queues = iter([[{'task_id':1,'topic_id':2084,'task_type':'review','title':'Review','href':'/tasks/1/topics/2084/review'}],
-                       [{'task_id':2,'topic_id':2084,'task_type':'lesson','title':'Lesson','href':'/tasks/2/topics/2084/lesson'}]])
+                       [{'task_id':2,'topic_id':2084,'task_type':'lesson','title':'Lesson','href':'/tasks/2/topics/2084/lesson'}], []])
         class FixtureBrowser:
             def __init__(self,*args): pass
             def queue(self): return next(queues)
@@ -218,13 +231,54 @@ class RunnerTests(unittest.TestCase):
                  patch('playwright.sync_api.sync_playwright',return_value=runtime),contextlib.redirect_stdout(io.StringIO()):
                 run(args)
             self.assertEqual(selected,['review','lesson'])
-            self.assertEqual(db.priorities.call_count,2)
+            self.assertEqual(db.priorities.call_count,3)
             self.assertEqual(db.import_content.call_count,2)
             self.assertTrue(all(call.args[2] is False for call in db.import_content.call_args_list))
             entries=[json.loads(line) for line in (Path(work)/'state/journal.jsonl').read_text().splitlines()]
             captured=[e for e in entries if e['event']=='activity_captured']
             self.assertEqual([e['task_type'] for e in captured],['review','lesson'])
+            observed=[e for e in entries if e['event']=='queue_observed']
+            self.assertEqual([e['after_task_id'] for e in observed],[None,1,2])
+            first=json.loads((Path(work)/'capture/1/queue-after.json').read_text())
+            last=json.loads((Path(work)/'capture/2/queue-after.json').read_text())
+            self.assertEqual(first['selected']['task_id'],2)
+            self.assertEqual(last['queue'],[])
         context.close.assert_called_once()
+
+    def test_unranked_lesson_runs_and_logs_remaining_queue_at_batch_limit(self):
+        queue = [{'task_id':1,'topic_id':10,'task_type':'lesson','title':'First unranked',
+                  'href':'/tasks/1/topics/10/lesson'},
+                 {'task_id':2,'topic_id':20,'task_type':'lesson','title':'Next unranked',
+                  'href':'/tasks/2/topics/20/lesson'}]
+        selected=[]
+        class FixtureBrowser:
+            def __init__(self,*args): pass
+            def queue(self): return queue if not selected else queue[1:]
+            def start(self,activity): selected.append(activity)
+            def activity(self,state,*args): state['activity_complete']=True
+            def history(self,state,*args): return {'task_id':state['task_id']}
+        db=Mock()
+        db.priorities.return_value={}
+        db.topic.return_value={}
+        db.import_content.return_value={'previewed':True}
+        context=SimpleNamespace(pages=[SimpleNamespace()],close=Mock())
+        runtime=Mock()
+        runtime.__enter__=Mock(return_value=runtime)
+        runtime.__exit__=Mock(return_value=False)
+        runtime.chromium.launch_persistent_context.return_value=context
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--limit','1','--preview','--state-dir',work+'/state','--output',work+'/capture'])
+            with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',FixtureBrowser), \
+                 patch('playwright.sync_api.sync_playwright',return_value=runtime), \
+                 contextlib.redirect_stdout(io.StringIO()),self.assertLogs(level='INFO') as logs:
+                run(args)
+            self.assertEqual([a['task_id'] for a in selected],[1])
+            self.assertEqual(selected[0]['selection_reason'],'queue_fallback')
+            after=json.loads((Path(work)/'capture/1/queue-after.json').read_text())
+            self.assertEqual(after['after_task_id'],1)
+            self.assertEqual(after['selected']['task_id'],2)
+            self.assertTrue(any('Available queue after task 1: 1 activities' in l for l in logs.output))
+            self.assertTrue(any('Next unranked' in l for l in logs.output))
 
 
 class DOMTests(unittest.TestCase):

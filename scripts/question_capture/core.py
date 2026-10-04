@@ -90,13 +90,20 @@ def choose_lesson(queue, priorities, completed_topics=()):
 
 
 def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
-    """Prefer ranked lessons; clear the first queued review when none is available."""
-    available = [item for item in queue if item['task_id'] not in captured_tasks]
+    """Prefer ranked lessons, then reviews, then the next uncaptured queue item."""
+    available = [item for item in queue if item['task_id'] not in captured_tasks and
+                 not (item.get('task_type', 'lesson') == 'lesson' and item['topic_id'] in completed_topics)]
     lesson = choose_lesson(available, priorities, completed_topics)
     if lesson:
-        return {**lesson, 'task_type': 'lesson'}
+        return {**lesson, 'task_type': 'lesson', 'selection_reason': 'priority'}
     # Reviews do not use lesson priorities and do not mark a topic lesson captured.
-    return next((item for item in available if item.get('task_type') == 'review'), None)
+    review = next((item for item in available if item.get('task_type') == 'review'), None)
+    if review:
+        return {**review, 'selection_reason': 'review_queue_order'}
+    if available:
+        return {**available[0], 'task_type': available[0].get('task_type', 'lesson'),
+                'selection_reason': 'queue_fallback'}
+    return None
 
 
 def choose_review_sequence(rng, weight=0.7):

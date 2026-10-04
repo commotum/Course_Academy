@@ -127,7 +127,7 @@ class CaptureBrowser:
             return
 
     def queue(self):
-        self.navigate(LEARN)
+        self.navigate(LEARN, force=True)
         self.page.locator('#incompleteTasks').wait_for(state='attached')
         # Wait for the asynchronous task list, allowing an empty queue.
         self.page.wait_for_timeout(self.args.settle_ms)
