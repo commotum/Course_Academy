@@ -119,11 +119,19 @@ with patch('capture.run',side_effect=RestartWorker(sys.argv[2])):
         with (self.args.state_dir/'capture.lock').open('a') as handle:
             fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
     def test_restarted_batch_keeps_remaining_limit_and_next_break_count(self):
+        self.restarted_batch(22)
+
+    def test_unlimited_default_survives_restart_and_runs_until_queue_exhausted(self):
+        self.assertIsNone(arguments(['run']).limit)
+        self.restarted_batch(None)
+
+    def restarted_batch(self,limit):
         attempted=[];maintenance=[]
         checkpoint=self.root/'batch.json'
-        atomic_json(checkpoint,{'attempted':19,'limit':22,'completed_topics':[], 'captured_tasks':[],
+        atomic_json(checkpoint,{'attempted':19,'limit':limit,'completed_topics':[], 'captured_tasks':[],
                               'rng_state':random.Random(8).getstate(),'next_resume':None})
-        args=arguments(['run','--limit','22','--preview','--state-dir',str(self.args.state_dir),
+        limit_args=[] if limit is None else ['--limit',str(limit)]
+        args=arguments(['run',*limit_args,'--preview','--state-dir',str(self.args.state_dir),
                         '--output',str(self.args.output),'--batch-checkpoint',str(checkpoint),
                         '--lesson-min','0','--lesson-max','0'])
         class Browser:
@@ -141,8 +149,8 @@ with patch('capture.run',side_effect=RestartWorker(sys.argv[2])):
              patch('playwright.sync_api.sync_playwright',return_value=runtime), \
              patch('capture_repair.cooldown',side_effect=lambda args,pacer,batch:maintenance.append(batch)), \
              contextlib.redirect_stdout(io.StringIO()):run(args)
-        self.assertEqual(attempted,[1,2,3])
+        self.assertEqual(attempted,[1,2,3,4] if limit is None else [1,2,3])
         self.assertEqual(len(maintenance),1);self.assertEqual(maintenance[0]['attempted'],20)
-        self.assertEqual(maintenance[0]['limit'],22)
+        self.assertEqual(maintenance[0]['limit'],limit)
 
 if __name__=='__main__':unittest.main()

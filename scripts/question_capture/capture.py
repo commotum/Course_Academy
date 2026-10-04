@@ -3,6 +3,7 @@
 import argparse
 import contextlib
 import fcntl
+import itertools
 import json
 import logging
 import os
@@ -33,7 +34,7 @@ def arguments(argv=None):
     parser.add_argument('--profile',type=Path,help='Dedicated Playwright profile; defaults to STATE_DIR/browser-profile')
     parser.add_argument('--content',type=Path,help='Saved content.json for import-saved')
     parser.add_argument('--resume',type=Path,help='Select a saved run, including a deferred failure; otherwise a single non-deferred unfinished run resumes automatically')
-    parser.add_argument('--limit',type=int,default=1,help='Maximum attempted activities (lessons, reviews, multisteps or eligible assessments); default 1')
+    parser.add_argument('--limit',type=int,help='Maximum attempted activities; default keeps running until no eligible activities remain or interrupted')
     parser.add_argument('--preview',action='store_true',help='Preview EDB writes. With run, MA answers are still submitted.')
     parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting an activity')
     parser.add_argument('--headless',action='store_true',help='Default is a visible Chromium window')
@@ -85,7 +86,7 @@ def arguments(argv=None):
     if (not math.isfinite(args.assessment_time_min) or not math.isfinite(args.assessment_time_max) or
             not 0<=args.assessment_time_min<=args.assessment_time_max<=0.95):
         parser.error('Assessment time fractions must satisfy 0 <= min <= max <= 0.95')
-    if args.limit<1 or args.review_question_limit<1 or args.rest_every<0 or args.timeout_ms<1 or args.solver_timeout<1 or args.import_repair_timeout<1 or args.capture_repair_timeout<1 or args.settle_ms<0 or args.ui_delay_ms<0:
+    if (args.limit is not None and args.limit<1) or args.review_question_limit<1 or args.rest_every<0 or args.timeout_ms<1 or args.solver_timeout<1 or args.import_repair_timeout<1 or args.capture_repair_timeout<1 or args.settle_ms<0 or args.ui_delay_ms<0:
         parser.error('Invalid limit, timeout, or rest frequency')
     if args.command=='import-saved' and not args.content:
         parser.error('import-saved requires --content')
@@ -310,7 +311,8 @@ def run(args):
         return
     batch = json.loads(args.batch_checkpoint.read_text()) if args.batch_checkpoint else {}
     start_n = batch.get('attempted',0)
-    if batch and (batch.get('limit')!=args.limit or not 0<=start_n<=args.limit):
+    if batch and (batch.get('limit')!=args.limit or start_n<0 or
+                  args.limit is not None and start_n>args.limit):
         raise ValueError('Maintenance checkpoint does not match the batch limit')
     if batch and start_n==args.limit:
         logging.info('Maintenance checkpoint reached the activity limit; batch is complete.')
@@ -364,7 +366,8 @@ def run(args):
             if deferred:
                 logging.info('Skipping deferred activities until explicit --resume: %s',deferred)
             queue_observation = None
-            for n in range(start_n,args.limit):
+            attempts = itertools.count(start_n) if args.limit is None else range(start_n,args.limit)
+            for n in attempts:
                 pacer.check_stop()
                 directory, state, phase = None, None, 'queue'
                 try:
@@ -482,7 +485,7 @@ def run(args):
                 if queue_observation is not None and not queue_observation['selected']:
                     logging.info('No eligible activity. Optional assessments remain queued; deferred/in-progress tasks require explicit --resume.')
                     break
-                if n+1<args.limit:
+                if args.limit is None or n+1<args.limit:
                     pacer.wait('lesson','between activities')
                     if args.rest_every and (n+1)%args.rest_every==0:
                         from capture_repair import cooldown

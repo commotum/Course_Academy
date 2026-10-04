@@ -229,8 +229,9 @@ optional and depends on that helper's browser/decryption dependencies.
 
 `run` **answers questions on Math Academy and commits EDB content by default**.
 `--dry-run` only inspects the queue and priorities. `--preview` still takes the
-activity but previews its database transaction without committing. Default limit
-is one activity; use `--limit N` for a bounded sequential batch. A required review or assessment
+activity but previews its database transaction without committing. By default,
+the runner keeps going until no eligible activities remain or you interrupt it;
+use `--limit N` for a bounded sequential batch. A required review or assessment
 counts toward that limit. For example, `--limit 2` permits a review followed by a
 lesson if completing the review makes a ranked lesson available. The queue and
 EDB priorities are read afresh between activities. Each observation prints the
