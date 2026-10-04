@@ -396,7 +396,7 @@ async function loadHome(signal, preserve) {
     document.title = 'Study · Course Academy';
     const head = el('div', 'page-heading');
     const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Next up'), el('p', 'subheading', isDeveloperMode() ? 'Preview activities without starting an attempt or recording progress.' : 'Pick an activity to continue building your knowledge.'));
-    head.append(intro, actionButton('Refresh ↻', 'small-button', home));
+    head.append(intro);
     $('main').append(head);
     const queue = el('section', 'queue'); queue.setAttribute('aria-label', 'Next five activities');
     const activities = (data.activities || []).slice(0, 5);
@@ -837,15 +837,23 @@ function pauseWhenHidden({ unloading = false } = {}) {
     .finally(() => { pendingPause = null; if (!document.hidden) void syncAfterVisibility(); });
   return pendingPause;
 }
+function refreshPageOnReturn() {
+  if (document.hidden || modeChanging) return;
+  if (task) {
+    if (isDeveloperMode()) return;
+    refreshAfterVisibility = true;
+    return syncAfterVisibility();
+  }
+  // Keep the list visible during the request and avoid interrupting a lesson
+  // that is still opening. home() shares any already-running queue request.
+  if (!busy) return home({ preserve: true });
+}
 document.addEventListener('visibilitychange', () => {
-  if (isDeveloperMode() || modeChanging) return;
-  if (document.hidden) pauseWhenHidden();
-  else if (task) { refreshAfterVisibility = true; void syncAfterVisibility(); }
-  else if (!homeRendered && !busy) void home();
+  if (document.hidden) pauseWhenHidden(); else void refreshPageOnReturn();
 });
 window.addEventListener('pagehide', () => pauseWhenHidden({ unloading: true }));
 window.addEventListener('pageshow', event => {
-  if (event.persisted && task && !isDeveloperMode()) { refreshAfterVisibility = true; void syncAfterVisibility(); }
+  if (event.persisted) void refreshPageOnReturn();
 });
 
 const initialParams = new URL(location.href).searchParams;

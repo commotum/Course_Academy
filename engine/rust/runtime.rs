@@ -211,8 +211,7 @@ fn question(snapshot: &EntitySnapshot, item: &Entity) -> Result<bool> {
     Ok(match content_id(snapshot, item)? {
         Some(content) => {
             let record = snapshot.entity(content)?;
-            record.contains_key("question/id")
-                && !snapshot.is_example(content)
+            record.contains_key("question/id") && !snapshot.is_example(content)
         }
         None => false,
     })

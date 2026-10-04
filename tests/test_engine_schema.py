@@ -64,6 +64,18 @@ def loaded(data=None, history=None):
 
 
 class SchemaTests(unittest.TestCase):
+    def test_canonical_reference_defines_role_and_solution_presence_does_not(self):
+        data = records()
+        data[14] = {'question/id': identity(14), 'question/worked-solution': 'Demonstration.'}
+        data[7]['knowledge-point/canonical-example'] = 14
+        data[8]['question/worked-solution'] = 'Practice feedback.'
+        snapshot = EntitySnapshot(data, 31)
+        self.assertTrue(snapshot.is_example(14))
+        self.assertFalse(snapshot.is_example(8))
+        data[7]['knowledge-point/questions'].append(14)
+        with self.assertRaisesRegex(ValueError, 'canonical examples'):
+            EntitySnapshot(data, 31).knowledge_points_for_question(14)
+
     def test_status_history_is_required_for_timing_and_validates_transaction_evidence(self):
         data = records()
         without_history = loaded(data, history=[])

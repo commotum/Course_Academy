@@ -112,13 +112,24 @@ fn profile_settings_validate_and_pause_a_lesson_atomically() -> Result<()> {
     let mut f = Fixture::new()?;
     let current = "00000000-0000-4000-8000-000000000001";
     let other = "00000000-0000-4000-8000-000000000030";
-    f.db = f.db.with_edn(&format!(r#"[{{:db/id "other" :course/id #uuid "{other}" :course/title "Other course"}}]"#), 1500)?.db_after;
+    f.db =
+        f.db.with_edn(
+            &format!(
+                r#"[{{:db/id "other" :course/id #uuid "{other}" :course/title "Other course"}}]"#
+            ),
+            1500,
+        )?
+        .db_after;
     let s = f.snapshot()?;
     let at = DateTime::from_timestamp_millis(3000).unwrap();
     let plan = |body: Json| super::super::mutate(&s, f.learner, "profile-settings", &body, at);
     assert!(plan(json!({"courseId":"missing","selfDirected":true})).is_err());
     assert!(plan(json!({"courseId":other,"selfDirected":"true"})).is_err());
-    assert!(plan(json!({"courseId":current,"selfDirected":false}))?.0.is_empty());
+    assert!(
+        plan(json!({"courseId":current,"selfDirected":false}))?
+            .0
+            .is_empty()
+    );
     let (forms, _) = plan(json!({"courseId":other,"selfDirected":true}))?;
     f.db = f.db.with_edn(&schema::edn(&json!(forms))?, 3000)?.db_after;
     let saved = f.snapshot()?;
@@ -126,9 +137,15 @@ fn profile_settings_validate_and_pause_a_lesson_atomically() -> Result<()> {
     assert_eq!(profile["course"]["id"], other);
     assert_eq!(profile["learner"]["selfDirected"], true);
     assert_eq!(profile["courses"].as_array().unwrap().len(), 2);
-    assert_eq!(status(&saved, f.lesson_task, "learner-task/status")?, "paused");
+    assert_eq!(
+        status(&saved, f.lesson_task, "learner-task/status")?,
+        "paused"
+    );
     assert_eq!(status(&saved, f.lesson_item, "task-item/status")?, "paused");
-    assert_eq!(number(&saved, f.lesson_item, "task-item/elapsed-seconds"), 2.0);
+    assert_eq!(
+        number(&saved, f.lesson_item, "task-item/elapsed-seconds"),
+        2.0
+    );
     assert_eq!(saved.entity(f.progress)?, s.entity(f.progress)?);
     Ok(())
 }
@@ -136,7 +153,9 @@ fn profile_settings_validate_and_pause_a_lesson_atomically() -> Result<()> {
 #[test]
 fn study_course_projects_reverse_group_membership_without_level_schema() -> Result<()> {
     let mut f = Fixture::new()?;
-    f.db = f.db.with_edn(include_str!("../schema/data/1-1-course-group.edn"), 1500)?.db_after;
+    f.db =
+        f.db.with_edn(include_str!("../schema/data/1-1-course-group.edn"), 1500)?
+            .db_after;
     f.db = f.db.with_edn(r#"[
       {:course-group/id #uuid "00000000-0000-4000-8000-000000000050" :course-group/title "University"
        :course-group/courses [[:course/id #uuid "00000000-0000-4000-8000-000000000001"]]}
@@ -158,15 +177,25 @@ fn profile_settings_pause_assignment_timing_and_preserve_work() -> Result<()> {
     let s = f.focus(f.first, 2000)?;
     let task = task_for(&s, f.learner, f.activity)?.unwrap();
     let before_items = items(&s, task)?;
-    let (forms, _) = super::super::mutate(&s, f.learner, "profile-settings",
+    let (forms, _) = super::super::mutate(
+        &s,
+        f.learner,
+        "profile-settings",
         &json!({"courseId":"00000000-0000-4000-8000-000000000001","selfDirected":true}),
-        DateTime::from_timestamp_millis(4000).unwrap())?;
+        DateTime::from_timestamp_millis(4000).unwrap(),
+    )?;
     f.db = f.db.with_edn(&schema::edn(&json!(forms))?, 4000)?.db_after;
     let saved = f.snapshot()?;
     assert_eq!(items(&saved, task)?, before_items);
     assert_eq!(status(&saved, task, "learner-task/status")?, "paused");
-    assert_eq!(status(&saved, before_items[0], "task-item/status")?, "paused");
-    assert_eq!(number(&saved, before_items[0], "task-item/elapsed-seconds"), 2.0);
+    assert_eq!(
+        status(&saved, before_items[0], "task-item/status")?,
+        "paused"
+    );
+    assert_eq!(
+        number(&saved, before_items[0], "task-item/elapsed-seconds"),
+        2.0
+    );
     Ok(())
 }
 

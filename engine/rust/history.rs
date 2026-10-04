@@ -619,7 +619,7 @@ mod tests {
     #[test]
     fn real_history_preserves_unknowns_and_join_coverage() {
         let audit = audit();
-        assert_eq!(audit["summary"]["activities"], 217);
+        assert_eq!(audit["summary"]["activities"], 219);
         assert_eq!(audit["summary"]["observed_tasks"], 34);
         assert_eq!(audit["summary"]["observed_questions"], 308);
         assert_eq!(audit["summary"]["correct_questions"], 205);
@@ -628,7 +628,7 @@ mod tests {
             70
         );
         assert_eq!(audit["summary"]["join_issue_count"], 0);
-        assert_eq!(audit["summary"]["snapshot_row_count_delta"], 3);
+        assert_eq!(audit["summary"]["snapshot_row_count_delta"], 5);
         assert_eq!(audit["summary"]["observation_snapshot_hash_matches"], false);
         for activity in audit["activities"].as_array().unwrap() {
             assert!(activity["fire_outcome"].is_null());
@@ -639,7 +639,7 @@ mod tests {
         assert_eq!(question["events"].as_array().unwrap().len(), 70);
         assert_eq!(
             question["omitted_task_counts"],
-            json!({"unobserved_task":183,"unmapped_or_conflicting_task":23})
+            json!({"unobserved_task":185,"unmapped_or_conflicting_task":23})
         );
         let zeros: Vec<_> = question["events"]
             .as_array()

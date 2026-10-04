@@ -92,21 +92,29 @@ def choose_sequence(rng, weight=0.7):
     return 'CWCWC' if rng.random() < weight else 'WCWCC'
 
 
-def choose_lesson(queue, priorities, completed_topics=()):
+def choose_topic_activity(queue, priorities, completed_topics=()):
+    """Rank lessons and reviews together by their topic's capture priority."""
     candidates = []
     for item in queue:
-        if item.get('task_type', 'lesson') != 'lesson':
+        kind = item.get('task_type', 'lesson')
+        if kind not in ('lesson', 'review'):
             continue
-        if item['topic_id'] in completed_topics:
+        if kind == 'lesson' and item['topic_id'] in completed_topics:
             continue
         priority = priorities.get(item['topic_id'])
         if priority is not None and math.isfinite(priority):
             candidates.append({**item, 'priority': priority})
-    return max(candidates, key=lambda i: (i['priority'], -i['topic_id']), default=None)
+    return max(candidates, key=lambda i: (i['priority'], -i['topic_id'],
+                                         i.get('task_type', 'lesson') == 'lesson'), default=None)
+
+
+def choose_lesson(queue, priorities, completed_topics=()):
+    return choose_topic_activity([i for i in queue if i.get('task_type', 'lesson') == 'lesson'],
+                                 priorities, completed_topics)
 
 
 def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
-    """Required assessments and quiz retakes first, then lessons/reviews/queue order."""
+    """Required assessments/retakes first, then ranked lessons/reviews and queue order."""
     tests = [item for item in queue if item.get('task_type') == 'assessment' and
              not item.get('in_progress') and item['task_id'] not in captured_tasks]
     required = next((item for item in tests if item.get('assessment_requirement') == 'required' and
@@ -121,10 +129,10 @@ def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
                  item.get('capture_supported',True) and not item.get('in_progress',False) and
                  item['task_id'] not in captured_tasks and
                  not (item.get('task_type', 'lesson') == 'lesson' and item['topic_id'] in completed_topics)]
-    lesson = choose_lesson(available, priorities, completed_topics)
-    if lesson:
-        return {**lesson, 'task_type': 'lesson', 'selection_reason': 'priority'}
-    # Reviews do not use lesson priorities and do not mark a topic lesson captured.
+    ranked = choose_topic_activity(available, priorities, completed_topics)
+    if ranked:
+        return {**ranked, 'task_type': ranked.get('task_type', 'lesson'), 'selection_reason': 'priority'}
+    # Unscored reviews retain queue order and never mark a topic lesson captured.
     review = next((item for item in available if item.get('task_type') == 'review'), None)
     if review:
         return {**review, 'selection_reason': 'review_queue_order'}

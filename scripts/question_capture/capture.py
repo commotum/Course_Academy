@@ -180,17 +180,17 @@ def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=No
     queue = browser.queue()
     retry_policy = update_policy(args.state_dir,getattr(browser,'completed_outcomes',()))
     priorities = db.priorities(args.learner_id,args.state_dir/'selection',
-                              topic_ids=[i['topic_id'] for i in queue if i['task_type']=='lesson' and i['topic_id'] is not None],
+                              topic_ids=[i['topic_id'] for i in queue if i['task_type'] in ('lesson','review') and i['topic_id'] is not None],
                               knowledge_snapshot=previous_activity_snapshot(args))
     retry_topics = {int(key.split(':')[1]) for key in retry_policy['pending'] if key.startswith('lesson:')}
     selected = apply_policy(choose_activity(queue, priorities,set(completed)-retry_topics,captured_tasks),retry_policy)
     observation = {'queue':queue, 'selected':selected,'completed_outcomes':getattr(browser,'completed_outcomes',[]),
                    'perfect_retakes_pending':retry_policy['pending'],
                    'unranked_topics':[i['topic_id'] for i in queue
-                                      if i['task_type'] == 'lesson' and i['topic_id'] not in priorities],
+                                      if i['task_type'] in ('lesson','review') and i['topic_id'] not in priorities],
                    'after_task_id':after_task_id,
                    'priority_scores':{i['topic_id']:priorities[i['topic_id']] for i in queue
-                                      if i['task_type']=='lesson' and i['topic_id'] in priorities}}
+                                      if i['task_type'] in ('lesson','review') and i['topic_id'] in priorities}}
     atomic_json(args.state_dir/'selection/queue.json', observation)
     if directory is not None:
         atomic_json(directory/'queue-after.json', observation)
@@ -198,7 +198,7 @@ def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=No
     logging.info('Available queue%s: %d activities',
                  ' after task ' + str(after_task_id) if after_task_id is not None else '', len(queue))
     for position, item in enumerate(queue, 1):
-        priority = priorities.get(item['topic_id']) if item['task_type'] == 'lesson' else None
+        priority = priorities.get(item['topic_id']) if item['task_type'] in ('lesson','review') else None
         logging.info('  %d. %s %s (task %s, topic %s%s)%s', position, item['task_type'],
                      item['title'], item['task_id'], item['topic_id'],
                      ', priority ' + str(priority) if priority is not None else '',

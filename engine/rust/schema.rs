@@ -203,8 +203,13 @@ impl EntitySnapshot {
         Ok(())
     }
     fn example_targets(entities: &BTreeMap<u64, Record>) -> BTreeSet<u64> {
-        entities.values()
-            .filter_map(|record| record.get("knowledge-point/canonical-example").and_then(Value::as_u64))
+        entities
+            .values()
+            .filter_map(|record| {
+                record
+                    .get("knowledge-point/canonical-example")
+                    .and_then(Value::as_u64)
+            })
             .collect()
     }
     /// The projection must include every canonical-example reference at this basis.
@@ -782,9 +787,7 @@ fn check_responses(
         return Ok(vec![]);
     }
     let q = s.reference(item, "task-item/content")?;
-    if !s.types(q)?.contains("question")
-        || s.is_example(q)
-    {
+    if !s.types(q)?.contains("question") || s.is_example(q) {
         return Err("only ordinary question items carry responses".into());
     }
     let fields = s.refs(q, "question/answer-fields")?;
@@ -856,8 +859,7 @@ pub fn completion_transaction(
         return Err("completion requires terminal item status".into());
     }
     let content = s.reference(item, "task-item/content")?;
-    let is_gradable = s.types(content)?.contains("question")
-        && !s.is_example(content);
+    let is_gradable = s.types(content)?.contains("question") && !s.is_example(content);
     if is_gradable == (terminal_name == "task-item.status/completed") {
         return Err("item terminal status does not match its content".into());
     }
@@ -1267,6 +1269,40 @@ pub(crate) fn writeback(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn canonical_references_define_example_roles_and_refresh_with_the_basis() {
+        let mut snapshot = EntitySnapshot::from_json(&json!({
+            "basis_t": 10, "entities": {
+                "1": {"knowledge-point/id": "kp", "knowledge-point/canonical-example": 2},
+                "2": {"question/id": "example", "question/worked-solution": "Solution"},
+                "3": {"question/id": "practice", "question/worked-solution": "Also a solution"},
+                "4": {"knowledge-point/id": "other", "knowledge-point/questions": [2,3]}
+            }
+        }))
+        .unwrap();
+        assert!(snapshot.is_example(2));
+        assert!(!snapshot.is_ordinary_question(2).unwrap());
+        assert!(snapshot.is_ordinary_question(3).unwrap());
+        assert!(snapshot.knowledge_points_for_question(2).is_err());
+        snapshot
+            .replace_records(
+                BTreeMap::from([(
+                    1,
+                    json!({"knowledge-point/id": "kp", "knowledge-point/canonical-example": 3})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                )]),
+                11,
+            )
+            .unwrap();
+        assert!(!snapshot.is_example(2));
+        assert!(snapshot.is_example(3));
+        snapshot
+            .replace_records(BTreeMap::from([(1, Record::new())]), 12)
+            .unwrap();
+        assert!(!snapshot.is_example(3));
+    }
     #[test]
     fn replacing_projection_records_removes_retracted_attributes_and_deleted_entities() {
         let mut snapshot = EntitySnapshot::from_json(&json!({

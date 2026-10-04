@@ -501,7 +501,9 @@ function pauseWhenHidden(unloading = false) {
   return work;
 }
 async function syncAfterVisibility() {
-  if (isDeveloperMode() || modeChanging || !assignmentData) return;
+  if (document.hidden || modeChanging) return;
+  if (!new URL(location.href).searchParams.has('assignment')) return load({ preserve: true });
+  if (isDeveloperMode() || !assignmentData) return;
   unloadPauseSent = false;
   if (pendingPause) await pendingPause;
   if (mutationPending) await mutationPending;
@@ -573,7 +575,7 @@ function renderList(data) {
     const option = el('option', '', title); option.value = value; sort.append(option);
   }
   sort.value = assignmentSortPreference(); sortLabel.htmlFor = sort.id; sortLabel.append(sort);
-  controls.append(sortLabel, button('Refresh ↻', 'small-button', load)); head.append(intro, controls);
+  controls.append(sortLabel); head.append(intro, controls);
   const content = el('div', 'assignment-list-content');
   const assignments = data.assignments || [];
   const pending = assignments.filter(assignment => short(assignment.status) !== 'completed');

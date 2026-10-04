@@ -26,7 +26,7 @@ class LiveHistoryTests(unittest.TestCase):
         self.assertEqual(summary["source_conflict_count"], 0)
         self.assertEqual(summary["union_question_occurrences"], 396)
         self.assertEqual(summary["union_observed_task_ids"], 39)
-        self.assertEqual(summary["union_progress_and_live_task_ids"], 218)
+        self.assertEqual(summary["union_progress_and_live_task_ids"], 220)
         self.assertEqual(summary["additional_prior_occurrences_with_task_topic_scope_only"], 67)
         self.assertTrue(self.audit["graph_snapshot_audit"]["checksum_verified"])
 

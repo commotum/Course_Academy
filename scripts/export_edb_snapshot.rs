@@ -16,23 +16,44 @@ use std::path::PathBuf;
 
 fn uuid_string(value: u128) -> String {
     let hex = format!("{value:032x}");
-    format!("{}-{}-{}-{}-{}", &hex[..8], &hex[8..12], &hex[12..16], &hex[16..20], &hex[20..])
+    format!(
+        "{}-{}-{}-{}-{}",
+        &hex[..8],
+        &hex[8..12],
+        &hex[12..16],
+        &hex[16..20],
+        &hex[20..]
+    )
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut args = env::args_os().skip(1);
-    let source = args.next().ok_or("usage: export_edb_snapshot [--database NAME | BACKUP_DIR] OUTPUT.jsonl")?;
+    let source = args
+        .next()
+        .ok_or("usage: export_edb_snapshot [--database NAME | BACKUP_DIR] OUTPUT.jsonl")?;
     let live = source == "--database";
-    let source = if live { args.next().ok_or("database name required")? } else { source };
+    let source = if live {
+        args.next().ok_or("database name required")?
+    } else {
+        source
+    };
     let backup = PathBuf::from(&source);
-    let output = PathBuf::from(args.next().ok_or("usage: export_edb_snapshot BACKUP_DIR OUTPUT.jsonl")?);
+    let output = PathBuf::from(
+        args.next()
+            .ok_or("usage: export_edb_snapshot BACKUP_DIR OUTPUT.jsonl")?,
+    );
     if args.next().is_some() {
         return Err("usage: export_edb_snapshot BACKUP_DIR OUTPUT.jsonl".into());
     }
     let manifest = output.with_extension("manifest.json");
     let staging = output.with_extension("jsonl.tmp");
     let db = if live {
-        Peer::connect_configured(&postgres_config_from_env()?, source.to_str().ok_or("invalid database name")?, 256)?.db()
+        Peer::connect_configured(
+            &postgres_config_from_env()?,
+            source.to_str().ok_or("invalid database name")?,
+            256,
+        )?
+        .db()
     } else {
         BackupConnection::open(&backup)?.db()
     };
@@ -47,7 +68,11 @@ fn main() -> Result<(), Box<dyn Error>> {
             .ident(datom.attribute as u64)
             .ok_or_else(|| format!("attribute {} has no ident", datom.attribute))?;
         let name = attr.qualified_name();
-        if attr.namespace.as_deref().is_some_and(|ns| ns == "db" || ns.starts_with("db.")) {
+        if attr
+            .namespace
+            .as_deref()
+            .is_some_and(|ns| ns == "db" || ns.starts_with("db."))
+        {
             skipped_builtin += 1;
             continue;
         }
@@ -56,7 +81,9 @@ fn main() -> Result<(), Box<dyn Error>> {
             Value::Ref(target) => Some(*target),
             _ => None,
         };
-        let ref_ident = ref_eid.and_then(|eid| db.ident(eid)).map(|ident| ident.qualified_name());
+        let ref_ident = ref_eid
+            .and_then(|eid| db.ident(eid))
+            .map(|ident| ident.qualified_name());
         let raw_string = match &datom.value {
             Value::String(value) => Some(value.as_str()),
             _ => None,
@@ -94,6 +121,9 @@ fn main() -> Result<(), Box<dyn Error>> {
             "attribute_counts": counts,
         }))?,
     )?;
-    println!("exported {exported} domain datoms at basis {basis_t} to {}", output.display());
+    println!(
+        "exported {exported} domain datoms at basis {basis_t} to {}",
+        output.display()
+    );
     Ok(())
 }

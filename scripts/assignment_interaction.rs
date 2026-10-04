@@ -542,9 +542,7 @@ pub(super) fn mutate(
     // completion or credit from the mapped topics or a partial import.
     let complete = route
         .iter()
-        .filter(|entry| {
-            !s.is_example(entry.question)
-        })
+        .filter(|entry| !s.is_example(entry.question))
         .all(|entry| {
             gradable(s, entry.question)
                 && presentations.get(&entry.step).is_some_and(|other| {

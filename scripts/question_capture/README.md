@@ -13,16 +13,16 @@ The editor code and answer interactions remain the site's original code.
 The runner:
 
 1. Reads existing lesson scores without filtering personal task status, and
-   calculates directed scores for offered lesson topics from your study targets
+   calculates directed scores for offered lesson and review topics from your study targets
    and assignment mappings, even if no personal task exists. The scoring follows
    `engine/rust/learning.rs`: target reach, remaining prerequisite work, distance
    to targets, and assignment deadlines. The capture account's latest knowledge
    snapshot determines which branches need further preparation; it never credits
    that work to your personal learner. Curriculum and target configuration are
    read once per invocation at one database basis. The runner takes the highest
-   score among new lessons actually available in Math Academy's visible queue.
-   When no eligible lesson is available, it takes the
-   first new review in the visible queue. If neither is available, it takes the
+   score among eligible lessons and reviews actually available in Math Academy's visible queue.
+   When no scored activity is available, it takes the
+   first new review in the visible queue. If no review is available, it takes the
    first remaining activity in visible queue order, including an unranked lesson.
    Already captured tasks and completed lesson topics are skipped.
    It refreshes and logs the queue after every completed activity, including the
@@ -43,8 +43,11 @@ The runner:
    This is checked again before Start; other unknown layouts stop before starting.
    Multisteps are supported in the remaining queue order, including their task
    and multistep IDs and original queue card HTML.
-   in-progress captures require explicit recovery. Reviews use queue order, not
-   lesson priority ratings. `selection/capture-priorities.json` records score
+   In-progress captures require explicit recovery. Lessons and reviews compete
+   by topic capture priority; the highest scored eligible activity is selected.
+   Equal scores prefer the lower topic ID, then a lesson over a review of that
+   same topic. Unscored reviews retain queue order as a fallback.
+   `selection/capture-priorities.json` records score
    components and the snapshot/configuration basis used.
    It does not change EDB task priorities or statuses.
 2. Captures each canonical example live. For each KP it randomly chooses

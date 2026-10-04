@@ -187,13 +187,16 @@ fn assignment(s: &EntitySnapshot, learner: u64, activity: u64, detail: bool) -> 
     // Prefer the latest real status assertion. Merely opening this view never
     // manufactures a status, task, answer, or learner timing record.
     let task = super::assignment_interaction::latest_task(s, learner, activity)?;
-    let course = s.optional_ref(activity, "activity/course")?.map(|course| -> Result<Json> {
-        Ok(json!({
-            "id": identity(s, course, "course/id")?,
-            "entityId": course,
-            "title": text(s, course, "course/title"),
-        }))
-    }).transpose()?;
+    let course = s
+        .optional_ref(activity, "activity/course")?
+        .map(|course| -> Result<Json> {
+            Ok(json!({
+                "id": identity(s, course, "course/id")?,
+                "entityId": course,
+                "title": text(s, course, "course/title"),
+            }))
+        })
+        .transpose()?;
     let mut value = json!({
         "id": identity(s, activity, "activity/id")?,
         "entityId": activity,
@@ -311,7 +314,10 @@ mod tests {
             ["earlier", "later", "undated"]
         );
         assert_eq!(list["assignments"][0]["due"], "2026-10-03T06:59:59.000Z");
-        assert_eq!(list["assignments"][0]["course"], json!({"id":"science","entityId":6,"title":"Science"}));
+        assert_eq!(
+            list["assignments"][0]["course"],
+            json!({"id":"science","entityId":6,"title":"Science"})
+        );
         assert_eq!(list["assignments"][1]["course"]["id"], "course");
         assert!(list["assignments"][2]["course"].is_null());
         assert_eq!(list["assignments"][0]["problemCount"], 1);

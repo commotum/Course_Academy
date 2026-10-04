@@ -17,6 +17,10 @@ from pathlib import Path
 SOURCE = Path('.local/edb/content-migration/source-datoms.jsonl')
 OUTPUT = Path('.local/edb/content-migration/fresh-plan')
 RENAMES = {
+    'sequence/id': 'course-group/id',
+    'sequence/title': 'course-group/title',
+    'sequence/courses': 'course-group/courses',
+    'sequence/next': 'course-group/next',
     'example/id': 'question/id',
     'example/problem': 'question/problem',
     'example/explanation': 'question/worked-solution',
@@ -146,7 +150,7 @@ def assert_schema_types():
     text = '\n'.join(path.read_text() for path in Path('schema').glob('*/*.edn'))
     required = {
         'question/id': 'uuid', 'question/math-academy-id': 'string',
-        'question/is-example': 'boolean', 'question/worked-solution': 'string',
+        'question/worked-solution': 'string',
         'answer-field/type': 'ref', 'answer-field/choices': 'ref',
         'answer-field/correct': 'ref', 'knowledge-point/canonical-example': 'ref',
     }
@@ -186,7 +190,7 @@ def batch_write(output, prefix, forms, max_items):
 def build(source, output):
     entities, source_counts = read_source(source)
     manifest = json.loads(source.with_suffix('.manifest.json').read_text())
-    assert len(entities) == 187_389 and sum(source_counts.values()) == manifest['domain_datoms']
+    assert sum(source_counts.values()) == manifest['domain_datoms']
     assert dict(source_counts) == manifest['attribute_counts']
     assert not any(name.startswith(('learner/', 'learner-task/', 'task-item/', 'learner-response/'))
                    for name in source_counts), 'This snapshot unexpectedly contains learner data'
@@ -196,7 +200,7 @@ def build(source, output):
     remap, duplicate_groups, field_owner, missing_correct = duplicate_answers(entities, identity, feedback_by_uuid)
     known = schema_attrs()
     assert_schema_types()
-    assert all(name in known for name in {'question/is-example', 'question/worked-solution', 'answer-field/type', 'answer-field/choices', 'answer-field/correct', 'knowledge-point/canonical-example'})
+    assert all(name in known for name in {'question/worked-solution', 'answer-field/type', 'answer-field/choices', 'answer-field/correct', 'knowledge-point/canonical-example'})
     assert 'example/id' not in known and 'question/type' not in known
     source_allowed = known | set(RENAMES) | {'question/type'}
     assert not (set(source_counts) - source_allowed), sorted(set(source_counts) - source_allowed)
@@ -245,10 +249,8 @@ def build(source, output):
                 else:
                     refs[eid][attr].add(remap.get(row['ref_eid'], row['ref_eid']))
         if 'example/id' in rows:
-            scalars[eid]['question/is-example'].add('true')
             assert 'question/worked-solution' in scalars[eid] and 'question/answer-fields' not in refs[eid]
         elif 'question/id' in rows:
-            scalars[eid]['question/is-example'].add('false')
             assert 'question/answer-fields' in refs[eid]
         if 'answer-field/id' in rows:
             scalars[eid]['answer-field/type'].add(':' + derived_types[eid])
@@ -279,7 +281,7 @@ def build(source, output):
             assert len(values) == 1, (eid, attr, values)
     ma_ids = [next(iter(attributes['question/math-academy-id'])) for attributes in scalars.values()
               if 'question/math-academy-id' in attributes]
-    assert len(ma_ids) == len(set(ma_ids)) == 29_274
+    assert len(ma_ids) == len(set(ma_ids)) == source_counts['question/math-academy-id'] + source_counts['example/math-academy-id']
     for eid, attributes in refs.items():
         for attr, targets in attributes.items():
             assert all(target in identity and target not in remap for target in targets), (eid, attr, targets)
@@ -312,10 +314,10 @@ def build(source, output):
                 canonical.add((id_attr, id_uuid, attr, value))
                 target_counts[attr] += 1
     assert len(canonical) == sum(target_counts.values())
-    assert target_counts['question/id'] == target_counts['question/is-example'] == 29_282
-    assert target_counts['question/worked-solution'] == 9_665
-    assert target_counts['answer-field/choices'] == target_counts['answer/id'] == 95_445
-    assert target_counts['knowledge-point/canonical-example'] == 9_636
+    assert target_counts['question/id'] == source_counts['question/id'] + source_counts['example/id']
+    assert target_counts['question/worked-solution'] == source_counts['question/explanation'] + source_counts['example/explanation']
+    assert target_counts['answer-field/choices'] == target_counts['answer/id'] == source_counts['answer/id'] - len(remap)
+    assert target_counts['knowledge-point/canonical-example'] == source_counts['knowledge-point/example']
     assert not any(name.startswith('example/') for name in target_counts)
     assert 'question/type' not in target_counts
     scalar_batches = batch_write(output, 'scalar', scalar_forms, MAX_SCALAR_ENTITIES)

@@ -128,7 +128,10 @@ fn section_content(facts: &Facts, content: u64) -> Result<Option<(&'static str, 
             title(facts, content, "knowledge-point"),
         )));
     }
-    if facts.keys().any(|kp| refs(facts, *kp, "knowledge-point/canonical-example").contains(&content)) {
+    if facts
+        .keys()
+        .any(|kp| refs(facts, *kp, "knowledge-point/canonical-example").contains(&content))
+    {
         return Ok(Some(("example", content, "Worked example".into())));
     }
     if scalar(facts, content, "question/id").is_some() {

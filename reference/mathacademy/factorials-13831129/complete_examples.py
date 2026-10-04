@@ -52,14 +52,16 @@ def canonical(value):
 
 
 def build(local):
-    before = question_map(read_edn(local / 'content-before.edn')[0][0])
+    topic = read_edn(local / 'content-before.edn')[0][0]
+    examples = {kp[':knowledge-point/canonical-example'][':question/math-academy-id'] for kp in topic[':topic/knowledge-points']}
+    before = question_map(topic)
     forms, notes = [], []
     for key, (difficulty, reason) in RATINGS.items():
         assert ':question/difficulty' not in before[key], key
         attrs = [':db/id [:question/math-academy-id ' + quote(key) + ']',
                  ':question/difficulty :question.difficulty/' + difficulty]
         if key in EXAMPLES:
-            assert before[key][':question/is-example'] is True
+            assert key in examples
             assert not before[key].get(':question/answer-fields')
             spec = EXAMPLES[key]
             values = [spec['correct'], *[v for v, _ in spec['distractors']]]
@@ -103,6 +105,7 @@ def verify(local):
     old_topic = read_edn(local / 'content-before.edn')[0][0]
     new_topic = read_edn(local / 'content-after.edn')[0][0]
     before, after = question_map(old_topic), question_map(new_topic)
+    examples = {kp[':knowledge-point/canonical-example'][':question/math-academy-id'] for kp in new_topic[':topic/knowledge-points']}
     assert set(before) == set(after) and len(after) == 16
     owned = {}
     for key, q in after.items():
@@ -151,7 +154,7 @@ def verify(local):
               'learner_and_engine_facts_unchanged': True, 'protected_facts_count': len(old_protected),
               'protected_facts_sha256': facts_hash(old_protected),
               'practice_questions_still_without_worked_solution': sorted(k for k, q in after.items()
-                  if not q[':question/is-example'] and not q.get(':question/worked-solution'))}
+                  if k not in examples and not q.get(':question/worked-solution'))}
     (ROOT / 'completion-verification.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps(result, indent=2))
 

@@ -92,7 +92,7 @@ def build():
             forms.append(
                 '{:db/id ' + quote(key) + ' '
                 ':question/id ' + edn_uuid(identity("question", numeric)) + ' '
-                ':question/math-academy-id ' + quote(key) + ' :question/is-example false '
+                ':question/math-academy-id ' + quote(key) + ' '
                 ':question/problem ' + quote(problem) + ' '
                 ':question/difficulty :question.difficulty/' + q["difficulty"] + ' '
                 ':question/worked-solution ' + quote(q["worked_solution"]) + ' '

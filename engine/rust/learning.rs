@@ -428,9 +428,7 @@ pub fn continuation(
         let item = *items.last().ok_or("instruction presentation required")?;
         let content_id = s.reference(item, "task-item/content")?;
         let content = s.entity(content_id)?;
-        if !content.contains_key("tutorial/id")
-            && !s.is_example(content_id)
-        {
+        if !content.contains_key("tutorial/id") && !s.is_example(content_id) {
             return Err("ordinary questions require a submitted answer".into());
         }
         Some(item)
@@ -967,9 +965,7 @@ fn passed_lesson_xp(s: &EntitySnapshot, activity: u64, items: &[u64], base: i64)
     let mut errors = 0usize;
     for item in items {
         let content = s.reference(*item, "task-item/content")?;
-        if s.is_ordinary_question(content)?
-            && question_outcome(s, *item)? != Some(Some(true))
-        {
+        if s.is_ordinary_question(content)? && question_outcome(s, *item)? != Some(Some(true)) {
             errors += 1;
         }
     }

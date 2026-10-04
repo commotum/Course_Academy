@@ -93,7 +93,6 @@ def verify_after(local):
         record = after[key]
         assert record[':question/worked-solution'] == q['worked_solution']
         assert record[':question/difficulty'][':db/ident'] == ':question.difficulty/' + q['difficulty']
-        assert record[':question/is-example'] is False
         assert [k[':knowledge-point/id'] for k in record[':knowledge-point/_questions']] == [KPS[q['knowledge_point']]]
         if key in EXISTING:
             preserved = dict(record)

@@ -229,10 +229,9 @@ def run(target, expected, source, mapping, plan_path, report_path):
                     assert row['ref_ident'], ('unresolved reference', eid, attr, ref)
                     value = ':' + row['ref_ident']
                 actual_counts[attr] += 1
-                if attr == 'question/is-example' and value == 'true':
-                    state['examples'].add(owner_uuid)
-                elif attr == 'question/is-example' and value == 'false':
-                    state['practice'].add(owner_uuid)
+                if attr == 'knowledge-point/canonical-example':
+                    assert ref in identities and identities[ref][0] == 'question/id'
+                    state['examples'].add(identities[ref][1])
                 elif attr == 'question/worked-solution':
                     state['worked'].add(owner_uuid)
                 elif attr == 'knowledge-point/questions':
@@ -259,6 +258,7 @@ def run(target, expected, source, mapping, plan_path, report_path):
                 yield owner_attr, owner_uuid, attr, value
 
         actual_count = insert_rows(connection, 'actual', rows())
+        state['practice'] = {uid for attr, uid in identities.values() if attr == 'question/id'} - state['examples']
         connection.commit()
         missing_count, missing_sample = set_difference(connection, 'expected', 'actual')
         extra_count, extra_sample = set_difference(connection, 'actual', 'expected')

@@ -63,6 +63,7 @@ function fixture(storage = new Map()) {
       f.calls.push({ path, body, keepalive: options.keepalive });
       if (path === '/api/pause') { f.server.status = 'paused'; f.server.step.status = 'paused'; f.server.elapsedSeconds = f.h.clock.elapsed; }
       if (path === '/api/resume') { f.server.status = 'started'; f.server.step.status = 'started'; }
+      if (f.delay) await f.delay;
       return { ok: true, json: async () => structuredClone(f.server) };
     },
   });
@@ -74,7 +75,7 @@ function fixture(storage = new Map()) {
     loadMath = async () => {};
     return {
       get view() { return lessonView; }, get clock() { return clock; }, get pending() { return pendingPause; },
-      setBusy, pauseWhenHidden, syncAfterVisibility, openTask, home,
+      setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, home,
       render: async data => { task = data; await renderTask(data); },
       preview: async (data, index) => { task = data; previewStepIndex = index; await renderPreview(); },
     };
@@ -239,6 +240,32 @@ test('Study progress is only shown for real started or paused lessons with valid
   await f.h.home();
   assert.equal(f.document.getElementById('main').querySelectorAll('.queue-progress-track').length, 0);
   assert.equal(f.calls.at(-1).path, '/api/preview-home');
+});
+
+test('returning to Study refreshes its queue without a Refresh button or a loading flash', async () => {
+  const f = fixture(); f.server = { activities: [activity(1)] };
+  await f.h.home();
+  const original = f.document.getElementById('main').querySelector('.queue-card');
+  assert.equal(f.document.getElementById('main').querySelectorAll('button').some(node => /Refresh/.test(node.textContent)), false);
+  f.server = { activities: [activity(2, 2, { title: 'Updated lesson' })] };
+  f.document.hidden = true; await f.h.refreshPageOnReturn();
+  assert.equal(f.calls.length, 1);
+  f.document.hidden = false;
+  let release;
+  f.delay = new Promise(resolve => { release = resolve; });
+  const refresh = f.h.refreshPageOnReturn();
+  await f.h.refreshPageOnReturn();
+  assert.equal(f.calls.length, 2);
+  assert.equal(f.document.getElementById('main').querySelector('.queue-card'), original);
+  release(); await refresh;
+  assert.match(f.document.getElementById('main').textContent, /Updated lesson/);
+  f.delay = null; f.dev = true;
+  await f.h.refreshPageOnReturn();
+  assert.equal(f.calls.at(-1).path, '/api/preview-home');
+  await f.h.preview({ activityId: 456, title: 'Preview', steps: [{ kind: 'tutorial', markdown: 'Read.' }] }, 0);
+  const calls = f.calls.length;
+  await f.h.refreshPageOnReturn();
+  assert.equal(f.calls.length, calls);
 });
 
 test('leaving the document sends a keepalive pause even when a save is busy', async () => {

@@ -19,14 +19,14 @@ class HistoryAuditTests(unittest.TestCase):
 
     def test_real_snapshot_coverage_and_stale_metadata(self):
         summary = self.audit["summary"]
-        self.assertEqual(summary["activities"], 217)
+        self.assertEqual(summary["activities"], 219)
         self.assertEqual(summary["observed_tasks"], 34)
         self.assertEqual(summary["observed_questions"], 308)
         self.assertEqual(summary["correct_questions"], 205)
         self.assertEqual(summary["observed_questions_with_task_topic_scope"], 70)
         self.assertEqual(summary["join_issue_count"], 0)
         self.assertFalse(summary["observation_snapshot_hash_matches"])
-        self.assertEqual(summary["snapshot_row_count_delta"], 3)
+        self.assertEqual(summary["snapshot_row_count_delta"], 5)
 
     def test_unknown_state_stays_unknown(self):
         for activity in self.audit["activities"]:
@@ -44,7 +44,7 @@ class HistoryAuditTests(unittest.TestCase):
         self.assertEqual(results, [True, True, False, True, False])
         self.assertEqual(len(scenario["events"]), 70)
         self.assertTrue(all(a["time"] <= b["time"] for a, b in zip(scenario["events"], scenario["events"][1:])))
-        self.assertEqual(scenario["omitted_task_counts"], {"unobserved_task": 183, "unmapped_or_conflicting_task": 23})
+        self.assertEqual(scenario["omitted_task_counts"], {"unobserved_task": 185, "unmapped_or_conflicting_task": 23})
 
     def test_aggregation_is_explicit_and_keeps_partial_review_distinct(self):
         scenario = build_replay_scenario(self.audit, outcome_policy="all_questions_correct", clock_policy="wall_days")

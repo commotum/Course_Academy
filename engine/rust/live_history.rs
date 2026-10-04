@@ -717,7 +717,7 @@ mod tests {
             ("source_conflict_count", 0),
             ("union_question_occurrences", 396),
             ("union_observed_task_ids", 39),
-            ("union_progress_and_live_task_ids", 218),
+            ("union_progress_and_live_task_ids", 220),
             (
                 "additional_prior_occurrences_with_task_topic_scope_only",
                 67,

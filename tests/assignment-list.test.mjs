@@ -6,6 +6,7 @@ import vm from 'node:vm';
 const source = await readFile(new URL('../ui/assignments.js', import.meta.url), 'utf8');
 const helpers = source.slice(source.indexOf('function el('), source.indexOf('function escapeHTML('));
 const list = source.slice(source.indexOf('function assignmentSortPreference('), source.indexOf('function renderAssignment('));
+const visibility = source.slice(source.indexOf('async function syncAfterVisibility()'), source.indexOf('async function leaveAssignment('));
 
 // Exercise the real list renderer without opening the app or writing learner data.
 function fixture(storage = new Map()) {
@@ -26,16 +27,18 @@ function fixture(storage = new Map()) {
   }
   const main = new Element('main'), announcement = new Element('div');
   const document = { createElement: tag => new Element(tag), getElementById: id => ({ main, announcement })[id] };
-  const f = { main, document, loads: 0, storage };
-  const context = vm.createContext({ document, Event,
+  const f = { main, document, loads: 0, storage, location: { href: 'http://127.0.0.1:8765/assignments' } };
+  const context = vm.createContext({ document, Event, URL, location: f.location, isDeveloperMode: () => false,
     localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) },
-    load() { f.loads++; },
+    load(options) { f.loads++; f.loadOptions = options; },
   });
   f.h = vm.runInContext(`(() => {
     const $ = id => document.getElementById(id);
+    const modeChanging = false, assignmentData = null;
     ${helpers}
     ${list}
-    return { renderList, assignmentGroups };
+    ${visibility}
+    return { renderList, assignmentGroups, syncAfterVisibility };
   })()`, context);
   f.render = assignments => { main.replaceChildren(); f.h.renderList({ assignments }); };
   return f;
@@ -57,6 +60,7 @@ test('default list groups by activity course, then deadline, with unassigned and
   const original = structuredClone(entries);
   f.render(entries);
   assert.equal(f.main.querySelector('select').value, 'course');
+  assert.equal(f.main.querySelectorAll('button').some(node => /Refresh/.test(node.textContent)), false);
   assert.deepEqual(f.main.querySelectorAll('.assignment-course-heading').map(node => node.textContent), ['Calculus', 'Chemistry', 'No course']);
   assert.deepEqual(rows(f.main), ['Math earlier', 'Math later', 'Math undated', 'Chemistry earlier', 'No course']);
   assert.deepEqual(entries, original);
@@ -79,6 +83,19 @@ test('date selection changes only the list, keeps course context and completion 
   const reload = fixture(f.storage); reload.render(entries);
   assert.equal(reload.main.querySelector('select').value, 'date');
   assert.deepEqual(rows(reload.main), ['Chemistry', 'Math', 'Finished']);
+});
+
+test('returning to the assignment list reloads in the background without interrupting a detail view', async () => {
+  const f = fixture(); f.render([assignment('Math', math, null)]);
+  const original = f.main.querySelector('.queue-card');
+  f.document.hidden = true; await f.h.syncAfterVisibility();
+  assert.equal(f.loads, 0);
+  f.document.hidden = false; await f.h.syncAfterVisibility();
+  assert.equal(f.loads, 1);
+  assert.equal(f.loadOptions.preserve, true);
+  assert.equal(f.main.querySelector('.queue-card'), original);
+  f.location.href += '?assignment=math'; await f.h.syncAfterVisibility();
+  assert.equal(f.loads, 1);
 });
 
 test('same-titled courses stay separate and empty or storage-blocked lists remain usable', () => {

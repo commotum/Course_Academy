@@ -19,7 +19,7 @@ from database import Database
 from edn import dumps, loads, kw
 from solver import Solver
 from progress import changes, normalize_course
-from capture import arguments, run, unfinished_run, read_journal, previous_activity_snapshot, record_failure
+from capture import arguments, run, unfinished_run, read_journal, previous_activity_snapshot, record_failure, observe_queue
 from priorities import capture_scores
 from datetime import datetime, timezone
 
@@ -212,6 +212,42 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(choose_activity(queue,{10:4},captured_tasks=[1])['task_id'],3)
         self.assertEqual(choose_activity(queue,{},captured_tasks=[1,2])['task_id'],3)
         self.assertIsNone(choose_activity(queue,{},completed_topics=[10],captured_tasks=[1,2]))
+
+    def test_reviews_compete_with_lessons_by_priority(self):
+        queue = [{'task_id':1,'topic_id':10,'task_type':'review'},
+                 {'task_id':2,'topic_id':20,'task_type':'review'},
+                 {'task_id':3,'topic_id':30,'task_type':'lesson'}]
+        selected = choose_activity(queue,{10:4,20:9,30:7})
+        self.assertEqual((selected['task_id'],selected['priority'],selected['selection_reason']),
+                         (2,9,'priority'))
+        self.assertEqual(choose_activity(queue,{10:4,20:9,30:10})['task_id'],3)
+        self.assertEqual(choose_activity(queue,{10:4,20:9,30:7},captured_tasks=[2])['task_id'],3)
+        self.assertEqual(choose_activity(queue,{10:4,20:9,30:7},completed_topics=[20,30])['task_id'],2)
+        queue[1]['in_progress'] = True
+        self.assertEqual(choose_activity(queue,{10:4,20:9,30:7})['task_id'],3)
+        self.assertEqual(choose_activity(queue,{10:4,20:float('nan'),30:3})['task_id'],1)
+
+    def test_required_quiz_still_precedes_ranked_review(self):
+        review = {'task_id':1,'topic_id':10,'task_type':'review'}
+        quiz = {'task_id':2,'topic_id':None,'task_type':'assessment',
+                'capture_supported':True,'assessment_requirement':'required'}
+        self.assertEqual(choose_activity([review,quiz],{10:10000})['task_id'],2)
+
+    def test_queue_observation_requests_and_records_review_priorities(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            args = arguments(['run','--state-dir',temporary])
+            browser = SimpleNamespace(completed_outcomes=[],queue=lambda:[
+                {'task_id':1,'topic_id':10,'task_type':'review','title':'Review'},
+                {'task_id':2,'topic_id':20,'task_type':'lesson','title':'Lesson'}])
+            db = Mock()
+            db.priorities.return_value = {10:9,20:4}
+            with patch('capture.previous_activity_snapshot',return_value=None):
+                observation = observe_queue(args,db,browser,set(),set())
+            self.assertEqual(db.priorities.call_args.kwargs['topic_ids'],[10,20])
+            self.assertEqual(observation['selected']['task_id'],1)
+            saved = json.loads((Path(temporary)/'selection/queue.json').read_text())
+            self.assertEqual(saved['priority_scores'],{'10':9,'20':4})
+            self.assertEqual(saved['unranked_topics'],[])
 
     def test_queue_fallback_uses_visible_order_and_skips_completed_captures(self):
         queue = [{'task_id':1,'topic_id':10,'task_type':'lesson'},
