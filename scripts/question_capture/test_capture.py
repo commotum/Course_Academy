@@ -5,6 +5,7 @@ import contextlib
 import io
 import json
 import random
+import subprocess
 import tempfile
 import unittest
 import uuid
@@ -12,19 +13,39 @@ from unittest.mock import Mock, patch
 from pathlib import Path
 from types import SimpleNamespace
 
-from browser import EXTRACT, CaptureBrowser, kp_for_example, normalize_mathquill
-from core import ROOT, ALLOWED, Pacer, build_transaction, choose_activity, choose_lesson, choose_sequence, choose_review_sequence, normalize
+from browser import EXTRACT, AccessBlocked, CaptureBrowser, kp_for_example, normalize_mathquill
+from core import ROOT, ALLOWED, Pacer, atomic_json, build_transaction, choose_activity, choose_lesson, choose_sequence, choose_review_sequence, normalize
 from database import Database
 from edn import dumps, loads, kw
 from solver import Solver
 from progress import changes, normalize_course
-from capture import arguments, run, unfinished_run, read_journal, previous_activity_snapshot
+from capture import arguments, run, unfinished_run, read_journal, previous_activity_snapshot, record_failure
 
 FIXTURE = ROOT/'reference/mathacademy/sum-rule-13925458'
 REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_math_notation_equivalents_and_symbol_identity(self):
+        pairs = [('± 3',r'\pm 3'),('π',r'\pi'),('α',r'\alpha'),('∞',r'\infty'),
+                 ('x ≤ 3',r'x\leq3'),(r'x\le3',r'x\leq3'),('x ≠ 3',r'x\neq3'),
+                 ('2 × 3',r'2\times3'),('2 ⋅ 3',r'2\cdot3'),
+                 ('x²',r'x^{2}'),('x₁',r'x_{1}'),('x⁻³',r'x^{-3}'),
+                 (r'\dfrac{1}{2}',r'\frac12'),('1/2',r'\frac{1}{2}'),
+                 (r'\sqrt3',r'\sqrt{3}'),(r'\operatorname{sin}(x)',r'\sin(x)'),
+                 ('sin⁡(x)',r'\sin(x)'),(r'\mathrm{i}','i'),
+                 (r'\left(x+8\right)^{\frac{1}{3}}','(x+8)^{1/3}')]
+        for a,b in pairs:
+            with self.subTest(a=a,b=b): self.assertEqual(normalize(a),normalize(b))
+        different = [('π','pi'),('±3','3'),(r'\pi x',r'\pix'),
+                     (r'\frac{1}{23}',r'\frac{12}{3}'),('x^{23}','x^23'),
+                     ('x^{1/3}','x^1/3'),('{x+8}^2','x+8^2'),
+                     (r'\sqrt{x+3}',r'\sqrt{x}+3'),
+                     (r'\sqrt[3]{x}',r'\sqrt{x}'),('sin(x)',r'\sin(x)'),
+                     (r'\text{a b}',r'\text{ab}')]
+        for a,b in different:
+            with self.subTest(a=a,b=b): self.assertNotEqual(normalize(a),normalize(b))
+        self.assertNotEqual(normalize('±3','text'),normalize(r'\pm3','text'))
     def test_priority_lookup_uses_schema_string_learner_id(self):
         db = Database(arguments(['priorities']))
         db.query = Mock(return_value=[[462, 'Continuity', 1244.0]])
@@ -122,6 +143,26 @@ class PolicyTests(unittest.TestCase):
 
 
 class ReconciliationTests(unittest.TestCase):
+    def test_real_unicode_plus_minus_conflict_reuses_existing_answers_without_rewriting(self):
+        fixture = Path(__file__).parent/'fixtures/distance-answer-conflict'
+        content = json.loads((fixture/'content.json').read_text())
+        topic = loads((fixture/'topic.edn').read_text())[0][0]
+        existing = {r[0][':question/math-academy-id']:r[0] for r in loads((fixture/'questions.edn').read_text())}
+        original = copy.deepcopy(existing)
+        transaction, report = build_transaction(content,topic,existing)
+        self.assertTrue(report[0]['existing'])
+        self.assertFalse(any(':answer/id' in row or ':answer/value' in row or
+                             ':answer-field/correct' in row or ':answer-field/choices' in row for row in transaction))
+        self.assertEqual(existing,original)
+        old_field = existing['q-97794'][':question/answer-fields'][0]
+        self.assertEqual(old_field[':answer-field/correct'][':answer/value'],'± 3')
+        old_field[':answer-field/correct'][':answer/value']='3'
+        with self.assertRaisesRegex(ValueError,'Correct answer conflict'):
+            build_transaction(content,topic,existing)
+        old_field[':answer-field/correct'][':answer/value']='± 3'
+        old_field[':answer-field/correct'][':answer/type'][':db/ident']=':answer.type/text'
+        with self.assertRaisesRegex(ValueError,'Correct answer type conflict'):
+            build_transaction(content,topic,existing)
     def setUp(self):
         self.content = json.loads((FIXTURE/'content.json').read_text())
         self.topic = loads((FIXTURE/'database-before.edn').read_text())[0][0]
@@ -188,6 +229,121 @@ class ProgressTests(unittest.TestCase):
 
 
 class RunnerTests(unittest.TestCase):
+    def test_failure_report_survives_browser_artifact_failures(self):
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--state-dir',work])
+            browser=Mock()
+            browser.page.url='https://mathacademy.com/learn'
+            browser.http_block=None
+            browser.diagnostic_events=[]
+            browser.page.content.side_effect=RuntimeError('Browser closed')
+            browser.page.screenshot.side_effect=RuntimeError('Browser closed')
+            browser.current_step.side_effect=RuntimeError('Browser closed')
+            state={'task_id':1,'questions':{'q-1':{'status':'submitting'}}}
+            error=subprocess.CalledProcessError(1,['fixture-solver'],output='partial output',stderr='solver failure')
+            target=record_failure(args,browser,state,Path(work),'activity',error)
+            report=json.loads((target/'error.json').read_text())
+            self.assertEqual(report['exception_type'],'CalledProcessError')
+            self.assertEqual(report['stdout'],'partial output')
+            self.assertEqual(report['stderr'],'solver failure')
+            self.assertEqual({e['artifact'] for e in report['artifact_errors']},{'page.html','page.png','current-step'})
+            self.assertEqual(json.loads((target/'state.json').read_text()),state)
+
+    def test_activity_failures_save_diagnostics_and_continue_without_replaying(self):
+        for failure_phase in ('start','activity','history','import','blocked','interrupted'):
+            with self.subTest(failure_phase=failure_phase),tempfile.TemporaryDirectory() as work:
+                selected=[]
+                queue=[{'task_id':i,'topic_id':i,'task_type':'lesson','title':'Lesson '+str(i),
+                        'href':'/tasks/'+str(i)+'/topics/'+str(i)+'/lesson'} for i in (1,2)]
+                page=Mock()
+                page.url='https://mathacademy.com/tasks/1/topics/1/lesson'
+                page.content.return_value='<div>Diagnostic DOM</div>'
+                page.screenshot.side_effect=lambda **kw:Path(kw['path']).write_bytes(b'screenshot')
+                class FixtureBrowser:
+                    def __init__(self,*args): self.page=page;self.http_block=None
+                    def current_step(self): return None
+                    # The failed task stays in the site's queue; the runner must
+                    # exclude its saved checkpoint and select the next one.
+                    def queue(self): return queue
+                    def start(self,activity):
+                        selected.append(activity['task_id'])
+                        if activity['task_id']==1 and failure_phase=='start': raise ValueError('Start failed')
+                    def activity(self,state,*args):
+                        if state['task_id']==1:
+                            if failure_phase=='activity':
+                                state['questions']['q-1']={'status':'submitting','intended':'C'}
+                                raise ValueError('Unknown DOM after submission')
+                            if failure_phase=='blocked': raise AccessBlocked('HTTP 429')
+                            if failure_phase=='interrupted': raise KeyboardInterrupt()
+                        state['activity_complete']=True
+                    def history(self,state,directory,*args):
+                        if state['task_id']==1 and failure_phase=='history': raise ValueError('History mismatch')
+                        state['history_complete']=True
+                        content={'task_id':state['task_id']}
+                        atomic_json(Path(directory)/'content.json',content)
+                        return content
+                db=Mock()
+                db.priorities.return_value={}
+                db.topic.return_value={}
+                def import_content(content,*args):
+                    if content['task_id']==1 and failure_phase=='import': raise ValueError('Correct answer conflict')
+                    return {'previewed':True}
+                db.import_content.side_effect=import_content
+                context=SimpleNamespace(pages=[page],close=Mock())
+                runtime=Mock()
+                runtime.__enter__=Mock(return_value=runtime);runtime.__exit__=Mock(return_value=False)
+                runtime.chromium.launch_persistent_context.return_value=context
+                args=arguments(['run','--limit','2','--preview','--state-dir',work+'/state','--output',work+'/capture',
+                                '--lesson-min','0','--lesson-max','0'])
+                with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',FixtureBrowser), \
+                     patch('playwright.sync_api.sync_playwright',return_value=runtime), \
+                     contextlib.redirect_stdout(io.StringIO()),self.assertLogs(level='INFO'):
+                    if failure_phase=='blocked':
+                        with self.assertRaises(AccessBlocked):run(args)
+                    elif failure_phase=='interrupted':
+                        with self.assertRaises(KeyboardInterrupt):run(args)
+                    else:run(args)
+                first=Path(work)/'capture/1'
+                saved=json.loads((first/'state.json').read_text())
+                report_path,=first.glob('diagnostics/*/error.json')
+                report=json.loads(report_path.read_text())
+                self.assertTrue(report['traceback'])
+                self.assertTrue(report['source_sha256'])
+                self.assertTrue((report_path.parent/'page.html').exists())
+                self.assertTrue((report_path.parent/'page.png').exists())
+                self.assertTrue((report_path.parent/'state.json').exists())
+                if failure_phase in ('blocked','interrupted'):
+                    self.assertEqual(selected,[1])
+                    self.assertNotIn('deferred_error',saved)
+                else:
+                    self.assertEqual(selected,[1,2])
+                    self.assertTrue(saved['deferred_error'])
+                    self.assertTrue(json.loads((Path(work)/'capture/2/state.json').read_text())['preview_complete'])
+                    self.assertIsNone(unfinished_run(args))
+                    self.assertEqual(unfinished_run(arguments(['run','--resume',str(first)])),first.resolve())
+                    if failure_phase=='activity':
+                        self.assertEqual(saved['questions']['q-1']['status'],'submitting')
+                    if failure_phase=='import':
+                        self.assertTrue(saved['activity_complete'] and saved['history_complete'])
+                        self.assertEqual(json.loads((first/'content.json').read_text()),{'task_id':1})
+                context.close.assert_called_once()
+                if failure_phase=='import':
+                    # Explicit recovery imports the saved content and clears
+                    # deferral without starting or navigating to the task again.
+                    db.import_content.side_effect=None
+                    db.import_content.return_value={'previewed':True}
+                    args.resume=first
+                    args.limit=1
+                    with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',FixtureBrowser), \
+                         patch('playwright.sync_api.sync_playwright',return_value=runtime), \
+                         contextlib.redirect_stdout(io.StringIO()),self.assertLogs(level='INFO'):
+                        run(args)
+                    recovered=json.loads((first/'state.json').read_text())
+                    self.assertNotIn('deferred_error',recovered)
+                    self.assertTrue(recovered['preview_complete'])
+                    self.assertEqual(selected,[1,2])
+                    self.assertEqual(db.import_content.call_args.args[0],{'task_id':1})
+
     def test_run_discovers_unfinished_capture_and_import_before_new_activity(self):
         with tempfile.TemporaryDirectory() as work:
             args=arguments(['run','--output',work+'/captures','--state-dir',work+'/state'])
@@ -306,6 +462,24 @@ class DOMTests(unittest.TestCase):
         cls.context.close()
         cls.browser.close()
         cls.runtime.stop()
+
+    def test_diagnostics_retain_browser_errors_and_current_question(self):
+        args=SimpleNamespace(timeout_ms=5000)
+        browser=CaptureBrowser(self.page,args,None,None)
+        self.page.set_content('<div id="step-q1" class="step questionWidget">'
+            '<div class="questionWidget-submitButton">Submit</div></div>')
+        self.page.evaluate("console.error('fixture console failure'); setTimeout(()=>{throw Error('fixture page failure')},0)")
+        self.page.wait_for_function("document.readyState === 'complete'")
+        self.page.route('https://diagnostic.test/missing',lambda route:route.fulfill(status=503,body='unavailable'))
+        self.page.route('https://diagnostic.test/failed',lambda route:route.abort())
+        self.page.evaluate("async()=>{await fetch('https://diagnostic.test/missing').catch(()=>{});await fetch('https://diagnostic.test/failed').catch(()=>{})}")
+        with tempfile.TemporaryDirectory() as work:
+            capture_args=arguments(['run','--state-dir',work])
+            target=record_failure(capture_args,browser,{'task_id':1},Path(work),'activity',ValueError('fixture failure'))
+            events=json.loads((target/'browser-events.json').read_text())
+            self.assertTrue({'console','pageerror','http_error','requestfailed'} <= {e['event'] for e in events})
+            self.assertTrue((target/'current-question.json').exists())
+            self.assertEqual(json.loads((target/'error.json').read_text())['artifact_errors'],[])
 
     def test_activity_wait_ignores_initial_numbered_placeholder(self):
         self.page.set_content('<div id="stepButton-1" class="stepButton current"></div>'

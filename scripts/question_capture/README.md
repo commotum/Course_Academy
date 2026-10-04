@@ -33,7 +33,7 @@ The runner:
    `.questionKP` source link. Each link must belong to the selected topic, and
    its title must match exactly one of that topic's database KPs. It captures
    whatever questions were served; reviews do not require five per KP or a live
-   canonical example. An unknown review tutorial/example layout stops for inspection.
+   canonical example. An unknown review tutorial/example layout defers the activity for inspection.
 4. Matches `q-N` and `e-N` globally in EDB. Adds missing attributes and choices,
    reuses existing owned answer entities, and links new practice to the correct
    `knowledge-point/questions`. Existing populated attributes are preserved.
@@ -54,7 +54,7 @@ Each `knowledge-state/<event>.json` contains every topic row from courses
 113/111/136, its source ID, title, color, mapped display band, module and topic
 number, the source `#units` HTML, per-course timestamps, and changes since the
 previous snapshot. Shared topics remain qualified by course, so conflicting
-colors are retained. Unknown colors or an incomplete topic count stop the run.
+colors are retained. Unknown colors or an incomplete topic count defer the activity.
 Use repeated `--progress-course-id ID` options to override the three-course scope.
 
 These files capture the **full displayed profile for those courses**, not MA's
@@ -161,16 +161,17 @@ typing actions, and any symbol buttons used.
 Verification accepts editor formatting such as `\left`/`\right`, fraction-style
 commands, and numeric rational exponents written as `^{1/3}` or
 `^{\frac{1}{3}}`, while preserving fraction and exponent grouping and symbol identity.
-Unknown widgets, unreadable formulas, and unrendered graphical assets stop for
-review. Invisible MathML `mphantom` content is omitted. Graphics are allowed to
+Unknown widgets, unreadable formulas, and unrendered graphical assets defer the
+activity for review. Invisible MathML `mphantom` content is omitted. Graphics are allowed to
 become visible and images must finish loading within `--timeout-ms` before capture;
-an asset that never renders still stops the run with saved DOM and a screenshot.
+an asset that never renders saves diagnostics and defers that activity.
 Radio extraction is validated against all fifteen actual Sum Rule
 widgets; native mixed fields have fixture tests. Offline keyboard tests use the
 exact public MathQuill distribution loaded by Math Academy and cover π menu
 clicks, command fallback, incorrect-answer entry, and fraction grouping. The
 custom-select path still needs validation on a live activity. A solver error can break the intended
-five-question sequence; the runner stops immediately on an unexpected grade.
+five-question sequence; an unexpected grade defers that activity before another
+answer, then the runner selects another available activity.
 
 ## Pacing inherited from the original pipeline
 
@@ -219,6 +220,26 @@ Artifacts go to `reference/mathacademy/question-capture/<taskId>/` by default:
 - `knowledge-state/` with a full displayed course profile after activity completion.
 - EDB reads, `transaction.edn`, preview, exact commit intent, receipt, matching
   report, and verification under `edb-import/`.
+- `diagnostics/<timestamp>/` on activity failures: exception and full traceback,
+  source hashes, configuration, checkpoint, last observed queue, page URL, DOM,
+  screenshot, current question extraction, recent browser console/JavaScript/network
+  errors, and subprocess stdout/stderr when
+  supplied by the exception. Each browser artifact is collected independently;
+  failed diagnostic reads are listed in `error.json`.
+
+Each invocation also writes a persistent run log to
+`.local/question_capture/logs/run-<timestamp>.log`. Activity errors, including
+solver, entry, extraction, history, snapshot, and database import failures, save
+diagnostics, mark the task with `deferred_error` in `state.json`, and continue
+other available activities. Deferred tasks are excluded from automatic selection
+across invocations until selected with `--resume`. `--limit` bounds attempted
+activities, including failures. A deferred import retains completed content and
+its original transaction/commit checkpoint.
+
+Authentication, access blocks, challenges, and user interruptions stop the batch.
+If the queue cannot be read or another task cannot be selected, the runner saves
+diagnostics and ends the batch. Submission and Continue actions are never retried
+as part of failure handling.
 
 Attempt results are retained only to audit the intentional capture sequence.
 They are never transacted into learner tasks, timing, responses, or ability.
@@ -226,15 +247,16 @@ Canonical examples normally expose no answer widgets or difficulty; those facts
 remain unknown and are listed as missing source fields. This runner does not
 invent canonical answer fields, difficulty ratings, or practice distractors.
 
-The normal command automatically resumes an unfinished saved capture or import
-before selecting a new activity:
+The normal command automatically resumes a single unfinished saved capture or
+import that has not been deferred, before selecting a new activity:
 
 ```bash
 "$CAPTURE_PY" scripts/question_capture run --headless --limit 1
 ```
 
 Use `--resume reference/mathacademy/question-capture/TASK_ID` to select a run
-explicitly. If several unfinished runs exist, the runner requires that selection.
+explicitly. If several unfinished runs exist, they are left for explicit recovery
+while the runner selects new activities.
 `run --dry-run` reports a pending capture without starting a browser or answering.
 
 Checkpoints preserve chosen patterns, captured questions, grades, and pending
@@ -247,13 +269,13 @@ read-only solver prompt can be repeated in that same session.
 
 If submission may have occurred, resume reads its grading result rather than
 sending the answer again. If the site cannot establish the result, the checkpoint
-remains available for inspection. An unconfirmed solver session ID also stops
-rather than silently resetting its context. Failed completion snapshots and
-content imports resume without retaking the activity. Previous per-step snapshot
+remains available for inspection and the task is deferred. An unconfirmed solver
+session ID also defers the task instead of resetting its context. Explicitly resumed
+completion snapshots and content imports recover without retaking the activity. Previous per-step snapshot
 checkpoints are migrated to Continue checkpoints without another mid-activity fetch.
 When a restored page has moved past a pending submission, the runner reconciles
 its complete saved after-capture before answering the next question. Incomplete
-saved results stop for recovery. Unexpected grades continue to stop automatically;
+saved results defer the activity for recovery. Unexpected grades also defer the activity;
 reviewed checkpoint repairs preserve the intended answer, actual entry, and grade.
 
 Import or retry already captured content without visiting Math Academy:
@@ -288,8 +310,10 @@ they also cover interrupted
 Continue, completion snapshot failure, automatic unfinished-run discovery, completed
 solver-answer reuse, reshuffled choice letters, and interrupted CLI turns retaining
 the same session. A local toy subprocess verifies streamed events survive a timeout
-and its process stops. Grading and selected-option mismatches stop before another
-submission. Fixture tests never make model calls.
+and its process stops. Grading and selected-option mismatches prevent another
+submission in that activity. Runner tests inject start, capture, history, and
+import failures, verify diagnostic preservation and selection of the next task,
+and check that access blocks and interruptions stop the batch. Fixture tests never make model calls.
 
 No live activity or database commit is performed by these fixture tests. The
 standalone automator completed live lesson **13831128**, Determining Continuity

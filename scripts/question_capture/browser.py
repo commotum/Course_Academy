@@ -4,6 +4,7 @@ import hashlib
 import logging
 import re
 import time
+from collections import deque
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -81,10 +82,25 @@ class CaptureBrowser:
         self.http_block = None
         self.progress_reader = None
         self.image_responses = {}
+        self.diagnostic_events = deque(maxlen=200)
         self.page.on('response', self._observe_response)
+        self.page.on('pageerror', lambda error:self._diagnostic_event('pageerror',message=str(error)))
+        self.page.on('console', self._observe_console)
+        self.page.on('requestfailed', lambda request:self._diagnostic_event(
+            'requestfailed',url=request.url,method=request.method,error=request.failure))
+
+    def _diagnostic_event(self, event, **details):
+        self.diagnostic_events.append({'time':time.time(),'event':event,**details})
+
+    def _observe_console(self, message):
+        if message.type in ('error','warning'):
+            self._diagnostic_event('console',level=message.type,message=message.text,
+                                   location=message.location)
 
     def _observe_response(self, response):
         host = urlparse(response.url).hostname or ''
+        if response.status >= 400:
+            self._diagnostic_event('http_error',url=response.url,status=response.status)
         if (host == 'mathacademy.com' or host.endswith('.mathacademy.com')) and response.status in (401,403,429):
             self.http_block = response.status
         if response.ok and response.request.resource_type == 'image':

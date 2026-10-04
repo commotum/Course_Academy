@@ -30,8 +30,8 @@ def arguments(argv=None):
     parser.add_argument('--state-dir',type=Path,default=ROOT/'.local/question_capture')
     parser.add_argument('--profile',type=Path,help='Dedicated Playwright profile; defaults to STATE_DIR/browser-profile')
     parser.add_argument('--content',type=Path,help='Saved content.json for import-saved')
-    parser.add_argument('--resume',type=Path,help='Select a saved run explicitly; otherwise unfinished runs resume automatically')
-    parser.add_argument('--limit',type=int,default=1,help='Maximum activities (lessons or reviews) per invocation; default 1')
+    parser.add_argument('--resume',type=Path,help='Select a saved run, including a deferred failure; otherwise a single non-deferred unfinished run resumes automatically')
+    parser.add_argument('--limit',type=int,default=1,help='Maximum attempted activities (lessons or reviews) per invocation; default 1')
     parser.add_argument('--preview',action='store_true',help='Preview EDB writes. With run, MA answers are still submitted.')
     parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting an activity')
     parser.add_argument('--headless',action='store_true',help='Default is a visible Chromium window')
@@ -190,6 +190,7 @@ def record_failure(args, browser, state, directory, phase, error):
     import hashlib
     target = (directory or args.state_dir)/'diagnostics'/str(time.time_ns())
     target.mkdir(parents=True,exist_ok=True)
+    os.chmod(target,0o700)
     report = {'phase':phase, 'task_id':(state or {}).get('task_id'),
               'exception_type':type(error).__name__, 'message':str(error),
               'traceback':''.join(traceback.format_exception(type(error),error,error.__traceback__)),
@@ -202,6 +203,8 @@ def record_failure(args, browser, state, directory, phase, error):
         value = getattr(error,name,None)
         if isinstance(value,bytes): value = value.decode(errors='replace')
         if isinstance(value,str): report[name] = value
+    # Write the original failure before attempting optional browser artifacts.
+    atomic_json(target/'error.json',report)
     artifacts = []
     if state is not None:
         artifacts.append(('state.json',lambda:atomic_json(target/'state.json',state)))
@@ -210,11 +213,20 @@ def record_failure(args, browser, state, directory, phase, error):
         artifacts.append(('queue.json',lambda:shutil.copy2(queue,target/'queue.json')))
     if browser is not None:
         page = browser.page
-        report['page_url'] = str(page.url)
         report['http_block'] = getattr(browser,'http_block',None)
-        artifacts += [('page.html',lambda:(target/'page.html').write_text(page.content())),
+        artifacts += [('page-url',lambda:report.update(page_url=str(page.url))),
+                      ('browser-events.json',lambda:atomic_json(target/'browser-events.json',
+                          list(getattr(browser,'diagnostic_events',[])))),
+                      ('page.html',lambda:(target/'page.html').write_text(page.content())),
                       ('page.png',lambda:page.screenshot(path=str(target/'page.png'),timeout=5000)),
                       ('current-step',lambda:report.update(current_step=browser.current_step()))]
+        def save_scope():
+            from browser import by_id, EXTRACT
+            current = report.get('current_step')
+            if current:
+                scope = by_id(page,current.replace('stepButton-','step-'))
+                atomic_json(target/'current-question.json',scope.evaluate(EXTRACT))
+        artifacts.append(('current-question.json',save_scope))
     for name, save_artifact in artifacts:
         try:
             save_artifact()
@@ -242,7 +254,7 @@ def run(args):
                           'captured_questions':len(state.get('questions',{}))},indent=2))
         return
     from playwright.sync_api import sync_playwright
-    from browser import CaptureBrowser, LEARN
+    from browser import AccessBlocked, CaptureBrowser, LEARN
     from solver import Solver
     rng = random.Random(args.seed)
     pacer = Pacer(args,rng)
@@ -268,48 +280,63 @@ def run(args):
                     captured_tasks.add(entry['task_id'])
                     if entry.get('task_type','lesson') == 'lesson':
                         completed.add(entry['topic_id'])
+            deferred = []
+            for source in args.output.glob('*/state.json'):
+                saved = json.loads(source.read_text())
+                captured_tasks.add(saved['task_id'])
+                if saved.get('deferred_error'):
+                    deferred.append(saved['task_id'])
+            if deferred:
+                logging.info('Skipping deferred activities until explicit --resume: %s',deferred)
             queue_observation = None
             for n in range(args.limit):
-                if resume_directory and n==0:
-                    directory = resume_directory
-                    logging.info('Resuming saved activity %s',directory)
-                    state = json.loads((directory/'state.json').read_text())
-                    state.setdefault('task_type', 'lesson')
-                    state.setdefault('previous_activity_snapshot',previous_activity_snapshot(args))
-                    topic = db.topic(state['topic_id'],directory/'selection')
-                    if not state.get('activity_complete') and not state.get(state['task_type'] + '_complete'):
-                        browser.navigate(state.get('activity_url') or state['lesson_url'])
-                else:
-                    if queue_observation is None:
-                        queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
-                    activity = queue_observation['selected']
-                    if not activity:
-                        logging.info('No new available lesson or review. In-progress tasks require explicit --resume.')
-                        break
-                    logging.info('Selected %s %s%s',activity['task_type'],activity['title'],
-                                 ': priority %.6f' % activity['priority'] if activity['selection_reason'] == 'priority'
-                                 else ': review queue order' if activity['selection_reason'] == 'review_queue_order'
-                                 else ': next available activity in queue order')
-                    if args.dry_run:
-                        print(json.dumps(activity,indent=2))
-                        break
-                    directory = args.output/str(activity['task_id'])
-                    if (directory/'state.json').exists():
-                        raise RuntimeError('Saved run exists; use --resume '+str(directory))
-                    topic = db.topic(activity['topic_id'],directory/'selection')
-                    (directory/'selection').mkdir(parents=True,exist_ok=True)
-                    for name in ('queue.json','priorities.edn','priorities-query.edn','priorities-inputs.edn'):
-                        source = args.state_dir/'selection'/name
-                        if source.is_file():
-                            shutil.copy2(source, directory/'selection'/source.name)
-                    state = {'task_id':activity['task_id'],'topic_id':activity['topic_id'],'task_type':activity['task_type'],
-                             'activity_url':'https://mathacademy.com'+activity['href'],
-                             'selected_priority':activity.get('priority'),'kps':{},'examples':{},'questions':{},
-                             'previous_activity_snapshot':previous_activity_snapshot(args)}
-                    atomic_json(directory/'state.json',state)
-                    browser.start(activity)
+                directory, state, phase = None, None, 'queue'
                 try:
+                    if resume_directory and n==0:
+                        directory = resume_directory
+                        logging.info('Resuming saved activity %s',directory)
+                        state = json.loads((directory/'state.json').read_text())
+                        state.setdefault('task_type', 'lesson')
+                        state.setdefault('previous_activity_snapshot',previous_activity_snapshot(args))
+                        phase = 'topic'
+                        topic = db.topic(state['topic_id'],directory/'selection')
+                        if not state.get('activity_complete') and not state.get(state['task_type'] + '_complete'):
+                            phase = 'navigation'
+                            browser.navigate(state.get('activity_url') or state['lesson_url'])
+                    else:
+                        if queue_observation is None:
+                            queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
+                        activity = queue_observation['selected']
+                        if not activity:
+                            logging.info('No new available lesson or review. Deferred/in-progress tasks require explicit --resume.')
+                            break
+                        logging.info('Selected %s %s%s',activity['task_type'],activity['title'],
+                                     ': priority %.6f' % activity['priority'] if activity['selection_reason'] == 'priority'
+                                     else ': review queue order' if activity['selection_reason'] == 'review_queue_order'
+                                     else ': next available activity in queue order')
+                        if args.dry_run:
+                            print(json.dumps(activity,indent=2))
+                            break
+                        directory = args.output/str(activity['task_id'])
+                        if (directory/'state.json').exists():
+                            raise RuntimeError('Saved run exists; use --resume '+str(directory))
+                        state = {'task_id':activity['task_id'],'topic_id':activity['topic_id'],'task_type':activity['task_type'],
+                                 'activity_url':'https://mathacademy.com'+activity['href'],
+                                 'selected_priority':activity.get('priority'),'kps':{},'examples':{},'questions':{},
+                                 'previous_activity_snapshot':previous_activity_snapshot(args)}
+                        atomic_json(directory/'state.json',state)
+                        phase = 'topic'
+                        topic = db.topic(activity['topic_id'],directory/'selection')
+                        (directory/'selection').mkdir(parents=True,exist_ok=True)
+                        for name in ('queue.json','priorities.edn','priorities-query.edn','priorities-inputs.edn'):
+                            source = args.state_dir/'selection'/name
+                            if source.is_file():
+                                shutil.copy2(source, directory/'selection'/source.name)
+                        phase = 'start'
+                        browser.start(activity)
+                    phase = 'activity'
                     browser.activity(state,directory,topic)
+                    phase = 'history'
                     if state.get('history_complete') and (directory/'content.json').exists():
                         content = json.loads((directory/'content.json').read_text())
                     else:
@@ -322,23 +349,38 @@ def run(args):
                         completed.add(state['topic_id'])
                     # Inspect even after the last allowed activity, and retain
                     # this fresh observation for selecting the next one.
+                    phase = 'queue-after'
                     queue_observation = observe_queue(args,db,browser,completed,captured_tasks,
                                                       state['task_id'],directory)
+                    phase = 'import'
                     result = db.import_content(content,directory/'edb-import',not args.preview)
                     state['preview_complete' if args.preview else 'import_complete'] = True
+                    state.pop('deferred_error',None)
                     atomic_json(directory/'state.json',state)
                     journal(log,'content_imported' if not args.preview else 'content_previewed',task_id=state['task_id'],**result)
                     print(json.dumps({'run_directory':str(directory),'database':result},indent=2),flush=True)
-                except BaseException:
-                    atomic_json(directory/'state.json',state)
-                    try:
-                        page.screenshot(path=str(directory/'stopped.png'))
-                    except Exception:
-                        pass
-                    journal(log,'stopped',task_id=state['task_id'],directory=str(directory))
-                    raise
-                if not queue_observation['selected']:
-                    logging.info('No new available lesson or review. In-progress tasks require explicit --resume.')
+                except (Exception,KeyboardInterrupt) as error:
+                    diagnostics = record_failure(args,browser,state,directory,phase,error)
+                    blocking = isinstance(error,(AccessBlocked,KeyboardInterrupt))
+                    if state is not None:
+                        if not blocking:
+                            state['deferred_error'] = {'phase':phase,'message':str(error),
+                                                       'diagnostics':str(diagnostics)}
+                            captured_tasks.add(state['task_id'])
+                        atomic_json(directory/'state.json',state)
+                    journal(log,'stopped' if blocking else 'activity_deferred',
+                            task_id=(state or {}).get('task_id'),phase=phase,diagnostics=str(diagnostics))
+                    logging.warning('%s during %s: %s; diagnostics: %s',type(error).__name__,phase,error,diagnostics)
+                    if blocking:
+                        raise
+                    if state is None:
+                        logging.error('Cannot read/select another activity; saved diagnostics and stopped this batch.')
+                        break
+                    queue_observation = None
+                    logging.info('Deferred task %s; continuing with other available activities. Retry with --resume %s',
+                                 state['task_id'],directory)
+                if queue_observation is not None and not queue_observation['selected']:
+                    logging.info('No new available lesson or review. Deferred/in-progress tasks require explicit --resume.')
                     break
                 if n+1<args.limit:
                     pacer.wait('lesson','between activities')
@@ -351,6 +393,15 @@ def run(args):
 def main(argv=None):
     args = arguments(argv)
     logging.basicConfig(level=logging.INFO,format='%(asctime)s %(message)s')
+    run_handler = None
+    if args.command == 'run':
+        log_directory = args.state_dir/'logs'
+        log_directory.mkdir(parents=True,exist_ok=True)
+        os.chmod(args.state_dir,0o700)
+        run_handler = logging.FileHandler(log_directory/('run-' + str(time.time_ns()) + '.log'))
+        run_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
+        logging.getLogger().addHandler(run_handler)
+        logging.info('Run log: %s',run_handler.baseFilename)
     def interrupted(*_):
         raise KeyboardInterrupt('Stopped; saved checkpoints are retained')
     original_sigterm = signal.signal(signal.SIGTERM,interrupted)
@@ -362,6 +413,9 @@ def main(argv=None):
         return 1
     finally:
         signal.signal(signal.SIGTERM,original_sigterm)
+        if run_handler is not None:
+            logging.getLogger().removeHandler(run_handler)
+            run_handler.close()
     return 0
 
 

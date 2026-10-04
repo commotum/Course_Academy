@@ -23,8 +23,17 @@ def tokens(value):
     value = re.sub('[⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻]+', lambda m:'^{'+m[0].translate(SUPERSCRIPTS)+'}', value)
     value = re.sub('[₀₁₂₃₄₅₆₇₈₉₊₋]+', lambda m:'_{'+m[0].translate(SUBSCRIPTS)+'}', value)
     result = []
+    literal_depth, pending_literal = 0, False
     for match in re.finditer(r'\\[A-Za-z]+|\\.|[\s\S]', value):
         token = match[0]
+        if token == r'\text':
+            pending_literal = True
+        elif token == '{':
+            if pending_literal or literal_depth:
+                literal_depth += 1
+            pending_literal = False
+        elif token == '}' and literal_depth:
+            literal_depth -= 1
         if token in SYMBOLS:
             token = '\\' + SYMBOLS[token]
         if token.startswith('\\'):
@@ -32,7 +41,7 @@ def tokens(value):
             if name in LAYOUT or name in (',',';','!',':',' '):
                 continue
             token = '\\' + ALIASES.get(name,name)
-        elif token.isspace():
+        elif token.isspace() and not literal_depth:
             continue
         result.append(token)
     return tuple(result)
