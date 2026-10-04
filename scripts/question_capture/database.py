@@ -70,7 +70,8 @@ class Database:
         return loads(result)
 
     def priorities(self, learner_id, directory):
-        rows = self.query(PRIORITY_QUERY, [learner_id], directory, 'priorities')
+        # learner/id is a string even when the identifier looks like a UUID.
+        rows = self.query(PRIORITY_QUERY, [str(learner_id)], directory, 'priorities')
         # A topic can have multiple eligible task records; use its highest rating.
         return {topic: max(r[2] for r in rows if r[0] == topic) for topic, _, _ in rows}
 

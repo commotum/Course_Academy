@@ -1,8 +1,11 @@
 """Structured solver adapter. It receives displayed content, never hidden keys."""
+import hashlib
 import json
+import os
+import re
 import shlex
 import subprocess
-import tempfile
+import uuid
 from pathlib import Path
 
 from core import atomic_json, normalize
@@ -40,7 +43,11 @@ has either text or key, the other null. Type ASCII characters with text, includi
 use ArrowRight to leave exponents/fractions. Available keys are ArrowLeft, ArrowRight,
 ArrowUp, ArrowDown, Space, Home, End. Do not use Enter, Tab, or submission shortcuts.
 For other fields those arrays may be empty. Explain the math in explanation.
-In verify mode, independently identify correct answers using the revealed worked solution.
+This conversation covers one activity. Use its examples and revealed explanations to
+understand the methods, but solve the CURRENT question and inspect its CURRENT choices.
+Never reuse an earlier answer letter or infer displayed order from an image filename.
+Previous activity feedback distinguishes deliberately incorrect submissions from solver errors.
+In verify mode, critically recheck correct answers using the revealed worked solution.
 If the solution contradicts an earlier prediction, return the answer supported by the solution.
 '''
 
@@ -50,32 +57,136 @@ class Solver:
         self.args = args
 
     def solve(self, item, screenshot, directory, phase='solve'):
-        directory = Path(directory)
+        directory = Path(directory).resolve()
         payload = {'mode':phase, 'problem':item['problem'], 'worked_solution':item.get('worked_solution',''),
                    'fields':[{k:v for k,v in f.items() if k in ('key','type','tag','choices')} for f in item['fields']]}
         for f in payload['fields']:
             f['choices'] = [{k:v for k,v in c.items() if k in ('option','type','value')} for c in f['choices']]
+        session_file = directory.parent / 'solver-session' / 'state.json'
+        session = json.loads(session_file.read_text()) if session_file.exists() else {'session_id':None,'context_keys':[]}
+        context, context_keys = self.activity_context(directory.parent, session['context_keys'] if not self.args.solver_command else [])
+        identity = {k:v for k,v in context.items() if k in ('task_id','task_type','topic_id')}
+        if session.get('activity') is not None and session['activity'] != identity:
+            raise ValueError('Saved solver session belongs to another activity')
+        session['activity'] = identity
+        payload['activity_context'] = context
         atomic_json(directory / (phase + '-input.json'), payload)
         if self.args.solver_command:
             process = subprocess.run(shlex.split(self.args.solver_command), input=json.dumps({**payload,'screenshot':str(screenshot)}),
                                      text=True, capture_output=True, timeout=self.args.solver_timeout, check=True)
             result = json.loads(process.stdout)
         else:
-            with tempfile.TemporaryDirectory(prefix='ma-question-solver-') as work:
-                schema, output = Path(work)/'schema.json', Path(work)/'answer.json'
-                schema.write_text(json.dumps(SCHEMA))
-                command = [self.args.codex_bin,'exec','--ignore-user-config','--sandbox','read-only',
-                           '--skip-git-repo-check','--ephemeral','--cd',work,
-                           '--output-schema',str(schema),'--output-last-message',str(output)]
-                if screenshot and Path(screenshot).is_file():
-                    command += ['--image',str(screenshot)]
-                if self.args.solver_model:
-                    command += ['--model',self.args.solver_model]
-                process = subprocess.run(command + ['-'], input=INSTRUCTIONS + '\n' + json.dumps(payload),
-                                         text=True, capture_output=True, timeout=self.args.solver_timeout, check=True)
-                result = json.loads(output.read_text())
+            result = self.codex_turn(payload, screenshot, directory, phase, session_file, session, context_keys)
         self.validate(item, result)
         atomic_json(directory / (phase + '-answer.json'), result)
+        return result
+
+    @staticmethod
+    def activity_context(activity_directory, delivered):
+        source = Path(activity_directory) / 'state.json'
+        state = json.loads(source.read_text()) if source.exists() else {}
+        context = {k:state[k] for k in ('task_id','task_type','topic_id') if k in state}
+        context['examples'], context['feedback'], keys = [], [], []
+        for mid, example in state.get('examples',{}).items():
+            key = 'example:' + mid
+            if key not in delivered:
+                observed = {k:v for k,v in example.items() if k in
+                    ('math_academy_id','knowledge_point','problem','worked_solution')}
+                if re.fullmatch(r'e-\d+',mid):
+                    image = Path(activity_directory) / ('example-' + mid[2:] + '.png')
+                    if image.is_file():
+                        observed['screenshot'] = str(image.resolve())
+                context['examples'].append(observed)
+                keys.append(key)
+        for mid, record in state.get('questions',{}).items():
+            after = record.get('after',{})
+            key = 'feedback:' + mid
+            if key not in delivered and after.get('worked_solution') and record.get('actual_result'):
+                context['feedback'].append({'math_academy_id':mid,'problem':after['problem'],
+                    'worked_solution':after['worked_solution'],'actual_result':record['actual_result'],
+                    'deliberately_incorrect_submission':record.get('intended') == 'W',
+                    'submitted_fields':[{k:v for k,v in f.items() if k in
+                        ('key','submitted_value','submitted_option','observed_selected_option')}
+                        for f in record.get('before',{}).get('fields',[])]})
+                keys.append(key)
+        return context, keys
+
+    @staticmethod
+    def event_session_id(events):
+        identifiers = set()
+        for line in events.splitlines():
+            try:
+                event = json.loads(line)
+            except (ValueError,TypeError):
+                continue
+            if event.get('type') == 'thread.started':
+                identifiers.add(str(uuid.UUID(event['thread_id'])))
+        if len(identifiers) > 1:
+            raise ValueError('Codex returned multiple session identities')
+        return next(iter(identifiers), None)
+
+    def codex_turn(self, payload, screenshot, directory, phase, session_file, session, context_keys):
+        if session.get('pending_turn'):
+            raise RuntimeError('Previous solver turn was interrupted; inspect ' + str(session_file) + ' before resuming it')
+        work = session_file.parent / 'work'
+        work.mkdir(parents=True, exist_ok=True)
+        os.chmod(session_file.parent,0o700)
+        os.chmod(work,0o700)
+        schema, output = work / 'schema.json', work / 'answer.json'
+        schema.write_text(json.dumps(SCHEMA))
+        output.unlink(missing_ok=True)
+        sid = session.get('session_id')
+        if sid:
+            sid = str(uuid.UUID(sid))
+        command = [self.args.codex_bin,'exec','--sandbox','read-only','--cd',str(work)]
+        if sid:
+            command.append('resume')
+        command += ['--ignore-user-config','--skip-git-repo-check','--json',
+                    '--output-schema',str(schema),'--output-last-message',str(output)]
+        images = [Path(screenshot).resolve()] if screenshot and Path(screenshot).is_file() else []
+        images += [Path(example['screenshot']) for example in payload['activity_context']['examples'] if example.get('screenshot')]
+        for image in dict.fromkeys(images):
+            command += ['--image',str(image)]
+        if self.args.solver_model:
+            command += ['--model',self.args.solver_model]
+        if sid:
+            command.append(sid)
+        session['pending_turn'] = {'question':directory.name,'phase':phase,
+                                   'payload_sha256':hashlib.sha256(json.dumps(payload,sort_keys=True).encode()).hexdigest()}
+        atomic_json(session_file,session)
+        try:
+            process = subprocess.run(command + ['-'], input=INSTRUCTIONS + '\n' + json.dumps(payload),
+                                     text=True, capture_output=True, timeout=self.args.solver_timeout, check=True)
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+            events = exc.stdout or ''
+            if isinstance(events,bytes):
+                events = events.decode('utf-8',errors='replace')
+            (directory / (phase + '-events.jsonl')).write_text(events)
+            diagnostic = exc.stderr or ''
+            if isinstance(diagnostic,bytes):
+                diagnostic = diagnostic.decode('utf-8',errors='replace')
+            (directory / (phase + '-stderr.txt')).write_text(diagnostic)
+            observed = self.event_session_id(events)
+            if observed and (not sid or observed == sid):
+                session['session_id'] = observed
+                atomic_json(session_file,session)
+            raise
+        (directory / (phase + '-events.jsonl')).write_text(process.stdout)
+        (directory / (phase + '-stderr.txt')).write_text(process.stderr or '')
+        observed = self.event_session_id(process.stdout)
+        if not observed or sid and observed != sid:
+            raise ValueError('Codex did not confirm the expected activity session; stop instead of creating another context')
+        session['session_id'] = observed
+        atomic_json(session_file,session)
+        # Require a completed turn, even if a partial output file exists.
+        events = [json.loads(line) for line in process.stdout.splitlines() if line.strip()]
+        if not any(event.get('type') == 'turn.completed' for event in events):
+            raise ValueError('Codex did not complete the solver turn')
+        result = json.loads(output.read_text())
+        atomic_json(directory / (phase + '-answer.json'),result)
+        session['context_keys'] = list(dict.fromkeys(session['context_keys'] + context_keys))
+        session['last_turn'] = session.pop('pending_turn')
+        atomic_json(session_file,session)
         return result
 
     @staticmethod

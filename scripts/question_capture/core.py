@@ -52,11 +52,16 @@ class Pacer:
     def __init__(self, args, rng=None, sleeper=time.sleep):
         self.args, self.rng, self.sleeper = args, rng or random.Random(), sleeper
 
-    def wait(self, kind, reason):
+    def wait(self, kind, reason, elapsed=0):
         low, high = getattr(self.args, kind + '_min'), getattr(self.args, kind + '_max')
-        delay = self.rng.uniform(low, high)
-        logging.info('Waiting %.1fs (%s)', delay, reason)
-        self.sleeper(delay)
+        if not math.isfinite(elapsed) or elapsed < 0:
+            raise ValueError('Elapsed pacing credit must be finite and nonnegative')
+        budget = self.rng.uniform(low, high)
+        delay = max(0, budget - elapsed)
+        logging.info('Waiting %.1fs (%s)%s', delay, reason,
+                     ' [%.1fs budget, %.1fs solver time]' % (budget, elapsed) if kind == 'answer' else '')
+        if delay:
+            self.sleeper(delay)
         return delay
 
     def backoff(self, attempt, retry_after=0):
@@ -74,6 +79,8 @@ def choose_sequence(rng, weight=0.7):
 def choose_lesson(queue, priorities, completed_topics=()):
     candidates = []
     for item in queue:
+        if item.get('task_type', 'lesson') != 'lesson':
+            continue
         if item['topic_id'] in completed_topics:
             continue
         priority = priorities.get(item['topic_id'])
@@ -82,7 +89,34 @@ def choose_lesson(queue, priorities, completed_topics=()):
     return max(candidates, key=lambda i: (i['priority'], -i['topic_id']), default=None)
 
 
+def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
+    """Prefer ranked lessons; clear the first queued review when none is available."""
+    available = [item for item in queue if item['task_id'] not in captured_tasks]
+    lesson = choose_lesson(available, priorities, completed_topics)
+    if lesson:
+        return {**lesson, 'task_type': 'lesson'}
+    # Reviews do not use lesson priorities and do not mark a topic lesson captured.
+    return next((item for item in available if item.get('task_type') == 'review'), None)
+
+
+def choose_review_sequence(rng, weight=0.7, policy='maximize'):
+    if policy == 'correct':
+        return 'CC'
+    if policy != 'maximize':
+        raise ValueError('Unknown review answer policy: ' + policy)
+    sequence = choose_sequence(rng, weight)
+    return sequence + ('C' if sequence == 'CWCWC' else '')
+
+
 def normalize(value, representation='math'):
+    if representation == 'image':
+        # The same source image can be saved under another activity directory or
+        # exposed by MA under a second URL. Reuse the existing owned answer when
+        # local bytes agree, without changing its persisted path.
+        path = Path(value)
+        if path.is_file():
+            return 'sha256:' + hashlib.sha256(path.read_bytes()).hexdigest()
+        return value
     if representation != 'math':
         return value
     value = value.strip().strip('$').replace('−', '-')

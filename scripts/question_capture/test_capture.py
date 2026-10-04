@@ -1,24 +1,36 @@
 """Regression checks using actual Sum Rule DOM and EDB capture fixtures."""
 import copy
+import contextlib
+import io
 import json
 import random
 import tempfile
 import unittest
 import uuid
+from unittest.mock import Mock, patch
 from pathlib import Path
 from types import SimpleNamespace
 
 from browser import EXTRACT, CaptureBrowser, kp_for_example
-from core import ROOT, ALLOWED, Pacer, build_transaction, choose_lesson, choose_sequence, normalize
+from core import ROOT, ALLOWED, Pacer, build_transaction, choose_activity, choose_lesson, choose_sequence, choose_review_sequence, normalize
 from database import Database
 from edn import dumps, loads, kw
 from solver import Solver
 from progress import changes, normalize_course
+from capture import arguments, run
 
 FIXTURE = ROOT/'reference/mathacademy/sum-rule-13925458'
+REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_priority_lookup_uses_schema_string_learner_id(self):
+        db = Database(arguments(['priorities']))
+        db.query = Mock(return_value=[[462, 'Continuity', 1244.0]])
+        learner = uuid.UUID('59d5cf13-351c-4114-be19-4c3bb64ee051')
+        self.assertEqual(db.priorities(learner, Path('/tmp/selection')), {462:1244.0})
+        self.assertEqual(db.query.call_args.args[1], [str(learner)])
+
     def test_sequences_maximize_without_terminating(self):
         rng = random.Random(42)
         values = [choose_sequence(rng) for _ in range(10000)]
@@ -44,9 +56,49 @@ class PolicyTests(unittest.TestCase):
         self.assertTrue(all(0.8<=d<=2.5 for d in draws))
         self.assertGreater(len(set(draws)),1)
 
+    def test_answer_budget_credits_solver_time(self):
+        slept=[]
+        pacer=Pacer(SimpleNamespace(answer_min=5,answer_max=12),Mock(uniform=Mock(return_value=9)),slept.append)
+        self.assertEqual(pacer.wait('answer','fast solver',elapsed=4),5)
+        self.assertEqual(pacer.wait('answer','equal budget',elapsed=9),0)
+        self.assertEqual(pacer.wait('answer','slow solver',elapsed=20),0)
+        self.assertEqual(slept,[5])
+        with self.assertRaises(ValueError):
+            pacer.wait('answer','invalid elapsed',elapsed=float('nan'))
+
+    def test_review_fallback_does_not_mark_its_topic_lesson_completed(self):
+        queue = [{'task_id':1,'topic_id':10,'task_type':'review'},
+                 {'task_id':2,'topic_id':20,'task_type':'review'},
+                 {'task_id':3,'topic_id':10,'task_type':'lesson'}]
+        self.assertEqual(choose_activity(queue,{10:4})['task_id'],3)
+        self.assertEqual(choose_activity(queue,{})['task_id'],1)
+        self.assertEqual(choose_activity(queue,{},captured_tasks=[1])['task_id'],2)
+        self.assertEqual(choose_activity(queue,{10:4},captured_tasks=[1])['task_id'],3)
+        self.assertIsNone(choose_activity(queue,{},captured_tasks=[1,2]))
+
+    def test_review_sequences_finish_with_two_correct_across_the_review(self):
+        rng = random.Random(42)
+        sequences = [choose_review_sequence(rng) for _ in range(10000)]
+        self.assertEqual(set(sequences),{'CWCWCC','WCWCC'})
+        self.assertLess(abs(sequences.count('CWCWCC')/len(sequences)-0.7),0.02)
+        for sequence in set(sequences):
+            self.assertTrue(sequence.endswith('CC'))
+            self.assertNotIn('WW',sequence)
+            self.assertNotIn('CC',sequence[:-1])
+        self.assertEqual(choose_review_sequence(rng,policy='correct'),'CC')
+
     def test_normalization_preserves_fraction_grouping(self):
         self.assertEqual(normalize(r'\frac{{x}^{3}}{3}'),normalize(r'\frac{x^{3}}{3}'))
         self.assertNotEqual(normalize(r'\frac{1}{23}'),normalize(r'\frac{12}{3}'))
+
+    def test_image_identity_reuses_identical_local_bytes_across_captures(self):
+        with tempfile.TemporaryDirectory() as work:
+            first,second=Path(work)/'first.png',Path(work)/'alias.png'
+            first.write_bytes((REVIEW_FIXTURE/'assets/q-28197-a-1.png').read_bytes())
+            second.write_bytes((REVIEW_FIXTURE/'assets/q-28197-e-0.png').read_bytes())
+            self.assertEqual(normalize(str(first),'image'),normalize(str(second),'image'))
+            second.write_bytes((REVIEW_FIXTURE/'assets/q-28197-a-2.png').read_bytes())
+            self.assertNotEqual(normalize(str(first),'image'),normalize(str(second),'image'))
 
 
 class ReconciliationTests(unittest.TestCase):
@@ -115,6 +167,43 @@ class ProgressTests(unittest.TestCase):
         self.assertEqual((diff[0]['course_id'],diff[0]['before_band'],diff[0]['after_band']),(111,0,2))
 
 
+class RunnerTests(unittest.TestCase):
+    def test_required_review_then_lesson_refreshes_queue_and_keeps_lesson_eligible(self):
+        selected = []
+        queues = iter([[{'task_id':1,'topic_id':2084,'task_type':'review','title':'Review','href':'/tasks/1/topics/2084/review'}],
+                       [{'task_id':2,'topic_id':2084,'task_type':'lesson','title':'Lesson','href':'/tasks/2/topics/2084/lesson'}]])
+        class FixtureBrowser:
+            def __init__(self,*args): pass
+            def queue(self): return next(queues)
+            def start(self,activity): selected.append(activity['task_type'])
+            def knowledge_snapshot(self,*args): pass
+            def activity(self,state,*args): state['activity_complete']=True
+            def history(self,state,*args): return {'task_id':state['task_id'],'task_type':state['task_type']}
+        db=Mock()
+        db.priorities.return_value={2084:10}
+        db.topic.return_value={}
+        db.import_content.return_value={'previewed':True,'database_writes':0}
+        context=SimpleNamespace(pages=[SimpleNamespace()],close=Mock())
+        runtime=Mock()
+        runtime.__enter__=Mock(return_value=runtime)
+        runtime.__exit__=Mock(return_value=False)
+        runtime.chromium.launch_persistent_context.return_value=context
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--limit','2','--preview','--state-dir',work+'/state','--output',work+'/capture',
+                            '--lesson-min','0','--lesson-max','0'])
+            with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',FixtureBrowser), \
+                 patch('playwright.sync_api.sync_playwright',return_value=runtime),contextlib.redirect_stdout(io.StringIO()):
+                run(args)
+            self.assertEqual(selected,['review','lesson'])
+            self.assertEqual(db.priorities.call_count,2)
+            self.assertEqual(db.import_content.call_count,2)
+            self.assertTrue(all(call.args[2] is False for call in db.import_content.call_args_list))
+            entries=[json.loads(line) for line in (Path(work)/'state/journal.jsonl').read_text().splitlines()]
+            captured=[e for e in entries if e['event']=='activity_captured']
+            self.assertEqual([e['task_type'] for e in captured],['review','lesson'])
+        context.close.assert_called_once()
+
+
 class DOMTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -133,6 +222,14 @@ class DOMTests(unittest.TestCase):
         cls.browser.close()
         cls.runtime.stop()
 
+    def test_activity_wait_ignores_initial_numbered_placeholder(self):
+        self.page.set_content('<div id="stepButton-1" class="stepButton current"></div>'
+            '<script>setTimeout(()=>document.querySelector(".current").id="stepButton-t2583",150)</script>')
+        args=SimpleNamespace(timeout_ms=5000)
+        browser=CaptureBrowser(self.page,args,None,None)
+        browser.wait_activity_ready()
+        self.assertEqual(self.page.locator('.current').get_attribute('id'),'stepButton-t2583')
+
     def test_all_fifteen_real_widgets_before_and_after_submission(self):
         live = json.loads((FIXTURE/'live-capture.json').read_text())
         for record in live['responses']:
@@ -149,6 +246,24 @@ class DOMTests(unittest.TestCase):
             self.assertFalse(after['errors'])
             self.assertTrue(after['worked_solution'])
             self.assertEqual(after['result'],record['actual_result'])
+
+    def test_queue_and_start_support_both_kinds_and_ignore_in_progress_tasks(self):
+        queue_html = '<div id="incompleteTasks">'+''.join(
+            '<div id="task-'+str(task)+'" class="taskUnlocked" progress="'+progress+'">'
+            '<span class="taskTypeUnlocked">'+kind.title()+'</span><span id="taskName-'+str(task)+'">Topic</span>'
+            '<a class="taskStartButton" id="start-'+str(task)+'" style="display:none" href="/tasks/'+str(task)+'/topics/2084/'+kind+'">Start</a></div>'
+            for task,kind,progress in [(100,'review','0'),(101,'lesson','0'),(102,'review','2')])+'</div>'
+        queue_html += '<script>document.querySelectorAll(".taskUnlocked").forEach(n=>n.onclick=()=>n.querySelector("a").style.display="block");</script>'
+        self.context.unroute('https://mathacademy.com/**')
+        self.context.route('https://mathacademy.com/**',lambda route:route.fulfill(status=200,content_type='text/html',body=queue_html if route.request.url.endswith('/learn') else '<p>Activity</p>'))
+        args=SimpleNamespace(timeout_ms=5000,settle_ms=0,event_min=0,event_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        queue=browser.queue()
+        self.assertEqual([(a['task_id'],a['task_type']) for a in queue],[(100,'review'),(101,'lesson')])
+        for activity in queue:
+            browser.navigate('https://mathacademy.com/learn',force=True)
+            browser.start(activity)
+            self.assertEqual(self.page.url,'https://mathacademy.com'+activity['href'])
 
     def test_svg_duplicate_title_ids_are_scoped_locally(self):
         self.page.set_content('<span class="mjpage"><svg><title id="same">x+1</title></svg></span><div id="test"><div class="exampleQuestion"><span class="mjpage"><svg><title id="same">x^2+1</title></svg></span></div><div class="exampleExplanation">solution</div></div>')
@@ -199,6 +314,8 @@ class DOMTests(unittest.TestCase):
           if(n.id==='finalScreen-doneButton'){location.href='/learn';return;}
           if(n.id.startsWith('continueButton-')){position++;move();return;}
           if(n.id.startsWith('questionWidget-choiceLetterCircle-')){const token=order[position];selected[token]=n.textContent.trim();
+            document.getElementById('step-'+token).querySelectorAll('.questionWidget-choiceLetterCircle').forEach(c=>c.removeAttribute('style'));
+            n.style.background='rgb(64, 64, 64)';n.style.color='white';
             document.getElementById('step-'+token).querySelector('.questionWidget-submitButton').classList.remove('disabledButton');}
           if(n.classList.contains('questionWidget-submitButton')){const token=order[position],number=token.slice(1);
             const node=document.getElementById('step-'+token);node.outerHTML=after[number];
@@ -215,6 +332,7 @@ class DOMTests(unittest.TestCase):
         </script>'''
         progress = {113:(ROOT/'sequences-graphs/MF1.txt').read_text(),111:(ROOT/'sequences-graphs/MF2.txt').read_text(),136:(ROOT/'sequences-graphs/MF3.txt').read_text()}
         submitted_count = 0
+        results = {}
         def respond(route):
             nonlocal submitted_count
             url = route.request.url
@@ -222,11 +340,17 @@ class DOMTests(unittest.TestCase):
                 course = int(url.split('/courses/')[1].split('/')[0])
                 submissions = int(self.page.locator('body').get_attribute('data-submissions') or 0)
                 submitted_count = max(submitted_count, submissions)
+                for token in order:
+                    if token[0] == 'q':
+                        node=self.page.locator('#step-'+token+' .questionWidget-result')
+                        if node.count() and node.inner_text().strip(): results[token[1:]]=node.inner_text().strip()
                 body = progress[course]
                 if course == 111 and submitted_count:
                     body += '''<script>document.querySelector('.topicLink[href="/topics/3769?courseId=111"]').closest('tr').querySelector('.topicCircle').style.background='rgb(165, 207, 243)';</script>'''
             else:
                 body = lesson if '/lesson' in url else activity if '?taskId=' in url else '<div id="incompleteTasks"></div>'
+                if '?taskId=' in url:
+                    body += '<script>const results='+json.dumps(results)+''';document.querySelectorAll('.question').forEach(q=>q.querySelector('.answerResult').textContent=results[q.id.slice(9)]);</script>'''
             route.fulfill(status=200,content_type='text/html; charset=utf-8',body=body)
         self.context.unroute('https://mathacademy.com/**')
         self.context.route('https://mathacademy.com/**',respond)
@@ -241,6 +365,150 @@ class DOMTests(unittest.TestCase):
                 return {'confident':True,'answers':[{'key':'selection','correct_option':choice['option'],
                     'correct_value':choice['value'],'value_type':choice['type'],'wrong_value':None,'correct_keys':[],'wrong_keys':[]}]}
         return FixtureSolver()
+
+    def review_fixture(self, misselect=False, wrong_kp=False):
+        """Real served DOM, with two explicitly synthetic copies to test 5/6 steps."""
+        history = json.loads((REVIEW_FIXTURE/'activity-capture.json').read_text())['questions']
+        manifest = json.loads((REVIEW_FIXTURE/'assets/manifest.json').read_text())
+        numbers = ['28197','39032','39091','112434','99001','99002']
+        original_numbers = numbers[:4] + ['112434','112434']
+        correct, before, after, activity = {}, {}, {}, {}
+        for number, original in zip(numbers,original_numbers):
+            raw_before = json.loads((REVIEW_FIXTURE/('q'+original+'-before.json')).read_text())
+            raw_after = json.loads((REVIEW_FIXTURE/('q'+original+'-after.json')).read_text())
+            correct[number] = {'28197':'a','39032':'a','39091':'c','112434':'c'}[original]
+            before[number] = raw_before['html'].replace(original,number)
+            after[number] = raw_after['html'].replace(original,number)
+            h = next(q for q in history if q['id']=='question-'+original)
+            activity[number] = (h['raw_html']+h['explanation_html']).replace(original,number)
+            if wrong_kp:
+                activity[number] = activity[number].replace('/topics/2084#','/topics/9999#')
+        setup = '''const numbers=NUMBERS, after=AFTER, correct=CORRECT; let position=0, selected={},streak=0;
+        const bar=document.createElement('div');document.body.prepend(bar);
+        for(const number of numbers){const b=document.createElement('div');b.id='stepButton-q'+number;b.className='stepButton';bar.append(b);}
+        const final=document.createElement('div');final.id='finalScreen';final.style.display='none';
+        final.innerHTML="Congratulations! You've completed the review.<button id='finalScreen-doneButton'>Continue</button>";document.body.append(final);
+        function move(){document.querySelectorAll('.stepButton').forEach(n=>n.classList.remove('current'));
+          numbers.forEach(number=>{document.getElementById('step-q'+number).style.display='none';});
+          if(streak>=2){final.style.display='block';return;}
+          const number=numbers[position];document.getElementById('stepButton-q'+number).classList.add('current');
+          document.getElementById('step-q'+number).style.display='block';}
+        document.addEventListener('click',event=>{const n=event.target,number=numbers[position];
+          if(n.id==='finalScreen-doneButton'){location.href='/learn';return;}
+          if(n.id.startsWith('continueButton-')){position++;move();return;}
+          if(n.id.startsWith('questionWidget-choiceLetterCircle-')){
+            const root=document.getElementById('step-q'+number);
+            root.querySelectorAll('.questionWidget-choiceLetterCircle').forEach(c=>c.removeAttribute('style'));
+            const actual=MISSELECT ? root.querySelector('.questionWidget-choiceLetterCircle') : n;
+            selected[number]=actual.textContent.trim();actual.style.background='rgb(64, 64, 64)';actual.style.color='white';
+            root.querySelector('.questionWidget-submitButton').classList.remove('disabledButton');}
+          if(n.classList.contains('questionWidget-submitButton')){
+            document.getElementById('step-q'+number).outerHTML=after[number];
+            const root=document.getElementById('step-q'+number),result=selected[number]===correct[number]?'Correct':'Incorrect';
+            root.querySelector('.questionWidget-result').textContent=result;
+            root.querySelectorAll('.questionWidget-choiceLetterCircle').forEach(c=>{c.removeAttribute('style');
+              if(c.textContent.trim()===selected[number]){c.style.background='rgb(64, 64, 64)';c.style.color='white';}});
+            streak=result==='Correct'?streak+1:0;
+            if(!document.getElementById('continueButton-q'+number)){const b=document.createElement('button');b.id='continueButton-q'+number;b.textContent='Continue';root.append(b);}
+            document.body.dataset.submissions=String(Number(document.body.dataset.submissions||0)+1);}
+        });move();'''
+        setup = setup.replace('NUMBERS',json.dumps(numbers)).replace('AFTER',json.dumps(after)).replace('CORRECT',json.dumps(correct)).replace('MISSELECT',str(misselect).lower()).replace('</script','<\\/script')
+        review = ''.join(before.values())+'<script>'+setup+'</script>'
+        progress = {c:(ROOT/('sequences-graphs/MF'+str(i)+'.txt')).read_text() for i,c in enumerate((113,111,136),1)}
+        served, results = 0, {}
+        def respond(route):
+            nonlocal served, results
+            url = route.request.url
+            if '/graphics/' in url:
+                original_url = url.replace('99001','112434').replace('99002','112434')
+                asset = manifest.get(original_url)
+                route.fulfill(status=200 if asset else 404,content_type='image/png',body=Path(asset['path']).read_bytes() if asset else b'')
+                return
+            if '/courses/' in url:
+                served = max(served,int(self.page.locator('body').get_attribute('data-submissions') or 0))
+                for number in numbers[:served]:
+                    node=self.page.locator('#step-q'+number+' .questionWidget-result')
+                    if node.count(): results[number]=node.inner_text()
+            if '/courses/' in url:
+                course = int(url.split('/courses/')[1].split('/')[0]); body=progress[course]
+            elif '/review' in url:
+                body = review
+            elif '?taskId=' in url:
+                rows = [activity[n] for n in numbers[:served]]
+                body = '<div class="reviewAnswerList">'+''.join(rows)+'</div><script>const results='+json.dumps(results)+''';
+                document.querySelectorAll('.question').forEach(q=>q.querySelector('.answerResult').textContent=results[q.id.slice(9)]);
+                document.querySelectorAll('.questionExplanation').forEach(e=>e.style.display='none');
+                document.querySelectorAll('.answerDetails').forEach(e=>e.onclick=()=>document.getElementById(e.closest('.question').id.replace('question-','questionExplanation-')).style.display='block');</script>'''
+            else: body='<div id="incompleteTasks"></div>'
+            route.fulfill(status=200,content_type='text/html; charset=utf-8',body=body)
+        self.context.unroute('https://mathacademy.com/**')
+        self.context.route('https://mathacademy.com/**',respond)
+        return correct
+
+    def test_reviews_capture_global_sequences_map_mixed_kps_and_original_images(self):
+        for weight, expected_sequence in [(0,'WCWCC'),(1,'CWCWCC')]:
+            correct=self.review_fixture()
+            args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=weight,review_policy='maximize',settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
+            browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),self.fixture_solver(correct))
+            self.page.goto('https://mathacademy.com/tasks/13925710/topics/2084/review')
+            state={'task_id':13925710,'topic_id':2084,'kps':{},'examples':{},'questions':{}}
+            topic=loads((REVIEW_FIXTURE/'database/topic.edn').read_text())[0][0]
+            with tempfile.TemporaryDirectory() as work:
+                if weight == 0:
+                    original = browser.knowledge_snapshot
+                    def fail_once(state,directory,event,**kwargs):
+                        if event == 'after-q28197': raise RuntimeError('Simulated review snapshot interruption')
+                        return original(state,directory,event,**kwargs)
+                    browser.knowledge_snapshot = fail_once
+                    with self.assertRaisesRegex(RuntimeError,'review snapshot interruption'):
+                        browser.review(state,work,topic)
+                    self.assertEqual(self.page.locator('body').get_attribute('data-submissions'),'1')
+                    browser.knowledge_snapshot = original
+                    args.cwcwc_weight = 1  # Resume must retain its already chosen sequence.
+                browser.review(state,work,topic)
+                if weight == 0:
+                    recovered=json.loads((Path(work)/'knowledge-state/after-q28197.json').read_text())
+                    self.assertTrue(recovered['recovered_after_interruption'])
+                self.assertEqual(state['review_sequence'],expected_sequence)
+                self.assertEqual(''.join(q['intended'] for q in state['questions'].values()),expected_sequence)
+                self.assertTrue(state['review_complete'])
+                content=browser.history(state,work,topic)
+                self.assertEqual(len(content['questions']),len(expected_sequence))
+                self.assertEqual(len(state['kps']),3)
+                self.assertEqual(content['canonical_examples'],[])
+                self.assertTrue(all(q['difficulty'] and q['knowledge_point_id'] and q['worked_solution'] for q in content['questions']))
+                images=json.loads((Path(work)/'assets/manifest.json').read_text())
+                self.assertTrue(all(a['representation']=='original' for a in images.values()))
+                source='https://mathacademy.com/graphics/q-28197-'
+                self.assertEqual(images[source+'a-1']['path'],images[source+'e-0']['path'])
+                self.assertEqual(len(state['knowledge_snapshots']),len(expected_sequence)+2)
+                transaction,_=build_transaction(content,topic,{})
+                self.assertEqual(sum(':knowledge-point/questions' in row for row in transaction),len(expected_sequence))
+
+    def test_actual_radio_selection_mismatch_stops_before_submit(self):
+        correct=self.review_fixture(misselect=True)
+        args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=0,review_policy='maximize',settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),self.fixture_solver(correct))
+        self.page.goto('https://mathacademy.com/tasks/13925710/topics/2084/review')
+        state={'task_id':13925710,'topic_id':2084,'kps':{},'examples':{},'questions':{}}
+        with tempfile.TemporaryDirectory() as work:
+            with self.assertRaisesRegex(ValueError,'Actual selected radio option'):
+                browser.review(state,work,{})
+            self.assertIsNone(self.page.locator('body').get_attribute('data-submissions'))
+            self.assertEqual(state['questions']['q-28197']['status'],'prepared')
+
+    def test_review_activity_rejects_kp_link_to_another_topic(self):
+        correct=self.review_fixture(wrong_kp=True)
+        args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=0,review_policy='correct',settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),self.fixture_solver(correct))
+        self.page.goto('https://mathacademy.com/tasks/13925710/topics/2084/review')
+        state={'task_id':13925710,'topic_id':2084,'kps':{},'examples':{},'questions':{}}
+        topic=loads((REVIEW_FIXTURE/'database/topic.edn').read_text())[0][0]
+        with tempfile.TemporaryDirectory() as work:
+            browser.review(state,work,topic)
+            self.assertEqual(len(state['questions']),2)
+            with self.assertRaisesRegex(ValueError,'valid topic/KP source link'):
+                browser.history(state,work,topic)
 
     def test_sequential_capture_and_activity_join_end_to_end_offline(self):
         correct = self.lesson_fixture()

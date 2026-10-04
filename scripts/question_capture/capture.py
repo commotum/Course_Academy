@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture highest-priority queued lessons and import their question content."""
+"""Capture queued lessons and required reviews and import their question content."""
 import argparse
 import contextlib
 import fcntl
@@ -7,11 +7,12 @@ import json
 import logging
 import os
 import random
+import shutil
 import sys
 import uuid
 from pathlib import Path
 
-from core import ROOT, Pacer, atomic_json, choose_lesson, journal
+from core import ROOT, Pacer, atomic_json, choose_activity, journal
 from database import Database
 
 
@@ -27,13 +28,17 @@ def arguments(argv=None):
     parser.add_argument('--profile',type=Path,help='Dedicated Playwright profile; defaults to STATE_DIR/browser-profile')
     parser.add_argument('--content',type=Path,help='Saved content.json for import-saved')
     parser.add_argument('--resume',type=Path,help='Resume a run directory containing state.json')
-    parser.add_argument('--limit',type=int,default=1,help='Maximum lessons per invocation; default 1')
+    parser.add_argument('--limit',type=int,default=1,help='Maximum activities (lessons or reviews) per invocation; default 1')
     parser.add_argument('--preview',action='store_true',help='Preview EDB writes. With run, MA answers are still submitted.')
-    parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting a lesson')
+    parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting an activity')
     parser.add_argument('--headless',action='store_true',help='Default is a visible Chromium window')
     parser.add_argument('--browser-spec',help='Optional existing browser cookie source, using the original MA cookiekit syntax')
     parser.add_argument('--ma-root',type=Path,default=Path('/home/jake/Developer/MA'))
     parser.add_argument('--cwcwc-weight',type=float,default=0.7)
+    parser.add_argument('--review-policy',choices=['maximize','correct'],default='maximize',
+                        help='Reviews: weighted capture sequence, or correct answers throughout')
+    parser.add_argument('--review-question-limit',type=int,default=20,
+                        help='Stop a review before submitting more than this many questions')
     parser.add_argument('--seed',type=int,help='Optional reproducible sequence/pacing seed')
     parser.add_argument('--timeout-ms',type=int,default=45000)
     parser.add_argument('--settle-ms',type=int,default=1000)
@@ -59,7 +64,7 @@ def arguments(argv=None):
             parser.error('Invalid '+kind+' wait range')
     if not math.isfinite(args.cwcwc_weight) or not 0<=args.cwcwc_weight<=1:
         parser.error('--cwcwc-weight must be in [0,1]')
-    if args.limit<1 or args.rest_every<0 or args.timeout_ms<1 or args.solver_timeout<1 or args.settle_ms<0:
+    if args.limit<1 or args.review_question_limit<1 or args.rest_every<0 or args.timeout_ms<1 or args.solver_timeout<1 or args.settle_ms<0:
         parser.error('Invalid limit, timeout, or rest frequency')
     if args.command=='import-saved' and not args.content:
         parser.error('import-saved requires --content')
@@ -134,51 +139,63 @@ def run(args):
                 logging.info('Session retained in the dedicated private profile')
                 return
             completed = set()
+            captured_tasks = set()
             log = args.state_dir/'journal.jsonl'
             if log.exists():
                 for line in log.read_text().splitlines():
                     entry = json.loads(line)
-                    if entry['event']=='lesson_captured':
-                        completed.add(entry['topic_id'])
+                    if entry['event'] in ('lesson_captured','activity_captured'):
+                        captured_tasks.add(entry['task_id'])
+                        if entry.get('task_type','lesson') == 'lesson':
+                            completed.add(entry['topic_id'])
             for n in range(args.limit):
                 if args.resume and n==0:
                     directory = args.resume.resolve()
                     state = json.loads((directory/'state.json').read_text())
+                    state.setdefault('task_type', 'lesson')
                     topic = db.topic(state['topic_id'],directory/'selection')
-                    if not state.get('lesson_complete'):
-                        browser.navigate(state['lesson_url'])
+                    if not state.get('activity_complete') and not state.get(state['task_type'] + '_complete'):
+                        browser.navigate(state.get('activity_url') or state['lesson_url'])
                 else:
                     priorities = db.priorities(args.learner_id,args.state_dir/'selection')
                     queue = browser.queue()
-                    lesson = choose_lesson(queue,priorities,completed)
-                    atomic_json(args.state_dir/'selection/queue.json',{'queue':queue,'selected':lesson,'unranked_topics':[i['topic_id'] for i in queue if i['topic_id'] not in priorities]})
-                    if not lesson:
-                        logging.info('No new lesson is both available in Math Academy and ranked/unlocked in EDB. Required reviews may be occupying the queue.')
+                    activity = choose_activity(queue,priorities,completed,captured_tasks)
+                    atomic_json(args.state_dir/'selection/queue.json',{'queue':queue,'selected':activity,'unranked_topics':[i['topic_id'] for i in queue if i['task_type'] == 'lesson' and i['topic_id'] not in priorities]})
+                    if not activity:
+                        logging.info('No new ranked lesson or queued review is available. In-progress tasks require explicit --resume.')
                         break
-                    logging.info('Selected %s: priority %.6f',lesson['title'],lesson['priority'])
+                    logging.info('Selected %s %s%s',activity['task_type'],activity['title'],
+                                 ': priority %.6f' % activity['priority'] if 'priority' in activity else ': review queue order')
                     if args.dry_run:
-                        print(json.dumps(lesson,indent=2))
+                        print(json.dumps(activity,indent=2))
                         break
-                    directory = args.output/str(lesson['task_id'])
+                    directory = args.output/str(activity['task_id'])
                     if (directory/'state.json').exists():
                         raise RuntimeError('Saved run exists; use --resume '+str(directory))
-                    topic = db.topic(lesson['topic_id'],directory/'selection')
-                    state = {'task_id':lesson['task_id'],'topic_id':lesson['topic_id'],
-                             'lesson_url':'https://mathacademy.com'+lesson['href'],
-                             'selected_priority':lesson['priority'],'kps':{},'examples':{},'questions':{}}
+                    topic = db.topic(activity['topic_id'],directory/'selection')
+                    (directory/'selection').mkdir(parents=True,exist_ok=True)
+                    for name in ('queue.json','priorities.edn','priorities-query.edn','priorities-inputs.edn'):
+                        source = args.state_dir/'selection'/name
+                        if source.is_file():
+                            shutil.copy2(source, directory/'selection'/source.name)
+                    state = {'task_id':activity['task_id'],'topic_id':activity['topic_id'],'task_type':activity['task_type'],
+                             'activity_url':'https://mathacademy.com'+activity['href'],
+                             'selected_priority':activity.get('priority'),'kps':{},'examples':{},'questions':{}}
                     atomic_json(directory/'state.json',state)
                     browser.knowledge_snapshot(state,directory,'baseline')
-                    browser.start(lesson)
+                    browser.start(activity)
                 try:
-                    browser.lesson(state,directory,topic)
+                    browser.activity(state,directory,topic)
                     if state.get('history_complete') and (directory/'content.json').exists():
                         content = json.loads((directory/'content.json').read_text())
                     else:
-                        content = browser.history(state,directory)
+                        content = browser.history(state,directory,topic)
                     # Record capture completion separately from an EDB receipt. Never retake
-                    # a completed MA lesson because its database commit needs recovery.
-                    journal(log,'lesson_captured',task_id=state['task_id'],topic_id=state['topic_id'],directory=str(directory))
-                    completed.add(state['topic_id'])
+                    # a completed MA activity because its database commit needs recovery.
+                    journal(log,'activity_captured',task_id=state['task_id'],topic_id=state['topic_id'],task_type=state['task_type'],directory=str(directory))
+                    captured_tasks.add(state['task_id'])
+                    if state['task_type'] == 'lesson':
+                        completed.add(state['topic_id'])
                     result = db.import_content(content,directory/'edb-import',not args.preview)
                     journal(log,'content_imported' if not args.preview else 'content_previewed',task_id=state['task_id'],**result)
                     print(json.dumps({'run_directory':str(directory),'database':result},indent=2),flush=True)
@@ -191,7 +208,7 @@ def run(args):
                     journal(log,'stopped',task_id=state['task_id'],directory=str(directory))
                     raise
                 if n+1<args.limit:
-                    pacer.wait('lesson','between lessons')
+                    pacer.wait('lesson','between activities')
                     if args.rest_every and (n+1)%args.rest_every==0:
                         pacer.wait('rest','periodic cooldown')
         finally:

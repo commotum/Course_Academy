@@ -122,5 +122,6 @@ element => {
     calculator_instructions:text(instructions), fields,
     result:element.querySelector('.questionWidget-result')?.textContent.trim(),
     html:element.outerHTML, errors:[...new Set(errors)],
-    assets:assets.map((n,index) => ({index, tag:n.localName, html:n.outerHTML}))};
+    assets:assets.map((n,index) => ({index, tag:n.localName, html:n.outerHTML,
+      source_url:n.localName==='img' ? n.currentSrc || n.src : null}))};
 }

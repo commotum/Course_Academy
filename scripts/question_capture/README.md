@@ -1,6 +1,6 @@
 # Question capture
 
-Run sequential Math Academy lessons and add captured **content only** to EDB.
+Run sequential Math Academy lessons and reviews and add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
 apart from Playwright, the EDB CLI, and a solver command.
 
@@ -8,15 +8,30 @@ The runner:
 
 1. Reads unlocked lesson priorities for the selected learner from EDB. Intersects
    them with new lessons actually available in Math Academy's visible queue, then
-   takes the highest priority. It does not change EDB task priorities or statuses.
+   takes the highest priority. When no eligible lesson is available, it takes the
+   first new review in the visible queue, then checks the queue again if the batch
+   has remaining capacity. Reviews use queue order, not lesson priority ratings.
+   It does not change EDB task priorities or statuses.
 2. Captures each canonical example live. For each KP it randomly chooses
    `C-W-C-W-C` with probability **0.7**, or `W-C-W-C-C` with probability **0.3**.
    It captures each practice problem and locally observed answer widgets before
    submitting, then captures the result and revealed worked solution. It checks
    every grading result before continuing.
+   Reviews use a single sequence across the whole task because questions can
+   switch KPs: `C-W-C-W-C-C` with probability **0.7**, or `W-C-W-C-C` with
+   probability **0.3**. The extra final C completes the first pattern with two
+   consecutive correct answers. `--review-policy correct` instead answers
+   correctly throughout. The chosen review sequence is saved before answering.
+   If the review continues beyond that sequence, subsequent answers are correct;
+   `--review-question-limit 20` bounds this unexpected behavior.
 3. Opens the completed activity, expands the explanations, and joins all question
    IDs to KP titles and source E/M/H difficulty labels. It checks that the live
    and activity question sets and KP mappings agree.
+   Review history uses `.reviewAnswerList .question` and a per-question
+   `.questionKP` source link. Each link must belong to the selected topic, and
+   its title must match exactly one of that topic's database KPs. It captures
+   whatever questions were served; reviews do not require five per KP or a live
+   canonical example. An unknown review tutorial/example layout stops for inspection.
 4. Matches `q-N` and `e-N` globally in EDB. Adds missing attributes and choices,
    reuses existing owned answer entities, and links new practice to the correct
    `knowledge-point/questions`. Existing populated attributes are preserved.
@@ -29,9 +44,9 @@ The runner:
 
 It also saves a baseline and a snapshot of all three course progress pages
 after **every step** (tutorial, canonical example, or answered question), after
-Continue advances the lesson, and once more after lesson completion. An
+Continue advances the activity, and once more after completion. An
 unexpected grade is captured before stopping. The progress pages use a separate
-tab, leaving the live lesson loaded. Reads are sequential and use the existing
+tab, leaving the live activity loaded. Reads are sequential and use the existing
 randomized navigation pauses: three additional page reads per snapshot.
 
 Each `knowledge-state/<event>.json` contains every topic row from courses
@@ -48,10 +63,10 @@ existing initialization convention; darkest-to-6 is an assumption. Unchanged
 bands do not prove the underlying values stayed unchanged. Progress snapshots
 are saved separately and never transacted into EDB learner state.
 
-**Reviews are not automated yet.** If required reviews occupy the queue, the
-runner reports that no ranked lesson is available and stops. Capture a review
-manually before designing its automation; do not assume lesson stopping rules
-apply to it. This is the current live queue situation as of October 3, 2026.
+The manual review captured on October 3, 2026 ended after two consecutive
+correct answers across different KPs. The runner waits for the site's completion
+screen and verifies it says the review completed; it does not declare completion
+from a predicted question count. Two-consecutive-wrong termination was not tested.
 
 ## Run
 
@@ -73,8 +88,11 @@ optional and depends on that helper's browser/decryption dependencies.
 
 `run` **answers questions on Math Academy and commits EDB content by default**.
 `--dry-run` only inspects the queue and priorities. `--preview` still takes the
-lesson but previews its database transaction without committing. Default limit
-is one lesson; use `--limit N` for a bounded sequential batch.
+activity but previews its database transaction without committing. Default limit
+is one activity; use `--limit N` for a bounded sequential batch. A required review
+counts toward that limit. For example, `--limit 2` permits a review followed by a
+lesson if completing the review makes a ranked lesson available. The queue and
+EDB priorities are read afresh between activities.
 
 To use a different Python environment, install `requirements.txt` there and
 install its Playwright Chromium browser if needed. No dependencies were added to
@@ -87,9 +105,23 @@ All paths work when invoked from this repository root.
 
 ## Solver
 
-The default adapter calls `codex exec` with structured output and a read-only
-temporary working directory, using only the displayed question, available
-choices, and a screenshot of the question. It uses `--ignore-user-config` so
+The default adapter keeps **one Codex session per activity**, for both lessons
+and reviews, including verification turns. The first question starts `codex exec`;
+subsequent calls use `codex exec resume <SESSION_ID>` with that explicit saved ID.
+The CLI process exits between calls, but its persisted conversation carries forward.
+It never uses `--last` or silently starts over if a resumed session has a different ID.
+
+Each turn receives the current problem, locally observed fields and choices,
+and its screenshot, along with newly captured canonical examples (including their
+saved screenshots) and newly
+revealed worked solutions from that activity. Grading feedback distinguishes
+intentional wrong submissions from solver errors. Examples and feedback are
+sent once, then retained in the session; changing KPs does not reset it. Current
+choice letters and ordering must always be checked anew.
+
+Structured output and a read-only working directory are retained. The persistent
+working directory and session checkpoint are under the activity's
+`solver-session/`; the Codex transcript uses normal CLI session storage. It uses `--ignore-user-config` so
 project instructions, configured connectors, and custom tools do not influence
 the solver. It does not set a model unless `--solver-model` is supplied. It needs
 an authenticated Codex CLI and consumes model usage. The structured-output
@@ -98,13 +130,20 @@ interface follows the [official noninteractive documentation](https://learn.chat
 The solver must identify the correct answer even when the runner intends to
 submit a wrong answer. The runner picks a different radio/select choice or types
 the solver's explicitly incorrect blank value. After an incorrect submission,
-the solver independently checks the correct answer against the revealed worked
+the solver rechecks the correct answer against the revealed worked
 solution. Correct submissions are confirmed by the site's grader.
+Radio choices are clicked by their observed choice-circle IDs, using the displayed
+option token from the solver. The actual highlighted letter is checked before
+Submit. Graph filenames do not determine displayed order. Native select and
+blank values are also checked before submitting; the entered screenshot and
+checkpoint retain the selection for recovery.
 
 Use `--solver-command 'python3 /absolute/path/solver.py'` to substitute a solver.
-It receives JSON on stdin (`mode`, `problem`, `worked_solution`, `fields`,
+It receives JSON on stdin (`mode`, `problem`, `worked_solution`, `fields`, `activity_context`,
 `screenshot`) and must emit JSON matching `solver.py:SCHEMA` on stdout. Commands
-are parsed as argument lists, never executed through a shell. Uncertain results
+are parsed as argument lists, never executed through a shell. A custom command
+manages its own session persistence; its activity context contains all available
+examples and grading feedback. Uncertain results
 or invalid choices stop before submission.
 
 The extractor supports observed radio circles, native blanks/selects, MathQuill
@@ -131,9 +170,9 @@ read pacing is 0.2–0.8 seconds; this interactive runner uses longer pauses:
 | Event | Default uniform wait |
 | --- | --- |
 | Navigation, field selection, Continue, history expansion | 0.8–2.5 seconds |
-| Before submitting an answer, in addition to solver time | 5–12 seconds |
-| Between lessons | 10–25 seconds |
-| After every 20 lessons when more remain | 120–360 seconds |
+| Total answer budget, crediting Codex solving time; only the remainder is waited before Submit | 5–12 seconds |
+| Between activities | 10–25 seconds |
+| After every 20 activities when more remain | 120–360 seconds |
 | Retry a failed read-only navigation | 30/60 seconds plus 0–5 seconds jitter |
 
 Each range has `--event-min/max`, `--answer-min/max`, `--lesson-min/max`, or
@@ -149,9 +188,16 @@ and Continue actions are never blindly retried.
 Artifacts go to `reference/mathacademy/question-capture/<taskId>/` by default:
 
 - Source DOM JSON, formula data inside its HTML, and before/after screenshots.
-- Rendered graphical assets saved locally without additional download requests.
+- Original images from browser-observed responses, with source URLs, hashes, and
+  local paths in `assets/manifest.json`. Identical bytes under different URLs reuse
+  one file. Canvas, inline SVG, or an unavailable original response uses a rendered
+  capture, explicitly marked in the manifest. No extra image requests are issued.
 - Canonical examples, activity metadata, and `content.json` for import.
 - `state.json` with chosen sequences and a checkpoint before every submission.
+- `solver-session/state.json` with the activity's Codex session ID, delivered
+  context, and pending turn checkpoint; question directories retain solver events
+  and inputs/outputs. A completed session is reused on script restart. A timeout
+  or unconfirmed turn stops for inspection before another prompt is sent.
 - `knowledge-state/` with a full course profile and band changes after each step.
 - EDB reads, `transaction.edn`, preview, exact commit intent, receipt, matching
   report, and verification under `edb-import/`.
@@ -189,7 +235,9 @@ retry the same command. The original payload, database, endpoint, basis guard,
 and request key are reused. A definitive stale-basis rejection requires a fresh
 plan after checking that no commit occurred; unresolved intents are never
 silently replaced. Completed captures are journaled separately from imports,
-so an EDB failure does not cause the lesson to be retaken.
+so an EDB failure does not cause the activity to be retaken. Reviews are tracked by
+task ID and do not mark their topic's lesson as already captured. Legacy lesson
+checkpoints and journal entries remain supported.
 
 ## Validation
 
@@ -198,13 +246,37 @@ so an EDB failure does not cause the lesson to be retaken.
 python3 scripts/question_capture import-saved --content reference/mathacademy/sum-rule-13925458/content.json --preview
 ```
 
-Tests use the saved real lesson DOM and EDB snapshots. Browser fixture tests run
+Tests use the saved real lesson and review DOM and EDB snapshots. Browser fixture tests run
 offline, including full five-question progression, activity joining, and a
 grading mismatch that must stop before the second submission. The progression
 test checks all 1,040 course-qualified rows in each of its 20 snapshots and a
 known color transition. Recovery tests ensure a failed snapshot does not resend
-an answer. The EDB preview
+an answer. Review tests exercise both weighted global sequences, mixed KPs, original
+image capture and alias deduplication, a selection mismatch that must stop before
+Submit, review recovery without resubmitting or changing its saved sequence,
+and a wrong-topic KP link that must stop the import. Queue tests cover both task
+types and ignore in-progress tasks; the runner test checks a required review
+followed by a freshly available lesson on the same topic. Two synthetic copies
+of a served question are used only in the offline fixture to test five- and
+six-question reviews; they are never submitted to MA or imported into EDB.
+Identical image files saved under separate capture paths also match existing
+answer entities by content hash. Solver lifecycle tests use a mocked CLI to check
+session reuse across questions, verification, KP changes, and Python restarts;
+separation between activities; incremental feedback; stale-choice rejection;
+and interruption or unexpected-session handling. They do not make model calls.
+The EDB preview
 for the saved Sum Rule capture passes at basis 305: three existing practice
 records enriched, twelve new practice records planned, with no learner writes.
-No live lesson, live review, or database commit was performed while developing
-this script.
+No live activity or database commit is performed by these fixture tests. The
+standalone automator completed live lesson **13831128**, Determining Continuity
+from Graphs, on October 3, 2026: fifteen practice questions, three canonical
+examples, 45 original images, and 22 full progress observations. One solver
+session handled all 21 solving/verification turns. The import created twelve
+questions and enriched three, committing basis 305 → 306 with all 4,614 protected
+learner/engine facts unchanged and a no-op reimport. See
+`reference/mathacademy/question-capture/13831128/README.md` and its verification
+files. The test fixed string learner-ID lookup and waits for initial step
+placeholders to load. Subsequent runs credit solver duration toward the answer
+budget rather than adding another full wait. The review path still relies on
+the earlier manual review and offline fixtures; it has not yet been run live by
+the standalone automator.
