@@ -164,6 +164,22 @@ class ProgressTests(unittest.TestCase):
 
 
 class RunnerTests(unittest.TestCase):
+    def test_run_discovers_unfinished_capture_and_import_before_new_activity(self):
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--output',work+'/captures','--state-dir',work+'/state'])
+            done=Path(work)/'captures/1'; pending=Path(work)/'captures/2'
+            for path in (done,pending):
+                path.mkdir(parents=True)
+                (path/'state.json').write_text(json.dumps({'task_id':int(path.name)}))
+            (done/'edb-import').mkdir()
+            (done/'edb-import/verification.json').write_text('{"committed":true}')
+            self.assertEqual(unfinished_run(args),pending.resolve())
+            # Even a finished website activity resumes if its content import failed.
+            (pending/'state.json').write_text('{"task_id":2,"activity_complete":true,"history_complete":true}')
+            self.assertEqual(unfinished_run(args),pending.resolve())
+            (pending/'state.json').write_text('{"task_id":2,"import_complete":true}')
+            self.assertIsNone(unfinished_run(args))
+
     def test_required_review_then_lesson_refreshes_queue_and_keeps_lesson_eligible(self):
         selected = []
         queues = iter([[{'task_id':1,'topic_id':2084,'task_type':'review','title':'Review','href':'/tasks/1/topics/2084/review'}],
@@ -225,6 +241,15 @@ class DOMTests(unittest.TestCase):
         browser=CaptureBrowser(self.page,args,None,None)
         browser.wait_activity_ready()
         self.assertEqual(self.page.locator('.current').get_attribute('id'),'stepButton-t2583')
+
+    def test_restore_uses_unanswered_widget_when_navigation_marker_is_stale(self):
+        self.page.set_content('<div id="stepButton-q1" class="stepButton current"></div>'
+            '<div id="step-q1" class="step questionWidget"><div class="questionWidget-result">Correct</div></div>'
+            '<div id="continueButton-q1" style="display:none">Continue</div>'
+            '<div id="step-q2" class="step questionWidget"><div class="questionWidget-submitButton">Submit</div></div>')
+        browser=CaptureBrowser(self.page,SimpleNamespace(timeout_ms=5000),None,None)
+        browser.wait_activity_ready()
+        self.assertEqual(browser.current_step(),'stepButton-q2')
 
     def test_all_fifteen_real_widgets_before_and_after_submission(self):
         live = json.loads((FIXTURE/'live-capture.json').read_text())
@@ -540,6 +565,33 @@ class DOMTests(unittest.TestCase):
             self.assertTrue(saved['recovered_after_interruption'])
             self.assertEqual(len(state['questions']),15)
             self.assertEqual(list(state['knowledge_snapshots']),['lesson-completed'])
+
+    def test_legacy_continue_checkpoint_resumes_without_repeating_answer(self):
+        correct=self.lesson_fixture()
+        args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=1,settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),self.fixture_solver(correct))
+        state={'task_id':13925458,'topic_id':3769,'kps':{},'examples':{},'questions':{}}
+        topic=loads((FIXTURE/'database-before.edn').read_text())[0][0]
+        original=browser._continue
+        def interrupted(identifier):
+            original(identifier)
+            if identifier=='continueButton-q71168':
+                raise KeyboardInterrupt()
+        browser._continue=interrupted
+        with tempfile.TemporaryDirectory() as work:
+            with self.assertRaises(KeyboardInterrupt):
+                browser.lesson(state,work,topic)
+            self.assertEqual(self.page.locator('body').get_attribute('data-submissions'),'1')
+            restored=json.loads((Path(work)/'state.json').read_text())
+            # Shape of the user's checkpoint saved by the previous script.
+            restored['pending_knowledge_snapshot']={**restored.pop('pending_continue'),'event':'after-q71168'}
+            browser._continue=original
+            browser.lesson(restored,work,topic)
+            self.assertEqual(len(restored['questions']),15)
+            self.assertEqual(self.page.evaluate("Number(localStorage.getItem('fixture-submissions'))"),15)
+            self.assertNotIn('pending_knowledge_snapshot',restored)
+            self.assertNotIn('pending_continue',restored)
+            self.assertEqual(list(restored['knowledge_snapshots']),['lesson-completed'])
 
     def test_unexpected_wrong_answer_stops_before_second_submission(self):
         self.lesson_fixture()

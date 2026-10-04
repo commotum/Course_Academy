@@ -12,6 +12,18 @@ from progress import COURSES, capture as capture_progress
 
 EXTRACT = (Path(__file__).parent / 'dom.js').read_text()
 LEARN = 'https://mathacademy.com/learn'
+ACTIVE_STEP = r'''() => {
+  const visible=n=>!!n?.getClientRects().length && getComputedStyle(n).visibility!=='hidden';
+  const unanswered=[...document.querySelectorAll('.step.questionWidget')].filter(n=>visible(n) &&
+    !n.querySelector('.questionWidget-result')?.textContent.trim() && visible(n.querySelector('.questionWidget-submitButton')));
+  if(unanswered.length===1) return 'stepButton-'+unanswered[0].id.slice(5);
+  if(unanswered.length>1) return null;
+  const buttons=[...document.querySelectorAll('[id^="continueButton-"]')].filter(visible);
+  if(buttons.length===1) return buttons[0].id.replace('continueButton-','stepButton-');
+  if(buttons.length>1) return null;
+  const current=document.querySelector('.stepButton.current')?.id || '';
+  return /^stepButton-[te]\d+$/.test(current) ? current : null;
+}'''
 
 
 def by_id(scope, identifier):
@@ -165,14 +177,14 @@ class CaptureBrowser:
         return item, screenshot
 
     def _continue(self, identifier):
-        current = self.page.locator('.stepButton.current').get_attribute('id')
+        current = self.current_step()
         button = by_id(self.page, identifier)
         button.wait_for(state='visible')
         self.pacer.wait('event', 'advance to the next item')
         self.check()
         button.click()
-        self.page.wait_for_function('''old => document.querySelector('.stepButton.current')?.id !== old ||
-          !!document.querySelector('#finalScreen')?.getClientRects().length''', arg=current)
+        self.page.wait_for_function('old => ('+ACTIVE_STEP+')() !== old || '
+          "!!document.querySelector('#finalScreen')?.getClientRects().length", arg=current)
 
     def knowledge_snapshot(self, state, directory, event, recovered=False):
         if event != state.get('task_type','lesson') + '-completed':
@@ -222,8 +234,11 @@ class CaptureBrowser:
 
     def wait_activity_ready(self):
         # Initial page markup uses numbered placeholders before real step IDs arrive.
-        self.page.wait_for_function(r'''() => /^stepButton-[teq]\d+$/.test(document.querySelector('.stepButton.current')?.id || '') ||
-          !!document.querySelector('#finalScreen')?.getClientRects().length''')
+        self.page.wait_for_function('() => !!('+ACTIVE_STEP+')() || '
+            "!!document.querySelector('#finalScreen')?.getClientRects().length")
+
+    def current_step(self):
+        return self.page.evaluate(ACTIVE_STEP)
 
     def activity(self, state, directory, topic):
         directory = Path(directory)
@@ -253,7 +268,7 @@ class CaptureBrowser:
         pending = state.get('pending_continue')
         if pending:
             self.wait_activity_ready()
-            current = self.page.locator('.stepButton.current').get_attribute('id') if self.page.locator('.stepButton.current').count() else None
+            current = self.current_step()
             if current != pending['source_step'] or self.page.locator('#finalScreen').is_visible():
                 state.pop('pending_continue', None)
                 save()
@@ -286,7 +301,7 @@ class CaptureBrowser:
                 self.page.wait_for_url('**/learn')
                 self.knowledge_snapshot(state, directory, completed_event)
                 return
-            current = self.page.locator('.stepButton.current').get_attribute('id')
+            current = self.current_step()
             match = re.fullmatch(r'stepButton-([teq])(\d+)', current or '')
             if not match:
                 raise ValueError('Unknown current step identifier: ' + str(current))
@@ -387,7 +402,6 @@ class CaptureBrowser:
             button.wait_for(state='visible')
             item, screenshot = self.read(scope,directory,mid + '-after')
             actual = (item.get('result') or '').strip()
-            expected = 'Correct' if record['intended'] == 'C' else 'Incorrect'
             record['after'], record['actual_result'] = item, actual
             record['status'] = 'graded'
             save()
@@ -550,7 +564,8 @@ class CaptureBrowser:
                    'questions':[q['content'] for q in state['questions'].values()],
                    'canonical_examples':list(state['examples'].values())}
         if task_type == 'review':
-            content['sequence_policy'] = {'scope':'whole review', 'policy':state.get('review_policy','maximize'),
-                                          'sequence':state['review_sequence']}
+            content['sequence_policy'] = {'scope':'whole review','CWCWC':self.args.cwcwc_weight,
+                'WCWCC':1-self.args.cwcwc_weight,'sequence':state['review_sequence'],
+                'continuation':'repeat saved pattern until site completion'}
         atomic_json(directory / 'content.json',content)
         return content

@@ -17,13 +17,11 @@ The runner:
    It captures each practice problem and locally observed answer widgets before
    submitting, then captures the result and revealed worked solution. It checks
    every grading result before continuing.
-   Reviews use a single sequence across the whole task because questions can
-   switch KPs: `C-W-C-W-C-C` with probability **0.7**, or `W-C-W-C-C` with
-   probability **0.3**. The extra final C completes the first pattern with two
-   consecutive correct answers. `--review-policy correct` instead answers
-   correctly throughout. The chosen review sequence is saved before answering.
-   If the review continues beyond that sequence, subsequent answers are correct;
-   `--review-question-limit 20` bounds this unexpected behavior.
+   Reviews use the same `C-W-C-W-C` / `W-C-W-C-C` patterns and 70/30 weights,
+   with one saved pattern across the whole review because questions can switch
+   KPs. If the site continues beyond five questions, that same pattern repeats;
+   `--review-question-limit 20` bounds unexpected continuation. Site completion
+   remains authoritative. An interrupted activity keeps its already chosen patterns.
 3. Opens the completed activity, expands the explanations, and joins all question
    IDs to KP titles and source E/M/H difficulty labels. It checks that the live
    and activity question sets and KP mappings agree.
@@ -42,12 +40,11 @@ The runner:
    across that exact transaction. It also verifies that a repeated import would
    produce no further changes.
 
-It also saves a baseline and a snapshot of all three course progress pages
-after **every step** (tutorial, canonical example, or answered question), after
-Continue advances the activity, and once more after completion. An
-unexpected grade is captured before stopping. The progress pages use a separate
-tab, leaving the live activity loaded. Reads are sequential and use the existing
-randomized navigation pauses: three additional page reads per snapshot.
+It saves one snapshot of all three course progress pages **after each completed
+activity**. There are no new baseline or mid-activity checks. The snapshot is
+compared with the preceding completed activity's snapshot when available.
+Existing snapshots from older runs remain preserved. Reads are sequential and
+use randomized navigation pauses: three page reads per completed activity.
 
 Each `knowledge-state/<event>.json` contains every topic row from courses
 113/111/136, its source ID, title, color, mapped display band, module and topic
@@ -196,9 +193,10 @@ Artifacts go to `reference/mathacademy/question-capture/<taskId>/` by default:
 - `state.json` with chosen sequences and a checkpoint before every submission.
 - `solver-session/state.json` with the activity's Codex session ID, delivered
   context, and pending turn checkpoint; question directories retain solver events
-  and inputs/outputs. A completed session is reused on script restart. A timeout
-  or unconfirmed turn stops for inspection before another prompt is sent.
-- `knowledge-state/` with a full course profile and band changes after each step.
+  and inputs/outputs. Completed answers are reused on restart. An interrupted
+  solver prompt resumes in the same confirmed activity session; uncertain website
+  submissions are never replayed.
+- `knowledge-state/` with a full displayed course profile after activity completion.
 - EDB reads, `transaction.edn`, preview, exact commit intent, receipt, matching
   report, and verification under `edb-import/`.
 
@@ -208,20 +206,31 @@ Canonical examples normally expose no answer widgets or difficulty; those facts
 remain unknown and are listed as missing source fields. This runner does not
 invent canonical answer fields, difficulty ratings, or practice distractors.
 
-Resume an interrupted live capture with:
+The normal command automatically resumes an unfinished saved capture or import
+before selecting a new activity:
 
 ```bash
-"$CAPTURE_PY" scripts/question_capture run --resume reference/mathacademy/question-capture/TASK_ID
+"$CAPTURE_PY" scripts/question_capture run --headless --limit 1
 ```
 
-If submission may have occurred, resume only waits for/reads its grading result;
-it does not send the answer again. If the site cannot establish the result, the
-checkpoint remains available for manual recovery.
+Use `--resume reference/mathacademy/question-capture/TASK_ID` to select a run
+explicitly. If several unfinished runs exist, the runner requires that selection.
+`run --dry-run` reports a pending capture without starting a browser or answering.
 
-Pending progress snapshots are checkpointed before Continue. If interrupted after
-advancing, resume captures the missing observation without resubmitting the
-answer; it marks the snapshot `recovered_after_interruption` because its original
-capture time cannot be reconstructed. Completed snapshot files are reused.
+Checkpoints preserve chosen patterns, captured questions, grades, and pending
+Continue actions. A restored graded question is advanced without being answered
+again. Completed solver results are reused and rematched by value if the site
+reshuffles choice letters. Solver events stream to disk; Ctrl+C and SIGTERM stop
+its process group and preserve the activity session ID for restart. A confirmed
+completed turn can be recovered without another model call. An incomplete
+read-only solver prompt can be repeated in that same session.
+
+If submission may have occurred, resume reads its grading result rather than
+sending the answer again. If the site cannot establish the result, the checkpoint
+remains available for inspection. An unconfirmed solver session ID also stops
+rather than silently resetting its context. Failed completion snapshots and
+content imports resume without retaking the activity. Previous per-step snapshot
+checkpoints are migrated to Continue checkpoints without another mid-activity fetch.
 
 Import or retry already captured content without visiting Math Academy:
 
@@ -246,27 +255,15 @@ checkpoints and journal entries remain supported.
 python3 scripts/question_capture import-saved --content reference/mathacademy/sum-rule-13925458/content.json --preview
 ```
 
-Tests use the saved real lesson and review DOM and EDB snapshots. Browser fixture tests run
-offline, including full five-question progression, activity joining, and a
-grading mismatch that must stop before the second submission. The progression
-test checks all 1,040 course-qualified rows in each of its 20 snapshots and a
-known color transition. Recovery tests ensure a failed snapshot does not resend
-an answer. Review tests exercise both weighted global sequences, mixed KPs, original
-image capture and alias deduplication, a selection mismatch that must stop before
-Submit, review recovery without resubmitting or changing its saved sequence,
-and a wrong-topic KP link that must stop the import. Queue tests cover both task
-types and ignore in-progress tasks; the runner test checks a required review
-followed by a freshly available lesson on the same topic. Two synthetic copies
-of a served question are used only in the offline fixture to test five- and
-six-question reviews; they are never submitted to MA or imported into EDB.
-Identical image files saved under separate capture paths also match existing
-answer entities by content hash. Solver lifecycle tests use a mocked CLI to check
-session reuse across questions, verification, KP changes, and Python restarts;
-separation between activities; incremental feedback; stale-choice rejection;
-and interruption or unexpected-session handling. They do not make model calls.
-The EDB preview
-for the saved Sum Rule capture passes at basis 305: three existing practice
-records enriched, twelve new practice records planned, with no learner writes.
+Tests use saved real lesson/review DOM and EDB snapshots. Offline progression
+checks cover five-question lessons, both shared review patterns, activity joining,
+original image capture, and correct KP mapping. Recovery checks cover interrupted
+Continue, completion snapshot failure, automatic unfinished-run discovery, completed
+solver-answer reuse, reshuffled choice letters, and interrupted CLI turns retaining
+the same session. A local toy subprocess verifies streamed events survive a timeout
+and its process stops. Grading and selected-option mismatches stop before another
+submission. Fixture tests never make model calls.
+
 No live activity or database commit is performed by these fixture tests. The
 standalone automator completed live lesson **13831128**, Determining Continuity
 from Graphs, on October 3, 2026: fifteen practice questions, three canonical
@@ -275,8 +272,8 @@ session handled all 21 solving/verification turns. The import created twelve
 questions and enriched three, committing basis 305 → 306 with all 4,614 protected
 learner/engine facts unchanged and a no-op reimport. See
 `reference/mathacademy/question-capture/13831128/README.md` and its verification
-files. The test fixed string learner-ID lookup and waits for initial step
-placeholders to load. Subsequent runs credit solver duration toward the answer
-budget rather than adding another full wait. The review path still relies on
+files. That historical test included per-step snapshots. Current runs capture one
+completion snapshot per activity. String learner-ID lookup and initial loading
+placeholders are handled; solver duration is credited toward the answer budget. The review path still relies on
 the earlier manual review and offline fixtures; it has not yet been run live by
 the standalone automator.
