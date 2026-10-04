@@ -982,6 +982,43 @@ class DOMTests(unittest.TestCase):
             browser.verify_entered(scope,record)
         self.assertEqual(self.page.evaluate('window.submissions'),0)
 
+    def test_two_mathquill_fields_switch_focus_under_a_floating_symbol_menu(self):
+        scope,record=self.mathquill_fixture()
+        self.page.evaluate(r'''() => {
+          const MQ=MathQuill.getInterface(2), wrapper=document.createElement('div');
+          wrapper.id='answer2';wrapper.className='matheditor-wrapper-answer';
+          wrapper.innerHTML='<span id="mq2"></span>';document.querySelector('#test').append(wrapper);
+          MQ.MathField(wrapper.firstChild);
+          const box=document.createElement('div');box.id='mathEditorToolbox';
+          box.innerHTML='<button class="mathIcon inftyIcon">∞</button>';
+          box.style.cssText='position:fixed;z-index:1000;display:none;background:white';
+          document.body.append(box);window.menuClicks=[];
+          const fields=[document.querySelector('#mq'),document.querySelector('#mq2')];
+          fields.forEach((field,i)=>field.querySelector('textarea').onfocus=()=>{
+            window.focusedField=i;const r=fields[1].getBoundingClientRect();
+            Object.assign(box.style,{display:'block',left:r.x+'px',top:r.y+'px',
+              width:Math.max(80,r.width)+'px',height:Math.max(40,r.height)+'px'});
+          });
+          box.onmousedown=e=>e.preventDefault();box.onclick=()=>{
+            window.menuClicks.push(window.focusedField);MQ(fields[window.focusedField]).cmd('\\infty');
+          };
+        }''')
+        record['before']=scope.evaluate(EXTRACT)
+        record['decision']['answers']=[
+            {'key':'field-1','correct_value':'2','correct_keys':[{'text':'2','key':None}]},
+            {'key':'field-2','correct_value':r'-\infty','correct_keys':[{'text':r'-\infty','key':None}]}]
+        scope.locator('#mq textarea').focus()
+        from playwright.sync_api import TimeoutError as PlaywrightTimeout
+        with self.assertRaises(PlaywrightTimeout):
+            scope.locator('#mq2').click(timeout=150)
+        args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+        reader=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        reader.enter(scope,record);reader.verify_entered(scope,record)
+        self.assertEqual([f['observed_mathquill_latex'] for f in record['before']['fields']],['2',r'-\infty'])
+        self.assertEqual(self.page.evaluate('window.menuClicks'),[1])
+        self.assertEqual(record['before']['fields'][1]['clicked_symbols'][0]['symbol'],'infty')
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
+
     def test_moved_past_submission_reconciles_saved_grade_before_next_question(self):
         scope, _ = self.complex_argument_fixture()
         item = scope.evaluate(EXTRACT)

@@ -202,6 +202,8 @@ or invalid choices stop before submission.
 The extractor supports observed radio circles, native blanks/selects, MathQuill
 answer wrappers, and the original `.selectList` widget. MathQuill entry uses
 explicit typed characters, arrow-key events, and visible symbol-menu buttons.
+The runner focuses each editor's keyboard input when switching fields, so a
+floating toolbox over the next answer box cannot intercept a mouse click.
 Named symbols such as π use the displayed toolbox when available, with explicit
 backslash commands as a fallback. The runner checks the existing editor's value
 through MathQuill's public read-only `.latex()` getter before Submit; it never

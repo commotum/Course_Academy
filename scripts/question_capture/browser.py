@@ -656,8 +656,11 @@ class CaptureBrowser:
                 value = answer['wrong_value'] if wrong else answer['correct_value']
                 control = answer_control(scope,field)
                 if field['tag'] == 'mathquill':
-                    control.locator('.mq-editable-field').click()
                     editor = control.locator('.mq-textarea textarea')
+                    # A nearby field can sit underneath the previous field's
+                    # floating symbol menu. Native textarea focus changes the
+                    # active editor and fires its usual focus/blur handlers.
+                    editor.focus()
                     editor.press('ControlOrMeta+A')
                     editor.press('Backspace')
                     actions = mathquill_keys(value, answer['wrong_keys' if wrong else 'correct_keys'])
