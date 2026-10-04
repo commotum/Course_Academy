@@ -10,6 +10,8 @@ import random
 import shutil
 import signal
 import sys
+import time
+import traceback
 import uuid
 from pathlib import Path
 
@@ -121,10 +123,12 @@ def unfinished_run(args):
         finished = state.get('import_complete') or receipt.get('committed') or receipt.get('already_complete')
         if args.preview:
             finished = finished or state.get('preview_complete')
-        if not finished:
+        if not finished and not state.get('deferred_error'):
             candidates.append(directory)
     if len(candidates) > 1:
-        raise RuntimeError('Multiple unfinished captures; choose one with --resume: ' + ', '.join(map(str,candidates)))
+        logging.warning('Multiple unfinished captures are left for explicit --resume: %s',
+                        ', '.join(map(str,candidates)))
+        return None
     return candidates[0] if candidates else None
 
 
@@ -179,6 +183,45 @@ def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=No
                      item['title'], item['task_id'], item['topic_id'],
                      ', priority ' + str(priority) if priority is not None else '')
     return observation
+
+
+def record_failure(args, browser, state, directory, phase, error):
+    """Preserve the failing state and visible page without interacting with it."""
+    import hashlib
+    target = (directory or args.state_dir)/'diagnostics'/str(time.time_ns())
+    target.mkdir(parents=True,exist_ok=True)
+    report = {'phase':phase, 'task_id':(state or {}).get('task_id'),
+              'exception_type':type(error).__name__, 'message':str(error),
+              'traceback':''.join(traceback.format_exception(type(error),error,error.__traceback__)),
+              'configuration':{k:getattr(args,k,None) for k in
+                               ('limit','preview','timeout_ms','solver_timeout','solver_model','seed')},
+              'source_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest()
+                               for p in Path(__file__).parent.iterdir() if p.suffix in ('.py','.js')},
+              'artifact_errors':[]}
+    for name in ('stdout','stderr'):
+        value = getattr(error,name,None)
+        if isinstance(value,bytes): value = value.decode(errors='replace')
+        if isinstance(value,str): report[name] = value
+    artifacts = []
+    if state is not None:
+        artifacts.append(('state.json',lambda:atomic_json(target/'state.json',state)))
+    queue = args.state_dir/'selection/queue.json'
+    if queue.exists():
+        artifacts.append(('queue.json',lambda:shutil.copy2(queue,target/'queue.json')))
+    if browser is not None:
+        page = browser.page
+        report['page_url'] = str(page.url)
+        report['http_block'] = getattr(browser,'http_block',None)
+        artifacts += [('page.html',lambda:(target/'page.html').write_text(page.content())),
+                      ('page.png',lambda:page.screenshot(path=str(target/'page.png'),timeout=5000)),
+                      ('current-step',lambda:report.update(current_step=browser.current_step()))]
+    for name, save_artifact in artifacts:
+        try:
+            save_artifact()
+        except Exception as artifact_error:
+            report['artifact_errors'].append({'artifact':name,'error':str(artifact_error)})
+    atomic_json(target/'error.json',report)
+    return target
 
 
 def run(args):

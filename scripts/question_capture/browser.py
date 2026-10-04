@@ -51,11 +51,6 @@ def mathquill_keys(value, actions):
 
 def normalize_mathquill(value):
     """Compare editor notation without treating differently grouped math as equal."""
-    value = re.sub(r'\\(?:tfrac|dfrac)\b', lambda _: r'\frac', value)
-    # A numeric rational exponent has the same structure whether written with
-    # an inline slash or a stacked fraction. Match only the entire exponent.
-    value = re.sub(r'\^\{\s*([+-]?\d+)\s*/\s*([+-]?\d+)\s*\}',
-                   lambda m: '^{\\frac{' + m[1] + '}{' + m[2] + '}}', value)
     return normalize(value)
 
 
@@ -63,6 +58,10 @@ def by_id(scope, identifier):
     if not identifier:
         raise ValueError('Missing observed DOM identifier')
     return scope.locator('[id=' + json.dumps(identifier) + ']')
+
+
+class AccessBlocked(RuntimeError):
+    """An authentication/access failure that affects the entire browser session."""
 
 
 def kp_for_example(topic, mid, name):
@@ -93,13 +92,13 @@ class CaptureBrowser:
 
     def check(self):
         if self.http_block:
-            raise RuntimeError('Math Academy returned HTTP ' + str(self.http_block) + '; stop and review before another run')
+            raise AccessBlocked('Math Academy returned HTTP ' + str(self.http_block) + '; stop and review before another run')
         if re.search(r'/(login|signin|session-expired)(?:/|\?|$)', self.page.url):
-            raise RuntimeError('Authentication required; use the login command')
+            raise AccessBlocked('Authentication required; use the login command')
         if self.page.locator('input[type="password"]').count():
-            raise RuntimeError('Login form detected; use the login command')
+            raise AccessBlocked('Login form detected; use the login command')
         if self.page.locator('iframe[src*="captcha"], #challenge-form, .cf-challenge').count():
-            raise RuntimeError('Challenge detected; stop for human review')
+            raise AccessBlocked('Challenge detected; stop for human review')
 
     def navigate(self, url, force=False):
         # Only idempotent page navigation is retried. Answer/Continue clicks never are.

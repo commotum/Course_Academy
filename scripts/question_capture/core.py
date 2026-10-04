@@ -11,6 +11,7 @@ import uuid
 from pathlib import Path
 
 from edn import kw
+from math_notation import identity as math_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 ALLOWED = {
@@ -121,16 +122,7 @@ def normalize(value, representation='math'):
         return value
     if representation != 'math':
         return value
-    value = value.strip().strip('$').replace('−', '-')
-    value = re.sub(r'\\(?:displaystyle|textstyle|left|right)\b', '', value)
-    value = re.sub(r'\\(?:,|;|!)', '', value)
-    value = re.sub(r'\s+', '', value)
-    # Only redundant single-atom braces, not arbitrary fraction grouping.
-    while True:
-        replacement = re.sub(r'\{([A-Za-z0-9])\}', r'\1', value)
-        if replacement == value:
-            return value
-        value = replacement
+    return math_identity(value)
 
 
 def stable_id(kind, source):
@@ -248,8 +240,12 @@ def build_transaction(content, topic, existing):
             old_correct = (previous or {}).get(':answer-field/correct')
             if old_correct:
                 kind = old_correct[':answer/type'][':db/ident'].split('/')[-1]
+                captured_kind = next(c['type'] for c in field['choices'] if c['value'] == field['correct_value'])
+                if captured_kind != kind:
+                    raise ValueError('Correct answer type conflict: ' + field_token)
                 if normalize(old_correct[':answer/value'], kind) != normalize(field['correct_value'], kind):
-                    raise ValueError('Correct answer conflict: ' + field_token)
+                    raise ValueError('Correct answer conflict: ' + field_token + '; stored '
+                                     + repr(old_correct[':answer/value']) + ', captured ' + repr(field['correct_value']))
             else:
                 fupdate[kw('answer-field/correct')] = correct_target
             if choice_links:
