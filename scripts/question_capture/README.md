@@ -208,9 +208,11 @@ commands, and numeric rational exponents written as `^{1/3}` or
 `^{\frac{1}{3}}`, while preserving fraction and exponent grouping and symbol identity.
 Numeric measurement answers also reconcile legacy suffixes such as `32ft^{2}`
 with `32\,{\text{ft}}^{2}` for recognized units, preserving the quantity, unit,
-and exponent. Plain text answers remain exact. Duplicate visible symbol toolboxes
-use explicit keyboard commands and retain the fallback reason in the checkpoint;
-the existing editor's value must still verify before Submit.
+and exponent. Plain text answers remain exact. When changing fields briefly leaves
+two symbol toolboxes visible, the runner waits for the previous toolbox to hide,
+then clicks the single visible button. Persistent ambiguity stops before Submit;
+keyboard commands are a fallback only when no matching button is visible.
+The existing editor's value must still verify before Submit.
 Unknown widgets, unreadable formulas, and unrendered graphical assets defer the
 activity for review. Invisible MathML `mphantom` content is omitted. Graphics are allowed to
 become visible and images must finish loading within `--timeout-ms` before capture;

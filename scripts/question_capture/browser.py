@@ -628,7 +628,8 @@ class CaptureBrowser:
 
     def type_mathquill(self, editor, text, field):
         # These classes belong to Math Academy's displayed symbol toolbox.
-        # Use a menu only when unambiguous; duplicate toolboxes use typed commands.
+        # Math Academy hides the previous editor's toolbox after 100 ms.
+        # Wait out overlapping toolboxes before choosing a visible button.
         symbol_just_inserted = False
         for part in re.split(r'(\\(?:pi|theta|alpha|beta|gamma|delta|lambda|mu|rho|sigma|phi|omega|infty)\b\s*)', text):
             if not part:
@@ -638,14 +639,19 @@ class CaptureBrowser:
                 symbol_just_inserted = True
                 name = symbol[1]
                 selector = '#mathEditorToolbox .mathIcon.' + name + 'Icon'
-                buttons = [b for b in self.page.locator(selector).all() if b.is_visible()]
-                if len(buttons) == 1:
-                    buttons[0].click()
+                buttons = self.page.locator(selector + ':visible')
+                if buttons.count() > 1:
+                    from playwright.sync_api import expect
+                    try:
+                        expect(buttons).to_have_count(1, timeout=self.args.timeout_ms)
+                    except AssertionError as exc:
+                        raise ValueError('Symbol toolboxes did not settle to one visible button: ' + name
+                                         + '; stop before Submit') from exc
+                    field.setdefault('waited_for_symbols', []).append(name)
+                if buttons.count() == 1:
+                    buttons.click()
                     field.setdefault('clicked_symbols', []).append({'symbol': name, 'selector': selector})
                 else:
-                    if len(buttons)>1:
-                        field.setdefault('symbol_fallbacks',[]).append({'symbol':name,'visible_buttons':len(buttons),
-                            'reason':'ambiguous_toolbox','method':'typed_command'})
                     editor.press_sequentially('\\' + name, delay=self.pacer.rng.uniform(60,140))
                     # In MA's distribution Space inserts a mathematical space,
                     # splitting the numerator; ArrowRight preserves its grouping.

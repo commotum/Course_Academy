@@ -727,7 +727,42 @@ class DOMTests(unittest.TestCase):
         self.assertEqual(field['clicked_symbols'][0]['symbol'],'pi')
         self.assertEqual(self.page.evaluate('window.submissions'),0)
 
-    def test_duplicate_infinity_toolboxes_use_keyboard_in_the_active_editor(self):
+    def test_infinity_click_waits_for_previous_field_toolbox_to_hide(self):
+        scope,record=self.mathquill_fixture()
+        self.page.evaluate(r'''() => {
+          const field=MathQuill.getInterface(2)(document.querySelector('#mq'));
+          window.toolboxClicks=[];
+          for (let i=0;i<9;i++) {
+            const box=document.createElement('div');box.id='mathEditorToolbox';
+            box.style.visibility=i===0 ? 'visible' : 'hidden';
+            box.innerHTML='<button class="mathIcon inftyIcon">∞</button>';
+            box.onmousedown=e=>e.preventDefault();
+            box.onclick=()=>{
+              window.toolboxClicks.push(i);
+              if(i!==8) throw Error('Previous field toolbox clicked');
+              field.cmd('\\infty');field.focus();
+            };
+            document.body.append(box);
+          }
+          document.querySelector('#mq textarea').onfocus=()=>{
+            const boxes=document.querySelectorAll('#mathEditorToolbox');
+            boxes[8].style.visibility='visible';
+            setTimeout(()=>{boxes[0].style.visibility='hidden'},100);
+          };
+        }''')
+        answer=record['decision']['answers'][0]
+        answer.update(correct_value=r'\infty',correct_keys=[{'text':r'\infty','key':None}])
+        args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        browser.enter(scope,record)
+        browser.verify_entered(scope,record)
+        field=record['before']['fields'][0]
+        self.assertEqual(normalize(field['observed_mathquill_latex']),normalize(r'\infty'))
+        self.assertEqual(self.page.evaluate('window.toolboxClicks'),[8])
+        self.assertEqual(field['clicked_symbols'][0]['symbol'],'infty')
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_persistent_duplicate_infinity_toolboxes_stop_before_submit(self):
         scope,record=self.mathquill_fixture()
         self.page.evaluate('''() => {
           for (let i=0;i<2;i++) {
@@ -739,13 +774,11 @@ class DOMTests(unittest.TestCase):
         }''')
         answer=record['decision']['answers'][0]
         answer.update(correct_value=r'-\infty',correct_keys=[{'text':r'-\infty','key':None}])
-        args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+        args=SimpleNamespace(timeout_ms=300,event_min=0,event_max=0)
         browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
-        browser.enter(scope,record)
-        browser.verify_entered(scope,record)
+        with self.assertRaisesRegex(ValueError,'Symbol toolboxes did not settle'):
+            browser.enter(scope,record)
         field=record['before']['fields'][0]
-        self.assertEqual(normalize(field['observed_mathquill_latex']),normalize(r'-\infty'))
-        self.assertEqual(field['symbol_fallbacks'][0]['visible_buttons'],2)
         self.assertFalse(field.get('clicked_symbols'))
         self.assertEqual(self.page.evaluate('window.submissions'),0)
 
