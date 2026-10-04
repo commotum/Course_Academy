@@ -147,7 +147,10 @@ The extractor supports observed radio circles, native blanks/selects, MathQuill
 answer wrappers, and the original `.selectList` widget. MathQuill entry uses
 explicit typed characters and arrow-key events, with no hidden widget API.
 Unknown widgets, unreadable formulas, and unrendered graphical assets stop for
-review. Radio extraction is validated against all fifteen actual Sum Rule
+review. Invisible MathML `mphantom` content is omitted. Graphics are allowed to
+become visible and images must finish loading within `--timeout-ms` before capture;
+an asset that never renders still stops the run with saved DOM and a screenshot.
+Radio extraction is validated against all fifteen actual Sum Rule
 widgets; native mixed fields have fixture tests. MathQuill/custom-select typing
 still needs validation on a live activity. A solver error can break the intended
 five-question sequence; the runner stops immediately on an unexpected grade.
@@ -258,6 +261,9 @@ python3 scripts/question_capture import-saved --content reference/mathacademy/su
 Tests use saved real lesson/review DOM and EDB snapshots. Offline progression
 checks cover five-question lessons, both shared review patterns, activity joining,
 original image capture, and correct KP mapping. Recovery checks cover interrupted
+post-submission extraction of the real complex-argument explanation (including
+`mphantom`), delayed graphics, and recovery of its correct grade without resubmission;
+they also cover interrupted
 Continue, completion snapshot failure, automatic unfinished-run discovery, completed
 solver-answer reuse, reshuffled choice letters, and interrupted CLI turns retaining
 the same session. A local toy subprocess verifies streamed events survive a timeout

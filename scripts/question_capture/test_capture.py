@@ -1,5 +1,6 @@
 """Regression checks using actual Sum Rule DOM and EDB capture fixtures."""
 import copy
+import base64
 import contextlib
 import io
 import json
@@ -226,7 +227,15 @@ class DOMTests(unittest.TestCase):
         cls.runtime = sync_playwright().start()
         cls.browser = cls.runtime.chromium.launch(headless=True)
         cls.context = cls.browser.new_context(offline=True)
-        cls.page = cls.context.new_page()
+
+    def setUp(self):
+        # Each fixture starts with a fresh URL and page timeout. A previous test
+        # ending at /learn must not make queue() skip loading its own fixture.
+        self.page = self.context.new_page()
+
+    def tearDown(self):
+        for page in self.context.pages:
+            page.close()
 
     @classmethod
     def tearDownClass(cls):
@@ -290,6 +299,86 @@ class DOMTests(unittest.TestCase):
         self.page.set_content('<span class="mjpage"><svg><title id="same">x+1</title></svg></span><div id="test"><div class="exampleQuestion"><span class="mjpage"><svg><title id="same">x^2+1</title></svg></span></div><div class="exampleExplanation">solution</div></div>')
         item = self.page.locator('#test').evaluate(EXTRACT)
         self.assertEqual(item['problem'],'$x^2+1$')
+
+    def complex_argument_fixture(self):
+        # Actual explanation that stopped task 13929099 after a correct submission.
+        html = (Path(__file__).parent/'fixtures/q-8257-after.html').read_text()
+        self.page.set_content(html)
+        scope = self.page.locator('#step-q8257')
+        # Use a local fixture image; the failed live capture did not save its graph.
+        pixels = (REVIEW_FIXTURE/'assets/q-28197-a-1.png').read_bytes()
+        source = 'data:image/png;base64,' + base64.b64encode(pixels).decode()
+        scope.locator('.graphic img').evaluate('(n, src) => n.src = src',source)
+        return scope, source
+
+    def test_real_complex_argument_explanation_omits_invisible_phantom_fraction(self):
+        scope, _ = self.complex_argument_fixture()
+        item = scope.evaluate(EXTRACT)
+        self.assertEqual(item['result'],'Correct')
+        self.assertFalse(item['errors'])
+        self.assertIn(r'≈0.927\,30.',item['worked_solution'])
+        self.assertNotIn(r'\frac{1}{1}',item['worked_solution'])
+
+    def test_read_waits_for_delayed_explanation_graph(self):
+        scope, source = self.complex_argument_fixture()
+        graphic = scope.locator('.graphic img')
+        graphic.evaluate("n => { n.style.display = 'none'; n.removeAttribute('src'); }")
+        self.assertFalse(graphic.is_visible())
+        graphic.evaluate('''(n, src) => setTimeout(() => {
+          n.src = src; n.style.display = 'block';
+        }, 300)''',source)
+        browser = CaptureBrowser(self.page,SimpleNamespace(timeout_ms=3000),None,None)
+        with tempfile.TemporaryDirectory() as work:
+            item, screenshot = browser.read(scope,work,'q-8257-after')
+            self.assertFalse(item['errors'])
+            self.assertTrue(screenshot.exists())
+            self.assertTrue(Path(item['assets'][0]['path']).exists())
+            self.assertNotIn('@asset-',item['worked_solution'])
+
+    def test_unrendered_graph_still_stops_and_preserves_diagnostics(self):
+        scope, _ = self.complex_argument_fixture()
+        scope.locator('.graphic img').evaluate("n => n.style.display = 'none'")
+        browser = CaptureBrowser(self.page,SimpleNamespace(timeout_ms=1000),None,None)
+        with tempfile.TemporaryDirectory() as work:
+            with self.assertRaisesRegex(ValueError,'Visual asset is not rendered'):
+                browser.read(scope,work,'q-8257-after')
+            item = json.loads((Path(work)/'q-8257-after.json').read_text())
+            self.assertEqual(item['errors'],['Visual asset is not rendered'])
+            self.assertTrue((Path(work)/'q-8257-after.png').exists())
+
+    def test_submitting_checkpoint_recovers_real_correct_grade_without_resubmitting(self):
+        scope, _ = self.complex_argument_fixture()
+        self.page.evaluate('''() => {
+          const b = document.createElement('button'); b.id = 'continueButton-q8257';
+          b.textContent = 'Continue'; document.body.append(b);
+          const final = document.createElement('div'); final.id = 'finalScreen';
+          final.style.display = 'none'; document.body.append(final);
+          window.submissions = 0;
+          document.addEventListener('click', e => {
+            if (e.target.closest('.questionWidget-submitButton')) window.submissions++;
+          });
+        }''')
+        item = scope.evaluate(EXTRACT)
+        decision = {'confident':True,'answers':[{'key':'selection','correct_option':'d',
+                    'correct_value':'2.21','value_type':'math'}]}
+        state = {'task_id':13929099,'topic_id':893,'task_type':'review',
+                 'review_sequence':'CWCWC','kps':{},'examples':{},'questions':{
+                     'q-8257':{'kp_id':None,'before':item,'decision':decision,
+                               'intended':'C','status':'submitting'}}}
+        solver = Mock()
+        browser = CaptureBrowser(self.page,SimpleNamespace(timeout_ms=3000),None,solver)
+        browser.advance = Mock(side_effect=RuntimeError('Stop after recovered grade'))
+        with tempfile.TemporaryDirectory() as work:
+            with self.assertRaisesRegex(RuntimeError,'Stop after recovered grade'):
+                browser.review(state,work,{})
+            restored = json.loads((Path(work)/'state.json').read_text())
+            question = restored['questions']['q-8257']
+            self.assertEqual(question['status'],'graded')
+            self.assertEqual(question['actual_result'],'Correct')
+            self.assertTrue(question['finalized'])
+            self.assertNotIn(r'\frac{1}{1}',question['content']['worked_solution'])
+            self.assertEqual(self.page.evaluate('window.submissions'),0)
+            solver.solve.assert_not_called()
 
     def test_mixed_native_fields_keep_field_locations_and_choice_values(self):
         self.page.set_content('<div id="test"><div class="questionWidget-text">x=<input id="blank" type="text">; sign=<select id="select"><option disabled value="">Choose</option><option value="plus">+</option><option value="minus">−</option></select></div></div>')
@@ -509,14 +598,15 @@ class DOMTests(unittest.TestCase):
 
     def test_review_activity_rejects_kp_link_to_another_topic(self):
         correct=self.review_fixture(wrong_kp=True)
-        args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=0,review_policy='correct',settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
+        args=SimpleNamespace(timeout_ms=5000,cwcwc_weight=0,settle_ms=0,event_min=0,event_max=0,answer_min=0,answer_max=0)
         browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),self.fixture_solver(correct))
         self.page.goto('https://mathacademy.com/tasks/13925710/topics/2084/review')
         state={'task_id':13925710,'topic_id':2084,'kps':{},'examples':{},'questions':{}}
         topic=loads((REVIEW_FIXTURE/'database/topic.edn').read_text())[0][0]
         with tempfile.TemporaryDirectory() as work:
             browser.review(state,work,topic)
-            self.assertEqual(len(state['questions']),2)
+            self.assertEqual(state['review_sequence'],'WCWCC')
+            self.assertEqual(len(state['questions']),5)
             with self.assertRaisesRegex(ValueError,'valid topic/KP source link'):
                 browser.history(state,work,topic)
 

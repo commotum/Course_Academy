@@ -121,6 +121,8 @@ class CaptureBrowser:
         self.check()
 
     def read(self, scope, directory, stem):
+        from playwright.sync_api import TimeoutError as PlaywrightTimeout
+
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         item = scope.evaluate(EXTRACT)
@@ -132,12 +134,15 @@ class CaptureBrowser:
             included = asset.evaluate('''n => !n.closest('.mjpage, mjx-container, .MathJax, .questionWidget-header, .questionWidget-result, .stepHeader') && !n.parentElement?.closest('svg')''')
             if not included:
                 continue
-            if not asset.is_visible():
+            try:
+                # Continue can appear before explanation graphics have loaded.
+                asset.wait_for(state='visible')
+                if asset.evaluate("n => n.localName === 'img'"):
+                    self.page.wait_for_function('n => n.complete && n.naturalWidth > 0', arg=asset.element_handle())
+            except PlaywrightTimeout:
                 item['errors'].append('Visual asset is not rendered')
                 index += 1
                 continue
-            if asset.evaluate("n => n.localName === 'img'"):
-                self.page.wait_for_function('n => n.complete && n.naturalWidth > 0', arg=asset.element_handle())
             metadata = item['assets'][index]
             source_url = metadata.get('source_url')
             response = self.image_responses.get(source_url)

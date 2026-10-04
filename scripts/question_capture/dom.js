@@ -37,7 +37,10 @@ element => {
   function m(n) {
     if (n.nodeType === 3) return greek[n.textContent] || n.textContent;
     if (n.nodeType !== 1) return '';
-    const cs = [...n.childNodes].map(m), t = n.localName.toLowerCase();
+    const t = n.localName.toLowerCase();
+    // Phantom content only reserves space; none of its descendants are visible.
+    if (t === 'mphantom') return '';
+    const cs = [...n.childNodes].map(m);
     switch(t) {
       case 'mfrac': return '\\frac{' + cs[0] + '}{' + cs[1] + '}';
       case 'msup': return '{' + cs[0] + '}^{' + cs[1] + '}';
