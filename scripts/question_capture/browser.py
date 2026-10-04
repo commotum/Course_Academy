@@ -8,7 +8,7 @@ from collections import deque
 from pathlib import Path
 from urllib.parse import urlparse
 
-from core import atomic_json, assessment_requirement, choose_sequence, choose_review_sequence, journal, normalize, stable_id
+from core import atomic_json, assessment_can_start, assessment_requirement, choose_sequence, choose_review_sequence, journal, normalize, stable_id
 from progress import COURSES, capture as capture_progress
 
 EXTRACT = (Path(__file__).parent / 'dom.js').read_text()
@@ -259,7 +259,8 @@ class CaptureBrowser:
         queue = cards.evaluate_all(EXTRACT_QUEUE)
         for item in queue:
             if item['task_type'] == 'assessment':
-                item.update(assessment_requirement(item['assessment_details'], only_activity=len(queue) == 1))
+                item.update(assessment_requirement(item['assessment_details'], only_activity=len(queue) == 1,
+                                                   title=item['title']))
         return queue
 
     def start(self, activity):
@@ -270,9 +271,10 @@ class CaptureBrowser:
             card = by_id(self.page,activity['card_id'])
             queue = self.page.locator('#incompleteTasks .taskUnlocked').evaluate_all(EXTRACT_QUEUE)
             current = next(item for item in queue if item['card_id'] == activity['card_id'])
-            current.update(assessment_requirement(current['assessment_details'], only_activity=len(queue) == 1))
-            if current['assessment_requirement'] != 'required':
-                raise ValueError('Assessment is optional or its requirement is unknown; stop before Start')
+            current.update(assessment_requirement(current['assessment_details'], only_activity=len(queue) == 1,
+                                                  title=current['title']))
+            if not assessment_can_start(current):
+                raise ValueError('Assessment is not an eligible retake or required quiz; stop before Start')
         else:
             card = by_id(self.page, activity['card_id'])
             if kind != 'multistep' or not card.locator('.taskDetails').is_visible():

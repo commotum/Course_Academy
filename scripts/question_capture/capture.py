@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture lessons, reviews, multisteps, and required assessments; import content only."""
+"""Capture lessons, reviews, multisteps, required assessments and quiz retakes; import content only."""
 import argparse
 import contextlib
 import fcntl
@@ -33,7 +33,7 @@ def arguments(argv=None):
     parser.add_argument('--profile',type=Path,help='Dedicated Playwright profile; defaults to STATE_DIR/browser-profile')
     parser.add_argument('--content',type=Path,help='Saved content.json for import-saved')
     parser.add_argument('--resume',type=Path,help='Select a saved run, including a deferred failure; otherwise a single non-deferred unfinished run resumes automatically')
-    parser.add_argument('--limit',type=int,default=1,help='Maximum attempted activities (lessons, reviews, multisteps, or required assessments); default 1')
+    parser.add_argument('--limit',type=int,default=1,help='Maximum attempted activities (lessons, reviews, multisteps, required assessments or quiz retakes); default 1')
     parser.add_argument('--preview',action='store_true',help='Preview EDB writes. With run, MA answers are still submitted.')
     parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting an activity')
     parser.add_argument('--headless',action='store_true',help='Default is a visible Chromium window')
@@ -195,7 +195,7 @@ def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=No
                      ' [recorded; capture unsupported]' if not item.get('capture_supported',True) else '')
         if item['task_type'] == 'assessment':
             logging.info('     Assessment: %s; optional XP remaining: %s; notice: %s',
-                         item.get('assessment_requirement','unknown'),item.get('optional_xp_remaining'),
+                         'retake' if item.get('assessment_is_retake') else item.get('assessment_requirement','unknown'),item.get('optional_xp_remaining'),
                          item.get('assessment_notice'))
     return observation
 
@@ -330,6 +330,7 @@ def run(args):
                         logging.info('Selected %s %s%s',activity['task_type'],activity['title'],
                                      ': priority %.6f' % activity['priority'] if activity['selection_reason'] == 'priority'
                                      else ': assessment is required' if activity['selection_reason'] == 'required_assessment'
+                                     else ': quiz retake is available' if activity['selection_reason'] == 'quiz_retake'
                                      else ': review queue order' if activity['selection_reason'] == 'review_queue_order'
                                      else ': assessment requirement needs inspection' if activity['selection_reason'] == 'assessment_requires_inspection'
                                      else ': next available activity in queue order')
@@ -349,7 +350,7 @@ def run(args):
                                  'previous_activity_snapshot':previous_activity_snapshot(args)}
                         if state['task_type'] == 'assessment':
                             state.update({key:activity.get(key) for key in
-                                          ('test_id','assessment_details','assessment_notice','optional_xp_remaining','assessment_requirement','assessment_requirement_evidence')})
+                                          ('test_id','assessment_details','assessment_notice','optional_xp_remaining','assessment_requirement','assessment_requirement_evidence','assessment_is_retake')})
                             atomic_json(directory/'assessment-queue.json',activity)
                         elif state['task_type'] == 'multistep':
                             state.update(multistep_id=activity['multistep_id'],title=activity['title'],answer_policy='all_correct')

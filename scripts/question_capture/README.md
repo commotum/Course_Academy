@@ -1,6 +1,6 @@
 # Question capture
 
-Run sequential Math Academy lessons, reviews, multisteps, and required quizzes/assessments;
+Run sequential Math Academy lessons, reviews, multisteps, required quizzes/assessments, and quiz retakes;
 add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
 apart from Playwright, the EDB CLI, and a solver command.
@@ -34,6 +34,10 @@ The runner:
    allowance. An optional quiz stays queued while other activities continue.
    A required assessment takes precedence and runs automatically. A notice with
    zero XP remaining or explicit required wording establishes that requirement.
+   Quiz retakes also run as soon as they appear, ahead of lessons and reviews.
+   The runner recognizes the `(Retake)` title or the quiz-retake Notes text,
+   checks the question count and time limit, and uses the same quiz player.
+   Retake status and the exact Notes are saved in the queue, checkpoint, and content capture.
    Required quizzes can also omit Notes: a sole queued assessment with complete
    question-count and time-limit details and no Notes row is treated as required.
    This is checked again before Start; other unknown layouts stop before starting.

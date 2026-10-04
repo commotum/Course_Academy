@@ -5,7 +5,7 @@ import re
 import time
 from pathlib import Path
 
-from core import atomic_json, journal, normalize
+from core import atomic_json, assessment_can_start, journal, normalize
 
 
 def finish(reader, state, directory):
@@ -46,8 +46,8 @@ def take_assessment(reader, state, directory):
     if state.get('test_submission_status') == 'confirming':
         raise ValueError('Assessment submission is unconfirmed; inspect its result before another submission')
     if not state.get('assessment_started'):
-        if state.get('assessment_requirement') != 'required':
-            raise ValueError('Assessment requirement is unknown or optional; stop before the timer starts')
+        if not assessment_can_start(state):
+            raise ValueError('Assessment is not an eligible retake or required quiz; stop before the timer starts')
         count = state.get('assessment_details',{}).get('Questions','')
         if not re.fullmatch(r'[1-9]\d*',count):
             raise ValueError('Assessment question count is missing; stop before the timer starts')
@@ -59,7 +59,7 @@ def take_assessment(reader, state, directory):
             state['assessment_start_intent'] = True
             state['activity_url'] = LEARN.replace('/learn','') + '/tasks/' + str(state['task_id']) + '/tests/' + str(state['test_id'])
             save()
-            reader.pacer.wait('event','start required assessment timer')
+            reader.pacer.wait('event','start assessment timer')
             by_id(page,'startButton').click()
         page.locator('#questions > .question').first.wait_for(state='attached')
         state['assessment_started'] = True
@@ -215,7 +215,8 @@ def assessment_history(reader, state, directory, load_topic):
         content['questions'].sort(key=lambda q:q['sequence_position'])
     else:
         content.update(test_id=state['test_id'],assessment_details=state['assessment_details'],
-                       assessment_notice=state.get('assessment_notice'),optional_xp_remaining=state.get('optional_xp_remaining'))
+                       assessment_notice=state.get('assessment_notice'),optional_xp_remaining=state.get('optional_xp_remaining'),
+                       assessment_is_retake=state.get('assessment_is_retake',False))
     atomic_json(directory/'content.json',content)
     state['history_complete'] = True
     atomic_json(directory/'state.json',state)

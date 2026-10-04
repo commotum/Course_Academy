@@ -106,13 +106,17 @@ def choose_lesson(queue, priorities, completed_topics=()):
 
 
 def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
-    """Required assessments first; otherwise ranked lessons, reviews, then queue order."""
+    """Required assessments and quiz retakes first, then lessons/reviews/queue order."""
     tests = [item for item in queue if item.get('task_type') == 'assessment' and
              not item.get('in_progress') and item['task_id'] not in captured_tasks]
     required = next((item for item in tests if item.get('assessment_requirement') == 'required' and
                      item.get('capture_supported')), None)
     if required:
         return {**required, 'selection_reason': 'required_assessment'}
+    retake = next((item for item in tests if item.get('assessment_is_retake') and
+                   assessment_can_start(item) and item.get('capture_supported')), None)
+    if retake:
+        return {**retake, 'selection_reason': 'quiz_retake'}
     available = [item for item in queue if item.get('task_type','lesson') in ('lesson','review','multistep') and
                  item.get('capture_supported',True) and not item.get('in_progress',False) and
                  item['task_id'] not in captured_tasks and
@@ -133,26 +137,38 @@ def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
     return None
 
 
-def assessment_requirement(details, *, only_activity=False):
-    """Keep the source notice; only start assessments with known requirements."""
+def assessment_requirement(details, *, only_activity=False, title=''):
+    """Keep the source requirement notice and identify quiz-retake metadata."""
     notes = next((value for key, value in details.items() if key.lower() == 'notes'), None)
+    metadata = {'assessment_is_retake': bool(re.search(r'\(retake\)\s*$', title, re.I) or
+                                            re.search(r'\bquiz retake\b', notes or '', re.I))}
     count = re.search(r'optional\s+until\s+([\d,]+)\s+more\s+XP\s+have\s+been\s+earned', notes or '', re.I)
     if count:
         remaining = int(count[1].replace(',', ''))
-        return {'assessment_notice': notes, 'optional_xp_remaining': remaining,
+        return {**metadata, 'assessment_notice': notes, 'optional_xp_remaining': remaining,
                 'assessment_requirement': 'optional' if remaining else 'required'}
     if notes is not None and re.search(r'\brequired\b|\bmust\b.{0,30}\b(?:take|complete)\b', notes, re.I):
-        return {'assessment_notice': notes, 'optional_xp_remaining': 0, 'assessment_requirement': 'required'}
+        return {**metadata, 'assessment_notice': notes, 'optional_xp_remaining': 0, 'assessment_requirement': 'required'}
     fields = {key.lower(): value for key, value in details.items()}
     # Required quizzes omit the optional Notes row. Recognize this only when
     # the expanded details are complete and the quiz is the sole offered task.
     if (notes is None and only_activity and
             re.fullmatch(r'[1-9]\d*', fields.get('questions') or '') and
             re.fullmatch(r'[1-9]\d*\s+minutes?', fields.get('time limit') or '', re.I)):
-        return {'assessment_notice': None, 'optional_xp_remaining': 0,
+        return {**metadata, 'assessment_notice': None, 'optional_xp_remaining': 0,
                 'assessment_requirement': 'required',
                 'assessment_requirement_evidence': 'sole_queue_activity_without_optional_notice'}
-    return {'assessment_notice': notes, 'optional_xp_remaining': None, 'assessment_requirement': 'unknown'}
+    return {**metadata, 'assessment_notice': notes, 'optional_xp_remaining': None, 'assessment_requirement': 'unknown'}
+
+
+def assessment_can_start(activity):
+    """Retakes run immediately with complete details; other quizzes must be required."""
+    if activity.get('assessment_requirement') == 'required':
+        return True
+    fields = {key.lower(): value for key, value in activity.get('assessment_details', {}).items()}
+    return bool(activity.get('assessment_is_retake') and
+                re.fullmatch(r'[1-9]\d*', fields.get('questions') or '') and
+                re.fullmatch(r'[1-9]\d*\s+minutes?', fields.get('time limit') or '', re.I))
 
 
 def choose_review_sequence(rng, weight=0.7):

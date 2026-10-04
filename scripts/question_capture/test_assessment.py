@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 
 from browser import CaptureBrowser, EXTRACT, deduplicate_math_editor, repair_math_editor_document
 from capture import arguments, observe_queue, run
-from core import Pacer, assessment_requirement, build_content_transaction, choose_activity
+from core import Pacer, assessment_can_start, assessment_requirement, build_content_transaction, choose_activity
 from retry_policy import apply_policy, earned_xp, update_policy
 
 FIXTURES = Path(__file__).parent/'fixtures'
@@ -28,11 +28,17 @@ class AssessmentPolicyTests(unittest.TestCase):
         self.assertEqual(deduplicate_math_editor(tag),tag)
 
     def test_normal_runner_automatically_takes_required_assessment_and_saves_queue_notice(self):
-        notice='This quiz is optional until 0 more XP have been earned.'
-        quiz={'task_id':1,'topic_id':None,'test_id':10,'task_type':'assessment','title':'Quiz',
+        self.assert_runner_assessment('This quiz is optional until 0 more XP have been earned.')
+
+    def test_normal_runner_takes_retake_and_persists_metadata(self):
+        self.assert_runner_assessment('XP earned from a quiz retake are in addition to the XP earned from the original quiz.',retake=True)
+
+    def assert_runner_assessment(self, notice, retake=False):
+        title='Quiz 7 (Retake)' if retake else 'Quiz'
+        details={'Notes':notice,'Questions':'8','Time Limit':'15 minutes'}
+        quiz={'task_id':1,'topic_id':None,'test_id':10,'task_type':'assessment','title':title,
               'href':'/tasks/1/tests/10/start','capture_supported':True,
-              'assessment_details':{'Notes':notice,'Questions':'8','Time Limit':'15 minutes'},
-              **assessment_requirement({'Notes':notice})}
+              'assessment_details':details,**assessment_requirement(details,title=title)}
         selected=[]
         class FixtureBrowser:
             def __init__(self,*args):pass
@@ -48,14 +54,38 @@ class AssessmentPolicyTests(unittest.TestCase):
             with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',FixtureBrowser), \
                  patch('playwright.sync_api.sync_playwright',return_value=runtime),contextlib.redirect_stdout(io.StringIO()):
                 run(args)
-            self.assertEqual(selected[0]['selection_reason'],'required_assessment')
+            self.assertEqual(selected[0]['selection_reason'],'quiz_retake' if retake else 'required_assessment')
             state=json.loads((args.output/'1/state.json').read_text())
             self.assertEqual(state['assessment_notice'],notice)
             self.assertTrue(state['preview_complete'])
             recorded=json.loads((args.output/'1/assessment-queue.json').read_text())
-            self.assertEqual(recorded['optional_xp_remaining'],0)
+            self.assertEqual(recorded['optional_xp_remaining'],None if retake else 0)
+            self.assertEqual(state['assessment_is_retake'],retake)
             db.topic.assert_not_called()  # No single-topic lookup before the assessment is taken.
             db.import_content.assert_called_once()
+
+    def test_retake_precedes_lessons_and_reviews_but_excludes_saved_or_in_progress(self):
+        details={'Questions':'8','Time Limit':'12 minutes',
+                 'Notes':'XP earned from a quiz retake are in addition to the XP earned from the original quiz.'}
+        retake={'task_id':1,'topic_id':None,'task_type':'assessment','capture_supported':True,
+                'assessment_details':details,**assessment_requirement(details,title='Quiz 7 (Retake)')}
+        lesson={'task_id':2,'topic_id':10,'task_type':'lesson'}
+        review={'task_id':3,'topic_id':11,'task_type':'review'}
+        self.assertEqual(choose_activity([lesson,review,retake],{10:999})['selection_reason'],'quiz_retake')
+        self.assertTrue(assessment_can_start(retake))
+        self.assertEqual(retake['assessment_requirement'],'unknown')  # Keep the observed requirement separate.
+        for skipped in ({**retake,'in_progress':True},{**retake,'capture_supported':False}):
+            self.assertEqual(choose_activity([skipped,lesson],{10:999})['task_id'],2)
+        self.assertEqual(choose_activity([retake,lesson],{10:999},captured_tasks={1})['task_id'],2)
+        for incomplete in ({'Questions':'8'}, {'Time Limit':'12 minutes'},
+                           {'Questions':'loading','Time Limit':'12 minutes'}):
+            self.assertFalse(assessment_can_start({**retake,'assessment_details':incomplete}))
+        # Either local retake marker is sufficient, including when an optional allowance appears.
+        optional={**details,'Notes':'This quiz is optional until 26 more XP have been earned.'}
+        metadata=assessment_requirement(optional,title='Quiz 7 (Retake)')
+        self.assertTrue(assessment_can_start({**retake,**metadata,'assessment_details':optional}))
+        self.assertTrue(assessment_requirement(details)['assessment_is_retake'])
+        self.assertFalse(assessment_requirement({'Notes':'Optional under another rule'})['assessment_is_retake'])
 
     def test_optional_required_and_unknown_notices(self):
         notice = 'This quiz is optional until 26 more XP have been earned.'
@@ -288,7 +318,7 @@ class AssessmentDOMTests(unittest.TestCase):
         reader=self.reader()
         quiz,=reader.queue()
         self.page.locator('#incompleteTasks').evaluate("n=>n.insertAdjacentHTML('beforeend','<div class=\"taskUnlocked\" id=\"task-2\">Another task</div>')")
-        with self.assertRaisesRegex(ValueError,'requirement is unknown'):
+        with self.assertRaisesRegex(ValueError,'stop before Start'):
             reader.start(quiz)
         self.assertEqual(self.page.url,'https://mathacademy.com/learn')
 
@@ -340,15 +370,39 @@ class AssessmentDOMTests(unittest.TestCase):
         self.assertEqual(self.instruction_pages,0)
 
     def test_whole_quiz_capture_preserves_choices_blanks_images_metadata_and_single_submission(self):
+        self.assert_whole_quiz_capture()
+
+    def test_observed_retake_among_other_tasks_uses_normal_quiz_capture(self):
+        card=(FIXTURES/'quiz-7-retake-card.html').read_text().replace('13938136','13930620').replace('589650','589340')
+        lesson='<div id="task-2" class="taskUnlocked" progress="0"><span class="taskTypeUnlocked">Lesson</span><div class="taskNameUnlocked">Lesson</div><a class="taskStartButton" href="/tasks/2/topics/10/lesson">Start</a></div>'
+        self.context.route('https://mathacademy.com/learn',lambda r:r.fulfill(
+            status=200,content_type='text/html',body='<div id="incompleteTasks">'+card+lesson+'</div>'))
+        self.assert_whole_quiz_capture(retake=True)
+
+    def test_start_rechecks_retake_marker_before_navigating(self):
+        card=(FIXTURES/'quiz-7-retake-card.html').read_text().replace('13938136','13930620').replace('589650','589340')
+        self.context.route('https://mathacademy.com/learn',lambda r:r.fulfill(
+            status=200,content_type='text/html',body='<div id="incompleteTasks">'+card+'</div>'))
+        reader=self.reader();quiz,=reader.queue()
+        self.page.locator('.taskNameUnlocked').evaluate("e => e.textContent='Quiz 7'")
+        self.page.locator('.testFieldValue').last.evaluate("e => e.textContent='Optional under another rule'")
+        with self.assertRaisesRegex(ValueError,'stop before Start'):
+            reader.start(quiz)
+        self.assertEqual(self.instruction_pages,0)
+
+    def assert_whole_quiz_capture(self, retake=False):
         reader=self.reader()
-        quiz,=reader.queue()
-        self.assertEqual(quiz['assessment_notice'],'This quiz is optional until 0 more XP have been earned.')
-        self.assertEqual(quiz['assessment_requirement'],'required')
+        quiz=choose_activity(reader.queue(),{10:999})
+        self.assertEqual(quiz['assessment_notice'],
+                         'XP earned from a quiz retake are in addition to the XP earned from the original quiz.' if retake
+                         else 'This quiz is optional until 0 more XP have been earned.')
+        self.assertEqual(quiz['assessment_requirement'],'unknown' if retake else 'required')
         with tempfile.TemporaryDirectory() as work:
             directory=Path(work)
             state={'task_id':quiz['task_id'],'task_type':'assessment','test_id':quiz['test_id'],'topic_id':None,
                    'assessment_details':quiz['assessment_details'],'assessment_requirement':quiz['assessment_requirement'],
-                   'assessment_notice':quiz['assessment_notice'],'optional_xp_remaining':0,
+                   'assessment_notice':quiz['assessment_notice'],'optional_xp_remaining':quiz['optional_xp_remaining'],
+                   'assessment_is_retake':quiz['assessment_is_retake'],
                    'questions':{},'examples':{},'kps':{}}
             reader.start(quiz)
             try:
@@ -366,6 +420,7 @@ class AssessmentDOMTests(unittest.TestCase):
             self.assertEqual(sum(len(f['choices']) for q in content['questions'] for f in q['answer_fields']),32)
             self.assertTrue(all(q['worked_solution'] and q['difficulty'] and q['knowledge_point_id'] for q in content['questions']))
             self.assertEqual(content['assessment_notice'],quiz['assessment_notice'])
+            self.assertEqual(content['assessment_is_retake'],retake)
             q=next(q for q in state['questions'].values() if q['before']['dom_id']=='question-82938')
             self.assertEqual(q['before']['fields'][0]['observed_selected_option'],'c')
             self.assertTrue(q['before']['fields'][0]['choices'][2]['value'].endswith('.png'))
