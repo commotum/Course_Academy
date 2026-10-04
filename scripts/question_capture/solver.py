@@ -76,7 +76,12 @@ without dollar delimiters, or an exact text value when appropriate. Also give a 
 incorrect wrong_value. Never deliberately misidentify the correct answer.
 For MathQuill blanks supply correct_keys and wrong_keys, ordered UI keystrokes: each item
 has either text or key, the other null. Type ASCII characters with text, including / and ^;
-use ArrowRight to leave exponents/fractions. Available keys are ArrowLeft, ArrowRight,
+use ArrowRight to leave exponents/fractions. For named symbols type a backslash command:
+for pi, type "\\\\pi". Plain "pi" means the two variables p and i; never assume
+automatic conversion. Do not add Space after a symbol: this editor inserts a
+mathematical space, which can change fraction grouping. The runner uses the visible
+symbol menu when available. For 11*pi/6, type "11", then "\\\\pi", then "/6",
+ArrowRight. Available keys are ArrowLeft, ArrowRight,
 ArrowUp, ArrowDown, Space, Home, End. Do not use Enter, Tab, or submission shortcuts.
 For other fields those arrays may be empty. Explain the math in explanation.
 This conversation covers one activity. Use its examples and revealed explanations to
@@ -158,7 +163,8 @@ class Solver:
                     'worked_solution':after['worked_solution'],'actual_result':record['actual_result'],
                     'deliberately_incorrect_submission':record.get('intended') == 'W',
                     'submitted_fields':[{k:v for k,v in f.items() if k in
-                        ('key','submitted_value','submitted_option','observed_selected_option')}
+                        ('key','submitted_value','submitted_option','observed_selected_option',
+                         'observed_mathquill_latex')}
                         for f in record.get('before',{}).get('fields',[])]})
                 keys.append(key)
         return context, keys

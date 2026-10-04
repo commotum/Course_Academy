@@ -389,6 +389,110 @@ class DOMTests(unittest.TestCase):
         self.assertIn('{{field-2}}',item['problem'])
         self.assertEqual([c['option'] for c in item['fields'][1]['choices']],['plus','minus'])
 
+    def mathquill_fixture(self, menu=False):
+        vendor = Path(__file__).parent/'fixtures/vendor'
+        self.page.set_content('<div id="test"><div class="questionWidget-text">Enter the answer</div>'
+            '<div id="answer" class="matheditor-wrapper-answer"><span id="mq"></span></div>'
+            '<button class="questionWidget-submitButton">Submit</button></div>')
+        self.page.add_style_tag(path=str(vendor/'mathquill-0.10.1.css'))
+        self.page.add_script_tag(path=str(vendor/'jquery-3.7.1.min.js'))
+        # This is the exact public MathQuill distribution loaded by Math Academy.
+        self.page.add_script_tag(path=str(vendor/'mathquill-ma.v2.1.min.js'))
+        self.page.evaluate('''menu => {
+          const MQ = MathQuill.getInterface(2);
+          const field = MQ.MathField(document.querySelector('#mq'));
+          window.submissions = 0;
+          document.querySelector('.questionWidget-submitButton').onclick = () => window.submissions++;
+          if (menu) {
+            const toolbox = document.createElement('div'); toolbox.id = 'mathEditorToolbox';
+            const pi = document.createElement('button'); pi.className = 'mathIcon piIcon'; pi.textContent = 'π';
+            pi.onmousedown = e => e.preventDefault();
+            pi.onclick = () => { field.cmd('\\\\pi'); field.focus(); };
+            toolbox.append(pi); document.body.append(toolbox);
+          }
+        }''',menu)
+        scope = self.page.locator('#test')
+        item = scope.evaluate(EXTRACT)
+        decision = {'answers':[{'key':'field-1','correct_value':r'\frac{11\pi}{6}',
+                    'value_type':'math',
+                    'wrong_value':r'\frac{\pi}{6}',
+                    'correct_keys':[{'text':'11pi/6','key':None},{'text':None,'key':'ArrowRight'}],
+                    'wrong_keys':[{'text':'pi/6','key':None},{'text':None,'key':'ArrowRight'}]}]}
+        return scope, {'before':item,'decision':decision,'intended':'C'}
+
+    def test_mathquill_pi_uses_visible_symbol_menu_and_verifies_the_value(self):
+        scope, record = self.mathquill_fixture(menu=True)
+        args = SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+        browser = CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        browser.enter(scope,record)
+        browser.verify_entered(scope,record)
+        field = record['before']['fields'][0]
+        self.assertEqual(normalize(field['observed_mathquill_latex']),normalize(r'\frac{11\pi}{6}'))
+        self.assertEqual(field['clicked_symbols'][0]['symbol'],'pi')
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_mathquill_pi_falls_back_to_explicit_command_and_handles_wrong_answers(self):
+        for intended, value in [('C',r'\frac{11\pi}{6}'),('W',r'\frac{\pi}{6}')]:
+            scope, record = self.mathquill_fixture()
+            record['intended'] = intended
+            args = SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+            browser = CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+            browser.enter(scope,record)
+            browser.verify_entered(scope,record)
+            field = record['before']['fields'][0]
+            self.assertEqual(normalize(field['observed_mathquill_latex']),normalize(value))
+            self.assertFalse(field.get('clicked_symbols'))
+
+    def test_mathquill_rejects_original_literal_pi_and_incorrect_fraction_grouping(self):
+        for typed in ('11pi/6','11/6pi'):
+            scope, record = self.mathquill_fixture()
+            args = SimpleNamespace(timeout_ms=3000)
+            browser = CaptureBrowser(self.page,args,None,None)
+            editor = scope.locator('.mq-textarea textarea')
+            editor.focus()
+            editor.press_sequentially(typed)
+            record['before']['fields'][0]['submitted_value'] = r'\frac{11\pi}{6}'
+            with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):
+                browser.verify_entered(scope,record)
+            self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_moved_past_submission_reconciles_saved_grade_before_next_question(self):
+        scope, _ = self.complex_argument_fixture()
+        item = scope.evaluate(EXTRACT)
+        pixels = (REVIEW_FIXTURE/'assets/q-28197-a-1.png').resolve()
+        item['assets'][0]['path'] = str(pixels)
+        record = {'kp_id':None,'before':item,'decision':{'answers':[{'key':'selection',
+                  'correct_value':'2.21','value_type':'math'}]},'intended':'C','status':'submitting'}
+        state = {'task_id':13929099,'topic_id':893,'task_type':'review','review_sequence':'CWCWC',
+                 'questions':{'q-8257':record},'kps':{},'examples':{}}
+        self.page.set_content('<div id="step-q2" class="step questionWidget">'
+                              '<button class="questionWidget-submitButton">Submit</button></div>')
+        solver = Mock()
+        browser = CaptureBrowser(self.page,SimpleNamespace(timeout_ms=3000),None,solver)
+        browser.check = Mock(side_effect=RuntimeError('Stop before next answer'))
+        with tempfile.TemporaryDirectory() as work:
+            source = Path(work)/'q-8257-after.json'
+            source.write_text(json.dumps(item))
+            with self.assertRaisesRegex(RuntimeError,'Stop before next answer'):
+                browser.review(state,work,{})
+            self.assertEqual(record['actual_result'],'Correct')
+            self.assertTrue(record['finalized'])
+            solver.solve.assert_not_called()
+            record.update(status='submitting',finalized=False)
+            item['errors'] = ['Visual asset is not rendered']
+            source.write_text(json.dumps(item))
+            with self.assertRaisesRegex(ValueError,'Previous submission needs a complete saved result'):
+                browser.review(state,work,{})
+
+    def test_content_retains_correct_pi_and_actual_literal_pi_as_distinct_choices(self):
+        scope, record = self.mathquill_fixture()
+        record['before']['fields'][0]['submitted_value'] = r'\frac{11pi}{6}'
+        record['after'] = {'worked_solution':r'The argument is $\frac{11\pi}{6}$.'}
+        content = CaptureBrowser.question_content('q-319581',record,{'id':None,'title':None})
+        field = content['answer_fields'][0]
+        self.assertEqual(field['correct_value'],r'\frac{11\pi}{6}')
+        self.assertEqual([c['value'] for c in field['choices']],[r'\frac{11\pi}{6}',r'\frac{11pi}{6}'])
+
     def test_activity_solution_does_not_include_student_answer(self):
         history = json.loads((FIXTURE/'activity-capture.json').read_text())
         for kp in history['kps']:

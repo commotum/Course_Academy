@@ -25,6 +25,29 @@ ACTIVE_STEP = r'''() => {
   return /^stepButton-[te]\d+$/.test(current) ? current : null;
 }'''
 
+MATHQUILL_VALUE = r'''n => {
+  const node = n.querySelector('.mq-editable-field');
+  const library = window.MathQuill;
+  if (!node || !library) return null;
+  const MQ = library.getInterface ? library.getInterface(2) : library;
+  const field = MQ(node); // Retrieve an existing editor; never construct or change one.
+  return field && typeof field.latex === 'function' ? field.latex() : null;
+}'''
+
+
+def mathquill_keys(value, actions):
+    """Make named symbols explicit when older solver turns assumed autoCommands."""
+    names = set(re.findall(r'\\(pi|theta|alpha|beta|gamma|delta|lambda|mu|rho|sigma|phi|omega)\b', value))
+    result = []
+    for action in actions:
+        action = dict(action)
+        if action.get('text') is not None:
+            for name in sorted(names, key=len, reverse=True):
+                action['text'] = re.sub(r'(?<![A-Za-z\\])' + name + r'(?![A-Za-z])',
+                                        lambda _: '\\' + name + ' ', action['text'])
+        result.append(action)
+    return result
+
 
 def by_id(scope, identifier):
     if not identifier:
@@ -278,7 +301,21 @@ class CaptureBrowser:
                 state.pop('pending_continue', None)
                 save()
         # A saved grade can be finalized even if Continue already advanced the UI.
+        if any(q.get('status') == 'submitting' for q in state['questions'].values()):
+            self.wait_activity_ready()
         for mid, record in state['questions'].items():
+            if record.get('status') == 'submitting' and self.current_step() != 'stepButton-' + mid.replace('-', ''):
+                # A restored activity may open on the next question. Reconcile the
+                # saved result before answering it, rather than orphaning a grade.
+                source = directory / (mid + '-after.json')
+                item = json.loads(source.read_text()) if source.exists() else {}
+                if (item.get('errors') or item.get('result') not in ('Correct', 'Incorrect') or
+                    not item.get('worked_solution') or
+                    normalize(item.get('problem', '')) != normalize(record['before']['problem']) or
+                    any(not a.get('path') or not Path(a['path']).is_file() for a in item.get('assets', []))):
+                    raise ValueError('Previous submission needs a complete saved result before advancing: ' + mid)
+                record.update(after=item, actual_result=item['result'], status='graded')
+                save()
             if record.get('status') == 'graded' and not record.get('finalized'):
                 self.finalize_question(state,directory,mid,record)
                 save()
@@ -463,15 +500,48 @@ class CaptureBrowser:
                     editor = control.locator('.mq-textarea textarea')
                     editor.press('ControlOrMeta+A')
                     editor.press('Backspace')
-                    for action in answer['wrong_keys' if wrong else 'correct_keys']:
+                    actions = mathquill_keys(value, answer['wrong_keys' if wrong else 'correct_keys'])
+                    field['entered_keys'] = actions
+                    symbol_just_inserted = False
+                    for action in actions:
                         if action['text'] is not None:
-                            editor.press_sequentially(action['text'],delay=self.pacer.rng.uniform(60,140))
+                            symbol_just_inserted = self.type_mathquill(editor, action['text'], field)
                         else:
-                            editor.press(action['key'])
+                            if not (symbol_just_inserted and action['key'] == 'Space'):
+                                editor.press(action['key'])
+                            symbol_just_inserted = False
                 else:
                     control.fill(value)
                 field['submitted_value'] = value
             wrong_used |= wrong
+
+    def type_mathquill(self, editor, text, field):
+        # These classes belong to Math Academy's displayed symbol toolbox.
+        # Observe a single visible button before using it; no widget setters.
+        symbol_just_inserted = False
+        for part in re.split(r'(\\(?:pi|theta|alpha|beta|gamma|delta|lambda|mu|rho|sigma|phi|omega)\b\s*)', text):
+            if not part:
+                continue
+            symbol = re.fullmatch(r'\\([a-z]+)\s*', part)
+            if symbol:
+                symbol_just_inserted = True
+                name = symbol[1]
+                selector = '#mathEditorToolbox .mathIcon.' + name + 'Icon'
+                buttons = [b for b in self.page.locator(selector).all() if b.is_visible()]
+                if len(buttons) > 1:
+                    raise ValueError('Multiple visible MathQuill symbol buttons: ' + name)
+                if buttons:
+                    buttons[0].click()
+                    field.setdefault('clicked_symbols', []).append({'symbol': name, 'selector': selector})
+                else:
+                    editor.press_sequentially('\\' + name, delay=self.pacer.rng.uniform(60,140))
+                    # In MA's distribution Space inserts a mathematical space,
+                    # splitting the numerator; ArrowRight preserves its grouping.
+                    editor.press('ArrowRight')
+            else:
+                symbol_just_inserted = False
+                editor.press_sequentially(part, delay=self.pacer.rng.uniform(60,140))
+        return symbol_just_inserted
 
     def verify_entered(self, scope, record):
         for field in record['before']['fields']:
@@ -487,6 +557,12 @@ class CaptureBrowser:
             elif field['type'] == 'blank' and field['tag'] != 'mathquill':
                 if by_id(scope,field['dom_id']).input_value() != field['submitted_value']:
                     raise ValueError('Actual blank value differs from intended value; stop before Submit')
+            elif field['tag'] == 'mathquill':
+                observed = by_id(scope,field['dom_id']).evaluate(MATHQUILL_VALUE)
+                field['observed_mathquill_latex'] = observed
+                if not isinstance(observed, str) or normalize(observed) != normalize(field['submitted_value']):
+                    raise ValueError('Actual MathQuill value differs from intended value; stop before Submit: '
+                                     + repr(observed) + ' != ' + repr(field['submitted_value']))
 
     @staticmethod
     def question_content(mid, record, kp):

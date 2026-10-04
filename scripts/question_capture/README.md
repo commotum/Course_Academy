@@ -145,14 +145,21 @@ or invalid choices stop before submission.
 
 The extractor supports observed radio circles, native blanks/selects, MathQuill
 answer wrappers, and the original `.selectList` widget. MathQuill entry uses
-explicit typed characters and arrow-key events, with no hidden widget API.
+explicit typed characters, arrow-key events, and visible symbol-menu buttons.
+Named symbols such as π use the displayed toolbox when available, with explicit
+backslash commands as a fallback. The runner checks the existing editor's value
+through MathQuill's public read-only `.latex()` getter before Submit; it never
+sets answers through the widget API. The checkpoint retains observed LaTeX,
+typing actions, and any symbol buttons used.
 Unknown widgets, unreadable formulas, and unrendered graphical assets stop for
 review. Invisible MathML `mphantom` content is omitted. Graphics are allowed to
 become visible and images must finish loading within `--timeout-ms` before capture;
 an asset that never renders still stops the run with saved DOM and a screenshot.
 Radio extraction is validated against all fifteen actual Sum Rule
-widgets; native mixed fields have fixture tests. MathQuill/custom-select typing
-still needs validation on a live activity. A solver error can break the intended
+widgets; native mixed fields have fixture tests. Offline keyboard tests use the
+exact public MathQuill distribution loaded by Math Academy and cover π menu
+clicks, command fallback, incorrect-answer entry, and fraction grouping. The
+custom-select path still needs validation on a live activity. A solver error can break the intended
 five-question sequence; the runner stops immediately on an unexpected grade.
 
 ## Pacing inherited from the original pipeline
@@ -234,6 +241,10 @@ remains available for inspection. An unconfirmed solver session ID also stops
 rather than silently resetting its context. Failed completion snapshots and
 content imports resume without retaking the activity. Previous per-step snapshot
 checkpoints are migrated to Continue checkpoints without another mid-activity fetch.
+When a restored page has moved past a pending submission, the runner reconciles
+its complete saved after-capture before answering the next question. Incomplete
+saved results stop for recovery. Unexpected grades continue to stop automatically;
+reviewed checkpoint repairs preserve the intended answer, actual entry, and grade.
 
 Import or retry already captured content without visiting Math Academy:
 
