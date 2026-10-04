@@ -20,12 +20,46 @@ from edn import dumps, loads, kw
 from solver import Solver
 from progress import changes, normalize_course
 from capture import arguments, run, unfinished_run, read_journal, previous_activity_snapshot, record_failure
+from priorities import capture_scores
+from datetime import datetime, timezone
 
 FIXTURE = ROOT/'reference/mathacademy/sum-rule-13925458'
 REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_unit_formatting_preserves_dimensions_and_text_identity(self):
+        for value in (r'32\,{\text{ft}}^{2}',r'32\,\mathrm{ft}^{2}','32ft²'):
+            self.assertEqual(normalize('32ft^{2}'),normalize(value))
+        for value in ('32ft','32ft^{3}','33ft^{2}',r'32\,{\text{cm}}^{2}',r'32\text{f t}^{2}'):
+            self.assertNotEqual(normalize('32ft^{2}'),normalize(value))
+        self.assertNotEqual(normalize(r'\text{a b}'),normalize(r'\text{ab}'))
+
+    def test_directed_capture_scores_do_not_require_personal_tasks_or_credit_remote_work(self):
+        context={'self_directed':True,'targets':[3,4],
+                 'assignments':[{'topics':{4},'due':datetime(2026,10,1,tzinfo=timezone.utc),'completed':False},
+                                {'topics':{8},'due':datetime(2026,10,1,tzinfo=timezone.utc),'completed':True}],
+                 'prerequisites':{3:{2},4:{2},2:{1}}}
+        snapshot={'courses':[{'topics':[{'topic_id':1,'display_band':1},
+                                        {'topic_id':2,'display_band':0}]}]}
+        before=copy.deepcopy(context),copy.deepcopy(snapshot)
+        scores=capture_scores([2,7,8],context,snapshot,datetime(2026,10,3,tzinfo=timezone.utc))
+        self.assertEqual(scores[2]['target_count'],2)
+        self.assertEqual(scores[2]['remaining_topics'],2)
+        self.assertEqual(scores[2]['nearest_target_steps'],1)
+        self.assertAlmostEqual(scores[2]['priority'],1+1000*2/3+100/3+50+250)
+        self.assertEqual(scores[7]['priority'],1)
+        self.assertEqual(scores[8]['priority'],1)
+        self.assertEqual(before,(context,snapshot))
+        context['self_directed']=False
+        self.assertEqual(capture_scores([2],context,snapshot)[2]['priority'],1)
+
+    def test_assessments_are_recorded_but_never_selected_as_lesson_fallback(self):
+        quiz={'task_id':1,'topic_id':None,'task_type':'assessment','capture_supported':False}
+        lesson={'task_id':2,'topic_id':2082,'task_type':'lesson'}
+        self.assertEqual(choose_activity([quiz,lesson],{2082:1218.4})['task_id'],2)
+        self.assertIsNone(choose_activity([quiz],{}))
+        self.assertIsNone(choose_activity([{**lesson,'in_progress':True}],{2082:1218.4}))
     def test_math_notation_equivalents_and_symbol_identity(self):
         pairs = [('± 3',r'\pm 3'),('π',r'\pi'),('α',r'\alpha'),('∞',r'\infty'),
                  ('x ≤ 3',r'x\leq3'),(r'x\le3',r'x\leq3'),('x ≠ 3',r'x\neq3'),
@@ -52,6 +86,7 @@ class PolicyTests(unittest.TestCase):
         learner = uuid.UUID('59d5cf13-351c-4114-be19-4c3bb64ee051')
         self.assertEqual(db.priorities(learner, Path('/tmp/selection')), {462:1244.0})
         self.assertEqual(db.query.call_args.args[1], [str(learner)])
+        self.assertNotIn('learner-task/status',db.query.call_args.args[0])
 
     def test_sequences_maximize_without_terminating(self):
         rng = random.Random(42)
@@ -527,11 +562,32 @@ class DOMTests(unittest.TestCase):
         args=SimpleNamespace(timeout_ms=5000,settle_ms=0,event_min=0,event_max=0)
         browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
         queue=browser.queue()
-        self.assertEqual([(a['task_id'],a['task_type']) for a in queue],[(100,'review'),(101,'lesson')])
-        for activity in queue:
+        self.assertEqual([(a['task_id'],a['task_type']) for a in queue],[(100,'review'),(101,'lesson'),(102,'review')])
+        self.assertTrue(queue[2]['in_progress'])
+        self.assertEqual(choose_activity(queue,{},captured_tasks=[100,101]),None)
+        for activity in queue[:2]:
             browser.navigate('https://mathacademy.com/learn',force=True)
             browser.start(activity)
             self.assertEqual(self.page.url,'https://mathacademy.com'+activity['href'])
+
+    def test_real_quiz_card_is_logged_with_metadata_and_never_started(self):
+        html=(Path(__file__).parent/'fixtures/quiz-5-card.html').read_text()
+        self.context.unroute('https://mathacademy.com/**')
+        self.context.route('https://mathacademy.com/**',lambda route:route.fulfill(
+            status=200,content_type='text/html',body='<div id="incompleteTasks">'+html+'</div>'))
+        args=SimpleNamespace(timeout_ms=5000,settle_ms=0,event_min=0,event_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        queue=browser.queue()
+        quiz,=queue
+        self.assertEqual((quiz['task_id'],quiz['test_id'],quiz['title']),(13930620,589340,'Quiz 5'))
+        self.assertEqual(quiz['task_type'],'assessment')
+        self.assertIsNone(quiz['topic_id'])
+        self.assertFalse(quiz['capture_supported'])
+        self.assertEqual(quiz['assessment_details']['Questions'],'8')
+        self.assertIsNone(choose_activity(queue,{}))
+        with self.assertRaisesRegex(ValueError,'unsupported'):
+            browser.start(quiz)
+        self.assertEqual(self.page.url,'https://mathacademy.com/learn')
 
     def test_svg_duplicate_title_ids_are_scoped_locally(self):
         self.page.set_content('<span class="mjpage"><svg><title id="same">x+1</title></svg></span><div id="test"><div class="exampleQuestion"><span class="mjpage"><svg><title id="same">x^2+1</title></svg></span></div><div class="exampleExplanation">solution</div></div>')
@@ -667,6 +723,28 @@ class DOMTests(unittest.TestCase):
         field = record['before']['fields'][0]
         self.assertEqual(normalize(field['observed_mathquill_latex']),normalize(r'\frac{11\pi}{6}'))
         self.assertEqual(field['clicked_symbols'][0]['symbol'],'pi')
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_duplicate_infinity_toolboxes_use_keyboard_in_the_active_editor(self):
+        scope,record=self.mathquill_fixture()
+        self.page.evaluate('''() => {
+          for (let i=0;i<2;i++) {
+            const box=document.createElement('div');box.id='mathEditorToolbox';
+            box.innerHTML='<button class="mathIcon inftyIcon">∞</button>';
+            box.onclick=()=>{throw Error('Ambiguous toolbox must not be clicked')};
+            document.body.append(box);
+          }
+        }''')
+        answer=record['decision']['answers'][0]
+        answer.update(correct_value=r'-\infty',correct_keys=[{'text':r'-\infty','key':None}])
+        args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        browser.enter(scope,record)
+        browser.verify_entered(scope,record)
+        field=record['before']['fields'][0]
+        self.assertEqual(normalize(field['observed_mathquill_latex']),normalize(r'-\infty'))
+        self.assertEqual(field['symbol_fallbacks'][0]['visible_buttons'],2)
+        self.assertFalse(field.get('clicked_symbols'))
         self.assertEqual(self.page.evaluate('window.submissions'),0)
 
     def test_mathquill_pi_falls_back_to_explicit_command_and_handles_wrong_answers(self):

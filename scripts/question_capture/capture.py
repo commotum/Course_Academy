@@ -164,13 +164,17 @@ def read_journal(path):
 
 
 def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=None, directory=None):
-    priorities = db.priorities(args.learner_id, args.state_dir/'selection')
     queue = browser.queue()
+    priorities = db.priorities(args.learner_id,args.state_dir/'selection',
+                              topic_ids=[i['topic_id'] for i in queue if i['task_type']=='lesson' and i['topic_id'] is not None],
+                              knowledge_snapshot=previous_activity_snapshot(args))
     selected = choose_activity(queue, priorities, completed, captured_tasks)
     observation = {'queue':queue, 'selected':selected,
                    'unranked_topics':[i['topic_id'] for i in queue
                                       if i['task_type'] == 'lesson' and i['topic_id'] not in priorities],
-                   'after_task_id':after_task_id}
+                   'after_task_id':after_task_id,
+                   'priority_scores':{i['topic_id']:priorities[i['topic_id']] for i in queue
+                                      if i['task_type']=='lesson' and i['topic_id'] in priorities}}
     atomic_json(args.state_dir/'selection/queue.json', observation)
     if directory is not None:
         atomic_json(directory/'queue-after.json', observation)
@@ -179,9 +183,11 @@ def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=No
                  ' after task ' + str(after_task_id) if after_task_id is not None else '', len(queue))
     for position, item in enumerate(queue, 1):
         priority = priorities.get(item['topic_id']) if item['task_type'] == 'lesson' else None
-        logging.info('  %d. %s %s (task %s, topic %s%s)', position, item['task_type'],
+        logging.info('  %d. %s %s (task %s, topic %s%s)%s', position, item['task_type'],
                      item['title'], item['task_id'], item['topic_id'],
-                     ', priority ' + str(priority) if priority is not None else '')
+                     ', priority ' + str(priority) if priority is not None else '',
+                     ' [in progress; explicit resume]' if item.get('in_progress') else
+                     ' [recorded; capture unsupported]' if not item.get('capture_supported',True) else '')
     return observation
 
 
@@ -328,7 +334,7 @@ def run(args):
                         phase = 'topic'
                         topic = db.topic(activity['topic_id'],directory/'selection')
                         (directory/'selection').mkdir(parents=True,exist_ok=True)
-                        for name in ('queue.json','priorities.edn','priorities-query.edn','priorities-inputs.edn'):
+                        for name in ('queue.json','priorities.edn','priorities-query.edn','priorities-inputs.edn','capture-priorities.json'):
                             source = args.state_dir/'selection'/name
                             if source.is_file():
                                 shutil.copy2(source, directory/'selection'/source.name)

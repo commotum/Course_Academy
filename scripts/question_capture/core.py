@@ -92,7 +92,9 @@ def choose_lesson(queue, priorities, completed_topics=()):
 
 def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
     """Prefer ranked lessons, then reviews, then the next uncaptured queue item."""
-    available = [item for item in queue if item['task_id'] not in captured_tasks and
+    available = [item for item in queue if item.get('task_type','lesson') in ('lesson','review') and
+                 item.get('capture_supported',True) and not item.get('in_progress',False) and
+                 item['task_id'] not in captured_tasks and
                  not (item.get('task_type', 'lesson') == 'lesson' and item['topic_id'] in completed_topics)]
     lesson = choose_lesson(available, priorities, completed_topics)
     if lesson:

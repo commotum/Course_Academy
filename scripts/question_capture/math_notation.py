@@ -16,6 +16,23 @@ OPERATORS = {'sin','cos','tan','sec','csc','cot','sinh','cosh','tanh','ln','log'
              'exp','arcsin','arccos','arctan','arg','lim','min','max'}
 SUPERSCRIPTS = str.maketrans('⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻', '0123456789+-')
 SUBSCRIPTS = str.maketrans('₀₁₂₃₄₅₆₇₈₉₊₋', '0123456789+-')
+UNITS = ('ft','in','yd','mi','mm','cm','km','m','kg','mg','lb','oz','g','ms','min','hr','s','h')
+
+
+def quantity_identity(value):
+    """Reconcile legacy numeric unit suffixes with explicitly typeset units."""
+    unit = '(?:'+'|'.join(UNITS)+')'
+    styled = r'\\(?:text|mathrm)\{\s*'+unit+r'\s*\}'
+    block = '(?:'+unit+'|'+styled+r'|\{'+styled+r'\})'
+    match = re.fullmatch(r'([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*'
+                        r'(?:(?:\\[,; ]|\\quad)\s*)*('+block+r')'
+                        r'\s*(?:\^\{([+-]?\d+)\}|\^([+-]?\d)|([²³]))?',
+                        value.strip().strip('$').replace('−','-'))
+    if not match:
+        return None
+    name = re.sub(r'\\(?:text|mathrm)|[{}\s]', '', match[2])
+    exponent = match[3] or match[4] or (match[5].translate(SUPERSCRIPTS) if match[5] else '1')
+    return ('quantity',tokens(match[1]),name,exponent)
 
 
 def tokens(value):
@@ -149,6 +166,9 @@ class Parser:
 
 
 def identity(value):
+    quantity = quantity_identity(value)
+    if quantity is not None:
+        return repr(quantity)
     source = tokens(value)
     try:
         return repr(('math',Parser(source).sequence()))

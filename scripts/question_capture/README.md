@@ -6,15 +6,27 @@ apart from Playwright, the EDB CLI, and a solver command.
 
 The runner:
 
-1. Reads unlocked lesson priorities for the selected learner from EDB. Intersects
-   them with new lessons actually available in Math Academy's visible queue, then
-   takes the highest priority. When no eligible lesson is available, it takes the
+1. Reads existing lesson scores without filtering personal task status, and
+   calculates directed scores for offered lesson topics from your study targets
+   and assignment mappings, even if no personal task exists. The scoring follows
+   `engine/rust/learning.rs`: target reach, remaining prerequisite work, distance
+   to targets, and assignment deadlines. The capture account's latest knowledge
+   snapshot determines which branches need further preparation; it never credits
+   that work to your personal learner. Curriculum and target configuration are
+   read once per invocation at one database basis. The runner takes the highest
+   score among new lessons actually available in Math Academy's visible queue.
+   When no eligible lesson is available, it takes the
    first new review in the visible queue. If neither is available, it takes the
    first remaining activity in visible queue order, including an unranked lesson.
    Already captured tasks and completed lesson topics are skipped.
    It refreshes and logs the queue after every completed activity, including the
    last activity allowed by `--limit`, and uses that observation for the next
-   selection. Reviews use queue order, not lesson priority ratings.
+   selection. Assessments, including quizzes, and in-progress tasks are also
+   logged, with their observed URLs, IDs, progress, and assessment details.
+   Assessments are recorded without being started by the lesson/review player;
+   in-progress captures require explicit recovery. Reviews use queue order, not
+   lesson priority ratings. `selection/capture-priorities.json` records score
+   components and the snapshot/configuration basis used.
    It does not change EDB task priorities or statuses.
 2. Captures each canonical example live. For each KP it randomly chooses
    `C-W-C-W-C` with probability **0.7**, or `W-C-W-C-C` with probability **0.3**.
@@ -161,6 +173,11 @@ typing actions, and any symbol buttons used.
 Verification accepts editor formatting such as `\left`/`\right`, fraction-style
 commands, and numeric rational exponents written as `^{1/3}` or
 `^{\frac{1}{3}}`, while preserving fraction and exponent grouping and symbol identity.
+Numeric measurement answers also reconcile legacy suffixes such as `32ft^{2}`
+with `32\,{\text{ft}}^{2}` for recognized units, preserving the quantity, unit,
+and exponent. Plain text answers remain exact. Duplicate visible symbol toolboxes
+use explicit keyboard commands and retain the fallback reason in the checkpoint;
+the existing editor's value must still verify before Submit.
 Unknown widgets, unreadable formulas, and unrendered graphical assets defer the
 activity for review. Invisible MathML `mphantom` content is omitted. Graphics are allowed to
 become visible and images must finish loading within `--timeout-ms` before capture;

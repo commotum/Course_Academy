@@ -26,6 +26,26 @@ ACTIVE_STEP = r'''() => {
   return /^stepButton-[te]\d+$/.test(current) ? current : null;
 }'''
 
+EXTRACT_QUEUE = r'''nodes => nodes.filter(e => e.getClientRects().length).map(e => {
+  const a=e.querySelector('a.taskStartButton'), href=a?.getAttribute('href') || '';
+  const lesson=href.match(/^\/tasks\/(\d+)\/topics\/(\d+)\/(lesson|review)$/);
+  const task=e.id.match(/^task-(\d+)$/), test=href.match(/^\/tasks\/(\d+)\/tests\/(\d+)\/start$/);
+  const kind=e.querySelector('.taskTypeUnlocked')?.textContent.trim().toLowerCase() || 'unknown';
+  const progress=Number(e.getAttribute('progress'));
+  const supported=!!lesson && kind === lesson[3];
+  const details={};
+  for (const row of e.querySelectorAll('.testDetails tr')) {
+    const name=row.querySelector('.testFieldName')?.textContent.trim().replace(/:$/,'');
+    if (name) details[name]=row.querySelector('.testFieldValue')?.textContent.trim();
+  }
+  return {task_id:task ? Number(task[1]) : null,topic_id:lesson ? Number(lesson[2]) : null,
+    card_id:e.id,start_id:a?.id || null,task_type:kind,href,
+    title:e.querySelector('[id^="taskName-"], .taskNameUnlocked')?.textContent.trim() || '',
+    capture_supported:supported,progress:Number.isFinite(progress) ? progress : null,
+    in_progress:Number.isFinite(progress) && progress>0,
+    ...(test ? {test_id:Number(test[2]),assessment_details:details} : {})};
+})'''
+
 MATHQUILL_VALUE = r'''n => {
   const node = n.querySelector('.mq-editable-field');
   const library = window.MathQuill;
@@ -147,16 +167,12 @@ class CaptureBrowser:
         # Wait for the asynchronous task list, allowing an empty queue.
         self.page.wait_for_timeout(self.args.settle_ms)
         self.check()
-        return self.page.locator('.taskUnlocked').evaluate_all('''nodes => nodes.filter(e => e.getClientRects().length && e.getAttribute('progress') === '0').flatMap(e => {
-          const a=e.querySelector('a.taskStartButton'), href=a?.getAttribute('href') || '';
-          const m=href.match(/^\\/tasks\\/(\\d+)\\/topics\\/(\\d+)\\/(lesson|review)$/);
-          if (!m || e.querySelector('.taskTypeUnlocked')?.textContent.trim().toLowerCase() !== m[3]) return [];
-          return [{task_id:Number(m[1]),topic_id:Number(m[2]),card_id:e.id,start_id:a.id,
-            task_type:m[3],href,title:e.querySelector('[id^="taskName-"]')?.textContent.trim()}];
-        })''')
+        return self.page.locator('#incompleteTasks .taskUnlocked').evaluate_all(EXTRACT_QUEUE)
 
     def start(self, activity):
         kind = activity.get('task_type', 'lesson')
+        if kind not in ('lesson','review') or not activity.get('capture_supported',True):
+            raise ValueError('Activity is recorded but unsupported by the lesson/review capture player')
         self.pacer.wait('event', 'expand the selected ' + kind)
         by_id(self.page, activity['card_id']).click()
         button = by_id(self.page, activity['start_id'])
@@ -545,9 +561,9 @@ class CaptureBrowser:
 
     def type_mathquill(self, editor, text, field):
         # These classes belong to Math Academy's displayed symbol toolbox.
-        # Observe a single visible button before using it; no widget setters.
+        # Use a menu only when unambiguous; duplicate toolboxes use typed commands.
         symbol_just_inserted = False
-        for part in re.split(r'(\\(?:pi|theta|alpha|beta|gamma|delta|lambda|mu|rho|sigma|phi|omega)\b\s*)', text):
+        for part in re.split(r'(\\(?:pi|theta|alpha|beta|gamma|delta|lambda|mu|rho|sigma|phi|omega|infty)\b\s*)', text):
             if not part:
                 continue
             symbol = re.fullmatch(r'\\([a-z]+)\s*', part)
@@ -556,12 +572,13 @@ class CaptureBrowser:
                 name = symbol[1]
                 selector = '#mathEditorToolbox .mathIcon.' + name + 'Icon'
                 buttons = [b for b in self.page.locator(selector).all() if b.is_visible()]
-                if len(buttons) > 1:
-                    raise ValueError('Multiple visible MathQuill symbol buttons: ' + name)
-                if buttons:
+                if len(buttons) == 1:
                     buttons[0].click()
                     field.setdefault('clicked_symbols', []).append({'symbol': name, 'selector': selector})
                 else:
+                    if len(buttons)>1:
+                        field.setdefault('symbol_fallbacks',[]).append({'symbol':name,'visible_buttons':len(buttons),
+                            'reason':'ambiguous_toolbox','method':'typed_command'})
                     editor.press_sequentially('\\' + name, delay=self.pacer.rng.uniform(60,140))
                     # In MA's distribution Space inserts a mathematical space,
                     # splitting the numerator; ArrowRight preserves its grouping.

@@ -4,6 +4,8 @@ import json
 import os
 import re
 import subprocess
+from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 
 from core import ALLOWED, atomic_json, build_transaction, journal
@@ -24,7 +26,6 @@ PRIORITY_QUERY = '''[:find ?topic-id ?title ?priority
  :in $ ?learner-id
  :where [?learner :learner/id ?learner-id]
  [?learner :learner/activity ?task]
- [?task :learner-task/status :learner-task.status/unlocked]
  [?task :learner-task/priority ?priority]
  [?task :learner-task/activity ?activity]
  [?activity :activity/type :activity.type/lesson]
@@ -69,11 +70,71 @@ class Database:
         (directory / (name + '.edn')).write_text(result)
         return loads(result)
 
-    def priorities(self, learner_id, directory):
+    def priorities(self, learner_id, directory, topic_ids=None, knowledge_snapshot=None):
         # learner/id is a string even when the identifier looks like a UUID.
         rows = self.query(PRIORITY_QUERY, [str(learner_id)], directory, 'priorities')
-        # A topic can have multiple eligible task records; use its highest rating.
-        return {topic: max(r[2] for r in rows if r[0] == topic) for topic, _, _ in rows}
+        # Multiple task records can refer to a topic; keep its highest stored score.
+        scores = {topic: max(r[2] for r in rows if r[0] == topic) for topic, _, _ in rows}
+        if topic_ids:
+            from priorities import capture_scores
+            context = self.capture_priority_context(learner_id,Path(directory)/'capture-priorities')
+            snapshot = json.loads(Path(knowledge_snapshot).read_text()) if knowledge_snapshot else None
+            report = capture_scores(topic_ids,context,snapshot)
+            atomic_json(Path(directory)/'capture-priorities.json', {
+                'source':'directed targets and assignments; remote availability; no personal task eligibility',
+                'knowledge_snapshot':str(knowledge_snapshot) if knowledge_snapshot else None,
+                'context_basis':context['basis'],'topics':report})
+            scores.update({mid:item['priority'] for mid,item in report.items()})
+        return scores
+
+    def capture_priority_context(self, learner_id, directory):
+        """Read configuration and curriculum once per batch; never write learner state."""
+        from priorities import assignment_topics
+        if hasattr(self,'_capture_priority_context'):
+            return self._capture_priority_context
+        basis = self.basis()
+        def content_pattern(depth):
+            base = '[:db/id {:assigned-problem/topic-coverage [:topic/math-academy-id]}'
+            if depth:
+                inner = content_pattern(depth-1)
+                base += ' {:assigned-problem/content '+inner+'} {:multistep/steps [{:step/content '+inner+'}]}'
+            return base+']'
+        query = '''[:find (pull ?l [:learner/self-directed
+          {:learner/targets [:topic/math-academy-id]}
+          {:learner/activity [{:learner-task/status [:db/ident]} {:learner-task/activity [:db/id]}]}
+          {:learner/assignments [:db/id :activity/title :activity/due
+            {:activity/steps [{:step/content '''+content_pattern(3)+'''}]}]}])
+          :in $ ?id :where [?l :learner/id ?id]]'''
+        learners = self.query(query,[str(learner_id)],directory,'configuration',basis)
+        if len(learners)!=1:
+            raise ValueError('Expected one learner configuration for capture priorities')
+        learner = learners[0][0]
+        completed = {t[':learner-task/activity'][':db/id'] for t in learner.get(':learner/activity',[])
+                     if t.get(':learner-task/status',{}).get(':db/ident') == ':learner-task.status/completed'}
+        assignments = []
+        for assignment in learner.get(':learner/assignments',[]):
+            due = assignment.get(':activity/due')
+            assignments.append({'topics':assignment_topics(assignment),'due':due if isinstance(due,datetime)
+                else datetime.fromisoformat(due.replace('Z','+00:00')) if due else None,
+                'completed':assignment[':db/id'] in completed})
+        ids = [r[0] for r in self.query('[:find ?mid :where [_ :topic/math-academy-id ?mid]]',
+                                       [],directory,'topic-ids',basis)]
+        query = '''[:find (pull ?t [:topic/math-academy-id
+          {:topic/next [:topic/math-academy-id]}
+          {:topic/knowledge-points [{:knowledge-point/key-prerequisites [:topic/math-academy-id]}]}])
+          :in $ [?mid ...] :where [?t :topic/math-academy-id ?mid]]'''
+        prerequisites = defaultdict(set)
+        for start in range(0,len(ids),200):
+            for row in self.query(query,[ids[start:start+200]],directory,'graph-'+str(start),basis):
+                topic = row[0]; mid = topic[':topic/math-academy-id']
+                for after in topic.get(':topic/next',[]):
+                    prerequisites[after[':topic/math-academy-id']].add(mid)
+                for kp in topic.get(':topic/knowledge-points',[]):
+                    prerequisites[mid].update(t[':topic/math-academy-id'] for t in kp.get(':knowledge-point/key-prerequisites',[]))
+        self._capture_priority_context = {'basis':basis,'self_directed':learner.get(':learner/self-directed',False),
+            'targets':[t[':topic/math-academy-id'] for t in learner.get(':learner/targets',[])],
+            'assignments':assignments,'prerequisites':dict(prerequisites)}
+        return self._capture_priority_context
 
     def topic(self, topic_id, directory, basis=None):
         rows = self.query(TOPIC_QUERY, [topic_id], directory, 'topic', basis)
