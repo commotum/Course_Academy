@@ -37,3 +37,11 @@ python scripts/retire_question_example_flag.py verify \
 ```
 
 Readers must capture canonical references with their question records. Curriculum changes must refresh the derived role index. Interpret historical presentations against their historical database value if canonical references have changed.
+
+## Application checks
+
+All 66 Rust engine tests, 142 Python engine tests, and 136 capture tests passed. The native learning helper passed 13 tests and the native graph/topic reader passed eight. The lesson view JavaScript check passed.
+
+The live home, assignments, topic, and lesson preview routes returned successfully. A lesson preview contained four canonical examples with worked solutions and 11 ordinary practice questions; topic sections also displayed worked solutions.
+
+The durable integration check completed a lesson with 13 presentations using an isolated learner, persisted answer results, XP, accuracy, and FIRe progress, and then removed the temporary learner. Final live queries confirmed zero `question/is-example` facts and no remaining temporary learner. The application and writer services remained active after migration.
