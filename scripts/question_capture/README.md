@@ -77,6 +77,10 @@ The runner:
    two correct answers overall. This favors progression over question quantity.
    The rule applies separately to each topic's lesson/review attempts and does
    not change personal learner state in EDB.
+   A recognized failed completion is captured and imported as a terminal attempt,
+   with its actual grades and penalty retained. Its partial question pool does
+   not need five questions per KP. A failed attempt does not mark the topic's
+   lesson as successfully captured, so a subsequently offered retake remains eligible.
 3. Opens the completed activity, expands the explanations, and joins all question
    IDs to KP titles and source E/M/H difficulty labels. It checks that the live
    and activity question sets and KP mappings agree.
@@ -257,12 +261,20 @@ The CLI process exits between calls, but its persisted conversation carries forw
 It never uses `--last` or silently starts over if a resumed session has a different ID.
 
 Each turn receives the current problem, locally observed fields and choices,
-and its screenshot, along with newly captured canonical examples (including their
+its screenshot and the original captured images displayed in that question,
+along with newly captured canonical examples (including their
 saved screenshots) and newly
 revealed worked solutions from that activity. Grading feedback distinguishes
 intentional wrong submissions from solver errors. Examples and feedback are
 sent once, then retained in the session; changing KPs does not reset it. Current
 choice letters and ordering must always be checked anew.
+
+A cropped screenshot therefore does not hide a diagram that was captured intact.
+An older uncertain answer can be rechecked in the same session when complete
+displayed images are newly attached; its original input and answer are retained.
+An exact model-capacity error gets at most two retries, each after a randomized
+30–60 second wait, using the same confirmed activity session. Other errors are
+deferred normally. Stop requests interrupt both the solver and retry waits.
 
 Structured output and a read-only working directory are retained. The persistent
 working directory and session checkpoint are under the activity's
@@ -282,6 +294,10 @@ option token from the solver. The actual highlighted letter is checked before
 Submit. Graph filenames do not determine displayed order. Native select and
 blank values are also checked before submitting; the entered screenshot and
 checkpoint retain the selection for recovery.
+Inequality commands use the visible ≤/≥ buttons when available. A typed fallback
+finishes the command before leaving it; an unfinished command blocks Submit even
+when MathQuill's LaTeX getter already returns the intended spelling. Outer fences
+on powered logarithms are retained and checked separately from argument fences.
 
 Use `--solver-command 'python3 /absolute/path/solver.py'` to substitute a solver.
 It receives JSON on stdin (`mode`, `problem`, `worked_solution`, `fields`, `activity_context`,

@@ -143,6 +143,54 @@ class SessionTests(unittest.TestCase):
             self.assertEqual(cli.call_count,1)
         self.assertEqual(answer['answers'][0]['correct_option'],'b')
 
+    def test_capacity_retry_reuses_confirmed_session_and_is_bounded(self):
+        root,_=self.activity('100','lesson')
+        sid=str(uuid.uuid4())
+        events='\n'.join(json.dumps(e) for e in [
+            {'type':'thread.started','thread_id':sid},
+            {'type':'error','message':'Selected model is at capacity. Please try a different model.'}])
+        def fail(command,**kwargs):
+            raise subprocess.CalledProcessError(1,command,output=events)
+        count=0
+        def recover(command,**kwargs):
+            nonlocal count
+            count+=1
+            if count==1:return fail(command,**kwargs)
+            return self.fake_cli(command,**kwargs)
+        with patch('solver.run_cli',side_effect=recover),patch('solver.time.sleep'):
+            Solver(self.args).solve(self.question(1),None,root/'q-1')
+        self.assertEqual(count,2)
+        self.assertEqual(self.calls[-1]['sid'],sid)
+        root,_=self.activity('200','review')
+        with patch('solver.run_cli',side_effect=fail) as cli,patch('solver.time.sleep'):
+            with self.assertRaises(subprocess.CalledProcessError):
+                Solver(self.args).solve(self.question(2),None,root/'q-2')
+        self.assertEqual(cli.call_count,3)
+
+    def test_other_cli_failure_is_not_retried(self):
+        root,_=self.activity('100','lesson')
+        with patch('solver.run_cli',side_effect=subprocess.CalledProcessError(1,'codex',output='auth required')) as cli:
+            with self.assertRaises(subprocess.CalledProcessError):
+                Solver(self.args).solve(self.question(1),None,root/'q-1')
+        self.assertEqual(cli.call_count,1)
+
+    def test_full_displayed_asset_rechecks_uncertainty_once_in_same_session(self):
+        root,_=self.activity('100','lesson')
+        item=self.question(1);asset=root/'assets/diagram.png'
+        asset.parent.mkdir();asset.write_bytes(b'fixture')
+        item['problem']+=' ![]('+str(asset)+')'
+        with patch('solver.run_cli',side_effect=self.fake_cli):
+            Solver(self.args).solve(item,None,root/'q-1')
+        sid=self.calls[-1]['sid'];answer=root/'q-1/solve-answer.json'
+        saved=json.loads(answer.read_text());saved['confident']=False;atomic_json(answer,saved)
+        item['assets']=[{'path':str(asset)}]
+        with patch('solver.run_cli',side_effect=self.fake_cli) as cli:
+            Solver(self.args).solve(item,None,root/'q-1')
+            self.assertEqual(cli.call_count,1)
+        self.assertEqual(self.calls[-1]['sid'],sid)
+        self.assertIn(str(asset),self.calls[-1]['command'])
+        self.assertTrue((root/'q-1/solve-before-full-images-answer.json').exists())
+
     def test_real_cli_timeout_preserves_streamed_events_and_stops_process(self):
         events,errors=self.root/'events.jsonl',self.root/'errors.txt'
         sid=str(uuid.uuid4());started=[]

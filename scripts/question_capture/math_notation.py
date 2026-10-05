@@ -88,6 +88,13 @@ def sequence_identity(nodes):
                     node = ('script',base,subscript,node[3])
         normalized.append(node)
     nodes = tuple(normalized)
+    # An explicit scalar multiplication dot between a closed function argument
+    # and the next named function adds no scope. Do not erase arbitrary dots
+    # (including vector products) or merge operands into a function argument.
+    nodes = tuple(n for i,n in enumerate(nodes) if not (
+        n == ('command','cdot') and i >= 2 and i+1 < len(nodes) and
+        nodes[i-1][0] == 'fence' and nodes[i-1][1] == '(' and nodes[i-1][3] == ')' and
+        nodes[i-2][0] == 'operator' and nodes[i+1][0] == 'operator'))
     # A whole quotient whose two arguments are explicitly fenced has the same
     # scope as a stacked fraction. Leave unfenced slash expressions untouched.
     if (len(nodes) == 3 and nodes[1] == ('char','/') and

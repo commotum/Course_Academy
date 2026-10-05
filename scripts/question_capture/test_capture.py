@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch
 from pathlib import Path
 from types import SimpleNamespace
 
-from browser import EXTRACT, AccessBlocked, CaptureBrowser, kp_for_example, kp_title_identity, normalize_mathquill
+from browser import EXTRACT, AccessBlocked, CaptureBrowser, kp_for_example, kp_title_identity, normalize_mathquill, history_kp_matches
 from core import ROOT, ALLOWED, Pacer, atomic_json, build_transaction, choose_activity, choose_lesson, choose_sequence, choose_review_sequence, normalize, stable_id
 from database import Database
 from edn import dumps, loads, kw
@@ -28,6 +28,21 @@ REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_explicit_multiplication_between_functions_preserves_scope(self):
+        intended=r'\frac{\tan(t)}{t}+\ln(t)\sec(t)^2'
+        observed=r'\frac{\tan\left(t\right)}{t}+\ln\left(t\right)\cdot\sec\left(t\right)^2'
+        self.assertEqual(normalize(intended),normalize(observed))
+        for wrong in (observed.replace('+','-'),observed.replace('^2','^3'),
+                      r'\frac{\tan(t)}{t}+\ln(t\sec(t)^2)'):
+            self.assertNotEqual(normalize(intended),normalize(wrong))
+        self.assertNotEqual(normalize(r'a\cdot b'),normalize('ab'))
+
+    def test_history_title_aliases_are_scoped_and_keep_other_differences(self):
+        live='Identifying the Largest Intervals of Continuity of a Function'
+        history='Identifying the Intervals of Continuity of a Function'
+        self.assertTrue(history_kp_matches(612,live,history))
+        self.assertFalse(history_kp_matches(613,live,history))
+        self.assertFalse(history_kp_matches(612,live,history+'s'))
     def test_powered_mathml_function_marker_preserves_factors_and_power_scope(self):
         stored=r'(7x\sec^{2} (7x - 2) - \tan (7x - 2))/(4x^{2})'
         captured='\\frac{7x{sec}^{2}\u2061(7x-2)-\\operatorname{tan}\u2061(7x-2)}{4{x}^{2}}'
@@ -1202,6 +1217,67 @@ class DOMTests(unittest.TestCase):
         self.assertEqual(normalize(field['observed_mathquill_latex']),normalize(r'\frac{11\pi}{6}'))
         self.assertEqual(field['clicked_symbols'][0]['symbol'],'pi')
         self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_powered_log_repairs_old_actions_without_relaxing_value_check(self):
+        scope,record=self.mathquill_fixture()
+        answer=record['decision']['answers'][0]
+        answer.update(correct_value=r'(\ln(9))^2',correct_keys=[
+            {'text':r'\ln','key':None},{'text':'9','key':None},
+            {'text':None,'key':'ArrowRight'},{'text':'^2','key':None},
+            {'text':None,'key':'ArrowRight'}])
+        args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+        browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        browser.enter(scope,record);browser.verify_entered(scope,record)
+        self.assertNotEqual(normalize(r'(\ln(9))^2'),normalize(r'\ln(9)^2'))
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
+
+    def test_failed_lesson_captures_its_terminal_attempt_without_requiring_five(self):
+        for message,outcome in [
+                ('This lesson has been halted due to poor performance and has been assigned a penalty. You have been assigned a penalty of -2 XP for this task.','failed'),
+                ('Congratulations! You have completed the lesson.','passed'),
+                ('A network error interrupted this lesson.','unknown')]:
+            self.page.set_content('<div id="finalScreen">'+message+
+                '<button id="finalScreen-doneButton">Continue</button></div>')
+            args=SimpleNamespace(timeout_ms=3000)
+            reader=CaptureBrowser(self.page,args,Mock(),None)
+            reader.knowledge_snapshot=Mock();reader.page.wait_for_url=Mock()
+            state={'task_id':1,'task_type':'lesson','topic_id':803,
+                'questions':{'q-1':{'kp_id':'kp','status':'graded','finalized':True}},
+                'kps':{'kp':{'id':'kp','title':'Range'}},'examples':{}}
+            with tempfile.TemporaryDirectory() as work:
+                if outcome=='failed':
+                    reader.activity(state,Path(work),{})
+                    self.assertEqual(state['earned_xp'],-2)
+                    self.assertEqual(state['activity_outcome'],'failed')
+                    self.assertTrue(state['activity_complete'])
+                else:
+                    with self.assertRaises(ValueError):reader.activity(state,Path(work),{})
+                    self.assertFalse(state.get('activity_complete',False))
+
+    def test_inequality_command_finishes_with_visible_menu_or_fallback(self):
+        for menu in (True,False):
+            scope,record=self.mathquill_fixture()
+            if menu:
+                self.page.evaluate(r'''() => {
+                  const field=MathQuill.getInterface(2)(document.querySelector('#mq'));
+                  const menu=document.createElement('div');menu.id='mathEditorToolbox';
+                  const button=document.createElement('button');button.className='mathIcon lteIcon';
+                  button.textContent='≤';button.onmousedown=e=>e.preventDefault();
+                  button.onclick=()=>{field.cmd('\\leq');field.focus()};
+                  menu.append(button);document.body.append(menu);
+                }''')
+            answer=record['decision']['answers'][0]
+            answer.update(correct_value=r'\leq',correct_keys=[{'text':r'\leq','key':None}])
+            args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+            browser=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+            browser.enter(scope,record);browser.verify_entered(scope,record)
+            self.assertEqual(scope.locator('.mq-latex-command-input').count(),0)
+            if menu:self.assertIn('lteIcon',record['before']['fields'][0]['clicked_symbols'][0]['selector'])
+        # The old path reports the intended LaTeX while the command is unfinished.
+        editor=scope.locator('.mq-textarea textarea');editor.focus()
+        editor.press('ControlOrMeta+A');editor.press('Backspace');editor.press_sequentially(r'\leq')
+        with self.assertRaisesRegex(ValueError,'Unfinished'):
+            browser.verify_entered(scope,record)
 
     def test_infinity_click_waits_for_previous_field_toolbox_to_hide(self):
         scope,record=self.mathquill_fixture()

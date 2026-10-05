@@ -6,11 +6,26 @@ from core import atomic_json
 
 
 def earned_xp(completion):
-    loss = re.search(r'(?:lost\s+|penalty\s+(?:of\s+)?)(\d+)\s*XP',completion,re.I)
+    loss = re.search(r'(?:lost\s+|penalty\s+(?:of\s+)?)(-?\d+)\s*XP',completion,re.I)
     if loss:
-        return -int(loss[1])
+        return -abs(int(loss[1]))
+    if re.search(r'No XP were awarded\.',completion,re.I):
+        return 0
     award = re.search(r'(?:awarded|earned)\s+(-?\d+)(?:\s+of\b.{0,50}?)?\s*XP',completion,re.I)
     return int(award[1]) if award else None
+
+
+def completion_outcome(completion,kind):
+    """Recognize the player's terminal messages, including failed attempts."""
+    if kind not in ('lesson','review'):
+        return None
+    if (f'This {kind} has been halted due to poor performance.' in completion or
+        f'This {kind} has been halted due to poor performance and has been assigned a penalty.' in completion or
+        f"You didn't pass the {kind}, however, you were awarded a limited amount of XP" in completion):
+        return 'failed'
+    if 'completed the '+kind in completion.lower():
+        return 'passed'
+    return None
 
 
 def update_policy(state_dir, outcomes=(), completed_state=None):

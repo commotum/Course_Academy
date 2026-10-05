@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+import random
 import signal
 import shlex
 import subprocess
@@ -104,6 +105,9 @@ then "+x^3", then ArrowRight to leave the exponent. Never put a separate sum
 term inside the function's argument. The entered expression must match the value.
 For "\\\\ln(5)+4", type "\\\\ln" as one action, then "5", then ArrowRight,
 then "+4". Do not type another opening parenthesis inside the button's argument.
+For "(\\\\ln(9))^2", first type "(", then "\\\\ln", "9", ArrowRight,
+then ArrowRight again to leave the outer parentheses, then "^2", ArrowRight.
+The outer parentheses group the WHOLE logarithm.
 For 11*pi/6, type "11", then "\\\\pi", then "/6",
 ArrowRight. Available keys are ArrowLeft, ArrowRight,
 ArrowUp, ArrowDown, Space, Home, End. Do not use Enter, Tab, or submission shortcuts.
@@ -127,6 +131,16 @@ class Solver:
                    'fields':[{k:v for k,v in f.items() if k in ('key','type','tag','choices')} for f in item['fields']]}
         for f in payload['fields']:
             f['choices'] = [{k:v for k,v in c.items() if k in ('option','type','value')} for c in f['choices']]
+        # A scrolled question screenshot can clip a tall diagram. Attach the
+        # captured displayed assets as well; never fetch hidden answer graphics.
+        displayed = json.dumps(payload,ensure_ascii=False)
+        asset_root = directory.parent/'assets'
+        payload['displayed_images'] = []
+        for asset in item.get('assets',[]):
+            path = Path(asset.get('path','')).resolve()
+            if (path.parent == asset_root and path.is_file() and
+                path.suffix.lower() in ('.png','.jpg','.jpeg','.webp','.gif') and str(path) in displayed):
+                payload['displayed_images'].append(str(path))
         session_file = directory.parent / 'solver-session' / 'state.json'
         session = json.loads(session_file.read_text()) if session_file.exists() else {'session_id':None,'context_keys':[]}
         activity_file = directory.parent/'state.json'
@@ -142,9 +156,18 @@ class Solver:
             original = json.loads(input_file.read_text())
             if normalize(original['problem']) != normalize(item['problem']):
                 raise ValueError('Saved solver answer belongs to a different problem')
-            result = self.reuse_answer(item,json.loads(answer_file.read_text()))
-            logging.info('Reusing completed solver answer for %s/%s',directory.name,phase)
-            return result
+            saved = json.loads(answer_file.read_text())
+            new_images = set(payload['displayed_images'])-set(original.get('displayed_images',[]))
+            if saved.get('confident') is not True and new_images:
+                # Retry an uncertain answer only with genuinely new visual
+                # evidence, preserving both the earlier answer and its context.
+                atomic_json(directory/(phase+'-before-full-images-answer.json'),saved)
+                atomic_json(directory/(phase+'-before-full-images-input.json'),original)
+                logging.info('Rechecking uncertain %s/%s with complete captured images',directory.name,phase)
+            else:
+                result = self.reuse_answer(item,saved)
+                logging.info('Reusing completed solver answer for %s/%s',directory.name,phase)
+                return result
         context, context_keys = self.activity_context(directory.parent, session['context_keys'] if not self.args.solver_command else [])
         identity = {k:v for k,v in context.items() if k in ('task_id','task_type','topic_id')}
         if session.get('activity') is not None and session['activity'] != identity:
@@ -157,10 +180,40 @@ class Solver:
                                      text=True, capture_output=True, timeout=self.args.solver_timeout, check=True)
             result = json.loads(process.stdout)
         else:
-            result = self.codex_turn(payload, screenshot, directory, phase, session_file, session, context_keys)
+            for attempt in range(3):
+                try:
+                    result = self.codex_turn(payload, screenshot, directory, phase, session_file, session, context_keys)
+                    break
+                except subprocess.CalledProcessError as exc:
+                    if attempt == 2 or not self.capacity_failure(exc.output or ''):
+                        raise
+                    self.recover_pending(session_file,session)
+                    delay = random.uniform(30,60)
+                    logging.warning('Solver model at capacity; retry %d/2 in %.1fs in the same activity session',attempt+1,delay)
+                    stop = getattr(self.args,'stop_event',None)
+                    if stop is not None:
+                        if stop.wait(delay):
+                            raise KeyboardInterrupt('Stopped; solver checkpoint is retained')
+                    else:
+                        time.sleep(delay)
         self.validate(item, result)
         atomic_json(directory / (phase + '-answer.json'), result)
         return result
+
+    @staticmethod
+    def capacity_failure(events):
+        if isinstance(events,bytes):
+            events = events.decode('utf-8',errors='replace')
+        for line in events.splitlines():
+            try:
+                event = json.loads(line)
+            except (ValueError,TypeError):
+                continue
+            if (event.get('type') in ('error','turn.failed') and
+                (event.get('message') or event.get('error',{}).get('message')) ==
+                    'Selected model is at capacity. Please try a different model.'):
+                return True
+        return False
 
     @staticmethod
     def activity_context(activity_directory, delivered):
@@ -300,6 +353,7 @@ class Solver:
         command += ['--ignore-user-config','--skip-git-repo-check','--json',
                     '--output-schema',str(schema),'--output-last-message',str(output)]
         images = [Path(screenshot).resolve()] if screenshot and Path(screenshot).is_file() else []
+        images += [Path(path) for path in payload.get('displayed_images',[])]
         images += [Path(example['screenshot']) for example in payload['activity_context']['examples'] if example.get('screenshot')]
         images += [Path(shared['screenshot']) for shared in payload['activity_context'].get('shared_contexts', []) if shared.get('screenshot')]
         for image in dict.fromkeys(images):
@@ -319,7 +373,8 @@ class Solver:
         try:
             process = run_cli(command + ['-'], input=INSTRUCTIONS + '\n' + json.dumps(payload,ensure_ascii=False),
                               timeout=self.args.solver_timeout,events_path=events_path,
-                              diagnostics_path=diagnostics_path,started=started)
+                              diagnostics_path=diagnostics_path,started=started,
+                              stop_event=getattr(self.args,'stop_event',None))
         except BaseException as exc:
             events = getattr(exc,'stdout',None) or (events_path.read_text() if events_path.exists() else '')
             if isinstance(events,bytes):

@@ -355,7 +355,7 @@ def run(args):
             for entry in read_journal(log):
                 if entry['event'] in ('lesson_captured','activity_captured'):
                     captured_tasks.add(entry['task_id'])
-                    if entry.get('task_type','lesson') == 'lesson':
+                    if entry.get('task_type','lesson') == 'lesson' and entry.get('activity_outcome') != 'failed':
                         completed.add(entry['topic_id'])
             deferred = []
             for source in args.output.glob('*/state.json'):
@@ -440,9 +440,9 @@ def run(args):
                         content = browser.history(state,directory,topic)
                     # Record capture completion separately from an EDB receipt. Never retake
                     # a completed MA activity because its database commit needs recovery.
-                    journal(log,'activity_captured',task_id=state['task_id'],topic_id=state['topic_id'],task_type=state['task_type'],directory=str(directory))
+                    journal(log,'activity_captured',task_id=state['task_id'],topic_id=state['topic_id'],task_type=state['task_type'],directory=str(directory),activity_outcome=state.get('activity_outcome'))
                     captured_tasks.add(state['task_id'])
-                    if state['task_type'] == 'lesson':
+                    if state['task_type'] == 'lesson' and state.get('activity_outcome') != 'failed':
                         completed.add(state['topic_id'])
                     # Inspect even after the last allowed activity, and retain
                     # this fresh observation for selecting the next one.

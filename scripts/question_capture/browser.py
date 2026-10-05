@@ -71,6 +71,14 @@ def mathquill_keys(value, actions):
                 action['text'] = re.sub(r'(?<![A-Za-z\\])' + name + r'(?![A-Za-z])',
                                         lambda _: '\\' + name + ' ', action['text'])
         result.append(action)
+    # Repair an exact older solver action pattern that omitted the outer fence
+    # explicitly present in the intended value. Verification still checks it.
+    powered_log = re.fullmatch(r'\(\\ln\((\d+)\)\)\^(\d+)',value)
+    if powered_log and result == [
+            {'text':r'\ln','key':None},{'text':powered_log[1],'key':None},
+            {'text':None,'key':'ArrowRight'},{'text':'^'+powered_log[2],'key':None},
+            {'text':None,'key':'ArrowRight'}]:
+        result = [{'text':'(','key':None}] + result[:3] + [{'text':None,'key':'ArrowRight'}] + result[3:]
     return result
 
 
@@ -132,6 +140,18 @@ class AccessBlocked(RuntimeError):
 def kp_title_identity(title):
     # Legacy imported titles use this older spelling; live MA uses Leibniz.
     return re.sub(r'\bLeibnitz\b', 'Leibniz', title)
+
+
+def history_kp_matches(topic_id, live, history):
+    # Observed live example / results-page title variants, scoped to their
+    # topics. Preserve the canonical example's KP ID; never fuzzy-match titles.
+    aliases = {
+        612: ('Identifying the Largest Intervals of Continuity of a Function',
+              'Identifying the Intervals of Continuity of a Function'),
+        708: ('Solving a Rational Equations by Factoring a Quadratic Denominator With No Constant Term',
+              'Solving Rationals Equations by Factoring a Quadratic Denominator With No Constant Term'),
+    }
+    return kp_title_identity(live) == kp_title_identity(history) or aliases.get(topic_id) == (live,history)
 
 
 def kp_for_example(topic, mid, name, allow_new=False):
@@ -313,7 +333,7 @@ class CaptureBrowser:
                     '**/tasks/' + str(activity['task_id']) + '/multisteps/' + str(activity['multistep_id'])
                     if kind == 'multistep' else
                     '**/tasks/' + str(activity['task_id']) + '/topics/' + str(activity['topic_id']) + '/' + kind)
-        self.page.wait_for_url(expected)
+        self.page.wait_for_url(expected,wait_until='domcontentloaded')
         self.check()
 
     def read(self, scope, directory, stem):
@@ -551,10 +571,11 @@ class CaptureBrowser:
             self.wait_activity_ready()
             if self.page.locator('#finalScreen').is_visible():
                 completion = self.page.locator('#finalScreen').inner_text()
-                from retry_policy import earned_xp
+                from retry_policy import earned_xp, completion_outcome
                 state['earned_xp'] = earned_xp(completion)
                 save()  # Even a failed completion must trigger a perfect retake.
-                if 'completed the ' + kind_name not in completion.lower():
+                outcome = completion_outcome(completion,kind_name)
+                if outcome is None:
                     raise ValueError(kind_name.title() + ' ended without completion: ' + completion)
                 if not state['questions'] or not all(q.get('finalized') for q in state['questions'].values()):
                     raise ValueError('Completion screen has incomplete captured content')
@@ -563,11 +584,16 @@ class CaptureBrowser:
                         raise ValueError('Lesson completed without captured knowledge points')
                     for kp in state['kps'].values():
                         count = sum(q['kp_id'] == kp['id'] and q.get('finalized') for q in state['questions'].values())
+                        if outcome == 'failed':
+                            if count < 1 or count > 5:
+                                raise ValueError('Failed lesson has an unexpected captured KP question count')
+                            continue
                         if (not perfect and count != 5) or (perfect and (count < 1 or any(
                             q['actual_result'] != 'Correct' for q in state['questions'].values()))):
                             raise ValueError('Knowledge point did not serve five questions: ' + kp['title'])
                 self.page.screenshot(path=str(directory / (completed_event + '.png')))
                 state['completion'], state['activity_complete'], state[kind_name + '_complete'] = completion, True, True
+                state['activity_outcome'] = outcome
                 save()
                 self.pacer.wait('event', 'finish ' + kind_name)
                 by_id(self.page,'finalScreen-doneButton').click()
@@ -773,14 +799,15 @@ class CaptureBrowser:
         # Math Academy hides the previous editor's toolbox after 100 ms.
         # Wait out overlapping toolboxes before choosing a visible button.
         symbol_just_inserted = False
-        for part in re.split(r'(\\(?:pi|theta|alpha|beta|gamma|delta|lambda|mu|rho|sigma|phi|omega|infty|ln)\b\s*)', text):
+        for part in re.split(r'(\\(?:pi|theta|alpha|beta|gamma|delta|lambda|mu|rho|sigma|phi|omega|infty|ln|sin|cos|tan|sec|csc|cot|sqrt|leq|geq|le|ge|neq)\b\s*)', text):
             if not part:
                 continue
             symbol = re.fullmatch(r'\\([a-z]+)\s*', part)
             if symbol:
                 symbol_just_inserted = True
                 name = symbol[1]
-                selector = '#mathEditorToolbox .mathIcon.' + name + 'Icon'
+                icon = {'leq':'lte','le':'lte','geq':'gte','ge':'gte','neq':'ne'}.get(name,name)
+                selector = '#mathEditorToolbox .mathIcon.' + icon + 'Icon'
                 buttons = self.page.locator(selector + ':visible')
                 if buttons.count() > 1:
                     from playwright.sync_api import expect
@@ -799,7 +826,10 @@ class CaptureBrowser:
                     # splitting the numerator; ArrowRight preserves its grouping.
                     # Finish the active root command while keeping its cursor
                     # inside the radicand; ArrowRight would immediately exit it.
-                    editor.press('Enter' if name == 'sqrt' else 'ArrowRight')
+                    # Finish the command while its input still owns the cursor.
+                    # ArrowRight leaves an unfinished command whose latex()
+                    # misleadingly already equals the intended symbol.
+                    editor.press('Enter')
                     if name in ('ln','sin','cos','tan','sec','csc','cot'):
                         # Match a function button's empty argument when the
                         # current field has no button for this named function.
@@ -825,6 +855,8 @@ class CaptureBrowser:
                 if by_id(scope,field['dom_id']).input_value() != field['submitted_value']:
                     raise ValueError('Actual blank value differs from intended value; stop before Submit')
             elif field['tag'] == 'mathquill':
+                if answer_control(scope,field).locator('.mq-latex-command-input').count():
+                    raise ValueError('Unfinished MathQuill command; stop before Submit')
                 observed = answer_control(scope,field).evaluate(MATHQUILL_VALUE)
                 field['observed_mathquill_latex'] = observed
                 if not isinstance(observed, str) or normalize_mathquill(observed) != normalize_mathquill(field['submitted_value']):
@@ -887,7 +919,7 @@ class CaptureBrowser:
                 record['content'].update(knowledge_point_id=kp_id, knowledge_point=matches[0][':knowledge-point/title'])
                 state['kps'].setdefault(kp_id, {'id':kp_id, 'title':matches[0][':knowledge-point/title']})
                 record['content']['knowledge_point_source_id'] = int(source[2])
-            elif kp_title_identity(record['content']['knowledge_point']) != kp_title_identity(title):
+            elif not history_kp_matches(state['topic_id'],record['content']['knowledge_point'],title):
                 raise ValueError('Activity KP title contradicts live example mapping: ' + mid)
             if q['result'] and q['result'] != record['actual_result']:
                 raise ValueError('Activity grade contradicts captured live result: ' + mid)

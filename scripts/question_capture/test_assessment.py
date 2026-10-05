@@ -266,6 +266,16 @@ class AssessmentPolicyTests(unittest.TestCase):
         self.assertEqual(earned_xp("You've been awarded 2 of the task's 4 XP."),2)
         self.assertEqual(earned_xp("You've lost 1 XP."),-1)
         self.assertEqual(earned_xp("You've been awarded -1 of the task's 4 XP."),-1)
+        self.assertEqual(earned_xp("You've been assigned a penalty of -2 XP for this task."),-2)
+        self.assertEqual(earned_xp('No XP were awarded.'),0)
+
+    def test_failed_completion_is_terminal_but_not_a_pass(self):
+        from retry_policy import completion_outcome
+        for kind in ('lesson','review'):
+            self.assertEqual(completion_outcome(f'This {kind} has been halted due to poor performance and has been assigned a penalty.',kind),'failed')
+            self.assertEqual(completion_outcome(f'This {kind} has been halted due to poor performance.',kind),'failed')
+            self.assertEqual(completion_outcome(f'Congratulations! You have completed the {kind}.',kind),'passed')
+            self.assertIsNone(completion_outcome('There was an error while loading the lesson. Please continue.',kind))
 
     def test_required_quiz_omits_notes_only_with_complete_details_and_sole_task(self):
         details={'Questions':'10','Time Limit':'14 minutes'}
