@@ -2,7 +2,7 @@
 ;; Install this file before 2-blocks.edn and 3-hyperdocs.edn.
 ;;
 ;; A tag type IS an installed attribute entity, annotated with tag-type/question
-;; and who/author. Its native valueType and cardinality describe the
+;; and author. Its native valueType and cardinality describe the
 ;; answer. A tag stores that answer under the selected attribute, not tag/value:
 ;;   :tag/type             :tag.value/difficulty
 ;;   :tag.value/difficulty :question.difficulty/hard
@@ -19,7 +19,7 @@
 ;; answer and its author atomically. Unknown historical authorship belongs
 ;; in source/partial import records, not a fabricated author on a complete tag.
 [
- {:db/ident :who/author
+ {:db/ident :author
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "The single agent that authored this entity: a tag, block, hyperdoc, type definition, or software generator. Creating an assignment hyperdoc in the UI attributes that hyperdoc to its initiating user; blocks and tags generated for it attribute their own authorship to the producing script or agent. A script may itself reference its code's author through this attribute. Authorship does not propagate through containment or grant access permissions. Ordinary refs preserve shared agents. Complete authored entities require exactly one author; native cardinality enforces at most one, required-attribute specs enforce presence, and the future agent validator checks the target."}
@@ -27,7 +27,7 @@
  {:db/ident :tag-type/question
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Nonempty question or prompt defining what this tag type asks. Attached to the installed native answer attribute itself, alongside its db/ident, db/valueType, db/cardinality, and who/author. This metadata identifies candidate tag types; ensure tag-type/validate before using one. The native attribute supplies storage semantics without a duplicate datatype or tag-type identity."}
+  :db/doc "Nonempty question or prompt defining what this tag type asks. Attached to the installed native answer attribute itself, alongside its db/ident, db/valueType, db/cardinality, and author. This metadata identifies candidate tag types; ensure tag-type/validate before using one. The native attribute supplies storage semantics without a duplicate datatype or tag-type identity."}
 
  {:db/ident :tag-type/choices
   :db/valueType :db.type/ref
@@ -47,12 +47,12 @@
 
  {:db/ident :tag-type/validate
   :db.entity/attrs [:db/ident :db/valueType :db/cardinality
-                    :tag-type/question :who/author]
+                    :tag-type/question :author]
   :db.entity/preds course-academy.generics/valid-tag-type?
   :db/doc "Strict tag-type contract, requested explicitly when authoring a native answer attribute's blueprint. Requires its native definition, nonempty prompt, and one valid author agent. The future predicate verifies an actual installed attribute, supported answer storage, and choices only for ref-valued answers. Answer refs must be noncomponent so tags do not own shared vocabulary/content. Native cardinality applies to answers within one tag, not tag counts in a block. Rule changes require explicit review/revalidation of existing users; incompatible native types or meanings require new attributes."}
 
  {:db/ident :tag/validate
-  :db.entity/attrs [:tag/id :tag/type :who/author]
+  :db.entity/attrs [:tag/id :tag/type :author]
   :db.entity/preds course-academy.generics/valid-tag?
   :db/doc "Strict complete-tag contract. Requires one author agent. The future predicate validates that agent and the selected tag type, requires at least one answer under that native attribute, checks any allowed choices, and rejects answers under other registered tag-type attributes on the same tag. False and zero are present values, not missing answers. Ordinary additional metadata is allowed. Native typing/cardinality still apply. Writers ensure this spec on every tag edit and revalidate affected blocks/hyperdocs; this spec does not become a permanent constraint merely because it passed once."}
 ]

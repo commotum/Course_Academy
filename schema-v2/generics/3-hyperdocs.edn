@@ -4,11 +4,11 @@
 ;; A hyperdoc owns placement entities, not the referenced blocks. The same block
 ;; may appear in multiple hyperdocs or multiple positions in one hyperdoc.
 ;; Placement entities use their EDB identity; no separate UUID or author is
-;; required. The hyperdoc has exactly one who/author for its creation and
+;; required. The hyperdoc has exactly one author for its creation and
 ;; composition; generated blocks/tags retain their own authors, not that user.
 ;;
 ;; Concrete hyperdoc types are authored native entity specs with db/ident,
-;; hyperdoc-type/title, who/author, and db.entity/attrs and/or
+;; hyperdoc-type/title, author, and db.entity/attrs and/or
 ;; db.entity/preds. Writers ensure hyperdoc/validate AND the selected type spec.
 ;;
 ;; Schema-only draft: the declared native predicates are not implemented or
@@ -20,7 +20,7 @@
  {:db/ident :hyperdoc-type/title
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Nonempty human-readable name of an authored hyperdoc blueprint, for example Lesson or Homework. The same entity has a db/ident, who/author, and native entity-spec facts. Ensure hyperdoc-type/validate when authoring it."}
+  :db/doc "Nonempty human-readable name of an authored hyperdoc blueprint, for example Lesson or Homework. The same entity has a db/ident, author, and native entity-spec facts. Ensure hyperdoc-type/validate when authoring it."}
 
  {:db/ident :hyperdoc-type/required-block-types
   :db/valueType :db.type/ref
@@ -60,7 +60,7 @@
   :db/doc "Positive, 1-based display position, unique within the owning hyperdoc. Gaps are allowed; global uniqueness is neither required nor appropriate. This contextual order belongs to the placement, not the shared block. Its owner is found by reverse lookup of hyperdoc/placements."}
 
  {:db/ident :hyperdoc-type/validate
-  :db.entity/attrs [:db/ident :hyperdoc-type/title :who/author]
+  :db.entity/attrs [:db/ident :hyperdoc-type/title :author]
   :db.entity/preds course-academy.generics/valid-hyperdoc-type?
   :db/doc "Strict hyperdoc-blueprint contract. The future predicate checks a nonempty title, one valid author agent, an actual native entity spec with required attrs and/or predicates, and valid concrete block-blueprint targets in both rule sets. Required and singular sets may overlap or be absent. Ensuring this spec does not revalidate existing hyperdocs."}
 
@@ -71,7 +71,7 @@
 
  {:db/ident :hyperdoc/validate
   :db.entity/attrs [:hyperdoc/id :hyperdoc/type :hyperdoc/placements
-                    :who/author]
+                    :author]
   :db.entity/preds course-academy.generics/valid-hyperdoc?
   :db/doc "Strict complete-hyperdoc contract requiring identity, a concrete blueprint, at least one placement, and exactly one valid author agent. The future predicate checks the blueprint, exclusive placement ownership, positive unique indexes, complete referenced blocks/tags, and required/singular block-type counts by placement. Writers additionally ensure each referenced block's selected native spec and this hyperdoc's selected native spec for extra rules. Only the explicitly ensured specs execute; edits to shared children require ensuring affected containers. Additional metadata is allowed."}
 ]

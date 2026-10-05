@@ -32,18 +32,20 @@ Sources: [course](../../schema/data/2-1-course.edn), [module membership](../../s
 
 ## 1. Authorship belongs to the contribution
 
-Use the same proposed `:who/author` reference on ordinary content, authored tag assignments, software generators, and schema/type definitions. Reference an agent entity representing a person, organization, model, or software. A generator can itself have agent and generator attributes; EDB does not require a second entity merely because it has both roles.
+Use the same proposed `:author` reference on ordinary content, authored tag assignments, software generators, and schema/type definitions. Reference an agent entity representing a person, organization, model, or software. A generator can itself have agent and generator attributes; EDB does not require a second entity merely because it has both roles.
 
-Retain the earlier proposal's UUID `:agent/id`, display name, and ref-valued agent type. Use one shared, cardinality-one `:who/author` attribute: every complete tag, block, hyperdoc, and authored blueprint has exactly one author agent. Native cardinality enforces at most one, and the required-attribute specs enforce presence. Contributions by different agents belong to distinct entities rather than a list of authors on the containing entity. This supersedes the earlier many-valued authorship proposal. The existing learner entity can also carry person-agent attributes; an extra learner-to-agent wrapper is unnecessary unless those identities intentionally have separate lifecycles.
+The unqualified name `:author` is deliberate: it expresses the same general relationship across these entity kinds. EDB recommends namespaces as a naming convention, but does not require a namespace for this attribute.
 
-For example, Jake presses the UI button to create an assignment. Jake is the author of that hyperdoc. A Python generator creates some blocks and is the author of those blocks and any tags it authors. A manually written block has Jake as its author; a block written by an agent has that agent as its author. The generator can itself have a single `:who/author` identifying who authored its code. None of these child contributions changes the assignment hyperdoc's author.
+Retain the earlier proposal's UUID `:agent/id`, display name, and ref-valued agent type. Use one shared, cardinality-one `:author` attribute: every complete tag, block, hyperdoc, and authored blueprint has exactly one author agent. Native cardinality enforces at most one, and the required-attribute specs enforce presence. Contributions by different agents belong to distinct entities rather than a list of authors on the containing entity. This supersedes the earlier many-valued authorship proposal. The existing learner entity can also carry person-agent attributes; an extra learner-to-agent wrapper is unnecessary unless those identities intentionally have separate lifecycles.
+
+For example, Jake presses the UI button to create an assignment. Jake is the author of that hyperdoc. A Python generator creates some blocks and is the author of those blocks and any tags it authors. A manually written block has Jake as its author; a block written by an agent has that agent as its author. The generator can itself have a single `:author` identifying who authored its code. None of these child contributions changes the assignment hyperdoc's author.
 
 ```text
-Assignment hyperdoc → who/author → Jake
-  ├─ Generated block → who/author → Python generator
-  │                                  └─ who/author → its code's author
-  ├─ Manual block    → who/author → Jake
-  └─ Agent block     → who/author → that agent
+Assignment hyperdoc → author → Jake
+  ├─ Generated block → author → Python generator
+  │                                  └─ author → its code's author
+  ├─ Manual block    → author → Jake
+  └─ Agent block     → author → that agent
 ```
 
 Each tag follows the same rule independently; reusing a tag preserves its author. The creator of a container does not automatically author its descendants. Here authorship identifies the contribution's creator, not an access-control role; adding generated content does not transfer document ownership or permissions.
@@ -84,7 +86,7 @@ The following is an illustrative definition, not an installation transaction. It
  :tag-type/choices [:question.difficulty/easy
                     :question.difficulty/moderate
                     :question.difficulty/hard]
- :who/author
+ :author
  [:agent/id #uuid "cfa90423-45a9-43e5-8caf-3b5cb3362937"]}
 ```
 
@@ -94,7 +96,7 @@ An instance answers that question:
 {:tag/id #uuid "203e6549-017c-4c06-a8f8-9b173659bb43"
  :tag/type :tag.value/difficulty
  :tag.value/difficulty :question.difficulty/hard
- :who/author
+ :author
  [:agent/id #uuid "f8bc5fb2-ddf3-4a84-bd65-64267a742dd9"]
  :db/ensure :tag/validate}
 ```

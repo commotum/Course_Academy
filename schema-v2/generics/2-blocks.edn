@@ -2,7 +2,7 @@
 ;; Depends on 1-tags.edn and, for data validation, the future agent model.
 ;;
 ;; Concrete block types are separately authored native entity-spec entities:
-;; db/ident + block-type/title + who/author + db.entity/attrs and/or
+;; db/ident + block-type/title + author + db.entity/attrs and/or
 ;; db.entity/preds. Their required/singular tag sets are additional metadata.
 ;; A block/type refers to one of these concrete blueprints, not block/validate.
 ;; Writers ensure BOTH block/validate and the selected concrete blueprint.
@@ -18,7 +18,7 @@
  {:db/ident :block-type/title
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Nonempty human-readable name of an authored block blueprint, for example Worked example. The same entity has a db/ident, who/author, and native entity-spec facts. It is not a second entity wrapping the spec. Ensure block-type/validate when authoring it."}
+  :db/doc "Nonempty human-readable name of an authored block blueprint, for example Worked example. The same entity has a db/ident, author, and native entity-spec facts. It is not a second entity wrapping the spec. Ensure block-type/validate when authoring it."}
 
  {:db/ident :block-type/required-tag-types
   :db/valueType :db.type/ref
@@ -47,12 +47,12 @@
   :db/doc "Unordered collection of authored tag assignments. Ordinary refs permit deliberate reuse and preserve tags when a block is removed. The block's single author assembled the collection; each tag retains its own single author. Validate each tag and the collection's required/singular type rules. This relationship supplies reverse lookup of containing blocks; do not maintain duplicate tag-to-block membership. Editing a shared tag affects every current referring block."}
 
  {:db/ident :block-type/validate
-  :db.entity/attrs [:db/ident :block-type/title :who/author]
+  :db.entity/attrs [:db/ident :block-type/title :author]
   :db.entity/preds course-academy.generics/valid-block-type?
   :db/doc "Strict block-blueprint contract. The future predicate checks a nonempty title, one valid author agent, an actual native entity spec with required attrs and/or predicates, and valid tag-type targets in both rule sets. The sets may overlap and may be absent. Schema metadata remains open to additional facts. Ensuring the blueprint does not retroactively validate blocks that use it."}
 
  {:db/ident :block/validate
-  :db.entity/attrs [:block/id :block/type :block/tags :who/author]
+  :db.entity/attrs [:block/id :block/type :block/tags :author]
   :db.entity/preds course-academy.generics/valid-block?
   :db/doc "Strict complete-block contract requiring identity, a concrete blueprint, one or more tags, and exactly one valid author agent. The future predicate checks the blueprint and complete child tags, then counts assignments by tag/type to enforce required and singular sets in the proposed database. It does not interpret tag order or reject unrelated metadata. Writers also ensure the selected native blueprint spec to execute any additional native requirements/predicates, and ensure edited children and affected hyperdocs. No automatic recursive or ongoing constraint is created."}
 ]

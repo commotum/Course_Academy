@@ -5,13 +5,13 @@ Status: Schema and import-tooling review. Generic v2 schema drafts have been wri
 
 Follow-up: [Authorship, source materials, content blueprints, and performance](authored-content-and-performance-model.md) records the newer recommendations from the discussion: lightweight authorship, external school sources, native tag/block/hyperdoc blueprints, and computed expected performance. Where implementation recommendations differ, use that report as the current design direction; the evidence and entity audit below remain relevant.
 
-The clarified authorship rule is **exactly one author for each complete authored contribution**, using the shared cardinality-one `:who/author` ref. Jake can author an assignment hyperdoc, a script can author its generated blocks, and that script can itself have one author. Manually written blocks identify Jake; agent-written blocks identify that agent. Attribution follows these separate contributions rather than collecting their authors on the enclosing document. The [generic v2 drafts](../../schema-v2/generics/) express this design; their native validators and agent dependency are not implemented or installed.
+The clarified authorship rule is **exactly one author for each complete authored contribution**, using the shared cardinality-one `:author` ref. Jake can author an assignment hyperdoc, a script can author its generated blocks, and that script can itself have one author. Manually written blocks identify Jake; agent-written blocks identify that agent. Attribution follows these separate contributions rather than collecting their authors on the enclosing document. The [generic v2 drafts](../../schema-v2/generics/) express this design; their native validators and agent dependency are not implemented or installed.
 
 ## Recommendation
 
 Use one shared provenance mechanism that can apply to every entity. For questions, grading, curriculum relationships, and calculated values, it also needs to identify the provenance of individual facts. Different parts of one entity can come from different sources.
 
-Use a small shared agent schema for the people, organizations, models, and software involved. Each complete authored entity has one `:who/author` reference for basic attribution; provenance records reuse those agents to describe how particular facts were obtained and verified. Different contributions can have different authors without giving any one contribution an author list. Keep the existing learner model. EDB permits agent attributes on the same learner entity; an optional person reference is needed only if person and learner-profile identities are intentionally separate.
+Use a small shared agent schema for the people, organizations, models, and software involved. Each complete authored entity has one `:author` reference for basic attribution; provenance records reuse those agents to describe how particular facts were obtained and verified. Different contributions can have different authors without giving any one contribution an author list. Keep the existing learner model. EDB permits agent attributes on the same learner entity; an optional person reference is needed only if person and learner-profile identities are intentionally separate.
 
 Use EDB's existing transaction entities and retained fact history as the foundation for provenance. Add explicit evidence records where one transaction combines different sources, or later observations corroborate an existing value. A generator can itself be a software agent with generator-specific attributes; it does not require a duplicate agent entity.
 
@@ -131,7 +131,7 @@ Automated capture results must remain distinguishable from actual learner eviden
 | `local_reconstruction` | Locally reconstructed wording or response structure. |
 | `local_interpretation` | A locally interpreted correct key in the documented historical preparation/repair records. |
 
-Evidence records already include useful elements such as question and field identity, attribute and value, source path and hash, transaction evidence, and verification database basis. The [database importer](../../scripts/question_capture/database.py) saves reconciliation evidence and replacement decisions in files. **The existing `schema/` definitions do not include shared provenance/authorship attributes.** The separate [v2 tag draft](../../schema-v2/generics/1-tags.edn) now declares `:who/author`; it has not been installed. Math Academy IDs identify content; they do not establish the source or verification of every current value.
+Evidence records already include useful elements such as question and field identity, attribute and value, source path and hash, transaction evidence, and verification database basis. The [database importer](../../scripts/question_capture/database.py) saves reconciliation evidence and replacement decisions in files. **The existing `schema/` definitions do not include shared provenance/authorship attributes.** The separate [v2 tag draft](../../schema-v2/generics/1-tags.edn) now declares `:author`; it has not been installed. Math Academy IDs identify content; they do not establish the source or verification of every current value.
 
 Coverage is selective. The authoring-record reader handles particular documented batches, and the importer can inspect prior saved captures. This does not establish the author of every older value. Unknown provenance should remain unknown until supported by evidence; age, an external ID, or course membership is insufficient.
 
@@ -146,7 +146,7 @@ The proposed agent entity and author reference are useful foundations. Authorshi
 
 | Original proposal | Recommendation |
 |---|---|
-| An `:author` reference | Use the shared cardinality-one `:who/author` ref. Each complete authored contribution identifies one responsible agent; independently attributable parts have their own author refs. |
+| An `:author` reference | Use the shared cardinality-one `:author` ref. Each complete authored contribution identifies one responsible agent; independently attributable parts have their own author refs. |
 | An agent entity | Keep it. Shared stable identities avoid repeated names and allow the same person or organization to appear in different roles. |
 | Organization, person, and model types | Keep all three and add software for deterministic generators and other programs. |
 | An agent name | Keep it, alongside a stable ID. Names alone should not establish identity. |
@@ -159,7 +159,7 @@ The smallest authorship-only addition would have these attributes:
 | `:agent/id` | UUID, unique identity | One | Stable agent identity. |
 | `:agent/name` | String | One | Display name. |
 | `:agent/type` | Ref to enum | One | Organization, person, model, or software. |
-| `:who/author` | Ref to agent | One | The single author of the entity carrying this attribute; required for complete authored contributions. |
+| `:author` | Ref to agent | One | The single author of the entity carrying this attribute; required for complete authored contributions. |
 | `:learner/agent` | Ref to agent | One, optional | Person associated with a separate learner profile, if that separation is needed. Omit when the learner entity itself carries the agent attributes. |
 
 Suggested enum identities, following the existing schema's naming convention, are `:agent.type/org`, `:agent.type/person`, `:agent.type/model`, and `:agent.type/software`. Author and learner references are ordinary references to shared agents, not component ownership.
@@ -202,12 +202,12 @@ Keep [`knowledge-point/question-generator`](../../schema/data/6-knowledge-point.
 |---|---|
 | `:agent/id` | Stable identity; no second UUID is needed solely to label the generator role. |
 | `:agent/name` and `:agent/type` = `:agent.type/software` | Identify the generating program. |
-| `:who/author` | The single agent that authored the program. |
+| `:author` | The single agent that authored the program. |
 | Proposed `:question-generator/script-path`, a string | Repository-relative location of the executable script under a configured repository root. |
 
 The source code remains in the versioned repository. Store generator configuration in the code initially; add narrowly scoped attributes only when the application needs to query or edit particular settings as data. A shared difficulty-factor taxonomy can remain deferred.
 
-The generator's author, the software that produced a question, and the evidence validating its output are different roles. A generated question or block has the software agent as its single author; the software's own `:who/author` ref identifies the one agent that authored its code. Generation evidence can retain exact execution inputs separately. Jake can remain the author of the hyperdoc containing those generated blocks without replacing their authorship or becoming their coauthor. Do not automatically label generated questions as Math Academy authored merely because their templates were inferred from Math Academy examples.
+The generator's author, the software that produced a question, and the evidence validating its output are different roles. A generated question or block has the software agent as its single author; the software's own `:author` ref identifies the one agent that authored its code. Generation evidence can retain exact execution inputs separately. Jake can remain the author of the hyperdoc containing those generated blocks without replacing their authorship or becoming their coauthor. Do not automatically label generated questions as Math Academy authored merely because their templates were inferred from Math Academy examples.
 
 The earlier [answer-grading proposal](../answer-grading-proposal.md) recommended putting a script path directly on the KP when the only requirement was locating code. The provenance requirement now gives the generator a separate identity and additional meaningful facts. Preserve the installed ref attribute and put the path on its target, rather than converting that ref to a string.
 
@@ -299,4 +299,4 @@ The checker also passed its explicit policy, difficulty, and progress predicate 
 
 This establishes admission of the existing `schema/` files and the checker's specific invariants. It does not validate all live data, every application rule, or the separate v2 drafts and proposed agent/generator/provenance implementation. The documentation inconsistencies above remain findings to resolve.
 
-The generic v2 drafts now include the cardinality-one `:who/author` ref and complete-content presence requirements. Their semantic predicates and agent dependency remain unimplemented. Neither those drafts nor the proposed agent, generator, and provenance additions have been installed; no live database migration is implied by this report.
+The generic v2 drafts now include the cardinality-one `:author` ref and complete-content presence requirements. Their semantic predicates and agent dependency remain unimplemented. Neither those drafts nor the proposed agent, generator, and provenance additions have been installed; no live database migration is implied by this report.
