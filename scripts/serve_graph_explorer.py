@@ -36,7 +36,8 @@ ROOT = Path(__file__).resolve().parent.parent
 HTML = ROOT / "ui" / "Math-Academy-Graph-Explorer.html"
 SOURCE = ROOT / "scripts" / "graph_explorer_reader.rs"
 DEFAULT_LEARNER = "59d5cf13-351c-4114-be19-4c3bb64ee051"
-ASSET_ROOTS = (ROOT.parent / "MA/DATA/Lessons", ROOT.parent / "study/vault")
+ASSET_ROOTS = (ROOT.parent / "MA/DATA/Lessons", ROOT.parent / "study/vault",
+               ROOT / "reference/mathacademy/history-question-import-2026-10-04/import-ready/assets")
 IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml"}
 MUTATING_ACTIONS = {"start", "answer", "continue", "pause", "resume", "target", "queue", "queue-topic",
                     "assignment-focus", "assignment-answer", "assignment-pause"}

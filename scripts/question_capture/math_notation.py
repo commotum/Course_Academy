@@ -273,6 +273,12 @@ def identity(value):
     quantity = quantity_identity(value)
     if quantity is not None:
         return repr(quantity)
+    # A whole bmatrix and a square-fenced aligned array display the same
+    # cells. Keep all row/column separators; leave nested environments alone.
+    matrix = re.fullmatch(r'\\begin\{bmatrix\}((?:(?!\\(?:begin|end)\{)[\s\S])*)'
+                          r'\\end\{bmatrix\}', value.strip().strip('$'))
+    if matrix:
+        value = r'[\begin{aligned}' + matrix[1] + r'\end{aligned}]'
     source = tokens(value)
     try:
         nodes = Parser(source).sequence()
