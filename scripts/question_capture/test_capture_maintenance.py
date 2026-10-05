@@ -7,6 +7,7 @@ import random
 import subprocess
 import sys
 import tempfile
+import threading
 import unittest
 import uuid
 from pathlib import Path
@@ -14,7 +15,7 @@ from types import SimpleNamespace
 from unittest.mock import Mock,patch
 
 from capture import arguments,main,run
-from capture_repair import RestartWorker,cooldown,next_failure,prepare,safe_resume,tuple_tree
+from capture_repair import RestartWorker,cooldown,next_failure,prepare,run_tests,safe_resume,tuple_tree
 from core import Pacer,atomic_json
 
 class CaptureMaintenanceTests(unittest.TestCase):
@@ -25,6 +26,26 @@ class CaptureMaintenanceTests(unittest.TestCase):
         self.sid=str(uuid.uuid4());self.commands=[]
         self.result={'status':'blocked','summary':'Missing source evidence.','file':'','edits':[],'regression_test':''}
     def tearDown(self):self.temp.cleanup()
+    def test_complete_suite_has_a_separate_configurable_timeout(self):
+        self.assertEqual(self.args.capture_repair_test_timeout,1800)
+        custom=arguments(['run','--capture-repair-test-timeout','2400'])
+        self.assertEqual(custom.capture_repair_test_timeout,2400)
+        with contextlib.redirect_stderr(io.StringIO()),self.assertRaises(SystemExit):
+            arguments(['run','--capture-repair-test-timeout','0'])
+        timeouts=[]
+        def validate(command,**kwargs):
+            timeouts.append(kwargs['timeout'])
+            kwargs['events_path'].write_text('')
+            kwargs['diagnostics_path'].write_text('OK')
+            self.assertIs(kwargs['stop_event'],self.args.stop_event)
+            return subprocess.CompletedProcess(command,0,stdout='',stderr='OK')
+        self.args.stop_event=Mock()
+        with patch('capture_repair.run_cli',side_effect=validate):
+            self.assertEqual(run_tests(self.root,'discover',self.root/'suite.txt',self.args),(0,'OK'))
+            self.args.capture_repair_test_timeout=2400
+            run_tests(self.root,'discover',self.root/'custom.txt',self.args)
+            run_tests(self.root,'targeted_regression',self.root/'targeted.txt',self.args)
+        self.assertEqual(timeouts,[1800,2400,300])
     def failure(self,task=1,phase='activity',kind='ValueError'):
         d=self.args.output/str(task);(d/'diagnostics/1').mkdir(parents=True)
         atomic_json(d/'state.json',{'task_id':task,'task_type':'lesson','questions':{}})
@@ -80,6 +101,30 @@ class CaptureMaintenanceTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'must fail by assertion'):prepare(self.args,self.pacer)
             apply.assert_not_called()
 
+    def test_suite_timeout_or_failure_never_produces_applicable_patch(self):
+        for task,outcome in enumerate((subprocess.TimeoutExpired('offline-suite',1800),(1,'FAIL: unrelated regression')),1):
+            with self.subTest(outcome=outcome):
+                self.failure(task);self.result={'status':'repair','summary':'Targeted fix.','file':'math_notation.py',
+                    'edits':[{'old':'without algebra.','new':'without guessing algebra.'}],
+                    'regression_test':'import unittest\nclass Regression(unittest.TestCase):\n def test_bug(self): self.fail("observed bug")\n'}
+                source=Path(__file__).parent/'math_notation.py';original=source.read_bytes()
+                with patch('capture_repair.run_cli',side_effect=self.cli), \
+                     patch('capture_repair.run_tests',side_effect=[(1,'FAIL: observed bug'),outcome]):
+                    with self.assertRaises((ValueError,subprocess.TimeoutExpired)):
+                        prepare(self.args,self.pacer)
+                self.assertEqual(source.read_bytes(),original)
+                (self.args.state_dir/'capture-repair/failures.json').unlink(missing_ok=True)
+
+    def test_offline_suite_shutdown_is_interruptible(self):
+        stage=self.root/'stage';package=stage/'scripts/question_capture';package.mkdir(parents=True)
+        (package/'test_wait.py').write_text('import time,unittest\nclass Waiting(unittest.TestCase):\n def test_wait(self): time.sleep(60)\n')
+        self.args.stop_event=threading.Event()
+        timer=threading.Timer(.1,self.args.stop_event.set);timer.start()
+        try:
+            with self.assertRaises(KeyboardInterrupt):
+                run_tests(stage,'discover',self.root/'stop.txt',self.args)
+        finally:timer.cancel();timer.join()
+
     def test_tested_candidate_retains_requested_source_file_after_fixture_copy(self):
         self.failure()
         self.result={'status':'repair','summary':'Targeted fix.','file':'math_notation.py',
@@ -109,9 +154,9 @@ from unittest.mock import patch
 from capture import main
 from capture_repair import RestartWorker
 with patch('capture.run',side_effect=RestartWorker(sys.argv[2])):
- raise SystemExit(main(['run','--limit','20','--headless','--state-dir',sys.argv[1]]))
+ raise SystemExit(main(['run','--limit','20','--headless','--state-dir',sys.argv[1],'--output',sys.argv[3]]))
 '''
-        result=subprocess.run([sys.executable,'-c',script,str(self.args.state_dir),str(checkpoint)],
+        result=subprocess.run([sys.executable,'-c',script,str(self.args.state_dir),str(checkpoint),str(self.args.output)],
                               cwd=Path(__file__).parent,capture_output=True,text=True,timeout=15)
         self.assertEqual(result.returncode,0,result.stderr)
         self.assertIn('reached the activity limit',result.stderr)

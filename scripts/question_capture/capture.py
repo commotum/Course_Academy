@@ -24,7 +24,7 @@ from retry_policy import apply_policy, update_policy
 
 def arguments(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command',choices=['run','login','priorities','import-saved'])
+    parser.add_argument('command',choices=['run','login','priorities','import-saved','sweep-saved'])
     parser.add_argument('--database',default=os.environ.get('EDB_DATABASE','course-academy-v2'))
     parser.add_argument('--endpoint',default=os.environ.get('EDB_ENDPOINT','/tmp/course-academy-edb-v2/writer.sock'))
     parser.add_argument('--edb-bin',default=os.environ.get('EDB_BIN','/home/jake/Developer/EDB/target/release/edb'))
@@ -58,6 +58,8 @@ def arguments(argv=None):
     parser.add_argument('--import-repair-timeout',type=int,default=600,help='Maximum seconds per completed-activity import repair turn')
     parser.add_argument('--no-capture-repair',action='store_true',help='Take ordinary cooldowns without inspecting capture failures')
     parser.add_argument('--capture-repair-timeout',type=int,default=180,help='Maximum seconds per capture repair diagnosis during a cooldown')
+    parser.add_argument('--capture-repair-test-timeout',type=int,default=1800,
+                        help='Maximum seconds for the complete offline suite validating a capture repair; default 1800 (30 minutes)')
     parser.add_argument('--batch-checkpoint',type=Path,help=argparse.SUPPRESS)
     parser.add_argument('--assessment-correct-weight',type=float,default=0.8717,
                         help='Independent probability of a correct quiz question; default 0.8717')
@@ -86,7 +88,7 @@ def arguments(argv=None):
     if (not math.isfinite(args.assessment_time_min) or not math.isfinite(args.assessment_time_max) or
             not 0<=args.assessment_time_min<=args.assessment_time_max<=0.95):
         parser.error('Assessment time fractions must satisfy 0 <= min <= max <= 0.95')
-    if (args.limit is not None and args.limit<1) or args.review_question_limit<1 or args.rest_every<0 or args.timeout_ms<1 or args.solver_timeout<1 or args.import_repair_timeout<1 or args.capture_repair_timeout<1 or args.settle_ms<0 or args.ui_delay_ms<0:
+    if (args.limit is not None and args.limit<1) or args.review_question_limit<1 or args.rest_every<0 or args.timeout_ms<1 or args.solver_timeout<1 or args.import_repair_timeout<1 or args.capture_repair_timeout<1 or args.capture_repair_test_timeout<1 or args.settle_ms<0 or args.ui_delay_ms<0:
         parser.error('Invalid limit, timeout, or rest frequency')
     if args.command=='import-saved' and not args.content:
         parser.error('import-saved requires --content')
@@ -144,6 +146,10 @@ def unfinished_run(args):
         directory = source.parent.resolve()
         verification = directory/'edb-import/verification.json'
         receipt = json.loads(verification.read_text()) if verification.exists() else {}
+        if state.get('activity_complete') and state.get('history_complete') and (directory/'content.json').exists():
+            # Completed captures belong to content-only recovery, even when
+            # their import is still deferred. Never navigate to resume them.
+            continue
         finished = state.get('import_complete') or receipt.get('committed') or receipt.get('already_complete')
         if args.preview:
             finished = finished or state.get('preview_complete')
@@ -298,10 +304,9 @@ def run(args):
         source = directory/'state.json'
         state = json.loads(source.read_text()) if source.exists() else {}
         result = import_with_repair(Database(args),content,directory,state,args)
-        if state:
-            state['preview_complete' if args.preview else 'import_complete'] = True
-            state.pop('deferred_error',None)
-            atomic_json(source,state)
+        if state and (result.get('previewed') or result.get('committed') or result.get('already_complete')):
+            from saved_imports import complete
+            complete(args,directory,state,result)
         print(json.dumps(result,indent=2))
         return
     db = Database(args)
@@ -309,16 +314,40 @@ def run(args):
         priorities = db.priorities(args.learner_id,args.state_dir/'selection')
         print(json.dumps(sorted(priorities.items(),key=lambda p:p[1],reverse=True),indent=2))
         return
+    if args.command in ('run','sweep-saved'):
+        from saved_imports import sweep
+        results = sweep(db,args,trigger='startup',exclude=[args.resume] if args.resume else ())
+        if args.command == 'sweep-saved':
+            print(json.dumps(results,indent=2))
+            return
+        if args.resume:
+            from saved_imports import eligible, read_json, complete
+            directory = args.resume.resolve()
+            state,content = read_json(directory/'state.json'),read_json(directory/'content.json')
+            if not args.dry_run and eligible(directory,state,content):
+                from import_repair import import_with_repair
+                result = import_with_repair(db,content,directory,state,args)
+                if result.get('previewed') or result.get('committed') or result.get('already_complete'):
+                    complete(args,directory,state,result)
+                sweep(db,args,trigger='batch-end',exclude=[directory])
+                print(json.dumps(result,indent=2))
+                return
     batch = json.loads(args.batch_checkpoint.read_text()) if args.batch_checkpoint else {}
     start_n = batch.get('attempted',0)
     if batch and (batch.get('limit')!=args.limit or start_n<0 or
                   args.limit is not None and start_n>args.limit):
         raise ValueError('Maintenance checkpoint does not match the batch limit')
     if batch and start_n==args.limit:
+        if args.command == 'run':
+            sweep(db,args,trigger='batch-end')
         logging.info('Maintenance checkpoint reached the activity limit; batch is complete.')
         return
     resume_directory = (Path(batch['next_resume']) if batch.get('next_resume') else None) if batch else (
         unfinished_run(args) if args.command=='run' else None)
+    if resume_directory and batch:
+        saved = json.loads((resume_directory/'state.json').read_text())
+        if saved.get('activity_complete') and saved.get('history_complete') and (resume_directory/'content.json').exists():
+            resume_directory = None
     if resume_directory and args.dry_run:
         state = json.loads((resume_directory/'state.json').read_text())
         print(json.dumps({'resume_directory':str(resume_directory),'task_id':state['task_id'],
@@ -366,6 +395,7 @@ def run(args):
             if deferred:
                 logging.info('Skipping deferred activities until explicit --resume: %s',deferred)
             queue_observation = None
+            imported_directories = set()
             attempts = itertools.count(start_n) if args.limit is None else range(start_n,args.limit)
             for n in attempts:
                 pacer.check_stop()
@@ -452,10 +482,10 @@ def run(args):
                     phase = 'import'
                     from import_repair import import_with_repair
                     result = import_with_repair(db,content,directory,state,args)
-                    state['preview_complete' if args.preview else 'import_complete'] = True
-                    state.pop('deferred_error',None)
-                    atomic_json(directory/'state.json',state)
-                    journal(log,'content_imported' if not args.preview else 'content_previewed',task_id=state['task_id'],**result)
+                    from saved_imports import complete
+                    if result.get('previewed') or result.get('committed') or result.get('already_complete'):
+                        complete(args,directory,state,result)
+                        imported_directories.add(directory)
                     print(json.dumps({'run_directory':str(directory),'database':result},indent=2),flush=True)
                 except (Exception,KeyboardInterrupt) as error:
                     if state is not None:
@@ -492,6 +522,8 @@ def run(args):
                         cooldown(args,pacer,{'attempted':n+1,'limit':args.limit,
                                             'completed_topics':sorted(completed),
                                             'captured_tasks':sorted(captured_tasks)})
+            from saved_imports import sweep
+            sweep(db,args,trigger='batch-end',exclude=imported_directories)
         finally:
             context.close()
 

@@ -84,12 +84,15 @@ def run_tests(stage, name, target, args):
     try:
         # unittest imports the staged modules, never the live worker's modules.
         command = [sys.executable,'-c',
-                   'import os,sys;os.chdir(sys.argv[1]);sys.path.insert(0,sys.argv[1]);'
+                   'import os,sys;os.environ.setdefault("COURSE_ACADEMY_MATH_COMPARE_BIN",sys.argv[3]);'
+                   'os.chdir(sys.argv[1]);sys.path.insert(0,sys.argv[1]);'
                    'import unittest;raise SystemExit(not unittest.TextTestRunner().run('
                    'unittest.defaultTestLoader.discover(".") if sys.argv[2]=="discover" else '
                    'unittest.defaultTestLoader.loadTestsFromName(sys.argv[2])).wasSuccessful())',
-                   str(stage/'scripts/question_capture'),name]
-        result = run_cli(command,input='',timeout=300,events_path=events,diagnostics_path=errors,
+                   str(stage/'scripts/question_capture'),name,str(ROOT/'target/debug/compare-question-answers')]
+        timeout = args.capture_repair_test_timeout if name == 'discover' else 300
+        logging.info('Capture repair validation: %s (timeout %ds)',name,timeout)
+        result = run_cli(command,input='',timeout=timeout,events_path=events,diagnostics_path=errors,
                          started=lambda pid:None,stop_event=getattr(args,'stop_event',None))
         code = 0
     except subprocess.CalledProcessError as error:

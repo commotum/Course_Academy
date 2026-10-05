@@ -223,16 +223,17 @@ class Reconciler:
     def needs_review(self):
         return any(d['category'] == 'review_required' for d in self.decisions)
 
-    def field_action(self, mid, previous, incoming):
+    def field_action(self, mid, previous, incoming, **context):
         """Version an unused field when owned components need replacement."""
-        from core import normalize
+        from core import compare_answers, matching_answer
         key = incoming['key']
         kind = previous[':answer-field/type'][':db/ident']
         new_kind = kw('answer-field.type/'+incoming['type'])
         c = next(c for c in incoming['choices'] if c['value'] == incoming['correct_value'])
         new_correct = [kw('answer.type/'+c['type']), c['value']]
         old_correct = field_value(previous, 'answer-field/correct')
-        equivalent = old_correct[0] == new_correct[0] and normalize(old_correct[1], c['type']) == normalize(c['value'], c['type'])
+        compared = compare_answers(old_correct[1], c['value'], c['type'], **context) if old_correct[0] == new_correct[0] else {'outcome':'different'}
+        equivalent = compared['outcome'] == 'equivalent'
         changed = False
         allowed = True
         if kind != new_kind:
@@ -242,9 +243,10 @@ class Reconciler:
             changed = True
             allowed &= self.replace(mid, key, 'answer-field/correct', old_correct, new_correct,
                                     {'ma_explicit_answer', 'ma_successful_grade'})
-        signatures = {(a['type'], normalize(a['value'], a['type'])) for a in incoming['choices']}
-        extras = [a for a in previous[':answer-field/choices'] if (
-            a[':answer/type'][':db/ident'].split('/')[-1], normalize(a[':answer/value'], a[':answer/type'][':db/ident'].split('/')[-1])) not in signatures]
+            self.decisions[-1]['comparison'] = compared
+        matched = {a[':db/id'] for choice in incoming['choices']
+                   if (a := matching_answer(choice, previous[':answer-field/choices'], **context)) is not None}
+        extras = [a for a in previous[':answer-field/choices'] if a[':db/id'] not in matched]
         values = sorted((a['type'], a['value']) for a in incoming['choices'])
         complete = self.evidence(self.sources, mid, key, 'answer-field/choices', values)
         if extras and incoming['type'] != 'blank' and complete:

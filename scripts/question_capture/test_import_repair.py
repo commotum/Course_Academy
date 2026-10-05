@@ -13,7 +13,7 @@ from import_repair import import_with_repair,repair
 class ImportRepairTests(unittest.TestCase):
     def setUp(self):
         self.work=tempfile.TemporaryDirectory();self.root=Path(self.work.name)
-        self.args=arguments(['run','--state-dir',str(self.root/'state')])
+        self.args=arguments(['run','--state-dir',str(self.root/'state'),'--output',str(self.root/'captures')])
         self.sid=str(uuid.uuid4());self.commands=[]
         self.result={'status':'blocked','summary':'Genuine answer conflict needs source evidence.',
                      'edits':[],'equivalent':[],'distinct':[]}

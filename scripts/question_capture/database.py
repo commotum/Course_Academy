@@ -325,7 +325,7 @@ class Database:
                   'immutable_fields':immutable_fields, 'no_history':sorted(reconciler.no_history)}
         (directory/'reconciliation.edn').write_text(dumps(frozen)+'\n')
         if not transaction:
-            result = {'database_writes': 0, 'already_complete': True}
+            result = {'database_writes': 0, 'already_complete': True, 'content_sha256':content_hash}
             atomic_json(directory / 'verification.json', result)
             return result
         tx_path.write_text(dumps(transaction) + '\n')
@@ -387,6 +387,7 @@ class Database:
         if remaining or reconciler and reconciler.needs_review:
             raise ValueError('Committed content does not reconcile to an idempotent import')
         result = {'committed': True, 'basis_before': before, 'basis_after': after,
+                  'content_sha256':hashlib.sha256(json.dumps(content,sort_keys=True,default=str).encode()).hexdigest(),
                   'question_count': len(ids), 'protected_fact_count': len(protected_before),
                   'protected_facts_sha256': fingerprint(protected_before),
                   'learner_and_engine_facts_unchanged': True, 'reimport_is_noop': True}

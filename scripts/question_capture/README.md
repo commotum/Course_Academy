@@ -3,7 +3,69 @@
 Run sequential Math Academy lessons, reviews, multisteps, and eligible quizzes/assessments;
 add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
-apart from Playwright, the EDB CLI, and a solver command.
+apart from Playwright, the EDB CLI, a solver command, and the native comparison helper.
+
+Build the native importer comparison helper before use:
+
+```sh
+cargo build --offline --bin compare-question-answers
+```
+
+The importer uses `target/debug/compare-question-answers`, or the executable named
+by `COURSE_ACADEMY_MATH_COMPARE_BIN`. It does not build code during capture or a
+sweep. The helper shares the engine's error-preserving exact comparison, prompt
+form requirements, and KP context (including formal vector/Riemann `i` and integer
+sequence indices). Beyond existing notation identity it returns **equivalent**,
+**different**, or **unresolved**. Equivalent values reuse the stored answer entity;
+choice grading still compares answer identities. Image/text comparison, field
+identity, and exact provenance hashes retain their existing rules. Different and
+unresolved pairs follow the replacement/review policy. Missing executables,
+execution errors, unsupported domains, and resource limits remain explicit; they
+do not make a new captured symbolic blank invalid or adapt it into a radio field.
+The helper accepts bounded requests, has a three-second execution deadline, reuses
+one process, and caches pairs with their prompt/KP context and executable hash.
+
+Completed saved imports are revisited on `run` startup, after a successful
+comparison/import repair and retry of the current activity, and before the batch
+ends. Installed cooldown repairs are picked up by the next startup. These sweeps
+call only `Database.import_content`: they never navigate MA or launch backlog
+repair sessions. A started assessment without confirmed terminal completion
+defers the sweep. `--dry-run` skips sweeps entirely.
+
+Eligibility requires the task-specific completion checkpoint and terminal screen
+text, complete history, a finalized `content.json` matching the saved question
+records, history explanations and activity metadata, and matching examples.
+Queue-after failures are eligible. Verified committed/no-op imports are skipped,
+with stale checkpoint flags repaired. Committed but unverified receipts use the
+existing receipt path; pending intents retain their original content, transaction,
+request key, basis and frozen reconciliation hash. Preview never sends a commit,
+including when an unresolved intent already exists.
+
+Each sweep attempts at most **20 captures**, at most once per capture. The durable
+`.local/question_capture/saved-import-attempts.json` ledger prevents unchanged
+failures from retrying on every activity or restart. A retry requires a changed
+importer/comparison source or native executable hash, relevant authoring/capture
+evidence or receipt, or a different preview/apply/database destination. New
+verified source evidence for the same question IDs counts; unrelated captures,
+database basis advances, checkpoint flags and diagnostic messages do not. The
+final attempt key includes any newly created frozen intent artifacts. Failed
+items stay deferred while other captures and live selection continue. Sweep
+attempts do not consume activity limits, cooldown counts, RNG draws or queue
+priorities. Review cases retain their existing authorization and history checks.
+
+For a content-only invocation, without opening a browser:
+
+```sh
+/home/jake/Developer/MA/.venv/bin/python scripts/question_capture sweep-saved --preview
+# Apply only when ready to import the bounded eligible backlog:
+/home/jake/Developer/MA/.venv/bin/python scripts/question_capture sweep-saved
+```
+
+Both commands take the normal capture lock. Explicit `import-saved --content ...`
+or `--resume DIRECTORY` remains available for a deliberate individual retry;
+finalized completed captures resume through content-only recovery. Original capture
+content and frozen intents are retained. A preview of an unresolved intent leaves
+it deferred for apply-mode receipt recovery.
 
 MA can include the identical `/js/math-editor.js` tag twice in a page, causing
 its `const OPERATIONS` declaration to fail on the second execution. Navigation
@@ -258,6 +320,10 @@ can extend a break when needed. With no outstanding capture failures the usual
 pause runs without a model call. Artifacts and the dedicated session ID are saved
 under `.local/question_capture/capture-repair`. Use `--no-capture-repair` to keep
 ordinary pauses, or `--capture-repair-timeout` to change the 180-second model limit.
+The complete offline validation suite has a separate 30-minute timeout, configurable
+with `--capture-repair-test-timeout SECONDS`. The initial focused regression retains
+its five-minute limit. A timeout never permits a patch to be applied, and validation
+remains interruptible. Testing can extend the cooldown beyond its usual duration.
 Import repair continues immediately after complete captures as described above.
 
 Recoverable assessment request errors and timeouts reload the same quiz at most

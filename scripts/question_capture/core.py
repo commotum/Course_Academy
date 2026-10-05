@@ -220,6 +220,29 @@ def stable_id(kind, source):
     return uuid.uuid5(uuid.NAMESPACE_URL, 'course-academy:ma:capture:' + kind + ':' + source)
 
 
+def compare_answers(a, b, representation='math', *, prompt='', kp_titles=()):
+    """Notation identity first; only the native checker can prove more math."""
+    form_sensitive = any(term in prompt.lower() for term in
+        ('round','decimal place','significant figure','significant digit',
+         'simplest form','lowest terms','reduced fraction'))
+    if a == b or (not form_sensitive and normalize(a, representation) == normalize(b, representation)):
+        return {'outcome':'equivalent'}
+    if representation != 'math':
+        return {'outcome':'different'}
+    from native_comparison import compare
+    return compare(a, b, prompt=prompt, kp_titles=kp_titles)
+
+
+def matching_answer(choice, values, **context):
+    matches = [a for a in values if a[':answer/type'][':db/ident'] == ':answer.type/'+choice['type']
+               and a[':answer/value'] == choice['value']]
+    if matches:
+        return matches[0]
+    matches = [a for a in values if a[':answer/type'][':db/ident'] == ':answer.type/'+choice['type']
+               and compare_answers(a[':answer/value'], choice['value'], choice['type'], **context)['outcome'] == 'equivalent']
+    return matches[0] if len(matches) == 1 else None
+
+
 def ref(attribute, value):
     return [kw(attribute), value]
 
@@ -309,6 +332,8 @@ def build_transaction(content, topic, existing, reconciler=None):
         if kp_id not in kps:
             raise ValueError('KP is not a member of the selected topic: ' + kp_id)
         kp, old = kps[kp_id], existing.get(mid)
+        comparison = {'prompt':(old or {}).get(':question/problem', question.get('problem','')),
+                      'kp_titles':[kp.get(':knowledge-point/title','')]}
         canonical = kp.get(':knowledge-point/canonical-example')
         if example and canonical and canonical[':question/math-academy-id'] != mid:
             raise ValueError('Live example differs from this KP canonical ID; review ' + mid)
@@ -343,6 +368,7 @@ def build_transaction(content, topic, existing, reconciler=None):
                     prior = prior[':db/ident']
                 if reconciler.replace(mid, None, attr, prior, value, {'ma_capture'}):
                     update[kw(attr)] = value
+        comparison['prompt'] = update.get(kw('question/problem'), comparison['prompt'])
         old_fields = {f[':answer-field/key']: f for f in (old or {}).get(':question/answer-fields', [])}
         captured_fields = {f['key'] for f in question.get('answer_fields', [])}
         if not example and captured_fields and set(old_fields) - captured_fields:
@@ -353,7 +379,7 @@ def build_transaction(content, topic, existing, reconciler=None):
             previous = old_fields.get(key)
             field_token = mid + '/' + key
             if previous and reconciler:
-                action = reconciler.field_action(mid, previous, field)
+                action = reconciler.field_action(mid, previous, field, **comparison)
                 if action == 'retain':
                     continue
                 if action == 'version':
@@ -391,11 +417,9 @@ def build_transaction(content, topic, existing, reconciler=None):
                 if not previous or ':' + attr not in previous:
                     fupdate[kw(attr)] = value
             values = (previous or {}).get(':answer-field/choices', [])
-            old_values = {(a[':answer/type'][':db/ident'].split('/')[-1], normalize(a[':answer/value'], a[':answer/type'][':db/ident'].split('/')[-1])): a for a in values}
             correct_target, choice_links = None, []
             for choice in field['choices']:
-                signature = (choice['type'], normalize(choice['value'], choice['type']))
-                answer = old_values.get(signature)
+                answer = matching_answer(choice, values, **comparison)
                 token = field_token + '/' + hashlib.sha256((choice['type'] + ':' + choice['value']).encode()).hexdigest()
                 answer_target = answer[':db/id'] if answer else token
                 if not answer:
@@ -407,7 +431,6 @@ def build_transaction(content, topic, existing, reconciler=None):
                         attrs['answer/feedback'] = choice['feedback']
                     transaction.append(ensured('answer', **attrs))
                     choice_links.append(answer_target)
-                    old_values[signature] = {':db/id': answer_target}
                 if choice['value'] == field['correct_value']:
                     correct_target = answer_target
             old_correct = (previous or {}).get(':answer-field/correct')
@@ -416,9 +439,11 @@ def build_transaction(content, topic, existing, reconciler=None):
                 captured_kind = next(c['type'] for c in field['choices'] if c['value'] == field['correct_value'])
                 if captured_kind != kind:
                     raise ValueError('Correct answer type conflict: ' + field_token)
-                if normalize(old_correct[':answer/value'], kind) != normalize(field['correct_value'], kind):
+                compared = compare_answers(old_correct[':answer/value'], field['correct_value'], kind, **comparison)
+                if compared['outcome'] != 'equivalent':
                     raise ValueError('Correct answer conflict: ' + field_token + '; stored '
-                                     + repr(old_correct[':answer/value']) + ', captured ' + repr(field['correct_value']))
+                                     + repr(old_correct[':answer/value']) + ', captured ' + repr(field['correct_value'])
+                                     + '; comparison '+compared['outcome']+': '+compared.get('reason',''))
             else:
                 fupdate[kw('answer-field/correct')] = correct_target
             if choice_links:

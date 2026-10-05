@@ -1096,22 +1096,12 @@ pub fn grade(s: &EntitySnapshot, question: u64, responses: &BTreeMap<u64, String
                         .as_str()
                         .unwrap()
                         .to_lowercase();
-                    let form_sensitive = [
-                        "round",
-                        "decimal place",
-                        "significant figure",
-                        "significant digit",
-                        "simplest form",
-                        "lowest terms",
-                        "reduced fraction",
-                    ]
-                    .iter()
-                    .any(|term| prompt.contains(term));
-                    if form_sensitive {
-                        normalize_math(submitted) == normalize_math(canonical)
-                    } else {
-                        compare_math(submitted, canonical, math_context(s, question)?)?
-                    }
+                    compare_math_in_context(
+                        submitted,
+                        canonical,
+                        &prompt,
+                        math_context(s, question)?,
+                    )?
                 }
                 "answer.type/text" => {
                     submitted
@@ -1210,24 +1200,40 @@ fn compare_math(a: &str, b: &str, context: symbolic::Context) -> Result<bool> {
     }
 }
 
-fn math_context(s: &EntitySnapshot, question: u64) -> Result<symbolic::Context> {
-    let mut wording = s
-        .entity(question)?
-        .get("question/problem")
-        .and_then(Value::as_str)
-        .unwrap_or("")
-        .to_lowercase();
-    for kp in s.owners(question, "knowledge-point/questions")? {
-        if let Some(title) = s
-            .entity(kp)?
-            .get("knowledge-point/title")
-            .and_then(Value::as_str)
-        {
-            wording.push(' ');
-            wording.push_str(&title.to_lowercase());
-        }
+/// Error-preserving comparison shared by grading and content reconciliation.
+pub fn compare_math_in_context(
+    a: &str,
+    b: &str,
+    prompt: &str,
+    context: symbolic::Context,
+) -> Result<bool> {
+    let prompt = prompt.to_lowercase();
+    if [
+        "round",
+        "decimal place",
+        "significant figure",
+        "significant digit",
+        "simplest form",
+        "lowest terms",
+        "reduced fraction",
+    ]
+    .iter()
+    .any(|term| prompt.contains(term))
+    {
+        Ok(normalize_math(a) == normalize_math(b))
+    } else {
+        compare_math(a, b, context)
     }
-    Ok(symbolic::Context {
+}
+
+/// Prompt and owning KP wording determine the interpretation of i and indices.
+pub fn comparison_context(prompt: &str, titles: &[String]) -> symbolic::Context {
+    let wording = std::iter::once(prompt.to_owned())
+        .chain(titles.iter().cloned())
+        .collect::<Vec<_>>()
+        .join(" ")
+        .to_lowercase();
+    symbolic::Context {
         symbolic_i: ["riemann", "sigma", "\\sum", "vector"]
             .iter()
             .any(|v| wording.contains(v)),
@@ -1242,7 +1248,27 @@ fn math_context(s: &EntitySnapshot, question: u64) -> Result<symbolic::Context> 
         ]
         .iter()
         .any(|v| wording.contains(v)),
-    })
+    }
+}
+
+fn math_context(s: &EntitySnapshot, question: u64) -> Result<symbolic::Context> {
+    let wording = s
+        .entity(question)?
+        .get("question/problem")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .to_lowercase();
+    let mut titles = vec![];
+    for kp in s.owners(question, "knowledge-point/questions")? {
+        if let Some(title) = s
+            .entity(kp)?
+            .get("knowledge-point/title")
+            .and_then(Value::as_str)
+        {
+            titles.push(title.to_owned());
+        }
+    }
+    Ok(comparison_context(&wording, &titles))
 }
 
 struct RationalParser<'a> {

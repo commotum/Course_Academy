@@ -195,4 +195,7 @@ def import_with_repair(db, content, directory, state, args):
             logging.warning('Import repair failed: %s; original capture remains saved',repair_error)
             raise error from repair_error
         if not fixed:raise
-        return db.import_content(content,Path(directory)/'edb-import',not args.preview)
+        result = db.import_content(content,Path(directory)/'edb-import',not args.preview)
+        from saved_imports import sweep
+        sweep(db,args,trigger='import-repair',exclude=[directory])
+        return result
