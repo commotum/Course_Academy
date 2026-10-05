@@ -130,6 +130,19 @@ Do not reinterpret any historical `[0,1]` topic accuracy values as workload mult
 
 Verify agreement with the expected-distribution comparison, operation with all individual difficulty labels absent, repeat-import stability, multiplier round trips to authoritative bases, default 1.0 behavior, floor-limited cases, separate-channel forecast weighting/fallbacks, and preservation of observed learner state. Check that a multiplier above 1 passes validation and cannot reach the former accuracy input. Verify that changes in capture question order cannot silently change an existing calibration's recorded sample.
 
+## Implementation results
+
+- Added and installed the two optional progress forecast attributes; updated topic documentation and validation to a positive workload multiplier. No old topic accuracy values were present. Schema transaction advanced basis 504 to 505.
+- Rust forecasts use separate assessment/practice mass weighting over direct prerequisites. Their values remain frozen after initialization; existing observed channels are preserved.
+- Retention speed now uses learner accuracy alone. Topic workload multipliers are read only by the base-XP module.
+- The study app computes missing lesson bases from the selected formula and freezes them on attempts. Existing attempt allocations are preserved.
+- Initial duration transaction advanced basis 505 to 506 and populated all **2,964 lesson activities**. Base estimates range from 7 to 52 XP, with median 9. **2,924 lessons** used at least one canonical worked-solution proxy. Nine assignments lacked a duration model or complete step estimates and were reported without assigning fabricated lesson estimates.
+- Both schema and duration transactions verified unchanged learner and policy facts. The duration transaction's protected-fact comparison covered **4,587 facts**. The updated local writer and study app were activated.
+- Verification passed: 78 Rust engine tests, 17 in-memory app tests, native schema/progress predicate checks, and the durable 13-presentation lesson lifecycle using a temporary learner. Both forecast attributes persisted; the attempt base stayed fixed. Cleanup restored the exact protected-fact fingerprint. A fresh backfill plan produced zero writes.
+- Calibration calculation is available through `fire request` without individual difficulty labels. Automatic capture-import recalibration is a separate integration step; this initial backfill uses default workload multiplier 1.0.
+
+Transaction evidence is retained in `.local/edb/xp-schema-2026-10-04/` and `.local/edb/initial-activity-xp-complete-2026-10-04/`, including plans, proxies, source features, previews, receipts, and verification. The reusable backfill command is `scripts/initialize_activity_xp.py`; it preserves existing durations and supports exact retries.
+
 ## Evidence and references
 
 - [Full base-XP formula and original fit](../xp-docs/base-xp-formula-report.md).

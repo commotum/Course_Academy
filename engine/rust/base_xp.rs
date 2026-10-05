@@ -423,4 +423,52 @@ mod tests {
             8
         );
     }
+
+    #[test]
+    fn catalog_proxies_missing_solutions_without_reading_difficulty() {
+        let mut records = BTreeMap::new();
+        for (id, record) in [
+            (
+                1,
+                json!({"activity/id":"lesson","activity/type":"activity.type/lesson","activity/scope":2,"activity/steps":[3],"activity/first-step":3}),
+            ),
+            (2, json!({"topic/id":"topic","topic/difficulty":2.5})),
+            (3, json!({"step/content":4})),
+            (
+                4,
+                json!({"knowledge-point/id":"kp","knowledge-point/canonical-example":5,"knowledge-point/questions":[6,7]}),
+            ),
+            (
+                5,
+                json!({"question/id":"example","question/problem":"Find $x$.","question/worked-solution":"$x=2$"}),
+            ),
+            (
+                6,
+                json!({"question/id":"practice1","question/problem":"Find $x$.","question/worked-solution":"$x=1+1=2$","question/answer-fields":[8]}),
+            ),
+            (
+                7,
+                json!({"question/id":"practice2","question/problem":"Find $x$.","question/answer-fields":[8]}),
+            ),
+            (8, json!({"answer-field/type":"answer-field.type/blank"})),
+            (9, json!({"policy/id":"policy"})),
+            (
+                10,
+                json!({"db/ident":crate::schema::keyword("activity.type/lesson")}),
+            ),
+            (
+                11,
+                json!({"db/ident":crate::schema::keyword("answer-field.type/blank")}),
+            ),
+        ] {
+            records.insert(id, record.as_object().unwrap().clone());
+        }
+        let s = EntitySnapshot::new(records, 1).unwrap();
+        let estimate = activity_estimate(&s, 1).unwrap();
+        assert_eq!(estimate.canonical_solution_proxy_count, 1);
+        assert!((estimate.features.solution_math_100 - 0.05).abs() < 1e-12);
+        assert_eq!(estimate.features.question_steps, 1.5);
+        assert_eq!(estimate.multiplier, 2.5);
+        assert_eq!(s.entity(7).unwrap().get("question/worked-solution"), None);
+    }
 }

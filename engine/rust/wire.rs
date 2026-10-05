@@ -86,7 +86,8 @@ pub fn execute(input: &Value) -> Result<Value> {
                     weights,
                     input
                         .get("multiplier")
-                        .and_then(Value::as_f64)
+                        .map(|v| v.as_f64().ok_or("multiplier must be numeric"))
+                        .transpose()?
                         .unwrap_or(1.0),
                 )?
             };

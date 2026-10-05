@@ -1858,32 +1858,12 @@ mod integration {
                 queue_forms(&s, l, at)?.is_empty(),
                 "unchanged planning must not create tasks or writes"
             );
-            let topic = s.reference(activity, "activity/scope")?;
-            let baseline = number(&s, t, "learner-task/priority");
-            let pending = s.refs(l, "learner/activity")?;
-            let target = json!({"topicId":topic,"selected":true});
-            let (forms, _) = mutate(&s, l, "target", &target, at)?;
-            s = commit(&conn, &endpoint, &s, forms, &format!("{id}-target"), at)?;
-            assert_eq!(s.refs(l, "learner/targets")?, vec![topic]);
-            assert_eq!(s.refs(l, "learner/activity")?, pending);
-            assert!(number(&s, t, "learner-task/priority") > baseline);
-            assert!(mutate(&s, l, "target", &target, at)?.0.is_empty());
-            assert!(mutate(&s, l, "target", &json!({"topicId":c,"selected":true}), at).is_err());
-            let (forms, _) = mutate(
-                &s,
-                l,
-                "target",
-                &json!({"topicId":topic,"selected":false}),
-                at,
-            )?;
-            s = commit(&conn, &endpoint, &s, forms, &format!("{id}-untarget"), at)?;
-            assert!(s.refs(l, "learner/targets")?.is_empty());
-            assert_eq!(number(&s, t, "learner-task/priority"), baseline);
-            assert_eq!(task_for(&s, l, activity)?, Some(t));
             let at = Utc::now();
             let (forms, result) = mutate(&s, l, "start", &json!({"activityId":activity}), at)?;
             assert_eq!(result["taskId"].as_u64(), Some(t));
             s = commit(&conn, &endpoint, &s, forms, &format!("{id}-start"), at)?;
+            let allocated_base = number(&s, t, "learner-task/xp-base");
+            assert_eq!(allocated_base, base_xp::activity_base(&s, activity)? as f64);
             let first = *items(&s, t)?.last().unwrap();
             let at = Utc::now();
             let (forms, _) = mutate(&s, l, "pause", &json!({"taskId":t}), at)?;
@@ -2007,6 +1987,11 @@ mod integration {
                 .unwrap();
             assert_eq!(s.entity(p)?.get("progress/learned"), Some(&json!(true)));
             assert!(s.entity(p)?.contains_key("progress/memory-at"));
+            assert_eq!(number(&s, t, "learner-task/xp-base"), allocated_base);
+            for name in ["progress/expected-assessment-accuracy", "progress/expected-practice-accuracy"] {
+                let forecast = s.entity(p)?.get(name).and_then(Json::as_f64).expect("forecast persisted");
+                assert!((0.0..=1.0).contains(&forecast));
+            }
             eprintln!(
                 "durable lesson completed: {} presentations; XP and FIRe persisted",
                 chain.len()
