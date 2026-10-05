@@ -89,7 +89,9 @@ class ImportRepairTests(unittest.TestCase):
         self.assertIn(old+' Tested.',source.read_text())
         record=json.loads((directory/'import-repair.json').read_text())
         self.assertEqual(record['attempts'][0]['status'],'applied')
-        self.assertIn('Ran 44 tests',(Path(record['attempts'][0]['job'])/'tests.txt').read_text())
+        count=unittest.defaultTestLoader.loadTestsFromNames(
+            ['test_capture.PolicyTests','test_capture.ReconciliationTests']).countTestCases()
+        self.assertIn(f'Ran {count} tests',(Path(record['attempts'][0]['job'])/'tests.txt').read_text())
 
     def test_failing_candidate_is_kept_for_review_and_source_is_not_changed(self):
         import import_repair
