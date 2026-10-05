@@ -31,6 +31,9 @@ ends. Installed cooldown repairs are picked up by the next startup. These sweeps
 call only `Database.import_content`: they never navigate MA or launch backlog
 repair sessions. A started assessment without confirmed terminal completion
 defers the sweep. `--dry-run` skips sweeps entirely.
+An assessment explicitly recorded as expired with a matching terminal answered
+count is finished for this guard. Its own import still needs complete source
+capture; an expired quiz does not block unrelated completed imports.
 
 Eligibility requires the task-specific completion checkpoint and terminal screen
 text, complete history, a finalized `content.json` matching the saved question
@@ -40,6 +43,16 @@ with stale checkpoint flags repaired. Committed but unverified receipts use the
 existing receipt path; pending intents retain their original content, transaction,
 request key, basis and frozen reconciliation hash. Preview never sends a commit,
 including when an unresolved intent already exists.
+The completed canonical-example payload migration archived original commit files.
+Those verifications now record the exact archived receipt location and old/new
+content hashes. Recognition checks the original transaction hash and basis and
+reconstructs the original payload hash solely for audit; changed content still
+requires reconciliation. New imports never add the retired example attribute.
+
+Protected-fact verification reads every non-content attribute at the original
+before/after bases. It binds attributes individually and, on EDB's value-byte
+limit, reads large values in bounded subject groups. Failed or incomplete reads
+remain verification failures. Schema predicate symbols are preserved as EDN data.
 
 Each sweep attempts at most **20 captures**, at most once per capture. The durable
 `.local/question_capture/saved-import-attempts.json` ledger prevents unchanged
@@ -304,6 +317,9 @@ a separate persistent capture repair session examines outstanding capture diagno
 It handles one targeted source fix per break, with at most two attempts per failure.
 Resolved or blocked diagnoses are recorded rather than repeatedly revisited. Import
 failures and authentication/rate-limit blocks are excluded from this session.
+If a nonempty queue contains only excluded activities, the runner attempts this
+maintenance break early before exiting, without consuming an activity attempt.
+An empty queue or an exhausted activity limit does not trigger the early break.
 
 The session proposes a patch to one capture source file and a new offline regression
 test. The runner stages it in an isolated copy, requires the regression to fail by

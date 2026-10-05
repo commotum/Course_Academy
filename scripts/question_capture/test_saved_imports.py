@@ -17,7 +17,7 @@ from database import Database
 from edn import dumps, kw
 from import_repair import import_with_repair
 from provenance import ReconciliationReview
-from saved_imports import complete, eligible, read_json, sweep
+from saved_imports import complete, eligible, read_json, sweep, verified
 
 
 class SavedImportTests(unittest.TestCase):
@@ -47,6 +47,47 @@ class SavedImportTests(unittest.TestCase):
         atomic_json(directory/'content.json',content)
         atomic_json(directory/'activity-metadata.json',[{'id':'question-'+str(task)}])
         return directory, state, content
+
+    def migrated_capture(self,task=1):
+        directory,state,content=self.capture(task,import_complete=True,
+            deferred_error={'phase':'import','message':'Content provenance needs review'})
+        historical=copy.deepcopy(content);historical['questions'][0]['is_example']=False
+        self.intent(directory,historical,committed=True)
+        target=directory/'edb-import';archive=target/'committed-before-capture-format-migration';archive.mkdir()
+        for name in ('transaction.edn','commit.edn','commit-intent.json','reconciliation.edn'):
+            (target/name).rename(archive/name)
+        atomic_json(target/'verification.json',{'committed':True,'reimport_is_noop':True,
+            'learner_and_engine_facts_unchanged':True,'basis_before':656,'basis_after':657,
+            'content_sha256':hashlib.sha256(json.dumps(content,sort_keys=True).encode()).hexdigest(),
+            'original_content_sha256':hashlib.sha256(json.dumps(historical,sort_keys=True).encode()).hexdigest(),
+            'receipt_archive':archive.name})
+        return directory,state,content
+
+    def test_audited_archived_receipt_skips_import_and_clears_false_deferral(self):
+        directory,state,content=self.migrated_capture()
+        self.assertTrue(verified(directory,content))
+        sweep(self.db,self.args,trigger='startup')
+        self.db.import_content.assert_not_called()
+        self.assertNotIn('deferred_error',read_json(directory/'state.json'))
+
+    def test_archived_receipt_never_attests_new_content_or_changed_transaction(self):
+        directory,state,content=self.migrated_capture()
+        content['questions'][0]['worked_solution']='New evidence'
+        proof=read_json(directory/'edb-import/verification.json')
+        proof['content_sha256']=hashlib.sha256(json.dumps(content,sort_keys=True).encode()).hexdigest()
+        atomic_json(directory/'edb-import/verification.json',proof)
+        self.assertFalse(verified(directory,content))
+        directory,state,content=self.migrated_capture(2)
+        (directory/'edb-import/committed-before-capture-format-migration/transaction.edn').write_text('[]')
+        self.assertFalse(verified(directory,content))
+
+    def test_archived_receipt_requires_matching_basis_and_audited_location(self):
+        directory,state,content=self.migrated_capture()
+        proof=read_json(directory/'edb-import/verification.json')
+        proof['basis_after']=999;atomic_json(directory/'edb-import/verification.json',proof)
+        self.assertFalse(verified(directory,content))
+        proof['basis_after']=657;proof['receipt_archive']='../other';atomic_json(directory/'edb-import/verification.json',proof)
+        self.assertFalse(verified(directory,content))
 
     def test_repair_of_current_b_also_unblocks_older_a(self):
         older,_,_ = self.capture(1)
@@ -263,6 +304,27 @@ class SavedImportTests(unittest.TestCase):
         (directory/'state.json').unlink()
         self.args.stop_event=threading.Event();self.args.stop_event.set()
         with self.assertRaises(KeyboardInterrupt):sweep(self.db,self.args,trigger='batch-end')
+        self.db.import_content.assert_not_called()
+
+    def test_expired_completed_quiz_does_not_block_other_imports(self):
+        pending,_,_=self.capture(1)
+        expired,state,content=self.capture(2,task_type='assessment',assessment_started=True,
+            assessment_complete=True,assessment_question_count=9,test_submission_status='expired',
+            completion='Quiz 7 expired; 0 of 9 answered; -1/15 XP.')
+        content['task_type']='assessment';atomic_json(expired/'content.json',content)
+        # This partial expired capture is not itself eligible for import, but
+        # its terminal state must not hold up the completed lesson's import.
+        self.assertFalse(eligible(expired,state,content))
+        results=sweep(self.db,self.args,trigger='batch-end')
+        self.assertEqual(len(results),1)
+        self.assertEqual(self.db.import_content.call_args.args[1].parent,pending)
+
+    def test_expired_status_without_completion_still_blocks_sweep(self):
+        self.capture(1)
+        self.capture(2,task_type='assessment',assessment_started=True,
+            activity_complete=False,assessment_complete=False,test_submission_status='expired',
+            assessment_question_count=9,completion='Quiz 7 expired; 0 of 9 answered.')
+        self.assertEqual(sweep(self.db,self.args,trigger='startup'),[])
         self.db.import_content.assert_not_called()
 
     def test_completed_pending_capture_never_resumes_browser_and_startup_runs_at_limit(self):

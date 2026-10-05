@@ -210,6 +210,21 @@ def read_journal(path):
     return entries
 
 
+def idle_capture_repair(args, pacer, queue, attempted, completed, captured_tasks):
+    """Inspect a repairable backlog before quitting on an excluded-only queue."""
+    if (args.dry_run or args.no_capture_repair or not queue or
+            args.limit is not None and attempted >= args.limit):
+        return
+    from capture_repair import cooldown, next_failure
+    ledger_path = args.state_dir/'capture-repair/failures.json'
+    ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else {}
+    if next_failure(args,ledger) is None:
+        return
+    logging.info('No eligible live activity; starting an early capture-repair cooldown')
+    cooldown(args,pacer,{'attempted':attempted,'limit':args.limit,
+                        'completed_topics':sorted(completed),'captured_tasks':sorted(captured_tasks)})
+
+
 def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=None, directory=None):
     queue = browser.queue()
     retry_policy = update_policy(args.state_dir,getattr(browser,'completed_outcomes',()))
@@ -357,6 +372,7 @@ def run(args):
     from playwright.sync_api import sync_playwright
     from browser import AccessBlocked, CaptureBrowser, LEARN, repair_math_editor_document
     from solver import Solver
+    from capture_repair import RestartWorker
     rng = random.Random(args.seed)
     if batch.get('rng_state'):
         from capture_repair import tuple_tree
@@ -386,14 +402,19 @@ def run(args):
                     captured_tasks.add(entry['task_id'])
                     if entry.get('task_type','lesson') == 'lesson' and entry.get('activity_outcome') != 'failed':
                         completed.add(entry['topic_id'])
-            deferred = []
+            deferred, pending_imports = [], []
             for source in args.output.glob('*/state.json'):
                 saved = json.loads(source.read_text())
                 captured_tasks.add(saved['task_id'])
                 if saved.get('deferred_error'):
-                    deferred.append(saved['task_id'])
+                    if saved.get('activity_complete') and saved.get('history_complete') and saved['deferred_error'].get('phase') in ('import','queue-after'):
+                        pending_imports.append(saved['task_id'])
+                    else:
+                        deferred.append(saved['task_id'])
+            if pending_imports:
+                logging.info('Completed captures awaiting database import: %s',sorted(pending_imports))
             if deferred:
-                logging.info('Skipping deferred activities until explicit --resume: %s',deferred)
+                logging.info('Skipping deferred captures until explicit --resume: %s',sorted(deferred))
             queue_observation = None
             imported_directories = set()
             attempts = itertools.count(start_n) if args.limit is None else range(start_n,args.limit)
@@ -417,6 +438,7 @@ def run(args):
                             queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
                         activity = queue_observation['selected']
                         if not activity:
+                            idle_capture_repair(args,pacer,queue_observation['queue'],n,completed,captured_tasks)
                             logging.info('No eligible activity. Deferred/in-progress tasks require explicit --resume; assessments with incomplete or unsupported details remain queued.')
                             break
                         logging.info('Selected %s %s%s',activity['task_type'],activity['title'],
@@ -487,6 +509,8 @@ def run(args):
                         complete(args,directory,state,result)
                         imported_directories.add(directory)
                     print(json.dumps({'run_directory':str(directory),'database':result},indent=2),flush=True)
+                except RestartWorker:
+                    raise  # Early maintenance is control flow, not a queue failure.
                 except (Exception,KeyboardInterrupt) as error:
                     if state is not None:
                         update_policy(args.state_dir,completed_state=state)
@@ -513,6 +537,7 @@ def run(args):
                     logging.info('Deferred task %s; continuing with other available activities. Retry with --resume %s',
                                  state['task_id'],directory)
                 if queue_observation is not None and not queue_observation['selected']:
+                    idle_capture_repair(args,pacer,queue_observation['queue'],n+1,completed,captured_tasks)
                     logging.info('No eligible activity. Optional assessments remain queued; deferred/in-progress tasks require explicit --resume.')
                     break
                 if args.limit is None or n+1<args.limit:

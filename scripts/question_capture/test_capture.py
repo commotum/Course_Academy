@@ -771,6 +771,64 @@ class RunnerTests(unittest.TestCase):
 
 
 class DOMTests(unittest.TestCase):
+    def test_custom_select_follows_owned_option_when_menu_moves_to_body(self):
+        self.page.set_content('''<div id="question"><div class="questionText">Select signs.</div>
+          <div id="select-1" class="selectList"><div id="frame-1" class="selectListFrame">
+          </div><div class="selectListOptions" style="visibility:hidden">
+          <div class="selectListOption">-</div><div class="selectListOption">+</div></div></div>
+          <div id="select-2" class="selectList"><div id="frame-2" class="selectListFrame">
+          </div><div class="selectListOptions" style="visibility:hidden">
+          <div class="selectListOption">-</div><div class="selectListOption">+</div></div></div></div>
+          <div class="selectListOptions" style="visibility:visible"><div class="selectListOption">Decoy</div></div>
+          <style>.selectListFrame {height:20px;width:32px;}</style>
+          <script>for(const control of document.querySelectorAll('.selectList')) {
+            const menu=control.querySelector('.selectListOptions');
+            control.querySelector('.selectListFrame').onclick=()=>{
+              document.body.appendChild(menu);menu.style.visibility='visible';
+            };
+            for(const option of menu.children) option.onclick=()=>{
+              control.querySelector('.selectListFrame').innerHTML=option.innerHTML;
+              control.appendChild(menu);menu.style.visibility='hidden';
+            };
+          }</script>''')
+        scope=self.page.locator('#question');before=scope.evaluate(EXTRACT)
+        record={'before':before,'intended':'C','decision':{'answers':[
+            {'key':'field-1','correct_option':'1'},{'key':'field-2','correct_option':'0'}]}}
+        reader=CaptureBrowser(self.page,SimpleNamespace(timeout_ms=500),SimpleNamespace(wait=lambda *args:None,rng=random.Random(1)),None)
+        reader.enter(scope,record)
+        self.assertEqual([f['submitted_value'] for f in before['fields']],['+','-'])
+        self.assertEqual(self.page.locator('#frame-1').inner_text(),'+')
+        self.assertEqual(self.page.locator('#frame-2').inner_text(),'-')
+        self.page.locator('#select-1 .selectListOption').nth(1).evaluate('n => n.onclick=()=>{}')
+        self.page.locator('#frame-1').evaluate('n => n.textContent="wrong"')
+        with self.assertRaisesRegex(ValueError,'Actual selected dropdown value'):
+            reader.enter(scope,record)
+
+    def test_real_sign_table_dropdown_selection_is_checked_in_its_frame(self):
+        fixture=Path(__file__).parent/'fixtures/sign-table-dropdown/question.html'
+        self.page.set_content(fixture.read_text())
+        self.assertEqual(self.page.locator('#selectList-278484-0 .selectListSelectedText').count(),0)
+        self.page.evaluate('''() => {for(const control of document.querySelectorAll('.selectList')) {
+          const frame=control.querySelector('.selectListFrame'), menu=control.querySelector('.selectListOptions');
+          frame.onclick=()=>{document.body.appendChild(menu);menu.style.visibility='visible';menu.style.position='static';};
+          for(const option of menu.children) option.onclick=()=>{
+            frame.innerHTML=option.innerHTML;control.appendChild(menu);menu.style.visibility='hidden';
+          };
+        }}''')
+        scope=self.page.locator('#step-q278484');before=scope.evaluate(EXTRACT)
+        self.assertEqual(before['errors'],[])
+        record={'before':before,'intended':'C','decision':{'answers':[
+            {'key':'field-1','correct_option':'1'}, {'key':'field-2','correct_option':'0'},
+            {'key':'field-3','correct_option':'0'}]}}
+        reader=CaptureBrowser(self.page,SimpleNamespace(timeout_ms=500),SimpleNamespace(wait=lambda *args:None,rng=random.Random(1)),None)
+        reader.enter(scope,record)
+        self.assertEqual([f['submitted_value'] for f in before['fields']],['+','-','-'])
+        self.assertIsNone(scope.evaluate('n=>n.querySelector(".questionWidget-result")') )
+        self.page.locator('#selectList-278484-0 .selectListOption').nth(1).evaluate('n=>n.onclick=()=>{}')
+        self.page.locator('#selectListFrame-278484-0').evaluate('n=>n.textContent="wrong"')
+        with self.assertRaisesRegex(ValueError,'Actual selected dropdown value'):
+            reader.enter(scope,record)
+
     def test_local_mathml_operator_nodes_preserve_adjacent_function_names(self):
         fixture=Path(__file__).parent/'fixtures/reciprocal-trig-operators'
         self.page.set_content((fixture/'question.html').read_text())

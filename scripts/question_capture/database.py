@@ -159,7 +159,46 @@ class Database:
         # Protect all non-content domain facts, including engine configuration,
         # weights, policies and activity data whose namespaces may expand.
         ids = [a for a, ident in attributes if str(ident)[1:] not in ALLOWED and not str(ident).startswith(':db/')]
-        return self.query('[:find ?e ?a ?v :in $ [?a ...] :where [?e ?a ?v]]', [ids], directory, name, basis)
+        # Bind one scalar attribute before scanning. A collection binding can
+        # allocate the broad EAV relation before joining, even for small lists.
+        # Every read uses the same immutable basis; no protected facts are omitted.
+        rows = []
+        for attribute in sorted(set(ids)):
+            stop = getattr(self.args, 'stop_event', None)
+            if stop is not None and stop.is_set():
+                raise KeyboardInterrupt('Stopped during protected-fact verification')
+            try:
+                part = self.query('[:find ?e ?a ?v :in $ ?a :where [?e ?a ?v]]',
+                                  [attribute], directory, name+'-'+str(attribute), basis)
+            except subprocess.CalledProcessError as error:
+                if 'query/value-byte-limit' not in (error.stderr or ''):
+                    raise
+                # Large text attributes need entity-bounded reads as well.
+                # Enumerating just subjects avoids allocating their text values.
+                subjects = sorted(r[0] for r in self.query(
+                    '[:find ?e :in $ ?a :where [?e ?a]]',[attribute],directory,
+                    name+'-'+str(attribute)+'-subjects',basis))
+                def read_subjects(group):
+                    if stop is not None and stop.is_set():
+                        raise KeyboardInterrupt('Stopped during protected-fact verification')
+                    label=name+'-'+str(attribute)+'-entities-'+str(group[0])+'-'+str(group[-1])
+                    try:
+                        values=self.query('[:find ?e ?a ?v :in $ ?a [?e ...] :where [?e ?a ?v]]',
+                                          [attribute,group],directory,label,basis)
+                    except subprocess.CalledProcessError as failure:
+                        if 'query/value-byte-limit' not in (failure.stderr or '') or len(group)==1:
+                            raise
+                        middle=len(group)//2
+                        return read_subjects(group[:middle])+read_subjects(group[middle:])
+                    if {r[0] for r in values} != set(group) or any(r[1]!=attribute for r in values):
+                        raise ValueError('Incomplete protected-fact entity partition')
+                    return values
+                part=[]
+                for offset in range(0,len(subjects),64):
+                    part.extend(read_subjects(subjects[offset:offset+64]))
+            rows.extend(part)
+        (Path(directory)/(name+'.edn')).write_text(dumps(rows)+'\n')
+        return rows
 
     def validate_datoms(self, receipt, attributes, retractions=(), immutable_answers=(), immutable_fields=()):
         allowed = {a for a, ident in attributes if str(ident)[1:] in ALLOWED or ident == ':db/txInstant'}

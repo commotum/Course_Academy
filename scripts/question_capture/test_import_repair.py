@@ -18,6 +18,16 @@ class ImportRepairTests(unittest.TestCase):
         self.result={'status':'blocked','summary':'Genuine answer conflict needs source evidence.',
                      'edits':[],'equivalent':[],'distinct':[]}
     def tearDown(self):self.work.cleanup()
+    def test_saved_commit_intent_bypasses_model_repair(self):
+        directory=self.root/'1';(directory/'edb-import').mkdir(parents=True)
+        atomic_json(directory/'edb-import/commit-intent.json',{'basis':657})
+        error=subprocess.CalledProcessError(1,['edb'],stderr='query/value-byte-limit')
+        db=Mock();db.import_content.side_effect=error
+        with patch('import_repair.repair') as repair:
+            with self.assertRaises(subprocess.CalledProcessError):
+                import_with_repair(db,{'task_id':1},directory,
+                    {'activity_complete':True,'history_complete':True},self.args)
+        repair.assert_not_called()
     def fake_cli(self,command,**kwargs):
         self.commands.append(command);kwargs['started'](123456789)
         Path(command[command.index('--output-last-message')+1]).write_text(json.dumps(self.result))

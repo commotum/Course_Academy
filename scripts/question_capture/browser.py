@@ -12,6 +12,12 @@ from core import atomic_json, assessment_can_start, assessment_requirement, choo
 from progress import COURSES, capture as capture_progress
 
 EXTRACT = (Path(__file__).parent / 'dom.js').read_text()
+SELECT_SNAPSHOT = '''n => {
+  const root=document.createElement('div'), prompt=document.createElement('div');
+  prompt.className='questionText';prompt.appendChild(n.cloneNode(true));root.appendChild(prompt);
+  const item=('''+EXTRACT+''')(root);
+  return {value:item.problem, images:item.assets.map(a=>a.source_url), errors:item.errors};
+}'''
 LEARN = 'https://mathacademy.com/learn'
 ACTIVE_STEP = r'''() => {
   const visible=n=>!!n?.getClientRects().length && getComputedStyle(n).visibility!=='hidden';
@@ -764,8 +770,21 @@ class CaptureBrowser:
                 elif field['tag'] == 'select':
                     by_id(scope,field['dom_id']).select_option(chosen['option'])
                 else:
+                    # MA reparents this menu to body when opened. Retain the
+                    # exact option node while it still belongs to this field;
+                    # a scoped locator would no longer find it after opening.
+                    option = by_id(scope,field['dom_id']).locator(
+                        '.selectListOptions > .selectListOption').nth(int(chosen['option'])).element_handle()
+                    if option is None:
+                        raise ValueError('Captured dropdown option is missing; stop before Submit')
+                    expected = option.evaluate(SELECT_SNAPSHOT)
                     by_id(scope,field['frame_id']).click()
-                    by_id(scope,field['dom_id']).locator('.selectListOptions > .selectListOption').nth(int(chosen['option'])).click()
+                    option.click()
+                    selected = by_id(scope,field['frame_id'])
+                    observed = selected.evaluate(SELECT_SNAPSHOT)
+                    if (expected['errors'] or observed['errors'] or expected['images'] != observed['images'] or
+                            normalize(expected['value'],'text') != normalize(observed['value'],'text')):
+                        raise ValueError('Actual selected dropdown value differs from intended option; stop before Submit')
                 field['submitted_value'] = chosen['value']
                 field['submitted_option'] = chosen['option']
             else:

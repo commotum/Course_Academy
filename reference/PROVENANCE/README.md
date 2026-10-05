@@ -3,6 +3,8 @@
 Date: 2026-10-05  
 Status: Schema and import-tooling review; recommendations, not an implemented provenance schema.
 
+Follow-up: [Authorship, source materials, content blueprints, and performance](authored-content-and-performance-model.md) records the newer recommendations from the discussion: lightweight authorship, external school sources, native tag/block/hyperdoc blueprints, and computed expected performance. Where implementation recommendations differ, use that report as the current design direction; the evidence and entity audit below remain relevant.
+
 ## Recommendation
 
 Use one shared provenance mechanism that can apply to every entity. For questions, grading, curriculum relationships, and calculated values, it also needs to identify the provenance of individual facts. Different parts of one entity can come from different sources.

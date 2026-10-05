@@ -14,7 +14,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock,patch
 
-from capture import arguments,main,run
+from capture import arguments,idle_capture_repair,main,run
 from capture_repair import RestartWorker,cooldown,next_failure,prepare,run_tests,safe_resume,tuple_tree
 from core import Pacer,atomic_json
 
@@ -26,6 +26,38 @@ class CaptureMaintenanceTests(unittest.TestCase):
         self.sid=str(uuid.uuid4());self.commands=[]
         self.result={'status':'blocked','summary':'Missing source evidence.','file':'','edits':[],'regression_test':''}
     def tearDown(self):self.temp.cleanup()
+    def test_excluded_only_queue_runs_early_repair_without_consuming_attempt(self):
+        self.failure()
+        fake=Mock();fake.rng=random.Random(1)
+        with patch('capture_repair.cooldown') as repair:
+            idle_capture_repair(self.args,fake,[{'task_id':1}],7,{10},{1})
+        self.assertEqual(repair.call_args.args[2],{'attempted':7,'limit':None,
+                         'completed_topics':[10],'captured_tasks':[1]})
+        with patch('capture_repair.cooldown') as repair:
+            idle_capture_repair(self.args,fake,[],7,set(),set())
+            self.args.limit=7
+            idle_capture_repair(self.args,fake,[{'task_id':1}],7,set(),set())
+            repair.assert_not_called()
+
+    def test_runner_reaches_early_repair_for_deferred_only_queue(self):
+        directory,_=self.failure()
+        atomic_json(directory/'state.json',{'task_id':1,'task_type':'lesson','topic_id':10,
+            'questions':{},'deferred_error':{'phase':'activity','message':'Unknown visible widget'}})
+        self.args.limit=2
+        class Browser:
+            def __init__(self,*args):pass
+            def queue(self):return [{'task_id':1,'topic_id':10,'task_type':'lesson','title':'Deferred',
+                                     'href':'/tasks/1/topics/10/lesson','in_progress':True}]
+        db=Mock();db.priorities.return_value={}
+        runtime=Mock();runtime.__enter__=Mock(return_value=runtime);runtime.__exit__=Mock(return_value=False)
+        context=SimpleNamespace(pages=[Mock()],close=Mock(),route=Mock())
+        runtime.chromium.launch_persistent_context.return_value=context
+        with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',Browser), \
+             patch('playwright.sync_api.sync_playwright',return_value=runtime), \
+             patch('capture_repair.cooldown',side_effect=RestartWorker(self.root/'batch.json')) as repair:
+            with self.assertRaises(RestartWorker):run(self.args)
+        self.assertEqual(repair.call_args.args[2]['attempted'],0)
+        context.close.assert_called_once()
     def test_complete_suite_has_a_separate_configurable_timeout(self):
         self.assertEqual(self.args.capture_repair_test_timeout,1800)
         custom=arguments(['run','--capture-repair-test-timeout','2400'])

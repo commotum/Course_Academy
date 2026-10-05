@@ -1,3 +1,31 @@
+Each of the following attributes will need to be turned into an entity type for us to attach authorship to. This will make things much more flexible down the road. The question entity will have different composition at different points in time, and the current time version will always point to the most up to date authoritative version we have.
+
+Each of these schemas will follow the same pattern previously, when a referenced entity is an attribute then the schema falls under that original entities index. ie 1-1-learner.edn has a many ref pointing to performance entities, which are laid out in the 1-2-learner-performance.edn file. The exception I think is probably difficulty which should actually be a generic schema used across topics, questions, etc? 
+
+EDN to create:
+
+    :question/difficulty (although I think difficulty )
+        :difficulty/id
+        :difficulty/level ref
+        :difficulty/author ref
+    :question/worked-solution
+        :solution/id
+        :solution/content string
+        :solution/author
+    :question/tags
+        :
+
+Non-Authored/Transitive Entities:
+
+1. Answer-Field
+
+
+
+
+
+
+
+
 /home/jake/Developer/MA/.venv/bin/python scripts/question_capture run --headless --limit 60
 
 Topics:
@@ -6,7 +34,12 @@ Topics:
     - 
 
 
+**Four KPs** have at least two fully captured questions in each band—the same four listed above:
 
+- Computing Higher Order Derivatives: **4 / 2 / 2**
+- Evenness Property of Secant: **4 / 2 / 2**
+- Radical Functions Using the Chain Rule: **2 / 4 / 2**
+- Range of Transformed Reciprocal Functions: **2 / 3 / 2**
 
 
 In reference/engine-dependencies.dots you modeled earned xp as dependent on graded learner results. Let's check our verified progress to see which is the better model, dependent on graded learner results, or dependent on learner accuracy. Same for the fractional repetition credit.

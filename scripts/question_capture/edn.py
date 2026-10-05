@@ -8,6 +8,11 @@ class Keyword(str):
     pass
 
 
+class Symbol(str):
+    """An EDN symbol is data, distinct from a quoted string; never evaluated."""
+    pass
+
+
 class Tagged:
     def __init__(self, tag, value):
         self.tag, self.value = tag, value
@@ -18,7 +23,7 @@ def kw(name):
 
 
 def dumps(value):
-    if isinstance(value, Keyword):
+    if isinstance(value, (Keyword, Symbol)):
         return str(value)
     if isinstance(value, uuid.UUID):
         return '#uuid ' + json.dumps(str(value))
@@ -72,6 +77,8 @@ def loads(source):
             return int(token)
         if re.fullmatch(r'-?\d+\.\d+(?:[Ee][+-]?\d+)?', token):
             return float(token)
+        if re.fullmatch(r'[A-Za-z_*+!?<>=][A-Za-z0-9_.*/+!?<>=-]*', token):
+            return Symbol(token)
         raise ValueError('Unsupported EDN token: ' + token)
 
     result = read()

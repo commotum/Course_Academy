@@ -184,7 +184,7 @@ class ReplacementTests(unittest.TestCase):
                 db.validate_datoms({':edb/tx-data':[row]},attrs,[[10,kw('question/problem'),'old']], [20])
         db.query = Mock(return_value=[])
         db.protected(attrs,self.directory,'protected',656)
-        self.assertEqual(db.query.call_args.args[1], [[2,4]])
+        self.assertEqual([call.args[1] for call in db.query.call_args_list], [[2],[4]])
 
     def test_pending_intent_keeps_exact_transaction_and_evidence(self):
         db = Database(SimpleNamespace(database='test', endpoint='socket'))

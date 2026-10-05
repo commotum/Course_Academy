@@ -187,6 +187,11 @@ def import_with_repair(db, content, directory, state, args):
             # Authorship and learner-history conflicts are data review cases;
             # a model must not turn them into notation equivalences.
             raise
+        if (Path(directory)/'edb-import/commit-intent.json').exists():
+            # A submitted transaction needs exact receipt/verification recovery,
+            # never a model-generated change to its frozen plan.
+            logging.warning('Import has a saved commit intent; retaining it for exact recovery/verification')
+            raise
         if args.no_import_repair or not (state.get('activity_complete') and state.get('history_complete')):
             raise
         try:

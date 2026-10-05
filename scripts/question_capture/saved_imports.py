@@ -28,8 +28,11 @@ def confirmed_completion(state):
             return False
     elif kind == 'assessment':
         count = state.get('assessment_question_count')
-        if (state.get('test_submission_status') != 'completed' or not count or
-                not re.search(r'\bof\s+'+str(count)+r'\s+questions\b',completion,re.I)):
+        status = state.get('test_submission_status')
+        suffix = '(?:questions|answered)' if status == 'expired' else 'questions'
+        if (status not in ('completed','expired') or not count or
+                status == 'expired' and not re.search(r'\bexpired\b',completion,re.I) or
+                not re.search(r'\bof\s+'+str(count)+r'\s+'+suffix+r'\b',completion,re.I)):
             return False
     elif kind == 'multistep':
         if 'completed the task' not in completion.lower():
@@ -128,19 +131,44 @@ def verified(directory, content):
             proof.get('committed') and proof.get('reimport_is_noop') and
             proof.get('learner_and_engine_facts_unchanged')):
         return False
+    receipts = directory/'edb-import'
+    archive = proof.get('receipt_archive')
+    if archive:
+        # The one-time canonical-example payload migration archived committed
+        # intents. Its audited hash transition is recorded on the verification,
+        # not inferred from a missing receipt or a checkpoint flag.
+        if archive != 'committed-before-capture-format-migration' or not proof.get('content_sha256'):
+            return False
+        receipts = receipts/archive
     if proof.get('committed'):
-        receipt = directory/'edb-import/commit.edn'
+        receipt = receipts/'commit.edn'
         if not receipt.exists() or loads(receipt.read_text()).get(':edb/committed') is not True:
             return False
-    intent = read_json(directory/'edb-import/commit-intent.json')
+        if archive:
+            committed = loads(receipt.read_text())
+            if (committed.get(':edb/db-before-t') != proof.get('basis_before') or
+                    committed.get(':edb/db-after-t') != proof.get('basis_after')):
+                return False
+    intent = read_json(receipts/'commit-intent.json')
+    if archive and not intent:
+        return False
     if intent:
-        if current != intent.get('content_sha256'):
+        attested = proof.get('original_content_sha256') if archive else current
+        if attested != intent.get('content_sha256'):
             return False
+        if archive:
+            historical = json.loads(json.dumps(content))
+            for question in historical.get('questions',[]):
+                question['is_example'] = False
+            for example in historical.get('canonical_examples',[]):
+                example['is_example'] = True
+            if hashlib.sha256(json.dumps(historical,sort_keys=True,default=str).encode()).hexdigest() != attested:
+                return False
         for name,key in [('transaction.edn','sha256'),('reconciliation.edn','reconciliation_sha256')]:
-            path = directory/'edb-import'/name
+            path = receipts/name
             if intent.get(key) and (not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest() != intent[key]):
                 return False
-        receipt = directory/'edb-import/commit.edn'
+        receipt = receipts/'commit.edn'
         if not receipt.exists() or loads(receipt.read_text()).get(':edb/committed') is not True:
             return False
     return True
