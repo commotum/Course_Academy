@@ -66,6 +66,20 @@ class Renderer:
             if kind=='math':value=value[1:-1]
             self.fields.append({'key':key,'type':'blank','choices':[{'type':kind,'value':value}] if value else [],'correct_value':value,'evidence':'Correct value displayed in historical free-response textbox'})
             return '{{'+key+'}}'
+        if extract_fields and 'selectList' in classes:
+            selected=n.find(class_='selectListFrame')
+            assert selected is not None and 'correctSelection' in selected.get('class',[]), 'Unverified historical dropdown'
+            value=self.text(selected)
+            value=value[1:-1] if value.startswith('$') and value.endswith('$') else value
+            choices=[]
+            for option in n.find_all(class_='selectListOption'):
+                text=self.text(option)
+                text=text[1:-1] if text.startswith('$') and text.endswith('$') else text
+                if text not in [c['value'] for c in choices]:choices.append({'type':'math','value':text})
+            key='field-'+str(len(self.fields)+1)
+            self.fields.append({'key':key,'type':'select','choices':choices,'correct_value':value,
+                'evidence':'Original historical dropdown options and correctSelection value'})
+            return '{{'+key+'}}'
         if t in ('mjx-container','math'):
             math=n if t=='math' else n.find('math')
             if math is None:self.errors.append('Formula without MathML');return ''
@@ -74,6 +88,9 @@ class Renderer:
         if t=='img':return '![]('+self.asset(n.get('src',''))+')'
         if t=='svg':self.errors.append('Inline SVG needs saved asset');return ''
         if t=='br':return '\n'
+        if t in ('ul','ol') and 'questionStatements' in classes:
+            roman=['I','II','III','IV','V','VI']
+            return '\n\n'+'\n'.join(roman[i]+'. '+self.text(c,extract_fields) for i,c in enumerate(n.find_all('li',recursive=False)))+'\n\n'
         if t=='table':
             rows=[]
             for row in n.find_all('tr'):
@@ -111,6 +128,8 @@ def prepare():
             raw=raw_cache[source_file][q['id']]
             graphic=BeautifulSoup(raw.get('raw_html',''),'html.parser').find(class_='questionGraphicFrame')
             if graphic:problem=r.text(graphic)+'\n\n'+problem
+            body=BeautifulSoup(raw.get('raw_html',''),'html.parser').find(class_='questionBody')
+            if body:problem+='\n\n'+r.text(body,True)
             assoc=matches[mid]
             assert len({a['database_kp_uuid'] for a in assoc})==1,(mid,assoc)
             records[mid]={'math_academy_id':mid,'topic_id':q['topic_id'],'knowledge_point_id':assoc[0]['database_kp_uuid'],

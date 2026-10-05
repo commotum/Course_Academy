@@ -1,0 +1,185 @@
+# Graphing a Curve Defined Parametrically
+
+Topic ID: 803
+
+Knowledge-point UUID: `e0dc11d5-8eda-52b1-b7b1-42b481813ff4`
+
+Questions needing reconstruction: `q-123789`, `q-123788`
+
+## Existing database examples and questions
+
+## e-5098
+
+Source: existing database content
+
+Difficulty: not recorded
+
+### Problem
+
+Plot the graph of the parametrically defined curve
+$x=t(t-6), \,\,\, y=t^3, \quad -2\leq t \leq 2$.
+
+### Worked solution
+
+We need to create a table of values and then sketch the curve. First, we work out the $x$-values using the formula $x=t(t-6)$. This gives
+
+| **$t$** | $-2$ | $-1$ | $0$ | $1$ | $2$ |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| $x$ | $16$ | $7$ | $0$ | $-5$ | $-8$ |
+| $y$ |  |  |  |  |  |
+
+Now, we work out the $y$ values using $y=t^3$. This gives
+
+| **$t$** | $-2$ | $-1$ | $0$ | $1$ | $2$ |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| $x$ | $16$ | $7$ | $0$ | $-5$ | $-8$ |
+| $y$ | $-8$ | $-1$ | $0$ | $1$ | $8$ |
+
+Plotting these points, we obtain the following curve:
+
+![](image_assets/e492a940fa95b406b60c6b0a5c438d98-f15f25af0c.png)
+
+## q-16190
+
+Source: existing database content
+
+Difficulty: not recorded
+
+### Problem
+
+> A scientific calculator is required to answer this question.
+
+Determine the graph of the following parametrically defined curve:
+$x = t^{2} - 2, y = 3 - t,-3 \le t \le 3$
+
+### Worked solution
+
+
+
+### Answer field `selection` (radio)
+
+1. ![](image_assets/q-16190-a-2-ac89c944c7.png)
+
+2. ![](image_assets/q-16190-a-4-b07c619499.png)
+
+3. ![](image_assets/q-16190-a-3-84c5e6aaa9.png)
+
+4. ![](image_assets/q-16190-a-5-33a2ed3d60.png)
+
+5. ![](image_assets/q-16190-a-1-0df9f67c90.png) **[stored correct answer]**
+
+## q-16194
+
+Source: existing database content
+
+Difficulty: not recorded
+
+### Problem
+
+> A scientific calculator is required to answer this question.
+
+Determine the graph of the following parametrically defined curve:
+$x = t^{2}, y = (2 - t)(t + 3),-5 \le t \le 5$
+
+### Worked solution
+
+
+
+### Answer field `selection` (radio)
+
+1. ![](image_assets/q-16194-a-4-b07c619499.png)
+
+2. ![](image_assets/q-16194-a-3-d87e8945e5.png)
+
+3. ![](image_assets/q-16194-a-1-eddae99bc7.png) **[stored correct answer]**
+
+4. ![](image_assets/q-16194-a-2-ac89c944c7.png)
+
+5. ![](image_assets/q-16194-a-5-0aecfe737a.png)
+
+## Additional captured historical questions
+
+## q-123789 — missing answer graph
+
+Source: completed historical activity
+
+Difficulty: easy
+
+### Problem
+
+Determine the graph of the following parametrically defined curve:
+
+$$
+x=2\sqrt{t},\,y=t,\,0\le t\le 4
+$$
+
+### Worked solution
+
+We need to create a table of values and then sketch the curve. First, we work out the $x$-values using the formula $x=2\sqrt{t}.$ This gives
+
+| **$t$** | $0$ | $1$ | $2$ | $3$ | $4$ |
+| --- | --- | --- | --- | --- | --- |
+| $x$ | $0$ | $2$ | $2.83$ | $3.46$ | $4$ |
+| $y$ | $$ | $$ | $$ | $$ | $$ |
+
+$$
+
+$$
+
+Now, we work out the $y$ values using $y=t.$ This gives
+
+| **$t$** | $0$ | $1$ | $2$ | $3$ | $4$ |
+| --- | --- | --- | --- | --- | --- |
+| $x$ | $0$ | $2$ | $2.83$ | $3.46$ | $4$ |
+| $y$ | $0$ | $1$ | $2$ | $3$ | $4$ |
+
+$$
+
+$$
+
+Plotting these points, we obtain the following curve:
+
+![](image_assets/82a911f8fafbf4ffc56365b1ebd9bc63485a975a81571d48480e2fac31cd348b-898075d0f7.png)
+
+## q-123788 — missing answer graph
+
+Source: completed historical activity
+
+Difficulty: easy
+
+### Problem
+
+Determine the graph of the following parametrically defined curve:
+
+$$
+x=t,\,y=-\frac{1}{t},\,-5\le t\le -1
+$$
+
+### Worked solution
+
+We need to create a table of values and then sketch the curve. First, we work out the $x$-values using the formula $x=t.$ This gives
+
+| **$t$** | $-5$ | $-4$ | $-3$ | $-2$ | $-1$ |
+| --- | --- | --- | --- | --- | --- |
+| $x$ | $-5$ | $-4$ | $-3$ | $-2$ | $-1$ |
+| $y$ | $$ | $$ | $$ | $$ | $$ |
+
+$$
+
+$$
+
+Now, we work out the $y$ values using $y=-\frac{1}{t}.$ This gives
+
+| **$t$** | $-5$ | $-4$ | $-3$ | $-2$ | $1$ |
+| --- | --- | --- | --- | --- | --- |
+| $x$ | $-5$ | $-4$ | $-3$ | $-2$ | $-1$ |
+| $y$ | $\frac{1}{5}$ | $\frac{1}{4}$ | $\frac{1}{3}$ | $\frac{1}{2}$ | $1$ |
+
+$$
+
+$$
+
+Plotting these points, we obtain the following curve:
+
+![](image_assets/f43506d71ff330a2c21c8ee405026c0c4204909e5ebadb135a7d35110130f4d9-c87dac6526.png)
+
