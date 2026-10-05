@@ -118,9 +118,9 @@ The runner:
    created. Unrecognized intervening context layouts stop for inspection.
 4. Matches `q-N` and `e-N` globally in EDB. Adds missing attributes and choices,
    reuses existing owned answer entities, and links new practice to the correct
-   `knowledge-point/questions`. Existing populated attributes are preserved.
-   Conflicting correct answers, field types, KP ownership, or canonical example
-   IDs stop the import for review.
+   `knowledge-point/questions`. Documented local values can be superseded by
+   recovered MA content, attribute by attribute. Unknown provenance and
+   contradictory source evidence stop the import with a review report.
    Worked-example roles come from `knowledge-point/canonical-example` references,
    and canonical targets are excluded from every KP practice pool. `q-N` / `e-N`
    distinguish MA source ID namespaces, not database roles. Captures omit
@@ -133,6 +133,85 @@ The runner:
    request key, and verifies that all learner and engine facts are unchanged
    across that exact transaction. It also verifies that a repeated import would
    produce no further changes.
+
+## Authoritative replacement
+
+`provenance.py` reads the saved Factorials authoring records and historical
+question reconstruction/format repairs. Each usable declaration needs its
+original transaction, verification basis, and a database readback at that basis.
+The current question identity and value must still match; field evidence also
+requires the same current field entity. Old content is never presumed authored
+because of its age. Original lesson CSVs provide identity and format metadata,
+not proof that a particular solution or distractor was locally written.
+
+Saved completed automator captures establish the incoming authority from the
+DOM/checkpoint and activity metadata, rather than from the solver's provenance
+labels. The importer also checks prior committed automator evidence so a local
+value subsequently confirmed by MA is treated as source content.
+
+- Captured problems, worked solutions, and observed E/M/H labels replace exact
+  documented local reconstructions, authored solutions, or estimated ratings.
+- Observed widgets can replace a documented local field type. Correct-key
+  changes require an explicit source answer or a matching submitted value with
+  a successful grade. A solver interpretation alone cannot change a conflicting
+  correct answer. The explicit historical correction for q-23188 remains source
+  evidence; its alternatives remain locally authored.
+- Complete radio/select choice sets supersede documented invented alternatives.
+  Completeness comes from the full extractor output, or the saved legacy radio
+  DOM's option count. Incomplete choices only enrich the existing field. A
+  complete set omitting legitimate source or unknown values requires review.
+- Replaced fields and answers receive fresh versioned identities. The importer
+  retracts the question's old ownership link and retains all old component
+  entities and values. Matching answer feedback survives when no replacement is
+  supplied. Blank-field values are retained, including prior entered strings.
+- Any retained historical presentation or response defers field replacement.
+  The usage check includes retracted presentations/responses and detached fields.
+  A `db/noHistory` setting on those relationships also prevents automatic field
+  replacement. Referenced fields/answers need additional handling outside this
+  importer; no learner response is changed or component cascade performed.
+- Missing source attributes preserve existing content, including canonical
+  example fields and estimated difficulty. Existing practice can likewise be
+  enriched by a partial source record; new practice still needs complete content.
+
+Answer identity uses typed semantic values, math normalization and image bytes,
+not displayed letters, option order, or image filename order. Question identity,
+KP ownership, canonical references, and practice membership retain their existing
+checks. Changed field keys or a changed KP mapping require review; the importer
+does not guess a correspondence between reconstructed fields and new widgets.
+
+Each import saves `replacement-report.json` with per-attribute/component hashes,
+categories, authoring/capture paths and hashes, basis, reason, and (after commit)
+receipt. `reconciliation.edn` freezes the attested records, usage check, exact
+approved retractions and immutable answer IDs. Its hash is part of the saved
+commit intent. Native preview/receipt validation permits only those exact
+retractions, rejects writes to preexisting answer identities/representations/
+strings, and protects every non-content domain attribute. Post-commit verification
+uses the frozen evidence and checks that reimport is a no-op. Unresolved intents
+always retry their original transaction and evidence; altered content is rejected.
+Review cases do not invoke the automated notation repair session.
+
+The changes apply on the next importer invocation; no database migration or
+worker restart is required. To inspect a real saved capture without visiting MA:
+
+```sh
+/home/jake/Developer/MA/.venv/bin/python scripts/question_capture import-saved \
+  --content reference/mathacademy/question-capture/ACTIVITY/content.json --preview
+```
+
+Read `edb-import/replacement-report.json`, matching report, and native preview
+before importing that same capture without `--preview`. Use a new capture/import
+directory for new evidence; keep an existing commit intent and its artifacts
+unchanged. Do not commit simulated test captures. This implementation does not
+perform a bulk replacement or start any MA activity.
+
+Focused offline checks:
+
+```sh
+cd scripts/question_capture
+/home/jake/Developer/MA/.venv/bin/python -m unittest \
+  test_replacement test_capture.PolicyTests test_capture.ReconciliationTests \
+  test_assessment test_multistep test_import_repair
+```
 
 After a complete activity and history capture, a failed import automatically
 calls a dedicated headless Codex repair session. Its ID is saved in

@@ -875,7 +875,13 @@ class CaptureBrowser:
                 submitted = f.get('submitted_value')
                 if submitted is not None and submitted != answer['correct_value']:
                     choices.append({'type':answer['value_type'],'value':submitted})
-            fields.append({'key':f['key'],'type':f['type'],'choices':choices,'correct_value':answer['correct_value']})
+            category = 'model_interpretation'
+            grade = record.get('actual_result') or record['after'].get('result')
+            if (grade == 'Correct' and f.get('submitted_value') is not None and
+                    normalize(f['submitted_value'],answer['value_type']) == normalize(answer['correct_value'],answer['value_type'])):
+                category = 'ma_successful_grade'
+            fields.append({'key':f['key'],'type':f['type'],'choices':choices,'correct_value':answer['correct_value'],
+                           'choices_complete':f.get('choices_complete',False), 'correct_origin':category})
         instructions = record['before'].get('calculator_instructions','')
         result = {'math_academy_id':mid,'knowledge_point_id':kp['id'],
                   'knowledge_point':kp['title'],'problem':record['before']['problem'],

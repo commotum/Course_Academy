@@ -12,6 +12,7 @@ import uuid
 from pathlib import Path
 
 from core import atomic_json
+from provenance import ReconciliationReview
 from solver import Solver, process_token, run_cli
 
 PACKAGE = Path(__file__).parent
@@ -182,6 +183,10 @@ def import_with_repair(db, content, directory, state, args):
     try:
         return db.import_content(content,Path(directory)/'edb-import',not args.preview)
     except Exception as error:
+        if isinstance(error, ReconciliationReview):
+            # Authorship and learner-history conflicts are data review cases;
+            # a model must not turn them into notation equivalences.
+            raise
         if args.no_import_repair or not (state.get('activity_complete') and state.get('history_complete')):
             raise
         try:

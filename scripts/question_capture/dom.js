@@ -151,6 +151,9 @@ element => {
       .filter(n => n.textContent.trim() && !(n.localName === 'option' && n.disabled))
       .map((n,i) => choice(n, n.localName === 'option' ? n.value : String(i), n.id || null));
   }
+  for (const field of fields) {
+    field.choices_complete = ['radio','select'].includes(field.type) && field.choices.length > 0 && errors.length === 0;
+  }
   const prompt = element.querySelector('.exampleQuestion, .questionWidget-text, .questionText') ||
     (element.matches('#steps > .step:not(:has(.question))') ? element : null);
   const graphic = element.querySelector('.questionWidget-graphic, #questionGraphic, .questionGraphicFrame');

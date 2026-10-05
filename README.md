@@ -29,6 +29,10 @@ queue serves lessons; review and assessment scheduling is not yet connected to
 this interface. Content without a supported grader or sufficient practice is
 excluded from the queue.
 
+Entered mathematical answers use our [Rust symbolic checker](reference/symbolic-grader-2026-10-05/README.md).
+It proves supported equivalences using exact arithmetic and keeps unresolved
+comparisons out of learner progress.
+
 Our FIRe implementation is in [engine/rust](engine/rust/). It combines the
 published mechanisms with configurable policies chosen for Course Academy.
 The goal is a reliable engine of our own, informed by the available evidence;

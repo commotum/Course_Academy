@@ -13,5 +13,6 @@ pub mod question_selection;
 pub mod replay;
 pub mod runtime;
 pub mod schema;
+pub mod symbolic;
 pub mod timing;
 pub mod wire;

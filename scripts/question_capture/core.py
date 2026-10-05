@@ -1,4 +1,4 @@
-"""Capture policy, durable files, and additive content reconciliation."""
+"""Capture policy, durable files, and evidence-backed content reconciliation."""
 import hashlib
 import json
 import logging
@@ -228,21 +228,22 @@ def ensured(kind, **attrs):
     return {**{kw(k): v for k, v in attrs.items()}, kw('db/ensure'): [kw(kind + '/validate')]}
 
 
-def validate_question(question, *, canonical=False):
+def validate_question(question, *, canonical=False, existing=None):
     if 'is_example' in question:
         raise ValueError('Retired capture field is_example; migrate saved content')
     mid = question['math_academy_id']
     if not re.fullmatch(r'[qe]-\d+', mid):
         raise ValueError('Invalid Math Academy ID: ' + mid)
     uuid.UUID(str(question['knowledge_point_id']))
-    if not question.get('problem') or not question.get('worked_solution'):
+    if (not (question.get('problem') or (existing or {}).get(':question/problem')) or
+            not (question.get('worked_solution') or (existing or {}).get(':question/worked-solution'))):
         raise ValueError('Missing problem or solution: ' + mid)
     if question.get('difficulty') not in (None, 'easy', 'moderate', 'hard'):
         raise ValueError('Invalid difficulty: ' + mid)
-    if not canonical and not question.get('difficulty'):
+    if not canonical and not (question.get('difficulty') or (existing or {}).get(':question/difficulty')):
         raise ValueError('Practice needs activity difficulty metadata: ' + mid)
     fields = question.get('answer_fields', [])
-    if not fields and not canonical:
+    if not fields and not canonical and not (existing or {}).get(':question/answer-fields'):
         raise ValueError('Practice needs locally observed answer fields: ' + mid)
     if len({f['key'] for f in fields}) != len(fields):
         raise ValueError('Duplicate field keys: ' + mid)
@@ -259,8 +260,8 @@ def validate_question(question, *, canonical=False):
             raise ValueError('Invalid answer representation: ' + mid)
 
 
-def build_transaction(content, topic, existing):
-    """Fill missing facts only. Existing owned components and values are reused."""
+def build_transaction(content, topic, existing, reconciler=None):
+    """Fill gaps and replace only attributes attested by saved evidence."""
     if content['topic_id'] != topic[':topic/math-academy-id']:
         raise ValueError('Topic mismatch')
     kps = {str(k[':knowledge-point/id']): k for k in topic[':topic/knowledge-points']}
@@ -303,8 +304,8 @@ def build_transaction(content, topic, existing):
         transaction.append({kw('db/id'):ref('topic/math-academy-id',content['topic_id']),
                             kw('topic/knowledge-points'):[target]})
     for question, example in records:
-        validate_question(question, canonical=example)
         mid, kp_id = question['math_academy_id'], str(question['knowledge_point_id'])
+        validate_question(question, canonical=example, existing=existing.get(mid))
         if kp_id not in kps:
             raise ValueError('KP is not a member of the selected topic: ' + kp_id)
         kp, old = kps[kp_id], existing.get(mid)
@@ -319,11 +320,16 @@ def build_transaction(content, topic, existing):
             owners = old.get(':knowledge-point/_questions', [])
             if any(str(o[':knowledge-point/id']) != kp_id for o in owners):
                 raise ValueError('Existing question belongs to another KP: ' + mid)
+        if old and reconciler:
+            owners = old.get(':knowledge-point/_questions', []) + old.get(':knowledge-point/_canonical-example', [])
+            if not any(str(o[':knowledge-point/id']) == kp_id for o in owners):
+                raise ValueError('Replacement needs an existing matching KP association: ' + mid)
         target = ref('question/math-academy-id', mid) if old else mid
         update = {kw('db/id'): target}
         candidates = {'question/id': stable_id('question', mid), 'question/math-academy-id': mid,
-                      'question/problem': question['problem'],
-                      'question/worked-solution': question['worked_solution']}
+                      'question/problem': question.get('problem'),
+                      'question/worked-solution': question.get('worked_solution')}
+        candidates = {attr:value for attr,value in candidates.items() if value is not None and value != ''}
         if question.get('difficulty'):
             candidates['question/difficulty'] = kw('question.difficulty/' + question['difficulty'])
         if question.get('requires_calculator') is not None:
@@ -331,15 +337,51 @@ def build_transaction(content, topic, existing):
         for attr, value in candidates.items():
             if not old or ':' + attr not in old:
                 update[kw(attr)] = value
+            elif reconciler and attr in ('question/problem', 'question/worked-solution', 'question/difficulty'):
+                prior = old[':' + attr]
+                if attr == 'question/difficulty':
+                    prior = prior[':db/ident']
+                if reconciler.replace(mid, None, attr, prior, value, {'ma_capture'}):
+                    update[kw(attr)] = value
         old_fields = {f[':answer-field/key']: f for f in (old or {}).get(':question/answer-fields', [])}
         captured_fields = {f['key'] for f in question.get('answer_fields', [])}
-        if not example and set(old_fields) - captured_fields:
+        if not example and captured_fields and set(old_fields) - captured_fields:
             raise ValueError('Live capture omitted existing fields: ' + mid)
         field_links = []
         for field in question.get('answer_fields', []):
             key = field['key']
             previous = old_fields.get(key)
             field_token = mid + '/' + key
+            if previous and reconciler:
+                action = reconciler.field_action(mid, previous, field)
+                if action == 'retain':
+                    continue
+                if action == 'version':
+                    # Detach ownership only: retractEntity would cascade and
+                    # destroy retained fields/answers. Fresh component identities
+                    # keep historical answer strings immutable.
+                    transaction.append([kw('db/retract'), old[':db/id'], kw('question/answer-fields'), previous[':db/id']])
+                    feedback = {(a[':answer/type'][':db/ident'].split('/')[-1],
+                                 normalize(a[':answer/value'], a[':answer/type'][':db/ident'].split('/')[-1])):a.get(':answer/feedback')
+                                for a in previous[':answer-field/choices']}
+                    field = {**field, 'choices':[dict(c) for c in field['choices']]}
+                    for c in field['choices']:
+                        retained = feedback.get((c['type'], normalize(c['value'], c['type'])))
+                        if retained is not None:
+                            c.setdefault('feedback', retained)
+                    if field['type'] == 'blank':
+                        field = {**field, 'choices': list(field['choices'])}
+                        signatures = {(c['type'], normalize(c['value'], c['type'])) for c in field['choices']}
+                        for a in previous[':answer-field/choices']:
+                            kind = a[':answer/type'][':db/ident'].split('/')[-1]
+                            if (kind, normalize(a[':answer/value'], kind)) not in signatures:
+                                retained = {'type':kind, 'value':a[':answer/value']}
+                                if ':answer/feedback' in a:
+                                    retained['feedback'] = a[':answer/feedback']
+                                field['choices'].append(retained)
+                    version = {**field, 'choices':sorted(field['choices'], key=lambda c:(c['type'], c['value']))}
+                    field_token += '/ma-v1/' + hashlib.sha256(json.dumps(version, sort_keys=True).encode()).hexdigest()
+                    previous = None
             field_target = previous[':db/id'] if previous else field_token
             fupdate = {kw('db/id'): field_target}
             if previous and previous[':answer-field/type'][':db/ident'] != ':answer-field.type/' + field['type']:
@@ -357,8 +399,13 @@ def build_transaction(content, topic, existing):
                 token = field_token + '/' + hashlib.sha256((choice['type'] + ':' + choice['value']).encode()).hexdigest()
                 answer_target = answer[':db/id'] if answer else token
                 if not answer:
-                    transaction.append(ensured('answer', **{'db/id': token, 'answer/id': stable_id('answer', token),
-                                                           'answer/type': kw('answer.type/' + choice['type']), 'answer/value': choice['value']}))
+                    attrs = {'db/id': token, 'answer/id': stable_id('answer', token),
+                             'answer/type': kw('answer.type/' + choice['type']), 'answer/value': choice['value']}
+                    if choice.get('feedback') is not None:
+                        if not isinstance(choice['feedback'], str):
+                            raise ValueError('Invalid answer feedback')
+                        attrs['answer/feedback'] = choice['feedback']
+                    transaction.append(ensured('answer', **attrs))
                     choice_links.append(answer_target)
                     old_values[signature] = {':db/id': answer_target}
                 if choice['value'] == field['correct_value']:
@@ -395,25 +442,29 @@ def build_transaction(content, topic, existing):
                        'added_question_attributes': [str(a)[1:] for a in update if a not in (':db/id', ':db/ensure')],
                        'missing_source_fields': question.get('missing_source_fields', [])})
     for item in transaction:
+        if isinstance(item, list):
+            if len(item) != 4 or item[0] != ':db/retract' or item[2] != ':question/answer-fields':
+                raise ValueError('Forbidden transaction operation')
+            continue
         forbidden = {str(a)[1:] for a in item} - ALLOWED - {'db/id', 'db/ensure'}
         if forbidden:
             raise ValueError('Forbidden transaction attributes: ' + repr(forbidden))
     return transaction, report
 
 
-def build_content_transaction(content, topics, existing):
+def build_content_transaction(content, topics, existing, reconciler=None):
     """Assessments and multisteps span topics in one guarded content transaction."""
     records = content['questions'] + content.get('canonical_examples', [])
     if len({q['math_academy_id'] for q in records}) != len(records):
         raise ValueError('Duplicate question identities in capture')
     if content.get('task_type') not in ('assessment','multistep'):
-        return build_transaction(content,topics[content['topic_id']],existing)
+        return build_transaction(content,topics[content['topic_id']],existing,reconciler)
     transaction, report = [], []
     if content.get('canonical_examples'):
         raise ValueError('Unexpected assessment canonical examples')
     for topic_id in sorted({q['topic_id'] for q in records}):
         group = {**content,'topic_id':topic_id,'questions':[q for q in records if q['topic_id']==topic_id]}
-        changes, matches = build_transaction(group,topics[topic_id],existing)
+        changes, matches = build_transaction(group,topics[topic_id],existing,reconciler)
         transaction.extend(changes)
         report.extend(matches)
     return transaction, report

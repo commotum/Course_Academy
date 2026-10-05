@@ -8,6 +8,7 @@ use crate::{
     activities::{decimal_number, evaluate_kp_prefix, lesson_xp_candidate},
     core::Event,
     schema::{EntitySnapshot, LoadedRuntime, load_runtime, timestamp_days, writeback},
+    symbolic,
 };
 use chrono::{DateTime, Utc};
 use num_rational::BigRational;
@@ -155,7 +156,8 @@ fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()> {
             }
             match ident(s, correct, "answer/type")?.as_str() {
                 "answer.type/math"
-                    if RationalParser::parse(&normalize_math(canonical)).is_some() => {}
+                    if RationalParser::parse(&normalize_math(canonical)).is_some()
+                        || symbolic::supports(canonical, math_context(s, question)?) => {}
                 "answer.type/text" => {}
                 _ => {
                     return Err("this blank needs a symbolic grader before it can be served".into());
@@ -1108,7 +1110,7 @@ pub fn grade(s: &EntitySnapshot, question: u64, responses: &BTreeMap<u64, String
                     if form_sensitive {
                         normalize_math(submitted) == normalize_math(canonical)
                     } else {
-                        equivalent_math(submitted, canonical)
+                        compare_math(submitted, canonical, math_context(s, question)?)?
                     }
                 }
                 "answer.type/text" => {
@@ -1188,23 +1190,59 @@ fn normalize_math(value: &str) -> String {
     text
 }
 
-/// Conservative mathematical equivalence: exact rational arithmetic plus
-/// formatting normalization. It never evaluates executable code or uses a float
-/// tolerance that could accept a wrong high-precision answer. General symbolic
-/// identities are deliberately not guessed.
+/// Compatibility predicate for callers that need only proved equivalence.
+/// The learner-facing grader uses compare_math so unsupported comparisons
+/// remain errors, rather than being recorded as incorrect learner answers.
 pub fn equivalent_math(a: &str, b: &str) -> bool {
+    compare_math(a, b, symbolic::Context::default()).unwrap_or(false)
+}
+
+fn compare_math(a: &str, b: &str, context: symbolic::Context) -> Result<bool> {
+    let (original_a, original_b) = (a, b);
     let a = normalize_math(a);
     let b = normalize_math(b);
     if a.is_empty() || b.is_empty() {
-        return false;
-    }
-    if a == b {
-        return true;
+        return Err("empty mathematical answer".into());
     }
     match (RationalParser::parse(&a), RationalParser::parse(&b)) {
-        (Some(a), Some(b)) => a == b,
-        _ => false,
+        (Some(a), Some(b)) => Ok(a == b),
+        _ => symbolic::compare(original_a, original_b, context),
     }
+}
+
+fn math_context(s: &EntitySnapshot, question: u64) -> Result<symbolic::Context> {
+    let mut wording = s
+        .entity(question)?
+        .get("question/problem")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .to_lowercase();
+    for kp in s.owners(question, "knowledge-point/questions")? {
+        if let Some(title) = s
+            .entity(kp)?
+            .get("knowledge-point/title")
+            .and_then(Value::as_str)
+        {
+            wording.push(' ');
+            wording.push_str(&title.to_lowercase());
+        }
+    }
+    Ok(symbolic::Context {
+        symbolic_i: ["riemann", "sigma", "\\sum", "vector"]
+            .iter()
+            .any(|v| wording.contains(v)),
+        integer_indices: [
+            "riemann",
+            "sigma",
+            "\\sum",
+            "series",
+            "sequence",
+            "recursive",
+            "partial sum",
+        ]
+        .iter()
+        .any(|v| wording.contains(v)),
+    })
 }
 
 struct RationalParser<'a> {
@@ -2526,14 +2564,21 @@ mod tests {
     }
 
     #[test]
-    fn unsupported_symbolic_blanks_are_not_served_and_rounding_preserves_form() {
+    fn supported_symbolic_blanks_are_served_and_rounding_preserves_form() {
         let mut s = fixture();
         s.entities
             .get_mut(&300)
             .unwrap()
             .insert("answer/value".into(), json!("x^2+1"));
+        assert!(validate_question(&s, 100).is_ok());
+        assert!(grade(&s, 100, &BTreeMap::from([(200, "1+x^2".into())])).unwrap());
+        assert!(!grade(&s, 100, &BTreeMap::from([(200, "2+x^2".into())])).unwrap());
+        assert!(grade(&s, 100, &BTreeMap::from([(200, "foo(x)".into())])).is_err());
+        s.entities
+            .get_mut(&300)
+            .unwrap()
+            .insert("answer/value".into(), json!("foo(x)"));
         assert!(validate_question(&s, 100).is_err());
-        assert!(grade(&s, 100, &BTreeMap::from([(200, "1+x^2".into())])).is_err());
         s.entities
             .get_mut(&300)
             .unwrap()
@@ -2544,6 +2589,37 @@ mod tests {
         );
         assert!(grade(&s, 100, &BTreeMap::from([(200, "0.50".into())])).unwrap());
         assert!(!grade(&s, 100, &BTreeMap::from([(200, "1/2".into())])).unwrap());
+    }
+
+    #[test]
+    fn symbolic_grading_keeps_unknown_comparisons_out_of_learner_results() {
+        let mut s = fixture();
+        for (canonical, submitted, expected) in [
+            ("2\\sqrt{10}", "\\sqrt{40}", true),
+            ("sin(x)", "-sin(x)", false),
+            ("2e^x", "3e^x", false),
+            ("\\le", "<=", true),
+            ("\\infty", "-∞", false),
+        ] {
+            s.entities
+                .get_mut(&300)
+                .unwrap()
+                .insert("answer/value".into(), json!(canonical));
+            assert_eq!(
+                grade(&s, 100, &BTreeMap::from([(200, submitted.into())])),
+                Ok(expected)
+            );
+        }
+        s.entities
+            .get_mut(&300)
+            .unwrap()
+            .insert("answer/value".into(), json!("x/x"));
+        assert!(grade(&s, 100, &BTreeMap::from([(200, "1".into())])).is_err());
+        s.entities
+            .get_mut(&300)
+            .unwrap()
+            .insert("answer/value".into(), json!("1/0"));
+        assert!(validate_question(&s, 100).is_err());
     }
 
     #[test]

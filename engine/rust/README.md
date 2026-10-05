@@ -53,6 +53,11 @@ The library separates these responsibilities:
   schemas without changing the loaded input.
 - `learning`: the current generic lesson delivery and grading path used by the
   study app, including finite question banks and partial imported progress.
+- `symbolic`: bounded exact symbolic equivalence for entered answers. It handles
+  polynomials, rational expressions, supported radicals and powers, common
+  function identities, complex coefficients, and explicit special tokens.
+  Unsupported comparisons return an error before learner results are saved.
+  See [the checker documentation and verification](../../reference/symbolic-grader-2026-10-05/README.md).
 - `replay`, `history`, `live_history`, and `graph_snapshots`: the existing local
   replay and evidence-analysis tools.
 
