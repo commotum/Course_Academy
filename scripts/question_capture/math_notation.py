@@ -67,6 +67,27 @@ def tokens(value):
 
 def sequence_identity(nodes):
     nodes = tuple(nodes)
+    # Legacy lim_(...) and MathML {lim}_{...} identify a limit only
+    # when the subscript contains an explicit approach arrow.
+    normalized = []
+    for node in nodes:
+        if node[0] == 'script' and node[2]:
+            subscript = node[2]
+            if (len(subscript) == 1 and subscript[0][0] == 'fence' and
+                subscript[0][1] == '(' and subscript[0][3] == ')'):
+                subscript = subscript[0][2]
+            if ('command','rightarrow') in subscript:
+                base = node[1]
+                if base == ('group', (('char','l'),('char','i'),('char','m'))):
+                    node = ('script',('operator','lim'),subscript,node[3])
+                elif (base == ('char','m') and
+                      normalized[-2:] == [('char','l'),('char','i')]):
+                    del normalized[-2:]
+                    node = ('script',('operator','lim'),subscript,node[3])
+                elif base == ('operator','lim'):
+                    node = ('script',base,subscript,node[3])
+        normalized.append(node)
+    nodes = tuple(normalized)
     # A whole quotient whose two arguments are explicitly fenced has the same
     # scope as a stacked fraction. Leave unfenced slash expressions untouched.
     if (len(nodes) == 3 and nodes[1] == ('char','/') and
