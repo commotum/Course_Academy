@@ -169,7 +169,7 @@ function canonicalAnswers(fields) {
 }
 function instructionalSection(section) {
   const article = el('section', 'topic-section'); article.id = section.anchor;
-  attachStepMenu(article, section.stepId);
+  attachStepMenu(article, section.stepId, section.mathAcademyId);
   article.setAttribute('aria-labelledby', section.anchor + '-title');
   const header = el('div', 'section-heading');
   const label = el('div');

@@ -71,6 +71,7 @@ fn learner_json(facts: &Facts, learner_eid: u64, learner_id: &str) -> Json {
         "courseId": course_id,
         "selfDirected": scalar(facts, learner_eid, "learner/self-directed") == Some(&Value::Bool(true)),
         "targets": refs(facts, learner_eid, "learner/targets"),
+        "queue": refs(facts, learner_eid, "learner/queue"),
     })
 }
 
@@ -95,6 +96,7 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
         "learner/course",
         "learner/self-directed",
         "learner/targets",
+        "learner/queue",
         "learner/knowledge-profile",
         "progress/topic",
         "progress/repetitions",
@@ -108,6 +110,7 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
                     | "topic/math-academy-id"
                     | "learner/self-directed"
                     | "learner/targets"
+                    | "learner/queue"
             ) {
                 continue;
             }
@@ -695,9 +698,11 @@ mod tests {
         let learner = learner_json(&facts, 20, "learner");
         assert_eq!(learner["selfDirected"], false);
         assert_eq!(learner["targets"], json!([]));
+        assert_eq!(learner["queue"], json!([]));
 
         fact(&mut facts, 20, "learner/targets", Value::Ref(101));
         fact(&mut facts, 20, "learner/targets", Value::Ref(102));
+        fact(&mut facts, 20, "learner/queue", Value::Ref(103));
         for mode in [false, true] {
             facts
                 .get_mut(&20)
@@ -706,6 +711,7 @@ mod tests {
             let learner = learner_json(&facts, 20, "learner");
             assert_eq!(learner["selfDirected"], mode);
             assert_eq!(learner["targets"], json!([101, 102]));
+            assert_eq!(learner["queue"], json!([103]));
         }
     }
 

@@ -66,7 +66,11 @@ def tokens(value):
 
 
 def sequence_identity(nodes):
-    nodes = tuple(nodes)
+    nodes = tuple(
+        ('overbar',(n[1],)) if (
+            n[0] == 'script' and not n[2] and
+            n[3] == (('fence','(',(('char','―'),),')'),)) else n
+        for n in nodes)
     # Legacy lim_(...) and MathML {lim}_{...} identify a limit only
     # when the subscript contains an explicit approach arrow.
     normalized = []
@@ -95,11 +99,13 @@ def sequence_identity(nodes):
         n == ('command','cdot') and i >= 2 and i+1 < len(nodes) and
         nodes[i-1][0] == 'fence' and nodes[i-1][1] == '(' and nodes[i-1][3] == ')' and
         nodes[i-2][0] == 'operator' and nodes[i+1][0] == 'operator'))
-    # A whole quotient whose two arguments are explicitly fenced has the same
-    # scope as a stacked fraction. Leave unfenced slash expressions untouched.
-    if (len(nodes) == 3 and nodes[1] == ('char','/') and
+    # A leading quotient with explicitly fenced arguments has the same scope
+    # as a stacked fraction when followed only by an additive boundary or end.
+    # Leave unfenced slashes, chained division, and adjacent factors untouched.
+    if (len(nodes) >= 3 and nodes[1] == ('char','/') and
+        (len(nodes) == 3 or nodes[3] in (('char','+'),('char','-'))) and
         all(n[0] == 'fence' and n[1] == '(' and n[3] == ')' for n in (nodes[0],nodes[2]))):
-        return (('frac',fraction_argument((nodes[0],)),fraction_argument((nodes[2],))),)
+        return (('frac',fraction_argument((nodes[0],)),fraction_argument((nodes[2],))),) + nodes[3:]
     # Convert only a whole numeric ratio, including one used as an exponent.
     # Do not change x^1/3, 1/(3x), or a fraction's argument boundaries.
     if all(n[0] == 'char' for n in nodes):
@@ -236,6 +242,14 @@ class Parser:
             # {11}^{x} must attach the exponent to the same complete number.
             while combine_digits and self.position < len(self.source) and self.source[self.position].isascii() and self.source[self.position].isdigit():
                 token += self.take()
+            # A decimal base is one displayed number. Keep unbraced TeX
+            # arguments limited to one token and require digits after the dot.
+            if (combine_digits and self.position + 1 < len(self.source) and
+                self.source[self.position] == '.' and
+                self.source[self.position+1].isascii() and self.source[self.position+1].isdigit()):
+                token += self.take()
+                while self.position < len(self.source) and self.source[self.position].isascii() and self.source[self.position].isdigit():
+                    token += self.take()
             return ('char',token)
         if token == '{':
             content = self.sequence('}')
@@ -253,6 +267,12 @@ class Parser:
                 self.position += 1
                 index = self.sequence(']')
             return ('root',index,self.argument())
+        if token == r'\overset':
+            annotation = self.argument()
+            argument = self.argument()
+            if annotation == (('char','―'),):
+                return ('overbar',argument)
+            return ('overset',annotation,argument)
         if token == r'\operatorname':
             argument = self.argument()
             if all(n[0] == 'char' for n in argument):
@@ -260,7 +280,7 @@ class Parser:
                 if name in OPERATORS:
                     return ('operator',name)
             return ('operatorname',argument)
-        if token in (r'\mathrm',r'\mathit',r'\text'):
+        if token in (r'\mathrm',r'\mathit',r'\text',r'\textrm'):
             argument = self.argument()
             if len(argument) == 1 and argument[0][0] == 'char' and argument[0][1].isalnum():
                 return argument[0]

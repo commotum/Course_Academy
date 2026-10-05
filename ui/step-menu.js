@@ -2,6 +2,7 @@
 const stepIds = new WeakMap();
 let menu = null;
 let copyButton;
+let academyButton;
 let notice;
 let noticeTimer;
 let currentStep = null;
@@ -14,10 +15,10 @@ export function stepEntityId(value) {
   return /^[1-9]\d*$/.test(id) ? id : null;
 }
 
-export function attachStepMenu(element, value) {
+export function attachStepMenu(element, value, mathAcademyId = null) {
   const id = stepEntityId(value);
   if (!id) return;
-  stepIds.set(element, id);
+  stepIds.set(element, { dbId: id, mathAcademyId: stepEntityId(mathAcademyId) });
   element.dataset.stepDbId = id;
   element.tabIndex = 0;
   if (!menu) initialize();
@@ -40,6 +41,7 @@ function close(restoreFocus = false) {
 function open(step, x, y) {
   currentStep = step;
   returnFocus = step.contains(document.activeElement) ? document.activeElement : step;
+  academyButton.hidden = !stepIds.get(step).mathAcademyId;
   menu.hidden = false;
   menu.style.left = '0px'; menu.style.top = '0px';
   const bounds = menu.getBoundingClientRect();
@@ -55,26 +57,31 @@ function initialize() {
   copyButton = document.createElement('button');
   copyButton.type = 'button'; copyButton.setAttribute('role', 'menuitem');
   copyButton.textContent = 'Copy :db/id';
-  menu.append(copyButton);
+  academyButton = document.createElement('button');
+  academyButton.type = 'button'; academyButton.setAttribute('role', 'menuitem');
+  academyButton.textContent = 'Copy :ma/id';
+  menu.append(copyButton, academyButton);
   notice = document.createElement('div');
   notice.className = 'step-copy-notice'; notice.setAttribute('role', 'status');
   notice.setAttribute('aria-atomic', 'true');
   document.body.append(menu, notice);
 
-  copyButton.addEventListener('click', async () => {
-    const id = stepIds.get(currentStep);
+  const copy = async (key, label) => {
+    const id = stepIds.get(currentStep)?.[key];
     close(true);
     if (!id) return;
     clearTimeout(noticeTimer); notice.textContent = '';
     try {
       await navigator.clipboard.writeText(id);
-      notice.textContent = `Copied :db/id ${id}`;
+      notice.textContent = `Copied ${label} ${id}`;
       noticeTimer = setTimeout(() => { notice.textContent = ''; }, 2500);
     } catch {
       // Keep the ID available even when browser clipboard permission is denied.
-      window.prompt('Clipboard unavailable. Copy this :db/id:', id);
+      window.prompt(`Clipboard unavailable. Copy this ${label}:`, id);
     }
-  });
+  };
+  copyButton.addEventListener('click', () => copy('dbId', ':db/id'));
+  academyButton.addEventListener('click', () => copy('mathAcademyId', ':ma/id'));
 
   const editable = target => target instanceof Element && target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])');
   document.addEventListener('contextmenu', event => {
@@ -89,7 +96,14 @@ function initialize() {
     if (!menu.hidden) {
       if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); close(true); }
       else if (event.key === 'Tab') close(true);
-      else if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) { event.preventDefault(); copyButton.focus(); }
+      else if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+        event.preventDefault();
+        const buttons = [copyButton, academyButton].filter(button => !button.hidden);
+        const index = buttons.indexOf(document.activeElement);
+        const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1
+          : (index + (event.key === 'ArrowDown' ? 1 : -1) + buttons.length) % buttons.length;
+        buttons[next].focus();
+      }
       return;
     }
     if (editable(event.target) || !(event.key === 'ContextMenu' || event.shiftKey && event.key === 'F10')) return;

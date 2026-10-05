@@ -60,7 +60,7 @@ function fixture(storage = new Map()) {
   const context = vm.createContext({ document, window, MathJax: window.MathJax, crypto, URLSearchParams, AbortController, Event,
     Date: class extends Date { static now() { return f.now; } },
     isDeveloperMode: () => f.dev,
-    attachStepMenu(node, id) { node.dataset.stepDbId = id; },
+    attachStepMenu(node, id, mathAcademyId) { node.dataset.stepDbId = id; node.dataset.mathAcademyId = mathAcademyId; },
     sessionStorage: { getItem: key => storage.get(key) ?? null, setItem(key, value) { storage.set(key, value); } },
     history: { replaceState() {} }, location: { replace() {}, assign() {} },
     fetch: async (path, options) => {
@@ -99,11 +99,11 @@ const activity = (itemId, number = 1, overrides = {}) => ({
   taskId: 123, activityId: 456, learner: { id: 'test', name: 'Learner' }, course: { id: 'course' },
   title: 'The lesson title', status: 'started', elapsedSeconds: 10,
   progress: { stepNumber: number, totalSteps: 3, presented: number },
-  step: { itemId, stepId: 'step-' + itemId, kind: 'tutorial', title: 'Introduction', markdown: 'Read this.', status: 'started', canContinue: true, fields: [] },
+  step: { itemId, stepId: 'step-' + itemId, mathAcademyId: '100' + itemId, kind: 'tutorial', title: 'Introduction', markdown: 'Read this.', status: 'started', canContinue: true, fields: [] },
   ...overrides,
 });
 const question = (itemId, status = 'started') => ({
-  itemId, stepId: 'step-' + itemId, kind: 'question', title: 'Power rule', markdown: 'Find the derivative.', status,
+  itemId, stepId: 'step-' + itemId, mathAcademyId: '200' + itemId, kind: 'question', title: 'Power rule', markdown: 'Find the derivative.', status,
   canContinue: status === 'correct', solution: status === 'correct' ? 'Apply the power rule.' : undefined,
   fields: [{ id: 30, key: 'selection', type: 'radio', response: status === 'correct' ? { choiceId: 41 } : null,
     choices: [{ id: 41, type: 'text', value: 'Correct option' }, { id: 42, type: 'text', value: 'Other option' }] }],
@@ -130,6 +130,7 @@ test('advancing retains the earlier DOM, disables its answers, and focuses only 
   await f.h.render(activity(2, 2));
   assert.equal(f.h.view.feed.children[0], previous);
   assert.equal(previous.dataset.history, 'true');
+  assert.equal(previous.dataset.mathAcademyId, '2001');
   assert.equal(previous.querySelector('.lesson-controls'), null);
   assert.equal(previous.querySelector('.answer-actions'), null);
   assert.equal(previous.querySelectorAll('input').every(node => node.disabled && node.dataset.readOnly === 'true'), true);
@@ -137,6 +138,7 @@ test('advancing retains the earlier DOM, disables its answers, and focuses only 
   assert.match(previous.textContent, /Step 1 \/ 3/);
   assert.equal(f.h.view.history.size, 1);
   assert.equal(f.h.view.current.dataset.stepDbId, 'step-2');
+  assert.equal(f.h.view.current.dataset.mathAcademyId, '1002');
   assert.equal(f.scrolls.at(-1).node, f.h.view.current);
   assert.equal(f.h.view.track.getAttribute('aria-valuenow'), '1');
   assert.equal(f.h.view.feed.children.filter(node => node.querySelector('.lesson-controls')).length, 1);
@@ -177,6 +179,8 @@ test('developer preview reveals only visited steps and keeps them available for 
   assert.equal(f.h.view.feed.children.length, 2);
   assert.equal(f.h.view.history.size, 1);
   assert.equal(f.h.view.feed.children[0].querySelector('.lesson-controls'), null);
+  assert.equal(f.h.view.feed.children[0].dataset.mathAcademyId, '1001');
+  assert.equal(f.h.view.current.dataset.mathAcademyId, '1002');
   assert.equal(f.h.view.timer.textContent, 'Preview');
   assert.equal(f.calls.length, 0);
 });

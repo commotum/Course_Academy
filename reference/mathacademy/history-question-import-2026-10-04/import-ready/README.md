@@ -46,3 +46,7 @@ All 1506 prepared questions were committed at basis 551 → 552. Their prompts, 
 The existing engine filters questions that fail its grader validation from KP selection and fresh-question supply checks. Storing the 705 unsupported math blanks with their KP links does not make them available for practice. No engine change or fabricated grading result was needed.
 
 Durable intent, receipt, before/after reads, and verification are in `database-import/`.
+
+## Subsequent response-format corrections
+
+The original batch and its import receipt remain historical evidence. A complete KP-based format audit subsequently repaired 974 questions at basis 652 → 653. Current engine readiness is 1,346, with 160 source-style symbolic questions still filtered out. Learner and engine facts are unchanged. See [the response-format audit](../format-audit/README.md) and its database verification for current formats.

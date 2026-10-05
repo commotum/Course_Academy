@@ -593,7 +593,7 @@ async function openPreview(query) {
 function previewContent(data, step, index, archived = false) {
   const content = el('section', 'lesson-content'), meta = el('div', 'step-meta');
   content.dataset.stepNumber = String(index + 1); content.dataset.totalSteps = String(data.steps.length);
-  attachStepMenu(content, step.stepId);
+  attachStepMenu(content, step.stepId, step.mathAcademyId);
   const kind = short(step.kind), fields = step.fields || [];
   if (archived) meta.append(el('span', 'history-position', `Step ${index + 1} / ${data.steps.length}`));
   if (kind !== 'example') meta.append(el('span', 'step-tag', { question: 'Practice', tutorial: 'Tutorial' }[kind] || kind));
@@ -684,7 +684,7 @@ function taskContent(data, step, number, total, archived = false) {
   const content = el('section', 'lesson-content');
   if (number) content.dataset.stepNumber = String(number);
   if (total) content.dataset.totalSteps = String(total);
-  attachStepMenu(content, step.stepId);
+  attachStepMenu(content, step.stepId, step.mathAcademyId);
   const meta = el('div', 'step-meta');
   if (number && archived) meta.append(el('span', 'history-position', `Step ${number}${total ? ' / ' + total : ''}`));
   const kind = short(step.kind);
@@ -897,6 +897,7 @@ function targetsChanged() {
   if (!busy && document.visibilityState === 'visible') void home();
 }
 window.addEventListener('course-academy:targets-changed', targetsChanged);
+window.addEventListener('course-academy:queue-changed', targetsChanged);
 window.addEventListener('storage', event => {
-  if (event.key === 'course-academy-targets-changed') targetsChanged();
+  if (['course-academy-targets-changed', 'course-academy-queue-changed'].includes(event.key)) targetsChanged();
 });

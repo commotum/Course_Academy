@@ -1,12 +1,23 @@
 import { isDeveloperMode, developerModeReady } from './developer-mode.js';
 
-const changeKey = 'course-academy-targets-changed';
+export function createTargetControls(options) {
+  return createTopicSelectionControls({ ...options, collection: 'targets' });
+}
 
-// Target membership always comes from the server. Storage only invalidates the
-// other open pages; it is never used as a learner or target data source.
-export function createTargetControls({ readLearner, onChange = () => {} }) {
+export function createQueueControls(options) {
+  return createTopicSelectionControls({ ...options, collection: 'queue' });
+}
+
+// Membership always comes from the server. Storage only invalidates other
+// pages; it is never used as a learner, target, or queue data source.
+function createTopicSelectionControls({ readLearner, onChange = () => {}, collection }) {
+  const queued = collection === 'queue';
+  const changeKey = `course-academy-${collection}-changed`;
+  const changeEvent = `course-academy:${collection}-changed`;
+  const endpoint = queued ? '/api/queue-topic' : '/api/target';
+  const noun = queued ? 'queue selection' : 'target';
   let learner = null;
-  let targets = new Set();
+  let selections = new Set();
   let pending = null;
   let revision = 0;
   let refreshNeeded = false;
@@ -18,17 +29,17 @@ export function createTargetControls({ readLearner, onChange = () => {} }) {
 
   function render(control) {
     const { host, button, status, topicId, title, menuItem } = control;
-    const selected = targets.has(topicId);
+    const selected = selections.has(topicId);
     const operation = operations.get(topicId);
     const saving = pending === topicId;
-    const action = (operation ? operation.selected : !selected) ? 'Add to targets' : 'Remove from targets';
-    host.hidden = learner?.selfDirected !== true;
+    const action = (operation ? operation.selected : !selected) ? `Add to ${collection}` : `Remove from ${collection}`;
+    host.hidden = !learner || (!queued && learner.selfDirected !== true);
     button.disabled = profileChanging || pending !== null || host.hidden || isDeveloperMode();
-    button.textContent = saving ? 'Saving…' : errors.has(topicId) ? 'Retry' : selected ? (menuItem ? 'Remove from targets' : 'Targeted') : 'Add to targets';
+    button.textContent = saving ? 'Saving…' : errors.has(topicId) ? 'Retry' : selected ? (menuItem ? `Remove from ${collection}` : queued ? 'Queued' : 'Targeted') : `Add to ${collection}`;
     if (!menuItem) button.setAttribute('aria-pressed', String(selected));
     button.setAttribute('aria-busy', String(saving));
     button.setAttribute('aria-label', `${errors.has(topicId) ? 'Retry: ' : ''}${action}: ${title}`);
-    button.title = isDeveloperMode() ? 'Target changes are disabled in developer mode.' : action;
+    button.title = isDeveloperMode() ? `${queued ? 'Queue' : 'Target'} changes are disabled in developer mode.` : action;
     status.textContent = errors.get(topicId) || '';
     if (status.textContent) button.setAttribute('aria-describedby', status.id);
     else button.removeAttribute('aria-describedby');
@@ -39,7 +50,7 @@ export function createTargetControls({ readLearner, onChange = () => {} }) {
     revision++;
     if (learner && value?.id !== learner.id) { operations.clear(); errors.clear(); }
     learner = value || null;
-    targets = new Set((learner?.targets || []).filter(id => Number.isSafeInteger(id) && id > 0));
+    selections = new Set((learner?.[collection] || []).filter(id => Number.isSafeInteger(id) && id > 0));
     renderAll();
     onChange(learner);
   }
@@ -63,14 +74,14 @@ export function createTargetControls({ readLearner, onChange = () => {} }) {
   }
 
   async function toggle(topicId) {
-    if (profileChanging || pending !== null || learner?.selfDirected !== true || isDeveloperMode()) return;
+    if (profileChanging || pending !== null || !learner || (!queued && learner.selfDirected !== true) || isDeveloperMode()) return;
     const operation = operations.get(topicId) || {
-      action: 'target', topicId, selected: !targets.has(topicId), requestId: crypto.randomUUID(),
+      action: queued ? 'queue-topic' : 'target', topicId, selected: !selections.has(topicId), requestId: crypto.randomUUID(),
     };
     operations.set(topicId, operation);
     pending = topicId; revision++; errors.delete(topicId); renderAll();
     try {
-      const response = await fetch('/api/target', {
+      const response = await fetch(endpoint, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin', cache: 'no-store', body: JSON.stringify(operation),
       });
@@ -78,19 +89,19 @@ export function createTargetControls({ readLearner, onChange = () => {} }) {
       try { result = await response.json(); }
       catch { throw new Error('The server response was unavailable. Retry to confirm this change.'); }
       if (!response.ok || result.error) {
-        const error = new Error(result.error || `Unable to save this target (${response.status}).`);
+        const error = new Error(result.error || `Unable to save this ${noun} (${response.status}).`);
         error.code = result.code;
         throw error;
       }
-      if (!result.learner || !Array.isArray(result.learner.targets)) throw new Error('Updated targets were unavailable. Retry to confirm this change.');
+      if (!result.learner || !Array.isArray(result.learner[collection])) throw new Error('Updated membership was unavailable. Retry to confirm this change.');
       operations.delete(topicId);
       setLearner(result.learner);
       try { localStorage.setItem(changeKey, crypto.randomUUID()); } catch { /* Refresh on return also works without storage. */ }
-      window.dispatchEvent(new CustomEvent('course-academy:targets-changed'));
+      window.dispatchEvent(new CustomEvent(changeEvent));
     } catch (error) {
       // Replaying an uncertain response must retain the original request ID.
       if (error.code === 'basis-conflict') operation.requestId = crypto.randomUUID();
-      errors.set(topicId, error.message || 'Unable to save this target. Try again.');
+      errors.set(topicId, error.message || `Unable to save this ${noun}. Try again.`);
     } finally {
       pending = null; renderAll(); void refresh();
     }

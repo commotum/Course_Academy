@@ -17,6 +17,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         let mut canonical = BTreeMap::new();
         let mut wrong = BTreeMap::new();
         let mut field_ids = vec![];
+        let mut alternate_choices = vec![];
         let mut next = 20;
         for f in q["answer_fields"].as_array().ok_or("answer fields required")? {
             let field_id = next; next += 1;
@@ -36,6 +37,10 @@ fn main() -> Result<(), Box<dyn Error>> {
             wrong.insert(field_id, if is_blank { format!("{response} [incorrect]") } else {
                 choices.iter().find(|c| **c != correct).ok_or("no distractor")?.to_string()
             });
+            if !is_blank {
+                alternate_choices.extend(choices.iter().filter(|c| **c != correct)
+                    .map(|c| (field_id, c.to_string())));
+            }
             entities.insert(field_id, json!({"answer-field/key":f["key"],
                 "answer-field/type":format!("answer-field.type/{}",f["type"].as_str().unwrap()),
                 "answer-field/choices":choices,"answer-field/correct":correct}).as_object().unwrap().clone());
@@ -48,6 +53,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         let (accepted, error) = match result {
             Ok(true) => {
                 if learning::grade(&snapshot, 10, &wrong)? { return Err("wrong response graded correct".into()); }
+                for (field_id, response) in alternate_choices {
+                    let mut attempt = canonical.clone();
+                    attempt.insert(field_id, response);
+                    if learning::grade(&snapshot, 10, &attempt)? {
+                        return Err("an authored distractor graded correct".into());
+                    }
+                }
                 (true, None)
             }
             Ok(false) => return Err("canonical response graded incorrect".into()),

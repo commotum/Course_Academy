@@ -705,6 +705,15 @@ fn lesson_progress(
     )
 }
 
+// Use the displayed content's source ID, never an authored placement or topic ID.
+fn content_math_academy_id(record: &Record) -> Option<String> {
+    record.get(if record.contains_key("tutorial/id") {
+        "tutorial/math-academy-id"
+    } else {
+        "question/math-academy-id"
+    }).and_then(Json::as_i64).map(|id| id.to_string())
+}
+
 fn task_json(s: &EntitySnapshot, l: u64, t: u64) -> Result<Json> {
     owned(s, l, t)?;
     let a = s.reference(t, "learner-task/activity")?;
@@ -762,6 +771,7 @@ fn task_json(s: &EntitySnapshot, l: u64, t: u64) -> Result<Json> {
         }
         step = json!({"itemId":i,"contentId":content,"kind":if tutorial{"tutorial"}else if example{"example"}else{"question"},"title":title,"markdown":text(s,content,if tutorial{"tutorial/content"}else{"question/problem"}),"fields":fields,"status":state,"canContinue":tutorial||example||terminal,"requiresCalculator":e.get("question/requires-calculator"),"elapsedSeconds":timing::elapsed(s,i,at)?});
         step["stepId"] = json!(authored.map(|(_, entry)| entry.step.to_string()));
+        step["mathAcademyId"] = json!(content_math_academy_id(e));
         if reveal {
             step["solution"] = json!(text(s, content, "question/worked-solution"));
         }
@@ -1415,6 +1425,16 @@ fn main() {
 #[cfg(test)]
 mod lesson_progress_tests {
     use super::*;
+
+    #[test]
+    fn source_id_preserves_digits_and_never_falls_back_to_topic_or_placement() {
+        let tutorial = json!({"tutorial/id":"intro","tutorial/math-academy-id":9007199254740993_i64});
+        assert_eq!(content_math_academy_id(tutorial.as_object().unwrap()).as_deref(), Some("9007199254740993"));
+        let question = json!({"question/id":"q","question/math-academy-id":456});
+        assert_eq!(content_math_academy_id(question.as_object().unwrap()).as_deref(), Some("456"));
+        let missing = json!({"question/id":"q","step/math-academy-id":789,"topic/math-academy-id":1116});
+        assert!(content_math_academy_id(missing.as_object().unwrap()).is_none());
+    }
 
     #[test]
     fn saved_position_uses_authored_steps_even_with_multiple_practice_presentations() {

@@ -304,6 +304,7 @@ button,input,select { font:inherit; }
 </div>
 </div>
 <div id="nodeContextMenu" role="menu" aria-label="Topic actions" hidden>
+<div id="nodeQueueAction" role="none"></div>
 <div id="nodeTargetAction" role="none"></div>
 <a id="goToTopicLink" role="menuitem" href="/topic">Go to topic</a>
 <button id="copyNodeButton" type="button" role="menuitem">Copy node to clipboard</button>
@@ -317,7 +318,7 @@ button,input,select { font:inherit; }
 </dialog>
 <script type="module">
 import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
-import { createTargetControls } from "/ui/targets.js";
+import { createTargetControls, createQueueControls } from "/ui/targets.js";
 import { isLightTheme, themeColor } from "/ui/profile.js";
 
 (() => {
@@ -341,6 +342,16 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       if (snapshot) snapshot.learner = { ...snapshot.learner, ...learner };
       if (targetsView && changed && !loading) changeCourse(null, true, 'targets');
       document.getElementById('targetActions').classList.toggle('hidden', targetTopicId === null || learner?.selfDirected !== true);
+    },
+  });
+  const queueControls = createQueueControls({
+    readLearner: async () => {
+      const response = await fetch('/api/graph-explorer', { cache: 'no-store' });
+      if (!response.ok) throw new Error('Unable to refresh queue.');
+      return (await response.json()).learner;
+    },
+    onChange: learner => {
+      if (snapshot) snapshot.learner.queue = learner?.queue || [];
     },
   });
   let dependencyOrder = [];
@@ -387,6 +398,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     for (const n of nodes) {nodeById.set(n.id,n);inMap.set(n.id,incoming.get(n.id));outMap.set(n.id,outgoing.get(n.id));}
     dependencyOrder=order; snapshot=data; repetitions=data.repetitions;
     targetControls.setLearner(data.learner);
+    queueControls.setLearner(data.learner);
     META.nodeCount=nodes.length;META.edgeCount=data.links.length;
     META.layerCount=Math.max(1,...nodes.map(n=>n.layer+1));META.maxLayerSize=Math.max(0,...[...layers.values()].map(a=>a.length));
     MAX_DEPTH=Math.max(1,META.layerCount-1);
@@ -1261,13 +1273,15 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   // Right-clicking opens actions for one node without changing the active set.
   const nodeContextMenu = (() => {
     const menu=$('nodeContextMenu'),button=$('copyNodeButton'),notice=$('copyNodeNotice');
-    const targetAction=$('nodeTargetAction'),topicLink=$('goToTopicLink');
+    const targetAction=$('nodeTargetAction'),queueAction=$('nodeQueueAction'),topicLink=$('goToTopicLink');
     const fallback=$('manualNodeCopy'),fallbackText=$('manualNodeText');
     let topic=null,opener=null,noticeTimer=0;
     function close(restoreFocus=false) {
       menu.hidden=true;
       for(const host of targetAction.children)targetControls.remove(host);
       targetAction.replaceChildren();
+      for(const host of queueAction.children)queueControls.remove(host);
+      queueAction.replaceChildren();
       if(opener?.isConnected){
         opener.setAttribute('aria-expanded','false');
         if(restoreFocus)opener.focus({preventScroll:true});
@@ -1280,6 +1294,8 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     function open(node,event,element) {
       event.preventDefault();event.stopPropagation();close();
       topic=node;opener=element;button.disabled=false;
+      const queue=queueControls.createToggle(node,{menuItem:true});
+      if(queue)queueAction.append(queue);
       const target=targetControls.createToggle(node,{menuItem:true});
       if(target)targetAction.append(target);
       topicLink.href=topicReferenceURL(snapshot,node,courseId);
@@ -1355,6 +1371,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     window.addEventListener('blur',()=>close(false));
     window.addEventListener('resize',()=>close(false));
     window.addEventListener('course-academy:targets-changed',()=>{if(!menu.hidden)close(true);});
+    window.addEventListener('course-academy:queue-changed',()=>{if(!menu.hidden)close(true);});
     return {open,close};
   })();
 

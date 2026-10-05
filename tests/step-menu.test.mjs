@@ -44,24 +44,43 @@ test('step menus copy the selected container ID and support keyboard, dismissal,
   try {
     const first = new Node('section'), second = new Node('section'), nestedMath = new Node('svg'), input = new Node('input');
     first.append(nestedMath, input); doc.body.append(first, second);
-    attachStepMenu(first, '17592186000101'); attachStepMenu(second, '17592186000102');
+    attachStepMenu(first, '17592186000101', '18446744073709551615'); attachStepMenu(second, '17592186000102');
     const menu = doc.body.children.find(node => node.className === 'step-context-menu');
     const action = menu.children[0];
+    const academyAction = menu.children[1];
     assert.equal(action.textContent, 'Copy :db/id');
+    assert.equal(academyAction.textContent, 'Copy :ma/id');
     nestedMath.dataset.stepDbId = '999'; // Content cannot spoof a registered step.
+    nestedMath.dataset.mathAcademyId = '999';
     const rightClick = fire(doc, 'contextmenu', { target: nestedMath, clientX: 795, clientY: 595 });
     assert.equal(rightClick.defaultPrevented, true);
     assert.equal(menu.hidden, false);
     assert.equal(menu.style.left, '612px'); assert.equal(menu.style.top, '550px');
     assert.equal(doc.activeElement, action);
+    assert.equal(academyAction.hidden, false);
     fire(action, 'click'); await settle();
     assert.deepEqual(copied, ['17592186000101']);
     assert.equal(menu.hidden, true); assert.equal(doc.activeElement, first);
 
+    fire(doc, 'keydown', { target: first, key: 'ContextMenu' });
+    fire(doc, 'keydown', { target: action, key: 'ArrowDown' });
+    assert.equal(doc.activeElement, academyAction);
+    fire(doc, 'keydown', { target: academyAction, key: 'ArrowDown' });
+    assert.equal(doc.activeElement, action);
+    fire(doc, 'keydown', { target: action, key: 'End' });
+    assert.equal(doc.activeElement, academyAction);
+    fire(doc, 'keydown', { target: academyAction, key: 'Home' });
+    assert.equal(doc.activeElement, action);
+    fire(academyAction, 'click'); await settle();
+    assert.deepEqual(copied, ['17592186000101', '18446744073709551615']);
+
     fire(doc, 'keydown', { target: second, key: 'F10', shiftKey: true });
     assert.equal(menu.hidden, false);
+    assert.equal(academyAction.hidden, true);
+    fire(doc, 'keydown', { target: action, key: 'End' });
+    assert.equal(doc.activeElement, action);
     fire(action, 'click'); await settle();
-    assert.deepEqual(copied, ['17592186000101', '17592186000102']);
+    assert.deepEqual(copied, ['17592186000101', '18446744073709551615', '17592186000102']);
 
     fire(doc, 'contextmenu', { target: first, clientX: 40, clientY: 60 });
     fire(doc, 'keydown', { target: action, key: 'Escape' });
@@ -79,6 +98,9 @@ test('step menus copy the selected container ID and support keyboard, dismissal,
     fire(doc, 'contextmenu', { target: second, clientX: 40, clientY: 60 });
     fire(action, 'click'); await settle();
     assert.deepEqual(prompted, ['17592186000102']);
+    fire(doc, 'contextmenu', { target: first, clientX: 40, clientY: 60 });
+    fire(academyAction, 'click'); await settle();
+    assert.deepEqual(prompted, ['17592186000102', '18446744073709551615']);
     assert.equal(doc.body.children.find(node => node.className === 'step-copy-notice').textContent, '');
   } finally {
     for (const [name, descriptor] of originals) {

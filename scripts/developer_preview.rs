@@ -216,6 +216,7 @@ fn append_content(
         };
         output.push(json!({
             "preview": true, "itemId": null, "stepId": step, "contentId": content,
+            "mathAcademyId": content_math_academy_id(record),
             "kind": kind, "title": title, "markdown": markdown.join("\n\n"),
             "fields": if tutorial { vec![] } else { fields(s, content)? },
             "solution": text(s, content, "question/worked-solution"),
@@ -346,7 +347,7 @@ mod tests {
             ),
             (
                 201,
-                json!({"tutorial/id":"intro","tutorial/title":"Introduction","tutorial/content":"Start here."}),
+                json!({"tutorial/id":"intro","tutorial/math-academy-id":123,"tutorial/title":"Introduction","tutorial/content":"Start here."}),
             ),
             (
                 210,
@@ -358,11 +359,11 @@ mod tests {
             ),
             (
                 300,
-                json!({"question/id":"example","question/problem":"Worked problem.","question/worked-solution":"Worked solution."}),
+                json!({"question/id":"example","question/math-academy-id":456,"question/problem":"Worked problem.","question/worked-solution":"Worked solution."}),
             ),
             (
                 301,
-                json!({"question/id":"practice","question/problem":"Enter one half.","question/answer-fields":[400],"question/worked-solution":"Divide one by two."}),
+                json!({"question/id":"practice","question/math-academy-id":789,"question/problem":"Enter one half.","question/answer-fields":[400],"question/worked-solution":"Divide one by two."}),
             ),
             (
                 302,
@@ -405,6 +406,10 @@ mod tests {
         assert_eq!(view["steps"].as_array().unwrap().len(), 4);
         assert_eq!(view["steps"][0]["kind"], "tutorial");
         assert_eq!(view["steps"][1]["kind"], "example");
+        assert_eq!(view["steps"][0]["mathAcademyId"], "123");
+        assert_eq!(view["steps"][1]["mathAcademyId"], "456");
+        assert_eq!(view["steps"][2]["mathAcademyId"], "789");
+        assert!(view["steps"][3]["mathAcademyId"].is_null());
         assert_eq!(view["steps"][3]["contentId"], 302);
         assert_eq!(
             view["steps"][2]["fields"][0]["correctAnswer"]["value"],

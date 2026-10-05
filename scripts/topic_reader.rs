@@ -196,12 +196,14 @@ fn example_fields(db: &DatabaseValue, facts: &mut Facts, question: u64) -> Resul
 
 const CONTENT_ATTRS: &[&str] = &[
     "tutorial/id",
+    "tutorial/math-academy-id",
     "tutorial/title",
     "tutorial/content",
     "knowledge-point/id",
     "knowledge-point/title",
     "knowledge-point/canonical-example",
     "question/id",
+    "question/math-academy-id",
     "question/problem",
     "question/worked-solution",
     "question/requires-calculator",
@@ -279,6 +281,7 @@ fn lesson_sections(db: &DatabaseValue, facts: &mut Facts, topic: u64) -> Result<
         let mut section = json!({
             "id": display_id(facts, step, "step/id"),
             "stepId": step.to_string(),
+            "mathAcademyId": long(facts, content, if kind == "tutorial" { "tutorial/math-academy-id" } else { "question/math-academy-id" }).map(|id| id.to_string()),
             "kind": kind, "title": heading, "markdown": markdown,
         });
         if kind == "example" {
