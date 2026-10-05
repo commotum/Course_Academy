@@ -45,6 +45,16 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence."}
 
+ {:db/ident :progress/expected-assessment-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional initial assessment accuracy forecast in [0,1], frozen before the first local outcome. Direct prerequisite assessment accuracies are weighted by their positive assessment masses; fallback is the learner's mass-weighted topic assessment accuracy, then policy/initial-accuracy. This forecast creates no evidence and does not overwrite observed accuracy. Backfilled values are migration-time estimates."}
+
+ {:db/ident :progress/expected-practice-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional initial practice accuracy forecast in [0,1], frozen before the first local outcome. Direct prerequisite practice accuracies are weighted by their positive practice masses; fallback is the learner's mass-weighted topic practice accuracy, then policy/initial-accuracy. Separate from assessment and from the shared topic workload multiplier. Backfilled values are migration-time estimates."}
+
  {:db/ident :progress/assessment-mass
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one

@@ -1,0 +1,13 @@
+Examine the evidence for the knowledge point "Differentiating a Radical Function Using the Chain Rule" (topic 1108).
+
+Start with README.md, BAND_COMPARISON.md, CAPTURED_QUESTIONS.md, and QUESTIONS.md. Inspect the canonical example, all captured worked solutions, answer fields and choice sets, original_lesson/1108.pdf and original_lesson/1108.json, and raw_html/ as needed. The full archived lesson includes neighboring KPs; focus your analysis on this KP.
+
+Identify the core mathematical procedure and the question templates. Compare easy, moderate, and hard questions by conceptual operations, inner-function structure, radical/reciprocal form, required simplification, numerical versus symbolic output, and answer support. Explain whether any common property separates every captured question in one band from the other bands, and whether that property plausibly increases difficulty. Distinguish a combination of features that merely classifies this sample from a mathematical explanation. Do not force a clean progression when the examples contradict it. Look for alternative explanations and state what further evidence would distinguish them.
+
+Source E/M/H labels are in automated_captures.json and capture_evidence/*/activity-metadata.json. Some database content originated in an older lesson archive and may have a normalized or revised worked solution. Preserve these source differences. Never treat studentAnswer, deliberately incorrect automated submissions, or a wrong value stored in a blank-field choices array as an authoritative correct answer. Blank-field choices are stored answer values, not displayed multiple-choice options. Canonical examples ordinarily have no difficulty label or answer widget.
+
+If proposing a generator, describe a few bounded templates with parameter constraints, exact correct answers, worked-solution structure, valid domains, distractor rules where appropriate, and controls for duplicate/near-duplicate variants. Separate our chosen generation policy from inferred Math Academy policy. Do not claim to recover their engine. No graph reconstruction is requested, and no database changes should be made.
+
+Return your analysis with question IDs and file references supporting each conclusion. We are looking for an explanation supported by the mathematical content, not a forced taxonomy.
+
+The canonical example e-182 is stored with difficulty easy in the database at basis 495, but the saved automated canonical-example capture records difficulty null. Its canonical role is established by the KP reference. The easy label is a stored database value, not an observed source difficulty label for this example. This discrepancy is preserved for review; no database change was made.

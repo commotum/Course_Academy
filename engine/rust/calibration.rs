@@ -1,4 +1,4 @@
-//! Replayable, independent assessment/practice accuracy and topic difficulty.
+//! Replayable, independent assessment/practice accuracy.
 //! These update rules are local reconstruction policies, not MA parameters.
 use crate::Result;
 use serde::{Deserialize, Serialize};
@@ -91,63 +91,6 @@ impl AccuracyEstimate {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[serde(default, deny_unknown_fields)]
-pub struct DifficultyEstimate {
-    pub assessment_correct: f64,
-    pub assessment_total: f64,
-    pub prior_accuracy: f64,
-}
-
-impl Default for DifficultyEstimate {
-    fn default() -> Self {
-        Self {
-            assessment_correct: 0.0,
-            assessment_total: 0.0,
-            prior_accuracy: 0.8,
-        }
-    }
-}
-
-impl DifficultyEstimate {
-    pub fn validate(&self) -> Result<()> {
-        number(self.assessment_correct, "assessment_correct", None)?;
-        number(self.assessment_total, "assessment_total", None)?;
-        number(self.prior_accuracy, "prior_accuracy", Some(1.0))?;
-        if self.assessment_correct > self.assessment_total {
-            return Err("assessment_correct cannot exceed assessment_total".into());
-        }
-        Ok(())
-    }
-
-    pub fn accuracy(&self) -> f64 {
-        if self.assessment_total == 0.0 {
-            self.prior_accuracy
-        } else {
-            self.assessment_correct / self.assessment_total
-        }
-    }
-
-    pub fn update(
-        &mut self,
-        outcomes: &[bool],
-        serious: bool,
-        assessment: bool,
-    ) -> Result<&mut Self> {
-        self.validate()?;
-        if !serious || !assessment || outcomes.is_empty() {
-            return Ok(self);
-        }
-        let correct = self.assessment_correct + outcomes.iter().filter(|&&v| v).count() as f64;
-        let total = self.assessment_total + outcomes.len() as f64;
-        number(correct, "assessment_correct", None)?;
-        number(total, "assessment_total", None)?;
-        self.assessment_correct = correct;
-        self.assessment_total = total;
-        Ok(self)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -182,15 +125,4 @@ mod tests {
         );
     }
 
-    #[test]
-    fn difficulty_excludes_unqualified_evidence() {
-        let mut difficulty = DifficultyEstimate::default();
-        difficulty.update(&[true; 20], true, false).unwrap();
-        difficulty.update(&[false; 20], false, true).unwrap();
-        assert_eq!(difficulty.assessment_total, 0.0);
-        difficulty.update(&[true, true, false], true, true).unwrap();
-        assert_eq!(difficulty.accuracy(), 2.0 / 3.0);
-        difficulty.assessment_correct = 5.0;
-        assert!(difficulty.validate().is_err());
-    }
 }

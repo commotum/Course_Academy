@@ -41,10 +41,12 @@ pub fn replay(data: Value) -> Result<Value> {
         }
     }
     let input: Input = serde_json::from_value(data).map_err(|e| e.to_string())?;
+    if input.difficulty_accuracy.as_ref().is_some_and(|v| !v.is_empty()) {
+        return Err("legacy topic accuracy calibration is no longer supported".into());
+    }
     let mut engine = FireEngine::new(
         EncompassingGraph::new(input.edges, input.topics)?,
         input.policy,
-        input.difficulty_accuracy.unwrap_or_default(),
         input.neighborhoods.unwrap_or_default(),
     )?;
     for seed in input.initial_states {
@@ -66,7 +68,6 @@ pub fn demo() -> Result<Value> {
     let mut engine = FireEngine::new(
         EncompassingGraph::new(edges.clone(), BTreeSet::new())?,
         Policy::default(),
-        BTreeMap::new(),
         BTreeMap::new(),
     )?;
     for topic in engine.graph.topics.clone() {
@@ -95,7 +96,6 @@ pub fn demo() -> Result<Value> {
     let mut slow = FireEngine::new(
         EncompassingGraph::new(edges.clone(), BTreeSet::new())?,
         Policy::default(),
-        BTreeMap::new(),
         BTreeMap::new(),
     )?;
     for topic in slow.graph.topics.clone() {

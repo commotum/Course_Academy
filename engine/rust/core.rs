@@ -334,14 +334,8 @@ impl Policy {
         Ok(self.maximum_interval_days.min(interval))
     }
 
-    pub fn speed(&self, accuracy: f64, difficulty_accuracy: f64) -> Result<f64> {
+    pub fn speed(&self, accuracy: f64) -> Result<f64> {
         finite(accuracy, "accuracy", Some(0.0), Some(1.0))?;
-        finite(
-            difficulty_accuracy,
-            "difficulty accuracy",
-            Some(0.0),
-            Some(1.0),
-        )?;
         if self.speed_exponent == 0.0 {
             return Ok(1.0);
         }
@@ -349,8 +343,7 @@ impl Policy {
             return Ok(self.minimum_speed);
         }
         let baseline = self.prior_accuracy.ln();
-        let log_speed = self.speed_exponent
-            * (accuracy.ln() - baseline + difficulty_accuracy.max(1e-12).ln() - baseline);
+        let log_speed = self.speed_exponent * (accuracy.ln() - baseline);
         if log_speed <= self.minimum_speed.ln() {
             return Ok(self.minimum_speed);
         }
@@ -392,6 +385,10 @@ pub struct TopicState {
     pub memory_at: f64,
     pub interval_days: f64,
     pub ability: AccuracyEstimate,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expected_assessment_accuracy: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expected_practice_accuracy: Option<f64>,
     pub learned: bool,
     pub last_direct_at: Option<f64>,
 }
@@ -404,6 +401,8 @@ impl Default for TopicState {
             memory_at: 0.0,
             interval_days: 1.0,
             ability: AccuracyEstimate::default(),
+            expected_assessment_accuracy: None,
+            expected_practice_accuracy: None,
             learned: true,
             last_direct_at: None,
         }
@@ -423,6 +422,8 @@ impl<'de> Deserialize<'de> for TopicState {
             memory_at: f64,
             interval_days: f64,
             ability: AccuracyEstimate,
+            expected_assessment_accuracy: Option<f64>,
+            expected_practice_accuracy: Option<f64>,
             learned: bool,
             last_direct_at: Option<f64>,
         }
@@ -434,6 +435,8 @@ impl<'de> Deserialize<'de> for TopicState {
                     memory_at: 0.0,
                     interval_days: 1.0,
                     ability: AccuracyEstimate::default(),
+                    expected_assessment_accuracy: None,
+                    expected_practice_accuracy: None,
                     learned: true,
                     last_direct_at: None,
                 }
@@ -446,6 +449,8 @@ impl<'de> Deserialize<'de> for TopicState {
             memory_at: fields.memory_at,
             interval_days: fields.interval_days,
             ability: fields.ability,
+            expected_assessment_accuracy: fields.expected_assessment_accuracy,
+            expected_practice_accuracy: fields.expected_practice_accuracy,
             learned: fields.learned,
             last_direct_at: fields.last_direct_at,
         };
@@ -476,6 +481,14 @@ impl TopicState {
     }
     pub fn validate(&self) -> Result<()> {
         self.ability.validate()?;
+        for (name, value) in [
+            ("expected_assessment_accuracy", self.expected_assessment_accuracy),
+            ("expected_practice_accuracy", self.expected_practice_accuracy),
+        ] {
+            if let Some(value) = value {
+                finite(value, name, Some(0.0), Some(1.0))?;
+            }
+        }
         for (name, value) in [
             ("repetitions", self.repetitions),
             ("memory", self.memory),
@@ -587,7 +600,6 @@ impl Event {
 pub struct FireEngine {
     pub graph: EncompassingGraph,
     pub policy: Policy,
-    pub difficulty_accuracy: BTreeMap<String, f64>,
     pub states: BTreeMap<String, BTreeMap<String, TopicState>>,
     pub receipts: BTreeMap<String, Value>,
     pub latest: BTreeMap<String, f64>,
@@ -601,7 +613,6 @@ impl Default for FireEngine {
             EncompassingGraph::default(),
             Policy::default(),
             BTreeMap::new(),
-            BTreeMap::new(),
         )
         .expect("default engine")
     }
@@ -611,13 +622,9 @@ impl FireEngine {
     pub fn new(
         graph: EncompassingGraph,
         policy: Policy,
-        difficulty_accuracy: BTreeMap<String, f64>,
         mut neighborhoods: BTreeMap<String, Vec<String>>,
     ) -> Result<Self> {
         policy.validate()?;
-        for value in difficulty_accuracy.values() {
-            finite(*value, "difficulty accuracy", Some(0.0), Some(1.0))?;
-        }
         for neighbors in neighborhoods.values_mut() {
             neighbors.sort();
             neighbors.dedup();
@@ -625,7 +632,6 @@ impl FireEngine {
         Ok(Self {
             graph,
             policy,
-            difficulty_accuracy,
             neighborhoods,
             states: BTreeMap::new(),
             receipts: BTreeMap::new(),
@@ -634,32 +640,51 @@ impl FireEngine {
         })
     }
 
-    fn prior(&self, learner: &str, topic: &str) -> f64 {
-        let mut neighbors: BTreeSet<String> = self
+    /// Separate mass-weighted forecasts using direct prerequisites only.
+    /// Fallback is all other observed topic states in the same channel, then
+    /// the policy prior. Global outcome EWMA is not a mass-weighted topic mean.
+    pub fn expected_accuracy(&self, learner: &str, topic: &str) -> (f64, f64) {
+        let neighbors: BTreeSet<String> = self
             .neighborhoods
             .get(topic)
             .into_iter()
             .flatten()
             .cloned()
             .collect();
-        neighbors.extend(self.graph.coverage(topic).into_keys());
-        let values: Vec<f64> = self
-            .states
-            .get(learner)
-            .into_iter()
-            .flat_map(|s| s.iter())
-            .filter(|(t, s)| {
-                t.as_str() != topic && neighbors.contains(*t) && s.evidence_mass() > 0.0
-            })
-            .map(|(_, s)| s.accuracy())
-            .collect();
-        if values.is_empty() {
-            self.global_ability
-                .get(learner)
-                .map_or(self.policy.prior_accuracy, AccuracyEstimate::accuracy)
-        } else {
-            values.iter().sum::<f64>() / values.len() as f64
-        }
+        let channel = |assessment: bool, direct_only: bool| -> Option<f64> {
+            let mut mean = 0.0;
+            let mut total = 0.0;
+            for (id, state) in self.states.get(learner).into_iter().flat_map(|s| s.iter()) {
+                if id == topic || (direct_only && !neighbors.contains(id)) { continue; }
+                let (accuracy, mass) = if assessment {
+                    (state.ability.assessment_accuracy, state.ability.assessment_mass)
+                } else {
+                    (state.ability.practice_accuracy, state.ability.practice_mass)
+                };
+                if mass > 0.0 {
+                    let next = total + mass;
+                    // Stable convex mean, avoiding accuracy*mass overflow.
+                    let ratio = if next.is_finite() { mass / next }
+                        else { 1.0 / (1.0 + total / mass) };
+                    mean += (accuracy - mean) * ratio;
+                    total = next;
+                }
+            }
+            (total > 0.0).then_some(mean)
+        };
+        let predict = |assessment| channel(assessment, true)
+            .or_else(|| channel(assessment, false)).unwrap_or(self.policy.prior_accuracy);
+        (predict(true), predict(false))
+    }
+
+    pub fn initial_state(&self, learner: &str, topic: &str, learned: bool) -> TopicState {
+        let (assessment, practice) = self.expected_accuracy(learner, topic);
+        let mut state = TopicState::new(self.policy.prior_accuracy, learned);
+        state.ability.assessment_accuracy = assessment;
+        state.ability.practice_accuracy = practice;
+        state.expected_assessment_accuracy = Some(assessment);
+        state.expected_practice_accuracy = Some(practice);
+        state
     }
 
     pub fn seed(&mut self, learner: &str, topic: &str, state: TopicState) -> Result<()> {
@@ -689,14 +714,8 @@ impl FireEngine {
         Ok(())
     }
 
-    pub fn speed(&self, topic: &str, state: &TopicState) -> Result<f64> {
-        self.policy.speed(
-            state.accuracy(),
-            self.difficulty_accuracy
-                .get(topic)
-                .copied()
-                .unwrap_or(self.policy.prior_accuracy),
-        )
+    pub fn speed(&self, _topic: &str, state: &TopicState) -> Result<f64> {
+        self.policy.speed(state.accuracy())
     }
 
     pub fn due(&self, learner: &str, at: f64) -> Result<Vec<String>> {
@@ -732,9 +751,6 @@ impl FireEngine {
     fn apply_mode(&mut self, event: &Event, mode: &str) -> Result<Value> {
         event.validate()?;
         self.policy.validate()?;
-        for value in self.difficulty_accuracy.values() {
-            finite(*value, "difficulty accuracy", Some(0.0), Some(1.0))?;
-        }
         let update_accuracy = mode != "retention";
         let update_retention = mode != "accuracy";
         let key = ascii_json(&[&event.learner, &event.id]);
@@ -807,14 +823,18 @@ impl FireEngine {
         for topic in targets {
             let coverage = retention_coverage.get(&topic).copied().unwrap_or(0.0);
             let created = !working.contains_key(&topic);
+            let initial = self.initial_state(&event.learner, &topic, false);
             let state = working.entry(topic.clone()).or_insert_with(|| TopicState {
                 memory: 0.0,
                 memory_at: event.at,
                 learned: false,
                 interval_days: p.base_interval_days,
-                ability: AccuracyEstimate::new(self.prior(&event.learner, &topic)),
-                ..TopicState::default()
+                ..initial.clone()
             });
+            // Existing outcome evidence is preserved; missing legacy forecasts
+            // are explicitly filled at this observation, not reconstructed past.
+            state.expected_assessment_accuracy = state.expected_assessment_accuracy.or(initial.expected_assessment_accuracy);
+            state.expected_practice_accuracy = state.expected_practice_accuracy.or(initial.expected_practice_accuracy);
             state.validate()?;
             let before = serde_json::to_value(&*state).map_err(|e| e.to_string())?;
             if event.at < state.memory_at {
@@ -909,7 +929,7 @@ impl FireEngine {
         }
         let receipt = json!({"event": event, "event_hash": digest, "mode": mode, "policy_id": p.id(),
             "graph_id": self.graph.id, "updates": updates, "global_ability_before": global_before,
-            "global_ability_after": global_after, "difficulty_id": fingerprint(&self.difficulty_accuracy),
+            "global_ability_after": global_after,
             "neighborhood_id": fingerprint(&self.neighborhoods)});
         self.states.insert(event.learner.clone(), working);
         if update_accuracy {
@@ -1007,7 +1027,7 @@ impl FireEngine {
 
     pub fn snapshot(&self) -> Value {
         json!({"format": 1, "policy": self.policy, "graph": self.graph.edges, "topics": self.graph.topics,
-            "difficulty_accuracy": self.difficulty_accuracy, "states": self.states, "receipts": self.receipts,
+            "states": self.states, "receipts": self.receipts,
             "latest": self.latest, "global_ability": self.global_ability, "neighborhoods": self.neighborhoods})
     }
 
@@ -1018,6 +1038,7 @@ impl FireEngine {
             policy: Policy,
             graph: Vec<Edge>,
             topics: BTreeSet<String>,
+            #[serde(default)]
             difficulty_accuracy: BTreeMap<String, f64>,
             states: BTreeMap<String, BTreeMap<String, TopicState>>,
             receipts: BTreeMap<String, Value>,
@@ -1031,10 +1052,12 @@ impl FireEngine {
         if data.format != 1 {
             return Err("unsupported snapshot format".into());
         }
+        if !data.difficulty_accuracy.is_empty() {
+            return Err("legacy topic accuracy calibration must be retired before restoring this snapshot".into());
+        }
         let mut result = Self::new(
             EncompassingGraph::new(data.graph, data.topics)?,
             data.policy,
-            data.difficulty_accuracy,
             data.neighborhoods,
         )?;
         for (learner, states) in data.states {
@@ -1077,7 +1100,6 @@ mod tests {
         let mut engine = FireEngine::new(
             graph(edges),
             Policy::default(),
-            BTreeMap::new(),
             BTreeMap::new(),
         )
         .unwrap();
@@ -1143,15 +1165,15 @@ mod tests {
         policy.validate().unwrap();
         close(policy.interval(1.5).unwrap() / 1e150, 1.0);
         assert_eq!(policy.interval(1e308).unwrap(), 1e300);
-        assert_eq!(policy.speed(0.81, 0.8).unwrap(), policy.maximum_speed);
-        assert_eq!(policy.speed(0.79, 0.8).unwrap(), policy.minimum_speed);
-        assert_eq!(policy.speed(0.0, 0.8).unwrap(), policy.minimum_speed);
+        assert_eq!(policy.speed(0.81).unwrap(), policy.maximum_speed);
+        assert_eq!(policy.speed(0.79).unwrap(), policy.minimum_speed);
+        assert_eq!(policy.speed(0.0).unwrap(), policy.minimum_speed);
         assert_eq!(
             Policy {
                 speed_exponent: 0.0,
                 ..Policy::default()
             }
-            .speed(0.0, 0.0)
+            .speed(0.0)
             .unwrap(),
             1.0
         );
@@ -1256,7 +1278,6 @@ mod tests {
         let mut engine = FireEngine::new(
             graph(&[("A", "B", 1.0)]),
             Policy::default(),
-            BTreeMap::new(),
             BTreeMap::new(),
         )
         .unwrap();
@@ -1476,7 +1497,6 @@ mod tests {
         let mut engine = FireEngine::new(
             graph(&[]),
             Policy::default(),
-            BTreeMap::new(),
             BTreeMap::from([("A".into(), vec!["B".into()])]),
         )
         .unwrap();

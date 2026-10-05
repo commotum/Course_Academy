@@ -24,7 +24,7 @@
  {:db/ident :topic/difficulty
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
-  :db/doc "Optional finite expected assessment accuracy in [0,1]; lower means harder. This is our engine scale, separate from question E/M/H and learner-specific accuracy. Omit when unknown; the engine uses policy/initial-accuracy."}
+  :db/doc "Optional positive finite lesson workload multiplier, default 1.0. Multiply the unrounded expected-distribution content score before rounding base XP. Calibrate from an authoritative Math Academy lesson base denominator and the first two questions per KP. Values above one are allowed. This is not accuracy and never enters retention or learning speed."}
 
  {:db/ident :topic/next
   :db/valueType :db.type/ref
@@ -49,7 +49,7 @@
  {:db/ident :topic/difficulty-validate
   :db.entity/attrs [:topic/id :topic/difficulty]
   :db.entity/preds course-academy.topic/valid-difficulty?
-  :db/doc "Requires a topic identity and finite difficulty in [0,1]. Does not require a fully populated curriculum topic."}
+  :db/doc "Requires a topic identity and a strictly positive finite workload multiplier. Does not require a fully populated curriculum topic."}
 
  {:db/ident :topic/validate
   :db.entity/attrs [:topic/id :topic/title :topic/knowledge-points]

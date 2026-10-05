@@ -469,7 +469,6 @@ pub fn run_history_scenarios(audit: &Value) -> Result<Value> {
                             EncompassingGraph::new(vec![], topics.clone())?,
                             policy.clone(),
                             BTreeMap::new(),
-                            BTreeMap::new(),
                         )?;
                         for topic in &topics {
                             engine.seed(

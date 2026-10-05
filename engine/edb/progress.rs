@@ -76,6 +76,14 @@ pub fn valid_progress(db: &DatabaseValue, progress: u64) -> Result<bool, Semanti
             return Ok(false);
         }
     }
+    for name in ["expected-assessment-accuracy", "expected-practice-accuracy"] {
+        let values = db.values(progress, attr(db, "progress", name)?)?;
+        if !values.is_empty()
+            && !matches!(values.as_slice(), [Value::Double(v)] if v.is_finite() && (0.0..=1.0).contains(v))
+        {
+            return Ok(false);
+        }
+    }
     // The reference must identify a policy, not just any existing EDB entity.
     let policies = db.values(progress, attr(db, "progress", "policy")?)?;
     let [Value::Ref(policy)] = policies.as_slice() else {

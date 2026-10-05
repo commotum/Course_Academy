@@ -39,7 +39,7 @@ pub fn check(db: &Database, topic: u64, input_basis: u64) -> Result<(), Box<dyn 
     ));
     assert!(transact(db, &format!("[{{:db/id {policy} :policy/retention-update-order :policy.retention-update/add-before-decay :db/ensure :policy/validate}}]"), 2200).is_ok());
 
-    for invalid in [-0.1, 1.1] {
+    for invalid in [-0.1, 0.0] {
         reject(&format!(
             "[{{:db/id {topic} :topic/difficulty {invalid} :db/ensure :topic/difficulty-validate}}]"
         ));
@@ -48,7 +48,7 @@ pub fn check(db: &Database, topic: u64, input_basis: u64) -> Result<(), Box<dyn 
         transact(
             db,
             &format!(
-                "[{{:db/id {topic} :topic/difficulty 0.9 :db/ensure :topic/difficulty-validate}}]"
+                "[{{:db/id {topic} :topic/difficulty 2.5 :db/ensure :topic/difficulty-validate}}]"
             ),
             2200
         )

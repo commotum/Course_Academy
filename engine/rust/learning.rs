@@ -1466,7 +1466,7 @@ fn learning_runtime(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>) -> Resu
             if !reps.is_finite() || reps < 0.0 {
                 return Err("invalid imported repetitions".into());
             }
-            let mut state = TopicState::new(loaded.engine.policy.prior_accuracy, false);
+            let mut state = loaded.engine.initial_state(&loaded.learner, &topic, false);
             state.repetitions = reps;
             state.memory = 0.0;
             state.memory_at = timestamp_days(at);

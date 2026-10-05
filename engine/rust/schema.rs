@@ -452,7 +452,6 @@ pub fn load_runtime(
         return Err("duplicate topic UUID".into());
     }
     let mut edges = vec![];
-    let mut difficulty = BTreeMap::new();
     let mut neighborhoods = BTreeMap::new();
     // Snapshot hydration runs on the full content catalog. Build the few
     // reverse relationships it needs once instead of scanning every answer and
@@ -489,12 +488,6 @@ pub fn load_runtime(
         {
             return Err("topic/next must reference known topics".into());
         }
-        if let Some(d) = snapshot.entity(eid)?.get("topic/difficulty") {
-            difficulty.insert(
-                id.clone(),
-                number(d, "topic difficulty", Some(0.), Some(1.))?,
-            );
-        }
         for e in snapshot.refs(eid, "topic/encompasses")? {
             if owners(e, "topic/encompasses") != vec![eid] {
                 return Err("encompassing record must have one source topic".into());
@@ -523,13 +516,11 @@ pub fn load_runtime(
             if !snapshot.types(kp)?.contains("knowledge-point") {
                 return Err("topic knowledge-points must reference knowledge points".into());
             }
-            neighbors.extend(snapshot.refs(kp, "knowledge-point/key-prerequisites")?);
         }
         for m in owners(eid, "module/topics") {
             if !snapshot.types(m)?.contains("module") {
                 return Err("topic module owner must be module".into());
             }
-            neighbors.extend(snapshot.refs(m, "module/topics")?);
         }
         if neighbors.iter().any(|n| !topic_eid_to_id.contains_key(n)) {
             return Err("curriculum neighbors must reference known topics".into());
@@ -548,7 +539,6 @@ pub fn load_runtime(
     let mut engine = FireEngine::new(
         EncompassingGraph::new(edges, topic_id_to_eid.keys().cloned().collect())?,
         policy,
-        difficulty,
         neighborhoods,
     )?;
     let performance_eid = snapshot.optional_ref(learner_eid, "learner/performance")?;
@@ -610,6 +600,11 @@ pub fn load_runtime(
             "ability".into(),
             serde_json::to_value(ability(state, "progress")?).map_err(|e| e.to_string())?,
         );
+        for name in ["expected-assessment-accuracy", "expected-practice-accuracy"] {
+            if let Some(value) = state.get(&format!("progress/{name}")) {
+                fields.insert(name.replace('-', "_"), value.clone());
+            }
+        }
         if let Some(v) = state.get("progress/last-direct-at") {
             fields.insert("last_direct_at".into(), json!(instant_days(v)?));
         }
@@ -1136,10 +1131,9 @@ pub(crate) fn writeback(
     let old = &loaded.engine;
     if serde_json::to_value(&engine.policy).unwrap() != serde_json::to_value(&old.policy).unwrap()
         || engine.graph.id != old.graph.id
-        || engine.difficulty_accuracy != old.difficulty_accuracy
         || engine.neighborhoods != old.neighborhoods
     {
-        return Err("writeback must use captured policy, graph, difficulty".into());
+        return Err("writeback must use captured policy, graph, prerequisites".into());
     }
     for l in old
         .states
@@ -1207,6 +1201,14 @@ pub(crate) fn writeback(
                 format!("progress/{}", f.replace('_', "-")),
                 ability[f].clone(),
             );
+        }
+        for (name, value) in [
+            ("expected-assessment-accuracy", state.expected_assessment_accuracy),
+            ("expected-practice-accuracy", state.expected_practice_accuracy),
+        ] {
+            if let Some(value) = value {
+                r.insert(format!("progress/{name}"), json!(value));
+            }
         }
         if let Some(at) = state.last_direct_at {
             r.insert("progress/last-direct-at".into(), day_instant(at)?);

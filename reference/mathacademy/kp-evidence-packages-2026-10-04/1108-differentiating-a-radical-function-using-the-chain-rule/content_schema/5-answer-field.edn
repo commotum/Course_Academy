@@ -1,0 +1,38 @@
+;; One answer field identifying a response location in a question.
+;; Request :db/ensure [:answer-field/validate] for every field.
+[
+ {:db/ident :answer-field.type/radio}
+ {:db/ident :answer-field.type/blank}
+ {:db/ident :answer-field.type/select}
+
+ {:db/ident :answer-field/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of a field owned by one question."}
+
+ {:db/ident :answer-field/type
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Interaction type for this field: :answer-field.type/radio, /blank, or /select. Radio and select display their authored choices. Blank fields accept entered values and never display their choices as options. The application checks enum membership."}
+
+ {:db/ident :answer-field/key
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Key unique within the question, binding the field to a problem location such as x or y. A single radio field can use selection without an inline placeholder."}
+
+ {:db/ident :answer-field/choices
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "All answer values owned by this field, including the canonical answer, authored radio/select options, and distinct entered blank values. The correct answer must be a member. Radio/select display authored choices; blanks never display this collection as options. The application deduplicates values within the field, controls option order, and preserves values once a task-item response references them."}
+
+ {:db/ident :answer-field/correct
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Required canonical answer, which must be a member of this field's choices. This ordinary ref does not add another ownership relationship."}
+
+ {:db/ident :answer-field/validate
+  :db.entity/attrs [:answer-field/id :answer-field/key :answer-field/type :answer-field/choices :answer-field/correct]
+  :db/doc "Requires identity, key, type, at least one answer value, and a correct ref when explicitly ensured. Writers also ensure answer/validate. Unique keys, correct-answer membership, field-scoped value deduplication, and interaction-specific display rules require application validation."}
+]
