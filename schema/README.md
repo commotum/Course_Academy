@@ -85,7 +85,7 @@ Courses, units, modules, topics, and knowledge points have an `identity-validate
 
 These five placeholder specs cover the current curriculum-loading workflow. We can add the same option to lessons, questions, or tutorials when staged content generation needs it.
 
-`data/5-1-topic.edn` includes optional `topic/difficulty`, a finite assessment-accuracy estimate in [0,1]. Ensure `topic/difficulty-validate` on difficulty-only updates. `topic/validate` also checks difficulty if present, while identity-only placeholders remain supported.
+`data/5-1-topic.edn` includes optional `topic/difficulty`, a positive finite lesson workload multiplier, default 1.0. It affects base XP only. Progress has optional separate expected assessment/practice accuracy forecasts initialized from direct prerequisites. Ensure `topic/difficulty-validate` on difficulty-only updates. `topic/validate` also checks difficulty if present, while identity-only placeholders remain supported.
 
 [1-fire-policy.edn](engine/1-fire-policy.edn) defines FIRe parameters under a stable `policy/id`. Ensure `policy/validate` when editing them. EDB history preserves earlier values: inspect past progress and its referenced policy in the same historical database value with `as_of`. Editing a policy leaves stored `progress/interval-days` unchanged until the engine recomputes it; it does not automatically reschedule every topic.
 

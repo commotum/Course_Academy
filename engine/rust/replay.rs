@@ -41,7 +41,11 @@ pub fn replay(data: Value) -> Result<Value> {
         }
     }
     let input: Input = serde_json::from_value(data).map_err(|e| e.to_string())?;
-    if input.difficulty_accuracy.as_ref().is_some_and(|v| !v.is_empty()) {
+    if input
+        .difficulty_accuracy
+        .as_ref()
+        .is_some_and(|v| !v.is_empty())
+    {
         return Err("legacy topic accuracy calibration is no longer supported".into());
     }
     let mut engine = FireEngine::new(

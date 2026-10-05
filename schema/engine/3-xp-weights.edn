@@ -11,6 +11,12 @@
 ;; Existing observed/imported awards are authoritative; these rules compute new
 ;; local awards and do not recalculate learner history during schema installation.
 ;; Full derivation, examples, and evidence: reference/xp-docs/earned-xp-formula-report.md.
+;; Lesson BASE XP: engine/rust/base_xp.rs implements the selected content formula
+;; with expected 60/30/10 difficulty distribution, workload weights 1/2/4, and
+;; max(7, floor(topic/difficulty * unrounded_score + 0.5)). No question labels or
+;; learner outcomes are inputs. Default topic multiplier is 1.0. Persist base*60
+;; as activity/expected-seconds and freeze base as learner-task/xp-base at start.
+;; See reference/THE_PLAN/README.md and xp-docs/expected-distribution-base-xp.md.
 [
  {:db/ident :xp-weights/lesson-v1
   :db/doc "Completed lesson: if p < 0.50, XP = -1; else if p = 1, XP = R(1.25 B); else XP = R(B min(1, 1.5 p - 0.30)). Use all ordinary question occurrences across the task, not average per-KP accuracy. A failed completed task still receives this formula's award; unfinished tasks receive no final award."}

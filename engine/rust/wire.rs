@@ -55,6 +55,43 @@ fn options(v: &Value) -> Result<CompletionOptions> {
 pub fn execute(input: &Value) -> Result<Value> {
     let op = input["op"].as_str().ok_or("op required")?;
     match op {
+        "estimate_lesson_xp" | "calibrate_lesson_xp" => {
+            let features = if let Some(features) = input.get("features") {
+                decode::<crate::base_xp::Features>(features)?
+            } else {
+                crate::base_xp::Features::from_content(
+                    &input["content"],
+                    input["tutorial_words"]
+                        .as_u64()
+                        .ok_or("tutorial word count required")? as usize,
+                    true,
+                )?
+            };
+            let weights = input
+                .get("weights")
+                .map(decode)
+                .transpose()?
+                .unwrap_or(crate::base_xp::DEFAULT_WEIGHTS);
+            let result = if op == "calibrate_lesson_xp" {
+                crate::base_xp::calibrate(
+                    features,
+                    weights,
+                    input["base_xp"]
+                        .as_i64()
+                        .ok_or("authoritative base XP required")?,
+                )?
+            } else {
+                crate::base_xp::estimate(
+                    features,
+                    weights,
+                    input
+                        .get("multiplier")
+                        .and_then(Value::as_f64)
+                        .unwrap_or(1.0),
+                )?
+            };
+            serde_json::to_value(result).map_err(|e| e.to_string())
+        }
         "apply" | "apply_accuracy" | "apply_retention" | "rank" | "due" | "restore" => {
             let mut engine = FireEngine::restore(input["engine"].clone())?;
             let output = match op {

@@ -1,5 +1,7 @@
 # Base XP: findings and selected formula
 
+**Selection updated October 4, 2026:** the production engine now uses the [expected-distribution content formula](expected-distribution-base-xp.md). The actual-question-difficulty formula and its 1.95 XP fit below are historical comparisons.
+
 **Date:** October 4, 2026  
 **Selected model:** `duration_1_2_4_full_content`  
 **Scope:** lesson base XP, calibrated to all 58 complete captured lessons

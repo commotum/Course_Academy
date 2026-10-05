@@ -19,7 +19,10 @@ digraph EngineDependencies {
   Earned [label="Earned XP"];
   Cadence [label="Assessment cadence"];
   Accuracy [label="Learner accuracy"];
-  Difficulty [label="Topic difficulty"];
+  Difficulty [label="Topic workload multiplier"];
+  Distribution [label="Expected question difficulty distribution"];
+  PrerequisitePerformance [label="Direct prerequisite accuracies + masses"];
+  ExpectedAccuracy [label="Initial assessment/practice forecasts"];
   Speed [label="FIRe learning-speed multiplier"];
   Coverage [label="Authored encompassing weights"];
   Credit [label="Fractional repetition credit"];
@@ -38,7 +41,12 @@ digraph EngineDependencies {
   Results -> Earned;
   Earned -> Cadence;
   Results -> Accuracy;
-  Difficulty -> Speed;
+  Content -> Workload;
+  Distribution -> Workload;
+  Difficulty -> Base;
+  PrerequisitePerformance -> ExpectedAccuracy;
+  Prerequisites -> ExpectedAccuracy;
+  ExpectedAccuracy -> Accuracy;
   Accuracy -> Speed;
   Coverage -> Credit;
   Results -> Credit;

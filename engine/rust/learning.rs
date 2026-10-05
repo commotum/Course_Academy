@@ -6,7 +6,7 @@
 use crate::{
     Result,
     activities::{decimal_number, evaluate_kp_prefix, lesson_xp_candidate},
-    core::{Event, TopicState},
+    core::Event,
     schema::{EntitySnapshot, LoadedRuntime, load_runtime, timestamp_days, writeback},
 };
 use chrono::{DateTime, Utc};

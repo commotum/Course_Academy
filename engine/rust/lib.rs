@@ -2,6 +2,7 @@
 pub type Result<T> = std::result::Result<T, String>;
 
 pub mod activities;
+pub mod base_xp;
 pub mod calibration;
 pub mod core;
 pub mod graph_snapshots;

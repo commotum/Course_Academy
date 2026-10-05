@@ -5,6 +5,7 @@ mod developer_preview;
 
 use chrono::{DateTime, Utc};
 use course_academy_engine::{
+    base_xp,
     learning,
     schema::{self, EntitySnapshot, Record, StatusAssertion},
     timing,
@@ -979,15 +980,10 @@ fn mutate(
                     "learner-task.status/started",
                 )?);
                 if s.entity(t)?.get("learner-task/xp-base").is_none() {
-                    let expected = number(s, a, "activity/expected-seconds");
                     forms.push(add(
                         json!(t),
                         "learner-task/xp-base",
-                        json!(if expected > 0.0 {
-                            (expected / 60.0).round().max(1.0) as i64
-                        } else {
-                            12
-                        }),
+                        json!(base_xp::activity_base(s, a)?),
                     ));
                 }
                 let content =
@@ -1000,12 +996,7 @@ fn mutate(
             return Err("Pause the current lesson before starting another".into());
         }
         let id = uid()?;
-        let expected = number(s, a, "activity/expected-seconds");
-        let xp_base = if expected > 0.0 {
-            (expected / 60.0).round().max(1.0) as i64
-        } else {
-            12
-        };
+        let xp_base = base_xp::activity_base(s, a)?;
         forms.push(json!({"db/id":"new-task","learner-task/id":{"$uuid":id},"learner-task/activity":a,"learner-task/status":kw("learner-task.status/started"),"learner-task/priority":1.0,"learner-task/elapsed-seconds":0.0,"learner-task/xp-base":xp_base,"learner-task/xp-earned":0,"db/ensure":kw("learner-task/validate")}));
         forms.push(add(json!(l), "learner/activity", json!("new-task")));
         let content = learning::first_content(s, a, l)?.ok_or("Lesson has no available content")?;
@@ -1521,11 +1512,11 @@ mod study_queue_tests {
             ),
             (
                 50,
-                json!({"activity/id":"course-lesson","activity/type":"activity.type/lesson","activity/scope":5,"activity/title":"Course lesson","activity/steps":[60],"activity/first-step":60}),
+                json!({"activity/id":"course-lesson","activity/type":"activity.type/lesson","activity/scope":5,"activity/title":"Course lesson","activity/expected-seconds":720.0,"activity/steps":[60],"activity/first-step":60}),
             ),
             (
                 51,
-                json!({"activity/id":"queued-lesson","activity/type":"activity.type/lesson","activity/scope":6,"activity/title":"Queued lesson","activity/steps":[61],"activity/first-step":61}),
+                json!({"activity/id":"queued-lesson","activity/type":"activity.type/lesson","activity/scope":6,"activity/title":"Queued lesson","activity/expected-seconds":720.0,"activity/steps":[61],"activity/first-step":61}),
             ),
             (60, json!({"step/content":70})),
             (61, json!({"step/content":71})),

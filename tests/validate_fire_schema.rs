@@ -41,9 +41,9 @@ fn main() -> Result<(), Box<dyn Error>> {
             // Seed transactions are applied after schema installation.
             .filter(|p| {
                 let seed_files = [
-                    "1-2-sequences.edn",
+                    "1-2-course-groups.edn",
                     "2-3-courses.edn",
-                    "2-4-self-directed-course.edn",
+                    "2-4-oregon-state-courses.edn",
                     "3-2-units.edn",
                     "3-3-course-units.edn",
                     "4-2-modules.edn",
@@ -178,6 +178,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         ":progress/interval-days 0.0",
         ":progress/assessment-accuracy 1.1",
         ":progress/practice-accuracy -0.1",
+        ":progress/expected-assessment-accuracy 1.1",
+        ":progress/expected-practice-accuracy -0.1",
         ":progress/assessment-mass -0.1",
         ":progress/practice-mass -0.1",
     ] {
@@ -264,12 +266,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     let topicidattr = db.entid(&Keyword::new("topic", "id")).unwrap() as u32;
     assert!(!removed.values(topic, topicidattr).is_empty());
-    edb_activity_checks::check(&db)?;
+    let schema_only = std::env::args().any(|arg| arg == "--schema-only");
+    if !schema_only { edb_activity_checks::check(&db)?; }
     println!(
         "PASS all {schema_count} current schemas install; policy/difficulty/progress predicates, single-owner topic progress, identity-preserving writes, required fields, component deletion and history checks pass."
     );
     println!(
-        "Scope: in-memory native EDB transaction/CAS validation and Rust-generated EDN. Durable writer basis-conflict/idempotency behavior is not exercised without a running transactor."
+        "Scope: in-memory native EDB validation. --schema-only omits the retired activity fixture; durable behavior is checked separately by check_learning_api.py."
     );
     Ok(())
 }

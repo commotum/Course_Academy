@@ -1,6 +1,6 @@
 # Base XP and learner expected accuracy
 
-Agreed direction: October 4, 2026. This document records the implementation plan. The engine, schema, and database changes below remain to be implemented.
+Agreed direction: October 4, 2026. The schema and Rust engine changes below are implemented. The initial catalog transaction and its verification are recorded in the implementation results section. [Current formula documentation](../xp-docs/expected-distribution-base-xp.md) describes runtime behavior and calibration operations.
 
 ## Decisions
 
@@ -24,6 +24,8 @@ The selected expected-distribution formula averages **2.40 XP absolute error** w
 ## Selected formula
 
 For each KP, take the first two distinct captured practice questions in recorded presentation order. Do not sort by difficulty or question ID. Canonical examples do not occupy either practice slot. If fewer than two questions are available, produce a provisional estimate from available content and record the incomplete coverage; do not use it to tune the topic multiplier.
+
+Initial estimates from the database use the available unordered practice pool per KP, since no recorded presentation order exists there. Missing practice worked solutions use that KP's canonical worked solution as a provisional measurement proxy; estimates record how many substitutions were used. Recorded-capture calibration still requires actual complete worked solutions and two questions per KP. No question content is changed by this estimate.
 
 Let `mean_k` mean the average over that KP's selected questions. The expected difficulty-weight multiplier is `0.60 × 1 + 0.30 × 2 + 0.10 × 4 = 1.6`. Substitute `W = 1.6T`, `M = 0.30K`, and `H = 0.10K` into the full-content formula. This assumes the same content-length measurement represents the expected band mix; it does not estimate separate mean lengths for each band.
 

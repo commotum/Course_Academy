@@ -1203,8 +1203,14 @@ pub(crate) fn writeback(
             );
         }
         for (name, value) in [
-            ("expected-assessment-accuracy", state.expected_assessment_accuracy),
-            ("expected-practice-accuracy", state.expected_practice_accuracy),
+            (
+                "expected-assessment-accuracy",
+                state.expected_assessment_accuracy,
+            ),
+            (
+                "expected-practice-accuracy",
+                state.expected_practice_accuracy,
+            ),
         ] {
             if let Some(value) = value {
                 r.insert(format!("progress/{name}"), json!(value));

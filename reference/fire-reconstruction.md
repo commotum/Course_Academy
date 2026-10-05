@@ -24,6 +24,10 @@ The adapter returns an atomic EDB transaction plan. A durable database writer,
 production UI and complete scheduler remain outside this
 implementation. Building those does not require MA's private learner-state values.
 
+## Current local model change
+
+The historical reconstruction below describes the original population-difficulty approach. The October 4 implementation instead uses direct-prerequisite mass-weighted forecasts for separate assessment/practice channels. Learning speed is based on learner accuracy alone. `topic/difficulty` now means a positive base-XP workload multiplier, default 1.0, and never enters retention. See [the adopted plan](THE_PLAN/README.md) and [current data contract](fire-data-model.md).
+
 ## What was investigated
 
 The [source evidence review](fire-source-evidence.md) identifies the local book

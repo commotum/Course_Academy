@@ -29,7 +29,7 @@ awards remain authoritative, and stored history is not recalculated.
 `ActivityRules::use_fitted_xp` is retained for replay compatibility and now
 defaults to `true`. Setting it to `false` suppresses automatic partial awards
 in the older `runtime` API; the current study app always uses the accepted rules.
-Base XP is supplied separately; these changes concern the earned/base adjustment.
+Base XP is computed by `base_xp` from content and the expected difficulty distribution. No individual difficulty labels are required. Topic workload multipliers default to 1.0; expected seconds are stored on activities and base XP is frozen on attempts at start. See [the selected formula](../../reference/xp-docs/expected-distribution-base-xp.md).
 
 ```bash
 cargo test
@@ -43,7 +43,7 @@ cargo run -- graph-snapshots --ma-root ../MA --without-git --output /tmp/graphs.
 The library separates these responsibilities:
 
 - `core` and `calibration`: weighted graph propagation, retention, accuracy,
-  difficulty estimation, ranking, and JSON snapshot/restore.
+  prerequisite-weighted initial accuracy forecasts, ranking, and JSON snapshot/restore.
 - `activities`: exact rational XP calculations, practice stopping rules, and
   diagnostic placement balances.
 - `schema`: hydrate an `EntitySnapshot` into a `LoadedRuntime` and construct

@@ -482,8 +482,14 @@ impl TopicState {
     pub fn validate(&self) -> Result<()> {
         self.ability.validate()?;
         for (name, value) in [
-            ("expected_assessment_accuracy", self.expected_assessment_accuracy),
-            ("expected_practice_accuracy", self.expected_practice_accuracy),
+            (
+                "expected_assessment_accuracy",
+                self.expected_assessment_accuracy,
+            ),
+            (
+                "expected_practice_accuracy",
+                self.expected_practice_accuracy,
+            ),
         ] {
             if let Some(value) = value {
                 finite(value, name, Some(0.0), Some(1.0))?;
@@ -652,28 +658,38 @@ impl FireEngine {
             .cloned()
             .collect();
         let channel = |assessment: bool, direct_only: bool| -> Option<f64> {
-            let mut mean = 0.0;
-            let mut total = 0.0;
+            let mut values = vec![];
             for (id, state) in self.states.get(learner).into_iter().flat_map(|s| s.iter()) {
-                if id == topic || (direct_only && !neighbors.contains(id)) { continue; }
+                if id == topic || (direct_only && !neighbors.contains(id)) {
+                    continue;
+                }
                 let (accuracy, mass) = if assessment {
-                    (state.ability.assessment_accuracy, state.ability.assessment_mass)
+                    (
+                        state.ability.assessment_accuracy,
+                        state.ability.assessment_mass,
+                    )
                 } else {
                     (state.ability.practice_accuracy, state.ability.practice_mass)
                 };
                 if mass > 0.0 {
-                    let next = total + mass;
-                    // Stable convex mean, avoiding accuracy*mass overflow.
-                    let ratio = if next.is_finite() { mass / next }
-                        else { 1.0 / (1.0 + total / mass) };
-                    mean += (accuracy - mean) * ratio;
-                    total = next;
+                    values.push((accuracy, mass));
                 }
             }
-            (total > 0.0).then_some(mean)
+            let scale = values.iter().map(|(_, mass)| *mass).reduce(f64::max)?;
+            let total: f64 = values.iter().map(|(_, mass)| mass / scale).sum();
+            Some(
+                values
+                    .iter()
+                    .map(|(accuracy, mass)| accuracy * (mass / scale))
+                    .sum::<f64>()
+                    / total,
+            )
         };
-        let predict = |assessment| channel(assessment, true)
-            .or_else(|| channel(assessment, false)).unwrap_or(self.policy.prior_accuracy);
+        let predict = |assessment| {
+            channel(assessment, true)
+                .or_else(|| channel(assessment, false))
+                .unwrap_or(self.policy.prior_accuracy)
+        };
         (predict(true), predict(false))
     }
 
@@ -833,8 +849,12 @@ impl FireEngine {
             });
             // Existing outcome evidence is preserved; missing legacy forecasts
             // are explicitly filled at this observation, not reconstructed past.
-            state.expected_assessment_accuracy = state.expected_assessment_accuracy.or(initial.expected_assessment_accuracy);
-            state.expected_practice_accuracy = state.expected_practice_accuracy.or(initial.expected_practice_accuracy);
+            state.expected_assessment_accuracy = state
+                .expected_assessment_accuracy
+                .or(initial.expected_assessment_accuracy);
+            state.expected_practice_accuracy = state
+                .expected_practice_accuracy
+                .or(initial.expected_practice_accuracy);
             state.validate()?;
             let before = serde_json::to_value(&*state).map_err(|e| e.to_string())?;
             if event.at < state.memory_at {
@@ -1053,7 +1073,10 @@ impl FireEngine {
             return Err("unsupported snapshot format".into());
         }
         if !data.difficulty_accuracy.is_empty() {
-            return Err("legacy topic accuracy calibration must be retired before restoring this snapshot".into());
+            return Err(
+                "legacy topic accuracy calibration must be retired before restoring this snapshot"
+                    .into(),
+            );
         }
         let mut result = Self::new(
             EncompassingGraph::new(data.graph, data.topics)?,
@@ -1097,12 +1120,7 @@ mod tests {
         .unwrap()
     }
     fn engine(edges: &[(&str, &str, f64)]) -> FireEngine {
-        let mut engine = FireEngine::new(
-            graph(edges),
-            Policy::default(),
-            BTreeMap::new(),
-        )
-        .unwrap();
+        let mut engine = FireEngine::new(graph(edges), Policy::default(), BTreeMap::new()).unwrap();
         for topic in ["A", "B", "C"] {
             engine
                 .seed("learner", topic, TopicState::default())
@@ -1128,10 +1146,6 @@ mod tests {
     fn json_rejects_unknown_fields_and_missing_required_event_data() {
         assert!(serde_json::from_value::<Policy>(json!({"magic": 1})).is_err());
         assert!(serde_json::from_value::<AccuracyEstimate>(json!({"magic": 1})).is_err());
-        assert!(
-            serde_json::from_value::<crate::calibration::DifficultyEstimate>(json!({"magic": 1}))
-                .is_err()
-        );
         assert!(serde_json::from_value::<TopicState>(json!({"magic": 1})).is_err());
         let valid = json!({"id":"e","learner":"l","topic":"A","at":1,"passed":true});
         for field in ["id", "learner", "topic", "at", "passed"] {
@@ -1493,7 +1507,7 @@ mod tests {
     }
 
     #[test]
-    fn local_prior_uses_observed_neighborhood_or_global_ability() {
+    fn missing_assessment_evidence_does_not_borrow_practice_accuracy() {
         let mut engine = FireEngine::new(
             graph(&[]),
             Policy::default(),
@@ -1509,8 +1523,65 @@ mod tests {
                 ..event("learn", "A", 1.0, true)
             })
             .unwrap();
-        assert_eq!(engine.states["learner"]["A"].accuracy(), 0.4);
+        let state = &engine.states["learner"]["A"];
+        assert_eq!(state.expected_assessment_accuracy, Some(0.8));
+        assert_eq!(state.expected_practice_accuracy, Some(0.4));
+        close(state.accuracy(), 0.6);
         assert!(engine.global_ability.is_empty());
+    }
+
+    #[test]
+    fn forecasts_use_separate_mass_weighted_direct_prerequisites_and_freeze() {
+        let mut engine = FireEngine::new(
+            graph(&[]),
+            Policy::default(),
+            BTreeMap::from([("A".into(), vec!["B".into(), "C".into()])]),
+        )
+        .unwrap();
+        for (topic, assessment, amass, practice, pmass) in [
+            ("B", 0.2, 1.0, 0.9, 3.0),
+            ("C", 0.8, 3.0, 0.1, 1.0),
+            ("D", 1.0, 100.0, 1.0, 100.0),
+        ] {
+            let mut state = TopicState::new(0.8, true);
+            state.ability.assessment_accuracy = assessment;
+            state.ability.assessment_mass = amass;
+            state.ability.practice_accuracy = practice;
+            state.ability.practice_mass = pmass;
+            engine.seed("learner", topic, state).unwrap();
+        }
+        let (assessment, practice) = engine.expected_accuracy("learner", "A");
+        close(assessment, 0.65);
+        close(practice, 0.7);
+        let fallback = engine.expected_accuracy("learner", "other");
+        close(fallback.0, 102.6 / 104.0);
+        close(fallback.1, 102.8 / 104.0);
+        engine
+            .apply_accuracy(Event {
+                question_results: vec![false],
+                ..event("first", "A", 1.0, false)
+            })
+            .unwrap();
+        let initial = engine.states["learner"]["A"].clone();
+        assert!(!initial.learned);
+        close(initial.expected_assessment_accuracy.unwrap(), 0.65);
+        close(initial.expected_practice_accuracy.unwrap(), 0.7);
+        close(initial.ability.practice_accuracy, 0.56);
+        assert_eq!(initial.ability.practice_mass, 1.0);
+        engine
+            .apply_accuracy(Event {
+                question_results: vec![true],
+                ..event("second", "A", 2.0, true)
+            })
+            .unwrap();
+        assert_eq!(
+            engine.states["learner"]["A"].expected_practice_accuracy,
+            initial.expected_practice_accuracy
+        );
+        assert_eq!(
+            FireEngine::restore(engine.snapshot()).unwrap().states,
+            engine.states
+        );
     }
 
     #[test]
