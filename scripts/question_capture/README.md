@@ -469,8 +469,12 @@ examples and grading feedback. Uncertain results
 or invalid choices stop before submission.
 
 The extractor supports observed radio circles, native blanks/selects, MathQuill
-answer wrappers, and the original `.selectList` widget. MathQuill entry uses
-explicit typed characters, arrow-key events, and visible symbol-menu buttons.
+answer wrappers, and the original `.selectList` widget.
+Custom selects retain their owned option node when the menu moves to `body` and
+verify the selected content in `.selectListFrame`; selecting an option removes
+the initial `.selectListSelectedText` placeholder.
+MathQuill entry uses explicit typed characters, arrow-key events, and visible
+symbol-menu buttons.
 The runner focuses each editor's keyboard input when switching fields, so a
 floating toolbox over the next answer box cannot intercept a mouse click.
 Named symbols such as π use the displayed toolbox when available, with explicit

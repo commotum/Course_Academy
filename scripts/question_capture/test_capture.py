@@ -829,6 +829,47 @@ class DOMTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Actual selected dropdown value'):
             reader.enter(scope,record)
 
+    def test_real_graded_dropdown_frames_require_a_source_grade(self):
+        fixture=Path(__file__).parent/'fixtures/sign-table-dropdown/graded-question.html'
+        self.page.set_content(fixture.read_text())
+        scope=self.page.locator('#step-q278484');item=scope.evaluate(EXTRACT)
+        self.assertEqual(item['result'],'Correct')
+        self.assertEqual(item['errors'],[])
+        self.assertEqual([f['frame_id'] for f in item['fields']],
+            ['selectListFrame-278484-'+str(i) for i in range(3)])
+        self.assertTrue(item['worked_solution'])
+        self.page.locator('.questionWidget-result').evaluate('n=>n.textContent=""')
+        unconfirmed=scope.evaluate(EXTRACT)
+        self.assertEqual(len([e for e in unconfirmed['errors'] if 'Select frame has no ID' in e]),3)
+
+    def test_real_submitting_dropdown_checkpoint_recovers_without_submit(self):
+        fixture=Path(__file__).parent/'fixtures/sign-table-dropdown'
+        self.page.set_content((fixture/'graded-question.html').read_text())
+        self.page.evaluate('''() => {
+          const next=document.createElement('button');next.id='continueButton-q278484';
+          next.textContent='Continue';document.body.appendChild(next);
+          const final=document.createElement('div');final.id='finalScreen';final.style.display='none';
+          document.body.appendChild(final);window.submissions=0;
+          document.addEventListener('click',e=>{if(e.target.closest('.questionWidget-submitButton'))window.submissions++;});
+        }''')
+        record=json.loads((fixture/'submitting-record.json').read_text())
+        self.assertEqual(record['status'],'submitting')
+        state={'task_id':13969014,'topic_id':118,'task_type':'review','review_sequence':'CWCWC',
+            'kps':{},'examples':{},'questions':{'q-278484':record}}
+        solver=Mock();reader=CaptureBrowser(self.page,SimpleNamespace(timeout_ms=2000),None,solver)
+        reader.advance=Mock(side_effect=RuntimeError('Stop after recovered grade'))
+        reader.enter=Mock(side_effect=AssertionError('Do not fill or replay a graded submission'))
+        with tempfile.TemporaryDirectory() as work:
+            with self.assertRaisesRegex(RuntimeError,'Stop after recovered grade'):
+                reader.review(state,work,{})
+            restored=json.loads((Path(work)/'state.json').read_text())['questions']['q-278484']
+        self.assertEqual(restored['actual_result'],'Correct')
+        self.assertTrue(restored['finalized'])
+        self.assertEqual(len(restored['content']['answer_fields']),3)
+        self.assertTrue(restored['content']['worked_solution'])
+        self.assertEqual(self.page.evaluate('window.submissions'),0)
+        reader.enter.assert_not_called();solver.solve.assert_not_called()
+
     def test_local_mathml_operator_nodes_preserve_adjacent_function_names(self):
         fixture=Path(__file__).parent/'fixtures/reciprocal-trig-operators'
         self.page.set_content((fixture/'question.html').read_text())

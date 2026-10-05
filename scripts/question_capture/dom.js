@@ -37,7 +37,9 @@ element => {
       if (!n.querySelector('.mq-editable-field .mq-textarea textarea')) errors.push('Unsupported math editor: ' + n.id);
     } else if (n.matches('.selectList')) {
       f.tag = 'custom-select';
-      f.frame_id = n.querySelector('.selectListFrame')?.id;
+      const graded = ['Correct','Incorrect'].includes(element.querySelector('.questionWidget-result')?.textContent.trim());
+      const frame = n.querySelector('.selectListFrame') || (graded && n.querySelector('.selectListFrameDisabled'));
+      f.frame_id = frame?.id;
       if (!f.frame_id) errors.push('Select frame has no ID: ' + n.id);
     } else if (n.matches('input') && !['text','number',''].includes(n.getAttribute('type') || '')) {
       errors.push('Unsupported input type: ' + n.getAttribute('type'));

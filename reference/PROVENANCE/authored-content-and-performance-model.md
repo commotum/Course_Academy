@@ -1,7 +1,7 @@
 # Authorship, source materials, content blueprints, and performance
 
 Date: 2026-10-05  
-Status: Design review and recommendations. These schemas and behavioral changes have not been implemented.
+Status: Design review and recommendations. The [three generic schema drafts](../../schema-v2/generics/) have been written; they have not been installed. Native validators, runtime integration, and the other proposed behavioral changes remain unimplemented.
 
 This report records the recent discussion of shared performance records, authored tags, school materials, generated courses, and the proposed **tag → block → hyperdoc** model. It supplements the [earlier provenance audit](README.md). Where their recommendations differ, this report describes the newer, lighter direction; the earlier audit remains useful evidence about existing imports and attribution gaps.
 
@@ -32,9 +32,21 @@ Sources: [course](../../schema/data/2-1-course.edn), [module membership](../../s
 
 ## 1. Authorship belongs to the contribution
 
-Use the same proposed `:authorship/author` reference on ordinary content, authored tag assignments, software generators, and schema/type definitions. Reference an agent entity representing a person, organization, model, or software. A generator can itself have agent and generator attributes; EDB does not require a second entity merely because it has both roles.
+Use the same proposed `:who/author` reference on ordinary content, authored tag assignments, software generators, and schema/type definitions. Reference an agent entity representing a person, organization, model, or software. A generator can itself have agent and generator attributes; EDB does not require a second entity merely because it has both roles.
 
-Retain the earlier proposal's UUID `:agent/id`, display name, and ref-valued agent type. Use one shared, cardinality-many `:authorship/author` attribute so a contribution can have one or several authors. Complete authored tags and blueprints require at least one author; attributing different fields to different contributors still requires separate assignments. The existing learner entity can also carry person-agent attributes; an extra learner-to-agent wrapper is unnecessary unless those identities intentionally have separate lifecycles.
+Retain the earlier proposal's UUID `:agent/id`, display name, and ref-valued agent type. Use one shared, cardinality-one `:who/author` attribute: every complete tag, block, hyperdoc, and authored blueprint has exactly one author agent. Native cardinality enforces at most one, and the required-attribute specs enforce presence. Contributions by different agents belong to distinct entities rather than a list of authors on the containing entity. This supersedes the earlier many-valued authorship proposal. The existing learner entity can also carry person-agent attributes; an extra learner-to-agent wrapper is unnecessary unless those identities intentionally have separate lifecycles.
+
+For example, Jake presses the UI button to create an assignment. Jake is the author of that hyperdoc. A Python generator creates some blocks and is the author of those blocks and any tags it authors. A manually written block has Jake as its author; a block written by an agent has that agent as its author. The generator can itself have a single `:who/author` identifying who authored its code. None of these child contributions changes the assignment hyperdoc's author.
+
+```text
+Assignment hyperdoc → who/author → Jake
+  ├─ Generated block → who/author → Python generator
+  │                                  └─ who/author → its code's author
+  ├─ Manual block    → who/author → Jake
+  └─ Agent block     → who/author → that agent
+```
+
+Each tag follows the same rule independently; reusing a tag preserves its author. The creator of a container does not automatically author its descendants. Here authorship identifies the contribution's creator, not an access-control role; adding generated content does not transfer document ownership or permissions.
 
 | Contribution | Meaning of its author |
 |---|---|
@@ -72,8 +84,8 @@ The following is an illustrative definition, not an installation transaction. It
  :tag-type/choices [:question.difficulty/easy
                     :question.difficulty/moderate
                     :question.difficulty/hard]
- :authorship/author
- [[:agent/id #uuid "cfa90423-45a9-43e5-8caf-3b5cb3362937"]]}
+ :who/author
+ [:agent/id #uuid "cfa90423-45a9-43e5-8caf-3b5cb3362937"]}
 ```
 
 An instance answers that question:
@@ -82,16 +94,16 @@ An instance answers that question:
 {:tag/id #uuid "203e6549-017c-4c06-a8f8-9b173659bb43"
  :tag/type :tag.value/difficulty
  :tag.value/difficulty :question.difficulty/hard
- :authorship/author
- [[:agent/id #uuid "f8bc5fb2-ddf3-4a84-bd65-64267a742dd9"]]
+ :who/author
+ [:agent/id #uuid "f8bc5fb2-ddf3-4a84-bd65-64267a742dd9"]
  :db/ensure :tag/validate}
 ```
 
-The illustrative UUID lookups stand for the agent defining the blueprint and the agent assigning the rating, respectively. The outer collection is required because authorship is many-valued. Here `:tag/type` points to the same schema entity whose attribute holds the answer. A generic editor can discover that attribute and expose a uniform **type, value, author** interface.
+The illustrative UUID lookups stand for the agent defining the blueprint and the agent assigning the rating, respectively. Each author value is one lookup ref, without an outer collection. Here `:tag/type` points to the same schema entity whose attribute holds the answer. A generic editor can discover that attribute and expose a uniform **type, value, author** interface.
 
 This deliberately adjusts the earlier generic `tag/value` proposal. A single ref-valued attribute works for categorical tags, but cannot directly hold text, booleans, or numbers. EDB has no arbitrary “any value” attribute type. Native answer attributes preserve useful database typing without stringifying values or wrapping every scalar in another entity.
 
-The strict shared tag validator should require identity, at least one valid author reference, a registered tag type, and its selected answer attribute. It should check permitted choices or ranges and reject conflicting additional tag-answer attributes. Ordinary extra metadata remains allowed. An enum ref alone does not enforce vocabulary membership.
+The strict shared tag validator should require identity, exactly one valid author reference, a registered tag type, and its selected answer attribute. It should check permitted choices or ranges and reject conflicting additional tag-answer attributes. Ordinary extra metadata remains allowed. An enum ref alone does not enforce vocabulary membership.
 
 Native cardinality controls the number of answers **inside one tag**. It does not control how many tags of that type a block contains. Those are separate collection rules.
 
