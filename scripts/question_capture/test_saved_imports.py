@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch
 
 from capture import arguments, run, unfinished_run
 from core import atomic_json
-from database import Database
+from database import Database, StaleBasis
 from edn import dumps, kw
 from import_repair import import_with_repair
 from provenance import ReconciliationReview
@@ -259,6 +259,22 @@ class SavedImportTests(unittest.TestCase):
         sweep(self.db,self.args,trigger='batch-end')
         self.assertEqual(self.db.import_content.call_count,1)
         self.assertEqual((directory/'edb-import/commit-intent.json').read_bytes(),original)
+
+    def test_contention_retries_next_sweep_while_other_imports_continue(self):
+        first,_,_=self.capture(1)
+        self.capture(2)
+        self.args.no_import_repair=False
+        self.db.import_content.side_effect=[StaleBasis('busy database'),
+            {'already_complete':True}, {'already_complete':True}]
+        with patch('import_repair.repair') as repair:
+            results=sweep(self.db,self.args,trigger='startup',repair_budget=0)
+            self.assertEqual([r['status'] for r in results],['contention_pending','complete'])
+            self.assertFalse(read_json(first/'state.json').get('import_complete'))
+            results=sweep(self.db,self.args,trigger='batch-end',repair_budget=0)
+            self.assertEqual([r['status'] for r in results],['complete'])
+            self.assertTrue(read_json(first/'state.json')['import_complete'])
+            repair.assert_not_called()
+        self.assertEqual(self.db.import_content.call_count,3)
 
     def test_bound_and_one_attempt_each_per_sweep(self):
         for task in range(1,5):self.capture(task)

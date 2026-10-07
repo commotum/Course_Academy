@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 from core import ROOT, atomic_json, journal
+from database import StaleBasis
 from edn import loads
 from native_comparison import availability
 from retry_policy import completion_outcome
@@ -262,6 +263,7 @@ def sweep(db, args, *, trigger, exclude=(), repair_budget=None):
             key = retry_key(directory,state,generation,args,related)
             previous = ledger.get(identity,{})
             if (previous.get('key') == key and
+                    previous.get('status') != 'contention_pending' and
                     (previous.get('status') != 'repair_pending' or remaining_repairs == 0)):
                 continue
             if len(outcomes) >= MAX_ATTEMPTS:
@@ -277,12 +279,16 @@ def sweep(db, args, *, trigger, exclude=(), repair_budget=None):
                 complete(args,directory,state,result)
                 status, error_text = 'complete', None
             except Exception as error:
-                status, error_text = 'repair_pending' if repair_postponed else 'deferred', str(error)
+                status = ('contention_pending' if isinstance(error,StaleBasis) else
+                          'repair_pending' if repair_postponed else 'deferred')
+                error_text = str(error)
                 state['deferred_error'] = {'phase':'import','message':str(error)}
                 atomic_json(directory/'state.json',state)
                 journal(args.state_dir/'journal.jsonl','saved_import_deferred',task_id=state['task_id'],
                         directory=str(directory),trigger=trigger,error_type=type(error).__name__,message=str(error))
-                if repair_postponed:
+                if status == 'contention_pending':
+                    logging.info('Saved import %s will retry database contention at the next sweep',directory)
+                elif repair_postponed:
                     logging.info('Saved import %s is queued for repair after live capture resumes',directory)
                 else:
                     logging.warning('Saved import %s remains deferred: %s',directory,error)

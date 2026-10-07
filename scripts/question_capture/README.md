@@ -282,6 +282,15 @@ errors can be repaired, while unsupported key changes still remain conflicts.
 Saved-import sweeps use that same session rather than only repeating failed reads.
 Pre-commit database-basis races replan locally, up to three attempts.
 
+Confirmed `postgres/stale-basis` commit rejections use the same bounded retry:
+the importer archives the rejected intent, transaction and reconciliation under
+`edb-import/rejected-commits/`, then reads the current basis and replans. New
+request keys include the basis as well as the transaction hash. EDB checks for an
+existing receipt before rejecting a stale basis, so unknown commit outcomes still
+replay their original request unchanged. Contention never launches a model repair;
+after three attempts it leaves the capture pending, continues other work, and
+permits another bounded attempt at the next saved-import sweep.
+
 The changes apply on the next importer invocation; no database migration or
 worker restart is required. To inspect a real saved capture without visiting MA:
 
@@ -692,8 +701,8 @@ python3 scripts/question_capture import-saved --content /absolute/path/content.j
 
 After a commit timeout, preserve `commit-intent.json` and `transaction.edn` and
 retry the same command. The original payload, database, endpoint, basis guard,
-and request key are reused. A definitive stale-basis rejection requires a fresh
-plan after checking that no commit occurred; unresolved intents are never
+and request key are reused. A definitive stale-basis rejection automatically
+archives the rejected plan and replans within the three-attempt limit; unresolved intents are never
 silently replaced. Completed captures are journaled separately from imports,
 so an EDB failure does not cause the activity to be retaken. Reviews are tracked by
 task ID and do not mark their topic's lesson as already captured. Legacy lesson

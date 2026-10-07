@@ -1,8 +1,10 @@
 """EDB reads, transaction previews, durable retry intents, and verification."""
 import hashlib
 import json
+import logging
 import os
 import re
+import shutil
 import subprocess
 from collections import defaultdict
 from datetime import datetime
@@ -39,6 +41,10 @@ PROTECTED_PREFIXES = ('learner/', 'learner-task/', 'task-item/', 'progress/',
 
 def fingerprint(rows):
     return hashlib.sha256('\n'.join(sorted(dumps(r) for r in rows)).encode()).hexdigest()
+
+
+class StaleBasis(RuntimeError):
+    """The database advanced before this import could commit."""
 
 
 class Database:
@@ -319,14 +325,20 @@ class Database:
         return {content['topic_id']:self.topic(content['topic_id'],directory,basis)}
 
     def import_content(self, content, directory, apply=True):
-        # Another app may transact between our read and preview. Replan this
-        # pre-commit race locally rather than spending a model repair turn.
+        # Replan ordinary contention locally, including a confirmed rejection
+        # after preview. Unknown commit outcomes keep their exact saved intent.
         for attempt in range(3):
             try:
                 return self._import_content(content,directory,apply)
-            except ValueError as error:
-                if str(error) != 'Database changed during planning; rerun before any commit' or attempt == 2:
+            except StaleBasis:
+                if attempt == 2:
                     raise
+                logging.info('EDB basis advanced before commit; replanning saved content (retry %d/2)',attempt+1)
+            except ValueError as error:
+                if str(error) != 'Database changed during planning; rerun before any commit':
+                    raise
+                if attempt == 2:
+                    raise StaleBasis(str(error)) from error
 
     def _import_content(self, content, directory, apply=True):
         directory = Path(directory)
@@ -392,7 +404,7 @@ class Database:
             return result
         digest = hashlib.sha256(tx_path.read_bytes()).hexdigest()
         intent = {'database': self.args.database, 'endpoint': self.args.endpoint, 'basis': basis,
-                  'sha256': digest, 'content_sha256':content_hash, 'request_key': 'ma-question-capture-' + digest,
+                  'sha256': digest, 'content_sha256':content_hash, 'request_key': 'ma-question-capture-' + str(basis) + '-' + digest,
                   'reconciliation_sha256':hashlib.sha256((directory/'reconciliation.edn').read_bytes()).hexdigest()}
         atomic_json(intent_path, intent)
         receipt = self._commit(intent, tx_path, directory)
@@ -408,8 +420,29 @@ class Database:
             if previous.get(':edb/committed') is True:
                 return previous
         journal(directory / 'events.jsonl', 'commit_requested', **intent)
-        text = self.command('transact', '--file', tx_path, '--endpoint', intent['endpoint'],
-                            '--request-key', intent['request_key'], '--basis', intent['basis'], '--timeout-ms', 180000)
+        try:
+            text = self.command('transact', '--file', tx_path, '--endpoint', intent['endpoint'],
+                                '--request-key', intent['request_key'], '--basis', intent['basis'], '--timeout-ms', 180000)
+        except subprocess.CalledProcessError as error:
+            diagnostic = error.stderr or ''
+            if isinstance(diagnostic,bytes):
+                diagnostic = diagnostic.decode('utf-8',errors='replace')
+            if not re.search(r'^ERROR category=Conflict code=postgres/stale-basis(?:\s|$)',diagnostic,re.M):
+                raise
+            # EDB checks exact receipts before this guard. This rejection proves
+            # the request did not commit, so its plan can be retired and rebuilt.
+            identity = hashlib.sha256(json.dumps(intent,sort_keys=True).encode()).hexdigest()
+            archive = directory/'rejected-commits'/(str(intent['basis'])+'-'+identity)
+            archive.mkdir(parents=True,exist_ok=True)
+            for source in (directory/'commit-intent.json',tx_path,directory/'reconciliation.edn',receipt_path):
+                if source.is_file():
+                    shutil.copy2(source,archive/source.name)
+            atomic_json(archive/'rejection.json',{'code':'postgres/stale-basis','stderr':diagnostic})
+            journal(directory/'events.jsonl','commit_rejected_stale_basis',basis=intent['basis'],
+                    request_key=intent['request_key'],archive=str(archive))
+            receipt_path.unlink(missing_ok=True)
+            (directory/'commit-intent.json').unlink()
+            raise StaleBasis('EDB rejected stale import basis '+str(intent['basis'])+'; rejected plan archived at '+str(archive)) from error
         receipt_path.write_text(text)
         receipt = loads(text)
         if receipt.get(':edb/committed') is not True:

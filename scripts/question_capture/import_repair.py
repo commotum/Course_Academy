@@ -12,6 +12,7 @@ import uuid
 from pathlib import Path
 
 from core import atomic_json
+from database import StaleBasis
 from provenance import ReconciliationReview
 from solver import Solver, process_token, run_cli
 
@@ -252,6 +253,9 @@ def import_with_repair(db, content, directory, state, args, *, revisit=True,can_
     try:
         return db.import_content(content,Path(directory)/'edb-import',not args.preview)
     except Exception as error:
+        if isinstance(error,StaleBasis):
+            # Database contention needs a later bounded retry, not a model fix.
+            raise
         # Reconciliation reports can also expose ordinary notation mismatches.
         # The same repair session proposes notation fixes or source-based answer
         # reviews; the runner owns derived content updates and EDB transactions.

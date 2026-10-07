@@ -85,6 +85,7 @@ element => {
       case 'mtable': return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
       case 'mtr': case 'mlabeledtr': return cs.join(' & ');
       case 'menclose':
+        if (n.getAttribute('notation') === 'right') return '\\left.' + cs.join('') + '\\right|';
         if (n.getAttribute('notation') === 'box') return '\\boxed{' + cs.join('') + '}';
         if (n.getAttribute('notation')?.includes('strike')) return '\\cancel{' + cs.join('') + '}';
         errors.push('Unsupported MathML enclosure'); return cs.join('');
