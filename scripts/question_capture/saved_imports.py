@@ -38,6 +38,12 @@ def confirmed_completion(state):
     elif kind == 'multistep':
         if 'completed the task' not in completion.lower():
             return False
+    elif kind == 'diagnostic':
+        from diagnostic import completed_url
+        if (not state.get('diagnostic_id') or not state.get('diagnostic_question_count') or
+                not completed_url(state, state.get('diagnostic_completion_url','')) or
+                completion != 'Diagnostic completed: '+state['diagnostic_completion_url']):
+            return False
     else:
         return False
     return True
@@ -53,6 +59,11 @@ def eligible(directory, state, content):
     if not records or len(questions) != len(content['questions']) or set(questions) != set(records):
         return False
     if state.get('task_type') == 'assessment' and len(records) != state.get('assessment_question_count'):
+        return False
+    if state.get('task_type') == 'diagnostic' and (
+            len(records) != state.get('diagnostic_question_count') or
+            set(state.get('diagnostic_question_order',[])) != set(records) or
+            content.get('question_order') != state.get('diagnostic_question_order')):
         return False
     if state.get('task_type') == 'multistep' and (
             set(state.get('multistep_question_order',[])) != set(records) or
@@ -205,7 +216,9 @@ def sweep(db, args, *, trigger, exclude=(), repair_budget=None):
     for source in sources:
         try:
             state = read_json(source)
-            if state.get('task_type') == 'assessment' and state.get('assessment_started') and not confirmed_completion(state):
+            if (state.get('task_type') in ('assessment','diagnostic') and
+                    (state.get('assessment_started') or state.get('diagnostic_started') or state.get('diagnostic_start_intent')) and
+                    not confirmed_completion(state)):
                 logging.info('Saved import sweep deferred until assessment completion')
                 return []
             states.append((source.parent,state))

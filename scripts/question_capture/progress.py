@@ -1,6 +1,8 @@
 """Course-qualified color observations; these are not exact FIRe state values."""
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlparse, parse_qs
+import re
 
 from core import atomic_json
 
@@ -27,6 +29,29 @@ EXTRACT_PROGRESS = '''() => ({
 
 def now():
     return datetime.now(timezone.utc).isoformat()
+
+
+def target(value):
+    if isinstance(value,int):value='https://mathacademy.com/courses/'+str(value)+'/progress'
+    url=urlparse(str(value))
+    match=re.fullmatch(r'/courses/([1-9]\d*)/progress',url.path)
+    query=parse_qs(url.query,keep_blank_values=True)
+    if (url.scheme!='https' or url.netloc!='mathacademy.com' or not match or url.fragment or
+            set(query)-{'unitId'} or ('unitId' in query and
+            (len(query['unitId'])!=1 or not re.fullmatch(r'[1-9]\d*',query['unitId'][0])))):
+        raise ValueError('Expected a Math Academy course progress URL with optional unitId: '+str(value))
+    source='https://mathacademy.com'+url.path
+    result={'course_id':int(match[1]),'source_url':source}
+    if 'unitId' in query:
+        result['selected_unit_id']=int(query['unitId'][0])
+        result['source_url']+='?unitId='+query['unitId'][0]
+    return result
+
+
+def targets(args,state=None):
+    state=state or {}
+    return tuple(state.get('progress_urls') or state.get('progress_course_ids') or
+                 getattr(args,'progress_urls',None) or getattr(args,'progress_course_ids',COURSES))
 
 
 def normalize_course(course_id, observed):
@@ -72,8 +97,9 @@ def capture(reader, directory, event, task_id, course_ids=COURSES, previous=None
                 'mapping': 'White=0; blue bands=1-6; darkest=6 is a local initialization convention',
                 'limitations': 'Not exact continuous repetitions, memory, intervals, ability, or complete internal MA state. Courses are read sequentially.',
                 'courses': []}
-    for course_id in course_ids:
-        url = 'https://mathacademy.com/courses/' + str(course_id) + '/progress'
+    for value in course_ids:
+        scope=target(value)
+        course_id=scope['course_id'];url=scope['source_url']
         started = now()
         reader.navigate(url, force=True)
         reader.page.locator('.moduleTopics .topicLink').first.wait_for(state='attached')
@@ -81,7 +107,7 @@ def capture(reader, directory, event, task_id, course_ids=COURSES, previous=None
         reader.check()
         observed = reader.page.evaluate(EXTRACT_PROGRESS)
         topics = normalize_course(course_id, observed)
-        course = {'course_id': course_id, 'source_url': url, 'started_at': started,
+        course = {**scope, 'started_at': started,
                   'captured_at': now(), 'topics': topics, 'units_html': observed['units_html']}
         snapshot['courses'].append(course)
     snapshot['finished_at'] = now()

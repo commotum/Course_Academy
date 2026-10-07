@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture lessons, reviews, multisteps, required assessments and quiz retakes; import content only."""
+"""Capture lessons, reviews, multisteps, diagnostics, assessments and quiz retakes; import content only."""
 import argparse
 import contextlib
 import fcntl
@@ -30,6 +30,8 @@ def arguments(argv=None):
     parser.add_argument('--edb-bin',default=os.environ.get('EDB_BIN','/home/jake/Developer/EDB/target/release/edb'))
     parser.add_argument('--learner-id',type=uuid.UUID,default=uuid.UUID('59d5cf13-351c-4114-be19-4c3bb64ee051'))
     parser.add_argument('--output',type=Path,default=ROOT/'reference/mathacademy/question-capture')
+    parser.add_argument('--capture-root',type=Path,action='append',default=[],
+                        help='Additional workers’ capture roots for shared import provenance; repeat for each worker')
     parser.add_argument('--state-dir',type=Path,default=ROOT/'.local/question_capture')
     parser.add_argument('--profile',type=Path,help='Dedicated Playwright profile; defaults to STATE_DIR/browser-profile')
     parser.add_argument('--content',type=Path,help='Saved content.json for import-saved')
@@ -40,6 +42,10 @@ def arguments(argv=None):
     parser.add_argument('--headless',action='store_true',help='Default is a visible Chromium window')
     parser.add_argument('--browser-spec',help='Optional existing browser cookie source, using the original MA cookiekit syntax')
     parser.add_argument('--ma-root',type=Path,default=Path('/home/jake/Developer/MA'))
+    parser.add_argument('--diagnostic-topics',type=Path,
+                        help='Diagnostic course Topics.csv or graph directory; otherwise resolve the enrolled course graph under MA/COURSES')
+    parser.add_argument('--diagnostic-course-id',type=int,
+                        help='Fallback enrolled course ID for diagnostics when the queue does not expose it')
     parser.add_argument('--cwcwc-weight',type=float,default=0.7)
     parser.add_argument('--review-question-limit',type=int,default=20,
                         help='Stop a review before submitting more than this many questions')
@@ -50,6 +56,8 @@ def arguments(argv=None):
                         help='Small delay for browser interactions, in addition to randomized waits; default 500 ms')
     parser.add_argument('--progress-course-id', dest='progress_course_ids', action='append', type=int,
                         help='Course progress to snapshot after each completed activity; repeat to override defaults 113,111,136')
+    parser.add_argument('--progress-url',dest='progress_urls',action='append',
+                        help='Exact course progress URL, including optional unitId; repeat instead of --progress-course-id')
     parser.add_argument('--solver-command',help='Command receiving JSON on stdin and returning solver JSON on stdout; no shell')
     parser.add_argument('--codex-bin',default='codex')
     parser.add_argument('--solver-model',help='Optional explicit Codex model for the solver')
@@ -72,10 +80,20 @@ def arguments(argv=None):
         parser.add_argument('--'+kind+'-max',type=float,default=high)
     parser.add_argument('--rest-every',type=int,default=20)
     args = parser.parse_args(argv)
+    args.progress_course_ids_explicit = args.progress_course_ids is not None or args.progress_urls is not None
+    if args.progress_urls:
+        if args.progress_course_ids is not None:parser.error('Use progress URLs or course IDs, rather than both')
+        from progress import target
+        try:scopes=[target(url) for url in args.progress_urls]
+        except ValueError as error:parser.error(str(error))
+        args.progress_urls=[s['source_url'] for s in scopes]
+        args.progress_course_ids=[s['course_id'] for s in scopes]
     if args.progress_course_ids is None:
         args.progress_course_ids = [113, 111, 136]
     if any(c < 1 for c in args.progress_course_ids) or len(set(args.progress_course_ids)) != len(args.progress_course_ids):
         parser.error('Progress course IDs must be positive and unique')
+    if args.diagnostic_course_id is not None and args.diagnostic_course_id < 1:
+        parser.error('Diagnostic course ID must be positive')
     import math
     for kind in ('event','answer','lesson','rest'):
         lo, hi = getattr(args,kind+'_min'),getattr(args,kind+'_max')
@@ -153,8 +171,9 @@ def unfinished_run(args):
         finished = state.get('import_complete') or receipt.get('committed') or receipt.get('already_complete')
         if args.preview:
             finished = finished or state.get('preview_complete')
-        if (not finished and state.get('task_type') == 'assessment' and
-                (state.get('assessment_started') or state.get('assessment_question_count')) and not state.get('activity_complete')):
+        if (not finished and state.get('task_type') in ('assessment','diagnostic') and
+                (state.get('assessment_started') or state.get('assessment_question_count') or
+                 state.get('diagnostic_started') or state.get('diagnostic_start_intent')) and not state.get('activity_complete')):
             if queued_resume(args,[{'task_id':state['task_id']}],set()):
                 assessments.append(directory)
         if not finished and not state.get('deferred_error'):
@@ -442,6 +461,7 @@ def run(args):
             page = context.pages[0] if context.pages else context.new_page()
             context.route('https://mathacademy.com/**',repair_math_editor_document)
             browser = CaptureBrowser(page,args,pacer,Solver(args))
+            browser.database = db
             if args.command=='login':
                 page.goto(LEARN,wait_until='domcontentloaded')
                 input('Sign in to Math Academy in this window, then press Enter here: ')
@@ -510,10 +530,15 @@ def run(args):
                         state.setdefault('task_type', 'lesson')
                         state.setdefault('previous_activity_snapshot',previous_activity_snapshot(args))
                         phase = 'topic'
-                        topic = db.topic if state['task_type'] in ('assessment','multistep') else db.topic(state['topic_id'],directory/'selection')
+                        topic = db.topic if state['task_type'] in ('assessment','multistep','diagnostic') else db.topic(state['topic_id'],directory/'selection')
+                        if state['task_type'] == 'diagnostic' and not state.get('diagnostic_policy'):
+                            from diagnostic import configure
+                            configure(args, state, state, directory)
                         if not state.get('activity_complete') and not state.get(state['task_type'] + '_complete'):
                             phase = 'navigation'
                             browser.navigate(state.get('activity_url') or state['lesson_url'], force=True)
+                            if state['task_type'] == 'diagnostic':
+                                state['diagnostic_restored'] = True
                     else:
                         if queue_observation is None:
                             queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
@@ -539,6 +564,9 @@ def run(args):
                                  'activity_url':'https://mathacademy.com'+activity['href'],
                                  'selected_priority':activity.get('priority'),'kps':{},'examples':{},'questions':{},
                                  'previous_activity_snapshot':previous_activity_snapshot(args)}
+                        if state['task_type']!='diagnostic':
+                            state['progress_course_ids']=args.progress_course_ids
+                            if args.progress_urls:state['progress_urls']=args.progress_urls
                         if state['task_type'] == 'assessment':
                             state.update({key:activity.get(key) for key in
                                           ('test_id','assessment_details','assessment_notice','optional_xp_remaining','assessment_requirement','assessment_requirement_evidence','assessment_is_retake','assessment_optional_fallback')})
@@ -546,11 +574,16 @@ def run(args):
                         elif state['task_type'] == 'multistep':
                             state.update(multistep_id=activity['multistep_id'],title=activity['title'],answer_policy='all_correct')
                             atomic_json(directory/'multistep-queue.json',activity)
+                        elif state['task_type'] == 'diagnostic':
+                            from diagnostic import configure
+                            state.update(diagnostic_id=activity['diagnostic_id'], title=activity['title'])
+                            configure(args, activity, state, directory)
+                            atomic_json(directory/'diagnostic-queue.json',activity)
                         else:
                             state.update({key:activity[key] for key in ('answer_policy','perfect_retake_of') if key in activity})
                         atomic_json(directory/'state.json',state)
                         phase = 'topic'
-                        topic = db.topic if state['task_type'] in ('assessment','multistep') else db.topic(activity['topic_id'],directory/'selection')
+                        topic = db.topic if state['task_type'] in ('assessment','multistep','diagnostic') else db.topic(activity['topic_id'],directory/'selection')
                         (directory/'selection').mkdir(parents=True,exist_ok=True)
                         for name in ('queue.json','priorities.edn','priorities-query.edn','priorities-inputs.edn','capture-priorities.json'):
                             source = args.state_dir/'selection'/name
@@ -618,7 +651,7 @@ def run(args):
                         # If MA forces an active quiz, reopen its existing
                         # checkpoint instead of repeatedly asking for the queue.
                         import re
-                        redirect = re.search(r'/tasks/(\d+)/tests/\d+',browser.page.url)
+                        redirect = re.search(r'/tasks/(\d+)/(?:tests|diagnostics)/\d+',browser.page.url)
                         if redirect:
                             saved = args.output/redirect[1]
                             if (saved/'state.json').is_file():
@@ -627,7 +660,7 @@ def run(args):
                         pacer.backoff(queue_failures)
                         continue
                     consecutive_failures += 1
-                    if ((state.get('task_type') == 'assessment' and not state.get('activity_complete')) or
+                    if ((state.get('task_type') in ('assessment','diagnostic') and not state.get('activity_complete')) or
                             consecutive_failures >= 2):
                         # A forced assessment redirect may prevent queue access.
                         # Repair at this boundary instead of exiting before the

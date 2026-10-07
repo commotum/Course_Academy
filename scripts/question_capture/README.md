@@ -1,9 +1,102 @@
 # Question capture
 
-Run sequential Math Academy lessons, reviews, multisteps, and eligible quizzes/assessments;
+Run sequential Math Academy lessons, reviews, multisteps, placement diagnostics, and eligible quizzes/assessments;
 add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
 apart from Playwright, the EDB CLI, a solver command, and the native comparison helper.
+
+## Multiple account workers
+
+From the repository root, start every configured account and attach to tmux:
+
+```sh
+./scripts/ma-workers start --attach
+```
+
+The installed terminal shortcut `cap` runs this same command. It is linked from
+`~/.local/bin/cap` to `scripts/cap` and accepts additional Start options.
+
+`workers.json` provides four permanent windows in session `ma`, in this order:
+**Mathematical Foundations**, **Linear Algebra**, **Multivariable Calculus**, and
+**Differential Equations**. Unconfigured accounts have idle windows and are skipped
+by Start. Saving the two remaining profiles is all that is needed to enable them;
+the same Start command then launches all four. Repeating Start leaves active
+workers alone. An unrelated process in a course window is also left alone.
+
+The Foundations worker keeps its existing `.local/question_capture` profile,
+checkpoints, logs and `reference/mathacademy/question-capture` output. The other
+workers each use `.local/question_capture-workers/<worker>/` and
+`reference/mathacademy/question-capture-workers/<worker>/`. Their browser profiles,
+capture locks, solver and repair sessions, pacing, retry ledgers and knowledge
+snapshots are separate. All workers import content into the same EDB using its
+existing bounded stale-basis retry handling. Verified captures in all four output
+roots can supply provenance evidence. Only installation of tested shared source
+repairs takes a short shared lock; solving and ordinary imports remain concurrent.
+
+Foundations (`commotum`, course 136) and Multivariable Calculus (`multiwilliam`,
+course 54) have saved and verified profiles. Workers run headless from those
+profiles, independently of the account currently signed into everyday Chrome.
+Cookies are copied only when explicitly saving a profile, rather than at every
+worker startup. The Foundations snapshot scopes remain 113, 111 and 136.
+Multivariable Calculus snapshots the following exact pages after each activity:
+
+- `https://mathacademy.com/courses/106/progress?unitId=679` (Calculus II, unit 679 expanded)
+- `https://mathacademy.com/courses/55/progress` (Linear Algebra)
+- `https://mathacademy.com/courses/54/progress` (Multivariable Calculus)
+
+The unit parameter controls the expanded unit; all topic rows present in the
+page's course grid are saved, including collapsed units. Linear Algebra and
+Differential Equations default to their enrolled course until their prerequisite
+progress pages are configured. Every account uses its own diagnostic topic graph.
+
+To add an account, sign into its enrolled course in Chrome, then run the matching
+command. These examples use Chrome's `Default` profile; replace it with the actual
+Chrome profile directory if different:
+
+```sh
+./scripts/ma-workers save-profile linear --browser-spec chrome/mathacademy.com:Default
+./scripts/ma-workers save-profile differential --browser-spec chrome/mathacademy.com:Default
+```
+
+Save one account at a time while Chrome is signed into that account. The helper
+checks the enrolled course, discovers its course ID and saves only Math Academy
+cookies into the worker profile. `save-profile multivariable` uses the same syntax
+if that account later needs a fresh login. Profile data stays in ignored local
+directories; no cookie values are printed.
+
+The Foundations window has a status pane refreshed every five seconds, showing
+all accounts, running/readiness state, latest saved activity, graded question count,
+daily earned/base XP, course percent and a progress bar, elapsed run time and recent
+log output. Narrow terminals abbreviate activity text.
+The tmux status bar also shows running, ready and unconfigured account counts.
+Use **Ctrl+b then n/p** to switch course windows and **Ctrl+b then d** to detach;
+detaching leaves workers running. Additional commands:
+
+```sh
+./scripts/ma-workers status
+./scripts/ma-workers check foundations multivariable  # Reopen saved logins; no activities
+./scripts/ma-workers start --dry-run                 # Inspect queues/resume checkpoints only
+./scripts/ma-workers stop                            # Request checkpoint shutdown for all
+./scripts/ma-workers stop multivariable              # Stop one account
+./scripts/ma-workers start multivariable             # Start/resume one account
+./scripts/ma-workers attach                          # Attach without starting workers
+```
+
+Daily XP sums the earned/base values on completed task rows marked **Today**.
+Penalties remain negative; fixed awards such as placement exams use their displayed
+full award as both earned and base. The denominator is the sum of task base points,
+rather than the daily goal. Task IDs are recorded in `daily-xp.json` by local date
+(America/Los_Angeles), so repeated queue reads and restarts do not double count.
+Rows observed earlier that day stay recorded if a later queue omits them. Course
+completion comes from `#coursePercentComplete`. `dashboard.json` is refreshed during
+normal queue reads and profile checks; the five-second display refresh only reads
+local files. At date rollover, daily XP shows unknown until a new queue read.
+
+The supervisor records each run's console log and process identity under that
+worker's `supervision/` directory. Stop signals only the supervisor it owns; it
+allows the capture child 60 seconds to save a checkpoint before terminating its
+own process group. Start resumes through the runner's existing recovery path.
+`--limit N` optionally bounds each newly started worker; the default is unlimited.
 
 Build the native importer comparison helper before use:
 
@@ -29,7 +122,7 @@ Completed saved imports are revisited on `run` startup, after a successful
 comparison/import repair and retry of the current activity, and before the batch
 ends. Installed cooldown repairs are picked up by the next startup. These sweeps
 call only `Database.import_content`: they never navigate MA or launch backlog
-repair sessions. A started assessment without confirmed terminal completion
+repair sessions. A started assessment or diagnostic without confirmed terminal completion
 defers the sweep. `--dry-run` skips sweeps entirely.
 An assessment explicitly recorded as expired with a matching terminal answered
 count is finished for this guard. Its own import still needs complete source
@@ -394,18 +487,20 @@ selection. Once it finishes, the batch continues. Unknown dialogs, uncertain
 final submissions, authentication blocks, and persistent failures require inspection.
 The full question DOM is saved before answering, including unvisited questions.
 
-It saves one snapshot of all three course progress pages **after each completed
+It saves one snapshot of the account's configured course progress pages **after each completed
 activity**. There are no new baseline or mid-activity checks. The snapshot is
 compared with the preceding completed activity's snapshot when available.
 Existing snapshots from older runs remain preserved. Reads are sequential and
-use randomized navigation pauses: three page reads per completed activity.
+use randomized navigation pauses: one read per configured page per completed activity.
 
 Each `knowledge-state/<event>.json` contains every topic row from courses
-113/111/136, its source ID, title, color, mapped display band, module and topic
+in the configured scope (113/111/136 for Foundations), its source ID, title, color, mapped display band, module and topic
 number, the source `#units` HTML, per-course timestamps, and changes since the
 previous snapshot. Shared topics remain qualified by course, so conflicting
 colors are retained. Unknown colors or an incomplete topic count defer the activity.
 Use repeated `--progress-course-id ID` options to override the three-course scope.
+Use repeated `--progress-url URL` instead when an exact URL with `unitId` is needed.
+New activity checkpoints retain their configured progress scope for recovery.
 
 These files capture the **full displayed profile for those courses**, not MA's
 complete internal learner state. The rows do not expose exact continuous FIRe
@@ -458,6 +553,65 @@ The default learner is `59d5cf13-351c-4114-be19-4c3bb64ee051`. Override it with
 `EDB_POSTGRES_URL`, `--database`, `--edb-bin`, and `--endpoint` as appropriate.
 All paths work when invoked from this repository root.
 
+## Placement diagnostics
+
+`diagnostic.py` handles `/tasks/T/diagnostics/D` separately from fixed-count quizzes.
+A new placement diagnostic takes precedence over lesson selection. Before START,
+the runner saves the enrolled course ID and a copy/hash of its `Topics.csv` in
+`diagnostic-policy.json` and `diagnostic-Topics.csv`. It resolves the graph from
+the visible course name under `--ma-root/COURSES/Math-Academy`; use
+`--diagnostic-topics` to supply a CSV or graph directory explicitly, and
+`--diagnostic-course-id` if the queue omits the enrolled course ID.
+
+For a dedicated Multivariable Calculus account, after signing into its worker
+profile, the diagnostic options are:
+
+```bash
+"$CAPTURE_PY" scripts/question_capture run --headless --limit 1 \
+  --state-dir .local/question_capture-workers/multivariable \
+  --output reference/mathacademy/question-capture-workers/multivariable \
+  --diagnostic-topics /home/jake/Developer/MA/COURSES/Math-Academy/University/Multivariable-Calculus/GRAPH-Multivariable-Calculus/Topics.csv \
+  --progress-url 'https://mathacademy.com/courses/106/progress?unitId=679' \
+  --progress-url 'https://mathacademy.com/courses/55/progress' \
+  --progress-url 'https://mathacademy.com/courses/54/progress'
+```
+
+This invocation answers the placement exam and imports its content. Diagnostics
+answer prerequisites correctly and use **Don't Know** for skills in the requested
+course. An existing source-question binding in EDB determines membership when
+available; otherwise the same activity solver classifies the tested skill against
+the saved topic list. Incidental vector notation does not itself make a problem
+course content. A topic on the list remains course content even when another
+course teaches it too. The 70/30 practice patterns and weighted quiz grades do
+not apply to diagnostics.
+
+The player captures every served problem, answer widget, complete choices, assets,
+decision, grade and revealed solution. It follows changed question headings and
+the exam's analysis URL; there is no assumed question count. Live radio controls
+expose source question IDs, while unnamed blanks retain durable numbered slots.
+The diagnostic page's `student-diagnostic.js` requests one question through
+`APISync.getNextDiagnosticQuestion(diagnosticId, taskId, retry)` when advancing;
+the saved HTML contains the current widget, with no observed upcoming question bank.
+History joins those slots to authentic question, topic and KP IDs, source difficulty
+and worked solutions. Correct answers for skipped/incorrect questions are recovered
+using verification turns in the same persistent solver session. Diagnostic solutions
+are preserved as solutions; no canonical examples are inferred.
+
+Submit and Next intents survive interruption. In-place observation retries are
+bounded and do not reload a timed question. A restored grade continues without
+resubmission; a fresh server view of an unanswered question permits saved answers
+to be rematched and entered. Started diagnostics recover automatically. The retry
+screen permits one immediate prerequisite retry in a retry chain; deliberate skips
+choose No. Completion saves the analysis page and one knowledge snapshot, scoped
+to the enrolled course unless `--progress-course-id` or `--progress-url` is explicit. Import failures
+use the existing content-only receipt/recovery path.
+
+The implementation is exercised offline using authentic radio, diagram and
+MathQuill markup from the 54-question manual Multivariable Calculus diagnostic.
+The fixture replays four representative questions, including skipped history
+answers, adaptive completion, interrupted Submit/Next, and an asynchronous retry
+overlay. The unattended player has not yet taken a new live diagnostic.
+
 The EDB reader must support the existing database's storage format. Rebuilding
 the adjacent EDB repository on a format-changing branch can break reads even
 though capture code is unchanged. Repeated queue-read errors do not restart
@@ -466,8 +620,8 @@ a changed error, reader binary, or capture source permits another diagnosis.
 
 ## Solver
 
-The default adapter keeps **one Codex session per activity**, for both lessons
-reviews, multisteps, and assessments, including verification turns. The first question starts `codex exec`;
+The default adapter keeps **one Codex session per activity**, for lessons,
+reviews, multisteps, diagnostics, and assessments, including verification turns. The first question starts `codex exec`;
 subsequent calls use `codex exec resume <SESSION_ID>` with that explicit saved ID.
 The CLI process exits between calls, but its persisted conversation carries forward.
 It never uses `--last` or silently starts over if a resumed session has a different ID.
@@ -581,8 +735,9 @@ Each range has `--event-min/max`, `--answer-min/max`, `--lesson-min/max`, or
 `--rest-min/max` overrides. `--rest-every` controls periodic rests. `--seed` makes
 draws reproducible for investigation; it does not change the 70/30 default.
 Random delays reduce request frequency; they do not guarantee a site considers
-automation acceptable. There are no parallel browser captures or direct calls
-to private endpoints. HTTP 401/403/429 and challenge pages stop the run. Submission
+automation acceptable. Each account captures activities sequentially; separate
+account workers can run in parallel. There are no direct calls to private endpoints.
+HTTP 401/403/429 and challenge pages stop the run. Submission
 and Continue actions are never blindly retried.
 
 ## Saved data and recovery
@@ -731,6 +886,9 @@ and check that access blocks and interruptions stop the batch. Fixture tests nev
 The real six-part pool multistep fixture covers shared diagrams and context,
 seven unnamed MathQuill fields, square-root entry, source explanations and
 synthetic-division tables, six topic/KP mappings, and one content transaction.
+The diagnostic fixture additionally covers prerequisite/course classification,
+unnamed-question history binding, source image choices, adaptive Next and completion,
+retry overlays, resumable classification turns, and multi-topic content import.
 Prepared-answer and post-submission interruptions resume without replaying grades;
 completion recovery does not take the activity again.
 The saved Quiz 5 fixture also covers eight-question assessment capture, radio

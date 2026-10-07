@@ -236,13 +236,15 @@ def repair(args, directory, error):
                        validation_tail=(test.stdout+test.stderr)[-6000:])
         atomic_json(record_path,record)
         raise ValueError('Proposed import repair failed offline regression checks; '+str(job/'tests.txt'))
-    if source.read_text() != original:
-        raise ValueError('Comparison code changed during diagnosis; retain staged repair for review')
-    temporary = source.with_suffix('.repair.tmp');temporary.write_text(candidate);temporary.replace(source)
-    # Existing callers imported identity directly; refresh that binding too.
-    import core, math_notation
-    importlib.invalidate_caches()
-    core.math_identity = importlib.reload(math_notation).identity
+    from coordination import source_install_lock
+    with source_install_lock():
+        if source.read_text() != original:
+            raise ValueError('Comparison code changed during diagnosis; retain staged repair for review')
+        temporary = source.with_suffix('.repair.tmp');temporary.write_text(candidate);temporary.replace(source)
+        # Existing callers imported identity directly; refresh that binding too.
+        import core, math_notation
+        importlib.invalidate_caches()
+        core.math_identity = importlib.reload(math_notation).identity
     attempt['status'] = 'applied';attempt['source_sha256'] = hashlib.sha256(candidate.encode()).hexdigest()
     atomic_json(record_path,record)
     logging.info('Applied tested import repair: %s',result['summary'])

@@ -1,0 +1,882 @@
+<html><head>
+        <title>Math Academy</title>
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20data-codex-favicon-badge%3D%22codex-favicon-badge%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cimage%20href%3D%22data%3Aimage%2Fbmp%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAByElEQVR4nOxWTUgCURBeKygiKIjSwqhbBGIgSQUSIVTYQVKRboFoUGASQdglKOrgLQihW0RERKVQil6CpEN1EpHAQPMiaWFJBSZpq%2FHm6eGFyB6KXWHn8vHmb2e%2BN8zbGoplqaFYljrqj8VstqwgtNu3bUz8WWdAwNRxYN5VQNjSXA%2FnC9s4EavVLII9GIzBOfLgYJSb%2BzNwHYhDZ7qtWzg%2FfuYAT52eS4SNDbjROeMOEef1%2BCBONTlakQnuz0DbjBM6qfvl%2BUWDmkod6MDS16sBRfqDBn0ui%2B2JV1eVMiCdPYMWklmaqiQbI%2B97CE1GgwFhl1ANcYJia9%2F5PGD82V32W9xj4C78Ah2MbV4R%2BiOLHPA%2BmgLM4saohel%2BIkcgEIJ4tcpKxB%2BerAIqFHLCnzsMyGSDQwhjEusNwtLUN9XiGsO7U2Xv0OFwJxDq9TYRToinXyxqBSzgI0XTmDKhOD6M0O%2F3w2LhDgNSU3Hqc3jqS5U%2F7WsZ7fSebrwHYrE0oe9sx2%2BHQIDTZDJ4kybfvKBgn4FQNAWVK9d9hOF8Ga6Kkks6GL%2BY5SQUikD%2BCeUSoT92rgFWz%2F%2FAfwnrDPAF8AXwBfAF8AX8AAAA%2F%2F9hYAD9AAAABklEQVQDAJ4lh9gpsS2YAAAAAElFTkSuQmCC%22%20width%3D%2232%22%20height%3D%2232%22%20opacity%3D%220.3%22%20%2F%3E%3Cpath%20d%3D%22M3.04536%204.45259C2.7582%203.60299%203.60299%202.7582%204.45259%203.04536L14.1828%206.33403C15.1637%206.66558%2015.0872%208.08006%2014.0715%208.39045L10.2994%209.54319C9.93919%209.65327%209.65327%209.93919%209.54319%2010.2994L8.39046%2014.0715C8.08007%2015.0872%206.66558%2015.1637%206.33404%2014.1828L3.04536%204.45259Z%22%20fill%3D%22black%22%20stroke%3D%22white%22%20stroke-width%3D%221.5%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%20fill%22%20transform%3D%22translate(-2%20-2)%20scale(2.1)%22%20%2F%3E%3C%2Fsvg%3E" data-codex-favicon-badge="true" data-codex-original-favicon-href="/img/favicon.ico">
+        <link rel="stylesheet" href="/css/app.css?v=2">
+        <link rel="stylesheet" href="/css/mathquill.css">
+        <link rel="stylesheet" href="/css/math-editor.css">
+
+        <link rel="stylesheet" href="/css/prism.css">
+        <script type="text/javascript" src="/js/prism.js"></script>
+
+        <script type="text/javascript" src="/js/jquery.1.11.0.min.js"></script>
+
+        <script>
+            $.noConflict();
+            // Code that uses other library's $ can follow here.
+        </script>
+
+        <script type="text/javascript" src="/js/mathquill.v2.1.min.js"></script>
+        <script type="text/javascript" src="/js/math-editor.js"></script> 
+        <script type="text/javascript" src="/js/mathjax-config.js?v=2"></script>
+        <script type="text/javascript" id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="loadMathJaxFallback()"></script>
+        <!--
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>        
+        <script type="text/javascript" src="/js/katex-config.js"></script>
+        -->
+
+        <script>
+            function showSupportDialog() {
+                const dlg = new SupportDialog();
+                dlg.show();
+            }            
+        </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+        <script type="text/javascript" src="/js/commonFunctions.js"></script>
+        <script type="text/javascript" src="/js/core.js"></script>
+        <script type="text/javascript" src="/js/core-ui.js"></script>
+        <script type="text/javascript" src="/js/api.js"></script>
+        <script type="text/javascript" src="/js/api-new.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+        <script type="text/javascript" src="/js/jdom.js"></script>
+        <script type="text/javascript" src="/js/header.js"></script>
+
+        <script>
+            var userTimeZone = 'America/Los_Angeles';
+            checkTimeZone(userTimeZone);
+        </script>
+
+        <style>
+            div#courseNameHeader {
+                margin-top: 50px;
+            }            
+        </style>        
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/color.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/enclose.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/bbox.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/cancel.js" charset="UTF-8"></script><style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-math {
+  display: inline-block;
+  text-align: left;
+  line-height: 0;
+  text-indent: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 100%;
+  font-size-adjust: none;
+  letter-spacing: normal;
+  border-collapse: collapse;
+  word-wrap: normal;
+  word-spacing: normal;
+  white-space: nowrap;
+  direction: ltr;
+  padding: 1px 0;
+}
+
+mjx-container[jax="CHTML"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="CHTML"][display="true"][width="full"] {
+  display: flex;
+}
+
+mjx-container[jax="CHTML"][display="true"] mjx-math {
+  padding: 0;
+}
+
+mjx-container[jax="CHTML"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="CHTML"][justify="right"] {
+  text-align: right;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style><style>
+  .imageye-selected {
+    outline: 2px solid black !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+  }
+</style><style data-calcw-skins="">.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}</style></head>
+
+    <body>
+        
+        <div id="topRibbon"></div>
+        
+
+        <div id="wrap">
+
+            
+            <div id="topBarContainer">
+
+                <table style="width: 1080px;">
+                    <tbody><tr>
+                        <td style="width: 100px;">
+                            <a href="/"><img class="logo" src="/img/math-academy-350-logo.png"></a>
+                        </td>
+                        <td>
+                            <div id="headerLinks">
+                                
+                                    
+                                        <a id="learnHeaderLink" class="headerLink" href="/learn">LEARN</a>
+                                        
+                                     
+
+                                         
+
+                                                                     
+                                                                                        
+                                                                                                   
+                                                    
+                                             
+                                    
+                                             
+
+                                                                          
+                                        <a id="coursesHeaderLink" class="headerLink" onmouseover="showCoursesMenu(this, 'coursesMenu');">COURSES</a>  
+                                      
+                                  
+                            </div>
+
+                            
+
+                            <div id="coursesMenu">
+                                <table id="coursesMenu-coursesTable" cellspacing="0" cellpadding="0">
+                                <tbody><tr>
+                                    <td class="coursesMenu-categoryList" style="padding-right: 15px;">
+                                        <div class="coursesMenu-categoryHeader">Elementary School</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/4th-grade-math">4th Grade Math</a></div>                                             
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/5th-grade-math">5th Grade Math</a></div>         
+                                        
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Middle School</div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/6th-grade-math">6th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/7th-grade-math">7th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/8th-grade-math">8th Grade Math</a></div>         
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/prealgebra">Prealgebra</a></div>
+                                
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">High School</div>
+
+                                        <div class="coursesMenu-courseSequence" style="margin-top: 20px;">Traditional</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-i">Algebra I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/geometry">Geometry</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-ii">Algebra II</a></div>       
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i">Integrated Math I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii">Integrated Math II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii">Integrated Math III</a></div>   
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+                                
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math (Honors)</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i-honors">Integrated Math I (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii-honors">Integrated Math II (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii-honors">Integrated Math III (Honors)</a></div>                                     
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Test Prep</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-fundamentals">SAT Math Fundamentals</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-prep">SAT Math Prep</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/act-math">ACT Math</a> *</div>
+                                    </td>
+                                    <td class="coursesMenu-categoryList">
+
+                                        <div class="coursesMenu-categoryHeader">AP Courses</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-ab">AP Calculus AB</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-bc">AP Calculus BC</a></div>
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Foundations Series</div>
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-i">Mathematical Foundations I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-ii">Mathematical Foundations II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-iii">Mathematical Foundations III</a></div>                                        
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">University</div>            
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-i">Calculus I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-ii">Calculus II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/linear-algebra">Linear Algebra</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/multivariable-calculus">Multivariable Calculus</a></div>                                     
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/methods-of-proof">Methods of Proof</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/differential-equations">Differential Equations</a></div>                                           
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/discrete-mathematics">Discrete Mathematics</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/probability-and-statistics">Probability &amp; Statistics</a></div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematics-for-machine-learning">Mathematics For Machine Learning</a></div>      
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-i">Mathematical Methods for the Physical Sciences I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-ii">Mathematical Methods for the Physical Sciences II</a></div>                                                                             
+                                                            
+                                        <div class="coursesMenu-course">
+                                            <a class="coursesMenu-courseLink" href="/courses/abstract-algebra">Abstract Algebra</a> *
+                                        </div>        
+                                    </td>
+                                </tr>
+                                </tbody></table>
+
+                                <div style="margin-top: 20px;">
+                                    * <span id="coursesMenu-underDevelopment">Currently under development</span> 
+                                </div>                            
+                            </div>                        
+                        </td>
+                        <td style="width: 250px;">
+                            <div id="topMenu">
+                                
+                                    
+
+                                        
+
+                                        
+                                            <div id="userHeader" onmouseover="showMenu(this, 'userMenu');">WP</div>
+                                        
+
+                                        <div id="userMenu">
+                                            <div id="userMenu-info">
+                                                <div id="userMenu-name">William Parker</div>
+                                                
+                                                    <div id="userMenu-username">multiwilliam</div>
+                                                
+                                            </div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/settings/profile');">Settings</div>
+
+                                            
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/help');">Help</div>
+
+                                            <div class="headerMenuItem" onmousedown="showSupportDialog();">Support</div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/logout');">Logout</div>                                        
+                                        </div>
+                                    
+                                                            
+                            </div> 
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+            
+
+            <div id="mathjaxCommands" style="display: none;">
+                <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="0" style="font-size: 113.1%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"></math></mjx-assistive-mml></mjx-container>
+            </div>
+
+            <div id="content">
+                <link rel="stylesheet" href="/css/help-menu.css">
+<link rel="stylesheet" href="/css/question-widget.css">
+<link rel="stylesheet" href="/css/select-list.css">
+<link rel="stylesheet" href="/css/student-diagnostic.css">
+
+<link rel="stylesheet" href="/css/calculator.css">
+<link rel="stylesheet" href="/css/calculator-skins-app.css">
+<link rel="stylesheet" href="/css/calculator-skins-edu.css">
+
+<script type="text/javascript" src="/js/core/utils/splitter.js"></script>
+<script type="text/javascript" src="/js/core/utils/segment-parser.js?v=3"></script>
+<script type="text/javascript" src="/js/core/utils/graphics-parser.js"></script>
+<script type="text/javascript" src="/js/core/utils/block-parser.js?v=2"></script>
+<script type="text/javascript" src="/js/core/utils/code-renderer.js?v=2"></script>
+<script type="text/javascript" src="/js/core/question/components/input/input.js"></script>
+<script type="text/javascript" src="/js/core/question/components/input/select.js"></script>
+<script type="text/javascript" src="/js/core/question/components/input/textbox.js"></script>
+<script type="text/javascript" src="/js/core/question/components/question-body-section.js"></script>
+<script type="text/javascript" src="/js/core/question/components/question-body.js"></script>
+
+<script type="text/javascript" src="/js/marked.min.js"></script>
+<script type="text/javascript" src="/js/mathdown.js?v=3"></script>
+<script type="text/javascript" src="/js/task-event-storage.js"></script>
+<script type="text/javascript" src="/js/task-event.js"></script>
+<script type="text/javascript" src="/js/free-response-parser.js"></script>
+<script type="text/javascript" src="/js/select-list.js"></script>
+<script type="text/javascript" src="/js/question-body-widget.js"></script>
+<script type="text/javascript" src="/js/question-body-renderer.js"></script>
+
+<script type="text/javascript" src="/js/calculator-expression.js"></script>
+<script type="text/javascript" src="/js/calculator-graphing.js"></script>
+<script type="text/javascript" src="/js/calculator-engine.js"></script>
+<script type="text/javascript" src="/js/calculator-widget.js"></script>
+
+<script type="text/javascript" src="/js/help-menu.js"></script>
+<script type="text/javascript" src="/js/question-widget.js?v=2"></script>
+<script type="text/javascript" src="/js/multiple-choice-question-widget.js"></script>
+<script type="text/javascript" src="/js/free-response-question-widget.js"></script>
+<script type="text/javascript" src="/js/static-select-question-widget.js"></script>
+<script type="text/javascript" src="/js/dynamic-select-question-widget.js"></script>
+<script type="text/javascript" src="/js/proof-question-widget.js"></script>
+<script type="text/javascript" src="/js/student-diagnostic.js"></script>
+
+
+
+
+
+
+
+ 
+
+
+
+
+<link rel="stylesheet" href="/css/flag-content-dialog.css">
+
+<script type="text/javascript" src="/js/flag-content-dialog.js"></script>
+
+<div id="flagContentDialog">
+    <div id="flagContentDialog-title">Flag Content</div>
+
+    <div id="flagContentDialog-instructions">Did you notice an error, or do you simply believe that something could be improved? Please explain below.</div>
+
+    <textarea id="flagContentDialog-description"></textarea>
+
+    <div id="flagContentDialog-submitButton">Submit</div>
+    <div id="flagContentDialog-cancelButton">Cancel</div>
+</div>            
+            </div> 
+        </div>
+
+        <link rel="stylesheet" href="/css/support-dialog.css">
+
+<script type="text/javascript" src="/js/support-dialog.js"></script>
+
+<div id="supportDialog">
+    <div id="supportDialog-title">Support</div>
+
+    <div id="supportDialog-message">
+        If you need support, please email <b>support@mathacademy.com</b>.
+    </div>
+
+    <div id="supportDialog-buttons">
+        <div id="supportDialog-closeButton">Close</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/xp-goals-dialog.css">
+
+<script type="text/javascript" src="/js/xp-goals-dialog.js"></script>
+
+<div id="xpGoalsDialog">
+    <div id="xpGoalsDialog-title">XP Goals</div>
+
+    <table id="xpGoalsDialog-goals" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+            <td class="xpGoalsDialog-dayOfWeek">Sun</td>
+            <td class="xpGoalsDialog-dayOfWeek">Mon</td>
+            <td class="xpGoalsDialog-dayOfWeek">Tue</td>
+            <td class="xpGoalsDialog-dayOfWeek">Wed</td>
+            <td class="xpGoalsDialog-dayOfWeek">Thu</td>
+            <td class="xpGoalsDialog-dayOfWeek">Fri</td>
+            <td class="xpGoalsDialog-dayOfWeek">Sat</td>
+        </tr>
+        <tr>
+            <td><input id="xpGoalsDialog-sunGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-monGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-tueGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-wedGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-thuGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-friGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-satGoal" class="xpGoalsDialog-goal" type="text"> </td>
+        </tr> 
+    </tbody></table>
+
+
+    <div id="xpGoalsDialog-courseCompletionText"></div>
+
+    <div id="xpGoalsDialog-pausedFrame">
+        <input id="xpGoalsDialog-paused" name="xpGoalsDialog-paused" type="checkbox"> 
+        <label id="xpGoalsDialog-pausedLabel" for="xpGoalsDialog-paused">Paused</label>
+    </div>
+
+    <div id="xpGoalsDialog-buttonBar">
+        <div id="xpGoalsDialog-submitButton">SUBMIT</div>
+        <div id="xpGoalsDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/course-dialog.css">
+
+<script type="text/javascript" src="/js/course-dialog.js"></script>
+
+<div id="courseDialog">
+    <div id="courseDialog-title">Change Course</div>
+
+    <div id="courseDialog-course">
+        <label id="courseDialog-courseLabel">Course</label>
+
+        <select id="courseDialog-courseSelect">
+            <option selected="">-</option>
+        </select>
+    </div>
+
+    <div id="courseDialog-buttonBar">
+        <div id="courseDialog-submitButton">SUBMIT</div>
+        <div id="courseDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+
+                
+
+                                    
+    
+              
+    
+<div id="initialScreen" style="display: none;">   
+    
+    
+    <div id="initialScreen-header">Multivariable Calculus: Placement Exam</div>
+
+    <ul id="initialScreen-instructions">
+        <li>Response time is factored into the scoring, but don't rush! What's most important 
+            is that you answer correctly any questions that you understand.</li>
+
+        <li>You can take a break in between questions. Each question is timed independently.</li>
+
+        <li>Exiting a question before answering it will result in the question 
+            being marked as incorrect.</li>
+
+        <li>If you don't know how to answer a question, click the <b>Don't Know</b> button. 
+            Guessing will only make the results less accurate.</li>
+
+        <li>Expect to get wrong answers. This is not a performance assessment, but an adaptive 
+            diagnostic that is attempting to find the contour of your knowledge profile.</li>                       
+    </ul>
+        
+
+    <div id="initialScreen-buttonBar">
+        <div id="initialScreen-startButton">START</div>  
+    </div>
+</div><div id="retryScreen" style="display: none;">   
+
+    <div id="retryScreen-yesButton" class="retryScreen-optionButton">
+        <div class="retryScreen-optionButtonText">
+            I made a silly mistake and would like to try answering another question from this topic.
+        </div>
+
+        <div class="retryScreen-yesButtonArrow"></div>
+    </div>
+
+    <div id="retryScreen-noButton" class="retryScreen-optionButton">
+        <div class="retryScreen-optionButtonText">
+            I didn't fully understand the question and would prefer to move on to the next topic.
+        </div>
+
+        <div class="retryScreen-noButtonArrow"></div>
+    </div>
+
+</div><div id="initialScreen-exitButton"></div><div id="questionAnswerContainer" style="display: block;">
+    <div id="exitButton"></div>
+
+    <table style="display: inline;">
+        <tbody><tr>
+            <td style="text-align: center;">
+
+                <div id="progressBarFrame">
+                    <div id="progressBar" style="width: 113px;"></div>
+                </div> 
+
+                <div id="questionContainer" class="questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 14</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Find all real eigenvalues of the matrix
+<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="248" style="font-size: 113.1%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mrow space="4"><mjx-mo class="mjx-s3"><mjx-c class="mjx-c5B TEX-S3"></mjx-c></mjx-mo><mjx-mtable style="min-width: 2.778em;"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style="padding-right: 0.5em; padding-bottom: 0.2em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="padding-left: 0.5em; padding-bottom: 0.2em;"><mjx-mn class="mjx-n"><mjx-c class="mjx-c32"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="padding-right: 0.5em; padding-top: 0.2em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="padding-left: 0.5em; padding-top: 0.2em;"><mjx-mn class="mjx-n"><mjx-c class="mjx-c36"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable><mjx-mo class="mjx-s3"><mjx-c class="mjx-c5D TEX-S3"></mjx-c></mjx-mo></mjx-mrow><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>R</mi><mo>=</mo><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">[</mo><mtable columnspacing="1em" rowspacing="4pt"><mtr><mtd><mo>−</mo><mn>5</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>5</mn></mtd><mtd><mn>6</mn></mtd></mtr></mtable><mo data-mjx-texclass="CLOSE">]</mo></mrow><mo>.</mo></math></mjx-assistive-mml></mjx-container></p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-12295-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText"><mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="249" style="font-size: 113.1%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c34"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>λ</mi><mo>=</mo><mn>4</mn></math></mjx-assistive-mml></mjx-container>  (double root)</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-12295-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="250" style="font-size: 113.1%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c34"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>λ</mi><mo>=</mo><mo>−</mo><mn>4</mn></math></mjx-assistive-mml></mjx-container> and <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="251" style="font-size: 113.1%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c35"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>λ</mi><mo>=</mo><mo>−</mo><mn>5</mn></math></mjx-assistive-mml></mjx-container></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-12295-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText">There are no real eigenvalues</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-12295-d" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">d</div></td><td class="questionWidget-choiceText"><mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="252" style="font-size: 113.1%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c34"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>λ</mi><mo>=</mo><mo>−</mo><mn>4</mn></math></mjx-assistive-mml></mjx-container> and <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="253" style="font-size: 113.1%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c35"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>λ</mi><mo>=</mo><mn>5</mn></math></mjx-assistive-mml></mjx-container></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-12295-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="254" style="font-size: 113.1%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>λ</mi><mo>=</mo><mo>−</mo><mn>1</mn></math></mjx-assistive-mml></mjx-container> and <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="255" style="font-size: 113.1%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c35"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>λ</mi><mo>=</mo><mn>5</mn></math></mjx-assistive-mml></mjx-container></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-skipButton" style="display: none;">Don't Know</div><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>Let's start by writing the matrix <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="256" style="font-size: 119.6%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D43C TEX-I"></mjx-c></mjx-mi><mjx-texatom texclass="ORD"><mjx-mo class="mjx-n"><mjx-c class="mjx-c3A"></mjx-c></mjx-mo></mjx-texatom></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>R</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mrow data-mjx-texclass="BIN"><mo>:</mo></mrow></math></mjx-assistive-mml></mjx-container>
+﻿﻿﻿<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" display="true" tabindex="0" ctxtmenu_counter="257" style="font-size: 119.6%; position: relative;"><mjx-math display="true" class="MJX-TEX" aria-hidden="true" style="margin-left: 0px; margin-right: 0px;"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D43C TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mrow space="4"><mjx-mo class="mjx-s3"><mjx-c class="mjx-c5B TEX-S3"></mjx-c></mjx-mo><mjx-mtable style="min-width: 6.389em;"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style="padding-right: 0.5em; padding-bottom: 0.2em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="padding-left: 0.5em; padding-bottom: 0.2em;"><mjx-mn class="mjx-n"><mjx-c class="mjx-c32"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="padding-right: 0.5em; padding-top: 0.2em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="padding-left: 0.5em; padding-top: 0.2em;"><mjx-mn class="mjx-n"><mjx-c class="mjx-c36"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable><mjx-mo class="mjx-s3"><mjx-c class="mjx-c5D TEX-S3"></mjx-c></mjx-mo></mjx-mrow><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>R</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mo>=</mo><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">[</mo><mtable columnspacing="1em" rowspacing="4pt"><mtr><mtd><mo>−</mo><mn>5</mn><mo>−</mo><mi>λ</mi></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>5</mn></mtd><mtd><mn>6</mn><mo>−</mo><mi>λ</mi></mtd></mtr></mtable><mo data-mjx-texclass="CLOSE">]</mo></mrow><mo>.</mo></math></mjx-assistive-mml></mjx-container></p>
+<p>Now, let's find and solve the characteristic equation <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="258" style="font-size: 119.6%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mo class="mjx-n"><mjx-c class="mjx-c64"></mjx-c><mjx-c class="mjx-c65"></mjx-c><mjx-c class="mjx-c74"></mjx-c></mjx-mo><mjx-mo class="mjx-n"><mjx-c class="mjx-c28"></mjx-c></mjx-mo><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D43C TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n"><mjx-c class="mjx-c29"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-texatom texclass="ORD"><mjx-mo class="mjx-n"><mjx-c class="mjx-c3A"></mjx-c></mjx-mo></mjx-texatom></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo data-mjx-texclass="OP" movablelimits="true">det</mo><mo stretchy="false">(</mo><mi>R</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn><mrow data-mjx-texclass="BIN"><mo>:</mo></mrow></math></mjx-assistive-mml></mjx-container>
+<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" display="true" tabindex="0" ctxtmenu_counter="259" style="font-size: 119.6%; position: relative;"><mjx-math display="true" class="MJX-TEX" aria-hidden="true" style="margin-left: 0px; margin-right: 0px;"><mjx-mtable style="min-width: 13.279em;"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style="text-align: right; padding-right: 0px; padding-bottom: 0.4em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c64"></mjx-c><mjx-c class="mjx-c65"></mjx-c><mjx-c class="mjx-c74"></mjx-c></mjx-mo><mjx-mo class="mjx-n"><mjx-c class="mjx-c28"></mjx-c></mjx-mo><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D43C TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n"><mjx-c class="mjx-c29"></mjx-c></mjx-mo><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="text-align: left; padding-left: 0px; padding-bottom: 0.4em;"><mjx-mi class="mjx-n"></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="text-align: right; padding-right: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-mrow><mjx-mo class="mjx-n"><mjx-stretchy-v class="mjx-c7C" style="height: 2.4em; vertical-align: -0.95em;"><mjx-ext><mjx-c></mjx-c></mjx-ext><mjx-mark></mjx-mark></mjx-stretchy-v></mjx-mo><mjx-mtable justify="right" style="min-width: 6.389em;"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style="padding-right: 0.5em; padding-bottom: 0.2em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="padding-left: 0.5em; padding-bottom: 0.2em;"><mjx-mn class="mjx-n"><mjx-c class="mjx-c32"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="padding-right: 0.5em; padding-top: 0.2em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="padding-left: 0.5em; padding-top: 0.2em;"><mjx-mn class="mjx-n"><mjx-c class="mjx-c36"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable><mjx-mo class="mjx-n"><mjx-stretchy-v class="mjx-c7C" style="height: 2.4em; vertical-align: -0.95em;"><mjx-ext><mjx-c></mjx-c></mjx-ext><mjx-mark></mjx-mark></mjx-stretchy-v></mjx-mo></mjx-mrow><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="text-align: left; padding-left: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-mi class="mjx-n"></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="text-align: right; padding-right: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c28"></mjx-c></mjx-mo><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n"><mjx-c class="mjx-c29"></mjx-c></mjx-mo><mjx-mo class="mjx-n"><mjx-c class="mjx-c28"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c36"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n"><mjx-c class="mjx-c29"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c32"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c22C5"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c28"></mjx-c></mjx-mo><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-mo class="mjx-n"><mjx-c class="mjx-c29"></mjx-c></mjx-mo><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="text-align: left; padding-left: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-mi class="mjx-n"></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="text-align: right; padding-right: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c33"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2B"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c36"></mjx-c></mjx-mn><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2B"></mjx-c></mjx-mo><mjx-msup space="3"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-script style="vertical-align: 0.413em;"><mjx-mn class="mjx-n" size="s"><mjx-c class="mjx-c32"></mjx-c></mjx-mn></mjx-script></mjx-msup><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2B"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="text-align: left; padding-left: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-mi class="mjx-n"></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="text-align: right; padding-right: 0px; padding-top: 0.4em;"><mjx-msup><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-script style="vertical-align: 0.413em;"><mjx-mn class="mjx-n" size="s"><mjx-c class="mjx-c32"></mjx-c></mjx-mn></mjx-script></mjx-msup><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c32"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="text-align: left; padding-left: 0px; padding-top: 0.4em;"><mjx-mi class="mjx-n"></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable></mjx-math><mjx-assistive-mml unselectable="on" display="block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="0.8em 0.8em 0.8em 0.8em 0.3em"><mtr><mtd><mo data-mjx-texclass="OP" movablelimits="true">det</mo><mo stretchy="false">(</mo><mi>R</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mo stretchy="false">)</mo></mtd><mtd><mi></mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">|</mo><mtable columnalign="center center" columnspacing="1em" rowspacing="4pt"><mtr><mtd><mo>−</mo><mn>5</mn><mo>−</mo><mi>λ</mi></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>5</mn></mtd><mtd><mn>6</mn><mo>−</mo><mi>λ</mi></mtd></mtr></mtable><mo data-mjx-texclass="CLOSE">|</mo></mrow></mtd><mtd><mi></mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mo stretchy="false">(</mo><mo>−</mo><mn>5</mn><mo>−</mo><mi>λ</mi><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mn>6</mn><mo>−</mo><mi>λ</mi><mo stretchy="false">)</mo><mo>−</mo><mn>2</mn><mo>⋅</mo><mo stretchy="false">(</mo><mo>−</mo><mn>5</mn><mo stretchy="false">)</mo></mtd><mtd><mi></mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>30</mn><mo>+</mo><mn>5</mn><mi>λ</mi><mo>−</mo><mn>6</mn><mi>λ</mi><mo>+</mo><msup><mi>λ</mi><mn>2</mn></msup><mo>+</mo><mn>10</mn></mtd><mtd><mi></mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd><msup><mi>λ</mi><mn>2</mn></msup><mo>−</mo><mi>λ</mi><mo>−</mo><mn>20</mn></mtd><mtd><mi></mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></math></mjx-assistive-mml></mjx-container></p>
+<p>Using the quadratic formula, we obtain</p>
+<p><mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" display="true" tabindex="0" ctxtmenu_counter="260" style="font-size: 119.6%; position: relative;"><mjx-math display="true" class="MJX-TEX" aria-hidden="true" style="margin-left: 0px; margin-right: 0px;"><mjx-mtable style="min-width: 12.259em;"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style="text-align: right; padding-right: 0px; padding-bottom: 0.4em;"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="text-align: left; padding-left: 0px; padding-bottom: 0.4em;"><mjx-mi class="mjx-n"></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mstyle space="4"><mjx-mfrac><mjx-frac type="d"><mjx-num><mjx-nstrut type="d"></mjx-nstrut><mjx-mrow><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-cB1"></mjx-c></mjx-mo><mjx-msqrt space="3"><mjx-sqrt><mjx-surd><mjx-mo class="mjx-sop"><mjx-c class="mjx-c221A TEX-S1"></mjx-c></mjx-mo></mjx-surd><mjx-box style="padding-top: 0.103em;"><mjx-mo class="mjx-n"><mjx-c class="mjx-c28"></mjx-c></mjx-mo><mjx-mo class="mjx-n"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c></mjx-mn><mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c29"></mjx-c></mjx-mo><mjx-script style="vertical-align: 0.289em;"><mjx-mn class="mjx-n" size="s"><mjx-c class="mjx-c32"></mjx-c></mjx-mn></mjx-script></mjx-msup><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2B"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c34"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c22C5"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c31"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c22C5"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c32"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn></mjx-box></mjx-sqrt></mjx-msqrt></mjx-mrow></mjx-num><mjx-dbox><mjx-dtable><mjx-line type="d"></mjx-line><mjx-row><mjx-den><mjx-dstrut type="d"></mjx-dstrut><mjx-mn class="mjx-n"><mjx-c class="mjx-c32"></mjx-c></mjx-mn></mjx-den></mjx-row></mjx-dtable></mjx-dbox></mjx-frac></mjx-mfrac></mjx-mstyle><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="text-align: right; padding-right: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="text-align: left; padding-left: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-mi class="mjx-n"></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mstyle space="4"><mjx-mfrac><mjx-frac type="d"><mjx-num><mjx-nstrut type="d"></mjx-nstrut><mjx-mrow><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-cB1"></mjx-c></mjx-mo><mjx-msqrt space="3"><mjx-sqrt><mjx-surd><mjx-mo class="mjx-n"><mjx-c class="mjx-c221A"></mjx-c></mjx-mo></mjx-surd><mjx-box style="padding-top: 0.163em;"><mjx-mn class="mjx-n"><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c31"></mjx-c></mjx-mn></mjx-box></mjx-sqrt></mjx-msqrt></mjx-mrow></mjx-num><mjx-dbox><mjx-dtable><mjx-line type="d"></mjx-line><mjx-row><mjx-den><mjx-dstrut type="d"></mjx-dstrut><mjx-mn class="mjx-n"><mjx-c class="mjx-c32"></mjx-c></mjx-mn></mjx-den></mjx-row></mjx-dtable></mjx-dbox></mjx-frac></mjx-mfrac></mjx-mstyle><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="text-align: right; padding-right: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="text-align: left; padding-left: 0px; padding-top: 0.4em; padding-bottom: 0.4em;"><mjx-mi class="mjx-n"></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mstyle space="4"><mjx-mfrac><mjx-frac type="d"><mjx-num><mjx-nstrut type="d"></mjx-nstrut><mjx-mrow><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-cB1"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c39"></mjx-c></mjx-mn></mjx-mrow></mjx-num><mjx-dbox><mjx-dtable><mjx-line type="d"></mjx-line><mjx-row><mjx-den><mjx-dstrut type="d"></mjx-dstrut><mjx-mn class="mjx-n"><mjx-c class="mjx-c32"></mjx-c></mjx-mn></mjx-den></mjx-row></mjx-dtable></mjx-dbox></mjx-frac></mjx-mfrac></mjx-mstyle><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style="text-align: right; padding-right: 0px; padding-top: 0.4em;"><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style="text-align: left; padding-left: 0px; padding-top: 0.4em;"><mjx-mi class="mjx-n"></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c34"></mjx-c></mjx-mn><mjx-mo class="mjx-n"><mjx-c class="mjx-c2C"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="2"><mjx-c class="mjx-c35"></mjx-c><mjx-c class="mjx-c2E"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable></mjx-math><mjx-assistive-mml unselectable="on" display="block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="0.8em 0.8em 0.8em 0.3em"><mtr><mtd><mi>λ</mi></mtd><mtd><mi></mi><mo>=</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mn>1</mn><mo>±</mo><msqrt><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mn>4</mn><mo>⋅</mo><mn>1</mn><mo>⋅</mo><mn>20</mn></msqrt></mrow><mn>2</mn></mfrac></mstyle></mtd></mtr><mtr><mtd></mtd><mtd><mi></mi><mo>=</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mn>1</mn><mo>±</mo><msqrt><mn>81</mn></msqrt></mrow><mn>2</mn></mfrac></mstyle></mtd></mtr><mtr><mtd></mtd><mtd><mi></mi><mo>=</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mn>1</mn><mo>±</mo><mn>9</mn></mrow><mn>2</mn></mfrac></mstyle></mtd></mtr><mtr><mtd></mtd><mtd><mi></mi><mo>=</mo><mo>−</mo><mn>4</mn><mo>,</mo><mn>5.</mn></mtd></mtr></mtable></math></mjx-assistive-mml></mjx-container></p>
+<p>Therefore, the eigenvalues are <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="261" style="font-size: 119.6%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n"><mjx-c class="mjx-c34"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>λ</mi><mo>=</mo><mo>−</mo><mn>4</mn></math></mjx-assistive-mml></mjx-container> and <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="262" style="font-size: 119.6%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D706 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="4"><mjx-c class="mjx-c35"></mjx-c><mjx-c class="mjx-c2E"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>λ</mi><mo>=</mo><mn>5.</mn></math></mjx-assistive-mml></mjx-container></p>
+</div></div>
+
+                <div id="buttons" style="visibility: visible;">               
+                    <div id="nextButton" class="button" style="display: block;">Next</div>
+                    <div id="doneButton" class="button" style="display: none;">Done</div>            
+                </div>                    
+            </td>
+        </tr>
+    </tbody></table>
+</div></body><div id="codex-agent-overlay-root" data-codex-agent-overlay-root="true"></div></html>

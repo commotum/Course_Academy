@@ -120,6 +120,34 @@ In verify mode, critically recheck correct answers using the revealed worked sol
 If the solution contradicts an earlier prediction, return the answer supported by the solution.
 '''
 
+DIAGNOSTIC_INSTRUCTIONS = '''
+This is an adaptive placement diagnostic. The diagnostic_policy topics are the exact
+requested course content. Classify the CURRENT tested skill, not incidental notation.
+Return diagnostic_classification="in_course" with diagnostic_topic_id equal to the
+matching supplied topic ID only when the question tests that course skill. Otherwise
+return diagnostic_classification="prerequisite" and diagnostic_topic_id=null.
+For Multivariable Calculus, basic single-variable calculus, matrix algebra,
+parameter elimination, and constant acceleration plane motion are prerequisites;
+partial derivatives, vector-function calculus, force using Newton's second law in
+the plane, and double sums/integrals are course skills. For every course, use the
+supplied topic list as the authority rather than these illustrative examples.
+A topic included in the supplied list is in_course even if another course also teaches it.
+Explain the skill match. For in_course, answers may be empty: the runner will use Don't
+Know and recover correct answers from the revealed solution. For prerequisite, solve
+and return all observed answer fields normally. confident concerns classification
+and, for prerequisite, the answer as well. Never mark a prerequisite answer wrong on purpose.
+'''
+
+
+def response_schema(payload):
+    schema = copy.deepcopy(SCHEMA)
+    if payload.get('diagnostic_policy'):
+        schema['required'] += ['diagnostic_classification', 'diagnostic_topic_id']
+        schema['properties'].update(
+            diagnostic_classification={'type':'string', 'enum':['in_course','prerequisite']},
+            diagnostic_topic_id={'type':['integer','null']})
+    return schema
+
 
 class Solver:
     def __init__(self, args):
@@ -129,6 +157,8 @@ class Solver:
         directory = Path(directory).resolve()
         payload = {'mode':phase, 'problem':item['problem'], 'worked_solution':item.get('worked_solution',''),
                    'fields':[{k:v for k,v in f.items() if k in ('key','type','tag','choices')} for f in item['fields']]}
+        if item.get('diagnostic_policy'):
+            payload['diagnostic_policy'] = item['diagnostic_policy']
         for f in payload['fields']:
             f['choices'] = [{k:v for k,v in c.items() if k in ('option','type','value')} for c in f['choices']]
         # A scrolled question screenshot can clip a tall diagram. Attach the
@@ -273,7 +303,8 @@ class Solver:
         pid = pending.get('process_id')
         if pid and pending.get('process_token') and process_token(pid) == pending['process_token']:
             raise RuntimeError('The previous solver process is still running; wait before resuming')
-        if not re.fullmatch(r'q-\d+',pending['question']) or pending['phase'] not in ('solve','verify'):
+        if (not re.fullmatch(r'(?:q-\d+|question-\d+)',pending['question']) or
+                pending['phase'] not in ('solve','verify','diagnostic','reconcile-grade')):
             raise ValueError('Invalid saved solver turn')
         directory = session_file.parent.parent/pending['question']
         phase = pending['phase']
@@ -342,7 +373,7 @@ class Solver:
         os.chmod(session_file.parent,0o700)
         os.chmod(work,0o700)
         schema, output = work / 'schema.json', work / 'answer.json'
-        schema.write_text(json.dumps(SCHEMA))
+        schema.write_text(json.dumps(response_schema(payload)))
         output.unlink(missing_ok=True)
         sid = session.get('session_id')
         if sid:
@@ -371,7 +402,8 @@ class Solver:
             atomic_json(session_file,session)
         events_path, diagnostics_path = directory/(phase+'-events.jsonl'), directory/(phase+'-stderr.txt')
         try:
-            process = run_cli(command + ['-'], input=INSTRUCTIONS + '\n' + json.dumps(payload,ensure_ascii=False),
+            instructions = INSTRUCTIONS + (DIAGNOSTIC_INSTRUCTIONS if payload.get('diagnostic_policy') else '')
+            process = run_cli(command + ['-'], input=instructions + '\n' + json.dumps(payload,ensure_ascii=False),
                               timeout=self.args.solver_timeout,events_path=events_path,
                               diagnostics_path=diagnostics_path,started=started,
                               stop_event=getattr(self.args,'stop_event',None))
@@ -413,6 +445,10 @@ class Solver:
     def validate(item, result):
         if result.get('confident') is not True:
             raise ValueError('Solver is uncertain; question saved for review')
+        if item.get('diagnostic_policy'):
+            from diagnostic import classify
+            if classify(item['diagnostic_policy'], result) == 'in_course' and result.get('answers') == []:
+                return  # Correct answers are recovered from the revealed solution after the skip.
         answers = {a['key']: a for a in result['answers']}
         if len(answers) != len(result['answers']) or set(answers) != {f['key'] for f in item['fields']}:
             raise ValueError('Solver must answer exactly the observed fields')

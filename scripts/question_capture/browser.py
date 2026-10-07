@@ -37,9 +37,10 @@ EXTRACT_QUEUE = r'''nodes => nodes.filter(e => e.getClientRects().length).map(e 
   const lesson=href.match(/^\/tasks\/(\d+)\/topics\/(\d+)\/(lesson|review)$/);
   const task=e.id.match(/^task-(\d+)$/), test=href.match(/^\/tasks\/(\d+)\/tests\/(\d+)\/start$/);
   const multistep=href.match(/^\/tasks\/(\d+)\/multisteps\/(\d+)$/);
+  const diagnostic=href.match(/^\/tasks\/(\d+)\/diagnostics\/(\d+)$/);
   const kind=e.querySelector('.taskTypeUnlocked')?.textContent.trim().toLowerCase() || 'unknown';
   const progress=Number(e.getAttribute('progress'));
-  const supported=(!!lesson && kind === lesson[3]) || (!!test && kind === 'assessment') || (!!multistep && kind === 'multistep');
+  const supported=(!!lesson && kind === lesson[3]) || (!!test && kind === 'assessment') || (!!multistep && kind === 'multistep') || (!!diagnostic && kind === 'diagnostic');
   const details={};
   for (const row of e.querySelectorAll('.testDetails tr')) {
     const name=row.querySelector('.testFieldName')?.textContent.trim().replace(/:$/,'');
@@ -50,6 +51,8 @@ EXTRACT_QUEUE = r'''nodes => nodes.filter(e => e.getClientRects().length).map(e 
     title:e.querySelector('[id^="taskName-"], .taskNameUnlocked')?.textContent.trim() || '',
     capture_supported:supported,progress:Number.isFinite(progress) ? progress : null,
     in_progress:Number.isFinite(progress) && progress>0,
+    ...(kind === 'diagnostic' ? {diagnostic_id:diagnostic ? Number(diagnostic[2]) : null,
+      diagnostic_card_html:e.outerHTML} : {}),
     ...(kind === 'multistep' ? {multistep_id:multistep ? Number(multistep[2]) : null,
       multistep_card_html:e.outerHTML} : {}),
     ...(kind === 'assessment' ? {test_id:test ? Number(test[2]) : null,assessment_details:details,
@@ -282,7 +285,7 @@ class CaptureBrowser:
             try:
                 response = self.page.goto(url, wait_until='domcontentloaded')
                 if response and response.request.redirected_from:
-                    if url == LEARN and re.search(r'/tasks/\d+/tests/\d+(?:[/?#]|$)',self.page.url):
+                    if url == LEARN and re.search(r'/tasks/\d+/(?:tests|diagnostics)/\d+(?:[/?#]|$)',self.page.url):
                         self.check()
                         return  # The queue caller reports the forced active assessment.
                     # Playwright routes only the first request of a redirect
@@ -310,12 +313,15 @@ class CaptureBrowser:
 
     def queue(self):
         self.navigate(LEARN, force=True)
-        if re.search(r'/tasks/\d+/tests/\d+(?:[/?#]|$)',self.page.url):
-            raise ValueError('Math Academy redirected the queue to an unfinished assessment: '+self.page.url+'; explicitly resume its saved capture')
+        if re.search(r'/tasks/\d+/(?:tests|diagnostics)/\d+(?:[/?#]|$)',self.page.url):
+            raise ValueError('Math Academy redirected the queue to an unfinished assessment or diagnostic: '+self.page.url+'; restoring its saved capture')
         self.page.locator('#incompleteTasks').wait_for(state='attached')
         # Wait for the asynchronous task list, allowing an empty queue.
         self.page.wait_for_timeout(self.args.settle_ms)
         self.check()
+        if getattr(self.args,'state_dir',None):
+            from dashboard import capture as capture_dashboard
+            capture_dashboard(self.page,self.args.state_dir)
         self.completed_outcomes = self.page.locator('#completedTasks .taskCompleted').evaluate_all(r'''nodes => nodes.flatMap(e => {
           const kind=e.querySelector('.taskTypeLocked')?.textContent.trim().toLowerCase();
           const xp=e.querySelector('.taskPoints')?.textContent.trim().match(/^(-?\d+)\s*\//);
@@ -327,8 +333,8 @@ class CaptureBrowser:
         cards = self.page.locator('#incompleteTasks .taskUnlocked')
         initial = cards.evaluate_all(EXTRACT_QUEUE)
         for item in initial:
-            if item['task_type'] == 'multistep' and not item['in_progress'] and not item['href']:
-                self.pacer.wait('event','expand multistep queue details')
+            if item['task_type'] in ('multistep','diagnostic') and not item['href']:
+                self.pacer.wait('event','expand '+item['task_type']+' queue details')
                 card = by_id(self.page,item['card_id'])
                 card.click()
                 card.locator('a.taskStartButton').wait_for(state='visible')
@@ -343,6 +349,12 @@ class CaptureBrowser:
                 card.locator('a.taskStartButton').wait_for(state='visible')
         self.check()
         queue = cards.evaluate_all(EXTRACT_QUEUE)
+        course = self.page.locator('a#courseNameLink, a.courseNameLink').first
+        if course.count():
+            match = re.fullmatch(r'/courses/(\d+)/progress',course.get_attribute('href') or '')
+            for item in queue:
+                if item['task_type'] == 'diagnostic':
+                    item.update(course_id=int(match[1]) if match else None,course_name=course.inner_text().strip())
         for item in queue:
             if item['task_type'] == 'assessment':
                 item.update(assessment_requirement(item['assessment_details'], only_activity=len(queue) == 1,
@@ -351,7 +363,7 @@ class CaptureBrowser:
 
     def start(self, activity):
         kind = activity.get('task_type', 'lesson')
-        if kind not in ('lesson','review','assessment','multistep') or not activity.get('capture_supported',True):
+        if kind not in ('lesson','review','assessment','multistep','diagnostic') or not activity.get('capture_supported',True):
             raise ValueError('Activity is recorded but unsupported by the capture player')
         if kind == 'assessment':
             card = by_id(self.page,activity['card_id'])
@@ -376,7 +388,7 @@ class CaptureBrowser:
                 raise ValueError('Assessment is not required, an eligible retake, or the only eligible activity; stop before Start')
         else:
             card = by_id(self.page, activity['card_id'])
-            if kind != 'multistep' or not card.locator('.taskDetails').is_visible():
+            if kind not in ('multistep','diagnostic') or not card.locator('.taskDetails').is_visible():
                 self.pacer.wait('event', 'expand the selected ' + kind)
                 card.click()
         button = by_id(self.page, activity['start_id'])
@@ -389,6 +401,8 @@ class CaptureBrowser:
                     if kind == 'assessment' else
                     '**/tasks/' + str(activity['task_id']) + '/multisteps/' + str(activity['multistep_id'])
                     if kind == 'multistep' else
+                    '**/tasks/' + str(activity['task_id']) + '/diagnostics/' + str(activity['diagnostic_id'])
+                    if kind == 'diagnostic' else
                     '**/tasks/' + str(activity['task_id']) + '/topics/' + str(activity['topic_id']) + '/' + kind)
         self.page.wait_for_url(expected,wait_until='domcontentloaded')
         self.check()
@@ -488,12 +502,15 @@ class CaptureBrowser:
         if event != state.get('task_type','lesson') + '-completed':
             raise ValueError('Knowledge snapshots are only captured after completed activities')
         directory = Path(directory)
-        courses = tuple(getattr(self.args, 'progress_course_ids', COURSES))
+        from progress import targets, target as progress_target
+        courses = targets(self.args,state)
         snapshots = state.setdefault('knowledge_snapshots', {})
         target = directory / 'knowledge-state' / (event + '.json')
         if target.exists():
             snapshot = json.loads(target.read_text())
-            if snapshot['task_id'] != state['task_id'] or tuple(c['course_id'] for c in snapshot['courses']) != courses:
+            observed=tuple(c.get('source_url') or progress_target(c['course_id'])['source_url'] for c in snapshot['courses'])
+            expected=tuple(progress_target(c)['source_url'] for c in courses)
+            if snapshot['task_id'] != state['task_id'] or observed != expected:
                 raise ValueError('Saved knowledge snapshot has a different task or course scope')
         else:
             previous = None
@@ -579,6 +596,9 @@ class CaptureBrowser:
         return True
 
     def activity(self, state, directory, topic):
+        if state.get('task_type') == 'diagnostic':
+            from diagnostic import take_diagnostic
+            return take_diagnostic(self,state,directory)
         if state.get('task_type') == 'multistep':
             from multistep import take_multistep
             return take_multistep(self,state,directory)
@@ -1014,7 +1034,7 @@ class CaptureBrowser:
         return result
 
     def history(self, state, directory, topic=None):
-        if state.get('task_type') in ('assessment','multistep'):
+        if state.get('task_type') in ('assessment','multistep','diagnostic'):
             from assessment import assessment_history
             return assessment_history(self,state,directory,topic)
         directory = Path(directory)

@@ -306,6 +306,27 @@ class ReplacementTests(unittest.TestCase):
         self.assertTrue(all(c.kwargs.get('history') is True for c in historical_calls))
         self.assertTrue(all(c.args[4] == 656 for c in db.query.call_args_list))
 
+    def test_verified_other_worker_capture_is_authoritative_evidence(self):
+        other=self.directory/'other-worker-captures'
+        capture=other/'123'
+        atomic_json(capture/'content.json',self.content)
+        atomic_json(capture/'edb-import/verification.json',{'committed':True,'basis_after':303})
+        # Unverified content from another worker must not become an attestation.
+        atomic_json(other/'124/content.json',self.content)
+        record={'question':self.mid,'field':None,'attribute':'question/worked-solution',
+                'value':self.old[':question/worked-solution'],'category':'ma_capture','file':'saved.json'}
+        db=Database(SimpleNamespace(capture_root=[other,other],output=other))
+        db.questions=Mock(return_value={self.mid:self.old});db.query=Mock(return_value=[])
+        def records(content,directory):
+            return [record] if directory==capture else []
+        with patch('database.ROOT',self.directory),patch('database.authoring_records',return_value=[]), \
+             patch('database.source_records',side_effect=records) as sources:
+            reconciler=db.reconciliation(self.content,self.directory,{self.mid:self.old},656)
+        self.assertEqual(len(reconciler.authored),1)
+        self.assertEqual(reconciler.authored[0]['basis'],303)
+        self.assertEqual(reconciler.authored[0]['verification'],str(capture/'edb-import/verification.json'))
+        self.assertEqual([c.args[1] for c in sources.call_args_list],[capture,self.directory.parent])
+
     def test_explicit_historical_correction_is_authoritative_not_an_invented_key(self):
         records = authoring_records(EVIDENCE,{'q-23188'})
         repaired = [r for r in records if r['basis']==653 and r['attribute']=='answer-field/correct']

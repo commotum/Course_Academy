@@ -117,6 +117,40 @@ class SessionTests(unittest.TestCase):
         self.assertEqual(feedback[0]['worked_solution'],'1+1=2')
         self.assertFalse(feedback[0]['deliberately_incorrect_submission'])
 
+    def test_diagnostic_classification_skip_recovery_and_verification_share_activity_session(self):
+        root,state=self.activity('100','diagnostic')
+        policy={'course_id':54,'topics':[{'topic_id':3052,'title':'Joint Distributions'}]}
+        item={**self.question(1),'diagnostic_policy':policy}
+        def diagnostic_cli(command,**kwargs):
+            response=self.fake_cli(command,**kwargs)
+            schema=json.loads(Path(command[command.index('--output-schema')+1]).read_text())
+            if self.calls[-1]['payload'].get('diagnostic_policy'):
+                self.assertIn('diagnostic_topic_id',schema['required'])
+                answer={'confident':True,'explanation':'Course topic','answers':[],
+                        'diagnostic_classification':'in_course','diagnostic_topic_id':3052}
+                Path(command[command.index('--output-last-message')+1]).write_text(json.dumps(answer))
+            else:
+                self.assertNotIn('diagnostic_topic_id',schema['properties'])
+            return response
+        def interrupted(command,**kwargs):
+            response=diagnostic_cli(command,**kwargs)
+            raise subprocess.CalledProcessError(1,command,output=response.stdout)
+        with patch('solver.run_cli',side_effect=interrupted),self.assertRaises(subprocess.CalledProcessError):
+            Solver(self.args).solve(item,None,root/'question-001','diagnostic')
+        sid=self.calls[-1]['sid']
+        with patch('solver.run_cli') as cli:
+            answer=Solver(self.args).solve(item,None,root/'question-001','diagnostic')
+            cli.assert_not_called()
+            self.assertEqual(answer['answers'],[])
+        state['questions']['question-001']={'intended':'skip','actual_result':'Skipped Question',
+                                          'before':self.question(1),'after':{**self.question(1),'worked_solution':'2'}}
+        atomic_json(root/'state.json',state)
+        with patch('solver.run_cli',side_effect=diagnostic_cli):
+            Solver(self.args).solve(self.question(2),None,root/'question-002')
+            Solver(self.args).solve({**self.question(1),'worked_solution':'2'},None,root/'question-001','verify')
+        self.assertTrue(all(c['sid']==sid for c in self.calls))
+        self.assertFalse(json.loads((root/'solver-session/state.json').read_text()).get('pending_turn'))
+
     def test_completed_answer_recovers_after_cli_exit_before_checkpoint(self):
         root,state=self.activity('100','lesson')
         state['examples']['e-10']={'math_academy_id':'e-10','problem':'1+1','worked_solution':'2'}

@@ -340,6 +340,7 @@ def assessment_history(reader, state, directory, load_topic):
     from browser import by_id, LEARN
     directory = Path(directory)
     is_multistep = state.get('task_type') == 'multistep'
+    is_diagnostic = state.get('task_type') == 'diagnostic'
     reader.navigate(LEARN+'?taskId='+str(state['task_id']))
     selector = '.question[id^="question-"]'
     reader.page.locator(selector).first.wait_for(state='visible')
@@ -347,8 +348,13 @@ def assessment_history(reader, state, directory, load_topic):
       id:q.id,difficulty:q.querySelector('.questionDifficulty')?.textContent.trim(),
       kp_title:q.querySelector('.questionKP')?.textContent.trim(),
       kp_href:q.querySelector('.questionKP')?.getAttribute('href'),
+      question_number:q.querySelector('.questionNumber')?.textContent.trim(),
       result:q.querySelector('.answerResult')?.textContent.trim(),raw_html:q.outerHTML,
       details_html:q.querySelector('.answerDetails')?.outerHTML}))''')
+    if is_diagnostic:
+        from diagnostic import bind_history
+        bind_history(state, metadata)
+        atomic_json(directory/'state.json',state)
     ids = [q['id'].replace('question-','q-') for q in metadata]
     if len(set(ids)) != len(ids) or set(ids) != set(state['questions']):
         raise ValueError('Assessment activity IDs differ from the live capture')
@@ -382,7 +388,7 @@ def assessment_history(reader, state, directory, load_topic):
             # Preserve the actual submitted value, but recover the correct value
             # from the revealed solution before producing database content.
             verified_item = {**record['before'],'worked_solution':item['worked_solution']}
-            verified = reader.solver.solve(verified_item,screenshot,directory/mid,'verify')
+            verified = reader.solver.solve(verified_item,screenshot,directory/record.get('solver_directory',mid),'verify')
             record.setdefault('predicted_answers', json.loads(json.dumps(record['decision']['answers'])))
             record['verification'] = verified
         if record.get('verification'):
@@ -404,6 +410,11 @@ def assessment_history(reader, state, directory, load_topic):
         if is_multistep:
             record['content'].update(sequence_position=record['sequence_position'], local_problem=record['local_problem'],
                                      shared_context_refs=[c['id'] for c in state.get('shared_contexts', [])])
+        if is_diagnostic:
+            record['content'].update(sequence_position=record['sequence_position'],
+                                     diagnostic_classification=record['classification'],
+                                     diagnostic_history_classification=record['history_classification'],
+                                     diagnostic_live_result=record.get('live_result'))
         record['finalized'] = True
         atomic_json(directory/'state.json',state)
     atomic_json(directory/'activity-metadata.json',metadata)
@@ -414,6 +425,11 @@ def assessment_history(reader, state, directory, load_topic):
     if is_multistep:
         content.update(multistep_id=state['multistep_id'],title=state.get('title'),
                        shared_contexts=state.get('shared_contexts', []), question_order=state['multistep_question_order'])
+        content['questions'].sort(key=lambda q:q['sequence_position'])
+    elif is_diagnostic:
+        content.update(diagnostic_id=state['diagnostic_id'],course_id=state['course_id'],
+                       question_order=state['diagnostic_question_order'],
+                       diagnostic_policy=state['diagnostic_policy'])
         content['questions'].sort(key=lambda q:q['sequence_position'])
     else:
         content.update(test_id=state['test_id'],assessment_details=state['assessment_details'],

@@ -232,7 +232,11 @@ class Database:
         records = authoring_records(ROOT/'reference/mathacademy', ids)
         # A later exact MA capture of a locally authored value makes that value
         # authoritative too. Do not overwrite it as if it were still invented.
-        for capture in (ROOT/'reference/mathacademy/question-capture').glob('*/content.json'):
+        roots={ROOT/'reference/mathacademy/question-capture'}
+        roots.update(Path(p).resolve() for p in getattr(self.args,'capture_root',[]))
+        if getattr(self.args,'output',None):roots.add(Path(self.args.output).resolve())
+        captures=sorted({p for root in roots for p in root.glob('*/content.json')})
+        for capture in captures:
             verification = capture.parent/'edb-import/verification.json'
             if not verification.exists():
                 continue
@@ -317,7 +321,7 @@ class Database:
         return retractions
 
     def content_topics(self, content, directory, basis):
-        if content.get('task_type') in ('assessment','multistep'):
+        if content.get('task_type') in ('assessment','multistep','diagnostic'):
             ids = {q['topic_id'] for q in content['questions']}
             if not ids or any(not isinstance(t,int) or t < 1 for t in ids):
                 raise ValueError('Assessment questions require source topic IDs')

@@ -15,7 +15,7 @@ from core import ROOT, atomic_json
 from solver import Solver, process_token, run_cli
 
 PACKAGE = Path(__file__).parent
-ALLOWED = {'browser.py','dom.js','assessment.py','multistep.py','math_notation.py','solver.py','core.py','capture.py'}
+ALLOWED = {'browser.py','dom.js','assessment.py','multistep.py','diagnostic.py','math_notation.py','solver.py','core.py','capture.py'}
 SCHEMA = {'type':'object','additionalProperties':False,
     'required':['status','summary','file','edits','patches','regression_test','validation'],
     'properties':{'status':{'type':'string','enum':['repair','resolved','blocked']},
@@ -165,6 +165,7 @@ def validation_names(files, regression, result):
     relevant={'browser.py':('test_unfinished_recovery','test_fast_recovery'),
               'assessment.py':('test_assessment.AssessmentPolicyTests',),
               'multistep.py':('test_multistep.MultistepRunnerTests',),
+              'diagnostic.py':('test_diagnostic',),
               'math_notation.py':('test_capture.ReconciliationTests',),
               'solver.py':('test_solver.SessionTests',),
               'capture.py':('test_capture.ProgressTests','test_shutdown'),
@@ -306,6 +307,12 @@ def prepare(args, pacer):
 
 
 def apply(plan):
+    from coordination import source_install_lock
+    with source_install_lock():
+        return _apply(plan)
+
+
+def _apply(plan):
     patches=plan.get('patches') or [plan]
     for patch in patches:
         if (PACKAGE/patch['file']).read_text()!=patch['original']:

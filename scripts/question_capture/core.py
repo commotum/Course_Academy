@@ -114,7 +114,12 @@ def choose_lesson(queue, priorities, completed_topics=()):
 
 
 def choose_activity(queue, priorities, completed_topics=(), captured_tasks=()):
-    """Required assessments/retakes first, then ranked lessons/reviews and queue order."""
+    """Placement, required assessments/retakes, then ranked practice and queue order."""
+    diagnostic = next((item for item in queue if item.get('task_type') == 'diagnostic' and
+                       item.get('capture_supported') and not item.get('in_progress') and
+                       item['task_id'] not in captured_tasks), None)
+    if diagnostic:
+        return {**diagnostic, 'selection_reason':'placement_diagnostic'}
     tests = [item for item in queue if item.get('task_type') == 'assessment' and
              not item.get('in_progress') and item['task_id'] not in captured_tasks]
     required = next((item for item in tests if item.get('assessment_requirement') == 'required' and
@@ -493,7 +498,7 @@ def build_content_transaction(content, topics, existing, reconciler=None):
     records = content['questions'] + content.get('canonical_examples', [])
     if len({q['math_academy_id'] for q in records}) != len(records):
         raise ValueError('Duplicate question identities in capture')
-    if content.get('task_type') not in ('assessment','multistep'):
+    if content.get('task_type') not in ('assessment','multistep','diagnostic'):
         return build_transaction(content,topics[content['topic_id']],existing,reconciler)
     transaction, report = [], []
     if content.get('canonical_examples'):
