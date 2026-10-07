@@ -314,7 +314,8 @@ def record_failure(args, browser, state, directory, phase, error):
               'exception_type':type(error).__name__, 'message':str(error),
               'traceback':''.join(traceback.format_exception(type(error),error,error.__traceback__)),
               'configuration':{k:getattr(args,k,None) for k in
-                               ('limit','preview','timeout_ms','solver_timeout','solver_model','seed','ui_delay_ms')},
+                               ('limit','preview','timeout_ms','solver_timeout','solver_model','seed','ui_delay_ms',
+                                'edb_bin','database')},
               'source_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest()
                                for p in Path(__file__).parent.iterdir() if p.suffix in ('.py','.js')},
               'artifact_errors':[]}

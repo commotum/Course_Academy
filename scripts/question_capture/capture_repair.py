@@ -2,6 +2,7 @@
 import hashlib
 import json
 import logging
+import os
 import re
 import shutil
 import subprocess
@@ -80,12 +81,30 @@ def source_version():
     return digest.hexdigest()
 
 
-def evidence_version(source):
+def evidence_version(source, edb_bin=None):
     """Reconsider a failure when its saved page/checkpoint supplies new evidence."""
-    digest=hashlib.sha256(str(source.resolve()).encode())
-    for path in (source,source.parents[2]/'state.json',source.parent/'page.html',source.parent/'page.png'):
+    report = json.loads(source.read_text())
+    digest=hashlib.sha256(failure_key(report).encode())
+    digest.update(json.dumps({key:report.get(key) for key in
+                             ('task_id','stdout','stderr','http_block')},sort_keys=True).encode())
+    if report.get('phase') in ('queue','queue-after') and report.get('task_id') is None:
+        # A reloaded queue and a new diagnostic timestamp do not fix a failed
+        # database reader. Revisit the diagnosis only when its error or reader changes.
+        reader = Path(edb_bin or report.get('configuration',{}).get('edb_bin') or
+                      os.environ.get('EDB_BIN','/home/jake/Developer/EDB/target/release/edb'))
+        digest.update(str(reader.resolve()).encode())
+        if reader.is_file():
+            stat = reader.stat()
+            digest.update(f'{stat.st_size}:{stat.st_mtime_ns}'.encode())
+        return digest.hexdigest()
+    state = source.parents[2]/'state.json'
+    if state.is_file():
+        saved = json.loads(state.read_text())
+        saved.pop('deferred_error',None)
+        digest.update(json.dumps(saved,sort_keys=True).encode())
+    for path in (source.parent/'page.html',source.parent/'page.png'):
         if path.exists():
-            stat=path.stat();digest.update(f'{path.name}:{stat.st_size}:{stat.st_mtime_ns}'.encode())
+            digest.update(path.name.encode());digest.update(path.read_bytes())
     return digest.hexdigest()
 
 
@@ -108,7 +127,7 @@ def next_failure(args, ledger, *, task_ids=None):
                 continue
         key = failure_key(report)
         previous = ledger.get(key,{})
-        if (previous.get('source_version')==generation and previous.get('evidence_version')==evidence_version(source) and
+        if (previous.get('source_version')==generation and previous.get('evidence_version')==evidence_version(source,args.edb_bin) and
                 (previous.get('status') in ('applied','resolved','blocked') or previous.get('attempts',0)>=2)):
             continue
         return source,report,key
@@ -163,7 +182,7 @@ def prepare(args, pacer):
     diagnostic,report,key = failure
     entry = ledger.setdefault(key,{'attempts':0})
     generation=source_version()
-    evidence=evidence_version(diagnostic)
+    evidence=evidence_version(diagnostic,args.edb_bin)
     if entry.get('source_version')!=generation or entry.get('evidence_version')!=evidence:
         entry['attempts']=0
     entry['source_version']=generation

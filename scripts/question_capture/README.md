@@ -449,6 +449,12 @@ The default learner is `59d5cf13-351c-4114-be19-4c3bb64ee051`. Override it with
 `EDB_POSTGRES_URL`, `--database`, `--edb-bin`, and `--endpoint` as appropriate.
 All paths work when invoked from this repository root.
 
+The EDB reader must support the existing database's storage format. Rebuilding
+the adjacent EDB repository on a format-changing branch can break reads even
+though capture code is unchanged. Repeated queue-read errors do not restart
+the repair agent just because a diagnostic timestamp or queue page changed;
+a changed error, reader binary, or capture source permits another diagnosis.
+
 ## Solver
 
 The default adapter keeps **one Codex session per activity**, for both lessons
