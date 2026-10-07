@@ -8,8 +8,8 @@ export function createQueueControls(options) {
   return createTopicSelectionControls({ ...options, collection: 'queue' });
 }
 
-// Membership always comes from the server. Storage only invalidates other
-// pages; it is never used as a learner, target, or queue data source.
+// Confirmed membership comes from the server. A pending target intent updates
+// the local presentation immediately; storage only invalidates other pages.
 function createTopicSelectionControls({ readLearner, onChange = () => {}, collection }) {
   const queued = collection === 'queue';
   const changeKey = `course-academy-${collection}-changed`;
@@ -28,15 +28,22 @@ function createTopicSelectionControls({ readLearner, onChange = () => {}, collec
   const errors = new Map();
 
   function render(control) {
-    const { host, button, status, topicId, title, menuItem } = control;
+    const { host, button, status, topicId, title, menuItem, switchControl, label } = control;
     const selected = selections.has(topicId);
     const operation = operations.get(topicId);
     const saving = pending === topicId;
-    const action = (operation ? operation.selected : !selected) ? `Add to ${collection}` : `Remove from ${collection}`;
+    const collectionLabel = switchControl ? (queued ? 'Queue' : 'Targets') : collection;
+    const action = (operation ? operation.selected : !selected) ? `Add to ${collectionLabel}` : `Remove from ${collectionLabel}`;
     host.hidden = !learner || (!queued && learner.selfDirected !== true);
     button.disabled = profileChanging || pending !== null || host.hidden || isDeveloperMode();
-    button.textContent = saving ? 'Saving…' : errors.has(topicId) ? 'Retry' : selected ? (menuItem ? `Remove from ${collection}` : queued ? 'Queued' : 'Targeted') : `Add to ${collection}`;
-    if (!menuItem) button.setAttribute('aria-pressed', String(selected));
+    if (switchControl) {
+      const checked = saving && operation ? operation.selected : selected;
+      label.textContent = checked ? `Remove from ${collectionLabel}` : `Add to ${collectionLabel}`;
+      button.setAttribute('aria-checked', String(checked));
+    } else {
+      button.textContent = saving ? 'Saving…' : errors.has(topicId) ? 'Retry' : selected ? (menuItem ? `Remove from ${collection}` : queued ? 'Queued' : 'Targeted') : `Add to ${collection}`;
+      if (!menuItem) button.setAttribute('aria-pressed', String(selected));
+    }
     button.setAttribute('aria-busy', String(saving));
     button.setAttribute('aria-label', `${errors.has(topicId) ? 'Retry: ' : ''}${action}: ${title}`);
     button.title = isDeveloperMode() ? `${queued ? 'Queue' : 'Target'} changes are disabled in developer mode.` : action;
@@ -81,6 +88,13 @@ function createTopicSelectionControls({ readLearner, onChange = () => {}, collec
     operations.set(topicId, operation);
     pending = topicId; revision++; errors.delete(topicId); renderAll();
     try {
+      if (!queued) {
+        const visibleTargets = new Set(selections);
+        if (operation.selected) visibleTargets.add(topicId); else visibleTargets.delete(topicId);
+        // Keep the confirmed learner intact for rollback and exact retries.
+        // Consumers repaint this local preview using their normal change path.
+        onChange({ ...learner, targets: [...visibleTargets] });
+      }
       const response = await fetch(endpoint, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin', cache: 'no-store', body: JSON.stringify(operation),
@@ -103,21 +117,33 @@ function createTopicSelectionControls({ readLearner, onChange = () => {}, collec
       if (error.code === 'basis-conflict') operation.requestId = crypto.randomUUID();
       errors.set(topicId, error.message || `Unable to save this ${noun}. Try again.`);
     } finally {
-      pending = null; renderAll(); void refresh();
+      pending = null; renderAll();
+      if (!queued) onChange(learner);
+      void refresh();
     }
   }
 
-  function createToggle(topic, { menuItem = false } = {}) {
+  function createToggle(topic, { menuItem = false, switchControl = false } = {}) {
     const topicId = Number(topic.id);
     if (!Number.isSafeInteger(topicId) || topicId <= 0) return null;
-    const host = document.createElement('span'); host.className = 'target-control';
-    const button = document.createElement('button'); button.type = 'button'; button.className = 'target-toggle';
+    switchControl = switchControl && !menuItem;
+    const host = document.createElement('span'); host.className = 'target-control' + (switchControl ? ' target-switch-control' : '');
+    const button = document.createElement('button'); button.type = 'button'; button.className = switchControl ? 'profile-switch target-switch' : 'target-toggle';
     if (menuItem) button.setAttribute('role', 'menuitem');
+    if (switchControl) button.setAttribute('role', 'switch');
+    const label = switchControl ? document.createElement('span') : null;
     const status = document.createElement('span'); status.className = 'target-status'; status.setAttribute('role', 'status');
     status.id = 'target-status-' + crypto.randomUUID();
-    const control = { host, button, status, topicId, title: topic.title || topic.name || 'Topic', menuItem };
-    button.addEventListener('click', () => { void toggle(topicId); });
-    host.append(button, status); controls.add(control); render(control);
+    const control = { host, button, status, topicId, title: topic.title || topic.name || 'Topic', menuItem, switchControl, label };
+    button.addEventListener('click', () => {
+      if (switchControl) button.dataset.animate = 'true';
+      void toggle(topicId);
+    });
+    if (switchControl) {
+      const row = document.createElement('span'); row.className = 'target-switch-row';
+      row.append(label, button); host.append(row, status);
+    } else host.append(button, status);
+    controls.add(control); render(control);
     return host;
   }
 

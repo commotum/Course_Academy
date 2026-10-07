@@ -5,7 +5,7 @@ import re
 import time
 from pathlib import Path
 
-from core import atomic_json, assessment_can_start, journal, normalize
+from core import atomic_json, assessment_can_start, compare_answers, journal, normalize
 
 
 def choose_quiz_intent(rng, correct_weight):
@@ -122,28 +122,61 @@ def check_request_error(page):
         raise AssessmentRequestError('Math Academy displayed its request-processing error dialog')
 
 
+def restore_assessment_intents(reader, state, directory):
+    """Use a fresh server-rendered screen to resolve interrupted start/submit clicks."""
+    pending_submit = state.get('test_submission_status') == 'confirming'
+    pending_start = state.get('assessment_start_intent') and not state.get('assessment_started')
+    if not (pending_submit or pending_start) or state.get('activity_complete'):
+        return
+    page = reader.page
+    if page.locator('#finalScreen').is_visible():
+        return  # _take_assessment captures this result without another submission.
+    url = state.get('activity_url')
+    if not url and state.get('task_id') and state.get('test_id'):
+        from browser import LEARN
+        url = LEARN.replace('/learn', '') + '/tasks/' + str(state['task_id']) + '/tests/' + str(state['test_id'])
+        state['activity_url'] = url
+    if not url:
+        return
+    reader.navigate(url, force=True)
+    page.locator('#startButton:visible, #questions > .question:visible, #finalScreen:visible').first.wait_for(state='visible')
+    if page.locator('#finalScreen').is_visible():
+        return
+    if pending_submit and page.locator('#questions > .question:visible').count():
+        state.setdefault('assessment_intent_recoveries', []).append(
+            {'intent':'submit', 'reason':'server_restored_unsubmitted_test', 'time':time.time()})
+        state.pop('test_submission_status', None)
+        logging.warning('Restored assessment remains unsubmitted; reusing its saved answers')
+    if pending_start and page.locator('#startButton').is_visible():
+        state.setdefault('assessment_intent_recoveries', []).append(
+            {'intent':'start', 'reason':'server_restored_instruction_screen', 'time':time.time()})
+        state.pop('assessment_start_intent', None)
+        logging.warning('Restored assessment has not started; continuing from its instructions')
+    atomic_json(Path(directory)/'state.json', state)
+
+
 def take_assessment(reader, state, directory):
-    """Recover request errors/timeouts without restarting or resubmitting a quiz."""
+    """Recover request errors/timeouts without replaying completed submissions."""
     from playwright.sync_api import TimeoutError as PlaywrightTimeout
     directory = Path(directory)
+    restore_assessment_intents(reader, state, directory)
+    recoveries = 0  # Bound this burst, not all future resumptions of this assessment.
     while True:
         try:
             return _take_assessment(reader, state, directory)
         except (AssessmentRequestError, PlaywrightTimeout) as error:
             reader.check()
             message = request_error_message(reader.page)
-            if state.get('test_submission_status') == 'confirming':
-                raise
             if reader.page.locator('#messageBox-message').is_visible() and not message:
                 raise  # Unknown dialogs require inspection, not dismissal.
-            if not message and not state.get('assessment_started'):
+            if not message and not (state.get('assessment_started') or state.get('assessment_question_count')):
                 raise
             if not state.get('activity_url'):
                 raise
-            attempts = state.get('assessment_recovery_attempts', 0)
-            if attempts >= 2:
-                raise AssessmentRequestError('Assessment could not recover after two reloads; saved answers require inspection') from error
-            attempt = attempts + 1
+            if recoveries >= 2:
+                raise AssessmentRequestError('Assessment could not recover in this retry burst; retaining it for automatic repair') from error
+            recoveries += 1
+            attempt = state.get('assessment_recovery_attempts', 0) + 1
             state['assessment_recovery_attempts'] = attempt
             state.setdefault('assessment_recovery_errors', []).append(
                 {'attempt': attempt, 'message': message or str(error), 'time': time.time()})
@@ -153,8 +186,13 @@ def take_assessment(reader, state, directory):
                 reader.page.screenshot(path=str(directory/('request-error-'+str(attempt)+'.png')),timeout=5000)
             except Exception:
                 logging.warning('Assessment recovery screenshot unavailable')
-            logging.warning('Restoring the same assessment (attempt %d/2), retaining saved answers and timer',attempt)
-            reader.navigate(state['activity_url'],force=True)
+            logging.warning('Restoring the same assessment (burst retry %d/2, total %d), retaining saved answers and timer',recoveries,attempt)
+            if attempt > 2:
+                reader.pacer.backoff(attempt - 2)
+            if state.get('test_submission_status') == 'confirming':
+                restore_assessment_intents(reader, state, directory)
+            else:
+                reader.navigate(state['activity_url'],force=True)
 
 
 def _take_assessment(reader, state, directory):
@@ -170,13 +208,18 @@ def _take_assessment(reader, state, directory):
         return
     if page.locator('#finalScreen').is_visible():
         return finish(reader,state,directory)
-    # Confirmation sends the whole test. An uncertain final submission is read,
-    # never replayed, even if restoring the page displays the old questions.
+    # Interrupted clicks are reconciled from a fresh server page by the wrapper.
     if state.get('test_submission_status') == 'confirming':
         raise ValueError('Assessment submission is unconfirmed; inspect its result before another submission')
     check_request_error(page)
     state.setdefault('assessment_correct_weight',reader.args.assessment_correct_weight)
     state['answer_policy'] = 'independent_weighted'
+    # Navigation can finish before the instruction screen becomes visible.
+    # Wait for either the START screen or the running/restored test before
+    # deciding which path to take. An early is_visible() is not a layout signal.
+    page.locator('#startButton:visible, #questions > .question:visible, #finalScreen:visible').first.wait_for(state='visible')
+    if page.locator('#finalScreen').is_visible():
+        return finish(reader,state,directory)
     if not state.get('assessment_started'):
         if not assessment_can_start(state):
             raise ValueError('Assessment is not eligible under its saved selection policy; stop before the timer starts')
@@ -340,6 +383,7 @@ def assessment_history(reader, state, directory, load_topic):
             # from the revealed solution before producing database content.
             verified_item = {**record['before'],'worked_solution':item['worked_solution']}
             verified = reader.solver.solve(verified_item,screenshot,directory/mid,'verify')
+            record.setdefault('predicted_answers', json.loads(json.dumps(record['decision']['answers'])))
             record['verification'] = verified
         if record.get('verification'):
             record['decision'] = record['verification']
@@ -348,8 +392,10 @@ def assessment_history(reader, state, directory, load_topic):
             for field in record['before']['fields']:
                 submitted = field.get('submitted_value')
                 answer = answers[field['key']]
-                if submitted is not None and normalize(submitted,answer['value_type']) != normalize(answer['correct_value'],answer['value_type']):
-                    raise ValueError('Graded correct answer contradicts the verified solution: '+mid)
+                if submitted is not None and compare_answers(submitted,answer['correct_value'],answer['value_type'],
+                                                            prompt=record['before']['problem'])['outcome'] != 'equivalent':
+                    reconcile_graded_answer(reader, record, item, screenshot, directory, mid)
+                    break
         kp = {'id':str(points[0][':knowledge-point/id']),'title':q['kp_title']}
         record['kp_id'] = kp['id']
         record['content'] = reader.question_content(mid,record,kp)
@@ -366,8 +412,6 @@ def assessment_history(reader, state, directory, load_topic):
                'answer_policy':'all correct' if is_multistep else state.get('answer_policy','all correct'),
                'questions':[q['content'] for q in state['questions'].values()],'canonical_examples':[]}
     if is_multistep:
-        if any(q['actual_result'] != 'Correct' for q in state['questions'].values()):
-            raise ValueError('Multistep history conflicts with the saved correct grades')
         content.update(multistep_id=state['multistep_id'],title=state.get('title'),
                        shared_contexts=state.get('shared_contexts', []), question_order=state['multistep_question_order'])
         content['questions'].sort(key=lambda q:q['sequence_position'])
@@ -381,3 +425,21 @@ def assessment_history(reader, state, directory, load_topic):
     state['history_complete'] = True
     atomic_json(directory/'state.json',state)
     return content
+
+
+def reconcile_graded_answer(reader, record, item, screenshot, directory, mid):
+    """Let the activity solver weigh the displayed solution against its actual grade."""
+    previous = json.loads(json.dumps(record['decision']))
+    evidence = {'actual_grade':record['actual_result'],
+                'submitted_values':{f['key']:f.get('submitted_value') for f in record['before']['fields']},
+                'previous_predicted_answers':previous['answers']}
+    reviewed = {**record['before'], 'worked_solution':item['worked_solution'] +
+                '\n\nCaptured grading evidence (separate from the worked solution):\n' +
+                json.dumps(evidence, ensure_ascii=False)}
+    decision = reader.solver.solve(reviewed, screenshot, Path(directory)/mid, 'reconcile-grade')
+    record.setdefault('predicted_answers', previous['answers'])
+    record.setdefault('answer_reconciliations', []).append(
+        {**evidence, 'reviewed_answers':decision['answers'], 'reason':decision.get('explanation','')})
+    record['verification'] = decision
+    record['decision'] = decision
+    logging.warning('%s: using the activity solver judgment for the grade/solution disagreement', mid)

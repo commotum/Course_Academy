@@ -16,9 +16,12 @@ element => {
       !n.querySelector('title')?.textContent.trim();
   });
   const fields = [], fieldNodes = new Map();
-  const rows = [...element.querySelectorAll('.questionWidget-choicesTable tr, tr:has(.choiceLetterCircle)')];
+  const rows = [...element.querySelectorAll('.questionWidget-choicesTable tr, tr:has(.choiceLetterCircle)')]
+    .filter(row => row.closest('table')?.matches('.questionWidget-choicesTable') ||
+      [...row.querySelectorAll('.choiceLetterCircle')].some(circle => circle.closest('tr') === row));
   if (rows.length) fields.push({key:'selection', type:'radio', choices:[]});
-  const nodes = [...element.querySelectorAll('.matheditor-wrapper-answer, .selectList, input:not([type="hidden"]), textarea, select, [contenteditable="true"]')]
+  const nodes = [...element.querySelectorAll('.matheditor-wrapper-answer, .selectList, input:not([type="hidden"]), textarea, select, [contenteditable="true"]' +
+    (['Correct','Incorrect'].includes(element.querySelector('.questionWidget-result')?.textContent.trim()) ? ', .freeResponseTextbox' : ''))]
     .filter(n => !n.closest('.questionWidget-explanation, .exampleExplanation') &&
       !n.parentElement?.closest('.matheditor-wrapper-answer, .selectList, [contenteditable="true"]'));
   for (const n of nodes) {
@@ -82,6 +85,7 @@ element => {
       case 'mtable': return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
       case 'mtr': case 'mlabeledtr': return cs.join(' & ');
       case 'menclose':
+        if (n.getAttribute('notation') === 'box') return '\\boxed{' + cs.join('') + '}';
         if (n.getAttribute('notation')?.includes('strike')) return '\\cancel{' + cs.join('') + '}';
         errors.push('Unsupported MathML enclosure'); return cs.join('');
       case 'mfenced': return (n.getAttribute('open') || '(') + cs.join(n.getAttribute('separators') || ',') + (n.getAttribute('close') || ')');

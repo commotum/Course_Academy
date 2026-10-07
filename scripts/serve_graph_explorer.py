@@ -39,7 +39,7 @@ DEFAULT_LEARNER = "59d5cf13-351c-4114-be19-4c3bb64ee051"
 ASSET_ROOTS = (ROOT.parent / "MA/DATA/Lessons", ROOT.parent / "study/vault",
                ROOT / "reference/mathacademy/history-question-import-2026-10-04/import-ready/assets")
 IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml"}
-MUTATING_ACTIONS = {"start", "answer", "continue", "pause", "resume", "target", "queue", "queue-topic",
+MUTATING_ACTIONS = {"start", "study-topic", "answer", "continue", "pause", "resume", "target", "queue", "queue-topic",
                     "assignment-focus", "assignment-answer", "assignment-pause"}
 
 
@@ -381,11 +381,14 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.learning_request({"action": "preview-home"})
             elif path == "/api/preview":
                 try:
-                    selectors = {key: int(query[key][0]) for key in ("activityId", "taskId") if key in query and len(query[key]) == 1}
+                    keys = ("activityId", "taskId", "topicId")
+                    if any(key in query and len(query[key]) != 1 for key in keys):
+                        raise ValueError("Provide one selector")
+                    selectors = {key: int(query[key][0]) for key in keys if key in query}
                     if len(selectors) != 1 or any(value <= 0 for value in selectors.values()):
-                        raise ValueError("One activityId or taskId is required")
+                        raise ValueError("One activityId, taskId, or topicId is required")
                 except ValueError:
-                    self.send_bytes(400, b'{"error":"One activityId or taskId is required."}', "application/json")
+                    self.send_bytes(400, b'{"error":"One activityId, taskId, or topicId is required."}', "application/json")
                     return
                 self.learning_request({"action": "preview", **selectors})
             elif path == "/api/home":
@@ -427,7 +430,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.send_bytes(200, (ROOT / "ui/Assignments.html").read_bytes(), "text/html; charset=utf-8")
             elif path.startswith("/ui/") and path != "/ui/Math-Academy-Graph-Explorer.html":
                 asset = (ROOT / path.lstrip("/")).resolve()
-                allowed = {"learning.js", "learning.css", "question-fields.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "profile.js", "course-catalog.js", "course-catalog.css"}
+                allowed = {"learning.js", "learning.css", "question-fields.js", "prose-lists.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "topic-menu.js", "profile.js", "course-catalog.js", "course-catalog.css"}
                 if not asset.is_relative_to((ROOT / "ui").resolve()) or not asset.is_file() or not (asset.name in allowed or asset.is_relative_to((ROOT / "ui/vendor").resolve())):
                     self.send_bytes(404, b"Not found", "text/plain")
                 else:

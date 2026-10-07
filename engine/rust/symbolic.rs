@@ -1102,23 +1102,27 @@ impl Parser {
         Ok(a)
     }
     fn product(&mut self) -> Result<Ast> {
-        let mut a = self.signed()?;
+        let mut a = self.implicit_product()?;
         loop {
             let op = if self.mark('*') {
                 '*'
             } else if self.mark('/') {
                 '/'
-            } else if matches!(
-                self.peek(),
-                Some(
-                    Token::Number(_) | Token::Word(_) | Token::Command(_) | Token::Mark('(' | '{')
-                )
-            ) {
-                '*'
             } else {
                 break;
             };
-            a = Ast::Binary(op, Box::new(a), Box::new(self.signed()?));
+            a = Ast::Binary(op, Box::new(a), Box::new(self.implicit_product()?));
+        }
+        Ok(a)
+    }
+    fn implicit_product(&mut self) -> Result<Ast> {
+        // Typed algebra treats an adjacent product as one slash denominator:
+        // 11/4x means 11/(4x). Explicit multiplication remains left associative;
+        // (11/4)x and 11/4*x still mean (11/4)*x. TeX fractions keep their groups.
+        let mut a = self.signed()?;
+        while matches!(self.peek(), Some(Token::Number(_) | Token::Word(_) |
+            Token::Command(_) | Token::Mark('(' | '{'))) {
+            a = Ast::Binary('*', Box::new(a), Box::new(self.signed()?));
         }
         Ok(a)
     }
@@ -1412,8 +1416,8 @@ pub fn supports(source: &str, context: Context) -> bool {
 }
 
 /// True is proved by exact normal forms. A nonzero rational polynomial proves
-/// false. Unresolved transcendental identities or differing domains return an
-/// error so the caller cannot turn a limitation into a learner failure.
+/// false. A counterexample must be valid in both domains. Unresolved identities
+/// or domain equivalence return an error rather than a learner failure.
 pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
     let a = parse(a, context)?;
     let b = parse(b, context)?;
@@ -1422,9 +1426,6 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
         (Answer::Special(_), Answer::Expression(..))
         | (Answer::Expression(..), Answer::Special(_)) => Ok(false),
         (Answer::Expression(a, ca), Answer::Expression(b, cb)) => {
-            if ca != cb {
-                return Err("answer comparison has unresolved domain differences".into());
-            }
             let mut algebra = Algebra {
                 work: 0,
                 depth: 0,
@@ -1435,7 +1436,22 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
             let r = algebra.pmul(&b.num, &a.den)?;
             let diff = algebra.padd(&l, &r.scale(&Q::from_integer((-1).into())))?;
             if diff.is_zero() {
+                if ca != cb {
+                    return Err("answer comparison has unresolved domain differences".into());
+                }
                 return Ok(true);
+            }
+            // A counterexample valid in BOTH domains proves inequality even
+            // when their restrictions differ. Never cancel away domain guards.
+            if ca != cb {
+                for sample in [-4, -2, 0, 1, 3] {
+                    if ca.iter().chain(cb.iter()).all(|c| condition_at(c, sample))
+                        && diff.interval_at(Some(sample)).is_some_and(|(lo, hi)|
+                            lo.is_positive() || hi.is_negative()) {
+                        return Ok(false);
+                    }
+                }
+                return Err("answer comparison has unresolved domain differences".into());
             }
             if diff.rational_variables_only() {
                 return Ok(false);
@@ -1510,6 +1526,18 @@ mod tests {
         }
     }
     #[test]
+    fn typed_slash_denominators_and_domain_counterexamples() {
+        eq("11/4x", "\\frac{11}{4x}");
+        eq("11/(4x)", "\\frac{11}{4x}");
+        eq("-7/3x", "-\\frac{7}{3x}");
+        eq("-7/(3x)", "-\\frac{7}{3x}");
+        eq("(11/4)x", "\\frac{11}{4}x");
+        eq("11/4*x", "\\frac{11}{4}x");
+        assert_eq!(compare("(11/4)x", "11/(4x)", Context::default()), Ok(false));
+        assert_eq!(compare("0", "11/(4x)", Context::default()), Ok(false));
+        assert!(compare("x/x", "1", Context::default()).is_err());
+    }
+    #[test]
     fn roots_and_functions() {
         for (a, b) in [
             ("2\\sqrt{10}", "\\sqrt{40}"),
@@ -1532,9 +1560,10 @@ mod tests {
     }
     #[test]
     fn domains_limits_and_unknown_identities_are_explicit() {
-        for (a, b) in [("x/x", "1"), ("sqrt(x)^2", "x"), ("ln(x)", "ln(x+1)")] {
+        for (a, b) in [("x/x", "1"), ("sqrt(x)^2", "x")] {
             assert!(compare(a, b, Context::default()).is_err());
         }
+        assert_eq!(compare("ln(x)", "ln(x+1)", Context::default()), Ok(false));
         for a in [
             "0*(1/0)",
             "ln(-1)",

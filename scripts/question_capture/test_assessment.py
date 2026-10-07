@@ -38,16 +38,15 @@ class AssessmentPolicyTests(unittest.TestCase):
             self.assertEqual(state['questions']['q-1']['intended'],'W')
             self.assertEqual(state['solver_session'],'saved-session')
 
-    def test_quiz_recovery_is_bounded_and_never_reloads_unknown_dialog_or_final_submission(self):
+    def test_quiz_recovery_burst_is_bounded_and_does_not_dismiss_unknown_dialogs(self):
         from assessment import take_assessment,AssessmentRequestError
         from playwright.sync_api import TimeoutError
-        for mode in ('persistent','unknown-dialog','confirming'):
+        for mode in ('persistent','unknown-dialog'):
             with self.subTest(mode=mode),tempfile.TemporaryDirectory() as work:
                 reader=Mock();reader.page.content.return_value='<html></html>'
                 reader.page.locator.return_value.is_visible.return_value=(mode=='unknown-dialog')
                 reader.page.locator.return_value.inner_text.return_value='Unrecognized error'
                 state={'assessment_started':True,'activity_url':'https://mathacademy.com/tasks/1/tests/2'}
-                if mode=='confirming':state['test_submission_status']='confirming'
                 with patch('assessment._take_assessment',side_effect=TimeoutError('navigation')):
                     with self.assertRaises(AssessmentRequestError if mode=='persistent' else TimeoutError):
                         take_assessment(reader,state,Path(work))
@@ -168,7 +167,7 @@ class AssessmentPolicyTests(unittest.TestCase):
         runtime=Mock();runtime.__enter__=Mock(return_value=runtime);runtime.__exit__=Mock(return_value=False)
         runtime.chromium.launch_persistent_context.return_value=SimpleNamespace(pages=[Mock()],close=Mock(),route=Mock())
         with tempfile.TemporaryDirectory() as work:
-            args=arguments(['run','--preview','--state-dir',work+'/state','--output',work+'/captures'])
+            args=arguments(['run','--preview','--limit','1','--state-dir',work+'/state','--output',work+'/captures'])
             with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',FixtureBrowser), \
                  patch('playwright.sync_api.sync_playwright',return_value=runtime),contextlib.redirect_stdout(io.StringIO()):
                 run(args)
@@ -604,7 +603,7 @@ class AssessmentDOMTests(unittest.TestCase):
         reader.verify_entered(self.page.locator('#q'),record)
         self.assertEqual([f['submitted_value'] for f in record['before']['fields']],['0','2'])
 
-    def test_unexpected_correct_grade_for_wrong_response_requires_consistent_solution(self):
+    def test_unexpected_correct_grade_for_wrong_response_uses_activity_solver_judgment(self):
         reader=self.reader();quiz,=reader.queue();reader.args.assessment_correct_weight=0
         state={'task_id':quiz['task_id'],'task_type':'assessment','test_id':quiz['test_id'],'topic_id':None,
                'assessment_details':quiz['assessment_details'],'assessment_requirement':'required',
@@ -616,11 +615,13 @@ class AssessmentDOMTests(unittest.TestCase):
                 q=next(q for q in QUIZ['questions'] if q['topic_id']==tid)
                 return {':topic/knowledge-points':[{
                     ':knowledge-point/title':q['knowledge_point'],':knowledge-point/id':q['knowledge_point_id']}]}
-            # The original fixture grades every response correct, contradicting
-            # the deliberately wrong input and unchanged worked solution.
-            with self.assertRaisesRegex(ValueError,'Graded correct answer contradicts'):
-                reader.history(state,directory,topic)
-            self.assertFalse((directory/'content.json').exists())
+            # The fixture grades deliberately wrong inputs correct. Reconcile
+            # these disagreements with the same solver and retain both values.
+            content=reader.history(state,directory,topic)
+            self.assertEqual(len(content['questions']),8)
+            self.assertTrue((directory/'content.json').exists())
+            self.assertTrue(all(q['answer_reconciliations'] and q['predicted_answers']
+                                for q in state['questions'].values()))
 
     def test_saved_wrong_choice_follows_value_when_display_order_changes(self):
         reader=self.reader()
@@ -771,15 +772,18 @@ class AssessmentDOMTests(unittest.TestCase):
             reader.activity(state,directory,None)
             self.assertEqual(self.submissions,1)
 
-    def test_uncertain_submission_never_replays_or_starts_timer(self):
+    def test_uncertain_submission_uses_fresh_server_unsubmitted_test(self):
         reader=self.reader()
         self.page.goto('https://mathacademy.com/tasks/13930620/tests/589340')
         with tempfile.TemporaryDirectory() as work:
             state={'task_id':13930620,'task_type':'assessment','test_id':589340,'questions':{},
+                   'assessment_details':{'Questions':'8','Time Limit':'15 minutes'}, 'assessment_question_count':8,
                    'test_submission_status':'confirming','assessment_started':True}
-            with self.assertRaisesRegex(ValueError,'unconfirmed'):
-                reader.activity(state,Path(work),None)
-        self.assertEqual(self.submissions,0)
+            reader.activity(state,Path(work),None)
+            self.assertTrue(state['activity_complete'])
+            self.assertEqual(state['assessment_intent_recoveries'][0]['reason'],'server_restored_unsubmitted_test')
+        self.assertEqual(self.submissions,1)
+        self.assertEqual(self.instruction_pages,0)
 
     def test_interrupted_unsubmitted_quiz_reuses_answers_and_resumes_without_starting_again(self):
         self.assert_interrupted_quiz_resumes()

@@ -33,8 +33,8 @@ def arguments(argv=None):
     parser.add_argument('--state-dir',type=Path,default=ROOT/'.local/question_capture')
     parser.add_argument('--profile',type=Path,help='Dedicated Playwright profile; defaults to STATE_DIR/browser-profile')
     parser.add_argument('--content',type=Path,help='Saved content.json for import-saved')
-    parser.add_argument('--resume',type=Path,help='Select a saved run, including a deferred failure; otherwise a single non-deferred unfinished run resumes automatically')
-    parser.add_argument('--limit',type=int,help='Maximum attempted activities; default keeps running until no eligible activities remain or interrupted')
+    parser.add_argument('--resume',type=Path,help='Select a saved run first; saved activities in the live queue also recover automatically')
+    parser.add_argument('--limit',type=int,help='Maximum attempted activities; default keeps running until the queue is empty or interrupted')
     parser.add_argument('--preview',action='store_true',help='Preview EDB writes. With run, MA answers are still submitted.')
     parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting an activity')
     parser.add_argument('--headless',action='store_true',help='Default is a visible Chromium window')
@@ -154,29 +154,42 @@ def unfinished_run(args):
         if args.preview:
             finished = finished or state.get('preview_complete')
         if (not finished and state.get('task_type') == 'assessment' and
-                state.get('assessment_started') and not state.get('activity_complete') and
-                state.get('test_submission_status') != 'confirming' and
-                state.get('assessment_recovery_attempts',0) < 2):
-            deferred = state.get('deferred_error')
-            recoverable = not deferred
-            if deferred and deferred.get('phase') == 'activity':
-                diagnostic = Path(deferred.get('diagnostics',''))/'error.json'
-                if diagnostic.is_file():
-                    recoverable = json.loads(diagnostic.read_text()).get('exception_type') == 'TimeoutError'
-            if recoverable:
+                (state.get('assessment_started') or state.get('assessment_question_count')) and not state.get('activity_complete')):
+            if queued_resume(args,[{'task_id':state['task_id']}],set()):
                 assessments.append(directory)
         if not finished and not state.get('deferred_error'):
             candidates.append(directory)
-    if len(assessments) == 1:
-        return assessments[0]
-    if len(assessments) > 1:
-        logging.warning('Multiple interrupted assessments require explicit --resume: %s',assessments)
-        return None
-    if len(candidates) > 1:
-        logging.warning('Multiple unfinished captures are left for explicit --resume: %s',
-                        ', '.join(map(str,candidates)))
-        return None
-    return candidates[0] if candidates else None
+    if assessments:
+        return max(assessments,key=lambda p:(p/'state.json').stat().st_mtime)
+    return max(candidates,key=lambda p:(p/'state.json').stat().st_mtime) if candidates else None
+
+
+def queued_resume(args, queue, resumed):
+    """Recover queued saved work once per worker, after fresh eligible work."""
+    from capture_repair import failure_key, source_version
+    ledger_path = args.state_dir/'capture-repair/failures.json'
+    ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else {}
+    generation = None
+    for activity in queue:
+        if activity['task_id'] in resumed:
+            continue
+        directory = args.output/str(activity['task_id'])
+        source = directory/'state.json'
+        if not source.is_file():
+            continue
+        state = json.loads(source.read_text())
+        if (state.get('activity_complete') and state.get('history_complete') or
+                state.get('import_complete')):
+            continue
+        diagnostic = Path(state.get('deferred_error',{}).get('diagnostics',''))/'error.json'
+        if diagnostic.is_file():
+            decision = ledger.get(failure_key(json.loads(diagnostic.read_text())),{})
+            if decision.get('status') == 'blocked':
+                generation = generation or source_version()
+                if decision.get('source_version') == generation:
+                    continue
+        return directory.resolve()
+    return None
 
 
 def previous_activity_snapshot(args):
@@ -211,18 +224,49 @@ def read_journal(path):
 
 
 def idle_capture_repair(args, pacer, queue, attempted, completed, captured_tasks):
-    """Inspect a repairable backlog before quitting on an excluded-only queue."""
+    """Inspect one backlog failure, then let the caller refresh the live queue."""
     if (args.dry_run or args.no_capture_repair or not queue or
             args.limit is not None and attempted >= args.limit):
-        return
+        return False
     from capture_repair import cooldown, next_failure
     ledger_path = args.state_dir/'capture-repair/failures.json'
     ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else {}
     if next_failure(args,ledger) is None:
-        return
-    logging.info('No eligible live activity; starting an early capture-repair cooldown')
+        return False
+    logging.info('No eligible live activity; inspecting one outstanding capture failure')
     cooldown(args,pacer,{'attempted':attempted,'limit':args.limit,
-                        'completed_topics':sorted(completed),'captured_tasks':sorted(captured_tasks)})
+                        'completed_topics':sorted(completed),'captured_tasks':sorted(captured_tasks)},
+             pause=False)
+    return True
+
+
+def queued_capture_repair(args, pacer, queue, attempted, completed, captured_tasks):
+    """Inspect one queued unfinished failure at a completed activity boundary."""
+    if (args.dry_run or args.no_capture_repair or
+            args.limit is not None and attempted >= args.limit):
+        return False
+    task_ids = set()
+    for activity in queue:
+        source = args.output/str(activity['task_id'])/'state.json'
+        if source.is_file():
+            saved = json.loads(source.read_text())
+            if not saved.get('activity_complete') and saved.get('deferred_error'):
+                task_ids.add(activity['task_id'])
+    if not task_ids:
+        return False
+    from capture_repair import cooldown, next_failure
+    ledger_path = args.state_dir/'capture-repair/failures.json'
+    ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else {}
+    if next_failure(args,ledger,task_ids=task_ids) is None:
+        return False
+    import copy
+    scoped = copy.copy(args)
+    scoped.capture_repair_task_ids = task_ids
+    logging.info('Completed activity; inspecting one queued unfinished capture failure')
+    cooldown(scoped,pacer,{'attempted':attempted,'limit':args.limit,
+                          'completed_topics':sorted(completed),'captured_tasks':sorted(captured_tasks)},
+             pause=False)
+    return True
 
 
 def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=None, directory=None):
@@ -251,7 +295,7 @@ def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=No
         logging.info('  %d. %s %s (task %s, topic %s%s)%s', position, item['task_type'],
                      item['title'], item['task_id'], item['topic_id'],
                      ', priority ' + str(priority) if priority is not None else '',
-                     ' [in progress; explicit resume]' if item.get('in_progress') else
+                     ' [in progress; saved recovery]' if item.get('in_progress') else
                      ' [recorded; capture unsupported]' if not item.get('capture_supported',True) else '')
         if item['task_type'] == 'assessment':
             logging.info('     Assessment: %s; optional XP remaining: %s; notice: %s',
@@ -331,22 +375,31 @@ def run(args):
         return
     if args.command in ('run','sweep-saved'):
         from saved_imports import sweep
-        results = sweep(db,args,trigger='startup',exclude=[args.resume] if args.resume else ())
+        results = sweep(db,args,trigger='startup',exclude=[args.resume] if args.resume else (),
+                        repair_budget=1 if args.command == 'run' else None)
         if args.command == 'sweep-saved':
             print(json.dumps(results,indent=2))
             return
-        if args.resume:
+        if args.resume and not args.batch_checkpoint:
             from saved_imports import eligible, read_json, complete
             directory = args.resume.resolve()
             state,content = read_json(directory/'state.json'),read_json(directory/'content.json')
             if not args.dry_run and eligible(directory,state,content):
                 from import_repair import import_with_repair
-                result = import_with_repair(db,content,directory,state,args)
-                if result.get('previewed') or result.get('committed') or result.get('already_complete'):
-                    complete(args,directory,state,result)
-                sweep(db,args,trigger='batch-end',exclude=[directory])
-                print(json.dumps(result,indent=2))
-                return
+                try:
+                    result = import_with_repair(db,content,directory,state,args)
+                    if result.get('previewed') or result.get('committed') or result.get('already_complete'):
+                        complete(args,directory,state,result)
+                    sweep(db,args,trigger='batch-end',exclude=[directory])
+                    print(json.dumps(result,indent=2))
+                except Exception as error:
+                    if args.limit == 1:
+                        raise
+                    logging.warning('Saved import remains pending; continuing the activity queue: %s',error)
+                if args.limit == 1:
+                    return
+                # --resume selects the first task, not the lifetime of the batch.
+                args.resume = None
     batch = json.loads(args.batch_checkpoint.read_text()) if args.batch_checkpoint else {}
     start_n = batch.get('attempted',0)
     if batch and (batch.get('limit')!=args.limit or start_n<0 or
@@ -406,26 +459,53 @@ def run(args):
             for source in args.output.glob('*/state.json'):
                 saved = json.loads(source.read_text())
                 captured_tasks.add(saved['task_id'])
+                if saved.get('import_complete') or args.preview and saved.get('preview_complete'):
+                    continue
+                if resume_directory and source.parent.resolve() == resume_directory.resolve():
+                    continue
                 if saved.get('deferred_error'):
-                    if saved.get('activity_complete') and saved.get('history_complete') and saved['deferred_error'].get('phase') in ('import','queue-after'):
+                    if saved.get('activity_complete') and saved.get('history_complete'):
                         pending_imports.append(saved['task_id'])
                     else:
                         deferred.append(saved['task_id'])
             if pending_imports:
-                logging.info('Completed captures awaiting database import: %s',sorted(pending_imports))
+                logging.debug('Completed captures awaiting database import: %s',sorted(pending_imports))
             if deferred:
-                logging.info('Skipping deferred captures until explicit --resume: %s',sorted(deferred))
+                logging.debug('Saved captures awaiting automatic recovery: %s',sorted(deferred))
             queue_observation = None
+            queue_failures = 0
+            consecutive_failures = 0
+            idle_cycles = 0
+            resumed_tasks = set()
             imported_directories = set()
             attempts = itertools.count(start_n) if args.limit is None else range(start_n,args.limit)
             for n in attempts:
                 pacer.check_stop()
                 directory, state, phase = None, None, 'queue'
                 try:
-                    if resume_directory and n==start_n:
+                    if not resume_directory and queue_observation is None:
+                        queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
+                    if not resume_directory and not queue_observation['selected']:
+                        inspected = idle_capture_repair(args,pacer,queue_observation['queue'],n,completed,captured_tasks)
+                        if inspected:
+                            queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
+                        if not queue_observation['selected']:
+                            resume_directory = queued_resume(args,queue_observation['queue'],resumed_tasks)
+                            if not resume_directory:
+                                if queue_observation['queue'] and not args.dry_run:
+                                    idle_cycles += 1
+                                    logging.info('Queued work is awaiting recovery; keeping the worker available')
+                                    pacer.backoff(idle_cycles)
+                                    queue_observation = None
+                                    continue
+                                logging.info('No queued activity; batch is complete.')
+                                break
+                    if resume_directory:
                         directory = resume_directory
+                        resume_directory = None
                         logging.info('Resuming saved activity %s',directory)
                         state = json.loads((directory/'state.json').read_text())
+                        resumed_tasks.add(state['task_id'])
                         state.setdefault('task_type', 'lesson')
                         state.setdefault('previous_activity_snapshot',previous_activity_snapshot(args))
                         phase = 'topic'
@@ -437,10 +517,6 @@ def run(args):
                         if queue_observation is None:
                             queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
                         activity = queue_observation['selected']
-                        if not activity:
-                            idle_capture_repair(args,pacer,queue_observation['queue'],n,completed,captured_tasks)
-                            logging.info('No eligible activity. Deferred/in-progress tasks require explicit --resume; assessments with incomplete or unsupported details remain queued.')
-                            break
                         logging.info('Selected %s %s%s',activity['task_type'],activity['title'],
                                      ': priority %.6f' % activity['priority'] if activity['selection_reason'] == 'priority'
                                      else ': assessment is required' if activity['selection_reason'] == 'required_assessment'
@@ -453,9 +529,8 @@ def run(args):
                             print(json.dumps(activity,indent=2))
                             break
                         if activity.get('stop_before_start'):
-                            logging.info('Stopped before assessment task %s: requirement or layout needs inspection. Queue details are saved.',activity['task_id'])
                             journal(log,'assessment_not_started',task_id=activity['task_id'],activity=activity)
-                            break
+                            raise ValueError('Assessment task %s needs eligibility/layout recovery; queue details are saved' % activity['task_id'])
                         directory = args.output/str(activity['task_id'])
                         if (directory/'state.json').exists():
                             raise RuntimeError('Saved run exists; use --resume '+str(directory))
@@ -509,6 +584,10 @@ def run(args):
                         complete(args,directory,state,result)
                         imported_directories.add(directory)
                     print(json.dumps({'run_directory':str(directory),'database':result},indent=2),flush=True)
+                    if queue_observation['selected']:
+                        queued_capture_repair(args,pacer,queue_observation['queue'],n+1,completed,captured_tasks)
+                    consecutive_failures = 0
+                    idle_cycles = 0
                 except RestartWorker:
                     raise  # Early maintenance is control flow, not a queue failure.
                 except (Exception,KeyboardInterrupt) as error:
@@ -528,18 +607,39 @@ def run(args):
                     if blocking:
                         raise
                     if state is None:
-                        logging.error('Cannot read/select another activity; saved diagnostics and stopped this batch.')
-                        break
-                    if state.get('task_type') == 'assessment' and not state.get('activity_complete'):
-                        logging.error('Assessment could not be safely recovered; saved answers need inspection before queue selection: --resume %s',directory)
-                        break
+                        # Queue layout failures used to exit before maintenance.
+                        # Inspect them now, and retry transient reads with a pause.
+                        from capture_repair import cooldown
+                        cooldown(args,pacer,{'attempted':n,'limit':args.limit,
+                                            'completed_topics':sorted(completed),
+                                            'captured_tasks':sorted(captured_tasks)},pause=False)
+                        queue_failures += 1
+                        # If MA forces an active quiz, reopen its existing
+                        # checkpoint instead of repeatedly asking for the queue.
+                        import re
+                        redirect = re.search(r'/tasks/(\d+)/tests/\d+',browser.page.url)
+                        if redirect:
+                            saved = args.output/redirect[1]
+                            if (saved/'state.json').is_file():
+                                resume_directory = saved
+                        queue_observation = None
+                        pacer.backoff(queue_failures)
+                        continue
+                    consecutive_failures += 1
+                    if ((state.get('task_type') == 'assessment' and not state.get('activity_complete')) or
+                            consecutive_failures >= 2):
+                        # A forced assessment redirect may prevent queue access.
+                        # Repair at this boundary instead of exiting before the
+                        # 20-activity maintenance break can ever be reached.
+                        from capture_repair import cooldown
+                        cooldown(args,pacer,{'attempted':n+1,'limit':args.limit,
+                                            'completed_topics':sorted(completed),
+                                            'captured_tasks':sorted(captured_tasks)},pause=False)
+                        consecutive_failures = 0
                     queue_observation = None
-                    logging.info('Deferred task %s; continuing with other available activities. Retry with --resume %s',
+                    logging.info('Saved task %s for automatic recovery; continuing with available activities: %s',
                                  state['task_id'],directory)
-                if queue_observation is not None and not queue_observation['selected']:
-                    idle_capture_repair(args,pacer,queue_observation['queue'],n+1,completed,captured_tasks)
-                    logging.info('No eligible activity. Optional assessments remain queued; deferred/in-progress tasks require explicit --resume.')
-                    break
+                queue_failures = 0
                 if args.limit is None or n+1<args.limit:
                     pacer.wait('lesson','between activities')
                     if args.rest_every and (n+1)%args.rest_every==0:
@@ -598,6 +698,9 @@ def main(argv=None):
         if '--batch-checkpoint' in values:
             index = values.index('--batch-checkpoint');del values[index:index+2]
         values = [v for v in values if not v.startswith('--batch-checkpoint=')]
+        if '--resume' in values:
+            index = values.index('--resume');del values[index:index+2]
+        values = [v for v in values if not v.startswith('--resume=')]
         logging.info('Restarting capture worker with the remaining batch limit and saved sessions')
         os.execv(sys.executable,[sys.executable,str(Path(__file__).parent),*values,
                                 '--batch-checkpoint',str(restart)])

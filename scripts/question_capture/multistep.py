@@ -14,8 +14,9 @@ def with_context(state, item, mid):
         if previous == mid:
             break
         record = state['questions'].get(previous)
-        if not record or record.get('actual_result') != 'Correct':
-            raise ValueError('Multistep preceding part has no confirmed correct answer: ' + previous)
+        if (not record or record.get('actual_result') not in ('Correct', 'Incorrect') or
+                (record.get('actual_result') == 'Incorrect' and not record.get('verification'))):
+            raise ValueError('Multistep preceding part has no recovered correct answer: ' + previous)
         solved = record['local_problem']
         for answer in record['decision']['answers']:
             value = answer['correct_value']
@@ -84,11 +85,18 @@ def take_multistep(reader, state, directory):
             continuation = by_id(page,part['step'].replace('step-', 'continueButton-'))
             # A confirmed grade is never answered again after restarting.
             if record and record.get('status') == 'graded':
-                if record.get('actual_result') != 'Correct' or not record.get('after', {}).get('worked_solution'):
+                if record.get('actual_result') not in ('Correct', 'Incorrect') or not record.get('after', {}).get('worked_solution'):
                     raise ValueError('Multistep prior grade needs inspection: ' + mid)
                 restored_grade = scope.locator('.correctAnswerText, .incorrectAnswerText')
                 if restored_grade.count() and restored_grade.inner_text().strip() != record['actual_result']:
-                    raise ValueError('Restored multistep grade conflicts with its checkpoint: ' + mid)
+                    item, screenshot = reader.read(scope, directory, mid + '-after')
+                    record.setdefault('grade_reconciliations', []).append(
+                        {'previous':record['actual_result'], 'observed':item['result'], 'time':time.time()})
+                    record.update(after=item, actual_result=item['result'])
+                    save()
+                else:
+                    item = record['after']
+                    screenshot = directory / (mid + '-after.png')
             else:
                 if not record:
                     if scope.locator('.answer').count():
@@ -143,12 +151,17 @@ def take_multistep(reader, state, directory):
                     submit.click()
                 # An interrupted submission is inspected, never clicked again.
                 continuation.wait_for(state='visible')
-                item, _ = reader.read(scope, directory, mid + '-after')
+                item, screenshot = reader.read(scope, directory, mid + '-after')
                 record.update(after=item, actual_result=item['result'], status='graded')
                 save()
-                if item['result'] != 'Correct' or not item['worked_solution']:
-                    raise ValueError('Multistep answer or explanation needs inspection: ' + mid)
-                logging.info('%s: Correct, captured %d fields', mid, len(record['before']['fields']))
+            if item['result'] not in ('Correct', 'Incorrect') or not item['worked_solution']:
+                raise ValueError('Multistep answer or explanation needs inspection: ' + mid)
+            if item['result'] == 'Incorrect' and not record.get('verification'):
+                from assessment import reconcile_graded_answer
+                reconcile_graded_answer(reader, record, item, screenshot, directory, mid)
+                save()
+            logging.info('%s: %s, captured %d fields', mid, item['result'],
+                         len(record.get('before', item).get('fields', [])))
             # Older parts remain visible but their Continue buttons disappear.
             if continuation.is_visible():
                 state['pending_multistep_continue'] = part['step']
@@ -165,7 +178,7 @@ def take_multistep(reader, state, directory):
     order = state.get('multistep_question_order', [])
     if ('completed the task' not in completion.lower() or not order or
         set(order) != set(state['questions']) or any(
-            q.get('status') != 'graded' or q.get('actual_result') != 'Correct' or
+            q.get('status') != 'graded' or q.get('actual_result') not in ('Correct', 'Incorrect') or
             not q.get('after', {}).get('worked_solution') for q in state['questions'].values())):
         raise ValueError('Multistep completion has incomplete captured parts or an unexpected result')
     (directory / 'multistep-completed.html').write_text(page.content())

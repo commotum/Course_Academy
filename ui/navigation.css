@@ -119,11 +119,11 @@
 #userProfile .profile-retry { margin-top: 8px; padding: 7px 12px; border: 1px solid var(--tone-77); background: var(--tone-18); color: var(--tone-ee); font: inherit; cursor: pointer; }
 @media (max-width: 680px) { #userProfile { right: 14px; padding: 20px; } }
 
-.step-context-menu { position: fixed; z-index: 120; padding: 4px; border: 1px solid var(--tone-55); background: var(--tone-11); color: var(--tone-ee); box-shadow: 0 8px 24px #0008; }
-.step-context-menu[hidden] { display: none; }
+.step-context-menu, .topic-context-menu { position: fixed; z-index: 120; padding: 4px; border: 1px solid var(--tone-55); background: var(--tone-11); color: var(--tone-ee); box-shadow: 0 8px 24px #0008; }
+.step-context-menu[hidden], .topic-context-menu[hidden] { display: none; }
 .step-context-menu button[hidden] { display: none; }
-.step-context-menu button { display: block; width: 100%; padding: 10px 16px; border: 0; border-radius: 0; background: transparent; color: inherit; text-align: left; font: 12px/1.5 ui-monospace, monospace; cursor: pointer; }
-.step-context-menu button:hover, .step-context-menu button:focus-visible { background: var(--tone-30); outline: 1px solid var(--tone-88); outline-offset: -1px; }
+.step-context-menu button, .topic-context-menu a { display: block; width: 100%; box-sizing: border-box; padding: 10px 16px; border: 0; border-radius: 0; background: transparent; color: inherit; text-align: left; font: 12px/1.5 ui-monospace, monospace; cursor: pointer; text-decoration: none; }
+.step-context-menu button:hover, .step-context-menu button:focus-visible, .topic-context-menu a:hover, .topic-context-menu a:focus-visible { background: var(--tone-30); outline: 1px solid var(--tone-88); outline-offset: -1px; }
 .step-copy-notice { position: fixed; right: 18px; bottom: 18px; z-index: 121; padding: 10px 14px; border: 1px solid var(--tone-55); background: var(--tone-11); color: var(--tone-ee); font: 12px/1.5 ui-monospace, monospace; }
 .step-copy-notice:empty { display: none; }
 [data-step-db-id]:focus-visible { outline: 1px solid var(--tone-88); outline-offset: 3px; }
@@ -297,3 +297,7 @@
   --tone-8c: #737373;
   --tone-b5: #4a4a4a;
 }
+
+/* Authored Roman statement labels must match the answer choices. */
+.prose ol.statement-list { list-style-type: upper-roman; padding-left: 2.6em; }
+.prose ol.statement-list > li { padding-left: .25em; margin: .45em 0; }

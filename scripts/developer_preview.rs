@@ -43,6 +43,12 @@ pub(super) fn active_tasks(s: &EntitySnapshot, learner: u64) -> Result<Json> {
 }
 
 fn activity_id(s: &EntitySnapshot, learner: u64, body: &Json) -> Result<u64> {
+    if body.get("topicId").is_some_and(|v| !v.is_null()) {
+        if ["activityId", "taskId"].iter().any(|key| body.get(*key).is_some_and(|v| !v.is_null())) {
+            return Err("Provide one topic, activity, or task ID".into());
+        }
+        return topic_lesson(s, required(body, "topicId")?);
+    }
     let from_task = if let Some(task) = body.get("taskId").filter(|v| !v.is_null()) {
         let task = task.as_u64().ok_or("Task ID must be an entity ID")?;
         owned(s, learner, task)?;
@@ -85,7 +91,9 @@ fn fields(s: &EntitySnapshot, question: u64) -> Result<Vec<Json>> {
         };
         fields.push(json!({
             "id": field, "key": text(s, field, "answer-field/key"),
-            "type": kind, "choices": choices,
+            "type": kind, "presentation": text(s, field, "answer-field/presentation"), "choices": choices,
+            "answerType": s.optional_ref(field, "answer-field/correct")?
+                .map(|id| status(s, id, "answer/type")).transpose()?,
             "correctAnswer": s.optional_ref(field, "answer-field/correct")?
                 .map(|id| answer(s, id)).transpose()?,
         }));
@@ -327,7 +335,7 @@ mod tests {
             ),
             (
                 10,
-                json!({"activity/id":"test","activity/type":"activity.type/lesson","activity/title":"Test lesson","activity/steps":[99,100],"activity/first-step":99}),
+                json!({"activity/id":"test","activity/type":"activity.type/lesson","activity/scope":3,"activity/title":"Test lesson","activity/steps":[99,100],"activity/first-step":99}),
             ),
             (
                 20,
@@ -338,6 +346,7 @@ mod tests {
                 json!({"learner-task/activity":10,"learner-task/status":"learner-task.status/started"}),
             ),
             (99, json!({"step/content":201,"step/next":100})),
+            (3, json!({"topic/id":"test-topic"})),
             (100, json!({"step/content":200})),
             (101, json!({"step/content":210})),
             (102, json!({"step/content":301})),
@@ -396,6 +405,19 @@ mod tests {
             );
         }
         EntitySnapshot::new(entries, 42).unwrap()
+    }
+
+    #[test]
+    fn topic_preview_is_read_only_and_does_not_require_scheduler_selection() {
+        let s = fixture();
+        let before = s.entities.clone();
+        let view = preview(&s, 1, &json!({"topicId":3})).unwrap();
+        assert_eq!(view["activityId"], 10);
+        assert_eq!(view["steps"].as_array().unwrap().len(), 4);
+        assert_eq!(view["steps"][2]["fields"][0]["answerType"], "math");
+        assert!(view["taskId"].is_null());
+        assert_eq!(s.entities, before);
+        assert!(preview(&s, 1, &json!({"topicId":3,"activityId":20})).is_err());
     }
 
     #[test]

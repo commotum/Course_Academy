@@ -104,26 +104,31 @@ class ReplacementTests(unittest.TestCase):
         self.assertFalse(self.reconciler.needs_review)
         self.assertEqual(loads(dumps(tx)), tx)
 
-    def test_mixed_provenance_does_not_classify_captured_prompt_as_authored(self):
+    def test_observed_prompt_replaces_unknown_origin_without_calling_it_authored(self):
         self.authentic_choices(['120','25','60'])
         self.evidence('answer/value', [kw('answer.type/math'),'24'], 'local_authored','selection',True)
         self.q['problem'] = 'New MA wording for the same problem'
         self.evidence('question/problem', self.q['problem'])
         tx = self.plan()
-        self.assertFalse(any(':question/problem' in m for m in tx if isinstance(m,dict)))
-        self.assertTrue(self.reconciler.needs_review)
-        self.assertTrue(any(d['attribute']=='question/problem' for d in self.reconciler.decisions))
+        self.assertTrue(any(':question/problem' in m for m in tx if isinstance(m,dict)))
+        self.assertFalse(self.reconciler.needs_review)
+        decision=next(d for d in self.reconciler.decisions if d['attribute']=='question/problem')
+        self.assertEqual(decision['authoring'],[])
+        self.assertEqual(decision['category'],'ma_capture')
 
-    def test_unknown_distractor_and_source_contradiction_are_review_cases(self):
+    def test_complete_observed_choices_replace_unknown_distractors(self):
         self.authentic_choices(['120','60'])
-        self.assertEqual(self.plan(), [])
-        self.assertTrue(self.reconciler.needs_review)
+        self.assertTrue(self.plan())
+        self.assertFalse(self.reconciler.needs_review)
         self.reconciler.decisions.clear()
         self.evidence('question/worked-solution', self.old[':question/worked-solution'], 'ma_capture', local=True)
         self.q['worked_solution'] = 'Different source solution'
         self.evidence('question/worked-solution', self.q['worked_solution'])
         self.plan()
-        self.assertTrue(any('Contradiction' in d['reason'] for d in self.reconciler.decisions))
+        self.assertTrue(any(d['attribute']=='question/worked-solution' and d.get('action')=='replace'
+                            for d in self.reconciler.decisions))
+        self.assertTrue(any(d['attribute']=='answer/value' and d['category']=='ma_complete_choices'
+                            for d in self.reconciler.decisions))
 
     def test_model_inference_cannot_replace_conflicting_key_but_grade_can(self):
         self.q['answer_fields'][0]['correct_value'] = '25'
@@ -159,12 +164,31 @@ class ReplacementTests(unittest.TestCase):
         self.assertEqual(self.plan(), [])
         self.assertFalse(self.reconciler.needs_review)
 
-    def test_exact_old_value_match_required(self):
+    def test_observed_solution_replaces_later_edit_with_exact_current_retraction(self):
         self.old[':question/worked-solution'] += '\nEdited later.'
         self.q['worked_solution'] = 'Recovered source solution'
         self.evidence('question/worked-solution',self.q['worked_solution'])
-        self.assertEqual(self.plan(), [])
-        self.assertTrue(self.reconciler.needs_review)
+        tx=self.plan()
+        guards=Database(SimpleNamespace()).replacement_guards(self.reconciler,{self.mid:self.old})
+        self.assertIn([1,kw('question/worked-solution'),self.old[':question/worked-solution']],guards)
+        self.assertTrue(any(isinstance(m,dict) and m.get(':question/worked-solution')==self.q['worked_solution'] for m in tx))
+        self.assertFalse(self.reconciler.needs_review)
+
+    def test_unknown_origin_metadata_requires_direct_source_evidence(self):
+        self.reconciler.authored=[]
+        for attr,new in [('question/problem','Updated MA problem'),
+                         ('question/worked-solution','Updated MA solution'),
+                         ('question/difficulty',kw('question.difficulty/hard'))]:
+            self.reconciler.decisions.clear();self.reconciler.sources=[]
+            self.assertFalse(self.reconciler.replace(self.mid,None,attr,'old',new,{'ma_capture'}))
+            self.assertTrue(self.reconciler.needs_review)
+            self.reconciler.decisions.clear()
+            self.evidence(attr,new,'model_interpretation')
+            self.assertFalse(self.reconciler.replace(self.mid,None,attr,'old',new,{'ma_capture'}))
+            self.reconciler.sources=[];self.reconciler.decisions.clear()
+            self.evidence(attr,new)
+            self.assertTrue(self.reconciler.replace(self.mid,None,attr,'old',new,{'ma_capture'}))
+            self.assertFalse(self.reconciler.needs_review)
 
     def test_field_type_conflict_versions_only_documented_unused_type(self):
         self.q['answer_fields'][0]['type'] = 'select'
@@ -206,12 +230,23 @@ class ReplacementTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'original intent'):
             db.import_content(self.content,self.directory,False)
 
-    def test_review_does_not_invoke_model_repair(self):
+    def test_reconciliation_notation_error_can_invoke_comparison_repair(self):
         db = Mock(); db.import_content.side_effect = ReconciliationReview('Needs provenance')
-        with patch('import_repair.repair') as repair, self.assertRaises(ReconciliationReview):
+        with patch('import_repair.repair',return_value=False) as repair, self.assertRaises(ReconciliationReview):
             import_with_repair(db,self.content,self.directory,{'activity_complete':True,'history_complete':True},
                                SimpleNamespace(preview=True,no_import_repair=False))
-        repair.assert_not_called()
+        repair.assert_called_once()
+
+    def test_legacy_single_radio_key_versions_instead_of_mutating_old_key(self):
+        self.field[':answer-field/key']='answer'
+        self.authentic_choices(['120','30','60'])
+        self.evidence('answer-field/type',kw('answer-field.type/radio'),'ma_widget','selection')
+        tx=self.plan()
+        self.assertIn([kw('db/retract'),1,kw('question/answer-fields'),10],tx)
+        self.assertEqual(self.field[':answer-field/key'],'answer')
+        self.assertFalse(self.reconciler.needs_review)
+        guards=Database(SimpleNamespace()).replacement_guards(self.reconciler,{self.mid:self.old})
+        self.assertIn([1,kw('question/answer-fields'),10],guards)
 
     def test_saved_real_capture_grade_and_complete_dom_not_model_labels(self):
         capture = EVIDENCE/'capture-13934288'
@@ -311,7 +346,7 @@ class ReplacementTests(unittest.TestCase):
         atomic_json(self.directory/'commit-intent.json',{'basis':656,'reconciliation_sha256':'saved-hash'})
         atomic_json(self.directory/'replacement-report.json',{'decisions':self.reconciler.decisions})
         db.attributes = Mock(return_value=[(5,kw('question/worked-solution'))])
-        db.protected = Mock(return_value=[[30,6,'learner response']])
+        db.protected = Mock(side_effect=AssertionError('Do not scan the database during an import'))
         db.content_topics = Mock(return_value={774:self.topic})
         db.questions = Mock(return_value={self.mid:after})
         receipt = {':edb/db-before-t':656,':edb/db-after-t':657,':edb/tx-data':[
@@ -319,6 +354,12 @@ class ReplacementTests(unittest.TestCase):
         result = db._verify(receipt,self.content,self.directory)
         self.assertTrue(result['reimport_is_noop'])
         self.assertTrue(result['learner_and_engine_facts_unchanged'])
+        self.assertEqual(result['verification_method'],'committed_transaction_and_content')
+        self.assertNotIn('protected_fact_count',result)
+        self.assertNotIn('protected_facts_sha256',result)
+        db.protected.assert_not_called()
+        db.attributes.assert_called_once_with(self.directory,656)
+        db.questions.assert_called_once()
         report = json.loads((self.directory/'replacement-report.json').read_text())
         self.assertTrue(report['committed'])
         self.assertTrue(all(d['transaction_receipt'].endswith('commit.edn') for d in report['decisions']))
@@ -333,6 +374,19 @@ class ReplacementTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'preexisting field'):
             db.validate_datoms({':edb/tx-data':[[10,5,88,100,True]]},[(5,kw('answer-field/correct'))],
                                immutable_fields=[[10,kw('answer-field/correct')]])
+
+    def test_fast_post_commit_verification_rejects_learner_effects(self):
+        db = Database(SimpleNamespace())
+        db.attributes = Mock(return_value=[(5,kw('question/problem')),(6,kw('learner/name'))])
+        db.protected = Mock(side_effect=AssertionError('Do not scan the database'))
+        db.questions = Mock()
+        for added in (True,False):
+            receipt = {':edb/db-before-t':656,':edb/db-after-t':657,
+                       ':edb/tx-data':[[30,6,'Changed learner',999,added]]}
+            with self.assertRaisesRegex(ValueError,'non-content attribute'):
+                db._verify(receipt,self.content,self.directory)
+        db.protected.assert_not_called()
+        db.questions.assert_not_called()
 
 
 if __name__ == '__main__':

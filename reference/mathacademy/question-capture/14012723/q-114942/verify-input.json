@@ -1,0 +1,63 @@
+{
+  "mode": "verify",
+  "problem": "Evaluate ${\\int }_{1}^{e}9{x}^{2}({log}_{2}\u2061x)^{2}\\,\\text{d}x.$",
+  "worked_solution": "We need to use integration by parts. We'll work out the indefinite integral first, and then proceed to work out the definite integral.\n\nIn this case, we define\n\n$$\n\\begin{aligned}u=({log}_{2}\u2061x)^{2}\\, & \u27f9\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{2{log}_{2}\u2061x}{x\\operatorname{ln}\u20612} \\\\ \\frac{\\text{d}v}{\\text{d}x}=9{x}^{2}\\, & \u27f9\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int 9{x}^{2}\\,\\text{d}x=3{x}^{3}.\\end{aligned}\n$$\n\nUsing the formula of integration by parts, we get\n\n$$\n\\begin{aligned}\\int 9{x}^{2}({log}_{2}\u2061x)^{2}\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={({log}_{2}\u2061x)}^{2}(3{x}^{3})-\\int (3{x}^{3})(\\frac{2{log}_{2}\u2061x}{x\\operatorname{ln}\u20612})\\,\\text{d}x \\\\  & =3{x}^{3}{({log}_{2}\u2061x)}^{2}-\\frac{6}{\\operatorname{ln}\u20612}\\int {x}^{2}{log}_{2}\u2061x\\,\\text{d}x.\\end{aligned}\n$$\n\nWe use integration by parts once again to evaluate  $\\int {x}^{2}{log}_{2}\u2061x\\,\\text{d}x.$ We take\n\n$$\n\\begin{aligned}u={log}_{2}\u2061x\\, & \u27f9\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}\u20612} \\\\ \\frac{\\text{d}v}{\\text{d}x}={x}^{2}\\, & \u27f9\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int {x}^{2}\\,\\text{d}x=\\frac{{x}^{3}}{3}.\\end{aligned}\n$$\n\nIn this case, the formula for integration by parts gives\n\n$$\n\\begin{aligned}\\int {x}^{2}{log}_{2}\u2061x\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & =({log}_{2}\u2061x)(\\frac{{x}^{3}}{3})-\\int (\\frac{{x}^{3}}{3})(\\frac{1}{x\\operatorname{ln}\u20612})\\,\\text{d}x \\\\  & =\\frac{{x}^{3}{log}_{2}\u2061x}{3}-\\frac{1}{3\\operatorname{ln}\u20612}\\int {x}^{2}\\,\\text{d}x \\\\  & =\\frac{{x}^{3}{log}_{2}\u2061x}{3}-\\frac{{x}^{3}}{9\\operatorname{ln}\u20612}+D,\\end{aligned}\n$$\n\nwhere $D$ is an integral constant.\n\nSo we have\n\n$$\n\\begin{aligned}\\int 9{x}^{2}({log}_{2}\u2061x)^{2}\\,\\text{d}x & =3{x}^{3}{({log}_{2}\u2061x)}^{2}-\\frac{6}{\\operatorname{ln}\u20612}(\\frac{{x}^{3}{log}_{2}\u2061x}{3}-\\frac{{x}^{3}}{9\\operatorname{ln}\u20612}+D) \\\\  & =3{x}^{3}{({log}_{2}\u2061x)}^{2}-\\frac{2{x}^{3}{log}_{2}\u2061x}{\\operatorname{ln}\u20612}+\\frac{2{x}^{3}}{3{ln}^{2}\u20612}+C \\\\  & =\\frac{3{x}^{3}{ln}^{2}\u2061x}{{ln}^{2}\u20612}-\\frac{2{x}^{3}\\operatorname{ln}\u2061x}{{ln}^{2}\u20612}+\\frac{2{x}^{3}}{3{ln}^{2}\u20612}+C \\\\  & =\\frac{{x}^{3}}{{ln}^{2}\u20612}(3{ln}^{2}\u2061x-2\\operatorname{ln}\u2061x+\\frac{2}{3})+C.\\end{aligned}\n$$\n\nwhere $C=-\\frac{6D}{\\operatorname{ln}\u20612}.$\n\nNote that in the above calculation we used the change of base formula ${log}_{2}\u2061x=\\frac{\\operatorname{ln}\u2061x}{\\operatorname{ln}\u20612}.$\n\nFinally then, we can work out the definite integral:\n\n$$\n\\begin{aligned}{\\int }_{1}^{e}9{x}^{2}({log}_{2}\u2061x)^{2}\\,\\text{d}x & ={[\\frac{{x}^{3}}{{ln}^{2}\u20612}(3{ln}^{2}\u2061x-2\\operatorname{ln}\u2061x+\\frac{2}{3})]}_{1}^{e} \\\\  & =\\frac{{e}^{3}}{{ln}^{2}\u20612}(3{ln}^{2}\u2061e-2\\operatorname{ln}\u2061e+\\frac{2}{3})-\\frac{{1}^{3}}{{ln}^{2}\u20612}(3{ln}^{2}\u20611-2\\operatorname{ln}\u20611+\\frac{2}{3}) \\\\  & =\\frac{{e}^{3}}{{ln}^{2}\u20612}(3-2+\\frac{2}{3})-\\frac{1}{{ln}^{2}\u20612}(0-0+\\frac{2}{3}) \\\\  & =\\frac{5{e}^{3}}{3{ln}^{2}\u20612}-\\frac{2}{3{ln}^{2}\u20612} \\\\  & =\\frac{5{e}^{3}-2}{3{ln}^{2}\u20612}.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "4{e}^{3}-1"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "\\frac{5{e}^{3}-2}{3{ln}^{2}\u20612}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\frac{{e}^{3}-1}{{ln}^{2}\u20612}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "\\frac{2{e}^{2}-3}{4{ln}^{2}\u20612}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "2{e}^{2}+3"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14012723,
+    "task_type": "lesson",
+    "topic_id": 416,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-114942",
+        "problem": "Evaluate ${\\int }_{1}^{e}9{x}^{2}({log}_{2}\u2061x)^{2}\\,\\text{d}x.$",
+        "worked_solution": "We need to use integration by parts. We'll work out the indefinite integral first, and then proceed to work out the definite integral.\n\nIn this case, we define\n\n$$\n\\begin{aligned}u=({log}_{2}\u2061x)^{2}\\, & \u27f9\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{2{log}_{2}\u2061x}{x\\operatorname{ln}\u20612} \\\\ \\frac{\\text{d}v}{\\text{d}x}=9{x}^{2}\\, & \u27f9\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int 9{x}^{2}\\,\\text{d}x=3{x}^{3}.\\end{aligned}\n$$\n\nUsing the formula of integration by parts, we get\n\n$$\n\\begin{aligned}\\int 9{x}^{2}({log}_{2}\u2061x)^{2}\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={({log}_{2}\u2061x)}^{2}(3{x}^{3})-\\int (3{x}^{3})(\\frac{2{log}_{2}\u2061x}{x\\operatorname{ln}\u20612})\\,\\text{d}x \\\\  & =3{x}^{3}{({log}_{2}\u2061x)}^{2}-\\frac{6}{\\operatorname{ln}\u20612}\\int {x}^{2}{log}_{2}\u2061x\\,\\text{d}x.\\end{aligned}\n$$\n\nWe use integration by parts once again to evaluate  $\\int {x}^{2}{log}_{2}\u2061x\\,\\text{d}x.$ We take\n\n$$\n\\begin{aligned}u={log}_{2}\u2061x\\, & \u27f9\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}\u20612} \\\\ \\frac{\\text{d}v}{\\text{d}x}={x}^{2}\\, & \u27f9\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int {x}^{2}\\,\\text{d}x=\\frac{{x}^{3}}{3}.\\end{aligned}\n$$\n\nIn this case, the formula for integration by parts gives\n\n$$\n\\begin{aligned}\\int {x}^{2}{log}_{2}\u2061x\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & =({log}_{2}\u2061x)(\\frac{{x}^{3}}{3})-\\int (\\frac{{x}^{3}}{3})(\\frac{1}{x\\operatorname{ln}\u20612})\\,\\text{d}x \\\\  & =\\frac{{x}^{3}{log}_{2}\u2061x}{3}-\\frac{1}{3\\operatorname{ln}\u20612}\\int {x}^{2}\\,\\text{d}x \\\\  & =\\frac{{x}^{3}{log}_{2}\u2061x}{3}-\\frac{{x}^{3}}{9\\operatorname{ln}\u20612}+D,\\end{aligned}\n$$\n\nwhere $D$ is an integral constant.\n\nSo we have\n\n$$\n\\begin{aligned}\\int 9{x}^{2}({log}_{2}\u2061x)^{2}\\,\\text{d}x & =3{x}^{3}{({log}_{2}\u2061x)}^{2}-\\frac{6}{\\operatorname{ln}\u20612}(\\frac{{x}^{3}{log}_{2}\u2061x}{3}-\\frac{{x}^{3}}{9\\operatorname{ln}\u20612}+D) \\\\  & =3{x}^{3}{({log}_{2}\u2061x)}^{2}-\\frac{2{x}^{3}{log}_{2}\u2061x}{\\operatorname{ln}\u20612}+\\frac{2{x}^{3}}{3{ln}^{2}\u20612}+C \\\\  & =\\frac{3{x}^{3}{ln}^{2}\u2061x}{{ln}^{2}\u20612}-\\frac{2{x}^{3}\\operatorname{ln}\u2061x}{{ln}^{2}\u20612}+\\frac{2{x}^{3}}{3{ln}^{2}\u20612}+C \\\\  & =\\frac{{x}^{3}}{{ln}^{2}\u20612}(3{ln}^{2}\u2061x-2\\operatorname{ln}\u2061x+\\frac{2}{3})+C.\\end{aligned}\n$$\n\nwhere $C=-\\frac{6D}{\\operatorname{ln}\u20612}.$\n\nNote that in the above calculation we used the change of base formula ${log}_{2}\u2061x=\\frac{\\operatorname{ln}\u2061x}{\\operatorname{ln}\u20612}.$\n\nFinally then, we can work out the definite integral:\n\n$$\n\\begin{aligned}{\\int }_{1}^{e}9{x}^{2}({log}_{2}\u2061x)^{2}\\,\\text{d}x & ={[\\frac{{x}^{3}}{{ln}^{2}\u20612}(3{ln}^{2}\u2061x-2\\operatorname{ln}\u2061x+\\frac{2}{3})]}_{1}^{e} \\\\  & =\\frac{{e}^{3}}{{ln}^{2}\u20612}(3{ln}^{2}\u2061e-2\\operatorname{ln}\u2061e+\\frac{2}{3})-\\frac{{1}^{3}}{{ln}^{2}\u20612}(3{ln}^{2}\u20611-2\\operatorname{ln}\u20611+\\frac{2}{3}) \\\\  & =\\frac{{e}^{3}}{{ln}^{2}\u20612}(3-2+\\frac{2}{3})-\\frac{1}{{ln}^{2}\u20612}(0-0+\\frac{2}{3}) \\\\  & =\\frac{5{e}^{3}}{3{ln}^{2}\u20612}-\\frac{2}{3{ln}^{2}\u20612} \\\\  & =\\frac{5{e}^{3}-2}{3{ln}^{2}\u20612}.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{2{e}^{2}-3}{4{ln}^{2}\u20612}",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

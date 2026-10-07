@@ -118,19 +118,88 @@ class CaptureMaintenanceTests(unittest.TestCase):
         self.assertEqual(saved['next_resume'],str((self.args.output/'1').resolve()))
         restored=random.Random();restored.setstate(tuple_tree(saved['rng_state']))
         self.assertEqual(restored.random(),fake.rng.random())
-    def test_unsafe_submissions_and_active_quizzes_are_never_scheduled_for_resume(self):
+
+    def test_resolved_failure_restarts_and_resumes_without_an_unnecessary_patch(self):
+        d,p=self.failure()
+        self.result.update(status='resolved',summary='Current source already handles the saved failure.')
+        with patch('capture_repair.run_cli',side_effect=self.cli):
+            plan=prepare(self.args,self.pacer)
+        self.assertTrue(plan['resolved'])
+        with patch('capture_repair.prepare',return_value=plan),patch('capture_repair.apply') as apply:
+            with self.assertRaises(RestartWorker) as restart:
+                cooldown(self.args,self.pacer,{'attempted':3,'limit':None})
+        apply.assert_not_called()
+        batch=json.loads(restart.exception.checkpoint.read_text())
+        self.assertEqual(batch['next_resume'],str(d.resolve()))
+        self.assertEqual(batch['attempted'],3)
+
+    def test_assessment_failure_calls_repair_before_twentieth_activity_and_keeps_running(self):
+        attempted=[]
+        quiz={'task_id':1,'topic_id':None,'test_id':10,'task_type':'assessment','title':'Quiz',
+              'href':'/tasks/1/tests/10/start','capture_supported':True,
+              'assessment_requirement':'required','assessment_details':{'Questions':'8','Time Limit':'15 minutes'}}
+        lesson={'task_id':2,'topic_id':20,'task_type':'lesson','title':'Next','href':'/tasks/2/topics/20/lesson'}
+        class Browser:
+            def __init__(self,*args):
+                self.page=Mock();self.page.content.return_value='<html>Saved</html>'
+                self.page.url='https://mathacademy.com/learn'
+            def queue(self):return [quiz] if not attempted else [lesson] if attempted==[1] else []
+            def start(self,item):attempted.append(item['task_id'])
+            def activity(self,state,*args):
+                if state['task_id']==1:raise ValueError('Unexpected quiz layout')
+                state['activity_complete']=True
+            def history(self,state,*args):return {'task_id':state['task_id']}
+        self.args.limit=2;self.args.preview=True;self.args.no_import_repair=True
+        self.args.lesson_min=self.args.lesson_max=0
+        db=Mock();db.priorities.return_value={};db.import_content.return_value={'previewed':True}
+        runtime=Mock();runtime.__enter__=Mock(return_value=runtime);runtime.__exit__=Mock(return_value=False)
+        runtime.chromium.launch_persistent_context.return_value=SimpleNamespace(pages=[Mock()],close=Mock(),route=Mock())
+        with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',Browser), \
+             patch('playwright.sync_api.sync_playwright',return_value=runtime), \
+             patch('capture_repair.cooldown') as repair,contextlib.redirect_stdout(io.StringIO()):
+            run(self.args)
+        self.assertEqual(attempted,[1,2])
+        self.assertEqual(repair.call_args.args[2]['attempted'],1)
+
+    def test_transient_queue_failure_is_repaired_and_retried(self):
+        calls=[];started=[]
+        class Browser:
+            def __init__(self,*args):
+                self.page=Mock();self.page.content.return_value='<html>Saved</html>'
+                self.page.url='https://mathacademy.com/learn'
+            def queue(self):
+                calls.append(1)
+                if len(calls)==1:raise ValueError('Queue did not finish rendering')
+                return [] if started else [{'task_id':1,'topic_id':10,'task_type':'lesson','title':'Next',
+                                           'href':'/tasks/1/topics/10/lesson'}]
+            def start(self,item):started.append(item['task_id'])
+            def activity(self,state,*args):state['activity_complete']=True
+            def history(self,state,*args):return {'task_id':state['task_id']}
+        self.args.limit=3;self.args.preview=True;self.args.no_import_repair=True
+        db=Mock();db.priorities.return_value={};db.import_content.return_value={'previewed':True}
+        runtime=Mock();runtime.__enter__=Mock(return_value=runtime);runtime.__exit__=Mock(return_value=False)
+        runtime.chromium.launch_persistent_context.return_value=SimpleNamespace(pages=[Mock()],close=Mock(),route=Mock())
+        with patch('capture.Database',return_value=db),patch('browser.CaptureBrowser',Browser), \
+             patch('playwright.sync_api.sync_playwright',return_value=runtime), \
+             patch('capture_repair.cooldown') as repair,patch('core.Pacer.sleep'),contextlib.redirect_stdout(io.StringIO()):
+            run(self.args)
+        self.assertEqual(started,[1])
+        self.assertEqual(repair.call_args.args[2]['attempted'],0)
+    def test_interrupted_submissions_reach_the_same_activity_recovery(self):
         d,p=self.failure();plan={'diagnostic':str(p)}
         for change in ({'questions':{'q-1':{'status':'submitting'}}},
                        {'pending_continue':{'source_step':'q-1'}},
-                       {'task_type':'assessment'},{'test_submission_status':'confirming'}):
+                       {'test_submission_status':'confirming'}):
             atomic_json(d/'state.json',{'task_type':'lesson','questions':{},**change})
-            self.assertIsNone(safe_resume(plan))
+            self.assertEqual(safe_resume(plan),str(d.resolve()))
+        atomic_json(d/'state.json',{'task_type':'assessment','questions':{}})
+        self.assertEqual(safe_resume(plan),str(d.resolve()))
     def test_failed_regression_never_applies_live_source(self):
         self.failure();self.result={'status':'repair','summary':'Targeted fix.','file':'browser.py',
             'edits':[{'old':'never matches','new':'new'}],'regression_test':'import unittest'}
         with patch('capture_repair.run_cli',side_effect=self.cli), \
              patch('capture_repair.run_tests',return_value=(0,'OK')),patch('capture_repair.apply') as apply:
-            with self.assertRaisesRegex(ValueError,'must fail by assertion'):prepare(self.args,self.pacer)
+            with self.assertRaisesRegex(ValueError,'must fail on original code'):prepare(self.args,self.pacer)
             apply.assert_not_called()
 
     def test_suite_timeout_or_failure_never_produces_applicable_patch(self):
@@ -167,7 +236,7 @@ class CaptureMaintenanceTests(unittest.TestCase):
             plan=prepare(self.args,self.pacer)
         self.assertEqual(plan['file'],'math_notation.py')
         self.assertIn('without symbolic algebra.',plan['candidate'])
-        self.assertEqual(tests.call_args_list[1].args[1],'discover')
+        self.assertIn(plan['test_name'],tests.call_args_list[1].args[1].split(','))
     def test_main_releases_lock_before_exec_and_preserves_original_cli_options(self):
         argv=['run','--limit','60','--seed','7','--state-dir',str(self.args.state_dir)]
         target=self.root/'batch.json'

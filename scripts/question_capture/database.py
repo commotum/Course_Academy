@@ -305,7 +305,8 @@ class Database:
                     value = value[':db/id']
                 retractions.append([q[':db/id'], kw(attr), value])
             elif attr == 'question/answer-fields':
-                f = next(f for f in q[':question/answer-fields'] if f[':answer-field/key'] == d['field'])
+                f = next(f for f in q[':question/answer-fields'] if
+                         f[':db/id'] == d.get('previous_field_id') or f[':answer-field/key'] == d['field'])
                 retractions.append([q[':db/id'], kw(attr), f[':db/id']])
         return retractions
 
@@ -318,6 +319,16 @@ class Database:
         return {content['topic_id']:self.topic(content['topic_id'],directory,basis)}
 
     def import_content(self, content, directory, apply=True):
+        # Another app may transact between our read and preview. Replan this
+        # pre-commit race locally rather than spending a model repair turn.
+        for attempt in range(3):
+            try:
+                return self._import_content(content,directory,apply)
+            except ValueError as error:
+                if str(error) != 'Database changed during planning; rerun before any commit' or attempt == 2:
+                    raise
+
+    def _import_content(self, content, directory, apply=True):
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         content_hash = hashlib.sha256(json.dumps(content,sort_keys=True,default=str).encode()).hexdigest()
@@ -414,10 +425,9 @@ class Database:
         frozen = loads((directory/'reconciliation.edn').read_text()) if intent.get('reconciliation_sha256') else {}
         attributes = self.attributes(directory, before)
         self.validate_datoms(receipt, attributes, frozen.get('retractions', []), frozen.get('immutable_answers', []), frozen.get('immutable_fields', []))
-        protected_before = self.protected(attributes, directory, 'protected-before', before)
-        protected_after = self.protected(attributes, directory, 'protected-after', after)
-        if fingerprint(protected_before) != fingerprint(protected_after):
-            raise ValueError('Protected learner/engine facts changed in the committed transaction')
+        # EDB's committed receipt lists every actual assertion and retraction,
+        # including derived changes. validate_datoms rejects non-content effects;
+        # scanning the entire database again adds no per-import protection.
         topics_after = self.content_topics(content, directory / 'after', after)
         ids = [q['math_academy_id'] for q in content['questions'] + content.get('canonical_examples', [])]
         questions_after = self.questions(ids, directory, 'questions-after', after)
@@ -427,8 +437,8 @@ class Database:
             raise ValueError('Committed content does not reconcile to an idempotent import')
         result = {'committed': True, 'basis_before': before, 'basis_after': after,
                   'content_sha256':hashlib.sha256(json.dumps(content,sort_keys=True,default=str).encode()).hexdigest(),
-                  'question_count': len(ids), 'protected_fact_count': len(protected_before),
-                  'protected_facts_sha256': fingerprint(protected_before),
+                  'question_count': len(ids),
+                  'verification_method': 'committed_transaction_and_content',
                   'learner_and_engine_facts_unchanged': True, 'reimport_is_noop': True}
         atomic_json(directory / 'verification.json', result)
         if frozen:

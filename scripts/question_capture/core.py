@@ -222,10 +222,14 @@ def stable_id(kind, source):
 
 def compare_answers(a, b, representation='math', *, prompt='', kp_titles=()):
     """Notation identity first; only the native checker can prove more math."""
+    prompt = re.sub(r'(?<!\S)Do not round the answer\.(?=\s|$)', '', prompt, flags=re.I)
     form_sensitive = any(term in prompt.lower() for term in
         ('round','decimal place','significant figure','significant digit',
          'simplest form','lowest terms','reduced fraction'))
-    if a == b or (not form_sensitive and normalize(a, representation) == normalize(b, representation)):
+    same_notation = (math_identity(a, preserve_form=True) == math_identity(b, preserve_form=True)
+                     if form_sensitive and representation == 'math' else
+                     normalize(a, representation) == normalize(b, representation))
+    if a == b or same_notation:
         return {'outcome':'equivalent'}
     if representation != 'math':
         return {'outcome':'different'}
@@ -371,6 +375,13 @@ def build_transaction(content, topic, existing, reconciler=None):
         comparison['prompt'] = update.get(kw('question/problem'), comparison['prompt'])
         old_fields = {f[':answer-field/key']: f for f in (old or {}).get(':question/answer-fields', [])}
         captured_fields = {f['key'] for f in question.get('answer_fields', [])}
+        # Earlier history imports called a single radio field "answer". The
+        # live extractor calls it "selection". Match this one observed field,
+        # then version its ownership; do not mutate the historical field key.
+        if (reconciler and set(old_fields) == {'answer'} and captured_fields == {'selection'} and
+                old_fields['answer'][':answer-field/type'][':db/ident'] == ':answer-field.type/radio' and
+                question['answer_fields'][0]['type'] == 'radio'):
+            old_fields = {'selection':old_fields['answer']}
         if not example and captured_fields and set(old_fields) - captured_fields:
             raise ValueError('Live capture omitted existing fields: ' + mid)
         field_links = []

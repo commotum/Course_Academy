@@ -49,10 +49,12 @@ content hashes. Recognition checks the original transaction hash and basis and
 reconstructs the original payload hash solely for audit; changed content still
 requires reconciliation. New imports never add the retired example attribute.
 
-Protected-fact verification reads every non-content attribute at the original
-before/after bases. It binds attributes individually and, on EDB's value-byte
-limit, reads large values in bounded subject groups. Failed or incomplete reads
-remain verification failures. Schema predicate symbols are preserved as EDN data.
+Imports validate every actual assertion/retraction in EDB's committed receipt
+against the allowed content attributes and approved replacements, then read back
+the affected content at that receipt's basis and check that reimport is a no-op.
+They do not scan the entire database before and after each activity.
+`verification_method` records `committed_transaction_and_content`; older full-scan
+verification receipts remain valid. Schema predicate symbols remain EDN data.
 
 Each sweep attempts at most **20 captures**, at most once per capture. The durable
 `.local/question_capture/saved-import-attempts.json` ledger prevents unchanged
@@ -84,6 +86,12 @@ MA can include the identical `/js/math-editor.js` tag twice in a page, causing
 its `const OPERATIONS` declaration to fail on the second execution. Navigation
 keeps the first tag and removes only repeated tags for that exact script URL.
 The editor code and answer interactions remain the site's original code.
+
+DNS/connection failures complete the intercepted request rather than leaving
+navigation pending. Page navigation retries network failures, timeouts and HTTP
+5xx responses with interruptible backoff, capped at 180–185 seconds per wait.
+Document fetches time out after 30 seconds. These retries do not repeat answer
+submissions; saved activity checkpoints remain intact.
 
 The runner:
 
@@ -122,7 +130,8 @@ The runner:
    This is checked again before Start; other unknown layouts stop before starting.
    Multisteps are supported in the remaining queue order, including their task
    and multistep IDs and original queue card HTML.
-   In-progress captures require explicit recovery. Lessons and reviews compete
+   Saved in-progress captures recover automatically after fresh eligible work;
+   `--resume` remains an optional way to choose one first. Lessons and reviews compete
    by topic capture priority; the highest scored eligible activity is selected.
    Equal scores prefer the lower topic ID, then a lesson over a review of that
    same topic. Unscored reviews retain queue order as a fallback.
@@ -224,17 +233,21 @@ DOM/checkpoint and activity metadata, rather than from the solver's provenance
 labels. The importer also checks prior committed automator evidence so a local
 value subsequently confirmed by MA is treated as source content.
 
-- Captured problems, worked solutions, and observed E/M/H labels replace exact
-  documented local reconstructions, authored solutions, or estimated ratings.
+- Directly captured MA problems, worked solutions, and observed E/M/H labels
+  replace stored values for the same question without requiring proof of the old
+  values' authorship. Source DOM/checkpoint matching remains required. Old values
+  remain in database history; exact retraction and basis guards still apply.
 - Observed widgets can replace a documented local field type. Correct-key
   changes require an explicit source answer or a matching submitted value with
-  a successful grade. A solver interpretation alone cannot change a conflicting
-  correct answer. The explicit historical correction for q-23188 remains source
+  a successful grade, or a confident source-based review by the persistent repair
+  agent. Reviewed derivations remain distinct from directly observed answer keys.
+  The explicit historical correction for q-23188 remains source
   evidence; its alternatives remain locally authored.
-- Complete radio/select choice sets supersede documented invented alternatives.
+- Complete observed radio/select choice sets supersede old alternatives.
   Completeness comes from the full extractor output, or the saved legacy radio
   DOM's option count. Incomplete choices only enrich the existing field. A
-  complete set omitting legitimate source or unknown values requires review.
+  correct key is checked independently; unknown old distractor authorship does
+  not block replacement by a complete live option set.
 - Replaced fields and answers receive fresh versioned identities. The importer
   retracts the question's old ownership link and retains all old component
   entities and values. Matching answer feedback survives when no replacement is
@@ -251,8 +264,9 @@ value subsequently confirmed by MA is treated as source content.
 Answer identity uses typed semantic values, math normalization and image bytes,
 not displayed letters, option order, or image filename order. Question identity,
 KP ownership, canonical references, and practice membership retain their existing
-checks. Changed field keys or a changed KP mapping require review; the importer
-does not guess a correspondence between reconstructed fields and new widgets.
+checks. A single legacy radio field named `answer` matches the observed single
+radio field `selection` and is replaced through fresh field/answer entities.
+Other changed field keys or a changed KP mapping require review.
 
 Each import saves `replacement-report.json` with per-attribute/component hashes,
 categories, authoring/capture paths and hashes, basis, reason, and (after commit)
@@ -263,7 +277,10 @@ retractions, rejects writes to preexisting answer identities/representations/
 strings, and protects every non-content domain attribute. Post-commit verification
 uses the frozen evidence and checks that reimport is a no-op. Unresolved intents
 always retry their original transaction and evidence; altered content is rejected.
-Review cases do not invoke the automated notation repair session.
+Reconciliation failures also reach the comparison repair session: formatting
+errors can be repaired, while unsupported key changes still remain conflicts.
+Saved-import sweeps use that same session rather than only repeating failed reads.
+Pre-commit database-basis races replan locally, up to three attempts.
 
 The changes apply on the next importer invocation; no database migration or
 worker restart is required. To inspect a real saved capture without visiting MA:
@@ -298,10 +315,17 @@ It can propose a minimal `math_notation.py` comparison fix. The runner checks
 the actual failing pair, nearby incorrect expressions, and the existing offline
 comparison/import tests before applying it and retrying the original content
 through all normal database guards. It can also request an unchanged retry when
-the comparison is already fixed or the database basis changed. Genuine answer
-conflicts, unsupported data repairs, and pending commit intents remain deferred
-with an explanation. Each activity gets at most two repair turns; model output,
+the comparison is already fixed or the database basis changed. From authentic
+worked solutions and original images it can propose confident answer corrections,
+including lost function boundaries and unit exponent scope. Choice corrections
+retain their original option indices. The runner archives previous derived
+content and preserves raw captures and predictions. Pending commit intents use
+exact receipt recovery. Each activity gets at most two repair turns per unchanged
+code and evidence; model output,
 diagnosis, candidates, and test logs are retained under the repair directory.
+Failed validation output is supplied to the next diagnosis. Startup permits one
+model diagnosis before reading the live queue; postponed repairs remain eligible
+at subsequent activity boundaries.
 Use `--no-import-repair` to disable this behavior, or `--import-repair-timeout`
 to change its default 600-second limit. Session reuse follows the
 [Codex non-interactive workflow](https://developers.openai.com/codex/noninteractive).
@@ -312,24 +336,36 @@ entry, in addition to the existing randomized waits. Change it with
 for the site's editor polling to enable Submit, then re-check the entered value;
 a persistently disabled button or changed answer still stops before submission.
 
-During periodic cooldowns (every 20 attempted activities when the batch continues),
-a separate persistent capture repair session examines outstanding capture diagnostics.
-It handles one targeted source fix per break, with at most two attempts per failure.
-Resolved or blocked diagnoses are recorded rather than repeatedly revisited. Import
+Every 20 attempted activities is the normal maintenance cadence while progress is
+healthy. Two consecutive failures, queue-reading failures, interrupted assessments,
+or a queue containing only saved work trigger repair earlier, without adding the
+long rest. A persistent capture repair session examines saved diagnostics and uses
+its judgment to resolve ordinary uncertainty from the source evidence.
+After a completed capture is imported, queued unfinished failures that have not
+been inspected under the current code and evidence also get one repair turn,
+even while fresh activities remain available.
+It handles targeted fixes, with at most two attempts per unchanged failure/evidence.
+Resolved or blocked diagnoses are recorded rather than repeatedly revisited under
+unchanged source. A code change makes an old failure eligible for a new diagnosis. Import
 failures and authentication/rate-limit blocks are excluded from this session.
-If a nonempty queue contains only excluded activities, the runner attempts this
-maintenance break early before exiting, without consuming an activity attempt.
+If a nonempty queue contains only excluded activities, the runner attempts repair
+early and keeps retrying with backoff. Each idle boundary inspects one failure,
+then refreshes the queue so new work can proceed. Other repairable failures remain
+eligible at later boundaries.
 An empty queue or an exhausted activity limit does not trigger the early break.
 
-The session proposes a patch to one capture source file and a new offline regression
-test. The runner stages it in an isolated copy, requires the regression to fail by
-assertion before the fix, and runs the complete offline capture suite afterward.
+The session proposes minimal related source patches and an offline regression
+test. The runner stages them in an isolated copy and runs focused relevant checks.
+Broad repairs can request the complete suite.
 Existing tests, capture policies, import checks, saved activity data and learner state
 are preserved. Only passing fixes are applied. The browser closes and the worker
 restarts in the same process, reacquiring the capture lock and loading a checkpoint
 that retains its attempted count, total limit, topic/task exclusions and RNG state.
-A safely resumable affected capture is selected using its existing checkpoint and
-solver session; uncertain submissions and active quizzes are left for inspection.
+The affected capture resumes using its existing checkpoint and solver session,
+including an unfinished quiz. The browser inspects the restored state to determine
+the next action, including previously uncertain submissions. A `resolved` diagnosis resumes it without
+requiring a new code patch. Assessment and queue failures trigger maintenance
+immediately instead of exiting before the regular break.
 
 Repair time counts toward the randomized 2–6 minute cooldown; diagnosis and testing
 can extend a break when needed. With no outstanding capture failures the usual
@@ -552,9 +588,10 @@ Artifacts go to `reference/mathacademy/question-capture/<taskId>/` by default:
   context, and pending turn checkpoint; question directories retain solver events
   and inputs/outputs. Completed answers are reused on restart. An interrupted
   solver prompt resumes in the same confirmed activity session; uncertain website
-  submissions are never replayed unless an explicit resume reloads the activity
-  and confirms the same radio question is unanswered, with no selected choice,
-  no pending request, and a disabled Submit button. That evidence is journaled.
+  submissions are recovered automatically by reloading the saved activity and
+  inspecting actual grades or empty unanswered fields. Existing grades are
+  captured without submitting again. Solver-reviewed worked solutions correct
+  mistaken predictions, retaining the earlier prediction in the capture record.
 - `knowledge-state/` with a full displayed course profile after activity completion.
 - EDB reads, `transaction.edn`, preview, exact commit intent, receipt, matching
   report, and verification under `edb-import/`.
@@ -585,15 +622,15 @@ Canonical examples normally expose no answer widgets or difficulty; those facts
 remain unknown and are listed as missing source fields. This runner does not
 invent canonical answer fields, difficulty ratings, or practice distractors.
 
-The normal command automatically resumes a single unfinished saved capture or
-import that has not been deferred, before selecting a new activity:
+The normal command continues available activities and automatically recovers
+saved interruptions; completed imports are handled separately:
 
 ```bash
-"$CAPTURE_PY" scripts/question_capture run --headless --limit 1
+"$CAPTURE_PY" scripts/question_capture run --headless
 ```
 
 Use `--resume reference/mathacademy/question-capture/TASK_ID` to select a run
-explicitly. If several unfinished runs exist, they are left for explicit recovery
+first. Several unfinished captures are otherwise recovered automatically
 while the runner selects new activities.
 `run --dry-run` reports a pending capture without starting a browser or answering.
 

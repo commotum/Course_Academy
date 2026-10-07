@@ -83,7 +83,7 @@ function initialize() {
   copyButton.addEventListener('click', () => copy('dbId', ':db/id'));
   academyButton.addEventListener('click', () => copy('mathAcademyId', ':ma/id'));
 
-  const editable = target => target instanceof Element && target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])');
+  const editable = target => target instanceof Element && target.closest('input, textarea, select, math-field, [contenteditable]:not([contenteditable="false"])');
   document.addEventListener('contextmenu', event => {
     if (event.shiftKey || editable(event.target)) { close(); return; }
     const step = stepAt(event.target);

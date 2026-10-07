@@ -17,7 +17,30 @@ from database import Database
 from edn import dumps, kw
 from import_repair import import_with_repair
 from provenance import ReconciliationReview
-from saved_imports import complete, eligible, read_json, sweep, verified
+from saved_imports import complete, eligible, read_json, sweep, verified, version
+
+
+class RetryVersionTests(unittest.TestCase):
+    def test_only_running_importer_or_installed_checker_resets_retries(self):
+        with tempfile.TemporaryDirectory() as work:
+            root=Path(work);package=root/'scripts/question_capture';package.mkdir(parents=True)
+            (root/'engine/rust').mkdir(parents=True)
+            source=root/'engine/rust/symbolic.rs';source.write_text('unbuilt v1')
+            (package/'core.py').write_text('importer v1')
+            sweep_source=package/'saved_imports.py';sweep_source.write_text('logging v1')
+            with patch('saved_imports.ROOT',root),patch('saved_imports.PACKAGE',package), \
+                 patch('saved_imports.availability',return_value=('checker','installed-v1',10,493)) as checker:
+                first=version()
+                source.write_text('unbuilt v2');sweep_source.write_text('logging v2')
+                self.assertEqual(first,version())
+                checker.return_value=('checker','installed-v2',10,493)
+                self.assertNotEqual(first,version())
+                checker.return_value=('checker','installed-v1',10,493)
+                (package/'core.py').write_text('importer v2')
+                self.assertNotEqual(first,version())
+                current=version()
+                (package/'import_repair.py').write_text('updated repair judgment')
+                self.assertNotEqual(current,version())
 
 
 class SavedImportTests(unittest.TestCase):
@@ -26,6 +49,7 @@ class SavedImportTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.args = arguments(['run','--state-dir',str(self.root/'state'),
                                '--output',str(self.root/'captures')])
+        self.args.no_import_repair=True  # These offline fixtures never launch a CLI.
         self.db = Mock()
         self.db.import_content.return_value = {'already_complete':True,'database_writes':0}
         self.generation = patch('saved_imports.version',return_value='v1').start()
@@ -94,6 +118,7 @@ class SavedImportTests(unittest.TestCase):
         current,state,content = self.capture(2)
         self.db.import_content.side_effect=ValueError('notation conflict')
         sweep(self.db,self.args,trigger='startup',exclude=[current])
+        self.args.no_import_repair=False
         self.db.import_content.reset_mock()
         self.db.import_content.side_effect = [ValueError('notation conflict'),
             {'previewed':True}, {'already_complete':True,'database_writes':0}]
@@ -107,6 +132,17 @@ class SavedImportTests(unittest.TestCase):
                          [current,current,older])
         self.assertTrue(read_json(older/'state.json')['import_complete'])
         self.assertNotIn('deferred_error',read_json(older/'state.json'))
+
+    def test_saved_import_failure_runs_repair_and_commits_on_success(self):
+        self.args.no_import_repair=False
+        directory,_,_=self.capture(1)
+        self.db.import_content.side_effect=[ReconciliationReview('notation mismatch'),
+                                           {'already_complete':True,'database_writes':0}]
+        with patch('import_repair.repair',return_value=True) as repair:
+            result=sweep(self.db,self.args,trigger='startup')
+        repair.assert_called_once()
+        self.assertEqual(result[0]['status'],'complete')
+        self.assertTrue(read_json(directory/'state.json')['import_complete'])
 
     def test_skip_verified_and_unfinished_and_repair_stale_checkpoint(self):
         committed,_,_ = self.capture(1,import_complete=False)

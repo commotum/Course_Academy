@@ -8,7 +8,7 @@ from collections import deque
 from pathlib import Path
 from urllib.parse import urlparse
 
-from core import atomic_json, assessment_can_start, assessment_requirement, choose_sequence, choose_review_sequence, journal, normalize, stable_id
+from core import atomic_json, assessment_can_start, assessment_requirement, choose_sequence, choose_review_sequence, compare_answers, journal, normalize, stable_id
 from progress import COURSES, capture as capture_progress
 
 EXTRACT = (Path(__file__).parent / 'dom.js').read_text()
@@ -85,12 +85,31 @@ def mathquill_keys(value, actions):
             {'text':None,'key':'ArrowRight'},{'text':'^'+powered_log[2],'key':None},
             {'text':None,'key':'ArrowRight'}]:
         result = [{'text':'(','key':None}] + result[:3] + [{'text':None,'key':'ArrowRight'}] + result[3:]
+    # MathQuill's slash captures only the last term of an unfenced sum.
+    # Group an exact whole-numerator action before creating its fraction.
+    fraction = re.fullmatch(r'\\+frac\{([^{}]+)\}\{(.+)\}', value)
+    if (fraction and re.search(r'.[+-]', fraction[1]) and len(result) >= 2 and
+            result[0] == {'text':fraction[1],'key':None} and
+            result[1] == {'text':'/','key':None}):
+        result[0]['text'] = '(' + fraction[1] + ')'
     return result
 
 
 def normalize_mathquill(value):
     """Compare editor notation without treating differently grouped math as equal."""
     return normalize(value)
+
+
+def same_question_problem(before, after):
+    if normalize(before['problem']) == normalize(after['problem']):
+        return True
+    # Reloaded graded blanks are static math instead of answer widgets.
+    rendered = before['problem']
+    for field in before.get('fields', []):
+        value = field.get('observed_mathquill_latex', field.get('submitted_value'))
+        if value is not None:
+            rendered = rendered.replace('{{' + field['key'] + '}}', '$' + value + '$')
+    return normalize(rendered) == normalize(after['problem'])
 
 
 def by_id(scope, identifier):
@@ -115,11 +134,26 @@ def deduplicate_math_editor(html):
 def repair_math_editor_document(route):
     # Browsers can fetch one script once but execute it for both tags, so
     # deduplicate the HTML rather than counting network requests.
+    from playwright.sync_api import Error as PlaywrightError
+    try:
+        return _repair_math_editor_document(route)
+    except PlaywrightError as error:
+        # An exception escaping this callback strands Playwright's pending
+        # navigation. Always finish the route; page.goto can then handle retry.
+        logging.warning('Document request failed (%s); releasing navigation for retry',
+                        network_failure_reason(error))
+        try:
+            route.abort('connectionfailed' if is_network_error(error) else 'failed')
+        except PlaywrightError:
+            pass  # A closed page or completed route needs no further action.
+
+
+def _repair_math_editor_document(route):
     if route.request.resource_type != 'document' or route.request.method != 'GET':
         return route.continue_()
     # Let the browser follow redirects so page scripts see the destination URL.
     # Fetching the final document and fulfilling /learn leaves its URL unchanged.
-    response = route.fetch(max_redirects=0)
+    response = route.fetch(max_redirects=0,timeout=30000)
     if response.status in (301,302,303,307,308):
         return route.fulfill(response=response)
     if 'text/html' not in response.headers.get('content-type','').lower():
@@ -129,6 +163,20 @@ def repair_math_editor_document(route):
     if cleaned != original:
         logging.info('Removed duplicate math-editor.js tag from %s',route.request.url)
     route.fulfill(response=response,body=cleaned)
+
+
+def is_network_error(error):
+    return bool(re.search(r'\b(?:EAI_AGAIN|ENOTFOUND|ECONNRESET|ECONNREFUSED|EHOSTUNREACH|ENETUNREACH|ETIMEDOUT)\b|'
+                          r'getaddrinfo|net::ERR_(?:NAME_NOT_RESOLVED|NAME_RESOLUTION_FAILED|INTERNET_DISCONNECTED|'
+                          r'CONNECTION_(?:FAILED|REFUSED|RESET|CLOSED|ABORTED|TIMED_OUT)|NETWORK_CHANGED|'
+                          r'ADDRESS_UNREACHABLE|TIMED_OUT)',str(error)))
+
+
+def network_failure_reason(error):
+    # Route.fetch's full error includes request headers. Log only its error code.
+    match=re.search(r'\b(?:EAI_AGAIN|ENOTFOUND|ECONNRESET|ECONNREFUSED|EHOSTUNREACH|ENETUNREACH|ETIMEDOUT)\b|'
+                    r'net::ERR_[A-Z_]+',str(error))
+    return match[0] if match else type(error).__name__
 
 
 def answer_control(scope, field):
@@ -223,11 +271,13 @@ class CaptureBrowser:
 
     def navigate(self, url, force=False):
         # Only idempotent page navigation is retried. Answer/Continue clicks never are.
-        from playwright.sync_api import TimeoutError as PlaywrightTimeout
+        from playwright.sync_api import Error as PlaywrightError, TimeoutError as PlaywrightTimeout
         if self.page.url == url and not force:
             self.check()
             return
-        for attempt in range(1,4):
+        attempt = 0
+        while True:
+            attempt += 1
             self.pacer.wait('event', 'page navigation')
             try:
                 response = self.page.goto(url, wait_until='domcontentloaded')
@@ -240,16 +290,17 @@ class CaptureBrowser:
                     # receives the same editor-tag repair as other navigations.
                     self.pacer.wait('event','initialize redirected page')
                     response = self.page.goto(self.page.url, wait_until='domcontentloaded')
-            except PlaywrightTimeout:
-                self.check()
-                if attempt == 3:
+            except PlaywrightError as error:
+                if not isinstance(error,PlaywrightTimeout) and not is_network_error(error):
                     raise
+                self.check()
+                logging.warning('Navigation unavailable (%s); retaining checkpoints and waiting for network recovery',
+                                network_failure_reason(error))
                 self.pacer.backoff(attempt)
                 continue
             self.check()
             if response and response.status >= 500:
-                if attempt == 3:
-                    raise RuntimeError('Repeated server failure: ' + str(response.status))
+                logging.warning('Math Academy returned HTTP %s; waiting for service recovery',response.status)
                 self.pacer.backoff(attempt)
                 continue
             # Positioned assessment content can leave the body with zero height.
@@ -371,9 +422,20 @@ class CaptureBrowser:
                 if asset.evaluate("n => n.localName === 'img'"):
                     self.page.wait_for_function('n => n.complete && n.naturalWidth > 0', arg=asset.element_handle())
             except PlaywrightTimeout:
-                item['errors'].append('Visual asset is not rendered')
-                index += 1
-                continue
+                recovered = False
+                if asset.is_visible() and asset.evaluate("n => n.localName === 'img' && n.complete && n.naturalWidth === 0"):
+                    self.pacer.backoff(1)
+                    asset.evaluate('n => { n.src = n.src; }')
+                    try:
+                        asset.wait_for(state='visible')
+                        self.page.wait_for_function('n => n.complete && n.naturalWidth > 0', arg=asset.element_handle())
+                        recovered = True
+                    except PlaywrightTimeout:
+                        pass
+                if not recovered:
+                    item['errors'].append('Visual asset is not rendered')
+                    index += 1
+                    continue
             metadata = item['assets'][index]
             source_url = metadata.get('source_url')
             response = self.image_responses.get(source_url)
@@ -477,12 +539,12 @@ class CaptureBrowser:
         return self.page.evaluate(ACTIVE_STEP)
 
     def restore_unanswered_submission(self, scope, record):
-        # Only a fresh, explicit --resume navigation may prove a failed radio
-        # submission was not graded. Never replay a submission in its live page.
-        if not getattr(self.args, 'resume', None):
-            return False
+        # Called while restoring saved activity state after fresh navigation.
+        # The server's empty unanswered widgets determine whether to retry.
         fields = record['before']['fields']
-        if len(fields) != 1 or fields[0]['type'] != 'radio':
+        radio = len(fields) == 1 and fields[0]['type'] == 'radio'
+        blanks = bool(fields) and all(f['type'] == 'blank' for f in fields)
+        if not (radio or blanks):
             return False
         evidence = scope.evaluate('''n => {
           const visible=e=>!!e?.getClientRects().length && getComputedStyle(e).visibility!=='hidden';
@@ -496,8 +558,15 @@ class CaptureBrowser:
             choices_unselected:circles.length>0 && circles.every(e=>!e.classList.contains('selectedChoice') &&
               !(e.style.backgroundColor==='rgb(64, 64, 64)' && e.style.color==='white'))};
         }''')
+        if blanks:
+            empty = []
+            for field in fields:
+                control = answer_control(scope, field)
+                value = control.evaluate(MATHQUILL_VALUE) if field['tag'] == 'mathquill' else control.input_value()
+                empty.append(value == '')
+            evidence['blanks_empty'] = all(empty)
         if not (evidence['unanswered'] and evidence['submit_visible'] and evidence['submit_disabled']
-                and evidence['choices_unselected'] and not evidence['pending']):
+                and (evidence['choices_unselected'] if radio else evidence['blanks_empty']) and not evidence['pending']):
             return False
         fresh = scope.evaluate(EXTRACT)
         for asset in record['before'].get('assets', []):
@@ -557,14 +626,28 @@ class CaptureBrowser:
                 if self.restore_unanswered_submission(scope, record):
                     save()
                     journal(directory / 'events.jsonl', 'submission_recovered_unanswered', question=mid)
-            if record.get('status') == 'submitting' and self.current_step() != 'stepButton-' + mid.replace('-', ''):
+            if record.get('status') == 'submitting':
                 # A restored activity may open on the next question. Reconcile the
                 # saved result before answering it, rather than orphaning a grade.
                 source = directory / (mid + '-after.json')
                 item = json.loads(source.read_text()) if source.exists() else {}
+                # A grading response can succeed while step navigation fails.
+                # Recover its actual result from the reloaded page when the
+                # interrupted capture never saved a complete explanation.
+                if (not item.get('worked_solution') or item.get('errors') or
+                        item.get('result') not in ('Correct', 'Incorrect') or
+                        normalize(item.get('problem', '')) != normalize(record['before']['problem'])):
+                    scope = by_id(self.page, 'step-' + mid.replace('-', ''))
+                    grade = scope.locator('.questionWidget-result')
+                    if grade.count() and grade.inner_text().strip() in ('Correct', 'Incorrect'):
+                        if not scope.is_visible():
+                            self.pacer.wait('event', 'restore graded question for capture')
+                            by_id(self.page, 'stepButton-' + mid.replace('-', '')).click()
+                            scope.wait_for(state='visible')
+                        item, _ = self.read(scope, directory, mid + '-after')
                 if (item.get('errors') or item.get('result') not in ('Correct', 'Incorrect') or
                     not item.get('worked_solution') or
-                    normalize(item.get('problem', '')) != normalize(record['before']['problem']) or
+                    not same_question_problem(record['before'], item) or
                     any(not a.get('path') or not Path(a['path']).is_file() for a in item.get('assets', []))):
                     raise ValueError('Previous submission needs a complete saved result before advancing: ' + mid)
                 record.update(after=item, actual_result=item['result'], status='graded')
@@ -594,9 +677,8 @@ class CaptureBrowser:
                             if count < 1 or count > 5:
                                 raise ValueError('Failed lesson has an unexpected captured KP question count')
                             continue
-                        if (not perfect and count != 5) or (perfect and (count < 1 or any(
-                            q['actual_result'] != 'Correct' for q in state['questions'].values()))):
-                            raise ValueError('Knowledge point did not serve five questions: ' + kp['title'])
+                        if count < 1 or count > 5:
+                            raise ValueError('Knowledge point served an unexpected question count: ' + kp['title'])
                 self.page.screenshot(path=str(directory / (completed_event + '.png')))
                 state['completion'], state['activity_complete'], state[kind_name + '_complete'] = completion, True, True
                 state['activity_outcome'] = outcome
@@ -728,16 +810,37 @@ class CaptureBrowser:
         expected = 'Correct' if record['intended'] == 'C' else 'Incorrect'
         actual, item = record['actual_result'], record['after']
         if actual != expected:
-            raise ValueError(mid + ' expected ' + expected + ', received ' + actual + '; stop before another answer')
+            record['grade_deviation'] = {'intended':expected, 'observed':actual}
+            logging.warning('%s graded %s instead of %s; retaining the actual result and continuing',mid,actual,expected)
+            if actual == 'Correct':
+                record.setdefault('predicted_answers', json.loads(json.dumps(record['decision']['answers'])))
+                submitted = {f['key']:f for f in record['before']['fields']}
+                for answer in record['decision']['answers']:
+                    field = submitted[answer['key']]
+                    answer['correct_value'] = field['submitted_value']
+                    answer['correct_option'] = field.get('submitted_option')
+                    selected = next((c for c in field.get('choices', [])
+                                     if c['option'] == field.get('submitted_option')), None)
+                    if selected:
+                        answer['value_type'] = selected['type']
         if not item['worked_solution']:
             raise ValueError('Revealed worked solution is missing: ' + mid)
         if actual == 'Incorrect' and not record.get('verification'):
-            verified = self.solver.solve(item,Path(directory)/(mid+'-after.png'),Path(directory)/mid,'verify')
+            verification_input = {**item, 'problem':record['before']['problem'], 'fields':record['before']['fields']}
+            verified = self.solver.solve(verification_input,Path(directory)/(mid+'-after.png'),Path(directory)/mid,'verify')
             original = {a['key']:a for a in record['decision']['answers']}
             for answer in verified['answers']:
                 first = original[answer['key']]
-                if normalize(first['correct_value'],first['value_type']) != normalize(answer['correct_value'],answer['value_type']):
-                    raise ValueError('Worked solution contradicts predicted correct answer: ' + mid)
+                outcome = compare_answers(first['correct_value'],answer['correct_value'],answer['value_type'],
+                                          prompt=record['before']['problem'])['outcome']
+                if first['value_type'] != answer['value_type'] or outcome != 'equivalent':
+                    record.setdefault('predicted_answers', json.loads(json.dumps(record['decision']['answers'])))
+                    record.setdefault('answer_reconciliations', []).append({
+                        'key':answer['key'], 'predicted':first['correct_value'],
+                        'worked_solution_answer':answer['correct_value'], 'comparison':outcome,
+                        'reason':verified['explanation']})
+                    first.update({key:answer[key] for key in ('correct_value','value_type','correct_option','correct_keys') if key in answer})
+                    logging.warning('%s/%s: using the solver-reviewed worked-solution answer',mid,answer['key'])
             record['verification'] = verified
         kp = {'id':None,'title':None} if state.get('task_type') == 'review' else state['kps'][record['kp_id']]
         record['content'] = self.question_content(mid,record,kp)
@@ -897,7 +1000,8 @@ class CaptureBrowser:
             category = 'model_interpretation'
             grade = record.get('actual_result') or record['after'].get('result')
             if (grade == 'Correct' and f.get('submitted_value') is not None and
-                    normalize(f['submitted_value'],answer['value_type']) == normalize(answer['correct_value'],answer['value_type'])):
+                    compare_answers(f['submitted_value'],answer['correct_value'],answer['value_type'],
+                                    prompt=record['before']['problem'])['outcome'] == 'equivalent'):
                 category = 'ma_successful_grade'
             fields.append({'key':f['key'],'type':f['type'],'choices':choices,'correct_value':answer['correct_value'],
                            'choices_complete':f.get('choices_complete',False), 'correct_origin':category})

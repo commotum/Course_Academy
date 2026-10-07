@@ -8,7 +8,7 @@ import vm from 'node:vm';
 const source = await readFile(new URL('../ui/learning.js', import.meta.url), 'utf8');
 const controllers = source.slice(source.indexOf('const $'), source.indexOf("$('retryButton').addEventListener"));
 const visibility = source.slice(source.indexOf('async function syncAfterVisibility()'), source.indexOf("document.addEventListener('visibilitychange'"));
-const fieldUI = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replaceAll('export ', '');
+const fieldUI = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^import .*;\n/m, '').replace(/^MathfieldElement\..*;\n/gm, '').replaceAll('export ', '');
 
 function fixture(storage = new Map()) {
   const f = { storage, calls: [], scrolls: [], focused: [], cleared: [], dev: false, now: 10000 };
@@ -66,6 +66,8 @@ function fixture(storage = new Map()) {
     fetch: async (path, options) => {
       const body = options.body ? JSON.parse(options.body) : null;
       f.calls.push({ path, body, keepalive: options.keepalive });
+      const response = await f.respond?.(path, body);
+      if (response) return response;
       if (path === '/api/pause') { f.server.status = 'paused'; f.server.step.status = 'paused'; f.server.elapsedSeconds = f.h.clock.elapsed; }
       if (path === '/api/resume') { f.server.status = 'started'; f.server.step.status = 'started'; }
       if (f.delay) await f.delay;
@@ -87,7 +89,7 @@ function fixture(storage = new Map()) {
     loadMath = async () => {};
     return {
       get view() { return lessonView; }, get clock() { return clock; }, get pending() { return pendingPause; },
-      setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, home,
+      mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home,
       render: async data => { task = data; await renderTask(data); },
       preview: async (data, index) => { task = data; previewStepIndex = index; await renderPreview(); },
     };
@@ -123,6 +125,30 @@ test('lesson frame has a compact progress bar and timer, and hides the topic hea
   assert.equal(f.scrolls.length, 1);
 });
 
+test('Study now starts the selected graph topic directly in the progressive lesson view', async () => {
+  const f = fixture(); f.server = activity(1);
+  await f.h.studyTopic('17592186050674');
+  assert.equal(f.calls.length, 1);
+  assert.equal(f.calls[0].path, '/api/study-topic');
+  assert.equal(f.calls[0].body.topicId, 17592186050674);
+  assert.ok(f.calls[0].body.requestId);
+  assert.equal(f.h.view.feed.children.length, 1);
+  assert.match(f.h.view.current.textContent, /Read this/);
+  await f.h.studyTopic('bad-topic');
+  assert.equal(f.calls.length, 1);
+});
+
+test('Study now in developer mode opens a topic preview without starting an attempt', async () => {
+  const f = fixture(); f.dev = true;
+  f.server = { ...activity(1), preview: true, steps: [activity(1).step, activity(2).step] };
+  await f.h.studyTopic('17592186050674');
+  assert.equal(f.calls.length, 1);
+  assert.equal(f.calls[0].path, '/api/preview?topicId=17592186050674');
+  assert.equal(f.calls[0].body, null);
+  assert.equal(f.h.view.feed.children.length, 1);
+  assert.equal(f.h.view.timer.textContent, 'Preview');
+});
+
 test('advancing retains the earlier DOM, disables its answers, and focuses only the new step', async () => {
   const f = fixture();
   await f.h.render(activity(1, 1, { step: question(1, 'correct') }));
@@ -135,7 +161,9 @@ test('advancing retains the earlier DOM, disables its answers, and focuses only 
   assert.equal(previous.querySelector('.answer-actions'), null);
   assert.equal(previous.querySelectorAll('input').every(node => node.disabled && node.dataset.readOnly === 'true'), true);
   assert.match(previous.textContent, /Apply the power rule/);
-  assert.match(previous.textContent, /Step 1 \/ 3/);
+  assert.equal(previous.querySelector('.step-title'), null);
+  assert.equal(previous.querySelector('.step-meta'), null);
+  assert.doesNotMatch(previous.textContent, /Step 1 \/ 3/);
   assert.equal(f.h.view.history.size, 1);
   assert.equal(f.h.view.current.dataset.stepDbId, 'step-2');
   assert.equal(f.h.view.current.dataset.mathAcademyId, '1002');
@@ -148,6 +176,9 @@ test('answer feedback updates the same presentation without duplicating history 
   const f = fixture();
   await f.h.render(activity(1, 1, { step: question(1) }));
   assert.ok(f.h.view.current.querySelector('.answer-actions'));
+  assert.equal(f.h.view.current.querySelector('.step-title'), null);
+  assert.equal(f.h.view.current.querySelector('.step-meta'), null);
+  assert.equal(f.h.view.current.querySelector('legend').className, 'sr-only');
   assert.equal(f.h.view.current.querySelector('.lesson-controls'), null);
   await f.h.render(activity(1, 1, { step: question(1, 'correct') }));
   assert.equal(f.h.view.feed.children.length, 1);
@@ -168,6 +199,58 @@ test('reload restores previously revealed steps as read-only and separates task 
   assert.match(restored.h.view.feed.children[0].textContent, /Apply the power rule/);
   await restored.h.render(activity(9, 1, { taskId: 999 }));
   assert.equal(restored.h.view.feed.children.length, 1);
+});
+
+test('resuming in a fresh session restores the database presentation chain as read-only history', async () => {
+  const f = fixture();
+  const first = { order: 1, number: 1, total: 3, step: question(11, 'correct') };
+  const second = { order: 2, number: 1, total: 3, step: question(12, 'correct') };
+  f.server = activity(13, 2, { status: 'paused', history: [first, second], progress: { stepNumber: 2, totalSteps: 3, presented: 3 } });
+  await f.h.openTask('123');
+  assert.equal(f.calls.some(call => call.path === '/api/resume'), true);
+  assert.deepEqual(f.h.view.feed.children.map(node => node.dataset.stepDbId), ['step-11', 'step-12', 'step-13']);
+  assert.equal(f.h.view.history.size, 2);
+  for (const node of f.h.view.feed.children.slice(0, 2)) {
+    assert.equal(node.dataset.history, 'true');
+    assert.equal(node.querySelector('.lesson-controls'), null);
+    assert.equal(node.querySelector('.answer-actions'), null);
+    assert.equal(node.querySelectorAll('input').every(input => input.disabled), true);
+    assert.match(node.textContent, /Apply the power rule/);
+  }
+  assert.equal(f.scrolls.at(-1).node, f.h.view.current);
+  await f.h.render(activity(14, 3, { progress: { stepNumber: 3, totalSteps: 3, presented: 4 } }));
+  assert.equal(f.h.view.feed.children.length, 4);
+  assert.equal(f.calls.length, 2); // No extra history request while advancing.
+});
+
+test('a completed attempt reopens as a full read-only lesson history without restarting its timer', async () => {
+  const f = fixture();
+  await f.h.render(activity(2, 3, {
+    status: 'completed', xp: 7,
+    step: { ...activity(2).step, status: 'completed' },
+    history: [{ order: 1, number: 1, total: 3, step: question(1, 'correct') }],
+    progress: { stepNumber: 3, totalSteps: 3, presented: 2 },
+  }));
+  assert.equal(f.h.clock.running, false);
+  assert.equal(f.h.view.history.size, 2);
+  assert.equal(f.h.view.feed.children.length, 3);
+  assert.match(f.h.view.current.textContent, /Activity complete/);
+  for (const node of f.h.view.feed.children.slice(0, 2)) {
+    assert.equal(node.dataset.history, 'true');
+    assert.equal(node.querySelector('.answer-actions'), null);
+    assert.equal(node.querySelector('.lesson-controls'), null);
+  }
+  assert.equal(f.calls.length, 0);
+});
+
+test('database history replaces stale browser entries without revealing later steps', async () => {
+  const f = fixture();
+  await f.h.render(activity(99, 1));
+  await f.h.render(activity(3, 2, {
+    history: [{ order: 1, number: 1, total: 3, step: activity(1).step }],
+    progress: { stepNumber: 2, totalSteps: 3, presented: 2 },
+  }));
+  assert.deepEqual(f.h.view.feed.children.map(node => node.dataset.stepDbId), ['step-1', 'step-3']);
 });
 
 test('developer preview reveals only visited steps and keeps them available for review', async () => {
@@ -355,4 +438,73 @@ test('leaving the document sends a keepalive pause even when a save is busy', as
   assert.equal(f.calls[0].path, '/api/pause');
   assert.equal(f.calls[0].keepalive, true);
   assert.equal(f.h.clock.running, false);
+});
+
+
+test('question shortages offer continuation and deferred practice is shown without claiming completion', async () => {
+  const f=fixture();
+  await f.h.render(activity(1,2,{step:{...question(1,'correct'),practiceShortage:{stepId:55,title:'Skill'}}}));
+  assert.match(f.h.view.current.textContent,/No fresh questions remain/);
+  assert.ok(f.h.view.current.querySelectorAll('button').some(b=>b.textContent==='Continue to next skill →'));
+  await f.h.render(activity(1,3,{status:'paused',awaitingQuestions:true,canResumePractice:false,deferredSteps:[{stepId:55,title:'Skill'}],step:question(1,'correct')}));
+  assert.match(f.h.view.current.textContent,/Practice unfinished/);
+  assert.match(f.h.view.current.textContent,/Waiting for new questions/);
+  assert.equal(f.h.view.current.querySelector('.deferred-skills').textContent,'Skill');
+  assert.ok(!f.h.view.current.textContent.includes('Activity complete'));
+  assert.equal(f.h.clock.running,false);
+  await f.h.render(activity(1,3,{status:'paused',awaitingQuestions:true,canResumePractice:true,deferredSteps:[{stepId:55,title:'Skill'}],step:question(1,'correct')}));
+  assert.ok(f.h.view.current.querySelectorAll('button').some(b=>b.textContent==='Resume unfinished practice →'));
+});
+
+
+test('an active Next click recovers a confirmed paused state and advances exactly once', async () => {
+  const f=fixture();f.server=activity(1);
+  await f.h.render(structuredClone(f.server));
+  let attempts=0;
+  f.respond=async(path)=>{
+    if(path==='/api/continue' && ++attempts===1) return {ok:false,status:409,json:async()=>({error:'Resume the lesson before continuing',code:'lesson-paused'})};
+    if(path==='/api/continue') f.server=activity(2,2);
+  };
+  await f.h.mutation('/api/continue',{taskId:123,itemId:1});
+  assert.deepEqual(f.calls.map(call=>call.path),['/api/continue','/api/resume','/api/continue']);
+  assert.notEqual(f.calls[0].body.requestId,f.calls[2].body.requestId);
+  assert.equal(f.h.view.current.dataset.stepDbId,'step-2');
+  assert.equal(f.document.getElementById('errorBanner').hidden,true);
+});
+
+test('stale Next never advances the new item after another tab has already advanced', async () => {
+  const f=fixture();f.server=activity(2,2);
+  await f.h.render(activity(1));
+  f.respond=async(path)=>path==='/api/continue'?{ok:false,status:409,json:async()=>({error:'Resume the lesson before continuing',code:'lesson-paused'})}:null;
+  await f.h.mutation('/api/continue',{taskId:123,itemId:1});
+  assert.deepEqual(f.calls.map(call=>call.path),['/api/continue','/api/resume']);
+  assert.equal(f.h.view.current.dataset.stepDbId,'step-2');
+});
+
+test('unknown save outcomes keep the original request identity and do not resume or retry automatically', async () => {
+  const f=fixture();f.server=activity(1);await f.h.render(structuredClone(f.server));
+  f.respond=async()=>{throw new Error('Network unavailable');};
+  await f.h.mutation('/api/continue',{taskId:123,itemId:1});
+  assert.equal(f.calls.length,1);
+  assert.equal(f.document.getElementById('errorBanner').hidden,false);
+});
+
+
+test('paused answer recovery keeps the selected answer and does not recover unrelated validation errors', async () => {
+  const f=fixture();f.server=activity(1,1,{step:question(1)});
+  await f.h.render(activity(1,1,{step:question(1)}));
+  let attempts=0;
+  f.respond=async(path)=>{
+    if(path==='/api/answer' && ++attempts===1) return {ok:false,status:409,json:async()=>({error:'Resume the lesson before continuing',code:'lesson-paused'})};
+    if(path==='/api/answer') f.server=activity(1,1,{step:question(1,'correct')});
+  };
+  const responses=[{fieldId:30,choiceId:41}];
+  await f.h.mutation('/api/answer',{taskId:123,itemId:1,responses});
+  assert.deepEqual(f.calls.map(call=>call.path),['/api/answer','/api/resume','/api/answer']);
+  assert.deepEqual(f.calls[2].body.responses,responses);
+  f.calls.length=0;
+  f.respond=async()=>({ok:false,status:409,json:async()=>({error:'Foreign question',code:'validation'})});
+  await f.h.mutation('/api/answer',{taskId:123,itemId:1,responses});
+  assert.equal(f.calls.length,1);
+  assert.equal(f.document.getElementById('errorBanner').hidden,false);
 });

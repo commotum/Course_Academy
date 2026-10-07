@@ -5,8 +5,7 @@ mod developer_preview;
 
 use chrono::{DateTime, Utc};
 use course_academy_engine::{
-    base_xp,
-    learning,
+    base_xp, learning,
     schema::{self, EntitySnapshot, Record, StatusAssertion},
     timing,
 };
@@ -420,6 +419,26 @@ fn number(s: &EntitySnapshot, e: u64, a: &str) -> f64 {
 fn status(s: &EntitySnapshot, e: u64, a: &str) -> Result<String> {
     Ok(timing::status(s, e, a)?.rsplit('/').next().unwrap().into())
 }
+fn topic_lesson(s: &EntitySnapshot, topic: u64) -> Result<u64> {
+    if !s.entity(topic)?.contains_key("topic/id") {
+        return Err("Study now requires a topic entity ID".into());
+    }
+    let mut lessons = vec![];
+    for (&activity, record) in &s.entities {
+        if record.contains_key("activity/id")
+            && status(s, activity, "activity/type")? == "lesson"
+            && s.optional_ref(activity, "activity/scope")? == Some(topic)
+        {
+            lessons.push(activity);
+        }
+    }
+    match lessons.as_slice() {
+        [activity] => Ok(*activity),
+        [] => Err("This topic does not have a lesson activity yet".into()),
+        _ => Err("This topic has multiple lesson activities; its lesson is ambiguous".into()),
+    }
+}
+
 fn owned(s: &EntitySnapshot, learner: u64, task: u64) -> Result<()> {
     if s.owners(task, "learner/activity")? != vec![learner] {
         return Err("Task does not belong to this learner".into());
@@ -427,35 +446,7 @@ fn owned(s: &EntitySnapshot, learner: u64, task: u64) -> Result<()> {
     Ok(())
 }
 fn items(s: &EntitySnapshot, task: u64) -> Result<Vec<u64>> {
-    let all: BTreeSet<_> = s.refs(task, "learner-task/items")?.into_iter().collect();
-    if all.is_empty() {
-        return Ok(vec![]);
-    }
-    let mut incoming = BTreeSet::new();
-    for i in &all {
-        if let Some(n) = s.optional_ref(*i, "task-item/next")? {
-            if !all.contains(&n) || !incoming.insert(n) {
-                return Err("Invalid presentation chain".into());
-            }
-        }
-    }
-    let heads: Vec<_> = all.difference(&incoming).copied().collect();
-    if heads.len() != 1 {
-        return Err("Invalid presentation chain".into());
-    }
-    let mut out = vec![];
-    let mut cur = Some(heads[0]);
-    while let Some(i) = cur {
-        if out.contains(&i) {
-            return Err("Presentation cycle".into());
-        }
-        out.push(i);
-        cur = s.optional_ref(i, "task-item/next")?;
-    }
-    if out.len() != all.len() {
-        return Err("Disconnected presentations".into());
-    }
-    Ok(out)
+    learning::ordered_presentations(s, task).map_err(Into::into)
 }
 fn task_for(s: &EntitySnapshot, learner: u64, activity: u64) -> Result<Option<u64>> {
     let mut result = None;
@@ -473,6 +464,22 @@ fn task_for(s: &EntitySnapshot, learner: u64, activity: u64) -> Result<Option<u6
     }
     Ok(result)
 }
+fn completed_task_for(s: &EntitySnapshot, learner: u64, activity: u64) -> Result<Option<u64>> {
+    let mut latest = None;
+    for task in s.refs(learner, "learner/activity")? {
+        if s.optional_ref(task, "learner-task/activity")? == Some(activity)
+            && status(s, task, "learner-task/status")? == "completed"
+        {
+            let finished_at = timing::status_at(s, task, "learner-task/status")?;
+            let entry = (finished_at, task);
+            if latest.as_ref().is_none_or(|previous| entry > *previous) {
+                latest = Some(entry);
+            }
+        }
+    }
+    Ok(latest.map(|(_, task)| task))
+}
+
 fn course(s: &EntitySnapshot, l: u64) -> Result<u64> {
     Ok(s.reference(l, "learner/course")?)
 }
@@ -517,13 +524,33 @@ fn profile_json(s: &EntitySnapshot, l: u64) -> Result<Json> {
     courses.sort_by(|a, b| a["title"].as_str().cmp(&b["title"].as_str()));
     Ok(json!({"learner":learner_json(s,l),"course":course_json(s,l)?,"courses":courses}))
 }
-fn another_started_task(s: &EntitySnapshot, learner: u64, current: Option<u64>) -> Result<bool> {
+// Selecting a lesson transfers the running session in the same guarded write.
+// Browser unload callbacks are best-effort and cannot release a durable task.
+fn pause_other_lessons(
+    s: &EntitySnapshot,
+    learner: u64,
+    current: Option<u64>,
+    at: DateTime<Utc>,
+    forms: &mut Vec<Json>,
+) -> Result<()> {
+    let active = timing::active_item(s, learner)?;
+    let mut handled_items = BTreeSet::new();
     for task in s.refs(learner, "learner/activity")? {
-        if Some(task) != current && status(s, task, "learner-task/status")? == "started" {
-            return Ok(true);
+        if Some(task) == current {
+            handled_items.extend(s.refs(task, "learner-task/items")?);
+        } else if status(s, task, "learner-task/status")? == "started" {
+            let activity = s.reference(task, "learner-task/activity")?;
+            if status(s, activity, "activity/type")? != "lesson" {
+                return Err("Pause the current activity before starting a lesson".into());
+            }
+            handled_items.extend(s.refs(task, "learner-task/items")?);
+            forms.extend(mutate(s, learner, "pause", &json!({"taskId":task}), at)?.0);
         }
     }
-    Ok(false)
+    if active.is_some_and(|item| !handled_items.contains(&item)) {
+        return Err("The active presentation does not belong to a running task".into());
+    }
+    Ok(())
 }
 fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
     let c = course(s, l)?;
@@ -563,8 +590,34 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
             break;
         }
     }
+    let mut waiting = vec![];
+    for t in s.refs(l, "learner/activity")? {
+        if status(s, t, "learner-task/status")? != "paused" {
+            continue;
+        }
+        let a = s.reference(t, "learner-task/activity")?;
+        if status(s, a, "activity/type")? != "lesson" {
+            continue;
+        }
+        let chain = items(s, t)?;
+        if !chain
+            .iter()
+            .any(|i| s.entities[i].contains_key("task-item/deferred-step"))
+        {
+            continue;
+        }
+        let p = practice_state(s, a, &chain)?;
+        if p.next.is_none()
+            && p.shortage.is_none()
+            && !p.deferred.is_empty()
+            && !p.failed
+            && !activities.iter().any(|entry| entry["taskId"] == t)
+        {
+            waiting.push(json!({"taskId":t,"title":text(s,a,"activity/title"),"pendingCount":p.deferred.len(),"canResumePractice":learning::deferred_resume_step(s,a,&chain)?.is_some()}));
+        }
+    }
     Ok(
-        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"queueDescription":"Engine recommendations interleave eligible lessons across course modules; self-directed study uses your selected topic queue.","practiceNotice":"Each skill needs two correct answers in a row, with up to five questions. If fresh questions run out, more content is needed and the lesson remains unfinished."}),
+        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"queueDescription":"Engine recommendations interleave eligible lessons across course modules; self-directed study uses your selected topic queue.","practiceNotice":"Each skill needs two correct answers in a row, with up to five questions. If fresh questions run out, you can continue to the next skill and return to unfinished practice later."}),
     )
 }
 
@@ -707,14 +760,102 @@ fn lesson_progress(
 
 // Use the displayed content's source ID, never an authored placement or topic ID.
 fn content_math_academy_id(record: &Record) -> Option<String> {
-    record.get(if record.contains_key("tutorial/id") {
-        "tutorial/math-academy-id"
+    record
+        .get(if record.contains_key("tutorial/id") {
+            "tutorial/math-academy-id"
+        } else {
+            "question/math-academy-id"
+        })
+        .and_then(Json::as_i64)
+        .map(|id| id.to_string())
+}
+
+fn task_step_json(
+    s: &EntitySnapshot,
+    steps: &[learning::LessonStep],
+    i: u64,
+    at: DateTime<Utc>,
+) -> Result<Json> {
+    let content = s.reference(i, "task-item/content")?;
+    let e = s.entity(content)?;
+    let state = status(s, i, "task-item/status")?;
+    let terminal = timing::terminal(&format!("task-item.status/{state}"));
+    let tutorial = e.contains_key("tutorial/id");
+    let example = s.is_example(content);
+    let reveal = example || terminal;
+    let authored = authored_step(&steps, content);
+    let title = if tutorial {
+        text(s, content, "tutorial/title")
+    } else if let Some((_, entry)) = authored.filter(|(_, entry)| entry.kind == "knowledge-point") {
+        text(s, entry.content, "knowledge-point/title")
+    } else if example {
+        "Worked example".into()
     } else {
-        "question/math-academy-id"
-    }).and_then(Json::as_i64).map(|id| id.to_string())
+        "Practice".into()
+    };
+    let mut fields = vec![];
+    for f in s.refs(content, "question/answer-fields")? {
+        let kind = status(s, f, "answer-field/type")?;
+        let mut choices = vec![];
+        if kind != "blank" {
+            for ch in s.refs(f, "answer-field/choices")? {
+                choices.push(json!({"id":ch,"type":status(s,ch,"answer/type")?,"value":text(s,ch,"answer/value")}));
+            }
+        }
+        let mut field = json!({"id":f,"key":text(s,f,"answer-field/key"),"type":kind,"presentation":text(s,f,"answer-field/presentation"),"choices":choices});
+        if kind == "blank" {
+            field["answerType"] = json!(
+                s.optional_ref(f, "answer-field/correct")?
+                    .map(|correct| status(s, correct, "answer/type"))
+                    .transpose()?
+            );
+        }
+        if terminal {
+            let selected = s.refs(i, "task-item/responses")?.into_iter().find(|ch| {
+                s.refs(f, "answer-field/choices")
+                    .unwrap_or_default()
+                    .contains(ch)
+            });
+            if let Some(ch) = selected {
+                field["response"] = json!({"id":ch,"choiceId":ch,"type":status(s,ch,"answer/type")?,"value":text(s,ch,"answer/value"),"feedback":text(s,ch,"answer/feedback")});
+            }
+            if let Some(correct) = s.optional_ref(f, "answer-field/correct")? {
+                field["correctAnswer"] = json!({"id":correct,"type":status(s,correct,"answer/type")?,"value":text(s,correct,"answer/value")});
+            }
+        }
+        fields.push(field);
+    }
+    let mut step = json!({"itemId":i,"contentId":content,"kind":if tutorial{"tutorial"}else if example{"example"}else{"question"},"title":title,"markdown":text(s,content,if tutorial{"tutorial/content"}else{"question/problem"}),"fields":fields,"status":state,"canContinue":tutorial||example||terminal,"requiresCalculator":e.get("question/requires-calculator"),"elapsedSeconds":timing::elapsed(s,i,at)?});
+    step["stepId"] = json!(authored.map(|(_, entry)| entry.step.to_string()));
+    step["mathAcademyId"] = json!(content_math_academy_id(e));
+    if reveal {
+        step["solution"] = json!(text(s, content, "question/worked-solution"));
+    }
+    Ok(step)
+}
+
+fn practice_state(s: &EntitySnapshot, a: u64, chain: &[u64]) -> Result<learning::Position> {
+    let instruction = chain
+        .last()
+        .map(|i| -> Result<bool> {
+            let content = s.reference(*i, "task-item/content")?;
+            Ok(
+                (s.entity(content)?.contains_key("tutorial/id") || s.is_example(content))
+                    && status(s, *i, "task-item/status")? == "started",
+            )
+        })
+        .transpose()?
+        .unwrap_or(false);
+    learning::continuation_state(s, a, chain, instruction, false).map_err(Into::into)
 }
 
 fn task_json(s: &EntitySnapshot, l: u64, t: u64) -> Result<Json> {
+    task_json_view(s, l, t, true)
+}
+
+// Full history is loaded when entering/resuming a lesson. Answer and continue
+// responses send only the current presentation to keep advancing inexpensive.
+fn task_json_view(s: &EntitySnapshot, l: u64, t: u64, include_history: bool) -> Result<Json> {
     owned(s, l, t)?;
     let a = s.reference(t, "learner-task/activity")?;
     let task_state = status(s, t, "learner-task/status")?;
@@ -722,63 +863,68 @@ fn task_json(s: &EntitySnapshot, l: u64, t: u64) -> Result<Json> {
     let at = Utc::now();
     let steps = learning::lesson_steps(s, a)?;
     let progress = lesson_progress(s, &steps, &chain)?;
-    let mut step = Json::Null;
-    if let Some(&i) = chain.last() {
-        let content = s.reference(i, "task-item/content")?;
-        let e = s.entity(content)?;
-        let state = status(s, i, "task-item/status")?;
-        let terminal = timing::terminal(&format!("task-item.status/{state}"));
-        let tutorial = e.contains_key("tutorial/id");
-        let example = s.is_example(content);
-        let reveal = example || terminal;
-        let authored = authored_step(&steps, content);
-        let title = if tutorial {
-            text(s, content, "tutorial/title")
-        } else if let Some((_, entry)) =
-            authored.filter(|(_, entry)| entry.kind == "knowledge-point")
-        {
-            text(s, entry.content, "knowledge-point/title")
-        } else if example {
-            "Worked example".into()
-        } else {
-            "Practice".into()
-        };
-        let mut fields = vec![];
-        for f in s.refs(content, "question/answer-fields")? {
-            let kind = status(s, f, "answer-field/type")?;
-            let mut choices = vec![];
-            if kind != "blank" {
-                for ch in s.refs(f, "answer-field/choices")? {
-                    choices.push(json!({"id":ch,"type":status(s,ch,"answer/type")?,"value":text(s,ch,"answer/value")}));
-                }
-            }
-            let mut field =
-                json!({"id":f,"key":text(s,f,"answer-field/key"),"type":kind,"choices":choices});
-            if terminal {
-                let selected = s.refs(i, "task-item/responses")?.into_iter().find(|ch| {
-                    s.refs(f, "answer-field/choices")
-                        .unwrap_or_default()
-                        .contains(ch)
-                });
-                if let Some(ch) = selected {
-                    field["response"] = json!({"id":ch,"choiceId":ch,"type":status(s,ch,"answer/type")?,"value":text(s,ch,"answer/value"),"feedback":text(s,ch,"answer/feedback")});
-                }
-                if let Some(correct) = s.optional_ref(f, "answer-field/correct")? {
-                    field["correctAnswer"] = json!({"id":correct,"type":status(s,correct,"answer/type")?,"value":text(s,correct,"answer/value")});
-                }
-            }
-            fields.push(field);
-        }
-        step = json!({"itemId":i,"contentId":content,"kind":if tutorial{"tutorial"}else if example{"example"}else{"question"},"title":title,"markdown":text(s,content,if tutorial{"tutorial/content"}else{"question/problem"}),"fields":fields,"status":state,"canContinue":tutorial||example||terminal,"requiresCalculator":e.get("question/requires-calculator"),"elapsedSeconds":timing::elapsed(s,i,at)?});
-        step["stepId"] = json!(authored.map(|(_, entry)| entry.step.to_string()));
-        step["mathAcademyId"] = json!(content_math_academy_id(e));
-        if reveal {
-            step["solution"] = json!(text(s, content, "question/worked-solution"));
+    let step = chain
+        .last()
+        .map(|&i| task_step_json(s, &steps, i, at))
+        .transpose()?
+        .unwrap_or(Json::Null);
+    let history = if include_history {
+        chain
+            .iter()
+            .take(chain.len().saturating_sub(1))
+            .enumerate()
+            .map(|(index, &i)| {
+                let step = task_step_json(s, &steps, i, at)?;
+                let number = authored_step(&steps, s.reference(i, "task-item/content")?)
+                    .map(|(index, _)| index + 1)
+                    .unwrap_or(1);
+                Ok(json!({"order":index + 1,"number":number,"total":steps.len(),"step":step}))
+            })
+            .collect::<Result<Vec<Json>>>()?
+    } else {
+        vec![]
+    };
+    let mut view = json!({"basis":s.basis_t,"taskId":t,"activityId":a,"learner":learner_json(s,l),"course":course_json(s,l)?,"title":text(s,a,"activity/title"),"status":task_state,"xp":number(s,t,"learner-task/xp-earned"),"xpBase":number(s,t,"learner-task/xp-base"),"elapsedSeconds":if matches!(task_state.as_str(),"unlocked"|"locked"){number(s,t,"learner-task/elapsed-seconds")}else{timing::task_elapsed(s,t,at)?},"step":step,"progress":progress});
+    let practice = practice_state(s, a, &chain);
+    if practice.is_err()
+        && chain
+            .iter()
+            .any(|i| s.entities[i].contains_key("task-item/deferred-step"))
+    {
+        return Err(practice.err().unwrap());
+    }
+    if let Ok(practice) = practice {
+        let awaiting = practice.next.is_none()
+            && practice.shortage.is_none()
+            && !practice.deferred.is_empty()
+            && !practice.failed;
+        view["awaitingQuestions"] = json!(awaiting);
+        view["canResumePractice"] =
+            json!(awaiting && learning::deferred_resume_step(s, a, &chain)?.is_some());
+        view["deferredSteps"] = json!(
+            practice
+                .deferred
+                .iter()
+                .map(|id| {
+                    let st = steps.iter().find(|st| st.step == *id).unwrap();
+                    json!({"stepId":id,"title":text(s,st.content,"knowledge-point/title")})
+                })
+                .collect::<Vec<_>>()
+        );
+        if let Some(id) = practice.shortage {
+            view["step"]["practiceShortage"] = json!({"stepId":id,"title":text(s,steps.iter().find(|st| st.step == id).unwrap().content,"knowledge-point/title")});
         }
     }
-    Ok(
-        json!({"basis":s.basis_t,"taskId":t,"activityId":a,"learner":learner_json(s,l),"course":course_json(s,l)?,"title":text(s,a,"activity/title"),"status":task_state,"xp":number(s,t,"learner-task/xp-earned"),"xpBase":number(s,t,"learner-task/xp-base"),"elapsedSeconds":if matches!(task_state.as_str(),"unlocked"|"locked"){number(s,t,"learner-task/elapsed-seconds")}else{timing::task_elapsed(s,t,at)?},"step":step,"progress":progress}),
-    )
+    if include_history {
+        view["history"] = json!(history);
+    }
+    Ok(view)
+}
+
+fn needs_queue_refresh(action: &str, task_state: &str) -> bool {
+    // Accuracy updates and intermediate presentations do not change learned
+    // prerequisites. Replan when finishing an attempt can unlock new work.
+    action == "continue" && matches!(task_state, "completed" | "failed")
 }
 fn add(e: Json, a: &str, v: Json) -> Json {
     json!([kw("db/add"), e, kw(a), v])
@@ -963,23 +1109,48 @@ fn mutate(
         forms.extend(queue_forms(&prospective, l, at)?);
         return Ok((forms, json!({"targets":true})));
     }
+    if action == "study-topic" {
+        let topic = required(body, "topicId")?;
+        let activity = topic_lesson(s, topic)?;
+        // A finished lesson is available for review through its saved attempt.
+        // Keep unfinished attempts resumable and never regrade completed work.
+        if task_for(s, l, activity)?.is_none() {
+            if let Some(task) = completed_task_for(s, l, activity)? {
+                return Ok((forms, json!({"taskId":task})));
+            }
+        }
+        // Explicit study uses the manual selection rules without persisting a
+        // queue membership, preference change, or engine unlock. Starting and
+        // resuming still use the same guarded, replayable lesson lifecycle.
+        let mut selection = s.clone();
+        let learner = selection.entities.get_mut(&l).ok_or("Learner not found")?;
+        learner.insert("learner/queue".into(), json!([topic]));
+        learner.insert("learner/self-directed".into(), json!(true));
+        return mutate(&selection, l, "start", &json!({"activityId":activity}), at);
+    }
     if action == "start" {
         let a = required(body, "activityId")?;
+        let existing = task_for(s, l, a)?;
+        if let Some(task) = existing {
+            match status(s, task, "learner-task/status")?.as_str() {
+                "paused" => return mutate(s, l, "resume", &json!({"taskId":task}), at),
+                "started" => {
+                    pause_other_lessons(s, l, Some(task), at, &mut forms)?;
+                    return Ok((forms, json!({"taskId":task})));
+                }
+                _ => {}
+            }
+        }
         if !learning::study_candidates(s, l, course(s, l)?, at)?
             .iter()
             .any(|p| p.activity == a)
         {
             return Err("Activity is not eligible or its content is unavailable".into());
         }
-        if let Some(t) = task_for(s, l, a)? {
+        if let Some(t) = existing {
             let state = status(s, t, "learner-task/status")?;
-            if state == "paused" {
-                return mutate(s, l, "resume", &json!({"taskId":t}), at);
-            }
             if matches!(state.as_str(), "locked" | "unlocked") {
-                if another_started_task(s, l, Some(t))? || timing::active_item(s, l)?.is_some() {
-                    return Err("Pause the current lesson before starting another".into());
-                }
+                pause_other_lessons(s, l, Some(t), at, &mut forms)?;
                 if !items(s, t)?.is_empty() {
                     return Err("An unstarted task cannot already have presentations".into());
                 }
@@ -1002,9 +1173,7 @@ fn mutate(
             }
             return Ok((forms, json!({"taskId":t})));
         }
-        if timing::active_item(s, l)?.is_some() || another_started_task(s, l, None)? {
-            return Err("Pause the current lesson before starting another".into());
-        }
+        pause_other_lessons(s, l, None, at, &mut forms)?;
         let id = uid()?;
         let xp_base = base_xp::activity_base(s, a)?;
         forms.push(json!({"db/id":"new-task","learner-task/id":{"$uuid":id},"learner-task/activity":a,"learner-task/status":kw("learner-task.status/started"),"learner-task/priority":1.0,"learner-task/elapsed-seconds":0.0,"learner-task/xp-base":xp_base,"learner-task/xp-earned":0,"db/ensure":kw("learner-task/validate")}));
@@ -1025,22 +1194,48 @@ fn mutate(
     let item_state = status(s, i, "task-item/status")?;
     let content = s.reference(i, "task-item/content")?;
     let terminal = timing::terminal(&format!("task-item.status/{item_state}"));
+    if action == "resume" && state == "paused" {
+        let p = learning::continuation_state(s, a, &chain, false, false)?;
+        if p.next.is_none() && p.shortage.is_none() && !p.deferred.is_empty() {
+            let Some(step) = learning::deferred_resume_step(s, a, &chain)? else {
+                return Ok((forms, json!({"taskId":t})));
+            };
+            pause_other_lessons(s, l, Some(t), at, &mut forms)?;
+            let example = learning::lesson_steps(s, a)?
+                .into_iter()
+                .find(|st| st.step == step)
+                .unwrap()
+                .example
+                .unwrap();
+            forms.push(cas(
+                s,
+                t,
+                "learner-task/status",
+                "learner-task.status/started",
+            )?);
+            append_item(json!(t), Some(i), example, &mut forms)?;
+            forms.push(add(
+                json!("new-item"),
+                "task-item/resumed-step",
+                json!(step),
+            ));
+            return Ok((forms, json!({"taskId":t})));
+        }
+    }
     if matches!(action, "pause" | "resume") {
         let target = if action == "pause" {
             "paused"
         } else {
             "started"
         };
+        if action == "resume" && matches!(state.as_str(), "started" | "paused") {
+            pause_other_lessons(s, l, Some(t), at, &mut forms)?;
+        }
         if state == target || matches!(state.as_str(), "completed" | "failed") {
             return Ok((forms, json!({"taskId":t})));
         }
         if !matches!(state.as_str(), "started" | "paused") {
             return Err("Task cannot change running state".into());
-        }
-        if action == "resume"
-            && (timing::active_item(s, l)?.is_some() || another_started_task(s, l, Some(t))?)
-        {
-            return Err("Pause the current lesson before resuming another".into());
         }
         if !terminal {
             transition(s, t, i, target, at, &mut forms)?;
@@ -1151,13 +1346,26 @@ fn mutate(
             if !terminal {
                 transition(s, t, i, "completed", at, &mut forms)?;
             }
-            let (next, passed, xp) = learning::continuation(
-                s,
-                a,
-                &chain,
-                !terminal,
-                number(s, t, "learner-task/xp-base") as i64,
-            )?;
+            let mut p = learning::continuation_state(s, a, &chain, !terminal, false)?;
+            if let Some(stage) = p.shortage {
+                forms.push(add(json!(i), "task-item/deferred-step", json!(stage)));
+                p = learning::continuation_state(s, a, &chain, !terminal, true)?;
+            }
+            let next = p.next;
+            let passed = p.passed;
+            let pending = !p.deferred.is_empty() && !p.failed;
+            let xp = if next.is_none() && !pending {
+                learning::continuation(
+                    s,
+                    a,
+                    &chain,
+                    !terminal,
+                    number(s, t, "learner-task/xp-base") as i64,
+                )?
+                .2
+            } else {
+                0
+            };
             if let Some(next) = next {
                 append_item(json!(t), Some(i), next, &mut forms)?;
             } else {
@@ -1165,23 +1373,27 @@ fn mutate(
                     s,
                     t,
                     "learner-task/status",
-                    if passed {
+                    if pending {
+                        "learner-task.status/paused"
+                    } else if passed {
                         "learner-task.status/completed"
                     } else {
                         "learner-task.status/failed"
                     },
                 )?);
                 forms.push(add(json!(t), "learner-task/xp-earned", json!(xp)));
-                forms.extend(learning::credit(
-                    s,
-                    l,
-                    a,
-                    None,
-                    passed,
-                    true,
-                    &format!("task-{t}"),
-                    at,
-                )?);
+                if !pending {
+                    forms.extend(learning::credit(
+                        s,
+                        l,
+                        a,
+                        None,
+                        passed,
+                        true,
+                        &format!("task-{t}"),
+                        at,
+                    )?);
+                }
             }
         } else {
             return Err("Unknown action".into());
@@ -1336,13 +1548,22 @@ impl Application {
                 })
                 .ok_or("Committed task unavailable")?
         };
-        // Task evidence commits first. Refresh derived availability immediately,
-        // using its own replayable request so queue maintenance cannot duplicate credit.
-        let request = format!("queue-after-{l}-{}", self.snapshot.basis_t);
-        let queue_error = self
-            .process(&json!({"action":"queue","requestId":request}))
-            .err();
-        let mut view = task_json(&self.snapshot, l, t)?;
+        // Task evidence commits first. Intermediate steps return immediately;
+        // completion refreshes availability with a separate replayable request.
+        let queue_error =
+            if needs_queue_refresh(action, &status(&self.snapshot, t, "learner-task/status")?) {
+                let request = format!("queue-after-{l}-{}", self.snapshot.basis_t);
+                self.process(&json!({"action":"queue","requestId":request}))
+                    .err()
+            } else {
+                None
+            };
+        let mut view = task_json_view(
+            &self.snapshot,
+            l,
+            t,
+            matches!(action, "start" | "study-topic" | "resume"),
+        )?;
         if let Some(error) = queue_error {
             eprintln!("Queue refresh postponed after saved task: {error}");
             view["queueNotice"] =
@@ -1357,7 +1578,11 @@ fn envelope(result: Result<Json>) -> Json {
         Ok(data) => json!({"ok":true,"data":data}),
         Err(error) => {
             eprintln!("Learning API: {error}");
-            let mut code = "validation";
+            let mut code = if error.to_string() == "Resume the lesson before continuing" {
+                "lesson-paused"
+            } else {
+                "validation"
+            };
             if let Some(error) = error.downcast_ref::<edb_core::SemanticError>() {
                 let native = error
                     .details
@@ -1427,12 +1652,44 @@ mod lesson_progress_tests {
     use super::*;
 
     #[test]
+    fn intermediate_steps_do_not_replan_the_entire_study_queue() {
+        for action in ["answer", "start", "study-topic", "pause", "resume"] {
+            for state in ["started", "paused", "completed", "failed"] {
+                assert!(!needs_queue_refresh(action, state));
+            }
+        }
+        assert!(!needs_queue_refresh("continue", "started"));
+        assert!(needs_queue_refresh("continue", "completed"));
+        assert!(needs_queue_refresh("continue", "failed"));
+    }
+
+    #[test]
+    fn paused_action_rejection_is_explicit_and_distinct_from_other_validation_errors() {
+        assert_eq!(
+            envelope(Err("Resume the lesson before continuing".into()))["code"],
+            "lesson-paused"
+        );
+        assert_eq!(
+            envelope(Err("Task does not belong to this learner".into()))["code"],
+            "validation"
+        );
+    }
+
+    #[test]
     fn source_id_preserves_digits_and_never_falls_back_to_topic_or_placement() {
-        let tutorial = json!({"tutorial/id":"intro","tutorial/math-academy-id":9007199254740993_i64});
-        assert_eq!(content_math_academy_id(tutorial.as_object().unwrap()).as_deref(), Some("9007199254740993"));
+        let tutorial =
+            json!({"tutorial/id":"intro","tutorial/math-academy-id":9007199254740993_i64});
+        assert_eq!(
+            content_math_academy_id(tutorial.as_object().unwrap()).as_deref(),
+            Some("9007199254740993")
+        );
         let question = json!({"question/id":"q","question/math-academy-id":456});
-        assert_eq!(content_math_academy_id(question.as_object().unwrap()).as_deref(), Some("456"));
-        let missing = json!({"question/id":"q","step/math-academy-id":789,"topic/math-academy-id":1116});
+        assert_eq!(
+            content_math_academy_id(question.as_object().unwrap()).as_deref(),
+            Some("456")
+        );
+        let missing =
+            json!({"question/id":"q","step/math-academy-id":789,"topic/math-academy-id":1116});
         assert!(content_math_academy_id(missing.as_object().unwrap()).is_none());
     }
 
@@ -1575,6 +1832,8 @@ mod study_queue_tests {
             "learner-task.status/locked",
             "learner-task.status/started",
             "task-item.status/started",
+            "learner-task.status/paused",
+            "task-item.status/correct",
         ]
         .iter()
         .enumerate()
@@ -1585,6 +1844,487 @@ mod study_queue_tests {
             );
         }
         EntitySnapshot::new(records, 42).unwrap()
+    }
+
+    #[test]
+    fn restored_task_history_uses_saved_presentations_and_reveals_only_answered_keys() {
+        let mut s = fixture();
+        s.entities.get_mut(&81).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/paused"),
+        );
+        s.entities
+            .get_mut(&81)
+            .unwrap()
+            .insert("learner-task/items".into(), json!([96, 95]));
+        s.entities.get_mut(&71).unwrap().insert(
+            "question/worked-solution".into(),
+            json!("The worked solution."),
+        );
+        s.entities
+            .get_mut(&90)
+            .unwrap()
+            .insert("answer-field/presentation".into(), json!("checkbox"));
+        s.entities.insert(95, json!({"task-item/content":71,"task-item/status":"task-item.status/correct","task-item/next":96,"task-item/responses":[91]}).as_object().unwrap().clone());
+        s.entities.insert(
+            96,
+            json!({"task-item/content":71,"task-item/status":"task-item.status/paused"})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        s.entities.insert(
+            1100,
+            json!({"db/ident":kw("task-item.status/paused")})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        s = EntitySnapshot::new(s.entities, 42).unwrap();
+        for (t, entity, attribute, value) in [
+            (1, 81, "learner-task/status", "learner-task.status/started"),
+            (2, 95, "task-item/status", "task-item.status/started"),
+            (3, 95, "task-item/status", "task-item.status/correct"),
+            (4, 96, "task-item/status", "task-item.status/started"),
+            (5, 96, "task-item/status", "task-item.status/paused"),
+            (5, 81, "learner-task/status", "learner-task.status/paused"),
+        ] {
+            s.status_history.push(StatusAssertion {
+                entity,
+                attribute: attribute.into(),
+                value: kw(value),
+                t,
+                at: json!({"$instant":t * 1000}),
+            });
+        }
+        let before = s.entities.clone();
+        let view = task_json(&s, 1, 81).unwrap();
+        assert_eq!(view["history"].as_array().unwrap().len(), 1);
+        let entry = &view["history"][0];
+        assert_eq!(entry["order"], 1);
+        assert_eq!(entry["number"], 1);
+        assert_eq!(entry["step"]["itemId"], 95);
+        assert_eq!(entry["step"]["solution"], "The worked solution.");
+        assert_eq!(entry["step"]["fields"][0]["presentation"], "checkbox");
+        assert_eq!(entry["step"]["fields"][0]["response"]["value"], "2");
+        assert_eq!(entry["step"]["fields"][0]["correctAnswer"]["value"], "2");
+        assert_eq!(view["step"]["itemId"], 96);
+        assert!(view["step"].get("solution").is_none());
+        assert!(view["step"]["fields"][0].get("correctAnswer").is_none());
+        assert!(
+            task_json_view(&s, 1, 81, false)
+                .unwrap()
+                .get("history")
+                .is_none()
+        );
+        assert!(task_json(&s, 999, 81).is_err());
+        assert_eq!(s.entities, before);
+    }
+
+    #[test]
+    fn exhausted_practice_defers_without_failure_and_can_be_resumed_when_supply_arrives() {
+        let mut s = fixture();
+        s.entities.insert(
+            1101,
+            json!({"db/ident":kw("task-item.status/completed")})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        s.entities.insert(
+            1102,
+            json!({"db/ident":kw("task-item.status/paused")})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        for (id, record) in [
+            (61, json!({"step/content":72,"step/next":62})),
+            (62, json!({"step/content":74})),
+            (
+                72,
+                json!({"knowledge-point/id":"kp","knowledge-point/title":"Unfinished skill","knowledge-point/canonical-example":73,"knowledge-point/questions":[71]}),
+            ),
+            (
+                73,
+                json!({"question/id":"example","question/problem":"Example","question/worked-solution":"Solution"}),
+            ),
+            (
+                74,
+                json!({"tutorial/id":"later","tutorial/content":"Continue reading"}),
+            ),
+            (
+                95,
+                json!({"task-item/content":73,"task-item/status":"task-item.status/completed","task-item/next":96,"task-item/elapsed-seconds":1.0}),
+            ),
+            (
+                96,
+                json!({"task-item/content":71,"task-item/status":"task-item.status/correct","task-item/elapsed-seconds":1.0}),
+            ),
+        ] {
+            s.entities.insert(id, record.as_object().unwrap().clone());
+        }
+        s.entities
+            .get_mut(&51)
+            .unwrap()
+            .insert("activity/steps".into(), json!([61, 62]));
+        s.entities.get_mut(&81).unwrap().extend(json!({"learner-task/status":"learner-task.status/started","learner-task/items":[95,96],"learner-task/xp-base":10,"learner-task/elapsed-seconds":2.0}).as_object().unwrap().clone());
+        s = EntitySnapshot::new(s.entities.clone(), s.basis_t).unwrap();
+        let at = DateTime::from_timestamp(10, 0).unwrap();
+        let (forms, _) = mutate(&s, 1, "continue", &json!({"taskId":81,"itemId":96}), at).unwrap();
+        assert!(forms.contains(&add(json!(96), "task-item/deferred-step", json!(61))));
+        assert!(
+            forms
+                .iter()
+                .any(|f| f.get("task-item/content") == Some(&json!(74)))
+        );
+        assert!(
+            !schema::edn(&json!(forms))
+                .unwrap()
+                .contains("learner-task.status/failed")
+        );
+        s.entities.get_mut(&96).unwrap().extend(
+            json!({"task-item/deferred-step":61,"task-item/next":97})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        s.entities.insert(97,json!({"task-item/content":74,"task-item/status":"task-item.status/completed","task-item/elapsed-seconds":1.0}).as_object().unwrap().clone());
+        s.entities
+            .get_mut(&81)
+            .unwrap()
+            .insert("learner-task/items".into(), json!([95, 96, 97]));
+        // A paused tutorial after a deferred skill is readable, not complete.
+        s.entities
+            .get_mut(&97)
+            .unwrap()
+            .insert("task-item/status".into(), json!("task-item.status/paused"));
+        let paused = practice_state(&s, 51, &items(&s, 81).unwrap()).unwrap();
+        assert_eq!(paused.next, Some(74));
+        assert_eq!(paused.deferred, vec![61]);
+        s.entities.get_mut(&97).unwrap().insert(
+            "task-item/status".into(),
+            json!("task-item.status/completed"),
+        );
+        let (forms, _) = mutate(&s, 1, "continue", &json!({"taskId":81,"itemId":97}), at).unwrap();
+        assert!(
+            forms.contains(
+                &cas(&s, 81, "learner-task/status", "learner-task.status/paused").unwrap()
+            )
+        );
+        assert!(forms.contains(&add(json!(81), "learner-task/xp-earned", json!(0))));
+        assert!(!schema::edn(&json!(forms)).unwrap().contains(":progress/"));
+        s.entities.get_mut(&81).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/paused"),
+        );
+        assert!(
+            mutate(&s, 1, "resume", &json!({"taskId":81}), at)
+                .unwrap()
+                .0
+                .is_empty()
+        );
+        s.entities.insert(75,json!({"question/id":"new-question","question/problem":"New practice","question/answer-fields":[90]}).as_object().unwrap().clone());
+        s.entities
+            .get_mut(&72)
+            .unwrap()
+            .insert("knowledge-point/questions".into(), json!([71, 75]));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([]));
+        let dashboard = home(&s, 1).unwrap();
+        assert!(dashboard["activities"].as_array().unwrap().is_empty());
+        assert_eq!(dashboard["waitingActivities"][0]["taskId"], 81);
+        assert_eq!(dashboard["waitingActivities"][0]["canResumePractice"], true);
+        let (forms, _) = mutate(&s, 1, "resume", &json!({"taskId":81}), at).unwrap();
+        assert!(forms.contains(&add(json!("new-item"), "task-item/resumed-step", json!(61))));
+        assert!(
+            forms
+                .iter()
+                .any(|f| f.get("task-item/content") == Some(&json!(73)))
+        );
+        assert!(
+            !forms
+                .iter()
+                .any(|f| f.get("task-item/content") == Some(&json!(74)))
+        );
+    }
+
+    #[test]
+    fn study_now_starts_a_locked_topic_without_changing_queue_course_or_mode() {
+        let mut s = fixture();
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(false));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([]));
+        let before = s.entities.clone();
+        let at = Utc::now();
+        assert!(mutate(&s, 1, "start", &json!({"activityId":51}), at).is_err());
+        let (forms, result) = mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).unwrap();
+        assert_eq!(result["taskId"], 81);
+        assert!(
+            forms.contains(
+                &cas(&s, 81, "learner-task/status", "learner-task.status/started").unwrap()
+            )
+        );
+        let edn = schema::edn(&json!(forms)).unwrap();
+        for untouched in [
+            "learner/queue",
+            "learner/self-directed",
+            "learner/course",
+            "learner-task.status/unlocked",
+        ] {
+            assert!(!edn.contains(untouched));
+        }
+        assert_eq!(s.entities, before);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([]));
+        let (forms, result) = mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).unwrap();
+        assert!(result["taskUuid"].is_string());
+        let task = forms
+            .iter()
+            .find(|f| f.get("learner-task/activity") == Some(&json!(51)))
+            .unwrap();
+        assert_eq!(
+            task["learner-task/status"],
+            kw("learner-task.status/started")
+        );
+    }
+
+    #[test]
+    fn study_now_resumes_the_same_attempt_and_preserves_its_presentations() {
+        let mut s = fixture();
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([]));
+        s.entities.get_mut(&81).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/paused"),
+        );
+        s.entities
+            .get_mut(&81)
+            .unwrap()
+            .insert("learner-task/items".into(), json!([95]));
+        s.entities.insert(
+            95,
+            json!({"task-item/content":71,"task-item/status":"task-item.status/correct"})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        let before = s.entities.clone();
+        let at = Utc::now();
+        let (forms, result) = mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).unwrap();
+        assert_eq!(result["taskId"], 81);
+        assert_eq!(
+            forms,
+            vec![cas(&s, 81, "learner-task/status", "learner-task.status/started").unwrap()]
+        );
+        assert_eq!(s.entities, before);
+        s.entities.get_mut(&80).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/started"),
+        );
+        s.entities
+            .get_mut(&80)
+            .unwrap()
+            .insert("learner-task/items".into(), json!([96]));
+        s.entities.insert(
+            96,
+            json!({"task-item/content":70,"task-item/status":1008,"task-item/responses":[91]})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        let (forms, result) = mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).unwrap();
+        assert_eq!(result["taskId"], 81);
+        assert_eq!(
+            forms,
+            vec![
+                cas(&s, 80, "learner-task/status", "learner-task.status/paused").unwrap(),
+                cas(&s, 81, "learner-task/status", "learner-task.status/started").unwrap(),
+            ]
+        );
+        s.entities.get_mut(&80).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/unlocked"),
+        );
+        s.entities.get_mut(&81).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/started"),
+        );
+        let (forms, result) = mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).unwrap();
+        assert_eq!(result["taskId"], 81);
+        assert!(forms.is_empty());
+    }
+
+    #[test]
+    fn switching_lessons_pauses_the_previous_clock_and_preserves_answers() {
+        let mut s = fixture();
+        s.entities.insert(
+            1101,
+            json!({"db/ident":kw("task-item.status/paused")})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        s.entities.get_mut(&80).unwrap().extend(json!({"learner-task/status":1005,"learner-task/items":[95,96],"learner-task/xp-earned":0}).as_object().unwrap().clone());
+        s.entities.insert(95, json!({"task-item/content":70,"task-item/status":1008,"task-item/responses":[91],"task-item/elapsed-seconds":7.0,"task-item/next":96}).as_object().unwrap().clone());
+        s.entities.insert(
+            96,
+            json!({"task-item/content":70,"task-item/status":1006,"task-item/elapsed-seconds":0.0})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        s = EntitySnapshot::new(s.entities, 42).unwrap();
+        let at = Utc::now();
+        s.status_history.push(StatusAssertion {
+            entity: 96,
+            attribute: "task-item/status".into(),
+            value: kw("task-item.status/started"),
+            t: 1,
+            at: json!({"$instant":at.timestamp_millis()-20_000}),
+        });
+        let before = s.entities.clone();
+        for action in ["start", "study-topic"] {
+            let body = if action == "start" {
+                json!({"activityId":51})
+            } else {
+                json!({"topicId":6})
+            };
+            let (forms, result) = mutate(&s, 1, action, &body, at).unwrap();
+            assert_eq!(result["taskId"], 81);
+            assert!(
+                forms
+                    .contains(&cas(&s, 96, "task-item/status", "task-item.status/paused").unwrap())
+            );
+            assert!(forms.contains(&add(json!(96), "task-item/elapsed-seconds", json!(20.0))));
+            assert!(forms.contains(&add(json!(80), "learner-task/elapsed-seconds", json!(27.0))));
+            assert!(forms.contains(
+                &cas(&s, 80, "learner-task/status", "learner-task.status/paused").unwrap()
+            ));
+            assert!(forms.contains(
+                &cas(&s, 81, "learner-task/status", "learner-task.status/started").unwrap()
+            ));
+            let edn = schema::edn(&json!(forms)).unwrap();
+            for untouched in [
+                "task-item/responses",
+                "learner-task/xp-earned",
+                "learner-task.status/completed",
+                "learner/queue",
+            ] {
+                assert!(!edn.contains(untouched));
+            }
+        }
+        // Starting a newly-created attempt uses the same transfer.
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([80]));
+        let (forms, result) = mutate(&s, 1, "start", &json!({"activityId":51}), at).unwrap();
+        assert!(result["taskUuid"].is_string());
+        assert!(
+            forms.contains(
+                &cas(&s, 80, "learner-task/status", "learner-task.status/paused").unwrap()
+            )
+        );
+        assert_eq!(s.entity(95).unwrap(), before.get(&95).unwrap());
+        assert_eq!(s.entity(96).unwrap(), before.get(&96).unwrap());
+        assert!(mutate(&s, 1, "start", &json!({"activityId":999}), at).is_err());
+        assert_eq!(s.entity(80).unwrap(), before.get(&80).unwrap());
+    }
+
+    #[test]
+    fn study_now_reopens_the_latest_completed_attempt_without_new_learning_or_credit() {
+        let mut s = fixture();
+        s.entities.get_mut(&81).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/completed"),
+        );
+        s.entities
+            .get_mut(&81)
+            .unwrap()
+            .insert("learner-task/xp-earned".into(), json!(7));
+        s.entities.insert(83, s.entity(81).unwrap().clone());
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([80, 83, 81]));
+        s.entities.insert(
+            1100,
+            json!({"db/ident":kw("learner-task.status/completed")})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        s = EntitySnapshot::new(s.entities, 42).unwrap();
+        for (task, t) in [(83, 1), (81, 2)] {
+            s.status_history.push(StatusAssertion {
+                entity: task,
+                attribute: "learner-task/status".into(),
+                value: kw("learner-task.status/completed"),
+                t,
+                at: json!({"$instant":t * 1000}),
+            });
+        }
+        let before = s.entities.clone();
+        for _ in 0..2 {
+            let (forms, result) =
+                mutate(&s, 1, "study-topic", &json!({"topicId":6}), Utc::now()).unwrap();
+            assert!(forms.is_empty());
+            assert_eq!(result["taskId"], 81);
+        }
+        assert_eq!(s.entities, before);
+        // An unfinished attempt takes precedence over the completed history.
+        s.entities.insert(85, json!({"learner-task/activity":51,"learner-task/status":"learner-task.status/paused","learner-task/items":[95]}).as_object().unwrap().clone());
+        s.entities.insert(
+            95,
+            json!({"task-item/content":71,"task-item/status":"task-item.status/correct"})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([80, 81, 83, 85]));
+        let (forms, result) =
+            mutate(&s, 1, "study-topic", &json!({"topicId":6}), Utc::now()).unwrap();
+        assert_eq!(result["taskId"], 85);
+        assert_eq!(
+            forms,
+            vec![cas(&s, 85, "learner-task/status", "learner-task.status/started").unwrap()]
+        );
+    }
+
+    #[test]
+    fn study_now_resolves_only_unambiguous_topics_with_available_content() {
+        let mut s = fixture();
+        let at = Utc::now();
+        assert!(mutate(&s, 1, "study-topic", &json!({"topicId":2}), at).is_err());
+        assert!(mutate(&s, 1, "study-topic", &json!({"topicId":7}), at).is_err());
+        assert!(mutate(&s, 1, "study-topic", &json!({"topicId":999}), at).is_err());
+        s.entities
+            .get_mut(&90)
+            .unwrap()
+            .remove("answer-field/correct");
+        assert!(mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).is_err());
+        s.entities.insert(52, s.entity(51).unwrap().clone());
+        assert!(
+            topic_lesson(&s, 6)
+                .unwrap_err()
+                .to_string()
+                .contains("ambiguous")
+        );
     }
 
     #[test]
@@ -2008,8 +2748,15 @@ mod integration {
             assert_eq!(s.entity(p)?.get("progress/learned"), Some(&json!(true)));
             assert!(s.entity(p)?.contains_key("progress/memory-at"));
             assert_eq!(number(&s, t, "learner-task/xp-base"), allocated_base);
-            for name in ["progress/expected-assessment-accuracy", "progress/expected-practice-accuracy"] {
-                let forecast = s.entity(p)?.get(name).and_then(Json::as_f64).expect("forecast persisted");
+            for name in [
+                "progress/expected-assessment-accuracy",
+                "progress/expected-practice-accuracy",
+            ] {
+                let forecast = s
+                    .entity(p)?
+                    .get(name)
+                    .and_then(Json::as_f64)
+                    .expect("forecast persisted");
                 assert!((0.0..=1.0).contains(&forecast));
             }
             eprintln!(

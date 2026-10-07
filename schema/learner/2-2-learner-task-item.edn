@@ -44,6 +44,16 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Optional next presentation in the same learner task. Omit on the last item. This ordinary ref orders the task's existing members; learner-task/items remains their component owner. Derive the first item from the member with no incoming next link. The application checks that all members form one chain without cycles, merges, or links outside the task."}
 
+ {:db/ident :task-item/deferred-step
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Authored knowledge-point stage deferred after this completed example or answered question because no fresh gradable questions were available. Keeps the practice unfinished while later lesson stages proceed; never a skip, failure, or mastery assertion. Application validates same-activity membership and exhaustion."}
+
+ {:db/ident :task-item/resumed-step
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Authored knowledge-point stage revisited by this canonical-example presentation after finishing a lesson route with deferred practice. Replay resumes only outstanding stages and retains prior question outcomes and exposure history. Application validates that the stage was deferred in this task."}
+
  {:db/ident :task-item/validate
   :db.entity/attrs [:task-item/id :task-item/status]
   :db/doc "Requires presentation identity and status. The next link is optional; historical content may be unknown. Task membership, chain consistency, status transitions, and derived elapsed totals require application validation."}

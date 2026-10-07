@@ -1,7 +1,9 @@
 import { marked } from './vendor/marked/marked.esm.js';
+import { romanLists } from './prose-lists.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
 import { developerModeReady, isDeveloperMode } from './developer-mode.js';
-import { inlinePrompt, mountInlineFields, richSelect, questionFeedback } from './question-fields.js';
+import { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, statementCheckboxControl } from './question-fields.js';
+import { attachTopicMenu } from './topic-menu.js';
 
 await developerModeReady;
 
@@ -92,7 +94,7 @@ function markdown(value, fields = []) {
     return prefix + (math.length - 1) + 'END';
   });
   source = source.replace(placeholder, (whole, key) => fieldIndex(key) < 0 ? whole : `<span class="field-location">${escapeHTML(fieldLabel(key, fieldIndex(key)))}</span>`);
-  let html = marked.parse(source, { async: false, gfm: true, breaks: false });
+  let html = marked.parse(romanLists(source), { async: false, gfm: true, breaks: false });
   html = html.replace(new RegExp(prefix + '(\\d+)END', 'g'), (_, i) => escapeHTML(math[Number(i)]));
   const fragment = DOMPurify.sanitize(html, {
     RETURN_DOM_FRAGMENT: true, USE_PROFILES: { html: true },
@@ -125,16 +127,16 @@ function fieldControl(field, question, index) {
   const set = el('fieldset', 'answer-field');
   set.dataset.fieldId = String(entityId(field));
   const label = field.key === 'selection' ? 'Choose an answer' : fieldLabel(field.key, index);
-  set.append(el('legend', '', label));
+  set.append(el('legend', field.key === 'selection' ? 'sr-only' : '', label));
   const response = field.response;
   const responseId = response?.choiceId ?? response?.entityId ?? response?.id;
   const name = `assignment-${questionKey(question)}-${entityId(field)}`;
   const type = short(field.type);
-  if (type === 'blank') {
-    const input = el('input', 'answer-input');
-    input.type = 'text'; input.name = name; input.autocomplete = 'off'; input.spellcheck = false;
-    input.setAttribute('aria-label', label); input.value = response?.value ?? '';
-    input.placeholder = 'Enter your answer'; set.append(input);
+  const checklist = statementCheckboxControl(field, question.problem ?? question.markdown, label => answerValue({ type: 'text', value: label }), false, name);
+  if (checklist) {
+    set.append(checklist);
+  } else if (type === 'blank') {
+    set.append(blankInput(field, label, name));
   } else if (type === 'radio') {
     const choices = el('div', 'choices');
     for (const choice of field.choices || []) {
@@ -160,8 +162,8 @@ function fieldControl(field, question, index) {
 function collectResponses(view) {
   return (view.question.fields || []).map(field => {
     const set = [...view.form.querySelectorAll('[data-field-id]')].find(node => node.dataset.fieldId === String(entityId(field)));
-    if (short(field.type) === 'blank') return { fieldId: entityId(field), value: set?.querySelector('input')?.value || '' };
-    const control = set?.querySelector('input:checked, select');
+    if (short(field.type) === 'blank') return { fieldId: entityId(field), value: set?.querySelector('input,math-field')?.value || '' };
+    const control = set?.querySelector('.answer-choice-value') || set?.querySelector('input:checked, select');
     return { fieldId: entityId(field), choiceId: control?.value ? Number(control.value) : '' };
   });
 }
@@ -175,9 +177,9 @@ function refreshControls() {
     const question = view.question;
     const editable = question.gradable === true && !question.isExample && (assignmentData?.preview || !answered(question));
     const disabled = modeChanging || !editable || view.submitting;
-    for (const input of view.form?.querySelectorAll('input,select,.answer-select-trigger') || []) input.disabled = disabled;
+    for (const input of view.form?.querySelectorAll('input,select,math-field,.answer-select-trigger') || []) input.disabled = disabled;
     if (view.check) {
-      const valid = collectResponses(view).every(response => response.choiceId || typeof response.value === 'string' && response.value.trim());
+      const valid = responsesComplete(view.question.fields || [], collectResponses(view));
       view.check.disabled = disabled || Boolean(mutationPending || pendingPause || retryOperation) || !valid || (!assignmentData?.preview && !activeQuestion(question));
     }
     if (view.work) {
@@ -204,8 +206,7 @@ function renderQuestionFeedback(view) {
   view.result.replaceChildren();
   if (answered(question)) {
     const feedback = el('div', 'feedback'); questionFeedback(feedback, question.status); feedback.setAttribute('role', 'status');
-    const label = short(question.status) === 'correct' ? '✓ Correct' : short(question.status) === 'skipped' ? 'Skipped' : '✕ Incorrect';
-    feedback.append(el('div', 'feedback-heading', label + (assignmentData.preview ? ' · Preview only' : '')));
+    feedback.append(feedbackHeading(question.status, assignmentData.preview));
     if (question.feedback) feedback.append(markdown(question.feedback));
     for (const field of question.fields || []) if (field.response?.feedback) feedback.append(markdown(field.response.feedback));
     view.result.append(feedback);
@@ -257,7 +258,7 @@ function questionView(question) {
       const check = el('button', 'primary', assignmentData.preview ? 'Check preview answer' : 'Check answer');
       check.type = 'submit'; view.check = check; actions.append(check); form.append(actions);
       form.addEventListener('focusin', event => {
-        if (!event.target.matches('input,select,.answer-select-trigger') || assignmentData.preview || modeChanging || answered(view.question)) return;
+        if (!event.target.matches('input,select,math-field,.answer-select-trigger') || assignmentData.preview || modeChanging || answered(view.question)) return;
         wantedFocus = key; void focusWantedQuestion();
       });
       form.addEventListener('input', refreshControls); form.addEventListener('change', refreshControls);
@@ -300,7 +301,11 @@ function coverage(topics) {
   const section = el('div', 'assignment-coverage');
   section.append(el('p', 'section-label', 'Preparation topics'));
   const list = el('ul', 'coverage-links');
-  for (const topic of topics) { const row = el('li'); row.append(link(topic.title || topic.name, topicURL(topic))); list.append(row); }
+  for (const topic of topics) {
+    const row = el('li'), topicLink = link(topic.title || topic.name, topicURL(topic));
+    attachTopicMenu(topicLink, topic);
+    row.append(topicLink); list.append(row);
+  }
   section.append(list); return section;
 }
 function contentView(content) {

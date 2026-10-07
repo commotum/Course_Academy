@@ -83,7 +83,7 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
             entry.questions = s.refs(content, "knowledge-point/questions")?;
             entry.questions.sort_unstable();
             entry.questions.dedup();
-            if entry.questions.is_empty() || entry.questions.iter().any(|q| s.is_example(*q)) {
+            if entry.questions.iter().any(|q| s.is_example(*q)) {
                 return Err("KP needs a practice pool separate from its worked example".into());
             }
         } else if r.contains_key("question/id") {
@@ -182,6 +182,38 @@ fn seen_questions(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
     Ok(seen)
 }
 
+pub fn ordered_presentations(s: &EntitySnapshot, task: u64) -> Result<Vec<u64>> {
+    let all: BTreeSet<_> = s.refs(task, "learner-task/items")?.into_iter().collect();
+    if all.is_empty() {
+        return Ok(vec![]);
+    }
+    let mut incoming = BTreeSet::new();
+    for i in &all {
+        if let Some(n) = s.optional_ref(*i, "task-item/next")? {
+            if !all.contains(&n) || !incoming.insert(n) {
+                return Err("Invalid presentation chain".into());
+            }
+        }
+    }
+    let heads: Vec<_> = all.difference(&incoming).copied().collect();
+    if heads.len() != 1 {
+        return Err("Invalid presentation chain".into());
+    }
+    let mut out = vec![];
+    let mut cur = Some(heads[0]);
+    while let Some(i) = cur {
+        if out.contains(&i) {
+            return Err("Presentation cycle".into());
+        }
+        out.push(i);
+        cur = s.optional_ref(i, "task-item/next")?;
+    }
+    if out.len() != all.len() {
+        return Err("Disconnected presentations".into());
+    }
+    Ok(out)
+}
+
 fn task_learner(s: &EntitySnapshot, items: &[u64]) -> Result<Option<u64>> {
     let Some(item) = items.first() else {
         return Ok(None);
@@ -207,9 +239,12 @@ fn task_learner(s: &EntitySnapshot, items: &[u64]) -> Result<Option<u64>> {
 }
 
 #[derive(Debug)]
-struct Position {
-    next: Option<u64>,
-    passed: bool,
+pub struct Position {
+    pub next: Option<u64>,
+    pub passed: bool,
+    pub shortage: Option<u64>,
+    pub failed: bool,
+    pub deferred: Vec<u64>,
 }
 
 fn consume_instruction(
@@ -266,137 +301,257 @@ fn position_after(
     items: &[u64],
     completed_item: Option<u64>,
 ) -> Result<Position> {
-    let mut seen = if let Some(learner) = task_learner(s, items)? {
-        seen_questions(s, learner)?
-    } else {
-        BTreeSet::new()
-    };
+    position_with_deferral(s, activity, items, completed_item, None)
+}
+
+fn position_with_deferral(
+    s: &EntitySnapshot,
+    activity: u64,
+    items: &[u64],
+    completed_item: Option<u64>,
+    deferred_item: Option<u64>,
+) -> Result<Position> {
+    let mut seen = task_learner(s, items)?
+        .map(|l| seen_questions(s, l))
+        .transpose()?
+        .unwrap_or_default();
+    let steps = lesson_steps(s, activity)?;
     let mut cursor = 0;
     let mut all_correct = true;
-    for step in lesson_steps(s, activity)? {
-        match step.kind.as_str() {
-            "tutorial" | "example" => {
-                if !consume_instruction(s, items, &mut cursor, step.content, completed_item)? {
-                    return Ok(Position {
-                        next: Some(step.content),
-                        passed: false,
-                    });
-                }
-            }
-            "question" => {
-                let Some(item) = items.get(cursor) else {
-                    if seen.contains(&step.content) {
-                        return Err("This authored question was already presented. Fresh content is needed; the lesson is not failed.".into());
+    let mut deferred = BTreeSet::new();
+    let mut outcomes_by_step: BTreeMap<u64, Vec<Option<bool>>> = BTreeMap::new();
+    let mut route: Vec<_> = steps.iter().collect();
+    loop {
+        for step in &route {
+            let current = |next, shortage, passed, pending: &BTreeSet<u64>| Position {
+                next,
+                shortage,
+                passed,
+                failed: false,
+                deferred: steps
+                    .iter()
+                    .filter(|st| pending.contains(&st.step))
+                    .map(|st| st.step)
+                    .collect(),
+            };
+            match step.kind.as_str() {
+                "tutorial" | "example" => {
+                    if !consume_instruction(s, items, &mut cursor, step.content, completed_item)? {
+                        return Ok(current(Some(step.content), None, false, &deferred));
                     }
-                    return Ok(Position {
-                        next: Some(step.content),
-                        passed: false,
-                    });
-                };
-                if s.reference(*item, "task-item/content")? != step.content {
-                    return Err("unexpected lesson question".into());
                 }
-                let Some(outcome) = question_outcome(s, *item)? else {
-                    if cursor + 1 != items.len() {
-                        return Err("unanswered question precedes later content".into());
-                    }
-                    return Ok(Position {
-                        next: Some(step.content),
-                        passed: false,
-                    });
-                };
-                all_correct &= outcome == Some(true);
-                cursor += 1;
-            }
-            "knowledge-point" => {
-                let example = step.example.unwrap();
-                if !consume_instruction(s, items, &mut cursor, example, completed_item)? {
-                    return Ok(Position {
-                        next: Some(example),
-                        passed: false,
-                    });
-                }
-                let mut outcomes = vec![];
-                loop {
-                    let decision = evaluate_kp_prefix(&outcomes)?;
-                    if decision.complete() {
-                        if decision.passed() == Some(false) {
-                            if cursor != items.len() {
-                                return Err("presentations continue after failed practice".into());
-                            }
-                            return Ok(Position {
-                                next: None,
-                                passed: false,
-                            });
+                "question" => {
+                    let Some(item) = items.get(cursor) else {
+                        if seen.contains(&step.content) {
+                            return Err("This authored question was already presented. Fresh content is needed; the lesson is not failed.".into());
                         }
-                        break;
+                        return Ok(current(Some(step.content), None, false, &deferred));
+                    };
+                    if s.reference(*item, "task-item/content")? != step.content {
+                        return Err("unexpected lesson question".into());
                     }
-                    if let Some(item) = items.get(cursor) {
-                        let content = s.reference(*item, "task-item/content")?;
-                        if !step.questions.contains(&content) {
-                            return Err(
-                                "question does not belong to current knowledge point".into()
-                            );
+                    let Some(outcome) = question_outcome(s, *item)? else {
+                        if cursor + 1 != items.len() {
+                            return Err("unanswered question precedes later content".into());
                         }
-                        let Some(outcome) = question_outcome(s, *item)? else {
-                            if cursor + 1 != items.len() {
-                                return Err("unanswered question precedes later content".into());
+                        return Ok(current(Some(step.content), None, false, &deferred));
+                    };
+                    all_correct &= outcome == Some(true);
+                    cursor += 1;
+                }
+                "knowledge-point" => {
+                    let example = step.example.unwrap();
+                    let example_item = items.get(cursor).copied();
+                    if !consume_instruction(s, items, &mut cursor, example, completed_item)? {
+                        return Ok(current(Some(example), None, false, &deferred));
+                    }
+                    let outcomes = outcomes_by_step.entry(step.step).or_default();
+                    let mut previous = example_item;
+                    loop {
+                        let decision = evaluate_kp_prefix(outcomes)?;
+                        if decision.complete() {
+                            if decision.passed() == Some(false) {
+                                if cursor != items.len() {
+                                    return Err(
+                                        "presentations continue after failed practice".into()
+                                    );
+                                }
+                                let mut p = current(None, None, false, &deferred);
+                                p.failed = true;
+                                return Ok(p);
                             }
-                            return Ok(Position {
-                                next: Some(content),
-                                passed: false,
-                            });
-                        };
-                        outcomes.push(outcome);
-                        seen.insert(content);
-                        cursor += 1;
-                    } else {
-                        let candidates = step
-                            .questions
-                            .iter()
-                            .copied()
-                            .filter(|q| !seen.contains(q) && validate_question(s, *q).is_ok())
-                            .collect::<Vec<_>>();
-                        let policy = crate::question_selection::active_policy(s)?;
-                        let weights = crate::question_selection::weights(
-                            s,
-                            policy,
-                            "lesson",
-                            outcomes.len(),
-                        )?;
-                        let task = items
-                            .first()
-                            .map(|item| s.owners(*item, "learner-task/items"))
-                            .transpose()?
-                            .and_then(|owners| owners.first().copied())
-                            .unwrap_or(activity);
-                        let seed =
-                            format!("task-{task}/kp-{}/slot-{}", step.content, outcomes.len());
-                        let next = crate::question_selection::select(s, &candidates, weights, &seed)?
-                            .ok_or("More fresh questions are needed for this knowledge point. Your lesson remains unfinished; this is not a failed attempt.")?;
-                        return Ok(Position {
-                            next: Some(next),
-                            passed: false,
-                        });
+                            deferred.remove(&step.step);
+                            break;
+                        }
+                        // The marker belongs to a real, finished presentation. It
+                        // records missing supply, never an invented question/skip.
+                        if let Some(item) = previous {
+                            let marker = s.optional_ref(item, "task-item/deferred-step")?;
+                            if marker.is_some() && marker != Some(step.step) {
+                                return Err("deferral does not match its lesson stage".into());
+                            }
+                            if marker == Some(step.step) || deferred_item == Some(item) {
+                                deferred.insert(step.step);
+                                break;
+                            }
+                        }
+                        if let Some(item) = items.get(cursor) {
+                            let content = s.reference(*item, "task-item/content")?;
+                            if !step.questions.contains(&content) {
+                                return Err(
+                                    "question does not belong to current knowledge point".into()
+                                );
+                            }
+                            let Some(outcome) = question_outcome(s, *item)? else {
+                                if cursor + 1 != items.len() {
+                                    return Err("unanswered question precedes later content".into());
+                                }
+                                return Ok(current(Some(content), None, false, &deferred));
+                            };
+                            outcomes.push(outcome);
+                            seen.insert(content);
+                            previous = Some(*item);
+                            cursor += 1;
+                        } else {
+                            let candidates = step
+                                .questions
+                                .iter()
+                                .copied()
+                                .filter(|q| !seen.contains(q) && validate_question(s, *q).is_ok())
+                                .collect::<Vec<_>>();
+                            if candidates.is_empty() {
+                                return Ok(current(None, Some(step.step), false, &deferred));
+                            }
+                            let policy = crate::question_selection::active_policy(s)?;
+                            let weights = crate::question_selection::weights(
+                                s,
+                                policy,
+                                "lesson",
+                                outcomes.len(),
+                            )?;
+                            let task = items
+                                .first()
+                                .map(|i| s.owners(*i, "learner-task/items"))
+                                .transpose()?
+                                .and_then(|o| o.first().copied())
+                                .unwrap_or(activity);
+                            let seed =
+                                format!("task-{task}/kp-{}/slot-{}", step.content, outcomes.len());
+                            let next =
+                                crate::question_selection::select(s, &candidates, weights, &seed)?;
+                            return Ok(current(next, None, false, &deferred));
+                        }
                     }
                 }
+                _ => unreachable!(),
             }
-            _ => unreachable!(),
+        }
+        if cursor == items.len() {
+            return Ok(Position {
+                next: None,
+                shortage: None,
+                failed: false,
+                passed: all_correct && deferred.is_empty(),
+                deferred: steps
+                    .iter()
+                    .filter(|st| deferred.contains(&st.step))
+                    .map(|st| st.step)
+                    .collect(),
+            });
+        }
+        // A later return appends a fresh example at a marked stage. Replay only
+        // still-deferred stages, retaining outcomes from earlier presentations.
+        let resumed = s
+            .optional_ref(items[cursor], "task-item/resumed-step")?
+            .ok_or("presentations continue beyond the lesson")?;
+        if !deferred.contains(&resumed) {
+            return Err("resumed stage was not deferred".into());
+        }
+        route = steps
+            .iter()
+            .filter(|st| deferred.contains(&st.step))
+            .skip_while(|st| st.step != resumed)
+            .collect();
+    }
+}
+
+/// Inspect the next click without writing or selecting an exposed answer.
+pub fn continuation_state(
+    s: &EntitySnapshot,
+    activity: u64,
+    items: &[u64],
+    complete_instruction: bool,
+    defer: bool,
+) -> Result<Position> {
+    let item = items.last().copied();
+    if complete_instruction {
+        let content = s.entity(s.reference(
+            item.ok_or("instruction presentation required")?,
+            "task-item/content",
+        )?)?;
+        if !content.contains_key("tutorial/id")
+            && !s.is_example(s.reference(item.unwrap(), "task-item/content")?)
+        {
+            return Err("ordinary questions require a submitted answer".into());
         }
     }
-    if cursor != items.len() {
-        return Err("presentations continue beyond the lesson".into());
+    let p = position_with_deferral(
+        s,
+        activity,
+        items,
+        complete_instruction.then_some(item.unwrap_or(0)),
+        None,
+    )?;
+    if defer {
+        if p.shortage.is_none() {
+            return Err(
+                "Practice can only be deferred when fresh questions are unavailable".into(),
+            );
+        }
+        return position_with_deferral(
+            s,
+            activity,
+            items,
+            complete_instruction.then_some(item.unwrap_or(0)),
+            item,
+        );
     }
-    Ok(Position {
-        next: None,
-        passed: all_correct,
-    })
+    Ok(p)
+}
+
+pub fn deferred_resume_step(
+    s: &EntitySnapshot,
+    activity: u64,
+    items: &[u64],
+) -> Result<Option<u64>> {
+    let p = position(s, activity, items)?;
+    if p.next.is_some() || p.shortage.is_some() || p.failed {
+        return Ok(None);
+    }
+    let seen = task_learner(s, items)?
+        .map(|l| seen_questions(s, l))
+        .transpose()?
+        .unwrap_or_default();
+    Ok(lesson_steps(s, activity)?
+        .iter()
+        .find(|st| {
+            p.deferred.contains(&st.step)
+                && st
+                    .questions
+                    .iter()
+                    .any(|q| !seen.contains(q) && validate_question(s, *q).is_ok())
+        })
+        .map(|st| st.step))
 }
 
 /// Return an existing active presentation's content, or the next fresh content.
 /// The caller reserves a returned new question atomically before displaying it.
 pub fn next_content(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<Option<u64>> {
-    Ok(position(s, activity, items)?.next)
+    let p = position(s, activity, items)?;
+    if p.shortage.is_some() {
+        return Err("More fresh questions are needed for this knowledge point. Your lesson remains unfinished; this is not a failed attempt.".into());
+    }
+    Ok(p.next)
 }
 
 /// The first presentation has no task owner yet. Check its learner history
@@ -414,7 +569,7 @@ pub fn first_content(s: &EntitySnapshot, activity: u64, learner: u64) -> Result<
 
 pub fn lesson_passed(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<bool> {
     let p = position(s, activity, items)?;
-    Ok(p.next.is_none() && p.passed)
+    Ok(p.next.is_none() && p.shortage.is_none() && p.passed)
 }
 
 /// Plan the next presentation while completing the current instruction in the
@@ -438,8 +593,11 @@ pub fn continuation(
         None
     };
     let p = position_after(s, activity, items, completed)?;
+    if p.shortage.is_some() {
+        return Err("More fresh questions are needed for this knowledge point. Your lesson remains unfinished; this is not a failed attempt.".into());
+    }
     let passed = p.next.is_none() && p.passed;
-    let xp = if p.next.is_none() {
+    let xp = if p.next.is_none() && (p.deferred.is_empty() || p.failed) {
         completed_lesson_xp(s, items, base)?
     } else {
         0
@@ -473,8 +631,8 @@ pub fn plan_candidates(
     course: u64,
     at: DateTime<Utc>,
 ) -> Result<Vec<PlannedActivity>> {
-    // Captured lesson banks currently contain two or three questions per KP.
-    // Exhaustion without a passing streak ends as failed without mastery or XP.
+    // Require enough supply to begin recommended work. Exhausted practice
+    // within an active lesson can be deferred without claiming failure/mastery.
     plan_candidates_with_supply(s, learner, course, at, 2, true)
 }
 
@@ -892,7 +1050,7 @@ fn plan_candidates_in_scope(
     scope.extend(support.keys().copied());
     let seen = seen_questions(s, learner)?;
     let mut finished = BTreeSet::new();
-    let mut active = BTreeSet::new();
+    let mut active = BTreeMap::new();
     for task in s.refs(learner, "learner/activity")? {
         let status = ident(s, task, "learner-task/status")?;
         if status == "learner-task.status/completed" {
@@ -901,7 +1059,7 @@ fn plan_candidates_in_scope(
             status.as_str(),
             "learner-task.status/started" | "learner-task.status/paused"
         ) {
-            active.insert(s.reference(task, "learner-task/activity")?);
+            active.insert(s.reference(task, "learner-task/activity")?, task);
         }
     }
     let mut result = vec![];
@@ -915,9 +1073,24 @@ fn plan_candidates_in_scope(
         let Some(topic) = s.optional_ref(activity, "activity/scope")? else {
             continue;
         };
-        if active.contains(&activity) {
+        if active.contains_key(&activity) {
             if (selection != StudyScope::Queue || scope.contains(&topic))
                 && lesson_steps(s, activity).is_ok()
+                && {
+                    let chain = ordered_presentations(s, active[&activity])?;
+                    if !chain
+                        .iter()
+                        .any(|i| s.entities[i].contains_key("task-item/deferred-step"))
+                    {
+                        true
+                    } else {
+                        let p = position(s, activity, &chain)?;
+                        p.next.is_some()
+                            || p.shortage.is_some()
+                            || p.deferred.is_empty()
+                            || deferred_resume_step(s, activity, &chain)?.is_some()
+                    }
+                }
             {
                 result.push((activity, topic));
             }
@@ -986,7 +1159,7 @@ fn plan_candidates_in_scope(
                 let days = (due - at).num_hours().max(0) as f64 / 24.0;
                 priority += 250.0 / (1.0 + days);
             }
-            let mut reason = if active.contains(&activity) {
+            let mut reason = if active.contains_key(&activity) {
                 priority += 10000.0;
                 "Continue your lesson".into()
             } else if target_count > 1 {
@@ -1128,7 +1301,11 @@ pub fn lesson_xp(s: &EntitySnapshot, activity: u64, items: &[u64], base: i64) ->
     if base < 0 {
         return Err("base XP must be nonnegative".into());
     }
-    if position(s, activity, items)?.next.is_some() {
+    let p = position(s, activity, items)?;
+    if p.shortage.is_some() {
+        return Err("More fresh questions are needed for this knowledge point".into());
+    }
+    if p.next.is_some() || (!p.deferred.is_empty() && !p.failed) {
         return Ok(0);
     }
     completed_lesson_xp(s, items, base)
@@ -1798,6 +1975,144 @@ mod tests {
     }
     fn items(s: &EntitySnapshot) -> Vec<u64> {
         s.refs(9, "learner-task/items").unwrap()
+    }
+
+    #[test]
+    fn supply_deferral_continues_later_skills_and_resumes_only_unfinished_practice() {
+        let mut s = fixture();
+        s.entities
+            .get_mut(&41)
+            .unwrap()
+            .insert("knowledge-point/questions".into(), json!([100, 101]));
+        s.entities
+            .get_mut(&31)
+            .unwrap()
+            .insert("step/next".into(), json!(32));
+        s.entities
+            .get_mut(&20)
+            .unwrap()
+            .insert("activity/steps".into(), json!([30, 31, 32]));
+        put(
+            &mut s.entities,
+            32,
+            json!({"step/id":id(32),"step/content":44}),
+        );
+        put(
+            &mut s.entities,
+            44,
+            json!({"knowledge-point/id":id(44),"knowledge-point/canonical-example":43,"knowledge-point/questions":[102,103]}),
+        );
+        put(
+            &mut s.entities,
+            43,
+            json!({"question/id":id(43),"question/problem":"Later example","question/worked-solution":"Explanation"}),
+        );
+        s = EntitySnapshot::new(s.entities.clone(), s.basis_t).unwrap();
+        present(&mut s, 40, "completed");
+        present(&mut s, 42, "completed");
+        present(&mut s, 100, "correct");
+        let blocked = present(&mut s, 101, "incorrect");
+        let p = continuation_state(&s, 20, &items(&s), false, false).unwrap();
+        assert_eq!(p.shortage, Some(31));
+        let p = continuation_state(&s, 20, &items(&s), false, true).unwrap();
+        assert_eq!(p.next, Some(43));
+        assert_eq!(p.deferred, vec![31]);
+        s.entities
+            .get_mut(&blocked)
+            .unwrap()
+            .insert("task-item/deferred-step".into(), json!(31));
+        present(&mut s, 43, "completed");
+        present(&mut s, 102, "correct");
+        present(&mut s, 103, "correct");
+        let p = position(&s, 20, &items(&s)).unwrap();
+        assert_eq!(p.next, None);
+        assert!(!p.passed);
+        assert_eq!(p.deferred, vec![31]);
+        assert_eq!(lesson_xp(&s, 20, &items(&s), 10).unwrap(), 0);
+        assert_eq!(deferred_resume_step(&s, 20, &items(&s)).unwrap(), None);
+        s.entities.get_mut(&9).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/paused"),
+        );
+        assert!(plan_candidates(&s, 1, 5, Utc::now()).unwrap().is_empty());
+        s.entities
+            .get_mut(&41)
+            .unwrap()
+            .insert("knowledge-point/questions".into(), json!([100, 101, 104]));
+        assert_eq!(deferred_resume_step(&s, 20, &items(&s)).unwrap(), Some(31));
+        assert_eq!(
+            plan_candidates(&s, 1, 5, Utc::now()).unwrap()[0].activity,
+            20
+        );
+        let resumed = present(&mut s, 42, "completed");
+        s.entities
+            .get_mut(&resumed)
+            .unwrap()
+            .insert("task-item/resumed-step".into(), json!(31));
+        let again = present(&mut s, 104, "correct");
+        assert_eq!(
+            continuation_state(&s, 20, &items(&s), false, false)
+                .unwrap()
+                .shortage,
+            Some(31)
+        );
+        s.entities
+            .get_mut(&again)
+            .unwrap()
+            .insert("task-item/deferred-step".into(), json!(31));
+        assert_eq!(position(&s, 20, &items(&s)).unwrap().deferred, vec![31]);
+        // A second return preserves the new one-answer streak.
+        let mut q = s.entities[&104].clone();
+        q.insert("question/id".into(), json!(id(105)));
+        put(&mut s.entities, 105, Value::Object(q));
+        s.entities.get_mut(&41).unwrap().insert(
+            "knowledge-point/questions".into(),
+            json!([100, 101, 104, 105]),
+        );
+        let return_again = present(&mut s, 42, "completed");
+        s.entities
+            .get_mut(&return_again)
+            .unwrap()
+            .insert("task-item/resumed-step".into(), json!(31));
+        assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(105));
+        present(&mut s, 105, "correct");
+        assert!(lesson_passed(&s, 20, &items(&s)).unwrap());
+        assert!(position(&s, 20, &items(&s)).unwrap().deferred.is_empty());
+        assert_eq!(items(&s).len(), 11); // Original history plus returns to only the deferred skill.
+    }
+
+    #[test]
+    fn empty_practice_pool_can_be_deferred_after_example_without_inventing_a_question() {
+        let mut s = fixture();
+        s.entities
+            .get_mut(&41)
+            .unwrap()
+            .insert("knowledge-point/questions".into(), json!([]));
+        present(&mut s, 40, "completed");
+        let example = present(&mut s, 42, "started");
+        let p = continuation_state(&s, 20, &items(&s), true, false).unwrap();
+        assert_eq!(p.shortage, Some(31));
+        let p = continuation_state(&s, 20, &items(&s), true, true).unwrap();
+        assert_eq!(p.deferred, vec![31]);
+        assert_eq!(p.next, None);
+        assert!(!p.passed);
+        assert_eq!(
+            s.entities[&example]["task-item/status"],
+            json!("task-item.status/started")
+        );
+        assert_eq!(items(&s).len(), 2);
+    }
+
+    #[test]
+    fn deferral_is_rejected_while_fresh_questions_remain() {
+        let mut s = fixture();
+        present(&mut s, 40, "completed");
+        present(&mut s, 42, "completed");
+        assert!(
+            continuation_state(&s, 20, &items(&s), false, true)
+                .unwrap_err()
+                .contains("only be deferred")
+        );
     }
 
     fn planning_fixture(targets: &[u64]) -> EntitySnapshot {

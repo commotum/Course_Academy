@@ -1,4 +1,5 @@
 import { marked } from './vendor/marked/marked.esm.js';
+import { romanLists } from './prose-lists.js';
 import { createCoursePicker } from './navigation.js';
 import { createTargetControls } from './targets.js';
 import { attachStepMenu } from './step-menu.js';
@@ -62,7 +63,7 @@ function markdown(value, className = 'prose', fields = []) {
     return prefix + (math.length - 1) + 'END';
   });
   source = source.replace(placeholder, (whole, key) => fieldIndex(key) < 0 ? whole : `<span class="field-location">${escapeHTML(fieldLabel(key, fieldIndex(key)))}</span>`);
-  let html = marked.parse(source, { async: false, gfm: true, breaks: false });
+  let html = marked.parse(romanLists(source), { async: false, gfm: true, breaks: false });
   html = html.replace(new RegExp(prefix + '(\\d+)END', 'g'), (_, i) => escapeHTML(math[Number(i)]));
   const fragment = DOMPurify.sanitize(html, {
     RETURN_DOM_FRAGMENT: true,

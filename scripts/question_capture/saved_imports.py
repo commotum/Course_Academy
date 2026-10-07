@@ -72,12 +72,13 @@ def eligible(directory, state, content):
 
 
 def version():
-    """Only importer/comparison changes reset ordinary retries."""
+    """Only effective importer/comparison changes reset ordinary retries."""
     digest = hashlib.sha256()
-    paths = [PACKAGE/name for name in ('saved_imports.py','core.py','database.py','edn.py',
-                                      'provenance.py','math_notation.py','native_comparison.py')]
-    paths += [ROOT/'engine/rust'/name for name in ('learning.rs','symbolic.rs','schema.rs','lib.rs')]
-    paths += [ROOT/'scripts/compare_question_answers.rs', ROOT/'Cargo.toml', ROOT/'Cargo.lock']
+    paths = [PACKAGE/name for name in ('core.py','database.py','edn.py',
+                                      'provenance.py','math_notation.py','native_comparison.py','import_repair.py')]
+    # The checker runs an installed executable, not its Rust source files.
+    # Unbuilt edits and changes to sweep bookkeeping cannot fix old imports.
+    # availability() below hashes the actual executable when it changes.
     for path in paths:
         if path.exists():
             digest.update(str(path.relative_to(ROOT)).encode())
@@ -110,7 +111,7 @@ def retry_key(directory, state, generation, args, prior_evidence=()):
                 'completion','questions','examples','kps','assessment_question_count','test_submission_status')}
     digest.update(json.dumps(evidence,sort_keys=True).encode())
     digest.update(json.dumps(prior_evidence,sort_keys=True).encode())
-    names = ['content.json','activity-metadata.json','assets/manifest.json',
+    names = ['content.json','activity-metadata.json','assets/manifest.json','answer-source-reviews.json',
              'edb-import/commit-intent.json','edb-import/commit.edn',
              'edb-import/transaction.edn','edb-import/reconciliation.edn']
     names += [str(p.relative_to(directory)) for p in sorted(directory.glob('example-*.json'))]
@@ -187,9 +188,11 @@ def complete(args, directory, state, result):
             task_id=state['task_id'], directory=str(directory), **result)
 
 
-def sweep(db, args, *, trigger, exclude=()):
+def sweep(db, args, *, trigger, exclude=(), repair_budget=None):
     """At most 20 attempts; one per capture and evidence/version/mode key.
 
+    repair_budget limits model diagnoses, not ordinary saved-content retries.
+    Budget-postponed repairs remain eligible at later boundaries.
     Persist started *before* importing, and the final key afterwards so newly
     created intent artifacts cannot cause an unchanged failure to loop. Only
     Database.import_content may recover, preview, plan, commit or verify.
@@ -229,6 +232,17 @@ def sweep(db, args, *, trigger, exclude=()):
         except (ValueError,OSError,AttributeError) as error:
             logging.warning('Cannot inspect prior MA evidence %s: %s',directory,error)
     outcomes = []
+    remaining_repairs = repair_budget
+    repair_postponed = False
+    def can_repair():
+        nonlocal remaining_repairs, repair_postponed
+        if remaining_repairs is None:
+            return True
+        if remaining_repairs <= 0:
+            repair_postponed = True
+            return False
+        remaining_repairs -= 1
+        return True
     for directory,state in states:
         if directory.resolve() in excluded:
             continue
@@ -246,25 +260,32 @@ def sweep(db, args, *, trigger, exclude=()):
             related = [r for q in content['questions']+content.get('canonical_examples',[])
                        for r in prior.get(q['math_academy_id'],[]) if Path(r['directory']) != directory]
             key = retry_key(directory,state,generation,args,related)
-            if ledger.get(identity,{}).get('key') == key:
+            previous = ledger.get(identity,{})
+            if (previous.get('key') == key and
+                    (previous.get('status') != 'repair_pending' or remaining_repairs == 0)):
                 continue
             if len(outcomes) >= MAX_ATTEMPTS:
                 break
             ledger[identity] = {'key':key, 'status':'started', 'trigger':trigger}
             atomic_json(ledger_path,ledger)
+            repair_postponed = False
             try:
-                result = db.import_content(content,directory/'edb-import',not args.preview)
+                from import_repair import import_with_repair
+                result = import_with_repair(db,content,directory,state,args,revisit=False,can_repair=can_repair)
                 if not (result.get('previewed') or result.get('committed') or result.get('already_complete')):
                     raise ValueError('Pending commit intent retained; preview cannot recover a commit')
                 complete(args,directory,state,result)
                 status, error_text = 'complete', None
             except Exception as error:
-                status, error_text = 'deferred', str(error)
+                status, error_text = 'repair_pending' if repair_postponed else 'deferred', str(error)
                 state['deferred_error'] = {'phase':'import','message':str(error)}
                 atomic_json(directory/'state.json',state)
                 journal(args.state_dir/'journal.jsonl','saved_import_deferred',task_id=state['task_id'],
                         directory=str(directory),trigger=trigger,error_type=type(error).__name__,message=str(error))
-                logging.warning('Saved import %s remains deferred: %s',directory,error)
+                if repair_postponed:
+                    logging.info('Saved import %s is queued for repair after live capture resumes',directory)
+                else:
+                    logging.warning('Saved import %s remains deferred: %s',directory,error)
             ledger[identity] = {'key':retry_key(directory,state,generation,args,related), 'status':status,
                                 'trigger':trigger, 'error':error_text}
             atomic_json(ledger_path,ledger)

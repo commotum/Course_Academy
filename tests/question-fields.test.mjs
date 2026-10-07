@@ -3,7 +3,7 @@ import test from 'node:test';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 
-const shared = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replaceAll('export ', '');
+const shared = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^import .*;\n/m, '').replace(/^MathfieldElement\..*;\n/gm, '').replaceAll('export ', '');
 const assignmentSource = await readFile(new URL('../ui/assignments.js', import.meta.url), 'utf8');
 const assignments = assignmentSource.slice(assignmentSource.indexOf('const $'), assignmentSource.indexOf('createCoursePicker({'));
 
@@ -52,7 +52,7 @@ function fixture() {
       return prompt;
     };
     typeset = async () => {};
-    return { inlinePrompt, mountInlineFields, richSelect, questionFeedback,
+    return { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, statementCheckboxControl,
       render: question => { assignmentData = { basis: 1, preview: false }; const view = questionView(question); refreshControls(); return questionViews.get(questionKey(question)); },
       update: question => applyAssignment({ basis: 2, preview: false, assignment: { steps: [{ content: question }] } }, generation),
       responses: view => collectResponses(view),
@@ -137,5 +137,112 @@ test('feedback accents retain readable contrast on dark and light question surfa
       const ink = luminance(color), background = luminance(theme === 'light' ? '#eeeeee' : '#111111');
       assert.ok((Math.max(ink, background) + .05) / (Math.min(ink, background) + .05) >= 4.5);
     }
+  }
+});
+
+
+test('math blanks use editable equations, retain LaTeX responses, and lock after grading', () => {
+  const f = fixture();
+  const math = { ...field, answerType: 'math', response: { value: String.raw`\frac{11}{4x}` } };
+  const question = { id: 'math-q', kind: 'question', gradable: true, status: 'started',
+    problem: '$y=$ {{blank-1}}.', fields: [math, { id: 'text', entityId: 12, key: 'word', type: 'blank', answerType: 'text' }] };
+  const view = f.h.render(question); f.document.body.append(view.node);
+  const editor = view.form.querySelector('math-field');
+  assert.ok(editor); assert.equal(editor.getAttribute('aria-label'), 'Answer 1');
+  assert.equal(editor.mathVirtualKeyboardPolicy, 'auto');
+  assert.equal(editor.getAttribute('placeholder'), '');
+  assert.equal(editor.disabled, false);
+  assert.equal(view.form.querySelectorAll('input').length, 1);
+  editor.value = String.raw`-\frac{7}{3x}`;
+  editor.dispatchEvent(new Event('input', { bubbles: true }));
+  assert.equal(view.check.disabled, true); // second, text field is still empty
+  view.form.querySelector('input').value = 'text';
+  view.form.querySelector('input').dispatchEvent(new Event('input', { bubbles: true }));
+  assert.equal(view.check.disabled, false);
+  editor.value = String.raw`\frac{11}{\placeholder{}}`;
+  editor.dispatchEvent(new Event('input', { bubbles: true }));
+  assert.equal(view.check.disabled, true);
+  editor.value = String.raw`-\frac{7}{3x}`;
+  editor.dispatchEvent(new Event('input', { bubbles: true }));
+  assert.equal(view.check.disabled, false);
+  assert.deepEqual(JSON.parse(JSON.stringify(f.h.responses(view))), [
+    { fieldId: 11, value: String.raw`-\frac{7}{3x}` }, { fieldId: 12, value: 'text' },
+  ]);
+  f.h.update({ ...question, status: 'correct', fields: [{ ...math, response: { value: editor.value } }, question.fields[1]] });
+  assert.equal(view.form.querySelector('math-field').disabled, true);
+  assert.equal(view.form.querySelector('math-field').value, String.raw`-\frac{7}{3x}`);
+});
+
+
+const statementPrompt = 'Which equations?\n\nI. - $y\'\'=x$\nII. - $y\'=x$\nIII. - $y\'=y$';
+const combinationValues = ['None of those listed', 'I only', 'II only', 'I and II only', 'III only', 'I and III only', 'II and III only', 'I, II, and III'];
+const statementField = { id: 10, key: 'selection', type: 'radio', presentation: 'checkbox',
+  choices: combinationValues.map((value, index) => ({ id: 100 + index, type: 'text', value })) };
+
+test('independent Roman checkboxes submit exactly the original authored choice for every combination', () => {
+  const f = fixture();
+  const render = label => { const node = f.node('span'); node.textContent = label; return node; };
+  const control = f.h.statementCheckboxControl(statementField, statementPrompt, render);
+  assert.ok(control);
+  const inputs = control.querySelectorAll('input').filter(input => input.type === 'checkbox');
+  assert.deepEqual(Array.from(inputs, input => input.value), ['I', 'II', 'III']);
+  const encoded = control.querySelector('.answer-choice-value');
+  for (let mask = 0; mask < 8; mask++) {
+    inputs.forEach((input, i) => { input.checked = Boolean(mask & (1 << i)); input.dispatchEvent(new Event('input')); });
+    assert.equal(encoded.value, String(100 + mask));
+  }
+});
+
+test('saved combination answers reopen as the matching read-only checkbox selection', () => {
+  const f = fixture();
+  const control = f.h.statementCheckboxControl({ ...statementField, response: { choiceId: 106 } }, statementPrompt,
+    label => { const node = f.node('span'); node.textContent = label; return node; }, true);
+  const inputs = control.querySelectorAll('input').filter(input => input.type === 'checkbox');
+  assert.deepEqual(Array.from(inputs, input => input.checked), [false, true, true]);
+  assert.equal(inputs.every(input => input.disabled), true);
+  assert.equal(control.querySelector('.answer-choice-value').value, '106');
+});
+
+test('ordinary radio fields and incomplete or ambiguous combination maps retain their existing presentation', () => {
+  const f = fixture();
+  for (const field of [{ ...statementField, presentation: '' }, { ...statementField, choices: statementField.choices.slice(0, 7) },
+    { ...statementField, choices: statementField.choices.map((choice, index) => index === 7 ? { ...choice, value: 'Something else' } : choice) }]) {
+    assert.equal(f.h.statementCheckboxControl(field, statementPrompt, () => f.node('span')), null);
+  }
+});
+
+test('assignments collect the encoded combination rather than the individual checkbox label', () => {
+  const f = fixture();
+  const question = { id: 'check-question', entityId: 500, kind: 'question', status: 'started', itemId: 600, problem: statementPrompt,
+    fields: [{ ...statementField, entityId: 10, choices: statementField.choices.map(choice => ({ ...choice, entityId: choice.id })) }] };
+  const view = f.h.render(question);
+  const inputs = view.form.querySelectorAll('input').filter(input => input.type === 'checkbox');
+  inputs[1].checked = true; inputs[1].dispatchEvent(new Event('input', { bubbles: true }));
+  inputs[2].checked = true; inputs[2].dispatchEvent(new Event('input', { bubbles: true }));
+  assert.deepEqual(JSON.parse(JSON.stringify(f.h.responses(view))), [{ fieldId: 10, choiceId: 106 }]);
+});
+
+
+test('grading feedback has a visible badge, a large separate symbol, and plain status text', () => {
+  const { h } = fixture();
+  for (const [status, label, icon] of [['correct', 'Correct!', '✓ '], ['incorrect', 'Incorrect!', '✕ ']]) {
+    const heading = h.feedbackHeading(status, true);
+    assert.equal(heading.querySelector('.feedback-icon').textContent, icon);
+    assert.equal(heading.querySelector('.feedback-icon').getAttribute('aria-hidden'), 'true');
+    assert.equal(heading.querySelector('.feedback-badge').textContent, icon + label);
+    assert.equal(heading.querySelector('.feedback-preview').textContent, 'Preview only');
+  }
+  const skipped = h.feedbackHeading('skipped');
+  assert.equal(skipped.querySelector('.feedback-icon'), null);
+  assert.equal(skipped.textContent, 'Skipped');
+});
+
+test('filled feedback badges keep at least 4.5:1 contrast with their white text', async () => {
+  const css = await readFile(new URL('../ui/learning.css', import.meta.url), 'utf8');
+  for (const match of css.matchAll(/--feedback-fill: (#[a-f0-9]{6})/g)) {
+    const rgb = match[1].slice(1).match(/../g).map(part => parseInt(part, 16) / 255)
+      .map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4);
+    const luminance = .2126 * rgb[0] + .7152 * rgb[1] + .0722 * rgb[2];
+    assert.ok(1.05 / (luminance + .05) >= 4.5);
   }
 });

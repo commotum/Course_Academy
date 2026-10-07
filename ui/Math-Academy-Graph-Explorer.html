@@ -135,7 +135,7 @@ button,input,select { font:inherit; }
   #modeBar button { flex-shrink:0; }
 }
 
-/* Scoped columns are local hops; Lxx is the unchanged, one-based global rank. */
+/* Scoped columns collapse ordered global layers; Lxx keeps the global rank. */
 /* The layer badge and title share the parent node's selection state. */
 .node.has-badge .node-shape{stroke-width:1}
 .node .badge-text{font-family:inherit;font-size:11px;font-weight:400;letter-spacing:inherit}
@@ -195,6 +195,8 @@ button,input,select { font:inherit; }
 .minimap-stats #zoomReadout{margin-left:auto;text-align:right}
 .info-actions#viewActions{gap:5px;margin-top:6px}
 .info-actions#viewActions .pill{height:28px;padding:0 8px;font-size:10px}
+.graph-target-color{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;font-size:11px;color:var(--tone-bb)}
+.graph-target-color .profile-switch:focus-visible{outline:2px solid var(--tone-ee);outline-offset:3px}
 @media(max-width:1000px){.mini-panel{display:block;width:170px}}
 @media(max-width:570px){.mini-panel{display:block;top:auto;bottom:55px;right:12px;width:142px;padding:8px}.minimap-stats{font-size:9px;letter-spacing:.07em}.info-actions#viewActions .pill{height:26px;font-size:9px}}
 </style>
@@ -204,6 +206,7 @@ button,input,select { font:inherit; }
 #nodeContextMenu [role="menuitem"]{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:11px 12px;font:inherit;font-size:12px;letter-spacing:0;cursor:pointer;white-space:nowrap;text-decoration:none;box-sizing:border-box}
 #nodeContextMenu [role="menuitem"]:hover,#nodeContextMenu [role="menuitem"]:focus-visible{background:var(--tone-ff);color:var(--tone-00);outline:none}
 #nodeContextMenu [role="menuitem"]:disabled{opacity:.55;cursor:wait}
+#nodeContextMenu .menu-new-tab-indicator{float:right;margin-left:16px}
 #nodeContextMenu .target-control{display:flex;width:100%;gap:0}
 #nodeContextMenu .target-status:not(:empty){padding:0 12px 10px}
 #copyNodeNotice{position:fixed;z-index:101;bottom:60px;left:50%;transform:translateX(-50%);max-width:calc(100vw - 32px);padding:10px 14px;background:var(--tone-11);border:1px solid var(--tone-77);color:var(--tone-ff);font:11px var(--font);box-shadow:0 6px 20px #0008;pointer-events:none}
@@ -215,7 +218,7 @@ button,input,select { font:inherit; }
 #manualNodeDone{margin-top:12px;float:right}
 
 </style><style id="competency-styles">
-/* Fill encodes only learner repetitions. Selection uses separate corner marks. */
+/* Fill shows repetitions or topic status. Selection uses separate corner marks. */
 #nodes .node .title-shape{fill:var(--node);stroke:var(--node-border);stroke-dasharray:var(--competency-dash,none)}
 #nodes .node .title-text{fill:var(--node-text)}
 #nodes .node .layer-badge{fill:var(--tone-00);stroke:var(--tone-ff);stroke-dasharray:none}
@@ -280,6 +283,7 @@ button,input,select { font:inherit; }
 <button class="pill" id="forwardBtn">Forward</button>
 <button class="pill" id="overviewBtn">Course overview</button>
 </div><div class="info-actions hidden" id="targetActions"></div><div class="info-actions" id="viewActions"><button class="pill" id="fitBtn">Fit</button><button class="pill" id="resetBtn">Reset</button></div>
+<div class="graph-target-color"><label id="targetColorLabel" for="targetColorToggle">Targets in red</label><button id="targetColorToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetColorLabel" aria-checked="false"></button></div>
 
 <div class="meta-line" id="metaLine"></div><div id="badgeNote">Global layer badges · prerequisite order</div>
 <section id="competencyLegend" aria-label="Progress and selection legend">
@@ -289,7 +293,7 @@ button,input,select { font:inherit; }
 <div class="competency-keys"><span><svg class="competency-active-example" viewBox="0 0 28 18" aria-hidden="true"><rect x="5" y="5" width="18" height="8" fill="var(--mastery-3)"/><path d="M7 2H2V7 M21 2H26V7 M2 11V16H7 M21 16H26V11" fill="none" stroke="var(--tone-ff)" stroke-width="1"/></svg>Active selection</span><span><i class="competency-unknown-example" aria-hidden="true"></i>No data</span></div>
 <details id="competencyDetails"><summary id="profileSummary">Knowledge profile</summary>
 <p id="competencySelectionDetail"></p>
-<p>Fill shows accumulated repetitions. Bands use the whole-number part of the value, capped at 6. A dashed outline means no progress record.</p>
+<p id="competencyFillDescription">Fill shows accumulated repetitions. Bands use the whole-number part of the value, capped at 6. A dashed outline means no progress record.</p>
 <p>Corner brackets mark your selection. Brightness shows progress; it does not indicate whether a review is due.</p>
 </details></section>
 <div class="breadcrumbs" id="breadcrumbs"></div>
@@ -306,7 +310,8 @@ button,input,select { font:inherit; }
 <div id="nodeContextMenu" role="menu" aria-label="Topic actions" hidden>
 <div id="nodeQueueAction" role="none"></div>
 <div id="nodeTargetAction" role="none"></div>
-<a id="goToTopicLink" role="menuitem" href="/topic">Go to topic</a>
+<a id="studyTopicLink" role="menuitem" href="/learn">Study now<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
+<a id="goToTopicLink" role="menuitem" href="/topic">Go to topic<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
 <button id="copyNodeButton" type="button" role="menuitem">Copy node to clipboard</button>
 </div>
 <div id="copyNodeNotice" role="status" aria-live="polite" hidden></div>
@@ -328,6 +333,9 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   const PALETTE = ['#000000','#303030','#5A5A5A','#858585','#AEAEAE','#D6D6D6','#FFFFFF'];
   let snapshot = null, courseId = null, courseTopics = new Set(), repetitions = {};
   let targetsView = false;
+  const targetColorKey = 'course-academy.graph-targets-red';
+  let targetsInRed = false;
+  try { targetsInRed = localStorage.getItem(targetColorKey) === 'true'; } catch { /* Coloring also works without browser storage. */ }
   let targetTopicId = null;
   const targetControls = createTargetControls({
     readLearner: async () => {
@@ -340,7 +348,8 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       const next = new Set(learner?.targets || []);
       const changed = previous.size !== next.size || [...next].some(id => !previous.has(id));
       if (snapshot) snapshot.learner = { ...snapshot.learner, ...learner };
-      if (targetsView && changed && !loading) changeCourse(null, true, 'targets');
+      if (targetsView && changed && !loading) refreshTargetScope();
+      else if (changed && !loading) refreshTargetColors();
       document.getElementById('targetActions').classList.toggle('hidden', targetTopicId === null || learner?.selfDirected !== true);
     },
   });
@@ -414,6 +423,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     mode:'overview',
     selected:null,
     activeIds:new Set(),
+    followTargets:false,
     depth:'1',
     view:{x:36,y:80,k:1},
     dragging:false,
@@ -463,11 +473,12 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
 
   // The input stores zero-based ranks. Display badges are human-facing L01…L93.
   // Depth selects topics by shortest-path distance. Scoped columns instead obey
-  // prerequisite order, compacted around the selection; badges keep global ranks.
+  // global layer order, collapsing independent layers; badges keep global ranks.
   function layerLabel(node) { return 'L' + String(node.layer + 1).padStart(2, '0'); }
   function isScoped() { return state.activeIds.size>0 && state.mode !== 'overview'; }
   function selectionMode() { return state.activeIds.size ? (targetsView ? 'upstream' : 'both') : 'overview'; }
   function resetSelection() {
+    state.followTargets=targetsView;
     state.activeIds = targetsView ? new Set(courseTopics) : new Set();
     state.selected = [...state.activeIds][0] ?? null;
     state.mode = selectionMode();
@@ -499,44 +510,28 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   // Compute distances in each direction separately: never expand into siblings
   // just because a traversal can turn around at a shared prerequisite.
   function assignScopedColumns(nodeIds, upstream, downstream, selected) {
+    // Keep global layers in order, but collapse consecutive visible layers
+    // into one stack until a prerequisite edge requires a new stack. Layers
+    // are placed as a group so unrelated later topics cannot jump left.
+    const layers = new Map();
+    for (const id of nodeIds) {
+      const layer = nodeById.get(id).layer;
+      if (!layers.has(layer)) layers.set(layer, []);
+      layers.get(layer).push(id);
+    }
     const ranks = new Map();
-    if (targetsView) {
-      // Work backwards from the target group, keeping every prerequisite to
-      // its left. A target can itself be a prerequisite of another target.
-      for (let i = dependencyOrder.length - 1; i >= 0; i--) {
-        const id = dependencyOrder[i];
-        if (!nodeIds.has(id)) continue;
-        let rank = state.activeIds.has(id) ? 0 : Infinity;
-        for (const next of outMap.get(id)) {
-          if (nodeIds.has(next) && ranks.has(next)) rank = Math.min(rank, ranks.get(next) - 1);
-        }
-        if (!Number.isFinite(rank)) throw new Error('Unplaced prerequisite topic: ' + id);
-        ranks.set(id, rank);
-      }
-    } else {
-    for (const id of dependencyOrder) {
-      if (!nodeIds.has(id)) continue;
-      let rank = state.activeIds.has(id) ? 0 : -Infinity;
-      for (const previous of inMap.get(id)) {
-        if (nodeIds.has(previous) && ranks.has(previous)) rank = Math.max(rank, ranks.get(previous) + 1);
-      }
-      if (Number.isFinite(rank)) ranks.set(id, rank);
+    let column = 0;
+    const stack = new Set();
+    for (const layer of [...layers.keys()].sort((a,b) => a-b)) {
+      const group = layers.get(layer);
+      const needsColumn = group.some(id => inMap.get(id).some(previous => stack.has(previous)));
+      if (needsColumn) { column++; stack.clear(); }
+      for (const id of group) { ranks.set(id, column); stack.add(id); }
     }
-    // Place the remaining ancestors as close as possible to their visible
-    // successors. Selected topics cannot jump in front of their prerequisites.
-    for (let i = dependencyOrder.length - 1; i >= 0; i--) {
-      const id = dependencyOrder[i];
-      if (!nodeIds.has(id) || ranks.has(id)) continue;
-      let rank = Infinity;
-      for (const next of outMap.get(id)) if (ranks.has(next)) rank = Math.min(rank, ranks.get(next) - 1);
-      if (!Number.isFinite(rank)) throw new Error('Unplaced scoped topic: ' + id);
-      ranks.set(id, rank);
-    }
-    }
-    const ordered = [...new Set(ranks.values())].sort((a,b) => a-b);
-    const index = new Map(ordered.map((rank,i) => [rank,i]));
-    const origin = targetsView ? ordered.length - 1 : index.get(ranks.get(selected));
-    const columns = new Map([...ranks].map(([id,rank]) => [id,index.get(rank)-origin]));
+    // Preserve the coordinate origin used by navigation and routing. This
+    // offset does not change which topics share a stack or the stack spacing.
+    const origin = targetsView ? Math.max(0, ...ranks.values()) : ranks.get(selected) ?? 0;
+    const columns = new Map([...ranks].map(([id,rank]) => [id,rank-origin]));
     for (const id of nodeIds) {
       if (!Number.isInteger(columns.get(id))) throw new Error('No column for topic ' + id);
       for (const next of outMap.get(id)) {
@@ -1014,7 +1009,41 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     const light=isLightTheme();
     return {known:true,level,repetitions:value,fill:PALETTE[light?6-level:level],text:(light?level<=3:level>=3)?'#000000':'#FFFFFF',border:themeColor('#FFFFFF'),dash:'none',label:value.toLocaleString(undefined,{maximumFractionDigits:3})+(value===1?' repetition':' repetitions')};
   }
+  function nodeAppearance(nodeOrId) {
+    const id=typeof nodeOrId==='object'?nodeOrId.id:nodeOrId;
+    const target=(snapshot?.learner.targets || []).some(value=>String(value)===String(id));
+    const appearance={...competencyFor(nodeOrId),target};
+    appearance.studied=snapshot?.learned?.[id]===true || (appearance.known && appearance.repetitions>=1);
+    // Local mastery is explicit; historical imports may only have repetitions.
+    // On Targets this status takes precedence over optional red target coloring.
+    if(targetsView && appearance.studied)Object.assign(appearance,{fill:'#14783e',text:'#FFFFFF',border:isLightTheme()?'#0e5a2e':'#66d99a'});
+    else if(targetsInRed && target)Object.assign(appearance,{fill:'#b52b34',text:'#FFFFFF',border:isLightTheme()?'#8b1721':'#ff8585'});
+    return appearance;
+  }
+  function paintNode(element,node) {
+    const appearance=nodeAppearance(node);
+    element.dataset.competency=appearance.known?String(appearance.level):'unknown';
+    element.style.setProperty('--node',appearance.fill);element.style.setProperty('--node-hover',appearance.fill);
+    element.style.setProperty('--node-text',appearance.text);element.style.setProperty('--node-border',appearance.border);element.style.setProperty('--competency-dash',appearance.dash);
+    element.setAttribute('aria-label',`${layerLabel(node)} · ${node.name} · ${appearance.label}${targetsView&&appearance.studied?' · Already studied':''}${appearance.target?' · Study target':''}${state.activeIds.has(node.id)?' · Active selection':''}`);
+  }
+  function refreshTargetColors() {
+    $('targetColorToggle').setAttribute('aria-checked',String(targetsInRed));
+    if(!state.layout)return;
+    for(const node of state.layout.activeNodes){
+      const element=$('topic-'+node.id);
+      if(element)paintNode(element,node);
+    }
+    minimapLayout=null;drawMinimap();
+  }
+  function setTargetColors(enabled,persist=true) {
+    targetsInRed=enabled;
+    if(persist){try{localStorage.setItem(targetColorKey,String(enabled));}catch{ /* Keep the local view usable. */ }}
+    refreshTargetColors();
+  }
   function updateCompetencyReadout() {
+    $('competencyFillDescription').textContent=(targetsView?'Green topics have been learned or have at least one recorded repetition. Other fills show accumulated repetitions. ':'Fill shows accumulated repetitions. ')+
+      'Bands use the whole-number part of the value, capped at 6. A dashed outline means no progress record.';
     const current=state.selected!==null?competencyFor(state.selected):null;
     $('competencyReadout').textContent=current?(current.known?current.label:'No data'):(snapshot?.learner.name||'Knowledge profile');
     $('competencySelectionDetail').textContent=current
@@ -1051,7 +1080,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       for (const host of $('targetActions').children) targetControls.remove(host);
       $('targetActions').replaceChildren();
       if (selectedNode) {
-        const target = targetControls.createToggle(selectedNode);
+        const target = targetControls.createToggle(selectedNode,{switchControl:true});
         if (target) $('targetActions').append(target);
       }
     }
@@ -1095,12 +1124,12 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   }
 
   function selectionSnapshot() {
-    return { selected:state.selected, activeIds:[...state.activeIds] };
+    return { selected:state.selected, activeIds:[...state.activeIds], followTargets:state.followTargets };
   }
 
   function remember() {
     const snapshot=selectionSnapshot(), previous=state.history[state.historyIndex];
-    if (previous && previous.selected===snapshot.selected && previous.activeIds.join(',')===snapshot.activeIds.join(',')) return;
+    if (previous && previous.selected===snapshot.selected && previous.followTargets===snapshot.followTargets && previous.activeIds.join(',')===snapshot.activeIds.join(',')) return;
     state.history=state.history.slice(0,state.historyIndex+1);
     state.history.push(snapshot);
     if (state.history.length>32) state.history.shift();
@@ -1113,12 +1142,15 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     const snapshot=state.history[idx];
     state.selected=snapshot.selected;
     state.activeIds=new Set(snapshot.activeIds);
+    state.followTargets=targetsView && snapshot.followTargets===true;
+    if(state.followTargets)resetSelection();
     state.mode=selectionMode();
     redraw(true);
   }
 
   function setSelected(id, center=true, additive=false) {
     id=Number(id);if(!nodeById.has(id))return;
+    state.followTargets=false;
     if (!additive) {
       state.activeIds=new Set([id]);state.selected=id;
     } else if (state.activeIds.has(id)) {
@@ -1173,7 +1205,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     if(now-depthWheelLast>220 || Math.sign(delta)!==Math.sign(depthWheelAmount))depthWheelAmount=0;
     depthWheelLast=now;depthWheelAmount+=delta;
     if(Math.abs(depthWheelAmount)<50)return;
-    const step=depthWheelAmount<0?1:-1;depthWheelAmount=0;
+    const step=depthWheelAmount>0?1:-1;depthWheelAmount=0;
     setDepth(Number(state.depth)+step);
   }
 
@@ -1273,11 +1305,19 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   // Right-clicking opens actions for one node without changing the active set.
   const nodeContextMenu = (() => {
     const menu=$('nodeContextMenu'),button=$('copyNodeButton'),notice=$('copyNodeNotice');
-    const targetAction=$('nodeTargetAction'),queueAction=$('nodeQueueAction'),topicLink=$('goToTopicLink');
+    const targetAction=$('nodeTargetAction'),queueAction=$('nodeQueueAction'),topicLink=$('goToTopicLink'),studyLink=$('studyTopicLink');
     const fallback=$('manualNodeCopy'),fallbackText=$('manualNodeText');
-    let topic=null,opener=null,noticeTimer=0;
+    const navigation=[{link:studyLink,label:'Study now'},{link:topicLink,label:'Go to topic'}];
+    let topic=null,opener=null,noticeTimer=0,shiftHeld=false;
+    function shiftMode(held) {
+      shiftHeld=Boolean(held);
+      for(const {link,label} of navigation) {
+        link.querySelector('.menu-new-tab-indicator').hidden=!shiftHeld;
+        link.setAttribute('aria-label',label+(shiftHeld?' · Opens in a new tab':''));
+      }
+    }
     function close(restoreFocus=false) {
-      menu.hidden=true;
+      menu.hidden=true;shiftMode(false);
       for(const host of targetAction.children)targetControls.remove(host);
       targetAction.replaceChildren();
       for(const host of queueAction.children)queueControls.remove(host);
@@ -1299,9 +1339,10 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       const target=targetControls.createToggle(node,{menuItem:true});
       if(target)targetAction.append(target);
       topicLink.href=topicReferenceURL(snapshot,node,courseId);
+      studyLink.href='/learn?topicId='+encodeURIComponent(node.id);
       menu.setAttribute('aria-label','Actions for '+node.name);
       element.setAttribute('aria-expanded','true');
-      menu.hidden=false;
+      menu.hidden=false;shiftMode(event.shiftKey);
       const box=element.querySelector('.node-hit').getBoundingClientRect();
       const keyboard=event.type==='keydown'||(!event.clientX&&!event.clientY);
       const x=keyboard?box.left+Math.min(box.width/2,100):event.clientX;
@@ -1350,6 +1391,20 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       if(copied)notify('Copied topic '+node.id+' to clipboard.');
       else offerManualCopy(value);
     });
+    for(const {link} of navigation)link.addEventListener('click',event=>{
+      if(menu.hidden)return;
+      // Programmatic keyboard activation has no modifiers on its click event.
+      const newTab=event.shiftKey || (event.detail===0 && shiftHeld);
+      if(newTab) {
+        event.preventDefault();event.stopPropagation();
+        const tabLink=document.createElement('a');
+        tabLink.href=link.href;tabLink.target='_blank';tabLink.rel='noopener noreferrer';
+        // Activate a normal link with no Shift modifier; native Shift-click
+        // and window.open while Shift is held can request a separate window.
+        document.body.append(tabLink);tabLink.click();tabLink.remove();
+      }
+      close(newTab);
+    });
     $('manualNodeDone').addEventListener('click',()=>{
       if(typeof fallback.close==='function')fallback.close();else fallback.removeAttribute('open');
     });
@@ -1363,11 +1418,17 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
           (current+(event.key==='ArrowDown'?1:-1)+items.length)%items.length;
         items[index]?.focus({preventScroll:true});
       }
-      else if(event.key===' '&&event.target===topicLink){event.preventDefault();topicLink.click();}
+      else if(event.key===' '&&(event.target===topicLink||event.target===studyLink)){event.preventDefault();event.target.click();}
     });
     document.addEventListener('pointerdown',event=>{if(!menu.hidden&&!menu.contains(event.target))close(false);},true);
     document.addEventListener('wheel',()=>close(false),{capture:true,passive:true});
-    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!menu.hidden)close(true);});
+    document.addEventListener('keydown',event=>{
+      if(menu.hidden)return;
+      if(event.key==='Escape')close(true);
+      else shiftMode(event.shiftKey || event.key==='Shift');
+    });
+    document.addEventListener('keyup',event=>{if(!menu.hidden)shiftMode(event.shiftKey);});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)close(false);});
     window.addEventListener('blur',()=>close(false));
     window.addEventListener('resize',()=>close(false));
     window.addEventListener('course-academy:targets-changed',()=>{if(!menu.hidden)close(true);});
@@ -1382,12 +1443,9 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     for(const node of state.layout.activeNodes){
       const p=state.layout.pos.get(node.id),geom=p.geometry,g=document.createElementNS(ns,'g');
       g.setAttribute('class','node'+(state.activeIds.has(node.id)?' selected':'')+(geom.badge?' has-badge':''));
-      const competence=competencyFor(node);
-      g.dataset.competency=competence.known?String(competence.level):'unknown';
-      g.style.setProperty('--node',competence.fill);g.style.setProperty('--node-hover',competence.fill);
-      g.style.setProperty('--node-text',competence.text);g.style.setProperty('--node-border',competence.border);g.style.setProperty('--competency-dash',competence.dash);
+      paintNode(g,node);
       g.id='topic-'+node.id;g.dataset.topicId=node.id;g.setAttribute('aria-pressed',String(state.activeIds.has(node.id)));g.dataset.layer=node.layer+1;g.dataset.sourceLayer=node.layer;g.dataset.localColumn=p.col;
-      g.setAttribute('transform',`translate(${p.x},${p.y})`);g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',`${layerLabel(node)} · ${node.name} · ${competence.label}${state.activeIds.has(node.id)?' · Active selection':''}`);
+      g.setAttribute('transform',`translate(${p.x},${p.y})`);g.setAttribute('role','button');g.setAttribute('tabindex','0');
       g.setAttribute('aria-haspopup','menu');g.setAttribute('aria-expanded','false');
       g.addEventListener('contextmenu',event=>nodeContextMenu.open(node,event,g));
       g.addEventListener('keydown',event=>{
@@ -1549,7 +1607,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     for (const n of state.layout.activeNodes) {
       const p = state.layout.pos.get(n.id);
       const x=p.x*k+ox,y=p.y*k+oy,w=Math.max(2,p.w*k),h=Math.max(2,p.h*k);
-      const competence=competencyFor(n);
+      const competence=nodeAppearance(n);
       ctx.fillStyle=competence.fill;ctx.fillRect(x,y,w,h);
       ctx.save();ctx.strokeStyle=competence.border;ctx.lineWidth=.6;
       if(!competence.known)ctx.setLineDash([2,2]);
@@ -1596,6 +1654,21 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   $('forwardBtn').addEventListener('click', () => jumpHistory(state.historyIndex + 1));
 
   function selectedCourse() {return snapshot?.courses.find(c=>c.id===courseId)||null;}
+  function refreshTargetScope() {
+    // An overview follows the saved target group. A focused exploration keeps
+    // its own roots, even if the topic being inspected is added or removed.
+    const followingTargets=state.followTargets;
+    courseTopics=new Set((snapshot.learner.targets || []).filter(id=>nodeById.has(id)));
+    if(followingTargets){
+      state.activeIds=new Set(courseTopics);
+      if(!state.activeIds.has(state.selected))state.selected=[...state.activeIds][0]??null;
+      state.mode=selectionMode();
+      // Preserve depth, camera, history, URL, and cached row ordering.
+      redraw(false);
+    }else{
+      refreshTargetColors();updateUI();
+    }
+  }
   function changeCourse(id, updateURL=true, view='course') {
     if(!snapshot)return;
     targetsView=view==='targets';
@@ -1676,6 +1749,17 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     } finally {loading=false;$('refreshData').disabled=false;}
   }
   $('retryLoad').onclick=loadData;$('refreshData').onclick=loadData;
+  $('targetColorToggle').setAttribute('aria-checked',String(targetsInRed));
+  $('targetColorToggle').addEventListener('click',()=>{
+    $('targetColorToggle').dataset.animate='true';setTargetColors(!targetsInRed);
+  });
+  window.addEventListener('storage',event=>{
+    if(event.key===targetColorKey || event.key===null){
+      let enabled=false;
+      try{enabled=localStorage.getItem(targetColorKey)==='true';}catch{ /* A missing preference uses the default. */ }
+      setTargetColors(enabled,false);
+    }
+  });
 
   window.addEventListener('resize', () => { resize(); redraw(false); });
   window.addEventListener('course-academy:theme-changed', () => {

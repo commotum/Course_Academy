@@ -108,7 +108,7 @@ class ImportRepairTests(unittest.TestCase):
         directory=self.root/'bad';directory.mkdir()
         source=self.root/'math_notation.py';original=import_repair.NORMALIZER.read_text();source.write_text(original)
         self.result={'status':'repair','summary':'Unsafe candidate.',
-                     'edits':[{'old':'return repr(scalar_identity(nodes)', 'new':'return repr(None'}],
+                     'edits':[{'old':"return repr(('math',nodes) if preserve_form else scalar_identity(nodes)", 'new':'return repr(None'}],
                      'equivalent':[{'left':'x','right':'y'}],
                      'distinct':[{'left':str(i),'right':str(i+1)} for i in range(3)]}
         with patch('import_repair.NORMALIZER',source),patch('import_repair.run_cli',side_effect=self.fake_cli):

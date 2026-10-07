@@ -100,6 +100,7 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
         "learner/knowledge-profile",
         "progress/topic",
         "progress/repetitions",
+        "progress/learned",
     ] {
         let (ns, name) = attr.split_once('/').unwrap();
         let Some(attribute) = db.schema().resolve_ident(&Keyword::new(ns, name)) else {
@@ -130,6 +131,43 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
         }
     }
     Ok(facts)
+}
+
+fn graph_progress(
+    facts: &Facts,
+    learner_eid: u64,
+    topic_ids: &BTreeSet<u64>,
+) -> Result<(BTreeMap<String, f64>, BTreeMap<String, bool>)> {
+    let mut repetitions = BTreeMap::new();
+    let mut learned = BTreeMap::new();
+    let mut seen = BTreeSet::new();
+    for progress in refs(facts, learner_eid, "learner/knowledge-profile") {
+        let Some(Value::Ref(topic)) = scalar(facts, progress, "progress/topic") else {
+            continue;
+        };
+        if !topic_ids.contains(topic) {
+            return Err("Progress references an entity without topic/id".into());
+        }
+        if !seen.insert(*topic) {
+            return Err("Learner has duplicate progress records for one topic".into());
+        }
+        match scalar(facts, progress, "progress/learned") {
+            Some(Value::Bool(value)) => { learned.insert(topic.to_string(), *value); }
+            None => {}
+            _ => return Err("Learned status must be boolean".into()),
+        }
+        let count = match scalar(facts, progress, "progress/repetitions") {
+            Some(Value::Double(n)) => *n,
+            Some(Value::Long(n)) => *n as f64,
+            None => continue, // Unknown repetitions stay absent, never inferred.
+            _ => return Err("Repetitions must be numeric".into()),
+        };
+        if !count.is_finite() || count < 0.0 {
+            return Err("Repetitions must be finite and nonnegative".into());
+        }
+        repetitions.insert(topic.to_string(), count);
+    }
+    Ok((repetitions, learned))
 }
 
 fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
@@ -199,31 +237,11 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
             .cmp(&b["title"].as_str())
             .then_with(|| a["id"].as_str().cmp(&b["id"].as_str()))
     });
-    let mut repetitions = BTreeMap::new();
-    for progress in refs(&facts, learner_eid, "learner/knowledge-profile") {
-        let Some(Value::Ref(topic)) = scalar(&facts, progress, "progress/topic") else {
-            continue;
-        };
-        let count = match scalar(&facts, progress, "progress/repetitions") {
-            Some(Value::Double(n)) => *n,
-            Some(Value::Long(n)) => *n as f64,
-            None => continue, // Unknown repetitions stay absent, never inferred.
-            _ => return Err("Repetitions must be numeric".into()),
-        };
-        if !count.is_finite() || count < 0.0 {
-            return Err("Repetitions must be finite and nonnegative".into());
-        }
-        if !topic_ids.contains(topic) {
-            return Err("Progress references an entity without topic/id".into());
-        }
-        if repetitions.insert(topic.to_string(), count).is_some() {
-            return Err("Learner has duplicate progress records for one topic".into());
-        }
-    }
+    let (repetitions, learned) = graph_progress(&facts, learner_eid, &topic_ids)?;
     Ok(json!({
         "basis": db.basis_t(), "courses": courses, "nodes": nodes, "links": links,
         "learner": learner_json(&facts, learner_eid, learner_id),
-        "repetitions": repetitions,
+        "repetitions": repetitions, "learned": learned,
     }))
 }
 
@@ -667,6 +685,33 @@ mod tests {
             .entry(attr)
             .or_default()
             .push(value);
+    }
+
+    #[test]
+    fn graph_preserves_explicit_learned_status_independently_of_repetition_bands() {
+        let mut facts = Facts::new();
+        for (record, topic, repetitions, learned) in [
+            (11, 101, Some(0.9938596149152737), Some(true)),
+            (12, 102, Some(3.0), None),
+            (13, 103, None, Some(true)),
+            (14, 104, Some(0.0), Some(false)),
+        ] {
+            fact(&mut facts, 1, "learner/knowledge-profile", Value::Ref(record));
+            fact(&mut facts, record, "progress/topic", Value::Ref(topic));
+            if let Some(value) = repetitions { fact(&mut facts, record, "progress/repetitions", Value::Double(value)); }
+            if let Some(value) = learned { fact(&mut facts, record, "progress/learned", Value::Bool(value)); }
+        }
+        let topics = [101, 102, 103, 104].into_iter().collect();
+        let (repetitions, learned) = graph_progress(&facts, 1, &topics).unwrap();
+        assert_eq!(repetitions["101"], 0.9938596149152737);
+        assert_eq!(learned["101"], true);
+        assert!(!learned.contains_key("102"));
+        assert!(!repetitions.contains_key("103"));
+        assert_eq!(learned["103"], true);
+        assert_eq!(learned["104"], false);
+        fact(&mut facts, 1, "learner/knowledge-profile", Value::Ref(15));
+        fact(&mut facts, 15, "progress/topic", Value::Ref(101));
+        assert!(graph_progress(&facts, 1, &topics).is_err());
     }
 
     #[test]

@@ -13,7 +13,7 @@ from edn import dumps, kw, loads
 
 
 class ReconciliationReview(ValueError):
-    """Saved evidence needs human review; a notation repair cannot resolve it."""
+    """Saved evidence needs source review by the persistent repair session."""
 
 
 def value_hash(value):
@@ -29,14 +29,14 @@ def field_value(field, attribute):
     raise ValueError(attribute)
 
 
-def source_records(content, directory):
+def source_records(content, directory, *, include_reviews=True):
     """Recover authority from saved DOM/checkpoints, never from solver labels.
 
     Choice completeness must be recorded by the extractor, or demonstrated by
     the full legacy radio DOM. A successful grade confirms the submitted values
     only. An incorrect grade leaves solution-derived keys as interpretations.
     """
-    from core import normalize
+    from core import compare_answers
     directory = Path(directory)
     state_path = directory/'state.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {}
@@ -88,7 +88,7 @@ def source_records(content, directory):
             category = 'model_interpretation'
             grade = record.get('actual_result') or record.get('after', {}).get('result')
             submitted = raw.get('submitted_value')
-            if grade == 'Correct' and submitted is not None and normalize(submitted, correct['type']) == normalize(correct['value'], correct['type']):
+            if grade == 'Correct' and submitted is not None and compare_answers(submitted, correct['value'], correct['type'],prompt=q.get('problem',''))['outcome'] == 'equivalent':
                 category = 'ma_successful_grade'
             # Explicit source answers must be stored separately from solver
             # decisions. Currently the extractor does not expose such answers.
@@ -96,7 +96,163 @@ def source_records(content, directory):
             if explicit == {'type': correct['type'], 'value': correct['value']}:
                 category = 'ma_explicit_answer'
             add(mid, f['key'], 'answer-field/correct', [kw('answer.type/'+correct['type']), correct['value']], category, file)
+    if include_reviews:
+        path=directory/'answer-source-reviews.json'
+        if path.exists():
+            for review in json.loads(path.read_text()).get('reviews',[]):
+                try:
+                    field,correct,bindings,files=answer_review_context(content,directory,review,result)
+                    if bindings!=review.get('bindings') or files!=review.get('evidence_files'):
+                        continue
+                    incoming=next(f for q in content['questions']+content.get('canonical_examples',[]) if q['math_academy_id']==review['question']
+                                  for f in q['answer_fields'] if f['key']==review['field'])
+                    if value_hash(incoming)!=value_hash(field):continue
+                    proof=Path(review['review_result'])
+                    if not proof.is_file() or hashlib.sha256(proof.read_bytes()).hexdigest()!=review['review_result_sha256']:
+                        continue
+                    result.append(dict(question=review['question'],field=review['field'],attribute='answer-field/correct',
+                        value=[kw('answer.type/'+correct['type']),correct['value']],category='reviewed_ma_solution',
+                        file=str(path),file_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                        reviewer_session=review['reviewer_session'],rationale=review['rationale'],
+                        bindings=bindings,evidence_files=files))
+                    if field['type'] in ('radio','select'):
+                        result.append(dict(question=review['question'],field=review['field'],attribute='answer-field/choices',
+                            value=sorted((c['type'],c['value']) for c in field['choices']),category='reviewed_ma_choices',
+                            file=str(path),file_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),rationale=review['rationale']))
+                except (KeyError,ValueError,TypeError,OSError):
+                    continue
     return result
+
+
+def answer_review_context(content,directory,review,sources):
+    """Bind derived math judgment to the unchanged original question and solution."""
+    import copy
+    directory=Path(directory).resolve()
+    if review.get('confident') is not True or not review.get('rationale','').strip():
+        raise ValueError('Answer review needs a confident source-based explanation')
+    question=next((q for q in content['questions']+content.get('canonical_examples',[]) if q['math_academy_id']==review['question']),None)
+    if question is None:raise ValueError('Answer review names an uncaptured question')
+    current=next((f for f in question.get('answer_fields',[]) if f['key']==review['field']),None)
+    if current is None:raise ValueError('Answer review names an uncaptured field')
+    original=review.get('original_answer_field',current)
+    if original['key']!=current['key'] or original['type']!=current['type']:
+        raise ValueError('Answer review cannot change a field identity or type')
+    matching=lambda attr,value: any(r['question']==review['question'] and r['field']==None
+        and r['attribute']==attr and value_hash(r['value'])==value_hash(value) and r['category']=='ma_capture' for r in sources)
+    if (not question.get('worked_solution') or not matching('question/problem',question['problem']) or
+            not matching('question/worked-solution',question['worked_solution'])):
+        raise ValueError('Answer review needs the authentic problem and worked solution')
+    state_path=directory/'state.json';state=json.loads(state_path.read_text()) if state_path.exists() else {}
+    record=state.get('questions',{}).get(review['question'],{})
+    before=record.get('before',{})
+    if review['question'].startswith('e-'):
+        path=directory/('example-'+review['question'].split('-')[1]+'.json')
+        before=json.loads(path.read_text()) if path.exists() else {}
+    raw=next((f for f in before.get('fields',[]) if f['key']==review['field']),{})
+    if raw.get('type')!=original['type']:raise ValueError('Answer review needs the captured matching widget')
+    choice_field=original['type'] in ('radio','select')
+    if choice_field:
+        pairs=lambda choices: sorted((c['type'],c['value']) for c in choices)
+        complete=raw.get('choices_complete') is True or ('choices_complete' not in raw and original['type']=='radio'
+            and len(re.findall(r'class="[^"\n]*\b(?:questionWidget-choiceText|choiceText)\b',before.get('html','')))==len(raw.get('choices',[]))>0)
+        if not complete or pairs(raw.get('choices',[]))!=pairs(original['choices']):
+            raise ValueError('Answer review needs the complete original choice set')
+    field=copy.deepcopy(original)
+    for correction in review.get('choice_corrections',[]):
+        index=correction['option_index']
+        if not choice_field or not isinstance(index,int) or not 0<=index<len(field['choices']):
+            raise ValueError('Choice correction needs an original option index')
+        if correction['value_type']!=field['choices'][index]['type']:
+            raise ValueError('Choice correction cannot change an answer type')
+        field['choices'][index]['value']=correction['value']
+    correct={'type':review['value_type'],'value':review['correct_value']}
+    if choice_field:
+        index=review['option_index']
+        if not isinstance(index,int) or not 0<=index<len(field['choices']) or field['choices'][index]!=correct:
+            # Captures can carry option feedback as well as type/value.
+            if not isinstance(index,int) or not 0<=index<len(field['choices']) or any(field['choices'][index].get(k)!=v for k,v in correct.items()):
+                raise ValueError('Reviewed answer must identify its original observed option')
+        grade=record.get('actual_result') or record.get('after',{}).get('result')
+        submitted=raw.get('submitted_option') or raw.get('observed_selected_option')
+        observed=[i for i,c in enumerate(raw['choices']) if c.get('option')==submitted] if submitted else []
+        if observed and (grade=='Correct' and index!=observed[0] or grade=='Incorrect' and index==observed[0]):
+            raise ValueError('Answer review contradicts the observed choice grade')
+        explicit=raw.get('source_correct')
+        original_choice=original['choices'][index]
+        if explicit and explicit!={k:original_choice[k] for k in ('type','value')}:
+            raise ValueError('Answer review contradicts the directly observed answer option')
+    elif original['type']=='blank':
+        if review.get('choice_corrections'):raise ValueError('Blank answer review has no original choice indices')
+        explicit=raw.get('source_correct')
+        if explicit:
+            from core import compare_answers
+            outcome=compare_answers(explicit['value'],correct['value'],correct['type'],prompt=question['problem'])['outcome']
+            if explicit['type']!=correct['type'] or outcome=='different':
+                raise ValueError('Answer review contradicts the directly observed answer key')
+        field['choices']=[correct]
+    else:raise ValueError('Answer source review supports blank, radio and select fields')
+    field['correct_value']=correct['value'];field['correct_origin']='reviewed_ma_solution'
+    files=[]
+    for item in review.get('evidence_files',[]):
+        name=item['path'] if isinstance(item,dict) else item
+        path=(directory/name).resolve()
+        if not path.is_relative_to(directory) or not path.is_file():raise ValueError('Answer review evidence must be a saved activity file')
+        # Identity comes from the bound original widget/problem/solution, not
+        # a filename. Shared activity evidence can be cited by the reviewer.
+        if path==directory/'state.json':
+            saved=json.loads(path.read_text());record=saved.get('questions',{}).get(review['question'],{})
+            evidence={'question':review['question'],
+                      'raw':{key:record.get(key) for key in ('before','after','history','actual_result')},
+                      'shared_contexts':saved.get('shared_contexts',[])}
+            digest=hashlib.sha256(json.dumps(evidence,sort_keys=True).encode()).hexdigest()
+            files.append({'path':'state.json','sha256':digest,'scope':'question_raw_state'})
+        else:
+            files.append({'path':str(path.relative_to(directory)),'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
+    if not files:raise ValueError('Answer review needs original question/solution evidence')
+    bindings={'problem':value_hash(question['problem']),'worked_solution':value_hash(question['worked_solution']),
+              'original_field':value_hash(original),'reviewed_field':value_hash(field),
+              'raw_widget':value_hash(raw)}
+    return field,correct,bindings,files
+
+
+def save_answer_reviews(content,directory,reviews,session_id,result_path):
+    """Freeze completed reviewer judgments and update only derived content."""
+    import copy
+    from core import atomic_json
+    directory=Path(directory)
+    if (directory/'edb-import/commit-intent.json').exists():raise ValueError('Pending commit intent cannot accept new answer reviews')
+    result_path=Path(result_path);sources=source_records(content,directory,include_reviews=False)
+    frozen=[];updated=copy.deepcopy(content)
+    for review in reviews:
+        question=next(q for q in content['questions']+content.get('canonical_examples',[]) if q['math_academy_id']==review['question'])
+        original=next(f for f in question['answer_fields'] if f['key']==review['field'])
+        review={**review,'original_answer_field':copy.deepcopy(original)}
+        field,_,bindings,files=answer_review_context(content,directory,review,sources)
+        frozen.append({**review,'bindings':bindings,'evidence_files':files,'reviewer_session':session_id,
+                       'review_result':str(result_path),'review_result_sha256':hashlib.sha256(result_path.read_bytes()).hexdigest()})
+        q=next(q for q in updated['questions']+updated.get('canonical_examples',[]) if q['math_academy_id']==review['question'])
+        q['answer_fields']=[field if f['key']==review['field'] else f for f in q['answer_fields']]
+    original_hash=hashlib.sha256(json.dumps(content,sort_keys=True).encode()).hexdigest()
+    archive=directory/('content-before-source-review-'+original_hash[:12]+'.json')
+    if not archive.exists():atomic_json(archive,content)
+    state_path=directory/'state.json'
+    if state_path.exists():
+        state=json.loads(state_path.read_text());old_state=copy.deepcopy(state)
+        for question in updated['questions']:
+            record=state.get('questions',{}).get(question['math_academy_id'],{})
+            if 'content' in record:record['content']=question
+        examples={q['math_academy_id']:q for q in updated.get('canonical_examples',[])}
+        for key,example in state.get('examples',{}).items():
+            if example['math_academy_id'] in examples:state['examples'][key]=examples[example['math_academy_id']]
+        if state!=old_state:
+            state_archive=directory/('state-before-source-review-'+original_hash[:12]+'.json')
+            if not state_archive.exists():atomic_json(state_archive,old_state)
+            atomic_json(state_path,state)
+    path=directory/'answer-source-reviews.json';existing=json.loads(path.read_text()).get('reviews',[]) if path.exists() else []
+    keys={(r['question'],r['field']) for r in frozen}
+    atomic_json(path,{'reviews':[r for r in existing if (r['question'],r['field']) not in keys]+frozen})
+    atomic_json(directory/'content.json',updated)
+    return len(frozen)
 
 
 def authoring_records(root, ids):
@@ -208,9 +364,24 @@ class Reconciler:
         known = self.evidence(self.authored, mid, key, attr, old)
         local = [r for r in known if r['category'].startswith('local_')]
         source = [r for r in self.evidence(self.sources, mid, key, attr, new) if r['category'] in categories]
+        if attr in ('question/problem','question/worked-solution','question/difficulty') and source:
+            # Current observed MA content is sufficient authority for these
+            # attributes. Old authorship does not veto a real source capture.
+            self.decisions.append(dict(question=mid, field=key, attribute=attr,
+                old_sha256=value_hash(old), new_sha256=value_hash(new), category='ma_capture',
+                authoring=known, source=source, basis=self.basis,
+                reason='Observed MA content supersedes the stored value', action='replace'))
+            return True
         if any(r['category'].startswith('ma_') for r in known):
             self.review(mid, key, attr, old, new, 'Contradiction between authoritative MA sources')
             return False
+        reviewed=[r for r in source if r['category']=='reviewed_ma_solution']
+        if attr=='answer-field/correct' and reviewed:
+            self.decisions.append(dict(question=mid,field=key,attribute=attr,
+                old_sha256=value_hash(old),new_sha256=value_hash(new),category='reviewed_ma_solution',
+                authoring=known,source=reviewed,basis=self.basis,
+                reason='Persistent repair judgment from authentic worked solution and original choices supersedes stored key',action='replace'))
+            return True
         if not local or not source:
             self.review(mid, key, attr, old, new, 'Unknown current provenance or missing authoritative replacement')
             return False
@@ -234,15 +405,18 @@ class Reconciler:
         old_correct = field_value(previous, 'answer-field/correct')
         compared = compare_answers(old_correct[1], c['value'], c['type'], **context) if old_correct[0] == new_correct[0] else {'outcome':'different'}
         equivalent = compared['outcome'] == 'equivalent'
-        changed = False
+        changed = previous[':answer-field/key'] != key
         allowed = True
+        if changed and not self.evidence(self.sources,mid,key,'answer-field/type',new_kind):
+            allowed = False
+            self.review(mid,key,'answer-field/key',previous[':answer-field/key'],key,'Field rename needs an observed matching widget')
         if kind != new_kind:
             changed = True
             allowed &= self.replace(mid, key, 'answer-field/type', kind, new_kind, {'ma_widget'})
         if not equivalent:
             changed = True
             allowed &= self.replace(mid, key, 'answer-field/correct', old_correct, new_correct,
-                                    {'ma_explicit_answer', 'ma_successful_grade'})
+                                    {'ma_explicit_answer', 'ma_successful_grade','reviewed_ma_solution'})
             self.decisions[-1]['comparison'] = compared
         matched = {a[':db/id'] for choice in incoming['choices']
                    if (a := matching_answer(choice, previous[':answer-field/choices'], **context)) is not None}
@@ -261,14 +435,12 @@ class Reconciler:
                 # replacement decision above; it is not an invented distractor.
                 if not local and value == old_correct and not equivalent:
                     local = self.evidence(self.authored, mid, key, 'answer-field/correct', value)
-                if not local:
-                    allowed = False
-                    self.review(mid, key, 'answer/value', value, None, 'Complete choices omit a source or unknown value')
-                else:
-                    self.decisions.append(dict(question=mid, field=key, attribute='answer/value',
-                        old_sha256=value_hash(value), new_sha256=value_hash(None), category=local[0]['category'],
-                        authoring=local, source=complete, basis=self.basis,
-                        reason='Authentic complete choice set supersedes local alternative', action='version'))
+                # A complete observed option set is enough to replace old
+                # distractors. The correct key is checked independently above.
+                self.decisions.append(dict(question=mid, field=key, attribute='answer/value',
+                    old_sha256=value_hash(value), new_sha256=value_hash(None), category='ma_complete_choices',
+                    authoring=local, source=complete, basis=self.basis,
+                    reason='Observed complete choice set supersedes old alternatives', action='version'))
         if not changed:
             return 'merge'
         if not complete and incoming['type'] != 'blank':
@@ -282,5 +454,6 @@ class Reconciler:
             return 'retain'
         self.decisions.append(dict(question=mid, field=key, attribute='question/answer-fields',
             old_sha256=value_hash(previous), new_sha256=value_hash(incoming), category='versioned_field',
-            source=complete, basis=self.basis, reason='Detach unused field ownership; retain old field and answers', action='replace'))
+            previous_field_id=previous[':db/id'],source=complete, basis=self.basis,
+            reason='Detach unused field ownership; retain old field and answers', action='replace'))
         return 'version'

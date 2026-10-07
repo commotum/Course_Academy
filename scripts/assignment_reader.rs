@@ -65,7 +65,9 @@ fn fields(s: &EntitySnapshot, question: u64) -> Result<Vec<Json>> {
             "id": identity(s, field, "answer-field/id")?,
             "entityId": field,
             "key": text(s, field, "answer-field/key"),
-            "type": kind,
+            "type": kind, "presentation": text(s, field, "answer-field/presentation"),
+            "answerType": s.optional_ref(field, "answer-field/correct")?
+                .map(|id| status(s, id, "answer/type")).transpose()?,
             "choices": choices,
         }));
     }
@@ -332,6 +334,7 @@ mod tests {
         assert_eq!(parts[0]["id"], "part-a");
         assert_eq!(parts[1]["id"], "part-b");
         assert_eq!(parts[0]["content"]["fields"][0]["choices"], json!([]));
+        assert_eq!(parts[0]["content"]["fields"][0]["answerType"], "text");
         assert!(!detail.to_string().contains("Secret"));
         assert_eq!(s.basis_t, 7);
         assert!(!s.entity(1).unwrap().contains_key("learner/activity"));

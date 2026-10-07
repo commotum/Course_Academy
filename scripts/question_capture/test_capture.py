@@ -557,10 +557,10 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(unfinished_run(args),quiz.resolve())
             for changes in ({'test_submission_status':'confirming'}, {'assessment_recovery_attempts':2}):
                 (quiz/'state.json').write_text(json.dumps({**state,**changes}))
-                self.assertEqual(unfinished_run(args),lesson.resolve())
+                self.assertEqual(unfinished_run(args),quiz.resolve())
             (diagnostic/'error.json').write_text(json.dumps({'exception_type':'ValueError'}))
             (quiz/'state.json').write_text(json.dumps(state))
-            self.assertEqual(unfinished_run(args),lesson.resolve())
+            self.assertEqual(unfinished_run(args),quiz.resolve())
 
     def test_failure_report_survives_browser_artifact_failures(self):
         with tempfile.TemporaryDirectory() as work:
@@ -974,7 +974,7 @@ class DOMTests(unittest.TestCase):
             self.assertFalse(reader.restore_unanswered_submission(scope,record))
             self.assertEqual(record['status'],'submitting')
         self.page.set_content(html);reader.args.resume=None
-        self.assertFalse(reader.restore_unanswered_submission(scope,record))
+        self.assertTrue(reader.restore_unanswered_submission(scope,record))
 
     def test_svg_only_formulas_are_saved_in_prompt_and_solution(self):
         self.page.set_content('<div id="test"><div class="stepName">Example: SVG</div>'
@@ -1896,10 +1896,15 @@ class DOMTests(unittest.TestCase):
             self.assertNotIn('pending_continue',restored)
             self.assertEqual(list(restored['knowledge_snapshots']),['lesson-completed'])
 
-    def test_unexpected_wrong_answer_stops_before_second_submission(self):
-        self.lesson_fixture()
+    def test_unexpected_wrong_answer_uses_worked_solution_and_continues(self):
+        correct = self.lesson_fixture()
+        accurate = self.fixture_solver(correct)
         class IncorrectSolver:
-            def solve(self,item,*args):
+            def solve(self,item,screenshot,directory,phase='solve'):
+                if phase == 'verify':
+                    answer = accurate.solve(item,screenshot,directory,phase)
+                    answer['explanation'] = 'Reviewed the revealed worked solution.'
+                    return answer
                 choice = item['fields'][0]['choices'][0]  # First answer is demonstrably wrong.
                 return {'confident':True,'answers':[{'key':'selection','correct_option':choice['option'],
                     'correct_value':choice['value'],'value_type':choice['type'],'wrong_value':None,'correct_keys':[],'wrong_keys':[]}]}
@@ -1907,11 +1912,20 @@ class DOMTests(unittest.TestCase):
         browser = CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),IncorrectSolver())
         state = {'task_id':13925458,'topic_id':3769,'kps':{},'examples':{},'questions':{}}
         topic = loads((FIXTURE/'database-before.edn').read_text())[0][0]
+        advance = browser.advance
+        def stop_after_recovery(state,directory,token):
+            if token.startswith('q'):
+                raise RuntimeError('continued after unexpected grade')
+            return advance(state,directory,token)
+        browser.advance = stop_after_recovery
         with tempfile.TemporaryDirectory() as work:
-            with self.assertRaisesRegex(ValueError,'expected Correct, received Incorrect'):
+            with self.assertRaisesRegex(RuntimeError,'continued after unexpected grade'):
                 browser.lesson(state,work,topic)
             self.assertEqual(self.page.locator('body').get_attribute('data-submissions'),'1')
             self.assertEqual(len(state['questions']),1)
+            question = next(iter(state['questions'].values()))
+            self.assertTrue(question['finalized'])
+            self.assertEqual(question['grade_deviation'],{'intended':'Correct','observed':'Incorrect'})
             self.assertFalse(state.get('knowledge_snapshots'))
 
 

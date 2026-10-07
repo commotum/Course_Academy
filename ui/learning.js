@@ -1,8 +1,9 @@
 import { marked } from './vendor/marked/marked.esm.js';
+import { romanLists } from './prose-lists.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
 import { developerModeReady, isDeveloperMode } from './developer-mode.js';
 import { attachStepMenu } from './step-menu.js';
-import { inlinePrompt, mountInlineFields, richSelect, questionFeedback } from './question-fields.js';
+import { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, statementCheckboxControl } from './question-fields.js';
 
 await developerModeReady;
 
@@ -46,7 +47,7 @@ function button(text, className, action) {
 }
 function short(value) { return String(value || '').split('/').at(-1); }
 function appendStepHeading(content, step, kind) {
-  if (!step.title && kind !== 'example') return;
+  if (kind === 'question' || (!step.title && kind !== 'example')) return;
   const heading = el('h2', 'step-title');
   if (kind === 'example') heading.append(el('strong', '', 'Example:'));
   if (step.title) heading.append((kind === 'example' ? ' ' : '') + step.title);
@@ -124,14 +125,37 @@ function actionButton(text, className, action, enabled = true) {
 async function mutation(path, values) {
   if (isDeveloperMode() || modeChanging) return;
   if (busy) return;
-  if (path === '/api/start') void loadMath().catch(() => {});
+  if (path === '/api/start' || path === '/api/study-topic') void loadMath().catch(() => {});
   const body = { ...values, requestId: crypto.randomUUID() };
   const revision = settingsRevision;
+  let resumeBody = null;
   const run = async () => {
     clearError();
     setBusy(true);
     try {
-      const result = await api(path, body);
+      if (pendingPause) await pendingPause;
+      let result;
+      try { result = await api(path, body); }
+      catch (error) {
+        // The last visible Next/Check button can outlive a pause from another
+        // tab or an unload request. Recover only a confirmed state rejection.
+        if (error.code !== 'lesson-paused' || !['/api/continue', '/api/answer'].includes(path)) throw error;
+        if (document.hidden || revision !== settingsRevision || modeChanging || isDeveloperMode()) {
+          refreshAfterVisibility = true; return;
+        }
+        resumeBody ||= { taskId: body.taskId, requestId: crypto.randomUUID() };
+        const resumed = await api('/api/resume', resumeBody);
+        if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
+        task = resumed.task || resumed;
+        rememberTaskStep(task);
+        // A different tab may already have advanced this task. Refresh rather
+        // than apply the old click or answers to a different presentation.
+        if (task.step?.itemId !== body.itemId || short(task.status) !== 'started' || document.hidden) result = task;
+        else {
+          body.requestId = crypto.randomUUID();
+          result = await api(path, body);
+        }
+      }
       if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
       task = result.task || result;
       history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(task.taskId));
@@ -167,7 +191,7 @@ function markdown(value, className = 'prose', fields = []) {
     return prefix + (math.length - 1) + 'END';
   });
   source = source.replace(placeholder, (whole, key) => fieldKeys.has(key) ? `<span class="field-location">${escapeHTML(fieldLabel(key))}</span>` : whole);
-  let html = marked.parse(source, { async: false, gfm: true, breaks: false });
+  let html = marked.parse(romanLists(source), { async: false, gfm: true, breaks: false });
   html = html.replace(new RegExp(prefix + '(\\d+)END', 'g'), (_, i) => escapeHTML(math[Number(i)]));
   const fragment = DOMPurify.sanitize(html, {
     RETURN_DOM_FRAGMENT: true,
@@ -259,6 +283,13 @@ function rememberTaskStep(data) {
     } catch { /* Review history can still be kept in memory. */ }
     seenTaskSteps.set(key, seen);
   }
+  if (Array.isArray(data.history)) {
+    // The saved presentation chain is authoritative across tabs and sessions.
+    seen.clear();
+    for (const entry of data.history) {
+      if (entry?.step?.itemId && Number.isInteger(entry.order) && entry.order > 0) seen.set(String(entry.step.itemId), entry);
+    }
+  }
   if (data.step?.itemId) {
     const id = String(data.step.itemId);
     const order = data.progress?.presented || seen.get(id)?.order || seen.size + 1;
@@ -313,11 +344,6 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
 
 function archiveLessonContent(content) {
   content.dataset.history = 'true';
-  const meta = content.querySelector('.step-meta');
-  if (meta && content.dataset.stepNumber && !meta.querySelector('.history-position')) {
-    const position = el('span', 'history-position', `Step ${content.dataset.stepNumber}${content.dataset.totalSteps ? ' / ' + content.dataset.totalSteps : ''}`);
-    meta.insertBefore(position, meta.firstChild);
-  }
   for (const control of content.querySelectorAll('.lesson-controls, .answer-actions')) control.remove();
   for (const input of content.querySelectorAll('[data-answer-input]')) {
     input.disabled = true; input.dataset.readOnly = 'true';
@@ -349,7 +375,8 @@ async function showLessonStep(view, identity, earlier, content, buildEarlier) {
       node = buildEarlier(entry); archiveLessonContent(node);
       view.history.set(entry.id, node); additions.push(node);
     }
-    view.feed.append(node);
+    // Keep earlier math editors mounted; moving custom elements reconnects them.
+    if (!view.feed.contains(node)) view.feed.append(node);
   }
   view.current = content; view.currentId = identity;
   content.tabIndex = -1;
@@ -446,6 +473,16 @@ async function loadHome(signal, preserve) {
     const foot = el('div', 'queue-foot');
     foot.append(el('span', '', `${activities.length} ${activities.length === 1 ? 'activity' : 'activities'} ready`), el('span', '', isDeveloperMode() ? 'Developer mode · Nothing recorded' : 'Your progress is saved as you work.'));
     $('main').append(foot);
+    if (data.waitingActivities?.length) {
+      const waiting = el('section', 'waiting-lessons');
+      waiting.append(el('h2', 'step-title', 'Unfinished practice'));
+      for (const activity of data.waitingActivities) {
+        const row = el('div', 'waiting-lesson');
+        row.append(el('span', '', `${activity.title} · ${activity.pendingCount} unfinished ${activity.pendingCount === 1 ? 'skill' : 'skills'}`), actionButton(activity.canResumePractice ? 'Resume practice →' : 'Review · waiting for questions →', 'secondary', () => openTask(activity.taskId)));
+        waiting.append(row);
+      }
+      $('main').append(waiting);
+    }
     if (data.practiceNotice || data.notice) $('main').append(el('p', 'notice', data.practiceNotice || data.notice));
     homeRendered = revision === targetRevision;
   } catch (error) {
@@ -454,6 +491,17 @@ async function loadHome(signal, preserve) {
   }
   finally { if (!signal.aborted) setBusy(false); }
 }
+async function studyTopic(id) {
+  if (modeChanging || busy) return;
+  if (!/^[1-9]\d*$/.test(String(id)) || !Number.isSafeInteger(Number(id))) {
+    showError(new Error('A valid topic entity ID is required.')); return;
+  }
+  homeController?.abort(); homeController = null; homeRequest = null;
+  homeRendered = false;
+  if (isDeveloperMode()) return openPreview({ topicId: id });
+  return mutation('/api/study-topic', { topicId: Number(id) });
+}
+
 async function openTask(id) {
   if (modeChanging) return;
   if (isDeveloperMode()) return openPreview({ taskId: id });
@@ -519,21 +567,20 @@ function choiceOrder(choices, seed) {
   const hash = value => { let n = 2166136261; for (const c of value) n = Math.imul(n ^ c.charCodeAt(0), 16777619); return n >>> 0; };
   return [...choices].sort((a, b) => hash(`${seed}:${a.id}`) - hash(`${seed}:${b.id}`));
 }
-function fieldControl(field, readOnly, itemId) {
+function fieldControl(field, readOnly, itemId, promptText = '') {
   const set = el('fieldset', 'answer-field');
   set.dataset.fieldId = String(field.id);
   set.dataset.type = short(field.type);
   const label = field.key === 'selection' ? 'Choose an answer' : fieldLabel(field.key);
-  set.append(el('legend', '', label));
+  set.append(el('legend', field.key === 'selection' ? 'sr-only' : '', label));
   const type = short(field.type), response = field.response;
   const choices = choiceOrder(field.choices || [], `${itemId}:${field.id}`);
   const responseId = response?.choiceId ?? response?.id;
-  if (type === 'blank') {
-    const input = el('input', 'answer-input');
-    input.type = 'text'; input.name = String(field.id); input.autocomplete = 'off'; input.spellcheck = false;
-    input.setAttribute('aria-label', label); input.value = response?.value ?? ''; input.disabled = readOnly;
-    input.placeholder = 'Enter your answer'; set.append(input);
-    if (!readOnly) set.append(el('div', 'input-help', 'Use ordinary notation or LaTeX.'));
+  const checklist = statementCheckboxControl(field, promptText, label => answerValue({ type: 'text', value: label }), readOnly);
+  if (checklist) {
+    set.append(checklist);
+  } else if (type === 'blank') {
+    set.append(blankInput(field, label, field.id, readOnly));
   } else if (type === 'radio') {
     const list = el('div', 'choices');
     for (const choice of choices) {
@@ -554,7 +601,7 @@ function fieldControl(field, readOnly, itemId) {
     select.value = responseId == null ? '' : String(responseId);
     set.append(richSelect(select, choices, answerValue, answer => answer.id, typeset));
   }
-  for (const input of set.querySelectorAll('input,select,.answer-select-trigger')) {
+  for (const input of set.querySelectorAll('input,select,math-field,.answer-select-trigger')) {
     input.dataset.answerInput = 'true'; input.dataset.readOnly = String(readOnly);
   }
   return set;
@@ -562,8 +609,8 @@ function fieldControl(field, readOnly, itemId) {
 function collectResponses(form, fields) {
   return fields.map(field => {
     const set = [...form.querySelectorAll('[data-field-id]')].find(node => node.dataset.fieldId === String(field.id));
-    if (short(field.type) === 'blank') return { fieldId: field.id, value: set.querySelector('input').value };
-    const input = set.querySelector('input:checked, select');
+    if (short(field.type) === 'blank') return { fieldId: field.id, value: set.querySelector('input,math-field').value };
+    const input = set.querySelector('.answer-choice-value') || set.querySelector('input:checked, select');
     return { fieldId: field.id, choiceId: input?.value ? Number(input.value) : '' };
   });
 }
@@ -591,15 +638,10 @@ async function openPreview(query) {
 }
 
 function previewContent(data, step, index, archived = false) {
-  const content = el('section', 'lesson-content'), meta = el('div', 'step-meta');
+  const content = el('section', 'lesson-content');
   content.dataset.stepNumber = String(index + 1); content.dataset.totalSteps = String(data.steps.length);
   attachStepMenu(content, step.stepId, step.mathAcademyId);
   const kind = short(step.kind), fields = step.fields || [];
-  if (archived) meta.append(el('span', 'history-position', `Step ${index + 1} / ${data.steps.length}`));
-  if (kind !== 'example') meta.append(el('span', 'step-tag', { question: 'Practice', tutorial: 'Tutorial' }[kind] || kind));
-  if (step.requiresCalculator) meta.append(el('span', '', 'Calculator required'));
-  if (step.difficulty) meta.append(el('span', '', short(step.difficulty)));
-  content.append(meta);
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
   const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', fields);
@@ -607,14 +649,14 @@ function previewContent(data, step, index, archived = false) {
   if (fields.length) {
     const form = el('form'), fieldList = el('div', 'answer-fields');
     const readOnly = archived || kind === 'example' || answered(short(step.status));
-    mountInlineFields(prompt, fieldList, fields, field => fieldControl(field, readOnly, step.contentId));
+    mountInlineFields(prompt, fieldList, fields, field => fieldControl(field, readOnly, step.contentId, step.markdown ?? step.problem));
     form.append(prompt, fieldList);
     if (!readOnly) {
       const actions = el('div', 'answer-actions');
       const check = el('button', 'primary', 'Check preview answer'); check.type = 'submit'; check.dataset.action = 'true';
       const refresh = () => {
         const responses = collectResponses(form, fields);
-        const valid = responses.every(response => response.choiceId || typeof response.value === 'string' && response.value.trim());
+        const valid = responsesComplete(fields, responses);
         check.dataset.unavailable = String(!valid); check.disabled = busy || !valid;
       };
       form.addEventListener('input', refresh); form.addEventListener('change', refresh);
@@ -638,7 +680,7 @@ function previewContent(data, step, index, archived = false) {
   }
   if (answered(short(step.status))) {
     const feedback = el('div', 'feedback'); questionFeedback(feedback, step.status); feedback.setAttribute('role', 'status');
-    feedback.append(el('div', 'feedback-heading', short(step.status) === 'correct' ? '✓ Correct · Preview only' : short(step.status) === 'skipped' ? 'Skipped · Preview only' : '✕ Incorrect · Preview only'));
+    feedback.append(feedbackHeading(step.status, true));
     if (step.feedback) feedback.append(markdown(step.feedback));
     for (const field of fields) if (field.response?.feedback) feedback.append(markdown(field.response.feedback));
     card.append(feedback);
@@ -685,14 +727,7 @@ function taskContent(data, step, number, total, archived = false) {
   if (number) content.dataset.stepNumber = String(number);
   if (total) content.dataset.totalSteps = String(total);
   attachStepMenu(content, step.stepId, step.mathAcademyId);
-  const meta = el('div', 'step-meta');
-  if (number && archived) meta.append(el('span', 'history-position', `Step ${number}${total ? ' / ' + total : ''}`));
   const kind = short(step.kind);
-  if (kind !== 'example') meta.append(el('span', 'step-tag', { question: 'Practice', tutorial: 'Tutorial' }[kind] || kind));
-  if (step.requiresCalculator) meta.append(el('span', '', 'Calculator required'));
-  if (step.difficulty) meta.append(el('span', '', short(step.difficulty)));
-  if (step.attempt) meta.append(el('span', '', `Question ${step.attempt}`));
-  content.append(meta);
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
   const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []);
@@ -706,7 +741,7 @@ function taskContent(data, step, number, total, archived = false) {
     const draft = drafts.get(step.itemId) || [];
     mountInlineFields(prompt, fieldList, fields, field => {
       const saved = draft.find(response => response.fieldId === field.id);
-      return fieldControl(!readOnly && saved ? { ...field, response: saved } : field, readOnly, step.itemId);
+      return fieldControl(!readOnly && saved ? { ...field, response: saved } : field, readOnly, step.itemId, step.markdown ?? step.problem);
     });
     form.append(prompt, fieldList);
     if (!readOnly) {
@@ -715,7 +750,7 @@ function taskContent(data, step, number, total, archived = false) {
       const refresh = () => {
         const responses = collectResponses(form, fields);
         drafts.set(step.itemId, responses);
-        const valid = responses.every(r => r.choiceId ? true : 'value' in r && r.value.trim().length > 0);
+        const valid = responsesComplete(fields, responses);
         submit.dataset.unavailable = String(!valid); submit.disabled = busy || !valid;
       };
       form.addEventListener('input', refresh); form.addEventListener('change', refresh);
@@ -729,7 +764,7 @@ function taskContent(data, step, number, total, archived = false) {
   }
   if (isAnswered) {
     const feedback = el('div', 'feedback'); questionFeedback(feedback, step.status); feedback.setAttribute('role', 'status');
-    feedback.append(el('div', 'feedback-heading', short(step.status) === 'correct' ? '✓ Correct' : short(step.status) === 'skipped' ? 'Skipped' : '✕ Incorrect'));
+    feedback.append(feedbackHeading(step.status));
     if (step.feedback) feedback.append(markdown(step.feedback));
     for (const field of fields) {
       if (field.response?.feedback) feedback.append(markdown(field.response.feedback));
@@ -749,7 +784,8 @@ function taskContent(data, step, number, total, archived = false) {
     if (short(data.status) === 'paused') {
       controls.append(actionButton('Resume →', 'primary', () => mutation('/api/resume', { taskId: data.taskId })));
     } else if (step.canContinue) {
-      controls.append(actionButton('Next step →', 'primary', () => mutation('/api/continue', { taskId: data.taskId, itemId: step.itemId })));
+      if (step.practiceShortage) controls.append(el('p', 'continue-hint', 'No fresh questions remain for this skill. Continue now and return to its practice later.'));
+      controls.append(actionButton(step.practiceShortage ? 'Continue to next skill →' : 'Next step →', 'primary', () => mutation('/api/continue', { taskId: data.taskId, itemId: step.itemId })));
     }
     if (controls.childElementCount) content.append(controls);
   }
@@ -768,10 +804,18 @@ async function renderTask(data) {
   const total = data.progress?.totalSteps ?? data.step?.totalSteps;
   const view = lessonShell(data, { number, total, complete: status === 'completed' });
   const buildEarlier = entry => taskContent(data, entry.step, entry.number, entry.total, true);
-  if (terminal(status)) {
+  if (terminal(status) || data.awaitingQuestions) {
     const done = el('section', 'lesson-content completion');
-    done.append(el('div', 'completion-mark', status === 'completed' ? '✓' : '↗'), el('h2', '', status === 'completed' ? 'Activity complete' : 'More practice needed'));
-    done.append(el('p', '', status === 'completed' ? 'Your answers and progress have been saved.' : 'Your answers are saved. This attempt did not establish mastery. Return to study to continue.'));
+    done.append(el('div', 'completion-mark', status === 'completed' ? '✓' : '↗'), el('h2', '', data.awaitingQuestions ? 'Practice unfinished' : status === 'completed' ? 'Activity complete' : 'More practice needed'));
+    done.append(el('p', '', data.awaitingQuestions ? 'You have reached the end of the lesson. These skills still need practice; your answers are saved.' : status === 'completed' ? 'Your answers and progress have been saved.' : 'Your answers are saved. This attempt did not establish mastery. Return to study to continue.'));
+    if (data.awaitingQuestions) {
+      const pending = el('ul', 'deferred-skills');
+      for (const step of data.deferredSteps || []) pending.append(el('li', '', step.title));
+      done.append(pending);
+      done.append(data.canResumePractice
+        ? actionButton('Resume unfinished practice →', 'primary', () => mutation('/api/resume', { taskId: data.taskId }))
+        : el('p', 'continue-hint', 'Waiting for new questions. You can return to this lesson from Study.'));
+    }
     const earned = data.xpEarned ?? data.xp?.earned ?? (typeof data.xp === 'number' ? data.xp : null);
     if (earned !== null && earned !== undefined) {
       const xp = el('div', 'completion-xp', `${earned >= 0 ? '+' : ''}${earned} `); xp.append(el('small', '', 'XP')); done.append(xp);
@@ -806,7 +850,8 @@ createCoursePicker({
 });
 window.addEventListener('popstate', () => {
   const params = new URL(location.href).searchParams;
-  if (isDeveloperMode() && params.has('activityId')) openPreview({ activityId: params.get('activityId') });
+  if (params.has('topicId')) studyTopic(params.get('topicId'));
+  else if (isDeveloperMode() && params.has('activityId')) openPreview({ activityId: params.get('activityId') });
   else if (params.has('taskId')) openTask(params.get('taskId')); else leaveTask();
 });
 setInterval(() => {
@@ -859,7 +904,8 @@ window.addEventListener('pageshow', event => {
 });
 
 const initialParams = new URL(location.href).searchParams;
-if (isDeveloperMode() && initialParams.has('activityId')) openPreview({ activityId: initialParams.get('activityId') });
+if (initialParams.has('topicId')) studyTopic(initialParams.get('topicId'));
+else if (isDeveloperMode() && initialParams.has('activityId')) openPreview({ activityId: initialParams.get('activityId') });
 else if (initialParams.has('taskId')) openTask(initialParams.get('taskId')); else home();
 
 for (const event of ['course-academy:developer-mode-changing', 'course-academy:profile-changing']) window.addEventListener(event, () => {

@@ -174,6 +174,8 @@ class Builder:
         return self.entity(source, key, 'answer', **attrs), (kind, value)
 
     def question(self, source, key, quiz, path, context=''):
+        if 'fields' in quiz:
+            return self.canonical_question(source, key, quiz, path, context)
         qid, kind = quiz['id'], quiz['type']
         common = {'type', 'id', 'content', 'gated', 'shuffle'}
         allowed = {'radio': common | {'options'}, 'blank': common | {'input_mode', 'require_exact', 'feedback'},
@@ -242,10 +244,113 @@ class Builder:
                           'input_mode': quiz.get('input_mode'), 'require_exact': quiz.get('require_exact'),
                           'shuffle': quiz.get('shuffle'), 'gated': quiz.get('gated'), 'fields': field_audit}
 
+    def canonical_question(self, source, key, quiz, path, context=''):
+        """Convert explicit vault fields to the existing EDB content schema.
+
+        EDB has no free field type. Preserve those reference responses in the
+        worked solution, as for legacy free quizzes, and record the limitation.
+        """
+        qid = quiz['id']
+        if set(quiz) - {'id', 'content', 'fields', 'feedback', 'shuffle', 'gated'}:
+            raise ValueError(f'Unsupported canonical question: {path}#{qid}')
+        if not isinstance(quiz['fields'], list) or not quiz['fields']:
+            raise ValueError(f'Canonical question requires fields: {qid}')
+        prompt = self.render_text(quiz['content'], path, qid + '/content')
+        fields, audit, free, keys = [], [], [], set()
+
+        def answer(answer_key, value, location):
+            if not isinstance(value, dict) or set(value) - {'id', 'type', 'value', 'feedback'}:
+                raise ValueError(f'Unsupported canonical answer: {qid}/{location}')
+            kind = value['type']
+            if kind not in ('math', 'text', 'image'):
+                raise ValueError(f'Unsupported answer representation: {kind}')
+            rendered = self.render_text(value['value'], path, location)
+            if kind == 'image':
+                image = LINK.fullmatch(rendered)
+                if image and image[1]:
+                    rendered = image[3] or image[4]
+                else:
+                    rendered = self.render_text(f'![answer]({rendered})', path, location)
+                    image = LINK.fullmatch(rendered)
+                    if not image:
+                        raise ValueError(f'Invalid image answer: {qid}/{location}')
+                    rendered = image[3] or image[4]
+            attrs = {'answer__type': ':answer.type/' + kind, 'answer__value': rendered}
+            if value.get('feedback'):
+                attrs['answer__feedback'] = self.render_text(value['feedback'], path, location + '/feedback')
+            return self.entity(source, answer_key, 'answer', **attrs), (kind, rendered)
+
+        for field in quiz['fields']:
+            fkey, kind = field['key'], field['type']
+            if not isinstance(fkey, str) or not fkey or fkey in keys:
+                raise ValueError(f'Missing or duplicate field key: {qid}/{fkey}')
+            keys.add(fkey)
+            if kind == 'free':
+                if set(field) != {'key', 'type', 'correct'}:
+                    raise ValueError(f'Unsupported free field: {qid}/{fkey}')
+                value = field['correct']
+                if set(value) != {'type', 'value'} or value['type'] not in ('text', 'math'):
+                    raise ValueError(f'Unsupported free reference: {qid}/{fkey}')
+                reference = self.render_text(value['value'], path, qid + '/' + fkey)
+                if value['type'] == 'math':
+                    reference = '$' + reference + '$'
+                free.append(f'**{fkey}:** {reference}')
+                audit.append({'key': fkey, 'type': kind, 'reference': reference, 'field_id': None})
+                continue
+            if kind == 'blank':
+                if set(field) != {'key', 'type', 'correct'}:
+                    raise ValueError(f'Unsupported blank field: {qid}/{fkey}')
+                correct, _ = answer(key + '/' + fkey + '/canonical', field['correct'], qid + '/' + fkey)
+                choices = [correct]
+                option_map = {}
+            elif kind in ('radio', 'select'):
+                if set(field) != {'key', 'type', 'correct', 'choices'} or len(field['choices']) < 2:
+                    raise ValueError(f'Unsupported selection field: {qid}/{fkey}')
+                choices, option_map, values = [], {}, set()
+                for option in field['choices']:
+                    oid = option['id']
+                    if not isinstance(oid, str) or not oid or oid in option_map:
+                        raise ValueError(f'Missing or duplicate option ID: {qid}/{fkey}')
+                    aid, value = answer(key + '/' + fkey + '/option-' + oid, option, qid + '/' + fkey + '/' + oid)
+                    if value in values:
+                        raise ValueError(f'Duplicate answer value: {qid}/{fkey}')
+                    values.add(value)
+                    choices.append(aid)
+                    option_map[oid] = aid
+                if field['correct'] not in option_map:
+                    raise ValueError(f'Correct answer outside choices: {qid}/{fkey}')
+                correct = option_map[field['correct']]
+            else:
+                raise ValueError(f'Unsupported field type: {qid}/{fkey}: {kind}')
+            fid = self.entity(source, key + '/' + fkey, 'answer-field', answer_field__key=fkey,
+                              answer_field__type=':answer-field.type/' + kind,
+                              answer_field__choices=choices, answer_field__correct=correct)
+            fields.append(fid)
+            audit.append({'field_id': fid, 'key': fkey, 'type': kind, 'options': option_map,
+                          'correct_answer_id': correct})
+        # Free responses are reference-only in the current EDB schema. Remove
+        # only their widget markers; keep the task and its response label.
+        for field in audit:
+            if field['type'] == 'free':
+                prompt = prompt.replace('{{' + field['key'] + '}}', '[' + field['key'] + ': written response]')
+        worked = '\n\n'.join(free + ([self.render_text(quiz['feedback'], path, qid + '/feedback')] if quiz.get('feedback') else []))
+        attrs = {'question__problem': tidy(context + '\n\n' + prompt) if context else prompt}
+        if fields:
+            attrs['question__answer_fields'] = fields
+        if worked:
+            attrs['question__worked_solution'] = worked
+        identity = self.entity(source, key, 'question', **attrs)
+        if free:
+            self.audit['grading_limitations'].append({'question_id': identity, 'quiz_id': qid,
+                'source': str(path.relative_to(self.vault)),
+                'reason': 'Free fields are written-response references in worked-solution; EDB does not automatically grade them, including in questions with other fields.'})
+        return identity, {'quiz_id': qid, 'type': 'fields', 'question_id': identity, 'identity_key': key,
+                          'shuffle': quiz.get('shuffle'), 'gated': quiz.get('gated'), 'fields': audit}
+
     def assignment(self, relative):
         path = self.vault / relative
         raw = path.read_text()
-        filename = re.fullmatch(r'\d{2}-\d{2}-\d{2}_((?:R|OHW|WHW)-\d+)\.md', path.name)
+        filename = re.fullmatch(r'(?:\d{2}-\d{2}-\d{2}|Undated)_((?:R|OHW|WHW)-\d+)\.md', path.name)
         if not filename or path.parent.name not in COURSES:
             raise ValueError(f'Unrecognized F26 assignment identity: {path}')
         code = filename[1]
@@ -271,10 +376,10 @@ class Builder:
                 if not isinstance(quiz, dict) or not isinstance(quiz.get('id'), str) or quiz['id'] in seen:
                     raise ValueError(f'Missing or duplicate stable quiz ID: {path}#{number}')
                 seen.add(quiz['id'])
-                label = re.fullmatch(r'q-' + number + r'([a-z]?)', quiz['id'])
+                label = re.fullmatch(r'q-' + number + r'([a-z]?|-[a-z][a-z0-9-]*)', quiz['id'])
                 if not label or (len(blocks) > 1 and not label[1]):
                     raise ValueError(f'Quiz ID does not identify its problem/part: {path}#{quiz["id"]}')
-                part = label[1]
+                part = label[1].lstrip('-')
                 parts.append(part)
                 key = f'problem-{number}/part-{part}' if part else f'problem-{number}/question'
                 question, qa = self.question(source, key, quiz, path, context if len(blocks) == 1 else '')
@@ -339,7 +444,10 @@ class Builder:
                 keys = [f[':answer-field/key'] for f in fields]
                 assert len(keys) == len(set(keys))
                 inline = re.findall(r'\{\{([^}]+)\}\}', row[':question/problem'])
-                assert set(inline) == set(keys) - {'selection'}, (uid, inline, keys)
+                unplaced = set(keys) - set(inline)
+                assert set(inline) <= set(keys), (uid, inline, keys)
+                assert all(f[':answer-field/type'] == ':answer-field.type/radio'
+                           for f in fields if f[':answer-field/key'] in unplaced), (uid, inline, keys)
             if ':answer-field/id' in row:
                 assert row[':answer-field/correct'] in row[':answer-field/choices']
             if ':answer/id' in row:
@@ -376,7 +484,7 @@ def build(vault: Path):
                                for a in builder.audit['activities'] for p in a['problems'] for q in p['quizzes']]
     builder.audit['counts'] = dict(collections.Counter(next(k[1:-3] for k in row if k.endswith('/id') and k != ':db/id') for row in builder.entities))
     builder.audit['quiz_types'] = dict(collections.Counter(q['type'] for a in builder.audit['activities'] for p in a['problems'] for q in p['quizzes']))
-    builder.audit['grading_limitations'] = [
+    builder.audit['grading_limitations'] += [
         'Free-response references remain fieldless questions with the authored correct response and feedback in worked-solution.',
         'Quiz require_exact, input_mode, shuffle, and gated settings are retained in the audit; the current content schema has no corresponding policy attributes.',
         'Canonical blank values retain their source math/text representation. Runtime grading eligibility must be checked using the existing validator; no symbolic equivalence is asserted.',

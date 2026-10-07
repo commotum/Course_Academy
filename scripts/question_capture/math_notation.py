@@ -23,15 +23,16 @@ UNITS = ('ft','in','yd','mi','mm','cm','km','m','kg','mg','lb','oz','g','ms','mi
 def quantity_identity(value):
     """Reconcile legacy numeric unit suffixes with explicitly typeset units."""
     unit = '(?:'+'|'.join(UNITS)+')'
-    styled = r'\\(?:text|mathrm)\{\s*'+unit+r'\s*\}'
-    block = '(?:'+unit+'|'+styled+r'|\{'+styled+r'\})'
+    rate = unit + '(?:/' + unit + ')?'
+    styled = r'\\(?:text|mathrm|textrm)\{\s*'+rate+r'\s*\}'
+    block = '(?:'+rate+'|'+styled+r'|\{'+styled+r'\})'
     match = re.fullmatch(r'([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*'
                         r'(?:(?:\\[,; ]|\\quad)\s*)*('+block+r')'
                         r'\s*(?:\^\{([+-]?\d+)\}|\^([+-]?\d)|([²³]))?',
                         value.strip().strip('$').replace('−','-'))
     if not match:
         return None
-    name = re.sub(r'\\(?:text|mathrm)|[{}\s]', '', match[2])
+    name = re.sub(r'\\(?:text|mathrm|textrm)|[{}\s]', '', match[2])
     exponent = match[3] or match[4] or (match[5].translate(SUPERSCRIPTS) if match[5] else '1')
     return ('quantity',tokens(match[1]),name,exponent)
 
@@ -99,13 +100,23 @@ def sequence_identity(nodes):
         n == ('command','cdot') and i >= 2 and i+1 < len(nodes) and
         nodes[i-1][0] == 'fence' and nodes[i-1][1] == '(' and nodes[i-1][3] == ')' and
         nodes[i-2][0] == 'operator' and nodes[i+1][0] == 'operator'))
-    # A leading quotient with explicitly fenced arguments has the same scope
-    # as a stacked fraction when followed only by an additive boundary or end.
-    # Leave unfenced slashes, chained division, and adjacent factors untouched.
-    if (len(nodes) >= 3 and nodes[1] == ('char','/') and
-        (len(nodes) == 3 or nodes[3] in (('char','+'),('char','-'))) and
-        all(n[0] == 'fence' and n[1] == '(' and n[3] == ')' for n in (nodes[0],nodes[2]))):
-        return (('frac',fraction_argument((nodes[0],)),fraction_argument((nodes[2],))),) + nodes[3:]
+    # Fenced slash quotients at additive/equality boundaries have the same
+    # scope as stacked fractions. Preserve chained division and adjacent factors.
+    normalized = []
+    position = 0
+    boundaries = (('char','+'),('char','-'),('char','='))
+    while position < len(nodes):
+        parts = nodes[position:position+3]
+        if (len(parts) == 3 and parts[1] == ('char','/') and
+            (position == 0 or nodes[position-1] in boundaries) and
+            (position+3 == len(nodes) or nodes[position+3] in boundaries) and
+            all(n[0] == 'fence' and n[1] == '(' and n[3] == ')' for n in (parts[0],parts[2]))):
+            normalized.append(('frac',fraction_argument((parts[0],)),fraction_argument((parts[2],))))
+            position += 3
+        else:
+            normalized.append(nodes[position])
+            position += 1
+    nodes = tuple(normalized)
     # Convert only a whole numeric ratio, including one used as an exponent.
     # Do not change x^1/3, 1/(3x), or a fraction's argument boundaries.
     if all(n[0] == 'char' for n in nodes):
@@ -291,12 +302,32 @@ class Parser:
         return ('char',token)
 
 
-def identity(value):
+def identity(value, preserve_form=False):
+    # The first importer wrapped some whole math values in this serialization
+    # marker. It is not a bracket or part of the displayed expression.
+    wrapped = re.fullmatch(r'\[MATH:\s*([\s\S]*)\]', value.strip())
+    if wrapped:
+        value = wrapped[1]
     # Whole Roman-numeral graph labels have been imported both bare and as
     # typeset text. Do not strip styling or spaces from arbitrary text.
     label = re.fullmatch(r'\\(?:text|mathrm)\{([IVXLCDM]+)\}', value.strip().strip('$'))
     if label:
         value = label[1]
+    # Legacy one-sided system braces are display delimiters, not TeX groups.
+    # Recognize only whole two-row systems of simple equations; retain rows.
+    system = value.strip().strip('$')
+    forms = (
+        ('{', '', ';'),
+        (r'{\begin{aligned}', r'\end{aligned}', r'\\'),
+        (r'\begin{aligned}{\begin{aligned}',
+         r'\end{aligned}\end{aligned}', r'\\'))
+    for prefix, suffix, separator in forms:
+        if system.startswith(prefix) and (not suffix or system.endswith(suffix)):
+            body = system[len(prefix):len(system)-len(suffix) if suffix else len(system)]
+            rows = body.split(separator)
+            if len(rows) == 2 and all(re.fullmatch(
+                    r'[A-Za-z0-9+\-.\s]+(?:[=<>]|\\(?:leq?|geq?))[A-Za-z0-9+\-.\s]+', row) for row in rows):
+                return repr(('system',tuple(identity(row, preserve_form=True) for row in rows)))
     quantity = quantity_identity(value)
     if quantity is not None:
         return repr(quantity)
@@ -309,7 +340,7 @@ def identity(value):
     source = tokens(value)
     try:
         nodes = Parser(source).sequence()
-        return repr(scalar_identity(nodes) or ('math',nodes))
+        return repr(('math',nodes) if preserve_form else scalar_identity(nodes) or ('math',nodes))
     except ValueError:
         # Unsupported/unbalanced notation still has a stable token identity.
         # It cannot collide with a successfully parsed expression.
