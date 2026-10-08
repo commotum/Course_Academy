@@ -1,0 +1,935 @@
+{
+  "mode": "verify",
+  "problem": "$$\n{x}^{\u2032}(t)=[\\begin{aligned}-3 & 2 \\\\ -6 & 5\\end{aligned}]x(t)+[\\begin{aligned}2t \\\\ 0\\end{aligned}]\n$$\n\nConsider the system of differential equations. Using the method of variation of parameters, the general solution of the equation can be written in the form\n\n| $x(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{-t}+{c}_{2}[\\begin{aligned}1 \\\\ 3\\end{aligned}]{e}^{3t}+\\,\\,\\frac{1}{9}$ |  | $30t-26$ |  | . |\n| --- | --- | --- | --- | --- |\n|  | {{field-1}} |  |  |  |",
+  "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nNotice that we are given that\n\n$$\n{x}_{c}(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{-t}+{c}_{2}[\\begin{aligned}1 \\\\ 3\\end{aligned}]{e}^{3t}.\n$$\n\nWe'll look for a particular solution in the form\n\n$$\n{x}_{p}(t)=\u03a6\\,u(t)\n$$\n\nwhere $\u03a6$ is a fundamental matrix for the corresponding homogeneous system, $f(t)$ is the forcing column vector and\n\n$$\nu(t)=\\int {\u03a6}^{-1}\\,f(t)\\,\\text{d}t.\n$$\n\nIn our case,\n\n$$\n\u03a6=[\\begin{aligned}{e}^{-t} & {e}^{3t} \\\\ {e}^{-t} & 3{e}^{3t}\\end{aligned}],\\,f(t)=[\\begin{aligned}2t \\\\ 0\\end{aligned}].\n$$\n\nSince $\u03a6$ is a fundamental matrix, it must be invertible. Using the formula for the inverse of a $2\\times 2$ matrix, we get the following:\n\n$$\n\\begin{aligned}{\u03a6}^{-1} & =\\frac{1}{{e}^{-t}\\cdot 3{e}^{3t}-{e}^{3t}\\cdot {e}^{-t}}[\\begin{aligned}3{e}^{3t} & -{e}^{3t} \\\\ -{e}^{-t} & {e}^{-t}\\end{aligned}] \\\\  & =\\frac{1}{2{e}^{2t}}[\\begin{aligned}3{e}^{3t} & -{e}^{3t} \\\\ -{e}^{-t} & {e}^{-t}\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}3{e}^{t} & -{e}^{t} \\\\ -{e}^{-3t} & {e}^{-3t}\\end{aligned}].\\end{aligned}\n$$\n\n$$\n\\begin{aligned}{\u03a6}^{-1}\\,f(t) & =\\frac{1}{2}[\\begin{aligned}3{e}^{t} & -{e}^{t} \\\\ -{e}^{-3t} & {e}^{-3t}\\end{aligned}][\\begin{aligned}2t \\\\ 0\\end{aligned}] \\\\  & =[\\begin{aligned}3t{e}^{t} \\\\ -t{e}^{-3t}\\end{aligned}].\\end{aligned}\n$$\n\nNow, using our formula for $u(t),$ we obtain\n\n$$\n\\begin{aligned}u(t) & =\\int {\u03a6}^{-1}\\,f(t)\\,\\text{d}t \\\\  & =\\int [\\begin{aligned}3t{e}^{t} \\\\ -t{e}^{-3t}\\end{aligned}]\\,\\text{d}t \\\\  & =[\\begin{aligned}\\int 3t{e}^{t}\\,\\text{d}t \\\\ \\int -t{e}^{-3t}\\,\\text{d}t\\end{aligned}].\\end{aligned}\n$$\n\nIntegrating the components by parts, we get the following:\n\n- For the first component, let $u=3t$ and $\\text{d}v={e}^{t}\\,\\text{d}t.$ Then, $\\text{d}u=3\\,\\text{d}t$ and $v={e}^{t}.$ So,\n\n$$\n\\begin{aligned}\\int 3t{e}^{t}\\,\\text{d}t & =(3t)\\cdot {e}^{t}-\\int {e}^{t}\\cdot (3\\,\\text{d}t) \\\\  & =3t{e}^{t}-3{e}^{t} \\\\  & =3{e}^{t}(t-1).\\end{aligned}\n$$\n\n- For the second component, let $u=-t$ and $\\text{d}v={e}^{-3t}\\,\\text{d}t.$ Then, $\\text{d}u=-\\,\\text{d}t$ and $v=-\\frac{1}{3}{e}^{-3t}.$ So,\n\n$$\n\\begin{aligned}\\int -t{e}^{-3t}\\,\\text{d}t & =(-t)\\cdot (-\\frac{1}{3}{e}^{-3t})-\\int (-\\frac{1}{3}{e}^{-3t})\\cdot (-\\,\\text{d}t) \\\\  & =\\frac{t}{3}{e}^{-3t}-\\frac{1}{3}\\int {e}^{-3t}\\,\\text{d}t \\\\  & =\\frac{t}{3}{e}^{-3t}+\\frac{1}{9}{e}^{-3t} \\\\  & =\\frac{1}{9}{e}^{-3t}(3t+1).\\end{aligned}\n$$\n\nTherefore, our particular solution is\n\n$$\n\\begin{aligned}{x}_{p}(t) & =\u03a6\\,u(t) \\\\  & =[\\begin{aligned}{e}^{-t} & {e}^{3t} \\\\ {e}^{-t} & 3{e}^{3t}\\end{aligned}][\\begin{aligned}3{e}^{t}(t-1) \\\\ \\frac{1}{9}{e}^{-3t}(3t+1)\\end{aligned}] \\\\  & =\\frac{1}{9}[\\begin{aligned}27(t-1)+(3t+1) \\\\ 27(t-1)+3(3t+1)\\end{aligned}] \\\\  & =\\frac{1}{9}[\\begin{aligned}30t-26 \\\\ 36t-24\\end{aligned}]\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14035554,
+    "task_type": "diagnostic",
+    "topic_id": null,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-120789",
+        "problem": "",
+        "worked_solution": "At the intersection points, the $y$-values are the same for both graphs. This gives the equation $\\operatorname{cos}\u2061x=-\\frac{1}{2}.$ \n\nFirst, we find the principal value:\n\n$$\n{x}_{1}=\\operatorname{arccos}\u2061(-\\frac{1}{2})=\\frac{2\\pi }{3}\n$$\n\nOur first solution lies in the $2$nd quadrant and has a reference angle of ${\\theta }_{R}=\\frac{\\pi }{3}.$ Since $\\operatorname{cos}\u2061x<0,$ the second solution must lie in the third quadrant, and it also has ${\\theta }_{R}=\\frac{\\pi }{3}.$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/ba34bf96662682ec433c3ade0bf3f118638212101a0729fe95bbae05aee8bf1e.png)\n\nSince the second solution ${x}_{2}$  lies in the $3$rd quadrant, we can find it using the reference angle as follows:\n\n$$\n\\begin{aligned}{x}_{2} & =\\pi +{\\theta }_{R} \\\\  & =\\pi +\\frac{\\pi }{3} \\\\  & =\\frac{4\\pi }{3}\\end{aligned}\n$$\n\nHence, the general solution for the given equation is \n\n$$\nx=\\frac{2\\pi }{3}+2n\\pi ,\\,x=\\frac{4\\pi }{3}+2n\\pi .\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "x=\\frac{2\\pi }{3}+2n\\pi ,\\,x=\\frac{4\\pi }{3}+2n\\pi ",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-113606",
+        "problem": "",
+        "worked_solution": "We will use the change-of-coordinates formula in the form\n\n$$\n[\\,x\\,]_{B}={P}_{S\\to B}[\\,x\\,]_{S}.\n$$\n\nFirst, recall that the change-of-coordinates matrix from $B$ to $S$ is the matrix whose columns are the vectors of $B$ relative to the standard basis $S.$ As a result, we have\n\n$$\n{P}_{B\\to S}=[\\begin{aligned}5 & -7 \\\\ -3 & 6\\end{aligned}].\n$$\n\nNow, we need to find the change-of-coordinates matrix ${P}_{S\\to B}$ from $S$ to $B.$ To do that, we compute the inverse of ${P}_{B\\to S}:$\n\n$$\n\\begin{aligned}{P}_{S\\to B} & ={P}_{B\\to S}^{-1} \\\\  & ={[\\begin{aligned}5 & -7 \\\\ -3 & 6\\end{aligned}]}^{-1} \\\\  & =\\frac{1}{5\\cdot 6-(-7)\\cdot (-3)}[\\begin{aligned}6 & 7 \\\\ 3 & 5\\end{aligned}] \\\\  & =[\\begin{aligned}\\frac{2}{3} & \\frac{7}{9} \\\\ \\frac{1}{3} & \\frac{5}{9}\\end{aligned}]\\end{aligned}\n$$\n\nFinally, we compute $[\\,x\\,]_{B}:$\n\n$$\n\\begin{aligned}[\\,x\\,]_{B} & ={P}_{S\\to B}[\\,x\\,]_{S} \\\\  & =[\\begin{aligned}\\frac{2}{3} & \\frac{7}{9} \\\\ \\frac{1}{3} & \\frac{5}{9}\\end{aligned}][\\begin{aligned}18 \\\\ -9\\end{aligned}] \\\\  & =[\\begin{aligned}5 \\\\ 1\\end{aligned}]\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}5 \\\\ 1\\end{aligned}]",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-36978",
+        "problem": "",
+        "worked_solution": "The gradient of the function $f(x,y,z)$ is defined as\n\n$$\n\u2207f(x,y,z)=\\frac{\u2202f}{\u2202x}\\,\\text{i}+\\frac{\u2202f}{\u2202y}\\,\\text{j}+\\frac{\u2202f}{\u2202z}\\,\\text{k}.\n$$\n\nSince $\u2207f(x,y,z)=F(x,y,z),$ the function $f(x,y,z)$ must satisfy the following system:\n\n$$\n\\frac{\u2202f}{\u2202x}=2\\operatorname{cos}\u2061(2x),\\,\\frac{\u2202f}{\u2202y}=2yz,\\,\\frac{\u2202f}{\u2202z}={y}^{2}\n$$\n\nFirst, we integrate $\\frac{\u2202f}{\u2202x}$ with respect to $x.$ Note that the solution should contain an arbitrary function of $y$ and $z:$\n\n$$\n\\begin{aligned}f(x,y,z) & =\\int \\frac{\u2202f}{\u2202x}\\,\\text{d}x \\\\  & =\\int 2\\operatorname{cos}\u2061(2x)\\,\\text{d}x \\\\  & =\\operatorname{sin}\u2061(2x)+g(y,z)\\end{aligned}\n$$\n\nNow, differentiating the above expression with respect to $y,$ we obtain\n\n$$\n\\frac{\u2202f}{\u2202y}=\\frac{\u2202g}{\u2202y}\n$$\n\nTaking $\\frac{\u2202f}{\u2202y}=2yz$ into account, we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202g}{\u2202y} & =2yz\\end{aligned}\n$$\n\nNow we integrate $\\frac{\u2202g}{\u2202y}$ with respect to $y.$ Note that the solution should contain an arbitrary function of $z:$\n\n$$\n\\begin{aligned}g(y,z) & =\\int \\frac{\u2202g}{\u2202y}\\,\\text{d}y \\\\  & =\\int (2yz)\\,\\text{d}y \\\\  & ={y}^{2}z+h(z)\\end{aligned}\n$$\n\nSubstituting $g(y,z)={y}^{2}z+h(z)$ in the expression for $f(x,y,z),$ we get\n\n$$\nf(x,y,z)=\\operatorname{sin}\u2061(2x)+{y}^{2}z+h(z).\n$$\n\nTo determine the function $h(z),$ we differentiate $f(x,y,z)$ with respect to $z.$ This gives\n\n$$\n\\frac{\u2202f}{\u2202z}={y}^{2}+{h}^{\u2032}(z).\n$$\n\nTaking $\\frac{\u2202f}{\u2202z}={y}^{2}$ into account, we obtain\n\n$$\n\\begin{aligned}{y}^{2}+{h}^{\u2032}(z) & ={y}^{2} \\\\ {h}^{\u2032}(z) & =0 \\\\ h(z) & =C,\\end{aligned}\n$$\n\nwhere $C$ is a constant.\n\nConsequently,\n\n$$\nf(x,y,z)=\\operatorname{sin}\u2061(2x)+{y}^{2}z+C.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "f(x,y,z)=\\operatorname{sin}\u2061(2x)+{y}^{2}z+C",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-337287",
+        "problem": "$$\n{x}^{\u2032}(t)=[\\begin{aligned}-3 & 2 \\\\ -6 & 5\\end{aligned}]x(t)+[\\begin{aligned}2t \\\\ 0\\end{aligned}]\n$$\n\nConsider the system of differential equations. Using the method of variation of parameters, the general solution of the equation can be written in the form\n\n| $x(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{-t}+{c}_{2}[\\begin{aligned}1 \\\\ 3\\end{aligned}]{e}^{3t}+\\,\\,\\frac{1}{9}$ |  | $30t-26$ |  | . |\n| --- | --- | --- | --- | --- |\n|  | {{field-1}} |  |  |  |",
+        "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nNotice that we are given that\n\n$$\n{x}_{c}(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{-t}+{c}_{2}[\\begin{aligned}1 \\\\ 3\\end{aligned}]{e}^{3t}.\n$$\n\nWe'll look for a particular solution in the form\n\n$$\n{x}_{p}(t)=\u03a6\\,u(t)\n$$\n\nwhere $\u03a6$ is a fundamental matrix for the corresponding homogeneous system, $f(t)$ is the forcing column vector and\n\n$$\nu(t)=\\int {\u03a6}^{-1}\\,f(t)\\,\\text{d}t.\n$$\n\nIn our case,\n\n$$\n\u03a6=[\\begin{aligned}{e}^{-t} & {e}^{3t} \\\\ {e}^{-t} & 3{e}^{3t}\\end{aligned}],\\,f(t)=[\\begin{aligned}2t \\\\ 0\\end{aligned}].\n$$\n\nSince $\u03a6$ is a fundamental matrix, it must be invertible. Using the formula for the inverse of a $2\\times 2$ matrix, we get the following:\n\n$$\n\\begin{aligned}{\u03a6}^{-1} & =\\frac{1}{{e}^{-t}\\cdot 3{e}^{3t}-{e}^{3t}\\cdot {e}^{-t}}[\\begin{aligned}3{e}^{3t} & -{e}^{3t} \\\\ -{e}^{-t} & {e}^{-t}\\end{aligned}] \\\\  & =\\frac{1}{2{e}^{2t}}[\\begin{aligned}3{e}^{3t} & -{e}^{3t} \\\\ -{e}^{-t} & {e}^{-t}\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}3{e}^{t} & -{e}^{t} \\\\ -{e}^{-3t} & {e}^{-3t}\\end{aligned}].\\end{aligned}\n$$\n\n$$\n\\begin{aligned}{\u03a6}^{-1}\\,f(t) & =\\frac{1}{2}[\\begin{aligned}3{e}^{t} & -{e}^{t} \\\\ -{e}^{-3t} & {e}^{-3t}\\end{aligned}][\\begin{aligned}2t \\\\ 0\\end{aligned}] \\\\  & =[\\begin{aligned}3t{e}^{t} \\\\ -t{e}^{-3t}\\end{aligned}].\\end{aligned}\n$$\n\nNow, using our formula for $u(t),$ we obtain\n\n$$\n\\begin{aligned}u(t) & =\\int {\u03a6}^{-1}\\,f(t)\\,\\text{d}t \\\\  & =\\int [\\begin{aligned}3t{e}^{t} \\\\ -t{e}^{-3t}\\end{aligned}]\\,\\text{d}t \\\\  & =[\\begin{aligned}\\int 3t{e}^{t}\\,\\text{d}t \\\\ \\int -t{e}^{-3t}\\,\\text{d}t\\end{aligned}].\\end{aligned}\n$$\n\nIntegrating the components by parts, we get the following:\n\n- For the first component, let $u=3t$ and $\\text{d}v={e}^{t}\\,\\text{d}t.$ Then, $\\text{d}u=3\\,\\text{d}t$ and $v={e}^{t}.$ So,\n\n$$\n\\begin{aligned}\\int 3t{e}^{t}\\,\\text{d}t & =(3t)\\cdot {e}^{t}-\\int {e}^{t}\\cdot (3\\,\\text{d}t) \\\\  & =3t{e}^{t}-3{e}^{t} \\\\  & =3{e}^{t}(t-1).\\end{aligned}\n$$\n\n- For the second component, let $u=-t$ and $\\text{d}v={e}^{-3t}\\,\\text{d}t.$ Then, $\\text{d}u=-\\,\\text{d}t$ and $v=-\\frac{1}{3}{e}^{-3t}.$ So,\n\n$$\n\\begin{aligned}\\int -t{e}^{-3t}\\,\\text{d}t & =(-t)\\cdot (-\\frac{1}{3}{e}^{-3t})-\\int (-\\frac{1}{3}{e}^{-3t})\\cdot (-\\,\\text{d}t) \\\\  & =\\frac{t}{3}{e}^{-3t}-\\frac{1}{3}\\int {e}^{-3t}\\,\\text{d}t \\\\  & =\\frac{t}{3}{e}^{-3t}+\\frac{1}{9}{e}^{-3t} \\\\  & =\\frac{1}{9}{e}^{-3t}(3t+1).\\end{aligned}\n$$\n\nTherefore, our particular solution is\n\n$$\n\\begin{aligned}{x}_{p}(t) & =\u03a6\\,u(t) \\\\  & =[\\begin{aligned}{e}^{-t} & {e}^{3t} \\\\ {e}^{-t} & 3{e}^{3t}\\end{aligned}][\\begin{aligned}3{e}^{t}(t-1) \\\\ \\frac{1}{9}{e}^{-3t}(3t+1)\\end{aligned}] \\\\  & =\\frac{1}{9}[\\begin{aligned}27(t-1)+(3t+1) \\\\ 27(t-1)+3(3t+1)\\end{aligned}] \\\\  & =\\frac{1}{9}[\\begin{aligned}30t-26 \\\\ 36t-24\\end{aligned}]\\end{aligned}\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-118729",
+        "problem": "At a geological site, an object is found with $75%$ of its original chlorine-36 content. Given that the half-life of chlorine-36 is $301$ thousand years, approximately how old is the object?",
+        "worked_solution": "The mass $M(t)$ of a radioactive substance at time $t$ can be modeled by the differential equation\n\n$$\n{M}^{\u2032}(t)=-kM(t),\\,M(0)={M}_{0}.\n$$\n\nThe general solution to this equation is\n\n$$\nM(t)={M}_{0}{e}^{-kt}.\n$$\n\nThe half-life ${t}_{1/2}$ is the time taken for the mass of the substance to reduce by one half and is given by\n\n$$\n{t}_{1/2}=\\frac{\\operatorname{ln}\u20612}{k}.\n$$\n\nSince we know that ${t}_{1/2}=301$ thousand years, we have\n\n$$\n301=\\frac{\\operatorname{ln}\u20612}{k}\\,\u21d2\\,k=\\frac{\\operatorname{ln}\u20612}{301}.\n$$\n\nSo, we have\n\n$$\nM(t)={M}_{0}{e}^{-t\\operatorname{ln}\u20612/301}.\n$$\n\nWe wish to calculate the time $t$ such that $M(t)=0.75{M}_{0}.$ So, we set up our equation as follows:\n\n$$\n0.75{M}_{0}={M}_{0}{e}^{-t\\operatorname{ln}\u20612/301}\n$$\n\nSolving this equation for $t,$ we get\n\n$$\n\\begin{aligned}0.75{M}_{0} & ={M}_{0}{e}^{-t\\operatorname{ln}\u20612/301} \\\\ 0.75\\cancel{{M}_{0}} & =\\cancel{{M}_{0}}{e}^{-t\\operatorname{ln}\u20612/301} \\\\ 0.75 & ={e}^{-t\\operatorname{ln}\u20612/301} \\\\ \\operatorname{ln}\u2061(0.75) & =\\operatorname{ln}\u2061({e}^{-t\\operatorname{ln}\u20612/301}) \\\\ \\operatorname{ln}\u2061(0.75) & =-\\frac{t\\operatorname{ln}\u20612}{301} \\\\ t & =-\\frac{301\\cdot \\operatorname{ln}\u2061(0.75)}{\\operatorname{ln}\u20612} \\\\ t & \u2248125.\\end{aligned}\n$$\n\nTherefore, we conclude that the object is approximately $125$ thousand years old.",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-117278",
+        "problem": "Find ${f}^{\u2032}(1)$ if $f(x)={\\int }_{-{x}^{3}}^{x}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t.$",
+        "worked_solution": "Here, both the lower and upper limits contain a variable. However, to apply FTC II, we need the variable to be on the upper limit only. So, we can split the integral into two integrals, and rewrite them so that in both cases the variable is on the upper limit. We get\n\n$$\n\\begin{aligned}{\\int }_{-{x}^{3}}^{x}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t & ={\\int }_{-{x}^{3}}^{a}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t+{\\int }_{a}^{x}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t \\\\  & =-{\\int }_{a}^{-{x}^{3}}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t+{\\int }_{a}^{x}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t,\\end{aligned}\n$$\n\nwhere $a$ is any constant number between $-{x}^{3}$ and $x.$\n\nThe integrand ${t}^{4}\\operatorname{cos}\u2061t$ is continuous for all $t,$ so applying the FTC II gives\n\n$$\n\\begin{aligned}{f}^{\u2032}(x) & =\\frac{\\text{d}}{\\text{d}x}(-{\\int }_{a}^{-{x}^{3}}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t+{\\int }_{a}^{x}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t) \\\\  & =-\\frac{\\text{d}}{\\text{d}x}({\\int }_{a}^{-{x}^{3}}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t)+\\frac{\\text{d}}{\\text{d}x}({\\int }_{a}^{x}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t) \\\\  & =-\\frac{\\text{d}u}{\\text{d}x}\\frac{\\text{d}}{\\text{d}u}({\\int }_{a}^{u}{t}^{4}\\operatorname{cos}\u2061t\\,\\text{d}t)+{x}^{4}\\operatorname{cos}\u2061x \\\\  & =-(-3{x}^{2}){u}^{4}\\operatorname{cos}\u2061u+{x}^{4}\\operatorname{cos}\u2061x \\\\  & =3{x}^{2}{(-{x}^{3})}^{4}\\operatorname{cos}\u2061(-{x}^{3})+{x}^{4}\\operatorname{cos}\u2061x \\\\  & =3{x}^{14}\\operatorname{cos}\u2061{x}^{3}+{x}^{4}\\operatorname{cos}\u2061x.\\end{aligned}\n$$\n\nNote that we used the substitution $u=-{x}^{3}.$\n\nFinally, we can compute ${f}^{\u2032}(1).$ We get\n\n$$\n\\begin{aligned}{f}^{\u2032}(1) & =3(1)^{14}\\operatorname{cos}\u2061{1}^{3}+{1}^{4}\\operatorname{cos}\u20611 \\\\  & =3\\operatorname{cos}\u20611+\\operatorname{cos}\u20611 \\\\  & =4\\operatorname{cos}\u20611.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "4\\operatorname{cos}\u20611",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-120282",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/e90d9a160db2c75091253eaa8a8c815e92c45f988841683f5a4d18ca6a6ea7db.png)\n\nWhich of the following equations could have generated the slope field shown above?\n\n- ${y}^{\u2032}=-x{y}^{2}$\n- ${y}^{\u2032}=-\\frac{y}{x}$\n- ${y}^{\u2032}=\\frac{x}{y}$",
+        "worked_solution": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/54932bcffbbe793d6e1f730e65570b19cfc3603ddb62eaf0a63ef2e5b0705979.png)\n\nNotice the following properties of the given slope field:\n\n- For $y\\ne 0,$ the slopes of the slope field become horizontal at $x=0$ only.\n\n- For $x\\ne 0,$ the slopes of the slope field become vertical as $y\\to 0.$\n\nWith that in mind, let's consider each equation.\n\n- Equation I does *not* give the required behavior. The right-hand side of ${y}^{\u2032}=-x{y}^{2}$ evaluates to zero both on $x=0$ and $y=0.$\n\n- Equation II does *not* give the required behavior. The right-hand side of ${y}^{\u2032}=-\\frac{y}{x}$ does not evaluate to zero on $x=0.$\n\n- Equation III gives the required behavior. For $y\\ne 0,$ the right-hand side of ${y}^{\u2032}=\\frac{x}{y}$ evaluates to zero on $x=0$ only, and for $x\\ne 0,$ we have \n\n$$\n|{y}^{\u2032}|=|\\frac{x}{y}|\\to \\infty \\,\\text{as}\\,y\\to 0.\n$$\n\nTherefore, the correct answer is \"III only.\"",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-50971",
+        "problem": "Which of the following series converge?\n\n- ${\\sum }_{n=1}^{\\infty }\\frac{(-1)^{n+1}}{n!}$\n- ${\\sum }_{n=1}^{\\infty }\\frac{2\\sqrt{n}}{n+2}$\n- ${\\sum }_{n=1}^{\\infty }\\frac{{n}^{3}}{n+2{n}^{2}}$",
+        "worked_solution": "We use the flowchart below to determine which tests to use for each series.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/3aa7f0243efeab51d00aa9694dd018245f7ca4664cc1a5fdf4e646aebb61536e.png)\n\nWith that in mind, let's test each series in turn.\n\n- For the first series, we use the alternating series test. Observe that \n\n$$\n{a}_{n}=\\frac{1}{n!}\n$$\n\nis positive and decreasing for all $n\\ge 1,$ and ${a}_{n}\\to 0$ as $n\\to \\infty .$ So, by the alternating series test, the series\n\n$$\n{\\sum }_{n=1}^{\\infty }\\frac{(-1)^{n+1}}{n!}\n$$\n\nis also convergent.\n\n- For the second series, we use the limit comparison test. Let \n\n$$\n{a}_{n}=\\frac{2\\sqrt{n}}{n+2}\\,{b}_{n}=\\frac{1}{\\sqrt{n}}\n$$\n\nWorking out the necessary limit, we get \n\n$$\n\\begin{aligned}L & ={lim}_{n\\to \\infty }|\\frac{{a}_{n}}{{b}_{n}}| \\\\  & ={lim}_{n\\to \\infty }(\\frac{2\\sqrt{n}}{n+2}\u00f7\\frac{1}{\\sqrt{n}}) \\\\  & ={lim}_{n\\to \\infty }(\\frac{2\\sqrt{n}}{n+2}\\cdot \\sqrt{n}) \\\\  & ={lim}_{n\\to \\infty }(\\frac{2n}{n+2}) \\\\  & ={lim}_{n\\to \\infty }(\\frac{2}{(1+\\frac{2}{n})}) \\\\  & =\\frac{2}{1+0} \\\\  & =2.\\end{aligned}\n$$\n\nSo, $L=2$ is positive and finite. Now, the series\n\n$$\n{\\sum }_{n=1}^{\\infty }\\frac{1}{\\sqrt{n}}\n$$\n\nis divergent by the $p$-series test. So, the series \n\n$$\n{\\sum }_{n=1}^{\\infty }\\frac{2\\sqrt{n}}{n+2}\n$$\n\nis also divergent by the limit comparison test.\n\n- For the final series, we use the $n$th term test for divergence. Let \n\n$$\n{a}_{n}=\\frac{{n}^{3}}{n+2{n}^{2}}\n$$\n\nThen, we have ${lim}_{n\\to \\infty }{a}_{n}=\\infty ,$ since the polynomial in the numerator grows faster than the polynomial in the denominator. Therefore, by the $n$th term test, the series\n\n$$\n{\\sum }_{n=1}^{\\infty }\\frac{{n}^{3}}{n+2{n}^{2}}\n$$\n\nis divergent.\n\nIn conclusion, only series I converges.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "I only",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-116178",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/9e368467f35af6f9f8c13dcfb2d8edc2547e2ab123b4bd2bfd68e6878cea9907.png)\n\nIdentify the differential equation that generated the slope field above.",
+        "worked_solution": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/632d27d8354cdde40f59894fc017c49a49d47003d2f914ed0deef8c6751d7c1d.png)\n\nNotice the following properties of the given slope field:\n\n- First, the slopes become vertical as $y\\to -2$ only. \n\nOf the given equations, the only equations that satisfy this condition are the following:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =\\frac{1}{(y+2)^{2}} \\\\ {y}^{\u2032} & =\\frac{{y}^{2}}{y+2} \\\\ {y}^{\u2032} & =-\\frac{3}{y+2}\\end{aligned}\n$$\n\n- Second, the slopes become horizontal as $y\\to \\infty .$\n\nOf the remaining options, the only two that give this behavior are\n\n$$\n\\begin{aligned}{y}^{\u2032} & =\\frac{1}{(y+2)^{2}} \\\\ {y}^{\u2032} & =-\\frac{3}{y+2}\\end{aligned}\n$$\n\n- Finally, the slopes of the slope field are positive for all $y\\ne -2.$ \n\nTherefore, the equation ${y}^{\u2032}=-\\frac{3}{y+2}$ does *not* give the required behavior. The slopes of the slope field for this differential equation are negative for $y>-2.$\n\nOn the other hand, the equation ${y}^{\u2032}=\\frac{1}{(y+2)^{2}}$ gives the required behavior. Notice that the right-hand side of this equation is positive for all $y\\ne -2.$\n\nSo, the correct answer is ${y}^{\u2032}=\\frac{1}{(y+2)^{2}}.$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-15432",
+        "problem": "What is the coefficient of $(x-1)^{3}$ in the third-degree Taylor polynomial of $f(x)={e}^{-{x}^{2}}$ about $x=1?$",
+        "worked_solution": "The coefficient of $(x-1)^{3}$ is $\\frac{1}{3!}{f}^{(3)}(1).$ Let's compute the necessary derivatives:\n\n$$\n\\begin{aligned}f(x) & ={e}^{-{x}^{2}} \\\\ {f}^{\u2032}(x) & =-2x{e}^{-{x}^{2}} \\\\ {f}^{\u2033}(x) & =-2{e}^{-{x}^{2}}+4{x}^{2}{e}^{-{x}^{2}} \\\\ {f}^{\u2034}(x) & =12x{e}^{-{x}^{2}}-8{x}^{3}{e}^{-{x}^{2}}\\end{aligned}\n$$\n\nNext, we evaluate ${f}^{\u2034}(1),$ which gives\n\n$$\n{f}^{\u2034}(1)=12\\cdot 1\\cdot {e}^{-{1}^{2}}-8\\cdot {1}^{3}\\cdot {e}^{-{1}^{2}}=4{e}^{-1}=\\frac{4}{e}.\n$$\n\nTherefore,\n\n$$\n\\frac{1}{3!}{f}^{\u2034}(1)=\\frac{1}{3!}\\cdot \\frac{4}{e}=\\frac{2}{3e}.\n$$\n\nSo the coefficient of $(x-1)^{3}$ is $\\frac{2}{3e}.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{2}{3e}",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-339145",
+        "problem": "Consider the following initial value problem.\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+\\frac{x}{6}y=x,\\,y(0)=5\n$$\n\nSelect the correct options below.\n$\\,$ An integrating factor for this equation is $I(x)=$ {{field-1}}.\n\n$\\,$ The solution to the initial value problem is $y(x)=$ {{field-2}}.",
+        "worked_solution": "This equation is in the standard form\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+P(x)y=Q(x),\n$$\n\nwith $P(x)=\\frac{x}{6}$ and $Q(x)=x.$\n\nWe compute an integrating factor using the definition:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (x/6)\\,\\text{d}x} \\\\  & ={e}^{{x}^{2}/12}\\end{aligned}\n$$\n\nMultiplying both sides of the equation in standard form by $I(x)={e}^{{x}^{2}/12}$ yields\n\n$$\n\\begin{aligned}{e}^{{x}^{2}/12}\\cdot (\\frac{\\text{d}y}{\\text{d}x}+\\frac{x}{6}y) & ={e}^{{x}^{2}/12}\\cdot x \\\\ {e}^{{x}^{2}/12}\\cdot \\frac{\\text{d}y}{\\text{d}x}+\\frac{x}{6}{e}^{{x}^{2}/12}\\cdot y & =x{e}^{{x}^{2}/12} \\\\ \\frac{\\text{d}}{\\text{d}x}(y{e}^{{x}^{2}/12}) & =x{e}^{{x}^{2}/12}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x,$ making use of the substitution $u=\\frac{{x}^{2}}{12}:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(y{e}^{{x}^{2}/12})\\text{d}x & =\\int x{e}^{{x}^{2}/12}\\,\\text{d}x \\\\ y{e}^{{x}^{2}/12} & =\\int 6{e}^{u}\\,\\text{d}u \\\\ y{e}^{{x}^{2}/12} & =6{e}^{u}+C \\\\ y{e}^{{x}^{2}/12} & =6{e}^{{x}^{2}/12}+C \\\\ y & =6+C{e}^{-{x}^{2}/12}\\end{aligned}\n$$\n\nThis is the general solution. To find the value of $C$ corresponding to the specific solution, we apply the initial condition $y(0)=5$ as follows:\n\n$$\n\\begin{aligned}y(0) & =6+C{e}^{-{0}^{2}/12} \\\\ 5 & =6+C \\\\ C & =-1\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=6-{e}^{-{x}^{2}/12}.\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-81106",
+        "problem": "Given the **orthonormal** basis $B={[\\begin{aligned}\\frac{2}{\\sqrt{5}} \\\\ -\\frac{1}{\\sqrt{5}}\\end{aligned}],[\\begin{aligned}\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}]}$ of ${R}^{2},$ find $[x]_{B}$ if $x=[\\begin{aligned}-3 \\\\ 5\\end{aligned}].$",
+        "worked_solution": "Let's denote the vectors of $B$ as ${q}_{1},\\,{q}_{2}.$ \n\nSince $B$ is an orthonormal basis, we have that $[x]_{B}=[\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}]$, where ${x}_{i}=x\\cdot {q}_{i}.$ Computing the components of $x,$ we get the following: \n\n$$\n\\begin{aligned}{x}_{1} & =[\\begin{aligned}-3 \\\\ 5\\end{aligned}]\\cdot [\\begin{aligned}\\frac{2}{\\sqrt{5}} \\\\ -\\frac{1}{\\sqrt{5}}\\end{aligned}]=-\\frac{6}{\\sqrt{10}}-\\frac{5}{\\sqrt{5}}=-\\frac{11}{\\sqrt{5}} \\\\ {x}_{2} & =[\\begin{aligned}-3 \\\\ 5\\end{aligned}]\\cdot [\\begin{aligned}\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}]=-\\frac{3}{\\sqrt{5}}+\\frac{10}{\\sqrt{10}}=\\frac{7}{\\sqrt{5}}\\end{aligned}\n$$\n\nTherefore, we have \n\n$$\n[x]_{B}=[\\begin{aligned}-\\frac{11}{\\sqrt{5}} \\\\ \\frac{7}{\\sqrt{5}}\\end{aligned}].\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}-\\frac{11}{\\sqrt{5}} \\\\ \\frac{7}{\\sqrt{5}}\\end{aligned}]",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-139976",
+        "problem": "Given $E=[\\begin{aligned}1 & -2 & 3 & 1 & 1 \\\\ 2 & -4 & 6 & 2 & 2 \\\\ 0 & 0 & 1 & -2 & 3 \\\\ 0 & 0 & -1 & 2 & -3\\end{aligned}],\\,$ what is $\\text{dim}(\\text{Null}(E))?$",
+        "worked_solution": "To find $\\text{dim}(\\text{Null}(E))$, we reduce $E$ to row echelon form, as follows:\n\n$$\n\\begin{aligned}E & =[\\begin{aligned}1 & -2 & 3 & 1 & 1 \\\\ 2 & -4 & 6 & 2 & 2 \\\\ 0 & 0 & 1 & -2 & 3 \\\\ 0 & 0 & -1 & 2 & -3\\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\\\  & \u223c[\\begin{aligned}1 & -2 & 3 & 1 & 1 \\\\ 0 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 1 & -2 & 3 \\\\ 0 & 0 & -1 & 2 & -3\\end{aligned}] & {R}_{4} & :={R}_{4}+{R}_{3} \\\\  & \u223c[\\begin{aligned}1 & -2 & 3 & 1 & 1 \\\\ 0 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 1 & -2 & 3 \\\\ 0 & 0 & 0 & 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\n \n\nThe reduced matrix has $2$ pivot columns and $3$ non-pivot columns (namely, the $2$nd,  $4$th, and $5$th columns). \n\nTherefore,\n\n$$\n\\text{dim}(\\text{Null}(E))=3.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "3",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-125323",
+        "problem": "Find the first three non-zero terms of the Maclaurin expansion of the function $f(x)=x{2}^{x}.$",
+        "worked_solution": "The Maclaurin expansion of $f(x)$ is\n\n$$\nf(x)=f(0)+{f}^{\u2032}(0)x+\\frac{{f}^{\u2033}(0)}{2!}{x}^{2}+\\frac{{f}^{\u2034}(0)}{3!}{x}^{3}+\u22ef.\n$$\n\nComputing the necessary derivatives, we get\n\n$$\n\\begin{aligned}f(x) & =x{2}^{x} \\\\ f(0) & =0\\cdot {2}^{0}=0 \\\\ {f}^{\u2032}(x) & ={2}^{x}+x(\\operatorname{ln}\u20612){2}^{x}=(1+x(\\operatorname{ln}\u20612)){2}^{x} \\\\ {f}^{\u2032}(0) & =(1+0){2}^{0}=1 \\\\ {f}^{\u2033}(x) & =(\\operatorname{ln}\u20612){2}^{x}+\\operatorname{ln}\u20612(1+(\\operatorname{ln}\u20612)x){2}^{x}=(2\\operatorname{ln}\u20612+x(\\operatorname{ln}\u20612)^{2}){2}^{x} \\\\ {f}^{\u2033}(0) & =(2\\operatorname{ln}\u20612+0){2}^{0}=2\\operatorname{ln}\u20612 \\\\ {f}^{\u2034}(x) & =(\\operatorname{ln}\u20612)^{2}{2}^{x}+\\operatorname{ln}\u20612(2\\operatorname{ln}\u20612+x(\\operatorname{ln}\u20612)^{2}){2}^{x}=(3(\\operatorname{ln}\u20612)^{2}+x(\\operatorname{ln}\u20612)^{3}){2}^{x} \\\\ {f}^{\u2034}(0) & =(3(\\operatorname{ln}\u20612)^{2}+0)\\cdot {2}^{0}=3(\\operatorname{ln}\u20612)^{2}.\\end{aligned}\n$$\n\nTherefore, the Maclaurin expansion is\n\n$$\n\\begin{aligned}x{2}^{x} & =(0)+(1)x+\\frac{(2\\operatorname{ln}\u20612)}{2!}{x}^{2}+\\frac{3(\\operatorname{ln}\u20612)^{2}}{3!}{x}^{3}+\u22ef \\\\  & =x+(\\operatorname{ln}\u20612){x}^{2}+\\frac{(\\operatorname{ln}\u20612)^{2}{x}^{3}}{2}+\u22ef.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "x{2}^{x}=x+(\\operatorname{ln}\u20612){x}^{2}+\\frac{(\\operatorname{ln}\u20612)^{2}{x}^{3}}{2}+\u22ef",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-42249",
+        "problem": "Let $V={R}_{2}[t]$ be the vector space of all polynomials of degree at most $2$, equipped with the inner product\n\n$$\n\u27e8x(t),y(t)\u27e9=x(1)y(1)+x(2)y(2)+x(3)y(3).\n$$\n\nFind $\u27e8x(t),y(t)\u27e9$, if\n\n$$\nx(t)={t}^{2}-2,\\,y(t)={t}^{2}+t.\n$$",
+        "worked_solution": "Computing the inner product according to the definition, we get\n\n$$\n\\begin{aligned}\u27e8x(t),y(t)\u27e9 & =x(1)y(1)+x(2)y(2)+x(3)y(3) \\\\  & =(-1)\\cdot 2+2\\cdot 6+7\\cdot 12 \\\\  & =-2+12+84 \\\\  & =94.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "94",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-105668",
+        "problem": "Given that $F(x,y,z)=3{z}^{2}\\,i+2y\\,j+k,$ what is $\\text{curl}\\,F?$",
+        "worked_solution": "If $F=P\\,i+Q\\,j+R\\,k$ is a vector field on ${R}^{3}$ and the partial derivatives of the components of $F$ all exist, then the curl of $F$ is the vector field given by\n\n$$\ncurl\\,F=\u2207\\times F=|\\begin{aligned}i & j & k \\\\ \\frac{\u2202}{\u2202x} & \\frac{\u2202}{\u2202y} & \\frac{\u2202}{\u2202z} \\\\ P & Q & R\\end{aligned}|.\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{curl}\\,F & =|\\begin{aligned}i & j & k \\\\ \\frac{\u2202}{\u2202x} & \\frac{\u2202}{\u2202y} & \\frac{\u2202}{\u2202z} \\\\ 3{z}^{2} & 2y & 1\\end{aligned}| \\\\  & =[\\frac{\u2202}{\u2202y}(1)-\\frac{\u2202}{\u2202z}(2y)]i-[\\frac{\u2202}{\u2202x}(1)-\\frac{\u2202}{\u2202z}(3{z}^{2})]j+[\\frac{\u2202}{\u2202x}(2y)-\\frac{\u2202}{\u2202y}(3{z}^{2})]k \\\\  & =(0-0)i-(0-6z)j+(0-0)k \\\\  & =6z\\,j.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "6z\\,j",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-108854",
+        "problem": "Consider the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{4x+2y}.\n$$\n\nThe general solution to this equation can be expressed in the form\n\n$$\n\\operatorname{ln}\u2061|g(x,y)|=4y-C,\n$$\n\nwhere $C$ is a constant. What is $g(x,y)?$",
+        "worked_solution": "First, we factor the right-hand side of the given equation.\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{2(2x+y)}\\end{aligned}\n$$\n\nThen, we make the substitution\n\n$$\nz=2x+y.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=2+\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,\\frac{\\text{d}y}{\\text{d}x}=\\frac{\\text{d}z}{\\text{d}x}-2.\n$$\n\nTherefore, the original equation can be written in terms of $z$ as follows:\n\n$$\n\\begin{aligned}\\frac{\\text{d}z}{\\text{d}x}-2 & =\\frac{1}{2z}\\end{aligned}\n$$\n\nExpressing this equation in the form ${z}^{\u2032}(x)=f(z)$ gives\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{4z+1}{2z}.\n$$\n\nThis differential equation is separable. So, we separate the variables and integrate both sides with respect to $x:$\n\n$$\n\\begin{aligned}\\frac{2z}{4z+1}\\,\\frac{\\text{d}z}{\\text{d}x} & =1 \\\\ \\int \\frac{2z}{4z+1}\\,\\text{d}z & =\\int \\text{d}x \\\\ \\frac{1}{2}\\int (1-\\frac{1}{4z+1})\\text{d}z & =\\int \\text{d}x \\\\ \\frac{1}{2}(z-\\frac{1}{4}\\operatorname{ln}\u2061|4z+1|) & =x+K \\\\ 4z-\\operatorname{ln}\u2061|4z+1| & =8x+C\\end{aligned}\n$$\n\nwhere $C=8K.$\n\nFinally, we write the equation in terms of $y$ and $x$ using our original substitution, as follows:\n\n$$\n\\begin{aligned}8x+4y-\\operatorname{ln}\u2061|8x+4y+1| & =8x+C \\\\ \\operatorname{ln}\u2061|8x+4y+1| & =4y-C\\end{aligned}\n$$\n\nTherefore, \n\n$$\ng(x,y)=8x+4y+1.\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-12296",
+        "problem": "Find all real eigenvalues of the matrix\n$S=[\\begin{aligned}-8 & 4 \\\\ -5 & 4\\end{aligned}].$",
+        "worked_solution": "Let's start by writing the matrix $S-\\lambda I:$\n\ufeff\ufeff\ufeff\n\n$$\nS-\\lambda I=[\\begin{aligned}-8-\\lambda  & 4 \\\\ -5 & 4-\\lambda \\end{aligned}].\n$$\n\nNow, let's find and solve the characteristic equation $det(S-\\lambda I)=0:$\n\n$$\n\\begin{aligned}det(S-\\lambda I) & =0 \\\\ |\\begin{aligned}-8-\\lambda  & 4 \\\\ -5 & 4-\\lambda \\end{aligned}| & =0 \\\\ (-8-\\lambda )(4-\\lambda )-4\\cdot (-5) & =0 \\\\ -32+8\\lambda -4\\lambda +{\\lambda }^{2}+20 & =0 \\\\ {\\lambda }^{2}+4\\lambda -12 & =0\\end{aligned}\n$$\n\nUsing the quadratic formula, we obtain\n\n$$\n\\begin{aligned}\\lambda  & =\\frac{-4\\pm \\sqrt{{4}^{2}+4\\cdot 1\\cdot 12}}{2} \\\\  & =\\frac{-4\\pm \\sqrt{64}}{2} \\\\  & =\\frac{-4\\pm 8}{2} \\\\  & =-6,2.\\end{aligned}\n$$\n\nTherefore, the eigenvalues are $\\lambda =-6$ and $\\lambda =2.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$\\lambda =-6$ and $\\lambda =2$",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-343302",
+        "problem": "$$\n{y}^{\u2033}+\\frac{1}{{x}^{2}+1}{y}^{\u2032}+Q(x)y=0\n$$\n\nLet ${y}_{1}$ and ${y}_{2}$ be solutions to the second-order homogeneous differential equation above, where $Q(x)$ is continuous on $(-\\infty ,\\infty ).$ The Wronskian satisfies $W(0)=2.$ Select the correct options in the reasoning below.\nThe Wronskian $W(x)$ satisfies the following first-order differential equation:\n\n$$\n-\\frac{1}{{x}^{2}+1}\n$$\n\nSolving this equation, we get\n\n$$\nC{e}^{\\operatorname{arctan}\u2061(x)}\n$$\n\nwhere $C$ is an arbitrary constant.\n\nNow, using the fact that $W(0)=2,$ we obtain \n{{field-3}}.",
+        "worked_solution": "Abel's identity says that if ${y}_{1}$ and ${y}_{2}$ are solutions of\n\n$$\n{y}^{\u2033}+P(x){y}^{\u2032}+Q(x)y=0,\n$$\n\nthen their Wronskian $W(x)$ satisfies\n\n$$\n{W}^{\u2032}(x)=-P(x)W(x).\n$$\n\nIn our equation, the coefficient of ${y}^{\u2032}$ is \n\n$$\nP(x)=\\frac{1}{{x}^{2}+1}.\n$$\n\nSubstituting into Abel's identity gives\n\n$$\n{W}^{\u2032}(x)=-\\frac{1}{{x}^{2}+1}W(x).\n$$\n\nNow, we solve the first-order differential equation for $W:$\n\n$$\n\\begin{aligned}{W}^{\u2032} & =-\\frac{1}{{x}^{2}+1}W \\\\ \\frac{\\text{d}W}{W} & =-\\frac{1}{{x}^{2}+1}\\text{d}x \\\\ \\int \\frac{\\text{d}W}{W} & =\\int -\\frac{1}{{x}^{2}+1}\\,\\text{d}x \\\\ \\operatorname{ln}\u2061|W| & =-\\operatorname{arctan}\u2061(x)+K \\\\ |W| & ={e}^{K}{e}^{-\\operatorname{arctan}\u2061(x)} \\\\ W & =C{e}^{-\\operatorname{arctan}\u2061(x)}\\end{aligned}\n$$\n\nwhere $C$ is a constant.\n\nNext, we use the given value $W(0)=2$ to find $C:$\n\n$$\n\\begin{aligned}W(0) & =C{e}^{-\\operatorname{arctan}\u2061(0)} \\\\ 2 & =C\\end{aligned}\n$$\n\nTherefore, we have $W(x)\\ne 0\\text{\u00a0for all\u00a0}x\\in R.$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          },
+          {
+            "key": "field-3"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-73839",
+        "problem": "Find the equation of the tangent plane to the surface $z=x{y}^{2}+{x}^{2}y$ at the point $(1,1,2).$",
+        "worked_solution": "The Cartesian equation of the tangent plane to the surface $z=f(x,y)$ at the point $({x}_{0},{y}_{0},{z}_{0})$ on the surface can be written as\n\n$$\nz-{z}_{0}=(x-{x}_{0})\\frac{\u2202f}{\u2202x}({x}_{0},{y}_{0})+(y-{y}_{0})\\frac{\u2202f}{\u2202y}({x}_{0},{y}_{0}).\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202f}{\u2202x} & =\\frac{\u2202}{\u2202x}(x{y}^{2}+{x}^{2}y) \\\\  & ={y}^{2}+2xy \\\\ \\frac{\u2202f}{\u2202y} & =\\frac{\u2202}{\u2202y}(x{y}^{2}+{x}^{2}y) \\\\  & =2xy+{x}^{2}\\end{aligned}\n$$\n\nNext, we evaluate the partial derivatives at $(x,y)=(1,1):$ \n\n$$\n\\begin{aligned}\\frac{\u2202f}{\u2202x}(1,1) & ={1}^{2}+2(1)(1)=3 \\\\ \\frac{\u2202f}{\u2202y}(1,1) & =2(1)(1)+{1}^{2}=3\\end{aligned}\n$$\n\nFinally, we write down the equation of the tangent plane:\n\n$$\n\\begin{aligned}z-2 & =(x-1)\\frac{\u2202f}{\u2202x}(1,1)+(y-1)\\frac{\u2202f}{\u2202y}(1,1) \\\\ z-2 & =3(x-1)+3(y-1) \\\\ z-2 & =3x+3y-6 \\\\ -3x-3y+z+4 & =0 \\\\ 3x+3y-z-4 & =0\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "3x+3y-z-4=0",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-90693",
+        "problem": "Use the transformation $y=v(x)x$ to find the general solution of the following homogeneous differential equation.\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{x+y}{x}\n$$",
+        "worked_solution": "With $y=v(x)x$, we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =x\\frac{\\text{d}v}{\\text{d}x}+v\\frac{\\text{d}}{\\text{d}x}(x) \\\\  & =x\\frac{\\text{d}v}{\\text{d}x}+v.\\end{aligned}\n$$\n\nSubstituting the above into our differential equation gives\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{x+y}{x} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{x+(vx)}{x} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{x(1+v)}{x} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =1+v \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =1 \\\\ \\frac{\\text{d}v}{\\text{d}x} & =\\frac{1}{x}.\\end{aligned}\n$$\n\nIntegrating both sides with respect to $x$, we obtain\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x & =\\int \\frac{1}{x}\\,\\text{d}x \\\\ \\int \\,\\text{d}v & =\\int \\frac{1}{x}\\,\\text{d}x \\\\ v & =\\operatorname{ln}\u2061|x|+C.\\end{aligned}\n$$\n\nFrom the transformation $y=vx$, we get\n\n$$\nv=\\frac{y}{x}\\,.\n$$\n\nSubstituting the above into our solution, we finally obtain\n\n$$\n\\begin{aligned}\\frac{y}{x} & =\\operatorname{ln}\u2061|x|+C \\\\ y & =x\\operatorname{ln}\u2061|x|+Cx.\\end{aligned}\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-337570",
+        "problem": "Find the orthogonal trajectories of the family of curves $xy=C,$ where $C$ and $K$ are parameters.",
+        "worked_solution": "Orthogonal trajectories are families of curves that intersect another given family of curves at right angles. In other words, the tangent lines of curves from each family are perpendicular at every intersection point.\n\nLet's determine the slope of the family of curves given by $xy=C.$ First, we implicitly differentiate with respect to $x$ and solve for the derivative of $y:$\n\n$$\n\\begin{aligned}\\frac{d}{dx}(xy) & =\\frac{d}{dx}(C) \\\\ y+x{y}^{\u2032} & =0 \\\\ x{y}^{\u2032} & =-y \\\\ {y}^{\u2032} & =-\\frac{y}{x}\\end{aligned}\n$$\n\nNote that the parameter $C$ has already been eliminated.\n\nFor a curve to intersect this family orthogonally, its slope ${y}_{\u22a5}^{\u2032}$ must be the negative reciprocal of the slope ${y}^{\u2032}$ above. Hence,\n\n$$\n{y}_{\u22a5}^{\u2032}=-\\frac{1}{{y}^{\u2032}}=-\\frac{1}{(-\\frac{y}{x})}=\\frac{x}{y}.\n$$\n\nHence, the orthogonal trajectories must satisfy\n\n$$\n\\frac{dy}{dx}=\\frac{x}{y}.\n$$\n\nTo find the general solution, we separate the variables and integrate both sides with respect to $x:$\n\n$$\n\\begin{aligned}y\\cdot \\frac{dy}{dx} & =x \\\\ \\int y\\cdot \\frac{dy}{dx}\\,dx & =\\int x\\,dx \\\\ \\int y\\,dy & =\\int x\\,dx \\\\ \\frac{{y}^{2}}{2} & =\\frac{{x}^{2}}{2}+{K}_{1} \\\\ {y}^{2} & ={x}^{2}+K\\end{aligned}\n$$\n\nNote that $K=2{K}_{1}$ is a constant of integration.\n\nTherefore, the orthogonal trajectories of the family of curves $xy=C,$ where $C$ is a parameter, are given by\n\n$$\n{y}^{2}={x}^{2}+K,\n$$\n\nwhere $K$ is a parameter. Some curves from each family for specific parameter values are given in the diagram below.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/98159dfb60fd280468ad8165475b5ba58e41658174a932b4c9555ef1153a577c.png)\n\n**Note**: For the slopes ${y}^{\u2032}$ and ${y}_{\u22a5}^{\u2032},$ we divide by $x$ and $y,$ respectively. So, the orthogonal trajectories are only defined on the region $x,y\\ne 0.$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-333680",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=2x-2y-3,\\,y(0)=1\n$$\n\nTo approximate the solution, one step of the Runge-Kutta method has already been computed, resulting in the following estimate:\n\n$$\ny(1)\u22480\n$$\n\nUse the $2$-Step Adams-Bashforth-Moulton Method with one step to approximate $y(2).$\n\n*Hint: The corrector equation of the two-step Adams-Bashforth-Moulton method is defined as*\n\n$$\n\u0394y=\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x\n$$\n\n*where ${y}_{p}$ denotes the predictor at the current step, and ${y}_{-1}^{\u2032}$ is the estimated slope at the previous point.*",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nthe $2$-Step Adams-Bashforth-Moulton (ABM $2$-step) Method with step size $\u0394x$ is given by\n\n$$\n\\begin{aligned}\\text{Predictor} & : & \u0394{y}_{p} & =\\frac{1}{2}(3{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x, \\\\ \\text{Corrector} & : & \u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x,\\end{aligned}\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the estimated slope at the current point $(x,y),$\n\n- ${y}_{-1}^{\u2032}=f({x}_{-1},{y}_{-1})$ is the estimated slope at the previous point (${x}_{-1},{y}_{-1}),$ and\n\n- ${y}_{p}^{\u2032}=f({x}_{\\text{new}},{y}_{p})$ is the estimated slope at the predicted new point $({x}_{\\text{new}},{y}_{p})=(x+\u0394x,y+\u0394{y}_{p}).$\n\nBefore we start, let's add the initial condition data and Runge-Kutta step data to a table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ |  | $-$ | $-$ | $-$ | $-$ |\n| $1$ | $0$ |  |  |  |  |  |\n\nNow, since we want to find the value of $y$ at $x=2,$ we will use a step size of\n\n$$\n\u0394x=2-1=1.\n$$\n\nFirst, we compute the values of ${y}^{\u2032}$ at each point according to the given rule:\n\n- The slope at the previous point $({x}_{-1},{y}_{-1})=(0,1)$ is\n\n$$\n\\begin{aligned}{y}_{-1}^{\u2032} & =2{x}_{-1}-2{y}_{-1}-3 \\\\  & =2\\cdot 0-2\\cdot 1-3 \\\\  & =-5.\\end{aligned}\n$$\n\n- The slope at the current point $(x,y)=(1,0)$ is\n\n$$\n\\begin{aligned}{y}^{\u2032} & =2x-2y-3 \\\\  & =2\\cdot 1-2\\cdot 0-3 \\\\  & =-1.\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-5$ | $-$ | $-$ | $-$ | $-$ |\n| $1$ | $0$ | $-1$ |  |  |  |  |\n\nNext, we compute $\u0394{y}_{p}$ using the predictor equation:\n\n$$\n\\begin{aligned}\u0394{y}_{p} & =\\frac{1}{2}(3{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{2}(3\\cdot (-1)-(-5))\\cdot 1 \\\\  & =1.\\end{aligned}\n$$\n\nWe add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-5$ | $-$ | $-$ | $-$ | $-$ |\n| $1$ | $0$ | $-1$ | $1$ |  |  |  |\n\nSo, the coordinates of the predicted new point are\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+1=2, \\\\ {y}_{p} & =y+\u0394{y}_{p}=0+1=1.\\end{aligned}\n$$\n\nLet's add the second value to the table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-5$ | $-$ | $-$ | $-$ | $-$ |\n| $1$ | $0$ | $-1$ | $1$ | $1$ |  |  |\n\nHence, the slope at this predicted point is\n\n$$\n\\begin{aligned}{y}_{p}^{\u2032} & =2{x}_{\\text{new}}-2{y}_{p}-3 \\\\  & =2\\cdot 2-2\\cdot 1-3 \\\\  & =-1.\\end{aligned}\n$$\n\nWe can add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-5$ | $-$ | $-$ | $-$ | $-$ |\n| $1$ | $0$ | $-1$ | $1$ | $1$ | $-1$ |  |\n\nFinally, we compute $\u0394y$ using the corrector equation:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{12}(5\\cdot (-1)+8\\cdot (-1)-(-5))\\cdot 1 \\\\  & =\\frac{1}{12}\\cdot (-8) \\\\  & =-\\frac{2}{3}.\\end{aligned}\n$$\n\nWe add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-5$ | $-$ | $-$ | $-$ | $-$ |\n| $1$ | $0$ | $-1$ | $1$ | $1$ | $-1$ | $-\\frac{2}{3}$ |\n\nThe value of $x$ in the next row is ${x}_{\\text{new}}=2.$ To get the value of $y$ in the next row, we add $\u0394y$ to $y:$\n\n$$\n\\begin{aligned}{y}_{\\text{new}} & =y+\u0394y \\\\  & =0+(-\\frac{2}{3}) \\\\  & =-\\frac{2}{3}.\\end{aligned}\n$$\n\nAdding these results to our table gives the following:\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-5$ | $-$ | $-$ | $-$ | $-$ |\n| $1$ | $0$ | $-1$ | $1$ | $1$ | $-1$ | $-\\frac{2}{3}$ |\n| $2$ | $-\\frac{2}{3}$ |  |  |  |  |  |\n\nTherefore, we conclude that $y(2)\u2248-\\frac{2}{3}.$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-164380",
+        "problem": "The projection of the intersection between the hyperboloid of two sheets $-\\frac{(x+1)^{2}}{18}+\\frac{{y}^{2}}{2}+(z-2)^{2}=-1$ and the plane $z=3$ onto the $xy$-plane is a hyperbola. What are the lengths of the semi-axes of the hyperbola?",
+        "worked_solution": "To find the intersection of the hyperboloid and the plane $z=3,$ we substitute $z=3$ into the equation of the hyperboloid:\n\n$$\n\\begin{aligned}-\\frac{(x+1)^{2}}{18}+\\frac{{y}^{2}}{2}+(3-2)^{2} & =-1 \\\\ -\\frac{(x+1)^{2}}{18}+\\frac{{y}^{2}}{2}+1 & =-1 \\\\ -\\frac{(x+1)^{2}}{18}+\\frac{{y}^{2}}{2} & =-2 \\\\ \\frac{(x+1)^{2}}{18}-\\frac{{y}^{2}}{2} & =2 \\\\ \\frac{(x+1)^{2}}{36}-\\frac{{y}^{2}}{4} & =1 \\\\ \\frac{(x+1)^{2}}{{6}^{2}}-\\frac{{y}^{2}}{{2}^{2}} & =1\\end{aligned}\n$$\n\nThis gives us the equation of a hyperbola with semi-axes of lengths $6$ and $2.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$6$ and $2$",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-334866",
+        "problem": "A numerical method for approximating a solution to an initial value problem is known to be order $3.$  Suppose that using step size $\u0394x=0.3$ produces a local truncation error (LTE) of $\u03c4(0.3)\u22480.162.$  If we instead use a step size $\u0394x=0.1,$ what LTE should we expect?\n\n$\u03c4(0.1)\u2248$\n{{field-1}}",
+        "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\u03c4(\u0394x)=O\\,((\u0394x)^{p+1})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the LTE by a factor of approximately ${k}^{p+1}.$\n\nIn our case, the step size decreases from $0.3$ to $0.1.$ So, it reduces by a factor of\n\n$$\nk=\\frac{0.3}{0.1}=3.\n$$\n\nNow, since the numerical method is of order $3,$ the error is expected to decrease by a factor of\n\n$$\n{k}^{3+1}={3}^{4}=81.\n$$\n\nTherefore, using a step size of $\u0394x=0.1,$ the expected LTE is\n\n$$\n\u03c4(0.1)\u2248\\frac{0.162}{81}=0.002.\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-333880",
+        "problem": "Consider the following initial value problem:\n\n$$\n{x}^{2}{y}^{\u2033}+4{y}^{\u2032}-y=0,\\,y(1)=-1,\\,{y}^{\u2032}(1)=2\n$$\n\nUse Euler's Method with two steps to approximate $y(2)$ and ${y}^{\u2032}(2).$\n\n$$\n-\\frac{5}{4}\n$$",
+        "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}{x}^{2}{y}^{\u2033}+4{y}^{\u2032}-y & =0 \\\\ {x}^{2}{y}^{\u2033} & =y-4{y}^{\u2032} \\\\ {y}^{\u2033} & =\\frac{y-4{y}^{\u2032}}{{x}^{2}}.\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{y-4z}{{x}^{2}}.\n$$\n\nNote that the initial value of $z$ is $z(1)={y}^{\u2032}(1)=2.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=-1, \\\\ {z}^{\u2032}=\\frac{y-4z}{{x}^{2}},\\, & z(1)=2\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, note that we are given the values of $y$ and $z={y}^{\u2032}$ at $x=1$ and asked to find their values at $x=2.$ The distance from $x=1$ to $x=2$ is $1,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\u0394x=\\frac{2-1}{2}=\\frac{1}{2}.\n$$\n\nNow, we'll start by creating a table that includes the initial condition data $y(1)=-1$ and $z(1)=2.$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ |  |  | $2$ |  |  |\n\n**Step 1**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=2 \\\\ {z}^{\u2032} & =\\frac{y-4z}{{x}^{2}}=\\frac{-1-4\\cdot 2}{{1}^{2}}=-9 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=2\\cdot \\frac{1}{2}=1 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=-9\\cdot \\frac{1}{2}=-\\frac{9}{2} \\\\ {x}_{\\text{new}} & =x+\u0394x=1+\\frac{1}{2}=\\frac{3}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y=-1+1=0 \\\\ {z}_{\\text{new}} & =z+\u0394z=2-\\frac{9}{2}=-\\frac{5}{2}\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $2$ | $1$ | $2$ | $-9$ | $-\\frac{9}{2}$ |\n| $\\frac{3}{2}$ | $0$ |  |  | $-\\frac{5}{2}$ |  |  |\n\n**Step 2**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=-\\frac{5}{2} \\\\ {z}^{\u2032} & =\\frac{y-4z}{{x}^{2}}=\\frac{0-4(-\\frac{5}{2})}{{(\\frac{3}{2})}^{2}}=\\frac{10}{(\\frac{9}{4})}=\\frac{40}{9} \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=-\\frac{5}{2}\\cdot \\frac{1}{2}=-\\frac{5}{4} \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=\\frac{40}{9}\\cdot \\frac{1}{2}=\\frac{20}{9} \\\\ {x}_{\\text{new}} & =x+\u0394x=\\frac{3}{2}+\\frac{1}{2}=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=0-\\frac{5}{4}=-\\frac{5}{4} \\\\ {z}_{\\text{new}} & =z+\u0394z=-\\frac{5}{2}+\\frac{20}{9}=-\\frac{5}{18}\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $2$ | $1$ | $2$ | $-9$ | $-\\frac{9}{2}$ |\n| $\\frac{3}{2}$ | $0$ | $-\\frac{5}{2}$ | $-\\frac{5}{4}$ | $-\\frac{5}{2}$ | $\\frac{40}{9}$ | $\\frac{20}{9}$ |\n| $2$ | $-\\frac{5}{4}$ |  |  | $-\\frac{5}{18}$ |  |  |\n\nTherefore, we conclude that\n$y(2)\u2248-\\frac{5}{4}$\nand\n${y}^{\u2032}(2)=z(2)\u2248-\\frac{5}{18}.$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-89885",
+        "problem": "The function $y=f(x)$ satisfies the differential equation \n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=x+y.\n$$\n\nGiven that the point $(-1,1)$ lies on the graph of $y=f(x),$ which of the following statements are true?\n\n- $(-1,1)$ is a stationary point of the function $f$\n- $(-1,1)$ is a local minimum point of the function $f$\n- $(-1,1)$ is an inflection point of the function $f$",
+        "worked_solution": "First, we find the value of the first and second derivatives of the function at the given point.\n\nTo find the first derivative of $f$ at $(-1,1),$ we substitute the coordinates of our point into the differential equation:\n\n$$\n\\begin{aligned}{\\frac{\\text{d}y}{\\text{d}x}|}_{(-1,1)} & ={(x+y)|}_{(-1,1)} \\\\  & =-1+1 \\\\  & =0\\end{aligned}\n$$\n\nTo find the second derivative, we first need to differentiate the equation and then substitute the coordinates of the point:\n\n$$\n\\begin{aligned}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}} & =\\frac{\\text{d}}{\\text{d}x}(\\frac{\\text{d}y}{\\text{d}x}) \\\\  & =\\frac{\\text{d}}{\\text{d}x}(x+y) \\\\  & =\\frac{\\text{d}}{\\text{d}x}(x)+\\frac{\\text{d}}{\\text{d}x}(y) \\\\  & =1+\\frac{\\text{d}y}{\\text{d}x} \\\\  & =1+(x+y) \\\\  & =x+y+1 \\\\ {\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}|}_{(-1,1)} & ={(x+y+1)|}_{(-1,1)} \\\\  & =-1+1+1 \\\\  & =1 \\\\  & >0\\end{aligned}\n$$\n\nWith that in mind, let's examine the statements in turn.\n\n- Statement I is true. Indeed, since\n\n$$\n{\\frac{\\text{d}y}{\\text{d}x}|}_{(-1,1)}=0,\n$$\n\nwe obtain that $(-1,1)$ is a stationary point of the function $f.$\n\n- Statement II is true. There is a critical point at $(-1,1).$ So, according to the second derivative test, since\n\n$$\n{\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}|}_{(-1,1)}>0,\n$$\n\nwe have a local minimum at that point.\n\n- Statement III is false. Since the second derivative is not zero, there is no inflection point at $(-1,1).$\n\nTherefore, the correct answer is \"I and II only.\"",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-339858",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=x+y,\\,y(0)=0\n$$\n\nUse the trapezoidal method with two steps to approximate $y(1)$ and $y(2),$ rounded to two decimal places.\n\n$$\n-3.11\n$$",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nthe trapezoidal method with step size $\u0394x$ is given by\n\n$$\n\u0394y=\\frac{1}{2}({y}^{\u2032}+{y}_{\\text{new}}^{\u2032})\\cdot \u0394x,\n$$\n\nwith ${y}_{\\text{new}}^{\u2032}=f({x}_{\\text{new}},{y}_{\\text{new}})$ evaluated at the next $x$ and $y$ values.\n\nFirst, note that we are given $y(0)$ and asked to find $y(2).$ The distance from $x=0$ to $x=2$ is $2,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\u0394x=\\frac{2-0}{2}=1.\n$$\n\nNow, let's proceed with the trapezoidal method. In general, $\u0394y$ is given by\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{2}({y}^{\u2032}+{y}_{\\text{new}}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{2}((x+y)+({x}_{\\text{new}}+{y}_{\\text{new}}))\\cdot 1 \\\\  & =\\frac{1}{2}(x+{x}_{\\text{new}}+y)+\\frac{1}{2}{y}_{\\text{new}}.\\end{aligned}\n$$\n\nWe substitute this into ${y}_{\\text{new}}=y+\u0394y:$\n\n$$\n\\begin{aligned}{y}_{\\text{new}} & =y+\u0394y \\\\ {y}_{\\text{new}} & =y+\\frac{1}{2}(x+{x}_{\\text{new}}+y)+\\frac{1}{2}{y}_{\\text{new}} \\\\ {y}_{\\text{new}} & =\\frac{1}{2}(x+{x}_{\\text{new}}+3y)+\\frac{1}{2}{y}_{\\text{new}}\\end{aligned}\n$$\n\nThen, we solve for the general formula for ${y}_{\\text{new}}:$\n\n$$\n\\begin{aligned}\\frac{1}{2}{y}_{\\text{new}} & =\\frac{1}{2}(x+{x}_{\\text{new}}+3y) \\\\ {y}_{\\text{new}} & =x+{x}_{\\text{new}}+3y\\end{aligned}\n$$\n\nWe now proceed to calculate our approximations of $y(1)$ and $y(2).$\n\n**Step 1**.\n\nFrom the initial conditions, we have\n\n$$\nx=0,\\,y=0.\n$$\n\nTherefore, the new $x$ value is \n\n$$\n{x}_{\\text{new}}=x+\u0394x=0+1=1.\n$$\n\nHence, the new $y$ value is\n\n$$\n\\begin{aligned}{y}_{\\text{new}} & =x+{x}_{\\text{new}}+3y \\\\  & =0+1+3\\cdot 0 \\\\  & =1.\\end{aligned}\n$$\n\n**Step 2**.\n\nFrom the previous step, we have\n\n$$\nx=1,\\,y=1.\n$$\n\nTherefore, the new $x$ value is \n\n$$\n{x}_{\\text{new}}=x+\u0394x=1+1=2.\n$$\n\nHence, the new $y$ value is\n\n$$\n\\begin{aligned}{y}_{\\text{new}} & =x+{x}_{\\text{new}}+3y \\\\  & =1+2+3\\cdot 1 \\\\  & =6.\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\ny(1)\u22481.00,\\,y(2)\u22486.00.\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-109693",
+        "problem": "The second-order differential equation $2{y}^{\u2033}+{y}^{\u2032}-3y=0$\ncan be expressed as the matrix equation ${x}^{\u2032}(t)=Ax(t),$ where \n\n$$\nx(t)=[\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}],\\,A=[\\begin{aligned}a & b \\\\ c & d\\end{aligned}],\\,y(t)={x}_{1}(t),\\,{y}^{\u2032}(t)={x}_{2}(t).\n$$\n\nFind the matrix $A.$",
+        "worked_solution": "We first need to express the given differential equation as a system of first-order differential equations. Then, we write the system as a matrix equation.\n\nWe start by making the following change of variables:\n\n$$\n\\begin{aligned}{x}_{1} & =y \\\\ {x}_{2} & ={y}^{\u2032}\\end{aligned}\n$$\n\nDifferentiating the above equations with respect to $t,$ we get\n\n$$\n\\begin{aligned}{x}_{1}^{\u2032} & ={y}^{\u2032} \\\\ {x}_{2}^{\u2032} & ={y}^{\u2033}\\end{aligned}\n$$\n\nwhich we can rewrite as \n\n$$\n{\\begin{aligned}{x}_{1}^{\u2032}={x}_{2}, \\\\ {x}_{2}^{\u2032}={y}^{\u2033}.\\end{aligned}\n$$\n\nWe must now write the right-hand side of the last equation in terms of ${x}_{1}$ and ${x}_{2}.$\n\nSolving our original differential equation for the highest-order derivative $({y}^{\u2033}),$ we obtain\n\n$$\n{y}^{\u2033}=-\\frac{1}{2}{y}^{\u2032}+\\frac{3}{2}y.\n$$\n\nThen, we substitute our new variables into the right-hand side of the above equation. This gives\n\n$$\n{y}^{\u2033}=-\\frac{1}{2}{x}_{2}+\\frac{3}{2}{x}_{1}.\n$$\n\nNotice that we do not include any derivative terms on the right-hand side. \n\nTherefore, our complete system of equations is as follows:\n\n$$\n{\\begin{aligned}{x}_{1}^{\u2032}={x}_{2} \\\\ {x}_{2}^{\u2032}=\\frac{3}{2}{x}_{1}-\\frac{1}{2}{x}_{2}\\end{aligned}\n$$\n\nWe can represent this system as the matrix differential equation ${x}^{\u2032}(t)=Ax(t)$ as follows:\n\n$$\n[\\begin{aligned}{x}_{1}^{\u2032} \\\\ {x}_{2}^{\u2032}\\end{aligned}]=[\\begin{aligned}0 & 1 \\\\ \\frac{3}{2} & -\\frac{1}{2}\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}].\n$$\n\nHence, $A=[\\begin{aligned}0 & 1 \\\\ \\frac{3}{2} & -\\frac{1}{2}\\end{aligned}].$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-163548",
+        "problem": "A particle $P$ moves along the $x$-axis in the direction of increasing $x$ where $x\\ge 0.$ When the displacement of $P$ from the origin is $x\\,m,$ the velocity is $v\\,m/s,$ and the acceleration is $(4-x)\\,{m/s}^{2}.$ If $P$ has velocity $v=6\\,m/s$ at the origin, find the maximum velocity of the particle.",
+        "worked_solution": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/d4e5b78932f8ff6155ac81e12538eb31ac211c9d27d6a2b0c67542527ccd3b2a.png)\n\nThe extrema of the velocity occur at the critical points of $v.$ Since the acceleration of the particle $P$ is $(4-x)\\,{m/s}^{2},$ we have\n\n$$\n\\frac{\\text{d}v}{\\text{d}t}=4-x.\n$$\n\nTo find the moments where $v$ is a maximum, we need to solve $\\frac{\\text{d}v}{\\text{d}t}=0$ and test each solution using the first or second derivative test.\n\nSolving $\\frac{\\text{d}v}{\\text{d}t}=0$ gives\n\n$$\n\\begin{aligned}4-x & =0 \\\\ x & =4.\\end{aligned}\n$$\n\nHence, the extremum of the velocity function occurs when $x=4\\,m.$\n\nWe now test the extreme value using the first derivative test. We summarize the necessary information in a table, shown below.\n\n| $x$ | $(0,4)$ | $4$ | $(4,\\infty )$ |\n| --- | --- | --- | --- |\n| Test Point | $2$ |  | $6$ |\n| $\\frac{\\text{d}v}{\\text{d}t}$ | $2>0$ | $0$ | $-2<0$ |\n| $v$ | $\u2197$ | max | $\u2198$ |\n\nWe conclude that the velocity is maximized when $x=4\\,m.$\n\nNext, using the fact that\n\n$$\n\\frac{\\text{d}v}{\\text{d}t}=\\frac{\\text{d}}{\\text{d}x}(\\frac{1}{2}{v}^{2}),\n$$\n\nwe can rewrite our initial equation as\n\n$$\n\\frac{\\text{d}}{\\text{d}x}(\\frac{1}{2}{v}^{2})=4-x.\n$$\n\nIntegrating both sides of the above equation with respect to $x,$ we have\n\n$$\n\\int \\frac{\\text{d}}{\\text{d}x}(\\frac{1}{2}{v}^{2})\\text{d}x=\\int (4-x)\\,\\text{d}x\n$$\n\nwhich gives the general solution\n\n$$\n\\frac{1}{2}{v}^{2}=4x-\\frac{1}{2}{x}^{2}+C.\n$$\n\nNow, since $v=6\\,m/s$ when $x=0\\,m,$ we can find the value of the constant $C,$ as follows:\n\n$$\n\\begin{aligned}\\frac{1}{2}{v}^{2} & =4x-\\frac{1}{2}{x}^{2}+C \\\\ \\frac{1}{2}(6)^{2} & =4(0)-\\frac{1}{2}(0)^{2}+C \\\\ C & =18\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}\\frac{1}{2}{v}^{2} & =4x-\\frac{1}{2}{x}^{2}+18 \\\\ {v}^{2} & =8x-{x}^{2}+36 \\\\ v & =\\pm \\sqrt{-{x}^{2}+8x+36}.\\end{aligned}\n$$\n\nSince the particle is moving in the direction of increasing $x,$ we have that $v(x)>0,$ so we can disregard the negative square root. Therefore,\n\n$$\nv(x)=\\sqrt{-{x}^{2}+8x+36}.\n$$\n\nFinally, we calculate the maximum velocity:\n\n$$\n{v}_{max}=v(4)=\\sqrt{-(4)^{2}+8(4)+36}=2\\sqrt{13}\\,m/s\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-161798",
+        "problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to (x(u,v,w),y(u,v,w),z(u,v,w)),$ given that \n\n$$\nu=x+y,\\,v=z,\\,w=4y-2{z}^{2}.\n$$",
+        "worked_solution": "For a transformation \n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\\to [\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}],\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =|\\begin{aligned}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{aligned}|.\\end{aligned}\n$$\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)},$ the Jacobian determinant of ${T}^{-1}.$\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202u}{\u2202x} & =1 & \\,\\frac{\u2202u}{\u2202y} & =1 & \\,\\frac{\u2202u}{\u2202z} & =0 \\\\ \\frac{\u2202v}{\u2202x} & =0 & \\,\\frac{\u2202v}{\u2202y} & =0 & \\,\\frac{\u2202v}{\u2202z} & =1 \\\\ \\frac{\u2202w}{\u2202x} & =0 & \\,\\frac{\u2202w}{\u2202y} & =4 & \\,\\frac{\u2202w}{\u2202z} & =-4z\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 1 & 0 \\\\ 0 & 0 & 1 \\\\ 0 & 4 & -4z\\end{aligned}| \\\\  & =1|\\begin{aligned}0 & 1 \\\\ 4 & -4z\\end{aligned}| \\\\  & =1(0-4) \\\\  & =-4.\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & ={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1} \\\\  & =\\frac{1}{(-4)} \\\\  & =-\\frac{1}{4}\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "-\\frac{1}{4}",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-130028",
+        "problem": "Given that ${y}_{1}(t)=t$ is a solution to the equation ${t}^{2}{y}^{\u2033}+2t{y}^{\u2032}-2y=0$ for $t>0,$ use reduction of order to find a second solution ${y}_{2}(t)$ to the equation, and write down the general solution.",
+        "worked_solution": "According to the reduction of order method, we let ${y}_{2}=u(t)t.$ \n\nDifferentiating the above with respect to $t$ gives\n\n$$\n\\begin{aligned}{y}_{2}^{\u2032} & ={u}^{\u2032}t+u \\\\ {y}_{2}^{\u2033} & ={u}^{\u2033}t+2{u}^{\u2032}.\\end{aligned}\n$$\n\nSubstituting the above into the differential equation gives\n\n$$\n\\begin{aligned}{t}^{2}({u}^{\u2033}t+2{u}^{\u2032})+2t({u}^{\u2032}t+u)-2ut & =0 \\\\ {u}^{\u2033}{t}^{3}+2{u}^{\u2032}{t}^{2}+2{u}^{\u2032}{t}^{2}+2ut-2ut & =0 \\\\ {u}^{\u2033}{t}^{3}+4{u}^{\u2032}{t}^{2} & =0 \\\\ {t}^{2}({u}^{\u2033}t+4{u}^{\u2032}) & =0.\\end{aligned}\n$$\n\nSince $t>0,$ we must have\n\n$$\n{u}^{\u2033}t+4{u}^{\u2032}=0.\n$$\n\nLet $w={u}^{\u2032}.$ Then our equation becomes\n\n$$\n{w}^{\u2032}t+4w=0.\n$$\n\nThe solution is\n\n$$\nw=\\frac{{c}_{1}}{{t}^{4}}.\n$$\n\nBut since $w={u}^{\u2032},$ we have\n\n$$\n{u}^{\u2032}=\\frac{{c}_{1}}{{t}^{4}}\\,\u27f9\\,u=-\\frac{{c}_{1}}{3{t}^{3}}+{c}_{2}.\n$$\n\nTherefore, our expression for ${y}_{2}(t)=ut$ becomes\n\n$$\n{y}_{2}(t)=(-\\frac{{c}_{1}}{3{t}^{3}}+{c}_{2})t.\n$$\n\nSetting ${c}_{1}=-3$ and ${c}_{2}=0,$ we get\n\n$$\n{y}_{2}(t)=\\frac{1}{{t}^{3}}\\cdot t=\\frac{1}{{t}^{2}}.\n$$\n\nFinally, because $W({y}_{1},{y}_{2})=-\\frac{3}{{t}^{2}}\\ne 0,$ we know that ${y}_{1}$ and ${y}_{2}$ are independent (you should verify this calculation yourself).\n\nTherefore, the general solution is\n\n$$\ny=At+\\frac{B}{{t}^{2}}.\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-122810",
+        "problem": "Which of the following could be the gradient vector field of the function $f(x,y)={x}^{2}-y?$",
+        "worked_solution": "We start by plotting some level curves of the function:\n\n- Setting $f(x,y)=-1,$ we get ${x}^{2}-y=-1,$ which gives the parabola $y={x}^{2}+1$\n\n- Setting $f(x,y)=0,$ we get ${x}^{2}-y=0,$ that is, the parabola $y={x}^{2}$\n\n- Setting $f(x,y)=2,$ we get ${x}^{2}-y=2,$ that is, the parabola $y={x}^{2}-2$\n\n- $\u22ef$\n\nContinuing in this way, we get the following contour plot:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/77a54ef31c41e0246e3d337a69c7faa161194058e6a5c672ef24d86866a83faf.png)\n\nNote that $f(x,y)$ increases as we move downward and away from the origin $O.$ \n\nNow, we recall the following facts:\n\n- The gradient field vectors of a function $f(x,y)$ always lie perpendicular to its level curves.\n\n- Moreover, the vectors point in the direction where $f(x,y)$ increases.\n\nWith this in mind, we can add the vector field to the contour plot, giving the following picture.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/4e124d5e77ef9a28002aba9aac40f0b7eff1232dd1c08b6bca10b166469675c7.png)\n\nSo, the corresponding gradient field is as follows:\n\n \n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/8bd5b7575d1693935df0d25a259767f0dd267fc1153139cd55cebad75e3988fd.png)",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/8bd5b7575d1693935df0d25a259767f0dd267fc1153139cd55cebad75e3988fd.png",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-331821",
+        "problem": "Consider a function $b(t)$ such that its Laplace transform is $L{b(t)}=B(s)$ for $s>{s}_{0}.$ Suppose we wish to find $L{{e}^{t}b(t)}.$ Select the correct options in the reasoning below.By definition of the Laplace transform, we can write \n\n$$\n{e}^{-st}\\cdot {e}^{-t}b(t)\n$$",
+        "worked_solution": "Starting from the definition of the Laplace transform, we have\n\n$$\n\\begin{aligned}L{{e}^{t}b(t)} & ={\\int }_{0}^{\\infty }{e}^{-st}\\cdot {e}^{t}\\,b(t)\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\infty }{e}^{-(s-1)t}\\,b(t)\\,\\text{d}t\\end{aligned}\n$$\n\nNow, recall that $B(s)={\\int }_{0}^{\\infty }{e}^{-st}\\,b(t)\\,\\text{d}t,$ where $s>{s}_{0}.$ Therefore, \n\n$$\n{\\int }_{0}^{\\infty }{e}^{-(s-1)t}\\,b(t)\\,\\text{d}t=B(s-1),\n$$\n\nwhere \n\n$$\ns-1>{s}_{0}\\,\u21d2\\,s>{s}_{0}+1.\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          },
+          {
+            "key": "field-3"
+          },
+          {
+            "key": "field-4"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-64564",
+        "problem": "Use the Taylor series method to find a series solution about $x=1$, in ascending powers of $(x-1)$ up to and including the term in $(x-1)^{3},$  of the initial value problem\n\n$$\n{y}^{\u2033}=y{e}^{1-x},\\,y(1)=-1,\\,{y}^{\u2032}(1)=0.\n$$",
+        "worked_solution": "We wish to express $y(x)$ as a Taylor series about $x=1$:\n\n$$\ny(x)=y(1)+(x-1){y}^{\u2032}(1)+\\frac{(x-1)^{2}}{2!}{y}^{\u2033}(1)+\\frac{(x-1)^{3}}{3!}{y}^{(3)}(1)+\u22ef\n$$\n\nWe're given $y(1)$ and ${y}^{\u2032}(1),$ so we need to calculate ${y}^{\u2033}(1)$ and ${y}^{(3)}(1).$\n\nWe substitute $y(1)=-1$ and ${y}^{\u2032}(1)=0$ into the given equation to find ${y}^{\u2033}(1):$\n\n$$\n\\begin{aligned}{y}^{\u2033}(1) & =y(1){e}^{1-1} \\\\  & =(-1){e}^{0} \\\\  & =-1\\end{aligned}\n$$\n\nNext, to find an expression for ${y}^{(3)}(x),$ we differentiate both sides on the given equation with respect to $x:$ \n\n$$\n{y}^{(3)}(x)={y}^{\u2032}{e}^{1-x}-y{e}^{1-x}\n$$\n\nWe can now find  ${y}^{(3)}(1)$ by substituting in the known values:\n\n$$\n\\begin{aligned}{y}^{(3)}(1) & ={y}^{\u2032}(1){e}^{1-1}-y(1){e}^{1-1} \\\\  & =(0\\cdot {e}^{0})-(-1\\cdot {e}^{0}) \\\\  & =0+1 \\\\  & =1\\end{aligned}\n$$\n\nFinally, we  substitute  the obtained values in  the Taylor series:\n\n$$\n\\begin{aligned}y(x) & =y(1)+(x-1){y}^{\u2032}(1)+\\frac{(x-1)^{2}}{2!}{y}^{\u2033}(1)+\\frac{(x-1)^{3}}{3!}{y}^{(3)}(1)+\u22ef \\\\  & =-1+(x-1)\\cdot 0+\\frac{(x-1)^{2}}{2}\\cdot (-1)+\\frac{(x-1)^{3}}{6}\\cdot 1+\u2026 \\\\  & =-1-\\frac{1}{2}(x-1)^{2}+\\frac{1}{6}(x-1)^{3}+\u22ef\\end{aligned}\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-335106",
+        "problem": "$$\nA=[\\begin{aligned}0 & -3 \\\\ 3 & 0\\end{aligned}],\\,{e}^{At}=[\\begin{aligned}\\operatorname{cos}\u2061(3t) & -\\operatorname{sin}\u2061(3t) \\\\ \\operatorname{sin}\u2061(3t) & \\operatorname{cos}\u2061(3t)\\end{aligned}]\n$$\n\nGiven the matrices $A$ and ${e}^{At}$ above, compute $\\frac{\\text{d}}{\\text{d}t}({e}^{At}).$\n\n| $\\frac{\\text{d}}{\\text{d}t}({e}^{At})=\\,\\,$ |  | {{field-1}} | {{field-2}} |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-3}} | {{field-4}} |  |  |",
+        "worked_solution": "Recall that \n\n$$\n\\frac{\\text{d}}{\\text{d}t}({e}^{At})=A\\,{e}^{At}.\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}t}({e}^{At}) & =A\\,{e}^{At} \\\\  & =[\\begin{aligned}0 & -3 \\\\ 3 & 0\\end{aligned}][\\begin{aligned}\\operatorname{cos}\u2061(3t) & -\\operatorname{sin}\u2061(3t) \\\\ \\operatorname{sin}\u2061(3t) & \\operatorname{cos}\u2061(3t)\\end{aligned}] \\\\  & =[\\begin{aligned}-3\\operatorname{sin}\u2061(3t) & -3\\operatorname{cos}\u2061(3t) \\\\ 3\\operatorname{cos}\u2061(3t) & -3\\operatorname{sin}\u2061(3t)\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          },
+          {
+            "key": "field-3"
+          },
+          {
+            "key": "field-4"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-112252",
+        "problem": "$$\nA=[\\begin{aligned}3 & 1 & 1 \\\\ 2 & 6 & -2 \\\\ -1 & 1 & 5\\end{aligned}],\\,v=[\\begin{aligned}0 \\\\ 1 \\\\ 1\\end{aligned}]\n$$\n\nConsider the matrix $A$ and vector $v$ shown above. Which of the following statements are true?\n\n- $v$ is an eigenvector corresponding to the eigenvalue $\\lambda =4$ of $A$\n- $v$ is a generalized eigenvector of rank $3$ corresponding to the eigenvalue $\\lambda =4$ of $A$\n- $v$ is a generalized eigenvector of rank $2$ corresponding to the eigenvalue $\\lambda =4$ of $A$",
+        "worked_solution": "A *generalized eigenvector* ${v}_{n}$ of rank $n$ corresponding to the eigenvalue $\\lambda $ of a matrix $A$ is a nonzero vector such that\n\n$$\n{v}_{n}\\overset{A-\\lambda I\\,}{\\to }{v}_{n-1}\\overset{A-\\lambda I\\,}{\\to }\u2026\\overset{A-\\lambda I\\,}{\\to }{v}_{1}\\overset{A-\\lambda I\\,}{\\to }0,\n$$\n\nwhere ${v}_{n-1},{v}_{n-2},\u2026,{v}_{1}\\ne 0.$ An *eigenvector* is simply a generalized eigenvector of rank $1.$\n\nFirst, we compute $A-4I:$\n\n$$\nA-4I=[\\begin{aligned}3 & 1 & 1 \\\\ 2 & 6 & -2 \\\\ -1 & 1 & 5\\end{aligned}]-4[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-1 & 1 & 1 \\\\ 2 & 2 & -2 \\\\ -1 & 1 & 1\\end{aligned}]\n$$\n\n- Next, we find the image of $v$ under the action of $A-4I:$\n\n$$\n(A-4I)v=[\\begin{aligned}-1 & 1 & 1 \\\\ 2 & 2 & -2 \\\\ -1 & 1 & 1\\end{aligned}][\\begin{aligned}0 \\\\ 1 \\\\ 1\\end{aligned}]={{[\\begin{aligned}2 \\\\ 0 \\\\ 2\\end{aligned}]}_{\u23df}}_{w}\\ne 0\n$$\n\n- Since we got a nonzero vector in the last step, we now compute the image of $w$ under the action of $A-4I:$\n\n$$\n(A-4I)w=[\\begin{aligned}-1 & 1 & 1 \\\\ 2 & 2 & -2 \\\\ -1 & 1 & 1\\end{aligned}][\\begin{aligned}2 \\\\ 0 \\\\ 2\\end{aligned}]=[\\begin{aligned}0 \\\\ 0 \\\\ 0\\end{aligned}]=0\n$$\n\nSo, we obtain the following chain of maps:\n\n$$\n{{[\\begin{aligned}0 \\\\ 1 \\\\ 1\\end{aligned}]}_{\u23df}}_{v}\\overset{A-4I\\,}{\\to }{{[\\begin{aligned}2 \\\\ 0 \\\\ 2\\end{aligned}]}_{\u23df}}_{w}\\overset{A-4I\\,}{\\to }{{[\\begin{aligned}0 \\\\ 0 \\\\ 0\\end{aligned}]}_{\u23df}}_{0}\n$$\n\nHere, we see that $A-4I$ maps $v$ to $0$ in $2$ steps.\n\nTherefore:\n\n$\\,$ *$v$ is a generalized eigenvector of rank $2$ corresponding to the eigenvalue $\\lambda =4$ of $A.$*\n\nSo, the correct answer is \"III only.\"",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "III only",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-90806",
+        "problem": "Given that $y=y(x)$ satisfies the equation ${y}^{\u2033}+4{y}^{\u2032}+20y=0,$ which of the following is **not** a solution to this equation?",
+        "worked_solution": "Assuming $y={e}^{\\lambda x}$ and differentiating $y$ with respect to $x$ gives\n\n$$\n{y}^{\u2032}=\\lambda {e}^{\\lambda x},\\,{y}^{\u2033}={\\lambda }^{2}{e}^{\\lambda x}.\n$$\n\nSubstituting the above into our differential equation gives\n\n$$\n\\begin{aligned}{\\lambda }^{2}{e}^{\\lambda x}+4\\lambda {e}^{\\lambda x}+20{e}^{\\lambda x} & =0 \\\\ {e}^{\\lambda x}({\\lambda }^{2}+4\\lambda +20) & =0.\\end{aligned}\n$$\n\nThe auxiliary equation is therefore\n\n$$\n{\\lambda }^{2}+4\\lambda +20=0.\n$$\n\nThe auxiliary equation can be solved by completing the square:\n\n$$\n\\begin{aligned}{\\lambda }^{2}+4\\lambda +20 & =0 \\\\ ({\\lambda }^{2}+4\\lambda +4)-4+20 & =0 \\\\ (\\lambda +2)^{2}+16 & =0 \\\\ (\\lambda +2)^{2} & =-16 \\\\ \\lambda +2 & =\\pm 4\\text{i} \\\\ \\lambda  & =-2\\pm 4\\text{i}\\end{aligned}\n$$\n\nHence, $\\lambda =-2\\pm 4\\text{i}$ are the complex roots of the auxiliary equation.\n\nThus, any linear combination of the functions $\\text{Re}({e}^{(-2+4\\text{i})x})={e}^{-2x}\\operatorname{cos}\u20614x$ and $\\text{Im}({e}^{(-2+4\\text{i})x})={e}^{-2x}\\operatorname{sin}\u20614x$ is a solution to the original differential equation. \n\nAmong the given options, only $4{e}^{-2x}+{e}^{-2x}\\operatorname{sin}\u20614x$ is not a solution.",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-340799",
+        "problem": "Consider the function $f(x)={x}^{2}\\operatorname{cos}\u2061(2x)$ on $x\\in [-\\pi ,\\pi ].$ Select the correct options below.\n$\\,$\nThe function $f(x)$ is\n{{field-1}}.\n\n$\\,$\nConsequently, the {{field-2}}\nin the corresponding Fourier series of $f(x)$ must be zero.",
+        "worked_solution": "To check whether $f$ is even or odd, we compare $f(-x)$ and $f(x):$\n\n$$\n\\begin{aligned}f(-x) & =(-x)^{2}\\operatorname{cos}\u2061(2(-x)) \\\\  & ={x}^{2}\\operatorname{cos}\u2061(-2x) \\\\  & ={x}^{2}\\operatorname{cos}\u2061(2x) \\\\  & =f(x).\\end{aligned}\n$$\n\nSince $f(-x)=f(x),$ we have that $f$ is even.\n\nFor the Fourier series on $[-\\pi ,\\pi ],$ the sine coefficients are given by\n\n$$\n{b}_{n}=\\frac{1}{\\pi }{\\int }_{-\\pi }^{\\pi }f(x)\\operatorname{sin}\u2061(nx)\\,\\text{d}x.\n$$\n\nHere, $f(x)$ is even and $\\operatorname{sin}\u2061(nx)$ is odd, so $f(x)\\operatorname{sin}\u2061(nx)$ is odd.\n\nNow, the integral of an odd function over $[-\\pi ,\\pi ]$ is $0.$ Thus, ${b}_{n}=0$ for all $n\\ge 1.$\n\nTherefore, the function $f(x)$ is $\\text{even}$ and the $\\text{sine terms}$ in its Fourier series must be zero.",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-343061",
+        "problem": "Consider the following initial value problem.\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+3y=\\operatorname{sin}\u20612t+\\operatorname{cos}\u20612t,\\,y(0)=1\n$$\n\nSelect the correct options in the reasoning below to find the solution using Laplace transforms. You may make use of the following results:\n\n$$\nL{\\operatorname{sin}\u2061\\omega t}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L{\\operatorname{cos}\u2061\\omega t}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$\n\nLet $Y(s)=L{y(t)}.$ Taking the Laplace transform of both sides of the equation and solving for $Y,$ we have\n\n$$\n\\frac{{s}^{2}+s+6}{(s+3)({s}^{2}+4)}\n$$\n\nThe partial fraction decomposition of $Y$ is\n\n$$\n\\frac{12}{13(s+3)}+\\frac{s-10}{13({s}^{2}+4)}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\n\\frac{12}{13}{e}^{-3t}+\\frac{1}{13}\\operatorname{sin}\u20612t+\\frac{5}{13}\\operatorname{cos}\u20612t\n$$",
+        "worked_solution": "First, we take the Laplace transform of both sides of the differential equation. Using the linearity property, we have\n\n$$\nL{{y}^{\u2032}}+3L{y}=L{\\operatorname{sin}\u20612t}+L{\\operatorname{cos}\u20612t}.\n$$\n\nUsing the formula for the transform of a derivative $L{{y}^{\u2032}}=sY(s)-y(0)$ and the standard trigonometric transforms\n\n$$\nL{\\operatorname{sin}\u20612t}=\\frac{2}{{s}^{2}+4},\\,L{\\operatorname{cos}\u20612t}=\\frac{s}{{s}^{2}+4},\n$$\n\nwe substitute the known values. Note that $y(0)=1:$\n\n$$\n\\begin{aligned}(sY(s)-1)+3Y(s) & =\\frac{2}{{s}^{2}+4}+\\frac{s}{{s}^{2}+4} \\\\ (s+3)Y(s)-1 & =\\frac{s+2}{{s}^{2}+4}\\end{aligned}\n$$\n\nWe rearrange to solve for $Y(s).$ First, add $1$ to the right-hand side and find a common denominator:\n\n$$\n\\begin{aligned}(s+3)Y(s) & =1+\\frac{s+2}{{s}^{2}+4} \\\\ (s+3)Y(s) & =\\frac{{s}^{2}+4}{{s}^{2}+4}+\\frac{s+2}{{s}^{2}+4} \\\\ (s+3)Y(s) & =\\frac{{s}^{2}+s+6}{{s}^{2}+4}\\end{aligned}\n$$\n\nDividing by $(s+3),$ we obtain\n\n$$\nY(s)=\\frac{{s}^{2}+s+6}{(s+3)({s}^{2}+4)}.\n$$\n\nNext, we perform a partial fraction decomposition. Since the denominator has a linear factor $(s+3)$ and an irreducible quadratic factor $({s}^{2}+4),$ we write\n\n$$\n\\frac{{s}^{2}+s+6}{(s+3)({s}^{2}+4)}=\\frac{A}{s+3}+\\frac{Bs+C}{{s}^{2}+4}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n{s}^{2}+s+6=A({s}^{2}+4)+(Bs+C)(s+3)\n$$\n\n- Setting $s=-3,$ we have\n \n\n$$\n(-3)^{2}+(-3)+6=A((-3)^{2}+4)+0\\,\u27f9\\,12=13A\\,\u27f9\\,A=\\frac{12}{13}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n  \n\n$$\n1=A+B\\,\u27f9\\,1=\\frac{12}{13}+B\\,\u27f9\\,B=\\frac{1}{13}.\n$$\n\n- Comparing the constant terms, we have\n \n\n$$\n6=4A+3C\\,\u27f9\\,6=4(\\frac{12}{13})+3C\\,\u27f9\\,C=\\frac{10}{13}.\n$$\n\nThus, the decomposition is\n\n$$\nY(s)=\\frac{(\\frac{12}{13})}{13(s+3)}+\\frac{(\\frac{1}{13}s+\\frac{10}{13})}{{s}^{2}+4}=\\frac{12}{13(s+3)}+\\frac{s+10}{13({s}^{2}+4)}.\n$$\n\nFrom the table of Laplace transforms, we have:\n\n$$\n\\begin{aligned}{L}^{-1}{\\frac{1}{s+3}} & ={e}^{-3t} \\\\ {L}^{-1}{\\frac{s}{{s}^{2}+4}} & =\\operatorname{cos}\u20612t \\\\ {L}^{-1}{\\frac{2}{{s}^{2}+4}} & =\\operatorname{sin}\u20612t\\end{aligned}\n$$\n\nFinally, taking the inverse Laplace transform of $Y(s),$ we get\n\n$$\n\\begin{aligned}y(t) & =\\frac{12}{13}{L}^{-1}{\\frac{1}{s+3}}+\\frac{1}{13}{L}^{-1}{\\frac{s}{{s}^{2}+4}}+\\frac{5}{13}{L}^{-1}{\\frac{2}{{s}^{2}+4}} \\\\ y(t) & =\\frac{12}{13}{e}^{-3t}+\\frac{5}{13}\\operatorname{sin}\u20612t+\\frac{1}{13}\\operatorname{cos}\u20612t.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          },
+          {
+            "key": "field-3"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-39705",
+        "problem": "Let ${v}_{1}=[\\begin{aligned}2 \\\\ 5\\end{aligned}]$ and ${v}_{2}=[\\begin{aligned}1 \\\\ 3\\end{aligned}]$ be eigenvectors of a matrix $A.$ Find the decoupling matrix of the differential equation ${x}^{\u2032}(t)=Ax(t).$",
+        "worked_solution": "First, we construct the matrix $E$, whose columns are the eigenvectors ${v}_{1}$ and ${v}_{2}:$\n\n$$\nE=[\\begin{aligned}2 & 1 \\\\ 5 & 3\\end{aligned}]\n$$\n\nNow, the decoupling matrix can be found as follows:\n\n$$\n\\begin{aligned}D & ={E}^{-1} \\\\  & ={[\\begin{aligned}2 & 1 \\\\ 5 & 3\\end{aligned}]}^{-1} \\\\  & =\\frac{1}{2\\cdot 3-5\\cdot 1}[\\begin{aligned}3 & -1 \\\\ -5 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}3 & -1 \\\\ -5 & 2\\end{aligned}]\\end{aligned}\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-95505",
+        "problem": "$$\n\nIf $y=\\operatorname{artanh}\u2061{e}^{x},$ then $\\frac{\\text{d}y}{\\text{d}x}=$",
+        "worked_solution": "The formula for the derivative of the inverse hyperbolic tangent function is\n\n$$\n\\frac{\\text{d}}{\\text{d}x}(\\operatorname{artanh}\u2061x)=\\frac{1}{1-{x}^{2}}.\n$$\n\nUsing the formula above with the chain rule, we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}}{\\text{d}x}(\\operatorname{artanh}\u2061{e}^{x}) \\\\  & =\\frac{1}{1-{({e}^{x})}^{2}}\\cdot {({e}^{x})}^{\u2032} \\\\  & =\\frac{1}{1-{e}^{2x}}\\cdot {e}^{x} \\\\  & =\\frac{{e}^{x}}{1-{e}^{2x}}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{{e}^{x}}{1-{e}^{2x}}",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-345281",
+        "problem": "Consider the following differential equation.\n\n$$\n8{x}^{2}{y}^{\u2033}+6x{y}^{\u2032}+(8x-3)y=0\n$$\n\nWhich of the following is a Frobenius series solution to the differential equation, where ${a}_{n}$ for $n=0,1,2,\u2026$ are constants determined by substitution?\n\n*Hint: Substituting a trial Frobenius series solution into each term of the ODE, we obtain*\n\n$$\n\\begin{aligned}8{x}^{2}{y}^{\u2033} & =8({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }8((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 6x{y}^{\u2032} & =6\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }6(\\lambda +n){a}_{n}{x}^{\\lambda +n}, \\\\ (8x-3)y & =-3{a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(8{a}_{n-1}-3{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$",
+        "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}8{x}^{2}{y}^{\u2033} & =8({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }8((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 6x{y}^{\u2032} & =6\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }6(\\lambda +n){a}_{n}{x}^{\\lambda +n} \\\\ (8x-3)y & =-3{a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(8{a}_{n-1}-3{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}8({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+6\\lambda {a}_{0}{x}^{\\lambda }-3{a}_{0}{x}^{\\lambda } & = \\\\ (8{\\lambda }^{2}-8\\lambda +6\\lambda -3){a}_{0}{x}^{\\lambda } & = \\\\ (8{\\lambda }^{2}-2\\lambda -3){a}_{0}{x}^{\\lambda } & .\\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we obtain an infinite series of the form\n${x}^{\\lambda }{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n},$\nfor some ${b}_{n}(\\lambda ),$ $n\\ge 1.$\nTherefore, substituting into the homogeneous ODE, we have\n\n$$\n\\begin{aligned}(8{\\lambda }^{2}-2\\lambda -3){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0 \\\\ (8{\\lambda }^{2}-2\\lambda -3){a}_{0}+{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficient of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(8{\\lambda }^{2}-2\\lambda -3){a}_{0} & =0 \\\\ 8{\\lambda }^{2}-2\\lambda -3 & =0\\end{aligned}\n$$\n\nNow, we can determine a solution. Solving the indicial equation for the roots, we get\n\n$$\n\\begin{aligned}8{\\lambda }^{2}-2\\lambda -3 & =0 \\\\ (4\\lambda -3)(2\\lambda +1) & =0 \\\\ \\lambda  & =-\\frac{1}{2},\\frac{3}{4}\\end{aligned}\n$$\n\nTherefore, the two Frobenius series solutions are\n\n$$\n\\begin{aligned}y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n-1/2}\\,\\text{and}\\,y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+3/4},\\end{aligned}\n$$\n\nwhere the constants ${a}_{n}$ are to be determined separately in each of the two cases.\n\nOf the given options, the correct answer is\n$y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+3/4}.$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-115776",
+        "problem": "Given that $r=-24\\operatorname{csc}\u2061\\theta $ for $\\theta =\\theta (t),$ and that $\\frac{\\text{d}r}{\\text{d}t}=12$ at the point where $\\theta =\\frac{5\\pi }{3},$ find $\\frac{\\text{d}\\theta }{\\text{d}t}.$",
+        "worked_solution": "Differentiating the given relation with respect to $t$ using implicit differentiation, we get\n\n$$\n\\begin{aligned}r & =-24\\operatorname{csc}\u2061\\theta  \\\\ \\frac{\\text{d}}{\\text{d}t}(r) & =\\frac{\\text{d}}{\\text{d}t}(-24\\operatorname{csc}\u2061\\theta ) \\\\ \\frac{\\text{d}r}{\\text{d}t} & =\\frac{\\text{d}\\theta }{\\text{d}t}\\cdot \\frac{\\text{d}}{\\text{d}\\theta }(-24\\operatorname{csc}\u2061\\theta ) \\\\ \\frac{\\text{d}r}{\\text{d}t} & =\\frac{\\text{d}\\theta }{\\text{d}t}\\cdot (24\\operatorname{csc}\u2061\\theta \\operatorname{cot}\u2061\\theta ).\\end{aligned}\n$$\n\nNow we can substitute the given information $\\frac{\\text{d}r}{\\text{d}t}=12$ and $\\theta =\\frac{5\\pi }{3},$ and solve for $\\frac{\\text{d}\\theta }{\\text{d}t}.$ We get\n\n$$\n\\begin{aligned}\\frac{\\text{d}r}{\\text{d}t} & =\\frac{\\text{d}\\theta }{\\text{d}t}\\cdot 24\\operatorname{csc}\u2061\\theta \\operatorname{cot}\u2061\\theta  \\\\ 12 & =\\frac{\\text{d}\\theta }{\\text{d}t}\\cdot (24\\operatorname{csc}\u2061(\\frac{5\\pi }{3})\\operatorname{cot}\u2061(\\frac{5\\pi }{3})) \\\\ 12 & =\\frac{\\text{d}\\theta }{\\text{d}t}\\cdot (24\\cdot (-\\frac{2}{\\sqrt{3}})\\cdot (-\\frac{1}{\\sqrt{3}})) \\\\ \\frac{\\text{d}\\theta }{\\text{d}t} & =\\frac{12}{16} \\\\ \\frac{\\text{d}\\theta }{\\text{d}t} & =\\frac{3}{4}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{3}{4}",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-95886",
+        "problem": "$$\n\nFind the derivative of $f(x)=\\frac{\\operatorname{sech}\u20613x}{x}.$",
+        "worked_solution": "In this case, the expression for $f(x)$ is a quotient $\\frac{u(x)}{v(x)}$ with $u(x)=\\operatorname{sech}\u20613x$ and $v(x)=x.$ \n\nTherefore, we apply the quotient rule as follows:\n\n$$\n\\begin{aligned}\\begin{aligned}{f}^{\u2032}(x) & =\\frac{{u}^{\u2032}(x)\\cdot v(x)-u(x)\\cdot {v}^{\u2032}(x)}{[v(x)]^{2}} \\\\  & =\\frac{{(\\operatorname{sech}\u20613x)}^{\u2032}\\cdot x-\\operatorname{sech}\u20613x\\cdot {(x)}^{\u2032}}{(x)^{2}} \\\\  & =\\frac{-3x\\operatorname{sech}\u20613x\\operatorname{tanh}\u20613x-\\operatorname{sech}\u20613x}{{x}^{2}} \\\\  & =-\\frac{\\operatorname{sech}\u20613x(3x\\operatorname{tanh}\u20613x+1)}{{x}^{2}}\\end{aligned}\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "-\\frac{\\operatorname{sech}\u20613x(3x\\operatorname{tanh}\u20613x+1)}{{x}^{2}}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-162223",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/522a51527563645261a3b4c5a1472510bcb3e890fc82d3b4c1b2ccdae59b9dbd.png)\n\nConsider the affine transformation $T,$ given by\n\n$$\n[\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}9 & -3 \\\\ 3 & -1\\end{aligned}]\\cdot [\\begin{aligned}u \\\\ v\\end{aligned}]+[\\begin{aligned}0 \\\\ 1\\end{aligned}].\n$$\n\n \nWhat would be the image of the rectangle shown above under the action of $T?$",
+        "worked_solution": "Recall that for any affine transformation \n\n$$\nT:u\u27f6Au+b,\n$$\n\nwhere $A$ is a $2\\times 2$ matrix and $u$ and $b$ are $2\\times 1$ column vectors, we have one of the following three possibilities:\n\n- If $T$ is non-singular, i.e., when $det(A)\\ne 0,$ then the image of a two-dimensional object is a two-dimensional object. In particular, the image of a polygon with $n$ vertices is a polygon with $n$ vertices.\n\n- If $T$ is singular, i.e., when $det(A)=0,$ we have two additional subcases:\n\n- If $A$ has at least one nonzero entry, then the image of a two-dimensional object is a one-dimensional line segment.\n\n- If $A$ is the zero matrix, then the image of a two-dimensional object is a point on the plane.\n\nWith that in mind, let's examine our transformation.\n\nNotice that the matrix representation of the linear transformation associated with $T$ is \n$A=[\\begin{aligned}9 & -3 \\\\ 3 & -1\\end{aligned}].$\n\nComputing the determinant of $A,$ we obtain\n\n$$\n\\begin{aligned}det(T) & =|\\begin{aligned}9 & -3 \\\\ 3 & -1\\end{aligned}| \\\\  & =9\\cdot (-1)-3\\cdot (-3) \\\\  & =0.\\end{aligned}\n$$\n\nSo, we have a singular nonzero matrix. \n\nTherefore, $T$ is non-invertible and the image of the rectangle under the action of $T$ is a line segment.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "A line segment",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-15664",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/e4b9bd92b63d85b0336974285b6aa7a8a7beb8348cf368f65d805f7b4b70ffa2.png)\n\nGiven the plots of $y=f(x)$ and $y=g(x)$ above, find ${h}^{\u2032}(1)$ where $h(x)=\\frac{f(x)}{g(x)}.$",
+        "worked_solution": "The quotient rule for derivatives gives\n\n$$\n{h}^{\u2032}(x)=\\frac{{f}^{\u2032}(x)\\cdot g(x)-f(x)\\cdot {g}^{\u2032}(x)}{(g(x))^{2}}.\n$$\n\nAs a result, we have that\n\n$$\n{h}^{\u2032}(1)=\\frac{{f}^{\u2032}(1)\\cdot g(1)-f(1)\\cdot {g}^{\u2032}(1)}{(g(1))^{2}}.\n$$\n\nFrom the graph above, we obtain that $f(1)=3$ and $g(1)=2.$\n\nAdditionally:\n\n- The slope of $f(x)$ on $x\\in (0,2)$ equals $1.$ So, ${f}^{\u2032}(1)=1.$\n\n- The slope of $g(x)$ on $x\\in (0,3)$ equals $-1.$ So, ${g}^{\u2032}(1)=-1.$\n\nFinally, we have\n\n$$\n\\begin{aligned}{h}^{\u2032}(1) & =\\frac{{f}^{\u2032}(1)\\cdot g(1)-f(1)\\cdot {g}^{\u2032}(1)}{(g(1))^{2}} \\\\  & =\\frac{1\\cdot 2-3\\cdot (-1)}{{2}^{2}} \\\\  & =\\frac{5}{4}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{5}{4}",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-124842",
+        "problem": "Given the series $S={\\sum }_{n=1}^{\\infty }\\frac{{n}^{3}+3\\sqrt{n}}{2{n}^{4}},$ which of the following is true?",
+        "worked_solution": "First, we note that $S$ is not a $p$-series, and we know from the $n$th term test the condition $\\frac{{n}^{3}+3\\sqrt{n}}{2{n}^{4}}\\to 0$ as $n\\to \\infty $ as $n\\to \\infty $ does not tell us anything about the convergence or divergence of the series.\n\nThe comparison test for divergence states the following:\n\n*Consider two series ${\\sum }_{n=1}^{\\infty }{a}_{n}$ and ${\\sum }_{n=1}^{\\infty }{b}_{n}$ such that ${a}_{n}$ and ${b}_{n}$ are both positive and ${a}_{n}\\ge {b}_{n}$ for all $n.$ If ${\\sum }_{n=1}^{\\infty }{b}_{n}$ is divergent, then ${\\sum }_{n=1}^{\\infty }{a}_{n}$ is also divergent.*\n\nWe follow four steps to show that $S$ is divergent.\n\n**Step 1**: First, we let ${a}_{n}=\\frac{{n}^{3}+3\\sqrt{n}}{2{n}^{4}}$ and ${b}_{n}=\\frac{1}{2n}.$ We note that ${a}_{n}>0$ and ${b}_{n}>0$ for all $n\\ge 1.$\n\n**Step 2**: We show that ${\\sum }_{n=1}^{\\infty }{b}_{n}$ is divergent. We have,\n\n$$\n{\\sum }_{n=1}^{\\infty }{b}_{n}=\\frac{1}{2}{\\sum }_{n=1}^{\\infty }\\frac{1}{n}\n$$\n\nwhich is divergent by the $p$-series test.\n\n**Step 3**: We show that ${a}_{n}\\ge {b}_{n}$ for all $n\\ge 1.$\n\n$$\n\\begin{aligned}{a}_{n} & \\overset{?}{\\ge }{b}_{n} \\\\ \\frac{{n}^{3}+3\\sqrt{n}}{2{n}^{4}} & \\ge \\frac{{n}^{3}}{2{n}^{4}}=\\frac{1}{2n}.\\,\u2713\\end{aligned}\n$$\n\n**Step 4**: We conclude that ${\\sum }_{n=1}^{\\infty }{a}_{n}$ is divergent by the comparison test.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "The series diverges by the comparison test",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-76209",
+        "problem": "If $\\,A=[\\begin{aligned}\\text{i} & 2-\\text{i} \\\\ 1-2\\text{i} & 2\\end{aligned}]\\,$ and $\\,x=[\\begin{aligned}1+2\\text{i} \\\\ 1-\\text{i}\\end{aligned}]\\,$, then $\\,Ax=$",
+        "worked_solution": "Multiplying the matrix by the vector using the usual method, we get\n\n$$\n\\begin{aligned}Ax & =[\\begin{aligned}\\text{i} & 2-\\text{i} \\\\ 1-2\\text{i} & 2\\end{aligned}]\\cdot [\\begin{aligned}1+2\\text{i} \\\\ 1-\\text{i}\\end{aligned}] \\\\  & =[\\begin{aligned}\\text{i}(1+2\\text{i})+(2-\\text{i})(1-\\text{i}) \\\\ (1-2\\text{i})(1+2\\text{i})+2(1-\\text{i})\\end{aligned}] \\\\  & =[\\begin{aligned}(\\text{i}-2)+(1-3\\text{i}) \\\\ 5+(2-2\\text{i})\\end{aligned}] \\\\  & =[\\begin{aligned}-1-2\\text{i} \\\\ 7-2\\text{i}\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}-1-2\\text{i} \\\\ 7-2\\text{i}\\end{aligned}]",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-41944",
+        "problem": "Find the product $AB$, if\n$A=[\\begin{aligned}0 & 1 & 0\\end{aligned}]$\nand \n$B=[\\begin{aligned}\\sqrt{5} & 4 & 1 \\\\ -3 & 2\\sqrt{2} & -3.2 \\\\ 0 & 1 & -\\sqrt{3}\\end{aligned}].$",
+        "worked_solution": "Notice that $A$ is the $2$nd *row* of the identity matrix ${I}_{3}.$\n\nSince we're multiplying the $3\\times 3$ matrix $B$ by the $2$nd *row* of the identity matrix ${I}_{3}$ on the *left*, the result must be the $2$nd *row* of $B.$ Therefore,\n\n$$\nAB=[\\begin{aligned}-3 & 2\\sqrt{2} & -3.2\\end{aligned}].\n$$\n\nLet's check the long way:\n\n$$\n\\begin{aligned}AB & =[\\begin{aligned}0 & 1 & 0\\end{aligned}][\\begin{aligned}\\sqrt{5} & 4 & 1 \\\\ -3 & 2\\sqrt{2} & -3.2 \\\\ 0 & 1 & -\\sqrt{3}\\end{aligned}] \\\\  & =[\\begin{aligned}-3 & 2\\sqrt{2} & -3.2\\end{aligned}]\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}-3 & 2\\sqrt{2} & -3.2\\end{aligned}]",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-118786",
+        "problem": "Which of the following systems is a first-order initial value problem?\n\n- $(1+{x}^{2}){y}^{\u2032}=8y,\\,y(-1)=3$\n- $8{y}^{\u2032}-xy=3$\n- $3{y}^{\u2033}=4y,\\,y(-1)=0,\\,{y}^{\u2032}(-1)=1$",
+        "worked_solution": "A first-order initial value problem (or IVP) is a first-order ordinary differential equation together with an initial condition that specifies a value of the unknown function at a point in its domain. A first-order initial value problem typically takes the form\n\n$$\n{y}^{\u2032}=f(x,y),\\,y({x}_{0})={y}_{0},\n$$\n\nwhere ${x}_{0}$ and ${y}_{0}$ are constants.\n\nWith that in mind, let's check each option.\n\n- System I is a first-order initial value problem. It consists of a first-order differential equation $(1+{x}^{2}){y}^{\u2032}=8y$ together with the initial condition $y(-1)=3.$\n\n- System II is not a first-order initial value problem. We have a first-order ordinary differential equation, but there is no initial condition.\n\n- System III is not a first-order initial value problem. It consists of a *second*-order differential equation $3{y}^{\u2033}=4y$ together with *two* initial conditions $y(-1)=0,\\,{y}^{\u2032}(-1)=1.$ This is a second-order initial value problem.\n\nTherefore, the correct answer is \"I only.\"",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "I only",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-141281",
+        "problem": "$\\operatorname{sin}\u2061(x+\\frac{2\\pi }{3})=$",
+        "worked_solution": "Recall the sum formula for sine:\n\n$$\n\\operatorname{sin}\u2061(u+v)=\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v+\\operatorname{cos}\u2061u\\operatorname{sin}\u2061v\n$$\n\nApplying the sum formula for sine with $u=x$ and $v=\\frac{2\\pi }{3},$ we get\n\n$$\n\\begin{aligned}\\operatorname{sin}\u2061(x+\\frac{2\\pi }{3}) & =\\operatorname{sin}\u2061x\\operatorname{cos}\u2061(\\frac{2\\pi }{3})+\\operatorname{cos}\u2061x\\operatorname{sin}\u2061(\\frac{2\\pi }{3}) \\\\  & =\\operatorname{sin}\u2061x\\cdot (-\\frac{1}{2})+\\operatorname{cos}\u2061x\\cdot (\\frac{\\sqrt{3}}{2}) \\\\  & =-\\frac{\\operatorname{sin}\u2061x}{2}+\\frac{\\sqrt{3}\\operatorname{cos}\u2061x}{2} \\\\  & =\\frac{\\sqrt{3}\\operatorname{cos}\u2061x-\\operatorname{sin}\u2061x}{2}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{\\sqrt{3}\\operatorname{cos}\u2061x-\\operatorname{sin}\u2061x}{2}",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-65502",
+        "problem": "$\\operatorname{cos}\u2061(x+\\frac{2\\pi }{3})=$",
+        "worked_solution": "First, we recall the sum formula for cosine:\n\n$$\n\\operatorname{cos}\u2061(u+v)=\\operatorname{cos}\u2061u\\operatorname{cos}\u2061v-\\operatorname{sin}\u2061u\\operatorname{sin}\u2061v\n$$\n\nApplying the sum formula for cosine with $u=x$ and $v=\\frac{2\\pi }{3}$, we get\n\n$$\n\\begin{aligned}\\operatorname{cos}\u2061(x+\\frac{2\\pi }{3}) & =\\operatorname{cos}\u2061x\\operatorname{cos}\u2061(\\frac{2\\pi }{3})-\\operatorname{sin}\u2061x\\operatorname{sin}\u2061(\\frac{2\\pi }{3}) \\\\  & =\\operatorname{cos}\u2061x\\cdot (-\\frac{1}{2})-\\operatorname{sin}\u2061x\\cdot (\\frac{\\sqrt{3}}{2}) \\\\  & =-\\frac{1}{2}(\\operatorname{cos}\u2061x+\\sqrt{3}\\operatorname{sin}\u2061x).\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "-\\frac{1}{2}(\\operatorname{cos}\u2061x+\\sqrt{3}\\operatorname{sin}\u2061x)",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-120644",
+        "problem": "$\\frac{1+{tan}^{2}\u2061\\theta }{\\operatorname{tan}\u2061\\theta \\cdot \\operatorname{sec}\u2061\\theta }=$",
+        "worked_solution": "First, let's recall the secant-tangent identity:\n\n$$\n1+{tan}^{2}\u2061\\theta ={sec}^{2}\u2061\\theta \n$$\n\nWe rewrite the given expression using the secant-tangent identity as follows:\n\n$$\n\\frac{1+{tan}^{2}\u2061\\theta }{\\operatorname{tan}\u2061\\theta \\cdot \\operatorname{sec}\u2061\\theta }=\\frac{{sec}^{2}\u2061\\theta }{\\operatorname{tan}\u2061\\theta \\cdot \\operatorname{sec}\u2061\\theta }\n$$\n\nWe now simplify the expression:\n\n$$\n\\begin{aligned}\\frac{{sec}^{2}\u2061\\theta }{\\operatorname{tan}\u2061\\theta \\cdot \\operatorname{sec}\u2061\\theta } & =\\frac{\\operatorname{sec}\u2061\\theta \\cdot \\operatorname{sec}\u2061\\theta }{\\operatorname{tan}\u2061\\theta \\cdot \\operatorname{sec}\u2061\\theta } \\\\  & =\\frac{\\operatorname{sec}\u2061\\theta \\cdot \\cancel{\\operatorname{sec}\u2061\\theta }}{\\operatorname{tan}\u2061\\theta \\cdot \\cancel{\\operatorname{sec}\u2061\\theta }} \\\\  & =\\frac{\\operatorname{sec}\u2061\\theta }{\\operatorname{tan}\u2061\\theta }\\end{aligned}\n$$\n\n \n\nNext, we recall the following identities:\n\n$$\n\\frac{1}{\\operatorname{tan}\u2061\\theta }=\\frac{\\operatorname{cos}\u2061\\theta }{\\operatorname{sin}\u2061\\theta },\\,\\operatorname{sec}\u2061\\theta =\\frac{1}{\\operatorname{cos}\u2061\\theta },\\,\\operatorname{csc}\u2061\\theta =\\frac{1}{\\operatorname{sin}\u2061\\theta }\n$$\n\n \n\nUsing the above identities, we can further simplify our expression as follows:\n\n$$\n\\begin{aligned}\\frac{\\operatorname{sec}\u2061\\theta }{\\operatorname{tan}\u2061\\theta } & =\\operatorname{sec}\u2061\\theta \\cdot \\frac{1}{\\operatorname{tan}\u2061\\theta } \\\\  & =\\frac{1}{\\operatorname{cos}\u2061\\theta }\\cdot \\frac{\\operatorname{cos}\u2061\\theta }{\\operatorname{sin}\u2061\\theta } \\\\  & =\\frac{1}{\\cancel{\\operatorname{cos}\u2061\\theta }}\\cdot \\frac{\\cancel{\\operatorname{cos}\u2061\\theta }}{\\operatorname{sin}\u2061\\theta } \\\\  & =\\frac{1}{\\operatorname{sin}\u2061\\theta } \\\\  & =\\operatorname{csc}\u2061\\theta \\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\n\\frac{1+{tan}^{2}\u2061\\theta }{\\operatorname{tan}\u2061\\theta \\cdot \\operatorname{sec}\u2061\\theta }=\\operatorname{csc}\u2061\\theta .\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\operatorname{csc}\u2061\\theta ",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-88041",
+        "problem": "Solve the inequality $\\operatorname{ln}\u2061(3x)\\le \\operatorname{ln}\u2061(x-1)+5.$",
+        "worked_solution": "We use each side of the inequality as an exponent of $e.$ This gives the following:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}\u2061(3x)} & \\le {e}^{\\operatorname{ln}\u2061(x-1)+5} \\\\ {e}^{\\operatorname{ln}\u2061(3x)} & \\le {e}^{\\operatorname{ln}\u2061(x-1)}\\cdot {e}^{5} \\\\ 3x & \\le (x-1){e}^{5} \\\\ 3x & \\le {e}^{5}x-{e}^{5} \\\\ {e}^{5} & \\le ({e}^{5}-3)x \\\\ x & \\ge \\frac{{e}^{5}}{{e}^{5}-3}\\end{aligned}\n$$\n\nNow, we must only keep the solutions that are in the domain of the logarithms in the original inequality. To find the domain of the logarithms, we recall that the argument of the logarithm must be positive:\n\n$$\n\\begin{aligned}3x & >0 & \u21d2 &  & x & >0 \\\\ x-1 & >0 & \u21d2 &  & x & >1\\end{aligned}\n$$\n\nOur solution is $x\\ge \\frac{{e}^{5}}{{e}^{5}-3},$ which can be expressed as $[\\frac{{e}^{5}}{{e}^{5}-3},\\infty ).$ Additionally, the domains of the logarithms are $x>0$ and $x>1,$ which can be expressed as $(0,\\infty )$ and $(1,\\infty )$ respectively. To find the solutions that are in the domains of the logarithms, we take the intersection:\n\n$$\n[\\frac{{e}^{5}}{{e}^{5}-3},\\infty )\\cap (0,\\infty )\\cap (1,\\infty )=[\\frac{{e}^{5}}{{e}^{5}-3},\\infty )\n$$\n\nTherefore, the solution is $x\\in [\\frac{{e}^{5}}{{e}^{5}-3},\\infty ),$ which can also be written as $x\\ge \\frac{{e}^{5}}{{e}^{5}-3}.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "x\\ge \\frac{{e}^{5}}{{e}^{5}-3}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-75961",
+        "problem": "Which value of $y$ satisfies the equation $\\frac{y+1}{{y}^{2}}=\\frac{3}{2y}+\\frac{2y-1}{{y}^{2}}?$",
+        "worked_solution": "We note that $y=0$ cannot be a solution since division by $0$ is undefined. \n\nThe equation has the denominators ${y}^{2}$ and $2y.$ So first, we find the least common multiple (or $\\text{LCM}$) of the denominators. We find that\n\n$$\n\\text{LCM}({y}^{2},2y)=2{y}^{2}.\n$$\n\nSo, we multiply both sides of the equation by $2{y}^{2},$ and simplify: \n\n$$\n\\begin{aligned}\\frac{y+1}{{y}^{2}} & =\\frac{3}{2y}+\\frac{2y-1}{{y}^{2}} \\\\ 2{y}^{2}\\cdot (\\frac{y+1}{{y}^{2}}) & =2{y}^{2}\\cdot (\\frac{3}{2y}+\\frac{2y-1}{{y}^{2}}) \\\\ 2{y}^{2}\\cdot (\\frac{y+1}{{y}^{2}}) & =2{y}^{2}\\cdot (\\frac{3}{2y})+2{y}^{2}\\cdot (\\frac{2y-1}{{y}^{2}}) \\\\ 2\\cdot {y}^{2}\\cdot (\\frac{y+1}{{y}^{2}}) & =y\\cdot 2y\\cdot (\\frac{3}{2y})+2\\cdot {y}^{2}\\cdot (\\frac{2y-1}{{y}^{2}}) \\\\ 2\\cdot \\cancel{{y}^{2}}\\cdot (\\frac{y+1}{\\cancel{{y}^{2}}}) & =y\\cdot \\cancel{2y}\\cdot (\\frac{3}{\\cancel{2y}})+2\\cdot \\cancel{{y}^{2}}\\cdot (\\frac{2y-1}{\\cancel{{y}^{2}}}) \\\\ 2(y+1) & =3y+2(2y-1)\\end{aligned}\n$$\n\nWe now have a linear equation in $y,$ and we can solve this using the addition and multiplication principles:\n\n$$\n\\begin{aligned}2(y+1) & =3y+2(2y-1) \\\\ 2y+2 & =7y-2 \\\\ 7y-2y & =2+2 \\\\ 5y & =4 \\\\ y & =\\frac{4}{5}\\end{aligned}\n$$\n\nFinally, we recall that we cannot allow $y=0$ as a solution. But since $y=\\frac{4}{5}\\ne 0,$ we conclude that the solution is $y=\\frac{4}{5}.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{4}{5}",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-47447",
+        "problem": "If $P(x)$ and $Q(x)$ are polynomials of degree $3$ and $7,$ respectively, which of the following statements are true?\n\n- $P+Q$ is always a polynomial of degree $10$\n- $P-Q$ is always a polynomial of degree $4$\n- $P\\cdot Q$ is always a polynomial of degree $10$",
+        "worked_solution": "Let's look at each statement in turn.\n\n- Statement I is false. For example, suppose $P(x)={x}^{3}$ and $Q(x)={x}^{7}.$ Then $P+Q={x}^{3}+{x}^{7},$ which is not a polynomial of degree $10.$\n\n- Statement II is false. For example, suppose $P(x)={x}^{3}$ and $Q(x)={x}^{7}.$ Then $P-Q={x}^{3}-{x}^{7},$ which is not a polynomial of degree $4.$\n\n- Statement III is true. The highest-degree terms in $P$ and $Q$ must contain ${x}^{3}$ and ${x}^{7},$ respectively. Therefore, the highest-degree term in $P\\cdot Q$ must contain ${x}^{3}\\cdot {x}^{7}={x}^{3+7}={x}^{10},$ meaning that $P\\cdot Q$ has degree $10.$\n\nIn conclusion, only statement III is true.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "III only",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-74505",
+        "problem": "The following table shows some values of a continuous function $f(x)$ over the interval $[2,12].$\n\n| $x$ | $2$ | $4$ | $8$ | $10$ | $12$ |\n| --- | --- | --- | --- | --- | --- |\n| $f(x)$ | $5$ | $3$ | $2$ | $1$ | $1$ |\n\nUse the left Riemann sum, with the four subintervals indicated by the data, to approximate the area under the curve $y=f(x)$ over the interval $[2,12].$",
+        "worked_solution": "In this case, we have $n=4$ rectangles. Using the left Riemann sum, the area is approximated as\n\n$$\nA\u2248f(2)\u0394{x}_{1}+f(4)\u0394{x}_{2}+f(8)\u0394{x}_{3}+f(10)\u0394{x}_{4},\n$$\n\nwhere each $\u0394{x}_{i}$ is calculated by considering the step between a particular $x$-value and the next one, i.e.,\n\n$$\n\u0394{x}_{i}={x}_{i+1}-{x}_{i}.\n$$\n\nWe set up a value table that includes the $\u0394x$'s.\n\n| $x$ | $2$ | $4$ | $8$ | $10$ | $12$ |\n| --- | --- | --- | --- | --- | --- |\n| $\u0394x$ | $2$ | $4$ | $2$ | $2$ | $-$ |\n| $f(x)$ | $5$ | $3$ | $2$ | $1$ | $1$ |\n\nFinally, we plug in the numbers to approximate the area under the curve and get\n\n$$\n\\begin{aligned}A & \u22485\\cdot 2+3\\cdot 4+2\\cdot 2+1\\cdot 2 \\\\  & =10+12+4+2 \\\\  & =28.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "28",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-72064",
+        "problem": "The following table shows the number of customers per minute, $C(t),$ that arrive at a bank, measured over a period of $15$ minutes.\n\n| $t\\,\\text{(minutes)}$ | $0$ | $3$ | $7$ | $12$ | $15$ |\n| --- | --- | --- | --- | --- | --- |\n| $C(t)\\,\\text{(customers/minute)}$ | $3$ | $4$ | $3$ | $5$ | $2$ |\n\nUse the right Riemann sum over $[0,15]$ with four subintervals to approximate the total number of customers served.",
+        "worked_solution": "Let $A$ denote the area under the curve $y=C(t)$ over $[0,15].$ In this case, we have $n=4$ rectangles. Using the right Riemann sum, the area is approximated as \n\n$$\nA\u2248C(3)\u0394{t}_{1}+C(7)\u0394{t}_{2}+C(12)\u0394{t}_{3}+C(15)\u0394{t}_{4},\n$$\n\nwhere each $\u0394{t}_{i}$ is calculated by considering the step between a particular $t$-value and the previous one, i.e.,\n\n$$\n\u0394{t}_{i}={t}_{i}-{t}_{i-1}.\n$$\n\nWe set up a value table that includes the $\u0394t$'s.\n\n| $t$ | $0$ | $3$ | $7$ | $12$ | $15$ |\n| --- | --- | --- | --- | --- | --- |\n| $\u0394t$ | $-$ | $3$ | $4$ | $5$ | $3$ |\n| $C(t)$ | $-$ | $4$ | $3$ | $5$ | $2$ |\n\nWe plug in the numbers to approximate the area under the curve and get\n\n$$\n\\begin{aligned}A & \u22484\\cdot 3+3\\cdot 4+5\\cdot 5+2\\cdot 3 \\\\  & =12+12+25+6 \\\\  & =55.\\end{aligned}\n$$\n\nFinally, in the given context, the area under the curve represents the total number of customers served over a period of $15$ minutes. So, the total number of customers is approximately\n$55.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "55\\,\\text{customers}",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-331263",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/26f5b15d20d9f57ee9b1d396683dd4dbad06a656b579ac0fd81241d362a28569.png)\n\nThe graph of $y=f(t)$ is shown above. Which of the following could be $f(t),$ where $u$ denotes the unit step function?",
+        "worked_solution": "The unit step function $u(t)$ is defined as\n\n$$\nu(t)={\\begin{aligned}1,\\,t\\ge 0, \\\\ 0,\\,t<0.\\end{aligned}\n$$\n\nThe graph of $y=u(t)$ is shown below.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14035554/assets/9fb8c20672705e9d68e69d32e7ff3499ec71560e10aa85136b3f3ad75c5fb5ed.png)\n\nNotice that to transform the function $y=u(t)$ to the given function $y=f(t),$ we perform the following transformations:\n\n- First, we reflect $y=u(t)$ in the $y$-axis, which gives $y=u(-t).$\n\n- Next, we shift by two units to the right, giving $y=u(-(t-2))=u(2-t).$\n\n- Finally, we scale by a scale factor of $2$ parallel to the $y$-axis, giving $y=2u(2-t).$\n\nTherefore, we conclude that $f(t)=2u(2-t).$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-253368",
+        "problem": "Classify the recurrence relation\n\n$$\n{a}_{n}={a}_{n-3}-{a}_{n-1},\\,{a}_{1}={a}_{2}={a}_{3}=1,\\,n\\ge 4.\n$$\n\nThe recurrence relation ${a}_{n}$ has order\n{{field-1}},\nis\n{{field-2}},\nand is\n{{field-3}}.",
+        "worked_solution": "Recall the following classifications of recurrence relations:\n\n- The order of a relation ${a}_{n}$ is the largest index difference between ${a}_{n}$ and the preceding terms in the relation.\n\n- A recurrence relation is *linear (with constant coefficients)* if it expresses ${a}_{n}$ as a sum of previous terms ${a}_{n-1},\u2026,{a}_{n-k}$ with constant coefficients, together with possibly a final term that depends only on $n:$\n\n$$\n{a}_{n}={s}_{1}{a}_{n-1}+{s}_{2}{a}_{n-2}+\u2026+{s}_{k}{a}_{n-k}+g(n)\n$$\n\nwhere ${s}_{1},{s}_{2},\u2026,{s}_{k}$ are constants and $g(n)$ is a function, often called a *forcing function*, that does not involve ${a}_{n}$ or its preceding terms.\n\n- A linear recurrence relation (with constant coefficients) is *homogeneous* if the forcing function is zero. Otherwise, it is *inhomogeneous.*\n\nLet's classify the relation ${a}_{n}={a}_{n-3}-{a}_{n-1}.$\n\n- The largest index difference between ${a}_{n}$ and the preceding terms ${a}_{n-1}$  and ${a}_{n-3}$ in the relation is $3.$ So, the relation has order $3.$\n\n- The previous terms ${a}_{n-1},$ and ${a}_{n-3}$ occur only in the first power and their coefficients are constants. So, the relation is linear.\n\n- The relation is linear, yet there is no forcing function (i.e., $g(n)=0$ for all $n$). So, the relation is homogeneous.\n\nTherefore, the recurrence relation ${a}_{n}$ has order\n$3,$\nis\n$\\text{linear},$\nand is\n$\\text{homogeneous}.$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          },
+          {
+            "key": "field-3"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-81083",
+        "problem": "Given that  ${a}_{n}={n}^{2}-5$ for $n\\ge 1,$ which of the following statements are true?\n\n- ${a}_{n+1}-{a}_{n}\\le 0$ for all $n\\ge 1$\n- ${a}_{n}$ is an increasing sequence\n- ${a}_{n}$ is a decreasing sequence",
+        "worked_solution": "Suppose the sequence ${a}_{n}$ is defined for $n\\ge 1.$ To determine whether ${a}_{n}$ is increasing or decreasing, we can use the following test:\n\n- If a sequence ${a}_{n}$ is *increasing,* then for all $n\\ge 1,$ we have\n\n$$\n{a}_{n+1}\\ge {a}_{n}\\,\u27f9\\,{a}_{n+1}-{a}_{n}\\ge 0.\n$$\n\n- If a sequence ${a}_{n}$ is *decreasing,* then for all $n\\ge 1,$ we have\n\n$$\n{a}_{n+1}\\le {a}_{n}\\,\u27f9\\,{a}_{n+1}-{a}_{n}\\le 0.\n$$\n\n- If neither of these conditions holds, the sequence is *neither increasing nor decreasing*.\n\nWith that in mind, let's analyze each statement.\n\n- Statement I is false. Computing the difference ${a}_{n+1}-{a}_{n},$ we get\n\n$$\n\\begin{aligned}{a}_{n+1}-{a}_{n} & =(n+1)^{2}-5-({n}^{2}-5) \\\\  & =(n+1)^{2}-5-{n}^{2}+5 \\\\  & ={n}^{2}+2n+1-{n}^{2} \\\\  & =2n+1\\end{aligned}\n$$\n\nwhich is *positive* for $n\\ge 1.$\n\nTo see this concretely, set ${b}_{n}=2n+1.$ Computing the first few terms of ${b}_{n}$ we get\n\n$$\n3,\\,5,\\,7,\\,9,\\,\u2026\\,.\n$$\n\n- Statement II is true, whereas statement III is false. Since ${a}_{n+1}-{a}_{n}\\ge 0$ for all $n\\ge 1,$ we can conclude that ${a}_{n}$ is an increasing sequence.\n\nTherefore, the correct answer is \"II only.\"",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "II only",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-336300",
+        "problem": "The gravitational force between two objects, of masses $(4.5\\times {10}^{6})\\,\\text{kg}$ and $(2.8\\times {10}^{6})\\,\\text{kg},$ has a magnitude of $(3.6\\times {10}^{-3})\\,\\text{N}.$\nAccording to Newton's law of universal gravitation, what is the distance between the centers of mass of the two objects? Write your answer in scientific notation, rounding to **two significant figures** where appropriate. Assume the Newtonian constant of gravitation is $G=(6.67\\times {10}^{-11})\\,{\\text{m}}^{3}/(\\text{kg}\\cdot {\\text{s}}^{2}).$\n\nThe distance between the two objects is\n$(${{field-1}}\n$\\times $\n{{field-2}}$)\\,\\text{m}.$",
+        "worked_solution": "Newton's law of universal gravitation states that the gravitational force attracting two objects is proportional to the product of the two masses and inversely proportional to the square of the distance between their centers of mass:\n\n$$\nF=G\\frac{{m}_{1}{m}_{2}}{{r}^{2}}\n$$\n\nwhere\n\n- $F$ is the gravitational force between the objects, measured in Newtons $(\\text{N}),$\n\n- $G=(6.67\\times {10}^{-11})\\,{\\text{m}}^{3}/(\\text{kg}\\cdot {\\text{s}}^{2})$ is the Newtonian constant of gravitation,\n\n- ${m}_{1}$ and ${m}_{2}$ are the masses of the objects, measured in $\\text{kg},$ and\n\n- $r$ is the distance between their centers of mass, measured in $\\text{m}.$\n\nFirst, let's rearrange the formula to make $r$ the subject:\n\n$$\n\\begin{aligned}F & =G\\frac{{m}_{1}{m}_{2}}{{r}^{2}} \\\\ {r}^{2} & =G\\frac{{m}_{1}{m}_{2}}{F} \\\\ r & =\\sqrt{G\\frac{{m}_{1}{m}_{2}}{F}}\\end{aligned}\n$$\n\nChoosing ${m}_{1}=(4.5\\times {10}^{6})\\,\\text{kg}$ and ${m}_{2}=(2.8\\times {10}^{6})\\,\\text{kg}$ and substituting in the other known values, we have\n\n$$\n\\begin{aligned}{r}^{2} & =(6.67\\times {10}^{-11})\\cdot \\frac{(4.5\\times {10}^{6})\\cdot (2.8\\times {10}^{6})}{3.6\\times {10}^{-3}} \\\\  & =\\frac{6.67\\cdot 4.5\\cdot 2.8}{3.6}\\times \\frac{{10}^{-11}\\cdot {10}^{6}\\cdot {10}^{6}}{{10}^{-3}} \\\\  & =23.345\\times {10}^{4}.\\end{aligned}\n$$\n\nFinally, taking the square root, we get\n\n$$\n\\begin{aligned}r & =\\sqrt{23.345\\times {10}^{4}} \\\\  & =\\sqrt{23.345}\\times \\sqrt{{10}^{4}} \\\\  & =(4.8316\u2026)\\times {10}^{2}.\\end{aligned}\n$$\n\nTherefore, rounded to two significant figures, the distance between the two objects is\n$(\\,4.8\\times {10}^{2}\\,)\\,\\text{m}.$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1"
+          },
+          {
+            "key": "field-2"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

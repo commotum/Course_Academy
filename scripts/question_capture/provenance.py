@@ -171,7 +171,8 @@ def answer_review_context(content,directory,review,sources):
         if not isinstance(index,int) or not 0<=index<len(field['choices']) or field['choices'][index]!=correct:
             # Captures can carry option feedback as well as type/value.
             if not isinstance(index,int) or not 0<=index<len(field['choices']) or any(field['choices'][index].get(k)!=v for k,v in correct.items()):
-                raise ValueError('Reviewed answer must identify its original observed option')
+                raise ValueError('Reviewed answer must identify its original observed option; '
+                                 'expected '+repr(field['choices'][index] if isinstance(index,int) and 0<=index<len(field['choices']) else 'valid option index')+'; received '+repr(correct))
         grade=record.get('actual_result') or record.get('after',{}).get('result')
         submitted=raw.get('submitted_option') or raw.get('observed_selected_option')
         observed=[i for i,c in enumerate(raw['choices']) if c.get('option')==submitted] if submitted else []
@@ -253,6 +254,42 @@ def save_answer_reviews(content,directory,reviews,session_id,result_path):
     atomic_json(path,{'reviews':[r for r in existing if (r['question'],r['field']) not in keys]+frozen})
     atomic_json(directory/'content.json',updated)
     return len(frozen)
+
+
+def mathematical_correction_records(root, ids):
+    """Load reviewed corrections backed by a committed, verified transaction.
+
+    Database.reconciliation also attests every value and field identity against
+    the immutable readback at the correction's basis before using these records.
+    Original MA captures remain separate evidence of what the site displayed.
+    """
+    records = []
+    for source in sorted((Path(root)/'mathematical-corrections').glob('*/review.json')):
+        try:
+            review = json.loads(source.read_text())
+            q = review['corrected_content']
+            if q['math_academy_id'] not in ids:
+                continue
+            tx, verification = source.parent/'transaction.edn', source.parent/'verification.json'
+            proof = json.loads(verification.read_text())
+            if (proof.get('committed') is not True or proof.get('mathematical_check_passed') is not True
+                    or not isinstance(proof.get('basis_after'), int)
+                    or proof.get('review_sha256') != hashlib.sha256(source.read_bytes()).hexdigest()
+                    or proof.get('transaction_sha256') != hashlib.sha256(tx.read_bytes()).hexdigest()):
+                continue
+            values = [(None, 'question/problem', q['problem']),
+                      (None, 'question/worked-solution', q['worked_solution'])]
+            for f in q['answer_fields']:
+                c = next(c for c in f['choices'] if c['value'] == f['correct_value'])
+                values.append((f['key'], 'answer-field/correct', [kw('answer.type/'+c['type']), c['value']]))
+            for field, attr, value in values:
+                records.append(dict(question=q['math_academy_id'], field=field, attribute=attr, value=value,
+                    category='mathematical_correction', file=str(source), file_sha256=proof['review_sha256'],
+                    transaction=str(tx), transaction_sha256=proof['transaction_sha256'],
+                    verification=str(verification), basis=proof['basis_after'], rationale=review['rationale']))
+        except (KeyError, ValueError, TypeError, OSError, StopIteration):
+            continue
+    return records
 
 
 def authoring_records(root, ids):
@@ -337,6 +374,7 @@ def authoring_records(root, ids):
                 for c in f['choices']:
                     if local and c['value'] != f['correct_value']:
                         add(q, key, 'answer/value', [kw('answer.type/'+c['type']), c['value']], 'local_authored', source, tx, verification)
+    records.extend(mathematical_correction_records(root, ids))
     return records
 
 
@@ -357,6 +395,14 @@ class Reconciler:
 
     def replace(self, mid, key, attr, old, new, categories):
         if value_hash(old) == value_hash(new):
+            return False
+        corrections = [r for r in self.evidence(self.authored, mid, key, attr, old)
+                       if r['category'] == 'mathematical_correction']
+        if corrections:
+            self.decisions.append(dict(question=mid, field=key, attribute=attr,
+                old_sha256=value_hash(old), new_sha256=value_hash(new), category='mathematical_correction',
+                authoring=corrections, basis=self.basis, action='retain',
+                reason='Retain the verified mathematical correction instead of reimporting the source error'))
             return False
         if kw(attr) in self.no_history:
             self.review(mid, key, attr, old, new, 'Installed db/noHistory would prevent retained attribute history')
@@ -395,15 +441,21 @@ class Reconciler:
         return any(d['category'] == 'review_required' for d in self.decisions)
 
     def field_action(self, mid, previous, incoming, **context):
-        """Version an unused field when owned components need replacement."""
+        """Version field ownership while retaining original fields and answers."""
         from core import compare_answers, matching_answer
         key = incoming['key']
         kind = previous[':answer-field/type'][':db/ident']
         new_kind = kw('answer-field.type/'+incoming['type'])
         c = next(c for c in incoming['choices'] if c['value'] == incoming['correct_value'])
         new_correct = [kw('answer.type/'+c['type']), c['value']]
-        old_correct = field_value(previous, 'answer-field/correct')
-        compared = compare_answers(old_correct[1], c['value'], c['type'], **context) if old_correct[0] == new_correct[0] else {'outcome':'different'}
+        old_correct = field_value(previous, 'answer-field/correct') if previous.get(':answer-field/correct') else None
+        if (kind == new_kind and previous[':answer-field/key'] == key and old_correct is not None
+                and value_hash(old_correct) != value_hash(new_correct)
+                and any(r['category'] == 'mathematical_correction' for r in
+                        self.evidence(self.authored, mid, key, 'answer-field/correct', old_correct))):
+            self.replace(mid, key, 'answer-field/correct', old_correct, new_correct, set())
+            return 'retain'
+        compared = compare_answers(old_correct[1], c['value'], c['type'], **context) if old_correct and old_correct[0] == new_correct[0] else {'outcome':'different'}
         equivalent = compared['outcome'] == 'equivalent'
         changed = previous[':answer-field/key'] != key
         allowed = True
@@ -413,14 +465,17 @@ class Reconciler:
         if kind != new_kind:
             changed = True
             allowed &= self.replace(mid, key, 'answer-field/type', kind, new_kind, {'ma_widget'})
-        if not equivalent:
+        if old_correct is not None and not equivalent:
             changed = True
             allowed &= self.replace(mid, key, 'answer-field/correct', old_correct, new_correct,
                                     {'ma_explicit_answer', 'ma_successful_grade','reviewed_ma_solution'})
             self.decisions[-1]['comparison'] = compared
+        # Historical fields can lack both choices and a correct answer. Let
+        # the normal merge path fill those gaps without inventing a conflict.
+        previous_choices = previous.get(':answer-field/choices', [])
         matched = {a[':db/id'] for choice in incoming['choices']
-                   if (a := matching_answer(choice, previous[':answer-field/choices'], **context)) is not None}
-        extras = [a for a in previous[':answer-field/choices'] if a[':db/id'] not in matched]
+                   if (a := matching_answer(choice, previous_choices, **context)) is not None}
+        extras = [a for a in previous_choices if a[':db/id'] not in matched]
         values = sorted((a['type'], a['value']) for a in incoming['choices'])
         complete = self.evidence(self.sources, mid, key, 'answer-field/choices', values)
         if extras and incoming['type'] != 'blank' and complete:
@@ -446,14 +501,15 @@ class Reconciler:
         if not complete and incoming['type'] != 'blank':
             allowed = False
             self.review(mid, key, 'answer-field/choices', None, values, 'Incomplete source choice set cannot replace a field')
-        if self.usage.get(mid) or mid not in self.usage:
+        if mid not in self.usage:
             allowed = False
             self.review(mid, key, 'question/answer-fields', previous[':db/id'], None,
-                        'Historical presentation/response exists or usage was not checked; preserve field and answer entities')
+                        'Usage was not checked; preserve field and answer entities')
         if not allowed:
             return 'retain'
         self.decisions.append(dict(question=mid, field=key, attribute='question/answer-fields',
             old_sha256=value_hash(previous), new_sha256=value_hash(incoming), category='versioned_field',
             previous_field_id=previous[':db/id'],source=complete, basis=self.basis,
-            reason='Detach unused field ownership; retain old field and answers', action='replace'))
+            historical_usage=self.usage.get(mid,[]),
+            reason='Attach source field; retain original field and answers for historical references', action='replace'))
         return 'version'

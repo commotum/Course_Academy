@@ -1,0 +1,63 @@
+{
+  "mode": "solve",
+  "problem": "Given the matrix \n$A=[\\begin{aligned}2 & -1 \\\\ 0 & 3\\end{aligned}]$, \nfind a diagonal matrix $D$ and an invertible matrix $P$ such that $D={P}^{-1}AP.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}2 & 0 \\\\ 0 & 3\\end{aligned}]$ and \n$P=[\\begin{aligned}1 & -1 \\\\ 0 & -1\\end{aligned}]$"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$A$ is not diagonalizable"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}2 & 0 \\\\ 0 & 3\\end{aligned}]$ and \n$P=[\\begin{aligned}2 & -2 \\\\ -1 & 1\\end{aligned}]$"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}2 & 0 \\\\ 0 & 3\\end{aligned}]$ and \n$P=[\\begin{aligned}1 & 1 \\\\ 0 & 1\\end{aligned}]$"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}2 & 0 \\\\ 0 & 3\\end{aligned}]$ and \n$P=[\\begin{aligned}1 & -1 \\\\ 0 & 1\\end{aligned}]$"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14040191,
+    "task_type": "lesson",
+    "topic_id": 1968,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-80480",
+        "problem": "Find matrices $P$ and $D$ such that $PD{P}^{-1}=E,$ where $D$ is a diagonal matrix and $E=[\\begin{aligned}7 & 9 \\\\ -6 & -8\\end{aligned}].$",
+        "worked_solution": "We apply the diagonalization algorithm. \n\n**Step 1.** We need to find the eigenvalues of the matrix $E$ using its characteristic equation $det(E-\\lambda I)=0:$\n\n$$\n\\begin{aligned}|\\begin{aligned}7-\\lambda  & 9 \\\\ -6 & -8-\\lambda \\end{aligned}| & =0 \\\\ (7-\\lambda )(-8-\\lambda )-9\\cdot (-6) & =0 \\\\ {\\lambda }^{2}+\\lambda -2 & =0 \\\\ (\\lambda -1)(\\lambda +2) & =0\\end{aligned}\n$$\n\nSo, the eigenvalues of $E$ are ${\\lambda }_{1}=1$ and ${\\lambda }_{2}=-2.$\n\n**Step 2.** Now, we need to find an eigenvector basis of $E.$\n\n- For ${\\lambda }_{1}=1,$ we have\n\n$$\n\\begin{aligned}E-I & =[\\begin{aligned}7 & 9 \\\\ -6 & -8\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}6 & 9 \\\\ -6 & -9\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}6 & 9 & 0 \\\\ -6 & -9 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c[\\begin{aligned}6 & 9 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-\\frac{3}{2}{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-\\frac{3}{2}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=-2,$ we get the eigenvector ${v}_{1}=[\\begin{aligned}3 \\\\ -2\\end{aligned}].$\n\n- For ${\\lambda }_{2}=-2,$ we have\n\n$$\n\\begin{aligned}E-(-2)I & =[\\begin{aligned}7 & 9 \\\\ -6 & -8\\end{aligned}]+2[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}9 & 9 \\\\ -6 & -6\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}9 & 9 & 0 \\\\ -6 & -6 & 0\\end{aligned}] & {R}_{2} & ={R}_{2}+(\\frac{2}{3}){R}_{1} \\\\  & \u223c[\\begin{aligned}9 & 9 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=1,$ we get the eigenvector ${v}_{2}=[\\begin{aligned}-1 \\\\ 1\\end{aligned}].$\n\n**Step 3.** We construct the diagonal matrix $D$ and the invertible matrix $P$ as follows:\n\n$$\nD=[\\begin{aligned}1 & 0 \\\\ 0 & -2\\end{aligned}],\\,P=[\\begin{aligned}3 & -1 \\\\ -2 & 1\\end{aligned}]\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & -2\\end{aligned}]$ and $P=[\\begin{aligned}3 & -1 \\\\ -2 & 1\\end{aligned}]$",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "mode": "solve",
+  "problem": "Consider the function $f(x)=3{x}^{2}.$ Which of the following statements are true?\n\n- ${\\int }_{0}^{\\infty }f(x)\\,\\text{d}x$ is convergent\n- ${\\int }_{-\\infty }^{0}f(x)\\,\\text{d}x$ is divergent\n- ${\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x$ is divergent",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "III only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "II and III only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "I, II, and III"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I and III only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I only"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14041037,
+    "task_type": "lesson",
+    "topic_id": 1382,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-81375",
+        "problem": "Consider the function $f(x)=2x{e}^{-{x}^{2}}.$ Which of the following statements are true?\n\n- ${\\int }_{0}^{\\infty }f(x)\\,\\text{d}x$ is convergent\n- ${\\int }_{-\\infty }^{0}f(x)\\,\\text{d}x$ is divergent\n- ${\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x$ is divergent",
+        "worked_solution": "Suppose we have an improper integral in which both the left and right endpoints are unbounded:\n\n$$\n{\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x\n$$\n\nIf the integrand $f(x)$ is continuous on $(-\\infty ,\\infty ),$ then we can break the integral up into two improper integrals, each with a single unbounded endpoint:\n\n$$\n{\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x={\\int }_{-\\infty }^{0}f(x)\\,\\text{d}x+{\\int }_{0}^{\\infty }f(x)\\,\\text{d}x\n$$\n\nThen, we can compute each of the two integrals separately and combine their results. \n\n**Watch out!** If either of the two integrals on the right-hand side is divergent, then the integral on the left-hand side is also divergent.\n\nFirst, we calculate the antiderivative using a substitution.  Let $u={x}^{2}$,  then $\\text{d}u=2x\\,\\text{d}x.$ Hence, the antiderivative is\n\n$$\n\\begin{aligned}\\int 2x{e}^{-{x}^{2}}\\,\\text{d}x & =\\int {e}^{-u}\\,\\text{d}u \\\\  & =-{e}^{-u}+C \\\\  & =-{e}^{-{x}^{2}}+C.\\end{aligned}\n$$\n\nNow, let's evaluate each integral in turn.\n\n- Statement I is true. Computing the required integral, we get\n\n$$\n\\begin{aligned}{\\int }_{0}^{\\infty }2x{e}^{-{x}^{2}}\\,\\text{d}x & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}2x{e}^{-{x}^{2}}\\,\\text{d}x \\\\  & ={lim}_{a\\to \\infty }({-{e}^{-{x}^{2}}|}_{0}^{a}) \\\\  & ={lim}_{a\\to \\infty }(-{e}^{-{a}^{2}}+{e}^{0}) \\\\  & =0+1 \\\\  & =1.\\end{aligned}\n$$\n\nSo the integral converges.\n\n- Statement II is false. Computing the required integral, we get\n\n$$\n\\begin{aligned}{\\int }_{-\\infty }^{0}2x{e}^{-{x}^{2}}\\,\\text{d}x & ={lim}_{a\\to -\\infty }{\\int }_{a}^{0}2x{e}^{-{x}^{2}}\\,\\text{d}x \\\\  & ={lim}_{a\\to -\\infty }({-{e}^{-{x}^{2}}|}_{a}^{0}) \\\\  & ={lim}_{a\\to -\\infty }(-{e}^{0}+{e}^{-{a}^{2}}) \\\\  & =-1+0 \\\\  & =-1.\\end{aligned}\n$$\n\nSo the integral converges.\n\n- Statement III is false. The integral in statement III can be expressed as\n\n$$\n{\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x={\\int }_{-\\infty }^{0}f(x)\\,\\text{d}x+{\\int }_{0}^{\\infty }f(x)\\,\\text{d}x=1-1=0.\n$$\n\nSo the integral converges.\n\nIn conclusion, only statement I is true.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "I only",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

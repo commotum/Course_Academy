@@ -1,0 +1,63 @@
+{
+  "mode": "verify",
+  "problem": "Evaluate ${\\int }_{1}^{e}4x({log}_{3}\u2061x)^{2}\\,\\text{d}x.$",
+  "worked_solution": "We need to use integration by parts. We'll work out the indefinite integral first, and then proceed to work out the definite integral.\n\nIn this case, we define\n\n$$\n\\begin{aligned}u=({log}_{3}\u2061x)^{2}\\, & \u27f9\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{2{log}_{3}\u2061x}{x\\operatorname{ln}\u20613} \\\\ \\frac{\\text{d}v}{\\text{d}x}=4x\\, & \u27f9\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int 4x\\,\\text{d}x=2{x}^{2}.\\end{aligned}\n$$\n\nThis gives\n\n$$\n\\begin{aligned}\\int 4x({log}_{3}\u2061x)^{2}\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={({log}_{3}\u2061x)}^{2}(2{x}^{2})-\\int (2{x}^{2})(\\frac{2{log}_{3}\u2061x}{x\\operatorname{ln}\u20613})\\,\\text{d}x \\\\  & =2{x}^{2}({log}_{3}\u2061x)^{2}-\\frac{4}{\\operatorname{ln}\u20613}\\int x{log}_{3}\u2061(x)\\,\\text{d}x.\\end{aligned}\n$$\n\nWe use integration by parts once again to evaluate $\\int x{log}_{3}\u2061(x)\\text{d}x.$ We take\n\n$$\n\\begin{aligned}u={log}_{3}\u2061(x)\\, & \u27f9\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}\u20613} \\\\ \\frac{\\text{d}v}{\\text{d}x}=x\\, & \u27f9\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int x\\,\\text{d}x=\\frac{{x}^{2}}{2}.\\end{aligned}\n$$\n\nIn this case, the formula for integration by parts gives\n\n$$\n\\begin{aligned}\\int x{log}_{3}\u2061x\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & =({log}_{3}\u2061x)(\\frac{{x}^{2}}{2})-\\int (\\frac{{x}^{2}}{2})(\\frac{1}{x\\operatorname{ln}\u20613})\\,\\text{d}x \\\\  & =\\frac{{x}^{2}{log}_{3}\u2061x}{2}-\\frac{1}{2\\operatorname{ln}\u20613}\\int x\\,\\text{d}x \\\\  & =\\frac{{x}^{2}{log}_{3}\u2061x}{2}-\\frac{{x}^{2}}{4\\operatorname{ln}\u20613}+D,\\end{aligned}\n$$\n\nwhere $D$ is a constant. \n\nSo, we get that the indefinite integral is \n\n$$\n\\begin{aligned}\\int 4x({log}_{3}\u2061x)^{2}\\,\\text{d}x & =2{x}^{2}({log}_{3}\u2061x)^{2}-\\frac{4}{\\operatorname{ln}\u20613}(\\frac{{x}^{2}{log}_{3}\u2061x}{2}-\\frac{{x}^{2}}{4\\operatorname{ln}\u20613}+D) \\\\  & =2{x}^{2}({log}_{3}\u2061x)^{2}-\\frac{2{x}^{2}{log}_{3}\u2061x}{\\operatorname{ln}\u20613}+\\frac{{x}^{2}}{{ln}^{2}\u20613}+C \\\\  & =\\frac{2{x}^{2}{ln}^{2}\u2061x}{{ln}^{2}\u20613}-\\frac{2{x}^{2}\\operatorname{ln}\u2061x}{{ln}^{2}\u20613}+\\frac{{x}^{2}}{{ln}^{2}\u20613}+C \\\\  & =\\frac{{x}^{2}}{{ln}^{2}\u20613}(2{ln}^{2}\u2061x-2\\operatorname{ln}\u2061x+1)+C,\\end{aligned}\n$$\n\nwhere $C=-\\frac{4D}{\\operatorname{ln}\u20613}.$ \n\nNote that in the above calculation we used the change of base formula ${log}_{3}\u2061x=\\frac{\\operatorname{ln}\u2061x}{\\operatorname{ln}\u20613}.$\n\nFinally then, we can work out the definite integral:\n\n$$\n\\begin{aligned}{\\int }_{1}^{e}4x({log}_{3}\u2061x)^{2}\\,\\text{d}x & ={[\\frac{{x}^{2}}{{ln}^{2}\u20613}(2{ln}^{2}\u2061x-2\\operatorname{ln}\u2061x+1)]}_{1}^{e} \\\\  & =\\frac{{e}^{2}}{{ln}^{2}\u20613}(2{ln}^{2}\u2061e-2\\operatorname{ln}\u2061e+1)-\\frac{{1}^{2}}{{ln}^{2}\u20613}(2{ln}^{2}\u20611-2\\operatorname{ln}\u20611+1) \\\\  & =\\frac{{e}^{2}}{{ln}^{2}\u20613}(2-2+1)-\\frac{1}{{ln}^{2}\u20613}(0-0+1) \\\\  & =\\frac{{e}^{2}-1}{{ln}^{2}\u20613}.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\frac{{e}^{2}+2}{{ln}^{2}\u20613}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "8e"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\frac{{e}^{2}-1}{{ln}^{2}\u20613}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "2{e}^{2}-1"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{1-2e}{{ln}^{2}\u20613}"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14039129,
+    "task_type": "lesson",
+    "topic_id": 416,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-114900",
+        "problem": "Evaluate ${\\int }_{1}^{e}4x({log}_{3}\u2061x)^{2}\\,\\text{d}x.$",
+        "worked_solution": "We need to use integration by parts. We'll work out the indefinite integral first, and then proceed to work out the definite integral.\n\nIn this case, we define\n\n$$\n\\begin{aligned}u=({log}_{3}\u2061x)^{2}\\, & \u27f9\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{2{log}_{3}\u2061x}{x\\operatorname{ln}\u20613} \\\\ \\frac{\\text{d}v}{\\text{d}x}=4x\\, & \u27f9\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int 4x\\,\\text{d}x=2{x}^{2}.\\end{aligned}\n$$\n\nThis gives\n\n$$\n\\begin{aligned}\\int 4x({log}_{3}\u2061x)^{2}\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={({log}_{3}\u2061x)}^{2}(2{x}^{2})-\\int (2{x}^{2})(\\frac{2{log}_{3}\u2061x}{x\\operatorname{ln}\u20613})\\,\\text{d}x \\\\  & =2{x}^{2}({log}_{3}\u2061x)^{2}-\\frac{4}{\\operatorname{ln}\u20613}\\int x{log}_{3}\u2061(x)\\,\\text{d}x.\\end{aligned}\n$$\n\nWe use integration by parts once again to evaluate $\\int x{log}_{3}\u2061(x)\\text{d}x.$ We take\n\n$$\n\\begin{aligned}u={log}_{3}\u2061(x)\\, & \u27f9\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}\u20613} \\\\ \\frac{\\text{d}v}{\\text{d}x}=x\\, & \u27f9\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int x\\,\\text{d}x=\\frac{{x}^{2}}{2}.\\end{aligned}\n$$\n\nIn this case, the formula for integration by parts gives\n\n$$\n\\begin{aligned}\\int x{log}_{3}\u2061x\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & =({log}_{3}\u2061x)(\\frac{{x}^{2}}{2})-\\int (\\frac{{x}^{2}}{2})(\\frac{1}{x\\operatorname{ln}\u20613})\\,\\text{d}x \\\\  & =\\frac{{x}^{2}{log}_{3}\u2061x}{2}-\\frac{1}{2\\operatorname{ln}\u20613}\\int x\\,\\text{d}x \\\\  & =\\frac{{x}^{2}{log}_{3}\u2061x}{2}-\\frac{{x}^{2}}{4\\operatorname{ln}\u20613}+D,\\end{aligned}\n$$\n\nwhere $D$ is a constant. \n\nSo, we get that the indefinite integral is \n\n$$\n\\begin{aligned}\\int 4x({log}_{3}\u2061x)^{2}\\,\\text{d}x & =2{x}^{2}({log}_{3}\u2061x)^{2}-\\frac{4}{\\operatorname{ln}\u20613}(\\frac{{x}^{2}{log}_{3}\u2061x}{2}-\\frac{{x}^{2}}{4\\operatorname{ln}\u20613}+D) \\\\  & =2{x}^{2}({log}_{3}\u2061x)^{2}-\\frac{2{x}^{2}{log}_{3}\u2061x}{\\operatorname{ln}\u20613}+\\frac{{x}^{2}}{{ln}^{2}\u20613}+C \\\\  & =\\frac{2{x}^{2}{ln}^{2}\u2061x}{{ln}^{2}\u20613}-\\frac{2{x}^{2}\\operatorname{ln}\u2061x}{{ln}^{2}\u20613}+\\frac{{x}^{2}}{{ln}^{2}\u20613}+C \\\\  & =\\frac{{x}^{2}}{{ln}^{2}\u20613}(2{ln}^{2}\u2061x-2\\operatorname{ln}\u2061x+1)+C,\\end{aligned}\n$$\n\nwhere $C=-\\frac{4D}{\\operatorname{ln}\u20613}.$ \n\nNote that in the above calculation we used the change of base formula ${log}_{3}\u2061x=\\frac{\\operatorname{ln}\u2061x}{\\operatorname{ln}\u20613}.$\n\nFinally then, we can work out the definite integral:\n\n$$\n\\begin{aligned}{\\int }_{1}^{e}4x({log}_{3}\u2061x)^{2}\\,\\text{d}x & ={[\\frac{{x}^{2}}{{ln}^{2}\u20613}(2{ln}^{2}\u2061x-2\\operatorname{ln}\u2061x+1)]}_{1}^{e} \\\\  & =\\frac{{e}^{2}}{{ln}^{2}\u20613}(2{ln}^{2}\u2061e-2\\operatorname{ln}\u2061e+1)-\\frac{{1}^{2}}{{ln}^{2}\u20613}(2{ln}^{2}\u20611-2\\operatorname{ln}\u20611+1) \\\\  & =\\frac{{e}^{2}}{{ln}^{2}\u20613}(2-2+1)-\\frac{1}{{ln}^{2}\u20613}(0-0+1) \\\\  & =\\frac{{e}^{2}-1}{{ln}^{2}\u20613}.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "2{e}^{2}-1",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

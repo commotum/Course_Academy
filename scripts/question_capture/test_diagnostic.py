@@ -58,6 +58,14 @@ class DiagnosticPolicyTests(unittest.TestCase):
                                         'deferred_error':{'phase':'activity'}})
             self.assertEqual(unfinished_run(args),root.resolve())
 
+    def test_completed_diagnostic_with_interrupted_history_recovers_without_retake(self):
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--output',work+'/captures','--state-dir',work+'/state'])
+            root=args.output/'1'
+            atomic_json(root/'state.json',{'task_id':1,'task_type':'diagnostic','diagnostic_started':True,
+                                        'activity_complete':True,'deferred_error':{'phase':'history'}})
+            self.assertEqual(unfinished_run(args),root.resolve())
+
     def test_diagnostic_selection_and_completion_are_distinct_from_fixed_quizzes(self):
         exam={'task_id':1,'task_type':'diagnostic','capture_supported':True}
         self.assertEqual(choose_activity([exam],{})['selection_reason'],'placement_diagnostic')
@@ -257,6 +265,32 @@ class DiagnosticReplayTests(unittest.TestCase):
         take_diagnostic(reader,state,self.root)
         self.assertEqual(self.submissions.count((0,'answer')),1)
         self.assertEqual(len(self.submissions),4)
+
+    def test_no_credit_history_preserves_label_and_recovers_solution_without_retake(self):
+        replay=copy.deepcopy(EXAM)
+        question=next(q for q in replay['questions'] if q['history']['result']=='Incorrect')
+        question['history']['raw_html']=question['history']['raw_html'].replace('Incorrect','No Credit')
+        with patch(__name__+'.EXAM',replay):
+            reader=self.reader();state=self.state();self.start(reader,state)
+            submissions=list(self.submissions)
+            content=reader.history(state,self.root,self.load_topic)
+            self.assertEqual(self.submissions,submissions)
+            mid=question['history']['id'].replace('question-','q-')
+            self.assertEqual(state['questions'][mid]['actual_result'],'No Credit')
+            self.assertTrue(state['questions'][mid]['verification']['answers'])
+            metadata=json.loads((self.root/'activity-metadata.json').read_text())
+            saved=next(q for q in metadata if q['id']==question['history']['id'])
+            self.assertEqual(saved['source_result'],'No Credit')
+            self.assertEqual(saved['result'],'No Credit')
+            self.assertTrue(eligible(self.root,state,content))
+
+    def test_diagnostic_pacing_credits_time_spent_capturing_and_solving(self):
+        reader=self.reader();state=self.state()
+        with patch.object(reader.pacer,'wait',wraps=reader.pacer.wait) as wait:
+            self.start(reader,state)
+        answers=[call for call in wait.call_args_list if call.args[0]=='answer']
+        self.assertEqual(len(answers),len(EXAM['questions']))
+        self.assertTrue(all(call.kwargs['elapsed']>0 for call in answers))
 
     def test_interrupted_next_observes_advanced_question_without_replaying_next(self):
         import diagnostic

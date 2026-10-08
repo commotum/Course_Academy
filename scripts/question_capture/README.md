@@ -33,21 +33,21 @@ existing bounded stale-basis retry handling. Verified captures in all four outpu
 roots can supply provenance evidence. Only installation of tested shared source
 repairs takes a short shared lock; solving and ordinary imports remain concurrent.
 
-Foundations (`commotum`, course 136) and Multivariable Calculus (`multiwilliam`,
-course 54) have saved and verified profiles. Workers run headless from those
+Foundations (`commotum`, course 136), Linear Algebra (`linearharrison`, course 55),
+Multivariable Calculus (`multiwilliam`, course 54) and Differential Equations
+(`differentwalker`, course 61) have saved and verified profiles.
+Workers run headless from those
 profiles, independently of the account currently signed into everyday Chrome.
 Cookies are copied only when explicitly saving a profile, rather than at every
-worker startup. The Foundations snapshot scopes remain 113, 111 and 136.
-Multivariable Calculus snapshots the following exact pages after each activity:
-
-- `https://mathacademy.com/courses/106/progress?unitId=679` (Calculus II, unit 679 expanded)
-- `https://mathacademy.com/courses/55/progress` (Linear Algebra)
-- `https://mathacademy.com/courses/54/progress` (Multivariable Calculus)
-
-The unit parameter controls the expanded unit; all topic rows present in the
-page's course grid are saved, including collapsed units. Linear Algebra and
-Differential Equations default to their enrolled course until their prerequisite
-progress pages are configured. Every account uses its own diagnostic topic graph.
+worker startup. All workers discover progress scopes from their account's Learn
+sidebar after activity completion, then visit each course once. Unit links are
+deduplicated into `/courses/<id>/progress`; these pages include every unit's rows,
+including collapsed units. No account-specific progress list is needed.
+Verified scopes are Foundations 136/113/111, Linear Algebra 55/105/106,
+Multivariable Calculus 54/106/55, and Differential Equations 61/55/54.
+Previously saved completion snapshots remain unchanged. Explicit
+`--progress-course-id` or `--progress-url` arguments still select a fixed scope.
+Every account uses its own diagnostic topic graph.
 
 To add an account, sign into its enrolled course in Chrome, then run the matching
 command. These examples use Chrome's `Default` profile; replace it with the actual
@@ -65,9 +65,21 @@ if that account later needs a fresh login. Profile data stays in ignored local
 directories; no cookie values are printed.
 
 The Foundations window has a status pane refreshed every five seconds, showing
-all accounts, running/readiness state, latest saved activity, graded question count,
-daily earned/base XP, course percent and a progress bar, elapsed run time and recent
-log output. Narrow terminals abbreviate activity text.
+four course cards with running/readiness state, daily earned/base XP, counts of
+completed lessons/reviews/quizzes/multisteps/diagnostics, daily unique database
+questions added and existing questions captured in verified imports, course
+percent and a progress bar, and the last 20
+completed activities' earned-XP bars. Bars run oldest to newest and use an
+XP scale per course, with the range shown; downward arrows identify XP penalties. Database counts use committed
+receipts and are cached locally; dashboard refreshes make no database queries.
+Finished captures show COMPLETE after import, HISTORY PENDING when explanations
+still need recovery, or IMPORT PENDING when only the database import remains.
+A recovered live worker shows RUNNING without retaining
+its previous deferred label. Saved graded captures reconcile interrupted checkpoint updates
+when the server has already advanced.
+History preserves No Credit separately from Incorrect and recovers its correct
+answer from the revealed solution. Diagnostic pacing credits capture and solver
+time toward the answer delay.
 The tmux status bar also shows running, ready and unconfigured account counts.
 Use **Ctrl+b then n/p** to switch course windows and **Ctrl+b then d** to detach;
 detaching leaves workers running. Additional commands:
@@ -80,6 +92,21 @@ detaching leaves workers running. Additional commands:
 ./scripts/ma-workers stop multivariable              # Stop one account
 ./scripts/ma-workers start multivariable             # Start/resume one account
 ./scripts/ma-workers attach                          # Attach without starting workers
+```
+
+Linear Algebra's 42-question placement diagnostic has completed and its content
+import is verified. Differential Equations' 63-question diagnostic and import are
+also complete and verified.
+Their runners use their own `Topics.csv` files (181 and 159 topics respectively)
+as the in-course skip lists, with the same correct-prerequisite / Don't Know policy
+and complete capture as Multivariable Calculus. Once a diagnostic reveals its
+detailed sidebar, progress discovery includes all its prerequisite courses.
+To run only a
+diagnostic and stop before selecting a lesson:
+
+```sh
+./scripts/ma-workers start linear --limit 1 --attach
+./scripts/ma-workers start differential --limit 1 --attach
 ```
 
 Daily XP sums the earned/base values on completed task rows marked **Today**.
@@ -148,6 +175,38 @@ the affected content at that receipt's basis and check that reimport is a no-op.
 They do not scan the entire database before and after each activity.
 `verification_method` records `committed_transaction_and_content`; older full-scan
 verification receipts remain valid. Schema predicate symbols remain EDN data.
+
+Reviewed mathematical source errors are corrected in the study database while
+their original captures remain unchanged. Corrections under
+`reference/mathacademy/mathematical-corrections/<question-id>/` include the original
+and corrected content, mathematical rationale, transaction and verified readback.
+Their problem, worked solution and correct-answer values are attested at the
+committed basis before reconciliation uses them. Later captures retain those exact
+corrected values instead of restoring the source mistake or deferring the import.
+Answer fields are replaced by new component identities; original fields, answers
+and question versions remain available for historical use.
+
+When the EDB CLI hides a remote conflict behind `transport/remote-error`, the
+importer replays the exact saved request through a temporary local relay to read
+only the original rejection code. Confirmed `postgres/stale-basis` rejections
+archive the rejected plan and use the existing bounded replan path. Other errors
+and unknown outcomes retain the original intent. The EDB development binary is
+not rebuilt or replaced.
+
+Identical displayed choices retain their positions in saved captures and share
+one answer entity in EDB. An existing field without a correct answer can be
+completed from the captured answer rather than failing reconciliation.
+For broken history explanation-image aliases, the reader can reuse the original
+bytes from that same question's graded live capture when the explanation text,
+image order and saved asset hash match. Recovery records its bindings and
+archives earlier history artifacts. Review history also accepts the same
+topic-specific title aliases as lesson history.
+If a solver stop leaves a completed event stream but no answer file, recovery
+uses the streamed structured final answer after validation in the same activity
+session. A completed turn without a usable answer repeats only its read-only
+solver prompt. Empty pre-start checkpoints can be closed as superseded when a
+later capture of that topic has a verified import; their original diagnostics
+remain archived and are excluded from future capture repairs.
 
 Each sweep attempts at most **20 captures**, at most once per capture. The durable
 `.local/question_capture/saved-import-attempts.json` ledger prevents unchanged
@@ -672,6 +731,16 @@ are parsed as argument lists, never executed through a shell. A custom command
 manages its own session persistence; its activity context contains all available
 examples and grading feedback. Uncertain results
 or invalid choices stop before submission.
+
+Proof questions can reveal new fields after an intermediate Submit. Each stage
+keeps its visible prompt, choices, entered values, and source field grades. The
+player fills only unanswered fields, retains one C/W decision for the question,
+and uses the same activity solver session for later stages. A restored submission
+needs matching accepted or rejected source selections before it can continue.
+One intended wrong choice is followed by correct retries; later stages introduce
+no additional intentional wrong choices. The terminal source grade, including
+Partial Credit, remains distinct, with canonical before/after captures and the
+complete revealed proof. Repeated unchanged rejections defer the question.
 
 The extractor supports observed radio circles, native blanks/selects, MathQuill
 answer wrappers, and the original `.selectList` widget.

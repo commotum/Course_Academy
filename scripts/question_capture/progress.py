@@ -25,6 +25,22 @@ EXTRACT_PROGRESS = '''() => ({
     circle_style:r.querySelector('.topicCircle')?.getAttribute('style')
   }))
 })'''
+EXTRACT_SIDEBAR = '''() => ({
+  enrolled:document.querySelector('a#courseNameLink, a.courseNameLink')?.getAttribute('href'),
+  links:[...document.querySelectorAll('#sequenceUnits a.courseUnitLink[href]')].map(a=>a.getAttribute('href')),
+  html:document.querySelector('#sequenceUnits')?.outerHTML
+})'''
+
+
+def sidebar_courses(observed):
+    """Deduplicate the sidebar's unit links into complete course pages."""
+    urls=[]
+    for href in [observed.get('enrolled'),*observed.get('links',[])]:
+        if not href:continue
+        scope=target('https://mathacademy.com'+href if href.startswith('/') else href)
+        url='https://mathacademy.com/courses/'+str(scope['course_id'])+'/progress'
+        if url not in urls:urls.append(url)
+    return urls
 
 
 def now():
@@ -89,7 +105,7 @@ def changes(previous, current):
             if before.get(key, {}).get('color') != after.get(key, {}).get('color')]
 
 
-def capture(reader, directory, event, task_id, course_ids=COURSES, previous=None, recovered=False):
+def capture(reader, directory, event, task_id, course_ids=COURSES, previous=None, recovered=False, *, start_url=None):
     directory = Path(directory)
     snapshot = {'event': event, 'task_id': task_id, 'started_at': now(),
                 'recovered_after_interruption': recovered,
@@ -97,11 +113,23 @@ def capture(reader, directory, event, task_id, course_ids=COURSES, previous=None
                 'mapping': 'White=0; blue bands=1-6; darkest=6 is a local initialization convention',
                 'limitations': 'Not exact continuous repetitions, memory, intervals, ability, or complete internal MA state. Courses are read sequentially.',
                 'courses': []}
+    loaded=None
+    if course_ids is None:
+        # The sequence sidebar is on Learn; individual progress pages omit it.
+        discovery_url='https://mathacademy.com/learn'
+        reader.navigate(discovery_url, force=True)
+        reader.page.locator('a#courseNameLink, a.courseNameLink').first.wait_for(state='attached')
+        observed=reader.page.evaluate(EXTRACT_SIDEBAR)
+        course_ids=sidebar_courses(observed) or [target(start_url)['source_url']]
+        snapshot['scope_source']='account sidebar'
+        snapshot['sidebar_html']=observed.get('html')
+        snapshot['discovery_start_url']=discovery_url
     for value in course_ids:
         scope=target(value)
         course_id=scope['course_id'];url=scope['source_url']
         started = now()
-        reader.navigate(url, force=True)
+        if url!=loaded:reader.navigate(url, force=True)
+        loaded=None
         reader.page.locator('.moduleTopics .topicLink').first.wait_for(state='attached')
         reader.page.wait_for_timeout(reader.args.settle_ms)
         reader.check()

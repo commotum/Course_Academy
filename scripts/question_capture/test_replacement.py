@@ -66,6 +66,66 @@ class ReplacementTests(unittest.TestCase):
         f['choices'] = [{'type':'math', 'value':v} for v in values]
         self.evidence('answer-field/choices', sorted(('math',v) for v in values), 'ma_complete_choices', 'selection')
 
+    def test_duplicate_visible_choices_keep_capture_but_write_one_answer(self):
+        self.authentic_choices(['120', '60', '60'])
+        original = copy.deepcopy(self.q)
+        tx = self.plan()
+        created = [m for m in tx if isinstance(m, dict) and ':answer/value' in m]
+        self.assertEqual([m[':answer/value'] for m in created], ['120', '60'])
+        self.assertEqual(self.q, original)
+        field = next(m for m in tx if isinstance(m, dict) and ':answer-field/choices' in m)
+        self.assertEqual(len(field[':answer-field/choices']), 2)
+
+    def test_missing_stored_correct_answer_is_filled(self):
+        self.field.pop(':answer-field/correct')
+        tx = self.plan()
+        field = next(m for m in tx if isinstance(m, dict) and ':answer-field/correct' in m)
+        self.assertEqual(field[':db/id'], 10)
+        self.assertEqual(field[':answer-field/correct'], 20)
+        self.assertFalse(self.reconciler.needs_review)
+
+    def test_missing_historical_choices_and_correct_are_filled(self):
+        for kind in ('blank', 'radio'):
+            with self.subTest(kind=kind):
+                self.field[':answer-field/type'][':db/ident'] = kw('answer-field.type/'+kind)
+                self.field.pop(':answer-field/choices', None)
+                self.field.pop(':answer-field/correct', None)
+                incoming = self.q['answer_fields'][0]
+                incoming.update(type=kind, choices=[{'type':'math', 'value':'120'}])
+                tx = self.plan()
+                created = [m for m in tx if isinstance(m, dict) and ':answer/value' in m]
+                self.assertEqual([m[':answer/value'] for m in created], ['120'])
+                field = next(m for m in tx if isinstance(m, dict) and ':answer-field/correct' in m)
+                self.assertEqual(field[':db/id'], 10)
+                self.assertEqual(field[':answer-field/correct'], created[0][':db/id'])
+                self.assertEqual(field[':answer-field/choices'], [created[0][':db/id']])
+                self.assertFalse(any(isinstance(m, list) and m[0] == kw('db/retract') for m in tx))
+                self.assertFalse(self.reconciler.needs_review)
+
+    def test_missing_choices_do_not_authorize_correct_answer_replacement(self):
+        self.field.pop(':answer-field/choices')
+        incoming = self.q['answer_fields'][0]
+        incoming.update(type='blank', correct_value='121', choices=[{'type':'math', 'value':'121'}])
+        self.field[':answer-field/type'][':db/ident'] = kw('answer-field.type/blank')
+        self.assertEqual(self.plan(), [])
+        self.assertTrue(self.reconciler.needs_review)
+        self.assertTrue(any(d['attribute'] == 'answer-field/correct' for d in self.reconciler.decisions))
+
+    def test_missing_choices_do_not_authorize_field_type_replacement(self):
+        self.field.pop(':answer-field/choices')
+        self.field.pop(':answer-field/correct')
+        self.q['answer_fields'][0]['type'] = 'blank'
+        self.assertEqual(self.plan(), [])
+        self.assertTrue(self.reconciler.needs_review)
+        self.assertTrue(any(d['attribute'] == 'answer-field/type' for d in self.reconciler.decisions))
+
+    def test_missing_correct_with_new_source_choices_versions_field(self):
+        self.field.pop(':answer-field/correct')
+        self.authentic_choices(['120', '60'])
+        tx = self.plan()
+        self.assertIn([kw('db/retract'), 1, kw('question/answer-fields'), 10], tx)
+        self.assertFalse(self.reconciler.needs_review)
+
     def test_documented_authored_solution_and_estimate_replaced_independently(self):
         self.q.update(worked_solution='By the definition, $5!=120$.', difficulty='hard')
         self.evidence('question/worked-solution', self.q['worked_solution'])
@@ -146,14 +206,18 @@ class ReplacementTests(unittest.TestCase):
         self.assertEqual(self.plan(),[])
         self.assertTrue(any('Contradiction' in d['reason'] for d in self.reconciler.decisions))
 
-    def test_historically_referenced_fields_and_answers_are_deferred(self):
+    def test_historically_referenced_fields_and_answers_survive_field_versioning(self):
         self.authentic_choices(['120','60'])
         for a in self.answers[1:]:
             self.evidence('answer/value', [kw('answer.type/math'),a[':answer/value']], 'local_authored','selection',True)
         for usage in ([{'kind':'presentations','entity':30}], [{'kind':'responses','entity':31}]):
             self.reconciler.usage[self.mid] = usage
-            self.assertEqual(self.plan(), [])
-            self.assertTrue(any('Historical' in d['reason'] for d in self.reconciler.decisions))
+            tx=self.plan()
+            self.assertIn([kw('db/retract'),1,kw('question/answer-fields'),10],tx)
+            self.assertFalse(any(isinstance(d,list) and d[0]==kw('db/retractEntity') for d in tx))
+            self.assertFalse(any(isinstance(d,dict) and d.get(':db/id') in (10,20,21,22,30,31) for d in tx))
+            self.assertFalse(self.reconciler.needs_review)
+            self.assertTrue(any(d.get('historical_usage')==usage for d in self.reconciler.decisions))
 
     def test_incomplete_choices_only_merge_and_semantic_option_shuffling_is_noop(self):
         self.q['answer_fields'][0]['choices'] = [{'type':'math','value':'120'}]
@@ -238,15 +302,32 @@ class ReplacementTests(unittest.TestCase):
         repair.assert_called_once()
 
     def test_legacy_single_radio_key_versions_instead_of_mutating_old_key(self):
-        self.field[':answer-field/key']='answer'
+        for key in ('answer','y'):
+            with self.subTest(key=key):
+                self.setUp_radio_rename(key)
+
+    def setUp_radio_rename(self, key):
+        self.field[':answer-field/key']=key
         self.authentic_choices(['120','30','60'])
         self.evidence('answer-field/type',kw('answer-field.type/radio'),'ma_widget','selection')
         tx=self.plan()
         self.assertIn([kw('db/retract'),1,kw('question/answer-fields'),10],tx)
-        self.assertEqual(self.field[':answer-field/key'],'answer')
+        self.assertEqual(self.field[':answer-field/key'],key)
         self.assertFalse(self.reconciler.needs_review)
         guards=Database(SimpleNamespace()).replacement_guards(self.reconciler,{self.mid:self.old})
         self.assertIn([1,kw('question/answer-fields'),10],guards)
+
+    def test_radio_rename_still_requires_observed_widget_and_complete_choices(self):
+        self.field[':answer-field/key']='y'
+        self.assertEqual(self.plan(),[])
+        self.assertTrue(self.reconciler.needs_review)
+        self.assertEqual(self.field[':answer-field/key'],'y')
+
+    def test_radio_rename_does_not_collapse_multiple_existing_fields(self):
+        self.field[':answer-field/key']='y'
+        self.old[':question/answer-fields'].append({**self.field, ':answer-field/key':'x', ':db/id':11})
+        with self.assertRaisesRegex(ValueError,'omitted existing fields'):
+            self.plan()
 
     def test_saved_real_capture_grade_and_complete_dom_not_model_labels(self):
         capture = EVIDENCE/'capture-13934288'

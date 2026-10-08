@@ -55,15 +55,15 @@ class FleetTests(unittest.TestCase):
         self.assertEqual(args.profile,self.worker['profile'])
         self.assertEqual(args.output,self.worker['output'])
         self.assertEqual(args.state_dir,self.worker['state_dir'])
-        self.assertEqual(args.progress_course_ids,[106,55,54])
-        self.assertEqual(args.progress_urls,self.worker['progress_urls'])
+        self.assertEqual(args.progress_mode,'sidebar')
+        self.assertIsNone(args.progress_urls)
         self.assertEqual(args.diagnostic_course_id,54)
         self.assertEqual(set(args.capture_root),{w['output'] for w in self.data['workers']})
         self.assertIsNone(args.browser_spec)
         self.assertTrue(args.headless and args.dry_run)
         self.assertEqual(args.limit,2)
         args=arguments(fleet.worker_command(self.data,self.data['workers'][0])[3:])
-        self.assertEqual(args.progress_course_ids,[113,111,136])
+        self.assertEqual(args.progress_mode,'sidebar')
 
     def test_account_locks_are_independent(self):
         with fleet.file_lock(self.worker['state_dir']/'capture.lock'):
@@ -155,6 +155,27 @@ class FleetTests(unittest.TestCase):
             row=fleet.worker_status(self.worker)
         self.assertEqual(row['daily_xp'],{})
         self.assertEqual(row['percent_complete'],70)
+
+    def test_finished_diagnostic_distinguishes_pending_import_from_completion(self):
+        self.configure()
+        path=self.worker['output']/'123/state.json'
+        state={'task_id':123,'task_type':'diagnostic','activity_complete':True,'history_complete':True,
+               'questions':{'1':{'actual_result':'Incorrect','finalized':True}},
+               'deferred_error':{'phase':'import','message':'Field identity mismatch'}}
+        atomic_json(path,state)
+        self.assertEqual(fleet.worker_status(self.worker)['status'],'IMPORT PENDING')
+        self.assertEqual(fleet.worker_status(self.worker)['recent'],'Field identity mismatch')
+        with patch('fleet.capture_running',return_value=True):
+            row=fleet.worker_status(self.worker)
+            self.assertEqual(row['status'],'RUNNING')
+            self.assertNotIn('deferred',row['activity'])
+        state.pop('deferred_error');state['import_complete']=True
+        atomic_json(path,state)
+        self.assertEqual(fleet.worker_status(self.worker)['status'],'COMPLETE')
+        state.pop('history_complete');state.pop('import_complete')
+        state['deferred_error']={'phase':'history','message':'Unrecognized source grade'}
+        atomic_json(path,state)
+        self.assertEqual(fleet.worker_status(self.worker)['status'],'HISTORY PENDING')
 
     def test_shared_repair_install_waits_for_current_install(self):
         import coordination

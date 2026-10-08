@@ -90,6 +90,7 @@ def arguments(argv=None):
         args.progress_course_ids=[s['course_id'] for s in scopes]
     if args.progress_course_ids is None:
         args.progress_course_ids = [113, 111, 136]
+    args.progress_mode='fixed' if args.progress_course_ids_explicit else 'sidebar'
     if any(c < 1 for c in args.progress_course_ids) or len(set(args.progress_course_ids)) != len(args.progress_course_ids):
         parser.error('Progress course IDs must be positive and unique')
     if args.diagnostic_course_id is not None and args.diagnostic_course_id < 1:
@@ -161,6 +162,8 @@ def unfinished_run(args):
     assessments = []
     for source in sorted(args.output.glob('*/state.json')):
         state = json.loads(source.read_text())
+        if superseded_before_start(state):
+            continue
         directory = source.parent.resolve()
         verification = directory/'edb-import/verification.json'
         receipt = json.loads(verification.read_text()) if verification.exists() else {}
@@ -173,7 +176,8 @@ def unfinished_run(args):
             finished = finished or state.get('preview_complete')
         if (not finished and state.get('task_type') in ('assessment','diagnostic') and
                 (state.get('assessment_started') or state.get('assessment_question_count') or
-                 state.get('diagnostic_started') or state.get('diagnostic_start_intent')) and not state.get('activity_complete')):
+                 state.get('diagnostic_started') or state.get('diagnostic_start_intent')) and
+                (not state.get('activity_complete') or not state.get('history_complete'))):
             if queued_resume(args,[{'task_id':state['task_id']}],set()):
                 assessments.append(directory)
         if not finished and not state.get('deferred_error'):
@@ -181,6 +185,13 @@ def unfinished_run(args):
     if assessments:
         return max(assessments,key=lambda p:(p/'state.json').stat().st_mtime)
     return max(candidates,key=lambda p:(p/'state.json').stat().st_mtime) if candidates else None
+
+
+def superseded_before_start(state):
+    recovery = state.get('source_recovery', {})
+    return (recovery.get('resolution') == 'verified_superseded_before_start' and
+            recovery.get('superseded_by_captured_task') and not state.get('questions') and
+            not state.get('examples'))
 
 
 def queued_resume(args, queue, resumed):
@@ -197,6 +208,8 @@ def queued_resume(args, queue, resumed):
         if not source.is_file():
             continue
         state = json.loads(source.read_text())
+        if superseded_before_start(state):
+            continue
         if (state.get('activity_complete') and state.get('history_complete') or
                 state.get('import_complete')):
             continue
@@ -566,6 +579,7 @@ def run(args):
                                  'previous_activity_snapshot':previous_activity_snapshot(args)}
                         if state['task_type']!='diagnostic':
                             state['progress_course_ids']=args.progress_course_ids
+                            state['progress_mode']=args.progress_mode
                             if args.progress_urls:state['progress_urls']=args.progress_urls
                         if state['task_type'] == 'assessment':
                             state.update({key:activity.get(key) for key in

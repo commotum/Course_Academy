@@ -99,6 +99,31 @@ class BasisRecoveryTests(unittest.TestCase):
         self.assertEqual(self.submissions[1][0]['basis'], 101)
         self.db.basis.assert_called_once()
 
+    def test_remote_stale_rejection_replans_after_exact_replay(self):
+        original = self.frozen_intent()
+        self.failures = [subprocess.CalledProcessError(1, ['edb', 'transact'],
+            stderr='ERROR category=Conflict code=transport/remote-error\n')]
+        def reject(command, **kwargs):
+            self.current_basis = 101
+            self.assertEqual(command[command.index('--request-key')+1], original['request_key'])
+            raise subprocess.CalledProcessError(1, command,
+                stderr='ERROR category=Conflict code=transport/remote-error\nremote_code=postgres/stale-basis\n')
+        with patch('edb_transport.replay', side_effect=reject):
+            self.assertEqual(self.db.import_content(self.content, self.directory), {'committed':True})
+        self.assertEqual([s[0]['basis'] for s in self.submissions], [100, 101])
+
+    def test_unknown_remote_conflict_retains_original_intent(self):
+        self.frozen_intent()
+        before = (self.directory/'commit-intent.json').read_bytes()
+        error = subprocess.CalledProcessError(1, ['edb', 'transact'],
+            stderr='ERROR category=Conflict code=transport/remote-error\n')
+        self.failures = [error]
+        with patch('edb_transport.replay', side_effect=error):
+            with self.assertRaises(subprocess.CalledProcessError):
+                self.db.import_content(self.content, self.directory)
+        self.assertEqual((self.directory/'commit-intent.json').read_bytes(), before)
+        self.assertFalse((self.directory/'rejected-commits').exists())
+
     def test_unknown_outcome_retries_same_intent_without_replanning(self):
         self.frozen_intent()
         self.failures = [subprocess.TimeoutExpired(['edb', 'transact'], 210)]

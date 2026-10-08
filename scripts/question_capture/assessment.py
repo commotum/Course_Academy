@@ -351,6 +351,8 @@ def assessment_history(reader, state, directory, load_topic):
       question_number:q.querySelector('.questionNumber')?.textContent.trim(),
       result:q.querySelector('.answerResult')?.textContent.trim(),raw_html:q.outerHTML,
       details_html:q.querySelector('.answerDetails')?.outerHTML}))''')
+    for question in metadata:
+        question['source_result'] = question['result']
     if is_diagnostic:
         from diagnostic import bind_history
         bind_history(state, metadata)
@@ -362,7 +364,7 @@ def assessment_history(reader, state, directory, load_topic):
     for q in metadata:
         mid = q['id'].replace('question-','q-')
         source = re.fullmatch(r'/topics/(\d+)#(\d+)',q['kp_href'] or '')
-        if not source or q['result'] not in ('Correct','Incorrect'):
+        if not source or q['result'] not in ('Correct','Incorrect','No Credit'):
             raise ValueError('Assessment question has no source KP or grade: '+mid)
         tid = int(source[1])
         if tid not in topics:
@@ -384,7 +386,7 @@ def assessment_history(reader, state, directory, load_topic):
             raise ValueError('Assessment explanation is missing: '+mid)
         record = state['questions'][mid]
         record.update(history=item,after=item,actual_result=q['result'])
-        if (q['result'] == 'Incorrect' or record.get('intended') == 'W') and not record.get('verification'):
+        if (q['result'] in ('Incorrect','No Credit') or record.get('intended') == 'W') and not record.get('verification'):
             # Preserve the actual submitted value, but recover the correct value
             # from the revealed solution before producing database content.
             verified_item = {**record['before'],'worked_solution':item['worked_solution']}

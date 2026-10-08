@@ -21,7 +21,7 @@ element => {
       [...row.querySelectorAll('.choiceLetterCircle')].some(circle => circle.closest('tr') === row));
   if (rows.length) fields.push({key:'selection', type:'radio', choices:[]});
   const nodes = [...element.querySelectorAll('.matheditor-wrapper-answer, .selectList, input:not([type="hidden"]), textarea, select, [contenteditable="true"]' +
-    (['Correct','Incorrect'].includes(element.querySelector('.questionWidget-result')?.textContent.trim()) ? ', .freeResponseTextbox' : ''))]
+    (['Correct','Incorrect','Skipped Question'].includes(element.querySelector('.questionWidget-result')?.textContent.trim()) ? ', .freeResponseTextbox' : ''))]
     .filter(n => !n.closest('.questionWidget-explanation, .exampleExplanation') &&
       !n.parentElement?.closest('.matheditor-wrapper-answer, .selectList, [contenteditable="true"]'));
   for (const n of nodes) {
@@ -40,7 +40,7 @@ element => {
       if (!n.querySelector('.mq-editable-field .mq-textarea textarea')) errors.push('Unsupported math editor: ' + n.id);
     } else if (n.matches('.selectList')) {
       f.tag = 'custom-select';
-      const graded = ['Correct','Incorrect'].includes(element.querySelector('.questionWidget-result')?.textContent.trim());
+      const graded = ['Correct','Incorrect','Partial Credit','Skipped Question'].includes(element.querySelector('.questionWidget-result')?.textContent.trim());
       const frame = n.querySelector('.selectListFrame') || (graded && n.querySelector('.selectListFrameDisabled'));
       f.frame_id = frame?.id;
       if (!f.frame_id) errors.push('Select frame has no ID: ' + n.id);
@@ -51,10 +51,18 @@ element => {
   }
   const greek = {'α':'\\alpha ','β':'\\beta ','γ':'\\gamma ','δ':'\\delta ','θ':'\\theta ','λ':'\\lambda ','μ':'\\mu ','π':'\\pi ','ρ':'\\rho ','σ':'\\sigma ','φ':'\\phi ','ω':'\\omega ','∞':'\\infty '};
   const ops = {'∫':'\\int ','∑':'\\sum ','∏':'\\prod ','⋅':'\\cdot ','×':'\\times ','−':'-', '±':'\\pm ','≤':'\\le ','≥':'\\ge ','≠':'\\ne ','→':'\\to ','∈':'\\in ','∉':'\\notin ','∪':'\\cup ','∩':'\\cap '};
+  let formulaFields = new Map();
   function m(n) {
     if (n.nodeType === 3) return greek[n.textContent] || n.textContent;
     if (n.nodeType !== 1) return '';
     const t = n.localName.toLowerCase();
+    // The site's rendered math embeds select controls in place of local S-index
+    // markers. The assistive MathML still contains the unselected sample value.
+    // Bind only markers with a matching observed control in this formula.
+    const marker = t === 'mrow' && n.children.length === 3 &&
+      n.children[0].textContent === '{' && n.children[2].textContent === '}' &&
+      n.children[1].localName === 'msub' && n.children[1].children[1]?.textContent.match(/^\(S(\d+)\)$/);
+    if (marker && formulaFields.has(marker[1])) return '{{' + formulaFields.get(marker[1]) + '}}';
     // Phantom content only reserves space; none of its descendants are visible.
     if (t === 'mphantom') return '';
     const cs = [...n.childNodes].map(m);
@@ -85,6 +93,7 @@ element => {
       case 'mtable': return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
       case 'mtr': case 'mlabeledtr': return cs.join(' & ');
       case 'menclose':
+        if (n.getAttribute('notation') === 'left right') return '\\left|' + cs.join('') + '\\right|';
         if (n.getAttribute('notation') === 'right') return '\\left.' + cs.join('') + '\\right|';
         if (n.getAttribute('notation') === 'box') return '\\boxed{' + cs.join('') + '}';
         if (n.getAttribute('notation')?.includes('strike')) return '\\cancel{' + cs.join('') + '}';
@@ -114,11 +123,16 @@ element => {
       return n.closest('.mjpage__block') ? '\n\n$$\n' + (tex || '') + '\n$$\n\n' : '$' + (tex || '') + '$';
     }
     if (t === 'mjx-container' || t === 'math') {
-      const math = t === 'math' ? n : n.querySelector('mjx-assistive-mml math');
+      const math = t === 'math' ? n : [...n.querySelectorAll('mjx-assistive-mml math')]
+        .find(math => math.closest('.selectList') === n.closest('.selectList'));
       if (!math && emptyFormula(n.querySelector('svg'))) return '';
       if (!math && assets.includes(n.querySelector('svg'))) return render(n.querySelector('svg'));
       if (!math) { errors.push('MathJax formula has no assistive MathML'); return ''; }
+      const previous = formulaFields;
+      formulaFields = new Map([...fieldNodes].filter(([control]) => n.contains(control))
+        .map(([control,key]) => [control.id.match(/-(\d+)$/)?.[1], key]));
       const tex = m(math);
+      formulaFields = previous;
       return n.getAttribute('display') === 'true' ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';
     }
     if (t === 'table') {
@@ -160,6 +174,16 @@ element => {
   }
   for (const field of fields) {
     field.choices_complete = ['radio','select'].includes(field.type) && field.choices.length > 0 && errors.length === 0;
+    if (field.tag === 'custom-select') {
+      const frame = [...fieldNodes].find(([,key]) => key === field.key)?.[0]
+        .querySelector('.selectListFrame, .selectListFrameDisabled');
+      if (frame?.matches('.correctSelection, .correctSelectionMultipleAttempts, .incorrectSelection')) {
+        field.source_result = frame.matches('.incorrectSelection') ? 'Incorrect' : 'Correct';
+        const selected = choice(frame, null);
+        field.source_selected = {type:selected.type, value:selected.value};
+        if (field.source_result === 'Correct') field.source_correct = field.source_selected;
+      }
+    }
   }
   const prompt = element.querySelector('.exampleQuestion, .questionWidget-text, .questionText') ||
     (element.matches('#steps > .step:not(:has(.question))') ? element : null);

@@ -329,15 +329,16 @@ class Solver:
         if completed and sid:
             answer_file = directory/(phase+'-answer.json')
             result_file = answer_file if answer_file.exists() else session_file.parent/'work/answer.json'
-            result = json.loads(result_file.read_text())
-            self.validate(source,result)
-            atomic_json(answer_file,result)
-            keys = pending.get('context_keys',[])
-            session['context_keys'] = list(dict.fromkeys(session['context_keys']+keys))
-            session['last_turn'] = session.pop('pending_turn')
-            atomic_json(session_file,session)
-            logging.info('Recovered completed solver turn %s/%s',pending['question'],phase)
-            return
+            result = self.turn_answer(result_file, events)
+            if result is not None:
+                self.validate(source,result)
+                atomic_json(answer_file,result)
+                keys = pending.get('context_keys',[])
+                session['context_keys'] = list(dict.fromkeys(session['context_keys']+keys))
+                session['last_turn'] = session.pop('pending_turn')
+                atomic_json(session_file,session)
+                logging.info('Recovered completed solver turn %s/%s',pending['question'],phase)
+                return
         if not sid and pending.get('exit_code') != 2:
             atomic_json(session_file,session)
             raise RuntimeError('Interrupted solver has no confirmed session ID; inspect '+str(events_file))
@@ -351,14 +352,49 @@ class Solver:
         logging.info('Resuming interrupted solver turn in activity session %s',sid)
 
     @staticmethod
+    def turn_answer(path, events):
+        try:
+            return json.loads(Path(path).read_text())
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass
+        # A stop can occur after the completed message is streamed but before
+        # --output-last-message is written. Only a completed turn qualifies.
+        message, completed = None, False
+        for line in events.splitlines():
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if event.get('type') == 'turn.started':
+                message, completed = None, False
+            if event.get('type') == 'item.completed' and event.get('item',{}).get('type') == 'agent_message':
+                message = event['item'].get('text')
+            if event.get('type') == 'turn.completed':
+                completed = True
+        if completed and isinstance(message, str):
+            try:
+                return json.loads(message)
+            except json.JSONDecodeError:
+                pass
+        return None
+
+    @staticmethod
     def reuse_answer(item, result):
         result = copy.deepcopy(result)
+        def choice_identity(value, kind):
+            # Legacy MathML serialized visible set braces as bare TeX groups.
+            # Preserve these fences, including singleton sets inside a set.
+            if (kind == 'math' and ',' in value and
+                    re.fullmatch(r'\{[{}A-Za-z0-9,\s.+\-…]+\}', value.strip())):
+                value = value.replace('{', r'\{').replace('}', r'\}')
+            return normalize(value, kind)
+
         fields = {f['key']:f for f in item['fields']}
         for answer in result['answers']:
             field = fields.get(answer['key'])
             if field and field['type'] in ('radio','select'):
                 candidates = [c for c in field['choices'] if c['type']==answer['value_type'] and
-                              normalize(c['value'],c['type'])==normalize(answer['correct_value'],answer['value_type'])]
+                              choice_identity(c['value'],c['type'])==choice_identity(answer['correct_value'],answer['value_type'])]
                 if len(candidates) != 1:
                     raise ValueError('Saved correct answer does not match exactly one restored choice')
                 answer['correct_option'], answer['correct_value'] = candidates[0]['option'], candidates[0]['value']
@@ -434,7 +470,9 @@ class Solver:
         events = [json.loads(line) for line in process.stdout.splitlines() if line.strip()]
         if not any(event.get('type') == 'turn.completed' for event in events):
             raise ValueError('Codex did not complete the solver turn')
-        result = json.loads(output.read_text())
+        result = self.turn_answer(output, process.stdout)
+        if result is None:
+            raise ValueError('Completed solver turn has no structured answer; retain the turn for same-session recovery')
         atomic_json(directory / (phase + '-answer.json'),result)
         session['context_keys'] = list(dict.fromkeys(session['context_keys'] + context_keys))
         session['last_turn'] = session.pop('pending_turn')

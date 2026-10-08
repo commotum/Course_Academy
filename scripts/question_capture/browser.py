@@ -95,6 +95,21 @@ def mathquill_keys(value, actions):
             result[0] == {'text':fraction[1],'key':None} and
             result[1] == {'text':'/','key':None}):
         result[0]['text'] = '(' + fraction[1] + ')'
+    # Closing the typed parentheses already leaves their inner cursor.
+    # In this exact saved pattern, the next Right exits the denominator.
+    powered_denominator = re.fullmatch(r'(.+)\\frac\{([^{}]+)\}\{(\([^{}]+\))\^(\d+)\}', value)
+    if powered_denominator:
+        prefix, numerator, base, power = powered_denominator.groups()
+        expected = [
+            {'text':prefix + numerator,'key':None},
+            {'text':'/','key':None},
+            {'text':base,'key':None},
+            {'text':None,'key':'ArrowRight'},
+            {'text':'^' + power,'key':None},
+            {'text':None,'key':'ArrowRight'},
+            {'text':None,'key':'ArrowRight'}]
+        if result == expected:
+            result = result[:3] + result[4:]
     return result
 
 
@@ -226,6 +241,37 @@ def kp_for_example(topic, mid, name, allow_new=False):
     if len(matches) != 1:
         raise ValueError('Cannot unambiguously map live example to a database KP: ' + mid)
     return matches[0]
+
+
+def history_asset_bindings(incoming, record, mid):
+    """Match explanation images only when the saved solution text is identical."""
+    after = record.get('after', {})
+    if record.get('status') != 'graded' or not after.get('worked_solution'):
+        return []
+    image = r'!\[[^\]]*\]\(([^)]+)\)'
+    old_paths = re.findall(image, after['worked_solution'])
+    new_paths = re.findall(image, incoming.get('worked_solution', ''))
+    normalized = lambda text: re.sub(r'\s+', ' ', re.sub(image, '![](@image@)', text)).strip()
+    if (len(old_paths) != len(new_paths) or not old_paths or
+            normalized(after['worked_solution']) != normalized(incoming.get('worked_solution', ''))):
+        return []
+    originals = {a.get('path'):a for a in after.get('assets', [])}
+    result = []
+    for old_path, marker in zip(old_paths, new_paths):
+        found = re.fullmatch(r'@asset-(\d+)@', marker)
+        if not found:
+            continue
+        index = int(found[1])
+        if index >= len(incoming.get('assets', [])):
+            continue
+        alias = incoming['assets'][index].get('source_url', '')
+        original = originals.get(old_path, {})
+        path = Path(old_path)
+        if (re.fullmatch(r'https://mathacademy\.com/graphics/'+re.escape(mid)+r'-e-\d+', alias) and
+                original.get('source_url') and original.get('content_type') and path.is_file() and
+                original.get('sha256') == hashlib.sha256(path.read_bytes()).hexdigest()):
+            result.append((index, original))
+    return result
 
 
 class CaptureBrowser:
@@ -504,13 +550,14 @@ class CaptureBrowser:
         directory = Path(directory)
         from progress import targets, target as progress_target
         courses = targets(self.args,state)
+        sidebar=state.get('progress_mode',getattr(self.args,'progress_mode','fixed'))=='sidebar'
         snapshots = state.setdefault('knowledge_snapshots', {})
         target = directory / 'knowledge-state' / (event + '.json')
         if target.exists():
             snapshot = json.loads(target.read_text())
             observed=tuple(c.get('source_url') or progress_target(c['course_id'])['source_url'] for c in snapshot['courses'])
             expected=tuple(progress_target(c)['source_url'] for c in courses)
-            if snapshot['task_id'] != state['task_id'] or observed != expected:
+            if snapshot['task_id'] != state['task_id'] or not sidebar and observed != expected:
                 raise ValueError('Saved knowledge snapshot has a different task or course scope')
         else:
             previous = None
@@ -524,8 +571,17 @@ class CaptureBrowser:
                 # Keep the live lesson loaded and its widgets untouched in the original tab.
                 page = self.page.context.new_page()
                 self.progress_reader = CaptureBrowser(page, self.args, self.pacer, None)
-            snapshot = capture_progress(self.progress_reader, target.parent, event, state['task_id'],
-                                        courses, previous, recovered)
+            if sidebar:
+                start_url=self.page.evaluate("() => document.querySelector('a#courseNameLink, a.courseNameLink')?.getAttribute('href') || null")
+                if start_url and start_url.startswith('/'):start_url='https://mathacademy.com'+start_url
+                if not start_url:
+                    enrolled=state.get('course_id') or getattr(self.args,'diagnostic_course_id',None)
+                    start_url=progress_target(enrolled or courses[-1])['source_url']
+                snapshot = capture_progress(self.progress_reader, target.parent, event, state['task_id'],
+                                            None, previous, recovered, start_url=start_url)
+            else:
+                snapshot = capture_progress(self.progress_reader, target.parent, event, state['task_id'],
+                                            courses, previous, recovered)
         snapshots[event] = {'path': str(target.relative_to(directory)),
                             'finished_at': snapshot['finished_at'], 'changes': len(snapshot['changes'])}
         atomic_json(directory / 'state.json', state)
@@ -595,6 +651,113 @@ class CaptureBrowser:
         record['status'] = 'prepared'
         return True
 
+    def proof_question(self, scope, record, directory, mid, save):
+        """Complete only newly exposed proof fields, inspecting every stage grade."""
+        from solver import Solver
+        stages = record.setdefault('proof_stages', [])
+        if record['status'] == 'submitting' and not record.get('proof_pending'):
+            record['proof_pending'] = {'keys':[f['key'] for f in record['before']['fields']]}
+            save()
+        while True:
+            self.check()
+            stage = len(stages)
+            item, screenshot = self.read(scope, directory, mid + '-proof-observed-' + str(stage))
+            current = {f['key']:f for f in item['fields']}
+            previous = {f['key']:f for f in record['before']['fields']}
+            if not set(previous).issubset(current):
+                raise ValueError('Proof stage lost previously captured fields: ' + mid)
+            for key, old in previous.items():
+                fresh = current[key]
+                if old['dom_id'] != fresh['dom_id'] or old['choices'] != fresh['choices']:
+                    # Re-rendering changes generated HTML, but not source values.
+                    identity = lambda f: [(c['option'],c['type'],normalize(c['value'],c['type'])) for c in f['choices']]
+                    if old['dom_id'] != fresh['dom_id'] or identity(old) != identity(fresh):
+                        raise ValueError('Proof stage changed a captured field: ' + key)
+                for name in ('submitted_value','submitted_option','entered_keys'):
+                    if name in old: fresh[name] = old[name]
+            pending = record.get('proof_pending')
+            terminal = item.get('result') in ('Correct','Incorrect','Partial Credit')
+            if pending and not terminal:
+                submitted = [current.get(key, {}) for key in pending['keys']]
+                if not submitted or not all(f.get('source_result') in ('Correct','Incorrect') for f in submitted):
+                    raise ValueError('Uncertain proof submission has no source outcome; stop without resubmission: ' + mid)
+                for field in submitted:
+                    observed = field.get('source_selected', {})
+                    if ('submitted_value' not in field or normalize(observed.get('value',''),observed.get('type','text')) !=
+                            normalize(field['submitted_value'],observed.get('type','text'))):
+                        raise ValueError('Proof source grade does not match the submitted value: ' + field.get('key','unknown'))
+                predictions = {a['key']:a for a in record['decision']['answers']}
+                for field in submitted:
+                    prediction = predictions.get(field['key'],{})
+                    distinct = normalize(field['submitted_value'],prediction.get('value_type','text')) != normalize(
+                        prediction.get('correct_value',''),prediction.get('value_type','text'))
+                    if record['intended']=='W' and distinct:
+                        record['wrong_submission_used'] = True
+                    if field['source_result']=='Incorrect' and not distinct:
+                        record['proof_needs_solve'] = True
+                rejected = [(f['key'],f.get('submitted_value')) for f in submitted if f['source_result']=='Incorrect']
+                repeats = sum(s.get('rejected_values')==rejected for s in stages) if rejected else 0
+                stages.append({'submitted_keys':pending['keys'], 'outcome':'accepted' if all(
+                    f['source_result']=='Correct' for f in submitted) else 'rejected', 'observation':item,
+                    'decision':record['decision'], 'intended':record['intended'], 'rejected_values':rejected})
+                record.pop('proof_pending',None)
+                record['status'] = 'prepared'
+                if repeats >= 1:
+                    save()
+                    raise ValueError('Repeated unchanged proof rejection; stop before another submission: ' + mid)
+            record['before'] = item
+            save()
+            if terminal:
+                if pending:
+                    stages.append({'submitted_keys':pending['keys'], 'outcome':item['result'],
+                                   'observation':item, 'decision':record['decision'], 'intended':record['intended']})
+                record.pop('proof_pending',None)
+                record.pop('entry_keys',None)
+                item, _ = self.read(scope,directory,mid+'-after')
+                record.update(after=item,actual_result=item['result'],status='graded')
+                save()
+                return
+            keys = [f['key'] for f in item['fields'] if f.get('source_result') != 'Correct']
+            if not keys:
+                raise ValueError('Proof accepted every field without exposing a next stage or final grade')
+            # New stages have their own answer artifacts but use this activity's
+            # existing solver session. The question keeps its one C/W decision.
+            known = {a['key'] for a in record['decision']['answers']}
+            if known != set(current) or record.get('proof_needs_solve'):
+                started = time.monotonic()
+                record['decision'] = self.solver.solve(item,screenshot,Path(directory)/mid,'proof-solve-'+str(len(stages)))
+                record['solver_elapsed_seconds'] = time.monotonic()-started
+                record.pop('proof_needs_solve',None)
+            else:
+                record['decision'] = Solver.reuse_answer(item,record['decision'])
+            item, screenshot = self.read(scope,directory,mid+'-before')
+            for field in item['fields']:
+                for name in ('submitted_value','submitted_option','entered_keys'):
+                    if name in current[field['key']]:field[name]=current[field['key']][name]
+            record['before'] = item
+            record['entry_keys'] = keys
+            save()
+            self.enter(scope,record)
+            self.pacer.wait('answer','before submitting a proof stage',elapsed=record.get('solver_elapsed_seconds',0))
+            self.check()
+            self.verify_entered(scope,record)
+            self.page.screenshot(path=str(Path(directory)/(mid+'-proof-entered-'+str(len(stages))+'.png')))
+            record['proof_pending'] = {'keys':keys}
+            record['status'] = 'submitting'
+            save()
+            journal(Path(directory)/'events.jsonl','proof_submission_intent',question=mid,stage=len(stages),intended=record['intended'],keys=keys)
+            submit=scope.locator('.questionWidget-submitButton')
+            if 'disabledButton' in (submit.get_attribute('class') or ''):
+                raise ValueError('Proof Submit is disabled after filling observed fields')
+            submit.click()
+            self.page.wait_for_function('''({id,ids})=>{
+              const n=document.getElementById(id),visible=e=>!!e?.getClientRects().length;
+              if(visible(document.getElementById('continueButton-'+id.replace('step-','')))) return true;
+              const spinner=n?.querySelector('.questionWidget-spinner');
+              if(visible(spinner) && spinner.style.display==='block') return false;
+              return ids.every(id=>document.getElementById(id)?.matches('.correctSelection,.correctSelectionMultipleAttempts,.incorrectSelection'));
+            }''',arg={'id':scope.get_attribute('id'),'ids':[current[key]['frame_id'] for key in keys]})
+
     def activity(self, state, directory, topic):
         if state.get('task_type') == 'diagnostic':
             from diagnostic import take_diagnostic
@@ -641,6 +804,12 @@ class CaptureBrowser:
         if any(q.get('status') == 'submitting' for q in state['questions'].values()):
             self.wait_activity_ready()
         for mid, record in state['questions'].items():
+            if record.get('status') == 'submitting':
+                proof_scope = by_id(self.page, 'step-' + mid.replace('-', ''))
+                if proof_scope.locator('.proofSection').count():
+                    # The proof player reconciles intermediate source grades;
+                    # the ordinary player expects a whole-question result.
+                    continue
             if record.get('status') == 'submitting' and self.current_step() == 'stepButton-' + mid.replace('-', ''):
                 scope = by_id(self.page, 'step-' + mid.replace('-', ''))
                 if self.restore_unanswered_submission(scope, record):
@@ -789,6 +958,14 @@ class CaptureBrowser:
                 state['questions'][mid] = record
                 save()
             button = by_id(self.page,'continueButton-' + token)
+            if scope.locator('.proofSection').count():
+                self.proof_question(scope,record,directory,mid,save)
+                self.finalize_question(state,directory,mid,record)
+                save()
+                logging.info('%s: %s, captured %d proof fields across %d stages',mid,
+                             record['actual_result'],len(record['content']['answer_fields']),len(record['proof_stages']))
+                self.advance(state,directory,token)
+                continue
             if record['status'] == 'prepared':
                 # Choice letters may be shuffled on a restored page. Reuse the
                 # solved value, then match it to today's observed DOM option.
@@ -845,7 +1022,7 @@ class CaptureBrowser:
                         answer['value_type'] = selected['type']
         if not item['worked_solution']:
             raise ValueError('Revealed worked solution is missing: ' + mid)
-        if actual == 'Incorrect' and not record.get('verification'):
+        if actual in ('Incorrect','Partial Credit') and not record.get('verification'):
             verification_input = {**item, 'problem':record['before']['problem'], 'fields':record['before']['fields']}
             verified = self.solver.solve(verification_input,Path(directory)/(mid+'-after.png'),Path(directory)/mid,'verify')
             original = {a['key']:a for a in record['decision']['answers']}
@@ -868,8 +1045,10 @@ class CaptureBrowser:
 
     def enter(self, scope, record):
         answers = {a['key']:a for a in record['decision']['answers']}
-        wrong_used = False
+        wrong_used = record.get('wrong_submission_used',False)
         for field in record['before']['fields']:
+            if record.get('entry_keys') is not None and field['key'] not in record['entry_keys']:
+                continue
             answer = answers[field['key']]
             wrong = record['intended'] == 'W' and not wrong_used
             self.pacer.wait('event','fill answer field ' + field['key'])
@@ -935,6 +1114,8 @@ class CaptureBrowser:
                     control.fill(value)
                 field['submitted_value'] = value
             wrong_used |= wrong
+            if wrong and record.get('entry_keys') is not None:
+                record['wrong_submission_used'] = True
 
     def type_mathquill(self, editor, text, field):
         # These classes belong to Math Academy's displayed symbol toolbox.
@@ -983,6 +1164,8 @@ class CaptureBrowser:
 
     def verify_entered(self, scope, record):
         for field in record['before']['fields']:
+            if record.get('entry_keys') is not None and field['key'] not in record['entry_keys']:
+                continue
             if field['type'] == 'radio':
                 selected = scope.locator('.questionWidget-choiceLetterCircle, .choiceLetterCircle').evaluate_all('''nodes => nodes.filter(n =>
                   n.classList.contains('selectedChoice') || (n.style.backgroundColor === 'rgb(64, 64, 64)' &&
@@ -1033,6 +1216,37 @@ class CaptureBrowser:
             result['requires_calculator'] = True
         return result
 
+    def read_history(self, explanation, record, directory, mid):
+        """Restore broken history image aliases from this question's live result."""
+        incoming = explanation.evaluate(EXTRACT)
+        bindings = history_asset_bindings(incoming, record, mid)
+        handlers = []
+        try:
+            for index, original in bindings:
+                source = incoming['assets'][index]['source_url']
+                handler = lambda route, request, original=original: route.fulfill(
+                    body=Path(original['path']).read_bytes(), content_type=original['content_type'])
+                self.page.route(original['source_url'], handler)
+                handlers.append((original['source_url'], handler))
+                explanation.locator('img').evaluate_all('''(nodes, binding) => {
+                  for (const image of nodes) if (image.src === binding.source) image.src=binding.original;
+                }''', {'source':source, 'original':original['source_url']})
+            if bindings:
+                archive = Path(directory)/'history-recovery'
+                archive.mkdir(exist_ok=True)
+                for suffix in ('.json', '.png'):
+                    old = Path(directory)/('history-'+mid+suffix)
+                    saved = archive/old.name
+                    if old.exists() and not saved.exists():
+                        saved.write_bytes(old.read_bytes())
+                atomic_json(archive/(mid+'-asset-bindings.json'), [
+                    {'history_url':incoming['assets'][index]['source_url'], 'original':original}
+                    for index, original in bindings])
+            return self.read(explanation, directory, 'history-'+mid)
+        finally:
+            for url, handler in handlers:
+                self.page.unroute(url, handler)
+
     def history(self, state, directory, topic=None):
         if state.get('task_type') in ('assessment','multistep','diagnostic'):
             from assessment import assessment_history
@@ -1060,7 +1274,8 @@ class CaptureBrowser:
                 source = re.fullmatch(r'/topics/(\d+)#(\d+)', q['kp_href'] or '')
                 if not source or int(source[1]) != state['topic_id'] or topic is None:
                     raise ValueError('Review activity has no valid topic/KP source link: ' + mid)
-                matches = [kp for kp in topic[':topic/knowledge-points'] if kp_title_identity(kp[':knowledge-point/title']) == kp_title_identity(title)]
+                matches = [kp for kp in topic[':topic/knowledge-points'] if
+                           history_kp_matches(state['topic_id'], kp[':knowledge-point/title'], title)]
                 if len(matches) != 1:
                     raise ValueError('Review KP title cannot be matched uniquely within the topic: ' + mid)
                 kp_id = str(matches[0][':knowledge-point/id'])
@@ -1081,7 +1296,7 @@ class CaptureBrowser:
                 self.pacer.wait('event','expand activity explanation')
                 by_id(self.page,q['id']).locator('.answerDetails').click()
             explanation.wait_for(state='visible')
-            item, _ = self.read(explanation,directory,'history-' + mid)
+            item, _ = self.read_history(explanation,record,directory,mid)
             if not item['worked_solution']:
                 raise ValueError('Activity explanation is missing: ' + mid)
             record['history'] = item

@@ -1,0 +1,71 @@
+{
+  "mode": "solve",
+  "problem": "Given the matrix \n$A=[\\begin{aligned}4 & -3 \\\\ 0 & 1\\end{aligned}]$, \nfind a diagonal matrix $D$ and an invertible matrix $P$ such that $D={P}^{-1}AP.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}4 & 0 \\\\ 0 & 1\\end{aligned}]$\nand\n$P=[\\begin{aligned}1 & 1 \\\\ 0 & 1\\end{aligned}]$"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}4 & 0 \\\\ 0 & 1\\end{aligned}]$\nand\n$P=[\\begin{aligned}1 & 1 \\\\ 1 & 0\\end{aligned}]$"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}]$\nand\n$P=[\\begin{aligned}1 & 1 \\\\ 0 & 1\\end{aligned}]$"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}]$\nand\n$P=[\\begin{aligned}0 & 1 \\\\ 1 & 1\\end{aligned}]$"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$A$ is not diagonalizable"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14040191,
+    "task_type": "lesson",
+    "topic_id": 1968,
+    "examples": [
+      {
+        "math_academy_id": "e-8574",
+        "knowledge_point": "Diagonalizing a 2x2 Matrix",
+        "problem": "Given the matrix \n$[\\begin{aligned}3 & -8 \\\\ 0 & -2\\end{aligned}]$ \nfind a diagonal matrix $D$ and an invertible matrix $P$ such that $D=P^{-1}AP.$",
+        "worked_solution": "We apply the diagonalization algorithm. \n\n**Step 1.**  We need to find the eigenvalues of the matrix. Since matrix $A$ is triangular, its eigenvalues are the entries on the main diagonal: \n\n$$\n\\lambda_1=3, \\quad\\quad\\lambda_2=-2.\n$$\n\n**Step 2.** Now, we need to find an eigenvector basis of $A.$\n\n- For $\\lambda_1=3,$ we have\n\n$$\n\\begin{aligned}A-3I & =[\\begin{aligned}3 & -8 \\\\ 0 & -2\\end{aligned}]-3[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}0 & -8 \\\\ 0 & -5\\end{aligned}].\\end{aligned}\n$$\n\nTo solve the corresponding system of linear equations, we construct the augmented matrix $M$ and reduce it to its row echelon form using Gaussian elimination:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}0 & -8 & 0 \\\\ 0 & -5 & 0\\end{aligned}] & {R}_{2}={R}_{2}+(-\\frac{5}{8}){R}_{1} \\\\  & \u223c[\\begin{aligned}0 & -8 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $2$nd one). So, $x_1$ is a free variable. From the first equation, we obtain $x_2=0.$ Therefore, the general solution is\n\n$$\n[\\begin{aligned}{x}_{1} \\\\ 0\\end{aligned}]\n$$\n\nSetting $x_1=1,$ we get the eigenvector $[\\begin{aligned}1 \\\\ 0\\end{aligned}]$\n\n- For $\\lambda_2=-2,$ we have\n\n$$\n\\begin{aligned}A-(-2)I & =[\\begin{aligned}3 & -8 \\\\ 0 & -2\\end{aligned}]+2[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}5 & -8 \\\\ 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nThe above matrix corresponds to a homogeneous system of linear equations. Note, the matrix is already in row echelon form. There is one pivot column (the $1$st one). So, $x_2$ is a free variable. From the first equation, we obtain $x_1=\\dfrac{8}{5}x_2.$ Therefore, the general solution is\n\n$$\n[\\begin{aligned}\\frac{8}{5}{x}_{2} \\\\ {x}_{2}\\end{aligned}]\n$$\n\nSetting  $x_2=5,$ we get the eigenvector  $[\\begin{aligned}8 \\\\ 5\\end{aligned}]$\n\n**Step 3.** We construct the diagonal matrix $D$ and the invertible matrix $P$ as follows:\n\n$$\n[\\begin{aligned}3 & 0 \\\\ 0 & -2\\end{aligned}]\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14040191/example-8574.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-80457",
+        "problem": "Consider the following matrices:\n\n$$\nA=[\\begin{aligned}-8 & 6 \\\\ -9 & 7\\end{aligned}],\\,D=[\\begin{aligned}-2 & 0 \\\\ 0 & 1\\end{aligned}],\\,P=[\\begin{aligned}1 & a \\\\ 1 & b\\end{aligned}]\n$$\n\nGiven that $D={P}^{-1}AP,$ find the value of $\\frac{a}{b}.$",
+        "worked_solution": "From the diagonal matrix $D=[\\begin{aligned}-2 & 0 \\\\ 0 & 1\\end{aligned}]$, we deduce that the eigenvalues of $A$ are ${\\lambda }_{1}=-2$ and ${\\lambda }_{2}=1.$\n\nSo, the second column of $P$ corresponds to the eigenvalue ${\\lambda }_{2}=1.$ \n\nNow, we simply need to find an eigenvector that corresponds to ${\\lambda }_{2}=1.$ Computing $A-I,$ we get\n\n$$\n\\begin{aligned}A-I & =[\\begin{aligned}-8 & 6 \\\\ -9 & 7\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}-9 & 6 \\\\ -9 & 6\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-9 & 6 & 0 \\\\ -9 & 6 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}-{R}_{1} \\\\  & \u223c[\\begin{aligned}-9 & 6 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=\\frac{2}{3}{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{2}{3}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nTherefore, setting ${x}_{2}=3,$ we get the eigenvector \n\n$$\n{v}_{2}=[\\begin{aligned}a \\\\ b\\end{aligned}]=[\\begin{aligned}2 \\\\ 3\\end{aligned}].\n$$\n\nFinally, $\\frac{a}{b}=\\frac{2}{3}.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{2}{3}",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

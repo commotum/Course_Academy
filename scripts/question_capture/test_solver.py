@@ -177,6 +177,44 @@ class SessionTests(unittest.TestCase):
             self.assertEqual(cli.call_count,1)
         self.assertEqual(answer['answers'][0]['correct_option'],'b')
 
+    def test_completed_event_answer_recovers_when_output_file_is_missing(self):
+        root,_=self.activity('100','lesson')
+        def interrupted(command,**kwargs):
+            result=self.fake_cli(command,**kwargs)
+            output=Path(command[command.index('--output-last-message')+1])
+            answer=output.read_text();output.unlink()
+            lines=result.stdout.splitlines()
+            lines.insert(-1,json.dumps({'type':'item.completed','item':{'type':'agent_message','text':answer}}))
+            raise subprocess.CalledProcessError(1,command,output='\n'.join(lines)+'\n')
+        with patch('solver.run_cli',side_effect=interrupted),self.assertRaises(subprocess.CalledProcessError):
+            Solver(self.args).solve(self.question(1),None,root/'q-1')
+        with patch('solver.run_cli') as cli:
+            answer=Solver(self.args).solve(self.question(1),None,root/'q-1')
+            cli.assert_not_called()
+        self.assertTrue(answer['confident'])
+        checkpoint=json.loads((root/'solver-session/state.json').read_text())
+        self.assertFalse(checkpoint.get('pending_turn'))
+
+    def test_incomplete_event_message_is_not_used_as_completed_answer(self):
+        path=self.root/'missing.json'
+        message=json.dumps({'type':'item.completed','item':{'type':'agent_message','text':'{"confident":true}'}})
+        self.assertIsNone(Solver.turn_answer(path,message))
+
+    def test_completed_turn_without_answer_repeats_prompt_in_same_session(self):
+        root,_=self.activity('100','lesson')
+        def interrupted(command,**kwargs):
+            result=self.fake_cli(command,**kwargs)
+            Path(command[command.index('--output-last-message')+1]).unlink()
+            raise subprocess.CalledProcessError(1,command,output=result.stdout)
+        with patch('solver.run_cli',side_effect=interrupted),self.assertRaises(subprocess.CalledProcessError):
+            Solver(self.args).solve(self.question(1),None,root/'q-1')
+        sid=self.calls[-1]['sid']
+        with patch('solver.run_cli',side_effect=self.fake_cli) as cli:
+            answer=Solver(self.args).solve(self.question(1),None,root/'q-1')
+            self.assertEqual(cli.call_count,1)
+        self.assertTrue(answer['confident'])
+        self.assertEqual(self.calls[-1]['sid'],sid)
+
     def test_capacity_retry_reuses_confirmed_session_and_is_bounded(self):
         root,_=self.activity('100','lesson')
         sid=str(uuid.uuid4())

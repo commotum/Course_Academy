@@ -1,0 +1,75 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following initial value problem.\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+\\frac{x}{6}y=x,\\,y(0)=5\n$$\n\nSelect the correct options below.\n$\\,$ An integrating factor for this equation is $I(x)=$ {{field-1}}.\n\n$\\,$ The solution to the initial value problem is $y(x)=$ {{field-2}}.",
+  "worked_solution": "This equation is in the standard form\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+P(x)y=Q(x),\n$$\n\nwith $P(x)=\\frac{x}{6}$ and $Q(x)=x.$\n\nWe compute an integrating factor using the definition:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (x/6)\\,\\text{d}x} \\\\  & ={e}^{{x}^{2}/12}\\end{aligned}\n$$\n\nMultiplying both sides of the equation in standard form by $I(x)={e}^{{x}^{2}/12}$ yields\n\n$$\n\\begin{aligned}{e}^{{x}^{2}/12}\\cdot (\\frac{\\text{d}y}{\\text{d}x}+\\frac{x}{6}y) & ={e}^{{x}^{2}/12}\\cdot x \\\\ {e}^{{x}^{2}/12}\\cdot \\frac{\\text{d}y}{\\text{d}x}+\\frac{x}{6}{e}^{{x}^{2}/12}\\cdot y & =x{e}^{{x}^{2}/12} \\\\ \\frac{\\text{d}}{\\text{d}x}(y{e}^{{x}^{2}/12}) & =x{e}^{{x}^{2}/12}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x,$ making use of the substitution $u=\\frac{{x}^{2}}{12}:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(y{e}^{{x}^{2}/12})\\text{d}x & =\\int x{e}^{{x}^{2}/12}\\,\\text{d}x \\\\ y{e}^{{x}^{2}/12} & =\\int 6{e}^{u}\\,\\text{d}u \\\\ y{e}^{{x}^{2}/12} & =6{e}^{u}+C \\\\ y{e}^{{x}^{2}/12} & =6{e}^{{x}^{2}/12}+C \\\\ y & =6+C{e}^{-{x}^{2}/12}\\end{aligned}\n$$\n\nThis is the general solution. To find the value of $C$ corresponding to the specific solution, we apply the initial condition $y(0)=5$ as follows:\n\n$$\n\\begin{aligned}y(0) & =6+C{e}^{-{0}^{2}/12} \\\\ 5 & =6+C \\\\ C & =-1\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=6-{e}^{-{x}^{2}/12}.\n$$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{e}^{12x}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "{x}^{6}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{1}{x}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "{e}^{{x}^{2}/12}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{e}^{6{x}^{2}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "6-{e}^{-{x}^{2}/12}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "6{x}^{2}+5"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "6x+5"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "6-{e}^{{x}^{2}}"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14035554,
+    "task_type": "diagnostic",
+    "topic_id": null,
+    "examples": [],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}

@@ -86,7 +86,7 @@ def eligible(directory, state, content):
 def version():
     """Only effective importer/comparison changes reset ordinary retries."""
     digest = hashlib.sha256()
-    paths = [PACKAGE/name for name in ('core.py','database.py','edn.py',
+    paths = [PACKAGE/name for name in ('core.py','database.py','edb_transport.py','edn.py',
                                       'provenance.py','math_notation.py','native_comparison.py','import_repair.py')]
     # The checker runs an installed executable, not its Rust source files.
     # Unbuilt edits and changes to sweep bookkeeping cannot fix old imports.
@@ -189,11 +189,11 @@ def verified(directory, content):
 
 def complete(args, directory, state, result):
     flag = 'preview_complete' if args.preview else 'import_complete'
-    changed = not state.get(flag) or state.get('deferred_error',{}).get('phase') in ('import','queue-after')
+    changed = not state.get(flag) or bool(state.get('deferred_error'))
     if not changed:
         return
     state[flag] = True
-    if state.get('deferred_error',{}).get('phase') in ('import','queue-after'):
+    if state.get('history_complete') or state.get('deferred_error',{}).get('phase') in ('import','queue-after'):
         state.pop('deferred_error',None)
     atomic_json(directory/'state.json',state)
     journal(args.state_dir/'journal.jsonl','content_previewed' if args.preview else 'content_imported',

@@ -286,8 +286,8 @@ def validate_question(question, *, canonical=False, existing=None):
         values = [(c['type'], c['value']) for c in field['choices']]
         if correct is None or not any(v == correct for _, v in values):
             raise ValueError('Correct answer must be a choice: ' + mid)
-        if len(set(values)) != len(values):
-            raise ValueError('Duplicate answer values: ' + mid)
+        # MA sometimes displays identical distractors in separate positions.
+        # Keep those positions in the capture; EDB stores unique answer refs.
         if any(t not in ('math', 'text', 'image') or not isinstance(v, str) for t, v in values):
             raise ValueError('Invalid answer representation: ' + mid)
 
@@ -380,13 +380,13 @@ def build_transaction(content, topic, existing, reconciler=None):
         comparison['prompt'] = update.get(kw('question/problem'), comparison['prompt'])
         old_fields = {f[':answer-field/key']: f for f in (old or {}).get(':question/answer-fields', [])}
         captured_fields = {f['key'] for f in question.get('answer_fields', [])}
-        # Earlier history imports called a single radio field "answer". The
+        # Earlier imports used authored keys for a single radio field. The
         # live extractor calls it "selection". Match this one observed field,
         # then version its ownership; do not mutate the historical field key.
-        if (reconciler and set(old_fields) == {'answer'} and captured_fields == {'selection'} and
-                old_fields['answer'][':answer-field/type'][':db/ident'] == ':answer-field.type/radio' and
+        if (reconciler and len(old_fields) == 1 and captured_fields == {'selection'} and
+                next(iter(old_fields.values()))[':answer-field/type'][':db/ident'] == ':answer-field.type/radio' and
                 question['answer_fields'][0]['type'] == 'radio'):
-            old_fields = {'selection':old_fields['answer']}
+            old_fields = {'selection':next(iter(old_fields.values()))}
         if not example and captured_fields and set(old_fields) - captured_fields:
             raise ValueError('Live capture omitted existing fields: ' + mid)
         field_links = []
@@ -434,7 +434,12 @@ def build_transaction(content, topic, existing, reconciler=None):
                     fupdate[kw(attr)] = value
             values = (previous or {}).get(':answer-field/choices', [])
             correct_target, choice_links = None, []
+            seen_choices = set()
             for choice in field['choices']:
+                signature = (choice['type'], choice['value'])
+                if signature in seen_choices:
+                    continue
+                seen_choices.add(signature)
                 answer = matching_answer(choice, values, **comparison)
                 token = field_token + '/' + hashlib.sha256((choice['type'] + ':' + choice['value']).encode()).hexdigest()
                 answer_target = answer[':db/id'] if answer else token

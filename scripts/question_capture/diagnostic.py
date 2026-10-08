@@ -4,6 +4,7 @@ import hashlib
 import json
 import logging
 import re
+import time
 from pathlib import Path
 
 from core import atomic_json, journal
@@ -59,6 +60,7 @@ def configure(args, activity, state, directory):
     if not topics or any(t['topic_id'] < 1 or not t['title'] for t in topics) or len({t['topic_id'] for t in topics}) != len(topics):
         raise ValueError('Diagnostic topic list is empty or contains invalid/duplicate topics')
     state.update(course_id=course_id, answer_policy='correct_prerequisites_skip_course',
+                 progress_mode=getattr(args,'progress_mode','sidebar'),
                  diagnostic_policy={'course_id':course_id, 'topics':topics, 'source':str(source),
                                     'sha256':hashlib.sha256(source.read_bytes()).hexdigest()},
                  progress_course_ids=(args.progress_course_ids if getattr(args,'progress_course_ids_explicit',False)
@@ -119,6 +121,50 @@ def wait_changed(reader, number):
                                  'v.retry || (v.ready && v.number !== old);}', arg=number)
 
 
+def recover_saved_grades(reader, state, directory, *, advanced_past=None):
+    """Use a saved graded DOM when server navigation already passed its question."""
+    from browser import EXTRACT, same_question_problem
+    recovered = 0
+    for slot, record in state['questions'].items():
+        if record.get('status') == 'graded' or record.get('finalized'):
+            continue
+        if advanced_past is not None and record['sequence_position'] >= advanced_past:
+            continue
+        path = Path(directory)/(record.get('solver_directory', slot)+'-after.json')
+        if not path.exists():
+            continue
+        saved = json.loads(path.read_text())
+        if saved.get('result') not in ('Correct','Incorrect','Skipped Question') or not saved.get('html'):
+            continue
+        item = reader.page.evaluate('html => ('+EXTRACT+')(new DOMParser().parseFromString(html, "text/html").body.firstElementChild)', saved['html'])
+        if item['errors'] or item.get('result') != saved['result']:
+            continue
+        # Reuse captured original assets; parsing saved HTML makes no requests.
+        assets = saved.get('assets', [])
+        if len(item.get('assets', [])) != len(assets):
+            continue
+        item['assets'] = assets
+        for index, asset in enumerate(assets):
+            marker = '@asset-'+str(index)+'@'
+            item['problem'] = item['problem'].replace(marker, asset['path'])
+            item['worked_solution'] = item['worked_solution'].replace(marker, asset['path'])
+            for field in item['fields']:
+                for choice in field['choices']:
+                    choice['value'] = choice['value'].replace(marker, asset['path'])
+        if not same_question_problem(record['before'], item):
+            continue
+        original = path.with_name(path.stem+'-original.json')
+        if not original.exists():
+            original.write_bytes(path.read_bytes())
+        atomic_json(path, item)
+        record.update(after=item, actual_result=item['result'], live_result=item['result'], status='graded')
+        recovered += 1
+        logging.info('Recovered saved diagnostic grade for question %s: %s', record['sequence_position'], item['result'])
+    if recovered:
+        atomic_json(Path(directory)/'state.json', state)
+    return recovered
+
+
 def take_diagnostic(reader, state, directory):
     """Retry observations in place; never reload a timed question to resolve a click."""
     from playwright.sync_api import TimeoutError
@@ -141,12 +187,14 @@ def _take_diagnostic(reader, state, directory):
     page = reader.page
     save = lambda: atomic_json(directory/'state.json', state)
     if state.get('activity_complete'):
+        recover_saved_grades(reader, state, directory)
         if 'diagnostic-completed' not in state.get('knowledge_snapshots', {}):
             reader.knowledge_snapshot(state, directory, 'diagnostic-completed', recovered=True)
         return
     while True:
         reader.check()
         if completed_url(state, page.url):
+            recover_saved_grades(reader, state, directory)
             return finish(reader, state, directory)
         page.wait_for_function('() => {const v=(' + VIEW + ')(); return v.instructions || v.retry || v.ready || '
                                '/\/diagnostics\/\d+\/analysis(?:[?#]|$)/.test(v.url);}')
@@ -185,6 +233,8 @@ def _take_diagnostic(reader, state, directory):
         number = view['number']
         if not number:
             raise ValueError('Diagnostic has no recognized current question')
+        question_started = time.monotonic()
+        recover_saved_grades(reader, state, directory, advanced_past=number)
         slot = 'question-' + str(number).zfill(3)
         record = state['questions'].get(slot)
         scope = by_id(page, 'questionContainer')
@@ -259,7 +309,7 @@ def _take_diagnostic(reader, state, directory):
             record['decision'] = decision
             record['intended'] = 'C' if record['classification'] == 'prerequisite' else 'skip'
             save()
-        reader.pacer.wait('answer', 'diagnostic answer', elapsed=0)
+        reader.pacer.wait('answer', 'diagnostic answer', elapsed=time.monotonic()-question_started)
         if record['classification'] == 'prerequisite':
             reader.enter(scope, record)
             reader.verify_entered(scope, record)

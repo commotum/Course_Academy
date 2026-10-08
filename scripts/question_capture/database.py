@@ -431,7 +431,25 @@ class Database:
             diagnostic = error.stderr or ''
             if isinstance(diagnostic,bytes):
                 diagnostic = diagnostic.decode('utf-8',errors='replace')
-            if not re.search(r'^ERROR category=Conflict code=postgres/stale-basis(?:\s|$)',diagnostic,re.M):
+            if re.search(r'^ERROR category=Conflict code=transport/remote-error(?:\s|$)', diagnostic, re.M):
+                from edb_transport import replay
+                try:
+                    text = replay([self.args.edb_bin, 'transact', '--database', self.args.database,
+                        '--file', tx_path, '--endpoint', intent['endpoint'], '--request-key', intent['request_key'],
+                        '--basis', intent['basis'], '--timeout-ms', 180000], env=self.env)
+                except subprocess.CalledProcessError as remote:
+                    error = remote
+                    diagnostic = remote.stderr or ''
+                else:
+                    receipt_path.write_text(text)
+                    receipt = loads(text)
+                    if receipt.get(':edb/committed') is not True:
+                        raise ValueError('Commit not confirmed. Retain and retry the exact saved intent.')
+                    return receipt
+            stale = re.search(r'^ERROR category=Conflict code=postgres/stale-basis(?:\s|$)',diagnostic,re.M)
+            stale = stale or (re.search(r'^ERROR category=Conflict code=transport/remote-error(?:\s|$)',diagnostic,re.M)
+                              and re.search(r'^remote_code=postgres/stale-basis$',diagnostic,re.M))
+            if not stale:
                 raise
             # EDB checks exact receipts before this guard. This rejection proves
             # the request did not commit, so its plan can be retired and rebuilt.
@@ -477,6 +495,11 @@ class Database:
                   'question_count': len(ids),
                   'verification_method': 'committed_transaction_and_content',
                   'learner_and_engine_facts_unchanged': True, 'reimport_is_noop': True}
+        identity_attributes={a for a,name in attributes if str(name)==':question/math-academy-id'}
+        result['imported_question_ids']=ids
+        result['new_question_ids']=sorted({str(d[2]) for d in receipt.get(':edb/tx-data',[])
+                                           if d[1] in identity_attributes and d[4]})
+        result['new_question_count']=len(result['new_question_ids'])
         atomic_json(directory / 'verification.json', result)
         if frozen:
             report_path = directory/'replacement-report.json'

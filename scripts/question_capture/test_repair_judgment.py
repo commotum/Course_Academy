@@ -56,6 +56,27 @@ class RepairJudgmentTests(unittest.TestCase):
         self.assertNotEqual(tests.call_args_list[1].args[1],'discover')
         self.assertIn('without symbolic algebra.',plan['patches'][0]['candidate'])
 
+    def test_absolute_allowed_source_path_reaches_candidate_validation(self):
+        import capture_repair
+        fixture=self.fixture();fixture.failure()
+        fixture.result={'status':'repair','summary':'Targeted recovery.','file':str((capture_repair.PACKAGE/'browser.py').resolve()),
+                        'edits':[{'old':'class CaptureBrowser:','new':'class CaptureBrowser:  # tested recovery'}],
+                        'regression_test':'import unittest','validation':'focused'}
+        with patch('capture_repair.run_cli',side_effect=fixture.cli), \
+             patch('capture_repair.run_tests',side_effect=[(1,'FAIL: observed failure'),(0,'OK')]) as tests:
+            plan=prepare(fixture.args,fixture.pacer)
+        self.assertEqual(plan['file'],'browser.py')
+        self.assertEqual(tests.call_count,2)
+
+    def test_absolute_path_outside_allowed_package_is_rejected(self):
+        fixture=self.fixture();fixture.failure()
+        fixture.result={'status':'repair','summary':'Invalid target.','file':str(fixture.root/'browser.py'),
+                        'edits':[{'old':'class CaptureBrowser:','new':'changed'}],'regression_test':'import unittest'}
+        with patch('capture_repair.run_cli',side_effect=fixture.cli), \
+             patch('capture_repair.run_tests') as tests,self.assertRaisesRegex(ValueError,'allowed source patches'):
+            prepare(fixture.args,fixture.pacer)
+        tests.assert_not_called()
+
     def test_interrupted_repair_without_session_identity_restarts_diagnosis(self):
         fixture=self.fixture();fixture.failure()
         directory=fixture.args.state_dir/'capture-repair';directory.mkdir(parents=True)

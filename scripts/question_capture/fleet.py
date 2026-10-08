@@ -92,9 +92,9 @@ def worker_command(data, worker, *, dry_run=False, limit=None):
              '--diagnostic-topics',worker['topics']]
     if course_id:
         command += ['--diagnostic-course-id',str(course_id)]
-    if worker.get('progress_urls'):
+    if worker.get('progress_mode')=='fixed' and worker.get('progress_urls'):
         for url in worker['progress_urls']:command += ['--progress-url',url]
-    else:
+    elif worker.get('progress_mode')=='fixed':
         for cid in worker.get('progress_course_ids') or [course_id]:
             command += ['--progress-course-id',str(cid)]
     for other in data['workers']:
@@ -258,7 +258,7 @@ def run_worker(data, worker, *, dry_run=False, limit=None):
                 with log.open() as incoming:
                     incoming.seek(position);remaining=incoming.read()
                 if remaining:print(remaining,end='',flush=True)
-                saved.update(finished_at=time.time(),exit_code=code)
+                saved.update(finished_at=time.time(),exit_code=code,stop_requested=stop.is_set())
                 atomic_json(root/'fleet-worker.json',saved)
                 (root/'exit-code').write_text(str(code)+'\n')
                 (root/'finished-at').write_text(time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())+'\n')
@@ -302,26 +302,48 @@ def worker_status(worker):
     sources=list(worker['output'].glob('*/state.json'))
     source=max(sources,key=lambda p:p.stat().st_mtime) if sources else None
     state=read_json(source) if source else {}
+    if not running and ready(worker) and not runtime.get('exit_code'):
+        if state.get('activity_complete') and not state.get('history_complete'):
+            status='HISTORY PENDING'
+        elif state.get('history_complete') and state.get('deferred_error',{}).get('phase')=='import':
+            status='IMPORT PENDING'
+        elif state.get('activity_complete') and state.get('history_complete'):
+            status='COMPLETE'
     records=list(state.get('questions',{}).values())
     graded=sum(bool(q.get('actual_result') or q.get('finalized')) for q in records)
     task=(str(state.get('task_type','activity'))+' '+str(state['task_id'])) if state else 'No activity yet'
-    if state.get('deferred_error'):task+=' (deferred)'
+    if state.get('deferred_error') and not running:task+=' (deferred)'
     log=runtime.get('log')
     if not log:
         logs=list((worker['state_dir']/'logs').glob('run-*.log'))
         if logs:log=str(max(logs,key=lambda p:p.stat().st_mtime))
     text=tail(log) if log else ''
+    if not running and runtime.get('exit_code') and (runtime.get('stop_requested') or 'KeyboardInterrupt: Stopped' in text):
+        status='STOPPED'
     recent=next((s for s in reversed(text.splitlines()) if s.strip()),'')
+    if status in ('IMPORT PENDING','HISTORY PENDING'):recent=state.get('deferred_error',{}).get('message',recent)
     age=time.time()-Path(log).stat().st_mtime if log and Path(log).exists() else None
     stats=read_json(worker['state_dir']/'dashboard.json')
-    from dashboard import local_date
+    from dashboard import local_date, activity_counts, import_totals
     xp=stats.get('daily_xp',{})
     if xp.get('date')!=local_date():xp={}
+    ledger=read_json(worker['state_dir']/'daily-xp.json').get(local_date(),{})
+    recent_activities=stats.get('recent_activities')
+    if recent_activities is None:
+        recent_activities=[{'task_id':mid,'date':date,**task} for date,tasks in sorted(read_json(worker['state_dir']/'daily-xp.json').items())
+                for mid,task in reversed(list(tasks.items()))][-20:]
+    if state.get('activity_complete') and not state.get('history_complete'):detail='Saving explanations'
+    elif state.get('history_complete') and not state.get('import_complete'):detail='Importing capture'
+    elif state.get('import_complete'):detail=state.get('task_type','Activity').capitalize()+' complete'
+    else:detail='Capturing '+state.get('task_type','activity') if state else 'No activity yet'
+    if not running and status=='STOPPED':detail='Checkpoint saved · ready to resume'
     return {'worker':worker['id'],'window':worker['window'],'account':auth.get('username','—'),
             'status':status,'activity':task,'questions':str(graded)+'/'+str(len(records))+' graded',
             'uptime':int(time.time()-runtime['started_at']) if running and runtime.get('started_at') else None,
             'log_age':int(age) if age is not None else None,'recent':recent,'log':log,
             'daily_xp':xp,'percent_complete':stats.get('percent_complete'),
+            'activity_counts':activity_counts(ledger.values()),'recent_activities':recent_activities,
+            'database_questions':import_totals(worker['state_dir']),'detail':detail,
             'stats_observed_at':stats.get('observed_at')}
 
 
@@ -336,26 +358,12 @@ def progress_line(row):
     return '  Today '+points+' XP  |  Course '+completion
 
 
-def render(rows, *, compact=False):
+def render(rows, *, compact=False, color=False):
     if compact:
         counts={kind:sum(r['status']==kind for r in rows) for kind in ('RUNNING','READY','NOT CONFIGURED')}
         return 'MA '+str(counts['RUNNING'])+' running / '+str(counts['READY'])+' ready / '+str(counts['NOT CONFIGURED'])+' unset'
-    width=shutil.get_terminal_size().columns
-    name_width=38 if width<110 else 43
-    activity_width=16 if width<110 else 29
-    lines=['Math Academy workers — '+datetime.now(ZoneInfo('America/Los_Angeles')).strftime('%H:%M:%S %Z'),
-           f'{"Course / account":<{name_width}} {"State":<14} {"Activity":<{activity_width}} Graded']
-    for row in rows:
-        name=row['window']+' / '+row['account']
-        questions=row['questions'].removesuffix(' graded')
-        lines.append(f'{name[:name_width]:<{name_width}} {row["status"]:<14} {row["activity"][:activity_width]:<{activity_width}} {questions}')
-        lines.append(progress_line(row))
-    for row in rows:
-        if row['status']=='RUNNING':
-            lines.append((row['worker']+' ('+str(row['uptime'] or 0)+'s; log '+str(row['log_age'] or 0)+'s ago): '+row['recent'])[:width])
-    lines += ['','Ctrl+b n/p: course windows · Ctrl+b d: detach (workers continue)',
-              'scripts/ma-workers status · scripts/ma-workers stop [worker]']
-    return '\n'.join(lines)
+    from terminal_monitor import render as cards
+    return cards(rows,shutil.get_terminal_size().columns,color=color)
 
 
 def main(argv=None):
@@ -391,10 +399,10 @@ def main(argv=None):
         elif args.command=='worker':return run_worker(data,workers[0],dry_run=args.dry_run,limit=args.limit)
         elif args.command=='status':
             rows=[worker_status(w) for w in workers]
-            print(json.dumps(rows,indent=2) if args.json else render(rows,compact=args.compact))
+            print(json.dumps(rows,indent=2) if args.json else render(rows,compact=args.compact,color=sys.stdout.isatty()))
         elif args.command=='dashboard':
             while True:
-                print('\033[2J\033[H'+render([worker_status(w) for w in workers]),end='\n',flush=True)
+                print('\033[?25l\033[H'+render([worker_status(w) for w in workers],color=True)+'\033[J',end='',flush=True)
                 time.sleep(5)
     except (Exception,KeyboardInterrupt) as error:
         print(type(error).__name__+': '+str(error),file=sys.stderr);return 1

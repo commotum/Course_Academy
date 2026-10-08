@@ -109,6 +109,7 @@ def evidence_version(source, edb_bin=None):
 
 
 def next_failure(args, ledger, *, task_ids=None):
+    from capture import superseded_before_start
     generation=source_version()
     sources = list(args.output.glob('*/diagnostics/*/error.json')) + list((args.state_dir/'diagnostics').glob('*/error.json'))
     for source in sorted(sources,key=lambda p:p.stat().st_mtime,reverse=True):
@@ -122,7 +123,7 @@ def next_failure(args, ledger, *, task_ids=None):
         state_file = source.parents[2]/'state.json'
         if state_file.exists():
             state = json.loads(state_file.read_text())
-            if (state.get('import_complete') or state.get('preview_complete') or
+            if (superseded_before_start(state) or state.get('import_complete') or state.get('preview_complete') or
                     state.get('history_complete') and report['phase'] not in ('queue','queue-after')):
                 continue
         key = failure_key(report)
@@ -172,6 +173,14 @@ def validation_names(files, regression, result):
               'core.py':('test_capture.ProgressTests','test_shutdown')}
     for name in files:names.update(relevant.get(name,()))
     return ','.join(sorted(names))
+
+
+def repair_filename(name):
+    """Accept an absolute spelling of the same allowlisted local source file."""
+    path=Path(name)
+    if path.is_absolute() and path.name in ALLOWED and path.resolve()==(PACKAGE/path.name).resolve():
+        return path.name
+    return name
 
 
 def prepare(args, pacer):
@@ -255,6 +264,7 @@ def prepare(args, pacer):
             return {'resolved':True,'diagnostic':str(diagnostic),'summary':result['summary']}
         return None
     patches=result.get('patches') or [{'file':result['file'],'edits':result['edits']}]
+    patches=[{**patch,'file':repair_filename(patch['file'])} for patch in patches]
     names=[patch['file'] for patch in patches]
     if (len(set(names))!=len(names) or any(name not in ALLOWED for name in names) or
             any(not patch['edits'] for patch in patches) or not result['regression_test']):
