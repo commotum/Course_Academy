@@ -1,0 +1,129 @@
+;; Questions, their answer fields, and the fields' answer values.
+;; :schema/target defines or names the shape reached through a ref.
+;; :schema/enum lists the enum entities associated with a ref.
+;; :schema/specs contains the specs requested explicitly through :db/ensure.
+;; Question-bank membership is stored through :knowledge-point/questions.
+;; Worked-example roles are derived from :knowledge-point/canonical-example.
+;; Learner answers, timing, outcomes, and exposure history belong to task-item data.
+
+{:db/ident :question/schema
+ :schema/attributes
+  [{:db/ident :question/id
+    :db/valueType :db.type/uuid
+    :db/cardinality :db.cardinality/one
+    :db/unique :db.unique/identity
+    :db/doc "Stable identity of a question or worked example. Individual presentations and submissions have separate identities; changing option order does not create a new question."}
+
+   {:db/ident :question/math-academy-id
+    :db/valueType :db.type/string
+    :db/cardinality :db.cardinality/one
+    :db/unique :db.unique/identity
+    :db/doc "Optional prefixed Math Academy content identifier: q-N for a source question ID or e-N for a source example content ID. The prefixes prevent overlap in this unique attribute. Identifies content, not a presentation or learner attempt. Omit for independently created content."}
+
+   {:db/ident :question/difficulty
+    :db/valueType :db.type/ref
+    :db/cardinality :db.cardinality/one
+    :db/doc "Optional reference to an E/M/H difficulty enum entity observed in completed MA activity: :question.difficulty/easy, /moderate, or /hard. This is distinct from aggregate topic difficulty and learner ability. Omit when unknown; allowed values require validation."
+    :schema/enum
+     [{:db/ident :question.difficulty/easy}
+      {:db/ident :question.difficulty/moderate}
+      {:db/ident :question.difficulty/hard}]}
+
+   {:db/ident :question/requires-calculator
+    :db/valueType :db.type/boolean
+    :db/cardinality :db.cardinality/one
+    :db/doc "Whether a calculator is required to answer the question. Captured MA instructions all express a requirement, sometimes specifying a scientific or graphing calculator. This boolean records the requirement only. False means not required, not forbidden; omit when unknown. Absence of a captured instruction alone does not establish false."}
+
+   {:db/ident :question/problem
+    :db/valueType :db.type/string
+    :db/cardinality :db.cardinality/one
+    :db/doc "Problem statement, stored as Markdown supporting LaTeX and image links. For gradable questions, named field locations correspond to answer-field/key on this question's fields. For examples, this is the demonstrated problem."}
+
+   {:db/ident :question/answer-fields
+    :db/valueType :db.type/ref
+    :db/cardinality :db.cardinality/many
+    :db/isComponent true
+    :db/doc "Owned answer fields, required for automatic grading and optional for worked examples or externally supplied assignment prompts. A question may mix radio, blank, and select fields. Field keys identify their locations in the problem; example fields are read-only. Fieldless assignment prompts do not enter practice banks or produce correctness evidence."
+    :schema/target
+     {:db/ident :answer-field/schema
+      :schema/attributes
+       [{:db/ident :answer-field/id
+         :db/valueType :db.type/uuid
+         :db/cardinality :db.cardinality/one
+         :db/unique :db.unique/identity
+         :db/doc "Stable identity of a field owned by one question."}
+
+        {:db/ident :answer-field/type
+         :db/valueType :db.type/ref
+         :db/cardinality :db.cardinality/one
+         :db/doc "Interaction type for this field: :answer-field.type/radio, /blank, or /select. Radio and select display their authored choices. Blank fields accept entered values and never display their choices as options. The application checks enum membership."
+         :schema/enum
+          [{:db/ident :answer-field.type/radio}
+           {:db/ident :answer-field.type/blank}
+           {:db/ident :answer-field.type/select}]}
+
+        {:db/ident :answer-field/presentation
+         :db/valueType :db.type/string
+         :db/cardinality :db.cardinality/one
+         :db/doc "Optional display hint. checkbox presents independent Roman-labelled statements when a radio field enumerates every combination, submitting the matching authored choice ID. Canonical grading and historical responses remain unchanged. Application validates the complete combination map before using this presentation."}
+
+        {:db/ident :answer-field/key
+         :db/valueType :db.type/string
+         :db/cardinality :db.cardinality/one
+         :db/doc "Key unique within the question, binding the field to a problem location such as x or y. A single radio field can use selection without an inline placeholder."}
+
+        {:db/ident :answer-field/choices
+         :db/valueType :db.type/ref
+         :db/cardinality :db.cardinality/many
+         :db/isComponent true
+         :db/doc "All answer values owned by this field, including the canonical answer, authored radio/select options, and distinct entered blank values. The correct answer must be a member. Radio/select display authored choices; blanks never display this collection as options. The application deduplicates values within the field, controls option order, and preserves values once a task-item response references them."
+         :schema/target
+          {:db/ident :answer/schema
+           :schema/attributes
+            [{:db/ident :answer/id
+              :db/valueType :db.type/uuid
+              :db/cardinality :db.cardinality/one
+              :db/unique :db.unique/identity
+              :db/doc "Stable identity of a field-scoped answer value. Reuse this entity for repeated identical values within its field; do not share it across fields."}
+
+             {:db/ident :answer/type
+              :db/valueType :db.type/ref
+              :db/cardinality :db.cardinality/one
+              :db/doc "Representation: answer.type/math, answer.type/text, or answer.type/image."
+              :schema/enum
+               [{:db/ident :answer.type/math}
+                {:db/ident :answer.type/text}
+                {:db/ident :answer.type/image}]}
+
+             {:db/ident :answer/value
+              :db/valueType :db.type/string
+              :db/cardinality :db.cardinality/one
+              :db/doc "Exact answer content: learner-entered strings are retained verbatim, including empty or malformed math input. Authored math values may use LaTeX without Markdown delimiters; text and image values hold their respective content. Evaluation and normalization are separate from storage."}
+
+             {:db/ident :answer/feedback
+              :db/valueType :db.type/string
+              :db/cardinality :db.cardinality/one
+              :db/doc "Optional feedback associated with this answer value, such as an explanation for a radio or select option."}]
+           :schema/specs
+            [{:db/ident :answer/validate
+              :db.entity/attrs [:answer/id :answer/type :answer/value]
+              :db/doc "Requires identity, type, and a string value when explicitly ensured. The application checks supported answer types and field-scoped deduplication, keeps referenced values immutable, and may validate authored image availability. Do not reject an entered value solely because its math syntax is malformed."}]}}
+
+        {:db/ident :answer-field/correct
+         :db/valueType :db.type/ref
+         :db/cardinality :db.cardinality/one
+         :db/doc "Required canonical answer, which must be a member of this field's choices. This ordinary ref does not add another ownership relationship."
+         :schema/target :answer/schema}]
+      :schema/specs
+       [{:db/ident :answer-field/validate
+         :db.entity/attrs [:answer-field/id :answer-field/key :answer-field/type :answer-field/choices :answer-field/correct]
+         :db/doc "Requires identity, key, type, at least one answer value, and a correct ref when explicitly ensured. Writers also ensure answer/validate. Unique keys, correct-answer membership, field-scoped value deduplication, and interaction-specific display rules require application validation."}]}}
+
+   {:db/ident :question/worked-solution
+    :db/valueType :db.type/string
+    :db/cardinality :db.cardinality/one
+    :db/doc "Worked solution for the whole problem, stored as Markdown supporting LaTeX and image links. Required for worked examples; optional for ordinary questions."}]
+ :schema/specs
+  [{:db/ident :question/validate
+    :db.entity/attrs [:question/id :question/problem]
+    :db/doc "Requires identity and problem when explicitly ensured. The application requires complete answer fields before automatic grading, and a worked solution for canonical examples, validates any present fields and answer values, and derives example roles from knowledge-point/canonical-example and excludes those targets from every practice pool. A fieldless school problem may be displayed through assigned-problem without grading or awarding mastery."}]}

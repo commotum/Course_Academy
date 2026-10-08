@@ -840,6 +840,12 @@ class DOMTests(unittest.TestCase):
         self.assertTrue(item['worked_solution'])
         self.page.locator('.questionWidget-result').evaluate('n=>n.textContent=""')
         unconfirmed=scope.evaluate(EXTRACT)
+        # A proof can confirm individual fields before its terminal grade.
+        # The actual accepted disabled frame carries its own source grade.
+        self.assertEqual(unconfirmed['errors'],[])
+        self.page.locator('.selectListFrameDisabled').evaluate_all(
+            'nodes=>nodes.forEach(n=>n.classList.remove("correctSelection","correctSelectionMultipleAttempts"))')
+        unconfirmed=scope.evaluate(EXTRACT)
         self.assertEqual(len([e for e in unconfirmed['errors'] if 'Select frame has no ID' in e]),3)
 
     def test_real_submitting_dropdown_checkpoint_recovers_without_submit(self):

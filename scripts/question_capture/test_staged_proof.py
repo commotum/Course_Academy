@@ -111,3 +111,103 @@ class StagedProofTests(unittest.TestCase):
             record['entry_keys']=['field-2'];b.enter(self.page.locator('body'),record)
             self.assertEqual(self.page.locator('#s2').input_value(),'0')
             self.assertEqual(record['intended'],'W')
+    def test_intermediate_stage_ignores_css_hidden_spinner(self):
+        self.page.set_content((FIXTURE/'before.html').read_text())
+        scope=self.page.locator('#step-q334055');initial=scope.evaluate(EXTRACT)
+        answers=[dict(key=f['key'],correct_option='0',correct_value=f['choices'][0]['value'],value_type=f['choices'][0]['type'],wrong_value=f['choices'][-1]['value'],correct_keys=[],wrong_keys=[]) for f in initial['fields']]
+        record=dict(before=initial,decision=dict(confident=True,explanation='fixture',answers=answers),intended='C',status='prepared')
+        accepted=(FIXTURE/'accepted.html').read_text().replace('class="questionWidget-spinnerFrame"','class="questionWidget-spinnerFrame" style="visibility:hidden"').replace('class="questionWidget-spinner"','class="questionWidget-spinner" style="display:block"')
+        self.page.evaluate('(html)=>document.querySelector(".questionWidget-submitButton").onclick=()=>document.getElementById("step-q334055").outerHTML=html',accepted)
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--state-dir',work,'--timeout-ms','500','--event-min','0','--event-max','0','--answer-min','0','--answer-max','0'])
+            solver=Mock();solver.solve.side_effect=RuntimeError('next stage solve')
+            b=CaptureBrowser(self.page,args,Pacer(args,random.Random(1)),solver)
+            def enter(scope,record):
+                for f in record['before']['fields']:
+                    f.update(submitted_value=f['choices'][0]['value'],submitted_option='0')
+                self.page.locator('.questionWidget-submitButton').evaluate("n=>n.classList.remove('disabledButton')")
+            b.enter=enter;b.verify_entered=Mock()
+            with self.assertRaisesRegex(RuntimeError,'next stage solve'):
+                b.proof_question(scope,record,Path(work),'q-334055',lambda:None)
+            self.assertEqual(record['proof_stages'][0]['outcome'],'accepted')
+    def test_rejected_wrong_stage_retries_correctly_before_next_stage(self):
+        self.page.set_content((FIXTURE/'before.html').read_text())
+        scope=self.page.locator('#step-q334055');initial=scope.evaluate(EXTRACT)
+        answers=[dict(key=f['key'],correct_option='0',correct_value=f['choices'][0]['value'],value_type=f['choices'][0]['type'],wrong_value=f['choices'][-1]['value'],correct_keys=[],wrong_keys=[]) for f in initial['fields']]
+        for f in initial['fields']:
+            c=f['choices'][-1] if f['key']=='field-1' else f['choices'][0]
+            f.update(submitted_value=c['value'],submitted_option=c['option'])
+            self.page.locator('#'+f['frame_id']).evaluate('(n,html)=>n.innerHTML=html',c['html'])
+        self.page.locator('#step-q334055').evaluate('(n,html)=>n.insertAdjacentHTML("beforeend",html)', "<div class='questionWidget-feedback'>Oops, that's not quite right. Please try again.</div>")
+        record=dict(before=initial,decision=dict(confident=True,explanation='fixture',answers=answers),intended='W',status='submitting')
+        self.page.evaluate('(html)=>document.querySelector(".questionWidget-submitButton").onclick=()=>document.getElementById("step-q334055").outerHTML=html',(FIXTURE/'accepted.html').read_text())
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--state-dir',work,'--timeout-ms','1000','--event-min','0','--event-max','0','--answer-min','0','--answer-max','0'])
+            solver=Mock();solver.solve.side_effect=RuntimeError('next stage solve')
+            b=CaptureBrowser(self.page,args,Pacer(args,random.Random(1)),solver)
+            entered=[]
+            def enter(scope,record):
+                self.assertTrue(record['wrong_submission_used'])
+                entered.append(record['entry_keys'])
+                for f in record['before']['fields']:
+                    c=f['choices'][0];f.update(submitted_value=c['value'],submitted_option=c['option'])
+                self.page.locator('.questionWidget-submitButton').evaluate("n=>n.classList.remove('disabledButton')")
+            b.enter=enter;b.verify_entered=Mock()
+            with self.assertRaisesRegex(RuntimeError,'next stage solve'):
+                b.proof_question(scope,record,Path(work),'q-334055',lambda:None)
+            self.assertEqual(entered,[['field-1','field-2']])
+            self.assertEqual([s['outcome'] for s in record['proof_stages']],['rejected','accepted'])
+            self.assertEqual(record['intended'],'W')
+    def test_actual_accepted_disabled_frame_is_captured_before_whole_grade(self):
+        self.page.set_content((FIXTURE/'accepted-disabled.html').read_text())
+        item=self.page.locator('#step-q334055').evaluate(EXTRACT)
+        self.assertEqual(item['errors'],[])
+        self.assertEqual(len(item['fields']),8)
+        self.assertEqual(item['fields'][5]['frame_id'],'selectListFrame-334055-5')
+        self.assertEqual(item['fields'][5]['source_correct'],{'type':'math','value':'3'})
+        record=json.loads((FIXTURE/'pending-six.json').read_text())
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--state-dir',work]);solver=Mock();solver.solve.side_effect=RuntimeError('next stage solve')
+            b=CaptureBrowser(self.page,args,Pacer(args,random.Random(1)),solver)
+            with self.assertRaisesRegex(RuntimeError,'next stage solve'):
+                b.proof_question(self.page.locator('#step-q334055'),record,Path(work),'q-334055',lambda:None)
+            self.assertEqual(record['proof_stages'][0]['submitted_keys'],['field-6'])
+            self.assertEqual(record['proof_stages'][0]['outcome'],'accepted')
+            self.assertEqual(len(record['before']['fields']),8)
+    def test_actual_stage_wait_accepts_disabled_frame_and_zero_area_spinner(self):
+        self.page.set_content((FIXTURE/'before-six.html').read_text())
+        self.page.evaluate('(html)=>document.querySelector(".questionWidget-submitButton").onclick=()=>document.getElementById("step-q334055").outerHTML=html',(FIXTURE/'accepted-disabled.html').read_text())
+        record=json.loads((FIXTURE/'pending-six.json').read_text());record['status']='prepared';record.pop('proof_pending')
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--state-dir',work,'--timeout-ms','1000','--event-min','0','--event-max','0','--answer-min','0','--answer-max','0'])
+            solver=Mock();solver.solve.side_effect=RuntimeError('next stage solve')
+            b=CaptureBrowser(self.page,args,Pacer(args,random.Random(1)),solver)
+            def enter(scope,record):
+                self.assertEqual(record['entry_keys'],['field-6'])
+                self.page.locator('.questionWidget-submitButton').evaluate("n=>n.classList.remove('disabledButton')")
+                for f in record['before']['fields']:
+                    if f['key']=='field-6':f.update(submitted_value='3',submitted_option='2')
+            b.enter=enter;b.verify_entered=Mock()
+            with self.assertRaisesRegex(RuntimeError,'next stage solve'):
+                b.proof_question(self.page.locator('#step-q334055'),record,Path(work),'q-334055',lambda:None)
+            self.assertEqual(record['proof_stages'][0]['outcome'],'accepted')
+    def test_initial_dynamic_select_dispatches_before_proof_sections_exist(self):
+        self.page.set_content('<div id="stepButton-q334064" class="stepButton current"></div><div id="finalScreen" style="display:none"></div>'+(FIXTURE/'initial-dynamic.html').read_text())
+        scope=self.page.locator('#step-q334064')
+        self.assertEqual(scope.locator('.proofSection').count(),0)
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--state-dir',work,'--event-min','0','--event-max','0'])
+            solver=Mock()
+            def solve(item,*args):
+                answers=[dict(key=f['key'],correct_option='0',correct_value=f['choices'][0]['value'],value_type=f['choices'][0]['type'],wrong_value=f['choices'][-1]['value'],correct_keys=[],wrong_keys=[])for f in item['fields']]
+                return dict(confident=True,explanation='fixture',answers=answers)
+            solver.solve.side_effect=solve
+            b=CaptureBrowser(self.page,args,Pacer(args,random.Random(1)),solver)
+            b.proof_question=Mock(side_effect=RuntimeError('staged player'))
+            b.enter=Mock(side_effect=RuntimeError('ordinary player'))
+            state=dict(task_id=1,task_type='lesson',questions={},current_kp='kp',kps={'kp':dict(id='kp',title='Polynomial order',sequence='CWCWC')})
+            with self.assertRaisesRegex(RuntimeError,'staged player'):b.activity(state,Path(work),{})
+            b.proof_question.assert_called_once()
+            b.enter.assert_not_called()
+            self.page.locator('.questionWidget-healthFrame').evaluate('n=>n.remove()')
+            self.assertFalse(b.is_staged_question(scope))

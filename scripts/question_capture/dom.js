@@ -41,7 +41,8 @@ element => {
     } else if (n.matches('.selectList')) {
       f.tag = 'custom-select';
       const graded = ['Correct','Incorrect','Partial Credit','Skipped Question'].includes(element.querySelector('.questionWidget-result')?.textContent.trim());
-      const frame = n.querySelector('.selectListFrame') || (graded && n.querySelector('.selectListFrameDisabled'));
+      const frame = n.querySelector('.selectListFrame') || n.querySelector(
+        graded ? '.selectListFrameDisabled' : '.selectListFrameDisabled.correctSelection, .selectListFrameDisabled.correctSelectionMultipleAttempts');
       f.frame_id = frame?.id;
       if (!f.frame_id) errors.push('Select frame has no ID: ' + n.id);
     } else if (n.matches('input') && !['text','number',''].includes(n.getAttribute('type') || '')) {
@@ -177,10 +178,12 @@ element => {
     if (field.tag === 'custom-select') {
       const frame = [...fieldNodes].find(([,key]) => key === field.key)?.[0]
         .querySelector('.selectListFrame, .selectListFrameDisabled');
-      if (frame?.matches('.correctSelection, .correctSelectionMultipleAttempts, .incorrectSelection')) {
-        field.source_result = frame.matches('.incorrectSelection') ? 'Incorrect' : 'Correct';
+      if (frame && !frame.querySelector('.selectListSelectedText')) {
         const selected = choice(frame, null);
         field.source_selected = {type:selected.type, value:selected.value};
+      }
+      if (frame?.matches('.correctSelection, .correctSelectionMultipleAttempts, .incorrectSelection')) {
+        field.source_result = frame.matches('.incorrectSelection') ? 'Incorrect' : 'Correct';
         if (field.source_result === 'Correct') field.source_correct = field.source_selected;
       }
     }
@@ -194,6 +197,7 @@ element => {
     problem:[text(graphic),text(prompt)].filter(Boolean).join('\n\n'), worked_solution:text(solution),
     calculator_instructions:text(instructions), fields,
     result:element.querySelector('.questionWidget-result, .correctAnswerText, .incorrectAnswerText')?.textContent.trim(),
+    proof_feedback:element.querySelector('.questionWidget-feedback')?.textContent.trim(),
     html:element.outerHTML, errors:[...new Set(errors)],
     assets:assets.map((n,index) => ({index, tag:n.localName, html:n.outerHTML,
       source_url:n.localName==='img' ? n.currentSrc || n.src : null}))};

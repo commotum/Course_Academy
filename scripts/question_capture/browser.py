@@ -651,6 +651,14 @@ class CaptureBrowser:
         record['status'] = 'prepared'
         return True
 
+    @staticmethod
+    def is_staged_question(scope):
+        # DynamicSelect renders a health bar before any later proof sections
+        # exist. Static selects have no health bar; ordinary questions keep
+        # their existing player.
+        return bool(scope.locator('.proofSection').count() or (
+            scope.locator('.questionWidget-healthFrame').count() and scope.locator('.selectList').count()))
+
     def proof_question(self, scope, record, directory, mid, save):
         """Complete only newly exposed proof fields, inspecting every stage grade."""
         from solver import Solver
@@ -679,7 +687,8 @@ class CaptureBrowser:
             terminal = item.get('result') in ('Correct','Incorrect','Partial Credit')
             if pending and not terminal:
                 submitted = [current.get(key, {}) for key in pending['keys']]
-                if not submitted or not all(f.get('source_result') in ('Correct','Incorrect') for f in submitted):
+                retry = item.get('proof_feedback') == "Oops, that's not quite right. Please try again."
+                if not submitted or not (retry or all(f.get('source_result') in ('Correct','Incorrect') for f in submitted)):
                     raise ValueError('Uncertain proof submission has no source outcome; stop without resubmission: ' + mid)
                 for field in submitted:
                     observed = field.get('source_selected', {})
@@ -693,12 +702,15 @@ class CaptureBrowser:
                         prediction.get('correct_value',''),prediction.get('value_type','text'))
                     if record['intended']=='W' and distinct:
                         record['wrong_submission_used'] = True
-                    if field['source_result']=='Incorrect' and not distinct:
+                    if field.get('source_result')=='Incorrect' and not distinct:
                         record['proof_needs_solve'] = True
-                rejected = [(f['key'],f.get('submitted_value')) for f in submitted if f['source_result']=='Incorrect']
+                if retry and not any(normalize(f['submitted_value']) != normalize(
+                        predictions.get(f['key'],{}).get('correct_value','')) for f in submitted):
+                    record['proof_needs_solve'] = True
+                rejected = [[f['key'],f.get('submitted_value')] for f in submitted if retry or f.get('source_result')=='Incorrect']
                 repeats = sum(s.get('rejected_values')==rejected for s in stages) if rejected else 0
                 stages.append({'submitted_keys':pending['keys'], 'outcome':'accepted' if all(
-                    f['source_result']=='Correct' for f in submitted) else 'rejected', 'observation':item,
+                    f.get('source_result')=='Correct' for f in submitted) else 'rejected', 'observation':item,
                     'decision':record['decision'], 'intended':record['intended'], 'rejected_values':rejected})
                 record.pop('proof_pending',None)
                 record['status'] = 'prepared'
@@ -742,7 +754,7 @@ class CaptureBrowser:
             self.check()
             self.verify_entered(scope,record)
             self.page.screenshot(path=str(Path(directory)/(mid+'-proof-entered-'+str(len(stages))+'.png')))
-            record['proof_pending'] = {'keys':keys}
+            record['proof_pending'] = {'keys':keys,'feedback_before':item.get('proof_feedback')}
             record['status'] = 'submitting'
             save()
             journal(Path(directory)/'events.jsonl','proof_submission_intent',question=mid,stage=len(stages),intended=record['intended'],keys=keys)
@@ -750,13 +762,21 @@ class CaptureBrowser:
             if 'disabledButton' in (submit.get_attribute('class') or ''):
                 raise ValueError('Proof Submit is disabled after filling observed fields')
             submit.click()
-            self.page.wait_for_function('''({id,ids})=>{
-              const n=document.getElementById(id),visible=e=>!!e?.getClientRects().length;
+            self.page.wait_for_function('''({id,ids,feedbackBefore})=>{
+              const n=document.getElementById(id),visible=e=>{const r=e?.getBoundingClientRect();return !!r && r.width>0 && r.height>0 && getComputedStyle(e).visibility!=='hidden';};
               if(visible(document.getElementById('continueButton-'+id.replace('step-','')))) return true;
+              const frames=ids.map(id=>document.getElementById(id)?.querySelector('.selectListFrame,.selectListFrameDisabled'));
+              // These classes are a completed source grade even when the site's
+              // empty spinner retains display:block after the request finishes.
+              if(frames.every(e=>e?.matches('.correctSelection,.correctSelectionMultipleAttempts'))) return true;
               const spinner=n?.querySelector('.questionWidget-spinner');
               if(visible(spinner) && spinner.style.display==='block') return false;
-              return ids.every(id=>document.getElementById(id)?.matches('.correctSelection,.correctSelectionMultipleAttempts,.incorrectSelection'));
-            }''',arg={'id':scope.get_attribute('id'),'ids':[current[key]['frame_id'] for key in keys]})
+              if(visible(n?.querySelector('.questionWidget-feedback')) &&
+                 n.querySelector('.questionWidget-feedback').textContent.trim()==="Oops, that's not quite right. Please try again." &&
+                 feedbackBefore!=="Oops, that's not quite right. Please try again.") return true;
+              return frames.every(e=>e?.matches('.correctSelection,.correctSelectionMultipleAttempts,.incorrectSelection'));
+            }''',arg={'id':scope.get_attribute('id'),'ids':[current[key]['dom_id'] for key in keys],
+                     'feedbackBefore':record['proof_pending']['feedback_before']})
 
     def activity(self, state, directory, topic):
         if state.get('task_type') == 'diagnostic':
@@ -806,7 +826,7 @@ class CaptureBrowser:
         for mid, record in state['questions'].items():
             if record.get('status') == 'submitting':
                 proof_scope = by_id(self.page, 'step-' + mid.replace('-', ''))
-                if proof_scope.locator('.proofSection').count():
+                if self.is_staged_question(proof_scope):
                     # The proof player reconciles intermediate source grades;
                     # the ordinary player expects a whole-question result.
                     continue
@@ -958,7 +978,7 @@ class CaptureBrowser:
                 state['questions'][mid] = record
                 save()
             button = by_id(self.page,'continueButton-' + token)
-            if scope.locator('.proofSection').count():
+            if self.is_staged_question(scope):
                 self.proof_question(scope,record,directory,mid,save)
                 self.finalize_question(state,directory,mid,record)
                 save()
