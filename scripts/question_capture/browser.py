@@ -659,6 +659,47 @@ class CaptureBrowser:
         return bool(scope.locator('.proofSection').count() or (
             scope.locator('.questionWidget-healthFrame').count() and scope.locator('.selectList').count()))
 
+    @staticmethod
+    def restored_proof_rejection(directory, record, item):
+        """Bind a transient saved rejection to the same restored server stage."""
+        def health(capture):
+            match = re.search(r'class="questionWidget-healthBar"[^>]*style="[^\"]*width:\s*([\d.]+)%',capture.get('html',''))
+            return float(match[1]) if match else None
+        before = record['before']
+        old_health, current_health = health(before), health(item)
+        if old_health is None or current_health is None:
+            return None
+        # The initial health bar animates from 0% after rendering. Permit that
+        # first-stage placeholder only with an exact saved rejection binding;
+        # later submissions still require a real decline in the displayed bar.
+        if current_health >= old_health and not (old_health == 0 and not record.get('proof_stages')):
+            return None
+        if before.get('dom_id') != item.get('dom_id') or normalize(before['problem']) != normalize(item['problem']):
+            return None
+        identity = lambda f: (f['key'],f['dom_id'],[(c['type'],normalize(c['value'],c['type'])) for c in f['choices']])
+        if [identity(f) for f in before['fields']] != [identity(f) for f in item['fields']]:
+            return None
+        for source in sorted(Path(directory).glob('diagnostics/*/current-question.json'),reverse=True):
+            captured = json.loads(source.read_text())
+            if (captured.get('proof_feedback') != "Oops, that's not quite right. Please try again." or
+                    captured.get('dom_id') != item.get('dom_id') or health(captured) != current_health or
+                    normalize(captured.get('problem','')) != normalize(item['problem']) or captured.get('errors') or
+                    [identity(f) for f in captured['fields']] != [identity(f) for f in item['fields']]):
+                continue
+            matches = True
+            for old, restored, graded in zip(before['fields'],item['fields'],captured['fields']):
+                selected = restored.get('source_selected',{})
+                saved = graded.get('source_selected',{})
+                if (not selected or selected != saved or 'submitted_value' not in old or
+                        normalize(selected['value'],selected['type']) != normalize(old['submitted_value'],selected['type'])):
+                    matches = False
+                    break
+            if matches:
+                return {'path':str(source.resolve()),'sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
+                        'before_health_percent':old_health,'restored_health_percent':current_health,
+                        'reason':'saved source rejection and restored selections/health match the pending submission'}
+        return None
+
     def proof_question(self, scope, record, directory, mid, save):
         """Complete only newly exposed proof fields, inspecting every stage grade."""
         from solver import Solver
@@ -688,6 +729,8 @@ class CaptureBrowser:
             if pending and not terminal:
                 submitted = [current.get(key, {}) for key in pending['keys']]
                 retry = item.get('proof_feedback') == "Oops, that's not quite right. Please try again."
+                rejection = None if retry else self.restored_proof_rejection(directory,record,item)
+                retry = retry or rejection is not None
                 if not submitted or not (retry or all(f.get('source_result') in ('Correct','Incorrect') for f in submitted)):
                     raise ValueError('Uncertain proof submission has no source outcome; stop without resubmission: ' + mid)
                 for field in submitted:
@@ -711,7 +754,8 @@ class CaptureBrowser:
                 repeats = sum(s.get('rejected_values')==rejected for s in stages) if rejected else 0
                 stages.append({'submitted_keys':pending['keys'], 'outcome':'accepted' if all(
                     f.get('source_result')=='Correct' for f in submitted) else 'rejected', 'observation':item,
-                    'decision':record['decision'], 'intended':record['intended'], 'rejected_values':rejected})
+                    'decision':record['decision'], 'intended':record['intended'], 'rejected_values':rejected,
+                    'restored_rejection_evidence':rejection})
                 record.pop('proof_pending',None)
                 record['status'] = 'prepared'
                 if repeats >= 1:
@@ -826,7 +870,8 @@ class CaptureBrowser:
         for mid, record in state['questions'].items():
             if record.get('status') == 'submitting':
                 proof_scope = by_id(self.page, 'step-' + mid.replace('-', ''))
-                if self.is_staged_question(proof_scope):
+                if (self.is_staged_question(proof_scope) and
+                        self.current_step() == 'stepButton-' + mid.replace('-', '')):
                     # The proof player reconciles intermediate source grades;
                     # the ordinary player expects a whole-question result.
                     continue
@@ -844,17 +889,17 @@ class CaptureBrowser:
                 # Recover its actual result from the reloaded page when the
                 # interrupted capture never saved a complete explanation.
                 if (not item.get('worked_solution') or item.get('errors') or
-                        item.get('result') not in ('Correct', 'Incorrect') or
+                        item.get('result') not in ('Correct', 'Incorrect', 'Partial Credit') or
                         normalize(item.get('problem', '')) != normalize(record['before']['problem'])):
                     scope = by_id(self.page, 'step-' + mid.replace('-', ''))
                     grade = scope.locator('.questionWidget-result')
-                    if grade.count() and grade.inner_text().strip() in ('Correct', 'Incorrect'):
+                    if grade.count() and grade.inner_text().strip() in ('Correct', 'Incorrect', 'Partial Credit'):
                         if not scope.is_visible():
                             self.pacer.wait('event', 'restore graded question for capture')
                             by_id(self.page, 'stepButton-' + mid.replace('-', '')).click()
                             scope.wait_for(state='visible')
                         item, _ = self.read(scope, directory, mid + '-after')
-                if (item.get('errors') or item.get('result') not in ('Correct', 'Incorrect') or
+                if (item.get('errors') or item.get('result') not in ('Correct', 'Incorrect', 'Partial Credit') or
                     not item.get('worked_solution') or
                     not same_question_problem(record['before'], item) or
                     any(not a.get('path') or not Path(a['path']).is_file() for a in item.get('assets', []))):

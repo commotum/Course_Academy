@@ -211,3 +211,47 @@ class StagedProofTests(unittest.TestCase):
             b.enter.assert_not_called()
             self.page.locator('.questionWidget-healthFrame').evaluate('n=>n.remove()')
             self.assertFalse(b.is_staged_question(scope))
+    def test_saved_rejection_binds_restored_same_selections_and_lower_health(self):
+        restored=json.loads((FIXTURE/'restored-rejected.json').read_text())
+        self.page.set_content(restored['html'])
+        record=json.loads((FIXTURE/'pending-rejected.json').read_text())
+        with tempfile.TemporaryDirectory() as work:
+            source=Path(work)/'diagnostics/saved/current-question.json';source.parent.mkdir(parents=True)
+            source.write_bytes((FIXTURE/'rejected.json').read_bytes())
+            args=arguments(['run','--state-dir',work,'--event-min','0','--event-max','0'])
+            b=CaptureBrowser(self.page,args,Pacer(args,random.Random(1)),Mock())
+            b.enter=Mock(side_effect=RuntimeError('correct retry'))
+            with self.assertRaisesRegex(RuntimeError,'correct retry'):
+                b.proof_question(self.page.locator('#step-q334064'),record,Path(work),'q-334064',lambda:None)
+            self.assertTrue(record['wrong_submission_used'])
+            self.assertEqual(record['proof_stages'][0]['outcome'],'rejected')
+            evidence=record['proof_stages'][0]['restored_rejection_evidence']
+            self.assertEqual(evidence['before_health_percent'],0)
+            self.assertEqual(evidence['restored_health_percent'],20)
+            self.assertEqual(evidence['path'],str(source.resolve()))
+    def test_saved_rejection_rejects_changed_health_or_selection(self):
+        restored=json.loads((FIXTURE/'restored-rejected.json').read_text())
+        record=json.loads((FIXTURE/'pending-rejected.json').read_text())
+        with tempfile.TemporaryDirectory() as work:
+            source=Path(work)/'diagnostics/saved/current-question.json';source.parent.mkdir(parents=True)
+            source.write_bytes((FIXTURE/'rejected.json').read_bytes())
+            wrong=copy.deepcopy(restored);wrong['html']=wrong['html'].replace('width: 20%;','width: 40%;')
+            self.assertIsNone(CaptureBrowser.restored_proof_rejection(work,record,wrong))
+            wrong=copy.deepcopy(restored);wrong['fields'][0]['source_selected']['value']='positive'
+            self.assertIsNone(CaptureBrowser.restored_proof_rejection(work,record,wrong))
+    def test_completed_proof_is_finalized_when_restored_on_next_question(self):
+        for actual in ('Correct','Partial Credit'):
+            with self.subTest(actual=actual),tempfile.TemporaryDirectory() as work:
+                before=json.loads((FIXTURE/'completed-first.json').read_text());before['status']='submitting'
+                after=json.loads((FIXTURE/'completed-first-after.json').read_text());after['result']=actual
+                (Path(work)/'q-334055-after.json').write_text(json.dumps(after))
+                self.page.set_content('<div id="stepButton-q334064" class="stepButton current"></div><div id="finalScreen" style="display:none"></div>'+after['html'].replace('class="step questionWidget"','class="step questionWidget" hidden')+(FIXTURE/'initial-dynamic.html').read_text())
+                args=arguments(['run','--state-dir',work,'--event-min','0','--event-max','0'])
+                solver=Mock();solver.solve.side_effect=RuntimeError('next question solve')
+                b=CaptureBrowser(self.page,args,Pacer(args,random.Random(1)),solver)
+                b.finalize_question=Mock(side_effect=lambda state,directory,mid,record:record.update(finalized=True))
+                state=dict(task_id=1,task_type='lesson',questions={'q-334055':before},current_kp=before['kp_id'],kps=json.loads((FIXTURE/'completed-first-kps.json').read_text()))
+                with self.assertRaisesRegex(RuntimeError,'next question solve'):b.activity(state,Path(work),{})
+                self.assertTrue(before['finalized'])
+                self.assertEqual(before['actual_result'],actual)
+                b.finalize_question.assert_called_once()
