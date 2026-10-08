@@ -1,0 +1,55 @@
+{
+  "mode": "solve",
+  "problem": "Suppose $f(x)=2{x}^{2}+\\operatorname{sin}\u2061x.$ Which of the following statements are true?\n\n- $f=O(1)$ as $x\\to 0$\n- $f=O(x)$ as $x\\to 0$\n- $f=O({x}^{2})$ as $x\\to 0$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "II only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "I, II, and III"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "II and III only"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I and II only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I only"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14040950,
+    "task_type": "lesson",
+    "topic_id": 2854,
+    "examples": [
+      {
+        "math_academy_id": "e-7762",
+        "knowledge_point": "Applying the Limit Test",
+        "problem": "Suppose $f(x) = e^x + x\\ln x.$ Which of the following statements are true?\n\n- $f= \\mathcal O(x)$ as $x\\to\\infty$\n\n- $f= \\mathcal O(\\ln x)$ as $x\\to\\infty$\n\n- $f= \\mathcal O(xe^{x})$ as $x\\to\\infty$",
+        "worked_solution": "Suppose we wish to test whether the following statement is true:\n\n$$\nf(x) = \\mathcal O(g(x)) \\quad \\textrm{as}\\quad x\\to a\n$$\n\nwhere $a$ is either finite or $+\\infty.$ To do this, we can examine the following limit:\n\n$$\n\\lim\\limits_{x\\to a} \\dfrac{f(x)}{g(x)}.\n$$\n\nWe have the following:\n\n- If the limit is *finite*, the statement is true.\n\n- If the limit is *infinite*, the statement is false.\n\n- If the limit does not exist, the test is inconclusive.\n\nHere, we must consider the function\n\n$$\nf(x) = e^x + x\\ln x.\n$$\n\nNow, let's consider each statement in turn.\n\n- Statement I is false. Let $g(x) = x.$ Then, we have\n\n$$\n\\begin{aligned}{lim}_{x\\to \\infty }\\frac{f(x)}{g(x)} & ={lim}_{x\\to \\infty }\\frac{{e}^{x}+x\\operatorname{ln}\u2061x}{x}.\\end{aligned}\n$$\n\nSince direct evaluation leads to the indeterminate form $\\dfrac{\\infty}{\\infty},$ we can evaluate the limit using L'Hopital's rule:\n\n$$\n\\begin{aligned}{lim}_{x\\to \\infty }\\frac{f(x)}{g(x)} & ={lim}_{x\\to \\infty }\\frac{{e}^{x}+x\\operatorname{ln}\u2061x}{x} \\\\  & ={lim}_{x\\to \\infty }\\frac{({e}^{x}+x\\operatorname{ln}\u2061x)^{\u2032}}{(x)^{\u2032}} \\\\  & ={lim}_{x\\to \\infty }\\frac{{e}^{x}+\\operatorname{ln}\u2061x+1}{1} \\\\  & =1+{lim}_{x\\to \\infty }({e}^{x}+\\operatorname{ln}\u2061x) \\\\  & =1+\\infty  \\\\  & =\\infty .\\end{aligned}\n$$\n\nHence, $f \\neq \\mathcal O(x)$ as $x\\to\\infty.$\n\n- Statement II is false. Let $g(x) =\\ln x.$  Then, using L'Hopital's rule where needed, we have\n\n$$\n\\begin{aligned}{lim}_{x\\to \\infty }\\frac{f(x)}{g(x)} & ={lim}_{x\\to \\infty }\\frac{{e}^{x}+x\\operatorname{ln}\u2061x}{\\operatorname{ln}\u2061x} \\\\  & ={lim}_{x\\to \\infty }\\frac{{e}^{x}+x\\operatorname{ln}\u2061x}{\\operatorname{ln}\u2061x} \\\\  & ={lim}_{x\\to \\infty }\\frac{({e}^{x}+x\\operatorname{ln}\u2061x)^{\u2032}}{(\\operatorname{ln}\u2061x)^{\u2032}} \\\\  & ={lim}_{x\\to \\infty }\\frac{{e}^{x}+\\operatorname{ln}\u2061x+1}{1/x} \\\\  & ={lim}_{x\\to \\infty }x({e}^{x}+\\operatorname{ln}\u2061x+1) \\\\  & =\\infty .\\end{aligned}\n$$\n\nHence, $f \\neq \\mathcal O(x)$ as $x\\to\\infty.$\n\n- Statement III is true. Let $g(x) = xe^{x}.$ Then, using L'Hopital's rule where needed, we have\n\n$$\n\\begin{aligned}{lim}_{x\\to \\infty }\\frac{f(x)}{g(x)} & ={lim}_{x\\to \\infty }\\frac{{e}^{x}+x\\operatorname{ln}\u2061x}{x{e}^{x}} \\\\  & ={lim}_{x\\to \\infty }(\\frac{1}{x}+\\frac{\\operatorname{ln}\u2061x}{{e}^{x}}) \\\\  & ={lim}_{x\\to \\infty }\\frac{1}{x}+{lim}_{x\\to \\infty }\\frac{\\operatorname{ln}\u2061x}{{e}^{x}} \\\\  & =0+{lim}_{x\\to \\infty }\\frac{\\operatorname{ln}\u2061x}{{e}^{x}} \\\\  & ={lim}_{x\\to \\infty }\\frac{(\\operatorname{ln}\u2061x)^{\u2032}}{({e}^{x})^{\u2032}} \\\\  & ={lim}_{x\\to \\infty }\\frac{1/x}{{e}^{x}} \\\\  & ={lim}_{x\\to \\infty }\\frac{1}{x{e}^{x}} \\\\  & =0.\\end{aligned}\n$$\n\nHence, $f = \\mathcal O(xe^x)$ as $x\\to\\infty.$\n\nTherefore, the correct answer is \"III only.\"",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14040950/example-7762.png"
+      }
+    ],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}

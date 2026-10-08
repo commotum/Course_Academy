@@ -1145,10 +1145,17 @@ class CaptureBrowser:
                     if option is None:
                         raise ValueError('Captured dropdown option is missing; stop before Submit')
                     expected = option.evaluate(SELECT_SNAPSHOT)
-                    by_id(scope,field['frame_id']).click()
-                    option.click()
                     selected = by_id(scope,field['frame_id'])
                     observed = selected.evaluate(SELECT_SNAPSHOT)
+                    already_selected = ('proof_stages' in record and
+                        not selected.locator('.selectListSelectedText').count() and
+                        not expected['errors'] and not observed['errors'] and
+                        expected['images'] == observed['images'] and
+                        normalize(expected['value'],'text') == normalize(observed['value'],'text'))
+                    if not already_selected:
+                        selected.click()
+                        option.click()
+                        observed = selected.evaluate(SELECT_SNAPSHOT)
                     if (expected['errors'] or observed['errors'] or expected['images'] != observed['images'] or
                             normalize(expected['value'],'text') != normalize(observed['value'],'text')):
                         raise ValueError('Actual selected dropdown value differs from intended option; stop before Submit')
