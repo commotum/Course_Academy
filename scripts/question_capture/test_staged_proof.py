@@ -255,3 +255,15 @@ class StagedProofTests(unittest.TestCase):
                 self.assertTrue(before['finalized'])
                 self.assertEqual(before['actual_result'],actual)
                 b.finalize_question.assert_called_once()
+    def test_retry_reuses_exact_visible_correct_choice_without_opening_locked_menu(self):
+        self.page.set_content(json.loads((FIXTURE/'restored-rejected.json').read_text())['html'])
+        scope=self.page.locator('#step-q334064');before=scope.evaluate(EXTRACT)
+        record=json.loads((FIXTURE/'pending-rejected.json').read_text());record.update(before=before,entry_keys=['field-2'],wrong_submission_used=True,proof_stages=[{'outcome':'rejected'}])
+        self.page.evaluate("()=>{window.fieldClicks=0;document.getElementById('selectListFrame-334064-1').onclick=()=>window.fieldClicks++;}")
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--state-dir',work,'--timeout-ms','300','--event-min','0','--event-max','0'])
+            b=CaptureBrowser(self.page,args,Pacer(args,random.Random(1)),None)
+            b.enter(scope,record);b.verify_entered(scope,record)
+            self.assertEqual(self.page.evaluate('window.fieldClicks'),0)
+            self.assertEqual(record['before']['fields'][1]['submitted_value'],r'|f(x)|\le K|g(x)|')
+            self.assertEqual(record['before']['fields'][1]['submitted_option'],'1')

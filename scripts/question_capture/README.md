@@ -737,6 +737,8 @@ keeps its visible prompt, choices, entered values, and source field grades. The
 player fills only unanswered fields, retains one C/W decision for the question,
 and uses the same activity solver session for later stages. A restored submission
 needs matching accepted or rejected source selections before it can continue.
+Saved rejection feedback can confirm a restored stage when its problem, complete
+choices, entered values, and displayed health match the pending submission.
 One intended wrong choice is followed by correct retries; later stages introduce
 no additional intentional wrong choices. The terminal source grade, including
 Partial Credit, remains distinct, with canonical before/after captures and the
