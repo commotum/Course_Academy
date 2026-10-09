@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Given the linear transformation $T:[\\begin{aligned}x \\\\ y\\end{aligned}]\u27f6[\\begin{aligned}3x-8y \\\\ 16y-6x\\end{aligned}],$\nfind  $2\\cdot \\text{nullity}(T)-3.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-3"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "-1"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-2"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071281,
+    "task_type": "lesson",
+    "topic_id": 1960,
+    "topic_title": "The Kernel of a Linear Transformation",
+    "examples": [
+      {
+        "math_academy_id": "e-5440",
+        "knowledge_point": "Finding the Nullity of a Linear Transformation",
+        "problem": "Given the linear transformation ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14071281/assets/a441d65e864253e32c59c58b6b0684482b6eaee7fd443fdb2f7c026f0fe10d1f.png) find $\\,\\textrm{nullity}(\\mathbf{T}).$",
+        "worked_solution": "First, we write down the standard matrix of $\\mathbf{T}\\mathbin{:}$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14071281/assets/f27d3195556ff8786f9416cddbe4ad52cf1838f2b0ce37b4da11746fee59fb9c.png)\n\nRecall that $\\textrm{nullity}(\\mathbf{T}) = \\textrm{nullity}(T) = \\textrm{dim}(\\textrm{Null}(T)).$\n\nIn order to find $\\textrm{dim}(\\textrm{Null}(T)),$ we reduce $T$ to row echelon form, as follows:\n\n$$\n\\begin{aligned}T & =[\\begin{aligned}2 & 4 & 0 \\\\ 4 & 10 & -1 \\\\ -6 & -12 & 1\\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\\\  & \u223c[\\begin{aligned}2 & 4 & 0 \\\\ 0 & 2 & -1 \\\\ -6 & -12 & 1\\end{aligned}] & {R}_{3} & :={R}_{3}+3{R}_{1} \\\\  & \u223c[\\begin{aligned}2 & 4 & 0 \\\\ 0 & 2 & -1 \\\\ 0 & 0 & 1\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has no non-pivot columns. Therefore, \n\n$$\n\\textrm{nullity}(\\mathbf{T})=\\textrm{dim}(\\textrm{Null}(T))=0.\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14071281/example-5440.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-37828",
+        "problem": "Find a basis of $\\,\\text{Ker}(T)$ given that $T:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\u27f6[\\begin{aligned}3y-6z-6x \\\\ -4y+x+z \\\\ 2y+8z+8x\\end{aligned}].$",
+        "worked_solution": "Finding the kernel of $\\,T\\,$ is equivalent to finding the null space of the standard matrix of $\\,T.$\n\nFor the given linear transformation, the standard matrix is $T=[\\begin{aligned}-6 & 3 & -6 \\\\ 1 & -4 & 1 \\\\ 8 & 2 & 8\\end{aligned}].$\n\nSetting $x=[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}],$ we then need to solve the equation $Tx=0.$ First, we reduce $T$ to row echelon form, as follows:\n\n$$\n\\begin{aligned}T & =[\\begin{aligned}-6 & 3 & -6 \\\\ 1 & -4 & 1 \\\\ 8 & 2 & 8\\end{aligned}] & {R}_{2} & :={R}_{2}+\\frac{1}{6}{R}_{1} \\\\  & \u223c[\\begin{aligned}-6 & 3 & -6 \\\\ 0 & -\\frac{7}{2} & 0 \\\\ 8 & 2 & 8\\end{aligned}] & {R}_{3} & :={R}_{3}+\\frac{4}{3}{R}_{1} \\\\  & \u223c[\\begin{aligned}-6 & 3 & -6 \\\\ 0 & -\\frac{7}{2} & 0 \\\\ 0 & 6 & 0\\end{aligned}] & {R}_{3} & :={R}_{3}+\\frac{12}{7}{R}_{2} \\\\  & \u223c[\\begin{aligned}-6 & 3 & -6 \\\\ 0 & -\\frac{7}{2} & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$ and $y$, and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$\n\nFrom the second equation, we get $y=0.$ Substituting this into the first equation, we have $x=-z.$ \n\nTherefore, if $x\\in \\text{Ker}(T),$ then \n\n$$\nx=[\\begin{aligned}-z \\\\ 0 \\\\ z\\end{aligned}]=[\\begin{aligned}-1 \\\\ 0 \\\\ 1\\end{aligned}]z,\\,z\\in R.\n$$\n\nThis implies that $B={[\\begin{aligned}-1 \\\\ 0 \\\\ 1\\end{aligned}]}$ is a basis of $\\text{Ker}(T).$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{[\\begin{aligned}-1 \\\\ 0 \\\\ 1\\end{aligned}]}",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
