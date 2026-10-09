@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}+y={u}_{2}(t)\\cdot (t-2)\\,,\\,y(0)=1,\n$$\n\nwhere ${u}_{2}(t)=u(t-2)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L{y(t)}$ is\n\n$$\nY(s)=\\frac{1}{s+1}+\\frac{{e}^{-2s}}{{s}^{2}(s+1)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)={e}^{-t}+u(t-2)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+  "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-2s}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{1}{{s}^{2}(s+1)}\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+1)$ and a repeated linear factor ${s}^{2},$ the decomposition takes the form\n\n$$\n\\frac{1}{{s}^{2}(s+1)}=\\frac{A}{s}+\\frac{B}{{s}^{2}}+\\frac{C}{s+1}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=As(s+1)+B(s+1)+C{s}^{2}\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=0,$ we have\n\n$$\n1=A(0)+B(1)+C(0)\\,\u27f9\\,B=1.\n$$\n\n- Setting $s=-1,$ we have\n\n$$\n1=A(0)+B(0)+C(1)\\,\u27f9\\,C=1.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+C\\,\u27f9\\,A=-C=-1.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=-\\frac{1}{s}+\\frac{1}{{s}^{2}}+\\frac{1}{s+1}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}{F(s)}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}{-\\frac{1}{s}+\\frac{1}{{s}^{2}}+\\frac{1}{s+1}} \\\\  & =-1+t+{e}^{-t}\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-2s}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L{u(t-a)\\cdot f(t-a)}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}{{e}^{-as}F(s)}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=2.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-2):$\n\n$$\n\\begin{aligned}u(t-2)f(t-2) & =u(t-2)(-1+(t-2)+{e}^{-(t-2)}) \\\\  & =u(t-2)(t-3+{e}^{-(t-2)})\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)={e}^{-t}+u(t-2)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)={e}^{-(t-2)}+t-3.\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{e}^{-(t-2)}+t-2"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{e}^{-(t-2)}-t+3"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{e}^{-(t-2)}+t-1"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{e}^{-(t-2)}-t-1"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{e}^{-(t-2)}+t-3"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072958,
+    "task_type": "lesson",
+    "topic_id": 6718,
+    "topic_title": "Solving First-Order ODEs With Time-Delayed Forcing Using Laplace Transforms",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-342314",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}+y={u}_{2}(t)\\cdot (t-2)\\,,\\,y(0)=1,\n$$\n\nwhere ${u}_{2}(t)=u(t-2)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L{y(t)}$ is\n\n$$\nY(s)=\\frac{1}{s+1}+\\frac{{e}^{-2s}}{{s}^{2}(s+1)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)={e}^{-t}+u(t-2)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+        "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-2s}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{1}{{s}^{2}(s+1)}\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+1)$ and a repeated linear factor ${s}^{2},$ the decomposition takes the form\n\n$$\n\\frac{1}{{s}^{2}(s+1)}=\\frac{A}{s}+\\frac{B}{{s}^{2}}+\\frac{C}{s+1}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=As(s+1)+B(s+1)+C{s}^{2}\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=0,$ we have\n\n$$\n1=A(0)+B(1)+C(0)\\,\u27f9\\,B=1.\n$$\n\n- Setting $s=-1,$ we have\n\n$$\n1=A(0)+B(0)+C(1)\\,\u27f9\\,C=1.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+C\\,\u27f9\\,A=-C=-1.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=-\\frac{1}{s}+\\frac{1}{{s}^{2}}+\\frac{1}{s+1}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}{F(s)}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}{-\\frac{1}{s}+\\frac{1}{{s}^{2}}+\\frac{1}{s+1}} \\\\  & =-1+t+{e}^{-t}\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-2s}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L{u(t-a)\\cdot f(t-a)}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}{{e}^{-as}F(s)}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=2.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-2):$\n\n$$\n\\begin{aligned}u(t-2)f(t-2) & =u(t-2)(-1+(t-2)+{e}^{-(t-2)}) \\\\  & =u(t-2)(t-3+{e}^{-(t-2)})\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)={e}^{-t}+u(t-2)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)={e}^{-(t-2)}+t-3.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{e}^{-(t-2)}-t-1",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

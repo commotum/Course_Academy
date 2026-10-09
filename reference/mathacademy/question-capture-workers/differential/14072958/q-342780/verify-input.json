@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following initial value problem:\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+3y={u}_{3}(t)\\cdot (t-3)\\,,\\,y(0)=-2,\n$$\n\nwhere ${u}_{3}(t)=u(t-3)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L{y(t)}$ is\n\n$$\nY(s)=-\\frac{2}{s+3}+\\frac{{e}^{-3s}}{{s}^{2}(s+3)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=-2{e}^{-3t}+u(t-3)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+  "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-3s}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{1}{{s}^{2}(s+3)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+3)$ and a repeated linear factor ${s}^{2},$ the decomposition takes the form\n\n$$\n\\frac{1}{{s}^{2}(s+3)}=\\frac{A}{s}+\\frac{B}{{s}^{2}}+\\frac{C}{s+3}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=As(s+3)+B(s+3)+C{s}^{2}.\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=0,$ we have\n\n$$\n1=A(0)+B(3)+C(0)\\,\u27f9\\,B=\\frac{1}{3}.\n$$\n\n- Setting $s=-3,$ we have\n\n$$\n1=A(0)+B(0)+C(9)\\,\u27f9\\,C=\\frac{1}{9}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+C\\,\u27f9\\,A=-C=-\\frac{1}{9}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=-\\frac{1}{9s}+\\frac{1}{3{s}^{2}}+\\frac{1}{9(s+3)}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}{F(s)}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}{-\\frac{1}{9s}+\\frac{1}{3{s}^{2}}+\\frac{1}{9(s+3)}} \\\\  & =-\\frac{1}{9}+\\frac{t}{3}+\\frac{1}{9}{e}^{-3t}.\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-3s}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L{u(t-a)\\cdot f(t-a)}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}{{e}^{-as}F(s)}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=3.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-3):$\n\n$$\n\\begin{aligned}u(t-3)f(t-3) & =u(t-3)(-\\frac{1}{9}+\\frac{t-3}{3}+\\frac{1}{9}{e}^{-3(t-3)}) \\\\  & =u(t-3)(\\frac{3t-10}{9}+\\frac{1}{9}{e}^{-3(t-3)}).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)=-2{e}^{-3t}+u(t-3)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=\\frac{1}{9}{e}^{-3(t-3)}+\\frac{3t-10}{9}.\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\frac{1}{9}{e}^{-3(t-3)}-\\frac{3t-10}{9}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "\\frac{1}{9}{e}^{-3(t-3)}+\\frac{10-3t}{9}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-\\frac{1}{9}{e}^{-3(t-3)}+\\frac{3t-10}{9}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "\\frac{1}{9}{e}^{-3(t-3)}+\\frac{3t-8}{9}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{1}{9}{e}^{-3(t-3)}+\\frac{3t-10}{9}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072958,
+    "task_type": "lesson",
+    "topic_id": 6718,
+    "topic_title": "Solving First-Order ODEs With Time-Delayed Forcing Using Laplace Transforms",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-342780",
+        "problem": "Consider the following initial value problem:\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+3y={u}_{3}(t)\\cdot (t-3)\\,,\\,y(0)=-2,\n$$\n\nwhere ${u}_{3}(t)=u(t-3)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L{y(t)}$ is\n\n$$\nY(s)=-\\frac{2}{s+3}+\\frac{{e}^{-3s}}{{s}^{2}(s+3)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=-2{e}^{-3t}+u(t-3)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+        "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-3s}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{1}{{s}^{2}(s+3)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+3)$ and a repeated linear factor ${s}^{2},$ the decomposition takes the form\n\n$$\n\\frac{1}{{s}^{2}(s+3)}=\\frac{A}{s}+\\frac{B}{{s}^{2}}+\\frac{C}{s+3}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=As(s+3)+B(s+3)+C{s}^{2}.\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=0,$ we have\n\n$$\n1=A(0)+B(3)+C(0)\\,\u27f9\\,B=\\frac{1}{3}.\n$$\n\n- Setting $s=-3,$ we have\n\n$$\n1=A(0)+B(0)+C(9)\\,\u27f9\\,C=\\frac{1}{9}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+C\\,\u27f9\\,A=-C=-\\frac{1}{9}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=-\\frac{1}{9s}+\\frac{1}{3{s}^{2}}+\\frac{1}{9(s+3)}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}{F(s)}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}{-\\frac{1}{9s}+\\frac{1}{3{s}^{2}}+\\frac{1}{9(s+3)}} \\\\  & =-\\frac{1}{9}+\\frac{t}{3}+\\frac{1}{9}{e}^{-3t}.\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-3s}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L{u(t-a)\\cdot f(t-a)}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}{{e}^{-as}F(s)}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=3.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-3):$\n\n$$\n\\begin{aligned}u(t-3)f(t-3) & =u(t-3)(-\\frac{1}{9}+\\frac{t-3}{3}+\\frac{1}{9}{e}^{-3(t-3)}) \\\\  & =u(t-3)(\\frac{3t-10}{9}+\\frac{1}{9}{e}^{-3(t-3)}).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)=-2{e}^{-3t}+u(t-3)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=\\frac{1}{9}{e}^{-3(t-3)}+\\frac{3t-10}{9}.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{1}{9}{e}^{-3(t-3)}+\\frac{10-3t}{9}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

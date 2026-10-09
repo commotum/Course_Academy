@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem:\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+3y={u}_{3}(t)\\cdot (t-3)\\,,\\,y(0)=-2,\n$$\n\nwhere ${u}_{3}(t)=u(t-3)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L{y(t)}$ is\n\n$$\nY(s)=-\\frac{2}{s+3}+\\frac{{e}^{-3s}}{{s}^{2}(s+3)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=-2{e}^{-3t}+u(t-3)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\frac{1}{9}{e}^{-3(t-3)}-\\frac{3t-10}{9}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "\\frac{1}{9}{e}^{-3(t-3)}+\\frac{10-3t}{9}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-\\frac{1}{9}{e}^{-3(t-3)}+\\frac{3t-10}{9}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "\\frac{1}{9}{e}^{-3(t-3)}+\\frac{3t-8}{9}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{1}{9}{e}^{-3(t-3)}+\\frac{3t-10}{9}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072958,
+    "task_type": "lesson",
+    "topic_id": 6718,
+    "topic_title": "Solving First-Order ODEs With Time-Delayed Forcing Using Laplace Transforms",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-342815",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}+2y={u}_{\\pi /2}(t)\\cdot cos\\,(2t-\\pi )\\,,\\,y(0)=-2,\n$$\n\nwhere ${u}_{\\pi /2}(t)=u\\,(t-\\frac{\\pi }{2})$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L{y(t)}$ is\n\n$$\nY(s)=-\\frac{2}{s+2}+\\frac{s\\,{e}^{-\\pi s/2}}{({s}^{2}+4)(s+2)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=-2{e}^{-2t}-\\frac{1}{4}u\\,(t-\\frac{\\pi }{2})\\cdot g(t).\n$$\n\nFind the function $g(t).$ \n\nHint: You may make use of the following results:\n\n$$\nL{\\operatorname{sin}\u2061\\omega t}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L{\\operatorname{cos}\u2061\\omega t}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$",
+        "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-\\pi s/2}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{s}{({s}^{2}+4)(s+2)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+2)$ and an irreducible quadratic factor $({s}^{2}+4),$ the decomposition takes the form\n\n$$\n\\frac{s}{({s}^{2}+4)(s+2)}=\\frac{A}{s+2}+\\frac{Bs+C}{{s}^{2}+4}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\ns=A({s}^{2}+4)+(Bs+C)(s+2).\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=-2,$ we have\n\n$$\n-2=A((-2)^{2}+4)+0\\,\u27f9\\,8A=-2\\,\u27f9\\,A=-\\frac{1}{4}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+B\\,\u27f9\\,B=-A=\\frac{1}{4}.\n$$\n\n- Comparing the constant terms, we have\n\n$$\n0=4A+2C\\,\u27f9\\,0=4\\,(-\\frac{1}{4})+2C\\,\u27f9\\,C=\\frac{1}{2}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{4}(-\\frac{1}{s+2}+\\frac{s}{{s}^{2}+4}+\\frac{2}{{s}^{2}+4}).\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}{F(s)}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & =\\frac{1}{4}(-{L}^{-1}{\\frac{1}{s+2}}+{L}^{-1}{\\frac{s}{{s}^{2}+4}}+{L}^{-1}{\\frac{2}{{s}^{2}+4}}) \\\\  & =\\frac{1}{4}(-{e}^{-2t}+\\operatorname{cos}\u2061(2t)+\\operatorname{sin}\u2061(2t))\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-\\pi s/2}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L{u(t-a)\\cdot f(t-a)}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}{{e}^{-as}F(s)}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=\\frac{\\pi }{2}.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-\\frac{\\pi }{2}):$\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{2})f\\,(t-\\frac{\\pi }{2}) \\\\  & =u\\,(t-\\frac{\\pi }{2})\\cdot \\frac{1}{4}[-{e}^{-2(t-\\pi /2)}+\\operatorname{cos}\u2061(2\\,(t-\\frac{\\pi }{2}))+\\operatorname{sin}\u2061(2\\,(t-\\frac{\\pi }{2}))].\\end{aligned}\n$$\n\nUsing the trigonometric identities $cos\\,(2\\,(t-\\frac{\\pi }{2}))=-\\operatorname{cos}\u2061(2t)$ and $sin\\,(2\\,(t-\\frac{\\pi }{2}))=-\\operatorname{sin}\u2061(2t),$ we simplify:\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{2})\\cdot \\frac{1}{4}(-{e}^{-2(t-\\pi /2)}-\\operatorname{cos}\u2061(2t)-\\operatorname{sin}\u2061(2t)) \\\\  & =-\\frac{1}{4}\\,u\\,(t-\\frac{\\pi }{2})({e}^{-2(t-\\pi /2)}+\\operatorname{cos}\u2061(2t)+\\operatorname{sin}\u2061(2t)).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)=-2{e}^{-2t}-\\frac{1}{4}u\\,(t-\\frac{\\pi }{2})\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)={e}^{-2(t-\\pi /2)}+\\operatorname{cos}\u2061(2t)+\\operatorname{sin}\u2061(2t).\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{e}^{-2(t-\\pi /2)}+\\operatorname{cos}\u2061(2t)+\\operatorname{sin}\u2061(2t)",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
