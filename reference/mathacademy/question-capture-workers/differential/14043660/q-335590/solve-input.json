@@ -1,0 +1,63 @@
+{
+  "mode": "solve",
+  "problem": "A small bakery produces loaves of bread. The owner knows that the bakery can produce a maximum of $600$ loaves a day; however, current production is below this maximum. Since she started monitoring, the bakers produced $480$ loaves and $500$ loaves on days $4$ and $8,$ respectively. How many loaves do they produce on day $40?$ Round your answer to the nearest integer.\n\n*Hint: You may assume that the bread production $E(t)$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$570$ loaves"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$590$ loaves"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$577$ loaves"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$560$ loaves"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$550$ loaves"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14043660,
+    "task_type": "lesson",
+    "topic_id": 1924,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-15370",
+        "problem": "A University Campus has a total of $1\\,500$ students.\nAt the beginning of the new semester at the University, flu affected $300$ students. After $10$ days, the number of students affected by the flu increases to $500.$ To the nearest day, how long does it take for the flu-stricken campus population to reach $800$ students?\n\n*Hint: You may assume that the number of students affected by the flu, $P(t),$ increases at a rate that obeys an inhibited growth model, where $t\\ge 0$ is the time, in days.*",
+        "worked_solution": "The rate at which the campus population affected by the flu, $P(t),$ changes is proportional to the difference between the total campus population and its current population affected. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the total population of the campus, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=1\\,500$ students, and we have\n\n$$\n\\frac{dP}{dt}=k(1\\,500-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{1\\,500-P} & =k\\,dt \\\\ \\int \\frac{dP}{1\\,500-P} & =\\int k\\,dt \\\\ -\\operatorname{ln}\u2061|1\\,500-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $1\\,500-P>0$ for all $t\\ge 0.$\nNext, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}1\\,500-P & ={e}^{-kt-C} \\\\ 1\\,500-P & ={e}^{-C}{e}^{-kt} \\\\ 1\\,500-P & =K{e}^{-kt} \\\\ P & =1\\,500-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration. \n\nWe're told that the initial campus population affected by the flu was $300$ students. So, we apply the initial condition $P(0)=300,$ and solve for $K:$\n\n$$\n\\begin{aligned}P(0) & =300 \\\\ 1\\,500-K{e}^{0} & =300 \\\\ 1\\,500-K & =300 \\\\ K & =1\\,200\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=1\\,500-1\\,200{e}^{-kt}\n$$\n\nWe're also told that, after $10$ days, the campus population affected by flu was $500$ students. So, applying the condition $P(10)=500,$ we can solve for $k:$\n\n$$\n\\begin{aligned}P(10) & =500 \\\\ 1\\,500-1\\,200{e}^{-10k} & =500 \\\\ 1\\,000 & =1\\,200{e}^{-10k} \\\\ {e}^{-10k} & =\\frac{5}{6} \\\\ -10k & =\\operatorname{ln}\u2061(\\frac{5}{6}) \\\\ k & =-\\frac{1}{10}\\operatorname{ln}\u2061(\\frac{5}{6})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when $800$ students are affected by the flu. Then, we have\n\n$$\n\\begin{aligned}P({t}_{1}) & =800 \\\\ 1\\,500-1\\,200{e}^{-k{t}_{1}} & =800 \\\\ 700 & =1\\,200{e}^{-k{t}_{1}} \\\\ {e}^{-k{t}_{1}} & =\\frac{7}{12} \\\\ -k{t}_{1} & =\\operatorname{ln}\u2061(\\frac{7}{12}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}\u2061(\\frac{7}{12}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that $800$ students will be affected by the flu after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}\u2061(\\frac{7}{12})}{-\\frac{1}{10}\\operatorname{ln}\u2061(\\frac{5}{6})}=29.562\u2026\u224830\\,\\text{days},\n$$\n\nrounded to the nearest day.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$30$ days",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "mode": "verify",
+  "problem": "A small bakery produces loaves of bread. The owner knows that the bakery can produce a maximum of $600$ loaves a day; however, current production is below this maximum. Since she started monitoring, the bakers produced $480$ loaves and $500$ loaves on days $4$ and $8,$ respectively. How many loaves do they produce on day $40?$ Round your answer to the nearest integer.\n\n*Hint: You may assume that the bread production $E(t)$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+  "worked_solution": "The rate at which the bread production $E(t)$ changes is proportional to the difference between the maximum possible bread production and its current bread production. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dE}{dt}=k(a-E),\n$$\n\nwhere $a$ is the maximum production of the bakery, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=600$ loaves, and we have\n\n$$\n\\frac{dE}{dt}=k(600-E).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dE}{600-E} & =k\\,dt \\\\ \\int \\frac{dE}{600-E} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}\u2061|600-E| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $600-E>0$ for all $t\\ge 0.$ Next, we solve for $E(t),$ as follows:\n\n$$\n\\begin{aligned}600-E & ={e}^{-kt-C} \\\\ 600-E & ={e}^{-C}{e}^{-kt} \\\\ 600-E & =K{e}^{-kt} \\\\ E & =600-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $4,$ the bread production was $480$ loaves. So, applying the condition $E(4)=480,$ we have\n\n$$\n\\begin{aligned}E(4) & =480 \\\\ 600-K{e}^{-4k} & =480 \\\\ K{e}^{-4k} & =120.\\end{aligned}\n$$\n\nWe're also told that, on day $8,$ the bread production was $500$ loaves. So, applying the condition $E(8)=500,$ we get\n\n$$\n\\begin{aligned}E(8) & =500 \\\\ 600-K{e}^{-8k} & =500 \\\\ K{e}^{-8k} & =100.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-4k}}{K{e}^{-8k}} & =\\frac{120}{100} \\\\ {e}^{4k} & =\\frac{6}{5} \\\\ 4k & =\\operatorname{ln}\u2061(\\frac{6}{5}) \\\\ k & =\\frac{1}{4}\\operatorname{ln}\u2061(\\frac{6}{5})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-4\\cdot (1/4)\\operatorname{ln}\u2061(6/5)} & =120 \\\\ K & =120{e}^{\\operatorname{ln}\u2061(6/5)} \\\\ K & =144\\end{aligned}\n$$\n\nTherefore, we have the following expression for $E(t):$\n\n$$\nE(t)=600-144{e}^{-(t/4)\\operatorname{ln}\u2061(6/5)}\n$$\n\nFinally, the number of loaves baked on day $t=40$ is\n\n$$\nE(40)=600-144{e}^{-(40/4)\\operatorname{ln}\u2061(6/5)}\u2248576.743\u2026\u2248577\\,\\text{loaves},\n$$\n\nrounded to the nearest integer.",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$570$ loaves"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$590$ loaves"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$577$ loaves"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$560$ loaves"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$550$ loaves"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14043660,
+    "task_type": "lesson",
+    "topic_id": 1924,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-335590",
+        "problem": "A small bakery produces loaves of bread. The owner knows that the bakery can produce a maximum of $600$ loaves a day; however, current production is below this maximum. Since she started monitoring, the bakers produced $480$ loaves and $500$ loaves on days $4$ and $8,$ respectively. How many loaves do they produce on day $40?$ Round your answer to the nearest integer.\n\n*Hint: You may assume that the bread production $E(t)$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+        "worked_solution": "The rate at which the bread production $E(t)$ changes is proportional to the difference between the maximum possible bread production and its current bread production. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dE}{dt}=k(a-E),\n$$\n\nwhere $a$ is the maximum production of the bakery, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=600$ loaves, and we have\n\n$$\n\\frac{dE}{dt}=k(600-E).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dE}{600-E} & =k\\,dt \\\\ \\int \\frac{dE}{600-E} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}\u2061|600-E| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $600-E>0$ for all $t\\ge 0.$ Next, we solve for $E(t),$ as follows:\n\n$$\n\\begin{aligned}600-E & ={e}^{-kt-C} \\\\ 600-E & ={e}^{-C}{e}^{-kt} \\\\ 600-E & =K{e}^{-kt} \\\\ E & =600-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $4,$ the bread production was $480$ loaves. So, applying the condition $E(4)=480,$ we have\n\n$$\n\\begin{aligned}E(4) & =480 \\\\ 600-K{e}^{-4k} & =480 \\\\ K{e}^{-4k} & =120.\\end{aligned}\n$$\n\nWe're also told that, on day $8,$ the bread production was $500$ loaves. So, applying the condition $E(8)=500,$ we get\n\n$$\n\\begin{aligned}E(8) & =500 \\\\ 600-K{e}^{-8k} & =500 \\\\ K{e}^{-8k} & =100.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-4k}}{K{e}^{-8k}} & =\\frac{120}{100} \\\\ {e}^{4k} & =\\frac{6}{5} \\\\ 4k & =\\operatorname{ln}\u2061(\\frac{6}{5}) \\\\ k & =\\frac{1}{4}\\operatorname{ln}\u2061(\\frac{6}{5})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-4\\cdot (1/4)\\operatorname{ln}\u2061(6/5)} & =120 \\\\ K & =120{e}^{\\operatorname{ln}\u2061(6/5)} \\\\ K & =144\\end{aligned}\n$$\n\nTherefore, we have the following expression for $E(t):$\n\n$$\nE(t)=600-144{e}^{-(t/4)\\operatorname{ln}\u2061(6/5)}\n$$\n\nFinally, the number of loaves baked on day $t=40$ is\n\n$$\nE(40)=600-144{e}^{-(40/4)\\operatorname{ln}\u2061(6/5)}\u2248576.743\u2026\u2248577\\,\\text{loaves},\n$$\n\nrounded to the nearest integer.",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$570$ loaves",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

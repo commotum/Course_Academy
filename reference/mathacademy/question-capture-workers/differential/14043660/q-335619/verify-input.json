@@ -1,0 +1,63 @@
+{
+  "mode": "verify",
+  "problem": "A national park is monitoring the number of people who have downloaded a new park app. The system can support a maximum of $800$ users, but the total is still below this limit. Since the park began tracking downloads, the number of users reached $620$ on day $3$ and $720$ on day $9.$ On what day will the number of users reach $760?$ Round your answer to the nearest integer.\n\n*Hint: You may assume that the number of users, $P(t),$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+  "worked_solution": "The rate at which the number of app users $P(t)$ changes is proportional to the difference between the maximum population and its current population. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the maximum number of users the system can support, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=800$ users, and we have\n\n$$\n\\frac{dP}{dt}=k(800-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{800-P} & =k\\,dt \\\\ \\int \\frac{dP}{800-P} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}\u2061|800-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $800-P>0$ for all $t\\ge 0.$ Next, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}800-P & ={e}^{-kt-C} \\\\ 800-P & ={e}^{-C}{e}^{-kt} \\\\ 800-P & =K{e}^{-kt} \\\\ P & =800-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $3,$ the number of users was $620.$ So, applying the condition $P(3)=620,$ we have\n\n$$\n\\begin{aligned}P(3) & =620 \\\\ 800-K{e}^{-3k} & =620 \\\\ K{e}^{-3k} & =180.\\end{aligned}\n$$\n\nWe're also told that, on day $9,$ the number of users was $720.$ So, applying the condition $P(9)=720,$ we get\n\n$$\n\\begin{aligned}P(9) & =720 \\\\ 800-K{e}^{-9k} & =720 \\\\ K{e}^{-9k} & =80.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-3k}}{K{e}^{-9k}} & =\\frac{180}{80} \\\\ {e}^{6k} & =\\frac{9}{4} \\\\ 6k & =\\operatorname{ln}\u2061(\\frac{9}{4}) \\\\ k & =\\frac{1}{6}\\operatorname{ln}\u2061(\\frac{9}{4})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-3\\cdot (1/6)\\operatorname{ln}\u2061(9/4)} & =180 \\\\ K & =180{e}^{(1/2)\\operatorname{ln}\u2061(9/4)} \\\\ K & =180\\sqrt{\\frac{9}{4}} \\\\ K & =180\\cdot \\frac{3}{2} \\\\ K & =270\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=800-270{e}^{-(t/6)\\operatorname{ln}\u2061(9/4)}.\n$$\n\nFinally, let $d$  be the day when the app reaches $760$ users. Then, we have\n\n$$\n\\begin{aligned}P(d) & =760 \\\\ 800-270{e}^{-kd} & =760 \\\\ 40 & =270{e}^{-kd} \\\\ {e}^{-kd} & =\\frac{40}{270} \\\\ {e}^{-kd} & =\\frac{4}{27} \\\\ -kd & =\\operatorname{ln}\u2061(\\frac{4}{27}) \\\\ d & =-\\frac{1}{k}\\operatorname{ln}\u2061(\\frac{4}{27}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the number of users will be $760$ on day\n\n$$\nd=\\frac{-\\operatorname{ln}\u2061(\\frac{4}{27})}{\\frac{1}{6}\\operatorname{ln}\u2061(\\frac{9}{4})}=14.1285\u2026\u224814,\n$$\n\nrounded to the nearest day.",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$14\\text{th}$ day"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$20\\text{th}$ day"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$25\\text{th}$ day"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$10\\text{th}$ day"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$12\\text{th}$ day"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14043660,
+    "task_type": "lesson",
+    "topic_id": 1924,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-335619",
+        "problem": "A national park is monitoring the number of people who have downloaded a new park app. The system can support a maximum of $800$ users, but the total is still below this limit. Since the park began tracking downloads, the number of users reached $620$ on day $3$ and $720$ on day $9.$ On what day will the number of users reach $760?$ Round your answer to the nearest integer.\n\n*Hint: You may assume that the number of users, $P(t),$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+        "worked_solution": "The rate at which the number of app users $P(t)$ changes is proportional to the difference between the maximum population and its current population. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the maximum number of users the system can support, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=800$ users, and we have\n\n$$\n\\frac{dP}{dt}=k(800-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{800-P} & =k\\,dt \\\\ \\int \\frac{dP}{800-P} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}\u2061|800-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $800-P>0$ for all $t\\ge 0.$ Next, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}800-P & ={e}^{-kt-C} \\\\ 800-P & ={e}^{-C}{e}^{-kt} \\\\ 800-P & =K{e}^{-kt} \\\\ P & =800-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $3,$ the number of users was $620.$ So, applying the condition $P(3)=620,$ we have\n\n$$\n\\begin{aligned}P(3) & =620 \\\\ 800-K{e}^{-3k} & =620 \\\\ K{e}^{-3k} & =180.\\end{aligned}\n$$\n\nWe're also told that, on day $9,$ the number of users was $720.$ So, applying the condition $P(9)=720,$ we get\n\n$$\n\\begin{aligned}P(9) & =720 \\\\ 800-K{e}^{-9k} & =720 \\\\ K{e}^{-9k} & =80.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-3k}}{K{e}^{-9k}} & =\\frac{180}{80} \\\\ {e}^{6k} & =\\frac{9}{4} \\\\ 6k & =\\operatorname{ln}\u2061(\\frac{9}{4}) \\\\ k & =\\frac{1}{6}\\operatorname{ln}\u2061(\\frac{9}{4})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-3\\cdot (1/6)\\operatorname{ln}\u2061(9/4)} & =180 \\\\ K & =180{e}^{(1/2)\\operatorname{ln}\u2061(9/4)} \\\\ K & =180\\sqrt{\\frac{9}{4}} \\\\ K & =180\\cdot \\frac{3}{2} \\\\ K & =270\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=800-270{e}^{-(t/6)\\operatorname{ln}\u2061(9/4)}.\n$$\n\nFinally, let $d$  be the day when the app reaches $760$ users. Then, we have\n\n$$\n\\begin{aligned}P(d) & =760 \\\\ 800-270{e}^{-kd} & =760 \\\\ 40 & =270{e}^{-kd} \\\\ {e}^{-kd} & =\\frac{40}{270} \\\\ {e}^{-kd} & =\\frac{4}{27} \\\\ -kd & =\\operatorname{ln}\u2061(\\frac{4}{27}) \\\\ d & =-\\frac{1}{k}\\operatorname{ln}\u2061(\\frac{4}{27}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the number of users will be $760$ on day\n\n$$\nd=\\frac{-\\operatorname{ln}\u2061(\\frac{4}{27})}{\\frac{1}{6}\\operatorname{ln}\u2061(\\frac{9}{4})}=14.1285\u2026\u224814,\n$$\n\nrounded to the nearest day.",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$20\\text{th}$ day",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
