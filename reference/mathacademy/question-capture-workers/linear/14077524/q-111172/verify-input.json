@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "The migration table below describes the movement of the population between cities and suburbs every year in a certain state. \n\n|  |  | From: |  |\n| --- | --- | --- | --- |\n|  |  | **Cities** | **Suburbs** |\n| To: | **Cities** | $0.8$ | $0.7$ |\n| **Suburbs** | $0.2$ | $0.3$ |  |\n\nThat is, $20%$ of those living in cities move to the suburbs each year, and $70%$ of those living in suburbs move to the cities.\n\nAssuming that the population of the state is $9$ million and remains constant, how many people would eventually live in cities if the given probabilities remain constant over many years?",
+  "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.8 & 0.7 \\\\ 0.2 & 0.3\\end{aligned}].\n$$\n\nNotice that $P$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many years, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,\u27f9\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.8 & 0.7 \\\\ 0.2 & 0.3\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-0.2 & 0.7 \\\\ 0.2 & -0.7\\end{aligned}].\n$$\n\nSo, the matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.2 & 0.7 & 0 \\\\ 0.2 & -0.7 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c[\\begin{aligned}-0.2 & 0.7 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain \n\n$$\n{x}_{1}=\\frac{7}{2}{x}_{2}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{7}{2}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}\\frac{7}{2}{x}_{2}+{x}_{2} & =1 \\\\ \\frac{9}{2}{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{2}{9}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{7}{9} \\\\ \\frac{2}{9}\\end{aligned}].\n$$\n\nSo, after many years, $\\frac{7}{9}$ of the $9$ million population will live in cities. Therefore, the total number of people living in cities after many years will be\n\n$$\n\\frac{7}{9}\\cdot 9\\,\\text{million}=7\\,\\text{million}.\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$9$ million"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$7$ million"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$8.5$ million"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$3$ million"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$6.5$ million"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14077524,
+    "task_type": "review",
+    "topic_id": 1913,
+    "topic_title": "Steady-State Vectors",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-111172",
+        "problem": "The migration table below describes the movement of the population between cities and suburbs every year in a certain state. \n\n|  |  | From: |  |\n| --- | --- | --- | --- |\n|  |  | **Cities** | **Suburbs** |\n| To: | **Cities** | $0.8$ | $0.7$ |\n| **Suburbs** | $0.2$ | $0.3$ |  |\n\nThat is, $20%$ of those living in cities move to the suburbs each year, and $70%$ of those living in suburbs move to the cities.\n\nAssuming that the population of the state is $9$ million and remains constant, how many people would eventually live in cities if the given probabilities remain constant over many years?",
+        "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.8 & 0.7 \\\\ 0.2 & 0.3\\end{aligned}].\n$$\n\nNotice that $P$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many years, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,\u27f9\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.8 & 0.7 \\\\ 0.2 & 0.3\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-0.2 & 0.7 \\\\ 0.2 & -0.7\\end{aligned}].\n$$\n\nSo, the matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.2 & 0.7 & 0 \\\\ 0.2 & -0.7 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c[\\begin{aligned}-0.2 & 0.7 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain \n\n$$\n{x}_{1}=\\frac{7}{2}{x}_{2}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{7}{2}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}\\frac{7}{2}{x}_{2}+{x}_{2} & =1 \\\\ \\frac{9}{2}{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{2}{9}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{7}{9} \\\\ \\frac{2}{9}\\end{aligned}].\n$$\n\nSo, after many years, $\\frac{7}{9}$ of the $9$ million population will live in cities. Therefore, the total number of people living in cities after many years will be\n\n$$\n\\frac{7}{9}\\cdot 9\\,\\text{million}=7\\,\\text{million}.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$6.5$ million",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
