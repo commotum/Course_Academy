@@ -1,0 +1,52 @@
+{
+  "mode": "solve",
+  "problem": "An initial value problem has the exact solution ${y}_{\\text{exact}}(x)={e}^{x}.$ A numerical method is used to approximate the solution to the initial value problem, resulting in the table below, where $y$ denotes the approximate solution at each step, and ${\u03c4}_{n}$ is the local truncation error at each step. At each step, the exact value is used to approximate the new value. \n\nCalculate the local truncation error at each step. Round your answers to three decimal places.\n\n| $n$ | $x$ | $y$ | ${\u03c4}_{n}$ |\n| --- | --- | --- | --- |\n| $0$ | $0$ | $1.000$ | $0$ |\n| $1$ | $0.25$ | $1.283$ | {{field-1}} |\n| $2$ | $0.5$ | $1.644$ | {{field-2}} |\n| $3$ | $0.75$ | $2.104$ | {{field-3}} |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-3",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14062722,
+    "task_type": "review",
+    "topic_id": 3246,
+    "topic_title": "Error in Numerical Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-331510",
+        "problem": "Suppose we wish to approximate the solution to an initial value problem using the following numerical method:\n\n$$\n\\begin{aligned}\u0394y & =({x}^{2}+y)\\cdot \u0394x \\\\ {y}_{\\text{new}} & =y+\u0394y\\end{aligned}\n$$\n\nIf the exact solution is ${y}_{\\text{exact}}(x)={x}^{3},$ find an expression for the local truncation error for the step from $x$ to ${x}_{\\text{new}}=x+\u0394x.$",
+        "worked_solution": "The local truncation error (LTE) is the error made in a *single step* of a numerical method, when the step begins from an *exact value*. The LTE of a numerical method at step $n$ from $x$ with exact value ${y}_{\\text{exact}}(x)$ to ${x}_{\\text{new}}=x+\u0394x$ is\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-{y}_{\\text{new}} \\\\  & ={y}_{\\text{exact}}({x}_{\\text{new}})-({y}_{\\text{exact}}(x)+\u0394y).\\end{aligned}\n$$\n\nWe're given that the exact solution of the initial value problem is $y(x)={x}^{3}.$ Now, let's find the $y$-increment given by the numerical method:\n\n$$\n\\begin{aligned}\u0394y & =({x}^{2}+{y}_{\\text{exact}}(x))\\cdot \u0394x \\\\  & =({x}^{2}+{x}^{3})\\cdot \u0394x.\\end{aligned}\n$$\n\nNext, we compute the exact value at ${x}_{\\text{new}}:$\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}({x}_{\\text{new}}) & ={y}_{\\text{exact}}(x+\u0394x) \\\\  & =(x+\u0394x)^{3} \\\\  & ={x}^{3}+3{x}^{2}\\cdot \u0394x+3x\\cdot (\u0394x)^{2}+(\u0394x)^{3}\\end{aligned}\n$$\n\nFinally, we calculate the LTE for step $n$ starting at $x:$\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-{y}_{\\text{new}} \\\\  & =[{x}^{3}+3{x}^{2}\\cdot \u0394x+3x\\cdot (\u0394x)^{2}+(\u0394x)^{3}]-[{x}^{3}+({x}^{2}+{x}^{3})\\cdot \u0394x] \\\\  & ={x}^{3}-{x}^{3}+(3{x}^{2}-({x}^{2}+{x}^{3}))\\cdot \u0394x+3x\\cdot (\u0394x)^{2}+(\u0394x)^{3} \\\\  & =(2{x}^{2}-{x}^{3})\u0394x+3x(\u0394x)^{2}+(\u0394x)^{3}\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "(2{x}^{2}-{x}^{3})\u0394x+3x(\u0394x)^{2}+(\u0394x)^{3}",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

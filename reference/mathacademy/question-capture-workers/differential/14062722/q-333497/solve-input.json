@@ -1,0 +1,64 @@
+{
+  "mode": "solve",
+  "problem": "Suppose we wish to approximate the solution to an initial value problem using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\ {y}_{\\text{new}} & =y+\u0394y\\end{aligned}\n$$\n\nIf the exact solution is ${y}_{\\text{exact}}(x)=3{x}^{2}+5x,$ find an expression for the local truncation error for the step from $x$ to ${x}_{\\text{new}}=x+\u0394x.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "3\\cdot (\u0394x)^{2}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "5\\cdot (\u0394x)^{2}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "3{x}^{2}\\cdot (\u0394x)^{2}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{1}{3}\\cdot (\u0394x)^{3}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14062722,
+    "task_type": "review",
+    "topic_id": 3246,
+    "topic_title": "Error in Numerical Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-333236",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=x+2,\\,y(0)=0\n$$\n\nSuppose we wish to approximate the solution using the following numerical method:\n\n$$\n\\begin{aligned}\u0394y & =(x+{y}^{\u2032})\\cdot \u0394x \\\\ {y}_{\\text{new}} & =y+\u0394y\\end{aligned}\n$$\n\nGiven that the exact solution is ${y}_{\\text{exact}}(x)=\\frac{1}{2}{x}^{2}+2x,$ compute the local truncation error, ${\u03c4}_{1},$ for the first step starting at $x=0$ with step size $\u0394x=0.3.$\n\n${\u03c4}_{1}=$\n{{field-1}}",
+        "worked_solution": "The local truncation error (LTE) is the error made in a *single step* of a numerical method, when the step begins from an *exact value*. The LTE of a numerical method at step $n$ from $x$ with exact value ${y}_{\\text{exact}}(x)$ to ${x}_{\\text{new}}=x+\u0394x$ is\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-{y}_{\\text{new}} \\\\  & ={y}_{\\text{exact}}({x}_{\\text{new}})-({y}_{\\text{exact}}(x)+\u0394y).\\end{aligned}\n$$\n\nWe're given that the exact $y$-value at the start of the step $x=0$ is $y(0)=0.$ Now, let's find the \n$y$-increment given by the numerical method.\n\nFirst, the slope at the start of the step is\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}^{\u2032}(0) & =0+2 \\\\  & =2.\\end{aligned}\n$$\n\nSo, the increment at this step is\n\n$$\n\\begin{aligned}\u0394y & =(x+{y}_{\\text{exact}}^{\u2032}(0))\\cdot \u0394x \\\\  & =(0+2)\\cdot 0.3 \\\\  & =0.6.\\end{aligned}\n$$\n\nNext, we compute the exact value at ${x}_{\\text{new}}:$\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}({x}_{\\text{new}}) & ={y}_{\\text{exact}}(x+\u0394x) \\\\  & ={y}_{\\text{exact}}(0+0.3) \\\\  & ={y}_{\\text{exact}}(0.3) \\\\  & =\\frac{1}{2}(0.3)^{2}+2(0.3) \\\\  & =0.045+0.6 \\\\  & =0.645.\\end{aligned}\n$$\n\nFinally, we calculate the LTE for the first step starting at $x=0:$\n\n$$\n\\begin{aligned}{\u03c4}_{1} & ={y}_{\\text{exact}}({x}_{\\text{new}})-(y(0)+\u0394y) \\\\  & =0.645-(0+0.6) \\\\  & =0.045.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0.045",
+            "observed_mathquill_latex": "0.045"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
