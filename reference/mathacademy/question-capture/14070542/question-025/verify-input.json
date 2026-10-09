@@ -1,0 +1,48 @@
+{
+  "mode": "verify",
+  "problem": "A local newspaper is sold by three distributors, $1,$ $2,$ and $3.$\n\n- Distributor $1$ gets $36%$ of the copies.\n\n- Distributor $2$ gets $23%$ of the copies, and $92%$ of those copies are sold.\n\n- Distributor $3$ gets $41%$ of the copies, and $95%$ of those copies are sold.\n\nIf $3%$ of all copies have some printing defect, $70%$ of defective copies are sold, and $2.5%$ of sold copies are defective, what is the probability that a randomly chosen copy bought by distributor $1$ is sold? Round your answer to $3$ decimal places.",
+  "worked_solution": "Let $R$ be the event that a copy has a printing defect, $S$ be the event that a copy is sold, and ${D}_{1},{D}_{2},{D}_{3}$ be the event that a copy is given to distributor $1,$ $2,$ or $3,$ respectively.\n\nLet's break down the information given in the problem statement:\n\n- From the bullet points, we have the following information:\n\n$$\n\\begin{aligned} & P({D}_{1})=0.36 \\\\  & P({D}_{2})=0.23 &  & P(S|{D}_{2})=0.92 \\\\  & P({D}_{3})=0.41 &  & P(S|{D}_{3})=0.95\\end{aligned}\n$$\n\nThe disjoint union ${D}_{1}\u2294{D}_{2}\u2294{D}_{3}$ covers the entire sample space, and we have\n\n$$\nP({D}_{1})+P({D}_{2})+P({D}_{3})=0.36+0.23+0.41=1.\n$$\n\n- Since $3%$ of all copies has some printing defect, we have\n\n$$\nP(R)=0.03.\n$$\n\n- Since $70%$ of defective copies are sold, we have\n\n$$\nP(S|R)=0.7.\n$$\n\n- Since $2.5%$ of sold copies are defective, we have\n\n$$\nP(R|S)=0.025.\n$$\n\nWe want to find the probability that a randomly chosen copy bought by distributor $1$ is sold, which is represented as $P(S|{D}_{1}).$ \n\nUsing Bayes' theorem combined with the law of total probability, we have\n\n$$\n\\begin{aligned}P(R|S) & =\\frac{P(S|R)P(R)}{P(S)} \\\\ P(R|S) & =\\frac{P(S|R)P(R)}{P(S|{D}_{1})P({D}_{1})+P(S|{D}_{2})P({D}_{2})+P(S|{D}_{3})P({D}_{3})} \\\\ 0.025 & =\\frac{(0.7)(0.03)}{P(S|{D}_{1})(0.36)+(0.92)(0.23)+(0.95)(0.41)} \\\\ 0.025 & =\\frac{0.021}{0.36P(S|{D}_{1})+0.6011}\\end{aligned}\n$$\n\nSolving this equation for $P(S|{D}_{1}),$ we have\n\n$$\n\\begin{aligned}0.025(0.36P(S|{D}_{1})+0.6011) & =0.021 \\\\ 0.36P(S|{D}_{1})+0.6011 & =\\frac{0.021}{0.025} \\\\ 0.36P(S|{D}_{1})+0.6011 & =\\frac{21}{25} \\\\ 0.36P(S|{D}_{1}) & =\\frac{21}{25}-0.6011 \\\\ P(S|{D}_{1}) & =\\frac{1}{0.36}(\\frac{21}{25}-0.6011) \\\\ P(S|{D}_{1}) & \u22480.664\\end{aligned}\n$$\n\nrounded to three decimal places.",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "0.923"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "0.664"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "0.943"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "0.872"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "0.885"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14070542,
+    "task_type": "diagnostic",
+    "topic_id": null,
+    "examples": [],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}
