@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "A certain cinema sells three types of popcorn: traditional, butter, and caramelized. The following table describes how the number of customers changes between the three types of popcorn each month:\n\n|  |  | From: |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | **Traditional** | **Butter** | **Caramelized** |\n| To: | **Traditional** | $0.4$ | $0.1$ | $0.2$ |\n| **Butter** | $0.3$ | $0.5$ | $0.2$ |  |\n| **Caramelized** | $0.3$ | $0.4$ | $0.6$ |  |\n\nFor example, $30%$ of traditional popcorn customers switch to butter popcorn each month, and $40%$ of butter popcorn customers switch to caramelized popcorn.\n\nCurrently, $400$ customers buy traditional popcorn, $300$ customers buy butter popcorn, and $300$ customers buy caramelized popcorn. How many customers will purchase butter popcorn in one month? You may assume that the total number of customers doesn't change.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "360"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "330"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "290"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "310"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "420"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14059948,
+    "task_type": "lesson",
+    "topic_id": 1911,
+    "topic_title": "Markov Chains",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-35845",
+        "problem": "A certain company produces two types of smartphones: Phone $A$ and Phone $B.$ The following table describes how the number of customers changes between both types of smartphones each year:\n\n|  |  | From: |  |\n| --- | --- | --- | --- |\n|  |  | **Phone $A$** | **Phone $B$** |\n| To: | **Phone $A$** | $0.6$ | $0.3$ |\n| **Phone $B$** | $0.4$ | $0.7$ |  |\n\nThat is, $40%$ of Phone $A$ customers switch to Phone $B$ each year, and $30%$ of Phone $B$ customers switch to Phone $A.$\n\nCurrently, $600\\,000$ customers use Phone $A,$ while $400\\,000$ customers use Phone $B.$ How many customers will use Phone $A$ in one year? You may assume that the total number of customers doesn't change.",
+        "worked_solution": "From the table, we can build the corresponding stochastic matrix: \n\n$$\nP=[\\begin{aligned}0.6 & 0.3 \\\\ 0.4 & 0.7\\end{aligned}]\n$$\n\nThe vector describing the number of customers for each smartphone is\n\n$$\n[\\begin{aligned}600\\,000 \\\\ 400\\,000\\end{aligned}].\n$$\n\nDividing the vector above by the total number of customers $(1\\,000\\,000),$ we get the stochastic vector of the initial state:\n\n$$\n{x}_{0}=\\frac{1}{1\\,000\\,000}[\\begin{aligned}600\\,000 \\\\ 400\\,000\\end{aligned}]=[\\begin{aligned}0.6 \\\\ 0.4\\end{aligned}]\n$$\n\nTo find the state vector ${x}_{1}$ after one year, we apply one step of the Markov chain:\n\n$$\n{x}_{1}=P{x}_{0}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}{x}_{1} & =P{x}_{0} \\\\  & =[\\begin{aligned}0.6 & 0.3 \\\\ 0.4 & 0.7\\end{aligned}][\\begin{aligned}0.6 \\\\ 0.4\\end{aligned}] \\\\  & =[\\begin{aligned}0.48 \\\\ 0.52\\end{aligned}].\\end{aligned}\n$$\n\nSo, after one year, $48%$ of customers will use Phone $A.$ Computing $48%$ of $1\\,000\\,000,$ we obtain\n\n$$\n1\\,000\\,000\\cdot 0.48=480\\,000.\n$$\n\nTherefore, $480\\,000$ customers will use Phone $A$ in one year.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "480\\,000",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

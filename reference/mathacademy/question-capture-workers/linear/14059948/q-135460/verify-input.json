@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "A certain company produces three types of milk: whole, skim, and lactose-free. The following table describes how the number of customers changes between the three types of milk each year:\n\n|  |  | From: |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | **Whole** | **Skim** | **Lactose-free** |\n| To: | **Whole** | $0.5$ | $0.3$ | $0.2$ |\n| **Skim** | $0.3$ | $0.4$ | $0.4$ |  |\n| **Lactose-free** | $0.2$ | $0.3$ | $0.4$ |  |\n\nFor example, $30%$ of whole milk customers switch to skim milk each year, and $20%$ of lactose-free milk customers switch to whole milk.\n\nCurrently, $400\\,000$ customers consume whole milk, $400\\,000$ customers consume skim milk, and $200\\,000$ customers consume lactose-free milk. How many customers will consume whole milk after one year? You may assume that the total number of customers doesn't change.",
+  "worked_solution": "From the table, we can build the corresponding stochastic matrix: \n\n$$\nP=[\\begin{aligned}0.5 & 0.3 & 0.2 \\\\ 0.3 & 0.4 & 0.4 \\\\ 0.2 & 0.3 & 0.4\\end{aligned}]\n$$\n\nThe vector describing the number of customers for each type of milk is\n\n$$\n[\\begin{aligned}400\\,000 \\\\ 400\\,000 \\\\ 200\\,000\\end{aligned}].\n$$\n\nDividing the vector above by the total number of customers $(1\\,000\\,000),$ we get the stochastic vector of the initial state:\n\n$$\n{x}_{0}=\\frac{1}{1\\,000\\,000}[\\begin{aligned}400\\,000 \\\\ 400\\,000 \\\\ 200\\,000\\end{aligned}]=[\\begin{aligned}0.4 \\\\ 0.4 \\\\ 0.2\\end{aligned}]\n$$\n\nTo find the state vector ${x}_{1}$ after one year, we apply one step of the Markov chain:\n\n$$\n{x}_{1}=P{x}_{0}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}{x}_{1} & =P{x}_{0} \\\\  & =[\\begin{aligned}0.5 & 0.3 & 0.2 \\\\ 0.3 & 0.4 & 0.4 \\\\ 0.2 & 0.3 & 0.4\\end{aligned}][\\begin{aligned}0.4 \\\\ 0.4 \\\\ 0.2\\end{aligned}] \\\\  & =[\\begin{aligned}0.36 \\\\ 0.36 \\\\ 0.28\\end{aligned}].\\end{aligned}\n$$\n\nSo, after one year, $36%$ of customers will consume whole milk. Computing $36%$ of $1\\,000\\,000,$ we obtain\n\n$$\n1\\,000\\,000\\cdot 0.36=360\\,000.\n$$\n\nTherefore, $360\\,000$ customers will consume whole milk after one year.",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "360\\,000"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "430\\,000"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "280\\,000"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "380\\,000"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "320\\,000"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14059948,
+    "task_type": "lesson",
+    "topic_id": 1911,
+    "topic_title": "Markov Chains",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-135460",
+        "problem": "A certain company produces three types of milk: whole, skim, and lactose-free. The following table describes how the number of customers changes between the three types of milk each year:\n\n|  |  | From: |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | **Whole** | **Skim** | **Lactose-free** |\n| To: | **Whole** | $0.5$ | $0.3$ | $0.2$ |\n| **Skim** | $0.3$ | $0.4$ | $0.4$ |  |\n| **Lactose-free** | $0.2$ | $0.3$ | $0.4$ |  |\n\nFor example, $30%$ of whole milk customers switch to skim milk each year, and $20%$ of lactose-free milk customers switch to whole milk.\n\nCurrently, $400\\,000$ customers consume whole milk, $400\\,000$ customers consume skim milk, and $200\\,000$ customers consume lactose-free milk. How many customers will consume whole milk after one year? You may assume that the total number of customers doesn't change.",
+        "worked_solution": "From the table, we can build the corresponding stochastic matrix: \n\n$$\nP=[\\begin{aligned}0.5 & 0.3 & 0.2 \\\\ 0.3 & 0.4 & 0.4 \\\\ 0.2 & 0.3 & 0.4\\end{aligned}]\n$$\n\nThe vector describing the number of customers for each type of milk is\n\n$$\n[\\begin{aligned}400\\,000 \\\\ 400\\,000 \\\\ 200\\,000\\end{aligned}].\n$$\n\nDividing the vector above by the total number of customers $(1\\,000\\,000),$ we get the stochastic vector of the initial state:\n\n$$\n{x}_{0}=\\frac{1}{1\\,000\\,000}[\\begin{aligned}400\\,000 \\\\ 400\\,000 \\\\ 200\\,000\\end{aligned}]=[\\begin{aligned}0.4 \\\\ 0.4 \\\\ 0.2\\end{aligned}]\n$$\n\nTo find the state vector ${x}_{1}$ after one year, we apply one step of the Markov chain:\n\n$$\n{x}_{1}=P{x}_{0}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}{x}_{1} & =P{x}_{0} \\\\  & =[\\begin{aligned}0.5 & 0.3 & 0.2 \\\\ 0.3 & 0.4 & 0.4 \\\\ 0.2 & 0.3 & 0.4\\end{aligned}][\\begin{aligned}0.4 \\\\ 0.4 \\\\ 0.2\\end{aligned}] \\\\  & =[\\begin{aligned}0.36 \\\\ 0.36 \\\\ 0.28\\end{aligned}].\\end{aligned}\n$$\n\nSo, after one year, $36%$ of customers will consume whole milk. Computing $36%$ of $1\\,000\\,000,$ we obtain\n\n$$\n1\\,000\\,000\\cdot 0.36=360\\,000.\n$$\n\nTherefore, $360\\,000$ customers will consume whole milk after one year.",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "280\\,000",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

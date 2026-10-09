@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "A certain cinema sells three types of popcorn: traditional, butter, and caramelized. The following table describes how the number of customers changes between the three types of popcorn each month:\n\n|  |  | From: |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | **Traditional** | **Butter** | **Caramelized** |\n| To: | **Traditional** | $0.4$ | $0.1$ | $0.2$ |\n| **Butter** | $0.3$ | $0.5$ | $0.2$ |  |\n| **Caramelized** | $0.3$ | $0.4$ | $0.6$ |  |\n\nFor example, $30%$ of traditional popcorn customers switch to butter popcorn each month, and $40%$ of butter popcorn customers switch to caramelized popcorn.\n\nCurrently, $400$ customers buy traditional popcorn, $300$ customers buy butter popcorn, and $300$ customers buy caramelized popcorn. How many customers will purchase butter popcorn in one month? You may assume that the total number of customers doesn't change.",
+  "worked_solution": "From the table, we can build the corresponding stochastic matrix: \n\n$$\nP=[\\begin{aligned}0.4 & 0.1 & 0.2 \\\\ 0.3 & 0.5 & 0.2 \\\\ 0.3 & 0.4 & 0.6\\end{aligned}]\n$$\n\nThe vector describing the number of customers for each type of popcorn customers is\n\n$$\n[\\begin{aligned}400 \\\\ 300 \\\\ 300\\end{aligned}].\n$$\n\nDividing the vector above by the total number of customers $(1\\,000),$ we get the stochastic vector of the initial state:\n\n$$\n{x}_{0}=\\frac{1}{1\\,000}[\\begin{aligned}400 \\\\ 300 \\\\ 300\\end{aligned}]=[\\begin{aligned}0.4 \\\\ 0.3 \\\\ 0.3\\end{aligned}]\n$$\n\nTo find the state vector ${x}_{1}$ after one year, we apply one step of the Markov chain:\n\n$$\n{x}_{1}=P{x}_{0}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}{x}_{1} & =P{x}_{0} \\\\  & =[\\begin{aligned}0.4 & 0.1 & 0.2 \\\\ 0.3 & 0.5 & 0.2 \\\\ 0.3 & 0.4 & 0.6\\end{aligned}][\\begin{aligned}0.4 \\\\ 0.3 \\\\ 0.3\\end{aligned}] \\\\  & =[\\begin{aligned}0.25 \\\\ 0.33 \\\\ 0.42\\end{aligned}].\\end{aligned}\n$$\n\nSo, after one year, $33%$ of customers will buy butter popcorn. Computing $33%$ of $1\\,000,$ we obtain\n\n$$\n1\\,000\\cdot 0.33=330.\n$$\n\nTherefore, $330$ customers will buy butter popcorn in one month.",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "360"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "330"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "290"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "310"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "420"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14059948,
+    "task_type": "lesson",
+    "topic_id": 1911,
+    "topic_title": "Markov Chains",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-135466",
+        "problem": "A certain cinema sells three types of popcorn: traditional, butter, and caramelized. The following table describes how the number of customers changes between the three types of popcorn each month:\n\n|  |  | From: |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | **Traditional** | **Butter** | **Caramelized** |\n| To: | **Traditional** | $0.4$ | $0.1$ | $0.2$ |\n| **Butter** | $0.3$ | $0.5$ | $0.2$ |  |\n| **Caramelized** | $0.3$ | $0.4$ | $0.6$ |  |\n\nFor example, $30%$ of traditional popcorn customers switch to butter popcorn each month, and $40%$ of butter popcorn customers switch to caramelized popcorn.\n\nCurrently, $400$ customers buy traditional popcorn, $300$ customers buy butter popcorn, and $300$ customers buy caramelized popcorn. How many customers will purchase butter popcorn in one month? You may assume that the total number of customers doesn't change.",
+        "worked_solution": "From the table, we can build the corresponding stochastic matrix: \n\n$$\nP=[\\begin{aligned}0.4 & 0.1 & 0.2 \\\\ 0.3 & 0.5 & 0.2 \\\\ 0.3 & 0.4 & 0.6\\end{aligned}]\n$$\n\nThe vector describing the number of customers for each type of popcorn customers is\n\n$$\n[\\begin{aligned}400 \\\\ 300 \\\\ 300\\end{aligned}].\n$$\n\nDividing the vector above by the total number of customers $(1\\,000),$ we get the stochastic vector of the initial state:\n\n$$\n{x}_{0}=\\frac{1}{1\\,000}[\\begin{aligned}400 \\\\ 300 \\\\ 300\\end{aligned}]=[\\begin{aligned}0.4 \\\\ 0.3 \\\\ 0.3\\end{aligned}]\n$$\n\nTo find the state vector ${x}_{1}$ after one year, we apply one step of the Markov chain:\n\n$$\n{x}_{1}=P{x}_{0}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}{x}_{1} & =P{x}_{0} \\\\  & =[\\begin{aligned}0.4 & 0.1 & 0.2 \\\\ 0.3 & 0.5 & 0.2 \\\\ 0.3 & 0.4 & 0.6\\end{aligned}][\\begin{aligned}0.4 \\\\ 0.3 \\\\ 0.3\\end{aligned}] \\\\  & =[\\begin{aligned}0.25 \\\\ 0.33 \\\\ 0.42\\end{aligned}].\\end{aligned}\n$$\n\nSo, after one year, $33%$ of customers will buy butter popcorn. Computing $33%$ of $1\\,000,$ we obtain\n\n$$\n1\\,000\\cdot 0.33=330.\n$$\n\nTherefore, $330$ customers will buy butter popcorn in one month.",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "420",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
