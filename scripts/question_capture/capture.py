@@ -309,8 +309,30 @@ def observe_queue(args, db, browser, completed, captured_tasks, after_task_id=No
                               topic_ids=[i['topic_id'] for i in queue if i['task_type'] in ('lesson','review') and i['topic_id'] is not None],
                               knowledge_snapshot=previous_activity_snapshot(args))
     retry_topics = {int(key.split(':')[1]) for key in retry_policy['pending'] if key.startswith('lesson:')}
-    selected = apply_policy(choose_activity(queue, priorities,set(completed)-retry_topics,captured_tasks),retry_policy)
+    blocked_topics = set(completed)-retry_topics
+    # A placement/course change can assign a new lesson for a topic captured
+    # earlier. The live unlocked task identity is authoritative for that new
+    # assignment; it must not be suppressed forever by the historical topic.
+    observed_captured = set(captured_tasks) | {
+        item['task_id'] for item in getattr(browser,'completed_outcomes',())}
+    reassigned = [item for item in queue if
+        item.get('task_type') == 'lesson' and item.get('topic_id') in blocked_topics and
+        item['task_id'] not in observed_captured and item.get('capture_supported') is True and
+        item.get('in_progress') is False and item.get('progress') == 0 and
+        item.get('card_id') == 'task-'+str(item['task_id']) and
+        item.get('start_id') == 'taskStartButton-'+str(item['task_id']) and
+        item.get('href') == '/tasks/%s/topics/%s/lesson' % (item['task_id'],item['topic_id'])]
+    reassigned_tasks = {item['task_id'] for item in reassigned}
+    historically_blocked_tasks = {item['task_id'] for item in queue if (
+        item.get('task_type','lesson') == 'lesson' and item.get('topic_id') in blocked_topics and
+        item['task_id'] not in reassigned_tasks)}
+    selected = apply_policy(choose_activity(queue, priorities,
+        blocked_topics-{item['topic_id'] for item in reassigned},
+        observed_captured|historically_blocked_tasks),retry_policy)
     observation = {'queue':queue, 'selected':selected,'completed_outcomes':getattr(browser,'completed_outcomes',[]),
+                   'reassigned_lessons':[{'task_id':item['task_id'],'topic_id':item['topic_id'],
+                       'href':item['href'],'reason':'fresh_unlocked_task_overrides_historical_topic'}
+                       for item in reassigned],
                    'perfect_retakes_pending':retry_policy['pending'],
                    'unranked_topics':[i['topic_id'] for i in queue
                                       if i['task_type'] in ('lesson','review') and i['topic_id'] not in priorities],

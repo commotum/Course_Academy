@@ -287,7 +287,12 @@ The runner:
    When no scored activity is available, it takes the
    first new review in the visible queue. If no review is available, it takes the
    first remaining activity in visible queue order, including an unranked lesson.
-   Already captured tasks and completed lesson topics are skipped.
+   Already captured tasks and completed lesson topics are skipped. A newly
+   assigned unlocked lesson with zero progress and matching task/topic Start
+   link can override a historical completed topic, for example after placement
+   changes the account's course progression. Its task ID must be absent from
+   saved captures and the observed completed task rows. Queue observations
+   record these exceptions as `reassigned_lessons`.
    It refreshes and logs the queue after every completed activity, including the
    last activity allowed by `--limit`, and uses that observation for the next
    selection. Assessments, including quizzes, and in-progress tasks are also
