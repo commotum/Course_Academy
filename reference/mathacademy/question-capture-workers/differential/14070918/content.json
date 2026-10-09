@@ -1,0 +1,830 @@
+{
+  "task_id": 14070918,
+  "task_type": "lesson",
+  "topic_id": 6400,
+  "content_only": true,
+  "source_url": "https://mathacademy.com/learn?taskId=14070918",
+  "sequence_policy": {
+    "CWCWC": 0.7,
+    "WCWCC": 0.30000000000000004
+  },
+  "questions": [
+    {
+      "math_academy_id": "q-333653",
+      "knowledge_point_id": "55d2b186-64d2-5ad8-b168-6c7bea413df3",
+      "knowledge_point": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+      "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2033}+2x{y}^{\u2032}+3{y}^{2}={x}^{2},\\,y(1)=1,\\,{y}^{\u2032}(1)=2\n$$\n\nWe wish to approximate the solution using Euler's method by introducing $z={y}^{\u2032}$ and reducing the equation to a system of first-order ODEs. What entries should be placed in the columns for $\u0394y$ and $\u0394z$ in the table below if the step size is $\u0394x=\\frac{1}{2}?$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ |  |  | {{field-1}} |  |  | {{field-2}} |\n\nTherefore, $y(\\frac{3}{2})\u2248$\n{{field-3}}.",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z),\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}{y}^{\u2033}+2x{y}^{\u2032}+3{y}^{2} & ={x}^{2} \\\\ {y}^{\u2033} & ={x}^{2}-2x{y}^{\u2032}-3{y}^{2}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032}$ and ${z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}={x}^{2}-2xz-3{y}^{2}.\n$$\n\nNote that the initial value of $z$ is $z(1)={y}^{\u2032}(1)=2.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=1, \\\\ {z}^{\u2032}={x}^{2}-2xz-3{y}^{2},\\, & z(1)=2\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, because the initial conditions are $y(1)=1$ and $z(1)=2,$ we place $y=1$ and $z=2$ in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ |  |  | $2$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=2 \\\\ {z}^{\u2032} & ={x}^{2}-2xz-3{y}^{2} \\\\  & ={1}^{2}-2\\cdot 1\\cdot 2-3\\cdot {1}^{2} \\\\  & =1-4-3 \\\\  & =-6\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $2$ |  | $2$ | $-6$ |  |\n\nFinally, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =2\\cdot \\frac{1}{2} \\\\  & =1 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =(-6)\\cdot \\frac{1}{2} \\\\  & =-3\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $2$ | $1$ | $2$ | $-6$ | $-3$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+\\frac{1}{2}=\\frac{3}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y=1+1=2 \\\\ {z}_{\\text{new}} & =z+\u0394z=2+(-3)=-1\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $2$ | $1$ | $2$ | $-6$ | $-3$ |\n| $\\frac{3}{2}$ | $2$ |  |  | $-1$ |  |  |\n\nTherefore, we conclude that \n$y(\\frac{3}{2})\u22482.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "2"
+            }
+          ],
+          "correct_value": "1",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-3"
+            }
+          ],
+          "correct_value": "-3",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "2"
+            }
+          ],
+          "correct_value": "2",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333653",
+        "kp_title": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333622",
+      "knowledge_point_id": "55d2b186-64d2-5ad8-b168-6c7bea413df3",
+      "knowledge_point": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+      "problem": "Consider the following initial value problem:\n\n$$\nx{y}^{\u2033}+4y{y}^{\u2032}-3y=3{x}^{2},\\,y(1)=1,\\,{y}^{\u2032}(1)=0\n$$\n\nWe wish to approximate the solution using Euler's method by introducing $z={y}^{\u2032}$ and reducing the equation to a system of first-order ODEs. What entries should be placed in the columns for $\u0394y$ and $\u0394z$ in the table below if the step size is $\u0394x=\\frac{1}{2}?$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ |  |  | {{field-1}} |  |  | {{field-2}} |\n\nTherefore, $y(\\frac{3}{2})\u2248$\n{{field-3}}.",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z),\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}x{y}^{\u2033}+4y{y}^{\u2032}-3y & =3{x}^{2} \\\\ x{y}^{\u2033} & =3{x}^{2}-4y{y}^{\u2032}+3y \\\\ {y}^{\u2033} & =\\frac{3{x}^{2}-4y{y}^{\u2032}+3y}{x}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{3{x}^{2}-4yz+3y}{x}.\n$$\n\nNote that the initial value of $z$ is $z(1)={y}^{\u2032}(1)=0.$ So, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=1, \\\\ {z}^{\u2032}=\\frac{3{x}^{2}-4yz+3y}{x},\\, & z(1)=0\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, because the initial conditions are $y(1)=1$ and $z(1)=0,$ we place $y=1$ and $z=0$ in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ |  |  | $0$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=0 \\\\ {z}^{\u2032} & =\\frac{3{x}^{2}-4yz+3y}{x} \\\\  & =\\frac{3\\cdot {1}^{2}-4\\cdot 1\\cdot 0+3\\cdot 1}{1} \\\\  & =\\frac{3+0+3}{1} \\\\  & =6\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $0$ |  | $0$ | $6$ |  |\n\nFinally, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =0\\cdot \\frac{1}{2} \\\\  & =0 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =6\\cdot \\frac{1}{2} \\\\  & =3\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $0$ | $0$ | $0$ | $6$ | $3$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+\\frac{1}{2}=\\frac{3}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y=1+0=1 \\\\ {z}_{\\text{new}} & =z+\u0394z=0+3=3\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $0$ | $0$ | $0$ | $6$ | $3$ |\n| $\\frac{3}{2}$ | $1$ |  |  | $3$ |  |  |\n\nTherefore, we conclude that\n$y(\\frac{3}{2})\u22481.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0"
+            }
+          ],
+          "correct_value": "0",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "3"
+            }
+          ],
+          "correct_value": "3",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "1"
+            }
+          ],
+          "correct_value": "1",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333622",
+        "kp_title": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333548",
+      "knowledge_point_id": "55d2b186-64d2-5ad8-b168-6c7bea413df3",
+      "knowledge_point": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+      "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2033}-x{y}^{\u2032}+6y={x}^{2},\\,y(2)=-3,\\,{y}^{\u2032}(2)=2\n$$\n\nWe wish to approximate the solution using Euler's method by introducing $z={y}^{\u2032}$ and reducing the equation to a system of first-order ODEs. What entries should be placed in the columns for $\u0394y$ and $\u0394z$ in the table below if the step size is $\u0394x=1?$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $2$ |  |  | {{field-1}} |  |  | {{field-2}} |\n\nTherefore, $y(3)\u2248$\n{{field-3}}.",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z),\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}{y}^{\u2033}-x{y}^{\u2032}+6y & ={x}^{2} \\\\ {y}^{\u2033} & =x{y}^{\u2032}-6y+{x}^{2}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032}$ and ${z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=xz-6y+{x}^{2}.\n$$\n\nNote that the initial value of $z$ is $z(2)={y}^{\u2032}(2)=2.$ So, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(2)=-3, \\\\ {z}^{\u2032}=xz-6y+{x}^{2},\\, & z(2)=2\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, because the initial conditions are $y(2)=-3$ and $z(2)=2,$ we place $y=-3$ and $z=2$ in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $2$ | $-3$ |  |  | $2$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=2 \\\\ {z}^{\u2032} & =xz-6y+{x}^{2} \\\\  & =2\\cdot 2-6\\cdot (-3)+{2}^{2} \\\\  & =4+18+4 \\\\  & =26\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $2$ | $-3$ | $2$ |  | $2$ | $26$ |  |\n\nFinally, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =2\\cdot 1 \\\\  & =2 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =26\\cdot 1 \\\\  & =26\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $2$ | $-3$ | $2$ | $2$ | $2$ | $26$ | $26$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=2+1=3 \\\\ {y}_{\\text{new}} & =y+\u0394y=-3+2=-1 \\\\ {z}_{\\text{new}} & =z+\u0394z=2+26=28\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $2$ | $-3$ | $2$ | $2$ | $2$ | $26$ | $26$ |\n| $3$ | $-1$ |  |  | $28$ |  |  |\n\nTherefore, we conclude that\n$y(3)\u2248-1.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "type": "math",
+              "value": "3"
+            }
+          ],
+          "correct_value": "2",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "26"
+            }
+          ],
+          "correct_value": "26",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-1"
+            }
+          ],
+          "correct_value": "-1",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-333548",
+        "kp_title": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333506",
+      "knowledge_point_id": "55d2b186-64d2-5ad8-b168-6c7bea413df3",
+      "knowledge_point": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+      "problem": "Consider the following initial value problem:\n\n$$\nx{y}^{\u2033}+3y{y}^{\u2032}=4x,\\,y(1)=2,\\,{y}^{\u2032}(1)=1\n$$\n\nWe wish to approximate the solution using Euler's method by introducing $z={y}^{\u2032}$ and reducing the equation to a system of first-order ODEs. What entries should be placed in the columns for $\u0394y$ and $\u0394z$ in the table below if the step size is $\u0394x=1?$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ |  |  | {{field-1}} |  |  | {{field-2}} |\n\nTherefore, $y(2)\u2248$\n{{field-3}}.",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z),\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}x{y}^{\u2033}+3y{y}^{\u2032} & =4x \\\\ x{y}^{\u2033} & =4x-3y{y}^{\u2032} \\\\ {y}^{\u2033} & =\\frac{4x-3y{y}^{\u2032}}{x}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{4x-3yz}{x}.\n$$\n\nNote that the initial value of $z$ is $z(1)={y}^{\u2032}(1)=1.$ So, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=2, \\\\ {z}^{\u2032}=\\frac{4x-3yz}{x},\\, & z(1)=1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, because the initial conditions are $y(1)=2$ and $z(1)=1,$ we place $y=2$ and $z=1$ in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ |  |  | $1$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=1 \\\\ {z}^{\u2032} & =\\frac{4x-3yz}{x} \\\\  & =\\frac{4\\cdot 1-3\\cdot 2\\cdot 1}{1} \\\\  & =\\frac{4-6}{1} \\\\  & =-2\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ | $1$ |  | $1$ | $-2$ |  |\n\nFinally, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =1\\cdot 1 \\\\  & =1 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =(-2)\\cdot 1 \\\\  & =-2\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ | $1$ | $1$ | $1$ | $-2$ | $-2$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+1=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=2+1=3 \\\\ {z}_{\\text{new}} & =z+\u0394z=1+(-2)=-1\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ | $1$ | $1$ | $1$ | $-2$ | $-2$ |\n| $2$ | $3$ |  |  | $-1$ |  |  |\n\nTherefore, we conclude that\n$y(2)\u22483.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "1"
+            }
+          ],
+          "correct_value": "1",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-2"
+            }
+          ],
+          "correct_value": "-2",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "3"
+            }
+          ],
+          "correct_value": "3",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-333506",
+        "kp_title": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333654",
+      "knowledge_point_id": "55d2b186-64d2-5ad8-b168-6c7bea413df3",
+      "knowledge_point": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+      "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2033}-x{y}^{\u2032}+{y}^{3}={x}^{3},\\,y(0)=1,\\,{y}^{\u2032}(0)=1\n$$\n\nWe wish to approximate the solution using Euler's method by introducing $z={y}^{\u2032}$ and reducing the equation to a system of first-order ODEs. What entries should be placed in the columns for $\u0394y$ and $\u0394z$ in the table below if the step size is $\u0394x=\\frac{1}{2}?$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ |  |  | {{field-1}} |  |  | {{field-2}} |\n\nTherefore, $y(\\frac{1}{2})\u2248$\n{{field-3}}.",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z),\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}{y}^{\u2033}-x{y}^{\u2032}+{y}^{3} & ={x}^{3} \\\\ {y}^{\u2033} & ={x}^{3}+x{y}^{\u2032}-{y}^{3}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}={x}^{3}+xz-{y}^{3}.\n$$\n\nNote that the initial value of $z$ is $z(0)={y}^{\u2032}(0)=1.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(0)=1, \\\\ {z}^{\u2032}={x}^{3}+xz-{y}^{3},\\, & z(0)=1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, because the initial conditions are $y(0)=1$ and $z(0)=1,$ we place $y=1$ and $z=1$ in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ |  |  | $1$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=1 \\\\ {z}^{\u2032} & ={x}^{3}+xz-{y}^{3} \\\\  & ={0}^{3}+0\\cdot 1-{1}^{3} \\\\  & =-1\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ |  | $1$ | $-1$ |  |\n\nFinally, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =1\\cdot \\frac{1}{2} \\\\  & =\\frac{1}{2} \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =(-1)\\cdot \\frac{1}{2} \\\\  & =-\\frac{1}{2}\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ | $\\frac{1}{2}$ | $1$ | $-1$ | $-\\frac{1}{2}$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=0+\\frac{1}{2}=\\frac{1}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y=1+\\frac{1}{2}=\\frac{3}{2} \\\\ {z}_{\\text{new}} & =z+\u0394z=1+(-\\frac{1}{2})=\\frac{1}{2}\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ | $\\frac{1}{2}$ | $1$ | $-1$ | $-\\frac{1}{2}$ |\n| $\\frac{1}{2}$ | $\\frac{3}{2}$ |  |  | $\\frac{1}{2}$ |  |  |\n\nTherefore, we conclude that\n\n$$\ny(\\frac{1}{2})\u2248\\frac{3}{2}.\n$$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{1}{2}"
+            }
+          ],
+          "correct_value": "\\frac{1}{2}",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-\\frac{1}{2}"
+            }
+          ],
+          "correct_value": "-\\frac{1}{2}",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{3}{2}"
+            }
+          ],
+          "correct_value": "\\frac{3}{2}",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333654",
+        "kp_title": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333710",
+      "knowledge_point_id": "cd3b7856-4ac5-5473-a585-949dd06100e8",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+      "problem": "Consider the following initial value problem:\n\n$$\nx{y}^{\u2033}-3y{y}^{\u2032}=2{x}^{2},\\,y(1)=-1,\\,{y}^{\u2032}(1)=1\n$$\n\nUse Euler's Method with one step to approximate $y(\\frac{3}{2})$ and ${y}^{\u2032}(\\frac{3}{2}).$\n\n$y(\\frac{3}{2})\u2248$\n{{field-1}},\n$\\,{y}^{\u2032}(\\frac{3}{2})\u2248$\n{{field-2}}",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}x{y}^{\u2033}-3y{y}^{\u2032} & =2{x}^{2} \\\\ x{y}^{\u2033} & =2{x}^{2}+3y{y}^{\u2032} \\\\ {y}^{\u2033} & =\\frac{2{x}^{2}+3y{y}^{\u2032}}{x}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{2{x}^{2}+3yz}{x}.\n$$\n\nNote that the initial value of $z$ is\n$z(1)={y}^{\u2032}(1)=1.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=-1, \\\\ {z}^{\u2032}=\\frac{2{x}^{2}+3yz}{x},\\, & z(1)=1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nSince we want to find the values of $y$ and ${y}^{\u2032}=z$ at $x=\\frac{3}{2},$ we will use a step size of\n\n$$\n\u0394x=\\frac{3}{2}-1=\\frac{1}{2}.\n$$\n\nFirst, we place the initial condition data in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ |  |  | $1$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=1 \\\\ {z}^{\u2032} & =\\frac{2{x}^{2}+3yz}{x} \\\\  & =\\frac{2\\cdot {1}^{2}+3\\cdot (-1)\\cdot 1}{1} \\\\  & =\\frac{2-3}{1} \\\\  & =-1\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $1$ |  | $1$ | $-1$ |  |\n\nNext, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =1\\cdot \\frac{1}{2} \\\\  & =\\frac{1}{2} \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =(-1)\\cdot \\frac{1}{2} \\\\  & =-\\frac{1}{2}\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $1$ | $\\frac{1}{2}$ | $1$ | $-1$ | $-\\frac{1}{2}$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+\\frac{1}{2}=\\frac{3}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y=-1+\\frac{1}{2}=-\\frac{1}{2} \\\\ {z}_{\\text{new}} & =z+\u0394z=1+(-\\frac{1}{2})=\\frac{1}{2}\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $1$ | $\\frac{1}{2}$ | $1$ | $-1$ | $-\\frac{1}{2}$ |\n| $\\frac{3}{2}$ | $-\\frac{1}{2}$ |  |  | $\\frac{1}{2}$ |  |  |\n\nTherefore, we conclude that\n$y(\\frac{3}{2})\u2248-\\frac{1}{2}$\nand\n${y}^{\u2032}(\\frac{3}{2})=z(\\frac{3}{2})\u2248\\frac{1}{2}.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-\\frac{1}{2}"
+            }
+          ],
+          "correct_value": "-\\frac{1}{2}",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{1}{2}"
+            }
+          ],
+          "correct_value": "\\frac{1}{2}",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333710",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333822",
+      "knowledge_point_id": "cd3b7856-4ac5-5473-a585-949dd06100e8",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+      "problem": "Consider the following initial value problem:\n\n$$\n3y{y}^{\u2033}-({y}^{\u2032})^{2}=4x,\\,y(1)=1,\\,{y}^{\u2032}(1)=1\n$$\n\nUse Euler's Method with one step to approximate $y(2)$ and ${y}^{\u2032}(2).$\n\n$y(2)\u2248$\n{{field-1}},\n$\\,{y}^{\u2032}(2)\u2248$\n{{field-2}}",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}3y{y}^{\u2033}-({y}^{\u2032})^{2} & =4x \\\\ 3y{y}^{\u2033} & =4x+({y}^{\u2032})^{2} \\\\ {y}^{\u2033} & =\\frac{4x+({y}^{\u2032})^{2}}{3y}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{4x+{z}^{2}}{3y}.\n$$\n\nNote that the initial value of $z$ is\n$z(1)={y}^{\u2032}(1)=1.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=1, \\\\ {z}^{\u2032}=\\frac{4x+{z}^{2}}{3y},\\, & z(1)=1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nSince we want to find the values of $y$ and ${y}^{\u2032}=z$ at $x=2,$ we will use a step size of\n\n$$\n\u0394x=2-1=1.\n$$\n\nFirst, we place the initial condition data in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ |  |  | $1$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=1 \\\\ {z}^{\u2032} & =\\frac{4x+{z}^{2}}{3y} \\\\  & =\\frac{4\\cdot 1+{1}^{2}}{3\\cdot 1} \\\\  & =\\frac{4+1}{3} \\\\  & =\\frac{5}{3}\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $1$ |  | $1$ | $\\frac{5}{3}$ |  |\n\nNext, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =1\\cdot 1 \\\\  & =1 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =\\frac{5}{3}\\cdot 1 \\\\  & =\\frac{5}{3}\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $1$ | $1$ | $1$ | $\\frac{5}{3}$ | $\\frac{5}{3}$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+1=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+1=2 \\\\ {z}_{\\text{new}} & =z+\u0394z=1+\\frac{5}{3}=\\frac{8}{3}\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $1$ | $1$ | $1$ | $\\frac{5}{3}$ | $\\frac{5}{3}$ |\n| $2$ | $2$ |  |  | $\\frac{8}{3}$ |  |  |\n\nTherefore, we conclude that\n$y(2)\u22482$\nand\n${y}^{\u2032}(2)=z(2)\u2248\\frac{8}{3}.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            }
+          ],
+          "correct_value": "2",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{8}{3}"
+            }
+          ],
+          "correct_value": "\\frac{8}{3}",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333822",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-332989",
+      "knowledge_point_id": "cd3b7856-4ac5-5473-a585-949dd06100e8",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+      "problem": "Consider the following initial value problem:\n\n$$\nx{y}^{\u2033}+3y{y}^{\u2032}=2x,\\,y(1)=0,\\,{y}^{\u2032}(1)=-2\n$$\n\nUse Euler's Method with one step to approximate $y(\\frac{5}{4})$ and ${y}^{\u2032}(\\frac{5}{4}).$\n\n$y(\\frac{5}{4})\u2248$\n{{field-1}},\n$\\,{y}^{\u2032}(\\frac{5}{4})\u2248$\n{{field-2}}",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}x{y}^{\u2033}+3y{y}^{\u2032} & =2x \\\\ x{y}^{\u2033} & =2x-3y{y}^{\u2032} \\\\ {y}^{\u2033} & =\\frac{2x-3y{y}^{\u2032}}{x}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{2x-3yz}{x}.\n$$\n\nNote that the initial value of $z$ is $z(1)={y}^{\u2032}(1)=-2.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=0, \\\\ {z}^{\u2032}=\\frac{2x-3yz}{x},\\, & z(1)=-2\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nSince we want to find the values of $y$ and ${y}^{\u2032}=z$ at $x=\\frac{5}{4},$ we will use a step size of\n\n$$\n\u0394x=\\frac{5}{4}-1=\\frac{1}{4}.\n$$\n\nFirst, we place the initial condition data in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $0$ |  |  | $-2$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=-2 \\\\ {z}^{\u2032} & =\\frac{2x-3yz}{x} \\\\  & =\\frac{2\\cdot 1-3\\cdot 0\\cdot (-2)}{1} \\\\  & =2\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $0$ | $-2$ |  | $-2$ | $2$ |  |\n\nNext, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =(-2)\\cdot \\frac{1}{4} \\\\  & =-\\frac{1}{2} \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =2\\cdot \\frac{1}{4} \\\\  & =\\frac{1}{2}\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $0$ | $-2$ | $-\\frac{1}{2}$ | $-2$ | $2$ | $\\frac{1}{2}$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+\\frac{1}{4}=\\frac{5}{4} \\\\ {y}_{\\text{new}} & =y+\u0394y=0+(-\\frac{1}{2})=-\\frac{1}{2} \\\\ {z}_{\\text{new}} & =z+\u0394z=(-2)+\\frac{1}{2}=-\\frac{3}{2}\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $0$ | $-2$ | $-\\frac{1}{2}$ | $-2$ | $2$ | $\\frac{1}{2}$ |\n| $\\frac{5}{4}$ | $-\\frac{1}{2}$ |  |  | $-\\frac{3}{2}$ |  |  |\n\nTherefore, we conclude that\n$y(\\frac{5}{4})\u2248-\\frac{1}{2}$\nand\n${y}^{\u2032}(\\frac{5}{4})=z(\\frac{5}{4})\u2248-\\frac{3}{2}.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-\\frac{1}{2}"
+            }
+          ],
+          "correct_value": "-\\frac{1}{2}",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-\\frac{3}{2}"
+            }
+          ],
+          "correct_value": "-\\frac{3}{2}",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-332989",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333724",
+      "knowledge_point_id": "cd3b7856-4ac5-5473-a585-949dd06100e8",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+      "problem": "Consider the following initial value problem:\n\n$$\nx{y}^{\u2033}+2y{y}^{\u2032}=3x,\\,y(1)=1,\\,{y}^{\u2032}(1)=-1\n$$\n\nUse Euler's Method with one step to approximate $y(2)$ and ${y}^{\u2032}(2).$\n\n$y(2)\u2248$\n{{field-1}},\n$\\,{y}^{\u2032}(2)\u2248$\n{{field-2}}",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}x{y}^{\u2033}+2y{y}^{\u2032} & =3x \\\\ x{y}^{\u2033} & =3x-2y{y}^{\u2032} \\\\ {y}^{\u2033} & =\\frac{3x-2y{y}^{\u2032}}{x}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{3x-2yz}{x}.\n$$\n\nNote that the initial value of $z$ is\n$z(1)={y}^{\u2032}(1)=-1.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=1, \\\\ {z}^{\u2032}=\\frac{3x-2yz}{x},\\, & z(1)=-1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nSince we want to find the values of $y$ and ${y}^{\u2032}=z$ at $x=2,$ we will use a step size of\n\n$$\n\u0394x=2-1=1.\n$$\n\nFirst, we place the initial condition data in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ |  |  | $-1$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=-1 \\\\ {z}^{\u2032} & =\\frac{3x-2yz}{x} \\\\  & =\\frac{3\\cdot 1-2\\cdot 1\\cdot (-1)}{1} \\\\  & =\\frac{3+2}{1} \\\\  & =5\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $-1$ |  | $-1$ | $5$ |  |\n\nNext, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =(-1)\\cdot 1 \\\\  & =-1 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =5\\cdot 1 \\\\  & =5\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $-1$ | $-1$ | $-1$ | $5$ | $5$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+1=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+(-1)=0 \\\\ {z}_{\\text{new}} & =z+\u0394z=(-1)+5=4\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $-1$ | $-1$ | $-1$ | $5$ | $5$ |\n| $2$ | $0$ |  |  | $4$ |  |  |\n\nTherefore, we conclude that\n$y(2)\u22480$\nand ${y}^{\u2032}(2)=z(2)\u22484.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            }
+          ],
+          "correct_value": "0",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "4"
+            }
+          ],
+          "correct_value": "4",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333724",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333817",
+      "knowledge_point_id": "cd3b7856-4ac5-5473-a585-949dd06100e8",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+      "problem": "Consider the following initial value problem:\n\n$$\ny{y}^{\u2033}-4x{y}^{\u2032}=2{x}^{2},\\,y(1)=1,\\,{y}^{\u2032}(1)=0\n$$\n\nUse Euler's Method with one step to approximate $y(2)$ and ${y}^{\u2032}(2).$\n\n$y(2)\u2248$\n{{field-1}},\n$\\,{y}^{\u2032}(2)\u2248$\n{{field-2}}",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}y{y}^{\u2033}-4x{y}^{\u2032} & =2{x}^{2} \\\\ y{y}^{\u2033} & =2{x}^{2}+4x{y}^{\u2032} \\\\ {y}^{\u2033} & =\\frac{2{x}^{2}+4x{y}^{\u2032}}{y}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{2{x}^{2}+4xz}{y}.\n$$\n\nNote that the initial value of $z$ is\n$z(1)={y}^{\u2032}(1)=0.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=1, \\\\ {z}^{\u2032}=\\frac{2{x}^{2}+4xz}{y},\\, & z(1)=0\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nSince we want to find the values of $y$ and ${y}^{\u2032}=z$ at $x=2,$ we will use a step size of\n\n$$\n\u0394x=2-1=1.\n$$\n\nFirst, we place the initial condition data in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ |  |  | $0$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=0 \\\\ {z}^{\u2032} & =\\frac{2{x}^{2}+4xz}{y} \\\\  & =\\frac{2\\cdot {1}^{2}+4\\cdot 1\\cdot 0}{1} \\\\  & =2\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $0$ |  | $0$ | $2$ |  |\n\nNext, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =0\\cdot 1 \\\\  & =0 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =2\\cdot 1 \\\\  & =2\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $0$ | $0$ | $0$ | $2$ | $2$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+1=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+0=1 \\\\ {z}_{\\text{new}} & =z+\u0394z=0+2=2\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $0$ | $0$ | $0$ | $2$ | $2$ |\n| $2$ | $1$ |  |  | $2$ |  |  |\n\nTherefore, we conclude that\n$y(2)\u22481$\nand\n${y}^{\u2032}(2)=z(2)\u22482.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "1"
+            }
+          ],
+          "correct_value": "1",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "2"
+            }
+          ],
+          "correct_value": "2",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333817",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-334003",
+      "knowledge_point_id": "785f39df-2c61-53b8-9293-093915b24356",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+      "problem": "Consider the following initial value problem:\n\n$$\ny{y}^{\u2033}+3{y}^{\u2032}-x=0,\\,y(-1)=1,\\,{y}^{\u2032}(-1)=-2\n$$\n\nUse Euler's Method with two steps to approximate $y(1)$ and ${y}^{\u2032}(1).$\n\n$$\ny(1)\u2248{{field-1}},\\,{y}^{\u2032}(1)\u2248{{field-2}}\n$$",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}y{y}^{\u2033}+3{y}^{\u2032}-x & =0 \\\\ y{y}^{\u2033} & =x-3{y}^{\u2032} \\\\ {y}^{\u2033} & =\\frac{x-3{y}^{\u2032}}{y}.\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{x-3z}{y}.\n$$\n\nNote that the initial value of $z$ is $z(-1)={y}^{\u2032}(-1)=-2.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(-1)=1, \\\\ {z}^{\u2032}=\\frac{x-3z}{y},\\, & z(-1)=-2\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, note that we are given the values of $y$ and $z={y}^{\u2032}$ at $x=-1$ and asked to find their values at $x=1.$ The distance from $x=-1$ to $x=1$ is $2,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\u0394x=\\frac{1-(-1)}{2}=1.\n$$\n\nNow, we'll start by creating a table that includes the initial condition data $y(-1)=1$ and $z(-1)=-2.$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-1$ | $1$ |  |  | $-2$ |  |  |\n\n**Step 1**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=-2 \\\\ {z}^{\u2032} & =\\frac{x-3z}{y}=\\frac{-1-3(-2)}{1}=5 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=-2\\cdot 1=-2 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=5\\cdot 1=5 \\\\ {x}_{\\text{new}} & =x+\u0394x=-1+1=0 \\\\ {y}_{\\text{new}} & =y+\u0394y=1-2=-1 \\\\ {z}_{\\text{new}} & =z+\u0394z=-2+5=3\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-1$ | $1$ | $-2$ | $-2$ | $-2$ | $5$ | $5$ |\n| $0$ | $-1$ |  |  | $3$ |  |  |\n\n**Step 2**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=3 \\\\ {z}^{\u2032} & =\\frac{x-3z}{y}=\\frac{0-3\\cdot 3}{(-1)}=9 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=3\\cdot 1=3 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=9\\cdot 1=9 \\\\ {x}_{\\text{new}} & =x+\u0394x=0+1=1 \\\\ {y}_{\\text{new}} & =y+\u0394y=-1+3=2 \\\\ {z}_{\\text{new}} & =z+\u0394z=3+9=12\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-1$ | $1$ | $-2$ | $-2$ | $-2$ | $5$ | $5$ |\n| $0$ | $-1$ | $3$ | $3$ | $3$ | $9$ | $9$ |\n| $1$ | $2$ |  |  | $12$ |  |  |\n\nTherefore, we conclude that\n$y(1)\u22482$\nand\n${y}^{\u2032}(1)=z(1)\u224812.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "3"
+            },
+            {
+              "type": "math",
+              "value": "2"
+            }
+          ],
+          "correct_value": "2",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "12"
+            },
+            {
+              "type": "math",
+              "value": "8"
+            },
+            {
+              "type": "math",
+              "value": "10"
+            }
+          ],
+          "correct_value": "12",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-334003",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333875",
+      "knowledge_point_id": "785f39df-2c61-53b8-9293-093915b24356",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+      "problem": "Consider the following initial value problem:\n\n$$\n{x}^{2}{y}^{\u2033}+x{y}^{\u2032}-2y=0,\\,y(1)=2,\\,{y}^{\u2032}(1)=1\n$$\n\nUse Euler's Method with two steps to approximate $y(2)$ and ${y}^{\u2032}(2).$\n\n$$\ny(2)\u2248{{field-1}},\\,{y}^{\u2032}(2)\u2248{{field-2}}\n$$",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}{x}^{2}{y}^{\u2033}+x{y}^{\u2032}-2y & =0 \\\\ {x}^{2}{y}^{\u2033} & =2y-x{y}^{\u2032} \\\\ {y}^{\u2033} & =\\frac{2y-x{y}^{\u2032}}{{x}^{2}}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{2y-xz}{{x}^{2}}.\n$$\n\nNote that the initial value of $z$ is $z(1)={y}^{\u2032}(1)=1.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=2, \\\\ {z}^{\u2032}=\\frac{2y-xz}{{x}^{2}},\\, & z(1)=1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, note that we are given the values of $y$ and $z={y}^{\u2032}$ at $x=1$ and asked to find their values at $x=2.$ The distance from $x=1$ to $x=2$ is $1,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\u0394x=\\frac{2-1}{2}=\\frac{1}{2}.\n$$\n\nNow, we'll start by creating a table that includes the initial condition data $y(1)=2$ and $z(1)=1.$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ |  |  | $1$ |  |  |\n\n**Step 1**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=1 \\\\ {z}^{\u2032} & =\\frac{2y-xz}{{x}^{2}}=\\frac{2\\cdot 2-1\\cdot 1}{{1}^{2}}=3 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=1\\cdot \\frac{1}{2}=\\frac{1}{2} \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=3\\cdot \\frac{1}{2}=\\frac{3}{2} \\\\ {x}_{\\text{new}} & =x+\u0394x=1+\\frac{1}{2}=\\frac{3}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y=2+\\frac{1}{2}=\\frac{5}{2} \\\\ {z}_{\\text{new}} & =z+\u0394z=1+\\frac{3}{2}=\\frac{5}{2}\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ | $1$ | $\\frac{1}{2}$ | $1$ | $3$ | $\\frac{3}{2}$ |\n| $\\frac{3}{2}$ | $\\frac{5}{2}$ |  |  | $\\frac{5}{2}$ |  |  |\n\n**Step 2**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=\\frac{5}{2} \\\\ {z}^{\u2032} & =\\frac{2y-xz}{{x}^{2}}=\\frac{2\\cdot \\frac{5}{2}-\\frac{3}{2}\\cdot \\frac{5}{2}}{{(\\frac{3}{2})}^{2}}=\\frac{(\\frac{5}{4})}{(\\frac{9}{4})}=\\frac{5}{9} \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=\\frac{5}{2}\\cdot \\frac{1}{2}=\\frac{5}{4} \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=\\frac{5}{9}\\cdot \\frac{1}{2}=\\frac{5}{18} \\\\ {x}_{\\text{new}} & =x+\u0394x=\\frac{3}{2}+\\frac{1}{2}=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=\\frac{5}{2}+\\frac{5}{4}=\\frac{15}{4} \\\\ {z}_{\\text{new}} & =z+\u0394z=\\frac{5}{2}+\\frac{5}{18}=\\frac{25}{9}\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ | $1$ | $\\frac{1}{2}$ | $1$ | $3$ | $\\frac{3}{2}$ |\n| $\\frac{3}{2}$ | $\\frac{5}{2}$ | $\\frac{5}{2}$ | $\\frac{5}{4}$ | $\\frac{5}{2}$ | $\\frac{5}{9}$ | $\\frac{5}{18}$ |\n| $2$ | $\\frac{15}{4}$ |  |  | $\\frac{25}{9}$ |  |  |\n\nTherefore, we conclude that\n$y(2)\u2248\\frac{15}{4}$\nand\n${y}^{\u2032}(2)=z(2)\u2248\\frac{25}{9}.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{7}{2}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{15}{4}"
+            }
+          ],
+          "correct_value": "\\frac{15}{4}",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{25}{9}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{8}{3}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{13}{6}"
+            }
+          ],
+          "correct_value": "\\frac{25}{9}",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333875",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333374",
+      "knowledge_point_id": "785f39df-2c61-53b8-9293-093915b24356",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+      "problem": "Consider the following initial value problem:\n\n$$\n{x}^{2}{y}^{\u2033}-x{y}^{\u2032}+y=0,\\,y(1)=-2,\\,{y}^{\u2032}(1)=1\n$$\n\nUse Euler's Method with two steps to approximate $y(2)$ and ${y}^{\u2032}(2).$\n\n$$\ny(2)\u2248{{field-1}},\\,{y}^{\u2032}(2)\u2248{{field-2}}\n$$",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}{x}^{2}{y}^{\u2033}-x{y}^{\u2032}+y & =0 \\\\ {x}^{2}{y}^{\u2033} & =x{y}^{\u2032}-y \\\\ {y}^{\u2033} & =\\frac{x{y}^{\u2032}-y}{{x}^{2}}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{xz-y}{{x}^{2}}.\n$$\n\nNote that the initial value of $z$ is $z(1)={y}^{\u2032}(1)=1.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=-2, \\\\ {z}^{\u2032}=\\frac{xz-y}{{x}^{2}},\\, & z(1)=1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, note that we are given the values of $y$ and $z={y}^{\u2032}$ at $x=1$ and asked to find their values at $x=2.$ The distance from $x=1$ to $x=2$ is $1,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\u0394x=\\frac{2-1}{2}=\\frac{1}{2}.\n$$\n\nNow, we'll start by creating a table that includes the initial condition data $y(1)=-2$ and $z(1)=1.$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-2$ |  |  | $1$ |  |  |\n\n**Step 1**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=1 \\\\ {z}^{\u2032} & =\\frac{xz-y}{{x}^{2}}=\\frac{1\\cdot 1-(-2)}{{1}^{2}}=3 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=1\\cdot \\frac{1}{2}=\\frac{1}{2} \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=3\\cdot \\frac{1}{2}=\\frac{3}{2} \\\\ {x}_{\\text{new}} & =x+\u0394x=1+\\frac{1}{2}=\\frac{3}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y=-2+\\frac{1}{2}=-\\frac{3}{2} \\\\ {z}_{\\text{new}} & =z+\u0394z=1+\\frac{3}{2}=\\frac{5}{2}\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-2$ | $1$ | $\\frac{1}{2}$ | $1$ | $3$ | $\\frac{3}{2}$ |\n| $\\frac{3}{2}$ | $-\\frac{3}{2}$ |  |  | $\\frac{5}{2}$ |  |  |\n\n**Step 2**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=\\frac{5}{2} \\\\ {z}^{\u2032} & =\\frac{xz-y}{{x}^{2}}=\\frac{(3/2)\\cdot (5/2)-(-3/2)}{(-3/2)^{2}}=\\frac{7}{3} \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=\\frac{5}{2}\\cdot \\frac{1}{2}=\\frac{5}{4} \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=\\frac{7}{3}\\cdot \\frac{1}{2}=\\frac{7}{6} \\\\ {x}_{\\text{new}} & =x+\u0394x=\\frac{3}{2}+\\frac{1}{2}=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=-\\frac{3}{2}+\\frac{5}{4}=-\\frac{1}{4} \\\\ {z}_{\\text{new}} & =z+\u0394z=\\frac{5}{2}+\\frac{7}{6}=\\frac{11}{3}\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-2$ | $1$ | $\\frac{1}{2}$ | $1$ | $3$ | $\\frac{3}{2}$ |\n| $\\frac{3}{2}$ | $-\\frac{3}{2}$ | $\\frac{5}{2}$ | $\\frac{5}{4}$ | $\\frac{5}{2}$ | $\\frac{7}{3}$ | $\\frac{7}{6}$ |\n| $2$ | $-\\frac{1}{4}$ |  |  | $\\frac{11}{3}$ |  |  |\n\nTherefore, we conclude that\n$y(2)\u2248-\\frac{1}{4}$\nand\n${y}^{\u2032}(2)=z(2)\u2248\\frac{11}{3}.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-\\frac{1}{2}"
+            },
+            {
+              "type": "math",
+              "value": "-1"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{1}{4}"
+            }
+          ],
+          "correct_value": "-\\frac{1}{4}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{7}{3}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{11}{3}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{10}{3}"
+            }
+          ],
+          "correct_value": "\\frac{11}{3}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333374",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333994",
+      "knowledge_point_id": "785f39df-2c61-53b8-9293-093915b24356",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+      "problem": "Consider the following initial value problem:\n\n$$\nx{y}^{\u2033}-4{y}^{\u2032}+2y=0,\\,y(1)=-1,\\,{y}^{\u2032}(1)=1\n$$\n\nUse Euler's Method with two steps to approximate $y(3)$ and ${y}^{\u2032}(3).$\n\n$$\ny(3)\u2248{{field-1}},\\,{y}^{\u2032}(3)\u2248{{field-2}}\n$$",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}x{y}^{\u2033}-4{y}^{\u2032}+2y & =0 \\\\ x{y}^{\u2033} & =4{y}^{\u2032}-2y \\\\ {y}^{\u2033} & =\\frac{4{y}^{\u2032}-2y}{x}.\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=\\frac{4z-2y}{x}.\n$$\n\nNote that the initial value of $z$ is $z(1)={y}^{\u2032}(1)=1.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=-1, \\\\ {z}^{\u2032}=\\frac{4z-2y}{x},\\, & z(1)=1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, note that we are given the values of $y$ and $z={y}^{\u2032}$ at $x=1$ and asked to find their values at $x=3.$ The distance from $x=1$ to $x=3$ is $2,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\u0394x=\\frac{3-1}{2}=1.\n$$\n\nNow, we'll start by creating a table that includes the initial condition data $y(1)=-1$ and $z(1)=1.$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ |  |  | $1$ |  |  |\n\n**Step 1**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=1 \\\\ {z}^{\u2032} & =\\frac{4z-2y}{x}=\\frac{4\\cdot 1-2\\cdot (-1)}{1}=6 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=1\\cdot 1=1 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=6\\cdot 1=6 \\\\ {x}_{\\text{new}} & =x+\u0394x=1+1=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=-1+1=0 \\\\ {z}_{\\text{new}} & =z+\u0394z=1+6=7\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $1$ | $1$ | $1$ | $6$ | $6$ |\n| $2$ | $0$ |  |  | $7$ |  |  |\n\n**Step 2**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=7 \\\\ {z}^{\u2032} & =\\frac{4z-2y}{x}=\\frac{4\\cdot 7-2\\cdot 0}{2}=14 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=7\\cdot 1=7 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=14\\cdot 1=14 \\\\ {x}_{\\text{new}} & =x+\u0394x=2+1=3 \\\\ {y}_{\\text{new}} & =y+\u0394y=0+7=7 \\\\ {z}_{\\text{new}} & =z+\u0394z=7+14=21\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $1$ | $1$ | $1$ | $6$ | $6$ |\n| $2$ | $0$ | $7$ | $7$ | $7$ | $14$ | $14$ |\n| $3$ | $7$ |  |  | $21$ |  |  |\n\nTherefore, we conclude that\n$y(3)\u22487$\nand\n${y}^{\u2032}(3)=z(3)\u224821.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "8"
+            },
+            {
+              "type": "math",
+              "value": "7"
+            },
+            {
+              "type": "math",
+              "value": "6"
+            }
+          ],
+          "correct_value": "7",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "21"
+            },
+            {
+              "type": "math",
+              "value": "20"
+            },
+            {
+              "type": "math",
+              "value": "18"
+            }
+          ],
+          "correct_value": "21",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333994",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-333997",
+      "knowledge_point_id": "785f39df-2c61-53b8-9293-093915b24356",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+      "problem": "Consider the following initial value problem:\n\n$$\n2x{y}^{\u2033}+5({y}^{\u2032})^{2}+x=0,\\,y(1)=2,\\,{y}^{\u2032}(1)=-1\n$$\n\nUse Euler's Method with two steps to approximate $y(3)$ and ${y}^{\u2032}(3).$\n\n$$\ny(3)\u2248{{field-1}},\\,{y}^{\u2032}(3)\u2248{{field-2}}\n$$",
+      "worked_solution": "For a second-order initial value problem\n\n$$\n{y}^{\u2033}=f(x,y,{y}^{\u2032}),\\,y(a)=c,\\,{y}^{\u2032}(a)=d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate ${y}^{\u2033}$ so it can serve as the derivative of a new variable $z:$\n\n$$\n\\begin{aligned}2x{y}^{\u2033}+5({y}^{\u2032})^{2}+x & =0 \\\\ 2x{y}^{\u2033} & =-5({y}^{\u2032})^{2}-x \\\\ {y}^{\u2033} & =-\\frac{5({y}^{\u2032})^{2}+x}{2x}.\\end{aligned}\n$$\n\nThen, we substitute our new variable $z={y}^{\u2032},{z}^{\u2032}={y}^{\u2033}$ in the right-hand side of the above equation. This gives\n\n$$\n{z}^{\u2032}=-\\frac{5{z}^{2}+x}{2x}.\n$$\n\nNote that the initial value of $z$ is $z(1)={y}^{\u2032}(1)=-1.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=2, \\\\ {z}^{\u2032}=-\\frac{5{z}^{2}+x}{2x},\\, & z(1)=-1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, note that we are given the values of $y$ and $z={y}^{\u2032}$ at $x=1$ and asked to find their values at $x=3.$ The distance from $x=1$ to $x=3$ is $2,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\u0394x=\\frac{3-1}{2}=1.\n$$\n\nNow, we'll start by creating a table that includes the initial condition data $y(1)=2$ and $z(1)=-1.$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ |  |  | $-1$ |  |  |\n\n**Step 1**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=-1 \\\\ {z}^{\u2032} & =-\\frac{5{z}^{2}+x}{2x}=-\\frac{5\\cdot (-1)^{2}+1}{2\\cdot 1}=-3 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=-1\\cdot 1=-1 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=-3\\cdot 1=-3 \\\\ {x}_{\\text{new}} & =x+\u0394x=1+1=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=2-1=1 \\\\ {z}_{\\text{new}} & =z+\u0394z=-1-3=-4\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ | $-1$ | $-1$ | $-1$ | $-3$ | $-3$ |\n| $2$ | $1$ |  |  | $-4$ |  |  |\n\n**Step 2**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=-4 \\\\ {z}^{\u2032} & =-\\frac{5{z}^{2}+x}{2x}=-\\frac{5\\cdot (-4)^{2}+2}{2\\cdot 2}=-\\frac{41}{2} \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=-4\\cdot 1=-4 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=-\\frac{41}{2}\\cdot 1=-\\frac{41}{2} \\\\ {x}_{\\text{new}} & =x+\u0394x=2+1=3 \\\\ {y}_{\\text{new}} & =y+\u0394y=1-4=-3 \\\\ {z}_{\\text{new}} & =z+\u0394z=-4-\\frac{41}{2}=-\\frac{49}{2}\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $2$ | $-1$ | $-1$ | $-1$ | $-3$ | $-3$ |\n| $2$ | $1$ | $-4$ | $-4$ | $-4$ | $-\\frac{41}{2}$ | $-\\frac{41}{2}$ |\n| $3$ | $-3$ |  |  | $-\\frac{49}{2}$ |  |  |\n\nTherefore, we conclude that\n$y(3)\u2248-3$\nand\n${y}^{\u2032}(3)=z(3)\u2248-\\frac{49}{2}.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-2"
+            },
+            {
+              "type": "math",
+              "value": "-3"
+            },
+            {
+              "type": "math",
+              "value": "-4"
+            }
+          ],
+          "correct_value": "-3",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-\\frac{25}{2}"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{41}{2}"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{49}{2}"
+            }
+          ],
+          "correct_value": "-\\frac{49}{2}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-333997",
+        "kp_title": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+        "kp_href": null
+      }
+    }
+  ],
+  "canonical_examples": [
+    {
+      "math_academy_id": "e-21664",
+      "knowledge_point_id": "55d2b186-64d2-5ad8-b168-6c7bea413df3",
+      "knowledge_point": "Completing a Row of a Table Using Euler's Method for Second-Order ODEs",
+      "problem": "Consider the following initial value problem:\n\n$$\ny'' + 4xy' - 3y = 2x, \\qquad y(0) = 1, \\quad y'(0) = -2\n$$\n\nWe wish to approximate the solution using Euler's method by introducing $z = y'$ and reducing the equation to a system of first-order ODEs. What entries should be placed in the columns for $\\Delta y$ and $\\Delta z$ in the table below if the step size is $\\Delta x = 1?$\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ |  |  |  |  |  |  |\n\nUse the information above to approximate the value of $y(1).$",
+      "worked_solution": "For a second-order initial value problem\n\n$$\ny'' = f(x,y,y'), \\qquad y(a) = c, \\quad y'(a) = d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate $y''$ so it can serve as the derivative of a new variable $z{:}$\n\n$$\n\\begin{aligned}{y}^{\u2033}+4x{y}^{\u2032}-3y & =2x \\\\ {y}^{\u2033} & =-4x{y}^{\u2032}+3y+2x\\end{aligned}\n$$\n\nThen, we substitute our new variable $z = y', z' = y''$ in the right-hand side of the above equation. This gives\n\n$$\nz' = -4xz + 3y + 2x.\n$$\n\nNote that the initial value of $z$ is $z(0) = y'(0) = -2.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(0)=1, \\\\ {z}^{\u2032}=-4xz+3y+2x,\\, & z(0)=-2\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, because the initial conditions are $y(0)=1$ and $z(0)=-2,$ we place $y=1$ and $z=-2$ in the table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ |  |  | $-2$ |  |  |\n\nNext, we compute both $y'$ and $z'$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=-2 \\\\ {z}^{\u2032} & =-4xz+3y+2x \\\\  & =-4\\cdot 0\\cdot (-2)+3\\cdot 1+2\\cdot 0 \\\\  & =0+3+0 \\\\  & =3\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-2$ |  | $-2$ | $3$ |  |\n\nFinally, we compute $\\Delta y$ and $\\Delta z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =(-2)\\cdot 1 \\\\  & =-2 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =3\\cdot 1 \\\\  & =3\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-2$ | $-2$ | $-2$ | $3$ | $3$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\\Delta x$ to $x,$ $\\Delta y$ to $y,$ and $\\Delta z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=0+1=1 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+(-2)=-1 \\\\ {z}_{\\text{new}} & =z+\u0394z=-2+3=1\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-2$ | $-2$ | $-2$ | $3$ | $3$ |\n| $1$ | $-1$ |  |  | $1$ |  |  |\n\nTherefore, we conclude that\n\n$$\ny(1) \\approx -1.\n$$",
+      "difficulty": null,
+      "answer_fields": [],
+      "missing_source_fields": [
+        "difficulty",
+        "answer_fields"
+      ]
+    },
+    {
+      "math_academy_id": "e-21668",
+      "knowledge_point_id": "cd3b7856-4ac5-5473-a585-949dd06100e8",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With One Step",
+      "problem": "Consider the following initial value problem:\n\n$$\nx^2y'' + 2y' = 4x^2, \\qquad y(1) = -1, \\qquad y'(1) = -1\n$$\n\nUse Euler's Method with one step to approximate $y\\left(\\dfrac32\\right)$ and $y'\\left(\\dfrac32\\right).$",
+      "worked_solution": "For a second-order initial value problem\n\n$$\ny'' = f(x,y,y'), \\qquad y(a) = c, \\quad y'(a) = d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate $y''$ so it can serve as the derivative of a new variable $z{:}$\n\n$$\n\\begin{aligned}{x}^{2}{y}^{\u2033}+2{y}^{\u2032} & =4{x}^{2} \\\\ {x}^{2}{y}^{\u2033} & =4{x}^{2}-2{y}^{\u2032} \\\\ {y}^{\u2033} & =\\frac{4{x}^{2}-2{y}^{\u2032}}{{x}^{2}}\\end{aligned}\n$$\n\nThen, we substitute our new variable $z = y', z' = y''$ in the right-hand side of the above equation. This gives\n\n$$\nz' = \\dfrac{4x^2 - 2z}{x^2}.\n$$\n\nNote that the initial value of $z$ is\n$z(1) = y'(1) = -1.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=-1, \\\\ {z}^{\u2032}=\\frac{4{x}^{2}-2z}{{x}^{2}},\\, & z(1)=-1\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nSince we want to find the values of $y$ and $y'=z$ at $x=\\dfrac32,$ we will use a step size of\n\n$$\n\\Delta x = \\dfrac32 - 1 = \\dfrac12.\n$$\n\nFirst, we place the initial condition data in the table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ |  |  | $-1$ |  |  |\n\nNext, we compute both $y'$ and $z'$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=-1 \\\\ {z}^{\u2032} & =\\frac{4{x}^{2}-2z}{{x}^{2}} \\\\  & =\\frac{4\\cdot {1}^{2}-2\\cdot (-1)}{{1}^{2}} \\\\  & =\\frac{4+2}{1} \\\\  & =6\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $-1$ |  | $-1$ | $6$ |  |\n\nNext, we compute $\\Delta y$ and $\\Delta z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =(-1)\\cdot \\frac{1}{2} \\\\  & =-\\frac{1}{2} \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =6\\cdot \\frac{1}{2} \\\\  & =3\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $-1$ | $-\\dfrac12$ | $-1$ | $6$ | $3$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\\Delta x$ to $x,$ $\\Delta y$ to $y,$ and $\\Delta z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+\\frac{1}{2}=\\frac{3}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y=-1+(-\\frac{1}{2})=-\\frac{3}{2} \\\\ {z}_{\\text{new}} & =z+\u0394z=-1+3=2\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $-1$ | $-\\dfrac12$ | $-1$ | $6$ | $3$ |\n| $\\dfrac32$ | $-\\dfrac32$ |  |  | $2$ |  |  |\n\nTherefore, we conclude that\n$y\\left(\\dfrac32\\right) \\approx -\\dfrac32$\nand\n$y'\\left(\\dfrac32\\right) = z\\left(\\dfrac32\\right) \\approx 2.$",
+      "difficulty": null,
+      "answer_fields": [],
+      "missing_source_fields": [
+        "difficulty",
+        "answer_fields"
+      ]
+    },
+    {
+      "math_academy_id": "e-21669",
+      "knowledge_point_id": "785f39df-2c61-53b8-9293-093915b24356",
+      "knowledge_point": "Approximating the Solution to a Second-Order ODE Using Euler's Method With Two Steps",
+      "problem": "Consider the following initial value problem:\n\n$$\n2x y'' - (y')^2 + 4y = 0, \\qquad y(1) = -1, \\quad y'(1) = 2\n$$\n\nUse Euler's Method with two steps to approximate $y(3)$ and $y'(3).$",
+      "worked_solution": "For a second-order initial value problem\n\n$$\ny'' = f(x,y,y'), \\qquad y(a) = c, \\quad y'(a) = d,\n$$\n\nwe can use Euler's method to approximate a solution by first reducing the second-order ODE to a system of first-order ODEs,\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(a)=c, \\\\ {z}^{\u2032}=f(x,y,z)\\, & z(a)=d,\\end{aligned}\n$$\n\nbefore applying the update rule component-wise to each equation.\n\nTo apply Euler\u2019s method, we first isolate $y''$ so it can serve as the derivative of a new variable $z{:}$\n\n$$\n\\begin{aligned}2x{y}^{\u2033}-({y}^{\u2032})^{2}+4y & =0 \\\\ 2x{y}^{\u2033} & =({y}^{\u2032})^{2}-4y \\\\ {y}^{\u2033} & =\\frac{({y}^{\u2032})^{2}-4y}{2x}.\\end{aligned}\n$$\n\nThen, we substitute our new variable $z = y',$ $z' = y''$ in the right-hand side of the above equation. This gives\n\n$$\nz' = \\dfrac{z^2 - 4y}{2x}.\n$$\n\nNote that the initial value of $z$ is $z(1) = y'(1) = 2.$\nSo, the initial value problem reduces to the following system of first-order ODEs:\n\n$$\n{\\begin{aligned}{y}^{\u2032}=z,\\, & y(1)=-1, \\\\ {z}^{\u2032}=\\frac{{z}^{2}-4y}{2x},\\, & z(1)=2\\end{aligned}\n$$\n\nNow, we can proceed with Euler's method by applying the update rule component-wise.\n\nFirst, note that we are given the values of $y$ and $z=y'$ at $x=1$ and asked to find their values at $x=3.$ The distance from $x=1$ to $x=3$ is $2,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\\Delta x = \\dfrac{3 - 1}2 = 1.\n$$\n\nNow, we'll start by creating a table that includes the initial condition data $y(1)=-1$ and $z(1)=2.$\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ |  |  | $2$ |  |  |\n\n**Step 1**.\n\nWe compute $y'$ and $\\Delta y,$ $z'$ and $\\Delta z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of $x_\\text{new},$ $y_\\text{new},$ and $z_\\text{new}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=2 \\\\ {z}^{\u2032} & =\\frac{{z}^{2}-4y}{2x}=\\frac{{2}^{2}-4(-1)}{2\\cdot 1}=4 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=2\\cdot 1=2 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=4\\cdot 1=4 \\\\ {x}_{\\text{new}} & =x+\u0394x=1+1=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=-1+2=1 \\\\ {z}_{\\text{new}} & =z+\u0394z=2+4=6\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $2$ | $2$ | $2$ | $4$ | $4$ |\n| $2$ | $1$ |  |  | $6$ |  |  |\n\n**Step 2**.\n\nWe compute $y'$ and $\\Delta y,$ $z'$ and $\\Delta z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of $x_\\text{new},$ $y_\\text{new},$ and $z_\\text{new}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =z=6 \\\\ {z}^{\u2032} & =\\frac{{z}^{2}-4y}{2x}=\\frac{{6}^{2}-4\\cdot 1}{2\\cdot 2}=8 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=6\\cdot 1=6 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=8\\cdot 1=8 \\\\ {x}_{\\text{new}} & =x+\u0394x=2+1=3 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+6=7 \\\\ {z}_{\\text{new}} & =z+\u0394z=6+8=14\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $-1$ | $2$ | $2$ | $2$ | $4$ | $4$ |\n| $2$ | $1$ | $6$ | $6$ | $6$ | $8$ | $8$ |\n| $3$ | $7$ |  |  | $14$ |  |  |\n\nTherefore, we conclude that\n$y(3) \\approx 7$\nand\n$y'(3) = z(3) \\approx 14.$",
+      "difficulty": null,
+      "answer_fields": [],
+      "missing_source_fields": [
+        "difficulty",
+        "answer_fields"
+      ]
+    }
+  ]
+}
