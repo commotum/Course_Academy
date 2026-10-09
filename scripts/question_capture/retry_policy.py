@@ -19,8 +19,9 @@ def completion_outcome(completion,kind):
     """Recognize the player's terminal messages, including failed attempts."""
     if kind not in ('lesson','review'):
         return None
-    if (f'This {kind} has been halted due to poor performance.' in completion or
-        f'This {kind} has been halted due to poor performance and has been assigned a penalty.' in completion or
+    if (re.search(r'\b(?:This|The)\s+' + re.escape(kind) +
+                  r'\s+has been halted due to poor performance(?: and has been assigned a penalty)?\.',
+                  completion, re.I) or
         f"You didn't pass the {kind}, however, you were awarded a limited amount of XP" in completion):
         return 'failed'
     if 'completed the '+kind in completion.lower():

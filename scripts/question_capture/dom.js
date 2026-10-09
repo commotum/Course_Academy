@@ -4,12 +4,21 @@ element => {
   const emptyFormula = n => n?.localName === 'svg' && n.closest('.mjpage, mjx-container, .MathJax') &&
     n.getAttribute('width') === '0' && n.getAttribute('viewBox')?.trim().split(/\s+/)[2] === '0' &&
     !n.textContent.trim() && !n.querySelector('path,use,text,line,polyline,polygon,circle,ellipse,rect,image,foreignObject');
+  // MathJax can render part of an SVG's TeX title again as nested MathML.
+  // That MathML describes only the inner fragment (e.g. phantom spacing),
+  // not the surrounding visible fbox. Preserve the whole rendered formula.
+  const mixedTitle = n => {
+    const title = n?.querySelector('title');
+    return title?.querySelector('math') && [...title.childNodes].some(child =>
+      child.nodeType === 3 && child.textContent.trim());
+  };
   const assets = [...element.querySelectorAll('img, canvas, svg')].filter(n => {
     if (emptyFormula(n)) return false;
     if (n.closest('.questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') ||
         n.parentElement?.closest('svg')) return false;
     const formula = n.closest('.mjpage, mjx-container, .MathJax');
     if (!formula) return true;
+    if (n.localName === 'svg' && mixedTitle(n)) return true;
     // Some server-rendered formulas have only SVG paths, with no local TeX or
     // assistive MathML. Preserve their visible rendering as a formula image.
     return n.localName === 'svg' && !formula.querySelector('mjx-assistive-mml math') &&
@@ -71,7 +80,11 @@ element => {
     // that glyph in braces obscures the fence boundary in extracted LaTeX.
     const scriptBase = [')',']','}'].includes(cs[0]) ? cs[0] : '{' + cs[0] + '}';
     switch(t) {
-      case 'mfrac': return '\\frac{' + cs[0] + '}{' + cs[1] + '}';
+      case 'mfrac':
+        // A zero-rule fraction is a stack, not division. Keep the source's rule.
+        return /^0(?:\.0+)?(?:[a-z%]+)?$/i.test(n.getAttribute('linethickness') || '') ?
+          '\\genfrac{}{}{0pt}{}{' + cs[0] + '}{' + cs[1] + '}' :
+          '\\frac{' + cs[0] + '}{' + cs[1] + '}';
       case 'msup': return scriptBase + '^{' + cs[1] + '}';
       case 'msub': return scriptBase + '_{' + cs[1] + '}';
       case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';
@@ -94,6 +107,9 @@ element => {
       case 'mtable': return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
       case 'mtr': case 'mlabeledtr': return cs.join(' & ');
       case 'menclose':
+        // The two borders group the synthetic-division root; retain both.
+        if (n.getAttribute('notation') === 'bottom right') return '\\enclose{bottom right}{' + cs.join('') + '}';
+        if (n.getAttribute('notation') === null || n.getAttribute('notation') === 'longdiv') return '\\enclose{longdiv}{' + cs.join('') + '}';
         if (n.getAttribute('notation') === 'left right') return '\\left|' + cs.join('') + '\\right|';
         if (n.getAttribute('notation') === 'right') return '\\left.' + cs.join('') + '\\right|';
         if (n.getAttribute('notation') === 'box') return '\\boxed{' + cs.join('') + '}';
@@ -124,6 +140,8 @@ element => {
       return n.closest('.mjpage__block') ? '\n\n$$\n' + (tex || '') + '\n$$\n\n' : '$' + (tex || '') + '$';
     }
     if (t === 'mjx-container' || t === 'math') {
+      if (t === 'mjx-container' && mixedTitle(n.querySelector('svg')) &&
+          assets.includes(n.querySelector('svg'))) return render(n.querySelector('svg'));
       const math = t === 'math' ? n : [...n.querySelectorAll('mjx-assistive-mml math')]
         .find(math => math.closest('.selectList') === n.closest('.selectList'));
       if (!math && emptyFormula(n.querySelector('svg'))) return '';

@@ -7,6 +7,45 @@ from pathlib import Path
 from core import atomic_json, journal, normalize
 
 
+def dismiss_math_toolboxes(page, scope):
+    # Native blur invokes the editor's normal toolbox dismissal handler.
+    scope.locator('.mq-textarea textarea').evaluate_all('(editors) => editors.forEach(e => e.blur())')
+    page.wait_for_function('''() => [...document.querySelectorAll('[id="mathEditorToolbox"]')].every(e =>
+      !e.getClientRects().length || ['hidden','collapse'].includes(getComputedStyle(e).visibility))''')
+
+
+def restore_empty_multistep(reader, scope, submit, continuation, record, directory, mid):
+    if (record.get('status') != 'submitting' or record.get('actual_result') or
+            record.get('after', {}).get('result') or continuation.is_visible() or
+            not submit.is_visible() or 'disabledButton' not in (submit.get_attribute('class') or '')):
+        return False
+    fields = record['before']['fields']
+    if not fields or not all(f.get('tag') == 'mathquill' for f in fields):
+        return False
+    empty = scope.evaluate('''q => {
+      const visible=e=>!!e?.getClientRects().length && getComputedStyle(e).visibility!=='hidden';
+      if(!visible(q) || q.querySelector('.answer, .correctAnswerText, .incorrectAnswerText')) return false;
+      if([...q.closest('.step').querySelectorAll('.spinner')].some(visible)) return false;
+      const library=window.MathQuill;
+      if(!library) return false;
+      const MQ=library.getInterface ? library.getInterface(2) : library;
+      const editors=[...q.querySelectorAll('.mq-editable-field')];
+      return editors.length>0 && editors.every(n=>visible(n) && MQ(n)?.latex()==='');
+    }''')
+    if not empty:
+        return False
+    fresh, _ = reader.read(scope, directory, mid + '-recovery')
+    if (fresh.get('errors') or fresh.get('result') or
+            normalize(fresh['problem']) != normalize(record['local_problem']) or
+            [(f['key'], f.get('tag')) for f in fresh['fields']] !=
+            [(f['key'], f.get('tag')) for f in fields]):
+        return False
+    record.setdefault('submission_recoveries', []).append(
+        {'reason':'server_restored_empty_multistep', 'time':time.time()})
+    record['status'] = 'prepared'
+    return True
+
+
 def with_context(state, item, mid):
     """Keep imported parts understandable without the surrounding Math Academy page."""
     sections = [c['problem'] for c in state.get('shared_contexts', [])]
@@ -117,6 +156,10 @@ def take_multistep(reader, state, directory):
                               'status':'prepared', 'solver_elapsed_seconds':time.monotonic()-started}
                     state['questions'][mid] = record
                     save()
+                if record['status'] == 'submitting':
+                    restored_submit = by_id(page, part['step'].replace('step-', 'submitButton-'))
+                    if restore_empty_multistep(reader, scope, restored_submit, continuation, record, directory, mid):
+                        save()
                 if record['status'] == 'prepared':
                     fresh, _ = reader.read(scope, directory, mid + '-before')
                     if normalize(fresh['problem']) != normalize(record['local_problem']):
@@ -135,8 +178,9 @@ def take_multistep(reader, state, directory):
                         expect(submit).not_to_have_class(re.compile(r'\bdisabledButton\b'),timeout=reader.args.timeout_ms)
                     except AssertionError as exc:
                         raise ValueError('Multistep Submit is disabled; stop before submitting') from exc
+                    dismiss_math_toolboxes(page, scope)
                     # The editor may sanitize a value while updating the button.
-                    # Verify after that update, before recording submission intent.
+                    # Verify after that update and blur, before recording submission intent.
                     try:
                         reader.verify_entered(scope, record)
                     finally:

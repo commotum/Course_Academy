@@ -17,9 +17,9 @@ from solver import Solver, process_token, run_cli
 PACKAGE = Path(__file__).parent
 ALLOWED = {'browser.py','dom.js','assessment.py','multistep.py','diagnostic.py','math_notation.py','solver.py','core.py','capture.py'}
 SCHEMA = {'type':'object','additionalProperties':False,
-    'required':['status','summary','file','edits','patches','regression_test','validation'],
+    'required':['status','summary','file','edits','patches','regression_test','validation','retry_on_source_change'],
     'properties':{'status':{'type':'string','enum':['repair','resolved','blocked']},
-        'summary':{'type':'string'},'file':{'type':'string'},'regression_test':{'type':'string'},
+        'summary':{'type':'string'},'retry_on_source_change':{'type':'boolean'},'file':{'type':'string'},'regression_test':{'type':'string'},
         'edits':{'type':'array','items':{'type':'object','additionalProperties':False,
             'required':['old','new'],'properties':{'old':{'type':'string'},'new':{'type':'string'}}}},
         'patches':{'type':'array','items':{'type':'object','additionalProperties':False,
@@ -53,7 +53,10 @@ Use resolved with empty edits if current code already handles this failure. Ordi
 need paced retry, not a permanent exclusion. Use blocked only when there is no viable automated
 action from available evidence (for example a real authentication challenge); preserve the
 capture so other queued activities can continue. Explain the missing evidence, not a request for
-permission. Never invent source data. For one file use file/edits; for a small related multi-file
+permission. For a proved mathematical source contradiction that cannot be repaired in capture code,
+set retry_on_source_change=false; new source wording, solver input or authentic grading evidence
+may reopen it, but unrelated capture source edits must not. For capture/interaction failures
+set retry_on_source_change=true. Never invent source data. For one file use file/edits; for a small related multi-file
 fix use patches and leave file empty and edits empty. Otherwise leave patches empty. Prefer focused validation; request full
 validation only if the change is broad enough to need it. Inspect previous_attempt.validation_feedback
 to correct any previously failing regression fixture or candidate before proposing it again.
@@ -69,9 +72,99 @@ def tuple_tree(value):
     return tuple(tuple_tree(v) for v in value) if isinstance(value,list) else value
 
 
-def failure_key(report):
+def legacy_failure_key(report):
     message = re.sub(r'(?:question-|step-q|q-|/tasks/)\d+',lambda m:re.sub(r'\d+','N',m[0]),report.get('message',''))
     return hashlib.sha256((report.get('phase','')+report.get('exception_type','')+message).encode()).hexdigest()
+
+
+def failure_key(report):
+    """An error family in one activity must not spend another activity's budget."""
+    return hashlib.sha256((legacy_failure_key(report)+':'+str(report.get('task_id'))).encode()).hexdigest()
+
+
+def semantic_evidence(value):
+    """Keep captured meaning and grades; discard observation/diagnostic bookkeeping."""
+    ignored = {'html','screenshot','deferred_error','diagnostics','timestamp','captured_at',
+               'updated_at','elapsed_seconds','solver_elapsed_seconds','previous_activity_snapshot',
+               'source_sha256','choice_confidence_policy'}
+    if isinstance(value,dict):
+        return {key:semantic_evidence(item) for key,item in value.items()
+                if key not in ignored and not key.endswith('_path')}
+    if isinstance(value,list):return [semantic_evidence(item) for item in value]
+    return value
+
+
+def uncertainty(report):
+    return report.get('message')=='Solver is uncertain; question saved for review'
+
+
+def evidence_only(entry, report):
+    # New diagnoses can explicitly distinguish source defects from capture errors.
+    if entry.get('retry_on_source_change') is False:return True
+    # Migrate the already proved legacy conflicts without another mathematical audit.
+    summary=entry.get('summary','').lower()
+    return (entry.get('status')=='blocked' and uncertainty(report) and
+            any(term in summary for term in ('improper integrals diverge','separate improper integrals diverge',
+                                            'choices still omit the valid answer','unresolved mathematical conflict')))
+
+
+def attempt_version(entry, report, evidence, generation):
+    return evidence if evidence_only(entry,report) else evidence+':'+generation
+
+
+def deferred_failure(args, diagnostic, ledger, generation, *, legacy_evidence=False, resume=False):
+    """Use the same scoped evidence decision for maintenance and checkpoint resume."""
+    report=json.loads(diagnostic.read_text());previous=ledger.get(failure_key(report),{})
+    if resume and previous.get('status') in ('applied','resolved'):return False
+    evidence=evidence_version(diagnostic,args.edb_bin)
+    version=attempt_version(previous,report,evidence,generation)
+    if previous.get('attempt_versions',{}).get(version,0)>=2:return True
+    same_source=(previous.get('source_version')==generation or evidence_only(previous,report))
+    same_evidence=(previous.get('evidence_version')==evidence or
+                   legacy_evidence and 'evidence_version' not in previous)
+    return (same_source and same_evidence and
+            (previous.get('status') in ('applied','resolved','blocked') or previous.get('attempts',0)>=2))
+
+
+def migrate_ledger(args, ledger):
+    """Retain old entries and immutable job references while restoring scoped budgets."""
+    jobs = args.state_dir.resolve()/'capture-repair'
+    for old_key, old in list(ledger.items()):
+        if not isinstance(old,dict) or old.get('budget_version')==2:continue
+        diagnostic=Path(old.get('diagnostic',''))
+        if not diagnostic.is_file():continue
+        report=json.loads(diagnostic.read_text())
+        if old_key!=legacy_failure_key(report):continue
+        groups={failure_key(report):[(diagnostic,dict(old),None)]}
+        # Reconstruct the other activities overwritten by this legacy generic key.
+        for input_file in sorted(jobs.glob(old_key[:10]+'-*/input.json')):
+            payload=json.loads(input_file.read_text());saved=payload.get('report',{})
+            if legacy_failure_key(saved)!=old_key:continue
+            result_file=input_file.parent/'result.json'
+            source=Path(payload['diagnostics'])/'error.json'
+            if not result_file.is_file() or not source.is_file():continue
+            result=json.loads(result_file.read_text())
+            decision={**payload.get('previous_attempt',{}),**result,
+                      'job':str(input_file.parent),'diagnostic':str(source)}
+            groups.setdefault(failure_key(saved),[]).append((source,decision,str(input_file.parent)))
+        for key, records in groups.items():
+            if key in ledger:continue
+            # Prefer the durable ledger's last decision for its own scoped activity.
+            diagnostic,latest,_=records[0] if key==failure_key(report) else records[-1]
+            saved=json.loads(diagnostic.read_text());entry=dict(latest)
+            entry.update(budget_version=2,legacy_key=old_key,
+                         evidence_version=evidence_version(diagnostic,args.edb_bin),
+                         retry_on_source_change=not evidence_only(latest,saved))
+            relevant=[{'job':job,'diagnostic':str(source),'status':decision.get('status'),
+                       'summary':decision.get('summary','')} for source,decision,job in records if job and
+                      (not entry['retry_on_source_change'] or
+                       decision.get('source_version')==entry.get('source_version'))]
+            entry['migrated_jobs']=relevant
+            entry['attempts']=max(entry.get('attempts',0),min(2,len(relevant)))
+            version=attempt_version(entry,saved,entry['evidence_version'],entry.get('source_version',''))
+            entry['attempt_versions']={version:entry['attempts']}
+            ledger[key]=entry
+    return ledger
 
 
 def source_version():
@@ -87,6 +180,21 @@ def evidence_version(source, edb_bin=None):
     digest=hashlib.sha256(failure_key(report).encode())
     digest.update(json.dumps({key:report.get(key) for key in
                              ('task_id','stdout','stderr','http_block')},sort_keys=True).encode())
+    if uncertainty(report):
+        directory=source.parents[2]
+        # Full-page render bytes include hidden panels and transient editor state.
+        # The canonical capture and solver inputs contain the actual question/context.
+        for path in sorted(list(directory.glob('*before.json'))+list(directory.glob('context-*.json'))+
+                           list(directory.glob('*/solve-input.json'))+list(directory.glob('*/solve-answer.json'))+
+                           list(directory.glob('*after.json'))):
+            digest.update(str(path.relative_to(directory)).encode())
+            digest.update(json.dumps(semantic_evidence(json.loads(path.read_text())),sort_keys=True).encode())
+        state=directory/'state.json'
+        if state.is_file():
+            saved=json.loads(state.read_text())
+            digest.update(json.dumps(semantic_evidence({key:saved.get(key) for key in
+                ('questions','shared_contexts','context_steps')}),sort_keys=True).encode())
+        return digest.hexdigest()
     if report.get('phase') in ('queue','queue-after') and report.get('task_id') is None:
         # A reloaded queue and a new diagnostic timestamp do not fix a failed
         # database reader. Revisit the diagnosis only when its error or reader changes.
@@ -112,6 +220,7 @@ def next_failure(args, ledger, *, task_ids=None):
     from capture import superseded_before_start
     generation=source_version()
     sources = list(args.output.glob('*/diagnostics/*/error.json')) + list((args.state_dir/'diagnostics').glob('*/error.json'))
+    seen=set()
     for source in sorted(sources,key=lambda p:p.stat().st_mtime,reverse=True):
         report = json.loads(source.read_text())
         if task_ids is not None and report.get('task_id') not in task_ids:
@@ -123,14 +232,17 @@ def next_failure(args, ledger, *, task_ids=None):
         state_file = source.parents[2]/'state.json'
         if state_file.exists():
             state = json.loads(state_file.read_text())
+            active=state.get('deferred_error',{}).get('diagnostics')
+            if (active and report['phase'] not in ('queue','queue-after') and
+                    Path(active).resolve()!=source.parent.resolve()):
+                continue
             if (superseded_before_start(state) or state.get('import_complete') or state.get('preview_complete') or
                     state.get('history_complete') and report['phase'] not in ('queue','queue-after')):
                 continue
         key = failure_key(report)
-        previous = ledger.get(key,{})
-        if (previous.get('source_version')==generation and previous.get('evidence_version')==evidence_version(source,args.edb_bin) and
-                (previous.get('status') in ('applied','resolved','blocked') or previous.get('attempts',0)>=2)):
-            continue
+        if key in seen:continue
+        seen.add(key)
+        if deferred_failure(args,source,ledger,generation):continue
         return source,report,key
     return None
 
@@ -187,14 +299,18 @@ def prepare(args, pacer):
     root = args.state_dir.resolve()/'capture-repair';root.mkdir(parents=True,exist_ok=True)
     ledger_file = root/'failures.json'
     ledger = json.loads(ledger_file.read_text()) if ledger_file.exists() else {}
+    migrate_ledger(args,ledger)
+    atomic_json(ledger_file,ledger)
     failure = next_failure(args,ledger,task_ids=getattr(args,'capture_repair_task_ids',None))
     if not failure:return None
     diagnostic,report,key = failure
     entry = ledger.setdefault(key,{'attempts':0})
     generation=source_version()
     evidence=evidence_version(diagnostic,args.edb_bin)
+    version=attempt_version(entry,report,evidence,generation)
     if entry.get('source_version')!=generation or entry.get('evidence_version')!=evidence:
-        entry['attempts']=0
+        entry['attempts']=entry.get('attempt_versions',{}).get(version,0)
+    entry['budget_version']=2
     entry['source_version']=generation
     entry['evidence_version']=evidence
     previous = dict(entry)
@@ -223,6 +339,7 @@ def prepare(args, pacer):
         session.pop('pending_turn')
     job = root/(key[:10]+'-'+str(time.time_ns()));job.mkdir()
     entry.update(attempts=entry['attempts']+1,status='started',diagnostic=str(diagnostic),job=str(job))
+    entry.setdefault('attempt_versions',{})[version]=entry['attempts']
     atomic_json(ledger_file,ledger)
     snapshots = {name:(PACKAGE/name).read_text() for name in ALLOWED}
     payload = {'diagnostics':str(diagnostic.parent),'report':report,'source_directory':str(PACKAGE),
@@ -257,7 +374,14 @@ def prepare(args, pacer):
         raise ValueError('Capture repair turn did not complete')
     session['last_turn']=session.pop('pending_turn');atomic_json(checkpoint,session)
     result = json.loads((job/'result.json').read_text())
-    entry.update(summary=result['summary'],job=str(job),status=result['status']);atomic_json(ledger_file,ledger)
+    entry.update(summary=result['summary'],job=str(job),status=result['status'])
+    entry.pop('retry_on_source_change',None)
+    if 'retry_on_source_change' in result:
+        entry['retry_on_source_change']=result['retry_on_source_change']
+    if evidence_only(entry,report):
+        entry['retry_on_source_change']=False
+        entry.setdefault('attempt_versions',{})[evidence]=entry['attempts']
+    atomic_json(ledger_file,ledger)
     if result['status']!='repair':
         logging.info('Capture repair %s: %s',result['status'],result['summary'])
         if result['status']=='resolved':

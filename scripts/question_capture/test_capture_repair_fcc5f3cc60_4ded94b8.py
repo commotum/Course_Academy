@@ -42,6 +42,7 @@ function hydrate(n) {
   n.getAttribute = k => n.attrs[k] ?? null;
   n.childNodes = n.childNodes.map(hydrate);
   const elements = n.childNodes.filter(c => c.nodeType === 1);
+  n.children = elements;
   elements.forEach((c, i) => c.nextElementSibling = elements[i + 1] || null);
   return n;
 }

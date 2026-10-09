@@ -186,6 +186,8 @@ corrected values instead of restoring the source mistake or deferring the import
 Answer fields are replaced by new component identities; original fields, answers
 and question versions remain available for historical use.
 
+Topic **2616**, KP `624215ff-efdc-5b12-8d61-9d66371672d9`, has a reviewed containing-region interpretation for rectangular zero-extension questions. A matching committed canonical correction attests the explicit requirement $D\subseteq R$ for solver inputs, including verification. Original prompts, widgets, grades and worked solutions stay unchanged; decisions and content record the interpretation separately. The incremental health check flags newly verified interpreted questions lacking a matching per-question study correction, so capture can continue while the study clarification is completed. Other topics and unrecognized forms use ordinary solving.
+
 When the EDB CLI hides a remote conflict behind `transport/remote-error`, the
 importer replays the exact saved request through a temporary local relay to read
 only the original rejection code. Confirmed `postgres/stale-basis` rejections
@@ -506,8 +508,14 @@ After a completed capture is imported, queued unfinished failures that have not
 been inspected under the current code and evidence also get one repair turn,
 even while fresh activities remain available.
 It handles targeted fixes, with at most two attempts per unchanged failure/evidence.
-Resolved or blocked diagnoses are recorded rather than repeatedly revisited under
-unchanged source. A code change makes an old failure eligible for a new diagnosis. Import
+Budgets are scoped to the activity and retained for each evidence/source version. Only
+the newest diagnostic for a failure is considered; old pages cannot alternate and reset
+its budget. Solver uncertainty uses saved question, context, input and grade evidence;
+diagnostic paths, observation timestamps and full-page render changes do not reopen it.
+Resolved or blocked diagnoses are recorded. Capture source changes can reopen interaction
+failures, while a proved mathematical source contradiction requires relevant source/input
+or authentic grading evidence. Existing generic ledgers retain their original entries
+and repair jobs while migrating completed attempts into scoped budgets. Import
 failures and authentication/rate-limit blocks are excluded from this session.
 If a nonempty queue contains only excluded activities, the runner attempts repair
 early and keeps retrying with backoff. Each idle boundary inspects one failure,
@@ -770,8 +778,11 @@ keyboard commands are a fallback only when no matching button is visible.
 The existing editor's value must still verify before Submit.
 Unknown widgets, unreadable formulas, and unrendered graphical assets defer the
 activity for review. Formulas supplied only as SVG paths are preserved as rendered
-formula images in the problem and worked solution. Invisible MathML `mphantom`
-content is omitted. Graphics are allowed to
+formula images in the problem and worked solution. SVG titles mixing outer TeX
+with nested MathML also retain the whole rendering, including visible blank
+boxes around phantom spacing. Rendered SVG assets save their exact original SVG
+DOM beside the raster capture. Invisible MathML `mphantom` content is omitted.
+Graphics are allowed to
 become visible and images must finish loading within `--timeout-ms` before capture;
 an asset that never renders saves diagnostics and defers that activity.
 Radio extraction is validated against all fifteen actual Sum Rule

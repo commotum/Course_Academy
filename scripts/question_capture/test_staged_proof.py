@@ -3,7 +3,7 @@ import copy,json,random,tempfile,unittest
 from pathlib import Path
 from unittest.mock import Mock
 from playwright.sync_api import sync_playwright
-from browser import CaptureBrowser,EXTRACT
+from browser import CaptureBrowser,EXTRACT,history_result_matches
 from core import Pacer
 from capture import arguments
 
@@ -19,6 +19,20 @@ class StagedProofTests(unittest.TestCase):
         self.page=self.browser.new_page();self.page.route('**/*',lambda r:r.abort())
         self.page.set_content((FIXTURE/'accepted.html').read_text())
     def tearDown(self):self.page.close()
+    def test_real_proof_history_full_credit_alias_preserves_distinct_source_grades(self):
+        rows=json.loads((FIXTURE/'history-grades.json').read_text())
+        for row in rows:
+            self.page.set_content(row['answer_details_html'])
+            result=self.page.locator('.answerResult').inner_text().strip()
+            record={'actual_result':row['live_result'],'proof_stages':[{}]*row['proof_stage_count']}
+            self.assertTrue(history_result_matches(record,result))
+            if result=='Full Credit':
+                self.assertEqual(record['actual_result'],'Correct')
+                self.assertFalse(history_result_matches({'actual_result':'Correct'},result))
+            for different in ('No Credit','Incorrect'):
+                self.assertFalse(history_result_matches(record,different))
+        self.assertFalse(history_result_matches({'actual_result':'Correct','proof_stages':[{}]},'Partial Credit'))
+        self.assertFalse(history_result_matches({'actual_result':'Partial Credit','proof_stages':[{}]},'Full Credit'))
     def test_real_math_select_markers_and_accepted_fields(self):
         item=self.page.locator('#step-q334055').evaluate(EXTRACT)
         self.assertEqual(item['errors'],[])

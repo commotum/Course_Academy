@@ -39,6 +39,22 @@ class CorrectionRetentionTests(unittest.TestCase):
 
 
 class CorrectionEvidenceTests(unittest.TestCase):
+    def test_canonical_example_correction_has_scalar_evidence_without_answer_fields(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=Path(name);directory=root/'mathematical-corrections/e-21715';directory.mkdir(parents=True)
+            review=directory/'review.json';tx=directory/'transaction.edn'
+            review.write_text(json.dumps({'rationale':'Correct circular premise labels.',
+                'corrected_content':{'math_academy_id':'e-21715','problem':'Original blank-box prompt',
+                    'worked_solution':'L3 follows from L1 and L2; L4 follows from L3.', 'answer_fields':[]}}))
+            tx.write_text('[]')
+            (directory/'verification.json').write_text(json.dumps({'committed':True,
+                'mathematical_check_passed':True,'basis_after':12,
+                'review_sha256':hashlib.sha256(review.read_bytes()).hexdigest(),
+                'transaction_sha256':hashlib.sha256(tx.read_bytes()).hexdigest()}))
+            records=mathematical_correction_records(root,{'e-21715'})
+            self.assertEqual([r['attribute'] for r in records],['question/problem','question/worked-solution'])
+            self.assertTrue(all(r['field'] is None for r in records))
+
     def test_requires_committed_verification_and_unchanged_review_and_transaction(self):
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)

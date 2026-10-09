@@ -1,0 +1,145 @@
+{
+  "question": "e-21717",
+  "source_capture": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14055149",
+  "original_content": {
+    "math_academy_id": "e-21717",
+    "knowledge_point_id": "a6bb3f2e-ee56-56f2-94f2-4b454a187ab7",
+    "knowledge_point": "Finding the General Solution",
+    "problem": "Consider the d\u2019Alembert differential equation\n\n$$\ny = x\\left(\\dfrac{\\textrm d y}{\\textrm d x}-1\\right)^2 + 2\\left(\\dfrac{\\textrm d y}{\\textrm d x}\\right).\n$$\n\nIf $y'(x) = t,$ then general solution can be expressed in parametric form $(x(t), y(t)),$ where\n\n$$\ny(t) = \\left( \\dfrac{2\\ln|t| - t^2+C}{2(t-1)^2} \\right) f(t) + g(t)\n$$\n\nand $C$ is an arbitrary constant. Find $f(t)+g(t).$\n\n*Hint: Under the given transformation, we have*\n\n$$\n\\dfrac{\\textrm d x}{\\textrm d t} + \\dfrac{2x}{t-1} = \\frac{1+t}{t(1-t)}\n$$",
+    "worked_solution": "A differential equation is a d'Alembert differential equation if it can be expressed in the form\n\n$$\ny = xf(y') + g(y'),\n$$\n\nwhere $f$ and $g$ are differentiable functions of $y'.$ \n\nWe're told that, under the substitution $y'(x) = t,$ our d\u2019Alembert differential equation transforms to the first-order linear equation\n\n$$\n\\dfrac{\\textrm d x}{\\textrm d t} + \\dfrac{2x}{t-1} = \\frac{1+t}{t(1-t)}.\n$$\n\nWe'll solve this equation using the method of integrating factors. Since this equation is already of the form\n\n$$\n\\dfrac{\\textrm d x}{\\textrm d t} + P(t)x = Q(t)\n$$\n\nwe compute our integrating factor as follows:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int P(t)\\,\\text{d}t} \\\\  & ={e}^{\\int 2/(t-1)\\,\\text{d}t} \\\\  & ={e}^{2\\operatorname{ln}\u2061|t-1|} \\\\  & ={e}^{\\operatorname{ln}\u2061(t-1)^{2}} \\\\  & =(t-1)^{2}\\end{aligned}\n$$\n\nMultiplying our differential equation by $I(t)$ gives\n\n$$\n\\begin{aligned}(t-1)^{2}\\frac{\\text{d}x}{\\text{d}t}+2(t-1)x & =(t-1)^{2}\\frac{1+t}{t(1-t)} \\\\ (t-1)^{2}\\frac{\\text{d}x}{\\text{d}t}+2(t-1)x & =\\frac{1-{t}^{2}}{t}.\\end{aligned}\n$$\n\nRewriting the left-hand side as an exact derivative, and integrating both sides of the equation with respect to $t,$ we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}t}(x(t-1)^{2}) & =\\frac{1-{t}^{2}}{t} \\\\ \\int \\frac{\\text{d}}{\\text{d}t}(x(t-1)^{2})\\,\\text{d}t & =\\int \\frac{1-{t}^{2}}{t}\\,\\text{d}t \\\\ x(t-1)^{2} & =\\int \\frac{1}{t}-t\\,\\text{d}t \\\\ x(t-1)^{2} & =\\operatorname{ln}\u2061|t|-\\frac{{t}^{2}}{2}+C \\\\ x & =\\frac{2\\operatorname{ln}\u2061|t|-{t}^{2}+C}{2(t-1)^{2}}.\\end{aligned}\n$$\n\nTherefore, we have that\n\n$$\nx(t) = \\dfrac{2\\ln|t| - t^2+C}{2(t-1)^2}.\n$$\n\nTo recover $y$, we substitute $x$ into\n\n$$\ny = x(t-1)^2 + 2t,\n$$\n\nwhich gives\n\n$$\n\\begin{aligned}y(t) & =(\\frac{2\\operatorname{ln}\u2061|t|-{t}^{2}+C}{2(t-1)^{2}})(t-1)^{2}+2t.\\end{aligned}\n$$\n\nFinally, we conclude that $f(t)=(t-1)^2,\\ g(t)=2t,$ and\n\n$$\nf(t)+g(t) = t^2 +1.\n$$",
+    "difficulty": null,
+    "answer_fields": [],
+    "missing_source_fields": [
+      "difficulty",
+      "answer_fields"
+    ]
+  },
+  "corrected_content": {
+    "math_academy_id": "e-21717",
+    "knowledge_point_id": "a6bb3f2e-ee56-56f2-94f2-4b454a187ab7",
+    "knowledge_point": "Finding the General Solution",
+    "problem": "Consider the d\u2019Alembert differential equation\n\n$$\ny = x\\left(\\dfrac{\\textrm d y}{\\textrm d x}-1\\right)^2 + 2\\left(\\dfrac{\\textrm d y}{\\textrm d x}\\right).\n$$\n\nIf $y'(x) = t,$ then general solution can be expressed in parametric form $(x(t), y(t)),$ where\n\n$$\ny(t) = x(t) f(t) + g(t)\n$$\n\nFind $f(t)+g(t).$\n\n*Hint: Under the given transformation, we have*\n\n$$\n\\dfrac{\\textrm d x}{\\textrm d t} - \\dfrac{2(t-1)}{t-(t-1)^2}x = \\dfrac{2}{t-(t-1)^2},\\qquad t-(t-1)^2\\ne0.\n$$",
+    "worked_solution": "Substitute $t=y'(x)$ into the original differential equation:\n\n$$y=x(t-1)^2+2t.$$\n\nTherefore $f(t)=(t-1)^2$ and $g(t)=2t$, so\n\n$$f(t)+g(t)=(t-1)^2+2t=t^2+1.$$\n\nFor the nonconstant parameter branch, differentiate with respect to $t$ and use $dy/dt=t\\,dx/dt$:\n\n$$t x'=(t-1)^2x'+2(t-1)x+2.$$\n\nWriting $D(t)=t-(t-1)^2$ yields the corrected linear equation\n\n$$x'-\\frac{2(t-1)}{D(t)}x=\\frac{2}{D(t)},\\qquad D(t)\\ne0.$$\n\nOn any interval avoiding the roots of $D$, choose a base point $t_0$ and define\n\n$$I(t)=\\exp\\!\\left(\\int_{t_0}^{t}\\frac{-2(s-1)}{D(s)}\\,ds\\right).$$\n\nThen\n\n$$x(t)=\\frac{C+\\int_{t_0}^{t}2I(s)/D(s)\\,ds}{I(t)},\\qquad y(t)=x(t)(t-1)^2+2t.$$\n\nIndeed $(Ix)'=2I/D$, so these formulas satisfy the corrected linear equation and $dy/dt=t\\,dx/dt$. They define a local graph where $x'(t)\\ne0$.\n\nThe excluded constant slopes $r=(3\\pm\\sqrt5)/2$ satisfy $r=(r-1)^2$ and give the separate straight-line solutions $y=rx+2r$. The original elementary expression for $x(t)$ and its associated hint are incorrect for the original equation.",
+    "difficulty": null,
+    "answer_fields": [],
+    "missing_source_fields": [
+      "difficulty",
+      "answer_fields"
+    ]
+  },
+  "rationale": "Retain the original equation and coefficient-identification answer t\u00b2+1. Replace the false supplied elementary x(t) with x(t) and derive the correct transformed linear equation from the original ODE; give a verified integrating-factor quadrature on valid parameter intervals. Raw canonical DOM and screenshot remain unchanged.",
+  "source_files": {
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14055149/example-21717.json": "af22e5b52513c6e08f91dc33de01eeafbeb4a4accf3d64eae61eed3a1bcc62ef",
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14055149/example-21717.png": "b2abf600d386ff3276ca31f95a4cea2b928ce9fc339364d68f003dad442077e9"
+  },
+  "mathematical_checks": {
+    "exact_derivative_cases": [
+      [
+        "-3",
+        "-7"
+      ],
+      [
+        "-3",
+        "0"
+      ],
+      [
+        "-3",
+        "11"
+      ],
+      [
+        "-1",
+        "-7"
+      ],
+      [
+        "-1",
+        "0"
+      ],
+      [
+        "-1",
+        "11"
+      ],
+      [
+        "0",
+        "-7"
+      ],
+      [
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "11"
+      ],
+      [
+        "1/2",
+        "-7"
+      ],
+      [
+        "1/2",
+        "0"
+      ],
+      [
+        "1/2",
+        "11"
+      ],
+      [
+        "1",
+        "-7"
+      ],
+      [
+        "1",
+        "0"
+      ],
+      [
+        "1",
+        "11"
+      ],
+      [
+        "2",
+        "-7"
+      ],
+      [
+        "2",
+        "0"
+      ],
+      [
+        "2",
+        "11"
+      ],
+      [
+        "3",
+        "-7"
+      ],
+      [
+        "3",
+        "0"
+      ],
+      [
+        "3",
+        "11"
+      ],
+      [
+        "5",
+        "-7"
+      ],
+      [
+        "5",
+        "0"
+      ],
+      [
+        "5",
+        "11"
+      ]
+    ],
+    "case_count": 24,
+    "integrating_factor": "Iprime/I=-2(t-1)/D; (I*x)prime=2*I/D",
+    "coefficient_sum": "(t-1)^2+2t=t^2+1",
+    "separate_constant_slopes": "r^2-3r+1=0; y=rx+2r"
+  },
+  "fields_changed": false,
+  "authorized_scope": "Explicitly approved finite source-error capture recovery and mathematically correct study correction",
+  "finalized_source_files": {
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14055149/content.json": "4e173a07711e47864cdf26103a53aa5068f47407de74b49580a159d73532f68a",
+    "/home/jake/Developer/Course_Academy/.local/question_capture-fleet/de-dalembert-14055149/canonical-review.json": "a61faca4212a1025a0575be4a710aee1c4954c25df73e655176606aa3188ff5b"
+  }
+}

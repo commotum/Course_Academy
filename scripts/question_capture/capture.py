@@ -196,9 +196,10 @@ def superseded_before_start(state):
 
 def queued_resume(args, queue, resumed):
     """Recover queued saved work once per worker, after fresh eligible work."""
-    from capture_repair import failure_key, source_version
+    from capture_repair import deferred_failure, migrate_ledger, source_version
     ledger_path = args.state_dir/'capture-repair/failures.json'
     ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else {}
+    migrate_ledger(args,ledger)
     generation = None
     for activity in queue:
         if activity['task_id'] in resumed:
@@ -215,11 +216,9 @@ def queued_resume(args, queue, resumed):
             continue
         diagnostic = Path(state.get('deferred_error',{}).get('diagnostics',''))/'error.json'
         if diagnostic.is_file():
-            decision = ledger.get(failure_key(json.loads(diagnostic.read_text())),{})
-            if decision.get('status') == 'blocked':
-                generation = generation or source_version()
-                if decision.get('source_version') == generation:
-                    continue
+            generation = generation or source_version()
+            if deferred_failure(args,diagnostic,ledger,generation,legacy_evidence=True,resume=True):
+                continue
         return directory.resolve()
     return None
 

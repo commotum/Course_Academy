@@ -115,6 +115,11 @@ def mathquill_keys(value, actions):
 
 def normalize_mathquill(value):
     """Compare editor notation without treating differently grouped math as equal."""
+    # A whole monomial quotient inside exponent braces has explicit scope.
+    # MathQuill renders its slash as a stacked fraction. Keep sums, adjacent
+    # denominator factors and chained division outside this identity.
+    value = re.sub(r'\^\{((?:[1-9]\d*)?\\pi|[A-Za-z](?:\^\d+|\^\{\d+\})?)/([1-9]\d*)\}',
+                   lambda m: '^{' + r'\frac{' + m[1] + '}{' + m[2] + '}}', value)
     return normalize(value)
 
 
@@ -130,10 +135,38 @@ def same_question_problem(before, after):
     return normalize(rendered) == normalize(after['problem'])
 
 
+def history_result_matches(record, source_result):
+    # Completed staged proofs use "Correct" live and "Full Credit" in history.
+    # Keep both original labels; partial/no credit are distinct source outcomes.
+    return (not source_result or source_result == record['actual_result'] or
+            source_result == 'Full Credit' and record['actual_result'] == 'Correct' and
+            bool(record.get('proof_stages')))
+
+
 def by_id(scope, identifier):
     if not identifier:
         raise ValueError('Missing observed DOM identifier')
     return scope.locator('[id=' + json.dumps(identifier) + ']')
+
+
+def click_select_frame(frame):
+    """Open MA's original menu through frame padding, avoiding child mousedown."""
+    frame.scroll_into_view_if_needed()
+    position = frame.evaluate('''n => {
+      const r=n.getBoundingClientRect();
+      // The original window mousedown handler immediately hides a menu when
+      // the target is a selected formula inside its frame. Use an observed
+      // point on the frame itself; never force visibility or dispatch events.
+      for(const x of [2,r.width-2,4,r.width-4,r.width/2])
+        for(const y of [2,r.height-2,4,r.height-4,r.height/2])
+          if(x>0 && y>0 && x<r.width && y<r.height &&
+             document.elementFromPoint(r.left+x,r.top+y)===n)
+            return {x,y};
+      return null;
+    }''')
+    if position is None:
+        raise ValueError('Dropdown frame has no visible direct click target; stop before Submit')
+    frame.click(position=position)
 
 
 def deduplicate_math_editor(html):
@@ -218,12 +251,20 @@ def history_kp_matches(topic_id, live, history):
     # Observed live example / results-page title variants, scoped to their
     # topics. Preserve the canonical example's KP ID; never fuzzy-match titles.
     aliases = {
-        612: ('Identifying the Largest Intervals of Continuity of a Function',
-              'Identifying the Intervals of Continuity of a Function'),
-        708: ('Solving a Rational Equations by Factoring a Quadratic Denominator With No Constant Term',
-              'Solving Rationals Equations by Factoring a Quadratic Denominator With No Constant Term'),
+        (612, 'Identifying the Largest Intervals of Continuity of a Function'):
+            'Identifying the Intervals of Continuity of a Function',
+        (3570, 'Expressing Part of a Shifted Sphere in Spherical Coordinates'):
+            'Expressing a Shifted Sphere or Part of a Shifted Sphere in Spherical Coordinates',
+        (36, 'Finding the a General Term for the Derivative of a Taylor Series'):
+            'Finding the General Term for the Derivative of a Taylor Series',
+        (424, 'Finding the Indefinite Integral of a Exponential-Trigonometric Expression Using Integration by Parts'):
+            'Finding the Indefinite Integral of an Exponential-Trigonometric Expression Using Integration by Parts',
+        (424, 'Finding the Definite Integral of a Exponential-Trigonometric Expression Using Integration by Parts'):
+            'Finding the Definite Integral of an Exponential-Trigonometric Expression Using Integration by Parts',
+        (708, 'Solving a Rational Equations by Factoring a Quadratic Denominator With No Constant Term'):
+            'Solving Rationals Equations by Factoring a Quadratic Denominator With No Constant Term',
     }
-    return kp_title_identity(live) == kp_title_identity(history) or aliases.get(topic_id) == (live,history)
+    return kp_title_identity(live) == kp_title_identity(history) or aliases.get((topic_id,live)) == history
 
 
 def kp_for_example(topic, mid, name, allow_new=False):
@@ -434,11 +475,20 @@ class CaptureBrowser:
                 raise ValueError('Assessment is not required, an eligible retake, or the only eligible activity; stop before Start')
         else:
             card = by_id(self.page, activity['card_id'])
-            if kind not in ('multistep','diagnostic') or not card.locator('.taskDetails').is_visible():
+            if not card.locator('.taskDetails').is_visible():
                 self.pacer.wait('event', 'expand the selected ' + kind)
                 card.click()
         button = by_id(self.page, activity['start_id'])
-        button.wait_for(state='visible')
+        from playwright.sync_api import TimeoutError as PlaywrightTimeout
+        try:
+            button.wait_for(state='visible')
+        except PlaywrightTimeout:
+            self.check()
+            if kind == 'assessment' or card.locator('.taskDetails').is_visible():
+                raise
+            self.pacer.wait('event', 'retry expanding the selected ' + kind)
+            card.click()
+            button.wait_for(state='visible')
         if button.get_attribute('href') != activity['href']:
             raise ValueError('Queue activity changed before starting')
         self.pacer.wait('event', 'start the selected ' + kind)
@@ -471,6 +521,9 @@ class CaptureBrowser:
               if(n.closest('.questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') ||
                  n.parentElement?.closest('svg')) return false;
               const formula=n.closest('.mjpage, mjx-container, .MathJax');
+              const title=n.querySelector('title');
+              if(n.localName==='svg' && formula && title?.querySelector('math') &&
+                 [...title.childNodes].some(child=>child.nodeType===3 && child.textContent.trim())) return true;
               return !formula || (n.localName==='svg' && !formula.querySelector('mjx-assistive-mml math') &&
                 !n.querySelector('title')?.textContent.trim());
             }''')
@@ -516,6 +569,12 @@ class CaptureBrowser:
             target.write_bytes(pixels)
             metadata.update(path=str(target), content_type=mime, representation=representation,
                             sha256=hashlib.sha256(pixels).hexdigest())
+            if metadata['tag'] == 'svg' and representation == 'rendered':
+                original_svg = metadata['html'].encode('utf-8')
+                svg_hash = hashlib.sha256(original_svg).hexdigest()
+                svg_target = target.parent / (svg_hash + '.svg')
+                svg_target.write_bytes(original_svg)
+                metadata.update(original_svg_path=str(svg_target), original_svg_sha256=svg_hash)
             manifest_path = directory / 'assets/manifest.json'
             manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
             manifest[source_url or stem + '/' + str(index)] = metadata
@@ -529,7 +588,15 @@ class CaptureBrowser:
             index += 1
         atomic_json(directory / (stem + '.json'), item)
         screenshot = directory / (stem + '.png')
-        scope.screenshot(path=str(screenshot))
+        for attempt in range(3):
+            try:
+                scope.screenshot(path=str(screenshot))
+                break
+            except PlaywrightTimeout as exc:
+                if attempt == 2 or 'waiting for fonts to load' not in str(exc):
+                    raise
+                self.pacer.backoff(attempt + 1)
+                self.check()
         if item['errors']:
             raise ValueError('DOM extraction needs review: ' + '; '.join(item['errors']))
         return item, screenshot
@@ -604,9 +671,42 @@ class CaptureBrowser:
         return self.activity(state, directory, topic)
 
     def wait_activity_ready(self):
+        # A gateway document can replace the activity without changing its URL.
+        # Reload only this exact error document; never replay interaction clicks.
+        attempt = 0
+        while True:
+            self.check()
+            if self.page.locator('body').inner_text().strip() != '502 Bad Gateway':
+                break
+            attempt += 1
+            self.pacer.backoff(attempt)
+            self.navigate(self.page.url, force=True)
+        from playwright.sync_api import TimeoutError as PlaywrightTimeout
+
         # Initial page markup uses numbered placeholders before real step IDs arrive.
-        self.page.wait_for_function('() => !!('+ACTIVE_STEP+')() || '
-            "!!document.querySelector('#finalScreen')?.getClientRects().length")
+        for readiness_attempt in range(3):
+            try:
+                self.page.wait_for_function('() => !!('+ACTIVE_STEP+')() || '
+                    "!!document.querySelector('#finalScreen')?.getClientRects().length")
+                return
+            except PlaywrightTimeout:
+                if readiness_attempt == 2:
+                    raise
+                self.pacer.backoff(readiness_attempt + 1)
+                self.page.reload(wait_until='domcontentloaded')
+                self.check()
+
+    def recover_reload_required(self):
+        self.check()
+        if not self.page.locator('#messageBox').is_visible():
+            return False
+        if (self.page.locator('#messageBox-title').inner_text().strip() != 'Reload Required' or
+                self.page.locator('#messageBox-message').inner_text().strip() !=
+                'Something has changed that requires the page to reload.'):
+            return False
+        self.pacer.backoff(1)
+        self.navigate(self.page.url, force=True)
+        return True
 
     def current_step(self):
         return self.page.evaluate(ACTIVE_STEP)
@@ -888,7 +988,9 @@ class CaptureBrowser:
                 # A grading response can succeed while step navigation fails.
                 # Recover its actual result from the reloaded page when the
                 # interrupted capture never saved a complete explanation.
-                if (not item.get('worked_solution') or item.get('errors') or
+                screenshot = directory / (mid + '-after.png')
+                missing_pixels = not screenshot.is_file() or not screenshot.stat().st_size
+                if (missing_pixels or not item.get('worked_solution') or item.get('errors') or
                         item.get('result') not in ('Correct', 'Incorrect', 'Partial Credit') or
                         normalize(item.get('problem', '')) != normalize(record['before']['problem'])):
                     scope = by_id(self.page, 'step-' + mid.replace('-', ''))
@@ -898,6 +1000,19 @@ class CaptureBrowser:
                             self.pacer.wait('event', 'restore graded question for capture')
                             by_id(self.page, 'stepButton-' + mid.replace('-', '')).click()
                             scope.wait_for(state='visible')
+                        if missing_pixels and source.is_file():
+                            original_json = source.read_bytes()
+                            original_hash = hashlib.sha256(original_json).hexdigest()
+                            archived = directory / 'after-capture-recovery' / (mid + '-after-' + original_hash + '.json')
+                            archived.parent.mkdir(parents=True, exist_ok=True)
+                            archived.write_bytes(original_json)
+                            record['after_capture_recovery'] = {
+                                'reason': 'missing_original_live_after_screenshot',
+                                'archived_original_json': str(archived),
+                                'original_json_sha256': original_hash,
+                                'recaptured_json': str(source),
+                                'recaptured_screenshot': str(screenshot)}
+                            save()
                         item, _ = self.read(scope, directory, mid + '-after')
                 if (item.get('errors') or item.get('result') not in ('Correct', 'Incorrect', 'Partial Credit') or
                     not item.get('worked_solution') or
@@ -1057,7 +1172,15 @@ class CaptureBrowser:
                     raise ValueError('Submit is still disabled after filling observed fields')
                 submit.click()
             # After a crash/timeout, only inspect/wait. Never blindly resubmit.
-            button.wait_for(state='visible')
+            from playwright.sync_api import TimeoutError as PlaywrightTimeout
+            try:
+                button.wait_for(state='visible')
+            except PlaywrightTimeout:
+                if not self.recover_reload_required():
+                    raise
+                # Keep the submitting checkpoint. The normal recovery reader
+                # reconciles fresh grades or restored unanswered controls first.
+                return self.activity(state, directory, topic)
             item, screenshot = self.read(scope,directory,mid + '-after')
             actual = (item.get('result') or '').strip()
             record['after'], record['actual_result'] = item, actual
@@ -1104,6 +1227,10 @@ class CaptureBrowser:
                     first.update({key:answer[key] for key in ('correct_value','value_type','correct_option','correct_keys') if key in answer})
                     logging.warning('%s/%s: using the solver-reviewed worked-solution answer',mid,answer['key'])
             record['verification'] = verified
+        interpretation = (record.get('verification', {}).get('source_feedback_interpretation') or
+                          record['decision'].get('source_feedback_interpretation'))
+        if interpretation:
+            record['source_feedback_interpretation'] = interpretation
         kp = {'id':None,'title':None} if state.get('task_type') == 'review' else state['kps'][record['kp_id']]
         record['content'] = self.question_content(mid,record,kp)
         record['finalized'] = True
@@ -1153,7 +1280,7 @@ class CaptureBrowser:
                         expected['images'] == observed['images'] and
                         normalize(expected['value'],'text') == normalize(observed['value'],'text'))
                     if not already_selected:
-                        selected.click()
+                        click_select_frame(selected)
                         option.click()
                         observed = selected.evaluate(SELECT_SNAPSHOT)
                     if (expected['errors'] or observed['errors'] or expected['images'] != observed['images'] or
@@ -1256,7 +1383,13 @@ class CaptureBrowser:
                     raise ValueError('Unfinished MathQuill command; stop before Submit')
                 observed = answer_control(scope,field).evaluate(MATHQUILL_VALUE)
                 field['observed_mathquill_latex'] = observed
-                if not isinstance(observed, str) or normalize_mathquill(observed) != normalize_mathquill(field['submitted_value']):
+                # Editor identity handles display notation cheaply. For other
+                # notation, require proof from the existing error-preserving
+                # exact checker; different and unresolved entries still stop.
+                if (not isinstance(observed, str) or
+                        (normalize_mathquill(observed) != normalize_mathquill(field['submitted_value']) and
+                         compare_answers(observed, field['submitted_value'],
+                                         prompt=record['before']['problem'])['outcome'] != 'equivalent')):
                     raise ValueError('Actual MathQuill value differs from intended value; stop before Submit: '
                                      + repr(observed) + ' != ' + repr(field['submitted_value']))
 
@@ -1284,6 +1417,10 @@ class CaptureBrowser:
         result = {'math_academy_id':mid,'knowledge_point_id':kp['id'],
                   'knowledge_point':kp['title'],'problem':record['before']['problem'],
                   'worked_solution':record['after']['worked_solution'],'answer_fields':fields}
+        interpretation = (record.get('source_feedback_interpretation') or
+                          record['decision'].get('source_feedback_interpretation'))
+        if interpretation:
+            result['source_feedback_interpretation'] = interpretation
         if instructions and not re.search(r'not|without|forbidden',instructions,re.I):
             result['requires_calculator'] = True
         return result
@@ -1357,7 +1494,7 @@ class CaptureBrowser:
                 record['content']['knowledge_point_source_id'] = int(source[2])
             elif not history_kp_matches(state['topic_id'],record['content']['knowledge_point'],title):
                 raise ValueError('Activity KP title contradicts live example mapping: ' + mid)
-            if q['result'] and q['result'] != record['actual_result']:
+            if not history_result_matches(record, q['result']):
                 raise ValueError('Activity grade contradicts captured live result: ' + mid)
             difficulty = {'E':'easy','M':'moderate','H':'hard'}.get(q['difficulty'])
             if not difficulty:

@@ -8,6 +8,7 @@ from fractions import Fraction
 SYMBOLS = dict(zip('αβγδθλμρσωπ∞±∓≤≥≠→∈∉∪∩∫∑∏×⋅·÷',
     ('alpha beta gamma delta theta lambda mu rho sigma omega pi infty pm mp '
      'leq geq neq rightarrow in notin cup cap int sum prod times cdot cdot div').split()))
+SYMBOLS['≈'] = 'approx'
 ALIASES = {'dfrac':'frac', 'tfrac':'frac', 'le':'leq', 'ge':'geq', 'ne':'neq',
            'to':'rightarrow'}
 LAYOUT = {'displaystyle','textstyle','scriptstyle','scriptscriptstyle','left','right',
@@ -17,7 +18,8 @@ OPERATORS = {'sin','cos','tan','sec','csc','cot','sinh','cosh','tanh','ln','log'
              'exp','arcsin','arccos','arctan','arg','lim','min','max'}
 SUPERSCRIPTS = str.maketrans('⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻', '0123456789+-')
 SUBSCRIPTS = str.maketrans('₀₁₂₃₄₅₆₇₈₉₊₋', '0123456789+-')
-UNITS = ('ft','in','yd','mi','mm','cm','km','m','kg','mg','lb','oz','g','ms','min','hr','s','h')
+UNITS = ('ft','in','yd','mi','mm','cm','km','m','kg','mg','lb','oz','g','ms','min','hr','s','h',
+         'liters','mile')
 
 
 def quantity_identity(value):
