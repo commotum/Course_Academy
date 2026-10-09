@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "Consider the differential equation \n\n$$\n{y}^{\u2033}-3{y}^{\u2032}+2y={x}^{3}{e}^{5x}.\n$$\n\nThe corresponding homogeneous equation has the fundamental solutions ${y}_{1}(x)={e}^{x}$ and ${y}_{2}={e}^{2x}.$ \n\nAccording to the method of variation of parameters, we should seek a particular solution \n\n$$\n{y}_{p}(x)={u}_{1}(x){y}_{1}+{u}_{2}(x){y}_{2}\n$$\n\nthat satisfies the following constraints:\n\n$$\n\\begin{aligned}{\\begin{aligned}{u}_{1}^{\u2032}{y}_{1}^{\u2032}+{u}_{2}^{\u2032}{y}_{2}^{\u2032}={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{y}_{1}+{u}_{2}^{\u2032}{y}_{2}=0\\end{aligned}\\end{aligned}\n$$\n\nGiven that ${u}_{1}(x)=-\\int g(x)\\,\\text{d}x,$ find the function $g.$",
+  "worked_solution": "We notice that the forcing term is $f(x)={x}^{3}{e}^{5x}.$ Additionally, we're given the fundamental solutions\n\n$$\n{y}_{1}(x)={e}^{x},\\,{y}_{2}(x)={e}^{2x}.\n$$\n\nFirst, let's verify that the fundamental solutions ${y}_{1}$ and ${y}_{2}$ are independent by computing the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{\u2032}-{y}_{1}^{\u2032}{y}_{2} \\\\  & =({e}^{x})({e}^{2x})^{\u2032}-({e}^{x})^{\u2032}({e}^{2x}) \\\\  & =({e}^{x})(2{e}^{2x})-({e}^{x})({e}^{2x}) \\\\  & =2{e}^{3x}-{e}^{3x} \\\\  & ={e}^{3x}\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1}(x)$ and ${y}_{2}(x)$ are linearly independent. \n\nNow, we have the following constraints:\n\n$$\n\\begin{aligned}{\\begin{aligned}{u}_{1}^{\u2032}{({e}^{x})}^{\u2032}+{u}_{2}^{\u2032}{({e}^{2x})}^{\u2032}={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{e}^{x}+{u}_{2}^{\u2032}{e}^{2x}=0\\end{aligned}\\,\u27f9\\,{\\begin{aligned}{u}_{1}^{\u2032}{e}^{x}+2{u}_{2}^{\u2032}{e}^{2x}={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{e}^{x}+{u}_{2}^{\u2032}{e}^{2x}=0\\end{aligned}\\end{aligned}\n$$\n\nWe wish to find an integral expression for ${u}_{1}.$ We start by eliminating ${u}_{2}^{\u2032}$ from the second equation:\n\n$$\n{u}_{2}^{\u2032}=-\\frac{{u}_{1}^{\u2032}{e}^{x}}{{e}^{2x}}=-{u}_{1}^{\u2032}{e}^{-x}.\n$$\n\nSubstituting this into the first equation, we get\n\n$$\n\\begin{aligned}{u}_{1}^{\u2032}{e}^{x}+2{u}_{2}^{\u2032}{e}^{2x} & ={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{e}^{x}+2(-{u}_{1}^{\u2032}{e}^{-x}){e}^{2x} & ={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{e}^{x}-2{u}_{1}^{\u2032}{e}^{x} & ={x}^{3}{e}^{5x} \\\\ -{u}_{1}^{\u2032}{e}^{x} & ={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032} & =-{x}^{3}{e}^{4x}.\\end{aligned}\n$$\n\nIntegrating both sides with respect to $x,$ we have\n\n$$\n\\begin{aligned}\\int {u}_{1}^{\u2032}\\,\\text{d}x & =\\int -{x}^{3}{e}^{4x}\\,\\text{d}x \\\\ {u}_{1} & =-\\int {x}^{3}{e}^{4x}\\,\\text{d}x.\\end{aligned}\n$$\n\nFinally, we conclude that $g(x)={x}^{3}{e}^{4x}.$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{x}^{4}{e}^{5x}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{x}^{4}{e}^{4x}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{x}^{3}{e}^{4x}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{x}^{3}{e}^{3x}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{x}^{2}{e}^{3x}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072088,
+    "task_type": "review",
+    "topic_id": 2527,
+    "topic_title": "Variation of Parameters for Second-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-337332",
+        "problem": "Consider the differential equation \n\n$$\n{y}^{\u2033}-3{y}^{\u2032}+2y={x}^{3}{e}^{5x}.\n$$\n\nThe corresponding homogeneous equation has the fundamental solutions ${y}_{1}(x)={e}^{x}$ and ${y}_{2}={e}^{2x}.$ \n\nAccording to the method of variation of parameters, we should seek a particular solution \n\n$$\n{y}_{p}(x)={u}_{1}(x){y}_{1}+{u}_{2}(x){y}_{2}\n$$\n\nthat satisfies the following constraints:\n\n$$\n\\begin{aligned}{\\begin{aligned}{u}_{1}^{\u2032}{y}_{1}^{\u2032}+{u}_{2}^{\u2032}{y}_{2}^{\u2032}={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{y}_{1}+{u}_{2}^{\u2032}{y}_{2}=0\\end{aligned}\\end{aligned}\n$$\n\nGiven that ${u}_{1}(x)=-\\int g(x)\\,\\text{d}x,$ find the function $g.$",
+        "worked_solution": "We notice that the forcing term is $f(x)={x}^{3}{e}^{5x}.$ Additionally, we're given the fundamental solutions\n\n$$\n{y}_{1}(x)={e}^{x},\\,{y}_{2}(x)={e}^{2x}.\n$$\n\nFirst, let's verify that the fundamental solutions ${y}_{1}$ and ${y}_{2}$ are independent by computing the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{\u2032}-{y}_{1}^{\u2032}{y}_{2} \\\\  & =({e}^{x})({e}^{2x})^{\u2032}-({e}^{x})^{\u2032}({e}^{2x}) \\\\  & =({e}^{x})(2{e}^{2x})-({e}^{x})({e}^{2x}) \\\\  & =2{e}^{3x}-{e}^{3x} \\\\  & ={e}^{3x}\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1}(x)$ and ${y}_{2}(x)$ are linearly independent. \n\nNow, we have the following constraints:\n\n$$\n\\begin{aligned}{\\begin{aligned}{u}_{1}^{\u2032}{({e}^{x})}^{\u2032}+{u}_{2}^{\u2032}{({e}^{2x})}^{\u2032}={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{e}^{x}+{u}_{2}^{\u2032}{e}^{2x}=0\\end{aligned}\\,\u27f9\\,{\\begin{aligned}{u}_{1}^{\u2032}{e}^{x}+2{u}_{2}^{\u2032}{e}^{2x}={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{e}^{x}+{u}_{2}^{\u2032}{e}^{2x}=0\\end{aligned}\\end{aligned}\n$$\n\nWe wish to find an integral expression for ${u}_{1}.$ We start by eliminating ${u}_{2}^{\u2032}$ from the second equation:\n\n$$\n{u}_{2}^{\u2032}=-\\frac{{u}_{1}^{\u2032}{e}^{x}}{{e}^{2x}}=-{u}_{1}^{\u2032}{e}^{-x}.\n$$\n\nSubstituting this into the first equation, we get\n\n$$\n\\begin{aligned}{u}_{1}^{\u2032}{e}^{x}+2{u}_{2}^{\u2032}{e}^{2x} & ={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{e}^{x}+2(-{u}_{1}^{\u2032}{e}^{-x}){e}^{2x} & ={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032}{e}^{x}-2{u}_{1}^{\u2032}{e}^{x} & ={x}^{3}{e}^{5x} \\\\ -{u}_{1}^{\u2032}{e}^{x} & ={x}^{3}{e}^{5x} \\\\ {u}_{1}^{\u2032} & =-{x}^{3}{e}^{4x}.\\end{aligned}\n$$\n\nIntegrating both sides with respect to $x,$ we have\n\n$$\n\\begin{aligned}\\int {u}_{1}^{\u2032}\\,\\text{d}x & =\\int -{x}^{3}{e}^{4x}\\,\\text{d}x \\\\ {u}_{1} & =-\\int {x}^{3}{e}^{4x}\\,\\text{d}x.\\end{aligned}\n$$\n\nFinally, we conclude that $g(x)={x}^{3}{e}^{4x}.$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{x}^{4}{e}^{4x}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
