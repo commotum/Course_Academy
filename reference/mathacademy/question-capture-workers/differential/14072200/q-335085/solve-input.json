@@ -1,0 +1,39 @@
+{
+  "mode": "solve",
+  "problem": "$$\n{\\begin{aligned}{x}^{\u2032}(t)=5x(t)+y(t)+1 \\\\ {y}^{\u2032}(t)=5y(t),\\end{aligned}\\,[\\begin{aligned}x(0) \\\\ y(0)\\end{aligned}]=[\\begin{aligned}0 \\\\ 0\\end{aligned}]\n$$\n\nFind the solution to the initial value problem above.\n\n*Hint: ${e}^{At}=[\\begin{aligned}{e}^{5t} & t{e}^{5t} \\\\ 0 & {e}^{5t}\\end{aligned}],$ where $A=[\\begin{aligned}5 & 1 \\\\ 0 & 5\\end{aligned}].$*\n\n| $[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]=\\frac{1}{5}\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | $0$ |  |  |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072200,
+    "task_type": "review",
+    "topic_id": 6691,
+    "topic_title": "Solving Inhomogeneous Systems of ODEs Using Matrix Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-335058",
+        "problem": "$$\n{\\begin{aligned}{x}^{\u2032}(t)=4y(t)-4 \\\\ {y}^{\u2032}(t)=-4x(t),\\end{aligned}\\,[\\begin{aligned}x(0) \\\\ y(0)\\end{aligned}]=[\\begin{aligned}1 \\\\ 1\\end{aligned}]\n$$\n\nFind the solution to the initial value problem above.\n\n*Hint: ${e}^{At}=[\\begin{aligned}\\operatorname{cos}\u2061(4t) & \\operatorname{sin}\u2061(4t) \\\\ -\\operatorname{sin}\u2061(4t) & \\operatorname{cos}\u2061(4t)\\end{aligned}],$ where $A=[\\begin{aligned}0 & 4 \\\\ -4 & 0\\end{aligned}].$*\n\n| $[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]=\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | $1-\\operatorname{sin}\u2061(4t)$ |  |  |",
+        "worked_solution": "Writing our system in matrix form, we get\n\n$$\n{x}^{\u2032}(t)=[\\begin{aligned}0 & 4 \\\\ -4 & 0\\end{aligned}]x(t)+g(t),\n$$\n\nwhere $x(t)=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]$ and $g(t)=[\\begin{aligned}-4 \\\\ 0\\end{aligned}].$ So, the matrix of the system is $A=[\\begin{aligned}0 & 4 \\\\ -4 & 0\\end{aligned}].$\n\nGiven the system ${x}^{\u2032}(t)=Ax(t)+g(t),$ where $A$ is a constant square matrix, the solution of the initial value problem can be written as the sum of the homogeneous part and a particular solution:\n\n$$\nx(t)={{{e}^{A(t-{t}_{0})}\\,x({t}_{0})}_{\u23df}}_{\\text{homogeneous part}}+{{{\\int }_{{t}_{0}}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s}_{\u23df}}_{\\text{particular solution}},\n$$\n\nwhere $x({t}_{0})$ is the initial condition vector. \n\nLet's evaluate each part separately:\n\n- First, we find the homogeneous part. We are given that \n\n$$\n{e}^{At}=[\\begin{aligned}\\operatorname{cos}\u2061(4t) & \\operatorname{sin}\u2061(4t) \\\\ -\\operatorname{sin}\u2061(4t) & \\operatorname{cos}\u2061(4t)\\end{aligned}].\n$$\n\nSince the initial conditions are given at $t={t}_{0}=0,$ we have\n\n$$\n\\begin{aligned}{e}^{A(t-{t}_{0})} & ={e}^{At}\\,x(0) \\\\  & =[\\begin{aligned}\\operatorname{cos}\u2061(4t) & \\operatorname{sin}\u2061(4t) \\\\ -\\operatorname{sin}\u2061(4t) & \\operatorname{cos}\u2061(4t)\\end{aligned}][\\begin{aligned}1 \\\\ 1\\end{aligned}] \\\\  & =[\\begin{aligned}\\operatorname{cos}\u2061(4t)+\\operatorname{sin}\u2061(4t) \\\\ -\\operatorname{sin}\u2061(4t)+\\operatorname{cos}\u2061(4t)\\end{aligned}].\\end{aligned}\n$$\n\n- Next, we find the particular solution. Notice that \n\n$$\n{e}^{A(t-s)}=[\\begin{aligned}\\operatorname{cos}\u2061(4(t-s)) & \\operatorname{sin}\u2061(4(t-s)) \\\\ -\\operatorname{sin}\u2061(4(t-s)) & \\operatorname{cos}\u2061(4(t-s))\\end{aligned}].\n$$\n\nSo, we have\n\n$$\n\\begin{aligned}{e}^{A(t-s)}g(s) & =[\\begin{aligned}\\operatorname{cos}\u2061(4(t-s)) & \\operatorname{sin}\u2061(4(t-s)) \\\\ -\\operatorname{sin}\u2061(4(t-s)) & \\operatorname{cos}\u2061(4(t-s))\\end{aligned}][\\begin{aligned}-4 \\\\ 0\\end{aligned}] \\\\  & =[\\begin{aligned}-4\\operatorname{cos}\u2061(4(t-s)) \\\\ 4\\operatorname{sin}\u2061(4(t-s))\\end{aligned}].\\end{aligned}\n$$\n\nThus, we obtain\n\n$$\n\\begin{aligned}{\\int }_{0}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s & ={\\int }_{0}^{t}[\\begin{aligned}-4\\operatorname{cos}\u2061(4(t-s)) \\\\ 4\\operatorname{sin}\u2061(4(t-s))\\end{aligned}]\\text{d}s \\\\  & ={[\\begin{aligned}-\\operatorname{sin}\u2061(4(t-s)) \\\\ \\operatorname{cos}\u2061(4(t-s))\\end{aligned}]}_{s=0}^{s=t} \\\\  & =[\\begin{aligned}-\\operatorname{sin}\u2061(4t) \\\\ 1-\\operatorname{cos}\u2061(4t)\\end{aligned}].\\end{aligned}\n$$\n\nFinally, we get\n\n$$\n\\begin{aligned}x(t) & =[\\begin{aligned}\\operatorname{cos}\u2061(4t)+\\operatorname{sin}\u2061(4t) \\\\ -\\operatorname{sin}\u2061(4t)+\\operatorname{cos}\u2061(4t)\\end{aligned}]+[\\begin{aligned}-\\operatorname{sin}\u2061(4t) \\\\ 1-\\operatorname{cos}\u2061(4t)\\end{aligned}] \\\\  & =[\\begin{aligned}\\operatorname{cos}\u2061(4t) \\\\ 1-\\operatorname{sin}\u2061(4t)\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\cos(4t)",
+            "observed_mathquill_latex": "\\cos\\left(4t\\right)"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
