@@ -6,9 +6,71 @@ from datetime import datetime
 import fcntl
 import os
 from pathlib import Path
+import stat
 import subprocess
 import tempfile
 import time
+
+
+def recover_stale_index_lock(index_lock, repo, cache, log):
+    """Preserve an abandoned lock only after checking its age and ownership."""
+    try:
+        before = index_lock.lstat()
+    except FileNotFoundError:
+        return True
+    if (not stat.S_ISREG(before.st_mode) or before.st_uid != os.getuid()
+            or time.time() - before.st_mtime < 10 * 60):
+        return False
+    # fuser catches open descriptors held by Git and by other applications.
+    holders = subprocess.run(["fuser", str(index_lock)], capture_output=True)
+    if holders.returncode != 1 or holders.stdout.strip():
+        return False
+    # A Git process can briefly close the descriptor before renaming the lock.
+    # Keep the lock if any Git command is still operating in this repository.
+    for process in Path("/proc").iterdir():
+        if not process.name.isdigit():
+            continue
+        try:
+            if process.stat().st_uid != os.getuid():
+                continue
+            arguments = (process / "cmdline").read_bytes().split(b"\0")
+            if not arguments or os.path.basename(os.fsdecode(arguments[0])) != "git":
+                continue
+            cwd = (process / "cwd").resolve(strict=True)
+            if cwd == repo or repo in cwd.parents:
+                return False
+            # Also recognize Git invoked from elsewhere with -C/--git-dir,
+            # or an explicit GIT_DIR / GIT_WORK_TREE / GIT_INDEX_FILE.
+            if any(os.fsencode(str(repo)) in argument for argument in arguments[1:]):
+                return False
+            environment = (process / "environ").read_bytes().split(b"\0")
+            for entry in environment:
+                key, separator, value = entry.partition(b"=")
+                if separator and key in {b"GIT_DIR", b"GIT_WORK_TREE", b"GIT_INDEX_FILE"}:
+                    target = Path(os.fsdecode(value))
+                    if not target.is_absolute():
+                        target = cwd / target
+                    target = target.resolve()
+                    if target == repo or repo in target.parents:
+                        return False
+        except (FileNotFoundError, ProcessLookupError):
+            continue
+        except OSError:
+            # Unreadable process state cannot establish that recovery is safe.
+            return False
+    try:
+        after = index_lock.lstat()
+    except FileNotFoundError:
+        return True
+    if ((before.st_ino, before.st_mtime_ns, before.st_ctime_ns, before.st_size)
+            != (after.st_ino, after.st_mtime_ns, after.st_ctime_ns, after.st_size)):
+        return False
+    backups = cache / f"{repo.name.lower().replace('_', '-')}-autosave-repair"
+    backups.mkdir(parents=True, exist_ok=True)
+    backup = backups / f"index.lock.{time.time_ns()}"
+    index_lock.rename(backup)
+    log(f"Recovered unused index.lock older than 10 minutes; preserved at {backup}.")
+    return True
 
 
 def main():
@@ -41,11 +103,27 @@ def main():
         return path if path.is_absolute() else repo / path
 
     def blocked():
-        for name in ("index.lock", "MERGE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD",
+        for name in ("MERGE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD",
                      "rebase-merge", "rebase-apply"):
             if git_path(name).exists():
-                log(f"Autosave paused: {name} exists; no locks removed automatically.")
+                log(f"Autosave paused: {name} exists.")
                 return True
+        index_lock = git_path("index.lock")
+        if index_lock.exists():
+            # Let a brief background status check finish before deciding that
+            # an old lock cannot safely be recovered. Fresh locks never wait.
+            for attempt in range(6):
+                if recover_stale_index_lock(index_lock, repo, cache, log):
+                    return False
+                try:
+                    old = time.time() - index_lock.lstat().st_mtime >= 10 * 60
+                except FileNotFoundError:
+                    return False
+                if not old or attempt == 5:
+                    break
+                time.sleep(2)
+            log("Autosave paused: index.lock is recent, in use, or cannot be verified as abandoned.")
+            return True
         return False
 
     def push():

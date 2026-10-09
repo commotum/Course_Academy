@@ -380,6 +380,14 @@ def build_transaction(content, topic, existing, reconciler=None):
         comparison['prompt'] = update.get(kw('question/problem'), comparison['prompt'])
         old_fields = {f[':answer-field/key']: f for f in (old or {}).get(':question/answer-fields', [])}
         captured_fields = {f['key'] for f in question.get('answer_fields', [])}
+        layout_version = bool(old_fields and reconciler and
+                              reconciler.field_layout_action(mid, old, question))
+        if layout_version:
+            for previous in old_fields.values():
+                transaction.append([kw('db/retract'), old[':db/id'], kw('question/answer-fields'), previous[':db/id']])
+            # An unchanged key may now name a different component. The new
+            # ownership set cannot inherit old values, feedback, or identities.
+            old_fields = {}
         # Earlier imports used authored keys for a single radio field. The
         # live extractor calls it "selection". Match this one observed field,
         # then version its ownership; do not mutate the historical field key.
@@ -394,6 +402,9 @@ def build_transaction(content, topic, existing, reconciler=None):
             key = field['key']
             previous = old_fields.get(key)
             field_token = mid + '/' + key
+            if layout_version:
+                layout = {'problem':question['problem'], 'answer_fields':question['answer_fields']}
+                field_token += '/ma-layout-v1/' + hashlib.sha256(json.dumps(layout, sort_keys=True).encode()).hexdigest()
             if previous and reconciler:
                 action = reconciler.field_action(mid, previous, field, **comparison)
                 if action == 'retain':

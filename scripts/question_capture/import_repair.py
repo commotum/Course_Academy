@@ -107,6 +107,8 @@ def repair_generation(directory):
     for name in ('content.json','activity-metadata.json','assets/manifest.json','answer-source-reviews.json'):
         path=directory/name;digest.update(name.encode())
         if path.exists():digest.update(path.read_bytes())
+    from provenance import field_layout_retry_evidence
+    digest.update(json.dumps(field_layout_retry_evidence(directory),sort_keys=True).encode())
     return digest.hexdigest()
 
 

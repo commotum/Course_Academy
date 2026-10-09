@@ -126,6 +126,8 @@ def retry_key(directory, state, generation, args, prior_evidence=()):
     names = ['content.json','activity-metadata.json','assets/manifest.json','answer-source-reviews.json',
              'edb-import/commit-intent.json','edb-import/commit.edn',
              'edb-import/transaction.edn','edb-import/reconciliation.edn']
+    from provenance import field_layout_retry_evidence
+    digest.update(json.dumps(field_layout_retry_evidence(directory),sort_keys=True).encode())
     names += [str(p.relative_to(directory)) for p in sorted(directory.glob('example-*.json'))]
     for name in names:
         path = directory/name

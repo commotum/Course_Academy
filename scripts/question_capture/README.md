@@ -422,6 +422,19 @@ checks. A single legacy radio field named `answer` matches the observed single
 radio field `selection` and is replaced through fresh field/answer entities.
 Other changed field keys or a changed KP mapping require review.
 
+A complete blank layout can be replaced through an explicit
+`field-layout-source-reviews.json` review. The review binds the original database
+question UUID, prompt, all field entities and values to a saved readback, and the
+incoming prompt, worked solution, complete raw DOM widget set and source-backed
+correct answers to hashes. Cited evidence files must remain exact. The same key
+can name a different mathematical component; this path detaches every old field
+and creates fresh layout-versioned identities without copying old-role values.
+It requires checked, unused presentation/response history and retained component
+relationships, and cannot override a reviewed mathematical correction. Missing
+or changed review evidence leaves ordinary omitted-field validation in place.
+Original components and the original question prompt remain in database history.
+
+
 Each import saves `replacement-report.json` with per-attribute/component hashes,
 categories, authoring/capture paths and hashes, basis, reason, and (after commit)
 receipt. `reconciliation.edn` freezes the attested records, usage check, exact

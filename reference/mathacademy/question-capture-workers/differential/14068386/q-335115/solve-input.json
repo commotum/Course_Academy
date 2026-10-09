@@ -1,0 +1,50 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem for the functions $y=y(x),z=z(x):$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=xy+z,\\, & y(0)=1 \\\\ {z}^{\u2032}=x-y+2,\\, & z(0)=0\\end{aligned}\n$$\n\nUse Euler's method with two steps of equal size to approximate $y(1)$ and $z(1).$\n\n$y(1)\u2248$\n{{field-1}},\n$\\,z(1)\u2248$\n{{field-2}}",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14068386,
+    "task_type": "review",
+    "topic_id": 3245,
+    "topic_title": "Euler's Method for Systems of ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-333280",
+        "problem": "Consider the following initial value problem for the functions $y=y(x),z=z(x):$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=x+{y}^{2}-z,\\, & y(-2)=0 \\\\ {z}^{\u2032}=2-y+2z,\\, & z(-2)=1\\end{aligned}\n$$\n\nUse Euler's method with two steps of equal size to approximate $y(0)$ and $z(0).$\n\n$y(0)\u2248$\n{{field-1}},\n$\\,z(0)\u2248$\n{{field-2}}",
+        "worked_solution": "For an initial value problem\n\n$$\n{\\begin{aligned}{y}^{\u2032}=f(x,y,z),\\, & y(a)=c, \\\\ {z}^{\u2032}=g(x,y,z),\\, & z(a)=d,\\end{aligned}\n$$\n\nEuler's method approximates the solution by applying the update rule component-wise to each equation. More precisely, the increments on $y$ and $z$ are\n\n$$\n{\\begin{aligned}\u0394y={y}^{\u2032}\\cdot \u0394x, \\\\ \u0394z={z}^{\u2032}\\cdot \u0394x.\\end{aligned}\n$$\n\nThe new values are then given by ${y}_{\\text{new}}=y+\u0394y$ and ${z}_{\\text{new}}=z+\u0394z.$\n\nFirst, note that we are given the values of $y$ and $z$ at $x=-2$ and asked to find their values at $x=0.$ The distance from $x=-2$ to $x=0$ is $2,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\u0394x=\\frac{0-(-2)}{2}=\\frac{2}{2}=1.\n$$\n\nNow, let's proceed with Euler's method. We'll start by creating a table that includes the initial condition data $y(-2)=0$ and $z(-2)=1.$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-2$ | $0$ |  |  | $1$ |  |  |\n\n**Step 1**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =x+{y}^{2}-z=-2+{0}^{2}-1=-3, \\\\ {z}^{\u2032} & =2-y+2z=2-0+2\\cdot 1=4, \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=(-3)\\cdot 1=-3, \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=4\\cdot 1=4, \\\\ {x}_{\\text{new}} & =x+\u0394x=-2+1=-1, \\\\ {y}_{\\text{new}} & =y+\u0394y=0+(-3)=-3, \\\\ {z}_{\\text{new}} & =z+\u0394z=1+4=5.\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-2$ | $0$ | $-3$ | $-3$ | $1$ | $4$ | $4$ |\n| $-1$ | $-3$ |  |  | $5$ |  |  |\n\n**Step 2**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =x+{y}^{2}-z=-1+(-3)^{2}-5=3, \\\\ {z}^{\u2032} & =2-y+2z=2-(-3)+2\\cdot 5=15, \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=3\\cdot 1=3, \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=15\\cdot 1=15, \\\\ {x}_{\\text{new}} & =x+\u0394x=-1+1=0, \\\\ {y}_{\\text{new}} & =y+\u0394y=-3+3=0, \\\\ {z}_{\\text{new}} & =z+\u0394z=5+15=20.\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-2$ | $0$ | $-3$ | $-3$ | $1$ | $4$ | $4$ |\n| $-1$ | $-3$ | $3$ | $3$ | $5$ | $15$ | $15$ |\n| $0$ | $0$ |  |  | $20$ |  |  |\n\nTherefore, we conclude that\n$y(0)\u22480$\nand\n$z(0)\u224820.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0",
+            "observed_mathquill_latex": "0"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "20",
+            "observed_mathquill_latex": "20"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

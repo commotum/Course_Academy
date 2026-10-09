@@ -885,7 +885,7 @@ class CaptureBrowser:
                 record['solver_elapsed_seconds'] = time.monotonic()-started
                 record.pop('proof_needs_solve',None)
             else:
-                record['decision'] = Solver.reuse_answer(item,record['decision'])
+                record['decision'] = Solver.reuse_answer(item,record['decision'],record['before'])
             item, screenshot = self.read(scope,directory,mid+'-before')
             for field in item['fields']:
                 for name in ('submitted_value','submitted_option','entered_keys'):
@@ -1153,7 +1153,7 @@ class CaptureBrowser:
                 if normalize(fresh['problem']) != normalize(record['before']['problem']):
                     raise ValueError('Restored question problem changed: ' + mid)
                 from solver import Solver
-                record['decision'] = Solver.reuse_answer(fresh,record['decision'])
+                record['decision'] = Solver.reuse_answer(fresh,record['decision'],record['before'])
                 record['before'] = fresh
                 save()
                 self.enter(scope,record)
@@ -1252,8 +1252,14 @@ class CaptureBrowser:
                 if saved:
                     if saved['key'] != field['key']:
                         raise ValueError('Saved incorrect choice belongs to a different field')
+                    from solver import restored_choice_identity
+                    sources = [c for c in field['choices'] if c['type'] == saved['type'] and c['value'] == saved['value']]
+                    identities = {restored_choice_identity(c['value'],c['type'],c.get('html','')) for c in sources}
+                    if len(identities) > 1:
+                        raise ValueError('Saved incorrect choice has ambiguous displayed fence evidence')
+                    identity = next(iter(identities), restored_choice_identity(saved['value'],saved['type'],saved.get('html','')))
                     choices = [c for c in choices if c['type'] == saved['type'] and
-                               normalize(c['value'],c['type']) == normalize(saved['value'],saved['type'])]
+                               restored_choice_identity(c['value'],c['type'],c.get('html','')) == identity]
                     if len(choices) != 1:
                         raise ValueError('Saved incorrect choice does not match exactly one restored option')
                     chosen = choices[0]

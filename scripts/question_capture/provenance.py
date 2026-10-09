@@ -121,7 +121,84 @@ def source_records(content, directory, *, include_reviews=True):
                             file=str(path),file_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),rationale=review['rationale']))
                 except (KeyError,ValueError,TypeError,OSError):
                     continue
+    if include_reviews:
+        result.extend(field_layout_review_records(content, directory, result))
     return result
+
+
+def question_layout(question):
+    """Bind widget roles to the original prompt and immutable component IDs."""
+    return {"question_id":question[":question/id"], "problem":question[":question/problem"],
+            "fields":sorted(question.get(":question/answer-fields", []), key=lambda f:str(f[":db/id"]))}
+
+
+def field_layout_review_records(content, directory, sources):
+    """Accept only an explicit review of an unchanged, complete blank layout.
+
+    A key can change mathematical role even when its spelling is unchanged.
+    These reviews replace the entire ownership set; no previous blank values
+    are carried into a new role. Raw source captures remain untouched.
+    """
+    directory=Path(directory).resolve();path=directory/"field-layout-source-reviews.json"
+    if not path.exists():return []
+    result=[]
+    for review in json.loads(path.read_text()).get("reviews", []):
+        try:
+            if review.get("confident") is not True or not review.get("rationale", "").strip():continue
+            q=next(q for q in content["questions"] if q["math_academy_id"]==review["question"])
+            fields=q["answer_fields"]
+            state=json.loads((directory/"state.json").read_text())
+            record=state["questions"][review["question"]];before=record["before"]
+            raw=before["fields"]
+            if (before.get("errors") or not fields or any(f["type"]!="blank" for f in fields)
+                    or [(f["key"],f["type"]) for f in fields]!=[(f["key"],f["type"]) for f in raw]):continue
+            # Count all observed blank wrappers, not merely extractor records.
+            ids=re.findall(r'\bid="(freeResponseTextbox-[^"]+)"', before["html"])
+            if len(ids)!=len(raw) or set(ids)!={f["dom_id"] for f in raw}:continue
+            if any(q["problem"].count("{{"+f["key"]+"}}")!=1 for f in fields):continue
+            bindings={"problem":value_hash(q["problem"]), "worked_solution":value_hash(q["worked_solution"]),
+                      "fields":value_hash(fields), "raw_before":value_hash(before)}
+            if bindings!=review.get("bindings"):continue
+            if not all(any(r["question"]==review["question"] and r["attribute"]==attr
+                and r["category"]=="ma_capture" and value_hash(r["value"])==bindings[key]
+                for r in sources) for attr,key in (("question/problem","problem"),("question/worked-solution","worked_solution"))):continue
+            if not all(any(r["question"]==review["question"] and r["field"]==f["key"]
+                and r["attribute"]=="answer-field/correct" and r["category"] in
+                ("ma_successful_grade","ma_explicit_answer","reviewed_ma_solution") for r in sources) for f in fields):continue
+            files=review["evidence_files"]
+            if not files:continue
+            valid=True
+            for evidence in files:
+                file=(directory/evidence["path"]).resolve()
+                if (not file.is_relative_to(directory) or not file.is_file()
+                        or hashlib.sha256(file.read_bytes()).hexdigest()!=evidence["sha256"]):valid=False;break
+            if not valid:continue
+            proof=review["previous_readback"]
+            if not any(f["path"]==proof for f in files):continue
+            previous=next(row[0] for row in loads((directory/proof).read_text())
+                          if row[0][":question/math-academy-id"]==review["question"])
+            previous_hash=value_hash(question_layout(previous))
+            if previous_hash!=review.get("previous_layout_sha256"):continue
+            result.append(dict(question=review["question"],field=None,attribute="question/answer-fields",
+                value=fields, category="reviewed_ma_field_layout", previous_layout_sha256=previous_hash,
+                file=str(path),file_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                bindings=bindings,evidence_files=files,rationale=review["rationale"]))
+        except (KeyError,ValueError,TypeError,OSError,StopIteration):continue
+    return result
+
+
+def field_layout_retry_evidence(directory):
+    """Fingerprint usable layout authority without review timestamps or paths."""
+    directory=Path(directory)
+    if not (directory/'field-layout-source-reviews.json').is_file():return []
+    try:
+        content=json.loads((directory/'content.json').read_text())
+        records=source_records(content,directory)
+        scopes={json.dumps({key:r[key] for key in ('question','previous_layout_sha256','bindings')},sort_keys=True)
+                for r in records if r['category']=='reviewed_ma_field_layout'}
+        return sorted(scopes)
+    except (KeyError,ValueError,TypeError,OSError):
+        return []
 
 
 def answer_review_context(content,directory,review,sources):
@@ -439,6 +516,26 @@ class Reconciler:
     @property
     def needs_review(self):
         return any(d['category'] == 'review_required' for d in self.decisions)
+
+    def field_layout_action(self, mid, previous, incoming):
+        """Authorize an exact reviewed layout, never a key-only role match."""
+        fields=incoming.get('answer_fields', [])
+        source=[r for r in self.evidence(self.sources,mid,None,'question/answer-fields',fields)
+                if r['category']=='reviewed_ma_field_layout'
+                and r.get('previous_layout_sha256')==value_hash(question_layout(previous))]
+        if not source:return False
+        if (mid not in self.usage or self.usage[mid] or self.no_history or
+                any(r['question']==mid and r['category']=='mathematical_correction' for r in self.authored)):
+            self.review(mid,None,'question/answer-fields',question_layout(previous),fields,
+                        'Reviewed layout needs checked unused history and retained component relationships')
+            return False
+        for field in previous.get(':question/answer-fields', []):
+            self.decisions.append(dict(question=mid,field=field[':answer-field/key'],
+                attribute='question/answer-fields',previous_field_id=field[':db/id'],
+                old_sha256=value_hash(field),new_sha256=value_hash(fields),category='reviewed_ma_field_layout',
+                source=source,basis=self.basis,historical_usage=self.usage[mid],action='replace',
+                reason='Reviewed source layout changes blank roles; retain original fields and answers'))
+        return True
 
     def field_action(self, mid, previous, incoming, **context):
         """Version field ownership while retaining original fields and answers."""

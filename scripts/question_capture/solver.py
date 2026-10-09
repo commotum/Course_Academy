@@ -16,6 +16,19 @@ from pathlib import Path
 from core import atomic_json, normalize
 
 
+def restored_choice_identity(value, kind, source_html=''):
+    """Retain literal set fences without treating TeX grouping as a set."""
+    if kind == 'math' and re.fullmatch(r'\{[{}A-Za-z0-9,\s.+\-…]+\}', value.strip()):
+        fences = re.findall(r'<mo\b[^>]*>\s*([{}])\s*</mo>', source_html)
+        literal = (fences.count('{') == value.count('{') and
+                   fences.count('}') == value.count('}'))
+        # Preserve the existing legacy comma-set compatibility. Singleton
+        # groups require the captured MathML's actual visible brace operators.
+        if literal or ',' in value:
+            value = value.replace('{', r'\{').replace('}', r'\}')
+    return normalize(value, kind)
+
+
 def process_token(pid):
     try:
         return Path('/proc/'+str(pid)+'/stat').read_text().rsplit(')',1)[1].split()[19]
@@ -266,7 +279,7 @@ class Solver:
                     'Recheck the CURRENT complete choices and return an exact supplied option/value pair. '
                     'Do not omit matrix cells. Preserve uncertainty or correct-answer conflicts.')
             else:
-                result = self.reuse_answer(item,saved)
+                result = self.reuse_answer(item,saved,original)
                 if interpretation and result.get('source_feedback_interpretation') != interpretation:
                     result['source_feedback_interpretation'] = interpretation
                     atomic_json(answer_file,result)
@@ -464,22 +477,21 @@ class Solver:
         return None
 
     @staticmethod
-    def reuse_answer(item, result):
+    def reuse_answer(item, result, saved_item=None):
         result = copy.deepcopy(result)
-        def choice_identity(value, kind):
-            # Legacy MathML serialized visible set braces as bare TeX groups.
-            # Preserve these fences, including singleton sets inside a set.
-            if (kind == 'math' and ',' in value and
-                    re.fullmatch(r'\{[{}A-Za-z0-9,\s.+\-…]+\}', value.strip())):
-                value = value.replace('{', r'\{').replace('}', r'\}')
-            return normalize(value, kind)
-
         fields = {f['key']:f for f in item['fields']}
+        saved_fields = {f['key']:f for f in (saved_item or item)['fields']}
         for answer in result['answers']:
             field = fields.get(answer['key'])
             if field and field['type'] in ('radio','select'):
+                original = [c for c in saved_fields.get(answer['key'], {}).get('choices', [])
+                            if c['type'] == answer['value_type'] and c['value'] == answer['correct_value']]
+                identities = {restored_choice_identity(c['value'],c['type'],c.get('html','')) for c in original}
+                if len(identities) > 1:
+                    raise ValueError('Saved correct answer has ambiguous displayed fence evidence')
+                identity = next(iter(identities), restored_choice_identity(answer['correct_value'],answer['value_type']))
                 candidates = [c for c in field['choices'] if c['type']==answer['value_type'] and
-                              choice_identity(c['value'],c['type'])==choice_identity(answer['correct_value'],answer['value_type'])]
+                              restored_choice_identity(c['value'],c['type'],c.get('html',''))==identity]
                 if len(candidates) != 1:
                     raise ValueError('Saved correct answer does not match exactly one restored choice')
                 answer['correct_option'], answer['correct_value'] = candidates[0]['option'], candidates[0]['value']
