@@ -1,0 +1,151 @@
+{
+  "activity": 14071697,
+  "question": "q-38665",
+  "finding": "No literal minus-plus loss reproduced. Native answer-review wording claiming plain-minus captured/stored values is contradicted by authentic DOM, saved capture text and before/after database snapshots. No production source repair, reimport or worker restart performed.",
+  "mathml_node": "<mo>∓</mo>",
+  "rendered_glyph_class": "mjx-c2213",
+  "raw_choice_minus_plus_counts": {
+    "a": 2,
+    "b": 2,
+    "c": 2,
+    "d": 1,
+    "e": 1
+  },
+  "raw_worked_solution_minus_plus_count": 2,
+  "extraction": "dom.js mo fallback returns Unicode ∓ unchanged; ± maps to TeX pm and Unicode minus maps to ASCII minus.",
+  "comparison": "math_notation.SYMBOLS maps ∓ to mp; core.normalize for text structurally normalizes delimited inline math. Unicode ∓ and TeX mp are equivalent. Minus/Unicode minus/±/TeX pm remain different. Text comparisons never invoke the native symbolic helper.",
+  "loading": "browser.py:14 loads dom.js into module EXTRACT at process import; SELECT_SNAPSHOT embeds the same cached code. Existing workers would need a process restart for a dom.js production change, but none is required for this test-only change.",
+  "verified_import": {
+    "committed": true,
+    "basis_before": 2578,
+    "basis_after": 2579,
+    "content_sha256": "1e9837c91d6f343691549c94e52de80ecd370b42b2ba0c954599ec6fe34866f3",
+    "question_count": 24,
+    "verification_method": "committed_transaction_and_content",
+    "learner_and_engine_facts_unchanged": true,
+    "reimport_is_noop": true,
+    "imported_question_ids": [
+      "q-135468",
+      "q-38665",
+      "q-135440",
+      "q-135467",
+      "q-135441",
+      "q-135532",
+      "q-135529",
+      "q-135533",
+      "q-135534",
+      "q-135530",
+      "q-135641",
+      "q-135667",
+      "q-135662",
+      "q-38660",
+      "q-135660",
+      "q-135537",
+      "q-135540",
+      "q-38921",
+      "q-135541",
+      "q-135536",
+      "e-5906",
+      "e-5533",
+      "e-5534",
+      "e-5535"
+    ],
+    "new_question_ids": [
+      "q-135440",
+      "q-135441",
+      "q-135467",
+      "q-135468",
+      "q-135529",
+      "q-135530",
+      "q-135532",
+      "q-135533",
+      "q-135534",
+      "q-135536",
+      "q-135537",
+      "q-135540",
+      "q-135541",
+      "q-135641",
+      "q-135660",
+      "q-135662",
+      "q-135667",
+      "q-38921"
+    ],
+    "new_question_count": 18
+  },
+  "validation": {
+    "command": "PYTHONPATH=scripts/question_capture /home/jake/Developer/MA/.venv/bin/python -m unittest test_minus_plus_extraction -v",
+    "result": "4 tests passed",
+    "browser": "temporary headless Playwright context, page JavaScript disabled, all requests aborted; no account/profile access",
+    "initial_sandbox_attempt": "Chromium startup blocked by sandbox; approved offline invocation passed"
+  },
+  "evidence": [
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/q-38665-before.json",
+      "sha256": "98563e65e322c4c232839c3d5636bb8cb6d6f7b250c271b3fd405f8bb2d86685"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/q-38665-before.png",
+      "sha256": "0fd08925b00db73a1da18fb141ac88eea4db6cc17e5a07edb6f13ac745e406f8"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/q-38665-after.json",
+      "sha256": "6a276bdc83e09ba8dd22559d37832af9e42f333f173e33ac0723bd6cb8f70332"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/history-q-38665.json",
+      "sha256": "d0de846e5ff53cadaf52add253dfbc4679d9aa1b78bb8dfb384ee3f7579fdb9c"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/history-q-38665.png",
+      "sha256": "dbb392d0da2533d8542cacb7c7b4bd5628b540efd69c0f3a033b5f5d399715e8"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/state.json",
+      "sha256": "7d3bd19b61bbd7f8b4f096f4fa67f6d99497d29965f6ffaec9c1e32aec57f9d5"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/content.json",
+      "sha256": "9be4e0e955feccdba2b9aa6e0261a844031fb9ace1e2a57236754f13db89de94"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/answer-source-reviews.json",
+      "sha256": "b04ba7ce3a533f616773eb01b768648591f7b525387dd6c3cf97dd37579aadbe"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/edb-import/questions.edn",
+      "sha256": "201e9129d161eceafdfd17fe4812050561610fe3f1677c23f085b2139d8e8ea8"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/edb-import/questions-after.edn",
+      "sha256": "f9e423b86e0d9c2fd31c5eaa81196d2e643aacaef5e9f6a44275b7476718ccd1"
+    },
+    {
+      "path": "reference/mathacademy/question-capture-workers/linear/14071697/edb-import/verification.json",
+      "sha256": "bdccccc55f1279d747e00f8e81bc5b6a10efc1bc71ef6af02cbda7532153f5ef"
+    },
+    {
+      "path": "scripts/question_capture/dom.js",
+      "sha256": "ae32daf5b7b27da02c0174c9695ff90cb553132f6f805f8d073692d221a80280"
+    },
+    {
+      "path": "scripts/question_capture/browser.py",
+      "sha256": "1653a0bfc2acef3621e270bb19f5e3ecb2522fed9fe6a32f3a969569f5993473"
+    },
+    {
+      "path": "scripts/question_capture/math_notation.py",
+      "sha256": "2553d739bc526d80fb1ea75e2521c65bb9cad0bda8003872fa80c703ec3351ea"
+    },
+    {
+      "path": "scripts/question_capture/core.py",
+      "sha256": "19b61f5f7a72b6a428d9b4ead8258da627261f60c26c0dfe511d2645b4658e5e"
+    },
+    {
+      "path": "scripts/question_capture/test_minus_plus_extraction.py",
+      "sha256": "c6de5e2d4a87a568adcb519b76884aee12f3e46726ec462defb7f038cdd91d1f"
+    },
+    {
+      "path": ".local/question_capture-workers/linear/import-repair/14071697-1791540093812912361/result.json",
+      "sha256": "01b1193c4803b0128c6195ed6b7d12b7a7b5ef19726564c07e5bcf8cc73abded"
+    }
+  ]
+}
