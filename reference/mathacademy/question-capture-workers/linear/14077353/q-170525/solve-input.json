@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Find the maximum value of $Q(x)=-3{x}_{1}^{2}+16{x}_{1}{x}_{2}+12{x}_{2}^{2}$ given that ${x}_{1}^{2}+4{x}_{2}^{2}=4.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "17"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "18"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "21"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "20"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "9"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14077353,
+    "task_type": "lesson",
+    "topic_id": 4238,
+    "topic_title": "Constrained Optimization of Quadratic Forms: Determining Where Extrema are Attained",
+    "examples": [
+      {
+        "math_academy_id": "e-12664",
+        "knowledge_point": "Finding Where the Extrema of a Quadratic Form Is Attained Over an Ellipse",
+        "problem": "Find the minimum value of $Q(\\mathbf{x})=16x_1^2+16x_1x_2+x_2^2$ given that $16x_1^2 + x_2^2=16,$ and find the vector $\\mathbf{x}$ at which the minimum is obtained.",
+        "worked_solution": "First, we write down the matrix of our quadratic form:\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14077353/assets/fab48c5c9c4d9adee4f270c6138d0f69317cfa59ad9d6f5dab2d4cad15d368c6.png)\n\nNotice that we can write the constraint equation as follows:\n\n$$\n\\dfrac{x_1^2}{1^2}+\\dfrac{x_2^2}{4^2}=1\n$$\n\nThis is an ellipse with semiaxes $a=1$ (along the $x_1$-axis) and $b=4$ (along the $x_2$-axis). \n\nIf we introduce new variables\n\n$\\qquad$ $y_1={x_1} \\quad$ and $\\quad y_2 = \\dfrac{x_2}{4},$\n\nthe equation of the ellipse will transform into $y_1^2+y_2^2 = 1,$ or $\\|\\mathbf{y}\\|=1.$\n\nSo, introducing a change-of-coordinates matrix \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14077353/assets/3042cf8eadb699a70b70daced51411fa570ec9cdf3b7b270943fe790739a5364.png) \n\nwe obtain that $\\mathbf{x} = P \\mathbf{y}.$ Substituting this into the expression of the quadratic form, we get\n\n$$\nQ(\\mathbf{x}) = \\mathbf{x}^T \\! A \\mathbf{x} = (P\\mathbf{y})^T A \\, (P\\mathbf{y}) = \\mathbf{y}^T \\! (P^TAP) \\mathbf{y}= Q'(\\mathbf{y}).\n$$\n\nAs a result, since $P^T=P,$ the matrix of our quadratic form in new coordinates is \n\n$$\n\\begin{aligned}B & ={P}^{T}\\,AP \\\\  & =PAP \\\\  & =[\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}][\\begin{aligned}16 & 8 \\\\ 8 & 1\\end{aligned}][\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}16 & 8 \\\\ 32 & 4\\end{aligned}][\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}16 & 32 \\\\ 32 & 16\\end{aligned}].\\end{aligned}\n$$\n\n \n\nNow, we minimise $Q'(\\mathbf{y})$ when $\\| \\mathbf{y} \\|=1,$ as usual. Calculating the eigenvalues $B,$ we obtain the following:\n\n$$\n\\begin{aligned}|B-\\lambda I| & =0 \\\\ |\\begin{aligned}16-\\lambda  & 32 \\\\ 32 & 16-\\lambda \\end{aligned}| & =0 \\\\ (16-\\lambda )(16-\\lambda )-1\\,024 & =0 \\\\ {\\lambda }^{2}-32\\lambda -768 & =0 \\\\ (\\lambda -48)(\\lambda +16) & =0 \\\\ \\lambda  & =48,\\,-16\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\min \\{ Q'(\\mathbf{y}) \\: | \\: \\| \\mathbf{y} \\|=1 \\} = \\lambda_{\\textrm{min}} = -16.\n$$\n\nNext, we need the unit eigenvector that corresponds to the eigenvalue $\\lambda_{\\textrm{min}}=-16{:}$\n\n$$\n\\begin{aligned}B-(-16I) & =[\\begin{aligned}16 & 32 \\\\ 32 & 16\\end{aligned}]+16[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}32 & 32 \\\\ 32 & 32\\end{aligned}]\\end{aligned}\n$$\n\nSeeking a non-zero solution of $(B-(-16I))\\mathbf{y}=\\mathbf{0}$ gives the eigenvector ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14077353/assets/df1ad3d9484608d37e762f74d2a61776c8f82f8eb650dcb0a37f47c5037678c4.png) Dividing $\\mathbf{v}$ by its norm $\\| \\mathbf{v} \\| = \\sqrt{2},$ we get \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14077353/assets/c869aa1eb73c078eaac66201b1062b2d55a45d90ec2010b6af532ca601498a53.png) \n\nFinally, we map this vector back to the initial coordinate  system using the change-of-coordinates matrix:\n\n$$\n\\begin{aligned}{x}_{\\text{min}} & =P{u}_{\\text{min}} \\\\  & =[\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}]\\cdot \\frac{1}{\\sqrt{2}}[\\begin{aligned}-1 \\\\ 1\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{2}}[\\begin{aligned}-1 \\\\ 4\\end{aligned}]\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14077353/example-12664.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-138132",
+        "problem": "The maximum value of the quadratic form $Q(x)=-2{x}_{1}^{2}+{x}_{2}^{2}-{x}_{3}^{2}+4{x}_{1}{x}_{2},$ when $\u2016x\u2016=1,$ is equal to $2.$ Which of the following is a vector $x$ at which the maximum is attained?",
+        "worked_solution": "Let $A$ be the matrix corresponding to our quadratic form. Recall that: \n\n- The maximum value of $Q(x),$ when $\u2016x\u2016=1,$ is equal to the largest eigenvalue of $A:$\n\n$$\nmax{Q(x)\\,|\\,\u2016x\u2016=1}={\\lambda }_{\\text{max}}\n$$\n\n \nThe maximum is attained on the corresponding unit eigenvector ${u}_{\\text{max}}.$\n\n- The minimum value of $Q(x),$ when $\u2016x\u2016=1,$ is equal to the smallest eigenvalue of $A:$\n\n$$\nmin{Q(x)\\,|\\,\u2016x\u2016=1}={\\lambda }_{\\text{min}}\n$$\n\n \nThe minimum is attained on the corresponding unit eigenvector ${u}_{\\text{min}}.$\n\nFirst, we write down the matrix of our quadratic form:\n\n$$\nA=[\\begin{aligned}-2 & 2 & 0 \\\\ 2 & 1 & 0 \\\\ 0 & 0 & -1\\end{aligned}]\n$$\n\nNow, we need the unit eigenvector that corresponds to the eigenvalue ${\\lambda }_{\\text{max}}=2:$\n\n$$\n\\begin{aligned}A-2I & =[\\begin{aligned}-2 & 2 & 0 \\\\ 2 & 1 & 0 \\\\ 0 & 0 & -1\\end{aligned}]-2[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-4 & 2 & 0 \\\\ 2 & -1 & 0 \\\\ 0 & 0 & -3\\end{aligned}]\\end{aligned}\n$$\n\nSeeking a non-zero solution of $(A-2I)x=0$ gives the eigenvector $v=[\\begin{aligned}1 \\\\ 2 \\\\ 0\\end{aligned}].$ \n\nFinally, dividing $v$ by its norm $\u2016v\u2016=\\sqrt{5},$ we get \n\n$$\n{u}_{\\text{max}}=\\frac{v}{\u2016v\u2016}=\\frac{1}{\\sqrt{5}}[\\begin{aligned}1 \\\\ 2 \\\\ 0\\end{aligned}].\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{1}{\\sqrt{5}}[\\begin{aligned}1 \\\\ 2 \\\\ 0\\end{aligned}]",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
