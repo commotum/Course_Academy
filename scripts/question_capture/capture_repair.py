@@ -115,6 +115,9 @@ def attempt_version(entry, report, evidence, generation):
 def deferred_failure(args, diagnostic, ledger, generation, *, legacy_evidence=False, resume=False):
     """Use the same scoped evidence decision for maintenance and checkpoint resume."""
     report=json.loads(diagnostic.read_text());previous=ledger.get(failure_key(report),{})
+    from answer_policy import recovery_available
+    if recovery_available(diagnostic):
+        return not resume  # Resume the question; do not spend another repair-model diagnosis.
     if resume and previous.get('status') in ('applied','resolved'):return False
     evidence=evidence_version(diagnostic,args.edb_bin)
     version=attempt_version(previous,report,evidence,generation)

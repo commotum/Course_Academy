@@ -1179,6 +1179,8 @@ class CaptureBrowser:
                 solver_elapsed = time.monotonic() - solve_started
                 record = {'kp_id':kp_id,'before':item,'decision':decision,
                           'intended':intended,'status':'prepared','solver_elapsed_seconds':solver_elapsed}
+                from answer_policy import soften_sequence
+                soften_sequence(record)
                 state['questions'][mid] = record
                 save()
             button = by_id(self.page,'continueButton-' + token)
@@ -1191,6 +1193,8 @@ class CaptureBrowser:
                 self.advance(state,directory,token)
                 continue
             if record['status'] == 'prepared':
+                from answer_policy import soften_sequence
+                soften_sequence(record)
                 # Choice letters may be shuffled on a restored page. Reuse the
                 # solved value, then match it to today's observed DOM option.
                 fresh, _ = self.read(scope,directory,mid + '-before')
@@ -1256,6 +1260,8 @@ class CaptureBrowser:
             raise ValueError('Revealed worked solution is missing: ' + mid)
         if actual in ('Incorrect','Partial Credit') and not record.get('verification'):
             verification_input = {**item, 'problem':record['before']['problem'], 'fields':record['before']['fields']}
+            from answer_policy import SOURCE_ANSWER
+            verification_input['source_answer_policy'] = SOURCE_ANSWER
             verified = self.solver.solve(verification_input,Path(directory)/(mid+'-after.png'),Path(directory)/mid,'verify')
             original = {a['key']:a for a in record['decision']['answers']}
             if set(original) != {f['key'] for f in verification_input['fields']}:
@@ -1482,6 +1488,14 @@ class CaptureBrowser:
                           record['decision'].get('source_feedback_interpretation'))
         if interpretation:
             result['source_feedback_interpretation'] = interpretation
+        if record.get('mathematical_assessment'):
+            result['mathematical_assessment'] = record['mathematical_assessment']
+            result['submission_recovery'] = {'desired_intended':record.get('desired_intended'),
+                'submitted_fields':[{k:f.get(k) for k in ('key','submitted_option','submitted_value')}
+                                    for f in record['before']['fields']],
+                'actual_result':record.get('actual_result')}
+        if record.get('verification', {}).get('source_answer_policy'):
+            result['source_answer_policy'] = record['verification']['source_answer_policy']
         if instructions and not re.search(r'not|without|forbidden',instructions,re.I):
             result['requires_calculator'] = True
         return result
