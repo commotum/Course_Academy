@@ -1,4 +1,4 @@
-"""Adaptive placement exams: correct prerequisites, skip requested course skills."""
+"""Adaptive placement exams with frozen course or explicitly covered-topic policies."""
 import csv
 import hashlib
 import json
@@ -36,6 +36,40 @@ def completed_url(state, url):
                             r'/diagnostics/' + str(state['diagnostic_id']) + r'/analysis(?:[?#].*)?', url))
 
 
+COVERED_MODE = 'covered_topics_only'
+
+
+def covered_policy(source, course_id):
+    """Read an explicit account-specific snapshot; never infer knowledge from EDB."""
+    source = Path(source).resolve()
+    raw = source.read_bytes()
+    snapshot = json.loads(raw)
+    if not isinstance(snapshot, dict) or not isinstance(snapshot.get('provenance'), dict) or not snapshot['provenance']:
+        raise ValueError('Covered-topic snapshot needs a nonempty provenance object')
+    topics = {}
+    for name in ('covered_topics', 'blocked_topics'):
+        values = snapshot.get(name, [] if name == 'blocked_topics' else None)
+        if not isinstance(values, list):
+            raise ValueError('Covered-topic snapshot needs a covered_topics list')
+        if any(not isinstance(t, dict) or type(t.get('topic_id')) is not int or t['topic_id'] < 1 or
+               not isinstance(t.get('title'), str) or not t['title'].strip() for t in values):
+            raise ValueError('Covered-topic snapshot contains invalid topics')
+        if len({t['topic_id'] for t in values}) != len(values):
+            raise ValueError('Covered-topic snapshot contains duplicate topics')
+        topics[name] = values
+    return {'mode':COVERED_MODE, 'course_id':course_id, **topics,
+            'provenance':snapshot['provenance'], 'source':str(source),
+            'sha256':hashlib.sha256(raw).hexdigest()}
+
+
+def policy_fingerprint(policy):
+    return hashlib.sha256(json.dumps(policy, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def answers_classification(kind):
+    return kind in ('prerequisite', 'covered')
+
+
 def configure(args, activity, state, directory):
     """Freeze the course allowlist before START; resumes use the saved policy."""
     if state.get('diagnostic_policy'):
@@ -43,6 +77,19 @@ def configure(args, activity, state, directory):
     course_id = activity.get('course_id') or getattr(args, 'diagnostic_course_id', None)
     if not isinstance(course_id, int) or course_id < 1:
         raise ValueError('Diagnostic needs the enrolled course ID or --diagnostic-course-id')
+    covered_source = getattr(args, 'diagnostic_covered_topics', None)
+    if covered_source is not None:
+        policy = covered_policy(covered_source, course_id)
+        state.update(course_id=course_id, answer_policy='correct_covered_skip_unknown',
+                     progress_mode=getattr(args, 'progress_mode', 'sidebar'), diagnostic_policy=policy,
+                     progress_course_ids=(args.progress_course_ids if getattr(args,'progress_course_ids_explicit',False)
+                                          else [course_id]))
+        if getattr(args, 'progress_urls', None): state['progress_urls'] = args.progress_urls
+        Path(directory).mkdir(parents=True, exist_ok=True)
+        (Path(directory)/'diagnostic-covered-topics.json').write_bytes(Path(covered_source).read_bytes())
+        atomic_json(Path(directory)/'diagnostic-policy.json', policy)
+        atomic_json(Path(directory)/'state.json', state)
+        return
     source = getattr(args, 'diagnostic_topics', None)
     if source is None:
         name = activity.get('course_name') or activity.get('title', '').split(':')[0]
@@ -73,6 +120,17 @@ def configure(args, activity, state, directory):
 
 
 def classify(policy, decision, known_topic_id=None):
+    if policy.get('mode') == COVERED_MODE:
+        covered = {t['topic_id'] for t in policy['covered_topics']}
+        blocked = {t['topic_id'] for t in policy.get('blocked_topics', [])}
+        if known_topic_id is not None:
+            return 'covered' if known_topic_id in covered else 'uncovered'
+        kind, tid = decision.get('diagnostic_classification'), decision.get('diagnostic_topic_id')
+        if type(tid) is int and tid in blocked and tid not in covered:
+            return 'uncovered'
+        if decision.get('confident') is True and kind == 'covered' and type(tid) is int and tid in covered:
+            return 'covered'
+        return 'unknown'  # Unbound, ambiguous, unsupplied and uncertain matches all skip.
     ids = {t['topic_id'] for t in policy['topics']}
     if known_topic_id is not None:
         return 'in_course' if known_topic_id in ids else 'prerequisite'
@@ -84,7 +142,7 @@ def classify(policy, decision, known_topic_id=None):
     raise ValueError('Diagnostic classification must identify a supplied course topic or a prerequisite')
 
 
-def source_topic(reader, mid, directory):
+def source_topic_ids(reader, mid, directory):
     db = getattr(reader, 'database', None)
     if db is None or mid is None:
         return None
@@ -94,10 +152,15 @@ def source_topic(reader, mid, directory):
           [?t :topic/knowledge-points ?kp] [?t :topic/math-academy-id ?id]]''',
                         [mid], Path(directory)/'selection', 'diagnostic-'+mid)
         ids = {row[0] for row in rows}
-        return next(iter(ids)) if len(ids) == 1 else None
+        return sorted(ids)
     except Exception as error:
-        logging.warning('Diagnostic question binding unavailable; using course skill classification: %s', error)
+        logging.warning('Diagnostic question binding unavailable; using saved skill classification: %s', error)
         return None
+
+
+def source_topic(reader, mid, directory):
+    ids = source_topic_ids(reader, mid, directory)
+    return ids[0] if ids and len(ids) == 1 else None
 
 
 def finish(reader, state, directory):
@@ -215,7 +278,7 @@ def _take_diagnostic(reader, state, directory):
             # Deliberate skips move on. A real prerequisite mistake gets one
             # immediate same-topic retry, without starting a new solver session.
             record = list(state['questions'].values())[-1] if state['questions'] else {}
-            retry = record.get('classification') == 'prerequisite' and not state.get('diagnostic_retry_active')
+            retry = answers_classification(record.get('classification')) and not state.get('diagnostic_retry_active')
             record['diagnostic_retry_taken'] = bool(retry)
             state['diagnostic_retry_active'] = bool(retry)
             state['diagnostic_pending_next'] = record.get('sequence_position')
@@ -293,31 +356,45 @@ def _take_diagnostic(reader, state, directory):
                 record['decision'] = Solver.reuse_answer(item, record['decision'])
             record['status'] = 'captured'
             save()
+        policy = state['diagnostic_policy']
+        fingerprint = policy_fingerprint(policy)
+        if (policy.get('mode') == COVERED_MODE and 'decision' in record and
+                record.get('diagnostic_policy_sha256') != fingerprint):
+            record.setdefault('diagnostic_previous_decisions', []).append(
+                {k:record[k] for k in ('decision', 'classification', 'intended', 'diagnostic_policy_sha256') if k in record})
+            for key in ('decision', 'classification', 'intended'):
+                record.pop(key, None)
+            save()
         if 'decision' not in record:
             source = record.get('source_question_id')
-            tid = source_topic(reader, 'q-'+str(source) if source else None, directory)
+            ids = source_topic_ids(reader, 'q-'+str(source) if source else None, directory)
+            tid = ids[0] if ids and len(ids) == 1 else None
             record['bound_topic_id'] = tid
-            if tid is not None and classify(state['diagnostic_policy'], {}, tid) == 'in_course':
-                decision = {'confident':True, 'answers':[], 'explanation':'Existing source question belongs to the requested course.'}
+            record['bound_topic_ids'] = ids
+            ambiguous = policy.get('mode') == COVERED_MODE and ids is not None and len(ids) > 1
+            if ambiguous or (tid is not None and not answers_classification(classify(policy, {}, tid))):
+                decision = {'confident':True, 'answers':[],
+                            'explanation':'Ambiguous source topic binding.' if ambiguous else 'Source topic is outside the answer allowlist.'}
             else:
                 item = dict(record['before'])
                 if tid is None:
-                    item['diagnostic_policy'] = state['diagnostic_policy']
+                    item['diagnostic_policy'] = policy
                 decision = reader.solver.solve(item, Path(record['screenshot']), directory/slot,
                                                'diagnostic' if tid is None else 'solve')
-            record['classification'] = classify(state['diagnostic_policy'], decision, tid)
+            record['classification'] = classify(policy, decision, tid)
             record['decision'] = decision
-            record['intended'] = 'C' if record['classification'] == 'prerequisite' else 'skip'
+            record['intended'] = 'C' if answers_classification(record['classification']) else 'skip'
+            record['diagnostic_policy_sha256'] = fingerprint
             save()
         reader.pacer.wait('answer', 'diagnostic answer', elapsed=time.monotonic()-question_started)
-        if record['classification'] == 'prerequisite':
+        if answers_classification(record['classification']):
             reader.enter(scope, record)
             reader.verify_entered(scope, record)
         record['status'] = 'submitting'
         save()
         journal(directory/'events.jsonl', 'diagnostic_submission_intent', question=slot, intended=record['intended'])
-        scope.locator('.questionWidget-skipButton' if record['classification'] == 'in_course' else
-                      '.questionWidget-submitButton').click()
+        scope.locator('.questionWidget-submitButton' if answers_classification(record['classification']) else
+                      '.questionWidget-skipButton').click()
         page.wait_for_function('() => !!(' + VIEW + ')().result')
 
 

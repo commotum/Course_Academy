@@ -90,6 +90,8 @@ def worker_command(data, worker, *, dry_run=False, limit=None):
              '--state-dir',str(worker['state_dir']),'--output',str(worker['output']),
              '--profile',str(worker['profile']),'--codex-bin','/home/jake/.local/bin/codex',
              '--diagnostic-topics',worker['topics']]
+    if worker.get('diagnostic_covered_topics'):
+        command += ['--diagnostic-covered-topics',str((ROOT/worker['diagnostic_covered_topics']).resolve())]
     if course_id:
         command += ['--diagnostic-course-id',str(course_id)]
     if worker.get('progress_mode')=='fixed' and worker.get('progress_urls'):

@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 from browser import CaptureBrowser
 from capture import arguments, run, unfinished_run
 from core import Pacer, atomic_json, build_content_transaction, choose_activity, stable_id
-from diagnostic import bind_history, classify, completed_url, configure, take_diagnostic
+from diagnostic import bind_history, classify, completed_url, configure, covered_policy, policy_fingerprint, take_diagnostic
 from saved_imports import eligible
 from solver import Solver, response_schema
 
@@ -20,6 +20,13 @@ FIXTURES = Path(__file__).parent/'fixtures'
 EXAM = json.loads((FIXTURES/'diagnostic-multivariable.json').read_text())
 POLICY = {'course_id':54,'topics':[{'topic_id':int(t['topic-id']),'title':t['topic-name']}
                                  for t in EXAM['policy']['topics']]}
+
+COVERED = {'mode':'covered_topics_only','course_id':54,
+           'covered_topics':[{'topic_id':2036,'title':'Covered prerequisite'},
+                             {'topic_id':3052,'title':'Covered overlapping course topic'}],
+           'blocked_topics':[{'topic_id':3340,'title':'Uncovered course topic'},
+                             {'topic_id':2036,'title':'Covered overlap takes precedence'}],
+           'provenance':{'account_id':'fixture','observed_at':'2026-10-09'}}
 
 
 class DiagnosticPolicyTests(unittest.TestCase):
@@ -49,6 +56,51 @@ class DiagnosticPolicyTests(unittest.TestCase):
             self.assertEqual(state['diagnostic_policy']['topics'][0]['topic_id'],3052)
             path.unlink();configure(args,{},state,Path(work)/'capture')
             self.assertEqual(state['course_id'],54)
+
+    def test_covered_allowlist_answers_overlap_and_skips_every_unsupplied_id(self):
+        self.assertEqual(classify(COVERED,{},3052),'covered')
+        self.assertEqual(classify(COVERED,{},2036),'covered')
+        self.assertEqual(classify(COVERED,{},3340),'uncovered')
+        self.assertEqual(classify(COVERED,{},9999),'uncovered')
+        self.assertEqual(classify(COVERED,{'diagnostic_classification':'covered','diagnostic_topic_id':3052,'confident':True}),'covered')
+        for decision in ({}, {'diagnostic_classification':'prerequisite','diagnostic_topic_id':None},
+                         {'diagnostic_classification':'covered','diagnostic_topic_id':9999,'confident':True},
+                         {'diagnostic_classification':'covered','diagnostic_topic_id':3052,'confident':False},
+                         {'diagnostic_classification':'unknown','diagnostic_topic_id':None,'confident':True}):
+            self.assertEqual(classify(COVERED,decision),'unknown')
+
+    def test_covered_unknown_and_uncertain_classification_allow_skip_but_covered_requires_answer(self):
+        item={'diagnostic_policy':COVERED,'fields':[{'key':'selection','type':'radio'}]}
+        Solver.validate(item,{'confident':False,'answers':[],
+                             'diagnostic_classification':'unknown','diagnostic_topic_id':None})
+        with self.assertRaises(ValueError):
+            Solver.validate(item,{'confident':True,'answers':[],
+                                 'diagnostic_classification':'covered','diagnostic_topic_id':3052})
+        schema=response_schema(item)
+        self.assertEqual(schema['properties']['diagnostic_classification']['enum'],['covered','uncovered','unknown'])
+        self.assertEqual(set(schema['properties']['diagnostic_topic_id']['enum']),{None,2036,3052,3340})
+
+    def test_covered_snapshot_is_frozen_with_provenance_without_course_graph(self):
+        with tempfile.TemporaryDirectory() as work:
+            path=Path(work)/'covered.json';atomic_json(path,COVERED)
+            args=arguments(['run','--diagnostic-covered-topics',str(path)])
+            state={};directory=Path(work)/'capture'
+            configure(args,{'course_id':54},state,directory)
+            self.assertEqual(state['answer_policy'],'correct_covered_skip_unknown')
+            self.assertEqual(state['diagnostic_policy']['covered_topics'],COVERED['covered_topics'])
+            self.assertEqual(state['diagnostic_policy']['provenance'],COVERED['provenance'])
+            self.assertEqual((directory/'diagnostic-covered-topics.json').read_bytes(),path.read_bytes())
+            frozen=copy.deepcopy(state['diagnostic_policy'])
+            path.unlink();configure(args,{},state,directory)
+            self.assertEqual(state['diagnostic_policy'],frozen)
+
+    def test_covered_snapshot_requires_provenance_and_allows_empty_covered_list(self):
+        with tempfile.TemporaryDirectory() as work:
+            path=Path(work)/'covered.json'
+            atomic_json(path,{'covered_topics':[]})
+            with self.assertRaises(ValueError):covered_policy(path,154)
+            atomic_json(path,{'covered_topics':[],'provenance':{'account_id':'fixture'}})
+            self.assertEqual(classify(covered_policy(path,154),{},2036),'uncovered')
 
     def test_started_diagnostic_automatically_recovers_even_if_deferred(self):
         with tempfile.TemporaryDirectory() as work:
@@ -253,6 +305,48 @@ class DiagnosticReplayTests(unittest.TestCase):
         manifest=json.loads((self.root/'assets/manifest.json').read_text())
         self.assertTrue(manifest);self.assertTrue(all(a['representation']=='original' for a in manifest.values()))
         self.assertEqual(sum(phase=='verify' for phase,_ in self.solver_calls),2)
+
+    def test_covered_policy_replay_uses_bound_overlap_and_unbound_blank_skill(self):
+        reader=self.reader();state=self.state();state['diagnostic_policy']=COVERED
+        state['answer_policy']='correct_covered_skip_unknown'
+        reader.database.query.side_effect=lambda _,inputs,*a:[[2036]] if inputs==['q-136396'] else [[3052]]
+        original=reader.solver.solve
+        def classify_blank(item,screenshot,directory,phase='solve'):
+            answer=original(item,screenshot,directory,phase)
+            if phase=='diagnostic':
+                answer.update(diagnostic_classification='unknown',diagnostic_topic_id=None)
+                answer['answers']=[]
+            return answer
+        reader.solver.solve=classify_blank
+        self.start(reader,state)
+        self.assertEqual(self.submissions,[(0,'answer'),(1,'answer'),(2,'answer'),(3,'skip')])
+        self.assertEqual([r['classification'] for r in state['questions'].values()],['covered','covered','covered','unknown'])
+
+    def test_covered_policy_skips_uncovered_prerequisites_and_ambiguous_bindings(self):
+        reader=self.reader();state=self.state();state['diagnostic_policy']=COVERED
+        reader.database.query.return_value=[[2036],[3052]];reader.database.query.side_effect=None
+        def no_known_blank(item,*args):
+            return {'confident':False,'answers':[], 'diagnostic_classification':'unknown','diagnostic_topic_id':None}
+        reader.solver.solve=no_known_blank
+        self.start(reader,state)
+        self.assertTrue(all(action=='skip' for _,action in self.submissions))
+        self.assertEqual(len(self.submissions),4)
+        self.assertEqual([r['classification'] for r in state['questions'].values()],['unknown']*4)
+
+    def test_changed_policy_preserves_grade_and_reclassifies_unanswered_decision(self):
+        reader=self.reader();state=self.state();original=reader.read
+        def stop(scope,directory,stem):
+            if stem=='question-001-after':raise KeyboardInterrupt('fixture stop after server grade')
+            return original(scope,directory,stem)
+        with patch.object(reader,'read',side_effect=stop),self.assertRaises(KeyboardInterrupt):self.start(reader,state)
+        # The previous policy's current graded question must never resubmit.
+        state['diagnostic_policy']={**COVERED,'covered_topics':[]}
+        reader.solver.solve=lambda *args: {'confident':True,'answers':[],
+                                         'diagnostic_classification':'unknown','diagnostic_topic_id':None}
+        reader.navigate(state['activity_url'],force=True);state['diagnostic_restored']=True
+        take_diagnostic(reader,state,self.root)
+        self.assertEqual(self.submissions,[(0,'answer'),(1,'skip'),(2,'skip'),(3,'skip')])
+        self.assertEqual(state['questions']['question-001']['classification'],'prerequisite')
 
     def test_interrupted_submit_reads_server_grade_without_submitting_twice(self):
         reader=self.reader();state=self.state();original=reader.read

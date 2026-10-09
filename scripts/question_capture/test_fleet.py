@@ -41,7 +41,7 @@ class FleetTests(unittest.TestCase):
     def test_default_layout_keeps_original_paths_and_has_four_courses(self):
         data=fleet.config()
         self.assertEqual([w['window'] for w in data['workers']],
-                         ['Mathematical Foundations','Linear Algebra','Multivariable Calculus','Differential Equations'])
+                         ['Mathematical Methods','Linear Algebra','Multivariable Calculus','Differential Equations'])
         self.assertEqual(data['workers'][0]['state_dir'],fleet.ROOT/'.local/question_capture')
         self.assertEqual(data['workers'][0]['output'],fleet.ROOT/'reference/mathacademy/question-capture')
         self.assertEqual(len({w['profile'] for w in data['workers']}),4)
@@ -64,6 +64,14 @@ class FleetTests(unittest.TestCase):
         self.assertEqual(args.limit,2)
         args=arguments(fleet.worker_command(self.data,self.data['workers'][0])[3:])
         self.assertEqual(args.progress_mode,'sidebar')
+
+    def test_covered_snapshot_option_is_worker_specific(self):
+        from capture import arguments
+        self.worker['diagnostic_covered_topics']='reference/covered-fixture.json'
+        args=arguments(fleet.worker_command(self.data,self.worker)[3:])
+        self.assertEqual(args.diagnostic_covered_topics,fleet.ROOT/'reference/covered-fixture.json')
+        args=arguments(fleet.worker_command(self.data,self.data['workers'][1])[3:])
+        self.assertIsNone(args.diagnostic_covered_topics)
 
     def test_account_locks_are_independent(self):
         with fleet.file_lock(self.worker['state_dir']/'capture.lock'):

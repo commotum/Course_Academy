@@ -138,9 +138,26 @@ def same_question_problem(before, after):
 def history_result_matches(record, source_result):
     # Completed staged proofs use "Correct" live and "Full Credit" in history.
     # Keep both original labels; partial/no credit are distinct source outcomes.
-    return (not source_result or source_result == record['actual_result'] or
+    if (not source_result or source_result == record['actual_result'] or
             source_result == 'Full Credit' and record['actual_result'] == 'Correct' and
-            bool(record.get('proof_stages')))
+            bool(record.get('proof_stages'))):
+        return True
+    # A terminal failure on the first proof submission earns no credit. Require
+    # that exact saved stage and its live observation, rather than aliasing all
+    # Incorrect grades (later proof failures can earn partial credit).
+    stages = record.get('proof_stages', [])
+    if source_result != 'No Credit' or record['actual_result'] != 'Incorrect' or len(stages) != 1:
+        return False
+    stage = stages[0]
+    observed = stage.get('observation', {})
+    before, after = record.get('before', {}), record.get('after', {})
+    keys = stage.get('submitted_keys', [])
+    fields = {f['key']:f for f in observed.get('fields', [])}
+    return bool(keys) and (stage.get('outcome') == observed.get('result') == after.get('result') == 'Incorrect' and
+            observed.get('dom_id') is not None and observed['dom_id'] == before.get('dom_id') == after.get('dom_id') and
+            len(set(keys)) == len(keys) and set(keys).issubset(fields) and
+            all(fields[key].get('submitted_value') is not None for key in keys) and
+            not any(f.get('source_result') == 'Correct' for f in fields.values()))
 
 
 def by_id(scope, identifier):

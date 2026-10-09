@@ -117,6 +117,34 @@ class SessionTests(unittest.TestCase):
         self.assertEqual(feedback[0]['worked_solution'],'1+1=2')
         self.assertFalse(feedback[0]['deliberately_incorrect_submission'])
 
+    def test_changed_diagnostic_policy_reclassifies_cached_answer_in_same_session(self):
+        root,state=self.activity('100','diagnostic')
+        old={'course_id':54,'topics':[{'topic_id':3052,'title':'Joint distributions'}]}
+        new={'mode':'covered_topics_only','course_id':154,'covered_topics':[],
+             'blocked_topics':[{'topic_id':3052,'title':'Joint distributions'}],
+             'provenance':{'account_id':'fixture'}}
+        question=self.question(1)
+        def policy_cli(command,**kwargs):
+            response=self.fake_cli(command,**kwargs)
+            payload=self.calls[-1]['payload']
+            answer={'confident':True,'answers':[],'explanation':'Classified current skill',
+                    'diagnostic_classification':'unknown' if payload['diagnostic_policy'].get('mode') else 'in_course',
+                    'diagnostic_topic_id':None if payload['diagnostic_policy'].get('mode') else 3052}
+            Path(command[command.index('--output-last-message')+1]).write_text(json.dumps(answer))
+            return response
+        with patch('solver.run_cli',side_effect=policy_cli):
+            Solver(self.args).solve({**question,'diagnostic_policy':old},None,root/'question-001','diagnostic')
+            result=Solver(self.args).solve({**question,'diagnostic_policy':new},None,root/'question-001','diagnostic')
+        self.assertEqual(len(self.calls),2)
+        self.assertEqual(self.calls[0]['sid'],self.calls[1]['sid'])
+        self.assertIn('resume',self.calls[1]['command'])
+        self.assertEqual(self.calls[1]['payload']['diagnostic_policy'],new)
+        self.assertIn('diagnostic_policy_sha256',self.calls[1]['payload'])
+        self.assertIn('changed',self.calls[1]['payload']['validation_feedback'])
+        self.assertEqual(result['diagnostic_classification'],'unknown')
+        self.assertTrue((root/'question-001/diagnostic-before-diagnostic-policy-answer.json').exists())
+        self.assertTrue((root/'question-001/diagnostic-before-diagnostic-policy-input.json').exists())
+
     def test_diagnostic_classification_skip_recovery_and_verification_share_activity_session(self):
         root,state=self.activity('100','diagnostic')
         policy={'course_id':54,'topics':[{'topic_id':3052,'title':'Joint Distributions'}]}

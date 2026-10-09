@@ -165,6 +165,31 @@ and, for prerequisite, the answer as well. Never mark a prerequisite answer wron
 '''
 
 
+COVERED_DIAGNOSTIC_INSTRUCTIONS = '''
+This is an adaptive placement diagnostic using a strict covered-topic allowlist.
+The ONLY previously covered skills are diagnostic_policy.covered_topics. Use those
+IDs and titles as the authority. blocked_topics describe supplied uncovered skills;
+all other skills are also uncovered. Never infer knowledge from prerequisites,
+course membership, shared database completion, another account, or earlier correct
+answers in this diagnostic. Classify the CURRENT tested skill, not incidental notation.
+Return diagnostic_classification="covered" and its supplied covered topic ID ONLY
+when the whole tested skill matches an explicitly covered skill confidently. Solve
+all observed answer fields for that case. A covered topic remains covered even if
+it also appears in the requested course. For a blocked skill return "uncovered"
+and its supplied blocked ID, with answers=[]. For unfamiliar, ambiguous, compound
+skills needing any uncovered step, uncertain, or unlisted skills return "unknown"
+and diagnostic_topic_id=null, answers=[]. Never invent or recall an unsupplied ID.
+The runner skips every uncovered or unknown question. Explain the skill match.
+'''
+
+
+def diagnostic_instructions(payload):
+    policy = payload.get('diagnostic_policy', {})
+    if policy.get('mode') == 'covered_topics_only':
+        return COVERED_DIAGNOSTIC_INSTRUCTIONS
+    return DIAGNOSTIC_INSTRUCTIONS if policy else ''
+
+
 def response_schema(payload):
     schema = copy.deepcopy(SCHEMA)
     if payload.get('diagnostic_policy'):
@@ -172,6 +197,11 @@ def response_schema(payload):
         schema['properties'].update(
             diagnostic_classification={'type':'string', 'enum':['in_course','prerequisite']},
             diagnostic_topic_id={'type':['integer','null']})
+        policy = payload['diagnostic_policy']
+        if policy.get('mode') == 'covered_topics_only':
+            schema['properties']['diagnostic_classification']['enum'] = ['covered','uncovered','unknown']
+            ids = sorted({t['topic_id'] for name in ('covered_topics','blocked_topics') for t in policy.get(name, [])})
+            schema['properties']['diagnostic_topic_id']['enum'] = ids + [None]
     return schema
 
 
@@ -204,6 +234,8 @@ class Solver:
         payload['choice_confidence_policy'] = 'equivalent-choices-v1'
         if item.get('diagnostic_policy'):
             payload['diagnostic_policy'] = item['diagnostic_policy']
+            from diagnostic import policy_fingerprint
+            payload['diagnostic_policy_sha256'] = policy_fingerprint(item['diagnostic_policy'])
         for f in payload['fields']:
             f['choices'] = [{k:v for k,v in c.items() if k in ('option','type','value')} for c in f['choices']]
         # A scrolled question screenshot can clip a tall diagram. Attach the
@@ -244,7 +276,18 @@ class Solver:
             containment_recheck = bool(
                 interpretation and prior_interpretation.get('identity_sha256') != interpretation['identity_sha256']
                 or prior_interpretation and not interpretation)
-            if containment_recheck:
+            diagnostic_recheck = bool(payload.get('diagnostic_policy') and
+                                      payload['diagnostic_policy'] != original.get('diagnostic_policy'))
+            if diagnostic_recheck:
+                atomic_json(directory/(phase+'-before-diagnostic-policy-answer.json'), saved)
+                atomic_json(directory/(phase+'-before-diagnostic-policy-input.json'), original)
+                payload['validation_feedback'] = (
+                    'The diagnostic answer policy has changed. Apply ONLY the CURRENT '
+                    'diagnostic_policy. Reclassify this unanswered question from the supplied '
+                    'topic lists. Previous assumptions about known prerequisites are revoked.')
+                logging.info('Reclassifying %s/%s under the current diagnostic policy in the same session',
+                             directory.name, phase)
+            elif containment_recheck:
                 archive = '-before-containment-policy' if interpretation else '-before-containment-policy-invalidated'
                 atomic_json(directory/(phase+archive+'-answer.json'), saved)
                 atomic_json(directory/(phase+archive+'-input.json'), original)
@@ -535,7 +578,7 @@ class Solver:
             atomic_json(session_file,session)
         events_path, diagnostics_path = directory/(phase+'-events.jsonl'), directory/(phase+'-stderr.txt')
         try:
-            instructions = INSTRUCTIONS + (DIAGNOSTIC_INSTRUCTIONS if payload.get('diagnostic_policy') else '')
+            instructions = INSTRUCTIONS + diagnostic_instructions(payload)
             process = run_cli(command + ['-'], input=instructions + '\n' + json.dumps(payload,ensure_ascii=False),
                               timeout=self.args.solver_timeout,events_path=events_path,
                               diagnostics_path=diagnostics_path,started=started,
@@ -578,6 +621,10 @@ class Solver:
 
     @staticmethod
     def validate(item, result):
+        if item.get('diagnostic_policy', {}).get('mode') == 'covered_topics_only':
+            from diagnostic import answers_classification, classify
+            if not answers_classification(classify(item['diagnostic_policy'], result)):
+                return  # Unknown or uncertain classification skips; revealed answers are verified later.
         if result.get('confident') is not True:
             raise ValueError('Solver is uncertain; question saved for review')
         if item.get('diagnostic_policy'):

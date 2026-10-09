@@ -17,13 +17,14 @@ The installed terminal shortcut `cap` runs this same command. It is linked from
 `~/.local/bin/cap` to `scripts/cap` and accepts additional Start options.
 
 `workers.json` provides four permanent windows in session `ma`, in this order:
-**Mathematical Foundations**, **Linear Algebra**, **Multivariable Calculus**, and
+**Mathematical Methods**, **Linear Algebra**, **Multivariable Calculus**, and
 **Differential Equations**. Unconfigured accounts have idle windows and are skipped
 by Start. Saving the two remaining profiles is all that is needed to enable them;
 the same Start command then launches all four. Repeating Start leaves active
 workers alone. An unrelated process in a course window is also left alone.
 
-The Foundations worker keeps its existing `.local/question_capture` profile,
+The Methods account retains the `foundations` worker ID and its existing
+`.local/question_capture` profile,
 checkpoints, logs and `reference/mathacademy/question-capture` output. The other
 workers each use `.local/question_capture-workers/<worker>/` and
 `reference/mathacademy/question-capture-workers/<worker>/`. Their browser profiles,
@@ -33,7 +34,8 @@ existing bounded stale-basis retry handling. Verified captures in all four outpu
 roots can supply provenance evidence. Only installation of tested shared source
 repairs takes a short shared lock; solving and ordinary imports remain concurrent.
 
-Foundations (`commotum`, course 136), Linear Algebra (`linearharrison`, course 55),
+Mathematical Methods for Physical Sciences I (`commotum`, course 154),
+Linear Algebra (`linearharrison`, course 55),
 Multivariable Calculus (`multiwilliam`, course 54) and Differential Equations
 (`differentwalker`, course 61) have saved and verified profiles.
 Workers run headless from those
@@ -43,11 +45,13 @@ worker startup. All workers discover progress scopes from their account's Learn
 sidebar after activity completion, then visit each course once. Unit links are
 deduplicated into `/courses/<id>/progress`; these pages include every unit's rows,
 including collapsed units. No account-specific progress list is needed.
-Verified scopes are Foundations 136/113/111, Linear Algebra 55/105/106,
+Verified scopes are Methods 154/105/106, Linear Algebra 55/105/106,
 Multivariable Calculus 54/106/55, and Differential Equations 61/55/54.
 Previously saved completion snapshots remain unchanged. Explicit
 `--progress-course-id` or `--progress-url` arguments still select a fixed scope.
-Every account uses its own diagnostic topic graph.
+Every account uses its own diagnostic topic graph. Methods uses an explicit
+covered-topic snapshot of the prior Foundations coverage; its placement exam skips
+uncovered calculus and unfamiliar Methods skills.
 
 To add an account, sign into its enrolled course in Chrome, then run the matching
 command. These examples use Chrome's `Default` profile; replace it with the actual
@@ -64,7 +68,7 @@ cookies into the worker profile. `save-profile multivariable` uses the same synt
 if that account later needs a fresh login. Profile data stays in ignored local
 directories; no cookie values are printed.
 
-The Foundations window has a status pane refreshed every five seconds, showing
+The Methods window has a status pane refreshed every five seconds, showing
 four course cards with running/readiness state, daily earned/base XP, counts of
 completed lessons/reviews/quizzes/multisteps/diagnostics, daily unique database
 questions added and existing questions captured in verified imports, course
@@ -78,7 +82,11 @@ A recovered live worker shows RUNNING without retaining
 its previous deferred label. Saved graded captures reconcile interrupted checkpoint updates
 when the server has already advanced.
 History preserves No Credit separately from Incorrect and recovers its correct
-answer from the revealed solution. Diagnostic pacing credits capture and solver
+answer from the revealed solution. A staged proof's first terminal Incorrect
+submission can bind to history's No Credit only when its saved stage, submitted
+values and terminal observation identify that same question with no accepted
+fields. Both original grade labels are retained; later failures and partial
+credit remain distinct. Diagnostic pacing credits capture and solver
 time toward the answer delay.
 The tmux status bar also shows running, ready and unconfigured account counts.
 Use **Ctrl+b then n/p** to switch course windows and **Ctrl+b then d** to detach;
@@ -664,6 +672,39 @@ the saved topic list. Incidental vector notation does not itself make a problem
 course content. A topic on the list remains course content even when another
 course teaches it too. The 70/30 practice patterns and weighted quiz grades do
 not apply to diagnostics.
+
+For an account that should answer only previously covered skills, use
+`--diagnostic-covered-topics /absolute/path/covered-topics.json`. This opt-in policy
+replaces the prerequisite assumption: only explicitly covered topic IDs may be
+answered. An uncovered prerequisite is skipped, and a covered skill is answered
+even when it also belongs to the new course. The JSON must contain
+`covered_topics` (possibly empty), optional `blocked_topics`, and a nonempty
+`provenance` object identifying the account, observation time, and source progress
+snapshots. Each topic has an integer `topic_id` and a nonempty `title`:
+
+```json
+{
+  "covered_topics": [{"topic_id": 2036, "title": "Previously covered skill"}],
+  "blocked_topics": [{"topic_id": 3340, "title": "Uncovered skill"}],
+  "provenance": {"account_id": "account-name", "observed_at": "2026-10-09", "sources": ["saved-progress.json"]}
+}
+```
+
+Refresh the account's sidebar progress before creating this snapshot. Include only
+verified prior coverage; placement answers and other accounts' shared EDB completion
+must not add known skills. The runner freezes the JSON bytes, source hash, topic
+lists and provenance in `diagnostic-covered-topics.json` and
+`diagnostic-policy.json`. Worker configuration can set `diagnostic_covered_topics`
+to the snapshot path. Existing source-question/topic identity takes precedence;
+unlisted and ambiguous source bindings skip. For blanks without a source ID, the
+same solver session may classify only supplied topic IDs; uncertain, compound or
+unmatched skills skip. The old policy remains the default for other workers.
+
+Resumes keep the frozen policy. An intentional policy migration must replace the
+saved `diagnostic_policy` and `answer_policy` after preserving the old evidence.
+The runner retains grades, invalidates unanswered decisions whose policy fingerprint
+changed, and archives cached solver answers before reclassifying in the existing
+activity session. It never resubmits a server grade to apply a new policy.
 
 The player captures every served problem, answer widget, complete choices, assets,
 decision, grade and revealed solution. It follows changed question headings and

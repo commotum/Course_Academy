@@ -44,6 +44,8 @@ def arguments(argv=None):
     parser.add_argument('--ma-root',type=Path,default=Path('/home/jake/Developer/MA'))
     parser.add_argument('--diagnostic-topics',type=Path,
                         help='Diagnostic course Topics.csv or graph directory; otherwise resolve the enrolled course graph under MA/COURSES')
+    parser.add_argument('--diagnostic-covered-topics',type=Path,
+                        help='Explicit account-specific JSON covered_topics allowlist with provenance; all other diagnostic skills skip')
     parser.add_argument('--diagnostic-course-id',type=int,
                         help='Fallback enrolled course ID for diagnostics when the queue does not expose it')
     parser.add_argument('--cwcwc-weight',type=float,default=0.7)
