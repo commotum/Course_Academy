@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "A writer is editing the first draft of a book. On average, each sentence has a $5%$ chance of containing a typo. What is the probability of finding the first typo in the $4$th sentence or later? Round your answer to $3$ decimal places.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "0.773"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "0.751"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "0.702"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "0.857"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "0.825"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14069917,
+    "task_type": "lesson",
+    "topic_id": 2839,
+    "topic_title": "Modeling With the Geometric Distribution",
+    "examples": [
+      {
+        "math_academy_id": "e-7503",
+        "knowledge_point": "Computing the Probability of a Geometric Random Variable on an Unbounded Interval",
+        "problem": "A company is conducting interviews to fill a job. On average, $35\\%$ of applicants meet all the requirements. What is the probability that an applicant who meets all the requirements will appear for the first time after the $3$rd interviewee? Round your answer to $3$ decimal places.",
+        "worked_solution": "A geometric random variable $X$ with probability of success $p$ has the following probability mass function:\n\n$$\nf(x) = (1-p)^{x-1}p\n$$\n\nLet $X$ be the number of applicants interviewed until an applicant who meets all requirements appears. Since the chance of finding an applicant who meets all the requirements is $35\\%,$ the number of applicants interviewed until an applicant who meets all requirements appears can be modeled as a geometric random variable with a probability of success\n\n$$\np = 35\\% = \\dfrac{35}{100} = 0.35.\n$$\n\nSo, $X\\sim\\textrm{Geom}(0.35).$ In this case, $X$ has the following probability mass function:\n\n$$\n\\begin{aligned}f(x) & =(1-0.35)^{x-1}(0.35) \\\\  & =(0.65)^{x-1}(0.35)\\end{aligned}\n$$\n\nTo compute $P(X \\gt 3),$ we will use the complement:\n\n$$\nP(X \\gt 3) = 1 - P(X \\leq  3)\n$$\n\nComputing the probability of the complement, we get\n\n$$\n\\begin{aligned}P(X\\le 3) & =P(X\\in {1,2,3}) \\\\  & =f(1)+f(2)+f(3) \\\\  & =(0.65)^{1-1}(0.35)+(0.65)^{2-1}(0.35)+(0.65)^{3-1}(0.35) \\\\  & =(0.35)+(0.65)(0.35)+(0.65)^{2}(0.35) \\\\  & =[1+0.65+(0.65)^{2}](0.35) \\\\  & \u22480.725\\end{aligned}\n$$\n\nrounded to $3$ decimal places.\n\nTherefore, the probability that an applicant who meets all the requirements will appear for the first time after the $3$rd interviewee is\n\n$$\n\\begin{aligned}P(X>3) & =1-P(X\\le 3) \\\\  & \u22481-0.725 \\\\  & \u22480.275\\end{aligned}\n$$\n\nrounded to $3$ decimal places.",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14069917/example-7503.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-130789",
+        "problem": "A coin is being randomly picked from a jar and put back in until getting a one-dollar coin. The jar holds a $70%$ of one-dollar coins. What is the probability that a one-dollar coin is chosen before the $5$th trial?  Round your answer to $3$ decimal places.",
+        "worked_solution": "A geometric random variable $X$ with probability of success $p$ has the following probability mass function:\n\n$$\nf(x)=(1-p)^{x-1}p\n$$\n\nLet $X$ be the number of choices before choosing a one-dollar coin. Since the chance of choosing a one-dollar coin is $70%,$ the number of choices required to choose a one-dollar coin can be modeled as a geometric random variable with a probability of success\n\n$$\np=70%=\\frac{70}{100}=0.7.\n$$\n\nSo, $X\u223c\\text{Geom}(0.7).$ In this case, $X$ has the following probability mass function:\n\n$$\n\\begin{aligned}f(x) & =(1-0.7)^{x-1}(0.7) \\\\  & =(0.3)^{x-1}(0.7)\\end{aligned}\n$$\n\nTherefore, the probability of choosing a one-dollar coin before the $5$th trial is\n\n$$\n\\begin{aligned}P(X<5) & =P(X\\in {1,2,3,4}) \\\\  & =f(1)+f(2)+f(3)+f(4) \\\\  & =(0.3)^{1-1}(0.7)+(0.3)^{2-1}(0.7)+(0.3)^{3-1}(0.7)+(0.3)^{4-1}(0.7) \\\\  & =(0.7)+(0.3)(0.7)+(0.3)^{2}(0.7)+(0.3)^{3}(0.7) \\\\  & =[1+0.3+(0.3)^{2}+(0.3)^{3}](0.7) \\\\  & \u22480.992\\end{aligned}\n$$\n\nrounded to $3$ decimal places.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "0.992",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
