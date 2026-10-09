@@ -49,9 +49,11 @@ Verified scopes are Methods 154/105/106, Linear Algebra 55/105/106,
 Multivariable Calculus 54/106/55, and Differential Equations 61/55/54.
 Previously saved completion snapshots remain unchanged. Explicit
 `--progress-course-id` or `--progress-url` arguments still select a fixed scope.
-Every account uses its own diagnostic topic graph. Methods uses an explicit
-covered-topic snapshot of the prior Foundations coverage; its placement exam skips
-uncovered calculus and unfamiliar Methods skills.
+Every account uses its own diagnostic topic graph. Methods answers only topics in
+the union of the Foundations I, II, and III `Topics.csv` files, frozen with their
+source hashes in `.local/question_capture-fleet/methods-foundations-only/covered-topics.json`.
+Its placement exam skips every other or uncertain skill; progress colors and credit
+from a previous diagnostic do not add topics to that list.
 
 To add an account, sign into its enrolled course in Chrome, then run the matching
 command. These examples use Chrome's `Default` profile; replace it with the actual
