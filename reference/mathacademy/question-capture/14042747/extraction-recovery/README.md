@@ -1,0 +1,17 @@
+# Halted review 14042747 recovery
+
+Review 14042747 (topic 3404) ended with the source message “The review has been halted due to poor performance and has been assigned a penalty.” Its four recorded grades remain Incorrect, Incorrect, Correct, Incorrect; earned XP remains -2. This is a failed terminal activity, not a passed review.
+
+The first solver misread a zero-rule stacked binomial coefficient as a column vector. The source worked solution and the saved verifier establish Pascal's identity: C(5,3) = C(4,2) + C(4,3) = 6 + 4. The missing expression is C(4,2), original option a. The original submission of option c and its Incorrect grade were retained.
+
+The installed extractor now preserves a MathML mfrac with zero line thickness as a zero-rule genfrac with the original surrounding delimiters. It does not guess that every stack is a binomial. Ordinary fractions and mtable vectors retain their prior shape. Solver context includes the already captured topic title, and terminal recognition accepts both “This review” and “The review” failure messages.
+
+`source-install.json` records the shared installation lock's before/after source hashes. `focused-tests.log` records 23 passing focused and solver tests. The broader 68-test assessment run had one pre-existing fixture KeyError for a missing `problem` field; `baseline-error.log` reproduces it with unchanged source.
+
+The owned Foundations supervisor received a checkpoint stop, and its unrelated lesson 14043389 finished before the stop. The old review URL redirected to Learn. `server-before.html`, `server-before.png`, and `server-before.json` preserve the fresh completed penalty row (-2/4 XP), exact history grade confirmation, and SHA-256 binding to the original diagnostic terminal. No question was answered and no activity was started during recovery. The recovered completion snapshot is `../knowledge-state/review-completed.json`.
+
+`original-bindings.json` binds nine archived original files: the state and all eight question before/after JSON files. The eight original question JSONs, raw HTML, screenshots, original choices, submitted option identities, solver decisions, verification answers, and grades were preserved. `regenerated-study-content.json` records the source-derived extraction and original content. The checkpoint's derived before extraction was then updated to attest the regenerated problem and choices; submitted values were remapped only through their unchanged observed option identities. Each checkpoint records its original archive and hash.
+
+The first preview made no writes or intent because the original lossy checkpoint problem did not attest the regenerated source. After the checkpoint extraction was bound to the authentic DOM, the changed-evidence retry committed content only at basis 1612 to 1613. It added q-69726 and q-70306 and enriched q-69994 and q-69995. `../edb-import/verification.json` records focused transaction/readback verification, unchanged learner and engine facts, and a no-op reimport. `math-and-readback-verification.json` and `committed-readback/` independently confirm the exact four questions at basis 1613 and the mathematical values 6, 20, and 10.
+
+`normal-worker-before.json` and `normal-worker-restarted.json` prove exact normal argument/profile restoration. The restored Foundations supervisor is 3971585 and capture child is 3971591. The other three account workers were not stopped or changed.
