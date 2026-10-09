@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "A numerical method is used to approximate the solution to an initial value problem.\n\n- With step size $\u0394x=0.08,$ the observed local truncation error is $\u03c4(0.08)=0.13.$\n\n- With step size $\u0394x=0.02,$ the observed local truncation error is $\u03c4(0.02)=0.002.$\n\nEstimate the order of the numerical method.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "4"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "3"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "5"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14048125,
+    "task_type": "lesson",
+    "topic_id": 6399,
+    "topic_title": "Order of Numerical Methods",
+    "examples": [
+      {
+        "math_academy_id": "e-21685",
+        "knowledge_point": "Determining the Order of a Numerical Method By Comparing LTE for Different Step Sizes",
+        "problem": "A numerical method is used to approximate the solution to an initial value problem.\n\n- With step size $\\Delta x = 0.24,$ the observed local truncation error is $\\tau(0.24) = 0.8.$\n\n- With step size $\\Delta x = 0.08,$ the observed local truncation error is $\\tau(0.08) = 0.01.$\n\nEstimate the order of the numerical method, rounded to the nearest integer.",
+        "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\\tau(\\Delta x) = \\mathcal O\\!\\left((\\Delta x)^{p+1}\\right)\\quad\\textrm{as}\\quad \\Delta x \\to 0.\n$$\n\nThe order describes how fast errors shrink as $\\Delta x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the LTE by a factor of approximately $k^{p+1}.$\n\nIn our case, the step size decreases from $0.24$ to $0.08.$ So, it reduces by a factor of\n\n$$\nk = \\dfrac{0.24}{0.08} = 3.\n$$\n\nAs a result, for a numerical method of order $p,$ the LTE should decrease by a factor of approximately\n\n$$\nk^{p+1} = 3^{p+1}.\n$$\n\nOn the other hand, the LTE actually decreases from $0.8$ to $0.01.$ So, it reduces by a factor of\n\n$$\n\\dfrac{0.8}{0.01} = 80.\n$$\n\nComparing the two scale factors for the LTE, we get\n\n$$\n\\begin{aligned}{3}^{p+1} & \u224880 \\\\ p+1 & \u2248{log}_{3}\u2061(80) \\\\ p+1 & \u22483.987\u2026 \\\\ p & \u22482.987\u2026.\\end{aligned}\n$$\n\nTherefore, rounding to the nearest integer, the estimated order of the method is $3.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14048125/example-21685.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-334546",
+        "problem": "A numerical method is used to approximate the solution to an initial value problem.\n\n- With step size $\u0394x=0.18,$ the observed global truncation error is $e(0.18)=0.486.$\n\n- With step size $\u0394x=0.06,$ the observed global truncation error is $e(0.06)=0.006.$\n\nUse this data to estimate the order of the numerical method.",
+        "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the global truncation error (GTE) satisfies\n\n$$\ne(\u0394x)=O\\,((\u0394x)^{p})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the GTE by a factor of approximately ${k}^{p}.$\n\nIn our case, the step size decreases from $0.18$ to $0.06.$ So, it reduces by a factor of\n\n$$\nk=\\frac{0.18}{0.06}=3.\n$$\n\nAs a result, for a numerical method of order $p,$ the GTE should decrease by a factor of approximately\n\n$$\n{k}^{p}={3}^{p}.\n$$\n\nOn the other hand, the GTE actually decreases from $0.486$ to $0.006.$ So, it reduces by a factor of\n\n$$\n\\frac{0.486}{0.006}=81.\n$$\n\nComparing the two scale factors for the GTE, we get\n\n$$\n\\begin{aligned}{3}^{p} & \u224881 \\\\ p & \u2248{log}_{3}\u2061(81) \\\\ p & \u22484.\\end{aligned}\n$$\n\nTherefore, the approximate order of the method is $4.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "4",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

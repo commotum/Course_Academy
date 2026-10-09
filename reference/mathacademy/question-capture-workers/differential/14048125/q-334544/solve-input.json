@@ -1,0 +1,57 @@
+{
+  "mode": "solve",
+  "problem": "A numerical method is used to approximate the solution to an initial value problem.\n\n- With step size $\u0394x=0.18,$ the observed global truncation error is $e(0.18)=0.740.$\n\n- With step size $\u0394x=0.06,$ the observed global truncation error is $e(0.06)=0.090.$\n\nUse this data to estimate the order of the numerical method.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "3"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "4"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "1"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14048125,
+    "task_type": "lesson",
+    "topic_id": 6399,
+    "topic_title": "Order of Numerical Methods",
+    "examples": [
+      {
+        "math_academy_id": "e-21684",
+        "knowledge_point": "Determining the Order of a Numerical Method By Comparing GTE for Different Step Sizes",
+        "problem": "The global truncation error (GTE) of a numerical method with step size $\\Delta x$ is\n\n$$\ne(\\Delta x) = 4(\\Delta x)^3 + (\\Delta x)^4.\n$$\n\nComplete the following sentences.\n\n$\\quad$ With step size $\\Delta x = 0.4,$ the global truncation error is ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14048125/assets/ee7115883733062534307c8ff2b1795c77d47d1e8dffeb357dcbe94e07e1f400.png)\n\n$\\quad$ With step size $\\Delta x = 0.2,$ the global truncation error is ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14048125/assets/3883232317dc9ab3e8888fab646fb593ca37585ef3367c5b3000be226962e512.png)\n\n$\\quad$ Decreasing from $\\Delta x = 0.4$ to $\\Delta x = 0.2,$ the GTE is reduced by a factor of ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14048125/assets/ea99ff6ac18f5bb8506edcecfe913b338b64d04e99532f67cec6eb94efc2e9fa.png)\n\n$\\quad$ According to this data, the order of the method is approximately\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14048125/assets/d8eaeb8b6abf175f486560cf0d407fd97cd5180907c2db8e6436ccc7e4b09f04.png)",
+        "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the global truncation error (GTE) satisfies\n\n$$\ne(\\Delta x) = \\mathcal O\\!\\left((\\Delta x)^p\\right)\\quad\\textrm{as}\\quad \\Delta x \\to 0.\n$$\n\nThe order describes how fast errors shrink as $\\Delta x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the GTE by a factor of approximately $k^p.$\n\nFirst, we compute the GTE for the given step sizes:\n\n- With step size $\\Delta x = 0.4,$ the GTE is\n\n$$\n\\begin{aligned}e(0.4) & =4(0.4)^{3}+(0.4)^{4} \\\\  & =4\\cdot 0.064+1\\cdot 0.025\\,6 \\\\  & =0.256+0.025\\,6 \\\\  & =0.281\\,6 \\\\  & \u22480.282.\\end{aligned}\n$$\n\n- With step size $\\Delta x = 0.2,$ the GTE is\n\n$$\n\\begin{aligned}e(0.2) & =4(0.2)^{3}+(0.2)^{4} \\\\  & =4\\cdot 0.008+1\\cdot 0.001\\,6 \\\\  & =0.032+0.001\\,6 \\\\  & =0.033\\,6 \\\\  & \u22480.034.\\end{aligned}\n$$\n\nNext, we determine the order by comparing the errors. The step size decreases from $0.4$ to $0.2.$ So, it reduces by a factor of\n\n$$\nk = \\dfrac{0.4}{0.2} = 2.\n$$\n\nAs a result, for a numerical method of order $p,$ the GTE should decrease by a factor of approximately\n\n$$\nk^p = 2^p.\n$$\n\nOn the other hand, the GTE actually decreases from $0.281\\,6$ to $0.033\\,6.$ So, it reduces by a factor of\n\n$$\n\\dfrac{0.281\\,6}{0.033\\,6} = 8.380\\,95\\ldots \\approx  \\bbox[4pt,border: 1px solid gray]{8.381}.\n$$\n\nComparing the two scale factors for the GTE, we get\n\n$$\n\\begin{aligned}{2}^{p} & \u22488.380\\,952\u2026 \\\\ p & \u2248{log}_{2}\u2061(8.380\\,95\u2026) \\\\ p & \u22483.067\u2026.\\end{aligned}\n$$\n\nTherefore, rounding to the nearest integer, the estimated order of the method is\n$\\bbox[4pt,border: 1px solid gray]{3}.$\n\nIndeed, this coincides with the definition of the order from the expression for the GTE:\n\n$$\ne(\\Delta x) = 4(\\Delta x)^3 + (\\Delta x)^4\n\\quad\\Rightarrow\\quad\ne(\\Delta x) = \\mathcal O\\!\\left((\\Delta x)^3\\right)\\quad\\textrm{as}\\quad \\Delta x\\to 0.\n$$\n\nHence, the order of the method is $3.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14048125/example-21684.png"
+      }
+    ],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}

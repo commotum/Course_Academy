@@ -1,0 +1,48 @@
+{
+  "mode": "solve",
+  "problem": "A numerical method for approximating a solution to an initial value problem is known to be order $2.$  Suppose that using step size $\u0394x=0.18$ produces a global truncation error (GTE) of $e(0.18)\u22480.2025.$  If we instead use a step size $\u0394x=0.04,$ what GTE should we expect?\n\n$e(0.04)\u2248$\n{{field-1}}",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14048125,
+    "task_type": "lesson",
+    "topic_id": 6399,
+    "topic_title": "Order of Numerical Methods",
+    "examples": [
+      {
+        "math_academy_id": "e-21687",
+        "knowledge_point": "Making Inferences Given the Order of a Numerical Method",
+        "problem": "A numerical method for approximating a solution to an initial value problem is known to be order $1.$\nSuppose that using step size $\\Delta x = 0.4$ produces a local truncation error (LTE) of $\\tau(0.4) \\approx 0.24.$\nIf we instead use a step size $\\Delta x = 0.1,$ what LTE should we expect?\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14048125/assets/31f454d50de05da419a55dfcdd26ac8d7883635e6eb0b95367f9f80fb30643a5.png)",
+        "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\\tau(\\Delta x) = \\mathcal O\\!\\left((\\Delta x)^{p+1}\\right)\\quad \\textrm{as}\\quad \\Delta x \\to 0.\n$$\n\nThe order describes how fast errors shrink as $\\Delta x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the LTE by a factor of approximately $k^{p+1}.$\n\nIn our case, the step size decreases from $0.4$ to $0.1.$ So, it reduces by a factor of\n\n$$\nk = \\frac{0.4}{0.1} = 4.\n$$\n\nNow, since the numerical method is of order $1,$ the error is expected to decrease by a factor of\n\n$$\nk^{1+1} = 4^2 = 16.\n$$\n\nTherefore, using a step size of $\\Delta x = 0.1,$ the expected LTE is\n\n$$\n\\tau(0.1) \\approx \\frac{0.24}{16} = 0.015.\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14048125/example-21687.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-334755",
+        "problem": "Which of the following local truncation error expressions represent a third-order numerical method?\n\n- $\u03c4(\u0394x)=4(\u0394x)^{3}+6(\u0394x)^{6}$\n- $\u03c4(\u0394x)=0.8(\u0394x)^{2}+5(\u0394x)^{3}$\n- $\u03c4(\u0394x)=9(\u0394x)^{4}+2(\u0394x)^{7}$",
+        "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\u03c4(\u0394x)=O\\,((\u0394x)^{p+1})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nWith that in mind, let\u2019s check each option in turn:\n\n- For $\u03c4(\u0394x)=4(\u0394x)^{3}+6(\u0394x)^{6},$ the dominant term as $\u0394x\\to 0$ is $4(\u0394x)^{3}=4(\u0394x)^{2+1}.$\nSo, statement I corresponds to an order $2$ method.\n\n- For $\u03c4(\u0394x)=0.8(\u0394x)^{2}+5(\u0394x)^{3},$ the dominant term as $\u0394x\\to 0$ is $0.8(\u0394x)^{2}=0.8(\u0394x)^{1+1}.$\nSo, statement II corresponds to an order $1$ method.\n\n- For $\u03c4(\u0394x)=9(\u0394x)^{4}+2(\u0394x)^{7},$ the dominant term as $\u0394x\\to 0$ is $9(\u0394x)^{4}=9(\u0394x)^{3+1}.$\nSo, statement III corresponds to an order $3$ method.\n\nTherefore, the correct answer is \"III only\".",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "III only",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
