@@ -19,7 +19,7 @@ OPERATORS = {'sin','cos','tan','sec','csc','cot','sinh','cosh','tanh','ln','log'
 SUPERSCRIPTS = str.maketrans('⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻', '0123456789+-')
 SUBSCRIPTS = str.maketrans('₀₁₂₃₄₅₆₇₈₉₊₋', '0123456789+-')
 UNITS = ('ft','in','yd','mi','mm','cm','km','m','kg','mg','lb','oz','g','ms','min','hr','s','h',
-         'liters','mile')
+         'liters','mile','mph')
 
 
 def quantity_identity(value):
