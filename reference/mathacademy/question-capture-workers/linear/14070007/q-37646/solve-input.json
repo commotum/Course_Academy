@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}-5 & -2 & -3 \\\\ -1 & -6 & -3 \\\\ 5 & 10 & 11\\end{aligned}],\\,D=[\\begin{aligned}-4 & 0 & 0 \\\\ 0 & -4 & 0 \\\\ 0 & 0 & 8\\end{aligned}],\\,P=[\\begin{aligned}-4 & a & -1 \\\\ 2 & 0 & -1 \\\\ 0 & b & 5\\end{aligned}]\n$$\n\nConsider the matrices shown above. Given that $A=PD{P}^{-1},$ find the value of $\\frac{a}{b}.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\frac{5}{2}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\frac{3}{7}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "-5"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-3"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14070007,
+    "task_type": "lesson",
+    "topic_id": 1971,
+    "topic_title": "Diagonalizing a 3x3 Matrix in the General Case",
+    "examples": [
+      {
+        "math_academy_id": "e-5507",
+        "knowledge_point": "Diagonalizing a 3x3 Matrix Given Part of the Diagonalization",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14070007/assets/055da79921f7640b8f396653160a3ec34c4959ee4157806c0286152fa781c3aa.png)\nConsider the matrices shown above. Given that $A=PDP^{-1},$ find the value of $\\dfrac{a}{b}.$",
+        "worked_solution": "Notice that $D=P^{-1}AP$ is a diagonalization of the matrix $A.$\n\nFrom the diagonal matrix $D,$ we find that the eigenvalues of $A$ are\n\n$\\qquad$ $\\lambda_1=\\lambda_3=-2 \\quad$ and $\\quad \\lambda_2=-9.$\n\nThe second column of $P$ corresponds to $\\lambda=-2.$ Computing $A-\\lambda I,$ we have\n\n$$\n\\begin{aligned}A-(-2)I & =[\\begin{aligned}-1 & 1 & -2 \\\\ -2 & -4 & 4 \\\\ 3 & 3 & -8\\end{aligned}]-(-2)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}1 & 1 & -2 \\\\ -2 & -2 & 4 \\\\ 3 & 3 & -6\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to row echelon form using Gaussian elimination:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & 1 & -2 & 0 \\\\ -2 & -2 & 4 & 0 \\\\ 3 & 3 & -6 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+2{R}_{1} \\\\ {R}_{3}:={R}_{3}+(-3){R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}1 & 1 & -2 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nIn the reduced matrix above, there is one pivot column (the $1$st one). Thus, $x_2$ and $x_3$ are free variables. From the first equation, we obtain \n\n$$\nx_1 = -x_2+2x_3.\n$$\n\nTherefore, the general solution is\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14070007/assets/c6dbdd2b14d7b81925ed2d7a10441061a5aaed814d9a295dd097597431985f0b.png)\n\nComparing this with the second column of $P,$ we deduce that $x_2=0.$ Now, setting $x_3=1$ and substituting our values for $x_2$ and $x_3$ into the general solution, we obtain the following: \n\n$$\n[\\begin{aligned}2 \\\\ 0 \\\\ 1\\end{aligned}]\n$$\n\nFinally, $\\dfrac{a}{b}=\\dfrac{2}{1}=2.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14070007/example-5507.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-96979",
+        "problem": "$$\nA=[\\begin{aligned}1 & 6 & -3 \\\\ 0 & -2 & 0 \\\\ 1 & 1 & -3\\end{aligned}]\n$$\n\nIf the matrix $A$ above is diagonalizable, find a corresponding diagonal matrix $D.$",
+        "worked_solution": "First, we find the eigenvalues of the matrix $A$ by solving $det(A-\\lambda I)=0:$\n\n$$\n\\begin{aligned}|\\begin{aligned}1-\\lambda  & 6 & -3 \\\\ 0 & -2-\\lambda  & 0 \\\\ 1 & 1 & -3-\\lambda \\end{aligned}| & =0 \\\\ (-2-\\lambda )|\\begin{aligned}1-\\lambda  & -3 \\\\ 1 & -3-\\lambda \\end{aligned}| & =0 \\\\ (-2-\\lambda )((1-\\lambda )(-3-\\lambda )+3) & =0 \\\\ -(\\lambda +2)({\\lambda }^{2}+2\\lambda ) & =0 \\\\ \\lambda (\\lambda +2)^{2} & =0\\end{aligned}\n$$\n\nTherefore, the eigenvalues are ${\\lambda }_{1}=0$ (simple root) and ${\\lambda }_{2}=-2$ (double root).\n\nLet's now find the dimension of the eigenspace corresponding to each eigenvalue.\n\n- First, we consider the simple root ${\\lambda }_{1}=0.$ Since the root is simple, the dimension of the eigenspace ${V}_{0}$ corresponding to ${\\lambda }_{1}=0$ is\n\n$$\n\\text{dim}({V}_{0})=1.\n$$\n\n- Next, we consider the double root ${\\lambda }_{2}=-2.$ Let's find the dimension of the eigenspace ${V}_{-2}$ corresponding to this eigenvalue. To do this, we row-reduce the matrix $A-(-2)I:$\n\n$$\n\\begin{aligned}A-(-2)I & =[\\begin{aligned}1 & 6 & -3 \\\\ 0 & -2 & 0 \\\\ 1 & 1 & -3\\end{aligned}]-(-2)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}3 & 6 & -3 \\\\ 0 & 0 & 0 \\\\ 1 & 1 & -1\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+(-\\frac{1}{3}){R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}3 & 6 & -3 \\\\ 0 & 0 & 0 \\\\ 0 & -1 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}\u2194{R}_{3}\\end{aligned} \\\\  & \u223c[\\begin{aligned}3 & 6 & -3 \\\\ 0 & -1 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nIn the reduced matrix above, there are two pivot columns (the $1$st and the $2$nd). This implies that we will have $3-2=1$ linearly independent eigenvector corresponding to the current eigenvalue. So, \n\n$$\n\\text{dim}({V}_{-2})=1.\n$$\n\nTherefore, $A$ is *not* diagonalizable, since \n\n$$\n\\text{dim}({V}_{0})+\\text{dim}({V}_{-2})=1+1=2\\ne 3.\\,\\times \n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$A$ is not diagonalizable",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

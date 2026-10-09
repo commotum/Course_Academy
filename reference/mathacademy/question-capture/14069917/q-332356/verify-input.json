@@ -1,0 +1,39 @@
+{
+  "mode": "verify",
+  "problem": "A coffee shop tracks how often customers order a latte. On average, $30%$ of customers order a latte. Each customer\u2019s order is independent of the others. Rounded to $3$ decimal places, the probability that the first customer who orders a latte is at least the $4$th customer is{{field-1}}.",
+  "worked_solution": "A geometric random variable $X$ with probability of success $p$ has the following probability mass function:\n\n$$\nf(x)=(1-p)^{x-1}p\n$$\n\nLet $X$ be the number of customers served until a latte is ordered. On average, the chance that any single customer orders a latte is \n\n$$\np=30%=\\frac{30}{100}=0.3.\n$$\n\nSo, the number of customers before the first latte order can be modeled as a geometric random variable with a probability of success $p=0.3.$\n\nSo, $X\u223c\\text{Geom}(0.3).$ In this case, $X$ has the following probability mass function:\n\n$$\n\\begin{aligned}f(x) & ={(1-0.3)}^{x-1}(0.3) \\\\  & ={(0.7)}^{x-1}(0.3)\\end{aligned}\n$$\n\nTo compute $P(X\\ge 4),$ we will use the complement:\n\n$$\nP(X\\ge 4)=1-P(X\\le 3)\n$$\n\nComputing the probability of the complement, we get\n\n$$\n\\begin{aligned}P(X\\le 3) & =P(X\\in {1,2,3}) \\\\  & =f(1)+f(2)+f(3) \\\\  & =(0.7)^{1-1}(0.3)+(0.7)^{2-1}(0.3)+(0.7)^{3-1}(0.3) \\\\  & =(0.3)+(0.7)(0.3)+(0.7)^{2}(0.3) \\\\  & =[1+0.7+(0.7)^{2}](0.3) \\\\  & =0.657.\\end{aligned}\n$$\n\nTherefore, the probability that the first customer who orders a latte is at least the $4$th customer is\n\n$$\n\\begin{aligned}P(X\\ge 4) & =1-P(X\\le 3) \\\\  & =1-0.657 \\\\  & =0.343.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14069917,
+    "task_type": "lesson",
+    "topic_id": 2839,
+    "topic_title": "Modeling With the Geometric Distribution",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-332356",
+        "problem": "A coffee shop tracks how often customers order a latte. On average, $30%$ of customers order a latte. Each customer\u2019s order is independent of the others. Rounded to $3$ decimal places, the probability that the first customer who orders a latte is at least the $4$th customer is{{field-1}}.",
+        "worked_solution": "A geometric random variable $X$ with probability of success $p$ has the following probability mass function:\n\n$$\nf(x)=(1-p)^{x-1}p\n$$\n\nLet $X$ be the number of customers served until a latte is ordered. On average, the chance that any single customer orders a latte is \n\n$$\np=30%=\\frac{30}{100}=0.3.\n$$\n\nSo, the number of customers before the first latte order can be modeled as a geometric random variable with a probability of success $p=0.3.$\n\nSo, $X\u223c\\text{Geom}(0.3).$ In this case, $X$ has the following probability mass function:\n\n$$\n\\begin{aligned}f(x) & ={(1-0.3)}^{x-1}(0.3) \\\\  & ={(0.7)}^{x-1}(0.3)\\end{aligned}\n$$\n\nTo compute $P(X\\ge 4),$ we will use the complement:\n\n$$\nP(X\\ge 4)=1-P(X\\le 3)\n$$\n\nComputing the probability of the complement, we get\n\n$$\n\\begin{aligned}P(X\\le 3) & =P(X\\in {1,2,3}) \\\\  & =f(1)+f(2)+f(3) \\\\  & =(0.7)^{1-1}(0.3)+(0.7)^{2-1}(0.3)+(0.7)^{3-1}(0.3) \\\\  & =(0.3)+(0.7)(0.3)+(0.7)^{2}(0.3) \\\\  & =[1+0.7+(0.7)^{2}](0.3) \\\\  & =0.657.\\end{aligned}\n$$\n\nTherefore, the probability that the first customer who orders a latte is at least the $4$th customer is\n\n$$\n\\begin{aligned}P(X\\ge 4) & =1-P(X\\le 3) \\\\  & =1-0.657 \\\\  & =0.343.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0.657",
+            "observed_mathquill_latex": "0.657"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
