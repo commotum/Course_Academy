@@ -1,0 +1,17 @@
+--- original/browser.py
++++ scripts/question_capture/browser.py
+@@ -1280,7 +1280,13 @@
+                     raise ValueError('Unfinished MathQuill command; stop before Submit')
+                 observed = answer_control(scope,field).evaluate(MATHQUILL_VALUE)
+                 field['observed_mathquill_latex'] = observed
+-                if not isinstance(observed, str) or normalize_mathquill(observed) != normalize_mathquill(field['submitted_value']):
++                # Editor identity handles display notation cheaply. For other
++                # notation, require proof from the existing error-preserving
++                # exact checker; different and unresolved entries still stop.
++                if (not isinstance(observed, str) or
++                        (normalize_mathquill(observed) != normalize_mathquill(field['submitted_value']) and
++                         compare_answers(observed, field['submitted_value'],
++                                         prompt=record['before']['problem'])['outcome'] != 'equivalent')):
+                     raise ValueError('Actual MathQuill value differs from intended value; stop before Submit: '
+                                      + repr(observed) + ' != ' + repr(field['submitted_value']))
+ 
