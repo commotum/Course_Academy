@@ -1,0 +1,125 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following initial value problem.\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+2y=\\operatorname{sin}\u20614t-\\operatorname{cos}\u20614t,\\,y(0)=0\n$$\n\nSelect the correct options in the reasoning below to find the solution using Laplace transforms. You may make use of the following results:\n\n$$\nL{\\operatorname{sin}\u2061\\omega t}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L{\\operatorname{cos}\u2061\\omega t}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$\n\nLet $Y(s)=L{y(t)}.$ Taking the Laplace transform of both sides of the equation and solving for $Y,$ we have\n\n$$\nY(s)={{field-1}}.\n$$\n\nThe partial fraction decomposition of $Y$ is\n\n$$\nY(s)={{field-2}}.\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny(t)={{field-3}}.\n$$",
+  "worked_solution": "First, we take the Laplace transform of both sides of the differential equation. Using the linearity property, we have\n\n$$\nL{{y}^{\u2032}}+2L{y}=L{\\operatorname{sin}\u20614t}-L{\\operatorname{cos}\u20614t}.\n$$\n\nUsing the formula for the transform of a derivative $L{{y}^{\u2032}}=sY(s)-y(0)$ and the standard trigonometric transforms\n\n$$\nL{\\operatorname{sin}\u20614t}=\\frac{4}{{s}^{2}+16},\\,L{\\operatorname{cos}\u20614t}=\\frac{s}{{s}^{2}+16},\n$$\n\nwe substitute the known values. Note that $y(0)=0:$\n\n$$\n\\begin{aligned}(sY(s)-0)+2Y(s) & =\\frac{4}{{s}^{2}+16}-\\frac{s}{{s}^{2}+16} \\\\ (s+2)Y(s) & =\\frac{4-s}{{s}^{2}+16}\\end{aligned}\n$$\n\nWe rearrange to solve for $Y(s).$ Dividing by $(s+2),$ we obtain\n\n$$\nY(s)=\\frac{4-s}{(s+2)({s}^{2}+16)}.\n$$\n\nNext, we perform a partial fraction decomposition. Since the denominator has a linear factor $(s+2)$ and an irreducible quadratic factor $({s}^{2}+16),$ we write\n\n$$\n\\frac{4-s}{(s+2)({s}^{2}+16)}=\\frac{A}{s+2}+\\frac{Bs+C}{{s}^{2}+16}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n4-s=A({s}^{2}+16)+(Bs+C)(s+2)\n$$\n\n- Setting $s=-2,$ we have\n \n\n$$\n4-(-2)=A((-2)^{2}+16)+0\\,\u27f9\\,6=20A\\,\u27f9\\,A=\\frac{3}{10}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n  \n\n$$\n0=A+B\\,\u27f9\\,0=\\frac{3}{10}+B\\,\u27f9\\,B=-\\frac{3}{10}.\n$$\n\n- Comparing the constant terms, we have\n \n\n$$\n4=16A+2C\\,\u27f9\\,4=\\frac{48}{10}+2C\\,\u27f9\\,C=-\\frac{2}{5}.\n$$\n\nThus, the decomposition is\n\n$$\nY(s)=\\frac{3}{10(s+2)}+\\frac{(-\\frac{3}{10}s-\\frac{2}{5})}{{s}^{2}+16}=\\frac{3}{10(s+2)}-\\frac{3s+4}{10({s}^{2}+16)}.\n$$\n\nFrom the table of Laplace transforms, we have:\n\n$$\n\\begin{aligned}{L}^{-1}{\\frac{1}{s+2}} & ={e}^{-2t} \\\\ {L}^{-1}{\\frac{s}{{s}^{2}+16}} & =\\operatorname{cos}\u20614t \\\\ {L}^{-1}{\\frac{4}{{s}^{2}+16}} & =\\operatorname{sin}\u20614t\\end{aligned}\n$$\n\nFinally, taking the inverse Laplace transform of $Y(s),$ we get\n\n$$\n\\begin{aligned}y(t) & =\\frac{3}{10}{L}^{-1}{\\frac{1}{s+2}}-\\frac{3}{10}{L}^{-1}{\\frac{s}{{s}^{2}+16}}-\\frac{1}{10}{L}^{-1}{\\frac{4}{{s}^{2}+16}} \\\\ y(t) & =\\frac{3}{10}{e}^{-2t}-\\frac{3}{10}\\operatorname{cos}\u20614t-\\frac{1}{10}\\operatorname{sin}\u20614t.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{s+4}{(s+2)({s}^{2}+16)}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{s-4}{(s+2)({s}^{2}+16)}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{s}{(s+2)({s}^{2}+16)}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{4}{(s+2)({s}^{2}+16)}"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "\\frac{4-s}{(s+2)({s}^{2}+16)}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{3}{10(s+2)}-\\frac{3s+4}{10({s}^{2}+16)}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{3}{10(s+2)}+\\frac{3s+4}{10({s}^{2}+16)}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{1}{s+2}-\\frac{s}{{s}^{2}+16}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{2}{s+2}-\\frac{s}{{s}^{2}+16}"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{3}{10}{e}^{-2t}-\\frac{3}{10}\\operatorname{cos}\u20614t-\\frac{1}{10}\\operatorname{sin}\u20614t"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{3}{10}{e}^{-2t}+\\frac{3}{10}\\operatorname{cos}\u20614t-\\frac{1}{10}\\operatorname{sin}\u20614t"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{3}{10}{e}^{-2t}-\\frac{3}{10}\\operatorname{cos}\u20614t+\\frac{1}{10}\\operatorname{sin}\u20614t"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "{e}^{-2t}-\\operatorname{cos}\u20614t"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072504,
+    "task_type": "lesson",
+    "topic_id": 2531,
+    "topic_title": "Solving First-Order ODEs Using Laplace Transforms",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-342960",
+        "problem": "Consider the following initial value problem.\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+2y=\\operatorname{sin}\u20614t-\\operatorname{cos}\u20614t,\\,y(0)=0\n$$\n\nSelect the correct options in the reasoning below to find the solution using Laplace transforms. You may make use of the following results:\n\n$$\nL{\\operatorname{sin}\u2061\\omega t}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L{\\operatorname{cos}\u2061\\omega t}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$\n\nLet $Y(s)=L{y(t)}.$ Taking the Laplace transform of both sides of the equation and solving for $Y,$ we have\n\n$$\nY(s)={{field-1}}.\n$$\n\nThe partial fraction decomposition of $Y$ is\n\n$$\nY(s)={{field-2}}.\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny(t)={{field-3}}.\n$$",
+        "worked_solution": "First, we take the Laplace transform of both sides of the differential equation. Using the linearity property, we have\n\n$$\nL{{y}^{\u2032}}+2L{y}=L{\\operatorname{sin}\u20614t}-L{\\operatorname{cos}\u20614t}.\n$$\n\nUsing the formula for the transform of a derivative $L{{y}^{\u2032}}=sY(s)-y(0)$ and the standard trigonometric transforms\n\n$$\nL{\\operatorname{sin}\u20614t}=\\frac{4}{{s}^{2}+16},\\,L{\\operatorname{cos}\u20614t}=\\frac{s}{{s}^{2}+16},\n$$\n\nwe substitute the known values. Note that $y(0)=0:$\n\n$$\n\\begin{aligned}(sY(s)-0)+2Y(s) & =\\frac{4}{{s}^{2}+16}-\\frac{s}{{s}^{2}+16} \\\\ (s+2)Y(s) & =\\frac{4-s}{{s}^{2}+16}\\end{aligned}\n$$\n\nWe rearrange to solve for $Y(s).$ Dividing by $(s+2),$ we obtain\n\n$$\nY(s)=\\frac{4-s}{(s+2)({s}^{2}+16)}.\n$$\n\nNext, we perform a partial fraction decomposition. Since the denominator has a linear factor $(s+2)$ and an irreducible quadratic factor $({s}^{2}+16),$ we write\n\n$$\n\\frac{4-s}{(s+2)({s}^{2}+16)}=\\frac{A}{s+2}+\\frac{Bs+C}{{s}^{2}+16}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n4-s=A({s}^{2}+16)+(Bs+C)(s+2)\n$$\n\n- Setting $s=-2,$ we have\n \n\n$$\n4-(-2)=A((-2)^{2}+16)+0\\,\u27f9\\,6=20A\\,\u27f9\\,A=\\frac{3}{10}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n  \n\n$$\n0=A+B\\,\u27f9\\,0=\\frac{3}{10}+B\\,\u27f9\\,B=-\\frac{3}{10}.\n$$\n\n- Comparing the constant terms, we have\n \n\n$$\n4=16A+2C\\,\u27f9\\,4=\\frac{48}{10}+2C\\,\u27f9\\,C=-\\frac{2}{5}.\n$$\n\nThus, the decomposition is\n\n$$\nY(s)=\\frac{3}{10(s+2)}+\\frac{(-\\frac{3}{10}s-\\frac{2}{5})}{{s}^{2}+16}=\\frac{3}{10(s+2)}-\\frac{3s+4}{10({s}^{2}+16)}.\n$$\n\nFrom the table of Laplace transforms, we have:\n\n$$\n\\begin{aligned}{L}^{-1}{\\frac{1}{s+2}} & ={e}^{-2t} \\\\ {L}^{-1}{\\frac{s}{{s}^{2}+16}} & =\\operatorname{cos}\u20614t \\\\ {L}^{-1}{\\frac{4}{{s}^{2}+16}} & =\\operatorname{sin}\u20614t\\end{aligned}\n$$\n\nFinally, taking the inverse Laplace transform of $Y(s),$ we get\n\n$$\n\\begin{aligned}y(t) & =\\frac{3}{10}{L}^{-1}{\\frac{1}{s+2}}-\\frac{3}{10}{L}^{-1}{\\frac{s}{{s}^{2}+16}}-\\frac{1}{10}{L}^{-1}{\\frac{4}{{s}^{2}+16}} \\\\ y(t) & =\\frac{3}{10}{e}^{-2t}-\\frac{3}{10}\\operatorname{cos}\u20614t-\\frac{1}{10}\\operatorname{sin}\u20614t.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{4}{(s+2)({s}^{2}+16)}",
+            "submitted_option": "3"
+          },
+          {
+            "key": "field-2"
+          },
+          {
+            "key": "field-3"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

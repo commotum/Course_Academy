@@ -1,0 +1,125 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following initial value problem.\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+y=\\operatorname{sin}\u2061t+\\operatorname{cos}\u2061t,\\,y(0)=2\n$$\n\nSelect the correct options in the reasoning below to find the solution using Laplace transforms. You may make use of the following results:\n\n$$\nL{\\operatorname{sin}\u2061\\omega t}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L{\\operatorname{cos}\u2061\\omega t}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$\n\nLet $Y(s)=L{y(t)}.$ Taking the Laplace transform of both sides of the equation and solving for $Y,$ we have\n\n$$\nY(s)={{field-1}}.\n$$\n\nThe partial fraction decomposition of $Y$ is\n\n$$\nY(s)={{field-2}}.\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny(t)={{field-3}}.\n$$",
+  "worked_solution": "First, we take the Laplace transform of both sides of the differential equation. Using the linearity property, we have\n\n$$\nL{{y}^{\u2032}}+L{y}=L{\\operatorname{sin}\u2061t}+L{\\operatorname{cos}\u2061t}.\n$$\n\nUsing the formula for the transform of a derivative $L{{y}^{\u2032}}=sY(s)-y(0)$ and the standard trigonometric transforms\n\n$$\nL{\\operatorname{sin}\u2061t}=\\frac{1}{{s}^{2}+1},\\,L{\\operatorname{cos}\u2061t}=\\frac{s}{{s}^{2}+1},\n$$\n\nwe substitute the known values. Note that $y(0)=2:$\n\n$$\n\\begin{aligned}(sY(s)-2)+Y(s) & =\\frac{1}{{s}^{2}+1}+\\frac{s}{{s}^{2}+1} \\\\ (s+1)Y(s)-2 & =\\frac{s+1}{{s}^{2}+1}\\end{aligned}\n$$\n\nWe rearrange to solve for $Y(s).$ First, add $2$ to the right-hand side and find a common denominator:\n\n$$\n\\begin{aligned}(s+1)Y(s) & =2+\\frac{s+1}{{s}^{2}+1} \\\\ (s+1)Y(s) & =\\frac{2({s}^{2}+1)}{{s}^{2}+1}+\\frac{s+1}{{s}^{2}+1} \\\\ (s+1)Y(s) & =\\frac{2{s}^{2}+s+3}{{s}^{2}+1}\\end{aligned}\n$$\n\nDividing by $(s+1),$ we obtain\n\n$$\nY(s)=\\frac{2{s}^{2}+s+3}{(s+1)({s}^{2}+1)}.\n$$\n\nNext, we perform a partial fraction decomposition. Since the denominator has a linear factor $(s+1)$ and an irreducible quadratic factor $({s}^{2}+1),$ we write\n\n$$\n\\frac{2{s}^{2}+s+3}{(s+1)({s}^{2}+1)}=\\frac{A}{s+1}+\\frac{Bs+C}{{s}^{2}+1}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n2{s}^{2}+s+3=A({s}^{2}+1)+(Bs+C)(s+1)\n$$\n\n- Setting $s=-1,$ we have\n \n\n$$\n2(-1)^{2}+(-1)+3=A((-1)^{2}+1)+0\\,\u27f9\\,4=2A\\,\u27f9\\,A=2.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n  \n\n$$\n2=A+B\\,\u27f9\\,2=2+B\\,\u27f9\\,B=0.\n$$\n\n- Comparing the constant terms, we have\n \n\n$$\n3=A+C\\,\u27f9\\,3=2+C\\,\u27f9\\,C=1.\n$$\n\nThus, the decomposition is\n\n$$\nY(s)=\\frac{2}{s+1}+\\frac{1}{{s}^{2}+1}.\n$$\n\nFrom the table of Laplace transforms, we have:\n\n$$\n\\begin{aligned}{L}^{-1}{\\frac{1}{s+1}} & ={e}^{-t} \\\\ {L}^{-1}{\\frac{1}{{s}^{2}+1}} & =\\operatorname{sin}\u2061t\\end{aligned}\n$$\n\nFinally, taking the inverse Laplace transform of $Y(s),$ we get\n\n$$\n\\begin{aligned}y(t) & =2{L}^{-1}{\\frac{1}{s+1}}+{L}^{-1}{\\frac{1}{{s}^{2}+1}} \\\\ y(t) & =2{e}^{-t}+\\operatorname{sin}\u2061t.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{2{s}^{2}+3}{(s+1)({s}^{2}+1)}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{2{s}^{2}-s+3}{(s+1)({s}^{2}+1)}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{2{s}^{2}+s+3}{(s+1)({s}^{2}+1)}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{{s}^{2}+s+2}{(s+1)({s}^{2}+1)}"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "\\frac{2{s}^{2}+s+2}{(s+1)({s}^{2}+1)}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{2}{s+1}+\\frac{1}{{s}^{2}+1}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{2}{s+1}-\\frac{1}{{s}^{2}+1}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{1}{s+1}+\\frac{s}{{s}^{2}+1}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{2}{s+1}+\\frac{s}{{s}^{2}+1}"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "2{e}^{-t}+\\operatorname{sin}\u2061t"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "2{e}^{-t}-\\operatorname{sin}\u2061t"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "2{e}^{-t}+\\operatorname{cos}\u2061t"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "{e}^{-t}+\\operatorname{sin}\u2061t+\\operatorname{cos}\u2061t"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072504,
+    "task_type": "lesson",
+    "topic_id": 2531,
+    "topic_title": "Solving First-Order ODEs Using Laplace Transforms",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-343057",
+        "problem": "Consider the following initial value problem.\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+y=\\operatorname{sin}\u2061t+\\operatorname{cos}\u2061t,\\,y(0)=2\n$$\n\nSelect the correct options in the reasoning below to find the solution using Laplace transforms. You may make use of the following results:\n\n$$\nL{\\operatorname{sin}\u2061\\omega t}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L{\\operatorname{cos}\u2061\\omega t}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$\n\nLet $Y(s)=L{y(t)}.$ Taking the Laplace transform of both sides of the equation and solving for $Y,$ we have\n\n$$\nY(s)={{field-1}}.\n$$\n\nThe partial fraction decomposition of $Y$ is\n\n$$\nY(s)={{field-2}}.\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny(t)={{field-3}}.\n$$",
+        "worked_solution": "First, we take the Laplace transform of both sides of the differential equation. Using the linearity property, we have\n\n$$\nL{{y}^{\u2032}}+L{y}=L{\\operatorname{sin}\u2061t}+L{\\operatorname{cos}\u2061t}.\n$$\n\nUsing the formula for the transform of a derivative $L{{y}^{\u2032}}=sY(s)-y(0)$ and the standard trigonometric transforms\n\n$$\nL{\\operatorname{sin}\u2061t}=\\frac{1}{{s}^{2}+1},\\,L{\\operatorname{cos}\u2061t}=\\frac{s}{{s}^{2}+1},\n$$\n\nwe substitute the known values. Note that $y(0)=2:$\n\n$$\n\\begin{aligned}(sY(s)-2)+Y(s) & =\\frac{1}{{s}^{2}+1}+\\frac{s}{{s}^{2}+1} \\\\ (s+1)Y(s)-2 & =\\frac{s+1}{{s}^{2}+1}\\end{aligned}\n$$\n\nWe rearrange to solve for $Y(s).$ First, add $2$ to the right-hand side and find a common denominator:\n\n$$\n\\begin{aligned}(s+1)Y(s) & =2+\\frac{s+1}{{s}^{2}+1} \\\\ (s+1)Y(s) & =\\frac{2({s}^{2}+1)}{{s}^{2}+1}+\\frac{s+1}{{s}^{2}+1} \\\\ (s+1)Y(s) & =\\frac{2{s}^{2}+s+3}{{s}^{2}+1}\\end{aligned}\n$$\n\nDividing by $(s+1),$ we obtain\n\n$$\nY(s)=\\frac{2{s}^{2}+s+3}{(s+1)({s}^{2}+1)}.\n$$\n\nNext, we perform a partial fraction decomposition. Since the denominator has a linear factor $(s+1)$ and an irreducible quadratic factor $({s}^{2}+1),$ we write\n\n$$\n\\frac{2{s}^{2}+s+3}{(s+1)({s}^{2}+1)}=\\frac{A}{s+1}+\\frac{Bs+C}{{s}^{2}+1}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n2{s}^{2}+s+3=A({s}^{2}+1)+(Bs+C)(s+1)\n$$\n\n- Setting $s=-1,$ we have\n \n\n$$\n2(-1)^{2}+(-1)+3=A((-1)^{2}+1)+0\\,\u27f9\\,4=2A\\,\u27f9\\,A=2.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n  \n\n$$\n2=A+B\\,\u27f9\\,2=2+B\\,\u27f9\\,B=0.\n$$\n\n- Comparing the constant terms, we have\n \n\n$$\n3=A+C\\,\u27f9\\,3=2+C\\,\u27f9\\,C=1.\n$$\n\nThus, the decomposition is\n\n$$\nY(s)=\\frac{2}{s+1}+\\frac{1}{{s}^{2}+1}.\n$$\n\nFrom the table of Laplace transforms, we have:\n\n$$\n\\begin{aligned}{L}^{-1}{\\frac{1}{s+1}} & ={e}^{-t} \\\\ {L}^{-1}{\\frac{1}{{s}^{2}+1}} & =\\operatorname{sin}\u2061t\\end{aligned}\n$$\n\nFinally, taking the inverse Laplace transform of $Y(s),$ we get\n\n$$\n\\begin{aligned}y(t) & =2{L}^{-1}{\\frac{1}{s+1}}+{L}^{-1}{\\frac{1}{{s}^{2}+1}} \\\\ y(t) & =2{e}^{-t}+\\operatorname{sin}\u2061t.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{2{s}^{2}+3}{(s+1)({s}^{2}+1)}",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-2"
+          },
+          {
+            "key": "field-3"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
