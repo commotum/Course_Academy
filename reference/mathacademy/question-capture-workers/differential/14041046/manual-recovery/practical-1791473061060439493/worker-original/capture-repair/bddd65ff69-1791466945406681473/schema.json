@@ -1,0 +1,97 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "summary",
+    "file",
+    "edits",
+    "patches",
+    "regression_test",
+    "validation",
+    "retry_on_source_change"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "repair",
+        "resolved",
+        "blocked"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "retry_on_source_change": {
+      "type": "boolean"
+    },
+    "file": {
+      "type": "string"
+    },
+    "regression_test": {
+      "type": "string"
+    },
+    "edits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "old",
+          "new"
+        ],
+        "properties": {
+          "old": {
+            "type": "string"
+          },
+          "new": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "patches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "file",
+          "edits"
+        ],
+        "properties": {
+          "file": {
+            "type": "string"
+          },
+          "edits": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "old",
+                "new"
+              ],
+              "properties": {
+                "old": {
+                  "type": "string"
+                },
+                "new": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "string",
+      "enum": [
+        "focused",
+        "full"
+      ]
+    }
+  }
+}
