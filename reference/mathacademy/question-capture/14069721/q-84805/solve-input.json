@@ -1,0 +1,64 @@
+{
+  "mode": "solve",
+  "problem": "A party decorator knows that one out of every five balloons he blows up pops right away. If the decorator blows up $15$ balloons, what is the probability that more than $2$ balloons pop? Round your answer to $3$ decimal places.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "0.648"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "0.351"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "0.602"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "0.592"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "0.398"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14069721,
+    "task_type": "lesson",
+    "topic_id": 1395,
+    "topic_title": "Modeling With the Binomial Distribution",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-331923",
+        "problem": "A text message has a $20%$ chance of being flagged as spam by a filter. Suppose $10$ messages are randomly selected. Rounded to $3$ decimal places, what is the probability that at least $2$ are flagged as spam?\n\nRounded to $3$ decimal places, the probability is\n{{field-1}}.",
+        "worked_solution": "Let the random variable $X$ be equal to the number of messages flagged as spam.\n\nHere, we have the following information:\n\n- There are $n=10$ messages.\n\n- The probability of a message being flagged as spam is $p=20%=0.20.$\n\nSo, $X$ follows a binomial distribution, where $X\u223cB(10,0.20).$\n\nThe number of successes of a binomial random variable has the probability mass function\n\n$$\nP(X=x)=(\\genfrac{}{}{0pt}{}{n}{x}){p}^{x}(1-p)^{n-x},\n$$\n\nwhere $n$ is the number of experiments, and $p$ is the probability of success on each experiment.\n\nSubstituting the above information into the formula for the probability mass function, we get\n\n$$\n\\begin{aligned}P(X=x) & =(\\genfrac{}{}{0pt}{}{10}{x})(0.20)^{x}(1-0.20)^{10-x} \\\\  & =(\\genfrac{}{}{0pt}{}{10}{x})(0.20)^{x}(0.80)^{10-x}.\\end{aligned}\n$$\n\nWe want to find the probability of at least $2$ messages being flagged. This corresponds to $P(X\\ge 2).$\n\nHowever, computing\n\n$$\nP(X\\ge 2)=P(X=2)+P(X=3)+\u2026+P(X=10)\n$$\n\nwill involve many computations, so let's express our answer in terms of the complement instead. By doing this, we get\n\n$$\n\\begin{aligned}P(X\\ge 2) & =1-P(X<2) \\\\  & =1-[P(X=0)+P(X=1)] \\\\  & =1-[(\\genfrac{}{}{0pt}{}{10}{0})(0.20)^{0}(0.80)^{10-0}+(\\genfrac{}{}{0pt}{}{10}{1})(0.20)^{1}(0.80)^{10-1}] \\\\  & =1-[(0.80)^{10}+10(0.20)(0.80)^{9}] \\\\  & =1-0.375\\,809\u2026 \\\\  & \u22480.624,\\end{aligned}\n$$\n\nrounded to $3$ decimal places.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0.624",
+            "observed_mathquill_latex": "0.624"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
