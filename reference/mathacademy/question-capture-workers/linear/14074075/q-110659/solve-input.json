@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}3 & 16 & 0 \\\\ -1 & -5 & 0 \\\\ 1 & -2 & 2\\end{aligned}],\\,J=[\\begin{aligned}-1 & 1 & 0 \\\\ 0 & -1 & 0 \\\\ 0 & 0 & 2\\end{aligned}],\\,P=[\\begin{aligned}-4 & a & \u2217 \\\\ 1 & b & \u2217 \\\\ 2 & c & \u2217\\end{aligned}]\n$$\n\nConsider the matrices above. Given that $A=PJ{P}^{-1}$ is a Jordan canonical decomposition of $A,$ find the value of $a+2c.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "-1"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "4"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "1"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14074075,
+    "task_type": "lesson",
+    "topic_id": 3639,
+    "topic_title": "Jordan Canonical Decomposition of a 3x3 Matrix",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-110657",
+        "problem": "$$\nA=[\\begin{aligned}5 & 0 & 1 \\\\ -15 & -1 & -15 \\\\ -1 & 0 & 3\\end{aligned}],\\,J=[\\begin{aligned}4 & 1 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & -1\\end{aligned}],\\,P=[\\begin{aligned}-1 & a & \u2217 \\\\ 0 & b & \u2217 \\\\ 1 & c & \u2217\\end{aligned}]\n$$\n\nConsider the matrices above. Given that $A=PJ{P}^{-1}$ is a Jordan canonical decomposition of $A,$ find the value of $a+c.$",
+        "worked_solution": "First, notice that the Jordan matrix $J$ may be written as a composition of Jordan blocks, as follows:\n\n$$\nJ={J}_{2}(4)\\,\u2295\\,{J}_{1}(-1)\n$$\n\nSo, we have\n\n- a single $2\\times 2$ Jordan block corresponding to $\\lambda =4,$ and\n\n- a single $1\\times 1$ block corresponding to $\\lambda =-1.$\n\nTherefore, the columns of $P$ form the following chains: \n\n$$\n\\begin{aligned}{J}_{2}(4) & : & {v}_{2}\\overset{A-4I\\,}{\\to }{v}_{1}\\overset{A-4I\\,}{\\to }0 &  \\\\ {J}_{1}(-1) & : & {v}_{3}\\overset{A+I\\,}{\\to }0 & \\end{aligned}\n$$\n\nAs a result, we obtain that \n\n- the first column of $P$ corresponds to the eigenvector ${v}_{1}=[\\begin{aligned}-1 \\\\ 0 \\\\ 1\\end{aligned}]$ of the eigenvalue $\\lambda =4,$\n\n- the second column of $P$ corresponds to the vector ${v}_{2}$ such that $(A-4I){v}_{2}={v}_{1}.$\n\nNow, computing $A-4I,$ we get\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}5 & 0 & 1 \\\\ -15 & -1 & -15 \\\\ -1 & 0 & 3\\end{aligned}]-4[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}1 & 0 & 1 \\\\ -15 & -5 & -15 \\\\ -1 & 0 & -1\\end{aligned}].\\end{aligned}\n$$\n\nSo, the matrix equation $(A-4I){v}_{2}={v}_{1}$ is equivalent to the system of linear equations with the augmented matrix $M$ which we reduce to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & 0 & 1 & -1 \\\\ -15 & -5 & -15 & 0 \\\\ -1 & 0 & -1 & 1\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+15{R}_{1} \\\\ {R}_{3}:={R}_{3}+{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}1 & 0 & 1 & -1 \\\\ 0 & -5 & 0 & -15 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the first and second equation, we have ${x}_{1}=-{x}_{3}-1$ and ${x}_{2}=3,$ respectively.\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}-{x}_{3}-1 \\\\ 3 \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nTherefore, setting ${x}_{3}=0,$ we get  \n\n$$\n{v}_{2}=[\\begin{aligned}a \\\\ b \\\\ c\\end{aligned}]=[\\begin{aligned}-1 \\\\ 3 \\\\ 0\\end{aligned}].\n$$\n\nFinally, $a+c=-1+0=-1.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "-1",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
