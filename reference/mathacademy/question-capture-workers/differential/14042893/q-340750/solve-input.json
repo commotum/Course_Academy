@@ -1,0 +1,78 @@
+{
+  "mode": "solve",
+  "problem": "What is the Laplace transform of $f(t)={e}^{-\\text{i}t/9},$ where $t,s\\in R?$$\\,L(f(t))=$\n{{field-1}},\ndefined for {{field-2}}.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{1}{9s+\\text{i}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{9}{9s+\\text{i}}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{9}{9s-\\text{i}}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{1}{9s-\\text{i}}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "s>1/9"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "s>0"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "s<0"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "s>-1/9"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14042893,
+    "task_type": "lesson",
+    "topic_id": 2529,
+    "examples": [
+      {
+        "math_academy_id": "e-21602",
+        "knowledge_point": "Evaluating Laplace Transforms of Complex Exponentials",
+        "problem": "What is the Laplace transform of $f(t) = e^{2\\textrm i t},$ where $t, s \\in\\mathbb  R?$",
+        "worked_solution": "We apply the definition of the Laplace transform:\n\n$$\n\\begin{aligned}L{f(t)} & =F(s)={\\int }_{0}^{\\infty }{e}^{-st}f(t)\\text{d}t\\end{aligned}\n$$\n\nFor the function $f(t)=e^{2\\textrm i t},$ we have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }{e}^{-st}{e}^{2\\text{i}t}\\text{d}t={\\int }_{0}^{\\infty }{e}^{(2\\text{i}-s)t}\\text{d}t.\\end{aligned}\n$$\n\nEvaluating in the usual way, we have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }{e}^{(2\\text{i}-s)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(2\\text{i}-s)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{(\\frac{1}{2\\text{i}-s}{e}^{(2\\text{i}-s)t})|}_{0}^{a} \\\\  & =\\frac{1}{2\\text{i}-s}({lim}_{a\\to \\infty }{e}^{(2\\text{i}-s)a}-1) \\\\  & =\\frac{1}{s-2\\text{i}}(1-{lim}_{a\\to \\infty }{e}^{(2\\text{i}-s)a}) \\\\  & =\\frac{1}{s-2\\text{i}}-\\frac{1}{s-2\\text{i}}({lim}_{a\\to \\infty }{e}^{-sa}\\cdot {e}^{2\\text{i}a}).\\end{aligned}\n$$\n\nNow, we recall Euler's formula:\n\n$$\ne^{\\textrm i\\theta} = \\cos\\theta + \\textrm i \\sin\\theta\n$$\n\nTherefore, we have\n\n$$\nF(s)= \\dfrac{1}{s-2\\textrm i} -  \\dfrac{1}{s-2\\textrm i}\\left[\\lim_{a\\to \\infty}e^{ -sa}\\cdot \\left(\\cos(2a) + \\textrm i\\sin(2a)\\right)  \\right].\n$$\n\nNow, we have the following cases:\n\n- For $s < 0,$ the term $e^{-sa}$ increases without bound while $\\cos(2a) + \\textrm i\\sin(2a)$ oscillates rapidly as $a\\to\\infty.$ Therefore, the limit does not exist for $s < 0.$\n\n- For $s = 0,$ we have simply $\\cos(2a) + \\textrm i\\sin(2a),$ which oscillates rapidly as $a\\to\\infty.$ Therefore, the limit does not exist for $s = 0.$\n\n- For $s > 0,$ the term $e^{-sa}$ decays to zero while $\\cos(2a) + \\textrm i\\sin(2a)$ oscillates rapidly as $a\\to\\infty.$ Therefore, the limit of their product equals zero.\n\nTherefore, for $s > 0,$ we have\n\n$$\n\\begin{aligned}F(s) & =\\frac{1}{s-2\\text{i}}-\\frac{1}{s-2\\text{i}}[{lim}_{a\\to \\infty }{e}^{-sa}\\cdot (\\operatorname{cos}\u2061(2a)+\\text{i}\\operatorname{sin}\u2061(2a))] \\\\  & =\\frac{1}{s-2\\text{i}}-0 \\\\  & =\\frac{1}{s-2\\text{i}}.\\end{aligned}\n$$\n\nSo, the Laplace transform of $e^{2\\textrm i t}$ is $F(s) =\\dfrac{1}{s-2\\textrm i},$ defined for $s>0.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14042893/example-21602.png"
+      }
+    ],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}

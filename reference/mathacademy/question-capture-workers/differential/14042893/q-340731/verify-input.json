@@ -1,0 +1,176 @@
+{
+  "mode": "verify",
+  "problem": "Complete the arguments in the reasoning below to find the Laplace transform of $f(t)={e}^{t/4}.$First, we apply the definition of the Laplace transform:\n\n$$\nL{f(t)}=F(s)={{field-1}}\n$$\n\nWe now examine the convergence of $F(s)$ for different values of $s:$\n\n$\\,$ For {{field-2}}\nthe integral is convergent.\n\n$\\,$ For {{field-3}}\nthe integral is divergent.\n\nEvaluating our integral in the convergent case, we have\n\n$$\n{\\int }_{0}^{\\infty }{e}^{(1/4-s)t}\\,\\text{d}t={{field-4}}.\n$$\n\nTherefore, we conclude that $L{{e}^{t/4}}=\\frac{4}{4s-1},$ \ndefined for\n{{field-5}}.",
+  "worked_solution": "For a function $f(t)$ defined on $[0,\\infty ),$ the Laplace transform of $f,$ denoted $L{f(t)}$ or $F(s),$ is a function of the variable $s$ defined as\n\n$$\nF(s)=L{f(t)}={\\int }_{0}^{\\infty }{e}^{-st}f(t)\\,\\text{d}t\n$$\n\nprovided that this integral exists and is finite. \n\nFor the function $f(t)={e}^{t/4},$ we have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }{e}^{-st}\\cdot {e}^{t/4}\\text{d}t \\\\  & ={\\int }_{0}^{\\infty }{e}^{-st+t/4}\\text{d}t \\\\  & ={\\int }_{0}^{\\infty }{e}^{(1/4-s)t}\\text{d}t.\\end{aligned}\n$$\n\nWe calculate our integral as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }{e}^{(1/4-s)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(1/4-s)t}\\text{d}t\\end{aligned}\n$$\n\nTo evaluate the last integral, we must consider whether $s\\ne \\frac{1}{4}$ or $s=\\frac{1}{4}.$\n\n- If $s\\ne \\frac{1}{4},$ we have\n\n$$\n\\begin{aligned}F(s) & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(1/4-s)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{(\\frac{1}{1/4-s}{e}^{(1/4-s)t})|}_{0}^{a} \\\\  & =\\frac{1}{1/4-s}({lim}_{a\\to \\infty }{e}^{(1/4-s)a}-1) \\\\  & =\\frac{1}{s-1/4}(1-{lim}_{a\\to \\infty }{e}^{(1/4-s)a}) \\\\  & =\\frac{1}{s-1/4}-\\frac{1}{s-1/4}\\cdot {lim}_{a\\to \\infty }{e}^{(1/4-s)a}\\end{aligned}\n$$\n\nLet's evaluate the limit. We have\n\n$$\n\\begin{aligned}{lim}_{a\\to \\infty }{e}^{(1/4-s)a}={\\begin{aligned}0,\\, & s>\\frac{1}{4}, \\\\ \\infty ,\\, & s<\\frac{1}{4}.\\end{aligned}\\end{aligned}\n$$\n\n- If $s=\\frac{1}{4},$ we have\n\n$$\n\\begin{aligned}F(\\frac{1}{4}) & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(1/4-1/4)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{0t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }t\\,{|}_{0}^{a} \\\\  & ={lim}_{a\\to \\infty }(a-0) \\\\  & ={lim}_{a\\to \\infty }a \\\\  & =\\infty .\\end{aligned}\n$$\n\nTherefore:\n\n- For $s>\\frac{1}{4}$ the integral is convergent.\n\n- For $s\\le \\frac{1}{4}$ the integral is divergent.\n\nEvaluating for $s>\\frac{1}{4},$ we have\n\n$$\n\\begin{aligned}F(s) & =\\frac{1}{s-1/4}-\\frac{1}{s-1/4}\\cdot {lim}_{a\\to \\infty }{e}^{(1/4-s)a} \\\\  & =\\frac{1}{s-1/4}-\\frac{1}{s-1/4}\\cdot 0 \\\\  & =\\frac{1}{s-1/4} \\\\  & =\\frac{4}{4s-1}.\\end{aligned}\n$$\n\nSo, the Laplace transform of $f(t)={e}^{t/4}$ is $F(s)=\\frac{4}{4s-1},$ defined for $s>\\frac{1}{4}.$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{\\int }_{-\\infty }^{\\infty }{e}^{(1/4-s)t}\\,\\text{d}t"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "{\\int }_{0}^{\\infty }{e}^{(1/4+s)t}\\,\\text{d}t"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "{\\int }_{0}^{\\infty }{e}^{(1/4-s)t}\\,\\text{d}t"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "{\\int }_{-\\infty }^{\\infty }{e}^{(1/4+s)t}\\,\\text{d}t"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "s\\ge \\frac{1}{4}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "s\\le \\frac{1}{4}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "s>\\frac{1}{4}"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "s>\\frac{1}{4}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "s\\le \\frac{1}{4}"
+        }
+      ]
+    },
+    {
+      "key": "field-4",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{4}{s-4}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{4}{4s-1}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{1}{4s-1}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{4}{4(s-1)}"
+        }
+      ]
+    },
+    {
+      "key": "field-5",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "s\\in R"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "s\\ge 0"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "s>0"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "s\\ge \\frac{1}{4}"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "s>\\frac{1}{4}"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14042893,
+    "task_type": "lesson",
+    "topic_id": 2529,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-340731",
+        "problem": "Complete the arguments in the reasoning below to find the Laplace transform of $f(t)={e}^{t/4}.$First, we apply the definition of the Laplace transform:\n\n$$\nL{f(t)}=F(s)={{field-1}}\n$$\n\nWe now examine the convergence of $F(s)$ for different values of $s:$\n\n$\\,$ For {{field-2}}\nthe integral is convergent.\n\n$\\,$ For {{field-3}}\nthe integral is divergent.\n\nEvaluating our integral in the convergent case, we have\n\n$$\n{\\int }_{0}^{\\infty }{e}^{(1/4-s)t}\\,\\text{d}t={{field-4}}.\n$$\n\nTherefore, we conclude that $L{{e}^{t/4}}=\\frac{4}{4s-1},$ \ndefined for\n{{field-5}}.",
+        "worked_solution": "For a function $f(t)$ defined on $[0,\\infty ),$ the Laplace transform of $f,$ denoted $L{f(t)}$ or $F(s),$ is a function of the variable $s$ defined as\n\n$$\nF(s)=L{f(t)}={\\int }_{0}^{\\infty }{e}^{-st}f(t)\\,\\text{d}t\n$$\n\nprovided that this integral exists and is finite. \n\nFor the function $f(t)={e}^{t/4},$ we have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }{e}^{-st}\\cdot {e}^{t/4}\\text{d}t \\\\  & ={\\int }_{0}^{\\infty }{e}^{-st+t/4}\\text{d}t \\\\  & ={\\int }_{0}^{\\infty }{e}^{(1/4-s)t}\\text{d}t.\\end{aligned}\n$$\n\nWe calculate our integral as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }{e}^{(1/4-s)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(1/4-s)t}\\text{d}t\\end{aligned}\n$$\n\nTo evaluate the last integral, we must consider whether $s\\ne \\frac{1}{4}$ or $s=\\frac{1}{4}.$\n\n- If $s\\ne \\frac{1}{4},$ we have\n\n$$\n\\begin{aligned}F(s) & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(1/4-s)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{(\\frac{1}{1/4-s}{e}^{(1/4-s)t})|}_{0}^{a} \\\\  & =\\frac{1}{1/4-s}({lim}_{a\\to \\infty }{e}^{(1/4-s)a}-1) \\\\  & =\\frac{1}{s-1/4}(1-{lim}_{a\\to \\infty }{e}^{(1/4-s)a}) \\\\  & =\\frac{1}{s-1/4}-\\frac{1}{s-1/4}\\cdot {lim}_{a\\to \\infty }{e}^{(1/4-s)a}\\end{aligned}\n$$\n\nLet's evaluate the limit. We have\n\n$$\n\\begin{aligned}{lim}_{a\\to \\infty }{e}^{(1/4-s)a}={\\begin{aligned}0,\\, & s>\\frac{1}{4}, \\\\ \\infty ,\\, & s<\\frac{1}{4}.\\end{aligned}\\end{aligned}\n$$\n\n- If $s=\\frac{1}{4},$ we have\n\n$$\n\\begin{aligned}F(\\frac{1}{4}) & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(1/4-1/4)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{0t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }t\\,{|}_{0}^{a} \\\\  & ={lim}_{a\\to \\infty }(a-0) \\\\  & ={lim}_{a\\to \\infty }a \\\\  & =\\infty .\\end{aligned}\n$$\n\nTherefore:\n\n- For $s>\\frac{1}{4}$ the integral is convergent.\n\n- For $s\\le \\frac{1}{4}$ the integral is divergent.\n\nEvaluating for $s>\\frac{1}{4},$ we have\n\n$$\n\\begin{aligned}F(s) & =\\frac{1}{s-1/4}-\\frac{1}{s-1/4}\\cdot {lim}_{a\\to \\infty }{e}^{(1/4-s)a} \\\\  & =\\frac{1}{s-1/4}-\\frac{1}{s-1/4}\\cdot 0 \\\\  & =\\frac{1}{s-1/4} \\\\  & =\\frac{4}{4s-1}.\\end{aligned}\n$$\n\nSo, the Laplace transform of $f(t)={e}^{t/4}$ is $F(s)=\\frac{4}{4s-1},$ defined for $s>\\frac{1}{4}.$",
+        "actual_result": "Partial Credit",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "{\\int }_{0}^{\\infty }{e}^{(1/4-s)t}\\,\\text{d}t",
+            "submitted_option": "2"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "s>\\frac{1}{4}",
+            "submitted_option": "2"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "s\\le \\frac{1}{4}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-4",
+            "submitted_value": "\\frac{4}{4s-1}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-5",
+            "submitted_value": "s>\\frac{1}{4}",
+            "submitted_option": "4"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

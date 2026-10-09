@@ -1,0 +1,52 @@
+test_retry_enters_correct_choice_using_original_mouse_handlers (test_laplace_select_target.LaplaceSelectTargetTests) ... ERROR
+test_completed_proof_is_finalized_when_restored_on_next_question (test_staged_proof.StagedProofTests) ... 
+======================================================================
+ERROR: test_retry_enters_correct_choice_using_original_mouse_handlers (test_laplace_select_target.LaplaceSelectTargetTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/de-laplace-select/package/test_laplace_select_target.py", line 50, in test_retry_enters_correct_choice_using_original_mouse_handlers
+    b.enter(self.scope,self.record);b.verify_entered(self.scope,self.record)
+  File "/tmp/de-laplace-select/package/browser.py", line 1230, in enter
+    option.click()
+  File "/home/jake/Developer/MA/.venv/lib/python3.10/site-packages/playwright/sync_api/_generated.py", line 2167, in click
+    self._sync(
+  File "/home/jake/Developer/MA/.venv/lib/python3.10/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+  File "/home/jake/Developer/MA/.venv/lib/python3.10/site-packages/playwright/_impl/_element_handle.py", line 143, in click
+    await self._channel.send(
+  File "/home/jake/Developer/MA/.venv/lib/python3.10/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+  File "/home/jake/Developer/MA/.venv/lib/python3.10/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: ElementHandle.click: Timeout 500ms exceeded.
+Call log:
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 100ms
+    - waiting for element to be visible, enabled and stable
+    - element is not visible
+  - retrying click action
+    - waiting 500ms
+
+
+======================================================================
+FAIL: test_completed_proof_is_finalized_when_restored_on_next_question (test_staged_proof.StagedProofTests) (actual='Partial Credit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/de-laplace-select/package/test_staged_proof.py", line 270, in test_completed_proof_is_finalized_when_restored_on_next_question
+    self.assertEqual(before['actual_result'],actual)
+AssertionError: 'Correct' != 'Partial Credit'
+- Correct
++ Partial Credit
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.295s
+
+FAILED (failures=1, errors=1)

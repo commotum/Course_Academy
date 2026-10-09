@@ -1,0 +1,51 @@
+{
+  "mode": "solve",
+  "problem": "Complete the arguments in the reasoning below to find the Laplace transform of $f(t)={e}^{7t}.$First, we apply the definition of the Laplace transform:\n\n$$\nL{f(t)}=F(s)={{field-1}}\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{\\int }_{0}^{\\infty }{e}^{(7-s)t}\\,\\text{d}t"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "{\\int }_{-\\infty }^{\\infty }{e}^{(7-s)t}\\,\\text{d}t"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "{\\int }_{-\\infty }^{\\infty }{e}^{(7+s)t}\\,\\text{d}t"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "{\\int }_{0}^{\\infty }{e}^{(7+s)t}\\,\\text{d}t"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14042893,
+    "task_type": "lesson",
+    "topic_id": 2529,
+    "examples": [
+      {
+        "math_academy_id": "e-21599",
+        "knowledge_point": "Evaluating Laplace Transforms of Real Exponential Functions",
+        "problem": "Find the Laplace transform of $f(t) = e^{-2t}.$",
+        "worked_solution": "For a function $f(t)$ defined on $[0,\\infty),$ the Laplace transform of $f,$ denoted $\\mathcal L\\{f(t)\\}$ or $F(s),$ is a function of the variable $s$ defined as\n\n$$\nF(s) = \\mathcal L \\{f(t)\\} = \n\\int_0^\\infty e^{-st} f(t) \\,\\textrm d t\n$$\n\nprovided that this integral exists and is finite. \n\nFor the function $f(t)=e^{-2t},$ we have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }{e}^{-st}\\cdot {e}^{-2t}\\text{d}t \\\\  & ={\\int }_{0}^{\\infty }{e}^{-st-2t}\\text{d}t \\\\  & ={\\int }_{0}^{\\infty }{e}^{(-2-s)t}\\text{d}t.\\end{aligned}\n$$\n\nWe calculate our integral as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }{e}^{(-2-s)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(-2-s)t}\\text{d}t\\end{aligned}\n$$\n\nTo evaluate the last integral, we must consider whether $s \\neq -2$ or $s = -2.$\n\n- If $s \\neq -2,$ we have\n\n$$\n\\begin{aligned}F(s) & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(-2-s)t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{(\\frac{1}{-2-s}{e}^{(-2-s)t})|}_{0}^{a} \\\\  & =\\frac{1}{-2-s}({lim}_{a\\to \\infty }{e}^{(-2-s)a}-1) \\\\  & =\\frac{1}{s+2}(1-{lim}_{a\\to \\infty }{e}^{(-2-s)a}) \\\\  & =\\frac{1}{s+2}-\\frac{1}{s+2}\\cdot {lim}_{a\\to \\infty }{e}^{(-2-s)a}\\end{aligned}\n$$\n\nLet's evaluate the limit. We have\n\n$$\n\\begin{aligned}{lim}_{a\\to \\infty }{e}^{(-2-s)a}={\\begin{aligned}0,\\, & s>-2, \\\\ \\infty ,\\, & s<-2.\\end{aligned}\\end{aligned}\n$$\n\n- If $s = -2,$ we have\n\n$$\n\\begin{aligned}F(-2) & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{(-2-(-2))t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}{e}^{0t}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}\\text{d}t \\\\  & ={lim}_{a\\to \\infty }t\\,{|}_{0}^{a} \\\\  & ={lim}_{a\\to \\infty }(a-0) \\\\  & ={lim}_{a\\to \\infty }a \\\\  & =\\infty .\\end{aligned}\n$$\n\nTherefore:\n\n- For $s \\leq -2$ the integral is divergent.\n\n- For $s > -2$ the integral is convergent.\n\nEvaluating for $s > -2,$ we have\n\n$$\n\\begin{aligned}F(s) & =\\frac{1}{s+2}-\\frac{1}{s+2}\\cdot {lim}_{a\\to \\infty }{e}^{(-2-s)a} \\\\  & =\\frac{1}{s+2}-\\frac{1}{s+2}\\cdot 0 \\\\  & =\\frac{1}{s+2}.\\end{aligned}\n$$\n\nSo the Laplace transform of $f(t)=e^{-2t}$ is $F(s) =\\dfrac{1}{s+2},$ defined for $s > -2.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14042893/example-21599.png"
+      }
+    ],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}
