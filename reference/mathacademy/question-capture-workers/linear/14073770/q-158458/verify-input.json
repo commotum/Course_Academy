@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "$$\nA=[\\begin{aligned}3 & -6 \\\\ 2 & -4 \\\\ 1 & -2\\end{aligned}],\\,b=[\\begin{aligned}1 \\\\ 2 \\\\ -1\\end{aligned}],\\,W=[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 2\\end{aligned}].\n$$\n\nConsider the matrices $A$ and $W,$ and the vector $b$ shown above. If the general solution for the weighted least-squares problem $W\\,Ax=Wb$ is \n\n$$\n[\\begin{aligned}a \\\\ 0\\end{aligned}]+{x}_{2}[\\begin{aligned}b \\\\ c\\end{aligned}],\\,{x}_{2}\\in R,\n$$\n\nwhat is the value of  $17a+\\frac{b}{c}?$",
+  "worked_solution": "To get the normal equation corresponding to $W\\,Ax=Wb,$ we pre-multiply both sides of the equation by $(W\\,A)^{T}:$\n\n$$\n\\begin{aligned}(W\\,A)^{T}\\cdot W\\,Ax & =(W\\,A)^{T}\\cdot Wb \\\\ {A}^{T}({W}^{T}W)Ax & ={A}^{T}({W}^{T}W)b\\end{aligned}\n$$\n\nNow, since\n\n$$\n{W}^{T}W=[\\begin{aligned}{1}^{2} & 0 & 0 \\\\ 0 & {1}^{2} & 0 \\\\ 0 & 0 & {2}^{2}\\end{aligned}]=[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 4\\end{aligned}],\n$$\n\nour normal equation can be written as follows:\n\n$$\n\\begin{aligned}[\\begin{aligned}3 & 2 & 1 \\\\ -6 & -4 & -2\\end{aligned}][\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 4\\end{aligned}][\\begin{aligned}3 & -6 \\\\ 2 & -4 \\\\ 1 & -2\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}3 & 2 & 1 \\\\ -6 & -4 & -2\\end{aligned}][\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 4\\end{aligned}][\\begin{aligned}1 \\\\ 2 \\\\ -1\\end{aligned}] \\\\ [\\begin{aligned}3 & 2 & 1 \\\\ -6 & -4 & -2\\end{aligned}][\\begin{aligned}3 & -6 \\\\ 2 & -4 \\\\ 4 & -8\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}3 & 2 & 1 \\\\ -6 & -4 & -2\\end{aligned}][\\begin{aligned}1 \\\\ 2 \\\\ -4\\end{aligned}] \\\\ [\\begin{aligned}17 & -34 \\\\ -34 & 68\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}3 \\\\ -6\\end{aligned}]\\end{aligned}\n$$\n\nNow, we solve the system corresponding to the above matrix equation using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}17 & -34 & 3 \\\\ -34 & 68 & -6\\end{aligned}] & {R}_{2}:={R}_{2}+2{R}_{1} \\\\  & \u223c[\\begin{aligned}17 & -34 & 3 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we have \n\n$$\n{x}_{1}=\\frac{3}{17}+2{x}_{2}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{3}{17}+2{x}_{2} \\\\ {x}_{2}\\end{aligned}]=[\\begin{aligned}\\frac{3}{17} \\\\ 0\\end{aligned}]+{x}_{2}[\\begin{aligned}2 \\\\ 1\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nTherefore, we have\n\n$$\n17a+\\frac{b}{c}=17(\\frac{3}{17})+\\frac{2}{1}=5.\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "-17"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "7"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "5"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "4"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{3}{17}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14073770,
+    "task_type": "lesson",
+    "topic_id": 3135,
+    "topic_title": "Weighted Least-Squares",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-158458",
+        "problem": "$$\nA=[\\begin{aligned}3 & -6 \\\\ 2 & -4 \\\\ 1 & -2\\end{aligned}],\\,b=[\\begin{aligned}1 \\\\ 2 \\\\ -1\\end{aligned}],\\,W=[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 2\\end{aligned}].\n$$\n\nConsider the matrices $A$ and $W,$ and the vector $b$ shown above. If the general solution for the weighted least-squares problem $W\\,Ax=Wb$ is \n\n$$\n[\\begin{aligned}a \\\\ 0\\end{aligned}]+{x}_{2}[\\begin{aligned}b \\\\ c\\end{aligned}],\\,{x}_{2}\\in R,\n$$\n\nwhat is the value of  $17a+\\frac{b}{c}?$",
+        "worked_solution": "To get the normal equation corresponding to $W\\,Ax=Wb,$ we pre-multiply both sides of the equation by $(W\\,A)^{T}:$\n\n$$\n\\begin{aligned}(W\\,A)^{T}\\cdot W\\,Ax & =(W\\,A)^{T}\\cdot Wb \\\\ {A}^{T}({W}^{T}W)Ax & ={A}^{T}({W}^{T}W)b\\end{aligned}\n$$\n\nNow, since\n\n$$\n{W}^{T}W=[\\begin{aligned}{1}^{2} & 0 & 0 \\\\ 0 & {1}^{2} & 0 \\\\ 0 & 0 & {2}^{2}\\end{aligned}]=[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 4\\end{aligned}],\n$$\n\nour normal equation can be written as follows:\n\n$$\n\\begin{aligned}[\\begin{aligned}3 & 2 & 1 \\\\ -6 & -4 & -2\\end{aligned}][\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 4\\end{aligned}][\\begin{aligned}3 & -6 \\\\ 2 & -4 \\\\ 1 & -2\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}3 & 2 & 1 \\\\ -6 & -4 & -2\\end{aligned}][\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 4\\end{aligned}][\\begin{aligned}1 \\\\ 2 \\\\ -1\\end{aligned}] \\\\ [\\begin{aligned}3 & 2 & 1 \\\\ -6 & -4 & -2\\end{aligned}][\\begin{aligned}3 & -6 \\\\ 2 & -4 \\\\ 4 & -8\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}3 & 2 & 1 \\\\ -6 & -4 & -2\\end{aligned}][\\begin{aligned}1 \\\\ 2 \\\\ -4\\end{aligned}] \\\\ [\\begin{aligned}17 & -34 \\\\ -34 & 68\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}3 \\\\ -6\\end{aligned}]\\end{aligned}\n$$\n\nNow, we solve the system corresponding to the above matrix equation using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}17 & -34 & 3 \\\\ -34 & 68 & -6\\end{aligned}] & {R}_{2}:={R}_{2}+2{R}_{1} \\\\  & \u223c[\\begin{aligned}17 & -34 & 3 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we have \n\n$$\n{x}_{1}=\\frac{3}{17}+2{x}_{2}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{3}{17}+2{x}_{2} \\\\ {x}_{2}\\end{aligned}]=[\\begin{aligned}\\frac{3}{17} \\\\ 0\\end{aligned}]+{x}_{2}[\\begin{aligned}2 \\\\ 1\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nTherefore, we have\n\n$$\n17a+\\frac{b}{c}=17(\\frac{3}{17})+\\frac{2}{1}=5.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "-17",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
