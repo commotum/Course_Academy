@@ -1,0 +1,6 @@
+[:find (pull ?q [* {:question/difficulty [:db/id :db/ident]}
+ {:knowledge-point/_questions [:knowledge-point/id :knowledge-point/title]}
+ {:knowledge-point/_canonical-example [:knowledge-point/id :knowledge-point/title]}
+ {:question/answer-fields [* {:answer-field/type [:db/ident]}
+ {:answer-field/correct [* {:answer/type [:db/ident]}]}
+ {:answer-field/choices [* {:answer/type [:db/ident]}]}]}]) :in $ [?id ...] :where [?q :question/math-academy-id ?id]]
