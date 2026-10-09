@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following matrices:\n\n$$\nA=[\\begin{aligned}3 & 2 & 3 \\\\ 0 & 5 & -3 \\\\ 0 & 0 & -1\\end{aligned}],\\,D=[\\begin{aligned}3 & 0 & 0 \\\\ 0 & 5 & 0 \\\\ 0 & 0 & -1\\end{aligned}],\\,P=[\\begin{aligned}1 & 1 & \u2217 \\\\ 1 & 0 & \u2217 \\\\ 0 & 0 & \u2217\\end{aligned}]\n$$\n\nGiven that $D={P}^{-1}AP,$ find the third column of the matrix $P.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}-2 \\\\ -1 \\\\ 4\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}-2 \\\\ 1 \\\\ 2\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}-1 \\\\ -1 \\\\ 2\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}-1 \\\\ -2 \\\\ 1\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}2 \\\\ -1 \\\\ 2\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14069769,
+    "task_type": "lesson",
+    "topic_id": 1970,
+    "topic_title": "Diagonalizing a 3x3 Matrix With Distinct Eigenvalues",
+    "examples": [
+      {
+        "math_academy_id": "e-5506",
+        "knowledge_point": "Diagonalizing a Matrix Given Part of the Diagonalization",
+        "problem": "Consider the following matrices:\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14069769/assets/7d992806d0d5b90b65030f8c0080f105f67fbb7b4d3d807c3a719307e0c31e40.png)\nGiven that $D=P^{-1}AP,$ find the first column of the matrix $P.$",
+        "worked_solution": "From the diagonal matrix $D$, we deduce that the eigenvalues of $A$ are  \n\n$\\qquad$ $\\lambda_1=-2, \\quad$ $\\lambda_2=-1, \\quad$ $\\lambda_3=2.$ \n\nSo, the first column of $P$ corresponds to the eigenvalue $\\lambda_1=-2.$\n\nNow, we need to find an eigenvector that corresponds to $\\lambda_1=-2.$ Computing $A-(-2)I,$ we get\n\n$$\n\\begin{aligned}A-{\\lambda }_{1}I & =[\\begin{aligned}-8 & -4 & 6 \\\\ -9 & -7 & 9 \\\\ -16 & -10 & 14\\end{aligned}]-(-2)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}-6 & -4 & 6 \\\\ -9 & -5 & 9 \\\\ -16 & -10 & 16\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ that we reduce to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-6 & -4 & 6 & 0 \\\\ -9 & -5 & 9 & 0 \\\\ -16 & -10 & 16 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-\\frac{3}{2}){R}_{1} \\\\ {R}_{3}:={R}_{3}+(-\\frac{8}{3}){R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-6 & -4 & 6 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & \\frac{2}{3} & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+(-\\frac{2}{3}){R}_{2}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-6 & -4 & 6 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns ($1$st and $2$nd). Thus, $x_3$ is a free variable. From the second equation, we obtain $x_2=0.$ Substituting this into the first equation, we get $x_1=x_3.$\nHence, the general solution is\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14069769/assets/fdf2311a1010ed8e8f25623328171687a63ea5da80f6e18a1a8dfbff9e5fae42.png)\n\nTherefore, setting $x_3=1,$ we get the eigenvector \n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14069769/assets/34e8934a56885ec189cc1819b1336f5b52b7708a092233e3c20e0960218cad10.png)\n\nFinally, ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14069769/assets/ec378af1062dda61e89d060d565ef70bf7593a723bd3cba78dfd86f0d027dc5d.png)",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14069769/example-5506.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-37256",
+        "problem": "Consider the matrix $A,$ given by\n\n$$\nA=[\\begin{aligned}2 & 0 & -6 \\\\ 14 & 3 & 1 \\\\ 3 & 0 & -5\\end{aligned}].\n$$\n\nDetermine whether $A=PD{P}^{-1}$ for some invertible matrix $P$ and a diagonal matrix $D,$ where $P$ and $D$ are both real. In the affirmative case, find a possible diagonal matrix $D.$",
+        "worked_solution": "First, we need to determine whether $D$ is diagonalizable over $R.$\n\nWe start by computing the eigenvalues of $A.$ To do that, we solve the characteristic equation, as follows:\n\n$$\n\\begin{aligned}det(A-\\lambda I) & =0 \\\\ |\\begin{aligned}2-\\lambda  & 0 & -6 \\\\ 14 & 3-\\lambda  & 1 \\\\ 3 & 0 & -5-\\lambda \\end{aligned}| & =0 \\\\ (3-\\lambda )|\\begin{aligned}2-\\lambda  & -6 \\\\ 3 & -5-\\lambda \\end{aligned}| & =0 \\\\ (3-\\lambda )((2-\\lambda )(-5-\\lambda )+18) & =0 \\\\ (3-\\lambda )({\\lambda }^{2}+3\\lambda +8) & =0\\end{aligned}\n$$\n\nFor the quadratic polynomial  $\\,{\\lambda }^{2}+3\\lambda +8\\,$ we have that the discriminant $D<0.$ So, it doesn't have real roots. \n\nTherefore, $A$ is not diagonalizable over $R.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$A$ is not diagonalizable",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
