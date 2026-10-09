@@ -1,0 +1,135 @@
+{
+  "mode": "solve",
+  "problem": "Suppose we wish to solve the initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nand we take a single step of size $\u0394x$ using the Runge-Kutta (RK4) method. Fill in the blanks to complete the weighted-average formula for the increment and the stage definitions, starting at the point $(x,y).$\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{6}({y}^{\u2032}+2{y}_{1}^{\u2032}+2{y}_{2}^{\u2032}+{y}_{3}^{\u2032})\\cdot {{field-1}} \\\\ {y}^{\u2032} & =f(x,y) \\\\ {y}_{1}^{\u2032} & =f({{field-2}},\\,y+\\frac{1}{2}{y}^{\u2032}\\cdot \u0394x) \\\\ {y}_{2}^{\u2032} & =f(x+\\frac{1}{2}\u0394x,\\,{{field-3}}+\\frac{1}{2}{y}_{1}^{\u2032}\\cdot \u0394x) \\\\ {y}_{3}^{\u2032} & =f({{field-4}},\\,y+{y}_{2}^{\u2032}\\cdot \u0394x)\\end{aligned}\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\u0394x"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "(y+\u0394y)"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "(x+\u0394x)"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\u0394x"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "x+\u0394x"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "x+\\frac{1}{2}\u0394x"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "y+\\frac{1}{2}\u0394y"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "x"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\u0394y"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "y"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\u0394x"
+        }
+      ]
+    },
+    {
+      "key": "field-4",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\u0394y"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\u0394x"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "x+\u0394x"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "y+\u0394y"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14042033,
+    "task_type": "lesson",
+    "topic_id": 3248,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-327582",
+        "problem": "Consider the initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(0)=1\n$$\n\nfor some function $f(x,y).$ The table below shows the intermediate quantities computed in the first iteration of the Runge-Kutta (RK4) method.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $4$ | $-2$ | $-1$ | $\\frac{1}{2}$ |  |\n\nGiven that the step size is $\u0394x=\\frac{1}{4},$ at which of the following points is the function $f$ evaluated during this iteration?\n\n- $(\\frac{1}{8},\\frac{3}{2})$\n- $(\\frac{1}{8},\\frac{3}{4})$\n- $(\\frac{1}{2},\\frac{5}{8})$",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c\n$$\n\nthe increment in $y$ using the Runge-Kutta (RK4) method with step size $\u0394x$ is computed as the weighted average of four sample slopes:\n\n$$\n\u0394y=\\frac{1}{6}({y}^{\u2032}+2{y}_{1}^{\u2032}+2{y}_{2}^{\u2032}+{y}_{3}^{\u2032})\\cdot \u0394x,\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the estimated slope at the initial point $(x,y),$\n\n- ${y}_{1}^{\u2032}=f({x}_{1},{y}_{1})$ is the estimated slope at $({x}_{1},{y}_{1})=(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}^{\u2032}\\cdot \u0394x),$\n\n- ${y}_{2}^{\u2032}=f({x}_{2},{y}_{2})$ is the estimated slope at $({x}_{2},{y}_{2})=(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}_{1}^{\u2032}\\cdot \u0394x),$\n\n- ${y}_{3}^{\u2032}=f({x}_{3},{y}_{3})$ is the estimated slope at $({x}_{3},{y}_{3})=(x+\u0394x,\\,y+{y}_{2}^{\u2032}\\cdot \u0394x).$\n\nNow, we have the following table of values:\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $4$ | $-2$ | $-1$ | $\\frac{1}{2}$ |  |\n\nWith this in mind, let's find each point at which the slope is evaluated in turn using the values given in the table.\n\n- The slope ${y}^{\u2032}$ is evaluated at the initial point $(x,y)=({x}_{0},{y}_{0})=(0,1).$\n\n- The estimated slope ${y}_{1}^{\u2032}$ is evaluated at\n\n$$\n\\begin{aligned}({x}_{1},{y}_{1}) & =(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}^{\u2032}\\cdot \u0394x) \\\\  & =(0+\\frac{1}{2}\\cdot \\frac{1}{4},\\,1+\\frac{1}{2}\\cdot 4\\cdot \\frac{1}{4}) \\\\  & =(\\frac{1}{8},\\frac{3}{2}).\\end{aligned}\n$$\n\n- The estimated slope ${y}_{2}^{\u2032}$ is evaluated at\n\n$$\n\\begin{aligned}({x}_{2},{y}_{2}) & =(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}_{1}^{\u2032}\\cdot \u0394x) \\\\  & =(0+\\frac{1}{2}\\cdot \\frac{1}{4},\\,1+\\frac{1}{2}\\cdot (-2)\\cdot \\frac{1}{4}) \\\\  & =(\\frac{1}{8},\\frac{3}{4}).\\end{aligned}\n$$\n\n- The estimated slope ${y}_{3}^{\u2032}$ is evaluated at\n\n$$\n\\begin{aligned}({x}_{3},{y}_{3}) & =(x+\u0394x,\\,y+{y}_{2}^{\u2032}\\cdot \u0394x) \\\\  & =(0+\\frac{1}{4},\\,1+(-1)\\cdot \\frac{1}{4}) \\\\  & =(\\frac{1}{4},\\frac{3}{4}).\\end{aligned}\n$$\n\nTherefore, of the given options, the slope is evaluated at the points \"I and II only\".",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "I and II only",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

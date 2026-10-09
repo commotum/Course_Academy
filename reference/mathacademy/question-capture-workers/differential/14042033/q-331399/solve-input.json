@@ -1,0 +1,48 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=xy+1,\\,y(-1)=0\n$$\n\nWe wish to approximate the solution using the Runge-Kutta (RK4) Method. Complete the first row of the table below, given that the step size is $\u0394x=1.$\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-1$ | $0$ | $1$ | $\\frac{3}{4}$ | $\\frac{13}{16}$ | $1$ | {{field-1}} |\n\nTherefore, $y(0)\u2248$\n{{field-2}}.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14042033,
+    "task_type": "lesson",
+    "topic_id": 3248,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-331396",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=x+2y,\\,y(0)=1\n$$\n\nWe wish to approximate the solution using the Runge-Kutta (RK4) Method. Complete the first row of the table below, given that the step size is $\u0394x=\\frac{1}{2}.$\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ | $\\frac{13}{4}$ | $\\frac{31}{8}$ | $\\frac{51}{8}$ | {{field-1}} |\n\nTherefore, $y\\,(\\frac{1}{2})\u2248$\n{{field-2}}.",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c\n$$\n\nthe increment in $y$ using the Runge-Kutta (RK4) method with step size $\u0394x$ is computed as the weighted average of four sample slopes:\n\n$$\n\u0394y=\\frac{1}{6}({y}^{\u2032}+2{y}_{1}^{\u2032}+2{y}_{2}^{\u2032}+{y}_{3}^{\u2032})\\cdot \u0394x,\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the estimated slope at the initial point $(x,y),$\n\n- ${y}_{1}^{\u2032}=f({x}_{1},{y}_{1})$ is the estimated slope at $({x}_{1},{y}_{1})=(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}^{\u2032}\\cdot \u0394x),$\n\n- ${y}_{2}^{\u2032}=f({x}_{2},{y}_{2})$ is the estimated slope at $({x}_{2},{y}_{2})=(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}_{1}^{\u2032}\\cdot \u0394x),$\n\n- ${y}_{3}^{\u2032}=f({x}_{3},{y}_{3})$ is the estimated slope at $({x}_{3},{y}_{3})=(x+\u0394x,\\,y+{y}_{2}^{\u2032}\\cdot \u0394x).$\n\nAll four sample slopes are already computed. So, we just need to find the increment on $y.$\n\nWe compute $\u0394y$ using the Runge-Kutta method:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{6}({y}^{\u2032}+2{y}_{1}^{\u2032}+2{y}_{2}^{\u2032}+{y}_{3}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{6}(2+2\\cdot \\frac{13}{4}+2\\cdot \\frac{31}{8}+\\frac{51}{8})\\cdot \\frac{1}{2} \\\\  & =\\frac{1}{6}\\cdot \\frac{181}{8}\\cdot \\frac{1}{2} \\\\  & =\\frac{181}{96}.\\end{aligned}\n$$\n\nTherefore, the completed first row is as given below.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ | $\\frac{13}{4}$ | $\\frac{31}{8}$ | $\\frac{51}{8}$ | $\\frac{181}{96}$ |\n\nTo get the values of $x$ and $y$ in the *next* row, we add $\u0394x$ to $x$ and $\u0394y$ to $y,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x \\\\  & =0+\\frac{1}{2} \\\\  & =\\frac{1}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y \\\\  & =1+\\frac{181}{96} \\\\  & =\\frac{277}{96}.\\end{aligned}\n$$\n\nAdding these rows to our table gives the following:\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ | $\\frac{13}{4}$ | $\\frac{31}{8}$ | $\\frac{51}{8}$ | $\\frac{181}{96}$ |\n| $\\frac{1}{2}$ | $\\frac{277}{96}$ |  |  |  |  |  |\n\nFinally, we have\n\n$$\n\\begin{aligned}y\\,(\\frac{1}{2})\u2248\\frac{277}{96}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{181}{96}",
+            "observed_mathquill_latex": "\\frac{181}{96}"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "\\frac{277}{96}",
+            "observed_mathquill_latex": "\\frac{277}{96}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

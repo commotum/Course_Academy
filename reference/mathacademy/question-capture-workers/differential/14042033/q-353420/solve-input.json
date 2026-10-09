@@ -1,0 +1,63 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=3x+1,\\,y(0)=0\n$$\n\nUse the Runge-Kutta (RK4) method with one step to approximate $y(1).$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "\\frac{5}{2}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\frac{15}{8}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "\\frac{5}{4}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "4"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14042033,
+    "task_type": "lesson",
+    "topic_id": 3248,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-353424",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=3x(y-2),\\,y(0)=1\n$$\n\nUse the Runge-Kutta (RK4) method with one step to approximate $y(1).$",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nthe increment in $y$ using the Runge-Kutta Method with step size $\u0394x$ is computed as the weighted average of four sample slopes:\n\n$$\n\u0394y=\\frac{1}{6}({y}^{\u2032}+2{y}_{1}^{\u2032}+2{y}_{2}^{\u2032}+{y}_{3}^{\u2032})\\cdot \u0394x,\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the slope at the initial point $(x,y),$\n\n- ${y}_{1}^{\u2032}=f({x}_{1},{y}_{1})$ is the slope at $({x}_{1},{y}_{1})=(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}^{\u2032}\\cdot \u0394x),$\n\n- ${y}_{2}^{\u2032}=f({x}_{2},{y}_{2})$ is the slope at $({x}_{2},{y}_{2})=(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}_{1}^{\u2032}\\cdot \u0394x),$\n\n- ${y}_{3}^{\u2032}=f({x}_{3},{y}_{3})$ is the slope at $({x}_{3},{y}_{3})=(x+\u0394x,\\,y+{y}_{2}^{\u2032}\\cdot \u0394x).$\n\nSince we want to find the value of $y$ at $x=1,$ we will use a step size of \n\n$$\n\u0394x=1-0=1.\n$$\n\nFirst, we create a table and add the initial condition data.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ |  |  |  |  |  |\n\nNow let's find the required values.\n\n- First, we compute the value of ${y}^{\u2032}$ according to the given rule:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =3x(y-2) \\\\  & =3(0)(1-2) \\\\  & =0.\\end{aligned}\n$$\n\nSo, we add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ |  |  |  |  |\n\n- The first intermediate point is\n\n$$\n\\begin{aligned}({x}_{1},{y}_{1}) & =(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}^{\u2032}\\cdot \u0394x) \\\\  & =(0+\\frac{1}{2}\\cdot 1,\\,1+\\frac{1}{2}\\cdot 0\\cdot 1) \\\\  & =(\\frac{1}{2},1).\\end{aligned}\n$$\n\nSo, the first intermediate slope is\n\n$$\n\\begin{aligned}{y}_{1}^{\u2032} & =3{x}_{1}({y}_{1}-2) \\\\  & =3\\cdot \\frac{1}{2}\\cdot (1-2) \\\\  & =-\\frac{3}{2}.\\end{aligned}\n$$\n\nWe can add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-\\frac{3}{2}$ |  |  |  |\n\n- The second intermediate point is\n\n$$\n\\begin{aligned}({x}_{2},{y}_{2}) & =(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}_{1}^{\u2032}\\cdot \u0394x) \\\\  & =(0+\\frac{1}{2}\\cdot 1,\\,1+\\frac{1}{2}\\cdot \\,(-\\frac{3}{2})\\cdot 1) \\\\  & =(\\frac{1}{2},\\frac{1}{4}).\\end{aligned}\n$$\n\nSo, the second intermediate slope is\n\n$$\n\\begin{aligned}{y}_{2}^{\u2032} & =3{x}_{2}({y}_{2}-2) \\\\  & =3\\cdot \\frac{1}{2}\\cdot (\\frac{1}{4}-2) \\\\  & =-\\frac{21}{8}.\\end{aligned}\n$$\n\nWe add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-\\frac{3}{2}$ | $-\\frac{21}{8}$ |  |  |\n\n- The third intermediate point is\n\n$$\n\\begin{aligned}({x}_{3},{y}_{3}) & =(x+\u0394x,\\,y+{y}_{2}^{\u2032}\\cdot \u0394x) \\\\  & =(0+1,\\,1+(-\\frac{21}{8})\\cdot 1) \\\\  & =(1,-\\frac{13}{8}).\\end{aligned}\n$$\n\nSo, the third intermediate slope is\n\n$$\n\\begin{aligned}{y}_{3}^{\u2032} & =3{x}_{3}({y}_{3}-2) \\\\  & =3(1)(-\\frac{13}{8}-2) \\\\  & =-\\frac{87}{8}.\\end{aligned}\n$$\n\nWe can add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-\\frac{3}{2}$ | $-\\frac{21}{8}$ | $-\\frac{87}{8}$ |  |\n\n- Finally, we compute $\u0394y$ using the Runge-Kutta Method:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{6}({y}^{\u2032}+2{y}_{1}^{\u2032}+2{y}_{2}^{\u2032}+{y}_{3}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{6}(0+2\\cdot \\,(-\\frac{3}{2})+2\\cdot \\,(-\\frac{21}{8})+(-\\frac{87}{8}))\\cdot 1 \\\\  & =\\frac{1}{6}(\\,-\\frac{24}{8}-\\frac{42}{8}-\\frac{87}{8}) \\\\  & =\\frac{1}{6}\\cdot \\,(-\\frac{153}{8}) \\\\  & =-\\frac{51}{16}.\\end{aligned}\n$$\n\nWe add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-\\frac{3}{2}$ | $-\\frac{21}{8}$ | $-\\frac{87}{8}$ | $-\\frac{51}{16}$ |\n\nTo get the values of $x$ and $y$ in the *next* row, we add $\u0394x$ to $x$ and $\u0394y$ to $y,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x \\\\  & =0+1 \\\\  & =1 \\\\ {y}_{\\text{new}} & =y+\u0394y \\\\  & =1+(-\\frac{51}{16}) \\\\  & =-\\frac{35}{16}\\end{aligned}\n$$\n\nAdding these rows to our table gives the following:\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-\\frac{3}{2}$ | $-\\frac{21}{8}$ | $-\\frac{87}{8}$ | $-\\frac{51}{16}$ |\n| $1$ | $-\\frac{35}{16}$ |  |  |  |  |  |\n\nTherefore, we conclude that $y(1)\u2248-\\frac{35}{16}.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "-\\frac{35}{16}",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
