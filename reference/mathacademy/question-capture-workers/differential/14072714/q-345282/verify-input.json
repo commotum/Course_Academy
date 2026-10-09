@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following differential equation.\n\n$$\n6{x}^{2}{y}^{\u2033}+x{y}^{\u2032}+(6x+1)y=0\n$$\n\nWhich of the following is a Frobenius series solution to the differential equation, where ${a}_{n}$ for $n=0,1,2,\u2026$ are constants determined by substitution?\n\n*Hint: Substituting a trial Frobenius series solution into each term of the ODE, we obtain*\n\n$$\n\\begin{aligned}6{x}^{2}{y}^{\u2033} & =6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }6((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ x{y}^{\u2032} & =\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n}, \\\\ (6x+1)y & ={a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(6{a}_{n-1}+{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$",
+  "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}6{x}^{2}{y}^{\u2033} & =6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }6((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ x{y}^{\u2032} & =\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n} \\\\ (6x+1)y & ={a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(6{a}_{n-1}+{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+\\lambda {a}_{0}{x}^{\\lambda }+{a}_{0}{x}^{\\lambda } & = \\\\ (6{\\lambda }^{2}-6\\lambda +\\lambda +1){a}_{0}{x}^{\\lambda } & = \\\\ (6{\\lambda }^{2}-5\\lambda +1){a}_{0}{x}^{\\lambda } & .\\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we obtain an infinite series of the form\n${x}^{\\lambda }{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n},$\nfor some ${b}_{n}(\\lambda ),$ $n\\ge 1.$\nTherefore, substituting into the homogeneous ODE, we have\n\n$$\n\\begin{aligned}(6{\\lambda }^{2}-5\\lambda +1){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0 \\\\ (6{\\lambda }^{2}-5\\lambda +1){a}_{0}+{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficient of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(6{\\lambda }^{2}-5\\lambda +1){a}_{0} & =0 \\\\ 6{\\lambda }^{2}-5\\lambda +1 & =0\\end{aligned}\n$$\n\nNow, we can determine a solution. Solving the indicial equation for the roots, we get\n\n$$\n\\begin{aligned}6{\\lambda }^{2}-5\\lambda +1 & =0 \\\\ (3\\lambda -1)(2\\lambda -1) & =0 \\\\ \\lambda  & =\\frac{1}{2},\\frac{1}{3}\\end{aligned}\n$$\n\nTherefore, the two Frobenius series solutions are\n\n$$\n\\begin{aligned}y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+1/2}\\,\\text{and}\\,y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+1/3},\\end{aligned}\n$$\n\nwhere the constants ${a}_{n}$ are to be determined separately in each of the two cases.\n\nOf the given options, the correct answer is\n$y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+1/3}.$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+2/3}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+1/3}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n-2/3}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n-1/3}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n-1/2}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072714,
+    "task_type": "review",
+    "topic_id": 2523,
+    "topic_title": "The Method of Frobenius",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-345282",
+        "problem": "Consider the following differential equation.\n\n$$\n6{x}^{2}{y}^{\u2033}+x{y}^{\u2032}+(6x+1)y=0\n$$\n\nWhich of the following is a Frobenius series solution to the differential equation, where ${a}_{n}$ for $n=0,1,2,\u2026$ are constants determined by substitution?\n\n*Hint: Substituting a trial Frobenius series solution into each term of the ODE, we obtain*\n\n$$\n\\begin{aligned}6{x}^{2}{y}^{\u2033} & =6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }6((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ x{y}^{\u2032} & =\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n}, \\\\ (6x+1)y & ={a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(6{a}_{n-1}+{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$",
+        "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}6{x}^{2}{y}^{\u2033} & =6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }6((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ x{y}^{\u2032} & =\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n} \\\\ (6x+1)y & ={a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(6{a}_{n-1}+{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+\\lambda {a}_{0}{x}^{\\lambda }+{a}_{0}{x}^{\\lambda } & = \\\\ (6{\\lambda }^{2}-6\\lambda +\\lambda +1){a}_{0}{x}^{\\lambda } & = \\\\ (6{\\lambda }^{2}-5\\lambda +1){a}_{0}{x}^{\\lambda } & .\\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we obtain an infinite series of the form\n${x}^{\\lambda }{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n},$\nfor some ${b}_{n}(\\lambda ),$ $n\\ge 1.$\nTherefore, substituting into the homogeneous ODE, we have\n\n$$\n\\begin{aligned}(6{\\lambda }^{2}-5\\lambda +1){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0 \\\\ (6{\\lambda }^{2}-5\\lambda +1){a}_{0}+{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficient of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(6{\\lambda }^{2}-5\\lambda +1){a}_{0} & =0 \\\\ 6{\\lambda }^{2}-5\\lambda +1 & =0\\end{aligned}\n$$\n\nNow, we can determine a solution. Solving the indicial equation for the roots, we get\n\n$$\n\\begin{aligned}6{\\lambda }^{2}-5\\lambda +1 & =0 \\\\ (3\\lambda -1)(2\\lambda -1) & =0 \\\\ \\lambda  & =\\frac{1}{2},\\frac{1}{3}\\end{aligned}\n$$\n\nTherefore, the two Frobenius series solutions are\n\n$$\n\\begin{aligned}y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+1/2}\\,\\text{and}\\,y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+1/3},\\end{aligned}\n$$\n\nwhere the constants ${a}_{n}$ are to be determined separately in each of the two cases.\n\nOf the given options, the correct answer is\n$y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+1/3}.$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+2/3}",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

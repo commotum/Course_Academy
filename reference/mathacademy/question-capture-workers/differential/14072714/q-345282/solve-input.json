@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following differential equation.\n\n$$\n6{x}^{2}{y}^{\u2033}+x{y}^{\u2032}+(6x+1)y=0\n$$\n\nWhich of the following is a Frobenius series solution to the differential equation, where ${a}_{n}$ for $n=0,1,2,\u2026$ are constants determined by substitution?\n\n*Hint: Substituting a trial Frobenius series solution into each term of the ODE, we obtain*\n\n$$\n\\begin{aligned}6{x}^{2}{y}^{\u2033} & =6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }6((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ x{y}^{\u2032} & =\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n}, \\\\ (6x+1)y & ={a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(6{a}_{n-1}+{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+2/3}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n+1/3}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n-2/3}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n-1/3}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "y(x)={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n-1/2}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072714,
+    "task_type": "review",
+    "topic_id": 2523,
+    "topic_title": "The Method of Frobenius",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-345275",
+        "problem": "$$\n2{x}^{2}{y}^{\u2033}-11x{y}^{\u2032}-(x-4)y=0\n$$\n\nFind the indicial equation for a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.",
+        "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain: \n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\n**Step 1**: Write the solution $y$ as a Frobenius power series:\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{\\lambda +n}\n$$\n\n**Step 2**: Compute the derivatives ${y}^{\u2032}$ and ${y}^{\u2033}:$\n\n$$\n\\begin{aligned}{y}^{\u2032} & ={\\sum }_{n=0}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n-1}, \\\\ {y}^{\u2033} & ={\\sum }_{n=0}^{\\infty }(\\lambda +n-1)(\\lambda +n){a}_{n}{x}^{\\lambda +n-2}\\end{aligned}\n$$\n\n**Step 3**: Rewrite all the series so that they use the same index of summation.\n\nThe terms of the differential equation are\n\n$$\n\\begin{aligned}2{x}^{2}{y}^{\u2033} & =2{x}^{2}\\cdot {\\sum }_{n=0}^{\\infty }(\\lambda +n-1)(\\lambda +n){a}_{n}{x}^{\\lambda +n-2} \\\\  & ={\\sum }_{n=0}^{\\infty }2((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ -11x{y}^{\u2032} & =-11x\\cdot {\\sum }_{n=0}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\  & =-{\\sum }_{n=0}^{\\infty }11(\\lambda +n){a}_{n}{x}^{\\lambda +n}, \\\\ -(x-4)y & =-(x-4){\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{\\lambda +n} \\\\  & =-{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{\\lambda +n+1}+{\\sum }_{n=0}^{\\infty }4{a}_{n}{x}^{\\lambda +n}.\\end{aligned}\n$$\n\nIn the first sum of the $y$ term, we change the index of the summation by writing $m=n+1.$ This gives\n\n$$\n-(x-4)y=-{\\sum }_{m=1}^{\\infty }{a}_{m-1}{x}^{\\lambda +m}+{\\sum }_{n=0}^{\\infty }4{a}_{n}{x}^{\\lambda +n}.\n$$\n\nThen, replacing $m$ with $n$ (since it does not matter which letter we use) and isolating the $n=0$ term gives\n\n$$\n-(x-4)y=-{\\sum }_{n=1}^{\\infty }{a}_{n-1}{x}^{\\lambda +n}+4{a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }4{a}_{n}{x}^{\\lambda +n}.\n$$\n\nSimilarly, isolating the $n=0$ terms for the other terms in the ODE, we have\n\n$$\n\\begin{aligned}2{x}^{2}{y}^{\u2033} & =2({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }2((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ -11x{y}^{\u2032} & =-11\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }-11(\\lambda +n){a}_{n}{x}^{\\lambda +n}.\\end{aligned}\n$$\n\n**Step 4**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}2({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }-11\\lambda {a}_{0}{x}^{\\lambda }+4{a}_{0}{x}^{\\lambda } & = \\\\ (2{\\lambda }^{2}-2\\lambda -11\\lambda +4){a}_{0}{x}^{\\lambda } & = \\\\ (2{\\lambda }^{2}-13\\lambda +4){a}_{0}{x}^{\\lambda }. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we obtain an infinite series of the form\n${x}^{\\lambda }{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n},$\nfor some ${b}_{n}(\\lambda ),$ $n\\ge 1.$\nTherefore, substituting into the homogeneous ODE, we have\n\n$$\n\\begin{aligned}(2{\\lambda }^{2}-13\\lambda +4){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0 \\\\ (2{\\lambda }^{2}-13\\lambda +4){a}_{0}+{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 5**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficient of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(2{\\lambda }^{2}-13\\lambda +4){a}_{0} & =0 \\\\ 2{\\lambda }^{2}-13\\lambda +4 & =0\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "2{\\lambda }^{2}-13\\lambda +4=0",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

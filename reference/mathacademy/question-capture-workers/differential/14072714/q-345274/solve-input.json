@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "$$\n-7{x}^{2}{y}^{\u2033}+2x{y}^{\u2032}+(x-5)y=0\n$$\n\nFind the indicial equation for a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "9{\\lambda }^{2}-7\\lambda +5=0"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "7{\\lambda }^{2}-9\\lambda -5=0"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "7{\\lambda }^{2}+9\\lambda +5=0"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{\\lambda }^{2}-9\\lambda +7=0"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "7{\\lambda }^{2}-9\\lambda +5=0"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072714,
+    "task_type": "review",
+    "topic_id": 2523,
+    "topic_title": "The Method of Frobenius",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-345179",
+        "problem": "$$\n8x{y}^{\u2033}-2{y}^{\u2032}+y=0\n$$\n\nFind the indicial equation for a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.",
+        "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain: \n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\n**Step 1**: Write the solution $y$ as a Frobenius power series:\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{\\lambda +n}\n$$\n\n**Step 2**: Compute the derivatives ${y}^{\u2032}$ and ${y}^{\u2033}:$\n\n$$\n\\begin{aligned}{y}^{\u2032} & ={({\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{\\lambda +n})}^{\u2032}={\\sum }_{n=0}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ {y}^{\u2033} & ={({\\sum }_{n=0}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n-1})}^{\u2032}={\\sum }_{n=0}^{\\infty }(\\lambda +n-1)(\\lambda +n){a}_{n}{x}^{\\lambda +n-2}\\end{aligned}\n$$\n\n**Step 3**: Rewrite all the series in the equation so that they use the same index of summation, the powers of $x$ are the same, and the indices start at the same value.\n\nThe terms of the differential equation are\n\n$$\n\\begin{aligned}8x{y}^{\u2033} & =8x\\cdot {\\sum }_{n=0}^{\\infty }(\\lambda +n-1)(\\lambda +n){a}_{n}{x}^{\\lambda +n-2} \\\\  & ={\\sum }_{n=0}^{\\infty }8((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ -2{y}^{\u2032} & =-2\\cdot {\\sum }_{n=0}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\  & =-{\\sum }_{n=0}^{\\infty }2(\\lambda +n){a}_{n}{x}^{\\lambda +n-1}, \\\\ y & ={\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{\\lambda +n}.\\end{aligned}\n$$\n\nIn the $y$ term, we change the index of the summation by writing $n=m-1.$ This gives\n\n$$\ny={\\sum }_{m=1}^{\\infty }{a}_{m-1}{x}^{\\lambda +m-1}.\n$$\n\nThen, replacing $m$ with $n$ (since it does not matter which letter we use) gives\n\n$$\ny={\\sum }_{n=1}^{\\infty }{a}_{n-1}{x}^{\\lambda +n-1}.\n$$\n\nNow, isolating the $n=0$ terms for the other terms in the ODE, we have\n\n$$\n\\begin{aligned}8x{y}^{\u2033} & =8({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }8((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ -2{y}^{\u2032} & =-2\\lambda {a}_{0}{x}^{\\lambda -1}-{\\sum }_{n=1}^{\\infty }2(\\lambda +n){a}_{n}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\n**Step 4**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}8({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}-2\\lambda {a}_{0}{x}^{\\lambda -1} & = \\\\ (8{\\lambda }^{2}-8\\lambda -2\\lambda ){a}_{0}{x}^{\\lambda -1} & = \\\\ (8{\\lambda }^{2}-10\\lambda ){a}_{0}{x}^{\\lambda -1}. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we obtain an infinite series of the form ${x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n},$ for some ${b}_{n}(\\lambda ),$ $n\\ge 1.$\nTherefore, substituting into the homogeneous ODE, we have\n\n$$\n\\begin{aligned}(8{\\lambda }^{2}-10\\lambda ){a}_{0}{x}^{\\lambda -1}+{x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0 \\\\ 2(4{\\lambda }^{2}-5\\lambda ){a}_{0}+{\\sum }_{n=1}^{\\infty }{b}_{n}(\\lambda ){x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 5**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}2(4{\\lambda }^{2}-5\\lambda ){a}_{0} & =0 \\\\ 4{\\lambda }^{2}-5\\lambda  & =0\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "4{\\lambda }^{2}-5\\lambda =0",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
