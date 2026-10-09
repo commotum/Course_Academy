@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}7 & -6 & 6 \\\\ 6 & -5 & 6 \\\\ -3 & 3 & -2\\end{aligned}],\\,{v}_{1}=[\\begin{aligned}a \\\\ 1 \\\\ 0\\end{aligned}],\\,{v}_{2}=[\\begin{aligned}b \\\\ 0 \\\\ 1\\end{aligned}]\n$$\n\nConsider the matrix $A$ and vectors ${v}_{1},{v}_{2}$ shown above.\nIf ${v}_{1}$ and ${v}_{2}$ are two linearly independent eigenvectors corresponding to the eigenvalue $\\lambda =1,$ what is the value of $a+b?$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-3"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "-1"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "0"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14069717,
+    "task_type": "lesson",
+    "topic_id": 1965,
+    "topic_title": "Calculating the Eigenvectors of a 3x3 Matrix in the General Case",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-37585",
+        "problem": "$$\nA=[\\begin{aligned}1 & 2 & -2 \\\\ 0 & 5 & -4 \\\\ 0 & 2 & -1\\end{aligned}],\\,{v}_{1}=[\\begin{aligned}0 \\\\ 1 \\\\ a\\end{aligned}],\\,{v}_{2}=[\\begin{aligned}1 \\\\ b \\\\ 0\\end{aligned}]\n$$\n\nConsider the matrix $A$ and vectors ${v}_{1},{v}_{2}$ shown above.\nIf ${v}_{1}$ and ${v}_{2}$ are two linearly independent eigenvectors corresponding to the eigenvalue $\\lambda =1,$ what is the value of $a+b?$",
+        "worked_solution": "To compute the eigenvectors of a matrix, we need to find non-zero solutions of the matrix equation \n\n$$\n(A-\\lambda I)\\text{x}=0.\n$$\n\n \n\nIn our case, we have $\\lambda =1.$ So, we get \n\n$$\n\\begin{aligned}A-\\lambda I & =[\\begin{aligned}1 & 2 & -2 \\\\ 0 & 5 & -4 \\\\ 0 & 2 & -1\\end{aligned}]-1[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}0 & 2 & -2 \\\\ 0 & 4 & -4 \\\\ 0 & 2 & -2\\end{aligned}].\\end{aligned}\n$$\n\nTo find the eigenvectors, we have to solve the corresponding homogeneous system of linear equations:\n\n$$\n{\\begin{aligned}2{x}_{2}-2{x}_{3}=0 \\\\ 4{x}_{2}-4{x}_{3}=0 \\\\ 2{x}_{2}-2{x}_{3}=0\\end{aligned}\n$$\n\nSo, we row-reduce the augmented matrix $M$ to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}0 & 2 & -2 & 0 \\\\ 0 & 4 & -4 & 0 \\\\ 0 & 2 & -2 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=\\frac{1}{2}{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}0 & 1 & -1 & 0 \\\\ 0 & 4 & -4 & 0 \\\\ 0 & 2 & -2 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-4){R}_{1} \\\\ {R}_{3}:={R}_{3}+(-2){R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}0 & 1 & -1 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nIn the reduced matrix above, there is one pivot column (the $2$nd one). Thus, ${x}_{1}$ and ${x}_{3}$ are free variables. On the other hand, from the first equation, we obtain ${x}_{2}={x}_{3}.$ \n\nHence, the general solution is\n\n$$\n[\\begin{aligned}{x}_{1} \\\\ {x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{1},{x}_{3}\\in R.\n$$\n\nWe now deduce the eigenvectors ${v}_{1}$ and ${v}_{2}:$\n\n- Since ${v}_{1}=[\\begin{aligned}0 \\\\ 1 \\\\ a\\end{aligned}],$ we must have that ${x}_{1}=0$ and ${x}_{3}=1.$ As a result, $a=1.$\n\n- Since ${v}_{2}=[\\begin{aligned}1 \\\\ b \\\\ 0\\end{aligned}],$ we must have that ${x}_{1}=1$ and ${x}_{3}=0.$ As a result, $b=0.$\n\nTherefore, $a+b=1+0=1.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "1",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
