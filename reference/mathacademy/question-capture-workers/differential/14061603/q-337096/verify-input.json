@@ -1,0 +1,92 @@
+{
+  "mode": "verify",
+  "problem": "Consider the inexact differential equation\n\n$$\n(\\frac{6{y}^{2}}{x}+4{y}^{3})\\,\\text{d}x+(4y+3x{y}^{2}+\\frac{1}{{x}^{3}})\\,\\text{d}y=0.\n$$\n\nIt is known that \n\n$$\n\\frac{1}{Q}(\\frac{\u2202P}{\u2202y}-\\frac{\u2202Q}{\u2202x})=\\frac{3}{x}\n$$\n\nwhere the functions $P$ and $Q$ are given by \n\n$$\nP(x,y)=\\frac{6{y}^{2}}{x}+4{y}^{3},\\,Q(x,y)=4y+3x{y}^{2}+\\frac{1}{{x}^{3}}.\n$$\n\nUse this information to find a suitable integrating factor $I(x)$ and hence find the general solution to the equation.\n\n$\\,$ A suitable integrating factor is $I(x)=$ {{field-1}}.\n\n$\\,$ The general solution is {{field-2}}, where $c$ is a constant.",
+  "worked_solution": "For a differential equation of the form\n\n$$\nP(x,y)\\,\\text{d}x+Q(x,y)\\,\\text{d}y=0,\n$$\n\nwe have that if\n\n$$\n\\frac{1}{Q}(\\frac{\u2202P}{\u2202y}-\\frac{\u2202Q}{\u2202x})=g(x)\n$$\n\nwhere $g(x)$ is independent of $y,$ then an integrating factor for the equation is\n\n$$\nI(x)=\\operatorname{exp}\u2061(\\int g(x)\\,\\text{d}x)\n$$\n\nwhere $\\operatorname{exp}\u2061(x)$ denotes the exponential function ${e}^{x}.$\n\nWe are given that \n\n$$\n\\frac{1}{Q}(\\frac{\u2202P}{\u2202y}-\\frac{\u2202Q}{\u2202x})=\\frac{3}{x}.\n$$\n\nSince $\\frac{3}{x}$ is a function of $x$ only, we can conclude that the integrating factor for the equation is \n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int 3{x}^{-1}\\text{\u00a0}\\text{d}x} \\\\  & ={e}^{3\\operatorname{ln}\u2061x} \\\\  & ={x}^{3}.\\end{aligned}\n$$\n\nMultiplying our equation by the integrating factor, we arrive at the following exact differential equation:\n\n$$\n\\begin{aligned}{x}^{3}[(\\frac{6{y}^{2}}{x}+4{y}^{3})\\,\\text{d}x+(4y+3x{y}^{2}+\\frac{1}{{x}^{3}})\\,\\text{d}y] & =0 \\\\ {{(6{x}^{2}{y}^{2}+4{x}^{3}{y}^{3})}_{\u23df}}_{\\overset{~}{P}}\\,\\text{d}x+{{(4{x}^{3}y+3{x}^{4}{y}^{2}+1)}_{\u23df}}_{\\overset{~}{Q}}\\,\\text{d}y & =0\\end{aligned}\n$$\n\nFor this exact equation, we have\n\n$$\n\\overset{~}{P}(x,y)=6{x}^{2}{y}^{2}+4{x}^{3}{y}^{3},\\,\\overset{~}{Q}(x,y)=4{x}^{3}y+3{x}^{4}{y}^{2}+1.\n$$\n\nTo solve the equation, let's first integrate $\\overset{~}{P}(x,y)$ with respect to $x.$\nThe result should include an arbitrary function of $y,$ which we'll call $F(y):$\n\n$$\n\\begin{aligned}u(x,y) & =\\int \\overset{~}{P}(x,y)\\,\\text{d}x+F(y) \\\\  & =\\int (6{x}^{2}{y}^{2}+4{x}^{3}{y}^{3})\\,\\text{d}x+F(y) \\\\  & =2{x}^{3}{y}^{2}+{x}^{4}{y}^{3}+F(y).\\end{aligned}\n$$\n\nNext, let's integrate $\\overset{~}{Q}(x,y)$ with respect to $y.$\nThe result should include an arbitrary function of $x,$ which we'll call $G(x):$\n\n$$\n\\begin{aligned}u(x,y) & =\\int \\overset{~}{Q}(x,y)\\,\\text{d}y+G(x) \\\\  & =\\int (4{x}^{3}y+3{x}^{4}{y}^{2}+1)\\,\\text{d}y+G(x) \\\\  & =2{x}^{3}{y}^{2}+{x}^{4}{y}^{3}+y+G(x).\\end{aligned}\n$$\n\nComparing the two solutions, we must have\n\n$$\nF(y)=y,\\,G(x)=0.\n$$\n\nTherefore, the general solution $u(x,y)=c$ is\n\n$$\n2{x}^{3}{y}^{2}+{x}^{4}{y}^{3}+y=c.\n$$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{e}^{3x}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "{x}^{2}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "{x}^{3}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{3}{x}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "2{x}^{2}{y}^{4}+3{x}^{2}{y}^{2}+xy=c"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "{x}^{2}{y}^{2}+x{y}^{2}+xy=c"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "{x}^{3}{y}^{3}+2x{y}^{2}+y=c"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "{x}^{4}{y}^{3}+2{x}^{3}{y}^{2}+y=c"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14061603,
+    "task_type": "lesson",
+    "topic_id": 6353,
+    "topic_title": "Solving Exact ODEs Using Integrating Factors",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-337096",
+        "problem": "Consider the inexact differential equation\n\n$$\n(\\frac{6{y}^{2}}{x}+4{y}^{3})\\,\\text{d}x+(4y+3x{y}^{2}+\\frac{1}{{x}^{3}})\\,\\text{d}y=0.\n$$\n\nIt is known that \n\n$$\n\\frac{1}{Q}(\\frac{\u2202P}{\u2202y}-\\frac{\u2202Q}{\u2202x})=\\frac{3}{x}\n$$\n\nwhere the functions $P$ and $Q$ are given by \n\n$$\nP(x,y)=\\frac{6{y}^{2}}{x}+4{y}^{3},\\,Q(x,y)=4y+3x{y}^{2}+\\frac{1}{{x}^{3}}.\n$$\n\nUse this information to find a suitable integrating factor $I(x)$ and hence find the general solution to the equation.\n\n$\\,$ A suitable integrating factor is $I(x)=$ {{field-1}}.\n\n$\\,$ The general solution is {{field-2}}, where $c$ is a constant.",
+        "worked_solution": "For a differential equation of the form\n\n$$\nP(x,y)\\,\\text{d}x+Q(x,y)\\,\\text{d}y=0,\n$$\n\nwe have that if\n\n$$\n\\frac{1}{Q}(\\frac{\u2202P}{\u2202y}-\\frac{\u2202Q}{\u2202x})=g(x)\n$$\n\nwhere $g(x)$ is independent of $y,$ then an integrating factor for the equation is\n\n$$\nI(x)=\\operatorname{exp}\u2061(\\int g(x)\\,\\text{d}x)\n$$\n\nwhere $\\operatorname{exp}\u2061(x)$ denotes the exponential function ${e}^{x}.$\n\nWe are given that \n\n$$\n\\frac{1}{Q}(\\frac{\u2202P}{\u2202y}-\\frac{\u2202Q}{\u2202x})=\\frac{3}{x}.\n$$\n\nSince $\\frac{3}{x}$ is a function of $x$ only, we can conclude that the integrating factor for the equation is \n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int 3{x}^{-1}\\text{\u00a0}\\text{d}x} \\\\  & ={e}^{3\\operatorname{ln}\u2061x} \\\\  & ={x}^{3}.\\end{aligned}\n$$\n\nMultiplying our equation by the integrating factor, we arrive at the following exact differential equation:\n\n$$\n\\begin{aligned}{x}^{3}[(\\frac{6{y}^{2}}{x}+4{y}^{3})\\,\\text{d}x+(4y+3x{y}^{2}+\\frac{1}{{x}^{3}})\\,\\text{d}y] & =0 \\\\ {{(6{x}^{2}{y}^{2}+4{x}^{3}{y}^{3})}_{\u23df}}_{\\overset{~}{P}}\\,\\text{d}x+{{(4{x}^{3}y+3{x}^{4}{y}^{2}+1)}_{\u23df}}_{\\overset{~}{Q}}\\,\\text{d}y & =0\\end{aligned}\n$$\n\nFor this exact equation, we have\n\n$$\n\\overset{~}{P}(x,y)=6{x}^{2}{y}^{2}+4{x}^{3}{y}^{3},\\,\\overset{~}{Q}(x,y)=4{x}^{3}y+3{x}^{4}{y}^{2}+1.\n$$\n\nTo solve the equation, let's first integrate $\\overset{~}{P}(x,y)$ with respect to $x.$\nThe result should include an arbitrary function of $y,$ which we'll call $F(y):$\n\n$$\n\\begin{aligned}u(x,y) & =\\int \\overset{~}{P}(x,y)\\,\\text{d}x+F(y) \\\\  & =\\int (6{x}^{2}{y}^{2}+4{x}^{3}{y}^{3})\\,\\text{d}x+F(y) \\\\  & =2{x}^{3}{y}^{2}+{x}^{4}{y}^{3}+F(y).\\end{aligned}\n$$\n\nNext, let's integrate $\\overset{~}{Q}(x,y)$ with respect to $y.$\nThe result should include an arbitrary function of $x,$ which we'll call $G(x):$\n\n$$\n\\begin{aligned}u(x,y) & =\\int \\overset{~}{Q}(x,y)\\,\\text{d}y+G(x) \\\\  & =\\int (4{x}^{3}y+3{x}^{4}{y}^{2}+1)\\,\\text{d}y+G(x) \\\\  & =2{x}^{3}{y}^{2}+{x}^{4}{y}^{3}+y+G(x).\\end{aligned}\n$$\n\nComparing the two solutions, we must have\n\n$$\nF(y)=y,\\,G(x)=0.\n$$\n\nTherefore, the general solution $u(x,y)=c$ is\n\n$$\n2{x}^{3}{y}^{2}+{x}^{4}{y}^{3}+y=c.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "{x}^{2}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "{x}^{4}{y}^{3}+2{x}^{3}{y}^{2}+y=c",
+            "submitted_option": "3"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
