@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${100}^{\u2218}C,$ calculate the temperature of the coffee after $6$ minutes. Round your answer to the nearest integer.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{83}^{\u2218}\\text{C}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{77}^{\u2218}\\text{C}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{81}^{\u2218}\\text{C}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{85}^{\u2218}\\text{C}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{79}^{\u2218}\\text{C}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14066127,
+    "task_type": "review",
+    "topic_id": 649,
+    "topic_title": "Inhibited Decay Models With First-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-15384",
+        "problem": "A thermometer is placed into a water bath and displays a reading of ${50}^{\u2218}C.$ The thermometer is then transferred to a ${10}^{\u2218}C$ water bath, and its reading begins to decrease. After $5$ minutes, the thermometer reading is ${40}^{\u2218}C.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${30}^{\u2218}C?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the thermometer was transferred into the ${10}^{\u2218}C$ water bath.*",
+        "worked_solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={10}^{\u2218}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-10).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-10} & =-k\\,dt \\\\ \\int \\frac{dT}{T-10} & =-k\\int dt \\\\ \\operatorname{ln}\u2061|T-10| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-10>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-10 & ={e}^{-kt+C} \\\\ T-10 & ={e}^{C}{e}^{-kt} \\\\ T-10 & =K{e}^{-kt} \\\\ T & =10+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${50}^{\u2218}C.$ So, we apply the initial condition $T(0)=50,$ and solve for $K:$\n\n$$\n\\begin{aligned}50 & =10+K{e}^{0} \\\\ 50 & =10+K \\\\ K & =40\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=10+40{e}^{-kt}\n$$\n\nWe're also told that, after $5$ minutes, the thermometer reading is ${40}^{\u2218}C.$ So, applying the condition $T(5)=40,$ we can solve for $k:$\n\n$$\n\\begin{aligned}40 & =10+40{e}^{-5k} \\\\ 30 & =40{e}^{-5k} \\\\ \\frac{3}{4} & ={e}^{-5k} \\\\ \\operatorname{ln}\u2061(\\frac{3}{4}) & =-5k \\\\ k & =-\\frac{1}{5}\\operatorname{ln}\u2061(\\frac{3}{4})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the thermometer reads ${30}^{\u2218}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =30 \\\\ 10+40{e}^{-k{t}_{1}} & =30 \\\\ 40{e}^{-k{t}_{1}} & =20 \\\\ {e}^{-k{t}_{1}} & =\\frac{1}{2} \\\\ -k{t}_{1} & =\\operatorname{ln}\u2061(\\frac{1}{2}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}\u2061(\\frac{1}{2}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the thermometer will read ${30}^{\u2218}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}\u2061(\\frac{1}{2})}{-\\frac{1}{5}\\operatorname{ln}\u2061(\\frac{3}{4})}\u224812\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "12\\,\\text{min}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
