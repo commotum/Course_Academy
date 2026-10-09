@@ -8,12 +8,13 @@ SOURCE_ANSWER = 'revealed-ma-answer-v1'
 
 def binding(item, *, feedback=False):
     # Restored pages may shuffle letters/order. Bind to the actual values and roles.
+    from core import normalize
     fields = sorted([{'key': f['key'], 'type': f['type'], 'tag': f.get('tag'),
-                      'choices': sorted((c['type'], c['value']) for c in f.get('choices', []))}
+                      'choices': sorted((c['type'], normalize(c['value'], c['type'])) for c in f.get('choices', []))}
                      for f in item.get('fields', [])], key=lambda f: f['key'])
-    source = {'problem': item.get('source_problem', item.get('problem', '')), 'fields': fields}
+    source = {'problem': normalize(' '.join(item.get('source_problem', item.get('problem', '')).split()), 'text'), 'fields': fields}
     if feedback:
-        source['worked_solution'] = item.get('worked_solution', '')
+        source['worked_solution'] = normalize(' '.join(item.get('worked_solution', '').split()), 'text')
     return hashlib.sha256(json.dumps(source, sort_keys=True).encode()).hexdigest()
 
 

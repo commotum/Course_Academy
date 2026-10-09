@@ -293,7 +293,7 @@ def validation_names(files, regression, result):
     """Keep routine repairs fast; broaden validation for broad changes."""
     if result.get('validation')=='full' or len(files)>=3:
         return 'discover'
-    names={regression,'test_capture.PolicyTests','test_capture.RunnerTests'}
+    names={regression,'test_capture.PolicyTests','test_capture.RunnerTests','test_answer_recovery'}
     relevant={'browser.py':('test_unfinished_recovery','test_fast_recovery'),
               'assessment.py':('test_assessment.AssessmentPolicyTests',),
               'multistep.py':('test_multistep.MultistepRunnerTests',),

@@ -178,6 +178,18 @@ class AnswerRecoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'uncertain'):
             Solver.validate(dict(item,diagnostic_policy={'mode':'other'}),result)
 
+    def test_equivalent_formatting_reuses_recovery_but_changed_math_does_not(self):
+        case=CASES[0];_,directory,_,item=self.setup_case(case)
+        result=self.recover(case,directory,item)
+        formatted=copy.deepcopy(item)
+        formatted['problem']='  '+formatted['problem'].replace(' ', '  ')+'\n'
+        chosen=next(c for c in formatted['fields'][0]['choices'] if c['value']=='4')
+        chosen['value']=r'\frac{8}{2}'
+        restored=Solver.reuse_answer(formatted,result,item)
+        self.assertTrue(best_effort(restored,formatted))
+        chosen['value']=r'\frac{9}{2}'
+        self.assertFalse(best_effort(restored,formatted))
+
     def test_stopped_status_reports_recovery_readiness_without_starting_workers(self):
         import fleet
         case=CASES[0];activity,directory,state,item=self.setup_case(case)

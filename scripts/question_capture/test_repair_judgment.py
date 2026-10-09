@@ -26,6 +26,7 @@ class RepairJudgmentTests(unittest.TestCase):
         selected=validation_names(['browser.py'],'test_observed_failure',{})
         self.assertIn('test_observed_failure',selected.split(','))
         self.assertIn('test_unfinished_recovery',selected.split(','))
+        self.assertIn('test_answer_recovery',selected.split(','))
         self.assertNotEqual(selected,'discover')
         self.assertEqual(validation_names(['browser.py'],'test_observed_failure',{'validation':'full'}),'discover')
         self.assertEqual(validation_names(['browser.py','dom.js','assessment.py'],'test_observed_failure',{}),'discover')
