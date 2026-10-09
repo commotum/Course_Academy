@@ -1,0 +1,41 @@
+{
+  "mode": "solve",
+  "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14056554/assets/9f527104795b8d264b0d526ccd6c2cd5c2790e4833fa24b169703170715efe12.png)\n\nFind an equation for the current $I(t)$ (in amperes) in the circuit given in the diagram above, expressing your answer in terms of time $t$ (in seconds) **only**, given that the current when $t=0\\,\\text{s}$ is $2\\,\\text{A}.$\n\n$I(t)=$\n{{field-1}}",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14056554/assets/9f527104795b8d264b0d526ccd6c2cd5c2790e4833fa24b169703170715efe12.png"
+  ],
+  "activity_context": {
+    "task_id": 14056554,
+    "task_type": "review",
+    "topic_id": 1788,
+    "topic_title": "Modeling RL Circuits With First-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336198",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14056554/assets/b437d93e812512302f48421f23fb048f2cfb9569f7eb3577449a24dfebdfec50.png)\n\nFind an equation for the current $I(t)$ (in amperes) in the circuit given in the diagram above, expressing your answer in terms of time $t$ (in seconds) **only**, given that the current when $t=0\\,\\text{s}$ is $1\\,\\text{A}.$\n\n$I(t)=$\n{{field-1}}",
+        "worked_solution": "The diagram shows a series RL circuit with a source electromotive force (EMF) of $3\\,\\text{V},$ a resistor of resistance of $30\\,\u03a9,$ and an inductor of inductance $1\\,\\text{H}.$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RL circuit, there are two voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=30\\,\u03a9.$\n\n$$\n{V}_{R}=30I\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=1\\,\\text{H}.$\n\n$$\n{V}_{L}=1\\cdot \\,\\frac{dI}{dt}\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of current $I$ in the circuit is\n\n$$\n3=30I+\\frac{dI}{dt}\n$$\n\nwhich gives\n\n$$\n\\frac{dI}{dt}+30I=3.\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution ${I}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{d{I}_{c}}{dt}+30{I}_{c}=0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\n{I}_{c}(t)=A{e}^{-30t},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is a polynomial of degree $0.$ So, we assume that the particular solution is also a polynomial of degree $0,$ i.e.,\n\n$$\n{I}_{p}(t)=\\alpha .\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${I}_{p}=\\alpha $ and $\\frac{d{I}_{p}}{dt}=(\\alpha )^{\u2032}=0$ into the inhomogeneous equation:\n\n$$\n0+30\\alpha =3\\,\u27f9\\,\\alpha =\\frac{1}{10}\n$$\n\nTherefore, the particular solution is ${I}_{p}(t)=\\frac{1}{10}.$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nI(t)={I}_{c}(t)+{I}_{p}(t)=A{e}^{-30t}+\\frac{1}{10}.\n$$\n\nWe're told that the circuit starts with an initial current of $1\\,\\text{A}.$ So, we can apply the initial condition $I(0)=1,$ and solve for $A:$\n\n$$\n\\begin{aligned}I(0) & =1 \\\\ A{e}^{-30(0)}+\\frac{1}{10} & =1 \\\\ A & =\\frac{9}{10}\\end{aligned}\n$$\n\nTherefore, we have the following expression for $I(t):$\n\n$$\n\\begin{aligned}I(t) & =\\frac{9}{10}{e}^{-30t}+\\frac{1}{10} \\\\  & =\\frac{1}{10}(9{e}^{-30t}+1)\\end{aligned}\n$$\n\nNote the following:\n\n- The quantity ${I}_{c}=\\frac{9}{10}{e}^{-30t}$ is the *transient current*, since it goes to zero as $t\\to \\infty .$\n\n- The constant ${I}_{p}=\\frac{1}{10}$ is the *steady-state current*. As $t\\to \\infty ,$ the current $I$ approaches the value of the steady-state current.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0.1+0.9e^{-30t}",
+            "observed_mathquill_latex": "0.1+0.9e^{-30t}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
