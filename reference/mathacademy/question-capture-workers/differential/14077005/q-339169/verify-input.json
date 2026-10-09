@@ -1,0 +1,124 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following boundary value problem (BVP).\n\n$$\n{y}^{\u2033}+y=x{e}^{3x},\\,{y}^{\u2032}(0)={y}^{\u2032}\\,(\\frac{\\pi }{2})=0,\\,0\\le x\\le \\frac{\\pi }{2}\n$$\n\nLet ${y}_{1}(x)$ and ${y}_{2}(x)$ be the fundamental solutions, and suppose we define the matrix $A$ as \n\n$$\nA=[\\begin{aligned}{y}_{1}^{\u2032}(0) & {y}_{2}^{\u2032}(0) \\\\ {y}_{1}^{\u2032}\\,(\\frac{\\pi }{2}) & {y}_{2}^{\u2032}\\,(\\frac{\\pi }{2})\\end{aligned}].\n$$\n\nFill in the correct options in the reasoning below **without calculating the solution** to this BVP. \n\n$\\,$ The **absolute value** of $det(A)$ is {{field-1}}.\n\n$\\,$ Therefore, the corresponding homogeneous BVP {{field-2}}.\n\n$\\,$ Therefore, our inhomogeneous BVP {{field-3}}.",
+  "worked_solution": "Suppose we have the second-order inhomogeneous boundary value problem (BVP)\n\n$$\n{y}^{\u2033}(x)+P(x){y}^{\u2032}+Q(x)y=f(x),\\,a\\le x\\le b\n$$\n\nwith the Robin (mixed) boundary conditions\n\n$$\n{\\alpha }_{1}y(a)+{\\beta }_{1}{y}^{\u2032}(a)={\\gamma }_{1},\\,{\\alpha }_{2}y(b)+{\\beta }_{2}{y}^{\u2032}(b)={\\gamma }_{2}\n$$\n\nwhere $P,Q,$ and $f$ are continuous on $[a,b],$ and ${\\alpha }_{i}$ and ${\\beta }_{i}$ are real constants such that $({\\alpha }_{i},{\\beta }_{i})\\ne (0,0).$ \n\nThe inhomogeneous BVP has at most one solution if and only if the associated homogeneous BVP has only the trivial solution $y\u22610.$ Specifically:\n\n- If the homogeneous BVP has the unique solution $y\u22610,$ then the inhomogeneous problem either has no solution or a unique solution.\n\n- If the homogeneous BVP has (infinitely many) nontrivial solutions, then the inhomogeneous problem either has infinitely many solutions or no solution.\n\nTo classify the solutions of the corresponding homogeneous BVP, we define the matrix $A$ as\n\n$$\nA=[\\begin{aligned}\\,{\\alpha }_{1}{y}_{1}(a)+{\\beta }_{1}{y}_{1}^{\u2032}(a) & {\\alpha }_{1}{y}_{2}(a)+{\\beta }_{1}{y}_{2}^{\u2032}(a) \\\\ {\\alpha }_{2}{y}_{1}(b)+{\\beta }_{2}{y}_{1}^{\u2032}(b) & {\\alpha }_{2}{y}_{2}(b)+{\\beta }_{2}{y}_{2}^{\u2032}(b)\\end{aligned}].\n$$\n\nThe homogeneous BVP has a unique, trivial solution $y\u22610$ if and only if $det(A)\\ne 0.$ In other words, if the determinant equals zero, then the homogeneous BVP has *infinitely many solutions*.\n\nNotice that, in our case, we have Neumann boundary conditions. So, setting ${\\alpha }_{i}=0,{\\beta }_{i}=1,a=0,$ and $b=\\frac{\\pi }{2},$ the matrix $A$ reduces to\n\n$$\nA=[\\begin{aligned}{y}_{1}^{\u2032}(0) & {y}_{2}^{\u2032}(0) \\\\ {y}_{1}^{\u2032}\\,(\\frac{\\pi }{2}) & {y}_{2}^{\u2032}\\,(\\frac{\\pi }{2})\\end{aligned}].\n$$\n\nTo find the fundamental solutions, we set $y={e}^{mx}.$ The auxiliary equation is\n\n$$\n\\begin{aligned}{m}^{2}+1 & =0.\\end{aligned}\n$$\n\nSo, we have $m=\\pm \\text{i}.$ So, the fundamental solutions are \n\n$$\n{y}_{1}(x)=\\operatorname{cos}\u2061x,\\,{y}_{2}(x)=\\operatorname{sin}\u2061x.\n$$\n\nDifferentiating, we have\n\n$$\n{y}_{1}^{\u2032}(x)=-\\operatorname{sin}\u2061x,\\,{y}_{2}^{\u2032}(x)=\\operatorname{cos}\u2061x.\n$$\n\nTherefore, the matrix $A$ is\n\n$$\n\\begin{aligned}A & =[\\begin{aligned}-\\operatorname{sin}\u2061(0) & \\operatorname{cos}\u2061(0) \\\\ -sin\\,(\\frac{\\pi }{2}) & cos\\,(\\frac{\\pi }{2})\\end{aligned}] \\\\  & =[\\begin{aligned}0 & 1 \\\\ -1 & 0\\end{aligned}]\\end{aligned}\n$$\n\nand we have\n\n$$\n\\begin{aligned}|det(A)| & =|0\\cdot 0-1\\cdot (-1)| \\\\  & =1.\\end{aligned}\n$$\n\nSince $det(A)\\ne 0,$ the corresponding homogeneous BVP $\\text{has the unique solution\u00a0}y\u22610.$\n\nTherefore, since the corresponding homogeneous BVP has the unique solution $y\u22610,$ our inhomogeneous BVP $\\text{has at most one solution}.$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\operatorname{cos}\u2061(1)"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "{e}^{2}"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "{e}^{3}-1"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "text",
+          "value": "has the unique solution $y\u22610$"
+        },
+        {
+          "option": "1",
+          "type": "text",
+          "value": "has infinitely many solutions"
+        },
+        {
+          "option": "2",
+          "type": "text",
+          "value": "has no solution"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "text",
+          "value": "has at most one solution"
+        },
+        {
+          "option": "1",
+          "type": "text",
+          "value": "has infinitely many solutions"
+        },
+        {
+          "option": "2",
+          "type": "text",
+          "value": "has infinitely many solutions or no solution"
+        },
+        {
+          "option": "3",
+          "type": "text",
+          "value": "has a unique solution"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14077005,
+    "task_type": "lesson",
+    "topic_id": 6710,
+    "topic_title": "Second-Order Inhomogeneous Boundary Value Problems",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-339169",
+        "problem": "Consider the following boundary value problem (BVP).\n\n$$\n{y}^{\u2033}+y=x{e}^{3x},\\,{y}^{\u2032}(0)={y}^{\u2032}\\,(\\frac{\\pi }{2})=0,\\,0\\le x\\le \\frac{\\pi }{2}\n$$\n\nLet ${y}_{1}(x)$ and ${y}_{2}(x)$ be the fundamental solutions, and suppose we define the matrix $A$ as \n\n$$\nA=[\\begin{aligned}{y}_{1}^{\u2032}(0) & {y}_{2}^{\u2032}(0) \\\\ {y}_{1}^{\u2032}\\,(\\frac{\\pi }{2}) & {y}_{2}^{\u2032}\\,(\\frac{\\pi }{2})\\end{aligned}].\n$$\n\nFill in the correct options in the reasoning below **without calculating the solution** to this BVP. \n\n$\\,$ The **absolute value** of $det(A)$ is {{field-1}}.\n\n$\\,$ Therefore, the corresponding homogeneous BVP {{field-2}}.\n\n$\\,$ Therefore, our inhomogeneous BVP {{field-3}}.",
+        "worked_solution": "Suppose we have the second-order inhomogeneous boundary value problem (BVP)\n\n$$\n{y}^{\u2033}(x)+P(x){y}^{\u2032}+Q(x)y=f(x),\\,a\\le x\\le b\n$$\n\nwith the Robin (mixed) boundary conditions\n\n$$\n{\\alpha }_{1}y(a)+{\\beta }_{1}{y}^{\u2032}(a)={\\gamma }_{1},\\,{\\alpha }_{2}y(b)+{\\beta }_{2}{y}^{\u2032}(b)={\\gamma }_{2}\n$$\n\nwhere $P,Q,$ and $f$ are continuous on $[a,b],$ and ${\\alpha }_{i}$ and ${\\beta }_{i}$ are real constants such that $({\\alpha }_{i},{\\beta }_{i})\\ne (0,0).$ \n\nThe inhomogeneous BVP has at most one solution if and only if the associated homogeneous BVP has only the trivial solution $y\u22610.$ Specifically:\n\n- If the homogeneous BVP has the unique solution $y\u22610,$ then the inhomogeneous problem either has no solution or a unique solution.\n\n- If the homogeneous BVP has (infinitely many) nontrivial solutions, then the inhomogeneous problem either has infinitely many solutions or no solution.\n\nTo classify the solutions of the corresponding homogeneous BVP, we define the matrix $A$ as\n\n$$\nA=[\\begin{aligned}\\,{\\alpha }_{1}{y}_{1}(a)+{\\beta }_{1}{y}_{1}^{\u2032}(a) & {\\alpha }_{1}{y}_{2}(a)+{\\beta }_{1}{y}_{2}^{\u2032}(a) \\\\ {\\alpha }_{2}{y}_{1}(b)+{\\beta }_{2}{y}_{1}^{\u2032}(b) & {\\alpha }_{2}{y}_{2}(b)+{\\beta }_{2}{y}_{2}^{\u2032}(b)\\end{aligned}].\n$$\n\nThe homogeneous BVP has a unique, trivial solution $y\u22610$ if and only if $det(A)\\ne 0.$ In other words, if the determinant equals zero, then the homogeneous BVP has *infinitely many solutions*.\n\nNotice that, in our case, we have Neumann boundary conditions. So, setting ${\\alpha }_{i}=0,{\\beta }_{i}=1,a=0,$ and $b=\\frac{\\pi }{2},$ the matrix $A$ reduces to\n\n$$\nA=[\\begin{aligned}{y}_{1}^{\u2032}(0) & {y}_{2}^{\u2032}(0) \\\\ {y}_{1}^{\u2032}\\,(\\frac{\\pi }{2}) & {y}_{2}^{\u2032}\\,(\\frac{\\pi }{2})\\end{aligned}].\n$$\n\nTo find the fundamental solutions, we set $y={e}^{mx}.$ The auxiliary equation is\n\n$$\n\\begin{aligned}{m}^{2}+1 & =0.\\end{aligned}\n$$\n\nSo, we have $m=\\pm \\text{i}.$ So, the fundamental solutions are \n\n$$\n{y}_{1}(x)=\\operatorname{cos}\u2061x,\\,{y}_{2}(x)=\\operatorname{sin}\u2061x.\n$$\n\nDifferentiating, we have\n\n$$\n{y}_{1}^{\u2032}(x)=-\\operatorname{sin}\u2061x,\\,{y}_{2}^{\u2032}(x)=\\operatorname{cos}\u2061x.\n$$\n\nTherefore, the matrix $A$ is\n\n$$\n\\begin{aligned}A & =[\\begin{aligned}-\\operatorname{sin}\u2061(0) & \\operatorname{cos}\u2061(0) \\\\ -sin\\,(\\frac{\\pi }{2}) & cos\\,(\\frac{\\pi }{2})\\end{aligned}] \\\\  & =[\\begin{aligned}0 & 1 \\\\ -1 & 0\\end{aligned}]\\end{aligned}\n$$\n\nand we have\n\n$$\n\\begin{aligned}|det(A)| & =|0\\cdot 0-1\\cdot (-1)| \\\\  & =1.\\end{aligned}\n$$\n\nSince $det(A)\\ne 0,$ the corresponding homogeneous BVP $\\text{has the unique solution\u00a0}y\u22610.$\n\nTherefore, since the corresponding homogeneous BVP has the unique solution $y\u22610,$ our inhomogeneous BVP $\\text{has at most one solution}.$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "1",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "has the unique solution $y\u22610$",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "has a unique solution",
+            "submitted_option": "3"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
