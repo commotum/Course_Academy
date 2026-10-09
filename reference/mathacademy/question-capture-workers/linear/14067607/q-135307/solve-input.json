@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "$$\nP=[\\begin{aligned}0.1 & 0.3 \\\\ 0.9 & 0.7\\end{aligned}],\\,q=[\\begin{aligned}0.2 \\\\ 0.8\\end{aligned}]\n$$\n\nConsider the stochastic matrix $P$ and vector $q$ shown above. Which of the following statements are true?\n\n- $q$ is a stochastic vector\n- $Pq=q$\n- $q$ is a steady-state vector of $P$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "I, II, and III"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "None of the statements are true"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "II only"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "II and III only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I only"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14067607,
+    "task_type": "review",
+    "topic_id": 1913,
+    "topic_title": "Steady-State Vectors",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-111192",
+        "problem": "A particular town has a fleet of $720$ bicycles for rent. The table below gives the pattern of rental and return locations over a typical day. \n\n|  |  | From: |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | **Museum** | **Station** | **Gym** |\n| To: | **Museum** | $0.9$ | $0.3$ | $0.1$ |\n| **Station** | $0$ | $0.3$ | $0.7$ |  |\n| **Gym** | $0.1$ | $0.4$ | $0.2$ |  |\n\nFor example, $40%$ of the bicycles at the Station are moved to the Gym every day.\n\nHow many bicycles would eventually be located at the Station if the listed probabilities remained constant over many days?",
+        "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.9 & 0.3 & 0.1 \\\\ 0 & 0.3 & 0.7 \\\\ 0.1 & 0.4 & 0.2\\end{aligned}].\n$$\n\nNotice that the matrix ${P}^{2}$ contains only positive entries. So, the matrix $P$ is regular. \nAs a result, after many years, the distribution will eventually converge to the steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,\u27f9\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.9 & 0.3 & 0.1 \\\\ 0 & 0.3 & 0.7 \\\\ 0.1 & 0.4 & 0.2\\end{aligned}]-[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-0.1 & 0.3 & 0.1 \\\\ 0 & -0.7 & 0.7 \\\\ 0.1 & 0.4 & -0.8\\end{aligned}].\n$$\n\nThe matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.1 & 0.3 & 0.1 & 0 \\\\ 0 & -0.7 & 0.7 & 0 \\\\ 0.1 & 0.4 & -0.8 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=10{R}_{1} \\\\ {R}_{2}:=10{R}_{2} \\\\ {R}_{3}:=10{R}_{3}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-1 & 3 & 1 & 0 \\\\ 0 & -7 & 7 & 0 \\\\ 1 & 4 & -8 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-1 & 3 & 1 & 0 \\\\ 0 & -7 & 7 & 0 \\\\ 0 & 7 & -7 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{2}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-1 & 3 & 1 & 0 \\\\ 0 & -7 & 7 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain \n\n$$\n{x}_{2}={x}_{3}.\n$$\n\n \nSubstituting this into the first equation, we obtain\n\n$$\n-{x}_{1}+3({x}_{3})+{x}_{3}=0\\,\u27f9\\,{x}_{1}=4{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}4{x}_{3} \\\\ {x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have\n\n$$\n\\begin{aligned}4{x}_{3}+{x}_{3}+{x}_{3} & =1 \\\\ 6{x}_{3} & =1 \\\\ {x}_{3} & =\\frac{1}{6}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{2}{3} \\\\ \\frac{1}{6} \\\\ \\frac{1}{6}\\end{aligned}].\n$$\n\nSo, after many days, $\\frac{1}{6}$ of the bicycles will be at the station. Therefore, the total number of bikes at the station after many days will be\n\n$$\n\\frac{1}{6}\\cdot 720=120.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "120",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

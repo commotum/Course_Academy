@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Solve the initial value problem\n\n$$\n{x}^{\u2032}(t)=[\\begin{aligned}-2 & 0 \\\\ 5 & -2\\end{aligned}]x(t),\\,x(0)=[\\begin{aligned}1 \\\\ 2\\end{aligned}].\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}(1+t){e}^{-2t} \\\\ 2{e}^{-2t}\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}{e}^{-2t} \\\\ 2{e}^{-2t}\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}{e}^{-2t} \\\\ (2+5t){e}^{-2t}\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}(1+t){e}^{-2t} \\\\ (2+5t){e}^{-2t}\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}(1-t){e}^{-2t} \\\\ 2{e}^{-2t}\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14067736,
+    "task_type": "lesson",
+    "topic_id": 2818,
+    "topic_title": "Solving Homogeneous Systems of ODEs With Repeated Eigenvalues",
+    "examples": [
+      {
+        "math_academy_id": "e-7050",
+        "knowledge_point": "Solving an Initial Value Problem in a Defective Case",
+        "problem": "Solve the initial value problem\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14067736/assets/9459f772e062490c525f6c7bc083c02d0ed5dc3bc4c331f642653aa4f9bf5515.png)\n*Hint: The only eigenvalue of the system's matrix is $\\lambda=3.$*",
+        "worked_solution": "We need to find the eigenvalues and the eigenvectors of the matrix ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14067736/assets/df4b98b4799865dbf40e765bda0fa6176157139d99a62bd1febe48d7c4600c8c.png)\n\nWe are given that the eigenvalue is $\\lambda=3$ (of multiplicity two). For this eigenvalue, we get \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14067736/assets/8032d75d584838d0743f2e9217c25844af637d07261dd2d6a89add9df531fdb1.png)\nSo, we get an eigenvector \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14067736/assets/aa5146c331315952e36051be1126010bbcaf706f2cbc1c886c56b0e92b468fa4.png)\n\nSince we have a repeated eigenvalue $\\lambda$ and only one linearly independent eigenvector $\\mathbf v,$ the solution to the system of differential equations is given by\n\n$$\n\\mathbf{x}(t) = c_1  \\mathbf{v}e^{\\lambda t} + c_2 (\\mathbf{v}t e^{\\lambda t} +  \\mathbf{w}e^{\\lambda t}),\n$$\n\nwhere $\\mathbf{w}$ is a solution to the equation $(A - \\lambda I)\\mathbf{w}= \\mathbf{v}.$\n\nTo find $\\mathbf{w},$ we solve the equation $(A - \\lambda I)\\mathbf{w} = \\mathbf{v}$ as follows:\n\n$$\n\\begin{aligned}(A-\\lambda I)w & =v \\\\ [\\begin{aligned}-1-3 & -8 \\\\ 2 & 7-3\\end{aligned}][\\begin{aligned}{w}_{1} \\\\ {w}_{2}\\end{aligned}] & =[\\begin{aligned}-2 \\\\ 1\\end{aligned}] \\\\ [\\begin{aligned}-4 & -8 \\\\ 2 & 4\\end{aligned}][\\begin{aligned}{w}_{1} \\\\ {w}_{2}\\end{aligned}] & =[\\begin{aligned}-2 \\\\ 1\\end{aligned}]\\end{aligned}\n$$\n\nThe last equality allows us to form the following system of equations:\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14067736/assets/b0d075668031a0decad6d092f2f03c3f74eacdcff0546e99e8373901c5a910ac.png)\n\nNote that the first equation is a constant multiple of the second. So, we obtain\n\n$$\nw_1 =\\dfrac{1}{2} - 2 w_2 .\n$$\n\nThe variable $w_2$ is a free variable. Setting $w_2 = 0,$  we get $w_1 = \\dfrac{1}{2},$ and therefore\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14067736/assets/726b5737809539337c1a8a259727a47b9bdacdf81de92a4a35783518df9dcaa0.png)\n\nTherefore, the general solution is given by\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14067736/assets/a1a3e46d8352ceee549fb5040261d8edf036d8fb32fc5fc5b960cab07097970f.png)\n\nNow, we need to find the values of $c_1$ and $c_2$ using the initial condition ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14067736/assets/2e3a20e62437546fb2498d1575c9ed2cd268c43b968174ea7e0139977fb6fbd5.png) Substituting $t=0$ into the general solution gives\n\n$$\n\\begin{aligned}\\text{x}(0) & =[\\begin{aligned}-2{c}_{1}+\\frac{1}{2}{c}_{2} \\\\ {c}_{1}\\end{aligned}] \\\\ [\\begin{aligned}-3 \\\\ 1\\end{aligned}] & =[\\begin{aligned}-2{c}_{1}+\\frac{1}{2}{c}_{2} \\\\ {c}_{1}\\end{aligned}] \\\\ [\\begin{aligned}{c}_{1} \\\\ {c}_{2}\\end{aligned}] & =[\\begin{aligned}1 \\\\ -2\\end{aligned}].\\end{aligned}\n$$\n\nFinally, the solution to our initial value problem is given by\n\n$$\n\\begin{aligned}\\text{x}(t) & =[\\begin{aligned}-2 \\\\ 1\\end{aligned}]{e}^{3t}-2([\\begin{aligned}-2 \\\\ 1\\end{aligned}]t{e}^{3t}+[\\begin{aligned}\\frac{1}{2} \\\\ 0\\end{aligned}]{e}^{3t}) \\\\  & =[\\begin{aligned}-3 \\\\ 1\\end{aligned}]{e}^{3t}+[\\begin{aligned}4 \\\\ -2\\end{aligned}]t{e}^{3t} \\\\  & =[\\begin{aligned}(4t-3){e}^{3t} \\\\ (1-2t){e}^{3t}\\end{aligned}].\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14067736/example-7050.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-80603",
+        "problem": "Consider the system of linear differential equations given by\n\n$$\n{x}^{\u2032}(t)=[\\begin{aligned}-1 & -1 \\\\ 1 & -3\\end{aligned}]x(t).\n$$\n\nGiven that the solution to the system can be written as\n\n$$\nx(t)={c}_{1}[\\begin{aligned}1 \\\\ a\\end{aligned}]{e}^{-2t}+{c}_{2}([\\begin{aligned}1 \\\\ a\\end{aligned}]t{e}^{-2t}+[\\begin{aligned}b \\\\ 0\\end{aligned}]{e}^{-2t}),\\,{c}_{1},{c}_{2}\\in R,\n$$\n\nwhat is the value of $a+b?$\n\n*Hint: The only eigenvalue of the system's matrix is $\\lambda =-2.$*",
+        "worked_solution": "We need to find the eigenvalues and the eigenvectors of the matrix $A=[\\begin{aligned}-1 & -1 \\\\ 1 & -3\\end{aligned}].$\n\nWe are given that the eigenvalue is $\\lambda =-2$ (of multiplicity two). For this eigenvalue, we get \n\n$$\nA-\\lambda I=[\\begin{aligned}1 & -1 \\\\ 1 & -1\\end{aligned}]\u223c[\\begin{aligned}1 & -1 \\\\ 0 & 0\\end{aligned}].\n$$\n\nSo, we get an eigenvector \n$v=[\\begin{aligned}1 \\\\ 1\\end{aligned}].$\n\nSince we have a repeated eigenvalue $\\lambda $ and only one linearly independent eigenvector $v$, the solution of the system of differential equations is given by\n\n$$\nx(t)={c}_{1}v{e}^{\\lambda t}+{c}_{2}(vt{e}^{\\lambda t}+w{e}^{\\lambda t}\\,),\n$$\n\nwhere $w$ is a solution to the equation $(A-\\lambda I)w=v.$\n\nTo find $w,$ we solve the equation $(A-\\lambda I)w=v$ as follows:\n\n$$\n\\begin{aligned}(A-\\lambda I)w & =v \\\\ [\\begin{aligned}-1+2 & -1 \\\\ 1 & -3+2\\end{aligned}][\\begin{aligned}{w}_{1} \\\\ {w}_{2}\\end{aligned}] & =[\\begin{aligned}1 \\\\ 1\\end{aligned}] \\\\ [\\begin{aligned}1 & -1 \\\\ 1 & -1\\end{aligned}][\\begin{aligned}{w}_{1} \\\\ {w}_{2}\\end{aligned}] & =[\\begin{aligned}1 \\\\ 1\\end{aligned}]\\end{aligned}\n$$\n\nThe last equality allows us to form the following system of equations:\n\n$$\n{\\begin{aligned}{w}_{1}-{w}_{2}=1 \\\\ {w}_{1}-{w}_{2}=1\\end{aligned}\n$$\n\nNote that the first equation is the same as the second. So, we obtain\n\n$$\n{w}_{1}={w}_{2}+1.\n$$\n\nThe variable ${w}_{2}$ is a free variable. Setting ${w}_{2}=0,$ we get ${w}_{1}=1,$ and therefore\n\n$$\nw=[\\begin{aligned}1 \\\\ 0\\end{aligned}].\n$$\n\nTherefore, the general solution is given by\n\n$$\nx(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{-2t}+{c}_{2}([\\begin{aligned}1 \\\\ 1\\end{aligned}]t{e}^{-2t}+[\\begin{aligned}1 \\\\ 0\\end{aligned}]{e}^{-2t}),\\,{c}_{1},{c}_{2}\\in R.\n$$\n\nFinally, we see that $a=1,b=1,$ and $a+b=2.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "2",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
