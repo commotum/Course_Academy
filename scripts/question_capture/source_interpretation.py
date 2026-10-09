@@ -66,8 +66,10 @@ def unresolved_study_clarifications(content, state, correction_root):
         mid = q.get('math_academy_id', '')
         record = state.get('questions', {}).get(mid, {})
         meta = q.get('source_feedback_interpretation') or record.get('source_feedback_interpretation')
-        if (not meta or meta.get('policy') != POLICY or meta.get('topic_id') != TOPIC
-                or meta.get('knowledge_point_id') != KP or not meta.get('requires_study_clarification')):
+        expected = {POLICY: (TOPIC, KP), INTEGRAL_POLICY: (INTEGRAL_TOPIC, INTEGRAL_KP)}
+        if (not meta or meta.get('policy') not in expected
+                or (meta.get('topic_id'), meta.get('knowledge_point_id')) != expected[meta['policy']]
+                or not meta.get('requires_study_clarification')):
             continue
         matched = False
         if re.fullmatch(r'q-\d+', mid):
@@ -84,7 +86,7 @@ def unresolved_study_clarifications(content, state, correction_root):
                     and isinstance(proof.get('basis_after'), int)
                     and proof.get('review_sha256') == hashlib.sha256(review_bytes).hexdigest()
                     and proof.get('transaction_sha256') == hashlib.sha256(transaction).hexdigest()
-                    and corrected.get('math_academy_id') == mid and corrected.get('knowledge_point_id') == KP
+                    and corrected.get('math_academy_id') == mid and corrected.get('knowledge_point_id') == meta['knowledge_point_id']
                     and meta['requirement'] in corrected['problem']
                     and source_identity(original['problem']) == source_identity(meta['source_problem'])
                     and fields(corrected) == fields(q))
@@ -95,3 +97,59 @@ def unresolved_study_clarifications(content, state, correction_root):
                 'requirement': meta.get('requirement'), 'canonical_review': meta.get('canonical_review'),
                 'interpretation_identity_sha256': meta.get('identity_sha256')})
     return result
+
+
+INTEGRAL_TOPIC = 6682
+INTEGRAL_KP = 'bbefb3bb-4783-5d77-b404-1f43ee8765de'
+INTEGRAL_POLICY = 'q-335252-continuous-partial-theorem-v1'
+
+
+def reviewed_integral_theorem(item, activity, directory):
+    """Exact source question only; the sufficient theorem is explicit in study content."""
+    if Path(directory).name != 'q-335252' or activity.get('topic_id') != INTEGRAL_TOPIC:
+        return None
+    fields = item.get('fields', [])
+    if (len(fields) != 1 or fields[0].get('key') != 'selection'
+            or fields[0].get('type') != 'radio' or not fields[0].get('choices_complete', True)):
+        return None
+    correction = ROOT/'reference/mathacademy/mathematical-corrections/q-335252'
+    try:
+        review_path = correction/'review.json'
+        review_bytes = review_path.read_bytes()
+        transaction_bytes = (correction/'transaction.edn').read_bytes()
+        proof = json.loads((correction/'verification.json').read_text())
+        review = json.loads(review_bytes)
+        original, corrected = review['original_content'], review['corrected_content']
+        original_field, = original['answer_fields']
+        corrected_field, = corrected['answer_fields']
+        choices = lambda fs: sorted((c['type'], c['value']) for c in fs['choices'])
+        if (proof.get('committed') is not True or proof.get('mathematical_check_passed') is not True
+                or not isinstance(proof.get('basis_after'), int)
+                or proof.get('review_sha256') != hashlib.sha256(review_bytes).hexdigest()
+                or proof.get('transaction_sha256') != hashlib.sha256(transaction_bytes).hexdigest()
+                or original.get('math_academy_id') != 'q-335252'
+                or original.get('knowledge_point_id') != INTEGRAL_KP
+                or corrected.get('knowledge_point_id') != INTEGRAL_KP
+                or item.get('problem') != original['problem']
+                or choices(fields[0]) != choices(original_field)
+                or corrected_field != original_field
+                or 'continuous-partial-derivative sufficient theorem' not in corrected['problem']
+                or 'dominated convergence' not in corrected['worked_solution']
+                or original_field.get('correct_value') != 'I and III only'):
+            return None
+        # A present live KP identity must agree; reviews may have none before grading.
+        kp = activity.get('questions', {}).get('q-335252', {}).get('kp_id') or activity.get('current_kp')
+        if kp is not None and kp != INTEGRAL_KP:
+            return None
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+    identity = [INTEGRAL_POLICY, proof['review_sha256'], hashlib.sha256(item['problem'].encode()).hexdigest()]
+    return {'policy': INTEGRAL_POLICY, 'topic_id': INTEGRAL_TOPIC, 'knowledge_point_id': INTEGRAL_KP,
+        'source_problem': item['problem'], 'interpreted_problem': corrected['problem'],
+        'requirement': 'continuous-partial-derivative sufficient theorem',
+        'requires_study_clarification': True,
+        'confidence_scope': 'Applicability of the explicitly stated sufficient theorem only. '
+                            'II admits differentiation by dominated convergence; failure of this theorem does not forbid interchange.',
+        'canonical_review': str(review_path), 'review_sha256': proof['review_sha256'],
+        'transaction_sha256': proof['transaction_sha256'], 'committed_basis': proof['basis_after'],
+        'identity_sha256': hashlib.sha256(json.dumps(identity).encode()).hexdigest()}

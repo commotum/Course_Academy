@@ -252,8 +252,9 @@ class Solver:
         session = json.loads(session_file.read_text()) if session_file.exists() else {'session_id':None,'context_keys':[]}
         activity_file = directory.parent/'state.json'
         activity = json.loads(activity_file.read_text()) if activity_file.exists() else {}
-        from source_interpretation import reviewed_containment
-        interpretation = reviewed_containment(item, activity, directory)
+        from source_interpretation import reviewed_containment, reviewed_integral_theorem
+        interpretation = (reviewed_containment(item, activity, directory)
+                          or reviewed_integral_theorem(item, activity, directory))
         if interpretation:
             payload['source_problem'] = item['problem']
             payload['problem'] = interpretation['interpreted_problem']
@@ -288,11 +289,13 @@ class Solver:
                 logging.info('Reclassifying %s/%s under the current diagnostic policy in the same session',
                              directory.name, phase)
             elif containment_recheck:
-                archive = '-before-containment-policy' if interpretation else '-before-containment-policy-invalidated'
+                integral_policy = (interpretation or prior_interpretation).get('policy', '').startswith('q-335252-')
+                label = 'integral-theorem-policy' if integral_policy else 'containment-policy'
+                archive = '-before-' + label + ('' if interpretation else '-invalidated')
                 atomic_json(directory/(phase+archive+'-answer.json'), saved)
                 atomic_json(directory/(phase+archive+'-input.json'), original)
-                logging.info('Rechecking %s/%s with the attested containing-region request in the same session',
-                             directory.name, phase)
+                logging.info('Rechecking %s/%s with the attested %s request in the same session',
+                             directory.name, phase, label)
             elif saved.get('confident') is not True and (new_images or policy_recheck):
                 # Preserve the prior evidence and reuse the existing session.
                 # The saved policy marker prevents repeated policy-only retries.
