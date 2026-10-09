@@ -1,0 +1,62 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem for the functions $y=y(x),z=z(x),w=w(x):$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=xz+1,\\, & y\\,(-\\frac{1}{2})=0 \\\\ {z}^{\u2032}=y+w-x,\\, & z\\,(-\\frac{1}{2})=1 \\\\ {w}^{\u2032}=-yz,\\, & w\\,(-\\frac{1}{2})=2\\end{aligned}\n$$\n\nUse Euler's Method with one step to approximate $y(0),$ $z(0),$ and $w(0).$\n\n$\\,y(0)\u2248$\n{{field-1}},\n$\\,z(0)\u2248$\n{{field-2}},\n$\\,w(0)\u2248$\n{{field-3}}",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-3",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14044404,
+    "task_type": "lesson",
+    "topic_id": 3245,
+    "examples": [
+      {
+        "math_academy_id": "e-21660",
+        "knowledge_point": "Approximating the Solution to a System of Three ODEs Using Euler's Method",
+        "problem": "Consider the following initial value problem for the functions $y = y(x), z = z(x), w=w(x){:}$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=2y+z+x,\\, & y(0)=1 \\\\ {z}^{\u2032}=y+z+2x,\\, & z(0)=0 \\\\ {w}^{\u2032}=wy-x,\\, & w(0)=2\\end{aligned}\n$$\n\nApproximate values of $y$, $z$ and $w$ at $x = 1$ using Euler's method if the step size is $\\Delta x = 1.$",
+        "worked_solution": "Euler's method approximates the solution of an initial value problem containing a system of ODEs by applying the update rule component-wise to each equation.\n\nFirst, because the initial conditions are $y(0)=1,$ $z(0)=0,$ and $w(0)=2,$ we place $y=1,$ $z=0,$ and $w=2$ in the table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ | $w$ | $w'$ | $\\Delta w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ |  |  | $0$ |  |  | $2$ |  |  |\n\nNext, we compute $y', z',$ and $w'$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =2y+z+x \\\\  & =2\\cdot 1+0+0 \\\\  & =2 \\\\ {z}^{\u2032} & =y+z+2x \\\\  & =1+0+2\\cdot 0 \\\\  & =1 \\\\ {w}^{\u2032} & =wy-x \\\\  & =2\\cdot 1-0 \\\\  & =2\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ | $w$ | $w'$ | $\\Delta w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ |  | $0$ | $1$ |  | $2$ | $2$ |  |\n\nFinally, we compute $\\Delta y,$ $\\Delta z,$ and $\\Delta w$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x=2\\cdot 1=2 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=1\\cdot 1=1 \\\\ \u0394w & ={w}^{\u2032}\\cdot \u0394x=2\\cdot 1=2\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ | $w$ | $w'$ | $\\Delta w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ | $\\bbox[4pt,border: 1px solid gainsboro]{2}$ | $0$ | $1$ | $\\bbox[4pt,border: 1px solid gainsboro]{1}$ | $2$ | $2$ | $\\bbox[4pt,border: 1px solid gainsboro]{2}$ |\n\nTo get the new values of $x,$ $y,$ $z,$ and $w$ in the *next* row, we add $\\Delta x$ to $x,$ $\\Delta y$ to $y,$ $\\Delta z$ to $z,$ and $\\Delta w$ to $w,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=0+1=1 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+2=3 \\\\ {z}_{\\text{new}} & =z+\u0394z=0+1=1 \\\\ {w}_{\\text{new}} & =w+\u0394w=2+2=4\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ | $w$ | $w'$ | $\\Delta w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ | $\\bbox[4pt,border: 1px solid gainsboro]{2}$ | $0$ | $1$ | $\\bbox[4pt,border: 1px solid gainsboro]{1}$ | $2$ | $2$ | $\\bbox[4pt,border: 1px solid gainsboro]{2}$ |\n| $1$ | $3$ |  |  | $1$ |  |  | $4$ |  |  |\n\nTherefore, we conclude that\n$y(1) \\approx \\bbox[4pt,border: 1px solid gainsboro]{3},$\n$z(1) \\approx \\bbox[4pt,border: 1px solid gainsboro]{1},$\nand\n$w(1) \\approx \\bbox[4pt,border: 1px solid gainsboro]{4}.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14044404/example-21660.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-332892",
+        "problem": "Consider the following initial value problem for the functions $y=y(x),z=z(x):$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=x+3y-{z}^{2},\\, & y(-2)=1 \\\\ {z}^{\u2032}=x-y+2z,\\, & z(-2)=1\\end{aligned}\n$$\n\nUse Euler's method with two steps of equal size to approximate $y(0)$ and $z(0).$\n\n$y(0)\u2248$\n{{field-1}},\n$\\,z(0)\u2248$\n{{field-2}}",
+        "worked_solution": "For an initial value problem\n\n$$\n{\\begin{aligned}{y}^{\u2032}=f(x,y,z),\\, & y(a)=c, \\\\ {z}^{\u2032}=g(x,y,z),\\, & z(a)=d,\\end{aligned}\n$$\n\nEuler's method approximates the solution by applying the update rule component-wise to each equation. More precisely, the increments on $y$ and $z$ are\n\n$$\n{\\begin{aligned}\u0394y={y}^{\u2032}\\cdot \u0394x, \\\\ \u0394z={z}^{\u2032}\\cdot \u0394x.\\end{aligned}\n$$\n\nThe new values are then given by ${y}_{\\text{new}}=y+\u0394y$ and ${z}_{\\text{new}}=z+\u0394z.$\n\nFirst, note that we are given the values of $y$ and $z$ at $x=-2$ and asked to find their values at $x=0.$ The distance from $x=-2$ to $x=0$ is $2,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\u0394x=\\frac{0-(-2)}{2}=\\frac{2}{2}=1.\n$$\n\nNow, let's proceed with Euler's method. We'll start by creating a table that includes the initial condition data $y(-2)=1$ and $z(-2)=1.$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-2$ | $1$ |  |  | $1$ |  |  |\n\n**Step 1**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =x+3y-{z}^{2}=-2+3\\cdot 1-{1}^{2}=0 \\\\ {z}^{\u2032} & =x-y+2z=-2-1+2\\cdot 1=-1 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=0\\cdot 1=0 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=-1\\cdot 1=-1 \\\\ {x}_{\\text{new}} & =x+\u0394x=-2+1=-1 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+0=1 \\\\ {z}_{\\text{new}} & =z+\u0394z=1+(-1)=0\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-2$ | $1$ | $0$ | $0$ | $1$ | $-1$ | $-1$ |\n| $-1$ | $1$ |  |  | $0$ |  |  |\n\n**Step 2**.\n\nWe compute ${y}^{\u2032}$ and $\u0394y,$ ${z}^{\u2032}$ and $\u0394z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of ${x}_{\\text{new}},$ ${y}_{\\text{new}},$ and ${z}_{\\text{new}}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =x+3y-{z}^{2}=-1+3\\cdot 1-{0}^{2}=2 \\\\ {z}^{\u2032} & =x-y+2z=-1-1+2\\cdot 0=-2 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=2\\cdot 1=2 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=-2\\cdot 1=-2 \\\\ {x}_{\\text{new}} & =x+\u0394x=-1+1=0 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+2=3 \\\\ {z}_{\\text{new}} & =z+\u0394z=0+(-2)=-2\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $-2$ | $1$ | $0$ | $0$ | $1$ | $-1$ | $-1$ |\n| $-1$ | $1$ | $2$ | $2$ | $0$ | $-2$ | $-2$ |\n| $0$ | $3$ |  |  | $-2$ |  |  |\n\nTherefore, we conclude that\n$y(0)\u22483$\nand\n$z(0)\u2248-2.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "3",
+            "observed_mathquill_latex": "3"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "-2",
+            "observed_mathquill_latex": "-2"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "mode": "solve",
+  "problem": "Consider the initial value problem:\n\n$$\n{y}^{\u2032}=-y,\\,y(0)=3\n$$\n\nSuppose we approximate the solution using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\ {y}_{\\text{new}} & =y+\u0394y\\end{aligned}\n$$\n\nGiven that the exact solution is ${y}_{\\text{exact}}(x)=3{e}^{-x},$ compute the local truncation error ${\u03c4}_{6}$ for the step starting at $x=1$ with step size $\u0394x=0.2.$ Round your answer to three decimal places.\n\n${\u03c4}_{6}\u2248$\n{{field-1}}",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14044563,
+    "task_type": "lesson",
+    "topic_id": 3246,
+    "examples": [
+      {
+        "math_academy_id": "e-21604",
+        "knowledge_point": "Computing the LTE for a Numerical Method Given an Initial Value Problem",
+        "problem": "Consider the following initial value problem:\n\n$$\ny' = -\\sin x, \\qquad y(0) = 1\n$$\n\nSuppose we wish to approximate the solution using the following method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\ {y}_{\\text{new}} & =y+\u0394y\\end{aligned}\n$$\n\nGiven that the exact solution is $y_{\\textrm{exact}}(x) = \\cos x,$ compute the local truncation error $\\tau_{6}$ for the step starting at $x=1$ with step size $\\Delta x=0.2.$ Round your answer to three decimal places.",
+        "worked_solution": "The local truncation error (LTE) is the error made in a *single step* of a numerical method, when the step begins from an *exact value*. The LTE of a numerical method at step $n$ from $x$ with exact value $y_{\\textrm{exact}}(x)$ to $x_\\text{new} = x + \\Delta x$ is\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-{y}_{\\text{new}} \\\\  & ={y}_{\\text{exact}}({x}_{\\text{new}})-({y}_{\\text{exact}}(x)+\u0394y).\\end{aligned}\n$$\n\nWe're given that the exact solution is $y_{\\textrm{exact}}(x) = \\cos x.$ So, the $y$-value at the start of the step $x=1$ is $y_{\\textrm{exact}}(1)=\\cos(1).$\n\nNow, let's find the $y$-increment given by the numerical method.\n\nFirst, the slope at the start of the step is\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}^{\u2032}(1) & =-\\operatorname{sin}\u2061(1) \\\\  & =-0.8415.\\end{aligned}\n$$\n\nSo, the increment at this step is\n\n$$\n\\begin{aligned}\u0394y & ={y}_{\\text{exact}}^{\u2032}(1)\\cdot \u0394x \\\\  & =-0.8415\\cdot 0.2 \\\\  & \u2248-0.1683.\\end{aligned}\n$$\n\nNext, we compute the exact value at $x_\\text{new}{:}$\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}({x}_{\\text{new}}) & ={y}_{\\text{exact}}(x+\u0394x) \\\\  & ={y}_{\\text{exact}}(1+0.2) \\\\  & ={y}_{\\text{exact}}(1.2) \\\\  & =\\operatorname{cos}\u2061(1.2)\\end{aligned}\n$$\n\nFinally, we calculate the LTE for the step starting at $x=1{:}$\n\n$$\n\\begin{aligned}{\u03c4}_{6} & =\\operatorname{cos}\u2061(1.2)-(\\operatorname{cos}\u2061(1)+\u0394y) \\\\  & =\\operatorname{cos}\u2061(1.2)-(\\operatorname{cos}\u2061(1)-0.1683) \\\\  & \u2248-0.010\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14044563/example-21604.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-332275",
+        "problem": "An initial value problem has the exact solution ${y}_{\\text{exact}}(x)=\\operatorname{sin}\u2061x.$ A numerical method is used to approximate the solution to the initial value problem, resulting in the table below, where $y$ denotes the approximate solution at each step, and ${\u03c4}_{n}$ is the local truncation error at each step. At each step, the exact value is used to approximate the new value. \n\nCalculate the local truncation error at each step. Round your answers to three decimal places.\n\n| $n$ | $x$ | $y$ | ${\u03c4}_{n}$ |\n| --- | --- | --- | --- |\n| $0$ | $0$ | $0$ | $0$ |\n| $1$ | $0.25$ | $0.250$ | {{field-1}} |\n| $2$ | $0.5$ | $0.483$ | {{field-2}} |\n| $3$ | $0.75$ | $0.688$ | {{field-3}} |",
+        "worked_solution": "The local truncation error (LTE) is the error made in a *single step* of a numerical method, when the step begins from an *exact value*. The LTE of a numerical method at step $n$ from $x$ with exact value ${y}_{\\text{exact}}(x)$ to ${x}_{\\text{new}}=x+\u0394x$ is\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-{y}_{\\text{new}} \\\\  & ={y}_{\\text{exact}}({x}_{\\text{new}})-({y}_{\\text{exact}}(x)+\u0394y).\\end{aligned}\n$$\n\nWe find the LTE at each step, rounding to three decimal places in each case:\n\n- After the first step, we have ${y}_{\\text{new}}=0.250.$ So, the LTE of the first step is\n\n$$\n\\begin{aligned}{\u03c4}_{1} & ={y}_{\\text{exact}}(0.25)-0.250 \\\\  & =\\operatorname{sin}\u2061(0.25)-0.250 \\\\  & \u2248-0.003.\\end{aligned}\n$$\n\n- After the second step, we have ${y}_{\\text{new}}=0.483.$ So, the LTE of the second step is\n\n$$\n\\begin{aligned}{\u03c4}_{2} & ={y}_{\\text{exact}}(0.5)-0.483 \\\\  & =\\operatorname{sin}\u2061(0.5)-0.483 \\\\  & \u2248-0.004.\\end{aligned}\n$$\n\n- After the third step, we have ${y}_{\\text{new}}=0.688.$ So, the LTE of the third step is\n\n$$\n\\begin{aligned}{\u03c4}_{3} & ={y}_{\\text{exact}}(0.75)-0.688 \\\\  & =\\operatorname{sin}\u2061(0.75)-0.688 \\\\  & \u2248-0.006.\\end{aligned}\n$$\n\nTherefore, the completed table is as given below.\n\n| $n$ | $x$ | $y$ | ${\u03c4}_{n}$ |\n| --- | --- | --- | --- |\n| $0$ | $0$ | $0$ | $0$ |\n| $1$ | $0.25$ | $0.250$ | $-0.003$ |\n| $2$ | $0.5$ | $0.483$ | $-0.004$ |\n| $3$ | $0.75$ | $0.688$ | $-0.006$ |",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "-0.003",
+            "observed_mathquill_latex": "-0.003"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "-0.004",
+            "observed_mathquill_latex": "-0.004"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "-0.006",
+            "observed_mathquill_latex": "-0.006"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

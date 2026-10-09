@@ -1,0 +1,66 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem for the functions $y=y(x),z=z(x):$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=x-y,\\, & y(0)=0 \\\\ {z}^{\u2032}=1+y,\\, & z(0)=0\\end{aligned}\n$$\n\nUse Euler's method with two steps of equal size to approximate $y(1)$ and $z(1).$\n\n$y(1)\u2248$\n{{field-1}},\n$\\,z(1)\u2248$\n{{field-2}}",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14044404,
+    "task_type": "lesson",
+    "topic_id": 3245,
+    "examples": [
+      {
+        "math_academy_id": "e-21656",
+        "knowledge_point": "Approximating the Solution to a System of ODEs Using Euler's Method With Multiple Steps",
+        "problem": "Consider the following initial value problem for the functions $y = y(x), z = z(x){:}$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=x-y+2z,\\, & y(1)=1 \\\\ {z}^{\u2032}=3x+y-z,\\, & z(1)=0\\end{aligned}\n$$\n\nUse Euler's method with two steps of equal size to approximate $y(3)$ and $z(3).$",
+        "worked_solution": "For an initial value problem\n\n$$\n{\\begin{aligned}{y}^{\u2032}=f(x,y,z),\\, & y(a)=c, \\\\ {z}^{\u2032}=g(x,y,z),\\, & z(a)=d,\\end{aligned}\n$$\n\nEuler's method approximates the solution by applying the update rule component-wise to each equation. More precisely, the increments on $y$ and $z$ are\n\n$$\n{\\begin{aligned}\u0394y={y}^{\u2032}\\cdot \u0394x, \\\\ \u0394z={z}^{\u2032}\\cdot \u0394x.\\end{aligned}\n$$\n\nThe new values are then given by $y_\\text{new} = y + \\Delta y$ and $z_\\text{new} = z + \\Delta z.$\n\nFirst, note that we are given the values of $y$ and $z$ at $x=1$ and asked to find their values at $x=3.$ The distance from $x=1$ to $x=3$ is $2,$ and since we are asked to use two steps of equal size, our step size must be\n\n$$\n\\Delta x = \\dfrac{3 - 1}2 = \\dfrac22 = 1.\n$$\n\nNow, let's proceed with Euler's method. We'll start by creating a table that includes the initial condition data $y(1)=1$ and $z(1)=0.$\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ |  |  | $0$ |  |  |\n\n**Step 1**.\n\nWe compute $y'$ and $\\Delta y,$ $z'$ and $\\Delta z$ (using the values of $x,$ $y,$ and $z$ in the first row), and the values of $x_\\text{new},$ $y_\\text{new},$ and $z_\\text{new}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =x-y+2z=1-1+2\\cdot 0=0 \\\\ {z}^{\u2032} & =3x+y-z=3\\cdot 1+1-0=4 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=0\\cdot 1=0 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=4\\cdot 1=4 \\\\ {x}_{\\text{new}} & =x+\u0394x=1+1=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+0=1 \\\\ {z}_{\\text{new}} & =z+\u0394z=0+4=4\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $0$ | $0$ | $0$ | $4$ | $4$ |\n| $2$ | $1$ |  |  | $4$ |  |  |\n\n**Step 2**.\n\nWe compute $y'$ and $\\Delta y,$ $z'$ and $\\Delta z$ (using the values of $x,$ $y,$ and $z$ in the second row), and the values of $x_\\text{new},$ $y_\\text{new},$ and $z_\\text{new}$ using Euler's method:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =x-y+2z=2-1+2\\cdot 4=9 \\\\ {z}^{\u2032} & =3x+y-z=3\\cdot 2+1-4=3 \\\\ \u0394y & ={y}^{\u2032}\\cdot \u0394x=9\\cdot 1=9 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x=3\\cdot 1=3 \\\\ {x}_{\\text{new}} & =x+\u0394x=2+1=3 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+9=10 \\\\ {z}_{\\text{new}} & =z+\u0394z=4+3=7\\end{aligned}\n$$\n\nWe add these values to our table.\n\n| $x$ | $y$ | $y'$ | $\\Delta y$ | $z$ | $z'$ | $\\Delta z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $1$ | $1$ | $0$ | $0$ | $0$ | $4$ | $4$ |\n| $2$ | $1$ | $9$ | $9$ | $4$ | $3$ | $3$ |\n| $3$ | $10$ |  |  | $7$ |  |  |\n\nTherefore, we conclude that\n$y(3) \\approx 10$\nand\n$z(3) \\approx 7.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14044404/example-21656.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-333827",
+        "problem": "Consider the following initial value problem for the functions $y=y(x),z=z(x):$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=3x+2y+z,\\, & y(0)=3 \\\\ {z}^{\u2032}=2x-y+3z,\\, & z(0)=-2\\end{aligned}\n$$\n\nWe wish to approximate the solution using Euler's method.\nWhat entries should be placed in the columns for $\u0394y$ and $\u0394z$ in the table below if the step size is $\u0394x=2?$\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ |  |  | {{field-1}} |  |  | {{field-2}} |\n\nTherefore, $y(2)\u2248$\n{{field-3}}\nand $z(2)\u2248$\n{{field-4}}.",
+        "worked_solution": "For an initial value problem\n\n$$\n{\\begin{aligned}{y}^{\u2032}=f(x,y,z),\\, & y(a)=c, \\\\ {z}^{\u2032}=g(x,y,z),\\, & z(a)=d,\\end{aligned}\n$$\n\nEuler's method approximates the solution by applying the update rule component-wise to each equation. More precisely, the increments on $y$ and $z$ are\n\n$$\n{\\begin{aligned}\u0394y={y}^{\u2032}\\cdot \u0394x, \\\\ \u0394z={z}^{\u2032}\\cdot \u0394x.\\end{aligned}\n$$\n\nThe new values are then given by ${y}_{\\text{new}}=y+\u0394y$ and ${z}_{\\text{new}}=z+\u0394z.$\n\nFirst, because the initial conditions are $y(0)=3$ and $z(0)=-2,$ we place $y=3$ and $z=-2$ in the table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $3$ |  |  | $-2$ |  |  |\n\nNext, we compute both ${y}^{\u2032}$ and ${z}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =3x+2y+z \\\\  & =3\\cdot 0+2\\cdot 3+(-2) \\\\  & =0+6-2 \\\\  & =4 \\\\ {z}^{\u2032} & =2x-y+3z \\\\  & =2\\cdot 0-3+3\\cdot (-2) \\\\  & =0-3-6 \\\\  & =-9\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $3$ | $4$ |  | $-2$ | $-9$ |  |\n\nFinally, we compute $\u0394y$ and $\u0394z$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =4\\cdot 2 \\\\  & =8 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =(-9)\\cdot 2 \\\\  & =-18\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $3$ | $4$ | $8$ | $-2$ | $-9$ | $-18$ |\n\nTo get the new values of $x,$ $y,$ and $z$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ and $\u0394z$ to $z,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=0+2=2 \\\\ {y}_{\\text{new}} & =y+\u0394y=3+8=11 \\\\ {z}_{\\text{new}} & =z+\u0394z=-2+(-18)=-20\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $3$ | $4$ | $8$ | $-2$ | $-9$ | $-18$ |\n| $2$ | $11$ |  |  | $-20$ |  |  |\n\nTherefore, we conclude that\n$y(2)\u224811$\nand\n$z(2)\u2248-20.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "8",
+            "observed_mathquill_latex": "8"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "-18",
+            "observed_mathquill_latex": "-18"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "11",
+            "observed_mathquill_latex": "11"
+          },
+          {
+            "key": "field-4",
+            "submitted_value": "-20",
+            "observed_mathquill_latex": "-20"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

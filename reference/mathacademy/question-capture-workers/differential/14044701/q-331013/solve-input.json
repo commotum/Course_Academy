@@ -1,0 +1,70 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=2x+y,\\,y(0)=1\n$$\n\nWe wish to approximate the solution using the modified Euler method. What entry should be placed in the cell indicated in the table below, if the step size is $\u0394x=\\frac{1}{2}?$\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ |  |  |  |  |  |\n| $\\frac{1}{2}$ | $\\,?\\,$ |  |  |  |  |  |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\frac{7}{4}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\frac{3}{2}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "\\frac{15}{8}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{13}{8}"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14044701,
+    "task_type": "lesson",
+    "topic_id": 3247,
+    "examples": [
+      {
+        "math_academy_id": "e-21274",
+        "knowledge_point": "Completing the First Row of a Table Using the Modified Euler Method",
+        "problem": "Consider the following initial value problem:\n\n$$\ny' = xy - y^2 + 2, \\qquad y(0)=1\n$$\n\nWe wish to approximate the solution using the modified Euler method. Complete the first row of the table below, given that the step size is $\\Delta x = 1.$\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,y'\\,$ | $\\Delta y_p$ | $y_p$ | $y'_p$ | $\\Delta y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ |  |  |  |  |  |",
+        "worked_solution": "For an initial value problem\n\n$$\ny' = f(x,y), \\qquad y_0 = y(x_0),\n$$\n\nthe modified Euler method with step size $\\Delta x$ is given by\n\n$$\n\\begin{aligned}\\text{Predictor} & : & \u0394{y}_{p} & ={y}^{\u2032}\\cdot \u0394x, \\\\ \\text{Corrector} & : & \u0394y & =\\frac{1}{2}({y}^{\u2032}+{y}_{p}^{\u2032})\\cdot \u0394x,\\end{aligned}\n$$\n\nwhere $y'_p = f(x_\\text{new},y_p)$ is the initially predicted slope at the predicted new point $(x_\\text{new}, y_p) = (x + \\Delta x, y + \\Delta y_p).$\n\nFirst, we compute the value of $y'$ according to the given rule:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =xy-{y}^{2}+2 \\\\  & =0\\cdot 1-{1}^{2}+2 \\\\  & =1\\end{aligned}\n$$\n\nSo, we add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,y'\\,$ | $\\Delta y_p$ | $y_p$ | $y'_p$ | $\\Delta y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ |  |  |  |  |\n\nNext, we compute $\\Delta y_p$ using the predictor equation:\n\n$$\n\\begin{aligned}\u0394{y}_{p} & ={y}^{\u2032}\\cdot \u0394x \\\\  & =1\\cdot 1 \\\\  & =1\\end{aligned}\n$$\n\nWe add this value to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,y'\\,$ | $\\Delta y_p$ | $y_p$ | $y'_p$ | $\\Delta y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ | $1$ |  |  |  |\n\nThe coordinates of the initially predicted new point given by the predictor equation are\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=0+1=1, \\\\ {y}_{p} & =y+\u0394{y}_{p}=1+1=2.\\end{aligned}\n$$\n\nLet's add the second value to the table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\, y'\\,$ | $\\Delta y_p$ | $y_p$ | $y'_p$ | $\\Delta y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ | $1$ | $2$ |  |  |\n\nSo, the predicted slope at this point is\n\n$$\n\\begin{aligned}{y}_{p}^{\u2032} & =f({x}_{\\text{new}},{y}_{p}) \\\\  & ={x}_{\\text{new}}{y}_{p}-{y}_{p}^{2}+2 \\\\  & =(1)(2)-(2)^{2}+2 \\\\  & =0\\end{aligned}\n$$\n\nWe can add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\, y'\\,$ | $\\Delta y_p$ | $y_p$ | $y'_p$ | $\\Delta y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ | $1$ | $2$ | $0$ |  |\n\nFinally, we compute $\\Delta y$ using the corrector equation:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{2}({y}^{\u2032}+{y}_{p}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{2}(1+0)\\cdot 1 \\\\  & =\\frac{1}{2}\\end{aligned}\n$$\n\nTherefore, the completed first row is as given below.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\, y'\\,$ | $\\Delta y_p$ | $y_p$ | $y'_p$ | $\\Delta y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ | $1$ | $2$ | $0$ | $\\dfrac{1}{2}$ |",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14044701/example-21274.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-331413",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}={x}^{2}y-{y}^{2},\\,y(0)=1\n$$\n\nWe wish to approximate the solution using the modified Euler method. Complete the first row of the table below, given that the step size is $\u0394x=\\frac{1}{2}.$\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-1$ | $-\\frac{1}{2}$ | $\\frac{1}{2}$ | $-\\frac{1}{8}$ | {{field-1}} |",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,{y}_{0}=y({x}_{0}),\n$$\n\nthe modified Euler method with step size $\u0394x$ is given by\n\n$$\n\\begin{aligned}\\text{Predictor} & : & \u0394{y}_{p} & ={y}^{\u2032}\\cdot \u0394x, \\\\ \\text{Corrector} & : & \u0394y & =\\frac{1}{2}({y}^{\u2032}+{y}_{p}^{\u2032})\\cdot \u0394x,\\end{aligned}\n$$\n\nwhere ${y}_{p}^{\u2032}=f({x}_{\\text{new}},{y}_{p})$ is the initially predicted slope at the predicted new point $({x}_{\\text{new}},{y}_{p})=(x+\u0394x,y+\u0394{y}_{p}).$\n\nWe compute $\u0394y$ using the corrector equation:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{2}({y}^{\u2032}+{y}_{p}^{\u2032})\u0394x \\\\  & =\\frac{1}{2}\\,(-1+\\,(-\\frac{1}{8}))\\cdot \\frac{1}{2} \\\\  & =\\frac{1}{4}\\,(-\\frac{9}{8}) \\\\  & =-\\frac{9}{32}\\end{aligned}\n$$\n\nTherefore, the completed first row is as given below.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $-1$ | $-\\frac{1}{2}$ | $\\frac{1}{2}$ | $-\\frac{1}{8}$ | $-\\frac{9}{32}$ |",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "-\\frac{9}{32}",
+            "observed_mathquill_latex": "-\\frac{9}{32}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

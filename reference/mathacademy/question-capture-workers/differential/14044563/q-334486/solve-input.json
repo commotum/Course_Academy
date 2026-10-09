@@ -1,0 +1,58 @@
+{
+  "mode": "solve",
+  "problem": "A numerical method is used to approximate a solution to an initial value problem, resulting in the table below. If the exact solution is $y(x)=\\frac{1}{2}{x}^{2}+1,$ find, rounded to three decimal places, the global truncation error at each step.\n\n| $n$ | ${x}_{n}$ | ${y}_{n}$ | ${e}_{n}$ |\n| --- | --- | --- | --- |\n| $0$ | $0$ | $1$ | $0$ |\n| $1$ | $0.2$ | $1.010$ | {{field-1}} |\n| $2$ | $0.4$ | $1.040$ | {{field-2}} |\n| $3$ | $0.7$ | $1.140$ | {{field-3}} |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-3",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14044563,
+    "task_type": "lesson",
+    "topic_id": 3246,
+    "examples": [
+      {
+        "math_academy_id": "e-21218",
+        "knowledge_point": "Computing Global Truncation Error Given Numerical Solutions to an Initial Value Problem",
+        "problem": "A numerical method is used to approximate a solution to an initial value problem, resulting in the table below. If the exact solution is $y(x) = \\sqrt{x + 2},$ find, rounded to three decimal places, the global truncation error at each step.\n\n| $n$ | $x_n$ | $y_n$ | $e_n$ |\n| --- | --- | --- | --- |\n| $0$ | $0$ | $1.414$ | $0$ |\n| $1$ | $0.3$ | $1.480$ |  |\n| $2$ | $0.6$ | $1.570$ |  |\n| $3$ | $0.9$ | $1.650$ |  |",
+        "worked_solution": "The global truncation error (GTE) is the total error accumulated after several steps of a numerical method. The GTE of a numerical method at step $n$ from $x_{n-1}$ to $x_n = x_{n-1} + \\Delta x$ is\n\n$$\ne_n = y(x_n) - y_n,\n$$\n\nwhere $y(x_n)$ is the exact value at $x_n,$ and $y_n$ is the numerical value produced after $n$ steps.\n\nWe are given the numerical values $y_n$ produced at each step in the table. Now, we compute the exact value $y(x_n)$ at each value of $x_n{:}$\n\n- The exact value at $x_0=0$ is $y(0) = \\sqrt{0 + 2} = \\sqrt{2}.$\n\n- The exact value at $x_1=0.3$ is $y(0.3) = \\sqrt{0.3 + 2}.$\n\n- The exact value at $x_2=0.6$ is $y(0.6) = \\sqrt{0.6 + 2}.$\n\n- The exact value at $x_3=0.9$ is $y(0.9) = \\sqrt{0.9 + 2}.$\n\nLet's add these values to the table.\n\n| $n$ | $x_n$ | $y_n$ | $y(x_n)$ | $e_n$ |\n| --- | --- | --- | --- | --- |\n| $0$ | $0$ | $1.414$ | $\\sqrt{2}$ | $0$ |\n| $1$ | $0.3$ | $1.480$ | $\\sqrt{2.3}$ |  |\n| $2$ | $0.6$ | $1.570$ | $\\sqrt{2.6}$ |  |\n| $3$ | $0.9$ | $1.650$ | $\\sqrt{2.9}$ |  |\n\nFinally, we find the GTE at each step, rounding to three decimal places in each case:\n\n- The GTE of the first step is\n\n$$\n\\begin{aligned}{e}_{1} & =y({x}_{1})-{y}_{1} \\\\  & =\\sqrt{2.3}-1.480 \\\\  & \u22480.037.\\end{aligned}\n$$\n\n- The GTE of the second step is\n\n$$\n\\begin{aligned}{e}_{2} & =y({x}_{2})-{y}_{2} \\\\  & =\\sqrt{2.6}-1.570 \\\\  & \u22480.042.\\end{aligned}\n$$\n\n- The GTE of the third step is\n\n$$\n\\begin{aligned}{e}_{3} & =y({x}_{3})-{y}_{3} \\\\  & =\\sqrt{2.9}-1.650 \\\\  & \u22480.053.\\end{aligned}\n$$\n\nTherefore, the completed table is as given below.\n\n| $n$ | $x_n$ | $y_n$ | $y(x_n)$ | $e_n$ |\n| --- | --- | --- | --- | --- |\n| $0$ | $0$ | $1.414$ | $\\sqrt{2}$ | $0$ |\n| $1$ | $0.3$ | $1.480$ | $\\sqrt{2.3}$ | $\\bbox[4pt,border: 1px solid gainsboro]{0.037}$ |\n| $2$ | $0.6$ | $1.570$ | $\\sqrt{2.6}$ | $\\bbox[4pt,border: 1px solid gainsboro]{0.042}$ |\n| $3$ | $0.9$ | $1.650$ | $\\sqrt{2.9}$ | $\\bbox[4pt,border: 1px solid gainsboro]{0.053}$ |",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14044563/example-21218.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-333495",
+        "problem": "Suppose we wish to approximate the solution to an initial value problem using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\ {y}_{\\text{new}} & =y+\u0394y\\end{aligned}\n$$\n\nIf the exact solution is ${y}_{\\text{exact}}(x)=5x,$ find an expression for the local truncation error for the step from $x$ to ${x}_{\\text{new}}=x+\u0394x.$",
+        "worked_solution": "The local truncation error (LTE) is the error made in a single step of a numerical method, when the step begins from an exact value. The LTE of a numerical method at step $n$ from $x$ with exact value ${y}_{\\text{exact}}$ to ${x}_{\\text{new}}=x+\u0394x$ is\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-{y}_{\\text{new}} \\\\  & ={y}_{\\text{exact}}({x}_{\\text{new}})-({y}_{\\text{exact}}(x)+\u0394y).\\end{aligned}\n$$\n\nWe're given that the exact solution of the initial value problem is ${y}_{\\text{exact}}(x)=5x.$ Now, let's find the $y$-increment given by the numerical method.\n\nFirst, the slope at a step starting at $x$ is\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}^{\u2032}(x)=(5x)^{\u2032}=5.\\end{aligned}\n$$\n\nSo, the increment given by the numerical method is\n\n$$\n\\begin{aligned}\u0394y & ={y}_{\\text{exact}}^{\u2032}(x)\\cdot \u0394x \\\\  & =5\\cdot \u0394x.\\end{aligned}\n$$\n\nNext, we compute the exact value at ${x}_{\\text{new}}:$\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}({x}_{\\text{new}}) & ={y}_{\\text{exact}}(x+\u0394x) \\\\  & =5(x+\u0394x) \\\\  & =5x+5\\cdot \u0394x\\end{aligned}\n$$\n\nFinally, we calculate the LTE for step $n$ starting at $x:$\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-({y}_{\\text{exact}}(x)+\u0394y) \\\\  & =[5x+5\\cdot \u0394x]-[5x+5\\cdot \u0394x] \\\\  & =0.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "0",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

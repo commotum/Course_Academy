@@ -1,0 +1,70 @@
+{
+  "mode": "solve",
+  "problem": "Suppose we wish to approximate the solution to an initial value problem using the following numerical method:\n\n$$\n\\begin{aligned}\u0394y & =({x}^{2}+\\sqrt{y})\\cdot \u0394x \\\\ {y}_{\\text{new}} & =y+\u0394y\\end{aligned}\n$$\n\nIf the exact solution is ${y}_{\\text{exact}}(x)={x}^{2}+4x+5,$ find an expression for the local truncation error for the step from $x$ to ${x}_{\\text{new}}=x+\u0394x.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "((2x+4)-{x}^{2}-\\sqrt{{x}^{2}+5x+5})\\cdot \u0394x+(\u0394x)^{2}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "((2x+4)-x-\\sqrt{{x}^{2}+4x+5})\\cdot \u0394x+(\u0394x)^{2}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "((2x+4)-{x}^{2}-\\sqrt{{x}^{2}+4x+5})\\cdot \u0394x+(\u0394x)^{2}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "((2x+4)-{x}^{2}-\\sqrt{{x}^{2}+4x+4})\\cdot \u0394x+(\u0394x)^{2}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "((2x+5)-{x}^{2}-\\sqrt{{x}^{2}+4x+5})\\cdot \u0394x+(\u0394x)^{2}"
+        }
+      ]
+    }
+  ],
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14044563,
+    "task_type": "lesson",
+    "topic_id": 3246,
+    "examples": [
+      {
+        "math_academy_id": "e-21214",
+        "knowledge_point": "Writing an Expression for the LTE for a Given Numerical Method",
+        "problem": "Suppose we wish to approximate the solution to an initial value problem using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\ {y}_{\\text{new}} & =y+\u0394y\\end{aligned}\n$$\n\nIf the exact solution is $y_{\\textrm{exact}}(x) = x^3,$ find an expression for the local truncation error for the step from $x$ to $x_\\text{new} = x + \\Delta x.$",
+        "worked_solution": "The local truncation error (LTE) is the error made in a *single step* of a numerical method, when the step begins from an *exact value*. The LTE of a numerical method at step $n$ from $x$ with exact value $y_{\\textrm{exact}}(x)$ to $x_\\text{new} = x + \\Delta x$ is\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-{y}_{\\text{new}} \\\\  & ={y}_{\\text{exact}}({x}_{\\text{new}})-({y}_{\\text{exact}}(x)+\u0394y).\\end{aligned}\n$$\n\nWe're given that the exact solution of the initial value problem is $y_{\\textrm{exact}}(x) = x^3.$ Now, let's find the $y$-increment given by the numerical method.\n\nFirst, the slope at a step starting at $x$ is\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}^{\u2032}(x)=({x}^{3})^{\u2032}=3{x}^{2}.\\end{aligned}\n$$\n\nSo, the increment given by the numerical method is\n\n$$\n\\begin{aligned}\u0394y & ={y}_{\\text{exact}}^{\u2032}(x)\\cdot \u0394x \\\\  & =3{x}^{2}\\cdot \u0394x.\\end{aligned}\n$$\n\nNext, we compute the exact value at $x_\\text{new}{:}$\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}({x}_{\\text{new}}) & ={y}_{\\text{exact}}(x+\u0394x) \\\\  & =(x+\u0394x)^{3} \\\\  & ={x}^{3}+3{x}^{2}\\cdot \u0394x+3x\\cdot (\u0394x)^{2}+(\u0394x)^{3}\\end{aligned}\n$$\n\nFinally, we calculate the LTE for step $n$ starting at $x{:}$\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-({y}_{\\text{exact}}(x)+\u0394y) \\\\  & =[{x}^{3}+3{x}^{2}\\cdot \u0394x+3x\\cdot (\u0394x)^{2}+(\u0394x)^{3}]-[{x}^{3}+3{x}^{2}\\cdot \u0394x] \\\\  & ={x}^{3}-{x}^{3}+(3{x}^{2}-3{x}^{2})\\cdot \u0394x+3x\\cdot (\u0394x)^{2}+(\u0394x)^{3} \\\\  & =3x\\cdot (\u0394x)^{2}+(\u0394x)^{3}\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14044563/example-21214.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-333255",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=3y,\\,y(0)=1\n$$\n\nSuppose we wish to approximate the solution using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\ {y}_{\\text{new}} & =y+\u0394y\\end{aligned}\n$$\n\nGiven that the exact solution is ${y}_{\\text{exact}}(x)={e}^{3x},$ compute the local truncation error ${\u03c4}_{1}$ for the first step starting at $x=0$ with step size $\u0394x=0.2.$ Round your answer to three decimal places.\n\n${\u03c4}_{1}\u2248$\n{{field-1}}",
+        "worked_solution": "The local truncation error (LTE) is the error made in a *single step* of a numerical method, when the step begins from an *exact value*. The LTE of a numerical method at step $n$ from $x$ with exact value ${y}_{\\text{exact}}(x)$ to ${x}_{\\text{new}}=x+\u0394x$ is\n\n$$\n\\begin{aligned}{\u03c4}_{n} & ={y}_{\\text{exact}}({x}_{\\text{new}})-{y}_{\\text{new}} \\\\  & ={y}_{\\text{exact}}({x}_{\\text{new}})-({y}_{\\text{exact}}(x)+\u0394y).\\end{aligned}\n$$\n\nWe're given that the exact $y$-value at the start of the step $x=0$ is $y(0)=1.$  Now, let's find the $y$-increment given by the numerical method.\n\nFirst, the slope at the start of the step is\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}^{\u2032}(0) & =3{y}_{\\text{exact}}(0) \\\\  & =3\\cdot 1 \\\\  & =3.\\end{aligned}\n$$\n\nSo, the increment at this step is\n\n$$\n\\begin{aligned}\u0394y & ={y}_{\\text{exact}}^{\u2032}(0)\\cdot \u0394x \\\\  & =3\\cdot 0.2 \\\\  & =0.6.\\end{aligned}\n$$\n\nNext, we compute the exact value at ${x}_{\\text{new}}:$\n\n$$\n\\begin{aligned}{y}_{\\text{exact}}({x}_{\\text{new}}) & ={y}_{\\text{exact}}(x+\u0394x) \\\\  & ={y}_{\\text{exact}}(0+0.2) \\\\  & ={y}_{\\text{exact}}(0.2) \\\\  & ={e}^{3\\cdot 0.2} \\\\  & ={e}^{0.6}.\\end{aligned}\n$$\n\nFinally, we calculate the LTE for the first step starting at $x=0:$\n\n$$\n\\begin{aligned}{\u03c4}_{1} & ={y}_{\\text{exact}}({x}_{\\text{new}})-(y(0)+\u0394y) \\\\  & ={e}^{0.6}-(1+0.6) \\\\  & ={e}^{0.6}-1.6 \\\\  & \u22480.222\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0.222",
+            "observed_mathquill_latex": "0.222"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
