@@ -1,0 +1,49 @@
+{
+  "mode": "solve",
+  "problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[-1,1]\\times [-1,1]\u2286{R}^{2},$ where\n\n$$\nf(x,y)=7{x}^{2}y-2xy+3{y}^{3}-1.\n$$\n\nCalculate the second iteration of the Newton-Raphson process for optimization that starts at ${x}_{0}=[-1,\\,1]^{T}$ if the first iteration of the algorithm gives ${x}_{1}=[-1,\\,0]^{T}.$ Round your final answer to **three decimal places.**\n\n| ${x}_{2}\u2248[$ | {{field-1}} | $]$ |\n| --- | --- | --- |\n| $0$ |  |  |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14083550,
+    "task_type": "review",
+    "topic_id": 5377,
+    "topic_title": "Newton's Method for Optimizing Multivariable Functions",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-257202",
+        "problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[0,1]\\times [0,1]\u2286{R}^{2},$ where\n\n$$\nf(x,y)=3{x}^{2}y-2{x}^{2}-2{y}^{2}+x.\n$$\n\nFill in the blanks in the matrix equation below that defines the first iteration of the Newton-Raphson process starting at the point $[1,\\,1]^{T}.$\n\n| $[$ | $2$ | {{field-1}} | $]({x}_{1}-{x}_{0})\\,=[$ | $-3$ | $]$ |\n| --- | --- | --- | --- | --- | --- |\n| {{field-2}} | $-4$ | {{field-3}} |  |  |  |",
+        "worked_solution": "The Newton-Raphson method of optimizing a multivariable function $f:{R}^{n}\\to R$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{H}_{f}({x}_{n})]^{-1}\u2207f({x}_{n}),\n$$\n\nwhere $H({x}_{n})$ and $\u2207f({x}_{n})$ are the Hessian and gradient of $f$, respectively, evaluated at ${x}_{n}.$\n\nEquivalently, at each iteration, the above equation can be rewritten as\n\n$$\n{H}_{f}({x}_{n})({x}_{n+1}-{x}_{n})=-\u2207f({x}_{n}).\n$$\n\nIn our case, the gradient is\n\n$$\n\\begin{aligned}\u2207f(x) & =[\\begin{aligned}\\frac{\u2202}{\u2202x}(3{x}^{2}y-2{x}^{2}-2{y}^{2}+x) \\\\ \\frac{\u2202}{\u2202y}(3{x}^{2}y-2{x}^{2}-2{y}^{2}+x)\\end{aligned}] \\\\  & =[\\begin{aligned}6xy-4x+1 \\\\ 3{x}^{2}-4y\\end{aligned}],\\end{aligned}\n$$\n\nand the Hessian is\n\n$$\n\\begin{aligned}{H}_{f}(x) & =[\\begin{aligned}\\frac{\u2202}{\u2202x}(6xy-4x+1) & \\frac{\u2202}{\u2202x}(3{x}^{2}-4y) \\\\ \\frac{\u2202}{\u2202y}(6xy-4x+1) & \\frac{\u2202}{\u2202y}(3{x}^{2}-4y)\\end{aligned}] \\\\  & =[\\begin{aligned}6y-4 & 6x \\\\ 6x & -4\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson system of equations is\n\n$$\n{[\\begin{aligned}6y-4 & 6x \\\\ 6x & -4\\end{aligned}]}_{{x}_{n}}({x}_{n+1}-{x}_{n})=-{[\\begin{aligned}6xy-4x+1 \\\\ 3{x}^{2}-4y\\end{aligned}]}_{{x}_{n}}.\n$$\n\nStarting with ${x}_{0}=[\\begin{aligned}1 \\\\ 1\\end{aligned}],$ we have\n\n$$\n\\begin{aligned}{[\\begin{aligned}6y-4 & 6x \\\\ 6x & -4\\end{aligned}]}_{{x}_{0}}({x}_{1}-{x}_{0}) & =-{[\\begin{aligned}6xy-4x+1 \\\\ 3{x}^{2}-4y\\end{aligned}]}_{{x}_{0}} \\\\ [\\begin{aligned}6(1)-4 & 6(1) \\\\ 6(1) & -4\\end{aligned}]({x}_{1}-{x}_{0}) & =-[\\begin{aligned}6(1)(1)-4(1)+1 \\\\ 3(1)^{2}-4(1)\\end{aligned}] \\\\ [\\begin{aligned}2 & 6 \\\\ 6 & -4\\end{aligned}]({x}_{1}-{x}_{0}) & =[\\begin{aligned}-3 \\\\ 1\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "6",
+            "observed_mathquill_latex": "6"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "6",
+            "observed_mathquill_latex": "6"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "1",
+            "observed_mathquill_latex": "1"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
