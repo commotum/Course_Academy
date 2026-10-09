@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Which of the following local truncation error expressions represent a second-order numerical method?\n\n- $\u03c4(\u0394x)=5(\u0394x)^{4}+4(\u0394x)^{5}$\n- $\u03c4(\u0394x)=0.3(\u0394x)^{3}+7(\u0394x)^{6}$\n- $\u03c4(\u0394x)=9(\u0394x)^{5}+2(\u0394x)^{6}$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "III only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "II only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "I only"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I and III only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I, II, and III"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071318,
+    "task_type": "review",
+    "topic_id": 6399,
+    "topic_title": "Order of Numerical Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-334647",
+        "problem": "A numerical method is used to approximate the solution to an initial value problem.\n\n- With step size $\u0394x=0.15,$ the observed local truncation error is $\u03c4(0.15)=0.54.$\n\n- With step size $\u0394x=0.05,$ the observed local truncation error is $\u03c4(0.05)=0.003.$\n\nEstimate the order of the numerical method.",
+        "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\u03c4(\u0394x)=O\\,((\u0394x)^{p+1})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the LTE by a factor of approximately ${k}^{p+1}.$\n\nIn our case, the step size decreases from $0.15$ to $0.05.$ So, it reduces by a factor of\n\n$$\nk=\\frac{0.15}{0.05}=3.\n$$\n\nAs a result, for a numerical method of order $p,$ the LTE should decrease by a factor of approximately\n\n$$\n{k}^{p+1}={3}^{p+1}.\n$$\n\nOn the other hand, the LTE actually decreases from $0.54$ to $0.003.$ So, it reduces by a factor of\n\n$$\n\\frac{0.54}{0.003}=180.\n$$\n\nComparing the two scale factors for the LTE, we get\n\n$$\n\\begin{aligned}{3}^{p+1} & \u2248180 \\\\ p+1 & \u2248{log}_{3}\u2061(180) \\\\ p+1 & \u22484.726\u2026 \\\\ p & \u22483.726\u2026.\\end{aligned}\n$$\n\nTherefore, rounding to the nearest integer, the estimated order of the method is $4.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "4",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
