@@ -1214,7 +1214,16 @@ class CaptureBrowser:
             verification_input = {**item, 'problem':record['before']['problem'], 'fields':record['before']['fields']}
             verified = self.solver.solve(verification_input,Path(directory)/(mid+'-after.png'),Path(directory)/mid,'verify')
             original = {a['key']:a for a in record['decision']['answers']}
+            if set(original) != {f['key'] for f in verification_input['fields']}:
+                from solver import Solver
+                Solver.validate(verification_input, verified)
             for answer in verified['answers']:
+                if answer['key'] not in original:
+                    record.setdefault('predicted_answers', json.loads(json.dumps(record['decision']['answers'])))
+                    recovered = json.loads(json.dumps(answer))
+                    record['decision']['answers'].append(recovered)
+                    original[answer['key']] = recovered
+                    continue
                 first = original[answer['key']]
                 outcome = compare_answers(first['correct_value'],answer['correct_value'],answer['value_type'],
                                           prompt=record['before']['problem'])['outcome']
