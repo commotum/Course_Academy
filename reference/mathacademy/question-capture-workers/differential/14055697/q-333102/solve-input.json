@@ -1,0 +1,57 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=x+{y}^{2},\\,y(0)=3\n$$\n\nUsing the implicit Euler method with step size $\u0394x=0.25,$ the new value ${y}_{\\text{new}}$ is obtained by solving the equation $g({y}_{\\text{new}})=0$ at each step.\nWhich of the following is the **general form** of $g({y}_{\\text{new}})$ in terms of the new values ${x}_{\\text{new}}$ and ${y}_{\\text{new}},$ and the current value $y?$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "g({y}_{\\text{new}})=-\\,{y}_{\\text{new}}+y+0.25\\,{x}_{\\text{new}}-0.25{y}^{2}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "g({y}_{\\text{new}})=-0.25({y}_{\\text{new}})^{2}+{y}_{\\text{new}}-y-0.25\\,{x}_{\\text{new}}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "g({y}_{\\text{new}})=0.25{y}^{2}+{y}_{\\text{new}}-y-0.25\\,{x}_{\\text{new}}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "g({y}_{\\text{new}})={y}_{\\text{new}}-y+0.25\\,{x}_{\\text{new}}-0.25({y}_{\\text{new}})^{2}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "g({y}_{\\text{new}})=0.25({y}_{\\text{new}})^{2}-{y}_{\\text{new}}-y+0.5\\,{x}_{\\text{new}}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14055697,
+    "task_type": "lesson",
+    "topic_id": 6686,
+    "topic_title": "Using the Implicit Euler Method With Newton's Method",
+    "examples": [
+      {
+        "math_academy_id": "e-21317",
+        "knowledge_point": "Determining the Function on Which to Apply a Root-Finding Method When Applying the Implicit Euler Method",
+        "problem": "Consider the following initial value problem:\n\n$$\ny' = y^3 - x\\,y, \\qquad y(1)=1\n$$\n\nUsing the implicit Euler method with step size $\\Delta x = 1,$ the new value $y_\\text{new}$ is obtained by solving the equation $g(y_\\text{new}) = 0$ at each step.\nWhich of the following is the **specific function** $g(y_\\text{new})$ used in the first step?\n\n- $g(y_\\text{new}) = (y_\\text{new})^3 - 3y_\\text{new} - 1$\n\n- $g(y_\\text{new}) = 3y_\\text{new} - (y_\\text{new})^3 + 1$\n\n- $g(y_\\text{new}) = 3y_\\text{new} - (y_\\text{new})^3 - 1$\n\n- $g(y_\\text{new}) = y_\\text{new} - (y_\\text{new})^3 + x_\\text{new}y_\\text{new}$",
+        "worked_solution": "For an initial value problem\n\n$$\ny' = f(x,y), \\qquad y_0 = y(x_0),\n$$\n\nthe implicit Euler method with step size $\\Delta x$ is given by\n\n$$\n\\Delta y = y'_\\text{new} \\cdot \\Delta x,\n$$\n\nwith $y'_\\text{new} = f(x_\\text{new},y_\\text{new})$ evaluated at the next $x$ and $y$ values.\n\nIn general, $\\Delta y$ is given by\n\n$$\n\\begin{aligned}\u0394y & ={y}_{\\text{new}}^{\u2032}\\cdot \u0394x \\\\  & =({y}_{\\text{new}})^{3}-{x}_{\\text{new}}{y}_{\\text{new}} \\\\  & =({y}_{\\text{new}})^{3}-{x}_{\\text{new}}{y}_{\\text{new}}.\\end{aligned}\n$$\n\nWe substitute this into $y_\\text{new} = y + \\Delta y$ and move all terms to the left-hand side and define the resulting expression as $g(y_\\text{new}){:}$\n\n$$\n\\begin{aligned}{y}_{\\text{new}} & =y+\u0394y \\\\ {y}_{\\text{new}} & =y+({y}_{\\text{new}})^{3}-{x}_{\\text{new}}{y}_{\\text{new}} \\\\ {{{y}_{\\text{new}}-({y}_{\\text{new}})^{3}+{x}_{\\text{new}}{y}_{\\text{new}}-y}_{\u23df}}_{g({y}_{\\text{new}})} & =0.\\end{aligned}\n$$\n\nSo, the general form of the function $g$ for step size $\\Delta x = 1$ is\n\n$$\ng(y_\\text{new}) = y_\\text{new} - (y_\\text{new})^3 + x_\\text{new}y_\\text{new} - y.\n$$\n\nNow, in the first step, the new $x$ value is $x_\\text{new} = x + \\Delta x = 1 + 1 = 2.$ Therefore, the function used in the first step is\n\n$$\n\\begin{aligned}g({y}_{\\text{new}}) & ={y}_{\\text{new}}-({y}_{\\text{new}})^{3}+2{y}_{\\text{new}}-1 \\\\  & =3{y}_{\\text{new}}-({y}_{\\text{new}})^{3}-1.\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14055697/example-21317.png"
+      }
+    ],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}

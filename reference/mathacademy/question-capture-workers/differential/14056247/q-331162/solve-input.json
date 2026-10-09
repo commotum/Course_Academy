@@ -1,0 +1,119 @@
+{
+  "mode": "solve",
+  "problem": "Suppose we wish to solve the initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nand we take a step of size $\u0394x$ using the Runge-Kutta (RK4) method. Fill in the blanks to complete the weighted-average formula for the increment and the stage definitions, starting at the point $(x,y).$\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{6}({y}^{\u2032}+2{y}_{1}^{\u2032}+2{y}_{2}^{\u2032}+{y}_{3}^{\u2032})\\cdot \u0394x \\\\ {y}^{\u2032} & =f(x,y) \\\\ {y}_{1}^{\u2032} & =f({{field-1}},\\,y+\\frac{1}{2}{y}^{\u2032}\\cdot \u0394x) \\\\ {y}_{2}^{\u2032} & =f(x+\\frac{1}{2}\u0394x,\\,{{field-2}}) \\\\ {y}_{3}^{\u2032} & =f(x+\u0394x,\\,{{field-3}})\\end{aligned}\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\text{\u00a0}x+{y}^{\u2032}\\cdot \u0394x"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "x+\\frac{1}{2}\u0394x"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\text{\u00a0}x+\u0394x"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\text{\u00a0}x"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\text{\u00a0}y+{y}_{1}^{\u2032}\\cdot \u0394x"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "y+\\frac{1}{2}{y}_{1}^{\u2032}\\cdot \u0394x"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\text{\u00a0}y+\\frac{1}{2}{y}^{\u2032}\\cdot \u0394x"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\text{\u00a0}y+{y}^{\u2032}\\cdot \u0394x"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\text{\u00a0}{y}_{2}^{\u2032}\\cdot \u0394x"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\text{\u00a0}\\frac{1}{2}{y}_{2}^{\u2032}\\cdot \u0394x"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\text{\u00a0}y+\\frac{1}{2}{y}_{2}^{\u2032}\\cdot \u0394x"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "y+{y}_{2}^{\u2032}\\cdot \u0394x"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14056247,
+    "task_type": "review",
+    "topic_id": 3248,
+    "topic_title": "The RK4 Method",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-330783",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=3x+y,\\,y(0)=1\n$$\n\nWe wish to approximate the solution using the Runge-Kutta (RK4) Method. Complete the first row of the table below, given that the step size is $\u0394x=\\frac{1}{2}.$\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ | $2$ | $\\frac{9}{4}$ | $\\frac{29}{8}$ | {{field-1}} |\n\nTherefore, $y\\,(\\frac{1}{2})\u2248$\n{{field-2}}.",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c\n$$\n\nthe increment in $y$ using the Runge-Kutta (RK4) method with step size $\u0394x$ is computed as the weighted average of four sample slopes:\n\n$$\n\u0394y=\\frac{1}{6}({y}^{\u2032}+2{y}_{1}^{\u2032}+2{y}_{2}^{\u2032}+{y}_{3}^{\u2032})\\cdot \u0394x,\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the estimated slope at the initial point $(x,y),$\n\n- ${y}_{1}^{\u2032}=f({x}_{1},{y}_{1})$ is the estimated slope at $({x}_{1},{y}_{1})=(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}^{\u2032}\\cdot \u0394x),$\n\n- ${y}_{2}^{\u2032}=f({x}_{2},{y}_{2})$ is the estimated slope at $({x}_{2},{y}_{2})=(x+\\frac{1}{2}\u0394x,\\,y+\\frac{1}{2}{y}_{1}^{\u2032}\\cdot \u0394x),$\n\n- ${y}_{3}^{\u2032}=f({x}_{3},{y}_{3})$ is the estimated slope at $({x}_{3},{y}_{3})=(x+\u0394x,\\,y+{y}_{2}^{\u2032}\\cdot \u0394x).$\n\nAll four sample slopes are already computed. So, we just need to find the increment on $y.$\n\nWe compute $\u0394y$ using the Runge-Kutta method:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{6}({y}^{\u2032}+2{y}_{1}^{\u2032}+2{y}_{2}^{\u2032}+{y}_{3}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{6}(1+2\\cdot 2+2\\cdot \\frac{9}{4}+\\frac{29}{8})\\cdot \\frac{1}{2} \\\\  & =\\frac{1}{12}\\cdot \\frac{105}{8} \\\\  & =\\frac{35}{32}.\\end{aligned}\n$$\n\nTherefore, the completed first row is as given below.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ | $2$ | $\\frac{9}{4}$ | $\\frac{29}{8}$ | $\\frac{35}{32}$ |\n\nTo get the values of $x$ and $y$ in the *next* row, we add $\u0394x$ to $x$ and $\u0394y$ to $y,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x \\\\  & =0+\\frac{1}{2} \\\\  & =\\frac{1}{2} \\\\ {y}_{\\text{new}} & =y+\u0394y \\\\  & =1+\\frac{35}{32} \\\\  & =\\frac{67}{32}\\end{aligned}\n$$\n\nAdding these rows to our table gives the following:\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\\,{y}_{1}^{\u2032}\\,$ | $\\,{y}_{2}^{\u2032}\\,$ | $\\,{y}_{3}^{\u2032}\\,$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $1$ | $2$ | $\\frac{9}{4}$ | $\\frac{29}{8}$ | $\\frac{35}{32}$ |\n| $\\frac{1}{2}$ | $\\frac{67}{32}$ |  |  |  |  |  |\n\nFinally, we have\n\n$$\n\\begin{aligned}y\\,(\\frac{1}{2})\u2248\\frac{67}{32}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{35}{32}",
+            "observed_mathquill_latex": "\\frac{35}{32}"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "\\frac{67}{32}",
+            "observed_mathquill_latex": "\\frac{67}{32}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
