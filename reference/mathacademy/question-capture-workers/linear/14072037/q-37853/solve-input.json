@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "$$\nB=[\\begin{aligned}1 & 3 & 1 \\\\ 3 & 1 & 1 \\\\ 0 & 0 & 2\\end{aligned}]\n$$\n\nThe matrix $B$ has eigenvalues ${\\lambda }_{1}=2,$ ${\\lambda }_{2}=-2,$ and ${\\lambda }_{3}=4.$\nFind a diagonal matrix $D$ and an invertible matrix $P$ such that $D={P}^{-1}BP.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}2 & 0 & 0 \\\\ 0 & -2 & 0 \\\\ 0 & 0 & 4\\end{aligned}]$ and $P=[\\begin{aligned}-2 & -1 & 1 \\\\ -1 & 1 & 1 \\\\ 1 & 0 & 0\\end{aligned}]$"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}2 & 0 & 0 \\\\ 0 & -2 & 0 \\\\ 0 & 0 & 0\\end{aligned}]$ and $P=[\\begin{aligned}-1 & -1 & 0 \\\\ -1 & 1 & 0 \\\\ 1 & 0 & 0\\end{aligned}]$"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}2 & 0 & 0 \\\\ 0 & -2 & 0 \\\\ 0 & 0 & 0\\end{aligned}]$ and $P=[\\begin{aligned}-1 & -1 & 1 \\\\ -2 & 1 & 1 \\\\ 1 & 0 & 0\\end{aligned}]$"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}2 & 0 & 0 \\\\ 0 & -2 & 0 \\\\ 0 & 0 & 4\\end{aligned}]$ and $P=[\\begin{aligned}-1 & -1 & 1 \\\\ -1 & 1 & 1 \\\\ 2 & 0 & 0\\end{aligned}]$"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$D=[\\begin{aligned}2 & 0 & 0 \\\\ 0 & -2 & 0 \\\\ 0 & 0 & 4\\end{aligned}]$ and $P=[\\begin{aligned}-1 & -1 & 1 \\\\ 1 & 1 & 1 \\\\ 1 & 0 & 0\\end{aligned}]$"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072037,
+    "task_type": "review",
+    "topic_id": 1970,
+    "topic_title": "Diagonalizing a 3x3 Matrix With Distinct Eigenvalues",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-37849",
+        "problem": "Consider the following matrices:\n\n$$\nA=[\\begin{aligned}-10 & 16 & 8 \\\\ -6 & 20 & 6 \\\\ -12 & 4 & 10\\end{aligned}],\\,D=[\\begin{aligned}14 & 0 & 0 \\\\ 0 & -2 & 0 \\\\ 0 & 0 & 8\\end{aligned}],\\,P=[\\begin{aligned}1 & a & 0 \\\\ 2 & b & -2 \\\\ -1 & 1 & 4\\end{aligned}]\n$$\n\nGiven that $A=PD{P}^{-1},$ find the value of $2a-b.$",
+        "worked_solution": "From the diagonal matrix $D$, we deduce that the eigenvalues of $A$ are \n\n$\\,$ ${\\lambda }_{1}=14,\\,$ ${\\lambda }_{2}=-2,\\,$ ${\\lambda }_{3}=8.$\n\nSo, the second column of $P$ corresponds to the eigenvalue ${\\lambda }_{2}=-2.$\n\nNow, we need to find an eigenvector that corresponds to ${\\lambda }_{2}=-2.$ Computing $A-(-2)I,$ we get\n\n$$\n\\begin{aligned}A-{\\lambda }_{2}I & =[\\begin{aligned}-10 & 16 & 8 \\\\ -6 & 20 & 6 \\\\ -12 & 4 & 10\\end{aligned}]-(-2)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}-8 & 16 & 8 \\\\ -6 & 22 & 6 \\\\ -12 & 4 & 12\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ that we reduce to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-8 & 16 & 8 & 0 \\\\ -6 & 22 & 6 & 0 \\\\ -12 & 4 & 12 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=-\\frac{1}{8}{R}_{1} \\\\ {R}_{3}:={R}_{3}-2{R}_{2}\\end{aligned} \\\\  & \u223c[\\begin{aligned}1 & -2 & -1 & 0 \\\\ -6 & 22 & 6 & 0 \\\\ 0 & -40 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+6{R}_{1} \\\\ {R}_{3}:={R}_{3}+4{R}_{2}\\end{aligned} \\\\  & \u223c[\\begin{aligned}1 & -2 & -1 & 0 \\\\ 0 & 10 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns ($1$st and $2$nd ones). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain ${x}_{2}=0.$ Substituting this into the first equation, we get ${x}_{1}={x}_{3}.$\nHence, the general solution is\n\n$$\n[\\begin{aligned}{x}_{3} \\\\ 0 \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nTherefore, setting ${x}_{3}=1,$ we get the eigenvector \n\n$$\n{v}_{2}=[\\begin{aligned}a \\\\ b \\\\ 1\\end{aligned}]=[\\begin{aligned}1 \\\\ 0 \\\\ 1\\end{aligned}].\n$$\n\nFinally, $2a-b=2\\cdot 1-0=2.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "2",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
