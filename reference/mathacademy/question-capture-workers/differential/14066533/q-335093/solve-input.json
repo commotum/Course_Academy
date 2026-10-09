@@ -1,0 +1,62 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}-2 & 1 \\\\ 0 & -2\\end{aligned}],\\,{e}^{At}=[\\begin{aligned}{e}^{-2t} & t{e}^{-2t} \\\\ 0 & {e}^{-2t}\\end{aligned}]\n$$\n\nGiven the matrices $A$ and ${e}^{At}$ above, compute $\\frac{\\text{d}}{\\text{d}t}({e}^{At}).$\n\n| $\\frac{\\text{d}}{\\text{d}t}({e}^{At})=\\,\\,$ |  | {{field-1}} | {{field-2}} |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-3}} | {{field-4}} |  |  |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-3",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-4",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14066533,
+    "task_type": "review",
+    "topic_id": 6375,
+    "topic_title": "Matrix Exponentials",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-334729",
+        "problem": "Find ${e}^{At}$ for $A=[\\begin{aligned}6 & -3 \\\\ 3 & 0\\end{aligned}].$ \n\n*Hint: The only eigenvalue of $A$ is $3,$ and it has multiplicity two.*\n\n| ${e}^{At}={e}^{3t}\\,\\,$ |  | {{field-1}} | {{field-2}} |  |\n| --- | --- | --- | --- | --- |\n|  | $3t$ | $1-3t$ |  |  |",
+        "worked_solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}[\\begin{aligned}6 & -3 \\\\ 3 & 0\\end{aligned}]t+{\\alpha }_{0}[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}6{\\alpha }_{1}t+{\\alpha }_{0} & -3{\\alpha }_{1}t \\\\ 3{\\alpha }_{1}t & {\\alpha }_{0}\\end{aligned}],\\end{aligned}\n$$\n\nwhere ${\\alpha }_{1}$ and ${\\alpha }_{0}$ are functions to be determined.\n\nConsider the polynomial $r(\\lambda )={\\alpha }_{1}\\lambda +{\\alpha }_{0}.$ The only eigenvalue of $At$ is \n\n$$\n{\\lambda }_{1}=3t\n$$\n\nof multiplicity two. Thus, we have the following:\n\n$$\n\\begin{aligned}{\\begin{aligned}r(3t)={e}^{3t} \\\\ \\frac{\\text{d}}{\\text{d}\\lambda }r(3t)={e}^{3t}\\end{aligned}\\,\u21d2\\,{\\begin{aligned}3t{\\alpha }_{1}+{\\alpha }_{0}={e}^{3t} \\\\ {\\alpha }_{1}={e}^{3t}\\end{aligned}\\end{aligned}\n$$\n\nNow, we solve the system for ${\\alpha }_{1}$ and ${\\alpha }_{0}:$\n\n- From the second equation, we get\n\n$$\n{\\alpha }_{1}={e}^{3t}.\n$$\n\n- Substituting this into the first one, we get\n\n$$\n3t{e}^{3t}+{\\alpha }_{0}={e}^{3t}\\,\u21d2\\,{\\alpha }_{0}={e}^{3t}(1-3t).\n$$\n\nSubstituting ${\\alpha }_{1}$ and ${\\alpha }_{0}$ into the expressions for the required entries of ${e}^{At},$ we get the following:\n\n$$\n\\begin{aligned}6{\\alpha }_{1}t+{\\alpha }_{0} & =6{e}^{3t}t+{e}^{3t}(1-3t) \\\\  & ={e}^{3t}(1+3t), \\\\ -3{\\alpha }_{1}t & =-3{e}^{3t}t\\end{aligned}\n$$\n\nTherefore,\n\n$$\n{e}^{At}={e}^{3t}[\\begin{aligned}1+3t & -3t \\\\ 3t & 1-3t\\end{aligned}].\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "1+3t",
+            "observed_mathquill_latex": "1+3t"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "-3t",
+            "observed_mathquill_latex": "-3t"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
