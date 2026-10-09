@@ -81,6 +81,12 @@ pending transaction intents. The runner freezes your review against the original
 assets, archives the old derived content, and retries the normal content-only transaction.
 Return an empty answer_reviews list when no answer review is needed. Previous attempts and
 validation failures are supplied below; use that feedback rather than repeating a rejected fix.
+For content carrying source_answer_policy.version="revealed-ma-answer-v1", the requested archive
+answer is what MA declares in its revealed solution, even if the mathematics is flawed. Preserve
+that source answer and the independent mathematical_assessment separately. A proved flaw in
+the source is not grounds to block that source-answer import or undo best-effort recovery.
+Existing verified mathematical corrections are retained by reconciliation in the study database;
+do not edit their attestations or the raw source to remove a disagreement.
 '''
 TEST_CANDIDATE = '''import importlib.util,json,sys,unittest
 from pathlib import Path

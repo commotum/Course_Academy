@@ -77,6 +77,28 @@ class SessionTests(unittest.TestCase):
             result=Solver(self.args).solve(self.question(1),None,root/'q-1','proof-solve-0')
         cli.assert_not_called();self.assertTrue(result['confident'])
 
+    def test_interrupted_best_effort_turn_recovers_without_another_model_call(self):
+        root,_=self.activity('100','lesson')
+        def uncertain_then_interrupted_guess(command,**kwargs):
+            response=self.fake_cli(command,**kwargs)
+            output=Path(command[command.index('--output-last-message')+1])
+            result=json.loads(output.read_text());result['confident']=False
+            output.write_text(json.dumps(result))
+            if len(self.calls)==3:
+                raise subprocess.CalledProcessError(1,command,output=response.stdout)
+            return response
+        with patch('solver.run_cli',side_effect=uncertain_then_interrupted_guess),self.assertRaises(subprocess.CalledProcessError):
+            Solver(self.args).solve(self.question(1),None,root/'q-1')
+        pending=json.loads((root/'solver-session/state.json').read_text())['pending_turn']
+        self.assertEqual(pending['phase'],'best-effort')
+        with patch('solver.run_cli') as cli:
+            result=Solver(self.args).solve(self.question(1),None,root/'q-1')
+            cli.assert_not_called()
+        self.assertFalse(result['confident'])
+        self.assertEqual(result['submission_policy']['version'],'best-effort-submission-v1')
+        self.assertEqual(len(self.calls),3)
+        self.assertFalse(json.loads((root/'solver-session/state.json').read_text()).get('pending_turn'))
+
     def test_interrupted_uncertainty_followup_retains_budget_and_never_reuses_old_answer(self):
         root,_=self.activity('100','lesson')
         def uncertain_then_interrupted(command,**kwargs):

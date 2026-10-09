@@ -144,6 +144,8 @@ class AnswerRecoveryTests(unittest.TestCase):
         # Source-key metadata does not make an absent option a valid submission.
         with self.assertRaisesRegex(ValueError,'exact displayed choice'):
             Solver.validate(item,dict(record['verification'],source_answer_policy={}))
+        with self.assertRaisesRegex(ValueError,'exact displayed choice'):
+            Solver.validate({**item,'worked_solution':'Changed feedback'},record['verification'])
 
     def test_old_permanent_deferrals_reopen_all_nine_without_resetting_budget(self):
         ledger={}
@@ -175,6 +177,64 @@ class AnswerRecoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'exact displayed choice'):Solver.validate(item,bad)
         with self.assertRaisesRegex(ValueError,'uncertain'):
             Solver.validate(dict(item,diagnostic_policy={'mode':'other'}),result)
+
+    def test_stopped_status_reports_recovery_readiness_without_starting_workers(self):
+        import fleet
+        case=CASES[0];activity,directory,state,item=self.setup_case(case)
+        diagnostic=activity/'diagnostics/1/error.json'
+        atomic_json(diagnostic,{'message':'Solver is uncertain; question saved for review'})
+        state['deferred_error']={'diagnostics':str(diagnostic.parent)};atomic_json(activity/'state.json',state)
+        worker={'id':'test','window':'Test','state_dir':self.args.state_dir,'output':self.args.output,
+            'supervision':self.root/'supervision','auth_file':self.root/'auth.json'}
+        atomic_json(worker['supervision']/'fleet-worker.json',{'stop_requested':True})
+        with patch('fleet.capture_running',return_value=False),patch('fleet.supervisor_running',return_value=False),\
+             patch('fleet.ready',return_value=True),patch('fleet.queue_wait_status',return_value={'tasks':[{'task_id':case['task_id']}]}):
+            result=fleet.worker_status(worker)
+        self.assertEqual(result['status'],'STOPPED')
+        self.assertFalse(result['process_running'])
+        self.assertIn('ready for best-effort recovery',result['detail'])
+
+
+class RecoveryControlTests(unittest.TestCase):
+    """Real Chromium and MA's MathQuill distribution; no Math Academy requests."""
+    import test_capture as existing
+    setUpClass = classmethod(existing.DOMTests.setUpClass.__func__)
+    tearDownClass = classmethod(existing.DOMTests.tearDownClass.__func__)
+    setUp = existing.DOMTests.setUp
+    tearDown = existing.DOMTests.tearDown
+    mathquill_fixture = existing.DOMTests.mathquill_fixture
+
+    def test_all_nine_best_effort_responses_enter_real_visible_controls_once(self):
+        import random
+        from core import Pacer
+        args=SimpleNamespace(timeout_ms=3000,event_min=0,event_max=0)
+        reader=CaptureBrowser(self.page,args,Pacer(args,random.Random(42)),None)
+        for case in CASES:
+            with self.subTest(activity=case['task_id']):
+                item=copy.deepcopy(case['item'])
+                if item['fields'][0]['type']=='blank':
+                    scope, fixture=self.mathquill_fixture()
+                    item['fields']=fixture['before']['fields']
+                else:
+                    self.page.set_content('<div id="test">'+''.join(
+                        '<button id="choice-'+c['option']+'" class="questionWidget-choiceLetterCircle">'+c['option']+'</button>'
+                        for c in item['fields'][0]['choices'])+'<button id="submit">Submit</button></div>'
+                        '<script>window.submissions=0;document.querySelectorAll(".questionWidget-choiceLetterCircle").forEach('
+                        'b=>b.onclick=()=>{document.querySelectorAll(".selectedChoice").forEach(n=>n.classList.remove("selectedChoice"));'
+                        'b.classList.add("selectedChoice");});document.querySelector("#submit").onclick=()=>window.submissions++;</script>')
+                    scope=self.page.locator('#test')
+                    for c in item['fields'][0]['choices']:c['dom_id']='choice-'+c['option']
+                decision=AnswerRecoveryTests.response(self,item,case['best_guess_value'])
+                decision['submission_policy']={'version':BEST_EFFORT,'question_sha256':binding(item),
+                    'mathematical_assessment':case['mathematical_assessment']}
+                record={'before':item,'decision':decision,'intended':'W'}
+                soften_sequence(record)
+                reader.enter(scope,record)
+                reader.verify_entered(scope,record)
+                self.assertEqual(item['fields'][0]['submitted_value'],case['best_guess_value'])
+                self.assertEqual(self.page.evaluate('window.submissions'),0)
+                scope.locator('.questionWidget-submitButton' if item['fields'][0]['type']=='blank' else '#submit').click()
+                self.assertEqual(self.page.evaluate('window.submissions'),1)
 
 
 if __name__=='__main__':unittest.main()

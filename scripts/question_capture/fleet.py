@@ -364,8 +364,13 @@ def worker_status(worker):
     else:detail='Capturing '+state.get('task_type','activity') if state else 'No activity yet'
     if queue_wait:detail=str(len(queue_wait['tasks']))+' queued activities await recovery'
     if not running and status=='STOPPED':
+        from answer_policy import recovery_available
+        resumable = sum(recovery_available(Path(read_json(worker['output']/str(task['task_id'])/'state.json')
+            .get('deferred_error', {}).get('diagnostics', ''))/'error.json') for task in queue_wait.get('tasks', []))
         detail=('Stopped · '+str(len(queue_wait['tasks']))+' queued activities blocked'
                 if queue_wait else 'Stopped · checkpoints retained')
+        if resumable:
+            detail='Stopped · '+str(resumable)+' queued activities ready for best-effort recovery'
     return {'worker':worker['id'],'window':worker['window'],'account':auth.get('username','—'),
             'status':status,'process_running':running,'queue_wait':queue_wait,
             'activity':task,'questions':str(graded)+'/'+str(len(records))+' graded',

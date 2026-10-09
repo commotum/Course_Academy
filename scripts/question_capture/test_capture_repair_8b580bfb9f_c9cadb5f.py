@@ -25,9 +25,12 @@ class IndependentVerificationRetryTests(unittest.TestCase):
         cls.saved = json.loads((ROOT / 'verify-before-independent-answer.json').read_text())
         tree = ast.parse(Path(solver.__file__).read_text())
         method = next(n for n in ast.walk(tree)
-                      if isinstance(n, ast.FunctionDef) and n.name == 'solve')
+                      if isinstance(n, ast.FunctionDef) and n.name == '_solve')
         branch = next(n for n in ast.walk(method) if isinstance(n, ast.If)
-                      and any(isinstance(c, ast.Name) and c.id == 'phase' for c in ast.walk(n.test))
+                      and any(isinstance(c, ast.Compare) and isinstance(c.left, ast.Name)
+                              and c.left.id == 'phase' and isinstance(c.ops[0], ast.Eq)
+                              and isinstance(c.comparators[0], ast.Constant)
+                              and c.comparators[0].value == 'verify' for c in ast.walk(n.test))
                       and any(isinstance(c, ast.Constant) and c.value == 'verification_retry'
                               for c in ast.walk(n.test)))
         # Isolate the real retry branch: no solver process or filesystem writes.
