@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "A study has recorded and analyzed the results of the parliamentary elections of a particular country, held every four years. The study shows how voter preference changes from one political party to another. The table below shows the results of this study.\n\n|  |  | From: |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | **Yellow Party** | **Blue Party** | **Red Party** |\n| To: | **Yellow Party** | $0.7$ | $0.1$ | $0.3$ |\n| **Blue Party** | $0.2$ | $0.8$ | $0.3$ |  |\n| **Red Party** | $0.1$ | $0.1$ | $0.4$ |  |\n\nFor example, $10%$ of the people who voted for the yellow party in the last election will vote for the red party in the next election.\n\nIf the electorate contains $5.6$ million voters and the given probabilities remain constant election after election, how many people will vote for the red party after many elections have taken place?",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$1.2$ million"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$1$ million"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$0.9$ million"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$1.6$ million"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$0.8$ million"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14077524,
+    "task_type": "review",
+    "topic_id": 1913,
+    "topic_title": "Steady-State Vectors",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-135409",
+        "problem": "A factory produces two types of sugar: brown and extra-refined. Every year, the factory's sales executives study how customers' preferences change between the two types of sugar. The table below shows the results of this study.\n\n|  |  | From: |  |\n| --- | --- | --- | --- |\n|  |  | **Brown** | **Extra-Refined** |\n| To: | **Brown** | $0.8$ | $1$ |\n| **Extra-Refined** | $0.2$ | $0$ |  |\n\nIt's found that $20%$ of customers who currently buy brown sugar will switch to extra-refined sugar next year, while $100%$ of customers who currently purchase extra-refined sugar will switch to brown sugar next year.\n\nAssuming that there are $450\\,000$ customers in total and that the given probabilities remain constant over many years, how many customers will eventually consume extra-refined sugar?",
+        "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.8 & 1 \\\\ 0.2 & 0\\end{aligned}].\n$$\n\nNow, note that\n\n$$\n{P}^{2}=[\\begin{aligned}0.84 & 0.8 \\\\ 0.16 & 0.2\\end{aligned}].\n$$\n\nThe matrix ${P}^{2}$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many years, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,\u27f9\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.8 & 1 \\\\ 0.2 & 0\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-0.2 & 1 \\\\ 0.2 & -1\\end{aligned}].\n$$\n\nSo, the matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.2 & 1 & 0 \\\\ 0.2 & -1 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c[\\begin{aligned}-0.2 & 1 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain \n\n$$\n\\begin{aligned}{x}_{1}=5{x}_{2}.\\end{aligned}\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}5{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}5{x}_{2}+{x}_{2} & =1 \\\\ 6{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{1}{6}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{5}{6} \\\\ \\frac{1}{6}\\end{aligned}].\n$$\n\nSo, $\\frac{1}{6}$ of the customers will eventually use extra-refined sugar. Therefore, the number of customers who will eventually use this type of sugar is\n\n$$\n\\frac{1}{6}\\cdot 450\\,000=75\\,000.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "75\\,000",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
