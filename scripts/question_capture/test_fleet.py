@@ -164,6 +164,69 @@ class FleetTests(unittest.TestCase):
         self.assertEqual(row['daily_xp'],{})
         self.assertEqual(row['percent_complete'],70)
 
+    def test_queue_wait_distinguishes_blocked_process_from_active_capture(self):
+        from queue_wait import record_queue_wait, clear_queue_wait
+        self.configure()
+        atomic_json(self.worker['output']/'123/state.json',
+                    {'task_id':123,'task_type':'lesson','questions':{},
+                     'deferred_error':{'message':'Question has no valid choice'}})
+        args=type('Args',(),self.worker)()
+        queue=[{'task_id':123,'task_type':'lesson','title':'Blocked lesson'}]
+        wait=record_queue_wait(args,queue)
+        with patch('fleet.capture_running',return_value=True):
+            row=fleet.worker_status(self.worker)
+            self.assertEqual(row['status'],'BLOCKED')
+            self.assertTrue(row['process_running'])
+            self.assertEqual(row['queue_wait']['tasks'][0]['reason'],'Question has no valid choice')
+            self.assertIn('1 queued activities',row['detail'])
+            self.assertIn('1 blocked',fleet.render([row],compact=True))
+            # Process identity guards against PID reuse and old wait records.
+            with patch('fleet.process_token',return_value='different-process'):
+                self.assertEqual(fleet.worker_status(self.worker)['status'],'RUNNING')
+            clear_queue_wait(self.worker['state_dir'])
+            self.assertEqual(fleet.worker_status(self.worker)['status'],'RUNNING')
+        self.assertEqual(wait['worker_pid'],os.getpid())
+
+    def test_intentional_zero_exit_stop_keeps_blocked_queue_without_resume_claim(self):
+        from queue_wait import record_queue_wait
+        self.configure()
+        args=type('Args',(),self.worker)()
+        wait=record_queue_wait(args,[{'task_id':123}])
+        atomic_json(self.worker['supervision']/'fleet-worker.json',
+                    {'worker_pid':os.getpid(),'started_at':wait['observed_at']-1,
+                     'stop_requested':True,'exit_code':0})
+        row=fleet.worker_status(self.worker)
+        self.assertEqual(row['status'],'STOPPED')
+        self.assertFalse(row['process_running'])
+        self.assertIn('1 queued activities blocked',row['detail'])
+        self.assertNotIn('ready to resume',row['detail'])
+        self.assertIn('1 stopped',fleet.render([row],compact=True))
+        atomic_json(self.worker['supervision']/'fleet-worker.json',
+                    {'worker_pid':os.getpid(),'started_at':wait['observed_at']+1,
+                     'stop_requested':True,'exit_code':0})
+        self.assertFalse(fleet.worker_status(self.worker)['queue_wait'])
+
+    def test_legacy_stopped_queue_requires_explicit_wait_evidence(self):
+        self.configure()
+        log=self.root/'run.log'
+        atomic_json(self.worker['supervision']/'fleet-worker.json',
+                    {'log':str(log),'exit_code':130,'stop_requested':True})
+        atomic_json(self.worker['state_dir']/'selection/queue.json',
+                    {'queue':[{'task_id':123}], 'selected':None})
+        wait='Queued work is awaiting recovery; keeping the worker available\n'
+        log.write_text(wait+'KeyboardInterrupt: Stopped\n')
+        row=fleet.worker_status(self.worker)
+        self.assertEqual(row['status'],'STOPPED')
+        self.assertEqual(len(row['queue_wait']['tasks']),1)
+        for text in (wait+'Selected lesson New activity\n',wait+'Resuming saved activity 123\n',
+                     'Waiting 180s (answer pacing)\n'):
+            log.write_text(text)
+            self.assertFalse(fleet.worker_status(self.worker)['queue_wait'])
+        # A live process with old logs is never diagnosed as blocked by age.
+        log.write_text(wait)
+        with patch('fleet.capture_running',return_value=True):
+            self.assertEqual(fleet.worker_status(self.worker)['status'],'RUNNING')
+
     def test_finished_diagnostic_distinguishes_pending_import_from_completion(self):
         self.configure()
         path=self.worker['output']/'123/state.json'

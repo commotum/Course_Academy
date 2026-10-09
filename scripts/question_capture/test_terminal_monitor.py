@@ -30,3 +30,13 @@ class MonitorTests(unittest.TestCase):
         self.assertNotIn('graded',text.lower())
         colored=render(self.rows(),80,color=True)
         self.assertEqual(re.sub(r'\x1b\[[0-9;]*m','',colored),text)
+
+    def test_blocked_card_and_heading_are_visible_at_eighty_columns(self):
+        rows=self.rows()
+        rows[1].update(status='BLOCKED',detail='2 queued activities await recovery')
+        text=render(rows,80)
+        self.assertIn('1 running · 1 blocked',text)
+        self.assertIn('BLOCKED',text)
+        self.assertIn('2 queued activities',text)
+        self.assertTrue(all(len(line)<=80 for line in text.splitlines()))
+        self.assertEqual(re.sub(r'\x1b\[[0-9;]*m','',render(rows,80,color=True)),text)

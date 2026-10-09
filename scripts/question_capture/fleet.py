@@ -296,6 +296,27 @@ def tail(path, size=12000):
     except OSError:return ''
 
 
+def queue_wait_status(worker, runtime, running, text):
+    saved=read_json(worker['state_dir']/'selection/queue-wait.json')
+    if saved.get('tasks') and saved.get('worker_pid') and saved.get('process_token'):
+        if running:
+            if process_token(saved['worker_pid'])==saved['process_token']:
+                return saved
+        elif (saved['worker_pid']==runtime.get('worker_pid') and
+              saved.get('observed_at',0)>=runtime.get('started_at',0)):
+            return saved
+    # Older stopped runs have no explicit wait record. Only attest a queue
+    # wait from its log and saved queue; never infer a live hang from log age.
+    if not running and not saved:
+        wait=text.rfind('Queued work is awaiting recovery; keeping the worker available')
+        if wait>=0 and text.rfind('Selected ')<wait and text.rfind('Resuming ')<wait:
+            queue=read_json(worker['state_dir']/'selection/queue.json')
+            if queue.get('queue') and queue.get('selected') is None:
+                from queue_wait import waiting_tasks
+                return {'tasks':waiting_tasks(worker['output'],queue['queue']), 'evidence':'saved queue and shutdown log'}
+    return {}
+
+
 def worker_status(worker):
     runtime=read_json(worker['supervision']/'fleet-worker.json');auth=read_json(worker['auth_file'])
     running=capture_running(worker) or supervisor_running(worker)
@@ -320,8 +341,11 @@ def worker_status(worker):
         logs=list((worker['state_dir']/'logs').glob('run-*.log'))
         if logs:log=str(max(logs,key=lambda p:p.stat().st_mtime))
     text=tail(log) if log else ''
-    if not running and runtime.get('exit_code') and (runtime.get('stop_requested') or 'KeyboardInterrupt: Stopped' in text):
+    if not running and (runtime.get('stop_requested') or
+                        runtime.get('exit_code') and 'KeyboardInterrupt: Stopped' in text):
         status='STOPPED'
+    queue_wait=queue_wait_status(worker,runtime,running,text)
+    if running and queue_wait:status='BLOCKED'
     recent=next((s for s in reversed(text.splitlines()) if s.strip()),'')
     if status in ('IMPORT PENDING','HISTORY PENDING'):recent=state.get('deferred_error',{}).get('message',recent)
     age=time.time()-Path(log).stat().st_mtime if log and Path(log).exists() else None
@@ -338,9 +362,13 @@ def worker_status(worker):
     elif state.get('history_complete') and not state.get('import_complete'):detail='Importing capture'
     elif state.get('import_complete'):detail=state.get('task_type','Activity').capitalize()+' complete'
     else:detail='Capturing '+state.get('task_type','activity') if state else 'No activity yet'
-    if not running and status=='STOPPED':detail='Checkpoint saved · ready to resume'
+    if queue_wait:detail=str(len(queue_wait['tasks']))+' queued activities await recovery'
+    if not running and status=='STOPPED':
+        detail=('Stopped · '+str(len(queue_wait['tasks']))+' queued activities blocked'
+                if queue_wait else 'Stopped · checkpoints retained')
     return {'worker':worker['id'],'window':worker['window'],'account':auth.get('username','—'),
-            'status':status,'activity':task,'questions':str(graded)+'/'+str(len(records))+' graded',
+            'status':status,'process_running':running,'queue_wait':queue_wait,
+            'activity':task,'questions':str(graded)+'/'+str(len(records))+' graded',
             'uptime':int(time.time()-runtime['started_at']) if running and runtime.get('started_at') else None,
             'log_age':int(age) if age is not None else None,'recent':recent,'log':log,
             'daily_xp':xp,'percent_complete':stats.get('percent_complete'),
@@ -362,8 +390,11 @@ def progress_line(row):
 
 def render(rows, *, compact=False, color=False):
     if compact:
-        counts={kind:sum(r['status']==kind for r in rows) for kind in ('RUNNING','READY','NOT CONFIGURED')}
-        return 'MA '+str(counts['RUNNING'])+' running / '+str(counts['READY'])+' ready / '+str(counts['NOT CONFIGURED'])+' unset'
+        counts={kind:sum(r['status']==kind for r in rows) for kind in ('RUNNING','READY','NOT CONFIGURED','BLOCKED','STOPPED')}
+        result='MA '+str(counts['RUNNING'])+' running / '+str(counts['READY'])+' ready / '+str(counts['NOT CONFIGURED'])+' unset'
+        for status in ('BLOCKED','STOPPED'):
+            if counts[status]:result+=' / '+str(counts[status])+' '+status.lower()
+        return result
     from terminal_monitor import render as cards
     return cards(rows,shutil.get_terminal_size().columns,color=color)
 

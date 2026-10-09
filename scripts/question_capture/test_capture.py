@@ -544,6 +544,53 @@ class ProgressTests(unittest.TestCase):
 
 
 class RunnerTests(unittest.TestCase):
+    def test_requested_shutdown_is_success_without_hiding_unrequested_interrupt(self):
+        from capture import main
+        for requested in (True,False):
+            with self.subTest(requested=requested),tempfile.TemporaryDirectory() as work:
+                def stopped(args):
+                    if requested:args.stop_event.set()
+                    raise KeyboardInterrupt('fixture interruption')
+                with patch('capture.run',side_effect=stopped),self.assertLogs(level='INFO') as logs:
+                    result=main(['run','--state-dir',work])
+                self.assertEqual(result,0 if requested else 1)
+                self.assertEqual(any(line.startswith('ERROR') for line in logs.output),not requested)
+
+    def test_exhausted_queue_records_wait_after_repair_and_resume_selection(self):
+        with tempfile.TemporaryDirectory() as work:
+            args=arguments(['run','--limit','1','--state-dir',work+'/state','--output',work+'/captures'])
+            atomic_json(args.output/'1/state.json',
+                        {'task_id':1,'task_type':'lesson','questions':{},
+                         'deferred_error':{'message':'No valid choice'}})
+            atomic_json(args.state_dir/'selection/queue-wait.json',{'worker_pid':-1,'tasks':[{}]})
+            page=Mock();context=Mock(pages=[page])
+            runtime=Mock();runtime.__enter__=Mock(return_value=runtime)
+            runtime.__exit__=Mock(return_value=False)
+            runtime.chromium.launch_persistent_context.return_value=context
+            browser=Mock()
+            queue=[{'task_id':1,'task_type':'lesson','title':'Deferred lesson'}]
+            pacer=Mock()
+            def backoff(cycle):
+                saved=json.loads((args.state_dir/'selection/queue-wait.json').read_text())
+                self.assertEqual(saved['tasks'][0]['reason'],'No valid choice')
+                self.assertNotEqual(saved['worker_pid'],-1)
+                browser.activity.assert_not_called()
+                raise KeyboardInterrupt('fixture stop')
+            pacer.backoff.side_effect=backoff
+            with patch('capture.Database'),patch('saved_imports.sweep'), \
+                 patch('capture.unfinished_run',return_value=None),patch('capture.Pacer',return_value=pacer), \
+                 patch('browser.CaptureBrowser',return_value=browser), \
+                 patch('playwright.sync_api.sync_playwright',return_value=runtime), \
+                 patch('capture.observe_queue',return_value={'queue':queue,'selected':None}), \
+                 patch('capture.idle_capture_repair',return_value=False) as repair, \
+                 patch('capture.queued_resume',return_value=None) as resume, \
+                 patch('capture.record_failure',return_value=args.state_dir/'diagnostics'), \
+                 self.assertLogs(level='INFO'),self.assertRaises(KeyboardInterrupt):
+                run(args)
+            repair.assert_called_once();resume.assert_called_once()
+            self.assertTrue((args.state_dir/'selection/queue-wait.json').is_file())
+            context.close.assert_called_once()
+
     def test_deferred_quiz_timeout_resumes_before_other_unfinished_activity(self):
         with tempfile.TemporaryDirectory() as work:
             root=Path(work); quiz=root/'1'; lesson=root/'2'

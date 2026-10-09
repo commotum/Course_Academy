@@ -18,6 +18,7 @@ import uuid
 from pathlib import Path
 
 from core import ROOT, Pacer, atomic_json, choose_activity, journal
+from queue_wait import clear_queue_wait, record_queue_wait
 from database import Database
 from retry_policy import apply_policy, update_policy
 
@@ -412,6 +413,8 @@ def record_failure(args, browser, state, directory, phase, error):
 
 
 def run(args):
+    if args.command == 'run':
+        clear_queue_wait(args.state_dir)
     if args.command=='import-saved':
         content = json.loads(args.content.read_text())
         from import_repair import import_with_repair
@@ -538,6 +541,7 @@ def run(args):
             attempts = itertools.count(start_n) if args.limit is None else range(start_n,args.limit)
             for n in attempts:
                 pacer.check_stop()
+                clear_queue_wait(args.state_dir)
                 directory, state, phase = None, None, 'queue'
                 try:
                     if not resume_directory and queue_observation is None:
@@ -551,6 +555,7 @@ def run(args):
                             if not resume_directory:
                                 if queue_observation['queue'] and not args.dry_run:
                                     idle_cycles += 1
+                                    record_queue_wait(args,queue_observation['queue'])
                                     logging.info('Queued work is awaiting recovery; keeping the worker available')
                                     pacer.backoff(idle_cycles)
                                     queue_observation = None
@@ -755,7 +760,13 @@ def main(argv=None):
             logging.info('Stopped before maintenance restart; checkpoint: %s',request.checkpoint)
             return 1
         restart = request.checkpoint
-    except (Exception,KeyboardInterrupt) as exc:
+    except KeyboardInterrupt as exc:
+        if args.stop_event.is_set():
+            logging.info('Stopped; saved checkpoints are retained')
+            return 0
+        logging.error('%s: %s',type(exc).__name__,exc)
+        return 1
+    except Exception as exc:
         logging.error('%s: %s',type(exc).__name__,exc)
         return 1
     finally:

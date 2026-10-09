@@ -17,6 +17,8 @@ def render(rows, width=80, *, color=False):
     width=max(40,min(width,150));inner=width-4
     stamp=datetime.now(ZoneInfo('America/Los_Angeles')).strftime('%H:%M:%S %Z')
     heading=' MATH ACADEMY  ·  '+str(sum(r['status']=='RUNNING' for r in rows))+' running '
+    blocked=sum(r['status']=='BLOCKED' for r in rows)
+    if blocked:heading+='· '+str(blocked)+' blocked '
     lines=['╭'+heading+'─'*max(0,width-len(heading)-len(stamp)-4)+' '+stamp+' ╮']
     def line(text):return '│ '+text[:inner].ljust(inner)+' │'
     for index,row in enumerate(rows):
@@ -59,7 +61,7 @@ def render(rows, width=80, *, color=False):
             for row in rows:
                 if row['window'] in text:text=text.replace(row['window'],white+row['window']+reset)
             text=text.replace('↓','\033[38;5;221m↓'+reset)
-            text=re.sub(r'(?:HISTORY|IMPORT) PENDING|EXIT \d+',lambda m:'\033[38;5;221m'+m[0]+reset,text)
+            text=re.sub(r'BLOCKED|(?:HISTORY|IMPORT) PENDING|EXIT \d+',lambda m:'\033[38;5;221m'+m[0]+reset,text)
             if 'MATH ACADEMY' in text:text=white+text+reset
             elif text.startswith(('╰','├')) or text.startswith('L lessons'):text=muted+text+reset
             return text

@@ -90,7 +90,13 @@ values and terminal observation identify that same question with no accepted
 fields. Both original grade labels are retained; later failures and partial
 credit remain distinct. Diagnostic pacing credits capture and solver
 time toward the answer delay.
-The tmux status bar also shows running, ready and unconfigured account counts.
+An exhausted queue shows **BLOCKED**, with its waiting task IDs and saved reasons
+in `status --json`, even though the process remains available to poll for new work.
+This is recorded only after repair and saved-resume selection find no eligible work;
+ordinary solving and pacing remain RUNNING. Wait records belong to the capture
+process and are cleared when it resumes work. Intentional shutdown shows **STOPPED**,
+including any blocked queue, without claiming that recovery is ready.
+The tmux status bar also shows running, ready, unconfigured, blocked and stopped counts.
 Use **Ctrl+b then n/p** to switch course windows and **Ctrl+b then d** to detach;
 detaching leaves workers running. Additional commands:
 
