@@ -1,0 +1,39 @@
+{
+  "mode": "verify",
+  "problem": "If $X\u223cB(6,0.9),$ then, **rounded to $3$ decimal places**, $P(X<5)\u2248${{field-1}}.",
+  "worked_solution": "For a binomial random variable $X\u223cB(n,p),$ where $n$ is the number of trials, and $p$ is the probability of success on each trial, we have the following probability mass function:\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{n}{x}){p}^{x}(1-p)^{n-x}\n$$\n\nHere, we have $X\u223cB(6,0.9),$ so $X$ has the probability mass function\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{6}{x})(0.9)^{x}(0.1)^{6-x}.\n$$\n\nComputing $P(X<5)$ will require us to compute $f(x)$ at $x=0,1,2,3,4.$ However, if we compute the complement $P(X\\ge 5)$ instead, then we will only have to compute $f(x)$ at $x=5,6,$ which will result in a much faster computation.\n\nComputing $P(X\\ge 5),$ we get\n\n$$\n\\begin{aligned}P(X\\ge 5) & =P(X\\in {5,6}) \\\\  & =f(5)+f(6) \\\\  & =(\\genfrac{}{}{0pt}{}{6}{5})(0.9)^{5}(0.1)^{6-5}+(\\genfrac{}{}{0pt}{}{6}{6})(0.9)^{6}(0.1)^{6-6} \\\\  & =6(0.9)^{5}(0.1)+(0.9)^{6} \\\\  & \u22480.886\\end{aligned}\n$$\n\nrounded to $3$ decimal places.\n\nTherefore, we have\n\n$$\n\\begin{aligned}P(X<5) & =1-P(X\\ge 5) \\\\  & \u22481-0.886 \\\\  & \u22480.114\\end{aligned}\n$$\n\nrounded to $3$ decimal places.",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14069463,
+    "task_type": "lesson",
+    "topic_id": 3281,
+    "topic_title": "The Binomial Distribution",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-279981",
+        "problem": "If $X\u223cB(6,0.9),$ then, **rounded to $3$ decimal places**, $P(X<5)\u2248${{field-1}}.",
+        "worked_solution": "For a binomial random variable $X\u223cB(n,p),$ where $n$ is the number of trials, and $p$ is the probability of success on each trial, we have the following probability mass function:\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{n}{x}){p}^{x}(1-p)^{n-x}\n$$\n\nHere, we have $X\u223cB(6,0.9),$ so $X$ has the probability mass function\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{6}{x})(0.9)^{x}(0.1)^{6-x}.\n$$\n\nComputing $P(X<5)$ will require us to compute $f(x)$ at $x=0,1,2,3,4.$ However, if we compute the complement $P(X\\ge 5)$ instead, then we will only have to compute $f(x)$ at $x=5,6,$ which will result in a much faster computation.\n\nComputing $P(X\\ge 5),$ we get\n\n$$\n\\begin{aligned}P(X\\ge 5) & =P(X\\in {5,6}) \\\\  & =f(5)+f(6) \\\\  & =(\\genfrac{}{}{0pt}{}{6}{5})(0.9)^{5}(0.1)^{6-5}+(\\genfrac{}{}{0pt}{}{6}{6})(0.9)^{6}(0.1)^{6-6} \\\\  & =6(0.9)^{5}(0.1)+(0.9)^{6} \\\\  & \u22480.886\\end{aligned}\n$$\n\nrounded to $3$ decimal places.\n\nTherefore, we have\n\n$$\n\\begin{aligned}P(X<5) & =1-P(X\\ge 5) \\\\  & \u22481-0.886 \\\\  & \u22480.114\\end{aligned}\n$$\n\nrounded to $3$ decimal places.",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0.115",
+            "observed_mathquill_latex": "0.115"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
