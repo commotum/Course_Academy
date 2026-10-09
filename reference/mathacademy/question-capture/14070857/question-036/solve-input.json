@@ -1,0 +1,88 @@
+{
+  "mode": "solve",
+  "problem": "Consider the matrices\n\n$$\nC=[\\begin{aligned}2 & 1 & 0 \\\\ 1 & 0 & 0 \\\\ 0 & 0 & 1\\end{aligned}],\\,D=[\\begin{aligned}0 & 1 & 0 \\\\ 1 & -2 & 0 \\\\ 0 & 0 & 1\\end{aligned}],\\,E=[\\begin{aligned}0 & 1 & 0 \\\\ 1 & 1 & 0 \\\\ 0 & 0 & -2\\end{aligned}].\n$$\n\nWhich of the following statements are true?\n\n- $CD=DC={I}_{3}$\n- $CE=EC={I}_{3}$\n- $D={C}^{-1}$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "I and II only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "III only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "II only"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I and III only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I only"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14070857,
+    "task_type": "diagnostic",
+    "topic_id": null,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "question-033",
+        "problem": "Evaluate\n${\\int }_{-1}^{3}\\frac{3x-6}{{x}^{2}-2x-8}\\,\\text{d}x.$",
+        "worked_solution": "We'll work out the indefinite integral first and then proceed with the definite integral.\n\nFirst, we note that a denominator of the integrand can be factored as\n\n$$\n{x}^{2}-2x-8=(x+2)(x-4).\n$$\n\nSo the integrand can be converted into a sum of partial fractions,\n\n$$\n\\begin{aligned}\\frac{3x-6}{{x}^{2}-2x-8} & =\\frac{3x-6}{(x+2)(x-4)}=\\frac{A}{x+2}+\\frac{B}{x-4},\\end{aligned}\n$$\n\nwhich gives\n\n$$\n3x-6=A(x-4)+B(x+2).\n$$\n\nPlugging in $x=4,$ we can eliminate $A$ and solve for $B:$\n\n$$\n\\begin{aligned}3(4)-6 & =A(4-4)+B(4+2) \\\\ 6 & =6B \\\\ B & =1\\end{aligned}\n$$\n\nOn the other hand, plugging in $x=-2,$ we can eliminate $B$ and solve for $A:$\n\n$$\n\\begin{aligned}3(-2)-6 & =A(-2-4)+B(-2+2) \\\\ -12 & =-6A \\\\ A & =2\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\frac{3x-6}{{x}^{2}-2x-8}=\\frac{2}{x+2}+\\frac{1}{x-4}.\n$$\n\nNow, we integrate, and we get\n\n$$\n\\begin{aligned}\\int \\frac{3x-6}{{x}^{2}-2x-8}\\,\\text{d}x & =\\int (\\frac{2}{x+2}+\\frac{1}{x-4})\\text{d}x \\\\  & =2\\int \\frac{1}{x+2}\\,\\text{d}x+\\int \\frac{1}{x-4}\\,\\text{d}x \\\\  & =2\\operatorname{ln}\u2061|x+2|+\\operatorname{ln}\u2061|x-4|+C.\\end{aligned}\n$$\n\nWe can simplify the result using the laws of logarithms, as follows:\n\n$$\n\\begin{aligned}\\int \\frac{3x-6}{{x}^{2}-2x-8}\\,\\text{d}x & =2\\operatorname{ln}\u2061|x+2|+\\operatorname{ln}\u2061|x-4|+C \\\\  & =\\operatorname{ln}\u2061|(x+2)^{2}|+\\operatorname{ln}\u2061|x-4|+C \\\\  & =\\operatorname{ln}\u2061|(x+2)^{2}(x-4)|+C\\end{aligned}\n$$\n\nFinally, the definite integral is \n\n$$\n\\begin{aligned}{\\int }_{-1}^{3}\\frac{3x-6}{{x}^{2}-2x-8}\\,\\text{d}x & =\\operatorname{ln}\u2061|(x+2)^{2}(x-4)|{|}_{-1}^{3} \\\\  & =\\operatorname{ln}\u2061({5}^{2})-\\operatorname{ln}\u20615 \\\\  & =2\\operatorname{ln}\u20615-\\operatorname{ln}\u20615 \\\\  & =\\operatorname{ln}\u20615.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\operatorname{ln}\u20615",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "question-034",
+        "problem": "Find the inverse of the following matrix:\n\n$$\nA=[\\begin{aligned}1 & 0 & 0 \\\\ 6 & 1 & 0 \\\\ -3 & 0 & 1\\end{aligned}]\n$$",
+        "worked_solution": "Notice that we're given a Frobenius matrix:\n\n- all entries on the main diagonal are ones\n\n- the matrix has only one column (the $1$st column) where some entries below the main diagonal are not zeros\n\n- all the other entries outside the main diagonal are zeros\n\nTo find the inverse of a Frobenius matrix, we simply take the non-zero entries outside the main diagonal with opposite signs. \n\nIn our case, we obtain\n\n$$\n\\begin{aligned}{A}^{-1}={[\\begin{aligned}1 & 0 & 0 \\\\ 6 & 1 & 0 \\\\ -3 & 0 & 1\\end{aligned}]}^{-1}=[\\begin{aligned}1 & 0 & 0 \\\\ -6 & 1 & 0 \\\\ 3 & 0 & 1\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "question-035",
+        "problem": "Find the product ${E}_{1}^{-1}{E}_{2}$, where\n\n$$\n\\begin{aligned}{E}_{1} & =[\\begin{aligned}1 & 8 \\\\ 0 & 1\\end{aligned}],\\,{E}_{2}=[\\begin{aligned}1 & 0 \\\\ -6 & 1\\end{aligned}].\\end{aligned}\n$$",
+        "worked_solution": "Notice that ${E}_{1}$ and ${E}_{2}$ are both elementary matrices.\n\nFirst, we need to find ${E}_{1}^{-1}.$ We write down ${E}_{1}$ and the identity matrix $I$ side-by-side (as shown below) and apply an elementary row operation that transforms the left matrix into the identity matrix:\n\n$$\n\\begin{aligned}[{E}_{1}\\,|\\,I\\,] & =[\\begin{aligned}1 & 8 & 1 & 0 \\\\ 0 & 1 & 0 & 1\\end{aligned}] &  & {R}_{1}:={R}_{1}+(-8){R}_{2} \\\\  & \u223c[\\begin{aligned}1 & 0 & 1 & -8 \\\\ 0 & 1 & 0 & 1\\end{aligned}]\\end{aligned}\n$$\n\nTherefore, \n\n$$\n{E}_{1}^{-1}=[\\begin{aligned}1 & -8 \\\\ 0 & 1\\end{aligned}].\n$$\n\nNow, we can find the product ${E}_{1}^{-1}{E}_{2}:$\n\n$$\n{E}_{1}^{-1}{E}_{2}=[\\begin{aligned}1 & -8 \\\\ 0 & 1\\end{aligned}][\\begin{aligned}1 & 0 \\\\ -6 & 1\\end{aligned}]=[\\begin{aligned}49 & -8 \\\\ -6 & 1\\end{aligned}]\n$$",
+        "actual_result": "Skipped Question",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
