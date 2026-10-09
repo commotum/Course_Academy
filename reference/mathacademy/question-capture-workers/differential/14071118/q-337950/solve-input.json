@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following differential equation\n\n$$\n{y}^{\u2033}+4y=2\\operatorname{tan}\u2061x.\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=A\\operatorname{cos}\u20612x+B\\operatorname{sin}\u20612x+g(x),\n$$\n\nwhere $A$ and $B$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method. You may also wish to make use of the following results (integration constants omitted):*\n\n$$\n\\begin{aligned}\\int \\operatorname{sin}\u20612x\\operatorname{tan}\u2061x\\,\\text{d}x & =x-\\frac{1}{2}\\operatorname{sin}\u20612x \\\\ \\int \\operatorname{cos}\u20612x\\operatorname{tan}\u2061x\\,\\text{d}x & =\\operatorname{ln}\u2061|\\operatorname{cos}\u2061x|-\\frac{1}{2}\\operatorname{cos}\u20612x-\\frac{1}{2}\\end{aligned}\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{cos}\u2061x|"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "x\\operatorname{cos}\u20612x+\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{cos}\u2061x|"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-x\\operatorname{cos}\u20612x"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "-x\\operatorname{sin}\u20612x+\\operatorname{cos}\u20612x\\operatorname{ln}\u2061|\\operatorname{cos}\u2061x|"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-x\\operatorname{cos}\u20612x+\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{cos}\u2061x|"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071118,
+    "task_type": "lesson",
+    "topic_id": 6704,
+    "topic_title": "Solving Second-Order ODEs Using Variation of Parameters",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-338528",
+        "problem": "Consider the following differential equation\n\n$$\n{y}^{\u2033}+4y={csc}^{3}\u20612x.\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=P\\operatorname{cos}\u20612x+Q\\operatorname{sin}\u20612x+g(x),\n$$\n\nwhere $P$ and $Q$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method. You may also wish to make use of the following result:*\n\n$$\n\\begin{aligned}\\operatorname{cos}\u20614x=2{cos}^{2}\u20612x-1\\end{aligned}\n$$",
+        "worked_solution": "Suppose we have a second-order linear differential equation with linearly independent fundamental solutions ${y}_{1}(x)$ and ${y}_{2}(x).$ Then, according to the method of variation of parameters, we can seek a particular solution ${y}_{p}$ using the ansatz\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}(x){y}_{1}(x)+{u}_{2}(x){y}_{2}(x),\\end{aligned}\n$$\n\nwhere ${u}_{1}$ and ${u}_{2}$ satisfy the following system:\n\n$$\n{\\begin{aligned}{u}_{1}^{\u2032}{y}_{1}^{\u2032}+{u}_{2}^{\u2032}{y}_{2}^{\u2032}=f(x) \\\\ {u}_{1}^{\u2032}{y}_{1}+{u}_{2}^{\u2032}{y}_{2}=0\\end{aligned}\n$$\n\nThe solution to this system is\n\n$$\n{u}_{1}(x)=-\\int \\frac{f(x){y}_{2}(x)}{W({y}_{1},{y}_{2})}\\,dx,\\,{u}_{2}(x)=\\int \\frac{f(x){y}_{1}(x)}{W({y}_{1},{y}_{2})}\\,dx,\n$$\n\nwhere $W({y}_{1},{y}_{2})$ is the Wronskian.\n\nFirst, we note that the forcing term is $f(x)={csc}^{3}\u20612x.$\n\nFrom the given information, we see that the complementary solution is\n\n$$\n{y}_{c}(x)=P\\operatorname{cos}\u20612x+Q\\operatorname{sin}\u20612x.\n$$\n\nTherefore, the fundamental solutions to the corresponding homogeneous equation are\n\n$$\n{y}_{1}(x)=\\operatorname{cos}\u20612x,\\,{y}_{2}(x)=\\operatorname{sin}\u20612x.\n$$\n\nWe can use the method of variation of parameters if these solutions are independent. So, let's first compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}(x){y}_{2}^{\u2032}(x)-{y}_{1}^{\u2032}(x){y}_{2}(x) \\\\  & =(\\operatorname{cos}\u20612x)(\\operatorname{sin}\u20612x)^{\u2032}-(\\operatorname{cos}\u20612x)^{\u2032}(\\operatorname{sin}\u20612x) \\\\  & =(\\operatorname{cos}\u20612x)(2\\operatorname{cos}\u20612x)-(-2\\operatorname{sin}\u20612x)(\\operatorname{sin}\u20612x) \\\\  & =2{cos}^{2}\u20612x+2{sin}^{2}\u20612x \\\\  & =2\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions  ${y}_{1}(x)$ and ${y}_{2}(x)$ are independent. \n\nLet's compute ${u}_{1}(x)$ and ${u}_{2}(x)$:\n\n- First, we compute ${u}_{1}(x):$\n\n$$\n\\begin{aligned}{u}_{1}(x) & =-\\int \\frac{{csc}^{3}\u20612x\\cdot \\operatorname{sin}\u20612x}{2}\\,dx \\\\  & =-\\frac{1}{2}\\int {csc}^{2}\u20612x\\,dx \\\\  & =\\frac{1}{4}\\operatorname{cot}\u20612x\\end{aligned}\n$$\n\n- Then, we compute ${u}_{2}(x):$\n\n$$\n\\begin{aligned}{u}_{2}(x) & =\\int \\frac{{csc}^{3}\u20612x\\cdot \\operatorname{cos}\u20612x}{2}\\,dx \\\\  & =\\frac{1}{2}\\int \\frac{\\operatorname{cos}\u20612x}{{sin}^{3}\u20612x}\\,dx\\end{aligned}\n$$\n\nLet $u=\\operatorname{sin}\u20612x.$ Then $du=2\\operatorname{cos}\u20612x\\,dx,$ so $\\operatorname{cos}\u20612x\\,dx=\\frac{1}{2}\\,du,$ and the integral becomes\n\n$$\n\\begin{aligned}\\frac{1}{2}\\int \\frac{\\operatorname{cos}\u20612x}{{sin}^{3}\u20612x}\\,dx & =\\frac{1}{2}\\int \\frac{1}{{u}^{3}}(\\frac{1}{2}\\,du) \\\\  & =\\frac{1}{4}\\int {u}^{-3}\\,du \\\\  & =-\\frac{1}{8}{u}^{-2} \\\\  & =-\\frac{1}{8{sin}^{2}\u20612x}.\\end{aligned}\n$$\n\nTherefore, the particular solution is\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}{y}_{1}+{u}_{2}{y}_{2} \\\\  & =(\\frac{1}{4}\\operatorname{cot}\u20612x)(\\operatorname{cos}\u20612x)+(-\\frac{1}{8{sin}^{2}\u20612x})(\\operatorname{sin}\u20612x) \\\\  & =\\frac{{cos}^{2}\u20612x}{4\\operatorname{sin}\u20612x}-\\frac{1}{8\\operatorname{sin}\u20612x} \\\\  & =\\frac{1}{8\\operatorname{sin}\u20612x}(2{cos}^{2}\u20612x-1) \\\\  & =\\frac{\\operatorname{cos}\u20614x}{8\\operatorname{sin}\u20612x} \\\\  & =\\frac{1}{8}\\operatorname{cos}\u20614x\\,\\operatorname{csc}\u20612x.\\end{aligned}\n$$\n\nThe general solution is the sum of the complementary and particular solutions, and can be written as follows:\n\n$$\n\\begin{aligned}y(x) & ={y}_{c}(x)+{y}_{p}(x) \\\\  & =P\\operatorname{cos}\u20612x+Q\\operatorname{sin}\u20612x\\,+\\,{{\\frac{1}{8}\\operatorname{cos}\u20614x\\operatorname{csc}\u20612x}_{\u23df}}_{g(x)}\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\ng(x)=\\frac{1}{8}\\operatorname{cos}\u20614x\\operatorname{csc}\u20612x.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{1}{8}\\operatorname{cos}\u20614x\\operatorname{csc}\u20612x",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

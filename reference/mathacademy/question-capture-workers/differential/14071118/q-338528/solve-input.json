@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following differential equation\n\n$$\n{y}^{\u2033}+4y={csc}^{3}\u20612x.\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=P\\operatorname{cos}\u20612x+Q\\operatorname{sin}\u20612x+g(x),\n$$\n\nwhere $P$ and $Q$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method. You may also wish to make use of the following result:*\n\n$$\n\\begin{aligned}\\operatorname{cos}\u20614x=2{cos}^{2}\u20612x-1\\end{aligned}\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\frac{1}{8}\\operatorname{sin}\u20614x\\operatorname{sec}\u20612x"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "\\frac{1}{4}\\operatorname{cos}\u20614x\\operatorname{csc}\u20612x"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\frac{1}{4}\\operatorname{sin}\u20614x\\operatorname{sec}\u20612x"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "\\frac{1}{8}\\operatorname{cos}\u20614x\\operatorname{csc}\u20612x"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{1}{2}\\operatorname{cos}\u20614x\\operatorname{csc}\u20612x"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071118,
+    "task_type": "lesson",
+    "topic_id": 6704,
+    "topic_title": "Solving Second-Order ODEs Using Variation of Parameters",
+    "examples": [
+      {
+        "math_academy_id": "e-6617",
+        "knowledge_point": "Solving a Differential Equation Whose Characteristic Equation Has Complex Roots",
+        "problem": "Consider the following differential equation\n\n$$\ny''+y=\\tan{x}.\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=A\\cos x + B\\sin x + g(x),\n$$\n\nwhere $A$ and $B$ are constants. What could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method. You may also wish to make use of the following result (integration constant omitted):*\n\n$$\n\\int \\tan x \\sin x\\,\\textrm{d}x\n= -\\sin x + \\ln\\!\\left|\\tan x+\\sec x\\right|\n$$",
+        "worked_solution": "Suppose we have a second-order linear differential equation with linearly independent fundamental solutions $y_1(x)$ and $y_2(x).$ Then, according to the method of variation of parameters, we can seek a particular solution $y_p$ using the ansatz\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}(x){y}_{1}(x)+{u}_{2}(x){y}_{2}(x),\\end{aligned}\n$$\n\nwhere $u_1$ and $u_2$ satisfy the following system:\n\n$$\n{\\begin{aligned}{u}_{1}^{\u2032}{y}_{1}^{\u2032}+{u}_{2}^{\u2032}{y}_{2}^{\u2032}=f(x) \\\\ {u}_{1}^{\u2032}{y}_{1}+{u}_{2}^{\u2032}{y}_{2}=0\\end{aligned}\n$$\n\nThe solution to this system is\n\n$$\nu_1(x)=-\\displaystyle\\int\\dfrac{f(x)y_2(x)}{W(y_1,y_2)}\\,\\mathrm{d}x,\n\\qquad\nu_2(x)=\\displaystyle\\int\\dfrac{f(x)y_1(x)}{W(y_1,y_2)}\\,\\mathrm{d}x,\n$$\n\nwhere $W(y_1,y_2)$ is the Wronskian.\n\nFirst, we note that the forcing term is $f(x)=\\tan x.$\n\nFrom the given information, we see that the complementary solution is\n\n$$\ny_c(x)=A\\cos x + B\\sin x.\n$$\n\nTherefore, the fundamental solutions to the corresponding homogeneous equation are\n\n$$\ny_1(x)=\\cos x,\n\\qquad\ny_2(x)=\\sin x.\n$$\n\nWe can use the method of variation of parameters if these solutions are linearly independent. So, let's first compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}(x){y}_{2}^{\u2032}(x)-{y}_{1}^{\u2032}(x){y}_{2}(x) \\\\  & =(\\operatorname{cos}\u2061x)(\\operatorname{sin}\u2061x)^{\u2032}-(\\operatorname{cos}\u2061x)^{\u2032}(\\operatorname{sin}\u2061x) \\\\  & =(\\operatorname{cos}\u2061x)(\\operatorname{cos}\u2061x)-(-\\operatorname{sin}\u2061x)(\\operatorname{sin}\u2061x) \\\\  & ={cos}^{2}\u2061x+{sin}^{2}\u2061x \\\\  & =1\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions $y_1(x)$ and $y_2(x)$ are independent.\n\nLet\u2019s compute $u_1(x)$ and $u_2(x)$:\n\n$$\n\\begin{aligned}{u}_{1}(x) & =-\\int \\frac{f(x){y}_{2}(x)}{W({y}_{1},{y}_{2})}\\,dx \\\\  & =-\\int \\operatorname{tan}\u2061x\\operatorname{sin}\u2061x\\,dx \\\\  & =\\operatorname{sin}\u2061x-ln\\,|\\operatorname{tan}\u2061x+\\operatorname{sec}\u2061x| \\\\ {u}_{2}(x) & =\\int \\frac{f(x){y}_{1}(x)}{W({y}_{1},{y}_{2})}\\,dx \\\\  & =\\int \\operatorname{tan}\u2061x\\operatorname{cos}\u2061x\\,dx \\\\  & =\\int \\operatorname{sin}\u2061x\\,dx \\\\  & =-\\operatorname{cos}\u2061x\\end{aligned}\n$$\n\nTherefore, the particular solution is\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}{y}_{1}+{u}_{2}{y}_{2} \\\\  & =(\\operatorname{cos}\u2061x)\\,(\\operatorname{sin}\u2061x-ln\\,|\\operatorname{tan}\u2061x+\\operatorname{sec}\u2061x|)+(-\\operatorname{cos}\u2061x)(\\operatorname{sin}\u2061x) \\\\  & =-\\operatorname{cos}\u2061xln\\,|\\operatorname{tan}\u2061x+\\operatorname{sec}\u2061x|.\\end{aligned}\n$$\n\nThe general solution is the sum of the complementary and particular solutions, and can be written as follows:\n\n$$\n\\begin{aligned}y(x) & ={y}_{c}(x)+{y}_{p}(x) \\\\  & =A\\operatorname{cos}\u2061x+B\\operatorname{sin}\u2061x\\,\\,{{-\\,\\operatorname{cos}\u2061xln\\,|\\operatorname{tan}\u2061x+\\operatorname{sec}\u2061x|}_{\u23df}}_{g(x)}\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\ng(x)=-\\cos x\\ln\\!\\left|\\tan x+\\sec x\\right|.\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14071118/example-6617.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-337391",
+        "problem": "Consider the following differential equation\n\n$$\n{y}^{\u2033}-6{y}^{\u2032}+9y=\\frac{2{e}^{3x}}{1+{x}^{2}}.\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=A{e}^{3x}+Bx{e}^{3x}+g(x),\n$$\n\nwhere $A$ and $B$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method.*",
+        "worked_solution": "Suppose we have a second-order linear differential equation with linearly independent fundamental solutions ${y}_{1}(x)$ and ${y}_{2}(x).$ Then, according to the method of variation of parameters, we can seek a particular solution ${y}_{p}$ using the ansatz\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}(x){y}_{1}(x)+{u}_{2}(x){y}_{2}(x),\\end{aligned}\n$$\n\nwhere ${u}_{1}$ and ${u}_{2}$ satisfy the following system:\n\n$$\n{\\begin{aligned}{u}_{1}^{\u2032}{y}_{1}^{\u2032}+{u}_{2}^{\u2032}{y}_{2}^{\u2032}=f(x) \\\\ {u}_{1}^{\u2032}{y}_{1}+{u}_{2}^{\u2032}{y}_{2}=0\\end{aligned}\n$$\n\nThe solution to this system is\n\n$$\n{u}_{1}(x)=-\\int \\frac{f(x){y}_{2}(x)}{W({y}_{1},{y}_{2})}\\,\\text{d}x,\\,{u}_{2}(x)=\\int \\frac{f(x){y}_{1}(x)}{W({y}_{1},{y}_{2})}\\,\\text{d}x\n$$\n\nwhere $W({y}_{1},{y}_{2})$ is the Wronskian.\n\nFrom the given information, we see that the complementary solution is\n\n$$\n{y}_{c}(x)=A{e}^{3x}+Bx{e}^{3x}.\n$$\n\nTherefore, the fundamental solutions to the corresponding homogeneous equation are\n\n$$\n{y}_{1}(x)={e}^{3x},\\,{y}_{2}(x)=x{e}^{3x}.\n$$\n\nWe can use the method of variation of parameters if these solutions are independent. So, let's first compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{\u2032}-{y}_{1}^{\u2032}{y}_{2} \\\\  & =({e}^{3x})(x{e}^{3x})^{\u2032}-({e}^{3x})^{\u2032}(x{e}^{3x}) \\\\  & =({e}^{3x})({e}^{3x}+3x{e}^{3x})-(3{e}^{3x})(x{e}^{3x}) \\\\  & ={e}^{6x}+3x{e}^{6x}-3x{e}^{6x} \\\\  & ={e}^{6x}\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions  ${y}_{1}(x)$ and ${y}_{2}(x)$ are independent.\n\nLet's compute ${u}_{1}(x)$ and ${u}_{2}(x):$\n\n$$\n\\begin{aligned}{u}_{1}(x) & =-\\int \\frac{2{e}^{3x}\\cdot x{e}^{3x}}{(1+{x}^{2}){e}^{6x}}\\,\\text{d}x \\\\  & =-\\int \\frac{2x}{1+{x}^{2}}\\,\\text{d}x \\\\  & =-\\operatorname{ln}\u2061(1+{x}^{2}) \\\\ {u}_{2}(x) & =\\int \\frac{2{e}^{3x}\\cdot {e}^{3x}}{(1+{x}^{2}){e}^{6x}}\\,\\text{d}x \\\\  & =2\\int \\frac{1}{1+{x}^{2}}\\,\\text{d}x \\\\  & =2\\operatorname{arctan}\u2061x\\end{aligned}\n$$\n\nNotice that we needed to use substitution $t=1+{x}^{2}$ to find ${u}_{1}(x).$\n\nTherefore, the particular solution is\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}{y}_{1}+{u}_{2}{y}_{2} \\\\  & =({e}^{3x})(-\\operatorname{ln}\u2061(1+{x}^{2}))+(x{e}^{3x})(2\\operatorname{arctan}\u2061x) \\\\  & ={e}^{3x}(2x\\operatorname{arctan}\u2061x-\\operatorname{ln}\u2061(1+{x}^{2})).\\end{aligned}\n$$\n\nThe general solution is the sum of the complementary and particular solutions, and can be written as follows:\n\n$$\n\\begin{aligned}y(x) & ={y}_{c}(x)+{y}_{p}(x) \\\\  & =A{e}^{3x}+Bx{e}^{3x}+{{{e}^{3x}(2x\\operatorname{arctan}\u2061x-\\operatorname{ln}\u2061(1+{x}^{2}))}_{\u23df}}_{g(x)}\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\ng(x)={e}^{3x}(2x\\operatorname{arctan}\u2061x-\\operatorname{ln}\u2061(1+{x}^{2})).\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{e}^{3x}(2x\\operatorname{arctan}\u2061x-\\operatorname{ln}\u2061(1+{x}^{2}))",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

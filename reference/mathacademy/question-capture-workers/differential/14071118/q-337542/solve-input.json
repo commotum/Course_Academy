@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following differential equation.\n\n$$\n{y}^{\u2033}-5{y}^{\u2032}+6y=2x{e}^{2x}\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=A{e}^{2x}+B{e}^{3x}+g(x),\n$$\n\nwhere $A$ and $B$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method. You may also wish to make use of the following result (integration constants omitted):*\n\n$$\n\\int x{e}^{-x}dx=-(x+1){e}^{-x}\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "-({x}^{2}+2x){e}^{2x}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-({x}^{2}+4x){e}^{2x}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-(2{x}^{2}+4x){e}^{2x}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "-({x}^{3}+2x){e}^{2x}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-(2{x}^{2}+2x){e}^{2x}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071118,
+    "task_type": "lesson",
+    "topic_id": 6704,
+    "topic_title": "Solving Second-Order ODEs Using Variation of Parameters",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-337548",
+        "problem": "Consider the following differential equation\n\n$$\n{y}^{\u2033}+2{y}^{\u2032}+y=\\frac{{e}^{-x}}{{x}^{3}}.\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=A{e}^{-x}+Bx{e}^{-x}+g(x),\n$$\n\nwhere $A$ and $B$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method.*",
+        "worked_solution": "Suppose we have a second-order linear differential equation with linearly independent fundamental solutions ${y}_{1}(x)$ and ${y}_{2}(x).$ Then, according to the method of variation of parameters, we can seek a particular solution ${y}_{p}$ using the ansatz\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}(x){y}_{1}(x)+{u}_{2}(x){y}_{2}(x),\\end{aligned}\n$$\n\nwhere ${u}_{1}$ and ${u}_{2}$ satisfy the following system:\n\n$$\n{\\begin{aligned}{u}_{1}^{\u2032}{y}_{1}^{\u2032}+{u}_{2}^{\u2032}{y}_{2}^{\u2032}=f(x) \\\\ {u}_{1}^{\u2032}{y}_{1}+{u}_{2}^{\u2032}{y}_{2}=0\\end{aligned}\n$$\n\nThe solution to this system is\n\n$$\n{u}_{1}(x)=-\\int \\frac{f(x){y}_{2}(x)}{W({y}_{1},{y}_{2})}\\,\\text{d}x,\\,{u}_{2}(x)=\\int \\frac{f(x){y}_{1}(x)}{W({y}_{1},{y}_{2})}\\,\\text{d}x\n$$\n\nwhere $W({y}_{1},{y}_{2})$ is the Wronskian.\n\nFrom the given information, we see that the complementary solution is\n\n$$\n{y}_{c}(x)=A{e}^{-x}+Bx{e}^{-x}.\n$$\n\nTherefore, the fundamental solutions to the corresponding homogeneous equation are\n\n$$\n{y}_{1}(x)={e}^{-x},\\,{y}_{2}(x)=x{e}^{-x}.\n$$\n\nWe can use the method of variation of parameters if these solutions are independent. So, let's first compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{\u2032}-{y}_{1}^{\u2032}{y}_{2} \\\\  & =({e}^{-x})(x{e}^{-x})^{\u2032}-({e}^{-x})^{\u2032}(x{e}^{-x}) \\\\  & =({e}^{-x})({e}^{-x}-x{e}^{-x})-(-{e}^{-x})(x{e}^{-x}) \\\\  & ={e}^{-2x}-x{e}^{-2x}+x{e}^{-2x} \\\\  & ={e}^{-2x}\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions  ${y}_{1}(x)$ and ${y}_{2}(x)$ are independent.\n\nLet's compute ${u}_{1}(x)$ and ${u}_{2}(x):$\n\n$$\n\\begin{aligned}{u}_{1}(x) & =-\\int \\frac{{e}^{-x}\\cdot x{e}^{-x}}{{x}^{3}{e}^{-2x}}\\,\\text{d}x \\\\  & =-\\int \\frac{1}{{x}^{2}}\\,\\text{d}x \\\\  & =\\frac{1}{x} \\\\ {u}_{2}(x) & =\\int \\frac{{e}^{-x}\\cdot {e}^{-x}}{{x}^{3}{e}^{-2x}}\\,\\text{d}x \\\\  & =\\int \\frac{1}{{x}^{3}}\\,\\text{d}x \\\\  & =-\\frac{1}{2{x}^{2}}\\end{aligned}\n$$\n\nTherefore, the particular solution is\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}{y}_{1}+{u}_{2}{y}_{2} \\\\  & =(\\frac{1}{x}){e}^{-x}+(-\\frac{1}{2{x}^{2}})x{e}^{-x} \\\\  & =\\frac{{e}^{-x}}{x}-\\frac{{e}^{-x}}{2x} \\\\  & =\\frac{{e}^{-x}}{2x}.\\end{aligned}\n$$\n\nThe general solution is the sum of the complementary and particular solutions, and can be written as follows:\n\n$$\n\\begin{aligned}y(x) & ={y}_{c}(x)+{y}_{p}(x) \\\\  & =A{e}^{-x}+Bx{e}^{-x}+{{\\frac{{e}^{-x}}{2x}}_{\u23df}}_{g(x)}\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\ng(x)=\\frac{{e}^{-x}}{2x}.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{{e}^{-x}}{2x}",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

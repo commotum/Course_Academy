@@ -1,0 +1,57 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following differential equation\n\n$$\n{y}^{\u2033}-4{y}^{\u2032}+4y=\\frac{{e}^{2x}}{{x}^{2}}.\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=A{e}^{2x}+Bx{e}^{2x}+g(x),\n$$\n\nwhere $A$ and $B$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method.*",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "-4{e}^{2x}\\operatorname{ln}\u2061|x|"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-2x{e}^{2x}\\operatorname{ln}\u2061|x|"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-x{e}^{2x}\\operatorname{ln}\u2061|x|"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "-{e}^{2x}\\operatorname{ln}\u2061|x|"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-2{e}^{2x}\\operatorname{ln}\u2061|x|"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071118,
+    "task_type": "lesson",
+    "topic_id": 6704,
+    "topic_title": "Solving Second-Order ODEs Using Variation of Parameters",
+    "examples": [
+      {
+        "math_academy_id": "e-6618",
+        "knowledge_point": "Solving a Differential Equation Whose Characteristic Equation Has Real Roots",
+        "problem": "Consider the following differential equation.\n\n$$\ny'' - 2y' + y = 18x e^{x}\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x) = A e^{x} + B x e^{x} + g(x),\n$$\n\nwhere $A$ and $B$ are constants. What could be the function $g(x)?$",
+        "worked_solution": "Suppose we have a second-order linear differential equation with linearly independent fundamental solutions $y_1(x)$ and $y_2(x)$. Then, according to the method of variation of parameters, we can seek a particular solution $y_p$ may be written as\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}(x){y}_{1}(x)+{u}_{2}(x){y}_{2}(x),\\end{aligned}\n$$\n\nwhere $u_1$ and $u_2$ satisfy the following system:\n\n$$\n{\\begin{aligned}{u}_{1}^{\u2032}{y}_{1}^{\u2032}+{u}_{2}^{\u2032}{y}_{2}^{\u2032}=f(x) \\\\ {u}_{1}^{\u2032}{y}_{1}+{u}_{2}^{\u2032}{y}_{2}=0\\end{aligned}\n$$\n\nThe solution to this system is\n\n$$\nu_1(x) = -\\int \\dfrac{f(x)y_2(x)}{W(y_1,y_2)}\\,dx,\n\\qquad\nu_2(x) = \\int \\dfrac{f(x)y_1(x)}{W(y_1,y_2)}\\,dx,\n$$\n\nwhere $W(y_1,y_2)$ is the Wronskian.\n\nFrom the given information, we see that the complementary solution is\n\n$$\ny_c(x) = A e^{x} + B x e^{x}.\n$$\n\nTherefore, the fundamental solutions to the corresponding homogeneous equation are\n\n$$\ny_1(x) = e^{x}, \\qquad y_2(x) = x e^{x}.\n$$\n\nWe can use the method of variation of parameters if these solutions are independent. So, let's first compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{\u2032}-{y}_{1}^{\u2032}{y}_{2} \\\\  & =({e}^{x})(x{e}^{x})^{\u2032}-({e}^{x})^{\u2032}(x{e}^{x}) \\\\  & =({e}^{x})({e}^{x}+x{e}^{x})-({e}^{x})(x{e}^{x}) \\\\  & ={e}^{2x}+x{e}^{2x}-x{e}^{2x} \\\\  & ={e}^{2x}\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions  $y_1(x)$ and $y_2(x)$ are independent.\n\nNow compute $u_1(x)$ and $u_2(x)$:\n\n$$\n\\begin{aligned}{u}_{1}(x) & =-\\int \\frac{18x{e}^{x}\\cdot x{e}^{x}}{{e}^{2x}}\\,dx \\\\  & =-18\\int {x}^{2}\\,dx \\\\  & =-6{x}^{3} \\\\ {u}_{2}(x) & =\\int \\frac{18x{e}^{x}\\cdot {e}^{x}}{{e}^{2x}}\\,dx \\\\  & =18\\int x\\,dx \\\\  & =9{x}^{2}\\end{aligned}\n$$\n\nTherefore, the particular solution is\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}{y}_{1}+{u}_{2}{y}_{2} \\\\  & =(-6{x}^{3}){e}^{x}+(9{x}^{2})(x{e}^{x}) \\\\  & =-6{x}^{3}{e}^{x}+9{x}^{3}{e}^{x} \\\\  & =3{x}^{3}{e}^{x}.\\end{aligned}\n$$\n\nThe general solution is the sum of the complementary and particular solutions, and can be written as follows:\n\n$$\n\\begin{aligned}y(x) & ={y}_{c}(x)+{y}_{p}(x) \\\\  & =A{e}^{x}+Bx{e}^{x}+{{3{x}^{3}{e}^{x}}_{\u23df}}_{g(x)}\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\ng(x) = 3x^3 e^{x}.\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14071118/example-6618.png"
+      }
+    ],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}
