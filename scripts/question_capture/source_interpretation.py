@@ -67,7 +67,8 @@ def unresolved_study_clarifications(content, state, correction_root):
         record = state.get('questions', {}).get(mid, {})
         meta = q.get('source_feedback_interpretation') or record.get('source_feedback_interpretation')
         expected = {POLICY: (TOPIC, KP), INTEGRAL_POLICY: (INTEGRAL_TOPIC, INTEGRAL_KP),
-                    LAPLACE_POLICY: (LAPLACE_TOPIC, LAPLACE_KP)}
+                    LAPLACE_POLICY: (LAPLACE_TOPIC, LAPLACE_KP),
+                    SMOOTHNESS_POLICY: (SMOOTHNESS_TOPIC, SMOOTHNESS_KP)}
         if (not meta or meta.get('policy') not in expected
                 or (meta.get('topic_id'), meta.get('knowledge_point_id')) != expected[meta['policy']]
                 or not meta.get('requires_study_clarification')):
@@ -211,3 +212,59 @@ def reviewed_laplace_domain(item, activity, directory):
         'canonical_review': str(review_path), 'review_sha256': proof['review_sha256'],
         'transaction_sha256': proof['transaction_sha256'], 'committed_basis': proof['basis_after'],
         'identity_sha256': hashlib.sha256(json.dumps(identity).encode()).hexdigest()}
+
+
+SMOOTHNESS_TOPIC = 6402
+SMOOTHNESS_KP = '6373d849-f5c6-50d2-ad4f-72f77a1a8c92'
+SMOOTHNESS_POLICY = 'q-340850-final-sine-conclusion-v1'
+SMOOTHNESS_WRONG = 'L{{t}^{2}{e}^{4t}}={{field-4}}'
+SMOOTHNESS_RIGHT = r'L{{t}^{2}\operatorname{sin}⁡4t}={{field-4}}'
+
+
+def reviewed_smoothness_conclusion(item, activity, directory):
+    """Interpret only the attested copied final LHS; retain actual source grading."""
+    if Path(directory).name != 'q-340850' or activity.get('topic_id') != SMOOTHNESS_TOPIC:
+        return None
+    fields = item.get('fields', [])
+    if (len(fields) != 4 or [f.get('key') for f in fields] != ['field-1','field-2','field-3','field-4']
+            or any(f.get('type') != 'select' or not f.get('choices_complete', True) for f in fields)):
+        return None
+    correction = ROOT/'reference/mathacademy/mathematical-corrections/q-340850'
+    try:
+        review_path = correction/'review.json'
+        review_bytes = review_path.read_bytes()
+        transaction_bytes = (correction/'transaction.edn').read_bytes()
+        proof = json.loads((correction/'verification.json').read_text())
+        review = json.loads(review_bytes)
+        original, corrected = review['original_content'], review['corrected_content']
+        choices = lambda fs: [(f['key'], f['type'], sorted((c['type'], c['value']) for c in f['choices'])) for f in fs]
+        if (proof.get('committed') is not True or proof.get('mathematical_check_passed') is not True
+                or proof.get('answer_fields_choices_and_answer_identities_unchanged') is not True
+                or not isinstance(proof.get('basis_after'), int)
+                or proof.get('review_sha256') != hashlib.sha256(review_bytes).hexdigest()
+                or proof.get('transaction_sha256') != hashlib.sha256(transaction_bytes).hexdigest()
+                or any(q.get('math_academy_id') != 'q-340850' or q.get('knowledge_point_id') != SMOOTHNESS_KP for q in (original, corrected))
+                or item.get('problem') != original['problem']
+                or original['problem'].count(SMOOTHNESS_WRONG) != 1
+                or corrected['problem'] != original['problem'].replace(SMOOTHNESS_WRONG, SMOOTHNESS_RIGHT)
+                or choices(fields) != choices(original['answer_fields'])
+                or corrected['answer_fields'] != original['answer_fields']
+                or [f.get('correct_value') for f in original['answer_fields']] != [
+                    r'{F}^{″}(s)', r'\frac{4}{{s}^{2}+16}',
+                    r'\frac{24{s}^{2}-128}{({s}^{2}+16)^{3}}',
+                    r'\frac{24{s}^{2}-128}{({s}^{2}+16)^{3}}']):
+            return None
+        kp = activity.get('questions', {}).get('q-340850', {}).get('kp_id') or activity.get('current_kp')
+        if kp is not None and kp != SMOOTHNESS_KP:
+            return None
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+    identity = [SMOOTHNESS_POLICY, proof['review_sha256'], hashlib.sha256(item['problem'].encode()).hexdigest()]
+    return {'policy':SMOOTHNESS_POLICY, 'topic_id':SMOOTHNESS_TOPIC, 'knowledge_point_id':SMOOTHNESS_KP,
+        'source_problem':item['problem'], 'interpreted_problem':corrected['problem'],
+        'requirement':SMOOTHNESS_RIGHT, 'requires_study_clarification':True,
+        'confidence_scope':'The original sine objective and defined f(t), with only the copied final exponential LHS corrected. '
+                           'Retain accepted prior proof stages and observe the authentic final grade separately.',
+        'canonical_review':str(review_path), 'review_sha256':proof['review_sha256'],
+        'transaction_sha256':proof['transaction_sha256'], 'committed_basis':proof['basis_after'],
+        'identity_sha256':hashlib.sha256(json.dumps(identity).encode()).hexdigest()}

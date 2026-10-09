@@ -252,10 +252,11 @@ class Solver:
         session = json.loads(session_file.read_text()) if session_file.exists() else {'session_id':None,'context_keys':[]}
         activity_file = directory.parent/'state.json'
         activity = json.loads(activity_file.read_text()) if activity_file.exists() else {}
-        from source_interpretation import reviewed_containment, reviewed_integral_theorem, reviewed_laplace_domain
+        from source_interpretation import reviewed_containment, reviewed_integral_theorem, reviewed_laplace_domain, reviewed_smoothness_conclusion
         interpretation = (reviewed_containment(item, activity, directory)
                           or reviewed_integral_theorem(item, activity, directory)
-                          or reviewed_laplace_domain(item, activity, directory))
+                          or reviewed_laplace_domain(item, activity, directory)
+                          or reviewed_smoothness_conclusion(item, activity, directory))
         if interpretation:
             payload['source_problem'] = item['problem']
             payload['problem'] = interpretation['interpreted_problem']
@@ -292,7 +293,9 @@ class Solver:
             elif containment_recheck:
                 integral_policy = (interpretation or prior_interpretation).get('policy', '').startswith('q-335252-')
                 laplace_policy = (interpretation or prior_interpretation).get('policy', '').startswith('q-330826-')
-                label = ('laplace-domain-policy' if laplace_policy else
+                smoothness_policy = (interpretation or prior_interpretation).get('policy', '').startswith('q-340850-')
+                label = ('smoothness-conclusion-policy' if smoothness_policy else
+                         'laplace-domain-policy' if laplace_policy else
                          'integral-theorem-policy' if integral_policy else 'containment-policy')
                 archive = '-before-' + label + ('' if interpretation else '-invalidated')
                 atomic_json(directory/(phase+archive+'-answer.json'), saved)
