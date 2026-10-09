@@ -1,5 +1,6 @@
 """EDB reads, transaction previews, durable retry intents, and verification."""
 import hashlib
+import copy
 import json
 import logging
 import os
@@ -151,9 +152,30 @@ class Database:
             raise ValueError('Expected exactly one database topic: ' + str(topic_id))
         return rows[0][0]
 
-    def questions(self, ids, directory, name='questions', basis=None):
+    def questions(self, ids, directory, name='questions', basis=None, *, immutable_evidence=False):
         if not ids:
             return {}
+        if immutable_evidence:
+            if basis is None:
+                raise ValueError('Historical evidence caching requires an explicit immutable basis')
+            cache = getattr(self,'_historical_question_cache',None)
+            if cache is None:
+                cache = self._historical_question_cache = {}
+            key = (getattr(self.args,'database',None),getattr(self.args,'endpoint',None),basis)
+            snapshot = cache.setdefault(key,{})
+            missing = sorted(set(ids)-set(snapshot))
+            if missing:
+                fresh = self.questions(missing,directory,name,basis)
+                snapshot.update({mid:copy.deepcopy(fresh.get(mid)) for mid in missing})
+            result = {mid:copy.deepcopy(snapshot[mid]) for mid in ids if snapshot[mid] is not None}
+            target = Path(directory);target.mkdir(parents=True,exist_ok=True)
+            # Every import retains its scoped readback, even when it reuses an
+            # already read immutable snapshot. Current/committed reads never cache.
+            (target/(name+'.edn')).write_text(dumps([[result[mid]] for mid in sorted(result)]))
+            atomic_json(target/(name+'-evidence-cache.json'),
+                        {'basis':basis,'question_ids':sorted(set(ids)),
+                         'queried_ids':missing,'immutable_as_of':True})
+            return result
         rows = self.query('[:find (pull ?q ' + QUESTION_PULL + ') :in $ [?id ...] :where [?q :question/math-academy-id ?id]]',
                           [ids], directory, name, basis)
         return {row[0][':question/math-academy-id']: row[0] for row in rows}
@@ -258,7 +280,7 @@ class Database:
         snapshots = {}
         for t in sorted({r['basis'] for r in records if r['basis'] <= basis}):
             mids = sorted({r['question'] for r in records if r['basis'] == t})
-            snapshots[t] = self.questions(mids, directory/'evidence', 'basis-'+str(t), t)
+            snapshots[t] = self.questions(mids, directory/'evidence', 'basis-'+str(t), t,immutable_evidence=True)
         attested = []
         for r in records:
             old = snapshots.get(r['basis'], {}).get(r['question'])
