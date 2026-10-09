@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "The matrix $P$ is given below. Let ${p}_{1}$, ${p}_{2}$, and ${p}_{3}$ be the respective columns of $P.$\nDetermine if $B=\\text{{}{p}_{1},{p}_{2}\\text{}}$ is a basis of $\\text{Col}(P).$ \nIf that is the case, find ${x}_{1}\\cdot {x}_{2}$, where ${p}_{3}={x}_{1}{p}_{1}+{x}_{2}{p}_{2}.$\n\n$$\nP=[\\begin{aligned}1 & 3 & 1 \\\\ 0 & 2 & 2\\end{aligned}]\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$\\text{{}{p}_{1},{p}_{2}\\text{}}$ is not a basis of $\\text{Col}(P)$"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-1"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "3"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-2"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14066433,
+    "task_type": "lesson",
+    "topic_id": 2623,
+    "topic_title": "Finding a Basis of the Column Space of a Matrix",
+    "examples": [
+      {
+        "math_academy_id": "e-6255",
+        "knowledge_point": "Determining Whether a Given Set Is a Basis of the Column Space of a Matrix With Two Rows",
+        "problem": "The matrix $A$ is given below. Let $\\mathbf{a}_1$, $\\mathbf{a}_2$, and $\\mathbf{a}_3$ be the respective columns of $A.$ Determine if ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066433/assets/f7e27a29b580edc016bf479e983cb17c5e61ebb800b03e671b89b5d556056533.png) is a basis of $\\textrm{Col}(A).$ \nIf that is the case, find $x_1 \\cdot x_2$, where $\\mathbf{a}_3=x_1\\mathbf{a}_1+x_2\\mathbf{a}_2.$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066433/assets/cce279327716181e5b5c5c1e95e7eac34c2b93a78a1f7e773393ffbf608cb1f4.png)",
+        "worked_solution": "First, we reduce the matrix $A$ to reduced row echelon form (RREF):\n\n$$\n\\begin{aligned}A & =[\\begin{aligned}1 & 2 & 9 \\\\ 3 & 1 & 17\\end{aligned}] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\\\  & \u223c[\\begin{aligned}1 & 2 & 9 \\\\ 0 & -5 & -10\\end{aligned}] & {R}_{2} & :=(-\\frac{1}{5}){R}_{2} \\\\  & \u223c[\\begin{aligned}1 & 2 & 9 \\\\ 0 & 1 & 2\\end{aligned}] & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\\\  & \u223c[\\begin{aligned}1 & 0 & 5 \\\\ 0 & 1 & 2\\end{aligned}]\\end{aligned}\n$$\n\nFrom the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\\textrm{Col}(A)$ is $\\{\\mathbf{a}_1,\\mathbf{a}_2 \\},$ that is to say,\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066433/assets/f083a27cf3de0a6150020b6f5887096258880d4f5e30de1cfb3bb091b79a16f9.png)\n\nNow, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express $\\mathbf{a}_3$ as a linear combination of all the other columns in the original matrix. So, we have\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066433/assets/96f39576ea8196a88248035262eb7cd006c134717f695b23c575667b6562f6e0.png)\n\nThis gives us $x_1 \\cdot x_2 = 5 \\cdot 2=10.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066433/example-6255.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-34513",
+        "problem": "Given the matrix \n$G=[\\begin{aligned}3 & -4 \\\\ 2 & -\\frac{8}{3}\\end{aligned}].$ Find a basis $B$ of $\\text{Col}(G).$",
+        "worked_solution": "In order to find a basis of $\\text{Col}(G),$ we reduce the matrix $G$ to row echelon form:\n\n$$\n\\begin{aligned}G & =[\\begin{aligned}3 & -4 \\\\ 2 & -\\frac{8}{3}\\end{aligned}] & {R}_{1} & :=\\frac{1}{3}{R}_{1} \\\\  & \u223c[\\begin{aligned}1 & -\\frac{4}{3} \\\\ 2 & -\\frac{8}{3}\\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1}^{\u2032} \\\\  & \u223c[\\begin{aligned}1 & -\\frac{4}{3} \\\\ 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, only the $1$st column is a pivot column, while the $2$nd column is a non-pivot column.\n\nRemember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. \n\nThe $1$st column from the original matrix is ${g}_{1}.$ So, a basis of $\\text{Col}(G)$ is ${{g}_{1}},$ that is to say, \n\n$$\nB={[\\begin{aligned}3 \\\\ 2\\end{aligned}]}.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "B={[\\begin{aligned}3 \\\\ 2\\end{aligned}]}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
