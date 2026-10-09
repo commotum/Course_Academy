@@ -1,0 +1,39 @@
+{
+  "mode": "verify",
+  "problem": "Consider a game where each play costs one dime $(10\u00a2).$ For each play, the game dispenses a single coin to the player. At the start of any game, the game machine always contains an equal number of pennies $(1\u00a2),$ nickels $(5\u00a2),$ dimes $(10\u00a2),$ quarters $(25\u00a2),$ and half-dollars $(50\u00a2).$ The dime inserted by the player is separate from the pool of reward coins. What is the expected profit, in cents, for a player who plays twenty games in a row?\n\n$\\text{E}[p]=$\n{{field-1}}",
+  "worked_solution": "First of all, profit is revenue minus cost, or in our case, winnings minus cost. So, once we have found the expected winnings after twenty games, we need to subtract $10\\cdot 20=200$ cents to account for the price of playing.\n\nNow, let's find the expected winnings. For each play, the five coins have an equal chance of being dispensed, so each one has a probability of $\\frac{1}{5}.$\n\nLet's summarize this in a table. If $W$ is the amount of winnings (in cents) on a single game, and $f(w)$ is the probability mass function for $W,$ then we have the following:\n\n| $f(w)$ | $\\frac{1}{5}$ | $\\frac{1}{5}$ | $\\frac{1}{5}$ | $\\frac{1}{5}$ | $\\frac{1}{5}$ |\n| --- | --- | --- | --- | --- | --- |\n| $w$ | $1$ | $5$ | $10$ | $25$ | $50$ |\n\nThe expected value of $W$ is given by\n\n$$\n\\begin{aligned}\\text{E}[W] & =1\\cdot f(1)+5\\cdot f(5)+10\\cdot f(10)+25\\cdot f(25)+50\\cdot f(50) \\\\  & =1(\\frac{1}{5})+5(\\frac{1}{5})+10(\\frac{1}{5})+25(\\frac{1}{5})+50(\\frac{1}{5}) \\\\  & =\\frac{1}{5}+\\frac{5}{5}+\\frac{10}{5}+\\frac{25}{5}+\\frac{50}{5} \\\\  & =\\frac{1+5+10+25+50}{5} \\\\  & =\\frac{91}{5} \\\\  & =18.2.\\end{aligned}\n$$\n\nThis represents the expected winnings for a single game. So, the expected winnings for $20$ games is\n\n$$\n20\\cdot \\text{E}[W]=20\\cdot 18.2=364.\n$$\n\nNow, subtracting the $200$ cents paid to play, we get that the expected profit (in cents) is\n\n$$\nE[p]=364-200=164.\n$$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14069215,
+    "task_type": "lesson",
+    "topic_id": 730,
+    "topic_title": "Expected Values of Discrete Random Variables",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-276305",
+        "problem": "Consider a game where each play costs one dime $(10\u00a2).$ For each play, the game dispenses a single coin to the player. At the start of any game, the game machine always contains an equal number of pennies $(1\u00a2),$ nickels $(5\u00a2),$ dimes $(10\u00a2),$ quarters $(25\u00a2),$ and half-dollars $(50\u00a2).$ The dime inserted by the player is separate from the pool of reward coins. What is the expected profit, in cents, for a player who plays twenty games in a row?\n\n$\\text{E}[p]=$\n{{field-1}}",
+        "worked_solution": "First of all, profit is revenue minus cost, or in our case, winnings minus cost. So, once we have found the expected winnings after twenty games, we need to subtract $10\\cdot 20=200$ cents to account for the price of playing.\n\nNow, let's find the expected winnings. For each play, the five coins have an equal chance of being dispensed, so each one has a probability of $\\frac{1}{5}.$\n\nLet's summarize this in a table. If $W$ is the amount of winnings (in cents) on a single game, and $f(w)$ is the probability mass function for $W,$ then we have the following:\n\n| $f(w)$ | $\\frac{1}{5}$ | $\\frac{1}{5}$ | $\\frac{1}{5}$ | $\\frac{1}{5}$ | $\\frac{1}{5}$ |\n| --- | --- | --- | --- | --- | --- |\n| $w$ | $1$ | $5$ | $10$ | $25$ | $50$ |\n\nThe expected value of $W$ is given by\n\n$$\n\\begin{aligned}\\text{E}[W] & =1\\cdot f(1)+5\\cdot f(5)+10\\cdot f(10)+25\\cdot f(25)+50\\cdot f(50) \\\\  & =1(\\frac{1}{5})+5(\\frac{1}{5})+10(\\frac{1}{5})+25(\\frac{1}{5})+50(\\frac{1}{5}) \\\\  & =\\frac{1}{5}+\\frac{5}{5}+\\frac{10}{5}+\\frac{25}{5}+\\frac{50}{5} \\\\  & =\\frac{1+5+10+25+50}{5} \\\\  & =\\frac{91}{5} \\\\  & =18.2.\\end{aligned}\n$$\n\nThis represents the expected winnings for a single game. So, the expected winnings for $20$ games is\n\n$$\n20\\cdot \\text{E}[W]=20\\cdot 18.2=364.\n$$\n\nNow, subtracting the $200$ cents paid to play, we get that the expected profit (in cents) is\n\n$$\nE[p]=364-200=164.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "364",
+            "observed_mathquill_latex": "364"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
