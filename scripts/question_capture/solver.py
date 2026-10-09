@@ -268,6 +268,15 @@ class Solver:
             self.recover_pending(session_file,session)
         answer_file = directory/(phase+'-answer.json')
         input_file = directory/(phase+'-input.json')
+        if input_file.exists() and not answer_file.exists():
+            interrupted_input = json.loads(input_file.read_text())
+            if (normalize(interrupted_input.get('source_problem',interrupted_input['problem'])) == normalize(item['problem']) and
+                    interrupted_input.get('fields') == payload['fields']):
+                for flag in ('uncertainty_retry','verification_retry','exact_choice_retry'):
+                    if interrupted_input.get(flag) == 1:
+                        payload[flag] = 1
+                if any(payload.get(flag) for flag in ('uncertainty_retry','verification_retry','exact_choice_retry')):
+                    payload['validation_feedback'] = interrupted_input.get('validation_feedback','')
         if answer_file.exists() and input_file.exists():
             original = json.loads(input_file.read_text())
             if normalize(original.get('source_problem', original['problem'])) != normalize(item['problem']):
@@ -322,6 +331,22 @@ class Solver:
                     'do not silently replace source coefficients with worked-solution coefficients. '
                     'Preserve uncertainty and genuine correct-answer conflicts. Return an exact '
                     'displayed choice only when independently justified.')
+            elif (saved.get('confident') is not True and not payload.get('diagnostic_policy') and
+                  phase != 'verify' and original.get('uncertainty_retry') != 1):
+                atomic_json(directory/(phase+'-before-uncertainty-answer.json'),saved)
+                atomic_json(directory/(phase+'-before-uncertainty-input.json'),original)
+                payload['uncertainty_retry'] = 1
+                payload['validation_feedback'] = (
+                    'Your first answer was uncertain. Independently recompute the CURRENT '
+                    'question from its complete visible controls, displayed assets and activity '
+                    'examples; check arithmetic, signs, units, equivalent notation and every '
+                    'choice. Give a proven valid answer even when another displayed choice is '
+                    'also valid. Explain the earlier uncertainty. Do not guess a source key, '
+                    'change the problem or claim confidence through a real contradiction. '
+                    'If no displayed answer is justified, retain confident=false with the '
+                    'specific contradictory premises or missing evidence. This is the single '
+                    'uncertainty retry for unchanged evidence in this activity session.')
+                logging.info('Recovering uncertain %s/%s once in the existing activity session',directory.name,phase)
             elif recheck_invalid_choice(original, saved):
                 atomic_json(directory/(phase+'-before-exact-choice-answer.json'), saved)
                 atomic_json(directory/(phase+'-before-exact-choice-input.json'), original)
@@ -343,6 +368,9 @@ class Solver:
             raise ValueError('Saved solver session belongs to another activity')
         session['activity'] = identity
         payload['activity_context'] = context
+        # A cached answer belongs to the old input. A completed/interrupted
+        # follow-up must never recover that answer as if it answered this input.
+        answer_file.unlink(missing_ok=True)
         atomic_json(directory / (phase + '-input.json'), payload)
         if self.args.solver_command:
             process = subprocess.run(shlex.split(self.args.solver_command), input=json.dumps({**payload,'screenshot':str(screenshot)},ensure_ascii=False),
@@ -365,7 +393,15 @@ class Solver:
                             raise KeyboardInterrupt('Stopped; solver checkpoint is retained')
                     else:
                         time.sleep(delay)
-        self.validate(item, result)
+        try:
+            self.validate(item, result)
+        except ValueError as error:
+            if (str(error) == 'Solver is uncertain; question saved for review' and
+                    not payload.get('diagnostic_policy') and
+                    not payload.get('verification_retry') and not payload.get('uncertainty_retry')):
+                atomic_json(answer_file,result)
+                return self.solve(item,screenshot,directory,phase)
+            raise
         if interpretation:
             result['source_feedback_interpretation'] = interpretation
         atomic_json(directory / (phase + '-answer.json'), result)
@@ -454,7 +490,8 @@ class Solver:
         if pid and pending.get('process_token') and process_token(pid) == pending['process_token']:
             raise RuntimeError('The previous solver process is still running; wait before resuming')
         if (not re.fullmatch(r'(?:q-\d+|question-\d+)',pending['question']) or
-                pending['phase'] not in ('solve','verify','diagnostic','reconcile-grade')):
+                pending['phase'] not in ('solve','verify','diagnostic','reconcile-grade') and
+                not re.fullmatch(r'proof-solve-\d+',pending['phase'])):
             raise ValueError('Invalid saved solver turn')
         directory = session_file.parent.parent/pending['question']
         phase = pending['phase']
@@ -481,7 +518,14 @@ class Solver:
             result_file = answer_file if answer_file.exists() else session_file.parent/'work/answer.json'
             result = self.turn_answer(result_file, events)
             if result is not None:
-                self.validate(source,result)
+                try:
+                    self.validate(source,result)
+                except ValueError as error:
+                    if str(error) != 'Solver is uncertain; question saved for review':
+                        raise
+                    # The model turn completed; its uncertainty is an answer
+                    # recovery task, not a still-running or pending process.
+                    # solve() owns the bounded same-session retry and validation.
                 atomic_json(answer_file,result)
                 keys = pending.get('context_keys',[])
                 session['context_keys'] = list(dict.fromkeys(session['context_keys']+keys))

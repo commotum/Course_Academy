@@ -15,6 +15,105 @@ from solver import Solver, run_cli, process_token
 
 
 class SessionTests(unittest.TestCase):
+    def test_ordinary_uncertainty_retries_once_in_same_activity_session(self):
+        root,_=self.activity('100','lesson')
+        def initially_uncertain(command,**kwargs):
+            response=self.fake_cli(command,**kwargs)
+            output=Path(command[command.index('--output-last-message')+1])
+            result=json.loads(output.read_text())
+            result['confident']=len(self.calls)>1
+            output.write_text(json.dumps(result))
+            return response
+        with patch('solver.run_cli',side_effect=initially_uncertain):
+            result=Solver(self.args).solve(self.question(1),None,root/'q-1')
+        self.assertTrue(result['confident'])
+        self.assertEqual(len(self.calls),2)
+        self.assertEqual(self.calls[0]['sid'],self.calls[1]['sid'])
+        self.assertIn('resume',self.calls[1]['command'])
+        self.assertEqual(self.calls[1]['payload']['uncertainty_retry'],1)
+        self.assertFalse(json.loads((root/'q-1/solve-before-uncertainty-answer.json').read_text())['confident'])
+
+    def test_unchanged_uncertainty_keeps_evidence_and_does_not_loop(self):
+        root,_=self.activity('100','review')
+        def always_uncertain(command,**kwargs):
+            response=self.fake_cli(command,**kwargs)
+            output=Path(command[command.index('--output-last-message')+1])
+            result=json.loads(output.read_text());result['confident']=False
+            output.write_text(json.dumps(result));return response
+        with patch('solver.run_cli',side_effect=always_uncertain):
+            for _ in range(2):
+                with self.assertRaisesRegex(ValueError,'uncertain'):
+                    Solver(self.args).solve(self.question(1),None,root/'q-1')
+        self.assertEqual(len(self.calls),2)
+        self.assertFalse(json.loads((root/'solver-session/state.json').read_text()).get('pending_turn'))
+        self.assertFalse(json.loads((root/'q-1/solve-answer.json').read_text())['confident'])
+
+    def test_completed_uncertain_turn_recovers_then_retries_without_poisoning_pending_state(self):
+        root,_=self.activity('100','lesson')
+        def interrupted_uncertainty(command,**kwargs):
+            response=self.fake_cli(command,**kwargs)
+            output=Path(command[command.index('--output-last-message')+1])
+            result=json.loads(output.read_text());result['confident']=False
+            output.write_text(json.dumps(result))
+            raise subprocess.CalledProcessError(1,command,output=response.stdout)
+        with patch('solver.run_cli',side_effect=interrupted_uncertainty),self.assertRaises(subprocess.CalledProcessError):
+            Solver(self.args).solve(self.question(1),None,root/'q-1')
+        sid=self.calls[0]['sid']
+        with patch('solver.run_cli',side_effect=self.fake_cli):
+            result=Solver(self.args).solve(self.question(1),None,root/'q-1')
+        self.assertTrue(result['confident']);self.assertEqual(self.calls[-1]['sid'],sid)
+        self.assertEqual(len(self.calls),2)
+        self.assertFalse(json.loads((root/'solver-session/state.json').read_text()).get('pending_turn'))
+
+    def test_interrupted_proof_solver_phase_recovers_completed_answer(self):
+        root,_=self.activity('100','lesson')
+        def interrupted(command,**kwargs):
+            response=self.fake_cli(command,**kwargs)
+            raise subprocess.CalledProcessError(1,command,output=response.stdout)
+        with patch('solver.run_cli',side_effect=interrupted),self.assertRaises(subprocess.CalledProcessError):
+            Solver(self.args).solve(self.question(1),None,root/'q-1','proof-solve-0')
+        with patch('solver.run_cli') as cli:
+            result=Solver(self.args).solve(self.question(1),None,root/'q-1','proof-solve-0')
+        cli.assert_not_called();self.assertTrue(result['confident'])
+
+    def test_interrupted_uncertainty_followup_retains_budget_and_never_reuses_old_answer(self):
+        root,_=self.activity('100','lesson')
+        def uncertain_then_interrupted(command,**kwargs):
+            response=self.fake_cli(command,**kwargs)
+            output=Path(command[command.index('--output-last-message')+1])
+            result=json.loads(output.read_text());result['confident']=False
+            output.write_text(json.dumps(result))
+            if len(self.calls)==2:
+                output.unlink()
+                events=json.dumps({'type':'thread.started','thread_id':self.calls[-1]['sid']})+'\n'
+                raise subprocess.TimeoutExpired(command,5,output=events)
+            return response
+        with patch('solver.run_cli',side_effect=uncertain_then_interrupted),self.assertRaises(subprocess.TimeoutExpired):
+            Solver(self.args).solve(self.question(1),None,root/'q-1')
+        self.assertFalse((root/'q-1/solve-answer.json').exists())
+        with patch('solver.run_cli',side_effect=uncertain_then_interrupted),self.assertRaisesRegex(ValueError,'uncertain'):
+            Solver(self.args).solve(self.question(1),None,root/'q-1')
+        self.assertEqual(len(self.calls),3)
+        self.assertEqual(self.calls[-1]['payload']['uncertainty_retry'],1)
+        with patch('solver.run_cli') as cli,self.assertRaisesRegex(ValueError,'uncertain'):
+            Solver(self.args).solve(self.question(1),None,root/'q-1')
+        cli.assert_not_called()
+
+    def test_uncertain_covered_diagnostic_still_skips_without_retrying_for_an_answer(self):
+        root,_=self.activity('100','diagnostic')
+        policy={'mode':'covered_topics_only','course_id':154,'covered_topics':[],
+                'blocked_topics':[],'provenance':{'account_id':'fixture'}}
+        def unknown(command,**kwargs):
+            response=self.fake_cli(command,**kwargs)
+            output=Path(command[command.index('--output-last-message')+1])
+            output.write_text(json.dumps({'confident':False,'explanation':'Not covered',
+                'answers':[],'diagnostic_classification':'unknown','diagnostic_topic_id':None}))
+            return response
+        with patch('solver.run_cli',side_effect=unknown):
+            result=Solver(self.args).solve({**self.question(1),'diagnostic_policy':policy},None,root/'question-001','diagnostic')
+        self.assertFalse(result['confident']);self.assertEqual(len(self.calls),1)
+
+
     def setUp(self):
         self.work = tempfile.TemporaryDirectory()
         self.root = Path(self.work.name)
