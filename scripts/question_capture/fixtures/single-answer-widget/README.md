@@ -1,0 +1,1 @@
+Authentic q-87562 from completed diagnostic 14070857. Source content, saved live/history record and activity metadata are limited to this question. Previous EDB question readback was retained before the content-only widget migration. The variance is 117/9 - (27/9)^2 = 4.

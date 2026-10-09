@@ -381,7 +381,8 @@ def build_transaction(content, topic, existing, reconciler=None):
         old_fields = {f[':answer-field/key']: f for f in (old or {}).get(':question/answer-fields', [])}
         captured_fields = {f['key'] for f in question.get('answer_fields', [])}
         layout_version = bool(old_fields and reconciler and
-                              reconciler.field_layout_action(mid, old, question))
+                              (reconciler.field_layout_action(mid, old, question) or
+                               reconciler.single_answer_widget_action(mid, old, question, **comparison)))
         if layout_version:
             for previous in old_fields.values():
                 transaction.append([kw('db/retract'), old[':db/id'], kw('question/answer-fields'), previous[':db/id']])

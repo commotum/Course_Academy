@@ -1,0 +1,60 @@
+{
+  "mode": "solve",
+  "problem": "$$\n{\\begin{aligned}{x}^{\u2032}(t)=7y(t) \\\\ {y}^{\u2032}(t)=7x(t)+7,\\end{aligned}\\,[\\begin{aligned}x(0) \\\\ y(0)\\end{aligned}]=[\\begin{aligned}0 \\\\ 0\\end{aligned}]\n$$\n\nFind the solution to the initial value problem above.\n\n*Hint: ${e}^{At}=[\\begin{aligned}\\operatorname{cosh}\u2061(7t) & \\operatorname{sinh}\u2061(7t) \\\\ \\operatorname{sinh}\u2061(7t) & \\operatorname{cosh}\u2061(7t)\\end{aligned}],$ where $A=[\\begin{aligned}0 & 7 \\\\ 7 & 0\\end{aligned}].$*\n\n| $[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]=\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | $\\operatorname{sinh}\u2061(7t)$ |  |  |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\operatorname{sinh}\u2061(7t)-1"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\operatorname{cosh}\u2061(7t)-1"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\operatorname{cosh}\u2061(7t)+1"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\operatorname{sinh}\u2061(7t)+1"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071250,
+    "task_type": "lesson",
+    "topic_id": 6691,
+    "topic_title": "Solving Inhomogeneous Systems of ODEs Using Matrix Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-335054",
+        "problem": "$$\n{\\begin{aligned}{x}^{\u2032}(t)=2y(t) \\\\ {y}^{\u2032}(t)=-2x(t)+3,\\end{aligned}\\,[\\begin{aligned}x(0) \\\\ y(0)\\end{aligned}]=[\\begin{aligned}1 \\\\ 1\\end{aligned}]\n$$\n\nFind the solution to the initial value problem above.\n\n*Hint: ${e}^{At}=[\\begin{aligned}\\operatorname{cos}\u2061(2t) & \\operatorname{sin}\u2061(2t) \\\\ -\\operatorname{sin}\u2061(2t) & \\operatorname{cos}\u2061(2t)\\end{aligned}],$ where $A=[\\begin{aligned}0 & 2 \\\\ -2 & 0\\end{aligned}].$*\n\n| $[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]=\\frac{1}{2}\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | $\\operatorname{sin}\u2061(2t)+2\\operatorname{cos}\u2061(2t)$ |  |  |",
+        "worked_solution": "Writing our system in matrix form, we get\n\n$$\n{x}^{\u2032}(t)=[\\begin{aligned}0 & 2 \\\\ -2 & 0\\end{aligned}]x(t)+g(t),\n$$\n\nwhere $x(t)=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]$ and $g(t)=[\\begin{aligned}0 \\\\ 3\\end{aligned}].$ So, the matrix of the system is $A=[\\begin{aligned}0 & 2 \\\\ -2 & 0\\end{aligned}].$\n\nGiven the system ${x}^{\u2032}(t)=Ax(t)+g(t),$ where $A$ is a constant square matrix, the solution of the initial value problem can be written as the sum of the homogeneous part and a particular solution:\n\n$$\nx(t)={{{e}^{A(t-{t}_{0})}\\,x({t}_{0})}_{\u23df}}_{\\text{homogeneous part}}+{{{\\int }_{{t}_{0}}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s}_{\u23df}}_{\\text{particular solution}},\n$$\n\nwhere $x({t}_{0})$ is the initial condition vector. \n\nLet's evaluate each part separately:\n\n- First, we find the homogeneous part. We are given that \n\n$$\n{e}^{At}=[\\begin{aligned}\\operatorname{cos}\u2061(2t) & \\operatorname{sin}\u2061(2t) \\\\ -\\operatorname{sin}\u2061(2t) & \\operatorname{cos}\u2061(2t)\\end{aligned}].\n$$\n\nSince the initial conditions are given at $t={t}_{0}=0,$ we have\n\n$$\n\\begin{aligned}{e}^{A(t-{t}_{0})} & ={e}^{At}\\,x(0) \\\\  & =[\\begin{aligned}\\operatorname{cos}\u2061(2t) & \\operatorname{sin}\u2061(2t) \\\\ -\\operatorname{sin}\u2061(2t) & \\operatorname{cos}\u2061(2t)\\end{aligned}][\\begin{aligned}1 \\\\ 1\\end{aligned}] \\\\  & =[\\begin{aligned}\\operatorname{cos}\u2061(2t)+\\operatorname{sin}\u2061(2t) \\\\ -\\operatorname{sin}\u2061(2t)+\\operatorname{cos}\u2061(2t)\\end{aligned}].\\end{aligned}\n$$\n\n- Next, we find the particular solution. Notice that \n\n$$\n{e}^{A(t-s)}=[\\begin{aligned}\\operatorname{cos}\u2061(2(t-s)) & \\operatorname{sin}\u2061(2(t-s)) \\\\ -\\operatorname{sin}\u2061(2(t-s)) & \\operatorname{cos}\u2061(2(t-s))\\end{aligned}].\n$$\n\nSo, we have\n\n$$\n\\begin{aligned}{e}^{A(t-s)}g(s) & =[\\begin{aligned}\\operatorname{cos}\u2061(2(t-s)) & \\operatorname{sin}\u2061(2(t-s)) \\\\ -\\operatorname{sin}\u2061(2(t-s)) & \\operatorname{cos}\u2061(2(t-s))\\end{aligned}][\\begin{aligned}0 \\\\ 3\\end{aligned}] \\\\  & =[\\begin{aligned}3\\operatorname{sin}\u2061(2(t-s)) \\\\ 3\\operatorname{cos}\u2061(2(t-s))\\end{aligned}].\\end{aligned}\n$$\n\nThus, we obtain\n\n$$\n\\begin{aligned}{\\int }_{0}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s & ={\\int }_{0}^{t}[\\begin{aligned}3\\operatorname{sin}\u2061(2(t-s)) \\\\ 3\\operatorname{cos}\u2061(2(t-s))\\end{aligned}]\\text{d}s \\\\  & ={[\\begin{aligned}\\frac{3}{2}\\operatorname{cos}\u2061(2(t-s)) \\\\ -\\frac{3}{2}\\operatorname{sin}\u2061(2(t-s))\\end{aligned}]}_{s=0}^{s=t} \\\\  & =\\frac{1}{2}[\\begin{aligned}3-3\\operatorname{cos}\u2061(2t) \\\\ 3\\operatorname{sin}\u2061(2t)\\end{aligned}].\\end{aligned}\n$$\n\nFinally, we get\n\n$$\n\\begin{aligned}x(t) & =[\\begin{aligned}\\operatorname{cos}\u2061(2t)+\\operatorname{sin}\u2061(2t) \\\\ -\\operatorname{sin}\u2061(2t)+\\operatorname{cos}\u2061(2t)\\end{aligned}]+\\frac{1}{2}[\\begin{aligned}3-3\\operatorname{cos}\u2061(2t) \\\\ 3\\operatorname{sin}\u2061(2t)\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}2\\operatorname{sin}\u2061(2t)-\\operatorname{cos}\u2061(2t)+3 \\\\ \\operatorname{sin}\u2061(2t)+2\\operatorname{cos}\u2061(2t)\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}2\\operatorname{sin}\u2061(2t)-\\operatorname{cos}\u2061(2t)+3 \\\\ \\operatorname{sin}\u2061(2t)+2\\operatorname{cos}\u2061(2t)\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "3-\\cos(2t)+2\\sin(2t)",
+            "observed_mathquill_latex": "3-\\cos\\left(2t\\right)+2\\sin\\left(2t\\right)"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

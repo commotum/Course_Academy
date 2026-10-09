@@ -537,6 +537,67 @@ class Reconciler:
                 reason='Reviewed source layout changes blank roles; retain original fields and answers'))
         return True
 
+    def single_answer_widget_action(self, mid, previous, incoming, **context):
+        """Version a legacy answer blank only when its source problem is identical.
+
+        The trailing authored placeholder is presentation, not a missing part.
+        Require independent source evidence for the prompt, widget, full option
+        set and correct key; neither a solver label nor equal answers alone
+        establishes that the two response roles are the same.
+        """
+        from core import compare_answers
+        old_fields = previous.get(':question/answer-fields', [])
+        fields = incoming.get('answer_fields', [])
+        if len(old_fields) != 1 or len(fields) != 1:
+            return False
+        old, field = old_fields[0], fields[0]
+        if (old[':answer-field/type'][':db/ident'] != ':answer-field.type/blank' or
+                field['type'] != 'radio' or field['key'] != 'selection'):
+            return False
+        problem = previous.get(':question/problem', '')
+        footer = r'\n\nAnswer: \{\{' + re.escape(old[':answer-field/key']) + r'\}\}\s*\Z'
+        stem, removed = re.subn(footer, '', problem)
+        if (removed != 1 or stem != incoming.get('problem') or
+                '{{' in stem or '}}' in stem):
+            return False
+        if (mid not in self.usage or self.usage[mid] or self.no_history or
+                any(r['question'] == mid and r['category'] == 'mathematical_correction'
+                    for r in self.authored)):
+            return False
+        correct = old.get(':answer-field/correct')
+        choices = [c for c in field['choices'] if c['value'] == field.get('correct_value')]
+        if not correct or len(choices) != 1:
+            return False
+        choice = choices[0]
+        value = [kw('answer.type/' + choice['type']), choice['value']]
+        if (correct[':answer/type'][':db/ident'] != value[0] or
+                compare_answers(correct[':answer/value'], choice['value'], choice['type'],
+                                **{**context, 'prompt':stem})['outcome'] != 'equivalent'):
+            return False
+        requirements = [
+            (None, 'question/problem', stem, {'ma_capture'}),
+            (field['key'], 'answer-field/type', kw('answer-field.type/radio'), {'ma_widget'}),
+            (field['key'], 'answer-field/choices',
+             sorted((c['type'], c['value']) for c in field['choices']), {'ma_complete_choices'}),
+            (field['key'], 'answer-field/correct', value,
+             {'ma_successful_grade', 'ma_explicit_answer'}),
+        ]
+        source = []
+        for key, attr, observed, categories in requirements:
+            records = [r for r in self.evidence(self.sources, mid, key, attr, observed)
+                       if r['category'] in categories]
+            if not records:
+                return False
+            source.extend(records)
+        self.decisions.append(dict(question=mid, field=old[':answer-field/key'],
+            attribute='question/answer-fields', previous_field_id=old[':db/id'],
+            old_sha256=value_hash(old), new_sha256=value_hash(fields),
+            category='ma_single_answer_widget', source=source, basis=self.basis,
+            previous_problem_sha256=value_hash(problem), source_problem_sha256=value_hash(stem),
+            historical_usage=self.usage[mid], action='replace',
+            reason='Identical source problem and equivalent verified single answer; retain original blank and answers'))
+        return True
+
     def field_action(self, mid, previous, incoming, **context):
         """Version field ownership while retaining original fields and answers."""
         from core import compare_answers, matching_answer
