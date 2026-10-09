@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "$$\n{y}^{\u2034}-2{y}^{\u2033}+4{y}^{\u2032}-8y=(8x+4){e}^{2x},\\,{{y}_{1}={e}^{2x},\\,{y}_{2}=\\operatorname{cos}\u2061(2x),\\,{y}_{3}=\\operatorname{sin}\u2061(2x)}\n$$\n\nConsider the differential equation and the set of fundamental solutions of the corresponding homogeneous equation above. \nUsing the method of variation of parameters, the general solution of the equation can be written in the form\n\n$$\ny(x)=A{e}^{2x}+B\\operatorname{cos}\u2061(2x)+C\\operatorname{sin}\u2061(2x)+{u}_{1}(x){e}^{2x}+{u}_{2}(x)\\operatorname{cos}\u2061(2x)+{u}_{3}(x)\\operatorname{sin}\u2061(2x).\n$$\n\nWhat is the function ${u}_{1}(x)?$",
+  "worked_solution": "According to the method of variation of parameters, the particular solution is\n\n$$\n{y}_{p}={u}_{1}{y}_{1}+{u}_{2}{y}_{2}+{u}_{3}{y}_{3},\\,{u}_{i}=(-1)^{3-i}\\int \\frac{g(x){W}_{i}(x)}{W(x)}\\,\\text{d}x,\\,i=1,2,3,\n$$\n\nwhere $g(x)$ is the forcing term, $W(x)$ is the Wronskian of ${y}_{1},{y}_{2},{y}_{3},$ and\n\n$$\n\\begin{aligned}{W}_{1}(x)=|\\begin{aligned}{y}_{2} & {y}_{3} \\\\ {y}_{2}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}|,\\,{W}_{2}(x)=|\\begin{aligned}{y}_{1} & {y}_{3} \\\\ {y}_{1}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}|,\\,{W}_{3}(x)=|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}|.\\end{aligned}\n$$\n\nIn our case, the forcing term is $g(x)=(8x+4){e}^{2x}.$ Additionally, we're given the fundamental solutions\n\n$$\n{y}_{1}={e}^{2x},\\,{y}_{2}=\\operatorname{cos}\u2061(2x),\\,{y}_{3}=\\operatorname{sin}\u2061(2x).\n$$\n\nFirst, let's verify that the fundamental solutions ${y}_{1},$ ${y}_{2},$ and ${y}_{3}$ are independent by computing the Wronskian:\n\n$$\n\\begin{aligned}W(x) & =W({y}_{1},{y}_{2},{y}_{3}) \\\\  & =|\\begin{aligned}{e}^{2x} & \\operatorname{cos}\u2061(2x) & \\operatorname{sin}\u2061(2x) \\\\ 2{e}^{2x} & -2\\operatorname{sin}\u2061(2x) & 2\\operatorname{cos}\u2061(2x) \\\\ 4{e}^{2x} & -4\\operatorname{cos}\u2061(2x) & -4\\operatorname{sin}\u2061(2x)\\end{aligned}| \\\\  & ={e}^{2x}\\cdot |\\begin{aligned}1 & \\operatorname{cos}\u2061(2x) & \\operatorname{sin}\u2061(2x) \\\\ 2 & -2\\operatorname{sin}\u2061(2x) & 2\\operatorname{cos}\u2061(2x) \\\\ 4 & -4\\operatorname{cos}\u2061(2x) & -4\\operatorname{sin}\u2061(2x)\\end{aligned}| \\\\  & ={e}^{2x}[(8{sin}^{2}\u2061(2x)+8{cos}^{2}\u2061(2x))-2(-4\\operatorname{sin}\u2061(2x)\\operatorname{cos}\u2061(2x)+4\\operatorname{sin}\u2061(2x)\\operatorname{cos}\u2061(2x))+4(2{sin}^{2}\u2061(2x)+2{cos}^{2}\u2061(2x))] \\\\  & ={e}^{2x}[8-2(0)+4(2)] \\\\  & =16{e}^{2x}\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1},$ ${y}_{2},$ and ${y}_{3}$ are linearly independent. \n\nNow, to find ${u}_{1},$ we compute the determinant ${W}_{1}(x)$:\n\n$$\n\\begin{aligned}{W}_{1}(x) & =|\\begin{aligned}{y}_{2} & {y}_{3} \\\\ {y}_{2}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}| \\\\  & =|\\begin{aligned}\\operatorname{cos}\u2061(2x) & \\operatorname{sin}\u2061(2x) \\\\ -2\\operatorname{sin}\u2061(2x) & 2\\operatorname{cos}\u2061(2x)\\end{aligned}| \\\\  & =2{cos}^{2}\u2061(2x)+2{sin}^{2}\u2061(2x) \\\\  & =2[{cos}^{2}\u2061(2x)+{sin}^{2}\u2061(2x)] \\\\  & =2\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}{u}_{1}(x) & =(-1)^{3-1}\\int \\frac{g(x){W}_{1}(x)}{W(x)}\\,\\text{d}x \\\\  & =\\int \\frac{(8x+4){e}^{2x}\\cdot 2}{16{e}^{2x}}\\,\\text{d}x \\\\  & =\\frac{1}{8}\\int (8x+4)\\,\\text{d}x \\\\  & =\\frac{1}{2}\\int (2x+1)\\,\\text{d}x \\\\  & =\\frac{1}{2}({x}^{2}+x).\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\frac{1}{2}{x}^{2}+x"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "2({x}^{2}+x)"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "2{x}^{2}+\\frac{1}{2}x"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{x}^{2}+\\frac{1}{2}x"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{1}{2}({x}^{2}+x)"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071673,
+    "task_type": "lesson",
+    "topic_id": 3209,
+    "topic_title": "Variation of Parameters With Higher-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-344832",
+        "problem": "$$\n{y}^{\u2034}-2{y}^{\u2033}+4{y}^{\u2032}-8y=(8x+4){e}^{2x},\\,{{y}_{1}={e}^{2x},\\,{y}_{2}=\\operatorname{cos}\u2061(2x),\\,{y}_{3}=\\operatorname{sin}\u2061(2x)}\n$$\n\nConsider the differential equation and the set of fundamental solutions of the corresponding homogeneous equation above. \nUsing the method of variation of parameters, the general solution of the equation can be written in the form\n\n$$\ny(x)=A{e}^{2x}+B\\operatorname{cos}\u2061(2x)+C\\operatorname{sin}\u2061(2x)+{u}_{1}(x){e}^{2x}+{u}_{2}(x)\\operatorname{cos}\u2061(2x)+{u}_{3}(x)\\operatorname{sin}\u2061(2x).\n$$\n\nWhat is the function ${u}_{1}(x)?$",
+        "worked_solution": "According to the method of variation of parameters, the particular solution is\n\n$$\n{y}_{p}={u}_{1}{y}_{1}+{u}_{2}{y}_{2}+{u}_{3}{y}_{3},\\,{u}_{i}=(-1)^{3-i}\\int \\frac{g(x){W}_{i}(x)}{W(x)}\\,\\text{d}x,\\,i=1,2,3,\n$$\n\nwhere $g(x)$ is the forcing term, $W(x)$ is the Wronskian of ${y}_{1},{y}_{2},{y}_{3},$ and\n\n$$\n\\begin{aligned}{W}_{1}(x)=|\\begin{aligned}{y}_{2} & {y}_{3} \\\\ {y}_{2}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}|,\\,{W}_{2}(x)=|\\begin{aligned}{y}_{1} & {y}_{3} \\\\ {y}_{1}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}|,\\,{W}_{3}(x)=|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}|.\\end{aligned}\n$$\n\nIn our case, the forcing term is $g(x)=(8x+4){e}^{2x}.$ Additionally, we're given the fundamental solutions\n\n$$\n{y}_{1}={e}^{2x},\\,{y}_{2}=\\operatorname{cos}\u2061(2x),\\,{y}_{3}=\\operatorname{sin}\u2061(2x).\n$$\n\nFirst, let's verify that the fundamental solutions ${y}_{1},$ ${y}_{2},$ and ${y}_{3}$ are independent by computing the Wronskian:\n\n$$\n\\begin{aligned}W(x) & =W({y}_{1},{y}_{2},{y}_{3}) \\\\  & =|\\begin{aligned}{e}^{2x} & \\operatorname{cos}\u2061(2x) & \\operatorname{sin}\u2061(2x) \\\\ 2{e}^{2x} & -2\\operatorname{sin}\u2061(2x) & 2\\operatorname{cos}\u2061(2x) \\\\ 4{e}^{2x} & -4\\operatorname{cos}\u2061(2x) & -4\\operatorname{sin}\u2061(2x)\\end{aligned}| \\\\  & ={e}^{2x}\\cdot |\\begin{aligned}1 & \\operatorname{cos}\u2061(2x) & \\operatorname{sin}\u2061(2x) \\\\ 2 & -2\\operatorname{sin}\u2061(2x) & 2\\operatorname{cos}\u2061(2x) \\\\ 4 & -4\\operatorname{cos}\u2061(2x) & -4\\operatorname{sin}\u2061(2x)\\end{aligned}| \\\\  & ={e}^{2x}[(8{sin}^{2}\u2061(2x)+8{cos}^{2}\u2061(2x))-2(-4\\operatorname{sin}\u2061(2x)\\operatorname{cos}\u2061(2x)+4\\operatorname{sin}\u2061(2x)\\operatorname{cos}\u2061(2x))+4(2{sin}^{2}\u2061(2x)+2{cos}^{2}\u2061(2x))] \\\\  & ={e}^{2x}[8-2(0)+4(2)] \\\\  & =16{e}^{2x}\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1},$ ${y}_{2},$ and ${y}_{3}$ are linearly independent. \n\nNow, to find ${u}_{1},$ we compute the determinant ${W}_{1}(x)$:\n\n$$\n\\begin{aligned}{W}_{1}(x) & =|\\begin{aligned}{y}_{2} & {y}_{3} \\\\ {y}_{2}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}| \\\\  & =|\\begin{aligned}\\operatorname{cos}\u2061(2x) & \\operatorname{sin}\u2061(2x) \\\\ -2\\operatorname{sin}\u2061(2x) & 2\\operatorname{cos}\u2061(2x)\\end{aligned}| \\\\  & =2{cos}^{2}\u2061(2x)+2{sin}^{2}\u2061(2x) \\\\  & =2[{cos}^{2}\u2061(2x)+{sin}^{2}\u2061(2x)] \\\\  & =2\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}{u}_{1}(x) & =(-1)^{3-1}\\int \\frac{g(x){W}_{1}(x)}{W(x)}\\,\\text{d}x \\\\  & =\\int \\frac{(8x+4){e}^{2x}\\cdot 2}{16{e}^{2x}}\\,\\text{d}x \\\\  & =\\frac{1}{8}\\int (8x+4)\\,\\text{d}x \\\\  & =\\frac{1}{2}\\int (2x+1)\\,\\text{d}x \\\\  & =\\frac{1}{2}({x}^{2}+x).\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{x}^{2}+\\frac{1}{2}x",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

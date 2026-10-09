@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "$$\n{y}^{\u2034}-2{y}^{\u2033}-5{y}^{\u2032}+6y=12{e}^{x}\\operatorname{cos}\u2061x,\\,{{y}_{1}={e}^{-2x},\\,{y}_{2}={e}^{x},\\,{y}_{3}={e}^{3x}}\n$$\n\nConsider the differential equation and the set of fundamental solutions of the corresponding homogeneous equation above. \nUsing the method of variation of parameters, the particular solution of the equation can be written in the form\n\n$$\n{y}_{p}(x)={u}_{1}(x){e}^{-2x}+{u}_{2}(x){e}^{x}+{u}_{3}(x){e}^{3x}.\n$$\n\nWhat is the function ${u}_{2}(x)?$",
+  "worked_solution": "According to the method of variation of parameters, the particular solution is\n\n$$\n{y}_{p}={u}_{1}{y}_{1}+{u}_{2}{y}_{2}+{u}_{3}{y}_{3},\\,{u}_{i}=(-1)^{3-i}\\int \\frac{g(x){W}_{i}(x)}{W(x)}\\,\\text{d}x,\\,i=1,2,3,\n$$\n\nwhere $g(x)$ is the forcing term, $W(x)$ is the Wronskian of ${y}_{1},{y}_{2},{y}_{3},$ and\n\n$$\n\\begin{aligned}{W}_{1}(x)=|\\begin{aligned}{y}_{2} & {y}_{3} \\\\ {y}_{2}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}|,\\,{W}_{2}(x)=|\\begin{aligned}{y}_{1} & {y}_{3} \\\\ {y}_{1}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}|,\\,{W}_{3}(x)=|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}|.\\end{aligned}\n$$\n\nIn our case, the forcing term is $g(x)=12{e}^{x}\\operatorname{cos}\u2061x.$ Additionally, we're given the fundamental solutions\n\n$$\n{y}_{1}={e}^{-2x},\\,{y}_{2}={e}^{x},\\,{y}_{3}={e}^{3x}.\n$$\n\nFirst, let's verify that the fundamental solutions ${y}_{1},$ ${y}_{2},$ and ${y}_{3}$ are independent by computing the Wronskian:\n\n$$\n\\begin{aligned}W(x) & =W({y}_{1},{y}_{2},{y}_{3}) \\\\  & =|\\begin{aligned}{e}^{-2x} & {e}^{x} & {e}^{3x} \\\\ -2{e}^{-2x} & {e}^{x} & 3{e}^{3x} \\\\ 4{e}^{-2x} & {e}^{x} & 9{e}^{3x}\\end{aligned}| \\\\  & =({e}^{-2x}\\cdot {e}^{x}\\cdot {e}^{3x})|\\begin{aligned}1 & 1 & 1 \\\\ -2 & 1 & 3 \\\\ 4 & 1 & 9\\end{aligned}| \\\\  & ={e}^{2x}[1(9-3)-1(-18-12)+1(-2-4)] \\\\  & ={e}^{2x}(6+30-6) \\\\  & =30{e}^{2x}\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1},$ ${y}_{2},$ and ${y}_{3}$ are linearly independent. \n\nNow, to find ${u}_{2},$ we compute the determinant\n\n$$\n\\begin{aligned}{W}_{2}(x) & ={W}_{2}({y}_{1},{y}_{3}) \\\\  & =|\\begin{aligned}{y}_{1} & {y}_{3} \\\\ {y}_{1}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}| \\\\  & =|\\begin{aligned}{e}^{-2x} & {e}^{3x} \\\\ -2{e}^{-2x} & 3{e}^{3x}\\end{aligned}| \\\\  & =3{e}^{x}-(-2{e}^{x}) \\\\  & =5{e}^{x}.\\end{aligned}\n$$\n\nTherefore, we have \n\n$$\n\\begin{aligned}{u}_{2}(x) & =(-1)^{3-2}\\int \\frac{g(x){W}_{2}(x)}{W(x)}\\,\\text{d}x \\\\  & =-\\int \\frac{(12{e}^{x}\\operatorname{cos}\u2061x)(5{e}^{x})}{30{e}^{2x}}\\,\\text{d}x \\\\  & =-2\\int \\operatorname{cos}\u2061x\\,\\text{d}x \\\\  & =-2\\operatorname{sin}\u2061x.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "2\\operatorname{sin}\u2061x"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-2\\operatorname{sin}\u2061x"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-2\\operatorname{cos}\u2061x"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "6\\operatorname{cos}\u2061x"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-6\\operatorname{sin}\u2061x"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071673,
+    "task_type": "lesson",
+    "topic_id": 3209,
+    "topic_title": "Variation of Parameters With Higher-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-344672",
+        "problem": "$$\n{y}^{\u2034}-2{y}^{\u2033}-5{y}^{\u2032}+6y=12{e}^{x}\\operatorname{cos}\u2061x,\\,{{y}_{1}={e}^{-2x},\\,{y}_{2}={e}^{x},\\,{y}_{3}={e}^{3x}}\n$$\n\nConsider the differential equation and the set of fundamental solutions of the corresponding homogeneous equation above. \nUsing the method of variation of parameters, the particular solution of the equation can be written in the form\n\n$$\n{y}_{p}(x)={u}_{1}(x){e}^{-2x}+{u}_{2}(x){e}^{x}+{u}_{3}(x){e}^{3x}.\n$$\n\nWhat is the function ${u}_{2}(x)?$",
+        "worked_solution": "According to the method of variation of parameters, the particular solution is\n\n$$\n{y}_{p}={u}_{1}{y}_{1}+{u}_{2}{y}_{2}+{u}_{3}{y}_{3},\\,{u}_{i}=(-1)^{3-i}\\int \\frac{g(x){W}_{i}(x)}{W(x)}\\,\\text{d}x,\\,i=1,2,3,\n$$\n\nwhere $g(x)$ is the forcing term, $W(x)$ is the Wronskian of ${y}_{1},{y}_{2},{y}_{3},$ and\n\n$$\n\\begin{aligned}{W}_{1}(x)=|\\begin{aligned}{y}_{2} & {y}_{3} \\\\ {y}_{2}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}|,\\,{W}_{2}(x)=|\\begin{aligned}{y}_{1} & {y}_{3} \\\\ {y}_{1}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}|,\\,{W}_{3}(x)=|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}|.\\end{aligned}\n$$\n\nIn our case, the forcing term is $g(x)=12{e}^{x}\\operatorname{cos}\u2061x.$ Additionally, we're given the fundamental solutions\n\n$$\n{y}_{1}={e}^{-2x},\\,{y}_{2}={e}^{x},\\,{y}_{3}={e}^{3x}.\n$$\n\nFirst, let's verify that the fundamental solutions ${y}_{1},$ ${y}_{2},$ and ${y}_{3}$ are independent by computing the Wronskian:\n\n$$\n\\begin{aligned}W(x) & =W({y}_{1},{y}_{2},{y}_{3}) \\\\  & =|\\begin{aligned}{e}^{-2x} & {e}^{x} & {e}^{3x} \\\\ -2{e}^{-2x} & {e}^{x} & 3{e}^{3x} \\\\ 4{e}^{-2x} & {e}^{x} & 9{e}^{3x}\\end{aligned}| \\\\  & =({e}^{-2x}\\cdot {e}^{x}\\cdot {e}^{3x})|\\begin{aligned}1 & 1 & 1 \\\\ -2 & 1 & 3 \\\\ 4 & 1 & 9\\end{aligned}| \\\\  & ={e}^{2x}[1(9-3)-1(-18-12)+1(-2-4)] \\\\  & ={e}^{2x}(6+30-6) \\\\  & =30{e}^{2x}\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1},$ ${y}_{2},$ and ${y}_{3}$ are linearly independent. \n\nNow, to find ${u}_{2},$ we compute the determinant\n\n$$\n\\begin{aligned}{W}_{2}(x) & ={W}_{2}({y}_{1},{y}_{3}) \\\\  & =|\\begin{aligned}{y}_{1} & {y}_{3} \\\\ {y}_{1}^{\u2032} & {y}_{3}^{\u2032}\\end{aligned}| \\\\  & =|\\begin{aligned}{e}^{-2x} & {e}^{3x} \\\\ -2{e}^{-2x} & 3{e}^{3x}\\end{aligned}| \\\\  & =3{e}^{x}-(-2{e}^{x}) \\\\  & =5{e}^{x}.\\end{aligned}\n$$\n\nTherefore, we have \n\n$$\n\\begin{aligned}{u}_{2}(x) & =(-1)^{3-2}\\int \\frac{g(x){W}_{2}(x)}{W(x)}\\,\\text{d}x \\\\  & =-\\int \\frac{(12{e}^{x}\\operatorname{cos}\u2061x)(5{e}^{x})}{30{e}^{2x}}\\,\\text{d}x \\\\  & =-2\\int \\operatorname{cos}\u2061x\\,\\text{d}x \\\\  & =-2\\operatorname{sin}\u2061x.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "2\\operatorname{sin}\u2061x",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
