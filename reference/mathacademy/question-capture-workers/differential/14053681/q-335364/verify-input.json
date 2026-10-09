@@ -1,0 +1,61 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following initial value problem for the functions $y=y(x),z=z(x),w=w(x):$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=(x+1)(y-1)+z,\\, & y(0)=1 \\\\ {z}^{\u2032}=2-(x-1)(z-2),\\, & z(0)=2 \\\\ {w}^{\u2032}=\\sqrt{x+{w}^{2}}-\\frac{y}{2},\\, & w(0)=1\\end{aligned}\n$$\n\nUse Euler's Method with one step to approximate $y(1),$ $z(1),$ and $w(1).$\n\n$\\,y(1)\u2248$\n{{field-1}},\n$\\,z(1)\u2248$\n{{field-2}},\n$\\,w(1)\u2248$\n{{field-3}}",
+  "worked_solution": "Euler's method approximates the solution of an initial value problem containing a system of ODEs by applying the update rule component-wise to each equation.\n\nSince we want to find the value of $y$, $z$ and $w$ at $x=1,$ we will use a step size of\n\n$$\n\u0394x=1-0=1.\n$$\n\nFirst, we place the initial condition data in a table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ | $w$ | ${w}^{\u2032}$ | $\u0394w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ |  |  | $2$ |  |  | $1$ |  |  |\n\nNext, we compute ${y}^{\u2032},$ ${z}^{\u2032},$ and ${w}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =(x+1)(y-1)+z \\\\  & =(0+1)(1-1)+2 \\\\  & =2 \\\\ {z}^{\u2032} & =2-(x-1)(z-2) \\\\  & =2-(0-1)(2-2) \\\\  & =2 \\\\ {w}^{\u2032} & =\\sqrt{x+{w}^{2}}-\\frac{y}{2} \\\\  & =\\sqrt{0+{1}^{2}}-\\frac{1}{2} \\\\  & =\\frac{1}{2}\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ | $w$ | ${w}^{\u2032}$ | $\u0394w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ |  | $2$ | $2$ |  | $1$ | $\\frac{1}{2}$ |  |\n\nNext, we compute $\u0394y,$ $\u0394z,$ and $\u0394w$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =2\\cdot 1 \\\\  & =2 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =2\\cdot 1 \\\\  & =2 \\\\ \u0394w & ={w}^{\u2032}\\cdot \u0394x \\\\  & =\\frac{1}{2}\\cdot 1 \\\\  & =\\frac{1}{2}\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ | $w$ | ${w}^{\u2032}$ | $\u0394w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ | $2$ | $2$ | $2$ | $2$ | $1$ | $\\frac{1}{2}$ | $\\frac{1}{2}$ |\n\nTo get the new values of $x,$ $y,$ $z,$ and $w$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ $\u0394z$ to $z,$ and $\u0394w$ to $w,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=0+1=1 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+2=3 \\\\ {z}_{\\text{new}} & =z+\u0394z=2+2=4 \\\\ {w}_{\\text{new}} & =w+\u0394w=1+\\frac{1}{2}=\\frac{3}{2}\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ | $w$ | ${w}^{\u2032}$ | $\u0394w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ | $2$ | $2$ | $2$ | $2$ | $1$ | $\\frac{1}{2}$ | $\\frac{1}{2}$ |\n| $1$ | $3$ |  |  | $4$ |  |  | $\\frac{3}{2}$ |  |  |\n\nTherefore, we conclude that\n$y(1)\u22483,$\n$z(1)\u22484,$\nand\n$w(1)\u2248\\frac{3}{2}.$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-3",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14053681,
+    "task_type": "review",
+    "topic_id": 3245,
+    "topic_title": "Euler's Method for Systems of ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-335364",
+        "problem": "Consider the following initial value problem for the functions $y=y(x),z=z(x),w=w(x):$\n\n$$\n{\\begin{aligned}{y}^{\u2032}=(x+1)(y-1)+z,\\, & y(0)=1 \\\\ {z}^{\u2032}=2-(x-1)(z-2),\\, & z(0)=2 \\\\ {w}^{\u2032}=\\sqrt{x+{w}^{2}}-\\frac{y}{2},\\, & w(0)=1\\end{aligned}\n$$\n\nUse Euler's Method with one step to approximate $y(1),$ $z(1),$ and $w(1).$\n\n$\\,y(1)\u2248$\n{{field-1}},\n$\\,z(1)\u2248$\n{{field-2}},\n$\\,w(1)\u2248$\n{{field-3}}",
+        "worked_solution": "Euler's method approximates the solution of an initial value problem containing a system of ODEs by applying the update rule component-wise to each equation.\n\nSince we want to find the value of $y$, $z$ and $w$ at $x=1,$ we will use a step size of\n\n$$\n\u0394x=1-0=1.\n$$\n\nFirst, we place the initial condition data in a table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ | $w$ | ${w}^{\u2032}$ | $\u0394w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ |  |  | $2$ |  |  | $1$ |  |  |\n\nNext, we compute ${y}^{\u2032},$ ${z}^{\u2032},$ and ${w}^{\u2032}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =(x+1)(y-1)+z \\\\  & =(0+1)(1-1)+2 \\\\  & =2 \\\\ {z}^{\u2032} & =2-(x-1)(z-2) \\\\  & =2-(0-1)(2-2) \\\\  & =2 \\\\ {w}^{\u2032} & =\\sqrt{x+{w}^{2}}-\\frac{y}{2} \\\\  & =\\sqrt{0+{1}^{2}}-\\frac{1}{2} \\\\  & =\\frac{1}{2}\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ | $w$ | ${w}^{\u2032}$ | $\u0394w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ |  | $2$ | $2$ |  | $1$ | $\\frac{1}{2}$ |  |\n\nNext, we compute $\u0394y,$ $\u0394z,$ and $\u0394w$ using Euler's method:\n\n$$\n\\begin{aligned}\u0394y & ={y}^{\u2032}\\cdot \u0394x \\\\  & =2\\cdot 1 \\\\  & =2 \\\\ \u0394z & ={z}^{\u2032}\\cdot \u0394x \\\\  & =2\\cdot 1 \\\\  & =2 \\\\ \u0394w & ={w}^{\u2032}\\cdot \u0394x \\\\  & =\\frac{1}{2}\\cdot 1 \\\\  & =\\frac{1}{2}\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ | $w$ | ${w}^{\u2032}$ | $\u0394w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ | $2$ | $2$ | $2$ | $2$ | $1$ | $\\frac{1}{2}$ | $\\frac{1}{2}$ |\n\nTo get the new values of $x,$ $y,$ $z,$ and $w$ in the *next* row, we add $\u0394x$ to $x,$ $\u0394y$ to $y,$ $\u0394z$ to $z,$ and $\u0394w$ to $w,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=0+1=1 \\\\ {y}_{\\text{new}} & =y+\u0394y=1+2=3 \\\\ {z}_{\\text{new}} & =z+\u0394z=2+2=4 \\\\ {w}_{\\text{new}} & =w+\u0394w=1+\\frac{1}{2}=\\frac{3}{2}\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{\u2032}$ | $\u0394y$ | $z$ | ${z}^{\u2032}$ | $\u0394z$ | $w$ | ${w}^{\u2032}$ | $\u0394w$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $2$ | $2$ | $2$ | $2$ | $2$ | $1$ | $\\frac{1}{2}$ | $\\frac{1}{2}$ |\n| $1$ | $3$ |  |  | $4$ |  |  | $\\frac{3}{2}$ |  |  |\n\nTherefore, we conclude that\n$y(1)\u22483,$\n$z(1)\u22484,$\nand\n$w(1)\u2248\\frac{3}{2}.$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "2",
+            "observed_mathquill_latex": "2"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "4",
+            "observed_mathquill_latex": "4"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "\\frac{3}{2}",
+            "observed_mathquill_latex": "\\frac{3}{2}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
