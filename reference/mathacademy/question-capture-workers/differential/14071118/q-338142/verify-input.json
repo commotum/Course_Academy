@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following differential equation\n\n$$\n{y}^{\u2033}-2{y}^{\u2032}+5y=4{e}^{x}\\operatorname{csc}\u20612x.\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=(A\\operatorname{cos}\u20612x+B\\operatorname{sin}\u20612x){e}^{x}+g(x),\n$$\n\nwhere $A$ and $B$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method. You may also wish to make use of the following result (integration constant omitted):*\n\n$$\n\\int \\frac{\\operatorname{cos}\u20612x}{\\operatorname{sin}\u20612x}\\,dx=\\frac{1}{2}\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|\n$$",
+  "worked_solution": "Suppose we have a second-order linear differential equation with linearly independent fundamental solutions ${y}_{1}(x)$ and ${y}_{2}(x).$ Then, according to the method of variation of parameters, we can seek a particular solution ${y}_{p}$ using the ansatz\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}(x){y}_{1}(x)+{u}_{2}(x){y}_{2}(x),\\end{aligned}\n$$\n\nwhere ${u}_{1}$ and ${u}_{2}$ satisfy the following system:\n\n$$\n{\\begin{aligned}{u}_{1}^{\u2032}{y}_{1}^{\u2032}+{u}_{2}^{\u2032}{y}_{2}^{\u2032}=f(x) \\\\ {u}_{1}^{\u2032}{y}_{1}+{u}_{2}^{\u2032}{y}_{2}=0\\end{aligned}\n$$\n\nThe solution to this system is\n\n$$\n{u}_{1}(x)=-\\int \\frac{f(x){y}_{2}(x)}{W({y}_{1},{y}_{2})}\\,dx,\\,{u}_{2}(x)=\\int \\frac{f(x){y}_{1}(x)}{W({y}_{1},{y}_{2})}\\,dx,\n$$\n\nwhere $W({y}_{1},{y}_{2})$ is the Wronskian.\n\nFirst, we note that the forcing term is $f(x)=4{e}^{x}\\operatorname{csc}\u20612x.$\n\nFrom the given information, we see that the complementary solution is\n\n$$\n{y}_{c}(x)=(A\\operatorname{cos}\u20612x+B\\operatorname{sin}\u20612x){e}^{x}.\n$$\n\nTherefore, the fundamental solutions to the corresponding homogeneous equation are\n\n$$\n{y}_{1}(x)={e}^{x}\\operatorname{cos}\u20612x,\\,{y}_{2}(x)={e}^{x}\\operatorname{sin}\u20612x.\n$$\n\nWe can use the method of variation of parameters if these solutions are linearly independent. So, let's first compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}(x){y}_{2}^{\u2032}(x)-{y}_{1}^{\u2032}(x){y}_{2}(x) \\\\  & =({e}^{x}\\operatorname{cos}\u20612x)({e}^{x}\\operatorname{sin}\u20612x)^{\u2032}-({e}^{x}\\operatorname{cos}\u20612x)^{\u2032}({e}^{x}\\operatorname{sin}\u20612x) \\\\  & =({e}^{x}\\operatorname{cos}\u20612x)({e}^{x}\\operatorname{sin}\u20612x+2{e}^{x}\\operatorname{cos}\u20612x)-({e}^{x}\\operatorname{cos}\u20612x-2{e}^{x}\\operatorname{sin}\u20612x)({e}^{x}\\operatorname{sin}\u20612x) \\\\  & ={e}^{2x}\\operatorname{cos}\u20612x\\operatorname{sin}\u20612x+2{e}^{2x}{cos}^{2}\u20612x-{e}^{2x}\\operatorname{cos}\u20612x\\operatorname{sin}\u20612x+2{e}^{2x}{sin}^{2}\u20612x \\\\  & =2{e}^{2x}({cos}^{2}\u20612x+{sin}^{2}\u20612x) \\\\  & =2{e}^{2x}\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1}(x)$ and ${y}_{2}(x)$ are independent.\n\nLet\u2019s compute ${u}_{1}(x)$ and ${u}_{2}(x)$:\n\n$$\n\\begin{aligned}{u}_{1}(x) & =-\\int \\frac{f(x){y}_{2}(x)}{W({y}_{1},{y}_{2})}\\,dx \\\\  & =-\\int \\frac{4{e}^{x}\\operatorname{csc}\u20612x\\cdot {e}^{x}\\operatorname{sin}\u20612x}{2{e}^{2x}}\\,dx \\\\  & =-2\\int dx \\\\  & =-2x \\\\ {u}_{2}(x) & =\\int \\frac{f(x){y}_{1}(x)}{W({y}_{1},{y}_{2})}\\,dx \\\\  & =\\int \\frac{4{e}^{x}\\operatorname{csc}\u20612x\\cdot {e}^{x}\\operatorname{cos}\u20612x}{2{e}^{2x}}\\,dx \\\\  & =2\\int \\frac{\\operatorname{cos}\u20612x}{\\operatorname{sin}\u20612x}\\,dx \\\\  & =\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|\\end{aligned}\n$$\n\nTherefore, the particular solution is\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}{y}_{1}+{u}_{2}{y}_{2} \\\\  & =(-2x)({e}^{x}\\operatorname{cos}\u20612x)+(\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|)({e}^{x}\\operatorname{sin}\u20612x) \\\\  & =(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-2x\\operatorname{cos}\u20612x){e}^{x}.\\end{aligned}\n$$\n\nThe general solution is the sum of the complementary and particular solutions, and can be written as follows:\n\n$$\n\\begin{aligned}y(x) & ={y}_{c}(x)+{y}_{p}(x) \\\\  & =(A\\operatorname{cos}\u20612x+B\\operatorname{sin}\u20612x){e}^{x}+{{(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-2x\\operatorname{cos}\u20612x){e}^{x}}_{\u23df}}_{g(x)}\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\ng(x)=(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-2x\\operatorname{cos}\u20612x){e}^{x}.\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|+x\\operatorname{cos}\u20612x){e}^{x}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-4x\\operatorname{cos}\u20612x){e}^{x}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "(\\operatorname{cos}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|+2x\\operatorname{sin}\u20612x){e}^{x}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "(\\operatorname{cos}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-x\\operatorname{sin}\u20612x){e}^{x}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-2x\\operatorname{cos}\u20612x){e}^{x}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071118,
+    "task_type": "lesson",
+    "topic_id": 6704,
+    "topic_title": "Solving Second-Order ODEs Using Variation of Parameters",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-338142",
+        "problem": "Consider the following differential equation\n\n$$\n{y}^{\u2033}-2{y}^{\u2032}+5y=4{e}^{x}\\operatorname{csc}\u20612x.\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=(A\\operatorname{cos}\u20612x+B\\operatorname{sin}\u20612x){e}^{x}+g(x),\n$$\n\nwhere $A$ and $B$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method. You may also wish to make use of the following result (integration constant omitted):*\n\n$$\n\\int \\frac{\\operatorname{cos}\u20612x}{\\operatorname{sin}\u20612x}\\,dx=\\frac{1}{2}\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|\n$$",
+        "worked_solution": "Suppose we have a second-order linear differential equation with linearly independent fundamental solutions ${y}_{1}(x)$ and ${y}_{2}(x).$ Then, according to the method of variation of parameters, we can seek a particular solution ${y}_{p}$ using the ansatz\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}(x){y}_{1}(x)+{u}_{2}(x){y}_{2}(x),\\end{aligned}\n$$\n\nwhere ${u}_{1}$ and ${u}_{2}$ satisfy the following system:\n\n$$\n{\\begin{aligned}{u}_{1}^{\u2032}{y}_{1}^{\u2032}+{u}_{2}^{\u2032}{y}_{2}^{\u2032}=f(x) \\\\ {u}_{1}^{\u2032}{y}_{1}+{u}_{2}^{\u2032}{y}_{2}=0\\end{aligned}\n$$\n\nThe solution to this system is\n\n$$\n{u}_{1}(x)=-\\int \\frac{f(x){y}_{2}(x)}{W({y}_{1},{y}_{2})}\\,dx,\\,{u}_{2}(x)=\\int \\frac{f(x){y}_{1}(x)}{W({y}_{1},{y}_{2})}\\,dx,\n$$\n\nwhere $W({y}_{1},{y}_{2})$ is the Wronskian.\n\nFirst, we note that the forcing term is $f(x)=4{e}^{x}\\operatorname{csc}\u20612x.$\n\nFrom the given information, we see that the complementary solution is\n\n$$\n{y}_{c}(x)=(A\\operatorname{cos}\u20612x+B\\operatorname{sin}\u20612x){e}^{x}.\n$$\n\nTherefore, the fundamental solutions to the corresponding homogeneous equation are\n\n$$\n{y}_{1}(x)={e}^{x}\\operatorname{cos}\u20612x,\\,{y}_{2}(x)={e}^{x}\\operatorname{sin}\u20612x.\n$$\n\nWe can use the method of variation of parameters if these solutions are linearly independent. So, let's first compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}(x){y}_{2}^{\u2032}(x)-{y}_{1}^{\u2032}(x){y}_{2}(x) \\\\  & =({e}^{x}\\operatorname{cos}\u20612x)({e}^{x}\\operatorname{sin}\u20612x)^{\u2032}-({e}^{x}\\operatorname{cos}\u20612x)^{\u2032}({e}^{x}\\operatorname{sin}\u20612x) \\\\  & =({e}^{x}\\operatorname{cos}\u20612x)({e}^{x}\\operatorname{sin}\u20612x+2{e}^{x}\\operatorname{cos}\u20612x)-({e}^{x}\\operatorname{cos}\u20612x-2{e}^{x}\\operatorname{sin}\u20612x)({e}^{x}\\operatorname{sin}\u20612x) \\\\  & ={e}^{2x}\\operatorname{cos}\u20612x\\operatorname{sin}\u20612x+2{e}^{2x}{cos}^{2}\u20612x-{e}^{2x}\\operatorname{cos}\u20612x\\operatorname{sin}\u20612x+2{e}^{2x}{sin}^{2}\u20612x \\\\  & =2{e}^{2x}({cos}^{2}\u20612x+{sin}^{2}\u20612x) \\\\  & =2{e}^{2x}\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1}(x)$ and ${y}_{2}(x)$ are independent.\n\nLet\u2019s compute ${u}_{1}(x)$ and ${u}_{2}(x)$:\n\n$$\n\\begin{aligned}{u}_{1}(x) & =-\\int \\frac{f(x){y}_{2}(x)}{W({y}_{1},{y}_{2})}\\,dx \\\\  & =-\\int \\frac{4{e}^{x}\\operatorname{csc}\u20612x\\cdot {e}^{x}\\operatorname{sin}\u20612x}{2{e}^{2x}}\\,dx \\\\  & =-2\\int dx \\\\  & =-2x \\\\ {u}_{2}(x) & =\\int \\frac{f(x){y}_{1}(x)}{W({y}_{1},{y}_{2})}\\,dx \\\\  & =\\int \\frac{4{e}^{x}\\operatorname{csc}\u20612x\\cdot {e}^{x}\\operatorname{cos}\u20612x}{2{e}^{2x}}\\,dx \\\\  & =2\\int \\frac{\\operatorname{cos}\u20612x}{\\operatorname{sin}\u20612x}\\,dx \\\\  & =\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|\\end{aligned}\n$$\n\nTherefore, the particular solution is\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}{y}_{1}+{u}_{2}{y}_{2} \\\\  & =(-2x)({e}^{x}\\operatorname{cos}\u20612x)+(\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|)({e}^{x}\\operatorname{sin}\u20612x) \\\\  & =(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-2x\\operatorname{cos}\u20612x){e}^{x}.\\end{aligned}\n$$\n\nThe general solution is the sum of the complementary and particular solutions, and can be written as follows:\n\n$$\n\\begin{aligned}y(x) & ={y}_{c}(x)+{y}_{p}(x) \\\\  & =(A\\operatorname{cos}\u20612x+B\\operatorname{sin}\u20612x){e}^{x}+{{(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-2x\\operatorname{cos}\u20612x){e}^{x}}_{\u23df}}_{g(x)}\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\ng(x)=(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-2x\\operatorname{cos}\u20612x){e}^{x}.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "(\\operatorname{sin}\u20612x\\operatorname{ln}\u2061|\\operatorname{sin}\u20612x|-4x\\operatorname{cos}\u20612x){e}^{x}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
