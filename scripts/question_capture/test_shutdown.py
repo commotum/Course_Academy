@@ -47,7 +47,7 @@ with patch('capture.run',fixture):
                         self.assertEqual(process.stdout.readline().strip(),'READY')
                         process.send_signal(stop_signal)
                         output,error=process.communicate(timeout=12)
-                        self.assertEqual(process.returncode,1,error)
+                        self.assertEqual(process.returncode,0,error)
                         self.assertIn('saved checkpoints are retained',error)
                         import fcntl
                         with (Path(work)/'capture.lock').open('a') as lock:

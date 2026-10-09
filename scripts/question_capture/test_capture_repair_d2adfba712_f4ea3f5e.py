@@ -60,7 +60,8 @@ class SavedGatewayRecoveryTests(unittest.TestCase):
         with self.assertRaises(TimeoutError):
             reader.wait_activity_ready()
         reader.navigate.assert_not_called()
-        reader.pacer.backoff.assert_not_called()
+        self.assertEqual([c.args[0] for c in reader.pacer.backoff.call_args_list], [1, 2])
+        self.assertEqual(reader.page.wait_for_function.call_count, 3)
 
     def test_access_block_or_stop_is_not_bypassed(self):
         reader = self.reader([self.body])

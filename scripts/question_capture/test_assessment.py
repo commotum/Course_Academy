@@ -687,9 +687,10 @@ class AssessmentDOMTests(unittest.TestCase):
         editor=scope.locator('.mq-editable-field')
         evidence=json.loads((FIXTURES/'negative-trig-quotient.json').read_text())
         editor.evaluate('(n,tex)=>MathQuill.getInterface(2).MathField(n).latex(tex)',evidence['observed'])
-        field=scope.evaluate(EXTRACT)['fields'][0]
+        item=scope.evaluate(EXTRACT)
+        field=item['fields'][0]
         field['submitted_value']=evidence['intended']
-        record={'before':{'fields':[field]}}
+        record={'before':item}
         reader.verify_entered(scope,record)
         field['submitted_value']=evidence['intended'].replace('-6','6')
         with self.assertRaisesRegex(ValueError,'Actual MathQuill value differs'):

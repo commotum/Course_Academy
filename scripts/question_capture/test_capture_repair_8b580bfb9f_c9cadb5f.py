@@ -21,12 +21,13 @@ def determinant(a):
 class IndependentVerificationRetryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.original = json.loads((ROOT / 'verify-input.json').read_text())
-        cls.saved = json.loads((ROOT / 'verify-answer.json').read_text())
+        cls.original = json.loads((ROOT / 'verify-before-independent-input.json').read_text())
+        cls.saved = json.loads((ROOT / 'verify-before-independent-answer.json').read_text())
         tree = ast.parse(Path(solver.__file__).read_text())
         method = next(n for n in ast.walk(tree)
                       if isinstance(n, ast.FunctionDef) and n.name == 'solve')
         branch = next(n for n in ast.walk(method) if isinstance(n, ast.If)
+                      and any(isinstance(c, ast.Name) and c.id == 'phase' for c in ast.walk(n.test))
                       and any(isinstance(c, ast.Constant) and c.value == 'verification_retry'
                               for c in ast.walk(n.test)))
         # Isolate the real retry branch: no solver process or filesystem writes.

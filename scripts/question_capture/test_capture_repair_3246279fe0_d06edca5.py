@@ -50,6 +50,7 @@ class SameQuestionGradeRecoveryTests(unittest.TestCase):
         player.wait_activity_ready = Mock()
         player.current_step = Mock(return_value='stepButton-q328412')
         player.restore_unanswered_submission = Mock(return_value=False)
+        player.is_staged_question = Mock(return_value=False)
         player.check = Mock()
         player.read = Mock(return_value=(item, None))
         player.finalize_question = Mock(side_effect=Finalized())

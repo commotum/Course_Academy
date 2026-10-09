@@ -258,6 +258,7 @@ class StagedProofTests(unittest.TestCase):
             with self.subTest(actual=actual),tempfile.TemporaryDirectory() as work:
                 before=json.loads((FIXTURE/'completed-first.json').read_text());before['status']='submitting'
                 after=json.loads((FIXTURE/'completed-first-after.json').read_text());after['result']=actual
+                after['html'] = after['html'].replace('>Correct<', '>'+actual+'<')
                 (Path(work)/'q-334055-after.json').write_text(json.dumps(after))
                 self.page.set_content('<div id="stepButton-q334064" class="stepButton current"></div><div id="finalScreen" style="display:none"></div>'+after['html'].replace('class="step questionWidget"','class="step questionWidget" hidden')+(FIXTURE/'initial-dynamic.html').read_text())
                 args=arguments(['run','--state-dir',work,'--event-min','0','--event-max','0'])

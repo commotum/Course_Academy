@@ -15,7 +15,7 @@ MID = 'q-343341'
 
 class FinalizeRevealedProofTests(unittest.TestCase):
     def setUp(self):
-        self.state = json.loads((ROOT / 'state.json').read_text())
+        self.state = json.loads((ROOT / 'diagnostics/1791519559430219638/state.json').read_text())
         self.record = self.state['questions'][MID]
         self.verified = json.loads((ROOT / MID / 'verify-answer.json').read_text())
         self.reader = CaptureBrowser.__new__(CaptureBrowser)

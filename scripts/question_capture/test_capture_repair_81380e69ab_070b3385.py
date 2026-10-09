@@ -54,7 +54,8 @@ const errors = [];
         return json.loads(process.stdout)
 
     def test_original_failure_from_saved_markup(self):
-        self.assertIn('Unsupported MathML enclosure', self.saved['errors'])
+        report = json.loads((EVIDENCE.parent/'diagnostics/1791478250261185954/error.json').read_text())
+        self.assertIn('Unsupported MathML enclosure', report['message'])
         original = self.source.replace(ADDED, '')
         for markup in self.markups:
             with self.subTest(markup=markup):

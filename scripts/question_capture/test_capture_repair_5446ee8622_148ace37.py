@@ -1,5 +1,6 @@
 import copy
 import json
+import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
@@ -14,8 +15,18 @@ QUESTION = ROOT / 'q-108966'
 
 class InvalidMatrixChoiceRecoveryTests(unittest.TestCase):
     def setUp(self):
-        self.item = json.loads((QUESTION / 'solve-input.json').read_text())
-        self.saved = json.loads((QUESTION / 'solve-answer.json').read_text())
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.question = self.root / QUESTION.name
+        self.question.mkdir()
+        self.item = json.loads((QUESTION / 'solve-before-exact-choice-input.json').read_text())
+        self.saved = json.loads((QUESTION / 'solve-before-exact-choice-answer.json').read_text())
+        (self.question/'solve-input.json').write_text(json.dumps(self.item))
+        (self.question/'solve-answer.json').write_text(json.dumps(self.saved))
+        session = self.root/'solver-session'
+        session.mkdir()
+        (session/'state.json').write_bytes((ROOT/'solver-session/state.json').read_bytes())
 
     def test_original_failure_and_retry_eligibility(self):
         with self.assertRaisesRegex(ValueError, 'exact displayed choice'):
@@ -28,13 +39,13 @@ class InvalidMatrixChoiceRecoveryTests(unittest.TestCase):
         choice = next(c for c in self.item['fields'][0]['choices'] if c['option'] == 'b')
         corrected['answers'][0]['correct_value'] = choice['value']
         runner = Solver(SimpleNamespace(solver_command=None))
-        session = json.loads((ROOT / 'solver-session/state.json').read_text())
+        session = json.loads((self.root / 'solver-session/state.json').read_text())
         identity = session['activity']
         with patch.object(runner, 'recover_pending'), \
              patch.object(runner, 'activity_context', return_value=(identity, [])), \
              patch.object(runner, 'codex_turn', return_value=corrected) as turn, \
              patch.object(solver, 'atomic_json') as write:
-            result = runner.solve(self.item, None, QUESTION)
+            result = runner.solve(self.item, None, self.question)
         self.assertEqual(result, corrected)
         turn.assert_called_once()
         payload, screenshot, directory, phase, session_file, reused_session, keys = turn.call_args.args
@@ -44,8 +55,8 @@ class InvalidMatrixChoiceRecoveryTests(unittest.TestCase):
         self.assertIn('exact displayed choice', payload['validation_feedback'])
         self.assertEqual(payload['fields'], self.item['fields'])
         archives = {str(c.args[0]): c.args[1] for c in write.call_args_list}
-        self.assertEqual(archives[str(QUESTION / 'solve-before-exact-choice-answer.json')], self.saved)
-        self.assertEqual(archives[str(QUESTION / 'solve-before-exact-choice-input.json')], self.item)
+        self.assertEqual(archives[str(self.question / 'solve-before-exact-choice-answer.json')], self.saved)
+        self.assertEqual(archives[str(self.question / 'solve-before-exact-choice-input.json')], self.item)
 
     def test_retry_is_bounded(self):
         previous = copy.deepcopy(self.item)

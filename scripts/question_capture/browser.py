@@ -259,6 +259,13 @@ class AccessBlocked(RuntimeError):
     """An authentication/access failure that affects the entire browser session."""
 
 
+class RateLimited(RuntimeError):
+    """A temporary throttle requires pacing and fresh server reconciliation."""
+    def __init__(self, retry_after=30):
+        self.retry_after = retry_after
+        super().__init__('Math Academy returned HTTP 429; restore the saved activity after backoff')
+
+
 def kp_title_identity(title):
     # Legacy imported titles use this older spelling; live MA uses Leibniz.
     return re.sub(r'\bLeibnitz\b', 'Leibniz', title)
@@ -337,6 +344,7 @@ class CaptureBrowser:
         self.page, self.args, self.pacer, self.solver = page, args, pacer, solver
         self.page.set_default_timeout(args.timeout_ms)
         self.http_block = None
+        self.rate_limit_retry_after = 30
         self.progress_reader = None
         self.image_responses = {}
         self.diagnostic_events = deque(maxlen=200)
@@ -360,6 +368,10 @@ class CaptureBrowser:
             self._diagnostic_event('http_error',url=response.url,status=response.status)
         if (host == 'mathacademy.com' or host.endswith('.mathacademy.com')) and response.status in (401,403,429):
             self.http_block = response.status
+            if response.status == 429:
+                value = response.header_value('retry-after') or ''
+                # Only a finite delta in seconds; malformed headers use backoff.
+                self.rate_limit_retry_after = int(value) if re.fullmatch(r'\d{1,7}', value) else 30
         if response.ok and response.request.resource_type == 'image':
             self.image_responses[response.url] = response
 
@@ -368,6 +380,9 @@ class CaptureBrowser:
         if stop is not None and stop.is_set():
             raise KeyboardInterrupt('Stopped; saved checkpoints are retained')
         if self.http_block:
+            if self.http_block == 429:
+                self.http_block = None
+                raise RateLimited(self.rate_limit_retry_after)
             raise AccessBlocked('Math Academy returned HTTP ' + str(self.http_block) + '; stop and review before another run')
         if re.search(r'/(login|signin|session-expired)(?:/|\?|$)', self.page.url):
             raise AccessBlocked('Authentication required; use the login command')
@@ -405,7 +420,12 @@ class CaptureBrowser:
                                 network_failure_reason(error))
                 self.pacer.backoff(attempt)
                 continue
-            self.check()
+            try:
+                self.check()
+            except RateLimited as error:
+                logging.warning('%s', error)
+                self.pacer.backoff(attempt, retry_after=error.retry_after)
+                continue  # Repeat only this read-only navigation.
             if response and response.status >= 500:
                 logging.warning('Math Academy returned HTTP %s; waiting for service recovery',response.status)
                 self.pacer.backoff(attempt)
@@ -1419,6 +1439,8 @@ class CaptureBrowser:
                 # notation, require proof from the existing error-preserving
                 # exact checker; different and unresolved entries still stop.
                 if (not isinstance(observed, str) or
+                        ('pi' in re.findall(r'(?<![a-zA-Z\\])[a-zA-Z]+', observed) and
+                         r'\pi' in field['submitted_value']) or
                         (normalize_mathquill(observed) != normalize_mathquill(field['submitted_value']) and
                          compare_answers(observed, field['submitted_value'],
                                          prompt=record['before']['problem'])['outcome'] != 'equivalent')):

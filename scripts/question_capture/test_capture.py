@@ -1397,10 +1397,10 @@ class DOMTests(unittest.TestCase):
                 'questions':{'q-1':{'kp_id':'kp','status':'graded','finalized':True}},
                 'kps':{'kp':{'id':'kp','title':'Range'}},'examples':{}}
             with tempfile.TemporaryDirectory() as work:
-                if outcome=='failed':
+                if outcome in ('failed', 'passed'):
                     reader.activity(state,Path(work),{})
-                    self.assertEqual(state['earned_xp'],-2)
-                    self.assertEqual(state['activity_outcome'],'failed')
+                    self.assertEqual(state['earned_xp'], -2 if outcome == 'failed' else None)
+                    self.assertEqual(state['activity_outcome'],outcome)
                     self.assertTrue(state['activity_complete'])
                 else:
                     with self.assertRaises(ValueError):reader.activity(state,Path(work),{})
@@ -1591,10 +1591,12 @@ class DOMTests(unittest.TestCase):
                               '<button class="questionWidget-submitButton">Submit</button></div>')
         solver = Mock()
         browser = CaptureBrowser(self.page,SimpleNamespace(timeout_ms=3000),None,solver)
+        browser.wait_activity_ready = Mock()
         browser.check = Mock(side_effect=RuntimeError('Stop before next answer'))
         with tempfile.TemporaryDirectory() as work:
             source = Path(work)/'q-8257-after.json'
             source.write_text(json.dumps(item))
+            (Path(work)/'q-8257-after.png').write_bytes(pixels.read_bytes())
             with self.assertRaisesRegex(RuntimeError,'Stop before next answer'):
                 browser.review(state,work,{})
             self.assertEqual(record['actual_result'],'Correct')
@@ -1812,7 +1814,10 @@ class DOMTests(unittest.TestCase):
                 images=json.loads((Path(work)/'assets/manifest.json').read_text())
                 self.assertTrue(all(a['representation']=='original' for a in images.values()))
                 source='https://mathacademy.com/graphics/q-28197-'
-                self.assertEqual(images[source+'a-1']['path'],images[source+'e-0']['path'])
+                bindings=json.loads((Path(work)/'history-recovery/q-28197-asset-bindings.json').read_text())
+                alias=next(b for b in bindings if b['history_url']==source+'e-0')
+                self.assertEqual(images[source+'a-1']['path'],alias['original']['path'])
+                self.assertEqual(images[source+'a-1']['sha256'],alias['original']['sha256'])
                 self.assertEqual(list(state['knowledge_snapshots']),['review-completed'])
                 transaction,_=build_transaction(content,topic,{})
                 self.assertEqual(sum(':knowledge-point/questions' in row for row in transaction),len(served))

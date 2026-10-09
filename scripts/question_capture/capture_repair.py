@@ -227,7 +227,7 @@ def next_failure(args, ledger, *, task_ids=None):
             continue
         if report.get('phase') not in ('start','activity','history','navigation','queue','queue-after'):
             continue
-        if report.get('exception_type') in ('AccessBlocked','KeyboardInterrupt') or report.get('http_block'):
+        if report.get('exception_type') in ('AccessBlocked','RateLimited','KeyboardInterrupt') or report.get('http_block'):
             continue
         state_file = source.parents[2]/'state.json'
         if state_file.exists():

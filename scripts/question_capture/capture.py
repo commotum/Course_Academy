@@ -482,7 +482,7 @@ def run(args):
                           'captured_questions':len(state.get('questions',{}))},indent=2))
         return
     from playwright.sync_api import sync_playwright
-    from browser import AccessBlocked, CaptureBrowser, LEARN, repair_math_editor_document
+    from browser import AccessBlocked, RateLimited, CaptureBrowser, LEARN, repair_math_editor_document
     from solver import Solver
     from capture_repair import RestartWorker
     rng = random.Random(args.seed)
@@ -682,6 +682,15 @@ def run(args):
                     logging.warning('%s during %s: %s; diagnostics: %s',type(error).__name__,phase,error,diagnostics)
                     if blocking:
                         raise
+                    if isinstance(error, RateLimited):
+                        # A rejected/ambiguous submission is never replayed here.
+                        # Reopen its checkpoint and reconcile the current grade.
+                        pacer.backoff(1, retry_after=error.retry_after)
+                        if state is not None and not state.get('activity_complete'):
+                            resume_directory = directory
+                            resumed_tasks.discard(state['task_id'])
+                        queue_observation = None
+                        continue
                     if state is None:
                         # Queue layout failures used to exit before maintenance.
                         # Inspect them now, and retry transient reads with a pause.

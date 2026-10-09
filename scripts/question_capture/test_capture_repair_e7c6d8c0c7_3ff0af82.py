@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 SOURCE = Path(__file__).with_name('browser.py')
 ACTIVITY = Path('/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14038412')
-ADDED = "        3570: ('Expressing Part of a Shifted Sphere in Spherical Coordinates',\n               'Expressing a Shifted Sphere or Part of a Shifted Sphere in Spherical Coordinates'),\n"
+ADDED = "        (3570, 'Expressing Part of a Shifted Sphere in Spherical Coordinates'):\n            'Expressing a Shifted Sphere or Part of a Shifted Sphere in Spherical Coordinates',\n"
 
 
 def matcher(source):

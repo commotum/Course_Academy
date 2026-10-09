@@ -12,7 +12,7 @@ ROOT = Path('/home/jake/Developer/Course_Academy/reference/mathacademy/question-
 class AssetRetryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        saved = json.loads((ROOT / 'history-q-277261.json').read_text())
+        saved = json.loads((ROOT / 'history-recovery/history-q-277261.json').read_text())
         cls.source_url = saved['assets'][0]['source_url']
         cls.saved_errors = saved['errors']
         tree = ast.parse(Path(browser.__file__).read_text())
