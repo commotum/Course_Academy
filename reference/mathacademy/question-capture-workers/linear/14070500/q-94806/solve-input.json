@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}-6 & 4 & 0 \\\\ 4 & -3 & 0 \\\\ 0 & 0 & -3\\end{aligned}]\n$$\n\nConsider the matrix $A$ shown above.\nWhich of the following statements are true?\n\n- ${a}_{11}=-6$ and $det(A)<0$\n- ${x}^{T}\\,A\\,x$ is positive-definite\n- $A$ is negative-definite",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "II and III only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "II only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "I and III only"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I and II only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I only"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14070500,
+    "task_type": "lesson",
+    "topic_id": 3127,
+    "topic_title": "Positive-Definite and Negative-Definite Quadratic Forms",
+    "examples": [
+      {
+        "math_academy_id": "e-8264",
+        "knowledge_point": "Identifying a Quadratic Form Type Using Sylvester's Criterion",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14070500/assets/d81ce57017adec7daf2556322259f32ce4261e646dc8f1a48632beb085d9a9cb.png)\nConsider the matrix $A$ shown above.\nWhich of the following statements are true?\n\n- $a_{11}=-6$ and $\\det(A) \\lt 0$\n\n- $\\mathbf{x}^T \\! A \\, \\mathbf{x}$ is negative-definite\n\n- $A$ is positive-definite",
+        "worked_solution": "Let $\\Delta_i$ for $i=1,2,\\ldots,n$  denote the principal minors of an $n \\times n$ matrix $A.$ Then, according to Sylvester's criterion, the quadratic form $\\mathbf{x}^T \\! A \\, \\mathbf{x}$ (as well as the matrix $A$) is \n\n- positive-definite if and only if $\\Delta_i > 0$ for all $i=1,2,\\ldots,n,$\n\n- negative-definite if and only if, for all $i=1,2,\\ldots,n,$ we have $\\Delta_i <          0$ when $i$ is odd, and $\\Delta_i > 0$ when $i$ is even.\n\nWith that in mind, let's examine each of the statements in turn.\n\n- Statement I is true. Indeed, $a_{11}=-6.$ Expanding $\\det(A)$ along the top row, we get \n\n$$\n\\begin{aligned}det(A) & =|\\begin{aligned}-6 & -5 & 1 \\\\ 5 & -2 & 2 \\\\ 1 & 2 & -1\\end{aligned}| \\\\  & =(-6)|\\begin{aligned}-2 & 2 \\\\ 2 & -1\\end{aligned}|-(-5)|\\begin{aligned}5 & 2 \\\\ 1 & -1\\end{aligned}|+1\\cdot |\\begin{aligned}5 & -2 \\\\ 1 & 2\\end{aligned}| \\\\  & =(-6)(-2)+(5)(-7)+12 \\\\  & =-11.\\end{aligned}\n$$\n\n- Statement II is true, while statement III is false. Notice the following:\n\n$$\n\\begin{aligned}{\u0394}_{1} & ={a}_{11}=-6<0 \\\\ {\u0394}_{2} & =|\\begin{aligned}-6 & -5 \\\\ 5 & -2\\end{aligned}|=37>0 \\\\ {\u0394}_{3} & =|A|=-11<0\\end{aligned}\n$$\n\nSo, by Sylvester's criterion, the quadratic form $\\mathbf{x}^T \\! A \\, \\mathbf{x},$ and the matrix $A,$ are negative-definite.\n\nTherefore, the correct answer is \"I and II only.\"",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14070500/example-8264.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-94795",
+        "problem": "Consider the matrix $A=[\\begin{aligned}3 & 2 \\\\ 2 & 3\\end{aligned}].$ Which of the following statements are true?\n\n- The eigenvalues of $A$ are ${\\lambda }_{1}=1$ and ${\\lambda }_{2}=5$\n- ${x}^{T}\\,A\\,x$ is positive-definite\n- $A$ is indefinite",
+        "worked_solution": "Given a quadratic form $Q(x)={x}^{T}Ax,$ we have the following theorem:\n\n- $Q$ is positive-definite if and only if all the eigenvalues of $A$ are positive,\n\n- $Q$ is positive semi-definite if and only if all the eigenvalues of $A$ are non-negative (note that positive semi-definite quadratic forms include all positive-definite quadratic forms),\n\n- $Q$ is negative-definite if and only if all the eigenvalues of $A$ are negative,\n\n- $Q$ is negative semi-definite if and only if all the eigenvalues of $A$ are non-positive (note that negative semi-definite quadratic forms include all negative-definite quadratic forms), and\n\n- $Q$ is indefinite if and only if $A$ has both positive and negative eigenvalues.\n\nWith that in mind, let's examine our statements in turn.\n\n- Statement I is true. Computing the characteristic equation of $A,$ we obtain\n\n$$\n\\begin{aligned}|A-\\lambda I| & =0 \\\\ |\\begin{aligned}3-\\lambda  & 2 \\\\ 2 & 3-\\lambda \\end{aligned}| & =0 \\\\ (3-\\lambda )(3-\\lambda )-4 & =0 \\\\ {\\lambda }^{2}-6\\lambda +5 & =0 \\\\ \\lambda  & =1,\\,5.\\end{aligned}\n$$\n\n- Statement II is true, while statement III is false. Since all the eigenvalues of $A$ are positive, the quadratic form ${x}^{T}\\,A\\,x$ (as well as the matrix $A$) is positive-definite.\n\nTherefore, the correct answer is \"I and II only.\"",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "I and II only",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
