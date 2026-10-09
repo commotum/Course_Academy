@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "For which of the following values is the implicit Euler method stable, given that $\\lambda $ is the parameter of the test equation?\n\n- $\\lambda \u0394x=0.25$\n- $\\lambda \u0394x=1$\n- $\\lambda \u0394x=1.5$\n- $\\lambda \u0394x=9$\n\n*Hint: The stability function $R$ of the implicit Euler method is given by*\n\n$$\nR(\\lambda \u0394)=\\frac{1}{1+\\lambda \u0394x}.\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "None"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "I and II only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "I, II, III, and IV"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I, II, and III only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I only"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14049825,
+    "task_type": "lesson",
+    "topic_id": 6685,
+    "topic_title": "Stability of Numerical Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-334431",
+        "problem": "For which of the following values is the Runge-Kutta Method (RK4) stable, given that $\\lambda $ is the parameter of the test equation?\n\n- $\\lambda \u0394x=0.5$\n- $\\lambda \u0394x=1.5$\n- $\\lambda \u0394x=2.5$\n- $\\lambda \u0394x=3.2$\n\n*Hint: The stability function $R$ of the RK4 method is given by*\n\n$$\nR(\\lambda \u0394)=1-\\lambda \u0394x+\\frac{(\\lambda \u0394x)^{2}}{2}-\\frac{(\\lambda \u0394x)^{3}}{6}+\\frac{(\\lambda \u0394x)^{4}}{24}.\n$$",
+        "worked_solution": "A numerical method\n${y}_{n+1}={y}_{n}+\u0394{y}_{n}$\nis stable for a given step size $\u0394x$ if, when applied to the test equation\n\n$$\n{y}^{\u2032}=-\\lambda y,\\,y(0)=1,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\n{y}_{n+1}=R(\\lambda \u0394x){y}_{n},\n$$\n\nwhere $R(\\lambda \u0394x)$ is referred to as the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda \u0394x)|<1,$ is called the stability region of the method.\n\nThe stability function of the RK4 Method is\n\n$$\nR(\\lambda \u0394x)=1-\\lambda \u0394x+\\frac{(\\lambda \u0394x)^{2}}{2}-\\frac{(\\lambda \u0394x)^{3}}{6}+\\frac{(\\lambda \u0394x)^{4}}{24}.\n$$\n\nLet's check the stability of the RK4 Method for each of the given values in turn.\n\n- For $\\lambda \u0394x=0.5,$ we have\n\n$$\n\\begin{aligned}|R(0.5)| & =|1-0.5+\\frac{(0.5)^{2}}{2}-\\frac{(0.5)^{3}}{6}+\\frac{(0.5)^{4}}{24}| \\\\  & =|\\frac{233}{384}| \\\\  & =0.606\u2026<1.\\,\u2713\\end{aligned}\n$$\n\nSince this value falls *within* the stability region, the RK4 Method is stable.\n\n- For $\\lambda \u0394x=1.5,$ we have\n\n$$\n\\begin{aligned}|R(1.5)| & =|1-1.5+\\frac{(1.5)^{2}}{2}-\\frac{(1.5)^{3}}{6}+\\frac{(1.5)^{4}}{24}| \\\\  & =|\\frac{35}{128}| \\\\  & =0.273\u2026<1.\\,\u2713\\end{aligned}\n$$\n\nSince this value falls *within* the stability region, the RK4 Method is stable.\n\n- For $\\lambda \u0394x=2.5,$ we have\n\n$$\n\\begin{aligned}|R(2.5)| & =|1-2.5+\\frac{(2.5)^{2}}{2}-\\frac{(2.5)^{3}}{6}+\\frac{(2.5)^{4}}{24}| \\\\  & =|\\frac{83}{128}| \\\\  & =0.648\u2026<1.\\,\u2713\\end{aligned}\n$$\n\nSince this value falls *within* the stability region, the RK4 Method is stable.\n\n- For $\\lambda \u0394x=3.2,$ we have\n\n$$\n\\begin{aligned}|R(3)| & =|1-3.2+\\frac{(3.2)^{2}}{2}-\\frac{(3.2)^{3}}{6}+\\frac{(3.2)^{4}}{24}| \\\\  & =|\\frac{3427}{1875}| \\\\  & =1.827\u2026<1.\\,\\times \\end{aligned}\n$$\n\nSince this value falls *outside* the stability region, the RK4 Method is unstable.\n\nTherefore, the correct answer is \"I, II, and III only\".\n\nNote that the stability region of the RK4 Method is $0<\\lambda \u0394x<2.785\u2026,$ so it is not absolutely stable.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "I, II, and III only",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Which of the following statements are true when testing the stability of the trapezoidal method on the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),y(0)=2,x\\ge 0,\\lambda =5,$ and step size $\u0394x?$  \n\n- The stability function is $R(5\u0394x)=\\frac{1-5\u0394x/2}{1+5\u0394x/2}.$\n- The stability region is $|\\frac{2-5\u0394x}{2+5\u0394x}|<1.$\n- The method is absolutely stable.\n- The method is **unstable** for step size $\u0394x=1.$\n\n*Hint:* The stability function $R$ is given by ${y}_{n+1}=R(\\lambda \u0394x){y}_{n}.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "II and III only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "II only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "I and IV only"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I and III only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I, II, and III only"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14049825,
+    "task_type": "lesson",
+    "topic_id": 6685,
+    "topic_title": "Stability of Numerical Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-333968",
+        "problem": "For the initial value problem ${y}^{\u2032}=f(x,y),y({x}_{0})={y}_{0},$ the modified Euler method can be expressed as the update formula\n\n$$\n\\begin{aligned}\u0394{y}_{n}^{(p)} & =f({x}_{n},{y}_{n})\\cdot \u0394x, \\\\ {y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}+\u0394{y}_{n}^{(p)}))\\cdot \u0394x.\\end{aligned}\n$$\n\nWhich of the following statements are true when testing the stability of the modified Euler method on the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),y(0)=1,x\\ge 0,\\lambda =2,$ and step size $\u0394x?$  \n\n- The stability function is $R(2\u0394x)=1-2\u0394x+2(\u0394x)^{2}.$\n- The stability region is $|2{(\u0394x-\\frac{1}{2})}^{2}+\\frac{1}{2}|<1.$\n- The method is absolutely stable.\n- The method is stable for step size $\u0394x=\\frac{1}{2}.$\n\n*Hint:* The stability function $R$ is given by ${y}_{n+1}=R(\\lambda \u0394x){y}_{n}.$",
+        "worked_solution": "A numerical method  ${y}_{n+1}={y}_{n}+\u0394{y}_{n}$ is stable for a given step size $\u0394x$ if, when applied to the test equation\n\n$$\n{y}^{\u2032}=-\\lambda y,\\,y(0)=\\frac{1}{2},\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\n{y}_{n+1}=R(\\lambda \u0394x){y}_{n},\n$$\n\nwhere $R(\\lambda \u0394x)$ is the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda \u0394x)|<1,$ is called the stability region of the method.\n\nA method that is stable for all possible values $\\lambda \u0394x>0$ is called absolutely stable.\n\nNow, let\u2019s check the stability of the modified Euler Method by applying it to the test equation  \n\n$$\n{y}^{\u2032}=-2y,\\,y(0)=1.\n$$\n\nWe now examine our statements:\n\n- Applying the modified Euler method to this test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n}+\u0394{y}_{n}^{(p)} & ={y}_{n}+f({x}_{n},{y}_{n})\\cdot \u0394x \\\\  & ={y}_{n}-2{y}_{n}\\cdot \u0394x\\end{aligned}\n$$\n\nThus,\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}-2{y}_{n}\\cdot \u0394x))\\cdot \u0394x \\\\  & ={y}_{n}+\\frac{1}{2}(-2{y}_{n}-2({y}_{n}-2{y}_{n}\\cdot \u0394x))\\cdot \u0394x \\\\  & ={y}_{n}+\\frac{1}{2}(-4{y}_{n}+4{y}_{n}\\cdot \u0394x)\\cdot \u0394x \\\\  & ={y}_{n}-2{y}_{n}\\cdot \u0394x+2{y}_{n}\\cdot (\u0394x)^{2} \\\\  & =[1-2\u0394x+2(\u0394x)^{2}]{y}_{n}.\\end{aligned}\n$$\n\nSo, the stability function is $R(2\u0394x)=1-2\u0394x+2(\u0394x)^{2}.$ Hence, statement I is true.\n\n- The method is stable when\n\n$$\n\\begin{aligned}|R(2\u0394x)| & <1 \\\\ |1-2\u0394x+2(\u0394x)^{2}| & <1 \\\\ |2{(\u0394x-\\frac{1}{2})}^{2}+\\frac{1}{2}| & <1.\\end{aligned}\n$$\n\nTherefore, ${y}_{n}$ converges to $0$ as $n\\to \\infty $ if and only if\n\n$$\n|2{(\u0394x-\\frac{1}{2})}^{2}+\\frac{1}{2}|<1.\n$$\n\nHence, statement II is true.\n\n- Now, since the argument of the absolute value is always non-negative, we can remove the absolute value. So, we have\n\n$$\n\\begin{aligned}2{(\u0394x-\\frac{1}{2})}^{2}+\\frac{1}{2} & <1 \\\\ 2{(\u0394x-\\frac{1}{2})}^{2} & <\\frac{1}{2} \\\\ {(\u0394x-\\frac{1}{2})}^{2} & <\\frac{1}{4} \\\\ -\\frac{1}{2}<\u0394x-\\frac{1}{2} & <\\frac{1}{2} \\\\ 0<\u0394x & <1\\end{aligned}\n$$\n\nThus, the modified Euler method is not absolutely stable, and statement III is false.\n\n- Finally, since it satisfies this inequality, the modified Euler method is stable for step size $\u0394x=\\frac{1}{2},$ and hence statement IV is true.\n\nIn conclusion, the correct answer is \"I, II, and IV only\".",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "I, II, and IV only",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "For which of the following step sizes is Euler's Method **stable**, given that $\\lambda $ is the parameter of the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),y(0)=1,x\\ge 0,\\lambda >0,$ and step size $\u0394x?$\n\n- $\u0394x=\\frac{0.25}{\\lambda }$\n- $\u0394x=\\frac{3.5}{\\lambda }$\n- $\u0394x=\\frac{2.2}{\\lambda }$\n- $\u0394x=\\frac{1.5}{\\lambda }$\n\n*Hint: The stability function for Euler's method is given by* $R(\\lambda \u0394x)=1-\\lambda \u0394x.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "I, II, and III only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "I and IV only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "I, II, III, and IV"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "None"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I and III only"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14049825,
+    "task_type": "lesson",
+    "topic_id": 6685,
+    "topic_title": "Stability of Numerical Methods",
+    "examples": [
+      {
+        "math_academy_id": "e-21638",
+        "knowledge_point": "Determining Stability in Euler's Method",
+        "problem": "For which of the following step sizes is Euler's Method stable, given that $\\lambda = 1$ is the parameter of the test equation $y' = -\\lambda y$ with $y = y(x), y(0) = 1, x \\geq 0,$ and step size $\\Delta x?$\n\n- $\\Delta x = 0.5$\n\n- $\\Delta x = 0.9$\n\n- $\\Delta x = 1.2$\n\n- $\\Delta x = 1.8$\n\n*Hint: The stability function for Euler's method is given by* $R(\\lambda\\Delta x) = 1 - \\lambda \\Delta x.$",
+        "worked_solution": "A numerical method $y_{n+1} = y_n + \\Delta y_n$is stable for a given step size $\\Delta x$ if, when applied to the test equation\n\n$$\ny' = -\\lambda y, \\qquad y(0) = 1, \\quad x \\geq 0, \\quad \\lambda > 0,\n$$\n\nthe numerical solution satisfies $y_n \\to 0$ as $n \\to \\infty,$ just like the exact solution.\n\nFor stability, we require that the following condition holds:\n\n$$\n\\begin{aligned}|R(\\lambda \u0394x)| & <1 \\\\ |1-\\lambda \u0394x| & <1\\end{aligned}\n$$\n\nSolving this gives\n\n$$\n0 < \\lambda \\Delta x < 2.\n$$\n\nThis means that Euler's method is stable when applied to the test equation for values in the region $0 < \\lambda\\Delta x < 2.$\n\nIn our case, where $\\lambda=1,$ this region simplifies to\n\n$$\n\\begin{aligned}0 & <\u0394x<2.\\end{aligned}\n$$\n\nNow, of the given step sizes:\n\n- $\\Delta x = 0.5$ satisfies the inequality,\n\n- $\\Delta x = 0.9$ satisfies the inequality,\n\n- $\\Delta x = 1.2$ satisfies the inequality, and\n\n- $\\Delta x = 1.8$ satisfies the inequality.\n\nTherefore, Euler's method is stable for all given step sizes.\n\nThus, the correct answer is \"I, II, III, and IV\".",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14049825/example-21638.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-333398",
+        "problem": "Which of the following statements are true when testing the stability of Euler's method on the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),\\,y(0)=6,\\,x\\ge 0,\\,\\lambda =\\frac{8}{3},$ and step size $\u0394x?$  \n\n- The update formula can be written as ${y}_{n+1}={(1-\\frac{8}{3}\u0394x)}^{n}{y}_{n}.$\n- The method is stable for $|1-\\frac{8}{3}\u0394x|<1.$\n- The method is stable for step size $\u0394x=0.25.$\n- The method is **unstable** for step size $\u0394x=0.8.$",
+        "worked_solution": "A numerical method ${y}_{n+1}={y}_{n}+\u0394{y}_{n}$ is stable for a given step size $\u0394x$ if, when applied to the test equation\n\n$$\n{y}^{\u2032}=-\\lambda y,\\,y(0)=6,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nNow, let's check the stability of Euler's Method by applying it to the test equation\n\n$$\n{y}^{\u2032}=-\\frac{8}{3}y,\\,y(0)=6.\n$$\n\nFirst, for an initial value problem ${y}^{\u2032}=f(x,y),y({x}_{0})={y}_{0},$ Euler's method is given by the update formula\n\n$$\n{y}_{n+1}={y}_{n}+f({x}_{n},{y}_{n})\\cdot \u0394x.\n$$\n\nNow, let's check our statements:\n\n- Applying Euler's method to the test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+(-\\frac{8}{3}{y}_{n})\\cdot \u0394x \\\\  & ={y}_{n}-\\frac{8}{3}{y}_{n}\\cdot \u0394x \\\\  & =(1-\\frac{8}{3}\u0394x){y}_{n}.\\end{aligned}\n$$\n\nHence, statement I is false.\n\n- For stability, we require ${y}_{n}\\to 0$ as $n\\to \\infty .$ Here, we have\n\n$$\n\\begin{aligned}{y}_{n} & =(1-\\frac{8}{3}\u0394x){y}_{n-1} \\\\  & =(1-\\frac{8}{3}\u0394x)((1-\\frac{8}{3}\u0394x){y}_{n-2}) \\\\  & ={(1-\\frac{8}{3}\u0394x)}^{2}{y}_{n-2} \\\\  & \\,\\,\u22ee\\,\\,\u22ee \\\\  & ={(1-\\frac{8}{3}\u0394x)}^{n}{y}_{0} \\\\  & =6{(1-\\frac{8}{3}\u0394x)}^{n}.\\end{aligned}\n$$\n\nTherefore, ${y}_{n}$ converges to $0$ as $n\\to \\infty $ if and only if $|1-\\frac{8}{3}\u0394x|<1,$ as stated. Hence, statement II is true.\n\n- Expanding the inequality $|1-\\frac{8}{3}\u0394x|<1,$ we get\n\n$$\n\\begin{aligned}-1 & <1-\\frac{8}{3}\u0394x<1 \\\\ -2 & <-\\frac{8}{3}\u0394x<0 \\\\ 0 & <\\frac{8}{3}\u0394x<2 \\\\ 0 & <\u0394x<\\frac{3}{4}.\\end{aligned}\n$$\n\nFinally, we determine stability for the given step sizes:\n\n- Since $\u0394x=0.25$ satisfies the above inequality, Euler's method is stable for this value. Hence, statement III is true.\n\n- Since $\u0394x=0.8$ does not satisfy the above inequality, Euler's method is unstable for this value. Hence, statement IV is true.\n\nIn conclusion, the correct answer is \"II, III, and IV only\".",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "II, III, and IV only",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

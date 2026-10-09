@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Which of the following statements are true when testing the stability of the implicit Euler method on the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),y(0)=1,x\\ge 0,\\lambda =6,$ and step size $\u0394x?$  \n\n- The stability function is $R(6\u0394x)=\\frac{1}{1-6\u0394x}.$\n- The stability region is $|\\frac{1}{1+6\u0394x}|<1.$\n- The method is absolutely stable.\n- The method is **unstable** for step size $\u0394x=0.10.$\n\n*Hint:* The stability function $R$ is given by ${y}_{n+1}=R(\\lambda \u0394x){y}_{n}.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "II and III only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "II and IV only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "I and III only"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I, II, and III only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I and IV only"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14049825,
+    "task_type": "lesson",
+    "topic_id": 6685,
+    "topic_title": "Stability of Numerical Methods",
+    "examples": [
+      {
+        "math_academy_id": "e-21637",
+        "knowledge_point": "Identifying True Statements About the Stability of Other Methods",
+        "problem": "For the initial value problem $y' = f(x,y), y(x_0) = y_0,$ the modified Euler method can be expressed as the update formula\n\n$$\n\\begin{aligned}\u0394{y}_{n}^{(p)} & =f({x}_{n},{y}_{n})\\cdot \u0394x, \\\\ {y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}+\u0394{y}_{n}^{(p)}))\\cdot \u0394x.\\end{aligned}\n$$\n\nWhich of the following statements are true when testing the stability of the modified Euler method on the test equation $y'=-\\lambda y$ with $y = y(x), y(0) = 1, x \\geq 0, \\lambda = 12,$ and step size $\\Delta x?$  \n\n- The stability function is $R(12\\Delta x) = 1 - 12\\Delta x + 72(\\Delta x)^2.$\n\n- The stability region is $\\left|72\\left(\\Delta x - \\dfrac16\\right)^2\\right| < 1.$\n\n- The method is absolutely stable.\n\n- The method is stable for step size $\\Delta x = 0.15.$\n\n*Hint:* The stability function $R$ is given by $y_{n+1} = R(\\lambda\\Delta x)y_n.$",
+        "worked_solution": "A numerical method  $y_{n+1} = y_n + \\Delta y_n$ is stable for a given step size $\\Delta x$ if, when applied to the test equation\n\n$$\ny' = -\\lambda y, \\qquad y(0) = 1, \\quad x \\geq 0, \\quad \\lambda > 0,\n$$\n\nthe numerical solution satisfies $y_n \\to 0$ as $n \\to \\infty,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\ny_{n+1} = R(\\lambda\\Delta x)y_n,\n$$\n\nwhere $R(\\lambda\\Delta x)$ is the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda\\Delta x)| < 1,$ is called the stability region of the method.\n\nA method that is stable for all possible values $\\lambda\\Delta x > 0$ is called absolutely stable.\n\nNow, let's check the stability of the modified Euler Method by applying it to the test equation\n\n$$\ny' = -12y, \\qquad y(0) = 1.\n$$\n\nWe now examine our statements:\n\n- Applying the modified Euler method to this test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n}+\u0394{y}_{n}^{(p)} & ={y}_{n}+f({x}_{n},{y}_{n})\\cdot \u0394x \\\\  & ={y}_{n}-12{y}_{n}\\cdot \u0394x\\end{aligned}\n$$\n\nThus,\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}-12{y}_{n}\\cdot \u0394x))\\cdot \u0394x \\\\  & ={y}_{n}+\\frac{1}{2}(-12{y}_{n}-12({y}_{n}-12{y}_{n}\\cdot \u0394x))\\cdot \u0394x \\\\  & ={y}_{n}+\\frac{1}{2}(-24{y}_{n}+144{y}_{n}\\cdot \u0394x)\\cdot \u0394x \\\\  & ={y}_{n}-12{y}_{n}\\cdot \u0394x+72{y}_{n}\\cdot (\u0394x)^{2} \\\\  & =[1-12\u0394x+72(\u0394x)^{2}]{y}_{n}.\\end{aligned}\n$$\n\nSo, the stability function is $R(12\\Delta x) = 1 - 12\\Delta x + 72(\\Delta x)^2.$ Hence, statement I is true.\n\n- The method is stable when\n\n$$\n\\begin{aligned}|R(12\u0394x)| & <1 \\\\ |1-12\u0394x+72(\u0394x)^{2}| & <1 \\\\ |72{(\u0394x-\\frac{1}{12})}^{2}+\\frac{1}{2}| & <1.\\end{aligned}\n$$\n\nTherefore, $y_n$ converges to $0$ as $n \\to \\infty$ if and only if\n\n$$\n\\left|72\\left(\\Delta x - \\dfrac1{12}\\right)^2 + \\dfrac12\\right| < 1.\n$$\n\nHence, statement II is false.\n\n- Now, since the argument of the absolute value is always non-negative, we can remove the absolute value. So, we have\n\n$$\n\\begin{aligned}72{(\u0394x-\\frac{1}{12})}^{2}+\\frac{1}{2} & <1 \\\\ 72{(\u0394x-\\frac{1}{12})}^{2} & <\\frac{1}{2} \\\\ {(\u0394x-\\frac{1}{12})}^{2} & <\\frac{1}{144} \\\\ -\\frac{1}{12}<\u0394x-\\frac{1}{12} & <\\frac{1}{12} \\\\ 0<\u0394x & <\\frac{1}{6}\\end{aligned}\n$$\n\nThus, the modified Euler method is not absolutely stable, and statement III is false.\n\n- Finally, since it satisfies this inequality, the modified Euler method is stable for step size $\\Delta x = 0.15,$ and hence statement IV is true.\n\nIn conclusion, the correct answer is \"I and IV only\".",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14049825/example-21637.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-332533",
+        "problem": "For which of the following values is Euler's method stable, given that $\\lambda $ is the parameter of the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),y(0)=1,x\\ge 0,\\lambda >0,$ and step size $\u0394x?$\n\n- $\\lambda \u0394x=0.67$\n- $\\lambda \u0394x=1.20$\n- $\\lambda \u0394x=1.80$\n- $\\lambda \u0394x=2.25$\n\n*Hint: The stability function for Euler's method is given by* $R(\\lambda \u0394x)=1-\\lambda \u0394x.$",
+        "worked_solution": "A numerical method\n${y}_{n+1}={y}_{n}+\u0394{y}_{n}$\nis stable for a given step size $\u0394x$ if, when applied to the test equation\n\n$$\n{y}^{\u2032}=-\\lambda y,\\,y(0)=1,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nFor stability, we require that the following condition holds:\n\n$$\n\\begin{aligned}|R(\\lambda \u0394x)| & <1 \\\\ |1-\\lambda \u0394x| & <1\\end{aligned}\n$$\n\nSolving this gives\n\n$$\n0<\\lambda \u0394x<2.\n$$\n\nThis means that Euler's method is stable when applied to the test equation for values in the region $0<\\lambda \u0394x<2.$ Of the given values:\n\n- $\\lambda \u0394x=0.67$ falls *within* the given region,\n\n- $\\lambda \u0394x=1.20$ falls *within* the given region,\n\n- $\\lambda \u0394x=1.80$ falls *within* the given region, and\n\n- $\\lambda \u0394x=2.25$ falls *outside* the given region.\n\nHence, Euler's method is stable for the values $\\lambda \u0394x=0.67,$ $\\lambda \u0394x=1.20,$ and $\\lambda \u0394x=1.80.$\n\nTherefore, the correct answer is \"I, II, and III only\".",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "I, II, and III only",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Which of the following statements are true when testing the stability of Euler's method on the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),\\,y(0)=5,\\,x\\ge 0,\\,\\lambda =\\frac{3}{2},$ and step size $\u0394x?$  \n\n- The update formula can be written as ${y}_{n+1}={(1-\\frac{3}{2}\u0394x)}^{n}{y}_{n}.$\n- The method is stable for $|1-\\frac{3}{2}\u0394x|<1.$\n- The method is stable for step size $\u0394x=0.3.$\n- The method is **unstable** for step size $\u0394x=1.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "III and IV only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "II and III only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "II, III, and IV only"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I, II, and III only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I, II, and IV only"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14049825,
+    "task_type": "lesson",
+    "topic_id": 6685,
+    "topic_title": "Stability of Numerical Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-333340",
+        "problem": "Which of the following statements are true when testing the stability of Euler's method on the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),\\,y(0)=3,\\,x\\ge 0,\\,\\lambda =\\frac{7}{3},$ and step size $\u0394x?$  \n\n- The update formula can be written as ${y}_{n+1}={(1-\\frac{7}{3}\u0394x)}^{n}{y}_{n}.$\n- The method is stable for $|1-\\frac{7}{3}\u0394x|>1.$\n- The method is stable for step size $\u0394x=0.2.$\n- The method is **unstable** for step size $\u0394x=0.9.$",
+        "worked_solution": "A numerical method ${y}_{n+1}={y}_{n}+\u0394{y}_{n}$ is stable for a given step size $\u0394x$ if, when applied to the test equation\n\n$$\n{y}^{\u2032}=-\\lambda y,\\,y(0)=3,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nNow, let's check the stability of Euler's Method by applying it to the test equation\n\n$$\n{y}^{\u2032}=-\\frac{7}{3}y,\\,y(0)=3.\n$$\n\nFirst, for an initial value problem ${y}^{\u2032}=f(x,y),y({x}_{0})={y}_{0},$ Euler's method is given by the update formula\n\n$$\n{y}_{n+1}={y}_{n}+f({x}_{n},{y}_{n})\\cdot \u0394x.\n$$\n\nNow, let's check our statements:\n\n- Applying Euler's method to the test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+(-\\frac{7}{3}{y}_{n})\\cdot \u0394x \\\\  & ={y}_{n}-\\frac{7}{3}{y}_{n}\\cdot \u0394x \\\\  & =(1-\\frac{7}{3}\u0394x){y}_{n}.\\end{aligned}\n$$\n\nHence, statement I is false.\n\n- For stability, we require ${y}_{n}\\to 0$ as $n\\to \\infty .$ Here, we have\n\n$$\n\\begin{aligned}{y}_{n} & =(1-\\frac{7}{3}\u0394x){y}_{n-1} \\\\  & =(1-\\frac{7}{3}\u0394x)((1-\\frac{7}{3}\u0394x){y}_{n-2}) \\\\  & ={(1-\\frac{7}{3}\u0394x)}^{2}{y}_{n-2} \\\\  & \\,\\,\u22ee\\,\\,\u22ee \\\\  & ={(1-\\frac{7}{3}\u0394x)}^{n}{y}_{0} \\\\  & =3{(1-\\frac{7}{3}\u0394x)}^{n}.\\end{aligned}\n$$\n\nTherefore, ${y}_{n}$ converges to $0$ as $n\\to \\infty $ if and only if $|1-\\frac{7}{3}\u0394x|<1,$ as stated. Hence, statement II is false.\n\n- Expanding the inequality $|1-\\frac{7}{3}\u0394x|<1,$ we get\n\n$$\n\\begin{aligned}-1 & <1-\\frac{7}{3}\u0394x<1 \\\\ -2 & <-\\frac{7}{3}\u0394x<0 \\\\ 0 & <\\frac{7}{3}\u0394x<2 \\\\ 0 & <\u0394x<\\frac{6}{7}.\\end{aligned}\n$$\n\nFinally, we determine stability for the given step sizes:\n\n- Since $\u0394x=0.2$ satisfies the above inequality, Euler's method is stable for this value. Hence, statement III is true.\n\n- Since $\u0394x=0.9$ does not satisfy the above inequality, Euler's method is unstable for this value. Hence, statement IV is true.\n\nIn conclusion, the correct answer is \"III and IV only\".",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "III and IV only",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

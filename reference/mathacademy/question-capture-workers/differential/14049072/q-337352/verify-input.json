@@ -1,0 +1,67 @@
+{
+  "mode": "verify",
+  "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14049072/assets/b1933db5df10c1a3faf07f1d459a7736be682a3d01ab85e48214da21e7a9d1d5.png)\n\nFind the amplitude of the steady-state charge for the RC circuit shown above, in coulombs, rounded to two decimal places. \n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+  "worked_solution": "The diagram shows a series RC circuit with a source electromotive force (EMF) of $80\\operatorname{sin}\u2061(4t)\\,\\text{V},$ a resistor with resistance $20\\,\u03a9,$ and a capacitor with capacitance $\\frac{1}{100}\\,\\text{F}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs. \n\n$$\nI=\\frac{\\text{d}q}{\\text{d}t}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RC circuit, there are two voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=20\\,\u03a9.$ So,\n\n$$\n{V}_{R}=20I=20\\,\\frac{dq}{dt}.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{(\\frac{1}{100})}=100q.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of charge $q$ on the capacitor is\n\n$$\n80\\operatorname{sin}\u2061(4t)=20\\,\\frac{dq}{dt}+100q,\n$$\n\nwhich gives\n\n$$\n\\frac{dq}{dt}+5q=4\\operatorname{sin}\u2061(4t).\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution ${q}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{d{q}_{c}}{dt}+5{q}_{c}=0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\n{q}_{c}(t)=A{e}^{-5t},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $4t.$ So, we assume that the particular solution is also sinusoidal with argument $4t,$ i.e.,\n\n$$\n{q}_{p}(t)=\\alpha \\operatorname{cos}\u2061(4t)+\\beta \\operatorname{sin}\u2061(4t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute\n\n$$\n\\begin{aligned}{q}_{p} & =\\alpha \\operatorname{cos}\u2061(4t)+\\beta \\operatorname{sin}\u2061(4t), \\\\ \\frac{d{q}_{p}}{dt} & =-4\\alpha \\operatorname{sin}\u2061(4t)+4\\beta \\operatorname{cos}\u2061(4t),\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}(-4\\alpha \\operatorname{sin}\u2061(4t)+4\\beta \\operatorname{cos}\u2061(4t))+5(\\alpha \\operatorname{cos}\u2061(4t)+\\beta \\operatorname{sin}\u2061(4t)) & =4\\operatorname{sin}\u2061(4t) \\\\ (-4\\alpha +5\\beta )\\operatorname{sin}\u2061(4t)+(5\\alpha +4\\beta )\\operatorname{cos}\u2061(4t) & =4\\operatorname{sin}\u2061(4t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n{\\begin{aligned}-4\\alpha +5\\beta =4\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}\u2061(4t)) \\\\ 5\\alpha +4\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}\u2061(4t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{16}{41},\\beta =\\frac{20}{41}.$ Therefore, the particular solution is\n\n$$\n{q}_{p}(t)=-\\frac{16}{41}\\operatorname{cos}\u2061(4t)+\\frac{20}{41}\\operatorname{sin}\u2061(4t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nq(t)={q}_{c}(t)+{q}_{p}(t)=A{e}^{-5t}-\\frac{16}{41}\\operatorname{cos}\u2061(4t)+\\frac{20}{41}\\operatorname{sin}\u2061(4t).\n$$\n\nNote the following:\n\n- The quantity ${q}_{c}(t)=A{e}^{-5t}$ is the *transient charge*, since it goes to zero as $t\\to \\infty .$\n\n- The function ${q}_{p}(t)=-\\frac{16}{41}\\operatorname{cos}\u2061(4t)+\\frac{20}{41}\\operatorname{sin}\u2061(4t)$ is the *steady-state charge*. It governs the charge's long-term behavior.\n\nTherefore, as $t\\to \\infty ,$ we have\n\n$$\nq(t)\u2248{q}_{p}(t)=-\\frac{16}{41}\\operatorname{cos}\u2061(4t)+\\frac{20}{41}\\operatorname{sin}\u2061(4t).\n$$\n\nFinally, the amplitude of the steady-state charge, in coulombs, is given by\n\n$$\n\\sqrt{{(-\\frac{16}{41})}^{2}+{(\\frac{20}{41})}^{2}}\u22480.62,\n$$\n\nrounded to two decimal places.",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "0.55"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "0.72"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "0.66"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "0.62"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "0.58"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14049072/assets/b1933db5df10c1a3faf07f1d459a7736be682a3d01ab85e48214da21e7a9d1d5.png"
+  ],
+  "activity_context": {
+    "task_id": 14049072,
+    "task_type": "lesson",
+    "topic_id": 6701,
+    "topic_title": "Modeling RC Circuits With First-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-337352",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14049072/assets/b1933db5df10c1a3faf07f1d459a7736be682a3d01ab85e48214da21e7a9d1d5.png)\n\nFind the amplitude of the steady-state charge for the RC circuit shown above, in coulombs, rounded to two decimal places. \n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+        "worked_solution": "The diagram shows a series RC circuit with a source electromotive force (EMF) of $80\\operatorname{sin}\u2061(4t)\\,\\text{V},$ a resistor with resistance $20\\,\u03a9,$ and a capacitor with capacitance $\\frac{1}{100}\\,\\text{F}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs. \n\n$$\nI=\\frac{\\text{d}q}{\\text{d}t}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RC circuit, there are two voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=20\\,\u03a9.$ So,\n\n$$\n{V}_{R}=20I=20\\,\\frac{dq}{dt}.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{(\\frac{1}{100})}=100q.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of charge $q$ on the capacitor is\n\n$$\n80\\operatorname{sin}\u2061(4t)=20\\,\\frac{dq}{dt}+100q,\n$$\n\nwhich gives\n\n$$\n\\frac{dq}{dt}+5q=4\\operatorname{sin}\u2061(4t).\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution ${q}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{d{q}_{c}}{dt}+5{q}_{c}=0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\n{q}_{c}(t)=A{e}^{-5t},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $4t.$ So, we assume that the particular solution is also sinusoidal with argument $4t,$ i.e.,\n\n$$\n{q}_{p}(t)=\\alpha \\operatorname{cos}\u2061(4t)+\\beta \\operatorname{sin}\u2061(4t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute\n\n$$\n\\begin{aligned}{q}_{p} & =\\alpha \\operatorname{cos}\u2061(4t)+\\beta \\operatorname{sin}\u2061(4t), \\\\ \\frac{d{q}_{p}}{dt} & =-4\\alpha \\operatorname{sin}\u2061(4t)+4\\beta \\operatorname{cos}\u2061(4t),\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}(-4\\alpha \\operatorname{sin}\u2061(4t)+4\\beta \\operatorname{cos}\u2061(4t))+5(\\alpha \\operatorname{cos}\u2061(4t)+\\beta \\operatorname{sin}\u2061(4t)) & =4\\operatorname{sin}\u2061(4t) \\\\ (-4\\alpha +5\\beta )\\operatorname{sin}\u2061(4t)+(5\\alpha +4\\beta )\\operatorname{cos}\u2061(4t) & =4\\operatorname{sin}\u2061(4t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n{\\begin{aligned}-4\\alpha +5\\beta =4\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}\u2061(4t)) \\\\ 5\\alpha +4\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}\u2061(4t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{16}{41},\\beta =\\frac{20}{41}.$ Therefore, the particular solution is\n\n$$\n{q}_{p}(t)=-\\frac{16}{41}\\operatorname{cos}\u2061(4t)+\\frac{20}{41}\\operatorname{sin}\u2061(4t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nq(t)={q}_{c}(t)+{q}_{p}(t)=A{e}^{-5t}-\\frac{16}{41}\\operatorname{cos}\u2061(4t)+\\frac{20}{41}\\operatorname{sin}\u2061(4t).\n$$\n\nNote the following:\n\n- The quantity ${q}_{c}(t)=A{e}^{-5t}$ is the *transient charge*, since it goes to zero as $t\\to \\infty .$\n\n- The function ${q}_{p}(t)=-\\frac{16}{41}\\operatorname{cos}\u2061(4t)+\\frac{20}{41}\\operatorname{sin}\u2061(4t)$ is the *steady-state charge*. It governs the charge's long-term behavior.\n\nTherefore, as $t\\to \\infty ,$ we have\n\n$$\nq(t)\u2248{q}_{p}(t)=-\\frac{16}{41}\\operatorname{cos}\u2061(4t)+\\frac{20}{41}\\operatorname{sin}\u2061(4t).\n$$\n\nFinally, the amplitude of the steady-state charge, in coulombs, is given by\n\n$$\n\\sqrt{{(-\\frac{16}{41})}^{2}+{(\\frac{20}{41})}^{2}}\u22480.62,\n$$\n\nrounded to two decimal places.",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "0.58",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

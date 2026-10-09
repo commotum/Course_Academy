@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "Which of the following statements are true when testing the stability of the trapezoidal method on the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),y(0)=2,x\\ge 0,\\lambda =5,$ and step size $\u0394x?$  \n\n- The stability function is $R(5\u0394x)=\\frac{1-5\u0394x/2}{1+5\u0394x/2}.$\n- The stability region is $|\\frac{2-5\u0394x}{2+5\u0394x}|<1.$\n- The method is absolutely stable.\n- The method is **unstable** for step size $\u0394x=1.$\n\n*Hint:* The stability function $R$ is given by ${y}_{n+1}=R(\\lambda \u0394x){y}_{n}.$",
+  "worked_solution": "A numerical method\n${y}_{n+1}={y}_{n}+\u0394{y}_{n}$\nis stable for a given step size $\u0394x$ if, when applied to the test equation\n\n$$\n{y}^{\u2032}=-\\lambda y,\\,y(0)=2,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\n{y}_{n+1}=R(\\lambda \u0394x){y}_{n},\n$$\n\nwhere $R(\\lambda \u0394x)$ is the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda \u0394x)|<1,$ is called the stability region of the method.\n\nA method that is stable for all possible values $\\lambda \u0394x>0$ is called absolutely stable.\n\nNow, let's check the stability of the trapezoidal method by applying it to the test equation\n\n$$\n{y}^{\u2032}=-5y,\\,y(0)=2.\n$$\n\nFirst, for an initial value problem ${y}^{\u2032}=f(x,y),y({x}_{0})={y}_{0},$ the trapezoidal method is given by the update formula\n\n$$\n{y}_{n+1}={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n+1}))\\cdot \u0394x.\n$$\n\nWe now examine our statements:\n\n- Applying the trapezoidal method to this test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n+1}))\\cdot \u0394x \\\\ {y}_{n+1} & ={y}_{n}+\\frac{1}{2}(-5{y}_{n}+(-5{y}_{n+1}))\\cdot \u0394x \\\\ {y}_{n+1}+\\frac{5}{2}{y}_{n+1}\\cdot \u0394x & ={y}_{n}-\\frac{5}{2}{y}_{n}\\cdot \u0394x \\\\ (1+\\frac{5}{2}\u0394x){y}_{n+1} & =(1-\\frac{5}{2}\u0394x){y}_{n} \\\\ {y}_{n+1} & =\\frac{1-5\u0394x/2}{1+5\u0394x/2}\\cdot {y}_{n}\\end{aligned}\n$$\n\nSo, the stability function is $R(5\u0394x)=\\frac{1-5\u0394x/2}{1+5\u0394x/2}.$ Hence, statement I is true.\n\n- The stability region of the method is\n\n$$\n\\begin{aligned}|R(5\u0394x)| & <1 \\\\ |\\frac{1-5\u0394x/2}{1+5\u0394x/2}| & <1 \\\\ |\\frac{2-5\u0394x}{2+5\u0394x}| & <1.\\end{aligned}\n$$\n\nHence, statement II is true.\n\n- Rearranging, we have\n\n$$\n\\begin{aligned}\\frac{|2-5\u0394x|}{|2+5\u0394x|} & <1 \\\\ |2-5\u0394x| & <|2+5\u0394x| \\\\ (2-5\u0394x)^{2} & <(2+5\u0394x)^{2} \\\\ 4-20\u0394x+25(\u0394x)^{2} & <4+20\u0394x+25(\u0394x)^{2} \\\\ -20\u0394x & <20\u0394x.\\end{aligned}\n$$\n\nSince $\u0394x>0,$ this inequality is always true. Thus, the trapezoidal method is absolutely stable, and statement III is true.\n\n- Finally, since it is absolutely stable, the trapezoidal method is stable for step size $\u0394x=1,$ and hence statement IV is false.\n\nIn conclusion, the correct answer is \"I, II, and III only\".",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "II and III only"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "II only"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "I and IV only"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "I and III only"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "I, II, and III only"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14049825,
+    "task_type": "lesson",
+    "topic_id": 6685,
+    "topic_title": "Stability of Numerical Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-333572",
+        "problem": "Which of the following statements are true when testing the stability of the trapezoidal method on the test equation ${y}^{\u2032}=-\\lambda y$ with $y=y(x),y(0)=2,x\\ge 0,\\lambda =5,$ and step size $\u0394x?$  \n\n- The stability function is $R(5\u0394x)=\\frac{1-5\u0394x/2}{1+5\u0394x/2}.$\n- The stability region is $|\\frac{2-5\u0394x}{2+5\u0394x}|<1.$\n- The method is absolutely stable.\n- The method is **unstable** for step size $\u0394x=1.$\n\n*Hint:* The stability function $R$ is given by ${y}_{n+1}=R(\\lambda \u0394x){y}_{n}.$",
+        "worked_solution": "A numerical method\n${y}_{n+1}={y}_{n}+\u0394{y}_{n}$\nis stable for a given step size $\u0394x$ if, when applied to the test equation\n\n$$\n{y}^{\u2032}=-\\lambda y,\\,y(0)=2,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\n{y}_{n+1}=R(\\lambda \u0394x){y}_{n},\n$$\n\nwhere $R(\\lambda \u0394x)$ is the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda \u0394x)|<1,$ is called the stability region of the method.\n\nA method that is stable for all possible values $\\lambda \u0394x>0$ is called absolutely stable.\n\nNow, let's check the stability of the trapezoidal method by applying it to the test equation\n\n$$\n{y}^{\u2032}=-5y,\\,y(0)=2.\n$$\n\nFirst, for an initial value problem ${y}^{\u2032}=f(x,y),y({x}_{0})={y}_{0},$ the trapezoidal method is given by the update formula\n\n$$\n{y}_{n+1}={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n+1}))\\cdot \u0394x.\n$$\n\nWe now examine our statements:\n\n- Applying the trapezoidal method to this test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n+1}))\\cdot \u0394x \\\\ {y}_{n+1} & ={y}_{n}+\\frac{1}{2}(-5{y}_{n}+(-5{y}_{n+1}))\\cdot \u0394x \\\\ {y}_{n+1}+\\frac{5}{2}{y}_{n+1}\\cdot \u0394x & ={y}_{n}-\\frac{5}{2}{y}_{n}\\cdot \u0394x \\\\ (1+\\frac{5}{2}\u0394x){y}_{n+1} & =(1-\\frac{5}{2}\u0394x){y}_{n} \\\\ {y}_{n+1} & =\\frac{1-5\u0394x/2}{1+5\u0394x/2}\\cdot {y}_{n}\\end{aligned}\n$$\n\nSo, the stability function is $R(5\u0394x)=\\frac{1-5\u0394x/2}{1+5\u0394x/2}.$ Hence, statement I is true.\n\n- The stability region of the method is\n\n$$\n\\begin{aligned}|R(5\u0394x)| & <1 \\\\ |\\frac{1-5\u0394x/2}{1+5\u0394x/2}| & <1 \\\\ |\\frac{2-5\u0394x}{2+5\u0394x}| & <1.\\end{aligned}\n$$\n\nHence, statement II is true.\n\n- Rearranging, we have\n\n$$\n\\begin{aligned}\\frac{|2-5\u0394x|}{|2+5\u0394x|} & <1 \\\\ |2-5\u0394x| & <|2+5\u0394x| \\\\ (2-5\u0394x)^{2} & <(2+5\u0394x)^{2} \\\\ 4-20\u0394x+25(\u0394x)^{2} & <4+20\u0394x+25(\u0394x)^{2} \\\\ -20\u0394x & <20\u0394x.\\end{aligned}\n$$\n\nSince $\u0394x>0,$ this inequality is always true. Thus, the trapezoidal method is absolutely stable, and statement III is true.\n\n- Finally, since it is absolutely stable, the trapezoidal method is stable for step size $\u0394x=1,$ and hence statement IV is false.\n\nIn conclusion, the correct answer is \"I, II, and III only\".",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "I and III only",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
