@@ -1,0 +1,359 @@
+{
+  "task_id": 14070331,
+  "task_type": "review",
+  "topic_id": 6399,
+  "content_only": true,
+  "source_url": "https://mathacademy.com/learn?taskId=14070331",
+  "sequence_policy": {
+    "scope": "whole review",
+    "CWCWC": 0.7,
+    "WCWCC": 0.30000000000000004,
+    "sequence": "CWCWC",
+    "continuation": "repeat saved pattern until site completion"
+  },
+  "questions": [
+    {
+      "math_academy_id": "q-334652",
+      "knowledge_point_id": "42c41150-5104-58cc-927b-f55b94529cb2",
+      "knowledge_point": "Determining the Order of a Numerical Method By Comparing LTE for Different Step Sizes",
+      "problem": "The local truncation error (LTE) of a numerical method with step size $\u0394x$ is\n\n$$\n\u03c4(\u0394x)=5(\u0394x)^{4}-(\u0394x)^{5}.\n$$\n\nComplete the following sentences.$\\,$ With step size $\u0394x=0.5,$ the local truncation error is $\u2248$\n{{field-1}}.\n\n$\\,$ With step size $\u0394x=0.25,$ the local truncation error is $\u2248$\n{{field-2}}.\n\n$\\,$ Decreasing from $\u0394x=0.5$ to $\u0394x=0.25,$ the LTE is reduced by a factor of $\u2248$\n{{field-3}}.\n\n$\\,$ According to this data, the order of the method is approximately\n{{field-4}}.",
+      "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\u03c4(\u0394x)=O\\,((\u0394x)^{p+1})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the LTE by a factor of approximately ${k}^{p+1}.$\n\nFirst, we compute the LTE for the given step sizes:\n\n- With step size $\u0394x=0.5,$ the LTE is\n\n$$\n\\begin{aligned}\u03c4(0.5) & =5(0.5)^{4}-(0.5)^{5} \\\\  & =5\\cdot 0.062\\,5-1\\cdot 0.031\\,25 \\\\  & =0.281\\,25 \\\\  & \u22480.281.\\end{aligned}\n$$\n\n- With step size $\u0394x=0.25,$ the LTE is\n\n$$\n\\begin{aligned}\u03c4(0.25) & =5(0.25)^{4}-(0.25)^{5} \\\\  & =5\\cdot 0.003\\,90...-1\\cdot 0.000\\,97... \\\\  & =0.018\\,55... \\\\  & \u22480.019.\\end{aligned}\n$$\n\nNext, we determine the order by comparing the errors. The step size decreases from $0.5$ to $0.25.$ So, it reduces by a factor of\n\n$$\nk=\\frac{0.5}{0.25}=2.\n$$\n\nAs a result, for a numerical method of order $p,$ the LTE should decrease by a factor of approximately\n\n$$\n{k}^{p+1}={2}^{p+1}.\n$$\n\nOn the other hand, the LTE actually decreases from $0.281\\,25$ to $0.018\\,55....$ So, it reduces by a factor of\n\n$$\n\\frac{0.281\\,25}{0.018\\,55...}=15.157\\,89\u2026\u224815.158.\n$$\n\nComparing the two scale factors for the LTE, we get\n\n$$\n\\begin{aligned}{2}^{p+1} & \u224815.157\\,89\u2026 \\\\ p+1 & \u2248{log}_{2}\u2061(15.157\\,89\u2026) \\\\ p+1 & \u22483.922\u2026 \\\\ p & \u22482.922\u2026.\\end{aligned}\n$$\n\nTherefore, rounding to the nearest integer, the estimated order of the method is\n$3.$\n\nIndeed, this coincides with the definition of the order from the expression for the LTE:\n\n$$\n\u03c4(\u0394x)=5(\u0394x)^{4}-(\u0394x)^{5}\\,\u21d2\\,\u03c4(\u0394x)=O\\,((\u0394x)^{4})=O\\,((\u0394x)^{3+1}),\\,\u0394x\\to 0.\n$$\n\nHence, the order of the method is $3.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0.095"
+            },
+            {
+              "type": "math",
+              "value": "0.019"
+            },
+            {
+              "type": "math",
+              "value": "0.175"
+            },
+            {
+              "type": "math",
+              "value": "0.281"
+            },
+            {
+              "type": "math",
+              "value": "0.350"
+            }
+          ],
+          "correct_value": "0.281",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0.095"
+            },
+            {
+              "type": "math",
+              "value": "0.281"
+            },
+            {
+              "type": "math",
+              "value": "0.175"
+            },
+            {
+              "type": "math",
+              "value": "0.019"
+            },
+            {
+              "type": "math",
+              "value": "0.350"
+            }
+          ],
+          "correct_value": "0.019",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-3",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "12.640"
+            },
+            {
+              "type": "math",
+              "value": "9.375"
+            },
+            {
+              "type": "math",
+              "value": "15.158"
+            },
+            {
+              "type": "math",
+              "value": "4.500"
+            },
+            {
+              "type": "math",
+              "value": "6.250"
+            }
+          ],
+          "correct_value": "15.158",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-4",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "5"
+            },
+            {
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "3"
+            }
+          ],
+          "correct_value": "3",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "knowledge_point_source_id": 21685,
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-334652",
+        "kp_title": "Determining the Order of a Numerical Method By Comparing LTE for Different Step Sizes",
+        "kp_href": "/topics/6399#21685"
+      }
+    },
+    {
+      "math_academy_id": "q-334709",
+      "knowledge_point_id": "42c41150-5104-58cc-927b-f55b94529cb2",
+      "knowledge_point": "Determining the Order of a Numerical Method By Comparing LTE for Different Step Sizes",
+      "problem": "The local truncation error (LTE) of a numerical method with step size $\u0394x$ is\n\n$$\n\u03c4(\u0394x)=4(\u0394x)^{3}-(\u0394x)^{4}.\n$$\n\nComplete the following sentences.$\\,$ With step size $\u0394x=0.3,$ the local truncation error is $\u2248$\n{{field-1}}.\n\n$\\,$ With step size $\u0394x=0.1,$ the local truncation error is $\u2248$\n{{field-2}}.\n\n$\\,$ Decreasing from $\u0394x=0.3$ to $\u0394x=0.1,$ the LTE is reduced by a factor of $\u2248$\n{{field-3}}.\n\n$\\,$ According to this data, the order of the method is approximately\n{{field-4}}.",
+      "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\u03c4(\u0394x)=O\\,((\u0394x)^{p+1})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the LTE by a factor of approximately ${k}^{p+1}.$\n\nFirst, we compute the LTE for the given step sizes:\n\n- With step size $\u0394x=0.3,$ the LTE is\n\n$$\n\\begin{aligned}\u03c4(0.3) & =4(0.3)^{3}-(0.3)^{4} \\\\  & =4\\cdot 0.027-0.008\\,1 \\\\  & =0.108-0.008\\,1 \\\\  & =0.099\\,9 \\\\  & \u22480.100.\\end{aligned}\n$$\n\n- With step size $\u0394x=0.1,$ the LTE is\n\n$$\n\\begin{aligned}\u03c4(0.1) & =4(0.1)^{3}-(0.1)^{4} \\\\  & =4\\cdot 0.001-0.000\\,1 \\\\  & =0.004-0.000\\,1 \\\\  & =0.003\\,9 \\\\  & \u22480.004.\\end{aligned}\n$$\n\nNext, we determine the order by comparing the errors. The step size decreases from $0.3$ to $0.1.$ So, it reduces by a factor of\n\n$$\nk=\\frac{0.3}{0.1}=3.\n$$\n\nAs a result, for a numerical method of order $p,$ the LTE should decrease by a factor of approximately\n\n$$\n{k}^{p+1}={3}^{p+1}.\n$$\n\nOn the other hand, the LTE actually decreases from $0.099\\,9$ to $0.003\\,9.$ So, it reduces by a factor of\n\n$$\n\\frac{0.099\\,9}{0.003\\,9}=25.615\\,38\u2026\u224825.615.\n$$\n\nComparing the two scale factors for the LTE, we get\n\n$$\n\\begin{aligned}{3}^{p+1} & \u224825.615\\,38\u2026 \\\\ p+1 & \u2248{log}_{3}\u2061(25.615\\,38\u2026) \\\\ p+1 & \u22482.952\u2026 \\\\ p & \u22481.952\u2026.\\end{aligned}\n$$\n\nTherefore, rounding to the nearest integer, the estimated order of the method is\n$2.$\n\nIndeed, this coincides with the definition of the order from the expression for the LTE:\n\n$$\n\u03c4(\u0394x)=4(\u0394x)^{3}-(\u0394x)^{4}\\,\u21d2\\,\u03c4(\u0394x)=O\\,((\u0394x)^{3})=O\\,((\u0394x)^{2+1}),\\,\u0394x\\to 0.\n$$\n\nHence, the order of the method is $2.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0.050"
+            },
+            {
+              "type": "math",
+              "value": "0.100"
+            },
+            {
+              "type": "math",
+              "value": "0.075"
+            },
+            {
+              "type": "math",
+              "value": "0.004"
+            },
+            {
+              "type": "math",
+              "value": "0.375"
+            }
+          ],
+          "correct_value": "0.100",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0.100"
+            },
+            {
+              "type": "math",
+              "value": "0.075"
+            },
+            {
+              "type": "math",
+              "value": "0.004"
+            },
+            {
+              "type": "math",
+              "value": "0.050"
+            },
+            {
+              "type": "math",
+              "value": "0.375"
+            }
+          ],
+          "correct_value": "0.004",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-3",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "20.865"
+            },
+            {
+              "type": "math",
+              "value": "10.642"
+            },
+            {
+              "type": "math",
+              "value": "27.015"
+            },
+            {
+              "type": "math",
+              "value": "15.384"
+            },
+            {
+              "type": "math",
+              "value": "25.615"
+            }
+          ],
+          "correct_value": "25.615",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        },
+        {
+          "key": "field-4",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "type": "math",
+              "value": "5"
+            },
+            {
+              "type": "math",
+              "value": "3"
+            },
+            {
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            }
+          ],
+          "correct_value": "2",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "knowledge_point_source_id": 21685,
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-334709",
+        "kp_title": "Determining the Order of a Numerical Method By Comparing LTE for Different Step Sizes",
+        "kp_href": "/topics/6399#21685"
+      }
+    },
+    {
+      "math_academy_id": "q-334745",
+      "knowledge_point_id": "11217aba-7942-5c3a-84cf-37f22aa209e3",
+      "knowledge_point": "Determining the Order of a Numerical Method Given the GTE or LTE",
+      "problem": "Which of the following global truncation error expressions represent a fourth-order numerical method?\n\n- $e(\u0394x)=4(\u0394x)^{4}+2(\u0394x)^{7}$\n- $e(\u0394x)=11(\u0394x)^{5}+0.5(\u0394x)^{6}$\n- $e(\u0394x)=0.2\u0394x+6(\u0394x)^{4}$",
+      "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the global truncation error (GTE) satisfies\n\n$$\ne(\u0394x)=O\\,((\u0394x)^{p})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nWith that in mind, let's check each option in turn:\n\n- For $e(\u0394x)=4(\u0394x)^{4}+2(\u0394x)^{7},$ the dominant term as $\u0394x\\to 0$ is $4(\u0394x)^{4}.$ So, statement I corresponds to an order $4$ method.\n\n- For $e(\u0394x)=11(\u0394x)^{5}+0.5(\u0394x)^{6},$ the dominant term as $\u0394x\\to 0$ is $11(\u0394x)^{5}.$ So, statement II corresponds to an order $5$ method.\n\n- For $e(\u0394x)=0.2\u0394x+6(\u0394x)^{4},$ the dominant term as $\u0394x\\to 0$ is $0.2\u0394x.$ So, statement III corresponds to an order $1$ method.\n\nTherefore, the correct answer is \"I only\".",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "type": "text",
+              "value": "II only"
+            },
+            {
+              "type": "text",
+              "value": "III only"
+            },
+            {
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "type": "text",
+              "value": "I, II, and III"
+            }
+          ],
+          "correct_value": "I only",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "knowledge_point_source_id": 21686,
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-334745",
+        "kp_title": "Determining the Order of a Numerical Method Given the GTE or LTE",
+        "kp_href": "/topics/6399#21686"
+      }
+    },
+    {
+      "math_academy_id": "q-334947",
+      "knowledge_point_id": "f4c7f962-87af-53af-8167-d24ade127366",
+      "knowledge_point": "Making Inferences Given the Order of a Numerical Method",
+      "problem": "A numerical method for approximating a solution to an initial value problem is known to be order $4.$  Suppose that using step size $\u0394x=0.4$ produces a local truncation error (LTE) of $\u03c4(0.4)\u22481.024.$  If we instead use a step size $\u0394x=0.1,$ what LTE should we expect?\n\n$\u03c4(0.1)\u2248$\n{{field-1}}",
+      "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\u03c4(\u0394x)=O\\,((\u0394x)^{p+1})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the LTE by a factor of approximately ${k}^{p+1}.$\n\nIn our case, the step size decreases from $0.4$ to $0.1.$ So, it reduces by a factor of\n\n$$\nk=\\frac{0.4}{0.1}=4.\n$$\n\nNow, since the numerical method is of order $4,$ the error is expected to decrease by a factor of\n\n$$\n{k}^{4+1}={4}^{5}=1024.\n$$\n\nTherefore, using a step size of $\u0394x=0.1,$ the expected LTE is\n\n$$\n\u03c4(0.1)\u2248\\frac{1.024}{1024}=0.001.\n$$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0.001"
+            },
+            {
+              "type": "math",
+              "value": "0.004"
+            }
+          ],
+          "correct_value": "0.001",
+          "choices_complete": false,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "knowledge_point_source_id": 21687,
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-334947",
+        "kp_title": "Making Inferences Given the Order of a Numerical Method",
+        "kp_href": "/topics/6399#21687"
+      }
+    }
+  ],
+  "canonical_examples": []
+}
