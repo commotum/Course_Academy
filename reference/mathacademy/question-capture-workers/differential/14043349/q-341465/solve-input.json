@@ -1,0 +1,115 @@
+{
+  "mode": "solve",
+  "problem": "Use the definition of Laplace transforms to calculate $F(s)=L{f(t)},$ where $f(t)$ is given by \n\n$$\nf(t)={\\begin{aligned}{e}^{5t},\\, & t\\le 1 \\\\ 1\\, & t>1.\\end{aligned}\n$$\n\n$\\,F(s)=L{f(t)}=$ {{field-1}},\nvalid for {{field-2}}.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{{e}^{(5-s)}-1}{s-5}-\\frac{{e}^{-s}}{s}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{{e}^{(5-s)}}{s-5}+\\frac{{e}^{-s}}{s}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{{e}^{(s-5)}}{s-5}+\\frac{{e}^{-s}}{s}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{{e}^{(5-s)}-1}{5-s}+\\frac{{e}^{-s}}{s}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "s>1"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "s\\ge 0"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "s>5"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "s\\ge 5"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "s\\ge 1"
+        },
+        {
+          "option": "5",
+          "type": "math",
+          "value": "s>0"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14043349,
+    "task_type": "lesson",
+    "topic_id": 6717,
+    "topic_title": "Laplace Transforms of Piecewise Continuous Functions",
+    "examples": [
+      {
+        "math_academy_id": "e-21842",
+        "knowledge_point": "Finding Laplace Transforms of Other Piecewise Continuous Functions",
+        "problem": "Use the definition of Laplace transforms to calculate $F(s) = \\mathcal L\\{f(t)\\},$ where $f(t)$ is given by \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14043349/assets/e70e54b6a70cebd480b86baf9d0e1d90bde0b3d9277c982d5d5e77218d0d2f5d.png)",
+        "worked_solution": "We apply the definition of the Laplace transform:\n\n$$\n\\begin{aligned}L{f(t)} & =F(s)={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t\\end{aligned}\n$$\n\nSo, for the piecewise function \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14043349/assets/48965cee8a09df4f637b4d997fdb9c90673e69a90ea1320434f9b471a2fed280.png)\n\nwe have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}{e}^{2t}\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{3}^{\\infty }1\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}{e}^{2t-st}\\,\\text{d}t+{\\int }_{3}^{\\infty }{e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}{e}^{(2-s)t}\\,\\text{d}t+{\\int }_{3}^{\\infty }{e}^{-st}\\,\\text{d}t.\\end{aligned}\n$$\n\nNote that the improper integral diverges if $s \\leq 0.$\n\nFor $s > 0,$ we calculate our Laplace transform as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{3}{e}^{(2-s)t}\\,\\text{d}t+{\\int }_{3}^{\\infty }{e}^{-st}\\,\\text{d}t \\\\  & =\\frac{1}{2-s}{[{e}^{(2-s)t}]}_{0}^{3}+{\\int }_{3}^{\\infty }{e}^{-st}\\,\\text{d}t \\\\  & =\\frac{{e}^{3(2-s)}-1}{2-s}+{lim}_{a\\to \\infty }{\\int }_{3}^{a}{e}^{-st}\\,\\text{d}t \\\\  & =\\frac{{e}^{3(2-s)}-1}{2-s}+{lim}_{a\\to \\infty }{(\\frac{-{e}^{-st}}{s})|}_{3}^{a} \\\\  & =\\frac{{e}^{3(2-s)}-1}{2-s}-\\frac{1}{s}\\cdot {lim}_{a\\to \\infty }({e}^{-as}-{e}^{-3s}) \\\\  & =\\frac{{e}^{3(2-s)}-1}{2-s}-\\frac{1}{s}\\cdot (0-{e}^{-3s}) \\\\  & =\\frac{{e}^{3(2-s)}-1}{2-s}+\\frac{{e}^{-3s}}{s}\\end{aligned}\n$$\n\nvalid for $s > 0.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14043349/example-21842.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-341390",
+        "problem": "Use the definition of Laplace transforms to calculate $F(s)=L{f(t)},$ where $f(t)=u(t-3)$ and $u$ is the unit step function.\n\n$F(s)=L{f(t)}=$\n{{field-1}},\nvalid for $s\\,$\n{{field-2}}{{field-3}}.",
+        "worked_solution": "We apply the definition of the Laplace transform:\n\n$$\n\\begin{aligned}L{f(t)} & =F(s)={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t\\end{aligned}\n$$\n\nRecall that the unit step function is defined as\n\n$$\n\\begin{aligned}u(t)={\\begin{aligned}0,\\, & t<0 \\\\ 1,\\, & t\\ge 0.\\end{aligned}\\end{aligned}\n$$\n\nSo, for the piecewise function \n\n$$\n\\begin{aligned}u(t-3)={\\begin{aligned}0,\\, & t<3 \\\\ 1,\\, & t\\ge 3\\end{aligned}\\end{aligned}\n$$\n\nwe have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }u(t-3){e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}0\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{3}^{\\infty }1\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{3}^{\\infty }{e}^{-st}\\,\\text{d}t.\\end{aligned}\n$$\n\nNote that this improper integral diverges if $s\\le 0.$\n\nFor $s>0,$ we calculate this integral as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{3}^{\\infty }{e}^{-st}\\,\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{3}^{a}{e}^{-st}\\,\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{(-\\frac{{e}^{-st}}{s})|}_{3}^{a} \\\\  & =-\\frac{1}{s}\\cdot {lim}_{a\\to \\infty }({e}^{-sa}-{e}^{-3s}) \\\\  & =-\\frac{1}{s}(0-{e}^{-3s}) \\\\  & =\\frac{{e}^{-3s}}{s}\\end{aligned}\n$$\n\nTherefore, the Laplace transform of $f(t)$ is\n\n$$\nL{f(t)}=\\frac{{e}^{-3s}}{s},\\,s>0.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{e^{-3s}}{s}",
+            "observed_mathquill_latex": "\\frac{e^{-3s}}{s}"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": ">",
+            "observed_mathquill_latex": ">"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "0",
+            "observed_mathquill_latex": "0"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
