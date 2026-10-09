@@ -1,5 +1,6 @@
 """Repeated queue observations must not reset a blocked repair's budget."""
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -46,6 +47,27 @@ class RetryEvidenceTests(unittest.TestCase):
         ledger = self.ledger(source)
         self.reader.write_bytes(b'replacement-compatible-reader')
         self.assertEqual(next_failure(self.args,ledger)[0],source)
+
+    def test_later_success_settles_old_queue_failure_even_after_reader_change(self):
+        source = self.diagnostic(1)
+        ledger = self.ledger(source)
+        observation = self.args.state_dir/'selection/queue.json'
+        atomic_json(observation, {'queue': [], 'priority_scores': {}})
+        os.utime(source, (10, 10))
+        os.utime(observation, (20, 20))
+        self.reader.write_bytes(b'new-pinned-reader')
+        self.assertIsNone(next_failure(self.args, ledger))
+        current = self.diagnostic(2, 'ERROR code=storage/unavailable')
+        os.utime(current, (30, 30))
+        self.assertEqual(next_failure(self.args, ledger)[0], current)
+
+    def test_browser_only_observation_does_not_settle_database_failure(self):
+        source = self.diagnostic(1)
+        observation = self.args.state_dir/'selection/queue.json'
+        atomic_json(observation, {'queue': []})
+        os.utime(source, (10, 10))
+        os.utime(observation, (20, 20))
+        self.assertEqual(next_failure(self.args, {})[0], source)
 
     def test_changed_database_error_reopens_diagnosis(self):
         source = self.diagnostic(1)

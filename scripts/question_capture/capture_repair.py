@@ -229,6 +229,16 @@ def next_failure(args, ledger, *, task_ids=None):
             continue
         if report.get('exception_type') in ('AccessBlocked','RateLimited','KeyboardInterrupt') or report.get('http_block'):
             continue
+        if report.get('task_id') is None and report.get('phase') in ('queue', 'queue-after'):
+            # observe_queue writes this only after both the MA queue and EDB
+            # priorities succeed. A later success settles an old queue failure;
+            # changing code or pinning a reader must not rediagnose that failure.
+            observed = args.state_dir/'selection/queue.json'
+            if observed.is_file() and observed.stat().st_mtime_ns > source.stat().st_mtime_ns:
+                saved_queue = json.loads(observed.read_text())
+                if (isinstance(saved_queue, dict) and isinstance(saved_queue.get('queue'), list)
+                        and isinstance(saved_queue.get('priority_scores'), dict)):
+                    continue
         state_file = source.parents[2]/'state.json'
         if state_file.exists():
             state = json.loads(state_file.read_text())

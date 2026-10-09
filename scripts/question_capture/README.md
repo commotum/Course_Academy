@@ -13,6 +13,12 @@ check are recorded in `.local/edb/capture-runtime/manifest.json`. Explicit
 copy a compatible EDB executable to that path and verify its read-only `status`
 and `query` commands against the existing database before starting capture.
 
+HTTP 429 throttling honors `Retry-After` with interruptible backoff. Navigation
+retries only the read; an interrupted activity reopens its checkpoint and checks
+the server's existing grade before continuing. Authentication and account
+challenges retain their explicit access stop. Throttling never launches a repair
+model or blindly repeats an answer submission.
+
 ## Multiple account workers
 
 From the repository root, start every configured account and attach to tmux:

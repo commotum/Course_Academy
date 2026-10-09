@@ -18,6 +18,7 @@ class InvalidMatrixChoiceRecoveryTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
+        (self.root/'state.json').write_bytes((ROOT/'state.json').read_bytes())
         self.question = self.root / QUESTION.name
         self.question.mkdir()
         self.item = json.loads((QUESTION / 'solve-before-exact-choice-input.json').read_text())

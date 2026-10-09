@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
+from email.utils import formatdate
 
 from browser import AccessBlocked, CaptureBrowser, RateLimited
 from capture import arguments
@@ -63,6 +64,15 @@ class RateLimitTests(unittest.TestCase):
         reader.args.stop_event = Mock(is_set=Mock(return_value=True))
         with self.assertRaises(KeyboardInterrupt):
             reader.check()
+
+    def test_http_date_retry_header_preserves_requested_delay(self):
+        from unittest.mock import patch
+        reader = self.reader()
+        with patch('browser.time.time', return_value=1000):
+            reader._observe_response(self.response(429, formatdate(1120, usegmt=True)))
+        with self.assertRaises(RateLimited) as raised:
+            reader.check()
+        self.assertEqual(raised.exception.retry_after, 120)
 
     def test_ambiguous_submission_restores_checkpoint_without_restart_or_repair(self):
         helper = adaptive.AdaptiveRunTests()

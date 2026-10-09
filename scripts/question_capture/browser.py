@@ -5,6 +5,7 @@ import logging
 import re
 import time
 from collections import deque
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -370,8 +371,14 @@ class CaptureBrowser:
             self.http_block = response.status
             if response.status == 429:
                 value = response.header_value('retry-after') or ''
-                # Only a finite delta in seconds; malformed headers use backoff.
-                self.rate_limit_retry_after = int(value) if re.fullmatch(r'\d{1,7}', value) else 30
+                self.rate_limit_retry_after = 30
+                if re.fullmatch(r'\d{1,7}', value):
+                    self.rate_limit_retry_after = int(value)
+                else:
+                    try:
+                        self.rate_limit_retry_after = max(0, parsedate_to_datetime(value).timestamp()-time.time())
+                    except (ValueError, TypeError, OverflowError):
+                        pass  # Malformed headers use the ordinary backoff.
         if response.ok and response.request.resource_type == 'image':
             self.image_responses[response.url] = response
 
