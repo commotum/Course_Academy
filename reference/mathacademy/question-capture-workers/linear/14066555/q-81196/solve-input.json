@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Given the vector $x$ and the system of linear equations below, find the projection of $x$ onto the solution space of the system.\n\n$$\nx=[\\begin{aligned}-2 \\\\ 3 \\\\ 7\\end{aligned}],\\,{\\begin{aligned}{x}_{1}+{x}_{2}=0 \\\\ 2{x}_{1}+{x}_{2}+{x}_{3}=0\\end{aligned}\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}1 \\\\ -2 \\\\ 4\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}-4 \\\\ 4 \\\\ 4\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}-\\frac{1}{2} \\\\ 1 \\\\ \\frac{1}{2}\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}-2 \\\\ 2 \\\\ 2\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}-2 \\\\ 1 \\\\ 4\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14066555,
+    "task_type": "lesson",
+    "topic_id": 2122,
+    "topic_title": "Projecting Vectors Onto One-Dimensional Subspaces",
+    "examples": [
+      {
+        "math_academy_id": "e-5572",
+        "knowledge_point": "Finding the Orthogonal Projection of a Vector onto the Solution Space of a System of Equations",
+        "problem": "Given the vector $\\mathbf{x}$ and the system of linear equations below, find the projection of $\\mathbf{x}$ onto the solution space of the system.\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066555/assets/37beee87c5b5bd6350bd2c0f6353b61b1cfd321449a96b8b66aac99584d459bb.png)",
+        "worked_solution": "First, we need to find the basis of the solution space of the system. \n\nConsider the augmented matrix $M$ of the system, which we reduce to row echelon form, as follows:    \n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & 1 & 4 & 0 \\\\ 1 & 2 & 0 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}-{R}_{1} \\\\  & \u223c[\\begin{aligned}1 & 1 & 4 & 0 \\\\ 0 & 1 & -4 & 0\\end{aligned}].\\end{aligned}\n$$\n\nIn the reduced matrix above, there are $2$ pivot columns ($1$st and $2$nd). Thus, $x_3$ is a free variable. Now, from the second equation, we get $x_2=4x_3.$ \nSubstituting this into the first equation, we obtain  \n\n$$\nx_1+4x_3+4x_3= 0\n\\qquad\\Longrightarrow\\qquad\nx_1=-8x_3.\n$$\n\nSo, the general solution is\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066555/assets/4995b9959cbb8a412fe0ed6198bfa9a82bcda40cd388c4759589e060ec16de1e.png)\nConsequently, ![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066555/assets/232c58060c7ba67f66564e8f8667fe67a84f6ef886a1c56e2d042224ace9b4db.png) is a basis of the solution space of the system.\n\nFinally, we find the projection of $\\mathbf{x}$ onto the solution space of the system:\n\n$$\n\\begin{aligned}{\\text{proj}}_{b}\\,x & =\\frac{x\\cdot b}{b\\cdot b}b \\\\  & =\\frac{(-10)\\cdot (-8)+20\\cdot 4+2\\cdot 1}{{(-8)}^{2}+{4}^{2}+{1}^{2}}b \\\\  & =\\frac{80+80+2}{64+16+1}b \\\\  & =\\frac{162}{81}b \\\\  & =2b \\\\  & =2[\\begin{aligned}-8 \\\\ 4 \\\\ 1\\end{aligned}] \\\\  & =[\\begin{aligned}-16 \\\\ 8 \\\\ 2\\end{aligned}]\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066555/example-5572.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-86733",
+        "problem": "Let $x=[\\begin{aligned}3 \\\\ 1 \\\\ 2 \\\\ 4\\end{aligned}]$ and $a=[\\begin{aligned}1 \\\\ 2 \\\\ -1 \\\\ 3\\end{aligned}].$ If $x=y+z,$ where $y\\in \\text{Span}{a}$ and $z\u22a5\\text{Span}{a},$ then $z=$",
+        "worked_solution": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066555/assets/d887852fe51f08cb7296437e69b6a9632721cfd155558e6abf9a99b4f59f7ad6.png)\n\nFirst, we find the orthogonal projection of $x$ onto $\\text{Span}{a}:$\n\n$$\n\\begin{aligned}{\\text{proj}}_{a}\\,x & =\\frac{a\\cdot x}{a\\cdot a}a \\\\  & =\\frac{1\\cdot 3+2\\cdot 1+(-1)\\cdot 2+3\\cdot 4}{{1}^{2}+{2}^{2}+(-1)^{2}+{3}^{2}}a \\\\  & =\\frac{3+2+(-2)+12}{1+4+1+9}a \\\\  & =\\frac{15}{15}a \\\\  & =a \\\\  & =[\\begin{aligned}1 \\\\ 2 \\\\ -1 \\\\ 3\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, we get the following: \n\n$$\n\\begin{aligned}y & ={\\text{proj}}_{a}\\,x=[\\begin{aligned}1 \\\\ 2 \\\\ -1 \\\\ 3\\end{aligned}] \\\\ z & =x-{\\text{proj}}_{a}\\,x=[\\begin{aligned}3 \\\\ 1 \\\\ 2 \\\\ 4\\end{aligned}]-[\\begin{aligned}1 \\\\ 2 \\\\ -1 \\\\ 3\\end{aligned}]=[\\begin{aligned}2 \\\\ -1 \\\\ 3 \\\\ 1\\end{aligned}]\\end{aligned}\n$$\n\nNotice that $y\\in \\text{Span}{a}$ and $z\u22a5\\text{Span}{a},$ as shown in the picture above.\n\nIn conclusion, $z=[\\begin{aligned}2 \\\\ -1 \\\\ 3 \\\\ 1\\end{aligned}].$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}2 \\\\ -1 \\\\ 3 \\\\ 1\\end{aligned}]",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
