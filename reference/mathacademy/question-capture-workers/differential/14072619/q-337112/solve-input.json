@@ -1,0 +1,39 @@
+{
+  "mode": "solve",
+  "problem": "The charge $q(t),$ in coulombs, in a series RC circuit is governed by the differential equation\n\n$$\n\\frac{dq}{dt}+7q=\\frac{3}{5}.\n$$\n\nFind the steady-state charge for this circuit.\n\nThe steady-state charge is\n{{field-1}} coulombs.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072619,
+    "task_type": "review",
+    "topic_id": 6701,
+    "topic_title": "Modeling RC Circuits With First-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336222",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14072619/assets/3a03159ef7285c7cbb571d8870edce98452b197d178334b4b06277f05a38d876.png)\n\nFind an equation for the charge $q$ (in coulombs) on the capacitor in the circuit given in the diagram above, expressing your answer in terms of time $t$ (in seconds) **only**, and given that the initial charge is $\\frac{1}{125}\\,\\text{C}.$\n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*\n\n$q(t)=$\n{{field-1}}",
+        "worked_solution": "The current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs. \n\n$$\nI=\\frac{\\text{d}q}{\\text{d}t}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RC circuit, there are two voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=30\\,\u03a9.$ So,\n\n$$\n{V}_{R}=30I=30\\,\\frac{dq}{dt}.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{0.002}=500q.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of charge $q$ on the capacitor is\n\n$$\n9=30\\,\\frac{dq}{dt}+500q,\n$$\n\nwhich gives\n\n$$\n\\frac{dq}{dt}+\\frac{50}{3}q=\\frac{3}{10}.\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution ${q}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{d{q}_{c}}{dt}+\\frac{50}{3}{q}_{c}=0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\n{q}_{c}(t)=A{e}^{-50t/3},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is a polynomial of degree $0.$ So, we assume that the particular solution is also a polynomial of degree $0,$ i.e.,\n\n$$\n{q}_{p}(t)=\\alpha .\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${q}_{p}=\\alpha $ and $\\frac{d{q}_{p}}{dt}=(\\alpha )^{\u2032}=0$ into the inhomogeneous equation:\n\n$$\n0+\\frac{50}{3}\\alpha =\\frac{3}{10}\\,\u27f9\\,\\alpha =\\frac{9}{500}\n$$\n\nTherefore, the particular solution is ${q}_{p}(t)=\\frac{9}{500}.$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nq(t)={q}_{c}(t)+{q}_{p}(t)=A{e}^{-50t/3}+\\frac{9}{500}.\n$$\n\nWe're told that the circuit starts with an initial charge of $\\frac{1}{125}\\,\\text{C}$ on the capacitor. So, we can apply the initial condition $q(0)=\\frac{1}{125},$ and solve for $A:$\n\n$$\n\\begin{aligned}q(0) & =\\frac{1}{125} \\\\ A{e}^{-50(0)/3}+\\frac{9}{500} & =\\frac{1}{125} \\\\ A & =-\\frac{1}{100}\\end{aligned}\n$$\n\nTherefore, we have the following expression for $q(t):$\n\n$$\n\\begin{aligned}q(t) & =-\\frac{1}{100}{e}^{-50t/3}+\\frac{9}{500} \\\\  & =\\frac{1}{500}(9-5{e}^{-50t/3})\\end{aligned}\n$$\n\nNote the following:\n\n- The quantity ${q}_{c}=-\\frac{1}{100}{e}^{-50t/3}$ is the *transient charge*, since it goes to zero as $t\\to \\infty .$\n\n- The constant ${q}_{p}=\\frac{9}{500}$ is the *steady-state charge*. As $t\\to \\infty ,$ the charge $q$ approaches the value of the steady-state charge.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0.018-0.01e^{-50t/3}",
+            "observed_mathquill_latex": "0.018-0.01e^{-\\frac{50t}{3}}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
