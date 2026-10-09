@@ -1,0 +1,39 @@
+{
+  "mode": "solve",
+  "problem": "Find the Laplace transform $Y(s)=L{y(t)}$ if \n\n$$\n{y}^{\u2032}+y={u}_{\\pi }(t)\\cdot \\operatorname{sin}\u2061(t-\\pi )\\,,\\,y(0)=0,\n$$\n\nwhere ${u}_{\\pi }(t)=u(t-\\pi )$ is the unit step function.\n\nYou may make use of the following result:\n\n$$\nL{\\operatorname{sin}\u2061\\omega t}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,s>0\n$$\n\n$Y(s)=$\n{{field-1}},$\\,s>0$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072958,
+    "task_type": "lesson",
+    "topic_id": 6718,
+    "topic_title": "Solving First-Order ODEs With Time-Delayed Forcing Using Laplace Transforms",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-342540",
+        "problem": "Find the Laplace transform $Y(s)=L{y(t)}$ if \n\n$$\n{y}^{\u2032}-2y=2{u}_{2}(t)\\cdot {e}^{4t-8}\\,,\\,y(0)=-1,\n$$\n\nwhere ${u}_{2}(t)=u(t-2)$ is the unit step function.\n\n$Y(s)=-\\frac{1}{s-2}\\,+\\,$\n{{field-1}},$\\,s>4$",
+        "worked_solution": "First, we take the Laplace transform of both sides and use the addition and scalar multiplication properties of the Laplace transform:\n\n$$\n\\begin{aligned}L{{y}^{\u2032}-2y} & =L{2{u}_{2}(t)\\cdot {e}^{4t-8}} \\\\ L{{y}^{\u2032}}-2L{y} & =L{2{u}_{2}(t)\\cdot {e}^{4t-8}}\\end{aligned}\n$$\n\nTo calculate $L{{y}^{\u2032}},$ we use the formula for the Laplace transform of a derivative and the initial condition $y(0)=1:$\n\n$$\nL{{y}^{\u2032}}=sY(s)-y(0)=sY(s)-(-1)=sY(s)+1\n$$\n\nTo find the transform of the right-hand side, we note that the term \n\n$$\n2{u}_{2}(t)\\cdot {e}^{4t-8}\n$$\n\nis in the form $u(t-a)\\cdot f(t)$ where $a=2$ and $f(t)=2{e}^{4t-8}.$\n\nNow, recall that the second shifting theorem (time-shifting property) states\n\n$$\nL{u(t-a)\\cdot f(t)}={e}^{-as}\\cdot L{f(t+a)}.\n$$\n\n  \n\nSo, by the second shifting theorem, we have\n\n$$\n\\begin{aligned}L{2u(t-2)\\cdot {e}^{4t-8}} & ={e}^{-2s}\\cdot L{2{e}^{4(t+2)-8}} \\\\  & ={e}^{-2s}\\cdot L{2{e}^{4t}} \\\\  & ={e}^{-2s}\\cdot \\frac{2}{s-4} \\\\  & =\\frac{2{e}^{-2s}}{s-4}.\\end{aligned}\n$$\n\nFinally, we substitute these back into our transformed differential equation:\n\n$$\n\\begin{aligned}L{{y}^{\u2032}}-2L{y} & =L{2{u}_{2}(t){e}^{4t-8}} \\\\ (sY(s)+1)-2Y(s) & =\\frac{2{e}^{-2s}}{s-4} \\\\ (s-2)Y(s)+1 & =\\frac{2{e}^{-2s}}{s-4} \\\\ (s-2)Y(s) & =-1+\\frac{2{e}^{-2s}}{s-4} \\\\ Y(s) & =-\\frac{1}{s-2}+\\frac{2{e}^{-2s}}{(s-4)(s-2)}\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{2e^{-2s}}{(s-4)(s-2)}",
+            "observed_mathquill_latex": "\\frac{2e^{-2s}}{\\left(s-4\\right)\\left(s-2\\right)}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

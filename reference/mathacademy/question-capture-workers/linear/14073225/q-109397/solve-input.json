@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}-1 & -4 & 3 \\\\ 1 & -5 & 2 \\\\ 0 & 0 & -3\\end{aligned}]\n$$\n\nThe matrix above has eigenvalues ${\\lambda }_{1}={\\lambda }_{2}={\\lambda }_{3}=-3.$ Find a Jordan canonical form of the matrix.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}-3 & 1 & 0 \\\\ 0 & -3 & 0 \\\\ 0 & 0 & -3\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}3 & 0 & 0 \\\\ 0 & -3 & 1 \\\\ 0 & 0 & -3\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}-3 & 1 & 0 \\\\ 0 & -3 & 1 \\\\ 0 & 0 & -3\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}-3 & 1 & 0 \\\\ 0 & -3 & 0 \\\\ 0 & 0 & 3\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}-3 & 0 & 0 \\\\ 0 & -3 & 0 \\\\ 0 & 0 & -3\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14073225,
+    "task_type": "lesson",
+    "topic_id": 3115,
+    "topic_title": "Jordan Canonical Form of a 3x3 Matrix",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-110498",
+        "problem": "$$\nA=[\\begin{aligned}2 & 3 & -1 \\\\ 0 & 2 & 0 \\\\ 0 & -1 & 2\\end{aligned}]\n$$\n\nThe matrix above has eigenvalues ${\\lambda }_{1}={\\lambda }_{2}={\\lambda }_{3}=2.$ Find a Jordan canonical form of the matrix.",
+        "worked_solution": "Notice that we are given a non-scalar $3\\times 3$ matrix that has the eigenvalue $\\lambda =2$ of algebraic multiplicity $3.$ \n\nAs a result, there are two possibilities for the Jordan blocks corresponding to $\\lambda =2:$\n\n- *Case I.* We may have the single $3\\times 3$ Jordan block ${J}_{3}(2).$ This happens when the generalized eigenvectors ${v}_{1},{v}_{2}$ and ${v}_{3}$ corresponding to $\\lambda =2$ form the following chain:\n\n$$\n{v}_{3}\\overset{A-2I\\,}{\\to }{v}_{2}\\overset{A-2I\\,}{\\to }{v}_{1}\\overset{A-2I\\,}{\\to }0\n$$\n\n- *Case II.* We may have a composition of one $2\\times 2$ and one $1\\times 1$ Jordan block, say ${J}_{2}(2)\\,\u2295\\,{J}_{1}(2).$ This happens when the generalized eigenvectors ${v}_{1},{v}_{2}$ and ${v}_{3}$ corresponding to $\\lambda =2$ form the following chains:\n\n$$\n\\begin{aligned}{v}_{2}\\overset{A-2I\\,}{\\to }{v}_{1}\\overset{A-2I\\,}{\\to }0 &  \\\\ {v}_{3}\\overset{A-2I\\,}{\\to }0 & \\end{aligned}\n$$\n\nTo figure out which of the cases we have in this situation, we find the number of linearly independent eigenvectors corresponding to $\\lambda =2.$\n\nComputing $A-2I,$ we get\n\n$$\n\\begin{aligned}A-2I & =[\\begin{aligned}2 & 3 & -1 \\\\ 0 & 2 & 0 \\\\ 0 & -1 & 2\\end{aligned}]-2[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}0 & 3 & -1 \\\\ 0 & 0 & 0 \\\\ 0 & -1 & 0\\end{aligned}].\\end{aligned}\n$$\n\n \n\nNow, we reduce this matrix to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}A-2I & =[\\begin{aligned}0 & 3 & -1 \\\\ 0 & 0 & 0 \\\\ 0 & -1 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}\u2194{R}_{3}\\end{aligned} \\\\  & \u223c[\\begin{aligned}0 & -1 & 0 \\\\ 0 & 0 & 0 \\\\ 0 & 3 & -1\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+3{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}0 & -1 & 0 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & -1\\end{aligned}] &  & \\begin{aligned}{R}_{2}\u2194{R}_{3}\\end{aligned} \\\\  & \u223c[\\begin{aligned}0 & -1 & 0 \\\\ 0 & 0 & -1 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\n \n\nSince $\\text{nullity}(A-2I)=1,$ there will be only one eigenvector that corresponds to the eigenvalue $\\lambda =2,$ say, ${v}_{1}.$ So, the generalized eigenvectors corresponding to the eigenvalue $\\lambda =2$ form the following chain: \n\n$$\n{v}_{3}\\overset{A-2I\\,}{\\to }{v}_{2}\\overset{A-2I\\,}{\\to }{v}_{1}\\overset{A-2I\\,}{\\to }0\n$$\n\n \n\nTherefore, we have *case I*, and $A$ has the following Jordan canonical form:\n\n$$\n{J}_{3}(2)=[\\begin{aligned}2 & 1 & 0 \\\\ 0 & 2 & 1 \\\\ 0 & 0 & 2\\end{aligned}]\n$$\n\n**Note:** The Jordan canonical form is unique up to the order of the Jordan blocks.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}2 & 1 & 0 \\\\ 0 & 2 & 1 \\\\ 0 & 0 & 2\\end{aligned}]",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}+y={u}_{2}(t)\\cdot (t-2)\\,,\\,y(0)=1,\n$$\n\nwhere ${u}_{2}(t)=u(t-2)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L{y(t)}$ is\n\n$$\nY(s)=\\frac{1}{s+1}+\\frac{{e}^{-2s}}{{s}^{2}(s+1)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)={e}^{-t}+u(t-2)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{e}^{-(t-2)}+t-2"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{e}^{-(t-2)}-t+3"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{e}^{-(t-2)}+t-1"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{e}^{-(t-2)}-t-1"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{e}^{-(t-2)}+t-3"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072958,
+    "task_type": "lesson",
+    "topic_id": 6718,
+    "topic_title": "Solving First-Order ODEs With Time-Delayed Forcing Using Laplace Transforms",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-342812",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}+3y={u}_{2}(t)\\cdot {e}^{-4(t-2)}\\,,\\,y(0)=0,\n$$\n\nwhere ${u}_{2}(t)=u(t-2)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L{y(t)}$ is\n\n$$\nY(s)=\\frac{{e}^{-2s}}{(s+3)(s+4)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=u(t-2)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+        "worked_solution": "To solve the initial value problem, we need to compute the inverse Laplace transform of $Y(s).$\n\nTo find the inverse transform, we first ignore the exponential term ${e}^{-2s}$ (which corresponds to a time shift) and focus on the rational function part:\n\n$$\nF(s)=\\frac{1}{(s+3)(s+4)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains distinct linear factors, the decomposition takes the form\n\n$$\n\\frac{1}{(s+3)(s+4)}=\\frac{A}{s+3}+\\frac{B}{s+4}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=A(s+4)+B(s+3).\n$$\n\nNow, we find the constants $A$ and $B.$\n\n- Setting $s=-3,$ we have\n\n$$\n1=A(1)+B(0)\\,\u27f9\\,A=1.\n$$\n\n- Setting $s=-4,$ we have\n\n$$\n1=A(0)+B(-1)\\,\u27f9\\,B=-1.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{s+3}-\\frac{1}{s+4}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}{F(s)}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}{\\frac{1}{s+3}-\\frac{1}{s+4}} \\\\  & ={e}^{-3t}-{e}^{-4t}.\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-2s}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L{u(t-a)\\cdot f(t-a)}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}{{e}^{-as}F(s)}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=2.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-2):$\n\n$$\n\\begin{aligned}u(t-2)f(t-2) & =u(t-2)[{e}^{-3(t-2)}-{e}^{-4(t-2)}].\\end{aligned}\n$$\n\nComparing this to the form given in the problem statement $y(t)=u(t-2)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)={e}^{-3(t-2)}-{e}^{-4(t-2)}.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{e}^{-3(t-2)}-{e}^{-4(t-2)}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
