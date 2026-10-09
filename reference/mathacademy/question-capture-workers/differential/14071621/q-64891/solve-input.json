@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Given that the differential equation \n\n$$\n{t}^{2}{y}^{\u2033}-2y={t}^{3}{e}^{t},\\,t>0\n$$\n\nhas the complimentary function ${y}_{c}(t)=\\frac{A}{t}+B{t}^{2}$, find the particular solution ${y}_{p}(t)$ to this equation. \n\n*Hint: You may wish to make use of the following result:* \n\n$$\n\\int {t}^{3}{e}^{t}\\text{d}t=({t}^{3}-3{t}^{2}+6t-6){e}^{t}+C\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{y}_{p}(t)=({t}^{2}+t+3){e}^{t}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{y}_{p}(t)=(4t+\\frac{1}{t}){e}^{t}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{y}_{p}(t)=(3t+1){e}^{t}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{y}_{p}(t)=(t-2+\\frac{2}{t}){e}^{t}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{y}_{p}(t)=({t}^{2}-1){e}^{t}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071621,
+    "task_type": "lesson",
+    "topic_id": 2546,
+    "topic_title": "Cauchy-Euler Equations With Forcing",
+    "examples": [
+      {
+        "math_academy_id": "e-6635",
+        "knowledge_point": "Calculating a Particular Solution For a Cauchy-Euler Equation Using Variation of Parameters",
+        "problem": "Given that the differential equation\n\n$$\nt^2 y'' +2ty' = t^2 e ^ {t}, \\quad t>0\n$$\n\nhas the complementary solution $y_c(t) =  \\dfrac{A}{t} + B,$ find the particular solution $y_p(t)$ to this equation.",
+        "worked_solution": "The right-hand side is not a polynomial, so we need to use another solution technique. Here, we are given the complementary solution $y_c(t) =  \\dfrac{A}{t} + B,$ which means that we have two fundamental solutions\n\n$$\ny_1(t) = \\dfrac{1}{t}  , \\qquad y_2(t) = 1.\n$$\n\nBecause we have two fundamental solutions, we can use variation of parameters.\n\nTo use variation of parameters, we must first reduce the differential equation to the form\n\n$$\ny'' + P(t) y' +Q(t) y = f(t).\n$$\n\nTo do this, we divide both sides of the given equation by $t^2,$ and get\n\n$$\ny'' + \\dfrac{2}{t}y'  =  e ^ {t}.\n$$\n\nSo, we have the following:\n\n$$\ny_1(t) = \\dfrac{1}{t}  , \\qquad y_2(t) = 1, \\qquad f(t) = e^t.\n$$\n\nFirst, let's compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{\u2032}-{y}_{1}^{\u2032}{y}_{2} \\\\  & =(\\frac{1}{t})(1)^{\u2032}-{(\\frac{1}{t})}^{\u2032}(1) \\\\  & =0+\\frac{1}{{t}^{2}} \\\\  & =\\frac{1}{{t}^{2}}\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions  $y_1(t)$ and $y_2(t)$ are independent.\n\nAccording to the method of variation of parameters, a particular solution of the differential equation is\n\n$$\n\\begin{aligned}{y}_{p}(t) & ={y}_{1}(t)u(t)+{y}_{2}(t)v(t),\\end{aligned}\n$$\n\nwhere\n\n$$\n\\begin{aligned}u(t) & =-\\int \\frac{f(t){y}_{2}(t)}{W({y}_{1},{y}_{2})}\\,\\text{d}t=-\\int {t}^{2}{e}^{t}=-({t}^{2}-2t+2){e}^{t}, \\\\ v(t) & =\\int \\frac{f(t){y}_{1}(t)}{W({y}_{1},{y}_{2})}\\,\\text{d}t=\\int t{e}^{t}=(t-1){e}^{t}.\\end{aligned}\n$$\n\nTherefore, a particular solution is given by\n\n$$\n\\begin{aligned}{y}_{p}(t) & ={y}_{1}(t)u(t)+{y}_{2}(t)v(t) \\\\  & =-\\frac{({t}^{2}-2t+2){e}^{t}}{t}+(t-1){e}^{t} \\\\  & =(1-\\frac{2}{t}){e}^{t}.\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14071621/example-6635.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-94175",
+        "problem": "Find the general solution to the equation \n\n$$\n{x}^{2}{y}^{\u2033}-x{y}^{\u2032}-15y=4{x}^{3},\\,x>0.\n$$",
+        "worked_solution": "First, we need to find the complimentary function ${y}_{c}(x)$ which is the solution to the homogeneous equation\n\n$$\n{x}^{2}{y}^{\u2033}-x{y}^{\u2032}-15y=0.\n$$\n\nLet $y={x}^{\\lambda }.$ Differentiating $y$ with respect to $x$ gives\n\n$$\n{y}^{\u2032}=\\lambda {x}^{\\lambda -1},\\,{y}^{\u2033}=\\lambda (\\lambda -1){x}^{\\lambda -2}.\n$$\n\nSubstituting the above to our differential equation gives\n\n$$\n\\begin{aligned}{x}^{2}\\cdot \\lambda (\\lambda -1){x}^{\\lambda -2}-x\\cdot \\lambda {x}^{\\lambda -1}-15{x}^{\\lambda } & =0 \\\\ \\lambda (\\lambda -1){x}^{\\lambda }-\\lambda {x}^{\\lambda }-15{x}^{\\lambda } & =0 \\\\ {x}^{\\lambda }[\\lambda (\\lambda -1)-\\lambda -15] & =0.\\end{aligned}\n$$\n\nTherefore, the auxiliary equation is\n\n$$\n\\begin{aligned}\\lambda (\\lambda -1)-\\lambda -15 & =0 \\\\ {\\lambda }^{2}-2\\lambda -15 & =0 \\\\ (\\lambda -5)(\\lambda +3) & =0.\\end{aligned}\n$$\n\nHence, the roots are $\\lambda =-3$ and $\\lambda =5.$\nTherefore, the complimentary function ${y}_{c}(x)$ is\n\n$$\n{y}_{c}(x)=\\frac{{c}_{1}}{{x}^{3}}+{c}_{2}{x}^{5}.\n$$\n\nThe right-hand side of the inhomogeneous equation is proportional to ${x}^{3}.$ Therefore, we assume that the particular solution is of the form \n\n$$\n{y}_{p}(x)=\\alpha {x}^{3}\n$$\n\nwhere $\\alpha $ is the constant that is to be determined. \n\nCalculating the first and second derivatives of ${y}_{p}$ gives\n\n$$\n\\frac{\\text{d}{y}_{p}}{\\text{d}x}=3\\alpha {x}^{2},\\,\\frac{{\\text{d}}^{2}{y}_{p}}{\\text{d}{x}^{2}}=6\\alpha x.\n$$\n\nTo find the value of $\\alpha ,$ we substitute the derivatives into the differential equation and group the terms on the left-hand side:\n\n$$\n\\begin{aligned}{x}^{2}(6\\alpha x)-x(3\\alpha {x}^{2})-15(\\alpha {x}^{3}) & =4{x}^{3} \\\\ (6\\alpha -3\\alpha -15\\alpha ){x}^{3} & =4{x}^{3} \\\\ -12\\alpha {x}^{3} & =4{x}^{3}\\end{aligned}\n$$\n\nEquating the coefficients, we get $\\alpha =-\\frac{1}{3}.$\n\nHence, the particular integral ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-\\frac{{x}^{3}}{3}.\n$$\n\nTherefore, the general solution is\n\n$$\n\\begin{aligned}y(x) & ={y}_{c}(x)+{y}_{p}(x) \\\\  & =\\frac{{c}_{1}}{{x}^{3}}+{c}_{2}{x}^{5}-\\frac{{x}^{3}}{3}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "y(x)=\\frac{{c}_{1}}{{x}^{3}}+{c}_{2}{x}^{5}-\\frac{{x}^{3}}{3}",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Given that the differential equation \n\n$$\n{x}^{2}{y}^{\u2033}+5x{y}^{\u2032}+3y=x{e}^{x},\\,x>0\n$$\n\nhas the complimentary function ${y}_{c}(x)=\\frac{A}{{x}^{3}}+\\frac{B}{x}$, find the particular solution ${y}_{p}(x)$ to this equation. \n\n*Hint: You may wish to make use of the following results:* \n\n$$\n\\int {x}^{3}{e}^{x}\\text{d}x=({x}^{3}-3{x}^{2}+6x-6){e}^{x}+C\n$$\n\nand\n\n$$\n\\int x{e}^{x}\\text{d}x=(x-1){e}^{x}+C\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{y}_{p}(x)=(\\frac{1}{x}-\\frac{3}{{x}^{2}}+\\frac{3}{{x}^{3}}){e}^{x}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{y}_{p}(x)=(\\frac{1}{x}+\\frac{1}{{x}^{2}}-\\frac{3}{{x}^{3}}){e}^{x}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{y}_{p}(x)=(\\frac{3}{x}-\\frac{1}{{x}^{2}}-\\frac{3}{{x}^{3}}){e}^{x}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{y}_{p}(x)=(\\frac{3}{x}-\\frac{1}{{x}^{2}}+\\frac{1}{{x}^{3}}){e}^{x}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{y}_{p}(x)=(\\frac{1}{x}+\\frac{3}{{x}^{2}}-\\frac{3}{{x}^{3}}){e}^{x}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071621,
+    "task_type": "lesson",
+    "topic_id": 2546,
+    "topic_title": "Cauchy-Euler Equations With Forcing",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-64891",
+        "problem": "Given that the differential equation \n\n$$\n{t}^{2}{y}^{\u2033}-2y={t}^{3}{e}^{t},\\,t>0\n$$\n\nhas the complimentary function ${y}_{c}(t)=\\frac{A}{t}+B{t}^{2}$, find the particular solution ${y}_{p}(t)$ to this equation. \n\n*Hint: You may wish to make use of the following result:* \n\n$$\n\\int {t}^{3}{e}^{t}\\text{d}t=({t}^{3}-3{t}^{2}+6t-6){e}^{t}+C\n$$",
+        "worked_solution": "First, we reduce the differential equation to the form\n\n$$\n{y}^{\u2033}+P(t){y}^{\u2032}+Q(t)y=f(t).\n$$\n\nSo, we divide both sides of the given equation by ${t}^{2}.$ We get\n\n$$\n{y}^{\u2033}-\\frac{2}{{t}^{2}}y=t{e}^{t}.\n$$\n\nWe notice that the forcing term $f(t)=t{e}^{t}.$ Additionally, we're given the fundamental solutions:\n\n$$\n{y}_{1}(t)=\\frac{1}{t},\\,{y}_{2}(t)={t}^{2}\n$$\n\nFirst, let's compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{\u2032}-{y}_{1}^{\u2032}{y}_{2} \\\\  & =\\frac{1}{t}({t}^{2})^{\u2032}-{(\\frac{1}{t})}^{\u2032}{t}^{2} \\\\  & =2t(\\frac{1}{t})-(-\\frac{1}{{t}^{2}}){t}^{2} \\\\  & =2+1 \\\\  & =3\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions  ${y}_{1}(x)$ and ${y}_{2}(x)$ are independent. \n\nAccording to the method of variation of parameters, the particular solution of the differential equation is\n\n$$\n\\begin{aligned}{y}_{p}(t) & ={y}_{1}(t)u(t)+{y}_{2}(t)v(t),\\end{aligned}\n$$\n\nwhere\n\n$$\n\\begin{aligned}u(t) & =-\\int \\frac{f(t){y}_{2}(t)}{W({y}_{1},{y}_{2})}\\,\\text{d}t=-\\frac{1}{3}\\int {t}^{3}{e}^{t}\\text{d}t=-\\frac{1}{3}({t}^{3}-3{t}^{2}+6t-6){e}^{t}, \\\\ v(t) & =\\int \\frac{f(t){y}_{1}(t)}{W({y}_{1},{y}_{2})}\\,\\text{d}t=\\frac{1}{3}\\int {e}^{t}\\text{d}t=\\frac{1}{3}{e}^{t}.\\end{aligned}\n$$\n\nThus,\n\n$$\n\\begin{aligned}{y}_{p}(t) & ={y}_{1}(t)u(t)+{y}_{2}(t)v(t) \\\\  & =-\\frac{1}{3t}({t}^{3}-3{t}^{2}+6t-6){e}^{t}+\\frac{{t}^{2}}{3}{e}^{t} \\\\  & =(-\\frac{{t}^{2}}{3}+t-2+\\frac{2}{t}+\\frac{{t}^{2}}{3}){e}^{t} \\\\  & =(t-2+\\frac{2}{t}){e}^{t}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{y}_{p}(t)=(t-2+\\frac{2}{t}){e}^{t}",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

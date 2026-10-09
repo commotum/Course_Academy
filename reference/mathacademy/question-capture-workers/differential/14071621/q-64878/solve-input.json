@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Find the particular solution ${y}_{p}(x)$ of the equation \n\n$$\n{x}^{2}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-3x\\frac{\\text{d}y}{\\text{d}x}+4y=4\\operatorname{ln}\u2061x,\\,x>0.\n$$\n\n*Hint: Consider using the substitution $x={e}^{t}.$*",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{y}_{p}(x)=2\\operatorname{ln}\u2061x"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{y}_{p}(x)=x\\operatorname{ln}\u2061x+2"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{y}_{p}(x)=2\\operatorname{ln}\u2061x-3"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{y}_{p}(x)={x}^{2}\\operatorname{ln}\u2061x"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{y}_{p}(x)=\\operatorname{ln}\u2061x+1"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071621,
+    "task_type": "lesson",
+    "topic_id": 2546,
+    "topic_title": "Cauchy-Euler Equations With Forcing",
+    "examples": [
+      {
+        "math_academy_id": "e-6636",
+        "knowledge_point": "Solving a Cauchy-Euler Equation Using a Substitution",
+        "problem": "Find the particular solution $y_p(x)$ of the equation \n\n$$\nx^2y''+xy'   + y =  \\ln x, \\quad x>0.\n$$",
+        "worked_solution": "This Cauchy-Euler equation has non-polynomial forcing, but we are not given two fundamental solutions, so we cannot use variation of parameters.\n\nHowever, if we make a substitution $x=e^t,$ we can transform the Cauchy-Euler equation into a linear ODE with constant coefficients.\n\nLetting $x=e^t,$ we note that\n\n$$\n\\dfrac{\\textrm dx}{\\textrm d t} = e^t = x\\quad\\Longrightarrow\\quad \\dfrac{\\textrm d t}{\\textrm d x} = \\dfrac1x.\n$$\n\nThen, we use the chain rule to compute the first and second derivatives. \n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}t}\\frac{\\text{d}t}{\\text{d}x}=\\frac{1}{x}\\frac{\\text{d}y}{\\text{d}t}, \\\\ \\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}} & =\\frac{\\text{d}}{\\text{d}x}(\\frac{1}{x}\\frac{\\text{d}y}{\\text{d}t}) \\\\  & ={{\\frac{\\text{d}}{\\text{d}x}(\\frac{1}{x})\\cdot \\frac{\\text{d}y}{\\text{d}t}+\\frac{1}{x}\\cdot \\frac{\\text{d}}{\\text{d}x}(\\frac{\\text{d}y}{\\text{d}t})}_{\u23df}}_{\\text{product rule}} \\\\  & =-\\frac{1}{{x}^{2}}\\frac{\\text{d}y}{\\text{d}t}+\\frac{1}{x}\\cdot {{\\frac{\\text{d}t}{\\text{d}x}\\frac{\\text{d}}{\\text{d}t}}_{\u23df}}_{\\text{chain rule}}(\\frac{\\text{d}y}{\\text{d}t}) \\\\  & =-\\frac{1}{{x}^{2}}\\frac{\\text{d}y}{\\text{d}t}+\\frac{1}{{x}^{2}}\\frac{{\\text{d}}^{2}y}{\\text{d}{t}^{2}} \\\\  & =\\frac{1}{{x}^{2}}\\frac{{\\text{d}}^{2}y}{\\text{d}{t}^{2}}-\\frac{1}{{x}^{2}}\\frac{\\text{d}y}{\\text{d}t}\\end{aligned}\n$$\n\nSubstituting the above to our differential equation gives\n\n$$\n\\begin{aligned}\\frac{{\\text{d}}^{2}y}{\\text{d}{t}^{2}}+y=t.\\end{aligned}\n$$\n\nThis equation is a second-order inhomogeneous ODE equation with constant coefficients and polynomial forcing.\n\nUsing the usual methods for solving second-order ODEs, we find that the complementary solution is \n\n$$\ny_c(x) = A\\cos t+B\\sin t.\n$$\n\nSince right-hand side of the inhomogeneous ODE is a polynomial of degree $1,$ we assume that the particular solution is also a polynomial of degree $1,$ i.e.\n\n$$\ny_p(t)=\\alpha t+ \\beta\n$$\n\nwhere $\\alpha$ and $\\beta$ are constants that are to be determined. \n\nCalculating the first and second derivatives of $y_p$ gives:\n\n$$\n\\frac{\\textrm{d}y_p}{\\textrm{d}t} = \\alpha\n,\\qquad \\frac{\\textrm{d}^2y_p}{\\textrm{d}t^2} = 0.\n$$\n\nTo find the values of $\\alpha$ and $\\beta,$ we substitute the derivatives into the differential equation for $y(t)\\mathbin{:}$\n\n$$\n0+(\\alpha t+\\beta)=t\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\begin{aligned}{\\begin{aligned}\\alpha =1\\, & (\\text{equating the coefficients of [math]t[/math]}) \\\\ \\beta =0\\, & (\\text{equating the constants})\\end{aligned}\\end{aligned}\n$$\n\nThis system has the solution $\\alpha=1$ and $\\beta=0.$ \n\nTherefore, the particular solution is\n\n$$\ny_p(t) = t.\n$$\n\nNow, all that remains is to write the above solution in terms of the original variable $x.$ Since $x=e^t,$ we have $t = \\ln x,$ and therefore\n\n$$\ny_p(x) =\\ln x.\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14071621/example-6636.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-94196",
+        "problem": "Given that the differential equation \n\n$$\n{x}^{2}{y}^{\u2033}+6x{y}^{\u2032}+6y=-{e}^{x},\\,x>0\n$$\n\nhas the complimentary function ${y}_{c}(x)=\\frac{A}{{x}^{3}}+\\frac{B}{{x}^{2}}$, find the particular solution ${y}_{p}(x)$ to this equation. \n\n*Hint: You may wish to make use of the following results:* \n\n$$\n\\int {x}^{2}{e}^{x}\\text{d}x=({x}^{2}-2x+2){e}^{x}+C\n$$\n\nand\n\n$$\n\\int x{e}^{x}\\text{d}x=(x-1){e}^{x}+C\n$$",
+        "worked_solution": "First, we reduce the differential equation to the form\n\n$$\n{y}^{\u2033}+P(x){y}^{\u2032}+Q(x)y=f(x).\n$$\n\nSo, we divide both sides of the given equation by ${x}^{2}.$ We get\n\n$$\n{y}^{\u2033}+\\frac{6}{x}{y}^{\u2032}+\\frac{6}{{x}^{2}}y=-\\frac{{e}^{x}}{{x}^{2}}.\n$$\n\nWe notice that the forcing term $f(x)=-\\frac{{e}^{x}}{{x}^{2}}.$ Additionally, we're given the fundamental solutions:\n\n$$\n{y}_{1}(x)=\\frac{1}{{x}^{3}},\\,{y}_{2}(x)=\\frac{1}{{x}^{2}}\n$$\n\nFirst, let's compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{\u2032} & {y}_{2}^{\u2032}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{\u2032}-{y}_{1}^{\u2032}{y}_{2} \\\\  & =\\frac{1}{{x}^{3}}{(\\frac{1}{{x}^{2}})}^{\u2032}-{(\\frac{1}{{x}^{3}})}^{\u2032}\\frac{1}{{x}^{2}} \\\\  & =\\frac{1}{{x}^{3}}(-\\frac{2}{{x}^{3}})-(-\\frac{3}{{x}^{4}})\\frac{1}{{x}^{2}} \\\\  & =-\\frac{2}{{x}^{6}}+\\frac{3}{{x}^{6}} \\\\  & =\\frac{1}{{x}^{6}}\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions  ${y}_{1}(x)$ and ${y}_{2}(x)$ are independent. \n\nAccording to the method of variation of parameters, the particular solution of the differential equation is\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={y}_{1}(x)u(x)+{y}_{2}(x)v(x),\\end{aligned}\n$$\n\nwhere\n\n$$\n\\begin{aligned}u(x) & =-\\int \\frac{f(x){y}_{2}(x)}{W({y}_{1},{y}_{2})}\\,\\text{d}x=\\int {x}^{2}{e}^{x}\\,\\text{d}x=({x}^{2}-2x+2){e}^{x}, \\\\ v(x) & =\\int \\frac{f(x){y}_{1}(x)}{W({y}_{1},{y}_{2})}\\,\\text{d}x=-\\int x{e}^{x}\\,\\text{d}x=(1-x){e}^{x}.\\end{aligned}\n$$\n\nThus,\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={y}_{1}(x)u(x)+{y}_{2}(x)v(x) \\\\  & =(\\frac{1}{{x}^{3}})({x}^{2}-2x+2){e}^{x}+(\\frac{1}{{x}^{2}})(1-x){e}^{x} \\\\  & =(\\frac{1}{x}-\\frac{2}{{x}^{2}}+\\frac{2}{{x}^{3}}+\\frac{1}{{x}^{2}}-\\frac{1}{x}){e}^{x} \\\\  & =(\\frac{2}{{x}^{3}}-\\frac{1}{{x}^{2}}){e}^{x}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{y}_{p}(x)=(\\frac{2}{{x}^{3}}-\\frac{1}{{x}^{2}}){e}^{x}",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

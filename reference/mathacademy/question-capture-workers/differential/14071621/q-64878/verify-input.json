@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "Find the particular solution ${y}_{p}(x)$ of the equation \n\n$$\n{x}^{2}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-3x\\frac{\\text{d}y}{\\text{d}x}+4y=4\\operatorname{ln}\u2061x,\\,x>0.\n$$\n\n*Hint: Consider using the substitution $x={e}^{t}.$*",
+  "worked_solution": "This Cauchy-Euler equation has non-polynomial forcing, but we are not given two fundamental solutions, so we cannot use variation of parameters.\n\nHowever, if we make a substitution $x={e}^{t},$ we can transform the Cauchy-Euler equation into a linear ODE with constant coefficients.\n\nLetting $x={e}^{t},$ we note that\n\n$$\n\\frac{\\text{d}x}{\\text{d}t}={e}^{t}=x\\,\u27f9\\,\\frac{\\text{d}t}{\\text{d}x}=\\frac{1}{x}.\n$$\n\nThen, we use the chain rule to compute the first and second derivatives. \n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}t}\\frac{\\text{d}t}{\\text{d}x}=\\frac{1}{x}\\frac{\\text{d}y}{\\text{d}t}, \\\\ \\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}} & =\\frac{\\text{d}}{\\text{d}x}(\\frac{1}{x}\\frac{\\text{d}y}{\\text{d}t}) \\\\  & ={{\\frac{\\text{d}}{\\text{d}x}(\\frac{1}{x})\\cdot \\frac{\\text{d}y}{\\text{d}t}+\\frac{1}{x}\\cdot \\frac{\\text{d}}{\\text{d}x}(\\frac{\\text{d}y}{\\text{d}t})}_{\u23df}}_{\\text{product rule}} \\\\  & =-\\frac{1}{{x}^{2}}\\frac{\\text{d}y}{\\text{d}t}+\\frac{1}{x}\\cdot {{\\frac{\\text{d}t}{\\text{d}x}\\frac{\\text{d}}{\\text{d}t}}_{\u23df}}_{\\text{chain rule}}(\\frac{\\text{d}y}{\\text{d}t}) \\\\  & =-\\frac{1}{{x}^{2}}\\frac{\\text{d}y}{\\text{d}t}+\\frac{1}{{x}^{2}}\\frac{{\\text{d}}^{2}y}{\\text{d}{t}^{2}} \\\\  & =\\frac{1}{{x}^{2}}\\frac{{\\text{d}}^{2}y}{\\text{d}{t}^{2}}-\\frac{1}{{x}^{2}}\\frac{\\text{d}y}{\\text{d}t}\\end{aligned}\n$$\n\nSubstituting the above to our differential equation gives\n\n$$\n\\begin{aligned}\\frac{{\\text{d}}^{2}y}{\\text{d}{t}^{2}}-4\\frac{\\text{d}y}{\\text{d}t}+4y=4t.\\end{aligned}\n$$\n\nThis equation is a second-order inhomogeneous differential equation with constant coefficients and polynomial forcing. \n\nUsing the usual methods for solving second-order ODEs, we find that the complementary solution is\n\n$$\n{y}_{c}(t)=A{e}^{2t}+Bt{e}^{2t}.\n$$\n\nThe right-hand side of the inhomogeneous equation is a polynomial of degree $1.$ Therefore, we assume that the particular solution is also a polynomial of degree $1,$ i.e.,\n\n$$\n{y}_{p}(t)=\\alpha t+\\beta \n$$\n\nwhere $\\alpha $ and $\\beta $ are constants that are to be determined. \n\nCalculating the first and second derivatives of ${y}_{p}$ gives\n\n$$\n\\frac{\\text{d}{y}_{p}}{\\text{d}t}=\\alpha ,\\,\\frac{{\\text{d}}^{2}{y}_{p}}{\\text{d}{t}^{2}}=0.\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute the derivatives into the differential equation for $y(t):$\n\n$$\n0-4\\alpha +4(\\alpha t+\\beta )=4t\n$$\n\nGrouping the terms on the left-hand side gives\n\n$$\n4\\alpha t+4(\\beta -\\alpha )=4t.\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\begin{aligned}{\\begin{aligned}4\\alpha =4\\, & (\\text{equating the coefficients of\u00a0}t) \\\\ \\beta -\\alpha =0\\, & (\\text{equating the constants}).\\end{aligned}\\end{aligned}\n$$\n\nHence, $\\alpha =1$ and $\\beta =1,$ and so the particular integral ${y}_{p}(t)$ is\n\n$$\n{y}_{p}(t)=t+1.\n$$\n\nNow, returning to the variable $x,$ we get\n\n$$\n{y}_{p}(x)=\\operatorname{ln}\u2061x+1.\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{y}_{p}(x)=2\\operatorname{ln}\u2061x"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{y}_{p}(x)=x\\operatorname{ln}\u2061x+2"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{y}_{p}(x)=2\\operatorname{ln}\u2061x-3"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{y}_{p}(x)={x}^{2}\\operatorname{ln}\u2061x"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{y}_{p}(x)=\\operatorname{ln}\u2061x+1"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071621,
+    "task_type": "lesson",
+    "topic_id": 2546,
+    "topic_title": "Cauchy-Euler Equations With Forcing",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-64878",
+        "problem": "Find the particular solution ${y}_{p}(x)$ of the equation \n\n$$\n{x}^{2}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-3x\\frac{\\text{d}y}{\\text{d}x}+4y=4\\operatorname{ln}\u2061x,\\,x>0.\n$$\n\n*Hint: Consider using the substitution $x={e}^{t}.$*",
+        "worked_solution": "This Cauchy-Euler equation has non-polynomial forcing, but we are not given two fundamental solutions, so we cannot use variation of parameters.\n\nHowever, if we make a substitution $x={e}^{t},$ we can transform the Cauchy-Euler equation into a linear ODE with constant coefficients.\n\nLetting $x={e}^{t},$ we note that\n\n$$\n\\frac{\\text{d}x}{\\text{d}t}={e}^{t}=x\\,\u27f9\\,\\frac{\\text{d}t}{\\text{d}x}=\\frac{1}{x}.\n$$\n\nThen, we use the chain rule to compute the first and second derivatives. \n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}t}\\frac{\\text{d}t}{\\text{d}x}=\\frac{1}{x}\\frac{\\text{d}y}{\\text{d}t}, \\\\ \\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}} & =\\frac{\\text{d}}{\\text{d}x}(\\frac{1}{x}\\frac{\\text{d}y}{\\text{d}t}) \\\\  & ={{\\frac{\\text{d}}{\\text{d}x}(\\frac{1}{x})\\cdot \\frac{\\text{d}y}{\\text{d}t}+\\frac{1}{x}\\cdot \\frac{\\text{d}}{\\text{d}x}(\\frac{\\text{d}y}{\\text{d}t})}_{\u23df}}_{\\text{product rule}} \\\\  & =-\\frac{1}{{x}^{2}}\\frac{\\text{d}y}{\\text{d}t}+\\frac{1}{x}\\cdot {{\\frac{\\text{d}t}{\\text{d}x}\\frac{\\text{d}}{\\text{d}t}}_{\u23df}}_{\\text{chain rule}}(\\frac{\\text{d}y}{\\text{d}t}) \\\\  & =-\\frac{1}{{x}^{2}}\\frac{\\text{d}y}{\\text{d}t}+\\frac{1}{{x}^{2}}\\frac{{\\text{d}}^{2}y}{\\text{d}{t}^{2}} \\\\  & =\\frac{1}{{x}^{2}}\\frac{{\\text{d}}^{2}y}{\\text{d}{t}^{2}}-\\frac{1}{{x}^{2}}\\frac{\\text{d}y}{\\text{d}t}\\end{aligned}\n$$\n\nSubstituting the above to our differential equation gives\n\n$$\n\\begin{aligned}\\frac{{\\text{d}}^{2}y}{\\text{d}{t}^{2}}-4\\frac{\\text{d}y}{\\text{d}t}+4y=4t.\\end{aligned}\n$$\n\nThis equation is a second-order inhomogeneous differential equation with constant coefficients and polynomial forcing. \n\nUsing the usual methods for solving second-order ODEs, we find that the complementary solution is\n\n$$\n{y}_{c}(t)=A{e}^{2t}+Bt{e}^{2t}.\n$$\n\nThe right-hand side of the inhomogeneous equation is a polynomial of degree $1.$ Therefore, we assume that the particular solution is also a polynomial of degree $1,$ i.e.,\n\n$$\n{y}_{p}(t)=\\alpha t+\\beta \n$$\n\nwhere $\\alpha $ and $\\beta $ are constants that are to be determined. \n\nCalculating the first and second derivatives of ${y}_{p}$ gives\n\n$$\n\\frac{\\text{d}{y}_{p}}{\\text{d}t}=\\alpha ,\\,\\frac{{\\text{d}}^{2}{y}_{p}}{\\text{d}{t}^{2}}=0.\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute the derivatives into the differential equation for $y(t):$\n\n$$\n0-4\\alpha +4(\\alpha t+\\beta )=4t\n$$\n\nGrouping the terms on the left-hand side gives\n\n$$\n4\\alpha t+4(\\beta -\\alpha )=4t.\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\begin{aligned}{\\begin{aligned}4\\alpha =4\\, & (\\text{equating the coefficients of\u00a0}t) \\\\ \\beta -\\alpha =0\\, & (\\text{equating the constants}).\\end{aligned}\\end{aligned}\n$$\n\nHence, $\\alpha =1$ and $\\beta =1,$ and so the particular integral ${y}_{p}(t)$ is\n\n$$\n{y}_{p}(t)=t+1.\n$$\n\nNow, returning to the variable $x,$ we get\n\n$$\n{y}_{p}(x)=\\operatorname{ln}\u2061x+1.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{y}_{p}(x)=2\\operatorname{ln}\u2061x-3",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
