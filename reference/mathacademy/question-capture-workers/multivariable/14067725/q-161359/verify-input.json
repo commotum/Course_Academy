@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "Consider the vector field $F(x,y,z)=\u27e8zy,\\,xz,\\,xy\u27e9$ and the surface $S$ defined by $z=x-y$ for $-1\\le x\\le 1$ and $0\\le y\\le 1.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-1}^{1}{\\int }_{0}^{1}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+  "worked_solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u-v\u27e9\n$$\n\nover the domain \n\n$$\nD={(u,v)\\,:\\,-1\\le u\\le 1,\\,0\\le v\\le 1}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u-v)\u27e9 \\\\  & =\u27e81,\\,0,\\,1\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u-v)\u27e9 \\\\  & =\u27e80,\\,1,\\,-1\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 1 \\\\ 0 & 1 & -1\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 1 \\\\ 1 & -1\\end{aligned}|,\\,-|\\begin{aligned}1 & 1 \\\\ 0 & -1\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8-1,\\,1,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8zy,\\,xz,\\,xy\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u-v} \\\\  & =\u27e8(u-v)v,\\,(u-v)u,\\,uv\u27e9\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8(u-v)v,\\,(u-v)u,\\,uv\u27e9\\cdot \u27e8-1,\\,1,\\,1\u27e9 \\\\  & =(u-v)v\\cdot (-1)+(u-v)u\\cdot (1)+uv\\cdot 1 \\\\  & =-uv+{v}^{2}+{u}^{2}-uv+uv \\\\  & ={u}^{2}-uv+{v}^{2}.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8zy,\\,xz,\\,xy\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A \\\\  & ={\u222c}_{D}({u}^{2}-uv+{v}^{2})\\,\\text{d}A \\\\  & ={\\int }_{-1}^{1}{\\int }_{0}^{1}({u}^{2}-uv+{v}^{2})\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{u}^{2}-uv+{v}^{2}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{u}^{2}-{v}^{2}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "(u-v)^{2}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "(u+v)^{2}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{u}^{2}+uv-{v}^{2}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14067725,
+    "task_type": "lesson",
+    "topic_id": 4143,
+    "topic_title": "Calculating Flux Through Cartesian Surfaces",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-161359",
+        "problem": "Consider the vector field $F(x,y,z)=\u27e8zy,\\,xz,\\,xy\u27e9$ and the surface $S$ defined by $z=x-y$ for $-1\\le x\\le 1$ and $0\\le y\\le 1.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-1}^{1}{\\int }_{0}^{1}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+        "worked_solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u-v\u27e9\n$$\n\nover the domain \n\n$$\nD={(u,v)\\,:\\,-1\\le u\\le 1,\\,0\\le v\\le 1}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u-v)\u27e9 \\\\  & =\u27e81,\\,0,\\,1\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u-v)\u27e9 \\\\  & =\u27e80,\\,1,\\,-1\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 1 \\\\ 0 & 1 & -1\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 1 \\\\ 1 & -1\\end{aligned}|,\\,-|\\begin{aligned}1 & 1 \\\\ 0 & -1\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8-1,\\,1,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8zy,\\,xz,\\,xy\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u-v} \\\\  & =\u27e8(u-v)v,\\,(u-v)u,\\,uv\u27e9\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8(u-v)v,\\,(u-v)u,\\,uv\u27e9\\cdot \u27e8-1,\\,1,\\,1\u27e9 \\\\  & =(u-v)v\\cdot (-1)+(u-v)u\\cdot (1)+uv\\cdot 1 \\\\  & =-uv+{v}^{2}+{u}^{2}-uv+uv \\\\  & ={u}^{2}-uv+{v}^{2}.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8zy,\\,xz,\\,xy\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A \\\\  & ={\u222c}_{D}({u}^{2}-uv+{v}^{2})\\,\\text{d}A \\\\  & ={\\int }_{-1}^{1}{\\int }_{0}^{1}({u}^{2}-uv+{v}^{2})\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "(u+v)^{2}",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
