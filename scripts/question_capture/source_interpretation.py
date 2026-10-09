@@ -66,7 +66,8 @@ def unresolved_study_clarifications(content, state, correction_root):
         mid = q.get('math_academy_id', '')
         record = state.get('questions', {}).get(mid, {})
         meta = q.get('source_feedback_interpretation') or record.get('source_feedback_interpretation')
-        expected = {POLICY: (TOPIC, KP), INTEGRAL_POLICY: (INTEGRAL_TOPIC, INTEGRAL_KP)}
+        expected = {POLICY: (TOPIC, KP), INTEGRAL_POLICY: (INTEGRAL_TOPIC, INTEGRAL_KP),
+                    LAPLACE_POLICY: (LAPLACE_TOPIC, LAPLACE_KP)}
         if (not meta or meta.get('policy') not in expected
                 or (meta.get('topic_id'), meta.get('knowledge_point_id')) != expected[meta['policy']]
                 or not meta.get('requires_study_clarification')):
@@ -150,6 +151,63 @@ def reviewed_integral_theorem(item, activity, directory):
         'requires_study_clarification': True,
         'confidence_scope': 'Applicability of the explicitly stated sufficient theorem only. '
                             'II admits differentiation by dominated convergence; failure of this theorem does not forbid interchange.',
+        'canonical_review': str(review_path), 'review_sha256': proof['review_sha256'],
+        'transaction_sha256': proof['transaction_sha256'], 'committed_basis': proof['basis_after'],
+        'identity_sha256': hashlib.sha256(json.dumps(identity).encode()).hexdigest()}
+
+
+LAPLACE_TOPIC = 6372
+LAPLACE_KP = '4241972f-4023-5638-aa7a-9e4a75167c3d'
+LAPLACE_POLICY = 'q-330826-reviewed-convergence-domain-v1'
+
+
+def reviewed_laplace_domain(item, activity, directory):
+    """Use the committed exact-question convergence correction; otherwise solve normally."""
+    if Path(directory).name != 'q-330826' or activity.get('topic_id') != LAPLACE_TOPIC:
+        return None
+    fields = item.get('fields', [])
+    if (len(fields) != 1 or fields[0].get('key') != 'selection'
+            or fields[0].get('type') != 'radio' or not fields[0].get('choices_complete', True)):
+        return None
+    correction = ROOT/'reference/mathacademy/mathematical-corrections/q-330826'
+    try:
+        review_path = correction/'review.json'
+        review_bytes = review_path.read_bytes()
+        transaction_bytes = (correction/'transaction.edn').read_bytes()
+        proof = json.loads((correction/'verification.json').read_text())
+        review = json.loads(review_bytes)
+        original, corrected = review['original_content'], review['corrected_content']
+        original_field, = original['answer_fields']
+        corrected_field, = corrected['answer_fields']
+        choices = lambda field: sorted((c['type'], c['value']) for c in field['choices'])
+        if (proof.get('committed') is not True or proof.get('mathematical_check_passed') is not True
+                or not isinstance(proof.get('basis_after'), int)
+                or proof.get('review_sha256') != hashlib.sha256(review_bytes).hexdigest()
+                or proof.get('transaction_sha256') != hashlib.sha256(transaction_bytes).hexdigest()
+                or original.get('math_academy_id') != 'q-330826'
+                or corrected.get('math_academy_id') != 'q-330826'
+                or original.get('knowledge_point_id') != LAPLACE_KP
+                or corrected.get('knowledge_point_id') != LAPLACE_KP
+                or item.get('problem') != original['problem']
+                or not original['problem'].endswith('for $s>-3.$')
+                or corrected['problem'] != original['problem'].replace('for $s>-3.$', 'for $s>0.$')
+                or choices(fields[0]) != choices(original_field)
+                or corrected_field != original_field
+                or original_field.get('correct_value') != r'\frac{1}{s(s+3)}'
+                or 'defining Laplace integral diverges' not in corrected['worked_solution']):
+            return None
+        kp = activity.get('questions', {}).get('q-330826', {}).get('kp_id') or activity.get('current_kp')
+        if kp is not None and kp != LAPLACE_KP:
+            return None
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+    identity = [LAPLACE_POLICY, proof['review_sha256'], hashlib.sha256(item['problem'].encode()).hexdigest()]
+    return {'policy': LAPLACE_POLICY, 'topic_id': LAPLACE_TOPIC, 'knowledge_point_id': LAPLACE_KP,
+        'source_problem': item['problem'], 'interpreted_problem': corrected['problem'],
+        'requirement': 'for $s>0.$', 'requires_study_clarification': True,
+        'confidence_scope': 'Transform formula on the proven maximal real convergence domain s>0 only. '
+                            'The original s>-3 and matching source-solution domain are erroneous; '
+                            'the transform diverges for every real s<=0. Preserve the original grade separately.',
         'canonical_review': str(review_path), 'review_sha256': proof['review_sha256'],
         'transaction_sha256': proof['transaction_sha256'], 'committed_basis': proof['basis_after'],
         'identity_sha256': hashlib.sha256(json.dumps(identity).encode()).hexdigest()}

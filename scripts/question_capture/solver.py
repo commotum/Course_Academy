@@ -252,9 +252,10 @@ class Solver:
         session = json.loads(session_file.read_text()) if session_file.exists() else {'session_id':None,'context_keys':[]}
         activity_file = directory.parent/'state.json'
         activity = json.loads(activity_file.read_text()) if activity_file.exists() else {}
-        from source_interpretation import reviewed_containment, reviewed_integral_theorem
+        from source_interpretation import reviewed_containment, reviewed_integral_theorem, reviewed_laplace_domain
         interpretation = (reviewed_containment(item, activity, directory)
-                          or reviewed_integral_theorem(item, activity, directory))
+                          or reviewed_integral_theorem(item, activity, directory)
+                          or reviewed_laplace_domain(item, activity, directory))
         if interpretation:
             payload['source_problem'] = item['problem']
             payload['problem'] = interpretation['interpreted_problem']
@@ -290,7 +291,9 @@ class Solver:
                              directory.name, phase)
             elif containment_recheck:
                 integral_policy = (interpretation or prior_interpretation).get('policy', '').startswith('q-335252-')
-                label = 'integral-theorem-policy' if integral_policy else 'containment-policy'
+                laplace_policy = (interpretation or prior_interpretation).get('policy', '').startswith('q-330826-')
+                label = ('laplace-domain-policy' if laplace_policy else
+                         'integral-theorem-policy' if integral_policy else 'containment-policy')
                 archive = '-before-' + label + ('' if interpretation else '-invalidated')
                 atomic_json(directory/(phase+archive+'-answer.json'), saved)
                 atomic_json(directory/(phase+archive+'-input.json'), original)

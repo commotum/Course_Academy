@@ -196,7 +196,23 @@ corrected values instead of restoring the source mistake or deferring the import
 Answer fields are replaced by new component identities; original fields, answers
 and question versions remain available for historical use.
 
+Exact question **330826** in topic **6372** has a verified convergence-domain
+correction: the transform of $\int_0^t e^{-3\tau}\,d\tau$ exists for $s>0$.
+Its unchanged displayed formula is $1/[s(s+3)]$. The solver applies this domain
+only when the exact original prompt and choices match the committed correction's
+hash-bound review. Original source wording, solutions and grades stay captured;
+missing or changed evidence falls back to ordinary solving.
+
 Topic **2616**, KP `624215ff-efdc-5b12-8d61-9d66371672d9`, has a reviewed containing-region interpretation for rectangular zero-extension questions. A matching committed canonical correction attests the explicit requirement $D\subseteq R$ for solver inputs, including verification. Original prompts, widgets, grades and worked solutions stay unchanged; decisions and content record the interpretation separately. The incremental health check flags newly verified interpreted questions lacking a matching per-question study correction, so capture can continue while the study clarification is completed. Other topics and unrecognized forms use ordinary solving.
+
+Question **335252** in topic **6682** has a reviewed sufficient-theorem request.
+Its authentic worked solution tests continuity and existence of the parameter
+partial derivative on local rectangles and accepts I and III. A verified study
+correction makes that criterion explicit and explains that II still admits
+differentiation by dominated convergence. Only that exact source prompt, KP and
+complete choice set receive the hash-bound interpretation. Raw prompts, grades
+and choices remain separate; missing or changed attestation uses ordinary
+solving and its existing confidence checks.
 
 When the EDB CLI hides a remote conflict behind `transport/remote-error`, the
 importer replays the exact saved request through a temporary local relay to read
