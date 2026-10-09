@@ -1,0 +1,57 @@
+{
+  "mode": "solve",
+  "problem": "Find $L{f(t)}$ for the piecewise function defined by \n\n$$\n\\begin{aligned}f(t)={\\begin{aligned}0,\\, & t<1 \\\\ -7,\\, & 1\\le t\\le 3 \\\\ 0,\\, & t>3.\\end{aligned}\\end{aligned}\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "L{f(t)}={e}^{-3s}-{e}^{-s}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "L{f(t)}=\\frac{7}{s}({e}^{-3s}-{e}^{-s})"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "L{f(t)}={e}^{-7s}-1"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "L{f(t)}=\\frac{1}{7}({e}^{3s}-{e}^{s})"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "L{f(t)}=\\frac{1}{s}(1-{e}^{7s})"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14043349,
+    "task_type": "lesson",
+    "topic_id": 6717,
+    "topic_title": "Laplace Transforms of Piecewise Continuous Functions",
+    "examples": [
+      {
+        "math_academy_id": "e-6641",
+        "knowledge_point": "Finding Laplace Transforms of Step Functions",
+        "problem": "Use the definition of Laplace transforms to calculate $F(s) = \\mathcal L\\{f(t)\\}$ for $f(t) = u(t - 2) + u(t-6),$ where $u$ is the unit step function.",
+        "worked_solution": "We apply the definition of the Laplace transform:\n\n$$\n\\begin{aligned}L{f(t)} & =F(s)={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t\\end{aligned}\n$$\n\nRecall that the unit step function is defined as\n\n$$\n\\begin{aligned}u(t)={\\begin{aligned}0,\\, & t<0 \\\\ 1,\\, & t\\ge 0.\\end{aligned}\\end{aligned}\n$$\n\nSo, for the piecewise functions $u(t-2)$ and $u(t-6),$ we have \n\n$$\n\\begin{aligned}u(t-2) & ={\\begin{aligned}0,\\, & t<2 \\\\ 1,\\, & t\\ge 2\\end{aligned} \\\\ u(t-6) & ={\\begin{aligned}0,\\, & t<6 \\\\ 1,\\, & t\\ge 6.\\end{aligned}\\end{aligned}\n$$\n\nTherefore,\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14043349/assets/6ddb2983dec1f3221778a336bb6ef3cce3138476b67d64334ab6660184a79f95.png)\n\nSo, for our Laplace transform, we have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{2}0\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{2}^{6}1\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{6}^{\\infty }2\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{2}^{6}{e}^{-st}\\,\\text{d}t+{\\int }_{6}^{\\infty }2{e}^{-st}\\,\\text{d}t.\\end{aligned}\n$$\n\nNote that the second integral diverges for $s \\leq 0.$\n\nFor $s > 0,$ we calculate our Laplace transform as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{2}^{6}{e}^{-st}\\,\\text{d}t+{\\int }_{6}^{\\infty }2{e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{2}^{6}{e}^{-st}\\,\\text{d}t+2{lim}_{a\\to \\infty }{\\int }_{6}^{a}{e}^{-st}\\,\\text{d}t \\\\  & ={[-\\frac{{e}^{-st}}{s}]}_{2}^{6}+2{lim}_{a\\to \\infty }{(-\\frac{{e}^{-st}}{s})|}_{6}^{a} \\\\  & =-\\frac{{e}^{-6s}}{s}+\\frac{{e}^{-2s}}{s}-\\frac{2}{s}\\cdot {lim}_{a\\to \\infty }({e}^{-sa}-{e}^{-6s}) \\\\  & =\\frac{{e}^{-2s}}{s}-\\frac{{e}^{-6s}}{s}-\\frac{2}{s}(0-{e}^{-6s}) \\\\  & =\\frac{{e}^{-2s}}{s}-\\frac{{e}^{-6s}}{s}+\\frac{2{e}^{-6s}}{s} \\\\  & =\\frac{{e}^{-2s}}{s}+\\frac{{e}^{-6s}}{s}\\end{aligned}\n$$\n\nTherefore, the Laplace transform of $f(t)$ is\n\n$$\n\\mathcal{L}\\left\\{f(t)\\right\\} =\\dfrac{e^{-2s}}{s} +\\dfrac{e^{-6s}}{s}, \n\\qquad \ns > 0.\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14043349/example-6641.png"
+      }
+    ],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}

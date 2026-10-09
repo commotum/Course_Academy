@@ -1,0 +1,80 @@
+{
+  "mode": "solve",
+  "problem": "Consider the boundary value problem\n\n$$\n{y}^{\u2033}-8\\lambda {y}^{\u2032}+16{\\lambda }^{2}y=0,\\,{y}^{\u2032}(1)=0,\\,y(2)+2{y}^{\u2032}(2)=0,\\,1\\le x\\le 2,\\,\\lambda \\in R.\n$$\n\nFind the eigenvalues and eigenfunctions of this problem. Assume that $B$ and $C$ are constants.\n$\\,$ The eigenvalues are $\\lambda =$ {{field-1}}.\n\n$\\,$ The eigenfunctions are $y=$ {{field-2}}.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\pm \\frac{1}{4}"
+        },
+        {
+          "option": "1",
+          "type": "text",
+          "value": "$-\\frac{1}{4}$ and $\\frac{1}{8}$"
+        },
+        {
+          "option": "2",
+          "type": "text",
+          "value": "$-\\frac{1}{8}$ and $\\frac{1}{4}$"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\pm \\frac{1}{8}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "text",
+          "value": "$Bx{e}^{-3x}$ and $C{e}^{x}(x-3)$"
+        },
+        {
+          "option": "1",
+          "type": "text",
+          "value": "$Bx{e}^{-x}$ and $C{e}^{2x}(x-1)$"
+        },
+        {
+          "option": "2",
+          "type": "text",
+          "value": "$Bx{e}^{2x}$ and $C{e}^{-x/2}(x-2)$"
+        },
+        {
+          "option": "3",
+          "type": "text",
+          "value": "$Bx{e}^{-x}$ and $C{e}^{x/2}(x-3)$"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071917,
+    "task_type": "lesson",
+    "topic_id": 3211,
+    "topic_title": "Eigenvalues and Eigenfunctions of Homogeneous BVPs",
+    "examples": [
+      {
+        "math_academy_id": "e-21808",
+        "knowledge_point": "Exponential Eigenfunctions",
+        "problem": "Consider the boundary value problem\n\n$$\ny'' - 18\\lambda y' + 81\\lambda^2y  = 0, \\quad y'(1) = 0, \\quad y(2) + 2y'(2) = 0, \\quad 1 \\leq x \\leq 2, \\quad \\lambda \\in\\mathbb R.\n$$\n\nFind the eigenvalues and eigenfunctions of this problem. Assume that $B$ and $C$ are constants.",
+        "worked_solution": "We consider the cases $\\lambda = 0$ and $\\lambda \\neq 0$ separately, since they correspond to different solutions. \n\n**Case 1**: First, we consider $\\lambda = 0.$ \n\nSetting $\\lambda = 0$ gives the equation\n\n$$\ny'' = 0.\n$$\n\nIntegrating this equation gives\n\n$$\ny = Ax + B.\n$$\n\nApplying the conditions $y'(1) =0$ and $y(2) + 2y'(2) = 0$ yields the trivial solution $y\\equiv 0.$ Since the zero solution is not an eigenfunction, $\\lambda = 0$ is not an eigenvalue.\n\n**Case 2**: Next, we consider $\\lambda \\neq 0.$\n\nTo find the fundamental solutions, we set $y = e^{m x}.$ The auxiliary equation is\n\n$$\n\\begin{aligned}{m}^{2}-18\\lambda m+81{\\lambda }^{2} & =0 \\\\ (m-9\\lambda )(m-9\\lambda ) & =0.\\end{aligned}\n$$\n\nSo, we have the double root $m = 9\\lambda.$ So, the fundamental solutions are \n\n$$\ny_1(x) = e^{9\\lambda x}, \\qquad y_2(x) = xe^{9\\lambda x}\n$$\n\nand the general solution is\n\n$$\ny = Ae^{9\\lambda x} + Bxe^{9\\lambda x}.\n$$\n\nDifferentiating gives\n\n$$\n\\begin{aligned}{y}^{\u2032} & =9A\\lambda {e}^{9\\lambda x}+B{e}^{9\\lambda x}+9B\\lambda x{e}^{9\\lambda x}.\\end{aligned}\n$$\n\nApplying the boundary condition $y'(1) = 0$ yields\n\n$$\n\\begin{aligned}9A\\lambda {e}^{9\\lambda }+B{e}^{9\\lambda }+9B\\lambda {e}^{9\\lambda } & =0 \\\\ 9A\\lambda +B+9B\\lambda  & =0 \\\\ (9\\lambda )A+(1+9\\lambda )B & =0.\\end{aligned}\n$$\n\nApplying the boundary condition $y(2) + 2y'(2) = 0$ yields\n\n$$\n\\begin{aligned}A{e}^{18\\lambda }+2B{e}^{18\\lambda }+2(9A\\lambda {e}^{18\\lambda }+B{e}^{18\\lambda }+18B\\lambda {e}^{18\\lambda }) & =0 \\\\ A+2B+2(9A\\lambda +B+18B\\lambda ) & =0 \\\\ A+2B+18A\\lambda +2B+36B\\lambda  & =0 \\\\ (1+18\\lambda )A+(4+36\\lambda )B & =0 \\\\ (1+18\\lambda )A+4(1+9\\lambda )B & =0.\\end{aligned}\n$$\n\nSo, we have the following systems of equations for $A$ and $B{:}$\n\n$$\n{\\begin{aligned}(9\\lambda )A+(1+9\\lambda )B=0 \\\\ (1+18\\lambda )A+4(1+9\\lambda )B=0\\end{aligned}\n$$\n\nThis homogeneous linear system has a nontrivial solution if and only if the determinant is zero. This gives\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14071917/assets/29df2dce71db62482d1664cc2f4033dce94574fb1903d80828f4f1d367f8c9a9.png)\n\nSo, we get\n\n$$\n\\begin{aligned}9\\lambda \\cdot 4(1+9\\lambda )-(1+9\\lambda )(1+18\\lambda ) & =0 \\\\ (1+9\\lambda )[36\\lambda -(1+18\\lambda )] & =0 \\\\ (1+9\\lambda )[36\\lambda -1-18\\lambda ] & =0 \\\\ (1+9\\lambda )(18\\lambda -1) & =0.\\end{aligned}\n$$\n\nThus, we have the eigenvalues $\\lambda_1 = -\\dfrac19  \\textrm{ and } \\lambda_2 = \\dfrac1{18}.$\n\nFinally, we find the eigenfunction corresponding to each eigenvalue:\n\n- Consider $\\lambda_1 = -\\dfrac19.$ Then, we have the solution\n\n$$\n\\begin{aligned}{y}_{1}(x) & =A{e}^{9{\\lambda }_{1}x}+Bx{e}^{9{\\lambda }_{1}x} \\\\  & =A{e}^{-x}+Bx{e}^{-x}\\end{aligned}\n$$\n\nand substituting $\\lambda_1$ into\n\n$$\n(9\\lambda)A  + (1 + 9\\lambda)B =0\n$$\n\n \nwe get \n\n$$\n-A  + \\left(1 -1\\right)B =0\n$$\n\n \nwhich gives $A = 0,$ and where $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\ny_1(x) = Bxe^{-x}.\n$$\n\n- For $\\lambda_2 = \\dfrac1{18},$ we have\n\n$$\n\\begin{aligned}{y}_{2}(x) & =A{e}^{9{\\lambda }_{2}x}+Bx{e}^{9{\\lambda }_{2}x} \\\\  & =A{e}^{x/2}+Bx{e}^{x/2}\\end{aligned}\n$$\n\nand substituting $\\lambda_2$ into\n\n$$\n(9\\lambda)A  + (1 + 9\\lambda)B =0\n$$\n\n \nwe get \n\n$$\n\\dfrac12A + \\dfrac32 B = 0 \\quad \\Rightarrow\\quad A = -3B\n$$\n\nwhere $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\n\\begin{aligned}{y}_{2}(x) & =-3B{e}^{x/2}+Bx{e}^{x/2} \\\\  & =B{e}^{x/2}(x-3) \\\\  & =C{e}^{x/2}(x-3)\\end{aligned}\n$$\n\nwhere we have set $C = B.$\n\nSo, the eigenfunctions corresponding to $\\lambda_1$ and $\\lambda_2,$ respectively, are $Bxe^{-x} \\textrm{ and } Ce^{x/2}(x-3).$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14071917/example-21808.png"
+      }
+    ],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "$$\na=[\\begin{aligned}2 \\\\ -1 \\\\ -2\\end{aligned}],\\,P=\\frac{1}{9}[\\begin{aligned}{p}_{11} & {p}_{12} & {p}_{13} \\\\ {p}_{21} & {p}_{22} & {p}_{23} \\\\ {p}_{31} & {p}_{32} & {p}_{33}\\end{aligned}]\n$$\n\nGiven that the vector $a$ above spans ${S}^{\u22a5},$ and that $P$ is the orthogonal projection matrix of ${R}^{3}$ onto the subspace $S$, what is the value of ${p}_{22}+{p}_{31}?$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "4"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "10"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "18"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "9"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "12"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071876,
+    "task_type": "lesson",
+    "topic_id": 2125,
+    "topic_title": "Projection Matrices, Linear Transformations and Their Properties",
+    "examples": [
+      {
+        "math_academy_id": "e-5580",
+        "knowledge_point": "Finding an Orthogonal Projection Matrix Given Vectors That Span the Orthogonal Complement",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14071876/assets/21268cd488766dc03da672cb931f1678644d2ada5629c90a591058d6f5954347.png)\nGiven that the vector $\\mathbf{a}$ above spans $S^\\perp,$ and that $P$ is the orthogonal projection matrix of $\\mathbb{R}^3$ onto the subspace $S$, what is the value of $p_{13} + p_{32}?$",
+        "worked_solution": "First, we find the orthogonal projection matrix onto $S^\\perp = \\textrm{Span}\\{\\mathbf{a}\\}.$\n\nUsing the formula for the orthogonal projection matrix\n\n$$\nP_{S^\\perp} = \\mathbf{a} (\\mathbf{a}^T\\!\\mathbf{a})^{-1} \\mathbf{a}^T,\n$$\n\nwe obtain the following:\n\n$$\n\\begin{aligned}{P}_{{S}^{\u22a5}} & =[\\begin{aligned}1 \\\\ 1 \\\\ 2\\end{aligned}]{([\\begin{aligned}1 & 1 & 2\\end{aligned}][\\begin{aligned}1 \\\\ 1 \\\\ 2\\end{aligned}])}^{-1}[\\begin{aligned}1 & 1 & 2\\end{aligned}] \\\\  & ={6}^{-1}[\\begin{aligned}1 \\\\ 1 \\\\ 2\\end{aligned}][\\begin{aligned}1 & 1 & 2\\end{aligned}] \\\\  & =\\frac{1}{6}[\\begin{aligned}1 & 1 & 2 \\\\ 1 & 1 & 2 \\\\ 2 & 2 & 4\\end{aligned}]\\end{aligned}\n$$\n\nRecall that $P_S  + P_{S^\\perp} = I.$ Therefore, \n\n$$\n\\begin{aligned}{P}_{S} & =I-{P}_{{S}^{\u22a5}} \\\\  & =I-\\frac{1}{6}[\\begin{aligned}1 & 1 & 2 \\\\ 1 & 1 & 2 \\\\ 2 & 2 & 4\\end{aligned}] \\\\  & =\\frac{1}{6}[\\begin{aligned}5 & -1 & -2 \\\\ -1 & 5 & -2 \\\\ -2 & -2 & 2\\end{aligned}].\\end{aligned}\n$$\n\nFinally, $p_{13} + p_{32} = (-2) + (-2) = -4.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14071876/example-5580.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-95351",
+        "problem": "Which of the following are orthogonal projection matrices?\n\n$$\nA=[\\begin{aligned}2 & -1 \\\\ -1 & 3\\end{aligned}],\\,B=[\\begin{aligned}\\frac{9}{10} & -\\frac{3}{10} \\\\ -\\frac{3}{10} & \\frac{1}{10}\\end{aligned}],\\,C=[\\begin{aligned}3 & 2 \\\\ 2 & -1\\end{aligned}].\n$$",
+        "worked_solution": "Recall that $Q$ is an orthogonal projection matrix if and only if ${Q}^{2}=Q$ and ${Q}^{T}=Q.$ \n\nWith that in mind, let's examine our matrices.\n\n- $A$ is *not* an orthogonal projection matrix. We have\n${A}^{T}=A$\nbut \n\n$$\n\\begin{aligned}{A}^{2} & =A\\cdot A \\\\  & =[\\begin{aligned}2 & -1 \\\\ -1 & 3\\end{aligned}][\\begin{aligned}2 & -1 \\\\ -1 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}5 & -5 \\\\ -5 & 10\\end{aligned}] \\\\  & \\ne A.\\end{aligned}\n$$\n\n- $B$ is an orthogonal projection matrix. Indeed,\n${B}^{T}=B$\nand\n\n$$\n\\begin{aligned}{B}^{2} & =B\\cdot B \\\\  & =[\\begin{aligned}\\frac{9}{10} & -\\frac{3}{10} \\\\ -\\frac{3}{10} & \\frac{1}{10}\\end{aligned}][\\begin{aligned}\\frac{9}{10} & -\\frac{3}{10} \\\\ -\\frac{3}{10} & \\frac{1}{10}\\end{aligned}] \\\\  & =\\frac{1}{10}[\\begin{aligned}9 & -3 \\\\ -3 & 1\\end{aligned}]\\cdot \\frac{1}{10}[\\begin{aligned}9 & -3 \\\\ -3 & 1\\end{aligned}] \\\\  & =\\frac{1}{100}[\\begin{aligned}9 & -3 \\\\ -3 & 1\\end{aligned}][\\begin{aligned}9 & -3 \\\\ -3 & 1\\end{aligned}] \\\\  & =\\frac{1}{100}[\\begin{aligned}90 & -30 \\\\ -30 & 10\\end{aligned}] \\\\  & =[\\begin{aligned}\\frac{9}{10} & -\\frac{3}{10} \\\\ -\\frac{3}{10} & \\frac{1}{10}\\end{aligned}] \\\\  & =B.\\end{aligned}\n$$\n\n- $C$ is *not* an orthogonal projection matrix. We have\n${C}^{T}=C$\nbut \n\n$$\n\\begin{aligned}{C}^{2} & =C\\cdot C \\\\  & =[\\begin{aligned}3 & 2 \\\\ 2 & -1\\end{aligned}][\\begin{aligned}3 & 2 \\\\ 2 & -1\\end{aligned}] \\\\  & =[\\begin{aligned}13 & 4 \\\\ 4 & 5\\end{aligned}] \\\\  & \\ne C.\\end{aligned}\n$$\n\nTherefore, the correct answer is \"$B$ only.\"",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$B$ only",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
