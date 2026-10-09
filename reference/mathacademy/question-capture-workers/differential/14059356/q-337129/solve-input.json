@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "A series RC circuit has a source electromotive force (EMF) of $12\\,\\text{V},$ a resistance of $20\\,\u03a9,$ and a capacitance of $0.005\\,\\text{F}.$ Find, in coulombs rounded to three decimal places, the circuit capacitor's charge after $0.05$ seconds, given that the initial charge is $\\frac{1}{50}$ coulombs.\n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "0.045"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "0.028"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "0.009"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "0.051"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "0.036"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14059356,
+    "task_type": "review",
+    "topic_id": 6701,
+    "topic_title": "Modeling RC Circuits With First-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336636",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14059356/assets/497263348010d38f2372e818b89ee2294d8f207366521f2bddce4a0628f457b1.png)\n\nConsider the RC circuit shown above. Given that the charge $q(t)$ of the capacitor at time $t$ seconds is given by\n\n$$\nq(t)=A{e}^{-5t}+\\frac{P}{145}\\operatorname{cos}\u2061(2t)+\\frac{Q}{29}\\operatorname{sin}\u2061(2t)\n$$\n\nwhere $A,$ $P,$ and $Q$ are constants, find the value of $P+Q.$\n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+        "worked_solution": "The diagram shows a series RC circuit with a source electromotive force (EMF) of $4\\operatorname{sin}\u2061(2t)\\,\\text{V},$ a resistor with resistance $20\\,\u03a9,$ and a capacitor of capacitance $0.01\\,\\text{F}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs. \n\n$$\nI=\\frac{\\text{d}q}{\\text{d}t}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RC circuit, there are two voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=20\\,\u03a9.$ So,\n\n$$\n{V}_{R}=20I=20\\,\\frac{dq}{dt}.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{0.01}=100q.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of charge $q$ on the capacitor is\n\n$$\n4\\operatorname{sin}\u2061(2t)=20\\,\\frac{dq}{dt}+100q,\n$$\n\nwhich gives\n\n$$\n\\frac{dq}{dt}+5q=\\frac{1}{5}\\operatorname{sin}\u2061(2t).\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution ${q}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{d{q}_{c}}{dt}+5{q}_{c}=0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\n{q}_{c}(t)=A{e}^{-5t},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $2t.$ So, we assume that the particular solution is also sinusoidal with argument $2t,$ i.e.,\n\n$$\n{q}_{p}(t)=\\alpha \\operatorname{cos}\u2061(2t)+\\beta \\operatorname{sin}\u2061(2t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute\n\n$$\n\\begin{aligned}{q}_{p} & =\\alpha \\operatorname{cos}\u2061(2t)+\\beta \\operatorname{sin}\u2061(2t), \\\\ \\frac{d{q}_{p}}{dt} & =-2\\alpha \\operatorname{sin}\u2061(2t)+2\\beta \\operatorname{cos}\u2061(2t),\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}(-2\\alpha \\operatorname{sin}\u2061(2t)+2\\beta \\operatorname{cos}\u2061(2t))+5(\\alpha \\operatorname{cos}\u2061(2t)+\\beta \\operatorname{sin}\u2061(2t)) & =\\frac{1}{5}\\operatorname{sin}\u2061(2t) \\\\ (-2\\alpha +5\\beta )\\operatorname{sin}\u2061(2t)+(5\\alpha +2\\beta )\\operatorname{cos}\u2061(2t) & =\\frac{1}{5}\\operatorname{sin}\u2061(2t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n{\\begin{aligned}-2\\alpha +5\\beta =\\frac{1}{5}\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}\u2061(2t)) \\\\ 5\\alpha +2\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}\u2061(2t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{2}{145},\\beta =\\frac{1}{29}.$ Therefore, the particular solution is\n\n$$\n{q}_{p}(t)=-\\frac{2}{145}\\operatorname{cos}\u2061(2t)+\\frac{1}{29}\\operatorname{sin}\u2061(2t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nq(t)={q}_{c}(t)+{q}_{p}(t)=A{e}^{-5t}-\\frac{2}{145}\\operatorname{cos}\u2061(2t)+\\frac{1}{29}\\operatorname{sin}\u2061(2t).\n$$\n\nTherefore, we have $P=-2,Q=1,$ and\n\n$$\nP+Q=-2+1=-1.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "-1",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
