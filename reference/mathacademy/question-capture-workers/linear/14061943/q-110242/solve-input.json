@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "$$\nP=[\\begin{aligned}0.4 & 0.1 \\\\ 0.6 & 0.9\\end{aligned}],\\,q=[\\begin{aligned}a \\\\ b\\end{aligned}]\n$$\n\nGiven that $q$ is the steady-state vector of the stochastic matrix $P,$ what is the value of $a-b?$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "-\\frac{5}{7}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-\\frac{5}{6}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-\\frac{2}{5}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "\\frac{3}{5}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{3}{7}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14061943,
+    "task_type": "lesson",
+    "topic_id": 1913,
+    "topic_title": "Steady-State Vectors",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-135408",
+        "problem": "There are two groups of people In a small town: those who travel to work by car and those who travel by train. Every year a study is done in which people are asked about their preference between using trains versus cars. The table below shows the results of this study.\n\n|  |  | From: |  |\n| --- | --- | --- | --- |\n|  |  | **Car** | **Train** |\n| To: | **Car** | $0.35$ | $0.25$ |\n| **Train** | $0.65$ | $0.75$ |  |\n\nIt's found that $65%$ of people who currently travel by car will switch to train next year, while $25%$ of people who currently travel by train will switch to their car next year.\n\nAssuming that the town has $90\\,000$ people that travel to work by train or car, and the given probabilities remain constant over many years, how many people will eventually use the train to travel to work?",
+        "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.35 & 0.25 \\\\ 0.65 & 0.75\\end{aligned}].\n$$\n\nNotice that $P$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many years, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,\u27f9\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.35 & 0.25 \\\\ 0.65 & 0.75\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-0.65 & 0.25 \\\\ 0.65 & -0.25\\end{aligned}].\n$$\n\nSo, the matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.65 & 0.25 & 0 \\\\ 0.65 & -0.25 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c[\\begin{aligned}-0.65 & 0.25 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain \n\n$$\n\\begin{aligned}{x}_{1}=\\frac{5}{13}{x}_{2}.\\end{aligned}\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{5}{13}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}\\frac{5}{13}{x}_{2}+{x}_{2} & =1 \\\\ \\frac{18}{13}{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{13}{18}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{5}{18} \\\\ \\frac{13}{18}\\end{aligned}].\n$$\n\nSo, $\\frac{13}{18}$ of the people will eventually use the train to travel. Therefore, the number of people who will eventually use the train is\n\n$$\n\\frac{13}{18}\\cdot 90\\,000=65\\,000.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "65\\,000",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

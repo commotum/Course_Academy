@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "A study conducted on $3\\,400$ teenagers by the transportation department of a particular city reveals that teenagers' preference for the type of home-to-school transportation changes with time. The following table shows the results of this study.  \n\n|  |  | From: |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | **Bus** | **Bicycle** | **Electric Scooter ** |\n| To: | **Bus** | $0.2$ | $0.2$ | $0$ |\n| **Bicycle** | $0.4$ | $0.4$ | $0.4$ |  |\n| **Electric Scooter** | $0.4$ | $0.4$ | $0.6$ |  |\n\nFor example, $40%$ of teenagers who used to go to school by bus now go by bicycle.  \n\nHow many teenagers would eventually go to school on electric scooters if the listed probabilities remained constant over many years?",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "2\\,040"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "680"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "1\\,360"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "340"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "1\\,700"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14061943,
+    "task_type": "lesson",
+    "topic_id": 1913,
+    "topic_title": "Steady-State Vectors",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-135432",
+        "problem": "A company processes and packages three types of rice: rice $A,$ rice $B,$ and rice $C.$ A study by the company's sales analysts demonstrates how consumer preference changes from one kind of rice to another year after year. The table below shows the results of this study.\n\n|  |  | From: |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | **Rice $A$** | **Rice $B$** | **Rice $C$** |\n| To: | **Rice $A$** | $0.5$ | $0.1$ | $0.15$ |\n| **Rice $B$** | $0.2$ | $0.7$ | $0.2$ |  |\n| **Rice $C$** | $0.3$ | $0.2$ | $0.65$ |  |\n\nFor example, $20%$ of the people who preferred rice $B$ last year switched to rice $C$ this year.\n\nIf the company has $200\\,000$ customers and the listed probabilities remain constant over many years, how many customers will eventually purchase rice $B?$",
+        "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.5 & 0.1 & 0.15 \\\\ 0.2 & 0.7 & 0.2 \\\\ 0.3 & 0.2 & 0.65\\end{aligned}].\n$$\n\nNotice that the matrix $P$ contains only positive entries. So, the matrix $P$ is regular. \nAs a result, after many years, the distribution will eventually converge to the steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,\u27f9\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.5 & 0.1 & 0.15 \\\\ 0.2 & 0.7 & 0.2 \\\\ 0.3 & 0.2 & 0.65\\end{aligned}]-[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-0.5 & 0.1 & 0.15 \\\\ 0.2 & -0.3 & 0.2 \\\\ 0.3 & 0.2 & -0.35\\end{aligned}].\n$$\n\nThe matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.5 & 0.1 & 0.15 & 0 \\\\ 0.2 & -0.3 & 0.2 & 0 \\\\ 0.3 & 0.2 & -0.35 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=10{R}_{1} \\\\ {R}_{2}:=100{R}_{2} \\\\ {R}_{3}:=100{R}_{3}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-5 & 1 & 1.5 & 0 \\\\ 20 & -30 & 20 & 0 \\\\ 30 & 20 & -35 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+4{R}_{1} \\\\ {R}_{3}:={R}_{3}+6{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-5 & 1 & 1.5 & 0 \\\\ 0 & -26 & 26 & 0 \\\\ 0 & 26 & -26 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{2}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-5 & 1 & 1.5 & 0 \\\\ 0 & -26 & 26 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{2}\\end{aligned}\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain \n\n$$\n{x}_{2}={x}_{3}.\n$$\n\n \nSubstituting this into the first equation, we obtain\n\n$$\n-5{x}_{1}+{x}_{3}+\\frac{3}{2}{x}_{3}=0\\,\u27f9\\,{x}_{1}=\\frac{1}{2}{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{1}{2}{x}_{3} \\\\ {x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have\n\n$$\n\\begin{aligned}\\frac{1}{2}{x}_{3}+{x}_{3}+{x}_{3} & =1 \\\\ \\frac{5}{2}{x}_{3} & =1 \\\\ {x}_{3} & =\\frac{2}{5}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{1}{5} \\\\ \\frac{2}{5} \\\\ \\frac{2}{5}\\end{aligned}].\n$$\n\nSo, after many years, $\\frac{2}{5}$ of the customers will consume rice $B.$ Therefore, the number of people who will eventually consume rice $B$ will be\n\n$$\n\\frac{2}{5}\\cdot 200\\,000=80\\,000.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "80\\,000",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
