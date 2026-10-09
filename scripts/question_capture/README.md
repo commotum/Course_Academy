@@ -5,6 +5,14 @@ add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
 apart from Playwright, the EDB CLI, a solver command, and the native comparison helper.
 
+Capture uses an independently copied, verified EDB executable at
+`.local/edb/capture-runtime/edb`. Rebuilding or changing branches in the EDB
+development checkout does not replace it. Its hash and the database compatibility
+check are recorded in `.local/edb/capture-runtime/manifest.json`. Explicit
+`--edb-bin` or `EDB_BIN` overrides still apply. When setting up another checkout,
+copy a compatible EDB executable to that path and verify its read-only `status`
+and `query` commands against the existing database before starting capture.
+
 ## Multiple account workers
 
 From the repository root, start every configured account and attach to tmux:

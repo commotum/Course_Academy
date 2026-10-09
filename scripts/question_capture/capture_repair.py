@@ -11,7 +11,7 @@ import time
 import uuid
 from pathlib import Path
 
-from core import ROOT, atomic_json
+from core import ROOT, CAPTURE_EDB_BIN, atomic_json
 from solver import Solver, process_token, run_cli
 
 PACKAGE = Path(__file__).parent
@@ -199,7 +199,7 @@ def evidence_version(source, edb_bin=None):
         # A reloaded queue and a new diagnostic timestamp do not fix a failed
         # database reader. Revisit the diagnosis only when its error or reader changes.
         reader = Path(edb_bin or report.get('configuration',{}).get('edb_bin') or
-                      os.environ.get('EDB_BIN','/home/jake/Developer/EDB/target/release/edb'))
+                      os.environ.get('EDB_BIN',str(CAPTURE_EDB_BIN)))
         digest.update(str(reader.resolve()).encode())
         if reader.is_file():
             stat = reader.stat()

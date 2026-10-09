@@ -17,7 +17,7 @@ import traceback
 import uuid
 from pathlib import Path
 
-from core import ROOT, Pacer, atomic_json, choose_activity, journal
+from core import ROOT, CAPTURE_EDB_BIN, Pacer, atomic_json, choose_activity, journal
 from queue_wait import clear_queue_wait, record_queue_wait
 from database import Database
 from retry_policy import apply_policy, update_policy
@@ -28,7 +28,7 @@ def arguments(argv=None):
     parser.add_argument('command',choices=['run','login','priorities','import-saved','sweep-saved'])
     parser.add_argument('--database',default=os.environ.get('EDB_DATABASE','course-academy-v2'))
     parser.add_argument('--endpoint',default=os.environ.get('EDB_ENDPOINT','/tmp/course-academy-edb-v2/writer.sock'))
-    parser.add_argument('--edb-bin',default=os.environ.get('EDB_BIN','/home/jake/Developer/EDB/target/release/edb'))
+    parser.add_argument('--edb-bin',default=os.environ.get('EDB_BIN',str(CAPTURE_EDB_BIN)))
     parser.add_argument('--learner-id',type=uuid.UUID,default=uuid.UUID('59d5cf13-351c-4114-be19-4c3bb64ee051'))
     parser.add_argument('--output',type=Path,default=ROOT/'reference/mathacademy/question-capture')
     parser.add_argument('--capture-root',type=Path,action='append',default=[],
