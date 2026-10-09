@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Suppose that a $3\\times 3$ matrix $C$ is reduced to row echelon form using the following elementary row operations, applied in the order in which they appear:\n\n$$\n{R}_{2}:={R}_{2}-3{R}_{1},\\,{R}_{3}:={R}_{3}+3{R}_{1}\n$$\n\nGiven that $C$ has the LU factorization $C=LU,$ then $L=$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}1 & 0 & 0 \\\\ 3 & 1 & 0 \\\\ 3 & 0 & 1\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ -3 & 3 & 1\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}1 & 0 & 0 \\\\ 3 & 1 & 0 \\\\ -3 & 0 & 1\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}1 & 0 & 0 \\\\ -3 & 1 & 0 \\\\ 3 & 0 & 1\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 3 & -3 & 1\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14062432,
+    "task_type": "lesson",
+    "topic_id": 1780,
+    "topic_title": "LU Factorization of 3x3 Matrices",
+    "examples": [
+      {
+        "math_academy_id": "e-4769",
+        "knowledge_point": "Finding the Lower Triangular Matrix Given the Elementary Row Operations",
+        "problem": "Suppose that a $3 \\times 3$ matrix $F$ is reduced to row echelon form using the following elementary row operations, applied in the order in which they appear:\n\n$$\nR_2:=R_2+R_1, \\qquad\n\tR_3:=R_3+2R_1\n$$\n\nGiven that $F$ has the LU factorization $F=LU,$ then $L=$",
+        "worked_solution": "Applying $R_2:=R_2 + {\\color{red}1} \\cdot R_1$ and then $R_3:=R_3+ {\\color{red}2} \\cdot R_1$ is equivalent to multiplying $F$ from the left by the following elementary matrices:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14062432/assets/5eb696ca679a0079e8460d472b6f172df4f2e29f5dfef6cbdee388c55dcb1db5.png)\n\nNow, since $E_2E_1F=U,$ we can invert $E_2$ and $E_1$ to arrive at the desired LU factorization:\n\n$$\n\\begin{aligned}{E}_{2}{E}_{1}F & =U \\\\ {E}_{1}F & ={E}_{2}^{-1}U \\\\ F & ={E}_{1}^{-1}{E}_{2}^{-1}U \\\\ F & ={[\\begin{aligned}1 & 0 & 0 \\\\ 1 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]}^{-1}{[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 2 & 0 & 1\\end{aligned}]}^{-1}U \\\\ F & =([\\begin{aligned}1 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}][\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ -2 & 0 & 1\\end{aligned}])U \\\\ F & ={{[\\begin{aligned}1 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ -2 & 0 & 1\\end{aligned}]}_{\u23df}}_{L}\\cdot U\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14062432/example-4769.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-32581",
+        "problem": "Given that\n$A=[\\begin{aligned}-3 & -4 & -1 \\\\ 0 & 6 & 2 \\\\ 12 & 16 & -5\\end{aligned}]$\nhas the LU decomposition $A=LU,$ then $L=$",
+        "worked_solution": "To find the matrices $L$ and $U,$ we reduce the matrix $A$ to row echelon form. Whilst doing this, we simultaneously write down the row operations applied to $A$ in terms of matrix multiplication using elementary matrices.\n\n$$\n\\begin{aligned}A & =[\\begin{aligned}-3 & -4 & -1 \\\\ 0 & 6 & 2 \\\\ 12 & 16 & -5\\end{aligned}] & {R}_{3} & :={R}_{3}+4{R}_{1} & \u27fa & \\,\\overset{{E}_{1}}{\\overset{\u23de}{[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 4 & 0 & 1\\end{aligned}]}}\\cdot A \\\\  & \u223c[\\begin{aligned}-3 & -4 & -1 \\\\ 0 & 6 & 2 \\\\ 0 & 0 & -9\\end{aligned}] \\\\  & =U.\\end{aligned}\n$$\n\nThe reduced matrix is upper triangular, so it is our matrix $U.$ Now, since ${E}_{1}A=U,$ we can invert ${E}_{1}$ to arrive at the desired LU factorization:\n\n$$\n\\begin{aligned}{E}_{1}A & =U \\\\ A & ={E}_{1}^{-1}U \\\\ A & ={[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 4 & 0 & 1\\end{aligned}]}^{-1}U \\\\ A & ={{[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ -4 & 0 & 1\\end{aligned}]}_{\u23df}}_{L}{{[\\begin{aligned}-3 & -4 & -1 \\\\ 0 & 6 & 2 \\\\ 0 & 0 & -9\\end{aligned}]}_{\u23df}}_{U}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ -4 & 0 & 1\\end{aligned}]",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

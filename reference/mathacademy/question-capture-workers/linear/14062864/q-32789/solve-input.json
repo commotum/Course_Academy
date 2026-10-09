@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}4 & 6 & -2 & -1 \\\\ -8 & -10 & 12 & 3 \\\\ 0 & -4 & -3 & -11 \\\\ 0 & 6 & 24 & 5\\end{aligned}]\n$$\n\nIf $A=LU$ is the LU decomposition of the matrix $A$ given above, what is the value of ${l}_{32}\\cdot {u}_{34}?$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "18"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-27"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-26"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "-4"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "6"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14062864,
+    "task_type": "lesson",
+    "topic_id": 1781,
+    "topic_title": "LU Factorization of NxN Matrices",
+    "examples": [
+      {
+        "math_academy_id": "e-4771",
+        "knowledge_point": "Finding the LU Factorization of a 4x4 Matrix",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14062864/assets/9129b6fbd360b9b9bcc937fd2acf0aedc25681d4b3dca100be7f681b7bb347dd.png) \n\nIf $A=LU$ is the LU decomposition of the matrix $A$ given above, what is the value of $l_{42} \\cdot u_{24}?$",
+        "worked_solution": "Let's apply our standard LU factorization algorithm.\n\nWe reduce the matrix $A$ to row echelon form to obtain the matrix $U,$ as usual. However, instead of writing zeros below the main diagonal, we will instead write down the entries of the matrix $L.$\n\n$$\n\\begin{aligned}A & =[\\begin{aligned}6 & 6 & -6 & 8 \\\\ 0 & -2 & 0 & -3 \\\\ -6 & -6 & 9 & -7 \\\\ 0 & 4 & 6 & 9\\end{aligned}] & {R}_{3} & :={R}_{3}+1{R}_{1} \\\\  & \u223c[\\begin{aligned}6 & 6 & -6 & 8 \\\\ 0 & -2 & 0 & -3 \\\\ -1 & 0 & 3 & 1 \\\\ 0 & 4 & 6 & 9\\end{aligned}] & {R}_{4} & :={R}_{4}+2{R}_{2} \\\\  & \u223c[\\begin{aligned}6 & 6 & -6 & 8 \\\\ 0 & -2 & 0 & -3 \\\\ -1 & 0 & 3 & 1 \\\\ 0 & -2 & 6 & 3\\end{aligned}] & {R}_{4} & :={R}_{4}+(-2){R}_{3} \\\\  & \u223c[\\begin{aligned}6 & 6 & -6 & 8 \\\\ 0 & -2 & 0 & -3 \\\\ -1 & 0 & 3 & 1 \\\\ 0 & -2 & \\,2\\, & 1\\end{aligned}]\\end{aligned}\n$$\n\nTherefore, we obtain \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14062864/assets/ac086686e36fdc3e3fffbf4e772f5bdd3d797a71cd06a8e0c4c0bc338051371e.png)\n\nFinally, since $l_{42}=-2$ and $u_{24}=-3,$ we get\n\n$$\nl_{42} \\cdot u_{24} = (-2) \\cdot (-3) =6.\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14062864/example-4771.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-105887",
+        "problem": "$$\nB=[\\begin{aligned}2 & 3 & 4 \\\\ -2 & 8 & 12 \\\\ -6 & 2 & -4\\end{aligned}]\n$$\n\nIf $B=LU$ is the LU decomposition of the matrix $B$ given above, what is the value of ${l}_{31}\\cdot {u}_{22}?$",
+        "worked_solution": "Let's apply our standard LU factorization algorithm.\n\nWe reduce the matrix $B$ to row echelon form to obtain the matrix $U,$ as usual. However, instead of writing zeros below the main diagonal, we will instead write down the entries of the matrix $L.$\n\n$$\n\\begin{aligned}B & =[\\begin{aligned}2 & 3 & 4 \\\\ -2 & 8 & 12 \\\\ -6 & 2 & -4\\end{aligned}] & {R}_{2} & :={R}_{2}+1{R}_{1} \\\\  & \u223c[\\begin{aligned}2 & 3 & 4 \\\\ -1 & 11 & 16 \\\\ -6 & 2 & -4\\end{aligned}] & {R}_{3} & :={R}_{3}+3{R}_{1} \\\\  & \u223c[\\begin{aligned}2 & 3 & 4 \\\\ -1 & 11 & 16 \\\\ \\,\\,-3\\,\\, & 11 & 8\\end{aligned}] & {R}_{3} & :={R}_{3}+(-1){R}_{2} \\\\  & \u223c[\\begin{aligned}2 & 3 & 4 \\\\ -1 & 11 & 16 \\\\ \\,\\,-3\\,\\, & \\,\\,1\\,\\, & -8\\end{aligned}]\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\nL=[\\begin{aligned}1 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ -3 & 1 & 1\\end{aligned}],\\,U=[\\begin{aligned}2 & 3 & 4 \\\\ 0 & 11 & 16 \\\\ 0 & 0 & -8\\end{aligned}].\n$$\n\nFinally, since ${l}_{31}=-3$ and ${u}_{22}=11,$ we get\n\n$$\n{l}_{31}\\cdot {u}_{22}=(-3)\\cdot 11=-33.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "-33",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
