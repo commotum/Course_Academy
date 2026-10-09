@@ -1,0 +1,65 @@
+{
+  "mode": "verify",
+  "problem": "Given the matrix\n$\\,A=[\\begin{aligned}6 & 11 \\\\ -3 & -6\\end{aligned}]$\nand $f(x)={x}^{15}-3{x}^{13}+{x}^{3}-5x+6$, find $f(A).$",
+  "worked_solution": "Let's start by finding the characteristic polynomial $p(\\lambda )$:\n\n$$\n\\begin{aligned}p(\\lambda ) & =\\text{det}(A-\\lambda I) \\\\  & =|\\begin{aligned}6-\\lambda  & 11 \\\\ -3 & -6-\\lambda \\end{aligned}| \\\\  & =(6-\\lambda )(-6-\\lambda )+33 \\\\  & ={\\lambda }^{2}-3\\end{aligned}\n$$\n\nNow, let's divide $f(x)$ by $p(x)$ using long division:\n\n|  | $\\,\\,{x}^{13}$ | $+$ | $x$ |  |  |  |  |  |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| ${x}^{2}-3\\,$ | $\\,\\enclose{longdiv}{{x}^{15}-3{x}^{13}+{x}^{3}-5x+6}$ |  |  |  |  |  |  |  |\n|  | ${x}^{15}$ | $\\,\\,\\,\\,-$ | $\\,\\,\\,\\,3{x}^{13}$ |  |  |  |  |  |\n|  |  |  |  | ${x}^{3}\\,\\,\\,\\,\\,\\,$ | $-\\,\\,$ | $\\,\\,5x$ | $\\,\\,\\,\\,\\,+$ | $\\,\\,\\,\\,\\,\\,\\,6$ |\n|  |  |  |  | ${x}^{3}\\,\\,\\,\\,\\,\\,$ | $-\\,\\,$ | $\\,\\,3x$ |  |  |\n|  |  |  |  |  | $-\\,\\,$ | $\\,\\,2x$ | $\\,\\,\\,\\,\\,+$ | $\\,\\,\\,\\,\\,\\,\\,6$ |\n\nTherefore, we can write $f(x)$ as \n\n$$\n\\begin{aligned}f(x) & =q(x)p(x)+r(x) \\\\  & =q(x)p(x)+(-2x+6)\\end{aligned}\n$$\n\nwhere $q(x)={x}^{13}+x.$ Replacing $x$ with $A,$ we have\n\n$$\nf(A)=q(A)p(A)+(-2A+6I).\n$$\n\nAccording to the Cayley-Hamilton theorem, we have $p(A)=O.$ Therefore,\n\n$$\n\\begin{aligned}f(A) & =q(A)p(A)+(-2A+6I) \\\\  & =q(A)\\cdot O+(-2A+6I) \\\\  & =-2A+6I \\\\  & =-2[\\begin{aligned}6 & 11 \\\\ -3 & -6\\end{aligned}]+6[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}-12 & -22 \\\\ 6 & 12\\end{aligned}]+[\\begin{aligned}6 & 0 \\\\ 0 & 6\\end{aligned}] \\\\  & =[\\begin{aligned}-6 & -22 \\\\ 6 & 18\\end{aligned}].\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}-22 & -6 \\\\ 6 & 18\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}-6 & -22 \\\\ 6 & 18\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}-12 & -22 \\\\ 6 & 12\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}-6 & -22 \\\\ 18 & 6\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}18 & -22 \\\\ 6 & -6\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14070368,
+    "task_type": "review",
+    "topic_id": 1972,
+    "topic_title": "The Cayley-Hamilton Theorem",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-38728",
+        "problem": "Given the matrix\n$\\,A=[\\begin{aligned}6 & 11 \\\\ -3 & -6\\end{aligned}]$\nand $f(x)={x}^{15}-3{x}^{13}+{x}^{3}-5x+6$, find $f(A).$",
+        "worked_solution": "Let's start by finding the characteristic polynomial $p(\\lambda )$:\n\n$$\n\\begin{aligned}p(\\lambda ) & =\\text{det}(A-\\lambda I) \\\\  & =|\\begin{aligned}6-\\lambda  & 11 \\\\ -3 & -6-\\lambda \\end{aligned}| \\\\  & =(6-\\lambda )(-6-\\lambda )+33 \\\\  & ={\\lambda }^{2}-3\\end{aligned}\n$$\n\nNow, let's divide $f(x)$ by $p(x)$ using long division:\n\n|  | $\\,\\,{x}^{13}$ | $+$ | $x$ |  |  |  |  |  |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| ${x}^{2}-3\\,$ | $\\,\\enclose{longdiv}{{x}^{15}-3{x}^{13}+{x}^{3}-5x+6}$ |  |  |  |  |  |  |  |\n|  | ${x}^{15}$ | $\\,\\,\\,\\,-$ | $\\,\\,\\,\\,3{x}^{13}$ |  |  |  |  |  |\n|  |  |  |  | ${x}^{3}\\,\\,\\,\\,\\,\\,$ | $-\\,\\,$ | $\\,\\,5x$ | $\\,\\,\\,\\,\\,+$ | $\\,\\,\\,\\,\\,\\,\\,6$ |\n|  |  |  |  | ${x}^{3}\\,\\,\\,\\,\\,\\,$ | $-\\,\\,$ | $\\,\\,3x$ |  |  |\n|  |  |  |  |  | $-\\,\\,$ | $\\,\\,2x$ | $\\,\\,\\,\\,\\,+$ | $\\,\\,\\,\\,\\,\\,\\,6$ |\n\nTherefore, we can write $f(x)$ as \n\n$$\n\\begin{aligned}f(x) & =q(x)p(x)+r(x) \\\\  & =q(x)p(x)+(-2x+6)\\end{aligned}\n$$\n\nwhere $q(x)={x}^{13}+x.$ Replacing $x$ with $A,$ we have\n\n$$\nf(A)=q(A)p(A)+(-2A+6I).\n$$\n\nAccording to the Cayley-Hamilton theorem, we have $p(A)=O.$ Therefore,\n\n$$\n\\begin{aligned}f(A) & =q(A)p(A)+(-2A+6I) \\\\  & =q(A)\\cdot O+(-2A+6I) \\\\  & =-2A+6I \\\\  & =-2[\\begin{aligned}6 & 11 \\\\ -3 & -6\\end{aligned}]+6[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}-12 & -22 \\\\ 6 & 12\\end{aligned}]+[\\begin{aligned}6 & 0 \\\\ 0 & 6\\end{aligned}] \\\\  & =[\\begin{aligned}-6 & -22 \\\\ 6 & 18\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}-6 & -22 \\\\ 18 & 6\\end{aligned}]",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
