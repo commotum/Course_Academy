@@ -1,0 +1,39 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=x+y,\\,y(0)=-1\n$$\n\nWe wish to approximate the solution using the $2$-step Adams-Bashforth-Moulton method. Given that the step size is $\u0394x=\\frac{1}{4},$ and that one preliminary step has already been computed using the Runge-Kutta method, complete the second row of the table below.\n\n*Hint: The corrector equation of the two-step Adams-Bashforth-Moulton method is defined as*\n\n$$\n\u0394y=\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x\n$$\n\n*where ${y}_{p}$ denotes the predictor at the current step, and ${y}_{-1}^{\u2032}$ is the estimated slope at the previous point.* \n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $-1$ | $-1$ | $-$ | $-$ | $-$ | $-\\frac{1}{4}$ |\n| $\\frac{1}{4}$ | $-\\frac{5}{4}$ | $-1$ | $-\\frac{1}{4}$ | $-\\frac{3}{2}$ | $-1$ | {{field-1}} |",
+  "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nthe $2$-step Adams-Bashforth-Moulton (ABM2) method with step size $\u0394x$ is given by\n\n$$\n\\begin{aligned}\\text{Predictor} & : & \u0394{y}_{p} & =\\frac{1}{2}(3{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x, \\\\ \\text{Corrector} & : & \u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x,\\end{aligned}\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the estimated slope at the current point $(x,y),$\n\n- ${y}_{-1}^{\u2032}=f({x}_{-1},{y}_{-1})$ is the estimated slope at the previous point (${x}_{-1},{y}_{-1}),$ and\n\n- ${y}_{p}^{\u2032}=f({x}_{\\text{new}},{y}_{p})$ is the estimated slope at the predicted new point $({x}_{\\text{new}},{y}_{p})=(x+\u0394x,y+\u0394{y}_{p}).$\n\nLooking at the partially filled table, we note the following:\n\n- From the second row, the slope at the current point $(x,y)=(\\frac{1}{4},-\\frac{5}{4})$ is ${y}^{\u2032}=-1.$\n\n- From the first row, the slope at the previous point $({x}_{-1},{y}_{-1})=(0,-1)$ is ${y}_{-1}^{\u2032}=-1.$\n\n- From the second row, the slope at the predicted new point $({x}_{\\text{new}},{y}_{p})$ is ${y}_{p}^{\u2032}=-1.$\n\nNow, we compute $\u0394y$ using the corrector equation:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{12}(5\\cdot (-1)+8\\cdot (-1)-(-1))\\cdot \\frac{1}{4} \\\\  & =\\frac{1}{48}\\cdot (-12) \\\\  & =-\\frac{1}{4}\\end{aligned}\n$$\n\nTherefore, the completed row is as given below.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $-1$ | $-1$ | $-$ | $-$ | $-$ | $-\\frac{1}{4}$ |\n| $\\frac{1}{4}$ | $-\\frac{5}{4}$ | $-1$ | $-\\frac{1}{4}$ | $-\\frac{3}{2}$ | $-1$ | $-\\frac{1}{4}$ |",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14060454,
+    "task_type": "review",
+    "topic_id": 6397,
+    "topic_title": "The ABM2 Method",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-333095",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=x+y,\\,y(0)=-1\n$$\n\nWe wish to approximate the solution using the $2$-step Adams-Bashforth-Moulton method. Given that the step size is $\u0394x=\\frac{1}{4},$ and that one preliminary step has already been computed using the Runge-Kutta method, complete the second row of the table below.\n\n*Hint: The corrector equation of the two-step Adams-Bashforth-Moulton method is defined as*\n\n$$\n\u0394y=\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x\n$$\n\n*where ${y}_{p}$ denotes the predictor at the current step, and ${y}_{-1}^{\u2032}$ is the estimated slope at the previous point.* \n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $-1$ | $-1$ | $-$ | $-$ | $-$ | $-\\frac{1}{4}$ |\n| $\\frac{1}{4}$ | $-\\frac{5}{4}$ | $-1$ | $-\\frac{1}{4}$ | $-\\frac{3}{2}$ | $-1$ | {{field-1}} |",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nthe $2$-step Adams-Bashforth-Moulton (ABM2) method with step size $\u0394x$ is given by\n\n$$\n\\begin{aligned}\\text{Predictor} & : & \u0394{y}_{p} & =\\frac{1}{2}(3{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x, \\\\ \\text{Corrector} & : & \u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x,\\end{aligned}\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the estimated slope at the current point $(x,y),$\n\n- ${y}_{-1}^{\u2032}=f({x}_{-1},{y}_{-1})$ is the estimated slope at the previous point (${x}_{-1},{y}_{-1}),$ and\n\n- ${y}_{p}^{\u2032}=f({x}_{\\text{new}},{y}_{p})$ is the estimated slope at the predicted new point $({x}_{\\text{new}},{y}_{p})=(x+\u0394x,y+\u0394{y}_{p}).$\n\nLooking at the partially filled table, we note the following:\n\n- From the second row, the slope at the current point $(x,y)=(\\frac{1}{4},-\\frac{5}{4})$ is ${y}^{\u2032}=-1.$\n\n- From the first row, the slope at the previous point $({x}_{-1},{y}_{-1})=(0,-1)$ is ${y}_{-1}^{\u2032}=-1.$\n\n- From the second row, the slope at the predicted new point $({x}_{\\text{new}},{y}_{p})$ is ${y}_{p}^{\u2032}=-1.$\n\nNow, we compute $\u0394y$ using the corrector equation:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{12}(5\\cdot (-1)+8\\cdot (-1)-(-1))\\cdot \\frac{1}{4} \\\\  & =\\frac{1}{48}\\cdot (-12) \\\\  & =-\\frac{1}{4}\\end{aligned}\n$$\n\nTherefore, the completed row is as given below.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $-1$ | $-1$ | $-$ | $-$ | $-$ | $-\\frac{1}{4}$ |\n| $\\frac{1}{4}$ | $-\\frac{5}{4}$ | $-1$ | $-\\frac{1}{4}$ | $-\\frac{3}{2}$ | $-1$ | $-\\frac{1}{4}$ |",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{1}{4}",
+            "observed_mathquill_latex": "\\frac{1}{4}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "mode": "solve",
+  "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=x-y-10,\\,y(1)=2\n$$\n\nTo approximate the solution, one step of the Runge-Kutta method has already been computed, resulting in the following estimate:\n\n$$\ny(2)\u2248-\\frac{9}{2}\n$$\n\nUse the $2$-Step Adams-Bashforth-Moulton Method with one step to approximate $y(3).$\n\n*Hint: The corrector equation of the two-step Adams-Bashforth-Moulton method is defined as*\n\n$$\n\u0394y=\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x\n$$\n\n*where ${y}_{p}$ denotes the predictor at the current step, and ${y}_{-1}^{\u2032}$ is the estimated slope at the previous point.*",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "-\\frac{97}{16}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-\\frac{109}{16}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-\\frac{113}{16}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "-\\frac{121}{16}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-\\frac{105}{16}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14060454,
+    "task_type": "review",
+    "topic_id": 6397,
+    "topic_title": "The ABM2 Method",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-333262",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=2xy,\\,y(0)=1\n$$\n\nWe wish to approximate the solution using the $2$-Step Adams-Bashforth-Moulton method. Given that the step size is $\u0394x=1,$ and that one preliminary step has already been computed using the Runge-Kutta method, complete the next row of the table below.\n\n*Hint: The corrector equation of the two-step Adams-Bashforth-Moulton method is defined as*\n\n$$\n\u0394y=\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x\n$$\n\n*where ${y}_{p}$ denotes the predictor at the current step, and ${y}_{-1}^{\u2032}$ is the estimated slope at the previous point.* \n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $\\frac{5}{3}$ |\n| $1$ | $\\frac{8}{3}$ | $\\frac{16}{3}$ | $8$ | {{field-1}} | {{field-2}} | {{field-3}} |\n\nTherefore, $y(2)\u2248$ {{field-4}}.",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nthe $2$-Step Adams-Bashforth-Moulton (ABM2) Method with step size $\u0394x$ is given by\n\n$$\n\\begin{aligned}\\text{Predictor} & : & \u0394{y}_{p} & =\\frac{1}{2}(3{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x, \\\\ \\text{Corrector} & : & \u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x,\\end{aligned}\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the estimated slope at the current point $(x,y),$\n\n- ${y}_{-1}^{\u2032}=f({x}_{-1},{y}_{-1})$ is the estimated slope at the previous point (${x}_{-1},{y}_{-1}),$ and\n\n- ${y}_{p}^{\u2032}=f({x}_{\\text{new}},{y}_{p})$ is the estimated slope at the predicted new point $({x}_{\\text{new}},{y}_{p})=(x+\u0394x,y+\u0394{y}_{p}).$\n\nFrom the second row of the partially filled table, we have that $y(1)\u2248\\frac{8}{3},$ where the predicted $y$-increment is $\u0394{y}_{p}=8.$\n\nSo, the coordinates of the predicted new point given by the predictor equation are\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+1=2, \\\\ {y}_{p} & =y+\u0394{y}_{p}=\\frac{8}{3}+8=\\frac{32}{3}.\\end{aligned}\n$$\n\nLet's add the second value to the table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $\\frac{5}{3}$ |\n| $1$ | $\\frac{8}{3}$ | $\\frac{16}{3}$ | $8$ | $\\frac{32}{3}$ |  |  |\n\nHence, the slope at this predicted point is\n\n$$\n\\begin{aligned}{y}_{p}^{\u2032} & =2{x}_{\\text{new}}{y}_{p} \\\\  & =2\\cdot 2\\cdot \\frac{32}{3} \\\\  & =\\frac{128}{3}.\\end{aligned}\n$$\n\nWe can add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $\\frac{5}{3}$ |\n| $1$ | $\\frac{8}{3}$ | $\\frac{16}{3}$ | $8$ | $\\frac{32}{3}$ | $\\frac{128}{3}$ |  |\n\nAlso from the table, we note the following:\n\n- From the second row, the slope at the current point $(x,y)=(1,\\frac{8}{3})$ is ${y}^{\u2032}=\\frac{16}{3}.$\n\n- From the first row, the slope at the previous point $({x}_{-1},{y}_{-1})=(0,1)$ is ${y}_{-1}^{\u2032}=0.$\n\nFinally, we compute $\u0394y$ using the corrector equation:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{12}(5\\cdot \\frac{128}{3}+8\\cdot \\frac{16}{3}-0)\\cdot 1 \\\\  & =\\frac{1}{12}\\cdot \\frac{768}{3} \\\\  & =\\frac{64}{3}\\end{aligned}\n$$\n\nTherefore, the completed row is as given below.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $\\frac{5}{3}$ |\n| $1$ | $\\frac{8}{3}$ | $\\frac{16}{3}$ | $8$ | $\\frac{32}{3}$ | $\\frac{128}{3}$ | $\\frac{64}{3}$ |\n\nThe value of $x$ in the next row is ${x}_{\\text{new}}=2.$ To get the value of $y$ in the next row, we add $\u0394y$ to $y:$\n\n$$\n{y}_{\\text{new}}=y+\u0394y=\\frac{8}{3}+\\frac{64}{3}=24\n$$\n\nAdding these results to our table gives the following:\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $\\frac{5}{3}$ |\n| $1$ | $\\frac{8}{3}$ | $\\frac{16}{3}$ | $8$ | $\\frac{32}{3}$ | $\\frac{128}{3}$ | $\\frac{64}{3}$ |\n| $2$ | $24$ |  |  |  |  |  |\n\nTherefore, we conclude that $y(2)\u224824.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{32}{3}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "\\frac{128}{3}",
+            "submitted_option": "2"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "\\frac{64}{3}",
+            "submitted_option": "2"
+          },
+          {
+            "key": "field-4",
+            "submitted_value": "24",
+            "submitted_option": "2"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

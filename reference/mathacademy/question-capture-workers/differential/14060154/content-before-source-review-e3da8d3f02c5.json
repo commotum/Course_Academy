@@ -1,0 +1,242 @@
+{
+  "task_id": 14060154,
+  "task_type": "review",
+  "topic_id": 1968,
+  "content_only": true,
+  "source_url": "https://mathacademy.com/learn?taskId=14060154",
+  "sequence_policy": {
+    "scope": "whole review",
+    "CWCWC": 0.7,
+    "WCWCC": 0.30000000000000004,
+    "sequence": "CWCWC",
+    "continuation": "repeat saved pattern until site completion"
+  },
+  "questions": [
+    {
+      "math_academy_id": "q-36929",
+      "knowledge_point_id": "d3d7cb0b-7d81-55a5-9781-dda7e9cc9fb9",
+      "knowledge_point": "Identifying Whether a Given 2x2 Matrix Is Diagonalizable",
+      "problem": "Determine if the matrix\n$A=[\\begin{aligned}4 & 8 \\\\ 0 & 4\\end{aligned}]$\nis diagonalizable or not, and if it is diagonalizable, find a corresponding diagonal matrix $D.$",
+      "worked_solution": "Since $A$ is triangular, the eigenvalues are the entries on the main diagonal. \n\nSo, the eigenvalues are ${\\lambda }_{1}={\\lambda }_{2}=4.$ Since we get one repeated eigenvalue, the matrix might not be diagonalizable. To check this, we row-reduce the matrix $(A-4I)\\text{x}=0:$\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}4 & 8 \\\\ 0 & 4\\end{aligned}]-4[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}0 & 8 \\\\ 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has only $1$ pivot column. This implies that we will have only $2-1=1$ linearly independent eigenvector corresponding to the current eigenvalue. Therefore, $A$ is not diagonalizable.",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "text",
+              "value": "$A$ is not diagonalizable"
+            },
+            {
+              "type": "math",
+              "value": "D=[\\begin{aligned}4 & 0 \\\\ 0 & 0\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "D=[\\begin{aligned}-4 & 0 \\\\ 0 & 4\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "D=[\\begin{aligned}4 & 0 \\\\ 0 & -4\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "D=[\\begin{aligned}4 & 0 \\\\ 0 & 4\\end{aligned}]"
+            }
+          ],
+          "correct_value": "$A$ is not diagonalizable",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "knowledge_point_source_id": 8572,
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-36929",
+        "kp_title": "Identifying Whether a Given 2x2 Matrix Is Diagonalizable",
+        "kp_href": "/topics/1968#8572"
+      }
+    },
+    {
+      "math_academy_id": "q-37634",
+      "knowledge_point_id": "0ff6446e-7913-5d55-adfd-124649f3f1c0",
+      "knowledge_point": "Diagonalizing a 2x2 Matrix",
+      "problem": "Find matrices $P$ and $D$ such that $PD{P}^{-1}=B,$ where $D$ is a diagonal matrix and $B=[\\begin{aligned}9 & 8 \\\\ -6 & -7\\end{aligned}].$",
+      "worked_solution": "We apply the diagonalization algorithm.\n\n**Step 1.** We need to find the eigenvalues of the matrix $B$ using its characteristic equation $det(B-\\lambda I)=0:$\n\n$$\n\\begin{aligned}|\\begin{aligned}9-\\lambda  & 8 \\\\ -6 & -7-\\lambda \\end{aligned}| & =0 \\\\ (9-\\lambda )(-7-\\lambda )-8\\cdot (-6) & =0 \\\\ {\\lambda }^{2}-2\\lambda -15 & =0 \\\\ (\\lambda -5)(\\lambda +3) & =0\\end{aligned}\n$$\n\nSo, the eigenvalues of $B$ are ${\\lambda }_{1}=5$ and ${\\lambda }_{2}=-3.$\n\n**Step 2.** Now, we need to find an eigenvector basis of $B.$\n\n- For ${\\lambda }_{1}=5,$ we have\n\n$$\n\\begin{aligned}B-5I & =[\\begin{aligned}9 & 8 \\\\ -6 & -7\\end{aligned}]-5[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}4 & 8 \\\\ -6 & -12\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}4 & 8 & 0 \\\\ -6 & -12 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+(\\frac{3}{2}){R}_{1} \\\\  & \u223c[\\begin{aligned}4 & 8 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-2{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-2{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=1,$ we get the eigenvector ${v}_{1}=[\\begin{aligned}-2 \\\\ 1\\end{aligned}].$\n\n- For ${\\lambda }_{2}=-3,$ we have\n\n$$\n\\begin{aligned}B-(-3)I & =[\\begin{aligned}9 & 8 \\\\ -6 & -7\\end{aligned}]-(-3)[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}12 & 8 \\\\ -6 & -4\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}12 & 8 & 0 \\\\ -6 & -4 & 0\\end{aligned}] & {R}_{2} & ={R}_{2}+(\\frac{1}{2}){R}_{1} \\\\  & \u223c[\\begin{aligned}12 & 8 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-\\frac{2}{3}{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-\\frac{2}{3}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=3,$ we get the eigenvector ${v}_{2}=[\\begin{aligned}-2 \\\\ 3\\end{aligned}].$\n\n**Step 3.** We construct the diagonal matrix $D$ and the invertible matrix $P$ as follows:\n\n$$\nD=[\\begin{aligned}5 & 0 \\\\ 0 & -3\\end{aligned}],\\,P=[\\begin{aligned}-2 & -2 \\\\ 1 & 3\\end{aligned}]\n$$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "text",
+              "value": "$D=[\\begin{aligned}-3 & 0 \\\\ 0 & 5\\end{aligned}]$\nand\n$P=[\\begin{aligned}-2 & 2 \\\\ 1 & 3\\end{aligned}].$"
+            },
+            {
+              "type": "text",
+              "value": "$D=[\\begin{aligned}5 & 0 \\\\ 0 & -3\\end{aligned}]$\nand\n$P=[\\begin{aligned}-2 & -2 \\\\ 1 & 3\\end{aligned}].$"
+            },
+            {
+              "type": "text",
+              "value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & -4\\end{aligned}]$\nand\n$P=[\\begin{aligned}-1 & 5 \\\\ -4 & 3\\end{aligned}].$"
+            },
+            {
+              "type": "text",
+              "value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & -4\\end{aligned}]$\nand\n$P=[\\begin{aligned}5 & -1 \\\\ 3 & -4\\end{aligned}]$"
+            },
+            {
+              "type": "text",
+              "value": "$B$ is not diagonalizable"
+            }
+          ],
+          "correct_value": "$D=[\\begin{aligned}5 & 0 \\\\ 0 & -3\\end{aligned}]$\nand\n$P=[\\begin{aligned}-2 & -2 \\\\ 1 & 3\\end{aligned}].$",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "knowledge_point_source_id": 8574,
+      "difficulty": "hard",
+      "provenance": {
+        "activity_question": "question-37634",
+        "kp_title": "Diagonalizing a 2x2 Matrix",
+        "kp_href": "/topics/1968#8574"
+      }
+    },
+    {
+      "math_academy_id": "q-80464",
+      "knowledge_point_id": "ca18fa52-5494-53ad-bd02-208aba4ff9e1",
+      "knowledge_point": "Diagonalizing a 2x2 Matrix Given Part of the Diagonalization",
+      "problem": "Consider the following matrices:\n\n$$\nA=[\\begin{aligned}8 & -12 \\\\ 6 & -10\\end{aligned}],\\,D=[\\begin{aligned}-4 & 0 \\\\ 0 & 2\\end{aligned}],\\,P=[\\begin{aligned}2 & a \\\\ 2 & b\\end{aligned}]\n$$\n\nGiven that $D={P}^{-1}AP,$ find the value of $\\frac{a}{b}.$",
+      "worked_solution": "From the diagonal matrix $D=[\\begin{aligned}-4 & 0 \\\\ 0 & 2\\end{aligned}]$, we deduce that the eigenvalues of $A$ are ${\\lambda }_{1}=-4$ and ${\\lambda }_{2}=2.$ \n\nSo, the second column of $P$ corresponds to the eigenvalue ${\\lambda }_{2}=2.$ \n\nNow, we simply need to find an eigenvector that corresponds to ${\\lambda }_{2}=2.$ Computing $A-2I,$ we get \n\n$$\n\\begin{aligned}A-2I & =[\\begin{aligned}8 & -12 \\\\ 6 & -10\\end{aligned}]-2[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}6 & -12 \\\\ 6 & -12\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}6 & -12 \\\\ 6 & -12\\end{aligned}] & {R}_{2} & :={R}_{2}+(-1){R}_{1} \\\\  & \u223c[\\begin{aligned}6 & -12 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=2{x}_{2}.$ Hence, the general solution is \n\n$$\n[\\begin{aligned}2{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nTherefore, setting ${x}_{2}=1,$ we get the eigenvector \n\n$$\n{v}_{2}=[\\begin{aligned}a \\\\ b\\end{aligned}]=[\\begin{aligned}2 \\\\ 1\\end{aligned}].\n$$\n\nFinally, $\\frac{a}{b}=\\frac{2}{1}=2.$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{1}{2}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{3}"
+            },
+            {
+              "type": "math",
+              "value": "3"
+            },
+            {
+              "type": "math",
+              "value": "-3"
+            }
+          ],
+          "correct_value": "2",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "knowledge_point_source_id": 8573,
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-80464",
+        "kp_title": "Diagonalizing a 2x2 Matrix Given Part of the Diagonalization",
+        "kp_href": "/topics/1968#8573"
+      }
+    },
+    {
+      "math_academy_id": "q-80467",
+      "knowledge_point_id": "ca18fa52-5494-53ad-bd02-208aba4ff9e1",
+      "knowledge_point": "Diagonalizing a 2x2 Matrix Given Part of the Diagonalization",
+      "problem": "Consider the following matrices:\n\n$$\nA=[\\begin{aligned}7 & -8 \\\\ 4 & -5\\end{aligned}],\\,D=[\\begin{aligned}3 & 0 \\\\ 0 & -1\\end{aligned}],\\,P=[\\begin{aligned}\u2217 & 1 \\\\ \u2217 & 1\\end{aligned}]\n$$\n\nGiven that $D={P}^{-1}AP,$   find the first column of the matrix $P.$",
+      "worked_solution": "From the diagonal matrix $D=[\\begin{aligned}3 & 0 \\\\ 0 & -1\\end{aligned}]$, we deduce that the eigenvalues of the matrix $A$ are ${\\lambda }_{1}=3$ and ${\\lambda }_{2}=-1.$  \n\nSo, the first column of $P$ corresponds to the eigenvalue ${\\lambda }_{1}=3.$ \n\nNow, we simply need to find an eigenvector that corresponds to ${\\lambda }_{1}=3.$ Computing $A-3I,$ we get \n\n$$\n\\begin{aligned}A-3I & =[\\begin{aligned}7 & -8 \\\\ 4 & -5\\end{aligned}]-3[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}4 & -8 \\\\ 4 & -8\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n \n\n$$\n\\begin{aligned}M & =[\\begin{aligned}4 & -8 & 0 \\\\ 4 & -8 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+(-1){R}_{1} \\\\  & \u223c[\\begin{aligned}4 & -8 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=2{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}2{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nTherefore, setting ${x}_{2}=1,$ we get the eigenvector \n\n$$\n{v}_{2}=[\\begin{aligned}2 \\\\ 1\\end{aligned}].\n$$\n\nFinally, $P=[\\begin{aligned}2 & 1 \\\\ 1 & 1\\end{aligned}].$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}4 \\\\ -2\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}3 \\\\ 2\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}2 \\\\ 1\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-1 \\\\ 1\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1 \\\\ 3\\end{aligned}]"
+            }
+          ],
+          "correct_value": "[\\begin{aligned}2 \\\\ 1\\end{aligned}]",
+          "choices_complete": true,
+          "correct_origin": "model_interpretation"
+        }
+      ],
+      "knowledge_point_source_id": 8573,
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-80467",
+        "kp_title": "Diagonalizing a 2x2 Matrix Given Part of the Diagonalization",
+        "kp_href": "/topics/1968#8573"
+      }
+    },
+    {
+      "math_academy_id": "q-140040",
+      "knowledge_point_id": "d3d7cb0b-7d81-55a5-9781-dda7e9cc9fb9",
+      "knowledge_point": "Identifying Whether a Given 2x2 Matrix Is Diagonalizable",
+      "problem": "Determine if the matrix \n$A=[\\begin{aligned}8 & 9 \\\\ -4 & -4\\end{aligned}]$\nis diagonalizable or not, and if it is diagonalizable, find a corresponding diagonal matrix $D.$",
+      "worked_solution": "First, we find the eigenvalues of the matrix $A$ by solving $det(A-\\lambda I)=0$:\n\n$$\n\\begin{aligned}|\\begin{aligned}8-\\lambda  & 9 \\\\ -4 & -4-\\lambda \\end{aligned}| & =0 \\\\ (8-\\lambda )(-4-\\lambda )-9\\cdot (-4) & =0 \\\\ {\\lambda }^{2}-4\\lambda -32+36 & =0 \\\\ {\\lambda }^{2}-4\\lambda +4 & =0 \\\\ (\\lambda -2)(\\lambda -2) & =0\\end{aligned}\n$$\n\nSo, the eigenvalues are ${\\lambda }_{1}={\\lambda }_{2}=2.$ Since we get one repeated eigenvalue, the matrix might not be diagonalizable. To check this, we row-reduce the matrix $(A-2I)\\text{x}=0:$\n\n$$\n\\begin{aligned}A-2I & =[\\begin{aligned}8 & 9 \\\\ -4 & -4\\end{aligned}]-2[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}6 & 9 \\\\ -4 & -6\\end{aligned}] & {R}_{2} & :={R}_{2}+\\frac{2}{3}{R}_{1} \\\\  & \u223c[\\begin{aligned}6 & 9 \\\\ 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has only $1$ pivot column. This implies that we will have only $2-1=1$ linearly independent eigenvector corresponding to the current eigenvalue. Therefore, $A$ is not diagonalizable.",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "text",
+              "value": "$A$ is not diagonalizable"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}2 & 0 \\\\ 0 & 3\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}2 & 0 \\\\ 0 & 2\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}2 & 3 \\\\ 0 & 0\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]"
+            }
+          ],
+          "correct_value": "$A$ is not diagonalizable",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "knowledge_point_source_id": 8572,
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-140040",
+        "kp_title": "Identifying Whether a Given 2x2 Matrix Is Diagonalizable",
+        "kp_href": "/topics/1968#8572"
+      }
+    }
+  ],
+  "canonical_examples": []
+}

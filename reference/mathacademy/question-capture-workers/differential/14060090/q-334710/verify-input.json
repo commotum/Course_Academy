@@ -1,0 +1,176 @@
+{
+  "mode": "verify",
+  "problem": "The local truncation error (LTE) of a numerical method with step size $\u0394x$ is\n\n$$\n\u03c4(\u0394x)=6(\u0394x)^{5}-(\u0394x)^{6}.\n$$\n\nComplete the following sentences.$\\,$ With step size $\u0394x=0.6,$ the local truncation error is $\u2248$\n{{field-1}}.\n\n$\\,$ With step size $\u0394x=0.4,$ the local truncation error is $\u2248$\n{{field-2}}.\n\n$\\,$ Decreasing from $\u0394x=0.6$ to $\u0394x=0.4,$ the LTE is reduced by a factor of $\u2248$\n{{field-3}}.\n\n$\\,$ According to this data, the order of the method is approximately\n{{field-4}}.",
+  "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\u03c4(\u0394x)=O\\,((\u0394x)^{p+1})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the LTE by a factor of approximately ${k}^{p+1}.$\n\nFirst, we compute the LTE for the given step sizes:\n\n- With step size $\u0394x=0.6,$ the LTE is\n\n$$\n\\begin{aligned}\u03c4(0.6) & =6(0.6)^{5}-(0.6)^{6} \\\\  & =6\\cdot 0.077\\,76-0.046\\,656 \\\\  & =0.466\\,56-0.046\\,656 \\\\  & =0.419\\,904 \\\\  & \u22480.420.\\end{aligned}\n$$\n\n- With step size $\u0394x=0.4,$ the LTE is\n\n$$\n\\begin{aligned}\u03c4(0.4) & =6(0.4)^{5}-(0.4)^{6} \\\\  & =6\\cdot 0.010\\,24-0.004\\,096 \\\\  & =0.061\\,44-0.004\\,096 \\\\  & =0.057\\,344 \\\\  & \u22480.057.\\end{aligned}\n$$\n\nNext, we determine the order by comparing the errors. The step size decreases from $0.6$ to $0.4.$ So, it reduces by a factor of\n\n$$\nk=\\frac{0.6}{0.4}=1.5.\n$$\n\nAs a result, for a numerical method of order $p,$ the LTE should decrease by a factor of approximately\n\n$$\n{k}^{p+1}={1.5}^{p+1}.\n$$\n\nOn the other hand, the LTE actually decreases from $0.419\\,904$ to $0.057\\,344.$ So, it reduces by a factor of\n\n$$\n\\frac{0.419\\,904}{0.057\\,344}=7.322\\,54\u2026\u22487.323.\n$$\n\nComparing the two scale factors for the LTE, we get\n\n$$\n\\begin{aligned}{1.5}^{p+1} & \u22487.322\\,54\u2026 \\\\ p+1 & \u2248{log}_{1.5}\u2061(7.322\\,54\u2026) \\\\ p+1 & \u22484.910\u2026 \\\\ p & \u22483.910\u2026.\\end{aligned}\n$$\n\nTherefore, rounding to the nearest integer, the estimated order of the method is\n$4.$\n\nIndeed, this coincides with the definition of the order from the expression for the LTE:\n\n$$\n\u03c4(\u0394x)=6(\u0394x)^{5}-(\u0394x)^{6}\\,\u21d2\\,\u03c4(\u0394x)=O\\,((\u0394x)^{5})=O\\,((\u0394x)^{4+1}),\\,\u0394x\\to 0.\n$$\n\nHence, the order of the method is $4.$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "0.550"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "0.075"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "0.375"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "0.057"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "0.420"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "0.057"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "0.075"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "0.420"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "0.225"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "0.550"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "7.323"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "5.957"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "10.065"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "4.361"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "8.603"
+        }
+      ]
+    },
+    {
+      "key": "field-4",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "4"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "5"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "3"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14060090,
+    "task_type": "review",
+    "topic_id": 6399,
+    "topic_title": "Order of Numerical Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-334710",
+        "problem": "The local truncation error (LTE) of a numerical method with step size $\u0394x$ is\n\n$$\n\u03c4(\u0394x)=6(\u0394x)^{5}-(\u0394x)^{6}.\n$$\n\nComplete the following sentences.$\\,$ With step size $\u0394x=0.6,$ the local truncation error is $\u2248$\n{{field-1}}.\n\n$\\,$ With step size $\u0394x=0.4,$ the local truncation error is $\u2248$\n{{field-2}}.\n\n$\\,$ Decreasing from $\u0394x=0.6$ to $\u0394x=0.4,$ the LTE is reduced by a factor of $\u2248$\n{{field-3}}.\n\n$\\,$ According to this data, the order of the method is approximately\n{{field-4}}.",
+        "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the local truncation error (LTE) satisfies\n\n$$\n\u03c4(\u0394x)=O\\,((\u0394x)^{p+1})\\,\\text{as}\\,\u0394x\\to 0.\n$$\n\nThe order describes how fast errors shrink as $\u0394x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the LTE by a factor of approximately ${k}^{p+1}.$\n\nFirst, we compute the LTE for the given step sizes:\n\n- With step size $\u0394x=0.6,$ the LTE is\n\n$$\n\\begin{aligned}\u03c4(0.6) & =6(0.6)^{5}-(0.6)^{6} \\\\  & =6\\cdot 0.077\\,76-0.046\\,656 \\\\  & =0.466\\,56-0.046\\,656 \\\\  & =0.419\\,904 \\\\  & \u22480.420.\\end{aligned}\n$$\n\n- With step size $\u0394x=0.4,$ the LTE is\n\n$$\n\\begin{aligned}\u03c4(0.4) & =6(0.4)^{5}-(0.4)^{6} \\\\  & =6\\cdot 0.010\\,24-0.004\\,096 \\\\  & =0.061\\,44-0.004\\,096 \\\\  & =0.057\\,344 \\\\  & \u22480.057.\\end{aligned}\n$$\n\nNext, we determine the order by comparing the errors. The step size decreases from $0.6$ to $0.4.$ So, it reduces by a factor of\n\n$$\nk=\\frac{0.6}{0.4}=1.5.\n$$\n\nAs a result, for a numerical method of order $p,$ the LTE should decrease by a factor of approximately\n\n$$\n{k}^{p+1}={1.5}^{p+1}.\n$$\n\nOn the other hand, the LTE actually decreases from $0.419\\,904$ to $0.057\\,344.$ So, it reduces by a factor of\n\n$$\n\\frac{0.419\\,904}{0.057\\,344}=7.322\\,54\u2026\u22487.323.\n$$\n\nComparing the two scale factors for the LTE, we get\n\n$$\n\\begin{aligned}{1.5}^{p+1} & \u22487.322\\,54\u2026 \\\\ p+1 & \u2248{log}_{1.5}\u2061(7.322\\,54\u2026) \\\\ p+1 & \u22484.910\u2026 \\\\ p & \u22483.910\u2026.\\end{aligned}\n$$\n\nTherefore, rounding to the nearest integer, the estimated order of the method is\n$4.$\n\nIndeed, this coincides with the definition of the order from the expression for the LTE:\n\n$$\n\u03c4(\u0394x)=6(\u0394x)^{5}-(\u0394x)^{6}\\,\u21d2\\,\u03c4(\u0394x)=O\\,((\u0394x)^{5})=O\\,((\u0394x)^{4+1}),\\,\u0394x\\to 0.\n$$\n\nHence, the order of the method is $4.$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0.550",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "0.057",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "7.323",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-4",
+            "submitted_value": "4",
+            "submitted_option": "0"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
