@@ -14,7 +14,7 @@ import uuid
 from pathlib import Path
 
 from core import atomic_json, normalize
-from answer_policy import BEST_EFFORT, SOURCE_ANSWER, binding, best_effort
+from answer_policy import BEST_EFFORT, SOURCE_ANSWER, binding, best_effort, source_answer
 
 
 def restored_choice_identity(value, kind, source_html=''):
@@ -114,7 +114,9 @@ source answer, not whether the source's mathematics is valid. Preserve its decla
 if your independent calculation disagrees. Explain the disagreement separately. Match the
 source's stated result to an exact current choice or blank value; do not guess a hidden key or
 claim the source says something absent from the revealed feedback. These policies never change
-placement diagnostic coverage rules. In ordinary solving, use the following rules:
+placement diagnostic coverage rules. If the revealed source explicitly names an answer missing
+from all original choices, return that source value with correct_option=null; the runner will
+archive it separately and will never try to click an absent choice. In ordinary solving, use the following rules:
 Return the required JSON. Confidence concerns whether the selected answer satisfies the
 stated mathematical request. If the question asks for a valid example (such as "a vector
 parallel to the line"), multiple valid displayed choices do not make a proven valid choice
@@ -627,6 +629,8 @@ class Solver:
     @staticmethod
     def reuse_answer(item, result, saved_item=None):
         result = copy.deepcopy(result)
+        if result.get('confident') is not True and not best_effort(result, item):
+            Solver.validate(item, result)  # An uncertain mathematical value need not be a displayed option.
         fields = {f['key']:f for f in item['fields']}
         saved_fields = {f['key']:f for f in (saved_item or item)['fields']}
         for answer in result['answers']:
@@ -640,6 +644,8 @@ class Solver:
                 identity = next(iter(identities), restored_choice_identity(answer['correct_value'],answer['value_type']))
                 candidates = [c for c in field['choices'] if c['type']==answer['value_type'] and
                               restored_choice_identity(c['value'],c['type'],c.get('html',''))==identity]
+                if not candidates and answer.get('correct_option') is None and source_answer(result, item):
+                    continue  # Feedback can name an answer absent from the original controls.
                 if len(candidates) != 1:
                     raise ValueError('Saved correct answer does not match exactly one restored choice')
                 answer['correct_option'], answer['correct_value'] = candidates[0]['option'], candidates[0]['value']
@@ -745,6 +751,8 @@ class Solver:
                 raise ValueError('Invalid solver answer')
             if field['type'] in ('radio','select'):
                 choice = next((c for c in field['choices'] if c['option'] == answer['correct_option']),None)
+                if choice is None and answer.get('correct_option') is None and source_answer(result, item):
+                    continue  # Source-solution values are never used to click absent controls.
                 if not choice or choice['value'] != answer['correct_value'] or choice['type'] != answer['value_type']:
                     raise ValueError('Solver must identify an exact displayed choice')
             else:

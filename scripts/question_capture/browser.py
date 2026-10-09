@@ -1467,12 +1467,18 @@ class CaptureBrowser:
         for f in record['before']['fields']:
             answer = answers[f['key']]
             choices = [{'type':c['type'],'value':c['value']} for c in f['choices']]
+            from answer_policy import source_answer
+            verified_source = source_answer(record.get('verification', {}), {
+                'problem':record['before']['problem'], 'fields':record['before']['fields'],
+                'worked_solution':record['after']['worked_solution']})
+            if verified_source and not any(c['type'] == answer['value_type'] and c['value'] == answer['correct_value'] for c in choices):
+                choices.append({'type':answer['value_type'], 'value':answer['correct_value']})
             if f['type'] == 'blank':
                 choices = [{'type':answer['value_type'],'value':answer['correct_value']}]
                 submitted = f.get('submitted_value')
                 if submitted is not None and submitted != answer['correct_value']:
                     choices.append({'type':answer['value_type'],'value':submitted})
-            category = 'model_interpretation'
+            category = 'ma_revealed_solution' if verified_source else 'model_interpretation'
             grade = record.get('actual_result') or record['after'].get('result')
             if (grade == 'Correct' and f.get('submitted_value') is not None and
                     compare_answers(f['submitted_value'],answer['correct_value'],answer['value_type'],

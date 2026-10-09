@@ -216,6 +216,26 @@ corrected values instead of restoring the source mistake or deferring the import
 Answer fields are replaced by new component identities; original fields, answers
 and question versions remain available for historical use.
 
+Lesson/review CWCWC and WCWCC sequences are desired targets. After ordinary solving
+and its one mathematical recheck remain uncertain, the runner makes one best-effort
+solver turn in the same activity session and submits its best supported visible
+response. It records `desired_intended`, the actual submission and grade, and the
+original `mathematical_assessment`; it never relabels the guess as mathematically
+proven. Cached recovery answers are reusable after choice shuffling, but still
+must match real controls and pass normal input verification. Placement diagnostic
+coverage and assessment policies are unchanged.
+
+After an incorrect/partial grade, verification identifies the answer declared by
+MA's revealed worked solution. Confidence then concerns source identification,
+not mathematical validity. The archive retains the original prompt, choices and
+solution, the MA answer, and mathematical disagreement separately. A solution
+that explicitly names a missing choice may supply that source answer for archived
+content; it does not create a clickable control. Source-answer reviews are bound
+to that exact question, full controls and feedback before reconciliation uses
+them. Existing committed mathematical corrections remain protected in the study
+database. Old permanent uncertainty deferrals can resume through this bounded
+action without clearing their repair history or repeatedly diagnosing the source.
+
 Exact question **330826** in topic **6372** has a verified convergence-domain
 correction: the transform of $\int_0^t e^{-3\tau}\,d\tau$ exists for $s>0$.
 Its unchanged displayed formula is $1/[s(s+3)]$. The solver applies this domain

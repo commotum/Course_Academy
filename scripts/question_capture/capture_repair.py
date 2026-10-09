@@ -15,7 +15,7 @@ from core import ROOT, CAPTURE_EDB_BIN, atomic_json
 from solver import Solver, process_token, run_cli
 
 PACKAGE = Path(__file__).parent
-ALLOWED = {'browser.py','dom.js','assessment.py','multistep.py','diagnostic.py','math_notation.py','solver.py','core.py','capture.py'}
+ALLOWED = {'browser.py','dom.js','assessment.py','multistep.py','diagnostic.py','math_notation.py','solver.py','core.py','capture.py','answer_policy.py'}
 SCHEMA = {'type':'object','additionalProperties':False,
     'required':['status','summary','file','edits','patches','regression_test','validation','retry_on_source_change'],
     'properties':{'status':{'type':'string','enum':['repair','resolved','blocked']},
@@ -38,7 +38,10 @@ fully offline, demonstrate the original failure, pass with your fix, and check t
 unsafe/incorrect alternative still fails. Do not change existing tests, weaken extraction/import
 checks, force clicks through overlays, bypass visibility checks, remove correct-answer conflicts,
 blindly replay submissions, infer image order from filenames, or reset solver context/timers.
-Preserve 70% CWCWC / 30% WCWCC lesson/review patterns, perfect negative-XP retakes, weighted quiz
+Preserve 70% CWCWC / 30% WCWCC lesson/review targets, with the authorized bounded best-effort
+submission when ordinary solving remains uncertain. Keep its mathematical objection and actual
+source feedback; never require a proven answer to an inconsistent source before progressing.
+Preserve perfect negative-XP retake targets, weighted quiz
 answers, quiz eligibility/pacing, original assets, canonical references, complete content, and
 post-activity-only snapshots. Do not change the queue or priority policy. The parent tests your
 candidate against focused offline regression checks, then applies it and
@@ -53,9 +56,11 @@ Use resolved with empty edits if current code already handles this failure. Ordi
 need paced retry, not a permanent exclusion. Use blocked only when there is no viable automated
 action from available evidence (for example a real authentication challenge); preserve the
 capture so other queued activities can continue. Explain the missing evidence, not a request for
-permission. For a proved mathematical source contradiction that cannot be repaired in capture code,
-set retry_on_source_change=false; new source wording, solver input or authentic grading evidence
-may reopen it, but unrelated capture source edits must not. For capture/interaction failures
+permission. Mathematical source contradictions in ordinary lesson/review questions now have the
+best-effort submission and source-answer recovery action in answer_policy.py/solver.py. Do not
+permanently exclude them merely because the original request has no valid choice. For a source
+failure with no usable controls or feedback, set retry_on_source_change=false; relevant source,
+solver input or grading evidence may reopen it, but unrelated source edits must not. For capture/interaction failures
 set retry_on_source_change=true. Never invent source data. For one file use file/edits; for a small related multi-file
 fix use patches and leave file empty and edits empty. Otherwise leave patches empty. Prefer focused validation; request full
 validation only if the change is broad enough to need it. Inspect previous_attempt.validation_feedback
@@ -189,6 +194,7 @@ def evidence_version(source, edb_bin=None):
         # The canonical capture and solver inputs contain the actual question/context.
         for path in sorted(list(directory.glob('*before.json'))+list(directory.glob('context-*.json'))+
                            list(directory.glob('*/solve-input.json'))+list(directory.glob('*/solve-answer.json'))+
+                           list(directory.glob('*/best-effort-input.json'))+list(directory.glob('*/best-effort-answer.json'))+
                            list(directory.glob('*after.json'))):
             digest.update(str(path.relative_to(directory)).encode())
             digest.update(json.dumps(semantic_evidence(json.loads(path.read_text())),sort_keys=True).encode())

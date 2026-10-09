@@ -33,7 +33,7 @@ class SessionTests(unittest.TestCase):
         self.assertEqual(self.calls[1]['payload']['uncertainty_retry'],1)
         self.assertFalse(json.loads((root/'q-1/solve-before-uncertainty-answer.json').read_text())['confident'])
 
-    def test_unchanged_uncertainty_keeps_evidence_and_does_not_loop(self):
+    def test_unchanged_uncertainty_keeps_evidence_and_uses_one_cached_best_effort(self):
         root,_=self.activity('100','review')
         def always_uncertain(command,**kwargs):
             response=self.fake_cli(command,**kwargs)
@@ -42,9 +42,10 @@ class SessionTests(unittest.TestCase):
             output.write_text(json.dumps(result));return response
         with patch('solver.run_cli',side_effect=always_uncertain):
             for _ in range(2):
-                with self.assertRaisesRegex(ValueError,'uncertain'):
-                    Solver(self.args).solve(self.question(1),None,root/'q-1')
-        self.assertEqual(len(self.calls),2)
+                result=Solver(self.args).solve(self.question(1),None,root/'q-1')
+                self.assertFalse(result['confident'])
+                self.assertEqual(result['submission_policy']['version'],'best-effort-submission-v1')
+        self.assertEqual(len(self.calls),3)
         self.assertFalse(json.loads((root/'solver-session/state.json').read_text()).get('pending_turn'))
         self.assertFalse(json.loads((root/'q-1/solve-answer.json').read_text())['confident'])
 
@@ -91,12 +92,13 @@ class SessionTests(unittest.TestCase):
         with patch('solver.run_cli',side_effect=uncertain_then_interrupted),self.assertRaises(subprocess.TimeoutExpired):
             Solver(self.args).solve(self.question(1),None,root/'q-1')
         self.assertFalse((root/'q-1/solve-answer.json').exists())
-        with patch('solver.run_cli',side_effect=uncertain_then_interrupted),self.assertRaisesRegex(ValueError,'uncertain'):
-            Solver(self.args).solve(self.question(1),None,root/'q-1')
-        self.assertEqual(len(self.calls),3)
-        self.assertEqual(self.calls[-1]['payload']['uncertainty_retry'],1)
-        with patch('solver.run_cli') as cli,self.assertRaisesRegex(ValueError,'uncertain'):
-            Solver(self.args).solve(self.question(1),None,root/'q-1')
+        with patch('solver.run_cli',side_effect=uncertain_then_interrupted):
+            result=Solver(self.args).solve(self.question(1),None,root/'q-1')
+        self.assertEqual(len(self.calls),4)
+        self.assertEqual(self.calls[-2]['payload']['uncertainty_retry'],1)
+        self.assertEqual(result['submission_policy']['version'],'best-effort-submission-v1')
+        with patch('solver.run_cli') as cli:
+            self.assertEqual(Solver(self.args).solve(self.question(1),None,root/'q-1'),result)
         cli.assert_not_called()
 
     def test_uncertain_covered_diagnostic_still_skips_without_retrying_for_an_answer(self):

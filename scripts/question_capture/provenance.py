@@ -37,6 +37,7 @@ def source_records(content, directory, *, include_reviews=True):
     only. An incorrect grade leaves solution-derived keys as interpretations.
     """
     from core import compare_answers
+    from answer_policy import source_answer
     directory = Path(directory)
     state_path = directory/'state.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {}
@@ -70,6 +71,9 @@ def source_records(content, directory, *, include_reviews=True):
         if rating and q.get('difficulty') == rating:
             add(mid, None, 'question/difficulty', kw('question.difficulty/'+rating), 'ma_capture', metadata_path)
         fields = {f['key']: f for f in before.get('fields', [])}
+        verification = record.get('verification', {})
+        verified_source = source_answer(verification, {'problem':before.get('problem', ''),
+            'fields':before.get('fields', []), 'worked_solution':record.get('after', {}).get('worked_solution', '')})
         for f in q.get('answer_fields', []):
             raw = fields.get(f['key'])
             if not raw or raw['type'] != f['type']:
@@ -86,6 +90,14 @@ def source_records(content, directory, *, include_reviews=True):
             if correct is None:
                 continue  # Normal validation will reject incomplete input.
             category = 'model_interpretation'
+            verified = next((a for a in verification.get('answers', []) if a['key'] == f['key']), None)
+            if (verified_source and verified and verified['correct_value'] == correct['value']
+                    and verified['value_type'] == correct['type']):
+                category = 'reviewed_ma_solution'
+                # Preserve original options and add only a source-solution answer.
+                expected = sorted(set(captured + [(correct['type'], correct['value'])]))
+                if f['type'] in ('radio', 'select') and sorted(set(incoming)) == expected:
+                    add(mid, f['key'], 'answer-field/choices', incoming, 'reviewed_ma_choices', file)
             grade = record.get('actual_result') or record.get('after', {}).get('result')
             submitted = raw.get('submitted_value')
             if grade == 'Correct' and submitted is not None and compare_answers(submitted, correct['value'], correct['type'],prompt=q.get('problem',''))['outcome'] == 'equivalent':
@@ -495,9 +507,6 @@ class Reconciler:
                 authoring=known, source=source, basis=self.basis,
                 reason='Observed MA content supersedes the stored value', action='replace'))
             return True
-        if any(r['category'].startswith('ma_') for r in known):
-            self.review(mid, key, attr, old, new, 'Contradiction between authoritative MA sources')
-            return False
         reviewed=[r for r in source if r['category']=='reviewed_ma_solution']
         if attr=='answer-field/correct' and reviewed:
             self.decisions.append(dict(question=mid,field=key,attribute=attr,
@@ -505,6 +514,9 @@ class Reconciler:
                 authoring=known,source=reviewed,basis=self.basis,
                 reason='Persistent repair judgment from authentic worked solution and original choices supersedes stored key',action='replace'))
             return True
+        if any(r['category'].startswith('ma_') for r in known):
+            self.review(mid, key, attr, old, new, 'Contradiction between authoritative MA sources')
+            return False
         if not local or not source:
             self.review(mid, key, attr, old, new, 'Unknown current provenance or missing authoritative replacement')
             return False
