@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "A certain company produces two types of smartphones: Phone $A$ and Phone $B.$ The following table describes how the number of customers changes between both types of smartphones each year:\n\n|  |  | From: |  |\n| --- | --- | --- | --- |\n|  |  | **Phone $A$** | **Phone $B$** |\n| To: | **Phone $A$** | $0.6$ | $0.3$ |\n| **Phone $B$** | $0.4$ | $0.7$ |  |\n\nThat is, $40%$ of Phone $A$ customers switch to Phone $B$ each year, and $30%$ of Phone $B$ customers switch to Phone $A.$\n\nCurrently, $600\\,000$ customers use Phone $A,$ while $400\\,000$ customers use Phone $B.$ How many customers will use Phone $A$ in one year? You may assume that the total number of customers doesn't change.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "640\\,000"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "430\\,000"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "400\\,000"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "480\\,000"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "520\\,000"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14059948,
+    "task_type": "lesson",
+    "topic_id": 1911,
+    "topic_title": "Markov Chains",
+    "examples": [
+      {
+        "math_academy_id": "e-5599",
+        "knowledge_point": "Constructing a Stochastic Matrix and Making a Prediction",
+        "problem": "A certain industry produces $2$ types of sugar, namely sugar $A$ and sugar $B$. The following table describes how the number of consumers changes between both types of sugar in a month:\n\n|  |  | From: |  |\n| --- | --- | --- | --- |\n|  |  | **Sugar $A$** | **Sugar $B$** |\n| To: | **Sugar $A$** | $0.3$ | $0.45$ |\n| **Sugar $B$** | $0.7$ | $0.55$ |  |\n\nThat is, $70\\%$ of sugar $A$ customers switch to sugar $B$ each month, and $45\\%$ of sugar $B$ customers switch to sugar $A.$\n\nCurrently, $600$ customers use sugar $A,$ while $400$ customers use sugar $B.$ How many customers will use sugar $A$ in one month? You may assume that the total number of customers doesn't change.",
+        "worked_solution": "From the table, we can build the corresponding stochastic matrix: \n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14059948/assets/451b82e8cb00ede7b0ddf73f35c0555d0eeeeefc5beb5ce4fddd54f0df5f2577.png)\n\nThe vector describing the number of customers for each type of sugar is\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14059948/assets/56952aeed1d718033af8a3e6d09e8e269f1d70aa8dc31609b8289f025f2e6bd6.png)\nDividing the vector above by the total number of customers $(1\\,000),$ we get the stochastic vector of the initial state:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14059948/assets/cae1bed6b8b01b3ff66c2e8bacf7a10f6c0ece53f3aeac0fb1a51e8fc3c07e8e.png)\n\nTo find the state vector $\\mathbf{x}_1$ after one month, we apply one step of the Markov chain:\n\n$$\n\\mathbf{x}_1=P\\mathbf{x}_0\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}{x}_{1} & =P{x}_{0} \\\\  & =[\\begin{aligned}0.3 & 0.45 \\\\ 0.7 & 0.55\\end{aligned}][\\begin{aligned}0.6 \\\\ 0.4\\end{aligned}] \\\\  & =[\\begin{aligned}0.36 \\\\ 0.64\\end{aligned}].\\end{aligned}\n$$\n\nSo, after one month, $\\color{blue}36\\%$ of customers will use sugar $A.$ Computing $36\\%$ of $1\\,000,$ we obtain\n\n$$\n1\\,000 \\cdot 0.36 = 360.\n$$\n\nTherefore, $360$ customers will use sugar $A$ in one month.",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14059948/example-5599.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-135450",
+        "problem": "$$\nP=[\\begin{aligned}0.2 & 0.4 \\\\ 0.8 & 0.6\\end{aligned}],\\,{x}_{0}=[\\begin{aligned}0.1 \\\\ 0.9\\end{aligned}]\n$$\n\n \n\nConsider a Markov chain with the stochastic matrix $P$ and the initial state vector ${x}_{0}$ given above. Calculate the state vector ${x}_{2}.$",
+        "worked_solution": "To find the state vector ${x}_{2},$ we apply two steps of the Markov chain:\n\n$$\n{x}_{1}=P{x}_{0},\\,{x}_{2}=P{x}_{1}\n$$\n\nAfter the first step, we have\n\n$$\n\\begin{aligned}{x}_{1} & =P{x}_{0} \\\\  & =[\\begin{aligned}0.2 & 0.4 \\\\ 0.8 & 0.6\\end{aligned}][\\begin{aligned}0.1 \\\\ 0.9\\end{aligned}] \\\\  & =[\\begin{aligned}0.38 \\\\ 0.62\\end{aligned}].\\end{aligned}\n$$\n\nFinally, after the second step, we obtain \n\n$$\n\\begin{aligned}{x}_{2} & =P{x}_{1} \\\\  & =[\\begin{aligned}0.2 & 0.4 \\\\ 0.8 & 0.6\\end{aligned}][\\begin{aligned}0.38 \\\\ 0.62\\end{aligned}] \\\\  & =[\\begin{aligned}0.324 \\\\ 0.676\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}0.324 \\\\ 0.676\\end{aligned}]",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
