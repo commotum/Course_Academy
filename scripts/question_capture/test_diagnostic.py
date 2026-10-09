@@ -184,7 +184,7 @@ class DiagnosticReplayTests(unittest.TestCase):
         self.context.route('https://mathacademy.com/**',self.respond)
         self.started=False;self.current=0;self.graded=set();self.submissions=[];self.nexts=[]
         self.solver_calls=[]
-        self.retry_indices=set();self.retries=[]
+        self.retry_indices=set();self.retries=[];self.direct_finish=False
 
     def tearDown(self):
         self.context.close();self.work.cleanup()
@@ -213,6 +213,10 @@ class DiagnosticReplayTests(unittest.TestCase):
                 document.querySelector('#retryScreen').style.display='none';
                 fetch('/fixture/retry/'+choice).then(r=>r.text()).then(url=>setTimeout(()=>location.href=url,150));
               });</script>'''
+        if self.direct_finish and self.current == len(EXAM['questions'])-1:
+            body += '''<script>document.querySelectorAll('.questionWidget-submitButton,.questionWidget-skipButton').forEach(n=>
+              n.onclick=()=>fetch('/fixture/grade/'+(n.classList.contains('questionWidget-skipButton')?'skip':'answer'))
+                .then(()=>location.href='/tasks/1/diagnostics/2/analysis#'));</script>'''
         return body
 
     def respond(self,route):
@@ -228,6 +232,7 @@ class DiagnosticReplayTests(unittest.TestCase):
             self.started=True;body='OK'
         elif '/fixture/grade/' in url:
             self.graded.add(self.current);self.submissions.append((self.current,url.rsplit('/',1)[1]));body='OK'
+            if self.direct_finish and self.current==len(EXAM['questions'])-1:self.current+=1
         elif '/fixture/next' in url or '/fixture/retry/' in url:
             if '/fixture/retry/' in url:self.retries.append((self.current,url.rsplit('/',1)[1]))
             self.nexts.append(self.current);self.current+=1
@@ -305,6 +310,46 @@ class DiagnosticReplayTests(unittest.TestCase):
         manifest=json.loads((self.root/'assets/manifest.json').read_text())
         self.assertTrue(manifest);self.assertTrue(all(a['representation']=='original' for a in manifest.values()))
         self.assertEqual(sum(phase=='verify' for phase,_ in self.solver_calls),2)
+
+    def test_final_skip_direct_analysis_completion_recovers_authentic_history_grade(self):
+        self.direct_finish=True
+        reader=self.reader();state=self.state()
+        state['diagnostic_policy']={**COVERED,'covered_topics':[]}
+        reader.solver.solve=lambda *args: {'confident':True,'answers':[],
+                                         'diagnostic_classification':'unknown','diagnostic_topic_id':None}
+        self.start(reader,state)
+        self.assertTrue(state['diagnostic_complete'])
+        self.assertEqual(self.submissions,[(0,'skip'),(1,'skip'),(2,'skip'),(3,'skip')])
+        last=state['questions']['question-004']
+        self.assertEqual(last['status'],'submitting')
+        self.assertNotIn('after',last)
+        self.assertFalse((self.root/'question-004-after.json').exists())
+        # History validates numbered question identity, KP, grade and source HTML.
+        metadata=[q['history'] for q in EXAM['questions']]
+        original_before=copy.deepcopy(last['before'])
+        bind_history(state,metadata)
+        last=state['questions']['q-314250']
+        self.assertEqual(last['status'],'graded')
+        self.assertEqual(last['actual_result'],metadata[-1]['result'])
+        self.assertIsNone(last['live_result'])
+        self.assertEqual(last['intended'],'skip')
+        self.assertEqual(last['before'],original_before)
+        self.assertEqual(last['history_grade_recovery']['raw_html'],metadata[-1]['raw_html'])
+        submissions=list(self.submissions)
+        take_diagnostic(reader,state,self.root)
+        self.assertEqual(self.submissions,submissions)
+
+    def test_missing_final_grade_does_not_recover_from_missing_or_wrong_history_evidence(self):
+        record={'sequence_position':1,'source_question_id':136396,'status':'submitting'}
+        state={**self.state(),'questions':{'question-001':record}}
+        metadata=[copy.deepcopy(EXAM['questions'][0]['history'])]
+        metadata[0]['result']=None
+        with self.assertRaises(ValueError):bind_history(state,metadata)
+        self.assertEqual(record['status'],'submitting')
+        metadata=[copy.deepcopy(EXAM['questions'][0]['history'])]
+        metadata[0]['id']='question-999999'
+        with self.assertRaises(ValueError):bind_history(state,metadata)
+        self.assertEqual(record['status'],'submitting')
 
     def test_covered_policy_replay_uses_bound_overlap_and_unbound_blank_skill(self):
         reader=self.reader();state=self.state();state['diagnostic_policy']=COVERED

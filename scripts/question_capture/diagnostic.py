@@ -184,6 +184,13 @@ def wait_changed(reader, number):
                                  'v.retry || (v.ready && v.number !== old);}', arg=number)
 
 
+def wait_submission_outcome(reader, state):
+    """A final submission may navigate straight to analysis without a graded widget."""
+    analysis = 'https://mathacademy.com/tasks/' + str(state['task_id']) + '/diagnostics/' + str(state['diagnostic_id']) + '/analysis'
+    reader.page.wait_for_function('expected => {const v=(' + VIEW + ')(); return '
+                                  '!!v.result || v.retry || v.url.split(/[?#]/)[0] === expected;}', arg=analysis)
+
+
 def recover_saved_grades(reader, state, directory, *, advanced_past=None):
     """Use a saved graded DOM when server navigation already passed its question."""
     from browser import EXTRACT, same_question_problem
@@ -340,8 +347,7 @@ def _take_diagnostic(reader, state, directory):
             save()
             continue
         if record.get('status') == 'submitting' and not state.get('diagnostic_restored'):
-            page.wait_for_function('() => {const v=(' + VIEW + ')(); return !!v.result || v.retry || '
-                                   '/\/analysis(?:[?#]|$)/.test(v.url);}')
+            wait_submission_outcome(reader, state)
             continue
         if state.pop('diagnostic_restored', False):
             # Fresh server navigation restored an unanswered question. Saved
@@ -395,7 +401,7 @@ def _take_diagnostic(reader, state, directory):
         journal(directory/'events.jsonl', 'diagnostic_submission_intent', question=slot, intended=record['intended'])
         scope.locator('.questionWidget-submitButton' if answers_classification(record['classification']) else
                       '.questionWidget-skipButton').click()
-        page.wait_for_function('() => !!(' + VIEW + ')().result')
+        wait_submission_outcome(reader, state)
 
 
 def bind_history(state, metadata):
@@ -422,6 +428,13 @@ def bind_history(state, metadata):
         if not source:
             raise ValueError('Diagnostic history lacks an authentic source topic/KP')
         record['history_classification'] = classify(state['diagnostic_policy'], {}, int(source[1]))
+        if record.get('status') != 'graded' and not record.get('finalized'):
+            if q.get('result') not in ('Correct', 'Incorrect', 'No Credit') or not q.get('raw_html'):
+                raise ValueError('Diagnostic history lacks an authentic grade for unfinished question: '+mid)
+            record.update(status='graded', actual_result=q['result'],
+                          history_grade_recovery={'source':'task_history', 'question_id':q['id'],
+                                                  'question_number':q['question_number'],
+                                                  'result':q['result'], 'raw_html':q['raw_html']})
         bound[mid] = record
     state['questions'] = dict(sorted(bound.items(), key=lambda pair:pair[1]['sequence_position']))
     state['diagnostic_question_order'] = list(state['questions'])
