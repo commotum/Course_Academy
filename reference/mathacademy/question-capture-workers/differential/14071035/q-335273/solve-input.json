@@ -1,0 +1,50 @@
+{
+  "mode": "solve",
+  "problem": "$$\n{\\begin{aligned}{x}^{\u2032}(t)=3x(t)+y(t) \\\\ {y}^{\u2032}(t)=3y(t),\\end{aligned}\\,[\\begin{aligned}x(2) \\\\ y(2)\\end{aligned}]=[\\begin{aligned}0 \\\\ 1\\end{aligned}]\n$$\n\nFind the solution to the initial value problem above.\n\n*Hint: ${e}^{At}=[\\begin{aligned}{e}^{3t} & t{e}^{3t} \\\\ 0 & {e}^{3t}\\end{aligned}],$ where $A=[\\begin{aligned}3 & 1 \\\\ 0 & 3\\end{aligned}].$*\n\n| $[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]=\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | {{field-2}} |  |  |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071035,
+    "task_type": "lesson",
+    "topic_id": 6690,
+    "topic_title": "Solving Homogeneous Systems of ODEs Using Matrix Methods",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-335430",
+        "problem": "$$\n{\\begin{aligned}{x}^{\u2032}(t)=7x(t)+y(t) \\\\ {y}^{\u2032}(t)=7y(t),\\end{aligned}\\,[\\begin{aligned}x(-3) \\\\ y(-3)\\end{aligned}]=[\\begin{aligned}0 \\\\ -2\\end{aligned}]\n$$\n\nFind the solution to the initial value problem above.\n\n*Hint: ${e}^{At}=[\\begin{aligned}{e}^{7t} & t{e}^{7t} \\\\ 0 & {e}^{7t}\\end{aligned}],$ where $A=[\\begin{aligned}7 & 1 \\\\ 0 & 7\\end{aligned}].$*\n\n| $[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]=\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | {{field-2}} |  |  |",
+        "worked_solution": "Writing our system in matrix form, we get\n\n$$\n{x}^{\u2032}(t)=[\\begin{aligned}7 & 1 \\\\ 0 & 7\\end{aligned}]x(t),\n$$\n\nwhere $x(t)=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}].$ So, the matrix of the system is $A=[\\begin{aligned}7 & 1 \\\\ 0 & 7\\end{aligned}].$\n\nGiven the system ${x}^{\u2032}(t)=Ax(t),$ where $A$ is a constant square matrix, the general solution of the system can be written as\n\n$$\nx(t)=\u03a6(t)\\,c,\n$$\n\nwhere $\u03a6(t)$ is a fundamental matrix of the system, and $c$ is a constant vector.\n\nSo, we can write our general solution as\n\n$$\nx(t)={\u03a6}_{0}(t)c={e}^{At}\\,c,\n$$\n\nwhere ${\u03a6}_{0}(t)={e}^{At}$ is the standard fundamental matrix of the system. Substituting $t={t}_{0},$ we have\n\n$$\nx({t}_{0})={e}^{A{t}_{0}}\\,c,\n$$\n\nand since ${e}^{At}$ is invertible for all $t,$ we have\n\n$$\nc={e}^{-A{t}_{0}}\\,x({t}_{0}).\n$$\n\nPlugging the above back into our expression for $x(t),$ we get\n\n$$\n\\begin{aligned}x(t) & ={e}^{At}\\,{e}^{-A{t}_{0}}\\,x({t}_{0}) \\\\  & ={e}^{A(t-{t}_{0})}\\,x({t}_{0}).\\end{aligned}\n$$\n\nTherefore, the solution is\n\n$$\n\\begin{aligned}x(t) & ={e}^{A(t+3)}\\,x(-3) \\\\  & =[\\begin{aligned}{e}^{7(t+3)} & (t+3){e}^{7(t+3)} \\\\ 0 & {e}^{7(t+3)}\\end{aligned}][\\begin{aligned}0 \\\\ -2\\end{aligned}] \\\\  & =[\\begin{aligned}\\,(-2t-6){e}^{7(t+3)}\\, \\\\ \\,-2{e}^{7(t+3)}\\,\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "-2(t+3)e^{7(t+3)}",
+            "observed_mathquill_latex": "-2\\left(t+3\\right)e^{7\\left(t+3\\right)}"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "-2e^{7(t+3)}",
+            "observed_mathquill_latex": "-2e^{7\\left(t+3\\right)}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

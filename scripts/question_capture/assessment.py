@@ -360,6 +360,8 @@ def assessment_history(reader, state, directory, load_topic):
     ids = [q['id'].replace('question-','q-') for q in metadata]
     if len(set(ids)) != len(ids) or set(ids) != set(state['questions']):
         raise ValueError('Assessment activity IDs differ from the live capture')
+    # Persist native identities and grades before slow per-question verification.
+    atomic_json(directory/'activity-metadata.json',metadata)
     topics = {}
     for q in metadata:
         mid = q['id'].replace('question-','q-')

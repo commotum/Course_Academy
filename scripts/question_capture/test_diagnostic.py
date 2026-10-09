@@ -102,6 +102,33 @@ class DiagnosticPolicyTests(unittest.TestCase):
             atomic_json(path,{'covered_topics':[],'provenance':{'account_id':'fixture'}})
             self.assertEqual(classify(covered_policy(path,154),{},2036),'uncovered')
 
+    def test_strict_source_binding_refuses_every_unbound_semantic_match(self):
+        strict={**COVERED,'require_source_binding':True}
+        self.assertEqual(classify(strict,{},2036),'covered')
+        self.assertEqual(classify(strict,{},3052),'covered')
+        self.assertEqual(classify(strict,{},3340),'uncovered')
+        self.assertEqual(classify(strict,{},99999),'uncovered')
+        for topic in COVERED['covered_topics']:
+            decision={'confident':True,'answers':[], 'diagnostic_classification':'covered',
+                      'diagnostic_topic_id':topic['topic_id']}
+            self.assertEqual(classify(strict,decision),'unknown')
+            self.assertEqual(classify(COVERED,decision),'covered')
+
+    def test_source_binding_flag_freezes_only_new_policies_and_validates_json_type(self):
+        with tempfile.TemporaryDirectory() as work:
+            path=Path(work)/'covered.json';atomic_json(path,{**COVERED,'require_source_binding':True})
+            args=arguments(['run','--diagnostic-covered-topics',str(path)])
+            state={};directory=Path(work)/'capture'
+            configure(args,{'course_id':54},state,directory)
+            self.assertTrue(state['diagnostic_policy']['require_source_binding'])
+            legacy={'diagnostic_policy':copy.deepcopy(COVERED)}
+            configure(args,{},legacy,directory)
+            self.assertEqual(legacy['diagnostic_policy'],COVERED)
+            atomic_json(path,{**COVERED,'require_source_binding':'yes'})
+            with self.assertRaises(ValueError):covered_policy(path,54)
+            atomic_json(path,{**COVERED,'require_source_binding':True})
+            self.assertTrue(covered_policy(path,54)['require_source_binding'])
+
     def test_started_diagnostic_automatically_recovers_even_if_deferred(self):
         with tempfile.TemporaryDirectory() as work:
             args=arguments(['run','--output',work+'/captures','--state-dir',work+'/state'])
@@ -350,6 +377,28 @@ class DiagnosticReplayTests(unittest.TestCase):
         metadata[0]['id']='question-999999'
         with self.assertRaises(ValueError):bind_history(state,metadata)
         self.assertEqual(record['status'],'submitting')
+
+    def test_strict_binding_replay_answers_known_source_and_skips_unbound_without_solver(self):
+        reader=self.reader();state=self.state()
+        state['diagnostic_policy']={**COVERED,'require_source_binding':True}
+        self.start(reader,state)
+        self.assertEqual(self.submissions,[(0,'answer'),(1,'skip'),(2,'skip'),(3,'skip')])
+        self.assertEqual(self.solver_calls,[('solve',str(self.root/'question-001'))])
+        self.assertEqual([r['classification'] for r in state['questions'].values()],['covered','unknown','unknown','unknown'])
+
+    def test_history_metadata_is_durable_before_slow_verification_turn(self):
+        reader=self.reader();state=self.state();self.start(reader,state)
+        original=reader.solver.solve
+        def stop_verify(item,screenshot,directory,phase='solve'):
+            if phase=='verify':raise KeyboardInterrupt('stop before slow history verification')
+            return original(item,screenshot,directory,phase)
+        reader.solver.solve=stop_verify
+        with self.assertRaises(KeyboardInterrupt):reader.history(state,self.root,self.load_topic)
+        metadata=json.loads((self.root/'activity-metadata.json').read_text())
+        self.assertEqual(len(metadata),len(EXAM['questions']))
+        self.assertEqual({q['id'] for q in metadata},{q['history']['id'] for q in EXAM['questions']})
+        self.assertTrue(all(q['source_result']==q['result'] and q['raw_html'] for q in metadata))
+        self.assertFalse(state.get('history_complete'))
 
     def test_covered_policy_replay_uses_bound_overlap_and_unbound_blank_skill(self):
         reader=self.reader();state=self.state();state['diagnostic_policy']=COVERED

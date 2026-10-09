@@ -57,9 +57,14 @@ def covered_policy(source, course_id):
         if len({t['topic_id'] for t in values}) != len(values):
             raise ValueError('Covered-topic snapshot contains duplicate topics')
         topics[name] = values
-    return {'mode':COVERED_MODE, 'course_id':course_id, **topics,
-            'provenance':snapshot['provenance'], 'source':str(source),
-            'sha256':hashlib.sha256(raw).hexdigest()}
+    policy = {'mode':COVERED_MODE, 'course_id':course_id, **topics,
+              'provenance':snapshot['provenance'], 'source':str(source),
+              'sha256':hashlib.sha256(raw).hexdigest()}
+    if 'require_source_binding' in snapshot:
+        if type(snapshot['require_source_binding']) is not bool:
+            raise ValueError('Covered-topic require_source_binding must be boolean')
+        policy['require_source_binding'] = snapshot['require_source_binding']
+    return policy
 
 
 def policy_fingerprint(policy):
@@ -125,6 +130,8 @@ def classify(policy, decision, known_topic_id=None):
         blocked = {t['topic_id'] for t in policy.get('blocked_topics', [])}
         if known_topic_id is not None:
             return 'covered' if known_topic_id in covered else 'uncovered'
+        if policy.get('require_source_binding'):
+            return 'unknown'
         kind, tid = decision.get('diagnostic_classification'), decision.get('diagnostic_topic_id')
         if type(tid) is int and tid in blocked and tid not in covered:
             return 'uncovered'
@@ -378,9 +385,12 @@ def _take_diagnostic(reader, state, directory):
             record['bound_topic_id'] = tid
             record['bound_topic_ids'] = ids
             ambiguous = policy.get('mode') == COVERED_MODE and ids is not None and len(ids) > 1
-            if ambiguous or (tid is not None and not answers_classification(classify(policy, {}, tid))):
+            unbound = policy.get('mode') == COVERED_MODE and policy.get('require_source_binding') and tid is None
+            if unbound or ambiguous or (tid is not None and not answers_classification(classify(policy, {}, tid))):
                 decision = {'confident':True, 'answers':[],
-                            'explanation':'Ambiguous source topic binding.' if ambiguous else 'Source topic is outside the answer allowlist.'}
+                            'explanation':('Verified source topic binding is required.' if unbound else
+                                           'Ambiguous source topic binding.' if ambiguous else
+                                           'Source topic is outside the answer allowlist.')}
             else:
                 item = dict(record['before'])
                 if tid is None:

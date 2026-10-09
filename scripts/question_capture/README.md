@@ -702,6 +702,16 @@ unlisted and ambiguous source bindings skip. For blanks without a source ID, the
 same solver session may classify only supplied topic IDs; uncertain, compound or
 unmatched skills skip. The old policy remains the default for other workers.
 
+For an exact Foundations CSV allowlist, set `require_source_binding: true` in
+this JSON.
+This stricter mode answers only when a source question has a unique, verified
+topic binding whose ID appears in `covered_topics`. Missing, ambiguous and
+unlisted bindings skip immediately; a solver's similar-skill suggestion cannot
+make them covered. This option applies when a new diagnostic policy is frozen;
+previously frozen policies and completed diagnostic evidence retain their rules.
+Native history identities and grades are saved to `activity-metadata.json` after
+the history join is validated, before per-question answer verification.
+
 Resumes keep the frozen policy. An intentional policy migration must replace the
 saved `diagnostic_policy` and `answer_policy` after preserving the old evidence.
 The runner retains grades, invalidates unanswered decisions whose policy fingerprint
