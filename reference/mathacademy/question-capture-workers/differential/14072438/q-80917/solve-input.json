@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Consider the system of linear differential equations given by\n\n$$\n{x}^{\u2032}(t)=[\\begin{aligned}5 & 2 \\\\ 0 & 5\\end{aligned}]x(t).\n$$\n\nGiven that the solution to the system can be written as\n\n$$\nx(t)={c}_{1}[\\begin{aligned}1 \\\\ a\\end{aligned}]{e}^{5t}+{c}_{2}([\\begin{aligned}1 \\\\ a\\end{aligned}]t{e}^{5t}+[\\begin{aligned}0 \\\\ b\\end{aligned}]{e}^{5t}),\\,{c}_{1},{c}_{2}\\in R,\n$$\n\nwhat is the value of $a+b?$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-1"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\frac{1}{2}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-\\frac{3}{2}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14072438,
+    "task_type": "review",
+    "topic_id": 2818,
+    "topic_title": "Solving Homogeneous Systems of ODEs With Repeated Eigenvalues",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-80608",
+        "problem": "Solve the initial value problem\n\n$$\n{x}^{\u2032}(t)=[\\begin{aligned}3 & 4 \\\\ -1 & -1\\end{aligned}]x(t),\\,x(0)=[\\begin{aligned}-1 \\\\ 1\\end{aligned}].\n$$\n\n*Hint: The only eigenvalue of the system's matrix is $\\lambda =1.$*",
+        "worked_solution": "We need to find the eigenvalues and the eigenvectors of the matrix $A=[\\begin{aligned}3 & 4 \\\\ -1 & -1\\end{aligned}].$\n\nWe are given that the eigenvalue is $\\lambda =1$ (of multiplicity two). For this eigenvalue, we get \n\n$$\nA-\\lambda I=[\\begin{aligned}2 & 4 \\\\ -1 & -2\\end{aligned}]\u223c[\\begin{aligned}1 & 2 \\\\ 0 & 0\\end{aligned}].\n$$\n\nSo, we get an eigenvector \n$v=[\\begin{aligned}-2 \\\\ 1\\end{aligned}].$\n\nSince we have a repeated eigenvalue $\\lambda $ and only one linearly independent eigenvector $v$, the solution to the system of differential equations is given by\n\n$$\nx(t)={c}_{1}v{e}^{\\lambda t}+{c}_{2}(vt{e}^{\\lambda t}+w{e}^{\\lambda t}),\n$$\n\nwhere $w$ is a solution to the equation $(A-\\lambda I)w=v.$\n\nTo find $w,$ we solve the equation $(A-\\lambda I)w=v$ as follows:\n\n$$\n\\begin{aligned}(A-\\lambda I)w & =v \\\\ [\\begin{aligned}3-1 & 4 \\\\ -1 & -1-1\\end{aligned}][\\begin{aligned}{w}_{1} \\\\ {w}_{2}\\end{aligned}] & =[\\begin{aligned}-2 \\\\ 1\\end{aligned}] \\\\ [\\begin{aligned}2 & 4 \\\\ -1 & -2\\end{aligned}][\\begin{aligned}{w}_{1} \\\\ {w}_{2}\\end{aligned}] & =[\\begin{aligned}-2 \\\\ 1\\end{aligned}]\\end{aligned}\n$$\n\nThe last equality allows us to form the following system of equations:\n\n$$\n{\\begin{aligned}2{w}_{1}+4{w}_{2}=-2 \\\\ -{w}_{1}-2{w}_{2}=1\\end{aligned}\n$$\n\nNote that the first equation is a constant multiple of the second. So, we obtain\n\n$$\n{w}_{1}=-1-2{w}_{2}.\n$$\n\nThe variable ${w}_{2}$ is a free variable. Setting ${w}_{2}=0,$  we get ${w}_{1}=-1,$ and therefore\n\n$$\nw=[\\begin{aligned}-1 \\\\ 0\\end{aligned}].\n$$\n\nTherefore, the general solution is given by\n\n$$\nx(t)={c}_{1}[\\begin{aligned}-2 \\\\ 1\\end{aligned}]{e}^{t}+{c}_{2}([\\begin{aligned}-2 \\\\ 1\\end{aligned}]t{e}^{t}+[\\begin{aligned}-1 \\\\ 0\\end{aligned}]{e}^{t}),\\,{c}_{1},{c}_{2}\\in R.\n$$\n\nNow, we need to find the values of ${c}_{1}$ and ${c}_{2}$ using the initial condition $x(0)=[\\begin{aligned}-1 \\\\ 1\\end{aligned}].$ Substituting $t=0$ into the general solution gives\n\n$$\n\\begin{aligned}\\text{x}(0) & =[\\begin{aligned}-2{c}_{1}-{c}_{2} \\\\ {c}_{1}\\end{aligned}] \\\\ [\\begin{aligned}-1 \\\\ 1\\end{aligned}] & =[\\begin{aligned}-2{c}_{1}-{c}_{2} \\\\ {c}_{1}\\end{aligned}] \\\\ [\\begin{aligned}{c}_{1} \\\\ {c}_{2}\\end{aligned}] & =[\\begin{aligned}1 \\\\ -1\\end{aligned}].\\end{aligned}\n$$\n\nFinally, the solution to our initial value problem is given by\n\n$$\n\\begin{aligned}x(t) & =[\\begin{aligned}-2 \\\\ 1\\end{aligned}]{e}^{t}-([\\begin{aligned}-2 \\\\ 1\\end{aligned}]t{e}^{t}+[\\begin{aligned}-1 \\\\ 0\\end{aligned}]{e}^{t}) \\\\  & =[\\begin{aligned}-1 \\\\ 1\\end{aligned}]{e}^{t}+[\\begin{aligned}2 \\\\ -1\\end{aligned}]t{e}^{t} \\\\  & =[\\begin{aligned}(2t-1){e}^{t} \\\\ (1-t){e}^{t}\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}(2t-1){e}^{t} \\\\ (1-t){e}^{t}\\end{aligned}]",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
