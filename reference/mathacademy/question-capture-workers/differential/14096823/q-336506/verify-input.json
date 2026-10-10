@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "A coolant reservoir in a manufacturing plant can hold up to $210\\,\\text{gal}$ of liquid. Initially, it contains $70\\,\\text{gal}$ of coolant solution with $20\\,\\text{lb}$ of dissolved corrosion inhibitor. A more concentrated coolant solution with concentration $0.5\\,\\text{lb/gal}$ flows into the reservoir at a rate of $21\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $14\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of inhibitor in the reservoir at the moment it begins to overflow.",
+  "worked_solution": "Since $Q$ is the amount of inhibitor in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which inhibitor enters the reservoir minus the rate at which inhibitor leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nFirst, note that a solution containing $0.5\\,\\text{lb/gal}$ of inhibitor enters the reservoir at a rate of $21\\,\\text{gal/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.5\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (21\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.5\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (21\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =10.5\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $70\\,\\text{gal}$ of solution; solution enters at $21\\,\\text{gal/min}$ and mixed solution leaves at $14\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=70+21t-14t=7(10+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of inhibitor in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{7(10+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $14\\,\\text{gal/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(14\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{7(10+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(14\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{7(10+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{14Q}{7(10+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{10+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =10.5-\\frac{2Q}{10+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{10+t}\\,Q=10.5.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(10+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|10+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(10+t)^{2}} \\\\  & =(10+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(10+t)^{2}$ yields\n\n$$\n\\begin{aligned}(10+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{10+t}\\,Q) & =(10+t)^{2}\\cdot 10.5 \\\\ (10+t)^{2}\\frac{dQ}{dt}+2(10+t)Q & =10.5(10+t)^{2} \\\\ \\frac{d}{dt}(Q(10+t)^{2}) & =10.5(10+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(10+t)^{2})\\,dt & =\\int 10.5(10+t)^{2}\\,dt \\\\ Q(10+t)^{2} & =10.5\\cdot \\frac{1}{3}(10+t)^{3}+C \\\\ Q(t) & =3.5(10+t)+\\frac{C}{(10+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $20\\,\\text{lb}$ of inhibitor. So, we can apply the initial condition $Q(0)=20,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =20 \\\\ 3.5(10+0)+\\frac{C}{(10+0)^{2}} & =20 \\\\ 35+\\frac{C}{(10)^{2}} & =20 \\\\ \\frac{C}{{10}^{2}} & =-15 \\\\ C & =-15(10)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =3.5(10+t)-\\frac{15(10)^{2}}{(10+t)^{2}} \\\\  & =3.5(10+t)-15{(\\frac{10}{10+t})}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $210\\,\\text{gal},$ so we can use the condition $V({t}_{o})=210$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =210 \\\\ 70+21{t}_{o}-14{t}_{o} & =210 \\\\ 70+7{t}_{o} & =210 \\\\ 7{t}_{o} & =140 \\\\ {t}_{o} & =20\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of inhibitor in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(20) & =3.5(10+20)-15{(\\frac{10}{10+20})}^{2} \\\\  & =105-15{(\\frac{10}{30})}^{2} \\\\  & \u2248103.3\\,\\text{lb}.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "103.7\\,\\text{lb}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "102.9\\,\\text{lb}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "103.3\\,\\text{lb}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "103.9\\,\\text{lb}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "102.5\\,\\text{lb}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "a17ae3b6a2b4e04d1b3a7694002cc8c3075a0e3a10c784d01cda57a51fb6db74"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096823,
+    "task_type": "lesson",
+    "topic_id": 6700,
+    "topic_title": "Modeling Mixture Problems With First-Order Linear ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336506",
+        "problem": "A coolant reservoir in a manufacturing plant can hold up to $210\\,\\text{gal}$ of liquid. Initially, it contains $70\\,\\text{gal}$ of coolant solution with $20\\,\\text{lb}$ of dissolved corrosion inhibitor. A more concentrated coolant solution with concentration $0.5\\,\\text{lb/gal}$ flows into the reservoir at a rate of $21\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $14\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of inhibitor in the reservoir at the moment it begins to overflow.",
+        "worked_solution": "Since $Q$ is the amount of inhibitor in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which inhibitor enters the reservoir minus the rate at which inhibitor leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nFirst, note that a solution containing $0.5\\,\\text{lb/gal}$ of inhibitor enters the reservoir at a rate of $21\\,\\text{gal/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.5\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (21\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.5\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (21\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =10.5\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $70\\,\\text{gal}$ of solution; solution enters at $21\\,\\text{gal/min}$ and mixed solution leaves at $14\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=70+21t-14t=7(10+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of inhibitor in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{7(10+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $14\\,\\text{gal/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(14\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{7(10+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(14\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{7(10+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{14Q}{7(10+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{10+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =10.5-\\frac{2Q}{10+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{10+t}\\,Q=10.5.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(10+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|10+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(10+t)^{2}} \\\\  & =(10+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(10+t)^{2}$ yields\n\n$$\n\\begin{aligned}(10+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{10+t}\\,Q) & =(10+t)^{2}\\cdot 10.5 \\\\ (10+t)^{2}\\frac{dQ}{dt}+2(10+t)Q & =10.5(10+t)^{2} \\\\ \\frac{d}{dt}(Q(10+t)^{2}) & =10.5(10+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(10+t)^{2})\\,dt & =\\int 10.5(10+t)^{2}\\,dt \\\\ Q(10+t)^{2} & =10.5\\cdot \\frac{1}{3}(10+t)^{3}+C \\\\ Q(t) & =3.5(10+t)+\\frac{C}{(10+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $20\\,\\text{lb}$ of inhibitor. So, we can apply the initial condition $Q(0)=20,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =20 \\\\ 3.5(10+0)+\\frac{C}{(10+0)^{2}} & =20 \\\\ 35+\\frac{C}{(10)^{2}} & =20 \\\\ \\frac{C}{{10}^{2}} & =-15 \\\\ C & =-15(10)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =3.5(10+t)-\\frac{15(10)^{2}}{(10+t)^{2}} \\\\  & =3.5(10+t)-15{(\\frac{10}{10+t})}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $210\\,\\text{gal},$ so we can use the condition $V({t}_{o})=210$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =210 \\\\ 70+21{t}_{o}-14{t}_{o} & =210 \\\\ 70+7{t}_{o} & =210 \\\\ 7{t}_{o} & =140 \\\\ {t}_{o} & =20\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of inhibitor in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(20) & =3.5(10+20)-15{(\\frac{10}{10+20})}^{2} \\\\  & =105-15{(\\frac{10}{30})}^{2} \\\\  & \u2248103.3\\,\\text{lb}.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "103.7\\,\\text{lb}",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
