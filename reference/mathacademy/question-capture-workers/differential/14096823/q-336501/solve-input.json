@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "A dye mixing tank at a textile factory can hold up to $180\\,\\text{gal}$ of liquid. Initially, it contains $100\\,\\text{gal}$ of solution with $20\\,\\text{lb}$ of dissolved dye. A more concentrated dye solution with concentration $0.6\\,\\text{lb/gal}$ flows into the tank at a rate of $15\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $10\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of dye in the tank at the moment it begins to overflow.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "96.4\\,\\text{lb}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "95.7\\,\\text{lb}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "96.1\\,\\text{lb}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "94.9\\,\\text{lb}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "95.2\\,\\text{lb}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096823,
+    "task_type": "lesson",
+    "topic_id": 6700,
+    "topic_title": "Modeling Mixture Problems With First-Order Linear ODEs",
+    "examples": [
+      {
+        "math_academy_id": "e-21766",
+        "knowledge_point": "Determining an Amount at an Overflow Point",
+        "problem": "A syrup mixing tank in a confectionery factory can hold up to $240\\,\\textrm{gal}$ of liquid. Initially, it contains $96\\,\\textrm{gal}$ of syrup solution with $32\\,\\textrm{lb}$ of dissolved sugar. A more concentrated syrup with concentration $1.5\\,\\textrm{lb/gal}$ flows into the tank at a rate of $24\\,\\textrm{gal/min},$ while the completely mixed solution drains out at a rate of $16\\,\\textrm{gal/min}.$ Rounded to one decimal place, find the amount of sugar in the tank at the moment it begins to overflow.",
+        "worked_solution": "Since $Q$ is the amount of sugar in the tank at time $t,$ the derivative \n\n$$\n\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which sugar enters the tank minus the rate at which sugar leaves the tank.\n\n$$\n\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}\n$$\n\nNote that the units of $\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}$ and $Q'_{\\textrm{out}}$ are $\\textrm{lb}/\\textrm{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which sugar enters the tank.\n\nFirst, note that a solution containing $1.5\\,\\textrm{lb/gal}$ of sugar enters the tank at a rate of $24\\,\\textrm{gal/min}.$ So, the rate at which the *sugar* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(1.5\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (24\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(1.5\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (24\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =36\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which sugar exits the tank.\n\nTo find the rate at which sugar leaves the tank, we must first determine the volume of solution in the tank at time $t.$\n\nThe tank initially contains $96\\,\\textrm{gal}$ of solution; solution enters at $24\\,\\textrm{gal/min}$ and mixed solution leaves at $16\\,\\textrm{gal/min}.$\nAs a result, the amount of solution in the tank after $t$ minutes is \n\n$$\nV(t) = 96 + 24t - 16t = 8(12+t)\\,\\textrm{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the tank is filling.\n\nSince $Q$ is the amount of sugar in the tank, the concentration of the solution at time $t$ is\n\n$$\n\\dfrac{Q}{8(12 + t)}\\,\\textrm{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $16\\,\\textrm{gal/min},$ *sugar* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(16\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{8(12+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(16\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{8(12+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{16Q}{8(12+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{12+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =36-\\frac{2Q}{12+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{2}{12 + t}\\,Q = 36.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(12+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|12+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(12+t)^{2}} \\\\  & =(12+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t) = (12+t)^2$ yields\n\n$$\n\\begin{aligned}(12+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{12+t}\\,Q) & =(12+t)^{2}\\cdot 36 \\\\ (12+t)^{2}\\frac{dQ}{dt}+2(12+t)Q & =36(12+t)^{2} \\\\ \\frac{d}{dt}(Q(12+t)^{2}) & =36(12+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t{:}$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(12+t)^{2})\\,dt & =\\int 36(12+t)^{2}\\,dt \\\\ Q(12+t)^{2} & =36\\cdot \\frac{1}{3}(12+t)^{3}+C \\\\ Q(t) & =12(12+t)+\\frac{C}{(12+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the tank initially contains $32\\,\\textrm{lb}$ of sugar. So, we can apply the initial condition $Q(0) = 32,$ and solve for $C{:}$\n\n$$\n\\begin{aligned}Q(0) & =32 \\\\ 12(12+0)+\\frac{C}{(12+0)^{2}} & =32 \\\\ 12\\cdot 12+\\frac{C}{(12)^{2}} & =32 \\\\ 144+\\frac{C}{{12}^{2}} & =32 \\\\ \\frac{C}{{12}^{2}} & =-112 \\\\ C & =-112(12)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t){:}$\n\n$$\n\\begin{aligned}Q(t) & =12(12+t)-\\frac{112(12)^{2}}{(12+t)^{2}} \\\\  & =12(12+t)-112{(\\frac{12}{12+t})}^{2}.\\end{aligned}\n$$\n\nNow, let $t_o$ be the time when the tank begins to overflow. The tank has a capacity of $240\\,\\textrm{gal},$ so we can use the condition $V(t_o) = 240$ to solve for $t_o{:}$\n\n$$\n\\begin{aligned}V({t}_{o}) & =240 \\\\ 96+24{t}_{o}-16{t}_{o} & =240 \\\\ 96+8{t}_{o} & =240 \\\\ 8{t}_{o} & =144 \\\\ {t}_{o} & =18\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of sugar in the tank at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(18) & =12(12+18)-112{(\\frac{12}{12+18})}^{2} \\\\  & =360-112{(\\frac{12}{30})}^{2} \\\\  & \u2248342.1\\,\\text{lb}.\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14096823/example-21766.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-339396",
+        "problem": "A fruit syrup tank initially holds $240\\,\\text{L}$ of liquid containing $7\\,\\text{kg}$ of dissolved sweetener.\nA solution containing $0.05\\,\\text{kg/L}$ of dissolved sweetener is pumped into the tank at a rate of $24\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $32\\,\\text{L/min}.$ If the amount of sweetener $Q(t),$ in kilograms, in the tank $t$ minutes after pumping begins is given by\n\n$$\nQ(t)=\\alpha \\,(1-\\frac{t}{30})+\\beta {(1-\\frac{t}{30})}^{4}\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants, what is the value of $\\alpha -\\beta ?$",
+        "worked_solution": "Since $Q$ is the amount of salt in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which sweetener enters the tank minus the rate at which sweetener leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which sweetener enter the tank.\n\nFirst, note that a solution containing $0.05\\,\\text{kg/L}$ of sweetener enters the tank at a rate of $24\\,\\text{L/min}.$ So, the rate at which the *sweetener* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.05\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (24\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.05\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (24\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =1.2\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which sweetener exit the tank.\n\nTo find the rate at which sweetener leaves the tank, we must first determine the volume of liquid in the tank at time $t.$\n\nThe tank initially contains $240\\,\\text{L}$ of liquid; a solution enters at $24\\,\\text{L/min}$ and leaves at $32\\,\\text{L/min}.$\nAs a result, the amount of liquid in the tank after $t$ minutes is \n\n$$\n240+24t-32t=(240-8t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of sweetener in the tank, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{240-8t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $32\\,\\text{L/min},$ *sweetener* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(32\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{240-8t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(32\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{240-8t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{32Q}{240-8t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{4Q}{30-t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =1.2-\\frac{4Q}{30-t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{4}{30-t}Q=1.2.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 4/(30-t)\\,dt} \\\\  & ={e}^{-4\\operatorname{ln}\u2061|30-t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(30-t)^{-4}} \\\\  & =(30-t)^{-4}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(30-t)^{-4}$ yields\n\n$$\n\\begin{aligned}(30-t)^{-4}\\cdot (\\frac{dQ}{dt}+\\frac{4}{30-t}Q) & =(30-t)^{-4}\\cdot 1.2 \\\\ (30-t)^{-4}\\frac{dQ}{dt}+4(30-t)^{-5}Q & =1.2(30-t)^{-4} \\\\ \\frac{d}{dt}(Q(30-t)^{-4}) & =1.2(30-t)^{-4}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(30-t)^{-4})\\,dt & =\\int 1.2(30-t)^{-4}\\,dt \\\\ Q(30-t)^{-4} & =1.2\\cdot \\frac{1}{3}(30-t)^{-3}+C \\\\ Q(t) & =0.4(30-t)+C(30-t)^{4}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the tank initially contains $7\\,\\text{kg}$ of sweetener. So, we can apply the initial condition $Q(0)=7,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =7 \\\\ C(30-0)^{4}+0.4(30-0) & =7 \\\\ C(30)^{4}+12 & =7 \\\\ C & =-\\frac{5}{{30}^{4}}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.4(30-t)-\\frac{5}{{30}^{4}}(30-t)^{4} \\\\  & =0.4\\cdot 30\\,(\\frac{30-t}{30})-5{(\\frac{30-t}{30})}^{4} \\\\  & =12\\,(1-\\frac{t}{30})-5{(1-\\frac{t}{30})}^{4}.\\end{aligned}\n$$\n\nFinally, we have $\\alpha =12,\\beta =-5,$ and\n\n$$\n\\alpha -\\beta =12-(-5)=17.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "17",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

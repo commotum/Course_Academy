@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "A juice-processing tank initially holds $400\\,\\text{L}$ of liquid containing $4\\,\\text{kg}$ of dissolved sugar.\nA solution containing $0.03\\,\\text{kg/L}$ of dissolved sugar is pumped into the tank at a rate of $20\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $30\\,\\text{L/min}.$ If the amount of sugar $Q(t),$ in kilograms, in the tank $t$ minutes after pumping begins is given by\n\n$$\nQ(t)=\\alpha \\,(1-\\frac{t}{40})+\\beta {(1-\\frac{t}{40})}^{3}\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants, what is the value of $\\alpha -\\beta ?$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "20"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "24"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "15"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "30"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "18"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096823,
+    "task_type": "lesson",
+    "topic_id": 6700,
+    "topic_title": "Modeling Mixture Problems With First-Order Linear ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336743",
+        "problem": "A processing tank initially holds $420\\,\\text{L}$ of liquid containing $10\\,\\text{kg}$ of dissolved preservative.\nA feed solution containing $0.05\\,\\text{kg/L}$ of the preservative is pumped into the tank at a rate of $18\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $12\\,\\text{L/min}.$\nFind, rounded to two decimal places, the amount of preservative in the tank $15$ minutes after pumping begins.",
+        "worked_solution": "Let $Q$ be the amount of preservative in the tank at time $t,$ in minutes. Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t.$ This is equal to the rate at which preservative enters the tank minus the rate at which preservative leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which preservative enters the tank.\n\nNote that a feed solution containing $0.05\\,\\text{kg/L}$ of the preservative enters the tank at a rate of $18\\,\\text{L/min}.$ So, the rate at which the *preservative* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.05\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (18\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.05\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (18\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0.9\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which preservative exits the tank.\n\nTo find the rate at which preservative leaves the tank, we must first determine the volume of liquid in the tank at time $t.$\n\nThe tank initially contains $420\\,\\text{L}$ of liquid; a solution enters at $18\\,\\text{L/min}$ and leaves at $12\\,\\text{L/min}.$\nAs a result, the volume of liquid in the tank after $t$ minutes is \n\n$$\n420+18t-12t=(420+6t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of preservative in the tank, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{420+6t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $12\\,\\text{L/min},$ *preservative* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(12\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{420+6t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(12\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{420+6t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{12Q}{420+6t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{2Q}{70+t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0.9-\\frac{2Q}{70+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{2}{70+t}Q=0.9.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(70+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|70+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(70+t)^{2}} \\\\  & =(70+t)^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(70+t)^{2}$ yields\n\n$$\n\\begin{aligned}(70+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{70+t}Q) & =(70+t)^{2}\\cdot 0.9 \\\\ (70+t)^{2}\\frac{dQ}{dt}+2(70+t)Q & =0.9(70+t)^{2} \\\\ \\frac{d}{dt}(Q(70+t)^{2}) & =0.9(70+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(70+t)^{2})\\,dt & =\\int 0.9(70+t)^{2}\\,dt \\\\ Q(70+t)^{2} & =0.9\\cdot \\frac{1}{3}(70+t)^{3}+C \\\\ Q(t) & =0.3(70+t)+\\frac{C}{(70+t)^{2}}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the tank initially contains $10\\,\\text{kg}$ of preservative. So, we can apply the initial condition $Q(0)=10,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =10 \\\\ 0.3(70+0)+\\frac{C}{(70+0)^{2}} & =10 \\\\ 21+\\frac{C}{{70}^{2}} & =10 \\\\ \\frac{C}{{70}^{2}} & =-11 \\\\ C & =-11(70)^{2}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.3(70+t)-\\frac{11(70)^{2}}{(70+t)^{2}} \\\\  & =0.3(70+t)-11{(\\frac{70}{70+t})}^{2}.\\end{aligned}\n$$\n\nFinally,  the amount of preservative in the tank $15$ minutes after pumping begins is\n\n$$\n\\begin{aligned}Q(15) & =0.3(70+15)-11{(\\frac{70}{70+15})}^{2} \\\\  & =25.5-11{(\\frac{70}{85})}^{2} \\\\  & \u224818.04\\,\\text{kg},\\end{aligned}\n$$\n\nrounded to two decimal places.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "18.04\\,\\text{kg}",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
