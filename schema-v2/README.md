@@ -6,7 +6,7 @@ Each folder has its own numbering; content starts at 0 for the generic activity 
 
 ```text
 data/
-  1-1-course-group.edn
+  1-course-group.edn
   1-2-course-groups.edn       # seed transaction data
   2-1-course.edn
   2-2-course-outcome.edn
