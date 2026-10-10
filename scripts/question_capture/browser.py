@@ -1021,6 +1021,59 @@ class CaptureBrowser:
             save()
         if is_review and state['review_sequence'] not in (('CCCCC',) if perfect else ('CWCWC','WCWCC')):
             raise ValueError('Saved review sequence does not match the configured lesson policy')
+        if (is_review and isinstance(self.page.url, str) and self.page.url.split('?', 1)[0].rstrip('/') == LEARN.rstrip('/')
+                and any(q.get('status') == 'submitting' for q in state['questions'].values())):
+            card = self.page.locator('#completedTasks #task-' + str(state['task_id']))
+            if card.is_visible():
+                evidence = card.evaluate("""e => ({
+                  kind:e.querySelector('.taskTypeLocked')?.textContent.trim().toLowerCase(),
+                  topic:e.querySelector('a[id^="taskTopicLink-"]')?.getAttribute('href'),
+                  points:e.querySelector('.taskPoints')?.textContent.trim()
+                })""")
+                xp = re.fullmatch(r'(-?\d+)\s*/\s*\d+\s*XP', evidence.get('points') or '')
+                if evidence.get('kind') != 'review' or evidence.get('topic') != '/topics/' + str(state['topic_id']) or not xp:
+                    raise ValueError('Completed review identity or XP is missing')
+                self.navigate(LEARN + '?taskId=' + str(state['task_id']))
+                rows = self.page.locator('.reviewAnswerList .question')
+                rows.first.wait_for(state='visible')
+                grades = rows.evaluate_all("""nodes => nodes.map(q => ({
+                  id:q.id, result:q.querySelector('.answerResult')?.textContent.trim()
+                }))""")
+                ids = [q['id'].replace('question-', 'q-') for q in grades]
+                if len(set(ids)) != len(ids) or set(ids) != set(state['questions']):
+                    raise ValueError('Completed review IDs do not match the saved capture')
+                for grade, mid in zip(grades, ids):
+                    record = state['questions'][mid]
+                    if grade['result'] not in ('Correct', 'Incorrect', 'Partial Credit'):
+                        raise ValueError('Completed review grade is missing: ' + mid)
+                    if record.get('actual_result') and record['actual_result'] != grade['result']:
+                        raise ValueError('Completed review grade conflicts with saved result: ' + mid)
+                for grade, mid in zip(grades, ids):
+                    record = state['questions'][mid]
+                    if record.get('finalized'):
+                        continue
+                    explanation = by_id(self.page, 'questionExplanation-' + mid[2:])
+                    if not explanation.is_visible():
+                        self.pacer.wait('event', 'expand activity explanation')
+                        by_id(self.page, grade['id']).locator('.answerDetails').click()
+                    explanation.wait_for(state='visible')
+                    item, _ = self.read_history(explanation, record, directory, mid)
+                    if item.get('errors') or not item.get('worked_solution'):
+                        raise ValueError('Completed review explanation is incomplete: ' + mid)
+                    self.page.screenshot(path=str(directory / (mid + '-after.png')))
+                    record['after'], record['actual_result'] = item, grade['result']
+                    record['status'] = 'graded'
+                    save()
+                    self.finalize_question(state, directory, mid, record)
+                    save()
+                state.update(earned_xp=int(xp[1]), activity_complete=True, review_complete=True,
+                             activity_outcome='failed' if int(xp[1]) < 0 else 'passed',
+                             completion=evidence['points'], completion_recovery=evidence)
+                state.pop('pending_continue', None)
+                save()
+                self.navigate(LEARN)
+                self.knowledge_snapshot(state, directory, completed_event, recovered=True)
+                return
         pending = state.get('pending_continue')
         if pending:
             self.wait_activity_ready()
