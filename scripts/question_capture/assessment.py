@@ -353,6 +353,8 @@ def assessment_history(reader, state, directory, load_topic):
       details_html:q.querySelector('.answerDetails')?.outerHTML}))''')
     for question in metadata:
         question['source_result'] = question['result']
+        if question['result'] == 'Full Credit':
+            question['result'] = 'Correct'
     if is_diagnostic:
         from diagnostic import bind_history
         bind_history(state, metadata)
