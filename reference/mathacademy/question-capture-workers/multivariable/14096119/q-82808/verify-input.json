@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD={(x,y)\\,:\\,-1\\le y-x\\le 1,\\,0\\le x+y\\le 1}.\n$$\n\nBy performing the change of variables $u=y-x$ and $v=x+y,$ the integral\n\n$$\n{\u222c}_{D}8xy\\,dx\\,dy\n$$\n\ncan be written in terms of $u$ and $v$ as",
+  "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=y-x,\\,v=x+y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & ={(u,v)\\,:\\,-1\\le u\\le 1,\\,0\\le v\\le 1}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-1 & 1 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}1\\end{aligned}| \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nIn this case, we first need to solve the transformation equations\n\n$$\nu=y-x,\\,v=x+y\n$$\n\n \nfor $x$ and $y$, which gives\n\n$$\nx=\\frac{v-u}{2},\\,y=\\frac{v+u}{2}.\n$$\n\n \n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}8xy\\,dx\\,dy & ={\u222c}_{\u0394}8(\\frac{v-u}{2})(\\frac{v+u}{2})|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}2({v}^{2}-{u}^{2})|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}2({v}^{2}-{u}^{2})|-\\frac{1}{2}|\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{1}{\\int }_{-1}^{1}({v}^{2}-{u}^{2})\\,du\\,dv.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{\\int }_{0}^{1}{\\int }_{-1}^{1}({v}^{2}-{u}^{2})\\,du\\,dv"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "2{\\int }_{0}^{1}{\\int }_{-1}^{1}({v}^{2}-{u}^{2})\\,du\\,dv"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{\\int }_{0}^{1}{\\int }_{-1}^{1}(v-u)^{4}\\,du\\,dv"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "2{\\int }_{0}^{1}{\\int }_{-1}^{1}(v-u)^{2}\\,du\\,dv"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{1}{2}{\\int }_{0}^{1}{\\int }_{-1}^{1}(v-u)^{2}\\,du\\,dv"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "a2e1b044bc30148dae3dd3b177d4dacfa1c90f652daf31d28189c3412cfefeac"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096119,
+    "task_type": "lesson",
+    "topic_id": 4132,
+    "topic_title": "Computing Double Integrals Using a Change of Variables",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-82808",
+        "problem": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD={(x,y)\\,:\\,-1\\le y-x\\le 1,\\,0\\le x+y\\le 1}.\n$$\n\nBy performing the change of variables $u=y-x$ and $v=x+y,$ the integral\n\n$$\n{\u222c}_{D}8xy\\,dx\\,dy\n$$\n\ncan be written in terms of $u$ and $v$ as",
+        "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=y-x,\\,v=x+y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & ={(u,v)\\,:\\,-1\\le u\\le 1,\\,0\\le v\\le 1}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-1 & 1 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}1\\end{aligned}| \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nIn this case, we first need to solve the transformation equations\n\n$$\nu=y-x,\\,v=x+y\n$$\n\n \nfor $x$ and $y$, which gives\n\n$$\nx=\\frac{v-u}{2},\\,y=\\frac{v+u}{2}.\n$$\n\n \n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}8xy\\,dx\\,dy & ={\u222c}_{\u0394}8(\\frac{v-u}{2})(\\frac{v+u}{2})|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}2({v}^{2}-{u}^{2})|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}2({v}^{2}-{u}^{2})|-\\frac{1}{2}|\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{1}{\\int }_{-1}^{1}({v}^{2}-{u}^{2})\\,du\\,dv.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "{\\int }_{0}^{1}{\\int }_{-1}^{1}(v-u)^{4}\\,du\\,dv",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
