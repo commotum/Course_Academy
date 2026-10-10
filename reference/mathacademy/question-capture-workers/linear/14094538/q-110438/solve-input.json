@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}-8 & -1 & 6 \\\\ -6 & -3 & 6 \\\\ -6 & -1 & 4\\end{aligned}]\n$$\n\nThe matrix above has eigenvalues ${\\lambda }_{1}={\\lambda }_{2}=-2,$ and ${\\lambda }_{3}=-3.$ Find a Jordan canonical form of the matrix.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}-2 & 0 & 0 \\\\ 0 & -3 & 1 \\\\ 0 & 0 & -3\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}-2 & 0 & 0 \\\\ 0 & -2 & 0 \\\\ 0 & 0 & -3\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}-2 & 0 & 0 \\\\ 0 & -3 & 0 \\\\ 0 & 0 & -3\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}-2 & 1 & 0 \\\\ 0 & -2 & 1 \\\\ 0 & 0 & -3\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}-2 & 1 & 0 \\\\ 0 & -2 & 0 \\\\ 0 & 0 & -3\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14094538,
+    "task_type": "review",
+    "topic_id": 3115,
+    "topic_title": "Jordan Canonical Form of a 3x3 Matrix",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-110393",
+        "problem": "$$\nA=[\\begin{aligned}1 & -3 & -3 \\\\ 3 & 7 & 3 \\\\ -3 & -3 & 1\\end{aligned}]\n$$\n\nThe matrix above has eigenvalues ${\\lambda }_{1}={\\lambda }_{2}=4,$ and ${\\lambda }_{3}=1.$ Find a Jordan canonical form of the matrix.",
+        "worked_solution": "Notice that we are given a $3\\times 3$ matrix with the following eigenvalues:\n\n- $\\lambda =4$ of algebraic multiplicity $2$\n\n- $\\lambda =1$ of algebraic multiplicity $1$\n\nAs a result, we have one $1\\times 1$ Jordan block ${J}_{1}(1)$ corresponding to $\\lambda =1.$\nHowever, there are two possibilities for the Jordan blocks corresponding to $\\lambda =4:$\n\n- *Case I.* We may get the single $2\\times 2$ Jordan block ${J}_{2}(4).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =4$ form the following chain:\n\n$$\n{v}_{2}\\overset{A-4I\\,}{\\to }{v}_{1}\\overset{A-4I\\,}{\\to }0\n$$\n\n- *Case II.* We may get a composition of two $1\\times 1$ Jordan blocks, namely ${J}_{1}(4)\\,\u2295\\,{J}_{1}(4).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =4$ form the following chains:\n\n$$\n\\begin{aligned}{v}_{1}\\overset{A-4I\\,}{\\to }0 &  \\\\ {v}_{2}\\overset{A-4I\\,}{\\to }0 & \\end{aligned}\n$$\n\nTo figure out which of the cases we obtain in this situation, let's find the number of linearly independent eigenvectors corresponding to $\\lambda =4.$\n\nComputing $A-4I,$ we get\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}1 & -3 & -3 \\\\ 3 & 7 & 3 \\\\ -3 & -3 & 1\\end{aligned}]-4[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-3 & -3 & -3 \\\\ 3 & 3 & 3 \\\\ -3 & -3 & -3\\end{aligned}].\\end{aligned}\n$$\n\nNow, we reduce this matrix to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}-3 & -3 & -3 \\\\ 3 & 3 & 3 \\\\ -3 & -3 & -3\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-3 & -3 & -3 \\\\ 0 & 0 & 0 \\\\ -3 & -3 & -3\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+(-1){R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-3 & -3 & -3 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nSince $\\text{nullity}(A-4I)=2,$ there will be two eigenvectors that correspond to the eigenvalue $\\lambda =4,$ say, ${v}_{1}$ and ${v}_{2}.$ So, the generalized eigenvectors corresponding to the eigenvalue $\\lambda =4$ form the following chains: \n\n$$\n\\begin{aligned}{v}_{1}\\overset{A-4I\\,}{\\to }0 \\\\ {v}_{2}\\overset{A-4I\\,}{\\to }0\\end{aligned}\n$$\n\nTherefore, we have *case II*, and $A$ has the following Jordan canonical form:\n\n$$\n{J}_{1}(4)\\,\u2295\\,{J}_{1}(4)\\,\u2295\\,{J}_{1}(1)=[\\begin{aligned}4 & 0 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & 1\\end{aligned}]\n$$\n\n**Note:** The Jordan canonical form is unique up to the order of the Jordan blocks.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}4 & 0 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & 1\\end{aligned}]",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

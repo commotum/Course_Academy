@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Consider the vectors ${v}_{1}$ and ${v}_{3}$ and the block diagonal matrix $B$ shown below, where both $2\\times 2$ blocks of $B$ represent rotation-scaling matrices:\n\n$$\n{v}_{1}=[\\begin{aligned}1-\\text{i} \\\\ 2+\\text{i} \\\\ 5\\text{i} \\\\ 2-\\text{i}\\end{aligned}],\\,{v}_{3}=[\\begin{aligned}3+2\\text{i} \\\\ 1-\\text{i} \\\\ 3-\\text{i} \\\\ -5+2\\text{i}\\end{aligned}],\\,B=[\\begin{aligned}2 & -1 & 0 & 0 \\\\ 1 & 2 & 0 & 0 \\\\ 0 & 0 & 5 & 1 \\\\ 0 & 0 & -1 & 5\\end{aligned}]\n$$\n\nThe vectors ${v}_{1}$ and ${v}_{3}$ are the eigenvectors of a matrix $A$ corresponding to the eigenvalues ${\\lambda }_{1}=2-\\text{i}$ and ${\\lambda }_{3}=\\text{i}+5,$ respectively. \nGiven that $A=PB{P}^{-1},$ which of the following could be the matrix $P?$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}3 & 2 & 1 & -1 \\\\ 1 & -1 & 2 & 1 \\\\ 3 & -1 & 0 & 5 \\\\ -5 & 2 & 2 & -1\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}-1 & 1 & 3 & 2 \\\\ 1 & 2 & 1 & -1 \\\\ 5 & 0 & 3 & -1 \\\\ -1 & 2 & -5 & 2\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}1 & -1 & 3 & 2 \\\\ 2 & 1 & 1 & -1 \\\\ 0 & 5 & 3 & -1 \\\\ 2 & -1 & -5 & 2\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}2 & 3 & -1 & 1 \\\\ -1 & 1 & 1 & 2 \\\\ -1 & 3 & 5 & 0 \\\\ 2 & -5 & -1 & 2\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}1 & -1 & 2 & 3 \\\\ 2 & 1 & -1 & 1 \\\\ 0 & 5 & -1 & 3 \\\\ 2 & -1 & 2 & -5\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14094450,
+    "task_type": "review",
+    "topic_id": 2019,
+    "topic_title": "Block Diagonalization of NxN Matrices",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-38655",
+        "problem": "$$\nA=[\\begin{aligned}1 & 0 & -1 \\\\ -2 & 3 & 6 \\\\ 1 & 0 & 1\\end{aligned}]\n$$\n\nConsider the matrix $A$ shown above. Find a block diagonal matrix $B,$ where the $2\\times 2$ block represents a rotation-scaling matrix, such that $A=PB{P}^{-1}.$",
+        "worked_solution": "Recall that if $A$ is a real $3\\times 3$ matrix that has one real eigenvalue ${\\lambda }_{1}$ with corresponding eigenvector ${v}_{1},$ and two complex eigenvalues ${\\lambda }_{2}={\\overset{\u2015}{\\lambda }}_{3}$ with corresponding eigenvectors ${v}_{2}={\\overset{\u2015}{v}}_{3},$ then $A=PB{P}^{-1},$ where\n\n$$\nB=[\\begin{aligned}{\\lambda }_{1} & 0 & 0 \\\\ 0 & \\text{Re}({\\lambda }_{2}) & \\text{Im}({\\lambda }_{2}) \\\\ 0 & -\\text{Im}({\\lambda }_{2}) & \\text{Re}({\\lambda }_{2})\\end{aligned}],\\,\\,P=[\\begin{aligned}| & | & | \\\\ {v}_{1} & \\text{Re}({v}_{2}) & \\text{Im}({v}_{2}) \\\\ | & | & |\\end{aligned}].\n$$\n\nSwapping the blocks on the main diagonal of $B$ will result in switching the corresponding columns in $P.$\n\nTo compute the eigenvalues of $A,$ we solve the characteristic equation, as follows:\n\n$$\n\\begin{aligned}det(A-\\lambda I) & =0 \\\\ |\\begin{aligned}1-\\lambda  & 0 & -1 \\\\ -2 & 3-\\lambda  & 6 \\\\ 1 & 0 & 1-\\lambda \\end{aligned}| & =0 \\\\ (3-\\lambda )((1-\\lambda )^{2}-1(-1)) & =0 \\\\ (3-\\lambda )({\\lambda }^{2}-2\\lambda +2) & =0\\end{aligned}\n$$\n\nSo, the real eigenvalue is \n${\\lambda }_{1}=3.$\nNow, using the quadratic formula, we get\n\n$$\n\\begin{aligned}{\\lambda }_{2,3} & =\\frac{2\\pm \\sqrt{(-2)^{2}-4\\cdot 1\\cdot 2}}{2} \\\\  & =\\frac{2\\pm \\sqrt{-4}}{2} \\\\  & =1\\pm \\text{i}.\\end{aligned}\n$$\n\nTherefore, the block diagonal matrix is\n\n$$\nB=[\\begin{aligned}3 & 0 & 0 \\\\ 0 & 1 & 1 \\\\ 0 & -1 & 1\\end{aligned}].\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "B=[\\begin{aligned}3 & 0 & 0 \\\\ 0 & 1 & 1 \\\\ 0 & -1 & 1\\end{aligned}]",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
