@@ -4,7 +4,7 @@ Supporting documentation is stored under `/home/jake/Developer/Course_Academy/re
 
 Nothing has been transacted. `math` remains at basis **71**.
 
-`1-originals/` contains **60 ordered EDN batches**, to be transacted as **`:org/Math-Academy`**. All passed EDB’s noncommitting `with` validation. Their contents are:
+`1-originals/` contains **61 ordered EDN batches**, to be transacted as **`:org/Math-Academy`**. All passed EDB’s noncommitting `with` validation. Their contents are:
 
 - **19,700 practice questions** with **23,108 complete answer fields**, original choices, and confirmed keys. **17,445** of those question identities are new to `math`.
 - **2,823 canonical worked examples**, preserving their `e-` identities and canonical-example roles.
@@ -15,7 +15,7 @@ Nothing has been transacted. `math` remains at basis **71**.
 
 The reviewed input is **2,198 verified completed captures** across the four streams. **12 unfinished activities are excluded**.
 
-`held-questions.json` preserves **2,103 questions** with captured controls and solutions whose full keys could not be confirmed without interpretation. They are absent from the ready transactions. All **35 previously missing graphics** were recovered through the separately verified account for each capture stream; all **27 affected tutorials** are now in the ready batches. `held-tutorials.json` is empty. See `graphic-recovery.json`. `unplaced-tutorials.json` indexes the 11 additional tutorials whose placements were verified on the five current MA lesson pages. Their content is prepared; adding their steps and updating the lesson links remain to be prepared. The current sequences and raw source evidence are recorded in `original-batches.json` and `source-evidence/`.
+`held-questions.json` preserves **2,103 questions** with captured controls and solutions whose full keys could not be confirmed without interpretation. They are absent from the ready transactions. All **35 previously missing graphics** were recovered through the separately verified account for each capture stream; all **27 affected tutorials** are now in the ready batches. `held-tutorials.json` is empty. See `graphic-recovery.json`. `unplaced-tutorials.json` is empty. Final batch `061-lesson-activities.edn` updates all six affected lesson activities to the current source order, adds the 11 tutorials and three new example/practice sections through 14 new steps, and preserves 28 existing step UUIDs. It also updates the title of topic 6669 and its lesson to “Piecewise Continuity and Piecewise Smoothness.” All 19 canonical examples are linked to their knowledge points. The current sequences and raw source evidence are recorded in `original-batches.json` and `source-evidence/`.
 
 The original question/example/multipart images are already in `math/images/`. Available tutorial graphics have also been copied there by SHA-256, using the same two-character folders and preserving PNG/SVG extensions. EDN references relative image paths; no image bytes enter EDB. Original captures remain in place.
 
