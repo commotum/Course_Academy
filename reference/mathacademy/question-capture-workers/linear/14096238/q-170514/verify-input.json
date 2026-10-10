@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "The minimum value of $Q(x)=8{x}_{1}^{2}-30{x}_{1}{x}_{2}-50{x}_{2}^{2},$ when $4{x}_{1}^{2}+25{x}_{2}^{2}=100,$ is $-250.$ Which of the following is a vector $x$ at which the minimum is attained?",
+  "worked_solution": "First, we write down the matrix of our quadratic form:\n\n$$\nA=[\\begin{aligned}8 & -15 \\\\ -15 & -50\\end{aligned}]\n$$\n\nNotice that we can write the constraint equation as follows:\n\n$$\n\\frac{{x}_{1}^{2}}{{5}^{2}}+\\frac{{x}_{2}^{2}}{{2}^{2}}=1\n$$\n\nThis is an ellipse with semiaxes $a=5$ (along the ${x}_{1}$-axis) and $b=2$ (along the ${x}_{2}$-axis). If we introduce new variables\n\n$\\,$ ${y}_{1}=\\frac{{x}_{1}}{5}\\,$ and $\\,{y}_{2}=\\frac{{x}_{2}}{2},$\n\nthe equation of the ellipse will transform into ${y}_{1}^{2}+{y}_{2}^{2}=1$ or $\u2016y\u2016=1.$\n\nSo, introducing a change-of-coordinate matrix \n\n$$\nP=[\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}],\n$$\n\n \n\nwe obtain that $x=Py.$ Substituting this into the expression of the quadratic form, we get\n\n$$\nQ(x)={x}^{T}\\,Ax=(Py)^{T}A\\,(Py)={y}^{T}\\,({P}^{T}AP)y={Q}^{\u2032}(y).\n$$\n\nAs a result, since ${P}^{T}=P,$ the matrix of our quadratic form in new coordinates is \n\n$$\n\\begin{aligned}B & ={P}^{T}\\,AP \\\\  & =PAP \\\\  & =[\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}][\\begin{aligned}8 & -15 \\\\ -15 & -50\\end{aligned}][\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}40 & -75 \\\\ -30 & -100\\end{aligned}][\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}200 & -150 \\\\ -150 & -200\\end{aligned}].\\end{aligned}\n$$\n\n \n\nNow, we minimize ${Q}^{\u2032}(y)$ when $\u2016y\u2016=1,$ as usual.\n\nSince we are told that the minimum value of the quadratic form is $-250,$ we have\n\n$$\nmin{{Q}^{\u2032}(y)\\,|\\,\u2016y\u2016=1}={\\lambda }_{min}=-250.\n$$\n\nNext, we need the unit eigenvector that corresponds to the eigenvalue ${\\lambda }_{\\text{min}}=-250:$\n\n$$\n\\begin{aligned}B-(-250I) & =[\\begin{aligned}200 & -150 \\\\ -150 & -200\\end{aligned}]+250[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}450 & -150 \\\\ -150 & 50\\end{aligned}]\\end{aligned}\n$$\n\nSeeking a non-zero solution of $(B-(-250I))y=0$ gives the eigenvector $v=[\\begin{aligned}1 \\\\ 3\\end{aligned}].$ Dividing $v$ by its norm $\u2016v\u2016=\\sqrt{10},$ we get \n\n$$\n{u}_{\\text{min}}=\\frac{v}{\u2016v\u2016}=\\frac{1}{\\sqrt{10}}[\\begin{aligned}1 \\\\ 3\\end{aligned}].\n$$\n\n \n\nFinally, we map this vector back to the initial coordinate  system using the change-of-coordinates matrix:\n\n$$\n\\begin{aligned}{x}_{\\text{min}} & =P{u}_{\\text{min}} \\\\  & =[\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}]\\cdot \\frac{1}{\\sqrt{10}}[\\begin{aligned}1 \\\\ 3\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{10}}[\\begin{aligned}5 \\\\ 6\\end{aligned}]\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{2}}[\\begin{aligned}1 \\\\ 1\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{10}}[\\begin{aligned}5 \\\\ 6\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{5}}[\\begin{aligned}5 \\\\ 4\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}3 \\\\ 4\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{10}}[\\begin{aligned}3 \\\\ 4\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "c80c1df99eb689753579a80af16ad25391d867f2869078899d5de18e1a5a6ef4"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096238,
+    "task_type": "review",
+    "topic_id": 4238,
+    "topic_title": "Constrained Optimization of Quadratic Forms: Determining Where Extrema are Attained",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-170514",
+        "problem": "The minimum value of $Q(x)=8{x}_{1}^{2}-30{x}_{1}{x}_{2}-50{x}_{2}^{2},$ when $4{x}_{1}^{2}+25{x}_{2}^{2}=100,$ is $-250.$ Which of the following is a vector $x$ at which the minimum is attained?",
+        "worked_solution": "First, we write down the matrix of our quadratic form:\n\n$$\nA=[\\begin{aligned}8 & -15 \\\\ -15 & -50\\end{aligned}]\n$$\n\nNotice that we can write the constraint equation as follows:\n\n$$\n\\frac{{x}_{1}^{2}}{{5}^{2}}+\\frac{{x}_{2}^{2}}{{2}^{2}}=1\n$$\n\nThis is an ellipse with semiaxes $a=5$ (along the ${x}_{1}$-axis) and $b=2$ (along the ${x}_{2}$-axis). If we introduce new variables\n\n$\\,$ ${y}_{1}=\\frac{{x}_{1}}{5}\\,$ and $\\,{y}_{2}=\\frac{{x}_{2}}{2},$\n\nthe equation of the ellipse will transform into ${y}_{1}^{2}+{y}_{2}^{2}=1$ or $\u2016y\u2016=1.$\n\nSo, introducing a change-of-coordinate matrix \n\n$$\nP=[\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}],\n$$\n\n \n\nwe obtain that $x=Py.$ Substituting this into the expression of the quadratic form, we get\n\n$$\nQ(x)={x}^{T}\\,Ax=(Py)^{T}A\\,(Py)={y}^{T}\\,({P}^{T}AP)y={Q}^{\u2032}(y).\n$$\n\nAs a result, since ${P}^{T}=P,$ the matrix of our quadratic form in new coordinates is \n\n$$\n\\begin{aligned}B & ={P}^{T}\\,AP \\\\  & =PAP \\\\  & =[\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}][\\begin{aligned}8 & -15 \\\\ -15 & -50\\end{aligned}][\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}40 & -75 \\\\ -30 & -100\\end{aligned}][\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}200 & -150 \\\\ -150 & -200\\end{aligned}].\\end{aligned}\n$$\n\n \n\nNow, we minimize ${Q}^{\u2032}(y)$ when $\u2016y\u2016=1,$ as usual.\n\nSince we are told that the minimum value of the quadratic form is $-250,$ we have\n\n$$\nmin{{Q}^{\u2032}(y)\\,|\\,\u2016y\u2016=1}={\\lambda }_{min}=-250.\n$$\n\nNext, we need the unit eigenvector that corresponds to the eigenvalue ${\\lambda }_{\\text{min}}=-250:$\n\n$$\n\\begin{aligned}B-(-250I) & =[\\begin{aligned}200 & -150 \\\\ -150 & -200\\end{aligned}]+250[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}450 & -150 \\\\ -150 & 50\\end{aligned}]\\end{aligned}\n$$\n\nSeeking a non-zero solution of $(B-(-250I))y=0$ gives the eigenvector $v=[\\begin{aligned}1 \\\\ 3\\end{aligned}].$ Dividing $v$ by its norm $\u2016v\u2016=\\sqrt{10},$ we get \n\n$$\n{u}_{\\text{min}}=\\frac{v}{\u2016v\u2016}=\\frac{1}{\\sqrt{10}}[\\begin{aligned}1 \\\\ 3\\end{aligned}].\n$$\n\n \n\nFinally, we map this vector back to the initial coordinate  system using the change-of-coordinates matrix:\n\n$$\n\\begin{aligned}{x}_{\\text{min}} & =P{u}_{\\text{min}} \\\\  & =[\\begin{aligned}5 & 0 \\\\ 0 & 2\\end{aligned}]\\cdot \\frac{1}{\\sqrt{10}}[\\begin{aligned}1 \\\\ 3\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{10}}[\\begin{aligned}5 \\\\ 6\\end{aligned}]\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}3 \\\\ 4\\end{aligned}]",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
