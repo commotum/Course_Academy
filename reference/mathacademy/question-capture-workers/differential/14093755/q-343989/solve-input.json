@@ -1,0 +1,60 @@
+{
+  "mode": "solve",
+  "problem": "$$\n{y}^{\u2033}+8y=f(x),\\,y(0)=-2,\\,{y}^{\u2032}(0)=0\n$$\n\nConsider the initial value problem above, where $f(x)$ is an even, $2\\pi $-periodic function. Select the missing part in the solution of the IVP, where the second infinite sum on the right-hand side below represents a particular solution of the differential equation.\n\n$$\ny(x)\u223c{{field-1}}+{\\sum }_{n=0}^{\\infty }{a}_{n}\\operatorname{cos}\u2061(nx)\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\operatorname{cos}\u2061(\\sqrt{8}x)(-2+{\\sum }_{n=0}^{\\infty }{a}_{n})"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\operatorname{cos}\u2061(\\sqrt{8}x)({\\sum }_{n=0}^{\\infty }{a}_{n}+2)"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\operatorname{sin}\u2061(\\sqrt{8}x)(-2-{\\sum }_{n=0}^{\\infty }{a}_{n})"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\operatorname{cos}\u2061(\\sqrt{8}x)(-2-{\\sum }_{n=0}^{\\infty }{a}_{n})"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14093755,
+    "task_type": "lesson",
+    "topic_id": 6721,
+    "topic_title": "Solving IVPs Using Fourier Series",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-343447",
+        "problem": "$$\n{y}^{\u2033}+2{\\pi }^{2}y=f(x),\\,y(0)=0,\\,{y}^{\u2032}(0)=0\n$$\n\nConsider the initial value problem above, where $f(x)$ is an odd, $6$-periodic function. Select the missing part in the solution of the IVP, where the second infinite sum on the right-hand side below represents a particular solution of the differential equation.\n\n$$\ny(x)\u223c{{field-1}}+{\\sum }_{n=1}^{\\infty }\\,\\frac{18(-1)^{n}}{{n}^{2}{\\pi }^{3}(18-{n}^{2})}\\operatorname{sin}\u2061(\\frac{n\\pi x}{3})\n$$",
+        "worked_solution": "Recall that the general solution of a linear differential equation of the form ${y}^{\u2033}+{\\omega }^{2}y=f(x)$ is given by $y={y}_{c}+{y}_{p},$ where ${y}_{c}$ is the solution to the homogeneous equation and ${y}_{p}$ is a particular solution.\n\nFirst, we address the particular solution ${y}_{p}.$ Since $f(x)$ is an odd function, its Fourier series consists only of sine terms. For a second-order equation with no ${y}^{\u2032}$ (damping) term, the particular solution inherits this property and is also an odd function. This is represented by the term\n\n$$\n{y}_{p}(x)={\\sum }_{n=1}^{\\infty }\\frac{18(-1)^{n}}{{n}^{2}{\\pi }^{3}(18-{n}^{2})}\\operatorname{sin}\u2061(\\frac{n\\pi x}{3}).\n$$\n\nNext, we find the homogeneous solution. The characteristic equation ${\\lambda }^{2}+2{\\pi }^{2}=0$ gives roots $\\lambda =\\pm \\sqrt{2}\\pi \\text{i}.$ So, we have\n\n$$\n{y}_{c}=A\\operatorname{cos}\u2061(\\sqrt{2}\\pi x)+B\\operatorname{sin}\u2061(\\sqrt{2}\\pi x).\n$$\n\nTo find the unknown constants, we apply the initial conditions. Using $y(0)=0:$\n\n$$\n\\begin{aligned}y(0) & =A\\operatorname{cos}\u2061(0)+B\\operatorname{sin}\u2061(0)+{y}_{p}(0) \\\\ 0 & =A(1)+0+0 \\\\ A & =0\\end{aligned}\n$$\n\nNote that ${y}_{p}(0)=0$ because the particular solution is a sine series.\n\nNext, we use the derivative condition ${y}^{\u2032}(0)=0.$ First, we compute the derivative of the total solution (with $A=0$):\n\n$$\n{y}^{\u2032}(x)\u223cB\\sqrt{2}\\pi \\operatorname{cos}\u2061(\\sqrt{2}\\pi x)+{\\sum }_{n=1}^{\\infty }\\frac{6(-1)^{n}}{n{\\pi }^{2}(18-{n}^{2})}\\operatorname{cos}\u2061(\\frac{n\\pi x}{3}).\n$$\n\nApplying ${y}^{\u2032}(0)=0$ and noting that $\\operatorname{cos}\u2061(0)=1,$ we have:\n\n$$\n\\begin{aligned}0 & =B\\sqrt{2}\\pi +{\\sum }_{n=1}^{\\infty }\\frac{6(-1)^{n}}{n{\\pi }^{2}(18-{n}^{2})} \\\\ B\\sqrt{2}\\pi  & =-{\\sum }_{n=1}^{\\infty }\\frac{6(-1)^{n}}{n{\\pi }^{2}(18-{n}^{2})} \\\\ B & =-\\frac{1}{\\sqrt{2}\\pi }{\\sum }_{n=1}^{\\infty }\\frac{6(-1)^{n}}{n{\\pi }^{2}(18-{n}^{2})} \\\\  & =-{\\sum }_{n=1}^{\\infty }\\frac{6(-1)^{n}}{\\sqrt{2}{\\pi }^{3}(18-{n}^{2})} \\\\  & =-{\\sum }_{n=1}^{\\infty }\\frac{3\\sqrt{2}(-1)^{n}}{n{\\pi }^{3}(18-{n}^{2})}\\end{aligned}\n$$\n\nSubstituting $B$ back into ${y}_{c}=B\\operatorname{sin}\u2061(\\sqrt{2}\\pi x)$, we find the missing part:\n\n$$\ny(x)\u223c-\\operatorname{sin}\u2061(\\sqrt{2}\\pi x){\\sum }_{n=1}^{\\infty }\\frac{3\\sqrt{2}(-1)^{n}}{n{\\pi }^{3}(18-{n}^{2})}+{\\sum }_{n=1}^{\\infty }\\,\\frac{18(-1)^{n}}{{n}^{2}{\\pi }^{3}(18-{n}^{2})}\\operatorname{sin}\u2061(\\frac{n\\pi x}{3})\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "-\\operatorname{sin}\u2061(\\sqrt{2}\\pi x){\\sum }_{n=1}^{\\infty }\\frac{3\\sqrt{2}(-1)^{n}}{n{\\pi }^{3}(18-{n}^{2})}",
+            "submitted_option": "2"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
