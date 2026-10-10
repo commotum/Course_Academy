@@ -87,7 +87,8 @@ def version():
     """Only effective importer/comparison changes reset ordinary retries."""
     digest = hashlib.sha256()
     paths = [PACKAGE/name for name in ('core.py','database.py','edb_transport.py','edn.py',
-                                      'provenance.py','math_notation.py','native_comparison.py','import_repair.py')]
+                                      'provenance.py','math_notation.py','native_comparison.py','import_repair.py',
+                                      'math_database.py','math_content.py','activities.py','image_library.py','authoritative.py')]
     # The checker runs an installed executable, not its Rust source files.
     # Unbuilt edits and changes to sweep bookkeeping cannot fix old imports.
     # availability() below hashes the actual executable when it changes.
@@ -126,6 +127,9 @@ def retry_key(directory, state, generation, args, prior_evidence=()):
     names = ['content.json','activity-metadata.json','assets/manifest.json','answer-source-reviews.json',
              'edb-import/commit-intent.json','edb-import/commit.edn',
              'edb-import/transaction.edn','edb-import/reconciliation.edn']
+    if getattr(args,'source',None):
+        names = [name.replace('edb-import/','edb-import-math/') for name in names]
+        names += ['lesson-definition.json','lesson-source.html']
     from provenance import field_layout_retry_evidence
     digest.update(json.dumps(field_layout_retry_evidence(directory),sort_keys=True).encode())
     names += [str(p.relative_to(directory)) for p in sorted(directory.glob('example-*.json'))]
@@ -137,8 +141,12 @@ def retry_key(directory, state, generation, args, prior_evidence=()):
     return digest.hexdigest()
 
 
-def verified(directory, content):
-    proof = read_json(directory/'edb-import/verification.json')
+def verified(directory, content, args=None):
+    from math_database import import_directory
+    target = import_directory(directory,args)
+    proof = read_json(target/'verification.json')
+    if getattr(args,'source',None) and (proof.get('database')!=args.database or proof.get('source')!=args.source):
+        return False
     current = hashlib.sha256(json.dumps(content,sort_keys=True,default=str).encode()).hexdigest()
     if proof.get('content_sha256') and proof['content_sha256'] != current:
         return False
@@ -146,7 +154,7 @@ def verified(directory, content):
             proof.get('committed') and proof.get('reimport_is_noop') and
             proof.get('learner_and_engine_facts_unchanged')):
         return False
-    receipts = directory/'edb-import'
+    receipts = target
     archive = proof.get('receipt_archive')
     if archive:
         # The one-time canonical-example payload migration archived committed
@@ -269,10 +277,13 @@ def sweep(db, args, *, trigger, exclude=(), repair_budget=None):
             raise KeyboardInterrupt('Stopped before saved import')
         try:
             content = read_json(directory/'content.json')
+            if getattr(args,'source',None) and content.get('capture_version') != 2:
+                continue  # Historical captures are migrated explicitly, never swept into a new DB.
             if not eligible(directory,state,content):
                 continue
-            if verified(directory,content):
-                complete(args,directory,state,read_json(directory/'edb-import/verification.json'))
+            if verified(directory,content,args):
+                from math_database import import_directory
+                complete(args,directory,state,read_json(import_directory(directory,args)/'verification.json'))
                 continue
             identity = str(directory.resolve())
             related = [r for q in content['questions']+content.get('canonical_examples',[])

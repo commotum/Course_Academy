@@ -276,6 +276,11 @@ def import_with_repair(db, content, directory, state, args, *, revisit=True,can_
                 task_id=state.get('task_id',content.get('task_id')),directory=str(directory),**result)
         logging.info('Capture %s saved; database import deferred',content.get('task_id'))
         return result
+    if getattr(args,'source',None):
+        # MA originals cannot be replaced by an automated repair model.
+        # Missing source keys/ambiguous identities remain saved for review.
+        from math_database import import_directory
+        return db.import_content(content,import_directory(directory,args),not args.preview)
     try:
         return db.import_content(content,Path(directory)/'edb-import',not args.preview)
     except Exception as error:

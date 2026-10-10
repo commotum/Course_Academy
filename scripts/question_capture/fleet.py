@@ -90,6 +90,9 @@ def worker_command(data, worker, *, dry_run=False, limit=None, capture_only=None
              '--state-dir',str(worker['state_dir']),'--output',str(worker['output']),
              '--profile',str(worker['profile']),'--codex-bin','/home/jake/.local/bin/codex',
              '--diagnostic-topics',worker['topics']]
+    for key, option in [('database','--database'),('endpoint','--endpoint'),
+                        ('math_root','--math-root'),('postgres_url','--postgres-url')]:
+        if data.get(key):command += [option,str(data[key])]
     if worker.get('diagnostic_covered_topics'):
         command += ['--diagnostic-covered-topics',str((ROOT/worker['diagnostic_covered_topics']).resolve())]
     if course_id:

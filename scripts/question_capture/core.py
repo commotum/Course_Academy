@@ -15,7 +15,7 @@ from math_notation import identity as math_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 # Keep capture independent of rebuilds in the EDB development checkout.
-CAPTURE_EDB_BIN = ROOT / '.local/edb/capture-runtime/edb'
+CAPTURE_EDB_BIN = ROOT / '.local/edb/capture-runtime/math-edb'
 ALLOWED = {
     'question/id', 'question/math-academy-id', 'question/problem',
     'question/worked-solution', 'question/difficulty', 'question/requires-calculator',

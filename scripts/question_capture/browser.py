@@ -1667,6 +1667,9 @@ class CaptureBrowser:
             record['content']['provenance'] = {'activity_question':q['id'], 'kp_title':title, 'kp_href':q['kp_href']}
             atomic_json(directory/'state.json',state)
         atomic_json(directory / 'activity-metadata.json',metadata)
+        if task_type == 'lesson':
+            from activities import capture_lesson
+            capture_lesson(self, state, directory, topic)
         state['history_complete'] = True
         atomic_json(directory / 'state.json',state)
         content = {'task_id':state['task_id'],'task_type':task_type,'topic_id':state['topic_id'],'content_only':True,
@@ -1675,6 +1678,13 @@ class CaptureBrowser:
                    'canonical_examples':list(state['examples'].values())}
         new_points=[{'id':kp['id'],'title':kp['title'],'source_example_id':kp['source_example_id']}
                     for kp in state['kps'].values() if kp.get('source_example_id')]
+        if task_type == 'lesson' and state.get('lesson_definition'):
+            content['lesson_definition'] = state['lesson_definition']
+            content['tutorials'] = state['tutorials']
+            # The topic definition supplies every canonical example, including
+            # sections this particular learner attempt did not visit.
+            content['canonical_examples'] = state['lesson_examples']
+            new_points = state['lesson_new_knowledge_points']
         if new_points:
             content['new_knowledge_points'] = new_points
         if task_type == 'review':

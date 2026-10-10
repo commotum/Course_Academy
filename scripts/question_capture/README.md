@@ -5,31 +5,58 @@ add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
 apart from Playwright, the EDB CLI, a solver command, and the native comparison helper.
 
-The fleet is currently configured with `"capture_only": true` in `workers.json`.
-`cap` and `scripts/ma-workers start` therefore capture without importing. MA
-activities, answers, history, assets, progress snapshots and `content.json` are
-saved in the usual per-account folders. Each finished capture writes
-`import-deferred.json` with its content-file hash and marks `import_deferred` in
-its checkpoint. It does not claim a database import completed. Startup and
-end-of-batch import sweeps, EDB previews and import repairs are skipped, including
-recovery of old pending transaction intents. Topic and priority lookups still
-read the existing `course-academy-v2` database; this mode does not use the new
-`math` database as an import target. EDB command execution permits only status,
-query and pull. Review the saved source evidence for a later attributed import.
+The fleet now defaults to the Source-aware **`math`** database at
+`/media/jake/SSD/EDB/math`, using `/tmp/edb-math/writer.sock` and the PostgreSQL
+socket `/tmp/edb-math` on port 55432. `workers.json` configures all four workers
+for this target. Imports use **`:org/Math-Academy`** as source; that entity and the
+schema must already exist. The installed math writer supplies the schema's native
+validation functions.
 
-For an explicit capture-only launch, use `scripts/ma-workers start --capture-only`
-or `python scripts/question_capture run --capture-only`. This mode still performs
-and submits MA activities; `--dry-run` remains queue inspection only. Re-enabling
-fleet imports requires changing the configuration; do that only after adapting
-the importer to the new database and source attribution.
+New captures automatically prepare original MA answers, shared SSD images, complete
+lesson/tutorial structures, and complete multistep activities. Saved learner-attempt
+evidence and post-activity progress observations remain in each capture folder.
+No learner or engine facts are transacted by the content importer.
 
-Capture uses an independently copied, verified EDB executable at
-`.local/edb/capture-runtime/edb`. Rebuilding or changing branches in the EDB
-development checkout does not replace it. Its hash and the database compatibility
-check are recorded in `.local/edb/capture-runtime/manifest.json`. Explicit
-`--edb-bin` or `EDB_BIN` overrides still apply. When setting up another checkout,
-copy a compatible EDB executable to that path and verify its read-only `status`
-and `query` commands against the existing database before starting capture.
+Original evidence remains in `content.json`, `state.json`, source HTML/JSON, and
+`assets/`. New database preparations and receipts are in **`edb-import-math/`**,
+including `prepared-content.json`, `answer-review.json`, `activity-report.json`,
+`transaction.edn`, preview, exact commit intent, receipt, and verification.
+The old `edb-import/` files continue to describe the old database. They are never
+replayed against `math`. Automatic recovery only sweeps captures marked
+`capture_version: 2`; historical captures require explicit migration.
+
+MA answers take precedence even when mathematically disputed. The importer rebuilds
+answer fields from saved source evidence rather than trusting the solver's normalized
+`correct_value`. Disagreements are recorded in `answer-review.json`. If any practice
+question lacks a fully confirmed source answer, the activity import is deferred with
+its evidence intact. No repair model substitutes its answer into an MA-source
+transaction. Assistant corrections require separate later transactions.
+
+Question, example, tutorial, choice, and multistep-context image references use
+`images/<first-two-sha256-characters>/<full-sha256>.<extension>`, relative to the
+math directory. Exact original files and inline SVG are preserved; concurrent
+workers reuse identical bytes. Image mappings and review notes stay in the capture
+folder, not the SSD image library. `--math-root` sets the database/image root.
+
+Completed lessons also capture the full authenticated `/topics/<topic-id>` page.
+Verified source placements resolve against current activities, steps, tutorials,
+and knowledge points. Existing UUIDs are retained; source revisions change values
+on the same entities. Ambiguous replacement identities are deferred. Multisteps
+preserve shared context and part order as multistep/step entities, referenced by
+assigned problems and assignment activities. Activity definitions are rebuilt against
+one current database basis, and committed content is checked for a no-op reimport.
+
+For evidence-only operation, use `scripts/ma-workers start --capture-only` or
+`python scripts/question_capture run --capture-only`. This still performs MA
+activities and saves evidence; it skips database previews, commits, and import
+sweeps. `--dry-run` inspects the queue without starting an activity.
+
+Capture uses a separately pinned compatible EDB executable at
+`.local/edb/capture-runtime/math-edb`. `--edb-bin` / `EDB_BIN` can override it.
+`--database`, `--endpoint`, and `--postgres-url` select the database connection.
+Rebuilding EDB does not replace the pinned capture executable. Install the Python
+dependencies from `scripts/question_capture/requirements.txt` in the capture
+environment (the fleet uses `/home/jake/Developer/MA/.venv/bin/python`).
 
 HTTP 429 throttling honors `Retry-After` with interruptible backoff. Navigation
 retries only the read; an interrupted activity reopens its checkpoint and checks
@@ -441,8 +468,8 @@ The runner:
    solver session. Each imported question includes the setup and earlier parts
    with confirmed answers, so references such as “part 5” remain understandable;
    the capture also keeps each original stem and its order separately. The
-   existing question/KP import is reused; no activity or learner entities are
-   created. Unrecognized intervening context layouts stop for inspection.
+   math importer also prepares the reusable multistep and assignment activity,
+   without learner entities. Unrecognized intervening context layouts stop for inspection.
 4. Matches `q-N` and `e-N` globally in EDB. Adds missing attributes and choices,
    reuses existing owned answer entities, and links new practice to the correct
    `knowledge-point/questions`. Documented local values can be superseded by
@@ -461,7 +488,10 @@ The runner:
    across that exact transaction. It also verifies that a repeated import would
    produce no further changes.
 
-## Authoritative replacement
+## Historical replacement workflow (old database)
+
+The following replacement/repair records describe the previous importer. New math
+imports use the source-only preparation and review process described above.
 
 `provenance.py` reads the saved Factorials authoring records and historical
 question reconstruction/format repairs. Each usable declaration needs its

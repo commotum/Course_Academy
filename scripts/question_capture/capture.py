@@ -26,9 +26,12 @@ from retry_policy import apply_policy, update_policy
 def arguments(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command',choices=['run','login','priorities','import-saved','sweep-saved'])
-    parser.add_argument('--database',default=os.environ.get('EDB_DATABASE','course-academy-v2'))
-    parser.add_argument('--endpoint',default=os.environ.get('EDB_ENDPOINT','/tmp/course-academy-edb-v2/writer.sock'))
+    parser.add_argument('--database',default=os.environ.get('EDB_DATABASE','math'))
+    parser.add_argument('--endpoint',default=os.environ.get('EDB_ENDPOINT','/tmp/edb-math/writer.sock'))
     parser.add_argument('--edb-bin',default=os.environ.get('EDB_BIN',str(CAPTURE_EDB_BIN)))
+    parser.add_argument('--source',default=':org/Math-Academy',choices=[':org/Math-Academy'])
+    parser.add_argument('--math-root',type=Path,default=Path('/media/jake/SSD/EDB/math'))
+    parser.add_argument('--postgres-url',default=os.environ.get('EDB_POSTGRES_URL',"host=/tmp/edb-math port=55432 dbname=math user=edb_peer sslmode=disable options='-c search_path=public'"))
     parser.add_argument('--learner-id',type=uuid.UUID,default=uuid.UUID('59d5cf13-351c-4114-be19-4c3bb64ee051'))
     parser.add_argument('--output',type=Path,default=ROOT/'reference/mathacademy/question-capture')
     parser.add_argument('--capture-root',type=Path,action='append',default=[],
@@ -178,7 +181,8 @@ def unfinished_run(args):
         if superseded_before_start(state):
             continue
         directory = source.parent.resolve()
-        verification = directory/'edb-import/verification.json'
+        from math_database import import_directory
+        verification = import_directory(directory,args)/'verification.json'
         receipt = json.loads(verification.read_text()) if verification.exists() else {}
         if state.get('activity_complete') and state.get('history_complete') and (directory/'content.json').exists():
             # Completed captures belong to content-only recovery, even when
@@ -661,6 +665,8 @@ def run(args):
                         content = json.loads((directory/'content.json').read_text())
                     else:
                         content = browser.history(state,directory,topic)
+                    content['capture_version'] = 2
+                    atomic_json(directory/'content.json',content)
                     # Record capture completion separately from an EDB receipt. Never retake
                     # a completed MA activity because its database commit needs recovery.
                     journal(log,'activity_captured',task_id=state['task_id'],topic_id=state['topic_id'],task_type=state['task_type'],directory=str(directory),activity_outcome=state.get('activity_outcome'))

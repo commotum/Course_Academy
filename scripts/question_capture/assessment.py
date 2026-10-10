@@ -415,6 +415,7 @@ def assessment_history(reader, state, directory, load_topic):
                                  provenance={'activity_question':q['id'],'kp_href':q['kp_href'],'kp_title':q['kp_title']})
         if is_multistep:
             record['content'].update(sequence_position=record['sequence_position'], local_problem=record['local_problem'],
+                                     problem=record['local_problem'], source_step=record.get('source_step'),
                                      shared_context_refs=[c['id'] for c in state.get('shared_contexts', [])])
         if is_diagnostic:
             record['content'].update(sequence_position=record['sequence_position'],

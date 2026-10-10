@@ -21,8 +21,8 @@ QUESTION_PULL = '''[* {:question/difficulty [:db/id :db/ident]}
  {:question/answer-fields [* {:answer-field/type [:db/ident]}
  {:answer-field/correct [* {:answer/type [:db/ident]}]}
  {:answer-field/choices [* {:answer/type [:db/ident]}]}]}]'''
-TOPIC_QUERY = '''[:find (pull ?topic [:topic/id :topic/title :topic/math-academy-id
- {:topic/knowledge-points [:knowledge-point/id :knowledge-point/title
+TOPIC_QUERY = '''[:find (pull ?topic [:db/id :topic/id :topic/title :topic/math-academy-id
+ {:topic/knowledge-points [:db/id :knowledge-point/id :knowledge-point/title
  {:knowledge-point/canonical-example [:question/id :question/math-academy-id]}
  {:knowledge-point/questions [:question/id :question/math-academy-id]}]}])
  :in $ ?id :where [?topic :topic/math-academy-id ?id]]'''
@@ -52,7 +52,10 @@ class Database:
     def __init__(self, args):
         self.args = args
         self.env = os.environ.copy()
-        self.env.setdefault('EDB_POSTGRES_URL', 'host=/home/jake/Developer/Course_Academy/.local/edb/run dbname=course_academy user=edb_peer sslmode=disable')
+        if getattr(args,'postgres_url',None):
+            self.env['EDB_POSTGRES_URL'] = args.postgres_url
+        else:
+            self.env.setdefault('EDB_POSTGRES_URL', "host=/tmp/edb-math port=55432 dbname=math user=edb_peer sslmode=disable options='-c search_path=public'")
 
     def command(self, command, *options):
         if getattr(self.args,'capture_only',False) and command not in ('status','query','pull'):
@@ -118,6 +121,8 @@ class Database:
             {:activity/steps [{:step/content '''+content_pattern(3)+'''}]}]}])
           :in $ ?id :where [?l :learner/id ?id]]'''
         learners = self.query(query,[str(learner_id)],directory,'configuration',basis)
+        if not learners and getattr(self.args,'source',None):
+            learners = [[{}]]  # Fresh math has content but no learner state yet.
         if len(learners)!=1:
             raise ValueError('Expected one learner configuration for capture priorities')
         learner = learners[0][0]
@@ -371,6 +376,9 @@ class Database:
                     raise StaleBasis(str(error)) from error
 
     def _import_content(self, content, directory, apply=True):
+        if getattr(self.args,'source',None):
+            from math_database import import_math
+            return import_math(self,content,directory,apply)
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         content_hash = hashlib.sha256(json.dumps(content,sort_keys=True,default=str).encode()).hexdigest()
@@ -450,9 +458,10 @@ class Database:
             if previous.get(':edb/committed') is True:
                 return previous
         journal(directory / 'events.jsonl', 'commit_requested', **intent)
+        source_options = ['--source',intent['source']] if intent.get('source') else []
         try:
             text = self.command('transact', '--file', tx_path, '--endpoint', intent['endpoint'],
-                                '--request-key', intent['request_key'], '--basis', intent['basis'], '--timeout-ms', 180000)
+                                '--request-key', intent['request_key'], '--basis', intent['basis'], '--timeout-ms', 180000, *source_options)
         except subprocess.CalledProcessError as error:
             diagnostic = error.stderr or ''
             if isinstance(diagnostic,bytes):
@@ -462,7 +471,7 @@ class Database:
                 try:
                     text = replay([self.args.edb_bin, 'transact', '--database', self.args.database,
                         '--file', tx_path, '--endpoint', intent['endpoint'], '--request-key', intent['request_key'],
-                        '--basis', intent['basis'], '--timeout-ms', 180000], env=self.env)
+                        '--basis', intent['basis'], '--timeout-ms', 180000, *source_options], env=self.env)
                 except subprocess.CalledProcessError as remote:
                     error = remote
                     diagnostic = remote.stderr or ''

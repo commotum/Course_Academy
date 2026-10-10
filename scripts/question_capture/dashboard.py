@@ -99,13 +99,14 @@ def activity_counts(tasks):
 def receipt_new_ids(directory):
     """Count actual question identity assertions, using saved receipts only."""
     from edn import loads
-    root=Path(directory)/'edb-import'
+    root=Path(directory)/'edb-import-math'
+    if not root.is_dir():root=Path(directory)/'edb-import'
     try:
         attributes=loads((root/'attributes.edn').read_text())
         identity=next(a for a,name in attributes if str(name)==':question/math-academy-id')
         receipt=loads((root/'commit.edn').read_text())
         if not receipt.get(':edb/committed'):return []
-        return sorted({str(d[2]) for d in receipt.get(':edb/tx-data',[]) if d[1]==identity and d[4]})
+        return sorted({str(d[2]) for d in receipt.get(':edb/tx-data',[]) if d[1]==identity and d[-1] is True})
     except (OSError,ValueError,StopIteration,KeyError,TypeError):return []
 
 
