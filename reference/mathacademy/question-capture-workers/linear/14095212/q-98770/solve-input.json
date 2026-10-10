@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}0 & 1 \\\\ -1 & 0 \\\\ 1 & 0\\end{aligned}],\\,\u03a3=[\\begin{aligned}\\sqrt{2} & 0 \\\\ 0 & 1 \\\\ 0 & 0\\end{aligned}],\\,V=[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]\n$$\n\nConsider the matrices shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$ which of the following could be the $3$rd column of the matrix $U?$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}0 \\\\ 0 \\\\ 1\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}0 \\\\ \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}-\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} \\\\ 0\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}1 \\\\ 0 \\\\ 0\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}\\frac{1}{\\sqrt{10}} \\\\ 0 \\\\ -\\frac{3}{\\sqrt{10}}\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14095212,
+    "task_type": "lesson",
+    "topic_id": 3133,
+    "topic_title": "Singular Value Decomposition of Larger Matrices",
+    "examples": [
+      {
+        "math_academy_id": "e-8634",
+        "knowledge_point": "Finding the First Factor in the SVD of a Rectangular Matrix",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/925955a8375872fd58a5e319a41ea0642049113754cfaa45b2401cc78ed53773.png)\nConsider the matrices shown above. Given that $A=U \\Sigma V^T$ is a singular value decomposition of $A,$ find a vector whose components correspond to the $3$rd column of the matrix $U.$",
+        "worked_solution": "Recall that if  $A=U \\Sigma V^T$ is a singular value decomposition of an $3 \\times 2$ matrix $A,$ then \n\n- $\\Sigma$ is a $3 \\times 2$ matrix with nonnegative elements on the main diagonal and zeroes outside the main diagonal,\n\n- $U$ is an orthogonal $3 \\times 3$ matrix,\n\n- $V$ is an orthogonal $2 \\times 2$ matrix.\n\nFrom the matrix $\\Sigma,$ we deduce that $\\sigma_1=7$ and $\\sigma_2=3.$\nAlso, the columns $\\mathbf{v}_1$ and $\\mathbf{v}_2$ of $V$ give us the right singular vectors of $A.$\n\nTherefore, we can compute the $1$st and $2$nd columns of $U$ as follows:\n\n- First, we compute $\\mathbf u_1\\mathbin{:}$\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{7}[\\begin{aligned}2 & -2 \\\\ -4 & -3 \\\\ 3 & 4\\end{aligned}][\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{7}[\\begin{aligned}0 \\\\ -\\frac{7}{\\sqrt{2}} \\\\ \\frac{7}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}0 \\\\ -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\n- Then, we compute $\\mathbf u_2\\mathbin{:}$\n\n$$\n\\begin{aligned}{u}_{2} & =\\frac{1}{{\\sigma }_{2}}A{v}_{2} \\\\  & =\\frac{1}{3}[\\begin{aligned}2 & -2 \\\\ -4 & -3 \\\\ 3 & 4\\end{aligned}][\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{3}[\\begin{aligned}-\\frac{4}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{4}{3\\sqrt{2}} \\\\ \\frac{1}{3\\sqrt{2}} \\\\ \\frac{1}{3\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\nSince we do not have the third singular value, we can't use the same formula to find the third column of $U.$ But we know that $U$ must be orthogonal. Hence, we must find a vector \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/c5b5eec6439fb75addb666ceca926126e5a2be24f0f30dcdfbffd623023af51d.png)\nsuch that \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/72487189cd6338fb35cdc88a7c9ca5937052fd1aa810015940c1559a0440c3c0.png)\nSolving this system, which is equivalent to\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/b1a4b3a15d573123e318cca21f79f71310e591b35ec7b591b44757aed136820d.png)\nwe get the nonzero normalized solution \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/899ded4e181102a00313e42ecf2a914cb1f4a3a42293a2d6d785e71268abb446.png)\n\nFinally, we construct the matrix $U \\mathbin{:}$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/4c2999617053e39685151362c1e136c98577d66e579284aad43f906b4dee7269.png)",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/example-8634.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-98559",
+        "problem": "$$\nA=[\\begin{aligned}0 & 1 \\\\ -2 & 2 \\\\ -1 & 0\\end{aligned}],\\,\u03a3=[\\begin{aligned}3 & 0 \\\\ 0 & 1 \\\\ 0 & 0\\end{aligned}]\n$$\n\nConsider the matrices $A$ and $\u03a3$ shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$ which of the following could be the matrix $V?$",
+        "worked_solution": "Recall that if  $A=U\u03a3{V}^{T}$ is a singular value decomposition of a $3\\times 2$ matrix $A,$ then\n\n- $\u03a3$ is a $3\\times 2$ matrix with nonnegative elements on the main diagonal and zeroes outside the main diagonal,\n\n- $U$ is an orthogonal $3\\times 3$ matrix,\n\n- $V$ is an orthogonal $2\\times 2$ matrix.\n\nLet's find the singular value decomposition of $A$ using the usual algorithm.\n\n- **Step 1.** Compute ${A}^{T}\\,A:$\n\n$$\n\\begin{aligned}{A}^{T}\\,A & ={[\\begin{aligned}0 & 1 \\\\ -2 & 2 \\\\ -1 & 0\\end{aligned}]}^{T}[\\begin{aligned}0 & 1 \\\\ -2 & 2 \\\\ -1 & 0\\end{aligned}] \\\\  & =[\\begin{aligned}0 & -2 & -1 \\\\ 1 & 2 & 0\\end{aligned}][\\begin{aligned}0 & 1 \\\\ -2 & 2 \\\\ -1 & 0\\end{aligned}] \\\\  & =[\\begin{aligned}5 & -4 \\\\ -4 & 5\\end{aligned}]\\end{aligned}\n$$\n\n- **Step 2.** Find the singular values: From the matrix $\u03a3,$ we deduce that ${\\sigma }_{1}=3$ and ${\\sigma }_{2}=1.$\n\n- **Step 3.** Find the right singular vectors of $A$ (i.e., the unit eigenvectors of ${A}^{T}\\,A$):\n\n- For ${\\lambda }_{1}={\\sigma }_{1}^{2}=9,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-9I & =[\\begin{aligned}5 & -4 \\\\ -4 & 5\\end{aligned}]-9[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-4 & -4 \\\\ -4 & -4\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-9I)v=0$ gives the unit eigenvector\n\n$$\n{v}_{1}=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}].\n$$\n\n- For ${\\lambda }_{2}={\\sigma }_{2}^{2}=1,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-1I & =[\\begin{aligned}5 & -4 \\\\ -4 & 5\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}4 & -4 \\\\ -4 & 4\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-1I)v=0$ gives the unit eigenvector\n\n$$\n{v}_{2}=[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}].\n$$\n\nFinally, we construct the matrix $V:$\n\n$$\nV=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
