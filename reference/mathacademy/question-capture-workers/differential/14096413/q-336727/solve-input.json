@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "A $10\\,500\\,\\text{mL}$-capacity reactor initially holds $7\\,500\\,\\text{mL}$ of a chemical solution containing $98\\,\\text{g}$ of reactant. Pure solvent begins to flow into the reactor at a rate of $90\\,\\text{mL/s},$ while the completely mixed solution flows out at a rate of $60\\,\\text{mL/s}.$ Find the amount of reactant in the reactor at the moment it begins to overflow.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "48\\,\\text{g}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "60\\,\\text{g}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "52\\,\\text{g}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "50\\,\\text{g}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "55\\,\\text{g}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096413,
+    "task_type": "lesson",
+    "topic_id": 1713,
+    "topic_title": "Modeling Mixture Problems With First-Order Separable ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336726",
+        "problem": "A $240\\,\\text{gal}$-capacity tank initially holds $150\\,\\text{gal}$ of a brine (salt-water) solution containing $32\\,\\text{lb}$ of salt. Fresh water begins to flow into the tank at a rate of $3\\,\\text{gal/min},$ while the completely mixed brine flows out at a rate of $2\\,\\text{gal/min}.$ Find the amount of salt in the tank at the moment it begins to overflow.",
+        "worked_solution": "Let $Q$ be the amount of salt in the tank at time $t.$ Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which salt enters the tank minus the rate at which salt leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which salt enters the tank.\n\nFirst, note that fresh water (i.e., a brine solution containing $0\\,\\text{lb/gal}$ of salt) enters the tank at a rate of $3\\,\\text{gal/min}.$ So, the rate at which the *salt* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (3\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (3\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which salt exits the tank.\n\nTo find the rate at which salt leaves the tank, we must first determine the volume of brine in the tank at time $t.$\n\nThe tank initially contains $150\\,\\text{gal}$ of brine; fresh water enters at $3\\,\\text{gal/min},$ and mixed brine leaves at $2\\,\\text{gal/min}.$\nAs a result, the amount of brine in the tank after $t$ minutes is \n\n$$\nV(t)=150+3t-2t=(150+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the tank is filling.\n\nSince $Q$ is the amount of salt in the tank, the concentration of the brine at time $t$ is\n\n$$\n\\frac{Q}{150+t}\\,\\frac{\\text{lb}}{\\text{gal}}.\n$$\n\nTherefore, as the completely mixed brine leaves at a rate of $2\\,\\text{gal/min},$ *salt* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(2\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{150+t}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(2\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{150+t}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{2Q}{150+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0-\\frac{2Q}{150+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}=-\\frac{2}{150+t}\\,Q.\n$$\n\n**Step 4**: Integrate the equation\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{2}{150+t} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{2}{150+t})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-2\\int \\frac{1}{150+t}\\,dt \\\\ \\operatorname{ln}\u2061|Q| & =-2(\\operatorname{ln}\u2061|150+t|)+C \\\\ \\operatorname{ln}\u2061|Q| & =\\operatorname{ln}\u2061|(150+t)^{-2}|+C \\\\ |Q| & ={e}^{\\operatorname{ln}\u2061|(150+t)^{-2}|+C} \\\\ Q(t) & =\\frac{A}{(150+t)^{2}},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the tank initially contains $32\\,\\text{lb}$ of salt. So, we can apply the initial condition $Q(0)=32,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =32 \\\\ \\frac{A}{(150+0)^{2}} & =32 \\\\ A & =32(150)^{2}\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =\\frac{32(150)^{2}}{(150+t)^{2}} \\\\  & =32{(\\frac{150}{150+t})}^{2}\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the tank begins to overflow. The tank has a capacity of $240\\,\\text{gal},$ so we can use the condition $V({t}_{o})=240$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =240 \\\\ 150+{t}_{o} & =240 \\\\ {t}_{o} & =90\\,\\text{min}\\end{aligned}\n$$\n\nFinally, the amount of salt in the tank at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(90) & =32{(\\frac{150}{150+90})}^{2} \\\\  & =32{(\\frac{150}{240})}^{2} \\\\  & =32{(\\frac{5}{8})}^{2} \\\\  & =12.5\\,\\text{lb}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "12.5\\,\\text{lb}",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

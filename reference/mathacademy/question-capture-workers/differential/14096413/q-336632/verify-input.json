@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "A tank initially holds $600\\,\\text{L}$ of a brine (salt-water) solution containing $25\\,\\text{kg}$ of salt.\nFresh water is poured into the tank at a rate of $18\\,\\text{L/min},$ while the completely mixed brine leaves the tank at a rate of $12\\,\\text{L/min}.$\nFind an equation for the amount of salt $Q(t),$ in kilograms, in the tank $t$ minutes after the fresh water is first added.",
+  "worked_solution": "Since $Q$ is the amount of salt in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which salt enters the tank minus the rate at which salt leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which salt enters the tank.\n\nFirst, note that fresh water (i.e., a brine solution containing $0\\,\\text{kg/L}$ of salt) enters the tank at a rate of $18\\,\\text{L/min}.$ So, the rate at which the *salt* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (18\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (18\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which salt exits the tank.\n\nNow, to find the rate at which salt leaves the tank, we must first determine the volume of brine in the tank at time $t.$\n\n- The tank initially contains $600\\,\\text{L}$ of brine.\n\n- Fresh water enters the tank at a rate of $18\\,\\text{L/min}.$ So, after $t$ minutes, $18t\\,\\text{L}$ have entered the tank.\n\n- The completely mixed brine leaves the tank at a rate of $12\\,\\text{L/min}.$ So, after $t$ minutes, $12t\\,\\text{L}$ have left the tank.\n\nAs a result, the volume of brine in the tank after $t$ minutes is \n\n$$\n600+18t-12t=(600+6t)\\,\\text{L}.\n$$\n\nThen, since $Q$ is the amount of salt in the tank, the *concentration* of the brine at time $t$ is\n\n$$\n\\frac{Q}{600+6t}\\,\\frac{\\text{kg}}{\\text{L}}.\n$$\n\nTherefore, as the completely mixed brine leaves at a rate of $12\\,\\text{L/min},$ *salt* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(12\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{600+6t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(12\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{600+6t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{12Q}{600+6t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{2Q}{100+t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\ \\frac{dQ}{dt} & =0-\\frac{2Q}{100+t} \\\\ \\frac{dQ}{dt} & =-\\frac{2}{100+t}\\,Q.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{2}{100+t} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{2}{100+t})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-2\\int \\frac{1}{100+t}\\,dt \\\\ \\operatorname{ln}\u2061|Q| & =-2\\operatorname{ln}\u2061|100+t|+C \\\\ |Q| & ={e}^{-2\\operatorname{ln}\u2061|100+t|+C} \\\\ Q(t) & =\\frac{A}{(100+t)^{2}},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the tank initially contains $25\\,\\text{kg}$ of salt. So, we can apply the initial condition $Q(0)=25,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =25 \\\\ \\frac{A}{(100+0)^{2}} & =25 \\\\ A & =25\\cdot {100}^{2}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\nQ(t)=25{(\\frac{100}{100+t})}^{2}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "Q(t)=20{(\\frac{10}{100+t})}^{2}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "Q(t)=20{(\\frac{100}{100+t})}^{2}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "Q(t)=25\\frac{100}{(100+t)^{2}}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "Q(t)=25{(\\frac{100}{100+t})}^{2}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "Q(t)=2500{(\\frac{10}{100+t})}^{2}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "092d65b719862d703019061fb3d2563d804bfb4e998903db673b30d82dbb4423"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096413,
+    "task_type": "lesson",
+    "topic_id": 1713,
+    "topic_title": "Modeling Mixture Problems With First-Order Separable ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336632",
+        "problem": "A tank initially holds $600\\,\\text{L}$ of a brine (salt-water) solution containing $25\\,\\text{kg}$ of salt.\nFresh water is poured into the tank at a rate of $18\\,\\text{L/min},$ while the completely mixed brine leaves the tank at a rate of $12\\,\\text{L/min}.$\nFind an equation for the amount of salt $Q(t),$ in kilograms, in the tank $t$ minutes after the fresh water is first added.",
+        "worked_solution": "Since $Q$ is the amount of salt in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which salt enters the tank minus the rate at which salt leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which salt enters the tank.\n\nFirst, note that fresh water (i.e., a brine solution containing $0\\,\\text{kg/L}$ of salt) enters the tank at a rate of $18\\,\\text{L/min}.$ So, the rate at which the *salt* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (18\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (18\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which salt exits the tank.\n\nNow, to find the rate at which salt leaves the tank, we must first determine the volume of brine in the tank at time $t.$\n\n- The tank initially contains $600\\,\\text{L}$ of brine.\n\n- Fresh water enters the tank at a rate of $18\\,\\text{L/min}.$ So, after $t$ minutes, $18t\\,\\text{L}$ have entered the tank.\n\n- The completely mixed brine leaves the tank at a rate of $12\\,\\text{L/min}.$ So, after $t$ minutes, $12t\\,\\text{L}$ have left the tank.\n\nAs a result, the volume of brine in the tank after $t$ minutes is \n\n$$\n600+18t-12t=(600+6t)\\,\\text{L}.\n$$\n\nThen, since $Q$ is the amount of salt in the tank, the *concentration* of the brine at time $t$ is\n\n$$\n\\frac{Q}{600+6t}\\,\\frac{\\text{kg}}{\\text{L}}.\n$$\n\nTherefore, as the completely mixed brine leaves at a rate of $12\\,\\text{L/min},$ *salt* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(12\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{600+6t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(12\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{600+6t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{12Q}{600+6t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{2Q}{100+t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\ \\frac{dQ}{dt} & =0-\\frac{2Q}{100+t} \\\\ \\frac{dQ}{dt} & =-\\frac{2}{100+t}\\,Q.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{2}{100+t} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{2}{100+t})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-2\\int \\frac{1}{100+t}\\,dt \\\\ \\operatorname{ln}\u2061|Q| & =-2\\operatorname{ln}\u2061|100+t|+C \\\\ |Q| & ={e}^{-2\\operatorname{ln}\u2061|100+t|+C} \\\\ Q(t) & =\\frac{A}{(100+t)^{2}},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the tank initially contains $25\\,\\text{kg}$ of salt. So, we can apply the initial condition $Q(0)=25,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =25 \\\\ \\frac{A}{(100+0)^{2}} & =25 \\\\ A & =25\\cdot {100}^{2}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\nQ(t)=25{(\\frac{100}{100+t})}^{2}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "Q(t)=2500{(\\frac{10}{100+t})}^{2}",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

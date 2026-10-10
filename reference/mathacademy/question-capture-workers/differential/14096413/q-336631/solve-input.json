@@ -1,0 +1,40 @@
+{
+  "mode": "solve",
+  "problem": "A tank initially holds $375\\,\\text{L}$ of a dissolved contaminant solution containing $9\\,\\text{kg}$ of dissolved contaminant.\nPure water is poured into the tank at a rate of $15\\,\\text{L/min},$ while the completely mixed solution leaves the tank at a rate of $15\\,\\text{L/min}.$\nFind an equation for the amount of dissolved contaminant $Q(t),$ in kilograms, in the tank $t$ minutes after the pure water is first added.\n\n$Q(t)=$\n{{field-1}}",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096413,
+    "task_type": "lesson",
+    "topic_id": 1713,
+    "topic_title": "Modeling Mixture Problems With First-Order Separable ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336401",
+        "problem": "A wastewater holding basin initially holds $450\\,\\text{L}$ of water containing $9\\,\\text{kg}$ of dissolved contaminants.\nClean water is pumped into the basin at a rate of $20\\,\\text{L/min},$ while the completely mixed liquid leaves the basin at a rate of $25\\,\\text{L/min}.$\nFind, rounded to two decimal places, the amount of contaminants in the basin $12$ minutes after the clean water pumping begins.",
+        "worked_solution": "Let $Q$ be the amount of contaminants in the basin at time $t.$ Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which contaminants enter the basin minus the rate at which contaminants leave the basin.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which contaminants enter the basin.\n\nNote that clean water (i.e., water containing $0\\,\\text{kg/L}$ of contaminants) enters the basin at a rate of $20\\,\\text{L/min}.$ So, the rate at which the *contaminants* enter the basin is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (20\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (20\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which contaminants exit the basin.\n\nTo find the rate at which contaminants leave the basin, we first determine the volume of wastewater in the basin at time $t.$\n\nThe basin initially contains $450\\,\\text{L}$ of wastewater; water enters at $20\\,\\text{L/min}$ and drains out at $25\\,\\text{L/min}.$\nAs a result, the amount of wastewater in the basin after $t$ minutes is \n\n$$\n450+20t-25t=(450-5t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of contaminants in the basin, the *concentration* of the wastewater at time $t$ is\n\n$$\n\\frac{Q}{450-5t}\\,\\frac{\\text{kg}}{\\text{L}}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $25\\,\\text{L/min},$ *contaminants* leave at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(25\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{450-5t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(25\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{450-5t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{25Q}{450-5t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{5Q}{90-t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0-\\frac{5Q}{90-t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}=-\\frac{5}{90-t}\\,Q.\n$$\n\n**Step 4**: Integrate the equation.\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{5}{90-t} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{5}{90-t})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-5\\int \\frac{1}{90-t}\\,dt \\\\ \\operatorname{ln}\u2061|Q| & =-5(-\\operatorname{ln}\u2061|90-t|)+C \\\\ \\operatorname{ln}\u2061|Q| & =\\operatorname{ln}\u2061|(90-t)^{5}|+C \\\\ |Q| & ={e}^{\\operatorname{ln}\u2061|(90-t)^{5}|+C} \\\\ Q(t) & =A(90-t)^{5},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the basin initially contains $9\\,\\text{kg}$ of contaminants. So, we can apply the initial condition $Q(0)=9,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =9 \\\\ A(90-0)^{5} & =9 \\\\ A & =\\frac{9}{{90}^{5}}\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =\\frac{9}{{90}^{5}}(90-t)^{5} \\\\  & =9{(\\frac{90-t}{90})}^{5} \\\\  & =9{(1-\\frac{t}{90})}^{5}\\end{aligned}\n$$\n\nFinally, the amount of contaminants in the basin $12$ minutes after the clean water is first pumped in is\n\n$$\nQ(12)=9{(1-\\frac{12}{90})}^{5}\u22484.40\\,\\text{kg},\n$$\n\nrounded to two decimal places.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "4.40\\,\\text{kg}",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
