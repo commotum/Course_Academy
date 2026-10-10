@@ -1,0 +1,80 @@
+{
+  "mode": "solve",
+  "problem": "$$\nA=[\\begin{aligned}1 & 0 \\\\ 1 & 0 \\\\ 1 & 0\\end{aligned}],\\,\u03a3=[\\begin{aligned}\\sqrt{3} & 0 \\\\ 0 & 0 \\\\ 0 & 0\\end{aligned}],\\,V=[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]\n$$\n\nConsider the matrices shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$  select the correct options in the computations of the matrix $U$ below.From the matrix $\u03a3,$ we deduce the singular values ${\\sigma }_{1}=\\sqrt{3}$ and ${\\sigma }_{2}=0.$\n\nNow, we compute the $1$st column of $U.$ It is given by:\n\n|  |  | $\\frac{1}{\\sqrt{3}}$ |  |  |\n| --- | --- | --- | --- | --- |\n| ${u}_{1}=\\,\\,$ |  | {{field-1}} |  |  |\n|  |  | {{field-2}} |  |  |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{2}{\\sqrt{3}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{3}}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "-\\frac{2}{\\sqrt{3}}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "-\\frac{1}{\\sqrt{3}}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "-\\frac{1}{\\sqrt{3}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{3}}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{2}{\\sqrt{3}}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "0"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14095212,
+    "task_type": "lesson",
+    "topic_id": 3133,
+    "topic_title": "Singular Value Decomposition of Larger Matrices",
+    "examples": [
+      {
+        "math_academy_id": "e-8798",
+        "knowledge_point": "Finding the First Factor in the SVD of a Rectangular Matrix: Cases Requiring Orthogonalization",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/9c846fa0c1cf9ce3643f4a82b11d012a9675ead6f51c4a145816a2ca1201dea6.png)\nConsider the matrices shown above. Given that $A=U \\Sigma V^T$ is a singular value decomposition of $A,$ find a $3\\times 3$ matrix that could be the matrix $U.$",
+        "worked_solution": "Recall that if  $A=U \\Sigma V^T$ is a singular value decomposition of a $3 \\times 2$ matrix $A,$ then\n\n- $\\Sigma$ is a $3 \\times 2$ matrix with nonnegative elements on the main diagonal and zeroes outside the main diagonal,\n\n- $U$ is an orthogonal $3 \\times 3$ matrix,\n\n- $V$ is an orthogonal $2 \\times 2$ matrix.\n\nFrom the matrix $\\Sigma,$ we deduce that $\\sigma_1=2$ and $\\sigma_2=0.$\nAlso, the columns $\\mathbf{v}_1$ and $\\mathbf{v}_2$ of $V$ give us the right singular vectors of $A.$\n\nTherefore, we can compute the $1$st column of $U$ as follows:\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{2}[\\begin{aligned}\\sqrt{2} & 0 \\\\ 1 & 0 \\\\ -1 & 0\\end{aligned}][\\begin{aligned}1 \\\\ 0\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}\\sqrt{2} \\\\ 1 \\\\ -1\\end{aligned}] \\\\  & =[\\begin{aligned}\\frac{\\sqrt{2}}{2} \\\\ \\frac{1}{2} \\\\ -\\frac{1}{2}\\end{aligned}]\\end{aligned}\n$$\n\n  \n\nSince the second singular value is $\\sigma_2=0$, and we do not have the third singular value, we can't use the same formula to find the second and third columns of $U.$ But we know that $U$ must be orthogonal. Hence, we must find vectors \n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/32e17465de4bba33105749d691af2ada0844faad000d5bb2ff8e8ed8d8e045e7.png)\n\nsuch that $\\mathbf{u}_1 \\cdot \\mathbf{u} = 0$ and $\\|\\mathbf{u}\\|=1.$\n\nSolving $\\mathbf{u}_1 \\cdot \\mathbf{u} = 0,$ which is equivalent to\n\n$$\n\\dfrac{\\sqrt2}{2} x_1 + \\dfrac{1}{2} x_2- \\dfrac{1}{2} x_3 = 0   \n\\qquad\\Longrightarrow\\qquad\n\\sqrt2x_1 + x_2-x_3 = 0,\n$$\n\nwe get the general solution \n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/ebd9c8f2b5e96799c652c39f5859e702f9d069e2842099429d4640010c8882fa.png)\n\nwhere $x_1$ and $x_2$ are free variables. \n\nNotice that the two linearly independent solutions $\\mathbf{b}_1$ and $\\mathbf{b}_2$ are *not* mutually orthogonal. Therefore, we have to orthogonalize them using the Gram-Schmidt process. So, let \n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/523cb0ebfa47497a9753cf1dd447db414aa20feb68380878cbe93d04ec407ad7.png)\n\nThen,\n\n$$\n\\begin{aligned}{c}_{2} & ={b}_{2}-\\frac{{b}_{2}\\cdot {c}_{1}}{{c}_{1}\\cdot {c}_{1}}{c}_{1} \\\\  & =[\\begin{aligned}0 \\\\ 1 \\\\ 1\\end{aligned}]-\\frac{\\sqrt{2}}{3}[\\begin{aligned}1 \\\\ 0 \\\\ \\sqrt{2}\\end{aligned}] \\\\  & =\\frac{1}{3}[\\begin{aligned}-\\sqrt{2} \\\\ 3 \\\\ 1\\end{aligned}].\\end{aligned}\n$$\n\nFinally, normalizing the orthogonal vectors $\\mathbf{c}_1$ and $\\mathbf{c}_2,$ we obtain the second and third columns of $U{:}$   \n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/6bbe1a671b976508c3a5b25e11f0bec804ae0425afdec8ea5046130145eb69c0.png)\n\nSo, the matrix $U$ could be the following:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/assets/17552120ad9a7ef3e6a6b1170a88fc104758254f9f7d1ade70a7f7a833deac94.png)",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14095212/example-8798.png"
+      }
+    ],
+    "feedback": [],
+    "shared_contexts": []
+  }
+}
