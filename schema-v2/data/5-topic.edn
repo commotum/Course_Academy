@@ -1,9 +1,10 @@
+;; Topic and owned encompassing relationship schema.
+[
 ;; Topic model for EDB. Install before creating topic entities.
 ;; Request :db/ensure [:topic/identity-validate] for an ID-only placeholder.
 ;; Request :db/ensure [:topic/validate] when its required data is ready.
 ;; Request :db/ensure :topic/difficulty-validate for a difficulty-only update.
-;; Owned encompassing relationships are defined in 5-2-encompassing.edn.
-[
+;; Owned encompassing relationships are defined below.
  {:db/ident :topic/id
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
@@ -35,7 +36,7 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true
-  :db/doc "Optional owned encompassing records, each identifying a component topic and its coverage weight. The containing topic supplies the source: practicing it exercises the referenced topics' skills. Defined in 5-2-encompassing.edn. Writers separately ensure encompassing/validate on each record. Relationships are distinct from prerequisites; duplicate targets, self-links, cycles, and ownership require additional validation."}
+  :db/doc "Optional owned encompassing records, each identifying a component topic and its coverage weight. The containing topic supplies the source: practicing it exercises the referenced topics' skills. Defined in this file. Writers separately ensure encompassing/validate on each record. Relationships are distinct from prerequisites; duplicate targets, self-links, cycles, and ownership require additional validation."}
 
  {:db/ident :topic/knowledge-points
   :db/valueType :db.type/ref
@@ -55,4 +56,26 @@
   :db.entity/attrs [:topic/id :topic/title :topic/knowledge-points]
   :db.entity/preds course-academy.topic/valid-difficulty?
   :db/doc "A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure requires identity, title, and at least one knowledge-point reference. The predicate checks difficulty when present. Referenced knowledge points and encompassing records must be validated separately."}
+
+;; A weighted relationship owned through :topic/encompasses.
+;; The containing topic supplies the source; no separate source attribute is needed.
+;; Request :db/ensure [:encompassing/validate] when writing a relationship.
+ {:db/ident :encompassing/topic
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The component topic whose skills are practiced implicitly. This ordinary ref preserves the topic when the encompassing record is deleted. Validate the referenced topic separately."}
+
+ {:db/ident :encompassing/weight
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Coverage fraction from 0 to 1 describing how much practice the containing topic provides for the component topic. Distinct from learner accuracy and final repetition credit; the engine applies performance and timing rules separately."}
+
+ {:db/ident :encompassing/rationale
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional explanation of which component skills the containing topic exercises and why this coverage weight was chosen."}
+
+ {:db/ident :encompassing/validate
+  :db.entity/attrs [:encompassing/topic :encompassing/weight]
+  :db/doc "Requires a component topic and weight when explicitly ensured. A valid topic target, finite weight in [0,1], and relationship consistency require additional validation."}
 ]
