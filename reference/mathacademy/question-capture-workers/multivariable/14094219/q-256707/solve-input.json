@@ -1,0 +1,45 @@
+{
+  "mode": "solve",
+  "problem": "Suppose we wish to find a zero of the function $f(x,y)$ in the region $[-3,-1]\\times [-4,-1]\u2286{R}^{2},$ where\n\n$$\nf(x,y)=[\\begin{aligned}{x}^{2}+xy+{y}^{2}-12 \\\\ {x}^{3}+x-y\\end{aligned}].\n$$\n\nCalculate the second iteration of the Newton-Raphson process that starts at ${x}_{0}=[-1,\\,-1]^{T}$ if the first iteration of the algorithm gives ${x}_{1}=[-1.4,\\,-3.6]^{T}.$ Round your final answer to three decimal places (if needed).\n\n| ${x}_{2}\u2248[$ | {{field-1}} | $]$ |\n| --- | --- | --- |\n| {{field-2}} |  |  |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14094219,
+    "task_type": "review",
+    "topic_id": 5379,
+    "topic_title": "Newton's Method for Multivariable Functions",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-256608",
+        "problem": "Suppose we wish to find a zero of the function $f(x,y)$ in the region $[-2,2]\\times [0,2]\u2286{R}^{2},$ where\n\n$$\nf(x,y)=[\\begin{aligned}{x}^{2}+{y}^{3}-xy-4 \\\\ {x}^{4}-2xy+{y}^{2}-5\\end{aligned}].\n$$\n\nCalculate the second iteration of the Newton-Raphson process that starts at ${x}_{0}=[0,\\,1]^{T}$ if the first iteration of the algorithm gives ${x}_{1}=[-1.5,\\,1.5]^{T}.$ Round your final answer to three decimal places (if needed).\n\n| ${x}_{2}\\,\u2248[$ | $-1.198$ | $]$ |\n| --- | --- | --- |\n| {{field-1}} |  |  |",
+        "worked_solution": "The Newton-Raphson method of finding the zeros of a multivariable function $f:{R}^{n}\\to {R}^{n}$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{J}_{f}({x}_{n})]^{-1}f({x}_{n}),\n$$\n\nwhere ${J}_{f}({x}_{n})$ is the Jacobian of $f$ evaluated at ${x}_{n}.$\n\nIn our case, the Jacobian is\n\n$$\n\\begin{aligned}{J}_{f}(x) & =[\\begin{aligned}\\frac{\u2202}{\u2202x}({x}^{2}+{y}^{3}-xy-4) & \\frac{\u2202}{\u2202y}({x}^{2}+{y}^{3}-xy-4) \\\\ \\frac{\u2202}{\u2202x}({x}^{4}-2xy+{y}^{2}-5) & \\frac{\u2202}{\u2202y}({x}^{4}-2xy+{y}^{2}-5)\\end{aligned}] \\\\  & =[\\begin{aligned}2x-y & 3{y}^{2}-x \\\\ 4{x}^{3}-2y & -2x+2y\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{[\\begin{aligned}2x-y & 3{y}^{2}-x \\\\ 4{x}^{3}-2y & -2x+2y\\end{aligned}]}_{{x}_{n}}^{-1}{[\\begin{aligned}{x}^{2}+{y}^{3}-xy-4 \\\\ {x}^{4}-2xy+{y}^{2}-5\\end{aligned}]}_{{x}_{n}}.\n$$\n\nFor the second iteration, we have\n\n$$\n\\begin{aligned}{x}_{2} & ={x}_{1}-{[\\begin{aligned}2x-y & 3{y}^{2}-x \\\\ 4{x}^{3}-2y & -2x+2y\\end{aligned}]}_{{x}_{1}}^{-1}{[\\begin{aligned}{x}^{2}+{y}^{3}-xy-4 \\\\ {x}^{4}-2xy+{y}^{2}-5\\end{aligned}]}_{{x}_{1}} \\\\  & =[\\begin{aligned}-1.5 \\\\ 1.5\\end{aligned}]-{[\\begin{aligned}2(-1.5)-1.5 & 3(1.5)^{2}-(-1.5) \\\\ 4(-1.5)^{3}-2(1.5) & -2(-1.5)+2(1.5)\\end{aligned}]}^{-1}[\\begin{aligned}(-1.5)^{2}+{1.5}^{3}-(-1.5)\\cdot 1.5-4 \\\\ (-1.5)^{4}-2(-1.5)(1.5)+{1.5}^{2}-5\\end{aligned}] \\\\  & =[\\begin{aligned}-1.5 \\\\ 1.5\\end{aligned}]-{[\\begin{aligned}-4.5 & 8.25 \\\\ -16.5 & 6\\end{aligned}]}^{-1}[\\begin{aligned}3.875 \\\\ 6.8125\\end{aligned}] \\\\  & =[\\begin{aligned}-1.5 \\\\ 1.5\\end{aligned}]-\\frac{1}{-4.5\\cdot 6-8.25\\cdot (-16.5)}[\\begin{aligned}6 & -8.25 \\\\ 16.5 & -4.5\\end{aligned}][\\begin{aligned}3.875 \\\\ 6.8125\\end{aligned}] \\\\  & =[\\begin{aligned}-1.5 \\\\ 1.5\\end{aligned}]-\\frac{1}{109.125}[\\begin{aligned}-32.953\\,125 \\\\ 33.281\\,250\\end{aligned}] \\\\  & \u2248[\\begin{aligned}-1.198 \\\\ 1.195\\end{aligned}],\\end{aligned}\n$$\n\nrounded to three decimal places.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "1.195",
+            "observed_mathquill_latex": "1.195"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
