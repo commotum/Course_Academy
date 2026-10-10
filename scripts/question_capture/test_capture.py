@@ -1854,7 +1854,7 @@ class DOMTests(unittest.TestCase):
             # requests are independent of this test's offline page routing.
             with patch('activities.capture_lesson') as prepare_lesson:
                 self.assertEqual(len(browser.history(state,work,topic)['questions']),6)
-            prepare_lesson.assert_called_once_with(browser, state, work, topic)
+            prepare_lesson.assert_called_once_with(browser, state, Path(work), topic)
 
     def test_actual_radio_selection_mismatch_stops_before_submit(self):
         correct=self.review_fixture(misselect=True)
@@ -1894,7 +1894,7 @@ class DOMTests(unittest.TestCase):
             # a topic API request outside this offline page fixture.
             with patch('activities.capture_lesson') as prepare_lesson:
                 content = browser.history(state,work)
-            prepare_lesson.assert_called_once_with(browser, state, work, None)
+            prepare_lesson.assert_called_once_with(browser, state, Path(work), None)
             self.assertTrue(state['lesson_complete'])
             self.assertTrue(state['history_complete'])
             self.assertEqual(len(content['questions']),15)

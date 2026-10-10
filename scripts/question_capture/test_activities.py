@@ -111,6 +111,26 @@ class ActivityTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'review before import'):
             build_activity_transaction(content, topics, snapshot, [])
 
+    def test_replacement_with_multiple_old_candidates_is_held(self):
+        content, topics, snapshot = fixture()
+        lesson = snapshot['lessons'][1]
+        lesson[':activity/steps'].insert(1, step(105, tutorial(5)))
+        route(lesson[':activity/steps'])
+        content['lesson_definition']['steps'][0].update(math_academy_id=901, content_id=9)
+        content['tutorials'][0].update(math_academy_id=9)
+        with self.assertRaisesRegex(ValueError, 'Ambiguous tutorial replacement'):
+            build_activity_transaction(content, topics, snapshot, [])
+
+    def test_replacement_with_additional_unmatched_sections_is_held(self):
+        content, topics, snapshot = fixture()
+        content['lesson_definition']['steps'][0].update(math_academy_id=901, content_id=9)
+        content['tutorials'][0].update(math_academy_id=9)
+        content['lesson_definition']['steps'].insert(1,
+            {'math_academy_id': 908, 'type': 'tutorial', 'content_id': 8, 'title': 'Additional explanation'})
+        content['tutorials'].append({'math_academy_id': 8, 'title': 'Additional explanation', 'content': 'Source explanation'})
+        with self.assertRaisesRegex(ValueError, 'Ambiguous tutorial replacement'):
+            build_activity_transaction(content, topics, snapshot, [])
+
     def test_new_kp_ref_uses_same_transaction_tempid(self):
         content, topics, snapshot = fixture()
         kid = uid('newkp')

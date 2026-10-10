@@ -97,6 +97,7 @@ def import_math(db, content, directory, apply=True):
     if db.args.source != SOURCE:
         raise ValueError('Original MA captures require :org/Math-Academy as transaction source')
     raw_hash = digest(content)
+    connection_hash = hashlib.sha256(db.env['EDB_POSTGRES_URL'].encode()).hexdigest()
     intent_path = directory / 'commit-intent.json'
     tx_path = directory / 'transaction.edn'
     prepared_path = directory / 'prepared-content.json'
@@ -104,8 +105,9 @@ def import_math(db, content, directory, apply=True):
     if intent_path.exists():
         intent = json.loads(intent_path.read_text())
         if (intent.get('database') != db.args.database or intent.get('endpoint') != db.args.endpoint or
-                intent.get('source') != SOURCE or intent.get('content_sha256') != raw_hash):
-            raise ValueError('Exact retry requires its original database, endpoint, source, and captured content')
+                intent.get('source') != SOURCE or intent.get('content_sha256') != raw_hash or
+                intent.get('connection_sha256') != connection_hash):
+            raise ValueError('Exact retry requires its original database connection, endpoint, source, and captured content')
         if (hashlib.sha256(tx_path.read_bytes()).hexdigest() != intent['sha256'] or
                 hashlib.sha256(guard_path.read_bytes()).hexdigest() != intent['reconciliation_sha256']):
             raise ValueError('Saved transaction or validation differs from its original intent')
@@ -118,6 +120,8 @@ def import_math(db, content, directory, apply=True):
         if receipt[':edb/db-before-t'] != intent['basis']:
             raise ValueError('Commit receipt differs from its original basis')
         return verify(db, receipt, prepared, raw_hash, directory, loads(guard_path.read_text()), intent['source_eid'])
+    if content.get('task_type') == 'lesson' and not content.get('lesson_definition', {}).get('complete'):
+        raise ValueError('A math lesson import requires its complete captured lesson definition')
     prepared, review = prepare_authoritative_content(content, directory.parent)
     atomic_json(directory / 'answer-review.json', review)
     if review.get('held_questions'):
@@ -155,7 +159,8 @@ def import_math(db, content, directory, apply=True):
         return result
     tx_hash = hashlib.sha256(tx_path.read_bytes()).hexdigest()
     intent = {'database': db.args.database, 'endpoint': db.args.endpoint, 'basis': basis,
-              'source': SOURCE, 'source_eid': source_id, 'sha256': tx_hash, 'content_sha256': raw_hash,
+              'source': SOURCE, 'source_eid': source_id, 'connection_sha256': connection_hash,
+              'sha256': tx_hash, 'content_sha256': raw_hash,
               'prepared_content_sha256': digest(prepared),
               'request_key': 'ma-source-capture-' + str(basis) + '-' + tx_hash,
               'reconciliation_sha256': hashlib.sha256(guard_path.read_bytes()).hexdigest()}

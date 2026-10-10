@@ -3,7 +3,8 @@
 Run sequential Math Academy lessons, reviews, multisteps, placement diagnostics, and eligible quizzes/assessments;
 add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
-apart from Playwright, the EDB CLI, a solver command, and the native comparison helper.
+apart from the Python dependencies in `requirements.txt`, the EDB CLI, a solver
+command, and the native comparison helper.
 
 The fleet now defaults to the Source-aware **`math`** database at
 `/media/jake/SSD/EDB/math`, using `/tmp/edb-math/writer.sock` and the PostgreSQL
@@ -200,29 +201,29 @@ allows the capture child 60 seconds to save a checkpoint before terminating its
 own process group. Start resumes through the runner's existing recovery path.
 `--limit N` optionally bounds each newly started worker; the default is unlimited.
 
-Build the native importer comparison helper before use:
+Build the native comparison helper used by solver/answer-entry checks and the legacy importer:
 
 ```sh
 cargo build --offline --bin compare-question-answers
 ```
 
-The importer uses `target/debug/compare-question-answers`, or the executable named
+Those checks use `target/debug/compare-question-answers`, or the executable named
 by `COURSE_ACADEMY_MATH_COMPARE_BIN`. It does not build code during capture or a
 sweep. The helper shares the engine's error-preserving exact comparison, prompt
 form requirements, and KP context (including formal vector/Riemann `i` and integer
 sequence indices). Beyond existing notation identity it returns **equivalent**,
-**different**, or **unresolved**. Equivalent values reuse the stored answer entity;
-choice grading still compares answer identities. Image/text comparison, field
-identity, and exact provenance hashes retain their existing rules. Different and
-unresolved pairs follow the replacement/review policy. Missing executables,
+**different**, or **unresolved**. The legacy importer used equivalence to reuse
+stored answer entities. The current math importer preserves exact source values:
+unchanged field definitions reuse their identities, and changed definitions receive
+new components. Native comparison does not authorize an assistant answer to replace
+an MA key. Choice grading still compares answer identities. Missing executables,
 execution errors, unsupported domains, and resource limits remain explicit; they
 do not make a new captured symbolic blank invalid or adapt it into a radio field.
 The helper accepts bounded requests, has a three-second execution deadline, reuses
 one process, and caches pairs with their prompt/KP context and executable hash.
 
-Completed saved imports are revisited on `run` startup, after a successful
-comparison/import repair and retry of the current activity, and before the batch
-ends. Installed cooldown repairs are picked up by the next startup. These sweeps
+Completed version-2 saved imports are revisited on `run` startup, at activity
+boundaries, and before the batch ends. These sweeps
 call only `Database.import_content`: they never navigate MA or launch backlog
 repair sessions. A started assessment or diagnostic without confirmed terminal completion
 defers the sweep. `--dry-run` skips sweeps entirely.
@@ -238,8 +239,8 @@ with stale checkpoint flags repaired. Committed but unverified receipts use the
 existing receipt path; pending intents retain their original content, transaction,
 request key, basis and frozen reconciliation hash. Preview never sends a commit,
 including when an unresolved intent already exists.
-The completed canonical-example payload migration archived original commit files.
-Those verifications now record the exact archived receipt location and old/new
+The **legacy canonical-example payload migration** archived old-database commit
+files. Its historical verifications record the exact archived receipt location and old/new
 content hashes. Recognition checks the original transaction hash and basis and
 reconstructs the original payload hash solely for audit; changed content still
 requires reconciliation. New imports never add the retired example attribute.
@@ -248,18 +249,19 @@ Imports validate every actual assertion/retraction in EDB's committed receipt
 against the allowed content attributes and approved replacements, then read back
 the affected content at that receipt's basis and check that reimport is a no-op.
 They do not scan the entire database before and after each activity.
-`verification_method` records `committed_transaction_and_content`; older full-scan
-verification receipts remain valid. Schema predicate symbols remain EDN data.
+Current math verification records `source_receipt_and_content_replan` and checks
+`:org/Math-Academy` attribution. Legacy `committed_transaction_and_content` and
+full-scan receipts describe their original database only. Schema predicate symbols
+remain EDN data.
 
-Reviewed mathematical source errors are corrected in the study database while
-their original captures remain unchanged. Corrections under
-`reference/mathacademy/mathematical-corrections/<question-id>/` include the original
-and corrected content, mathematical rationale, transaction and verified readback.
-Their problem, worked solution and correct-answer values are attested at the
-committed basis before reconciliation uses them. Later captures retain those exact
-corrected values instead of restoring the source mistake or deferring the import.
-Answer fields are replaced by new component identities; original fields, answers
-and question versions remain available for historical use.
+**Historical corrections:** the previous study database applied reviewed
+mathematical corrections and protected them during later imports. The records under
+`reference/mathacademy/mathematical-corrections/<question-id>/` retain their original
+and corrected content, rationale, transaction and readback. They do not authorize
+correction transactions in `math`. Current imports preserve MA originals, including
+source errors, and record disagreements for later review. Assistant corrections
+require a separate source and later transactions. Changed source answer fields use
+new components; earlier fields, answers and question versions remain in history.
 
 Lesson/review CWCWC and WCWCC sequences are desired targets. After ordinary solving
 and its one mathematical recheck remain uncertain, the runner makes one best-effort
@@ -270,16 +272,18 @@ proven. Cached recovery answers are reusable after choice shuffling, but still
 must match real controls and pass normal input verification. Placement diagnostic
 coverage and assessment policies are unchanged.
 
-After an incorrect/partial grade, verification identifies the answer declared by
-MA's revealed worked solution. Confidence then concerns source identification,
-not mathematical validity. The archive retains the original prompt, choices and
-solution, the MA answer, and mathematical disagreement separately. A solution
-that explicitly names a missing choice may supply that source answer for archived
-content; it does not create a clickable control. Source-answer reviews are bound
-to that exact question, full controls and feedback before reconciliation uses
-them. Existing committed mathematical corrections remain protected in the study
-database. Old permanent uncertainty deferrals can resume through this bounded
-action without clearing their repair history or repeatedly diagnosing the source.
+After an incorrect/partial grade, the solver reviews MA's revealed worked solution
+and saves its interpretation alongside the original evidence. Current math
+preparation independently establishes each key from displayed source answers,
+source grading, or an explicit source conclusion that matches an original choice.
+Solver confidence alone is insufficient. Missing or ambiguous keys, including a
+key absent from the original choices, defer the activity import. Original prompts,
+choices, solutions, submissions and disagreements remain available for review.
+Best-effort capture recovery can continue without clearing its repair history.
+
+The reviewed cases below affect solver inputs and historical correction records;
+current math imports restore the captured MA wording and do not apply those
+assistant-authored corrections.
 
 Exact question **330826** in topic **6372** has a verified convergence-domain
 correction: the transform of $\int_0^t e^{-3\tau}\,d\tau$ exists for $s>0$.
@@ -288,7 +292,7 @@ only when the exact original prompt and choices match the committed correction's
 hash-bound review. Original source wording, solutions and grades stay captured;
 missing or changed evidence falls back to ordinary solving.
 
-Topic **2616**, KP `624215ff-efdc-5b12-8d61-9d66371672d9`, has a reviewed containing-region interpretation for rectangular zero-extension questions. A matching committed canonical correction attests the explicit requirement $D\subseteq R$ for solver inputs, including verification. Original prompts, widgets, grades and worked solutions stay unchanged; decisions and content record the interpretation separately. The incremental health check flags newly verified interpreted questions lacking a matching per-question study correction, so capture can continue while the study clarification is completed. Other topics and unrecognized forms use ordinary solving.
+Topic **2616**, KP `624215ff-efdc-5b12-8d61-9d66371672d9`, has a reviewed containing-region interpretation for rectangular zero-extension questions. A matching committed canonical correction attests the explicit requirement $D\subseteq R$ for solver inputs, including verification. Original prompts, widgets, grades and worked solutions stay unchanged; decisions and content record the interpretation separately. The legacy incremental health check flagged interpreted questions lacking a matching per-question study correction. Current math preparation records the disagreement while preserving the MA-original problem. Other topics and unrecognized forms use ordinary solving.
 
 Question **335252** in topic **6682** has a reviewed sufficient-theorem request.
 Its authentic worked solution tests continuity and existence of the parameter
@@ -307,8 +311,9 @@ and unknown outcomes retain the original intent. The EDB development binary is
 not rebuilt or replaced.
 
 Identical displayed choices retain their positions in saved captures and share
-one answer entity in EDB. An existing field without a correct answer can be
-completed from the captured answer rather than failing reconciliation.
+one answer entity in EDB. A confirmed source answer can complete a missing key
+through a replacement field definition; existing field and answer values remain
+unchanged for history.
 For broken history explanation-image aliases, the reader can reuse the original
 bytes from that same question's graded live capture when the explanation text,
 image order and saved asset hash match. Recovery records its bindings and
@@ -465,16 +470,19 @@ The runner:
    diagrams before answering, support multiple unnamed MathQuill blanks, and
    capture each grade and explanation before Continue. Their activity records
    supply topic/KP links and difficulty just like assessments. All parts use one
-   solver session. Each imported question includes the setup and earlier parts
-   with confirmed answers, so references such as “part 5” remain understandable;
-   the capture also keeps each original stem and its order separately. The
-   math importer also prepares the reusable multistep and assignment activity,
+   solver session. Solver context can include earlier parts and their answers.
+   Imported questions keep their original local problems; shared setup belongs in
+   `:multistep/context`, and ordered steps preserve references such as “part 5.”
+   The math importer prepares the reusable multistep and assignment activity,
    without learner entities. Unrecognized intervening context layouts stop for inspection.
-4. Matches `q-N` and `e-N` globally in EDB. Adds missing attributes and choices,
-   reuses existing owned answer entities, and links new practice to the correct
-   `knowledge-point/questions`. Documented local values can be superseded by
-   recovered MA content, attribute by attribute. Unknown provenance and
-   contradictory source evidence stop the import with a review report.
+4. Prepares MA-original answer fields and shared image references, then matches
+   `q-N` and `e-N` globally in `math`. Existing question/KP UUIDs are reused.
+   Unchanged answer-field definitions reuse their components; changed definitions
+   replace field ownership while retaining the old components in history. Original
+   choices and confirmed source keys determine the new definitions. Practice is
+   linked through `knowledge-point/questions`. Full lesson definitions reconcile
+   tutorial/example placements, content references and step order. Missing source
+   keys or ambiguous identities defer the import with local review notes.
    Worked-example roles come from `knowledge-point/canonical-example` references,
    and canonical targets are excluded from every KP practice pool. `q-N` / `e-N`
    distinguish MA source ID namespaces, not database roles. Captures omit
@@ -577,31 +585,37 @@ replay their original request unchanged. Contention never launches a model repai
 after three attempts it leaves the capture pending, continues other work, and
 permits another bounded attempt at the next saved-import sweep.
 
-The changes apply on the next importer invocation; no database migration or
-worker restart is required. To inspect a real saved capture without visiting MA:
+## Previewing a current math import
+
+To inspect a version-2 saved capture without visiting MA:
 
 ```sh
 /home/jake/Developer/MA/.venv/bin/python scripts/question_capture import-saved \
   --content reference/mathacademy/question-capture/ACTIVITY/content.json --preview
 ```
 
-Read `edb-import/replacement-report.json`, matching report, and native preview
-before importing that same capture without `--preview`. Use a new capture/import
+Read `edb-import-math/answer-review.json`, `activity-report.json`, matching report
+and native preview before importing that same capture without `--preview`. Use a new capture/import
 directory for new evidence; keep an existing commit intent and its artifacts
 unchanged. Do not commit simulated test captures. This implementation does not
 perform a bulk replacement or start any MA activity.
 
-Focused offline checks:
+Focused source-import checks:
 
 ```sh
 cd scripts/question_capture
 /home/jake/Developer/MA/.venv/bin/python -m unittest \
-  test_replacement test_capture.PolicyTests test_capture.ReconciliationTests \
-  test_assessment test_multistep test_import_repair
+  test_authoritative test_math_content test_activities test_image_library
 ```
 
-After a complete activity and history capture, a failed import automatically
-calls a dedicated headless Codex repair session. Its ID is saved in
+## Historical automatic import repair (old database)
+
+This behavior belongs to the previous importer and is bypassed for current
+`:org/Math-Academy` imports. Current math failures retain their evidence for review;
+no import-repair model replaces source answers.
+
+In the legacy workflow, after a complete activity and history capture, a failed
+import automatically called a dedicated headless Codex repair session. Its ID is saved in
 `.local/question_capture/import-repair/session.json` and reused across lessons,
 reviews, quizzes, and multisteps. This is separate from each activity's math
 solver session. The capture worker keeps its lock and pauses at the import
@@ -624,6 +638,8 @@ at subsequent activity boundaries.
 Use `--no-import-repair` to disable this behavior, or `--import-repair-timeout`
 to change its default 600-second limit. Session reuse follows the
 [Codex non-interactive workflow](https://developers.openai.com/codex/noninteractive).
+
+## Capture recovery
 
 Browser interactions also use a 500 ms delay, including button clicks and answer
 entry, in addition to the existing randomized waits. Change it with
@@ -677,7 +693,8 @@ The complete offline validation suite has a separate 30-minute timeout, configur
 with `--capture-repair-test-timeout SECONDS`. The initial focused regression retains
 its five-minute limit. A timeout never permits a patch to be applied, and validation
 remains interruptible. Testing can extend the cooldown beyond its usual duration.
-Import repair continues immediately after complete captures as described above.
+Current math import failures retain the completed capture and review notes.
+Automatic browser/capture repair does not authorize source-answer corrections.
 
 Recoverable assessment request errors and timeouts reload the same quiz at most
 twice, preserving saved answers, decisions, solver session, and original timer.
@@ -748,8 +765,9 @@ install its Playwright Chromium browser if needed. No dependencies were added to
 the main application environment.
 
 The default learner is `59d5cf13-351c-4114-be19-4c3bb64ee051`. Override it with
-`--learner-id`. Database defaults match this project's local EDB service; override
-`EDB_POSTGRES_URL`, `--database`, `--edb-bin`, and `--endpoint` as appropriate.
+`--learner-id`. Database defaults target `math` on the SSD; override
+`--postgres-url` (or `EDB_POSTGRES_URL`), `--database`, `--edb-bin`, and `--endpoint`
+as appropriate. `--math-root` controls the shared image-library location.
 All paths work when invoked from this repository root.
 
 To finish one already-started activity and exit without consuming fresh queued work, use
@@ -845,9 +863,10 @@ The diagnostic page's `student-diagnostic.js` requests one question through
 `APISync.getNextDiagnosticQuestion(diagnosticId, taskId, retry)` when advancing;
 the saved HTML contains the current widget, with no observed upcoming question bank.
 History joins those slots to authentic question, topic and KP IDs, source difficulty
-and worked solutions. Correct answers for skipped/incorrect questions are recovered
-using verification turns in the same persistent solver session. Diagnostic solutions
-are preserved as solutions; no canonical examples are inferred.
+and worked solutions. Verification turns in the same persistent solver session
+save interpretations for skipped/incorrect questions. Math preparation still
+requires independently confirmed MA keys; unresolved questions defer the activity
+import. Diagnostic solutions remain solutions; no canonical examples are inferred.
 
 Submit and Next intents survive interruption. In-place observation retries are
 bounded and do not reload a timed question. A restored grade continues without
@@ -1014,9 +1033,13 @@ Artifacts go to `reference/mathacademy/question-capture/<taskId>/` by default:
 - Source DOM JSON, formula data inside its HTML, and before/after screenshots.
 - Original images from browser-observed responses, with source URLs, hashes, and
   local paths in `assets/manifest.json`. Identical bytes under different URLs reuse
-  one file. Canvas, inline SVG, or an unavailable original response uses a rendered
-  capture, explicitly marked in the manifest. No extra image requests are issued.
-- Canonical examples, activity metadata, and `content.json` for import.
+  one file. Inline SVG source is also retained; canvas and unavailable original
+  responses can retain rendered evidence, marked in the manifest. Full lesson
+  capture retrieves referenced graphics through the authenticated account. Prepared
+  content uses the shared SSD hash library, with image mappings retained locally.
+- Canonical examples, activity metadata, and original `content.json`. Complete
+  lessons also save `lesson-topic.html`, the lesson definition and parsed tutorial/
+  example evidence; multisteps retain shared context and question order.
 - Assessment queue notice/eligibility, start instructions, fixed question IDs,
   filled test HTML, and completion result. These source facts are saved in the
   queue observation, `assessment-queue.json`, and assessment `content.json`.
@@ -1027,11 +1050,13 @@ Artifacts go to `reference/mathacademy/question-capture/<taskId>/` by default:
   solver prompt resumes in the same confirmed activity session; uncertain website
   submissions are recovered automatically by reloading the saved activity and
   inspecting actual grades or empty unanswered fields. Existing grades are
-  captured without submitting again. Solver-reviewed worked solutions correct
-  mistaken predictions, retaining the earlier prediction in the capture record.
+  captured without submitting again. Solver reviews can revise predictions in
+  the capture record, retaining earlier predictions; these revisions are not
+  automatically accepted as authoritative database answers.
 - `knowledge-state/` with a full displayed course profile after activity completion.
-- EDB reads, `transaction.edn`, preview, exact commit intent, receipt, matching
-  report, and verification under `edb-import/`.
+- Prepared source content, answer-review notes, activity/matching reports, EDB
+  reads, `transaction.edn`, preview, exact commit intent, receipt and verification
+  under `edb-import-math/`. Existing `edb-import/` artifacts describe legacy imports.
 - `diagnostics/<timestamp>/` on activity failures: exception and full traceback,
   source hashes, configuration, checkpoint, last observed queue, page URL, DOM,
   screenshot, current question extraction, recent browser console/JavaScript/network
@@ -1121,8 +1146,9 @@ python3 scripts/question_capture import-saved --content /absolute/path/content.j
 python3 scripts/question_capture import-saved --content /absolute/path/content.json
 ```
 
-After a commit timeout, preserve `commit-intent.json` and `transaction.edn` and
-retry the same command. The original payload, database, endpoint, basis guard,
+After a commit timeout, preserve `edb-import-math/commit-intent.json`,
+`transaction.edn`, `prepared-content.json` and `reconciliation.edn` in that same
+import folder, and retry the same command. The original payload, database, endpoint, basis guard,
 and request key are reused. A definitive stale-basis rejection automatically
 archives the rejected plan and replans within the three-attempt limit; unresolved intents are never
 silently replaced. Completed captures are journaled separately from imports,
@@ -1134,8 +1160,11 @@ checkpoints and journal entries remain supported.
 
 ```bash
 "$CAPTURE_PY" -m unittest discover -s scripts/question_capture -p 'test_*.py' -v
-python3 scripts/question_capture import-saved --content reference/mathacademy/sum-rule-13925458/content.json --preview
 ```
+
+`reference/mathacademy/sum-rule-13925458/content.json` is a legacy capture. Its old
+preview workflow does not establish a current math lesson definition; use a complete
+version-2 capture for current import previews.
 
 Tests use saved real lesson/review DOM and EDB snapshots. Offline progression
 checks cover five-question lessons, both shared review patterns, activity joining,

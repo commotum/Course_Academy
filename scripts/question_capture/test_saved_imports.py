@@ -460,4 +460,53 @@ class SavedImportTests(unittest.TestCase):
         self.assertEqual([call.args[0]['task_id'] for call in self.db.import_content.call_args_list],[1,2])
 
 
+class MathSavedImportTests(unittest.TestCase):
+    """New captures are swept only into math with the MA source and separate receipts."""
+    def setUp(self):
+        SavedImportTests.setUp(self)
+        self.args.source = ':org/Math-Academy'
+        self.db.args = self.args
+
+    def review(self, task=1, version=2):
+        directory, state, content = SavedImportTests.capture(self, task,
+            task_type='review', review_complete=True, completion="You've completed the review.")
+        content['task_type'] = 'review'
+        if version is not None:
+            content['capture_version'] = version
+        atomic_json(directory/'content.json', content)
+        self.assertTrue(eligible(directory, state, content))
+        return directory, state, content
+
+    def test_old_unversioned_captures_are_not_automatically_imported_into_math(self):
+        directory, state, content = self.review(version=None)
+        self.assertEqual(sweep(self.db, self.args, trigger='startup'), [])
+        self.db.import_content.assert_not_called()
+        self.assertEqual(read_json(directory/'state.json'), state)
+        self.assertFalse((directory/'edb-import-math').exists())
+
+    def test_current_review_uses_math_receipt_directory_and_ma_source(self):
+        directory, state, content = self.review()
+        result = sweep(self.db, self.args, trigger='startup')
+        self.assertEqual(result[0]['status'], 'complete')
+        self.db.import_content.assert_called_once_with(content, directory/'edb-import-math', True)
+        self.assertEqual(self.db.args.database, 'math')
+        self.assertEqual(self.db.args.source, ':org/Math-Academy')
+        self.assertTrue(read_json(directory/'state.json')['import_complete'])
+
+    def test_legacy_verification_never_counts_as_math_verification(self):
+        directory, state, content = self.review()
+        proof = {'already_complete':True, 'database_writes':0,
+                 'database':'math', 'source':':org/Math-Academy'}
+        atomic_json(directory/'edb-import/verification.json', proof)
+        self.assertTrue(verified(directory, content))
+        self.assertFalse(verified(directory, content, self.args))
+        target = directory/'edb-import-math/verification.json'
+        atomic_json(target, {**proof, 'database':'course-academy-v2'})
+        self.assertFalse(verified(directory, content, self.args))
+        atomic_json(target, {**proof, 'source':':person/jake'})
+        self.assertFalse(verified(directory, content, self.args))
+        atomic_json(target, proof)
+        self.assertTrue(verified(directory, content, self.args))
+
+
 if __name__ == '__main__':unittest.main()

@@ -414,7 +414,9 @@ def _lesson(plan, content, topics, snapshot):
         pending = [i for i in range(index + 1, len(desired)) if not matches[i] and
                    (after is None or i < next(j for j in range(index + 1, len(desired)) if matches[j] is after))]
         candidates = [s for s in candidates if _step_key(s)[0] == 'tutorial']
-        if len(candidates) == 1 and not pending:
+        if candidates and (len(candidates) != 1 or pending):
+            raise ValueError('Ambiguous tutorial replacement between preserved sections; review before import')
+        if candidates:
             previous = candidates[0]
             if previous[':step/content'].get(':tutorial/title', '').strip() != item['title'].strip():
                 raise ValueError('Possible tutorial replacement changed identity and title; review before import')

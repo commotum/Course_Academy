@@ -102,6 +102,11 @@ class MathDatabaseTests(unittest.TestCase):
                 setattr(self.args,field,old)
         with self.assertRaisesRegex(ValueError,'Exact retry'):
             self.db.import_content({**self.content,'changed':True},self.directory)
+        original_connection = self.db.env['EDB_POSTGRES_URL']
+        self.db.env['EDB_POSTGRES_URL'] = 'dbname=other'
+        with self.assertRaisesRegex(ValueError,'Exact retry'):
+            self.db.import_content(self.content,self.directory)
+        self.db.env['EDB_POSTGRES_URL'] = original_connection
         path = self.directory/'prepared-content.json'
         path.write_text(json.dumps({**self.prepared,'changed':True}))
         with self.assertRaisesRegex(ValueError,'Prepared content differs'):
@@ -130,6 +135,12 @@ class MathDatabaseTests(unittest.TestCase):
         self.assertTrue(result['previewed'])
         self.assertEqual(self.submissions,[])
         self.assertFalse((self.directory/'commit-intent.json').exists())
+
+    def test_lesson_requires_complete_definition_before_preparation(self):
+        with self.assertRaisesRegex(ValueError,'complete captured lesson definition'):
+            self.db.import_content({**self.content,'task_type':'lesson'},self.directory)
+        self.prepare.assert_not_called()
+        self.db.command.assert_not_called()
 
     def test_pending_preview_does_not_replay_commit(self):
         self.failures = [subprocess.TimeoutExpired(['edb'],210)]
