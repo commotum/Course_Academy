@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,-2\\le x\\le 2,\\,0\\le {x}^{2}-y-z\\le 1,\\,1\\le \\sqrt{z}\\le 4}.\n$$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "6"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "12"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "60"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "36"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "30"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096366,
+    "task_type": "lesson",
+    "topic_id": 4151,
+    "topic_title": "Computing Triple Integrals Using a Change of Variables",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-162212",
+        "problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,-5\\le x+z\\le 5,\\,0\\le y\\le 10,\\,0\\le y-z\\le 6}.\n$$",
+        "worked_solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={\u222d}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\u27f6[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n-5\\le x+z\\le 5,,\\,0\\le y\\le 10,\\,0\\le y-z\\le 6,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x+z,\\,v=y,\\,w=y-z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & ={(u,v,w)\\,:\\,-5\\le u\\le 5,\\,0\\le v\\le 10,\\,0\\le w\\le 6}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 1 & -1\\end{aligned}| \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=-1.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}dV & ={\u222d}_{\u0394}1\\cdot |-1|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{-5}^{5}{\\int }_{0}^{10}{\\int }_{0}^{6}dw\\,dv\\,du \\\\  & ={\\int }_{-5}^{5}du\\cdot {\\int }_{0}^{10}dv\\cdot {\\int }_{0}^{6}dw \\\\  & =[u]_{u=-5}^{u=5}\\cdot [v]_{v=0}^{v=10}\\cdot [w]_{w=0}^{w=6} \\\\  & =(5-(-5))\\cdot (10-0)\\cdot (6-0) \\\\  & =600.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "600",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "A wastewater holding basin initially holds $480\\,\\text{gal}$ of water containing $12\\,\\text{lb}$ of dissolved contaminants.\nClean water is pumped into the basin at a rate of $24\\,\\text{gal/min},$ while the completely mixed liquid leaves the basin at a rate of $18\\,\\text{gal/min}.$\nFind, rounded to two decimal places, the amount of contaminants in the basin $10$ minutes after the clean water pumping begins.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "8.08\\,\\text{lb}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "7.54\\,\\text{lb}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "8.70\\,\\text{lb}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "8.43\\,\\text{lb}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "8.22\\,\\text{lb}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096413,
+    "task_type": "lesson",
+    "topic_id": 1713,
+    "topic_title": "Modeling Mixture Problems With First-Order Separable ODEs",
+    "examples": [
+      {
+        "math_academy_id": "e-21752",
+        "knowledge_point": "Constructing and Solving a Dilution Model",
+        "problem": "A reactor initially holds $300\\,\\textrm{gal}$ of a chemical solution containing $18\\,\\textrm{lb}$ of dissolved reactant.\nPure solvent is pumped into the reactor at a rate of $14\\,\\textrm{gal/min},$ while the completely mixed chemical solution leaves the reactor at a rate of $14\\,\\textrm{gal/min}.$\nFind, rounded to two decimal places, the amount of reactant in the reactor $25$ minutes after the solvent pumping begins.",
+        "worked_solution": "Let $Q$ be the amount of reactant in the reactor at time $t.$ Then, the derivative \n\n$$\n\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which reactant enters the reactor minus the rate at which reactant leaves the reactor.\n\n$$\n\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}\n$$\n\nNote that the units of $\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}$ and $Q'_{\\textrm{out}}$ are $\\textrm{lb}/\\textrm{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which reactant enters the reactor.\n\nNote that pure solvent (i.e., a solution containing $0\\,\\textrm{lb/gal}$ of reactant) enters the reactor at a rate of $14\\,\\textrm{gal/min}.$ So, the rate at which the *reactant* enters the reactor is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (14\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (14\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which reactant exits the reactor.\n\nTo find the rate at which reactant leaves the reactor, we first determine the volume of solution in the reactor at time $t.$\n\nThe reactor initially contains $300\\,\\textrm{gal}$ of chemical solution; solvent enters at $14\\,\\textrm{gal/min}$ and drains out at $14\\,\\textrm{gal/min}.$\nAs a result, the amount of chemical solution in the reactor after $t$ minutes is \n\n$$\n300 + 14t - 14t = 300\\,\\textrm{gal}.\n$$\n\nSince $Q$ is the amount of reactant in the reactor, the *concentration* of the solution at time $t$ is\n\n$$\n\\dfrac{Q}{300}\\,\\dfrac{\\textrm{lb}}{\\textrm{gal}}.\n$$\n\nTherefore, as the completely mixed chemical solution leaves at a rate of $14\\,\\textrm{gal/min},$ *reactant* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(14\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{300}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(14\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{300}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{14Q}{300}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{7Q}{150}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0-\\frac{7Q}{150}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = -\\dfrac{7}{150}\\,Q.\n$$\n\n**Step 4**: Integrate the equation.\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{7}{150} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{7}{150})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-\\frac{7}{150}\\int 1\\,dt \\\\ \\operatorname{ln}\u2061|Q| & =-\\frac{7t}{150}+C \\\\ |Q| & ={e}^{-\\frac{7t}{150}+C} \\\\ Q(t) & =A{e}^{-7t/150},\\end{aligned}\n$$\n\nwhere $A = \\pm e^C$ is a constant of integration.\n\nWe're told that the reactor initially contains $18\\,\\textrm{lb}$ of reactant. So, we can apply the initial condition $Q(0) = 18,$ and solve for $A{:}$\n\n$$\n\\begin{aligned}Q(0) & =18 \\\\ A{e}^{-7\\cdot 0/150} & =18 \\\\ A & =18\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t){:}$\n\n$$\nQ(t) = 18e^{-7t/150}\n$$\n\nFinally, the amount of reactant in the reactor $25$ minutes after the solvent is first pumped in is\n\n$$\nQ(25) = 18e^{-175/150} \\approx 5.61\\,\\textrm{lb},\n$$\n\nrounded to two decimal places.",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14096413/example-21752.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-336666",
+        "problem": "A tank initially holds $600\\,\\text{gal}$ of a brine (salt-water) solution containing $18\\,\\text{lb}$ of salt.\nA brine solution containing $0.02\\,\\text{lb}$ of salt per gallon flows into the tank at a rate of $15\\,\\text{gal/min},$ while the completely mixed brine leaves the tank at a rate of $20\\,\\text{gal/min}.$ Which differential equation best describes the amount of salt $Q,$ in pounds, in the tank $t$ minutes after the inflow begins?",
+        "worked_solution": "Since $Q$ is the amount of salt in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which salt enters the tank minus the rate at which salt leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which salt enters the tank.\n\nThe inflowing brine has concentration $0.02\\,\\text{lb/gal}$ and flows into the tank at a rate of $15\\,\\text{gal}/\\text{min}.$ So, the rate at which the *salt* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.02\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (15\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.02\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (15\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =0.3\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{3}{10}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which salt exits the tank.\n\nNow, to find the rate at which salt leaves the tank, we must first determine the volume of brine in the tank at time $t.$\n\n- The tank initially contains $600\\,\\text{gal}$ of brine.\n\n- Brine enters the tank at a rate of $15\\,\\text{gal/min}.$ So, after $t$ minutes, $15t\\,\\text{gal}$ have entered the tank.\n\n- The completely mixed brine leaves the tank at a rate of $20\\,\\text{gal/min}.$ So, after $t$ minutes, $20t\\,\\text{gal}$ have left the tank.\n\nAs a result, the volume of brine in the tank after $t$ minutes is \n\n$$\n600+15t-20t=(600-5t)\\,\\text{gal}.\n$$\n\nSince $Q$ is the mass of salt in the tank, the *concentration* of the brine at time $t$ is\n\n$$\n\\frac{Q}{600-5t}\\,\\frac{\\text{lb}}{\\text{gal}}.\n$$\n\nTherefore, as the completely mixed brine leaves at a rate of $20\\,\\text{gal/min},$ *salt* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(20\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{600-5t}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(20\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{600-5t}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{20Q}{600-5t}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{4Q}{120-t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nFinally, the rate of change equals the rate of entry minus the rate of exit: \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =\\frac{3}{10}-\\frac{4Q}{120-t}\\end{aligned}\n$$\n\nwhich finally gives\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{4}{120-t}Q=\\frac{3}{10}.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{dQ}{dt}+\\frac{4}{120-t}Q=\\frac{3}{10}",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

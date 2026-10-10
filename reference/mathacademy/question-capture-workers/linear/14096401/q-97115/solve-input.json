@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "$$\n[T]_{C}=[\\begin{aligned}2 & 1 \\\\ 3 & 4\\end{aligned}],\\,{P}_{C\\to B}=[\\begin{aligned}-5 & 2 \\\\ 3 & -1\\end{aligned}]\n$$\n\nConsider the matrix $[T]_{C}$ of a linear transformation $T$ with respect to the basis $C$ and the change-of-coordinates matrix ${P}_{C\\to B}$ shown above. Find the matrix of $T$ relative to the basis $B.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "[\\begin{aligned}5 & 7 \\\\ 0 & 1\\end{aligned}]"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "[\\begin{aligned}5 & 9 \\\\ 5 & 6\\end{aligned}]"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "[\\begin{aligned}9 & -1 \\\\ -8 & 7\\end{aligned}]"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "[\\begin{aligned}-7 & 3 \\\\ -3 & 2\\end{aligned}]"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "[\\begin{aligned}-1 & 7 \\\\ -6 & 9\\end{aligned}]"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096401,
+    "task_type": "review",
+    "topic_id": 2014,
+    "topic_title": "Connections Between Matrix Representations of a Linear Transformation",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-38808",
+        "problem": "$$\nB={[\\begin{aligned}-10 \\\\ 9\\end{aligned}],[\\begin{aligned}13 \\\\ -11\\end{aligned}]},\\,C={[\\begin{aligned}1 \\\\ -3\\end{aligned}],[\\begin{aligned}2 \\\\ 1\\end{aligned}]},\\,[T]_{B}=[\\begin{aligned}-4 & 3 \\\\ -3 & 2\\end{aligned}]\n$$\n\nConsider the bases $B$ and $C$ of ${R}^{2},$ and the matrix $[T]_{B}$ of a linear transformation $T$ with respect to the basis $B$, shown above. Find the matrix of $T$ relative to the basis $C.$",
+        "worked_solution": "The connection between the matrices of our linear transformation $T$ relative to the bases $B$ and $C$ is given by the following diagram:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14096401/assets/1b81504d6fdcabee0e1f586fef3dd2af5a57a8411ba4d22429e00e09b171a4d1.png)\n\n \n\nHere, moving along an arrow means pre-multiplying by the corresponding matrix. Algebraically, we can write this as\n\n$$\n[T]_{C}={P}_{B\\to C}\\cdot [T]_{B}\\cdot {P}_{B\\to C}^{-1},\n$$\n\nwhere ${P}_{B\\to C}$ is the change-of-coordinates matrix from $B$ to $C.$\n\nFirst, let's denote the vectors of $B$ and $C$ as ${{b}_{1},{b}_{2}}$ and ${{c}_{1},{c}_{2}}$, respectively.\n\nThe change-of-coordinates matrix from $B$ to $C$ is a matrix whose columns are the coordinates of vectors from $B$ relative to the basis $C.$\n\nHence, we need to find the coordinates of ${b}_{1}$ and ${b}_{2}$ relative to the basis $C.$ To do this, we consider the matrix\n\n$$\nM=[\\begin{aligned}| & | & | & | \\\\ {c}_{1} & {c}_{2} & {b}_{1} & {b}_{2} \\\\ | & | & | & |\\end{aligned}].\n$$\n\nWe reduce $M$ using Gaussian elimination until we get the identity matrix on the left. By doing this, we obtain the required change-of-coordinates matrix on the right.\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & 2 & -10 & 13 \\\\ -3 & 1 & 9 & -11\\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\\\  & \u223c[\\begin{aligned}1 & 2 & -10 & 13 \\\\ 0 & 7 & -21 & 28\\end{aligned}] & {R}_{2} & :=\\frac{1}{7}{R}_{2} \\\\  & \u223c[\\begin{aligned}1 & 2 & -10 & 13 \\\\ 0 & 1 & -3 & 4\\end{aligned}] & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\\\  & \u223c[\\begin{aligned}1 & 0 & -4 & 5 \\\\ 0 & 1 & -3 & 4\\end{aligned}]\\end{aligned}\n$$\n\nHence,\n\n$$\n{P}_{B\\to C}=[\\begin{aligned}-4 & 5 \\\\ -3 & 4\\end{aligned}].\n$$\n\nNow, we compute the inverse of ${P}_{B\\to C}:$\n\n$$\n\\begin{aligned}{P}_{B\\to C}^{-1} & ={[\\begin{aligned}-4 & 5 \\\\ -3 & 4\\end{aligned}]}^{-1} \\\\  & =\\frac{1}{4\\cdot (-4)-(-3)\\cdot 5}[\\begin{aligned}4 & -5 \\\\ 3 & -4\\end{aligned}] \\\\  & =[\\begin{aligned}-4 & 5 \\\\ -3 & 4\\end{aligned}]\\end{aligned}\n$$\n\nFinally, we can compute the matrix of $T$ relative to the basis $C:$\n\n$$\n\\begin{aligned}[T]_{C} & ={P}_{B\\to C}\\cdot [T]_{B}\\cdot {P}_{B\\to C}^{-1} \\\\  & =[\\begin{aligned}-4 & 5 \\\\ -3 & 4\\end{aligned}][\\begin{aligned}-4 & 3 \\\\ -3 & 2\\end{aligned}][\\begin{aligned}-4 & 5 \\\\ -3 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}1 & -2 \\\\ 0 & -1\\end{aligned}][\\begin{aligned}-4 & 5 \\\\ -3 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}2 & -3 \\\\ 3 & -4\\end{aligned}]\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "[\\begin{aligned}2 & -3 \\\\ 3 & -4\\end{aligned}]",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

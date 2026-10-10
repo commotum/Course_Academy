@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "A wastewater holding basin initially holds $480\\,\\text{gal}$ of water containing $12\\,\\text{lb}$ of dissolved contaminants.\nClean water is pumped into the basin at a rate of $24\\,\\text{gal/min},$ while the completely mixed liquid leaves the basin at a rate of $18\\,\\text{gal/min}.$\nFind, rounded to two decimal places, the amount of contaminants in the basin $10$ minutes after the clean water pumping begins.",
+  "worked_solution": "Let $Q$ be the amount of contaminants in the basin at time $t.$ Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which contaminants enter the basin minus the rate at which contaminants leave the basin.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which contaminants enter the basin.\n\nNote that clean water (i.e., water containing $0\\,\\text{lb/gal}$ of contaminants) enters the basin at a rate of $24\\,\\text{gal/min}.$ So, the rate at which the *contaminants* enter the basin is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (24\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (24\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which contaminants exit the basin.\n\nTo find the rate at which contaminants leave the basin, we first determine the volume of wastewater in the basin at time $t.$\n\nThe basin initially contains $480\\,\\text{gal}$ of wastewater; water enters at $24\\,\\text{gal/min}$ and drains out at $18\\,\\text{gal/min}.$\nAs a result, the amount of wastewater in the basin after $t$ minutes is \n\n$$\n480+24t-18t=(480+6t)\\,\\text{gal}.\n$$\n\nSince $Q$ is the amount of contaminants in the basin, the *concentration* of the wastewater at time $t$ is\n\n$$\n\\frac{Q}{480+6t}\\,\\frac{\\text{lb}}{\\text{gal}}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $18\\,\\text{gal/min},$ *contaminants* leave at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(18\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{480+6t}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(18\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{480+6t}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{18Q}{480+6t}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{3Q}{80+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0-\\frac{3Q}{80+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}=-\\frac{3}{80+t}\\,Q.\n$$\n\n**Step 4**: Integrate the equation.\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{3}{80+t} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{3}{80+t})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-3\\int \\frac{1}{80+t}\\,dt \\\\ \\operatorname{ln}\u2061|Q| & =-3\\operatorname{ln}\u2061|80+t|+C \\\\ |Q| & ={e}^{-3\\operatorname{ln}\u2061|80+t|+C} \\\\ Q(t) & =\\frac{A}{(80+t)^{3}},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the basin initially contains $12\\,\\text{lb}$ of contaminants. So, we can apply the initial condition $Q(0)=12,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =12 \\\\ \\frac{A}{(80+0)^{3}} & =12 \\\\ A & =12\\cdot {80}^{3}\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\nQ(t)=12{(\\frac{80}{80+t})}^{3}\n$$\n\nFinally, the amount of contaminants in the basin $10$ minutes after the clean water is first pumped in is\n\n$$\nQ(12)=12{(\\frac{80}{90})}^{3}\u22488.43\\,\\text{lb},\n$$\n\nrounded to two decimal places.",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "8.08\\,\\text{lb}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "7.54\\,\\text{lb}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "8.70\\,\\text{lb}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "8.43\\,\\text{lb}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "8.22\\,\\text{lb}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "d4e30e5f50d0eee4950ac6063aabbfcf5323f81ba4384f59ae6c582bb17f352d"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096413,
+    "task_type": "lesson",
+    "topic_id": 1713,
+    "topic_title": "Modeling Mixture Problems With First-Order Separable ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336674",
+        "problem": "A wastewater holding basin initially holds $480\\,\\text{gal}$ of water containing $12\\,\\text{lb}$ of dissolved contaminants.\nClean water is pumped into the basin at a rate of $24\\,\\text{gal/min},$ while the completely mixed liquid leaves the basin at a rate of $18\\,\\text{gal/min}.$\nFind, rounded to two decimal places, the amount of contaminants in the basin $10$ minutes after the clean water pumping begins.",
+        "worked_solution": "Let $Q$ be the amount of contaminants in the basin at time $t.$ Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which contaminants enter the basin minus the rate at which contaminants leave the basin.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which contaminants enter the basin.\n\nNote that clean water (i.e., water containing $0\\,\\text{lb/gal}$ of contaminants) enters the basin at a rate of $24\\,\\text{gal/min}.$ So, the rate at which the *contaminants* enter the basin is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (24\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (24\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which contaminants exit the basin.\n\nTo find the rate at which contaminants leave the basin, we first determine the volume of wastewater in the basin at time $t.$\n\nThe basin initially contains $480\\,\\text{gal}$ of wastewater; water enters at $24\\,\\text{gal/min}$ and drains out at $18\\,\\text{gal/min}.$\nAs a result, the amount of wastewater in the basin after $t$ minutes is \n\n$$\n480+24t-18t=(480+6t)\\,\\text{gal}.\n$$\n\nSince $Q$ is the amount of contaminants in the basin, the *concentration* of the wastewater at time $t$ is\n\n$$\n\\frac{Q}{480+6t}\\,\\frac{\\text{lb}}{\\text{gal}}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $18\\,\\text{gal/min},$ *contaminants* leave at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(18\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{480+6t}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(18\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{480+6t}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{18Q}{480+6t}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{3Q}{80+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0-\\frac{3Q}{80+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}=-\\frac{3}{80+t}\\,Q.\n$$\n\n**Step 4**: Integrate the equation.\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{3}{80+t} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{3}{80+t})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-3\\int \\frac{1}{80+t}\\,dt \\\\ \\operatorname{ln}\u2061|Q| & =-3\\operatorname{ln}\u2061|80+t|+C \\\\ |Q| & ={e}^{-3\\operatorname{ln}\u2061|80+t|+C} \\\\ Q(t) & =\\frac{A}{(80+t)^{3}},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the basin initially contains $12\\,\\text{lb}$ of contaminants. So, we can apply the initial condition $Q(0)=12,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =12 \\\\ \\frac{A}{(80+0)^{3}} & =12 \\\\ A & =12\\cdot {80}^{3}\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\nQ(t)=12{(\\frac{80}{80+t})}^{3}\n$$\n\nFinally, the amount of contaminants in the basin $10$ minutes after the clean water is first pumped in is\n\n$$\nQ(12)=12{(\\frac{80}{90})}^{3}\u22488.43\\,\\text{lb},\n$$\n\nrounded to two decimal places.",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "7.54\\,\\text{lb}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
