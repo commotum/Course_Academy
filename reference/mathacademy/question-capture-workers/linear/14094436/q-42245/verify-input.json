@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "$$\nA=[\\begin{aligned}1 & -1 & 2 \\\\ 0 & 1 & 0 \\\\ -1 & 1 & -2\\end{aligned}],\\,b=[\\begin{aligned}-1 \\\\ -3 \\\\ 1\\end{aligned}].\n$$\n\nConsider the matrix $A$ and vector $b$ shown above. If the general least-squares solution of $Ax=b$ is given by\n\n$$\n[\\begin{aligned}-4 \\\\ b \\\\ c\\end{aligned}]+{x}_{3}[\\begin{aligned}a \\\\ 0 \\\\ 1\\end{aligned}],\\,{x}_{3}\\in R\n$$\n\nwhat is the value of $a+b+4c?$",
+  "worked_solution": "The least-squares solution of $Ax=b$ satisfies the corresponding normal equation:\n\n$$\n{A}^{T}\\,Ax={A}^{T}b\n$$\n\nNotice that the columns of $A$ are linearly dependent. So first, let's write down the normal equation in matrix form:\n\n$$\n\\begin{aligned}[\\begin{aligned}1 & 0 & -1 \\\\ -1 & 1 & 1 \\\\ 2 & 0 & -2\\end{aligned}][\\begin{aligned}1 & -1 & 2 \\\\ 0 & 1 & 0 \\\\ -1 & 1 & -2\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}] & =[\\begin{aligned}1 & 0 & -1 \\\\ -1 & 1 & 1 \\\\ 2 & 0 & -2\\end{aligned}][\\begin{aligned}-1 \\\\ -3 \\\\ 1\\end{aligned}] \\\\ [\\begin{aligned}2 & -2 & 4 \\\\ -2 & 3 & -4 \\\\ 4 & -4 & 8\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}] & =[\\begin{aligned}-2 \\\\ -1 \\\\ -4\\end{aligned}]\\end{aligned}\n$$\n\nNow, we solve the system corresponding to the final matrix equation using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}2 & -2 & 4 & -2 \\\\ -2 & 3 & -4 & -1 \\\\ 4 & -4 & 8 & -4\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+{R}_{1} \\\\ {R}_{3}:={R}_{3}+(-2){R}_{1}\\end{aligned} \\\\  & \u223c\\,\\,[\\begin{aligned}2 & -2 & 4 & -2 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=\\frac{1}{2}{R}_{1}\\end{aligned} \\\\  & \u223c\\,\\,[\\begin{aligned}1 & -1 & 2 & -1 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable.\n\n From the second row, we have \n\n$$\n{x}_{2}=-3.\n$$\n\nSubstituting this into the first equation, we obtain\n\n$$\n{x}_{1}-(-3)+2{x}_{3}=-1\\,\u27f9\\,{x}_{1}=-4-2{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}-4-2{x}_{3} \\\\ -3 \\\\ {x}_{3}\\end{aligned}]=[\\begin{aligned}-4 \\\\ -3 \\\\ 0\\end{aligned}]+{x}_{3}[\\begin{aligned}-2 \\\\ 0 \\\\ 1\\end{aligned}].\n$$\n\nTherefore, we have\n\n$$\na+b+4c=(-2)+(-3)+4\\cdot 0=-5.\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "3"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-7"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-2"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "-5"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-4"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "80549c43aaf2bd18e37c053e866138f8844bdb64c02d4d5fb2936847c991d51f"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14094436,
+    "task_type": "review",
+    "topic_id": 2167,
+    "topic_title": "The Least-Squares Solution of a Linear System (With Collinearity)",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-42245",
+        "problem": "$$\nA=[\\begin{aligned}1 & -1 & 2 \\\\ 0 & 1 & 0 \\\\ -1 & 1 & -2\\end{aligned}],\\,b=[\\begin{aligned}-1 \\\\ -3 \\\\ 1\\end{aligned}].\n$$\n\nConsider the matrix $A$ and vector $b$ shown above. If the general least-squares solution of $Ax=b$ is given by\n\n$$\n[\\begin{aligned}-4 \\\\ b \\\\ c\\end{aligned}]+{x}_{3}[\\begin{aligned}a \\\\ 0 \\\\ 1\\end{aligned}],\\,{x}_{3}\\in R\n$$\n\nwhat is the value of $a+b+4c?$",
+        "worked_solution": "The least-squares solution of $Ax=b$ satisfies the corresponding normal equation:\n\n$$\n{A}^{T}\\,Ax={A}^{T}b\n$$\n\nNotice that the columns of $A$ are linearly dependent. So first, let's write down the normal equation in matrix form:\n\n$$\n\\begin{aligned}[\\begin{aligned}1 & 0 & -1 \\\\ -1 & 1 & 1 \\\\ 2 & 0 & -2\\end{aligned}][\\begin{aligned}1 & -1 & 2 \\\\ 0 & 1 & 0 \\\\ -1 & 1 & -2\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}] & =[\\begin{aligned}1 & 0 & -1 \\\\ -1 & 1 & 1 \\\\ 2 & 0 & -2\\end{aligned}][\\begin{aligned}-1 \\\\ -3 \\\\ 1\\end{aligned}] \\\\ [\\begin{aligned}2 & -2 & 4 \\\\ -2 & 3 & -4 \\\\ 4 & -4 & 8\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}] & =[\\begin{aligned}-2 \\\\ -1 \\\\ -4\\end{aligned}]\\end{aligned}\n$$\n\nNow, we solve the system corresponding to the final matrix equation using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}2 & -2 & 4 & -2 \\\\ -2 & 3 & -4 & -1 \\\\ 4 & -4 & 8 & -4\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+{R}_{1} \\\\ {R}_{3}:={R}_{3}+(-2){R}_{1}\\end{aligned} \\\\  & \u223c\\,\\,[\\begin{aligned}2 & -2 & 4 & -2 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=\\frac{1}{2}{R}_{1}\\end{aligned} \\\\  & \u223c\\,\\,[\\begin{aligned}1 & -1 & 2 & -1 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable.\n\n From the second row, we have \n\n$$\n{x}_{2}=-3.\n$$\n\nSubstituting this into the first equation, we obtain\n\n$$\n{x}_{1}-(-3)+2{x}_{3}=-1\\,\u27f9\\,{x}_{1}=-4-2{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}-4-2{x}_{3} \\\\ -3 \\\\ {x}_{3}\\end{aligned}]=[\\begin{aligned}-4 \\\\ -3 \\\\ 0\\end{aligned}]+{x}_{3}[\\begin{aligned}-2 \\\\ 0 \\\\ 1\\end{aligned}].\n$$\n\nTherefore, we have\n\n$$\na+b+4c=(-2)+(-3)+4\\cdot 0=-5.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "-4",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
