@@ -1,0 +1,523 @@
+{
+  "task_id": 14071530,
+  "task_type": "lesson",
+  "topic_id": 6727,
+  "content_only": true,
+  "source_url": "https://mathacademy.com/learn?taskId=14071530",
+  "sequence_policy": {
+    "CWCWC": 0.7,
+    "WCWCC": 0.30000000000000004
+  },
+  "questions": [
+    {
+      "math_academy_id": "q-345166",
+      "knowledge_point_id": "d4c55cd1-e4f7-52ff-ba7f-574a53960ce1",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+      "problem": "Consider the following differential equation.\n\n$$\nx{y}^{\u2033}+4{y}^{\u2032}+3y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nGiven that $\\lambda \\in (-4,-2),$ find the recurrence relation for the coefficients ${a}_{n},$ where $n=1,2,3,\u2026.$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}x{y}^{\u2033} & =({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ 4{y}^{\u2032} & =4\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }4(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 3y & ={\\sum }_{n=1}^{\\infty }3{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}x{y}^{\u2033} & =({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ 4{y}^{\u2032} & =4\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }4(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 3y & ={\\sum }_{n=1}^{\\infty }3{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+4\\lambda {a}_{0}{x}^{\\lambda -1} & = \\\\ ({\\lambda }^{2}-\\lambda +4\\lambda ){a}_{0}{x}^{\\lambda -1} & = \\\\ ({\\lambda }^{2}+3\\lambda ){a}_{0}{x}^{\\lambda -1}. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+4(\\lambda +n){a}_{n}+3{a}_{n-1}]{x}^{\\lambda +n-1} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[(\\lambda +n)^{2}{a}_{n}+3(\\lambda +n){a}_{n}+3{a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[((\\lambda +n)^{2}+3(\\lambda +n)){a}_{n}+3{a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}({\\lambda }^{2}+3\\lambda ){a}_{0}{x}^{\\lambda -1}+{x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[((\\lambda +n)^{2}+3(\\lambda +n)){a}_{n}+3{a}_{n-1}]{x}^{n} & =0 \\\\ ({\\lambda }^{2}+3\\lambda ){a}_{0}+{\\sum }_{n=1}^{\\infty }[((\\lambda +n)^{2}+3(\\lambda +n)){a}_{n}+3{a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**: Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}({\\lambda }^{2}+3\\lambda ){a}_{0} & =0 \\\\ \\lambda (\\lambda +3) & =0 \\\\ \\lambda  & =-3,0\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (-4,-2),$ we take $\\lambda =-3.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}((\\lambda +n)^{2}+3(\\lambda +n)){a}_{n}+3{a}_{n-1} & =0\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =-3$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}(n-3)(n-3+3)\\,{a}_{n} & =-3{a}_{n-1} \\\\ {a}_{n} & =-\\frac{3{a}_{n-1}}{n(n-3)}\\end{aligned}\n$$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{3{a}_{n-1}}{(n-3)^{2}}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{3{a}_{n-1}}{n-3}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{3{a}_{n-1}}{n(n+3)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=\\frac{3{a}_{n-1}}{n(n-3)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{3{a}_{n-1}}{n(n-3)}"
+            }
+          ],
+          "correct_value": "{a}_{n}=-\\frac{3{a}_{n-1}}{n(n-3)}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "mathematical_assessment": {
+        "confident": false,
+        "explanation": "Recomputing gives the indicial equation \u03bb(\u03bb+3)=0, hence \u03bb=-3, and the coefficient relation n(n-3)a_n+3a_{n-1}=0. Option e is the resulting formula only when n\u22603. At n=3 the relation requires a_2=0, but n=1 and n=2 give a_1=3a_0/2 and a_2=9a_0/4, contradicting the nonzero leading coefficient a_0. The earlier uncertainty therefore remains: none of the choices is valid for every stated n\u22651.",
+        "answers": [
+          {
+            "key": "selection",
+            "correct_option": null,
+            "correct_value": "",
+            "value_type": "math",
+            "wrong_value": null,
+            "correct_keys": [],
+            "wrong_keys": []
+          }
+        ]
+      },
+      "submission_recovery": {
+        "desired_intended": "C",
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_option": "e",
+            "submitted_value": "{a}_{n}=-\\frac{3{a}_{n-1}}{n(n-3)}"
+          }
+        ],
+        "actual_result": "Correct"
+      },
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-345166",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-345062",
+      "knowledge_point_id": "d4c55cd1-e4f7-52ff-ba7f-574a53960ce1",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+      "problem": "Consider the following differential equation.\n\n$$\n4x{y}^{\u2033}+{y}^{\u2032}+5y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nGiven that $\\lambda \\in (-\\frac{1}{2},\\frac{1}{2}),$ find the recurrence relation for the coefficients ${a}_{n},$ where $n=1,2,3,\u2026.$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain*\n\n$$\n\\begin{aligned}4x{y}^{\u2033} & =4({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }4((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ {y}^{\u2032} & =\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 5y & ={\\sum }_{n=1}^{\\infty }5{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}4x{y}^{\u2033} & =4({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }4((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ {y}^{\u2032} & =\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 5y & ={\\sum }_{n=1}^{\\infty }5{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}4({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+\\lambda {a}_{0}{x}^{\\lambda -1} & = \\\\ (4{\\lambda }^{2}-4\\lambda +\\lambda ){a}_{0}{x}^{\\lambda -1} & = \\\\ (4{\\lambda }^{2}-3\\lambda ){a}_{0}{x}^{\\lambda -1}. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[4((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+(\\lambda +n){a}_{n}+5{a}_{n-1}]{x}^{\\lambda +n-1} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[4(\\lambda +n)^{2}{a}_{n}-3(\\lambda +n){a}_{n}+5{a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[(4(\\lambda +n)^{2}-3(\\lambda +n)){a}_{n}+5{a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}(4{\\lambda }^{2}-3\\lambda ){a}_{0}{x}^{\\lambda -1}+{x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[(4(\\lambda +n)^{2}-3(\\lambda +n)){a}_{n}+5{a}_{n-1}]{x}^{n} & =0 \\\\ (4{\\lambda }^{2}-3\\lambda ){a}_{0}+{\\sum }_{n=1}^{\\infty }[(4(\\lambda +n)^{2}-3(\\lambda +n)){a}_{n}+5{a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**: Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(4{\\lambda }^{2}-3\\lambda ){a}_{0} & =0 \\\\ \\lambda (4\\lambda -3) & =0 \\\\ \\lambda  & =0,\\frac{3}{4}\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (-\\frac{1}{2},\\frac{1}{2}),$ we take $\\lambda =0.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(4(\\lambda +n)^{2}-3(\\lambda +n)){a}_{n}+5{a}_{n-1} & =0\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =0$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}n(4n-3){a}_{n} & =-5{a}_{n-1} \\\\ {a}_{n} & =-\\frac{5{a}_{n-1}}{n(4n-3)}\\end{aligned}\n$$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{5{a}_{n-1}}{(4n-3)^{2}}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{5{a}_{n-1}}{n(4n-3)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{5{a}_{n-1}}{4n-3}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{5{a}_{n-1}}{n(4n+3)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{5{a}_{n-1}}{n(n-3)}"
+            }
+          ],
+          "correct_value": "{a}_{n}=-\\frac{5{a}_{n-1}}{n(4n-3)}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        }
+      ],
+      "source_answer_policy": {
+        "version": "revealed-ma-answer-v1",
+        "feedback_sha256": "801af5d399e4864a994ebceae7059af1ddf185ad1d1045ee856624b807113b1a"
+      },
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-345062",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-345066",
+      "knowledge_point_id": "d4c55cd1-e4f7-52ff-ba7f-574a53960ce1",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+      "problem": "Consider the following differential equation.\n\n$$\n2x{y}^{\u2033}+5{y}^{\u2032}+3y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nGiven that $\\lambda \\in (-2,-1),$ find the recurrence relation for the coefficients ${a}_{n},$ where $n=1,2,3,\u2026.$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}2x{y}^{\u2033} & =2({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }2((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ 5{y}^{\u2032} & =5\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }5(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 3y & ={\\sum }_{n=1}^{\\infty }3{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}2x{y}^{\u2033} & =2({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }2((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ 5{y}^{\u2032} & =5\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }5(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 3y & ={\\sum }_{n=1}^{\\infty }3{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}2({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+5\\lambda {a}_{0}{x}^{\\lambda -1} & = \\\\ (2{\\lambda }^{2}-2\\lambda +5\\lambda ){a}_{0}{x}^{\\lambda -1} & = \\\\ (2{\\lambda }^{2}+3\\lambda ){a}_{0}{x}^{\\lambda -1}. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[2((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+5(\\lambda +n){a}_{n}+3{a}_{n-1}]{x}^{\\lambda +n-1} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[2(\\lambda +n)^{2}{a}_{n}+3(\\lambda +n){a}_{n}+3{a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[(2(\\lambda +n)^{2}+3(\\lambda +n)){a}_{n}+3{a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}(2{\\lambda }^{2}+3\\lambda ){a}_{0}{x}^{\\lambda -1}+{x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[(2(\\lambda +n)^{2}+3(\\lambda +n)){a}_{n}+3{a}_{n-1}]{x}^{n} & =0 \\\\ (2{\\lambda }^{2}+3\\lambda ){a}_{0}+{\\sum }_{n=1}^{\\infty }[(2(\\lambda +n)^{2}+3(\\lambda +n)){a}_{n}+3{a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**: Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(2{\\lambda }^{2}+3\\lambda ){a}_{0} & =0 \\\\ \\lambda (2\\lambda +3) & =0 \\\\ \\lambda  & =-\\frac{3}{2},0\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (-2,-1),$ we take $\\lambda =-\\frac{3}{2}.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(2(\\lambda +n)^{2}+3(\\lambda +n)){a}_{n}+3{a}_{n-1} & =0\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =-\\frac{3}{2}$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}(n-\\frac{3}{2})(2(n-\\frac{3}{2})+3){a}_{n} & =-3{a}_{n-1} \\\\ (n-\\frac{3}{2})(2n){a}_{n} & =-3{a}_{n-1} \\\\ n(2n-3){a}_{n} & =-3{a}_{n-1} \\\\ {a}_{n} & =-\\frac{3{a}_{n-1}}{n(2n-3)}\\end{aligned}\n$$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{3{a}_{n-1}}{n(2n-3)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{3{a}_{n-1}}{2n-3}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{3{a}_{n-1}}{n(2n+3)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=\\frac{3{a}_{n-1}}{n(2n-3)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{3{a}_{n-1}}{n(n-3)}"
+            }
+          ],
+          "correct_value": "{a}_{n}=-\\frac{3{a}_{n-1}}{n(2n-3)}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-345066",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-344008",
+      "knowledge_point_id": "d4c55cd1-e4f7-52ff-ba7f-574a53960ce1",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+      "problem": "Consider the following differential equation.\n\n$$\n3x{y}^{\u2033}+5{y}^{\u2032}+6y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nGiven that $\\lambda \\in (-\\frac{1}{2},\\frac{1}{2}),$ find the recurrence relation for the coefficients ${a}_{n},$ where $n=1,2,3,\u2026.$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}3x{y}^{\u2033} & =3({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }3((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ 5{y}^{\u2032} & =5\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }5(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 6y & ={\\sum }_{n=1}^{\\infty }6{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}3x{y}^{\u2033} & =3({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }3((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ 5{y}^{\u2032} & =5\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }5(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 6y & ={\\sum }_{n=1}^{\\infty }6{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}3({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+5\\lambda {a}_{0}{x}^{\\lambda -1} & = \\\\ (3{\\lambda }^{2}-3\\lambda +5\\lambda ){a}_{0}{x}^{\\lambda -1} & = \\\\ (3{\\lambda }^{2}+2\\lambda ){a}_{0}{x}^{\\lambda -1}. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[3((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+5(\\lambda +n){a}_{n}+6{a}_{n-1}]{x}^{\\lambda +n-1} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[3(\\lambda +n)^{2}{a}_{n}+2(\\lambda +n){a}_{n}+6{a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[(3(\\lambda +n)^{2}+2(\\lambda +n)){a}_{n}+6{a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}(3{\\lambda }^{2}+2\\lambda ){a}_{0}{x}^{\\lambda -1}+{x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[(3(\\lambda +n)^{2}+2(\\lambda +n)){a}_{n}+6{a}_{n-1}]{x}^{n} & =0 \\\\ (3{\\lambda }^{2}+2\\lambda ){a}_{0}+{\\sum }_{n=1}^{\\infty }[(3(\\lambda +n)^{2}+2(\\lambda +n)){a}_{n}+6{a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**: Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(3{\\lambda }^{2}+2\\lambda ){a}_{0} & =0 \\\\ \\lambda (3\\lambda +2) & =0 \\\\ \\lambda  & =-\\frac{2}{3},0\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (-\\frac{1}{2},\\frac{1}{2}),$ we take $\\lambda =0.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(3(\\lambda +n)^{2}+2(\\lambda +n)){a}_{n}+6{a}_{n-1} & =0\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =0$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}(0+n)(3(0+n)+2){a}_{n} & =-6{a}_{n-1} \\\\ {a}_{n} & =-\\frac{6{a}_{n-1}}{n(3n+2)}\\end{aligned}\n$$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{6{a}_{n-1}}{3n+2}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{6{a}_{n-1}}{n(n+2)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{6{a}_{n-1}}{(n+2)^{2}}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{6{a}_{n-1}}{n(3n-2)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{6{a}_{n-1}}{n(3n+2)}"
+            }
+          ],
+          "correct_value": "{a}_{n}=-\\frac{6{a}_{n-1}}{n(3n+2)}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        }
+      ],
+      "source_answer_policy": {
+        "version": "revealed-ma-answer-v1",
+        "feedback_sha256": "da0778fa68dfc283d764e3d0a4c16d779c68459ac2ab72ded1d759b8e8baf7f9"
+      },
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-344008",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-345165",
+      "knowledge_point_id": "d4c55cd1-e4f7-52ff-ba7f-574a53960ce1",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+      "problem": "Consider the following differential equation.\n\n$$\n6x{y}^{\u2033}+{y}^{\u2032}+4y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nGiven that $\\lambda \\in (\\frac{1}{2},1),$ find the recurrence relation for the coefficients ${a}_{n},$ where $n=1,2,3,\u2026.$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}6x{y}^{\u2033} & =6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }6((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ {y}^{\u2032} & =\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 4y & ={\\sum }_{n=1}^{\\infty }4{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}6x{y}^{\u2033} & =6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }6((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n-1}, \\\\ {y}^{\u2032} & =\\lambda {a}_{0}{x}^{\\lambda -1}+{\\sum }_{n=1}^{\\infty }(\\lambda +n){a}_{n}{x}^{\\lambda +n-1} \\\\ 4y & ={\\sum }_{n=1}^{\\infty }4{a}_{n-1}{x}^{\\lambda +n-1}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}6({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda -1}+\\lambda {a}_{0}{x}^{\\lambda -1} & = \\\\ (6{\\lambda }^{2}-6\\lambda +\\lambda ){a}_{0}{x}^{\\lambda -1} & = \\\\ (6{\\lambda }^{2}-5\\lambda ){a}_{0}{x}^{\\lambda -1}. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[6((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+(\\lambda +n){a}_{n}+4{a}_{n-1}]{x}^{\\lambda +n-1} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[6(\\lambda +n)^{2}{a}_{n}-5(\\lambda +n){a}_{n}+4{a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[(6(\\lambda +n)^{2}-5(\\lambda +n)){a}_{n}+4{a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}(6{\\lambda }^{2}-5\\lambda ){a}_{0}{x}^{\\lambda -1}+{x}^{\\lambda -1}{\\sum }_{n=1}^{\\infty }[(6(\\lambda +n)^{2}-5(\\lambda +n)){a}_{n}+4{a}_{n-1}]{x}^{n} & =0 \\\\ (6{\\lambda }^{2}-5\\lambda ){a}_{0}+{\\sum }_{n=1}^{\\infty }[(6(\\lambda +n)^{2}-5(\\lambda +n)){a}_{n}+4{a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**: Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(6{\\lambda }^{2}-5\\lambda ){a}_{0} & =0 \\\\ \\lambda (6\\lambda -5) & =0 \\\\ \\lambda  & =0,\\frac{5}{6}\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (\\frac{1}{2},1),$ we take $\\lambda =\\frac{5}{6}.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(6(\\lambda +n)^{2}-5(\\lambda +n)){a}_{n}+4{a}_{n-1} & =0\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =\\frac{5}{6}$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}(n+\\frac{5}{6})(6(n+\\frac{5}{6})-5){a}_{n} & =-4{a}_{n-1} \\\\ (n+\\frac{5}{6})(6n){a}_{n} & =-4{a}_{n-1} \\\\ n(6n+5){a}_{n} & =-4{a}_{n-1} \\\\ {a}_{n} & =-\\frac{4{a}_{n-1}}{n(6n+5)}\\end{aligned}\n$$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{4{a}_{n-1}}{n(6n-5)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{4{a}_{n-1}}{n(6n+5)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{4{a}_{n-1}}{n(n+5)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=\\frac{4{a}_{n-1}}{n(6n+5)}"
+            },
+            {
+              "type": "math",
+              "value": "{a}_{n}=-\\frac{4{a}_{n-1}}{6n+5}"
+            }
+          ],
+          "correct_value": "{a}_{n}=-\\frac{4{a}_{n-1}}{n(6n+5)}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-345165",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-345292",
+      "knowledge_point_id": "77c85efd-bbc3-5ebf-8667-668810c2d074",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+      "problem": "Consider the following differential equation.\n\n$$\n9{x}^{2}{y}^{\u2033}+4x(x+3){y}^{\u2032}-6y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nFind $f(n),$ given that $\\lambda \\in (\\frac{1}{2},1)$ and the recurrence relation for ${a}_{n}$ can be written as\n\n$$\n{a}_{n}=\\frac{4(1-3n)}{f(n)}\\,{a}_{n-1},\\,n\\ge 1.\n$$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}9{x}^{2}{y}^{\u2033} & =9({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }9((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 4x(x+3){y}^{\u2032} & =12\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[4(\\lambda +n-1){a}_{n-1}+12(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -6y & =-6{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }6{a}_{n}{x}^{\\lambda +n}\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}9{x}^{2}{y}^{\u2033} & =9({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }9((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 4x(x+3){y}^{\u2032} & =12\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[4(\\lambda +n-1){a}_{n-1}+12(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -6y & =-6{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }6{a}_{n}{x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}9({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+12\\lambda {a}_{0}{x}^{\\lambda }-6{a}_{0}{x}^{\\lambda } & = \\\\ (9{\\lambda }^{2}-9\\lambda +12\\lambda -6){a}_{0}{x}^{\\lambda } & = \\\\ (9{\\lambda }^{2}+3\\lambda -6){a}_{0}{x}^{\\lambda }. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[9((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+4(\\lambda +n-1){a}_{n-1}+12(\\lambda +n){a}_{n}-6{a}_{n}]{x}^{\\lambda +n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[9(\\lambda +n)^{2}{a}_{n}+3(\\lambda +n){a}_{n}-6{a}_{n}+4(\\lambda +n-1){a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(9(\\lambda +n)^{2}+3(\\lambda +n)-6){a}_{n}+4(\\lambda +n-1){a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,(9{\\lambda }^{2}+3\\lambda -6){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(9(\\lambda +n)^{2}+3(\\lambda +n)-6){a}_{n}+4(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0 \\\\ \\,\\,\\,\\,(9{\\lambda }^{2}+3\\lambda -6){a}_{0}+{\\sum }_{n=1}^{\\infty }[(9(\\lambda +n)^{2}+3(\\lambda +n)-6){a}_{n}+4(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(9{\\lambda }^{2}+3\\lambda -6){a}_{0} & =0 \\\\ (3\\lambda -2)(\\lambda +1) & =0 \\\\ \\lambda  & =-1,\\frac{2}{3}\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (\\frac{1}{2},1),$ we take $\\lambda =\\frac{2}{3}.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(9(\\lambda +n)^{2}+3(\\lambda +n)-6){a}_{n}+4(\\lambda +n-1){a}_{n-1} & =0 \\\\ 3(\\lambda +n+1)(3(\\lambda +n)-2){a}_{n} & =-4(\\lambda +n-1){a}_{n-1}\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =\\frac{2}{3}$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}3(\\frac{2}{3}+n+1)(3(\\frac{2}{3}+n)-2){a}_{n} & =-4(\\frac{2}{3}+n-1){a}_{n-1} \\\\ 3(n+\\frac{5}{3})(3n){a}_{n} & =-4(n-\\frac{1}{3}){a}_{n-1} \\\\ 3n(3n+5){a}_{n} & =-\\frac{4}{3}(3n-1){a}_{n-1} \\\\ {a}_{n} & =\\frac{4(1-3n)}{9n(3n+5)}\\,{a}_{n-1}\\end{aligned}\n$$\n\nTherefore, $f(n)=9n(3n+5).$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "f(n)=9n(3n-5)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=9(n+1)(3n+5)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=3n(3n+5)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=n(3n+5)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=9n(3n+5)"
+            }
+          ],
+          "correct_value": "f(n)=9n(3n+5)",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-345292",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-345290",
+      "knowledge_point_id": "77c85efd-bbc3-5ebf-8667-668810c2d074",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+      "problem": "Consider the following differential equation.\n\n$$\n36{x}^{2}{y}^{\u2033}+54x(x+1){y}^{\u2032}-10y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nFind $f(n),$ given that $\\lambda \\in (0,\\frac{1}{2})$ and the recurrence relation for ${a}_{n}$ can be written as\n\n$$\n{a}_{n}=\\frac{3(2-3n)}{f(n)}\\,{a}_{n-1},\\,n\\ge 1.\n$$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}36{x}^{2}{y}^{\u2033} & =36({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }36((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 54x(x+1){y}^{\u2032} & =54\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[54(\\lambda +n-1){a}_{n-1}+54(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -10y & =-10{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }10{a}_{n}{x}^{\\lambda +n}\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}36{x}^{2}{y}^{\u2033} & =36({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }36((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 54x(x+1){y}^{\u2032} & =54\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[54(\\lambda +n-1){a}_{n-1}+54(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -10y & =-10{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }10{a}_{n}{x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}36({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+54\\lambda {a}_{0}{x}^{\\lambda }-10{a}_{0}{x}^{\\lambda } & = \\\\ (36{\\lambda }^{2}-36\\lambda +54\\lambda -10){a}_{0}{x}^{\\lambda } & = \\\\ (36{\\lambda }^{2}+18\\lambda -10){a}_{0}{x}^{\\lambda }. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[36((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+54(\\lambda +n-1){a}_{n-1}+54(\\lambda +n){a}_{n}-10{a}_{n}]{x}^{\\lambda +n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[36(\\lambda +n)^{2}{a}_{n}+18(\\lambda +n){a}_{n}-10{a}_{n}+54(\\lambda +n-1){a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(36(\\lambda +n)^{2}+18(\\lambda +n)-10){a}_{n}+54(\\lambda +n-1){a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,(36{\\lambda }^{2}+18\\lambda -10){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(36(\\lambda +n)^{2}+18(\\lambda +n)-10){a}_{n}+54(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0 \\\\ \\,\\,\\,\\,(36{\\lambda }^{2}+18\\lambda -10){a}_{0}+{\\sum }_{n=1}^{\\infty }[(36(\\lambda +n)^{2}+18(\\lambda +n)-10){a}_{n}+54(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(36{\\lambda }^{2}+18\\lambda -10){a}_{0} & =0 \\\\ (3\\lambda -1)(6\\lambda +5) & =0 \\\\ \\lambda  & =-\\frac{5}{6},\\frac{1}{3}\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (0,\\frac{1}{2}),$ we take $\\lambda =\\frac{1}{3}.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(36(\\lambda +n)^{2}+18(\\lambda +n)-10){a}_{n}+54(\\lambda +n-1){a}_{n-1} & =0 \\\\ (3(\\lambda +n)-1)(6(\\lambda +n)+5){a}_{n} & =-27(\\lambda +n-1){a}_{n-1}\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =\\frac{1}{3}$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}(3(\\frac{1}{3}+n)-1)(6(\\frac{1}{3}+n)+5){a}_{n} & =-27(\\frac{1}{3}+n-1){a}_{n-1} \\\\ 3n(6n+7){a}_{n} & =-27(n-\\frac{2}{3}){a}_{n-1} \\\\ 3n(6n+7){a}_{n} & =9(2-3n){a}_{n-1} \\\\ {a}_{n} & =\\frac{3(2-3n)}{n(6n+7)}\\,{a}_{n-1}\\end{aligned}\n$$\n\nTherefore, $f(n)=n(6n+7).$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "f(n)=(n+1)(6n+7)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=n(6n-7)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=6n(n+7)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=n(6n+7)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=3n(2n+7)"
+            }
+          ],
+          "correct_value": "f(n)=n(6n+7)",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        }
+      ],
+      "source_answer_policy": {
+        "version": "revealed-ma-answer-v1",
+        "feedback_sha256": "676dc3819807c686435f8766f85eca6836bfe028099b3ff2963889ce301b03bb"
+      },
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-345290",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-345289",
+      "knowledge_point_id": "77c85efd-bbc3-5ebf-8667-668810c2d074",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+      "problem": "Consider the following differential equation.\n\n$$\n3{x}^{2}{y}^{\u2033}+2x(x+4){y}^{\u2032}-12y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nFind $f(n),$ given that $\\lambda \\in (1,2)$ and the recurrence relation for ${a}_{n}$ can be written as\n\n$$\n{a}_{n}=\\frac{2(-3n-1)}{f(n)}\\,{a}_{n-1},\\,n\\ge 1.\n$$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}3{x}^{2}{y}^{\u2033} & =3({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }3((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 2x(x+4){y}^{\u2032} & =8\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[2(\\lambda +n-1){a}_{n-1}+8(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -12y & =-12{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }12{a}_{n}{x}^{\\lambda +n}\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}3{x}^{2}{y}^{\u2033} & =3({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }3((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 2x(x+4){y}^{\u2032} & =8\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[2(\\lambda +n-1){a}_{n-1}+8(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -12y & =-12{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }12{a}_{n}{x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}3({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+8\\lambda {a}_{0}{x}^{\\lambda }-12{a}_{0}{x}^{\\lambda } & = \\\\ (3{\\lambda }^{2}-3\\lambda +8\\lambda -12){a}_{0}{x}^{\\lambda } & = \\\\ (3{\\lambda }^{2}+5\\lambda -12){a}_{0}{x}^{\\lambda }. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[3((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+2(\\lambda +n-1){a}_{n-1}+8(\\lambda +n){a}_{n}-12{a}_{n}]{x}^{\\lambda +n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[3(\\lambda +n)^{2}{a}_{n}+5(\\lambda +n){a}_{n}-12{a}_{n}+2(\\lambda +n-1){a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(3(\\lambda +n)^{2}+5(\\lambda +n)-12){a}_{n}+2(\\lambda +n-1){a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,(3{\\lambda }^{2}+5\\lambda -12){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(3(\\lambda +n)^{2}+5(\\lambda +n)-12){a}_{n}+2(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0 \\\\ \\,\\,\\,\\,(3{\\lambda }^{2}+5\\lambda -12){a}_{0}+{\\sum }_{n=1}^{\\infty }[(3(\\lambda +n)^{2}+5(\\lambda +n)-12){a}_{n}+2(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(3{\\lambda }^{2}+5\\lambda -12){a}_{0} & =0 \\\\ (3\\lambda -4)(\\lambda +3) & =0 \\\\ \\lambda  & =-3,\\frac{4}{3}\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (1,2),$ we take $\\lambda =\\frac{4}{3}.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(3(\\lambda +n)^{2}+5(\\lambda +n)-12){a}_{n}+2(\\lambda +n-1){a}_{n-1} & =0 \\\\ (3(\\lambda +n)-4)((\\lambda +n)+3){a}_{n} & =-2(\\lambda +n-1){a}_{n-1}\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =\\frac{4}{3}$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}(3(\\frac{4}{3}+n)-4)((\\frac{4}{3}+n)+3){a}_{n} & =-2(\\frac{4}{3}+n-1){a}_{n-1} \\\\ 3n(n+\\frac{13}{3}){a}_{n} & =-2(n+\\frac{1}{3}){a}_{n-1} \\\\ n(3n+13){a}_{n} & =-\\frac{2}{3}(3n+1){a}_{n-1} \\\\ {a}_{n} & =\\frac{2(-3n-1)}{3n(3n+13)}\\,{a}_{n-1}\\end{aligned}\n$$\n\nTherefore, $f(n)=3n(3n+13).$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "f(n)=3n(n+13)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=3(n+1)(3n+13)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=3n(3n-13)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=3n(3n+13)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=n(3n+13)"
+            }
+          ],
+          "correct_value": "f(n)=3n(3n+13)",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-345289",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-345291",
+      "knowledge_point_id": "77c85efd-bbc3-5ebf-8667-668810c2d074",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+      "problem": "Consider the following differential equation.\n\n$$\n8{x}^{2}{y}^{\u2033}+5x(x+2){y}^{\u2032}-3y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nFind $f(n),$ given that $\\lambda \\in (0,\\frac{3}{5})$ and the recurrence relation for ${a}_{n}$ can be written as\n\n$$\n{a}_{n}=\\frac{5(1-2n)}{f(n)}\\,{a}_{n-1},\\,n\\ge 1.\n$$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}8{x}^{2}{y}^{\u2033} & =8({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }8((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 5x(x+2){y}^{\u2032} & =10\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[5(\\lambda +n-1){a}_{n-1}+10(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -3y & =-3{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }3{a}_{n}{x}^{\\lambda +n}\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}8{x}^{2}{y}^{\u2033} & =8({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }8((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 5x(x+2){y}^{\u2032} & =10\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[5(\\lambda +n-1){a}_{n-1}+10(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -3y & =-3{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }3{a}_{n}{x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}8({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+10\\lambda {a}_{0}{x}^{\\lambda }-3{a}_{0}{x}^{\\lambda } & = \\\\ (8{\\lambda }^{2}-8\\lambda +10\\lambda -3){a}_{0}{x}^{\\lambda } & = \\\\ (8{\\lambda }^{2}+2\\lambda -3){a}_{0}{x}^{\\lambda }. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[8((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+5(\\lambda +n-1){a}_{n-1}+10(\\lambda +n){a}_{n}-3{a}_{n}]{x}^{\\lambda +n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[8(\\lambda +n)^{2}{a}_{n}+2(\\lambda +n){a}_{n}-3{a}_{n}+5(\\lambda +n-1){a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(8(\\lambda +n)^{2}+2(\\lambda +n)-3){a}_{n}+5(\\lambda +n-1){a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,(8{\\lambda }^{2}+2\\lambda -3){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(8(\\lambda +n)^{2}+2(\\lambda +n)-3){a}_{n}+5(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0 \\\\ \\,\\,\\,\\,(8{\\lambda }^{2}+2\\lambda -3){a}_{0}+{\\sum }_{n=1}^{\\infty }[(8(\\lambda +n)^{2}+2(\\lambda +n)-3){a}_{n}+5(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(8{\\lambda }^{2}+2\\lambda -3){a}_{0} & =0 \\\\ (2\\lambda -1)(4\\lambda +3) & =0 \\\\ \\lambda  & =-\\frac{3}{4},\\frac{1}{2}\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (0,\\frac{3}{5}),$ we take $\\lambda =\\frac{1}{2}.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(8(\\lambda +n)^{2}+2(\\lambda +n)-3){a}_{n}+5(\\lambda +n-1){a}_{n-1} & =0 \\\\ (2(\\lambda +n)-1)(4(\\lambda +n)+3){a}_{n} & =-5(\\lambda +n-1){a}_{n-1}\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =\\frac{1}{2}$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}(2(\\frac{1}{2}+n)-1)(4(\\frac{1}{2}+n)+3){a}_{n} & =-5(\\frac{1}{2}+n-1){a}_{n-1} \\\\ 2n(4n+5){a}_{n} & =-5(n-\\frac{1}{2}){a}_{n-1} \\\\ 2n(4n+5){a}_{n} & =\\frac{5}{2}(1-2n){a}_{n-1} \\\\ {a}_{n} & =\\frac{5(1-2n)}{4n(4n+5)}\\,{a}_{n-1}\\end{aligned}\n$$\n\nTherefore, $f(n)=4n(4n+5).$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "f(n)=2n(4n+5)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=n(4n+5)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=4n(4n+5)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=4n(4n-5)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=4(n+1)(4n+5)"
+            }
+          ],
+          "correct_value": "f(n)=4n(4n+5)",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        }
+      ],
+      "source_answer_policy": {
+        "version": "revealed-ma-answer-v1",
+        "feedback_sha256": "f53bceeed00e240fa056dd52ce0ce96a29c86dbda145cd428eff3e5fd6280c07"
+      },
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-345291",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+        "kp_href": null
+      }
+    },
+    {
+      "math_academy_id": "q-344011",
+      "knowledge_point_id": "77c85efd-bbc3-5ebf-8667-668810c2d074",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+      "problem": "$$\n3{x}^{2}{y}^{\u2033}+\\frac{5}{2}x{y}^{\u2032}+(2x-1)y=0\n$$\n\nLet $y={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n}$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nFind $f(n),$ given that $\\lambda \\in (0,1)$ and the recurrence relation for ${a}_{n}$ can be written as\n\n$$\n{a}_{n}=-\\frac{4{a}_{n-1}}{f(n)},\\,n\\ge 1.\n$$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain*\n\n$$\n\\begin{aligned}3{x}^{2}{y}^{\u2033} & =3({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }3((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ \\frac{5}{2}x{y}^{\u2032} & =\\frac{5}{2}\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }\\frac{5}{2}(\\lambda +n){a}_{n}{x}^{\\lambda +n}, \\\\ (2x-1)y & =-{a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(2{a}_{n-1}-{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny={x}^{\\lambda }{\\sum }_{n=0}^{\\infty }{a}_{n}{x}^{n},\n$$\n\nwhere $\\lambda $ and ${a}_{n}$ for $n=0,1,2,\u2026$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary ${a}_{0},$ and\n\n- a recurrence formula from the coefficients of the $n\\ge 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $n=0$ term isolated in each.\n\n$$\n\\begin{aligned}3{x}^{2}{y}^{\u2033} & =3({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }3((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ \\frac{5}{2}x{y}^{\u2032} & =\\frac{5}{2}\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }\\frac{5}{2}(\\lambda +n){a}_{n}{x}^{\\lambda +n}, \\\\ (2x-1)y & =-{a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(2{a}_{n-1}-{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for $n=0,$ we have\n\n$$\n\\begin{aligned}3({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+\\frac{5}{2}\\lambda {a}_{0}{x}^{\\lambda }-{a}_{0}{x}^{\\lambda } & = \\\\ (3{\\lambda }^{2}-3\\lambda +\\frac{5}{2}\\lambda -1){a}_{0}{x}^{\\lambda } & = \\\\ \\frac{1}{2}(6{\\lambda }^{2}-\\lambda -2){a}_{0}{x}^{\\lambda }. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[3((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+\\frac{5}{2}(\\lambda +n){a}_{n}+2{a}_{n-1}-{a}_{n}]{x}^{\\lambda +n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[3(\\lambda +n)^{2}{a}_{n}-\\frac{1}{2}(\\lambda +n){a}_{n}-{a}_{n}+2{a}_{n-1}]{x}^{n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[\\frac{1}{2}(6(\\lambda +n)^{2}-(\\lambda +n)-2){a}_{n}+2{a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}\\frac{1}{2}(6{\\lambda }^{2}-\\lambda -2){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[\\frac{1}{2}(6(\\lambda +n)^{2}-(\\lambda +n)-2){a}_{n}+2{a}_{n-1}]{x}^{n} & =0 \\\\ \\frac{1}{2}(6{\\lambda }^{2}-\\lambda -2){a}_{0}+{\\sum }_{n=1}^{\\infty }[\\frac{1}{2}(6(\\lambda +n)^{2}-(\\lambda +n)-2){a}_{n}+2{a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary ${a}_{0}\\ne 0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}\\frac{1}{2}(6{\\lambda }^{2}-\\lambda -2){a}_{0} & =0 \\\\ (3\\lambda -2)(2\\lambda +1) & =0 \\\\ \\lambda  & =-\\frac{1}{2},\\frac{2}{3}\\end{aligned}\n$$\n\nSince we're interested in $\\lambda \\in (0,1),$ we take $\\lambda =\\frac{2}{3}.$\n\nSimilarly, setting the coefficients of ${x}^{n}$ for $n\\ge 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}\\frac{1}{2}(6(\\lambda +n)^{2}-(\\lambda +n)-2){a}_{n}+2{a}_{n-1} & =0 \\\\ \\frac{1}{2}(3(\\lambda +n)-2)(2(\\lambda +n)+1){a}_{n}+2{a}_{n-1} & =0\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda =\\frac{2}{3}$ into the above and solve for ${a}_{n}:$\n\n$$\n\\begin{aligned}\\frac{1}{2}(3(\\frac{2}{3}+n)-2)(2(\\frac{2}{3}+n)+1){a}_{n} & =-2{a}_{n-1} \\\\ 3n(2n+\\frac{7}{3}){a}_{n} & =-4{a}_{n-1} \\\\ n(6n+7){a}_{n} & =-4{a}_{n-1} \\\\ {a}_{n} & =-\\frac{4{a}_{n-1}}{n(6n+7)}\\end{aligned}\n$$\n\nTherefore, $f(n)=n(6n+7).$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "f(n)=n(6n+1)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=n(6n+7)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=(n+1)(6n+1)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=n(6n-7)"
+            },
+            {
+              "type": "math",
+              "value": "f(n)=n(6n-1)"
+            }
+          ],
+          "correct_value": "f(n)=n(6n+7)",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-344011",
+        "kp_title": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+        "kp_href": null
+      }
+    }
+  ],
+  "canonical_examples": [
+    {
+      "math_academy_id": "e-21850",
+      "knowledge_point_id": "d4c55cd1-e4f7-52ff-ba7f-574a53960ce1",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Constant Coefficients of y and y'",
+      "problem": "$$\n10x^2y'' + 7xy' + (3x-1)y = 0\n$$\n\nLet $\\displaystyle y = x^\\lambda \\sum_{n=0}^\\infty a_nx^n$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nFind $f(n),$ given that $\\lambda\\in(0,1)$ and the recurrence relation for $a_n$ can be written as\n\n$$\na_n = -\\dfrac{3a_{n-1}}{f(n)}, \\qquad n \\geq 1.\n$$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}10{x}^{2}{y}^{\u2033} & =10({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }10((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 7x{y}^{\u2032} & =7\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }7(\\lambda +n){a}_{n}{x}^{\\lambda +n}, \\\\ (3x-1)y & =-{a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(3{a}_{n-1}-{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny = x^\\lambda \\sum_{n=0}^\\infty a_nx^n,\n$$\n\nwhere $\\lambda$ and $a_n$ for $n=0,1,2,\\ldots$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary $a_0,$ and\n\n- a recurrence formula from the coefficients of the $n \\geq 1$ terms.\n\nWe are given the three terms of the ODE as power series with the $\\color{blue}n=0$ term isolated in each.\n\n$$\n\\begin{aligned}10{x}^{2}{y}^{\u2033} & =10({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }10((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 7x{y}^{\u2032} & =7\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }7(\\lambda +n){a}_{n}{x}^{\\lambda +n}, \\\\ (3x-1)y & =-{a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }(3{a}_{n-1}-{a}_{n}){x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 4**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for ${\\color{blue}n=0},$ we have\n\n$$\n\\begin{aligned}10({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+7\\lambda {a}_{0}{x}^{\\lambda }-{a}_{0}{x}^{\\lambda } & = \\\\ (10{\\lambda }^{2}-10\\lambda +7\\lambda -1){a}_{0}{x}^{\\lambda } & = \\\\ (10{\\lambda }^{2}-3\\lambda -1){a}_{0}{x}^{\\lambda }. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\geq 1,$ we have\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[10((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}+7(\\lambda +n){a}_{n}+(3{a}_{n-1}-{a}_{n})]{x}^{\\lambda +n} & = \\\\ {\\sum }_{n=1}^{\\infty }[10(\\lambda +n)^{2}{a}_{n}-3(\\lambda +n){a}_{n}-{a}_{n}+3{a}_{n-1}]{x}^{\\lambda +n} & = \\\\ {x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(10(\\lambda +n)^{2}-3(\\lambda +n)-1){a}_{n}+3{a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we obtain\n\n$$\n\\begin{aligned}(10{\\lambda }^{2}-3\\lambda -1){a}_{0}{x}^{\\lambda }+{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(10(\\lambda +n)^{2}-3(\\lambda +n)-1){a}_{n}+3{a}_{n-1}]{x}^{n} & =0 \\\\ (10{\\lambda }^{2}-3\\lambda -1){a}_{0}+{\\sum }_{n=1}^{\\infty }[(10(\\lambda +n)^{2}-3(\\lambda +n)-1){a}_{n}+3{a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 5**:  Set the coefficients of the series equal to $0.$\n\nSetting the coefficients of the $n=0$ term equal to $0$ with arbitrary $a_0\\neq0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}(10{\\lambda }^{2}-3\\lambda -1){a}_{0} & =0 \\\\ 10{\\lambda }^{2}-3\\lambda -1 & =0 \\\\ (2\\lambda -1)(5\\lambda +1) & =0 \\\\ \\lambda  & =-\\frac{1}{5},\\frac{1}{2}\\end{aligned}\n$$\n\nSince we're interested in $\\lambda\\in(0,1),$ we take $\\lambda=\\dfrac12.$\n\nSimilarly, setting the coefficients of $x^n$ for $n \\geq 1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(10(\\lambda +n)^{2}-3(\\lambda +n)-1){a}_{n}+3{a}_{n-1} & =0 \\\\ (2(\\lambda +n)-1)(5(\\lambda +n)+1){a}_{n}+3{a}_{n-1} & =0\\end{aligned}\n$$\n\nFinally, we substitute $\\lambda=\\dfrac12$ into the above and solve for $a_n{:}$\n\n$$\n\\begin{aligned}(2(\\frac{1}{2}+n)-1)(5(\\frac{1}{2}+n)+1){a}_{n} & =-3{a}_{n-1} \\\\ 2n(5n+\\frac{7}{2}){a}_{n} & =-3{a}_{n-1} \\\\ n(10n+7){a}_{n} & =-3{a}_{n-1} \\\\ {a}_{n} & =-\\frac{3{a}_{n-1}}{n(10n+7)}\\end{aligned}\n$$\n\nTherefore, $f(n)=n(10n+7).$",
+      "difficulty": null,
+      "answer_fields": [],
+      "missing_source_fields": [
+        "difficulty",
+        "answer_fields"
+      ]
+    },
+    {
+      "math_academy_id": "e-21986",
+      "knowledge_point_id": "77c85efd-bbc3-5ebf-8667-668810c2d074",
+      "knowledge_point": "Determining a Recurrence Formula for the Coefficients of a Frobenius Series Solution: Binomial Coefficient of y or y'",
+      "problem": "$$\n4x^2y'' + 3x(x+2)y' - 2y = 0\n$$\n\nLet $\\displaystyle y = x^\\lambda \\sum_{n=0}^\\infty a_nx^n$ be a Frobenius series solution about the regular singular point $x=0$ of the differential equation above.\nFind $f(n),$ given that $\\lambda\\in(0,1)$ and the recurrence relation for $a_n$ can be written as\n\n$$\na_n = \\dfrac{3(1-2n)}{f(n)}\\,a_{n-1}, \\qquad n \\geq 1.\n$$\n\n*Hint: Substituting the Frobenius series solution into each term of the ODE, we obtain\n\n$$\n\\begin{aligned}4{x}^{2}{y}^{\u2033} & =4({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }4((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 3x(x+2){y}^{\u2032} & =6\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[3(\\lambda +n-1){a}_{n-1}+6(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -2y & =-2{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }2{a}_{n}{x}^{\\lambda +n}.\\end{aligned}\n$$\n\n*",
+      "worked_solution": "If $x=0$ is a regular singular point of a second-order homogeneous linear differential equation, then the method of Frobenius states that there is at least one solution of the form\n\n$$\ny = x^\\lambda \\sum_{n=0}^\\infty a_nx^n,\n$$\n\nwhere $\\lambda$ and $a_n$ for $n=0,1,2,\\ldots$ are constants.\n\nSubstituting this solution and its derivatives into the ODE, collecting like terms, and setting coefficients equal to zero, we obtain:\n\n- the indicial equation from the coefficients of the $n=0$ term for arbitrary $a_0,$ and\n\n- a recurrence formula from the coefficients of the $n \\geq 1$ terms.\n\nWe are given the three terms of the ODE as a power series with the $\\color{blue}n=0$ term isolated in each.\n\n$$\n\\begin{aligned}4{x}^{2}{y}^{\u2033} & =4({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }4((\\lambda +n)^{2}-(\\lambda +n)){a}_{n}{x}^{\\lambda +n}, \\\\ 3x(x+2){y}^{\u2032} & =6\\lambda {a}_{0}{x}^{\\lambda }+{\\sum }_{n=1}^{\\infty }[3(\\lambda +n-1){a}_{n-1}+6(\\lambda +n){a}_{n}]{x}^{\\lambda +n}, \\\\ -2y & =-2{a}_{0}{x}^{\\lambda }-{\\sum }_{n=1}^{\\infty }2{a}_{n}{x}^{\\lambda +n}.\\end{aligned}\n$$\n\nNow, we continue from this point.\n\n**Step 1**: Consolidate all the series into a single series that is equal to $0.$\n\nCollecting the terms for ${\\color{blue}n=0},$ we have\n\n$$\n\\begin{aligned}4({\\lambda }^{2}-\\lambda ){a}_{0}{x}^{\\lambda }+6\\lambda {a}_{0}{x}^{\\lambda }-2{a}_{0}{x}^{\\lambda } & = \\\\ (4{\\lambda }^{2}-4\\lambda +6\\lambda -2){a}_{0}{x}^{\\lambda } & = \\\\ 2(2{\\lambda }^{2}+\\lambda -1){a}_{0}{x}^{\\lambda }. & \\end{aligned}\n$$\n\nSimilarly, collecting terms for $n\\geq 1,$ we obtain\n\n$$\n\\begin{aligned}{\\sum }_{n=1}^{\\infty }[4((\\lambda +n)^{2}-(\\lambda +n))+3(\\lambda +n-1){a}_{n-1}+6(\\lambda +n){a}_{n}-2{a}_{n}]{x}^{\\lambda +n} & = \\\\ {\\sum }_{n=1}^{\\infty }[4(\\lambda +n)^{2}+2(\\lambda +n){a}_{n}-2{a}_{n}+3(\\lambda +n-1){a}_{n-1}]{x}^{\\lambda +n} & = \\\\ 2{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(2(\\lambda +n)^{2}+(\\lambda +n)-1){a}_{n}+\\frac{3}{2}(\\lambda +n-1){a}_{n-1}]{x}^{n} & .\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,2(2{\\lambda }^{2}+\\lambda -1){a}_{0}{x}^{\\lambda }+2{x}^{\\lambda }{\\sum }_{n=1}^{\\infty }[(2(\\lambda +n)^{2}+(\\lambda +n)-1){a}_{n}+\\frac{3}{2}(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0 \\\\ (2{\\lambda }^{2}+\\lambda -1){a}_{0}+{\\sum }_{n=1}^{\\infty }[(2(\\lambda +n)^{2}+(\\lambda +n)-1){a}_{n}+\\frac{3}{2}(\\lambda +n-1){a}_{n-1}]{x}^{n} & =0.\\end{aligned}\n$$\n\n**Step 2**: Set the coefficients of the series equal to $0.$\n\nSetting the coefficient of the $n=0$ term equal to $0$ with arbitrary $a_0\\neq0,$ we obtain the indicial equation:\n\n$$\n\\begin{aligned}2{\\lambda }^{2}+\\lambda -1 & =0 \\\\ (\\lambda +1)(2\\lambda -1) & =0 \\\\ \\lambda  & =-1,\\frac{1}{2}.\\end{aligned}\n$$\n\nSince we're interested in $\\lambda\\in(0,1),$ we take $\\lambda=\\dfrac12.$\n\nSimilarly, setting the coefficients of $x^n$ for $n\\geq1$ equal to $0,$ we obtain the following recurrence relation:\n\n$$\n\\begin{aligned}(2(\\lambda +n)^{2}+(\\lambda +n)-1){a}_{n}+\\frac{3}{2}(\\lambda +n-1){a}_{n-1} & =0 \\\\ ((\\lambda +n)+1)(2(\\lambda +n)-1){a}_{n} & =-\\frac{3}{2}(\\lambda +n-1){a}_{n-1}\\end{aligned}\n$$\n\nSubstituting $\\lambda=\\dfrac12$ and solving for $a_n,$ we have\n\n$$\n\\begin{aligned}((\\frac{1}{2}+n)+1)(2(\\frac{1}{2}+n)-1){a}_{n} & =-\\frac{3}{2}(\\frac{1}{2}+n-1){a}_{n-1} \\\\ (n+\\frac{3}{2})(2n){a}_{n} & =-\\frac{3}{2}(n-\\frac{1}{2}){a}_{n-1} \\\\ n(2n+3){a}_{n} & =\\frac{3}{4}(1-2n){a}_{n-1} \\\\ {a}_{n} & =\\frac{3(1-2n)}{4n(2n+3)}\\,{a}_{n-1}.\\end{aligned}\n$$\n\nTherefore,\n$f(n) = 4n(2n+3).$",
+      "difficulty": null,
+      "answer_fields": [],
+      "missing_source_fields": [
+        "difficulty",
+        "answer_fields"
+      ]
+    }
+  ]
+}
