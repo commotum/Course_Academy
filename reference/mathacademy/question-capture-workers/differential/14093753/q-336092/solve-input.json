@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "A package of mass $500\\,\\text{kg}$ is released from rest and falls vertically downward. Let $v(t)$ be the package's velocity, in meters per second, $t\\ge 0$ seconds after release, with downward taken as the positive direction.\nThe air resistance on the package is proportional to the square of its velocity and acts in the direction opposite to its motion.\nAt a particular moment during the fall, the package\u2019s velocity is $6.25\\,\\text{m/s}$ and its instantaneous acceleration is $7.35\\,{\\text{m/s}}^{2}.$\n\nFind, rounded to two decimal places, the velocity of the package after $2$ seconds.\nAssume the acceleration due to gravity is $g=9.8\\,{\\text{m/s}}^{2},$ and the only forces acting on the package are the weight due to gravity and drag.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "12.25\\,\\text{m/s}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "11.46\\,\\text{m/s}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "9.16\\,\\text{m/s}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "10.18\\,\\text{m/s}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "13.64\\,\\text{m/s}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14093753,
+    "task_type": "lesson",
+    "topic_id": 6693,
+    "topic_title": "Falling Body Problems With Quadratic Drag",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336031",
+        "problem": "A sack of mass $50\\,\\text{kg}$ is released from rest and falls vertically downward. Let $v(t)$ be the sack's velocity, in meters per second, $t\\ge 0$ seconds after release, with downward taken as the positive direction.\nThe air resistance on the sack is proportional to the square of its velocity and acts in the direction opposite to motion.\nAt a particular moment during the fall, the sack\u2019s velocity is $2.5\\,\\text{m/s}$ and its instantaneous acceleration is $7.35\\,{\\text{m/s}}^{2}.$\n\nFind the equation for the velocity $v(t).$\nAssume the acceleration due to gravity is $g=9.8\\,{\\text{m/s}}^{2},$ and the only forces acting on the sack are the weight due to gravity and drag.",
+        "worked_solution": "First, note that only two forces act on the sack: the force due to gravity, given by the weight\n\n$$\nw=mg=50g\n$$\n\nand the force due to drag $D,$ which is proportional to the velocity squared (and negative since it acts in the negative direction),\n\n$$\nD=-k{v}^{2},\n$$\n\nwhere $k>0$ is a constant of proportionality. Hence, the resultant force acting on the sack is\n\n$$\nF=w+D=50g-k{v}^{2}.\n$$\n\nApplying Newton's second law, we obtain a separable first-order differential equation:\n\n$$\n\\begin{aligned}F & =ma \\\\ 50g-k{v}^{2} & =50\\,\\frac{dv}{dt} \\\\ \\frac{dv}{dt} & =g-\\frac{k}{50}{v}^{2}\\end{aligned}\n$$\n\nWe're told that, at a particular moment, the sack's velocity is $2.5\\,\\text{m/s}$ and its instantaneous acceleration is $7.35\\,{\\text{m/s}}^{2}.$ Substituting these values and $g=9.8$ into the ODE, we can solve for $k:$\n\n$$\n7.35=g-\\frac{k}{50}\\cdot {2.5}^{2}\\,\u27f9\\,k=19.6\\,\\text{kg/m}\n$$\n\nTherefore, we have the following differential equation:\n\n$$\n\\frac{dv}{dt}=g-0.392{v}^{2}\n$$\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{dv}{dt} & =g(1-0.04{v}^{2}) \\\\ \\frac{1}{1-0.04{v}^{2}}\\cdot \\frac{dv}{dt} & =g \\\\ \\int \\frac{1}{1-0.04{v}^{2}}\\cdot \\frac{dv}{dt}\\,dt & =g\\int dt \\\\ \\int \\frac{1}{1-(0.2v)^{2}}\\,dv & =g\\int dt \\\\ \\frac{1}{0.2}\\operatorname{artanh}\u2061(0.2v) & =gt+{C}_{1} \\\\ \\operatorname{artanh}\u2061(0.2v) & =\\frac{1}{5}gt+C \\\\ 0.2v & =\\operatorname{tanh}\u2061(\\frac{1}{5}gt+C) \\\\ v(t) & =5\\operatorname{tanh}\u2061(\\frac{1}{5}gt+C)\\end{aligned}\n$$\n\nwhere $C=0.2{C}_{1}$ is a constant of integration.\n\nWe're told that the body is released from rest. So, we can apply the initial condition $v(0)=0,$ and solve for $C:$\n\n$$\n\\begin{aligned}v(0) & =5\\operatorname{tanh}\u2061(\\frac{1}{5}g\\cdot 0+C) \\\\ 0 & =5\\operatorname{tanh}\u2061(C) \\\\ \\operatorname{tanh}\u2061(C) & =0 \\\\ C & =0\\end{aligned}\n$$\n\nTherefore, we have the following expression for $v(t):$\n\n$$\nv(t)=5\\operatorname{tanh}\u2061(\\frac{1}{5}gt)\n$$\n\nFinally, evaluating $\\frac{1}{5}g,$ we have\n\n$$\nv(t)=5\\operatorname{tanh}\u2061(1.96t).\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "v(t)=5\\operatorname{tanh}\u2061(1.96t)",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

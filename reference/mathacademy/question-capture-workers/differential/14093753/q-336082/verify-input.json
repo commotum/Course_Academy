@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "A supply container of mass $1\\,000\\,\\text{kg}$ is dropped vertically downward with an initial velocity of $25\\,\\text{m/s}$ and instantaneous acceleration of $7.35\\,{\\text{m/s}}^{2}.$ Let $v(t)$ be the container's velocity, in meters per second, $t\\ge 0$ seconds after release, with downward taken as the positive direction.\nThe air resistance on the container is proportional to the square of its velocity and acts in the direction opposite to its motion.\n\nFind the equation for the velocity $v(t).$\nAssume the acceleration due to gravity is $g=9.8\\,{\\text{m/s}}^{2},$ and the only forces acting on the container are the weight due to gravity and drag.",
+  "worked_solution": "First, note that only two forces act on the container: the force due to gravity, given by the weight\n\n$$\nw=mg=1000g,\n$$\n\nand the force due to drag $D,$ which is proportional to the velocity squared (and negative since it acts in the negative direction),\n\n$$\nD=-k{v}^{2},\n$$\n\nwhere $k>0$ is a constant of proportionality. Hence, the resultant force acting on the container is\n\n$$\nF=w+D=1000g-k{v}^{2}.\n$$\n\nApplying Newton's second law, we obtain a separable first-order differential equation:\n\n$$\n\\begin{aligned}F & =ma \\\\ 1000g-k{v}^{2} & =1000\\,\\frac{dv}{dt} \\\\ \\frac{dv}{dt} & =g-\\frac{k}{1000}{v}^{2}\\end{aligned}\n$$\n\nWe're told that, at a particular moment, the container's velocity is $25\\,\\text{m/s}$ and its instantaneous acceleration is $7.35\\,{\\text{m/s}}^{2}.$ Substituting these values into the ODE, we can solve for $k:$\n\n$$\n7.35=g-\\frac{k}{1000}\\cdot (25)^{2}\\,\u27f9\\,k=3.92\n$$\n\nTherefore, we have the following differential equation:\n\n$$\n\\frac{dv}{dt}=g-0.00392{v}^{2}\n$$\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{dv}{dt} & =g(1-0.0004{v}^{2}) \\\\ \\frac{1}{1-0.0004{v}^{2}}\\cdot \\frac{dv}{dt} & =g \\\\ \\int \\frac{1}{1-0.0004{v}^{2}}\\cdot \\frac{dv}{dt}\\,dt & =g\\int dt \\\\ \\int \\frac{1}{1-(0.02v)^{2}}\\,dv & =g\\int dt \\\\ \\frac{1}{0.02}\\operatorname{artanh}\u2061(0.02v) & =gt+{C}_{1} \\\\ \\operatorname{artanh}\u2061(0.02v) & =\\frac{1}{50}gt+C \\\\ 0.02v & =\\operatorname{tanh}\u2061(\\frac{1}{50}gt+C) \\\\ v(t) & =50(\\frac{1}{50}gt+C),\\end{aligned}\n$$\n\nwhere $C=0.02{C}_{1}$ is a constant of integration.\n\nWe're told that the container is released with an initial velocity of $25\\,\\text{m/s}.$ So, we can apply the initial condition $v(0)=25,$ and solve for $C:$\n\n$$\n\\begin{aligned}v(0) & =50(\\frac{1}{50}g\\cdot 0+C) \\\\ 25 & =50\\operatorname{tanh}\u2061(C) \\\\ 0.5 & =\\operatorname{tanh}\u2061(C) \\\\ C & =\\operatorname{artanh}\u2061(0.5)\u22480.549\\end{aligned}\n$$\n\nTherefore, we have the following expression for $v(t):$\n\n$$\nv(t)\u224850\\operatorname{tanh}\u2061(\\frac{1}{50}gt+0.549)\n$$\n\nFinally, evaluating $\\frac{1}{50}g,$ we have\n\n$$\nv(t)=50\\operatorname{tanh}\u2061(0.196t+0.549).\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "v(t)=50\\operatorname{tanh}\u2061(0.196t+0.549)"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "v(t)=\\operatorname{tanh}\u2061(2t+0.549)"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "v(t)=50\\operatorname{tanh}\u2061(0.98t+0.549)"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "v(t)=5\\operatorname{tanh}\u2061(0.49t+0.549)"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "v(t)=0.02\\operatorname{tanh}\u2061(0.196t+0.549)"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "5f1b9bc437c731e2875e63d682014a47024895d847dbbdc5ddb6a2f93257c10d"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14093753,
+    "task_type": "lesson",
+    "topic_id": 6693,
+    "topic_title": "Falling Body Problems With Quadratic Drag",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336082",
+        "problem": "A supply container of mass $1\\,000\\,\\text{kg}$ is dropped vertically downward with an initial velocity of $25\\,\\text{m/s}$ and instantaneous acceleration of $7.35\\,{\\text{m/s}}^{2}.$ Let $v(t)$ be the container's velocity, in meters per second, $t\\ge 0$ seconds after release, with downward taken as the positive direction.\nThe air resistance on the container is proportional to the square of its velocity and acts in the direction opposite to its motion.\n\nFind the equation for the velocity $v(t).$\nAssume the acceleration due to gravity is $g=9.8\\,{\\text{m/s}}^{2},$ and the only forces acting on the container are the weight due to gravity and drag.",
+        "worked_solution": "First, note that only two forces act on the container: the force due to gravity, given by the weight\n\n$$\nw=mg=1000g,\n$$\n\nand the force due to drag $D,$ which is proportional to the velocity squared (and negative since it acts in the negative direction),\n\n$$\nD=-k{v}^{2},\n$$\n\nwhere $k>0$ is a constant of proportionality. Hence, the resultant force acting on the container is\n\n$$\nF=w+D=1000g-k{v}^{2}.\n$$\n\nApplying Newton's second law, we obtain a separable first-order differential equation:\n\n$$\n\\begin{aligned}F & =ma \\\\ 1000g-k{v}^{2} & =1000\\,\\frac{dv}{dt} \\\\ \\frac{dv}{dt} & =g-\\frac{k}{1000}{v}^{2}\\end{aligned}\n$$\n\nWe're told that, at a particular moment, the container's velocity is $25\\,\\text{m/s}$ and its instantaneous acceleration is $7.35\\,{\\text{m/s}}^{2}.$ Substituting these values into the ODE, we can solve for $k:$\n\n$$\n7.35=g-\\frac{k}{1000}\\cdot (25)^{2}\\,\u27f9\\,k=3.92\n$$\n\nTherefore, we have the following differential equation:\n\n$$\n\\frac{dv}{dt}=g-0.00392{v}^{2}\n$$\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{dv}{dt} & =g(1-0.0004{v}^{2}) \\\\ \\frac{1}{1-0.0004{v}^{2}}\\cdot \\frac{dv}{dt} & =g \\\\ \\int \\frac{1}{1-0.0004{v}^{2}}\\cdot \\frac{dv}{dt}\\,dt & =g\\int dt \\\\ \\int \\frac{1}{1-(0.02v)^{2}}\\,dv & =g\\int dt \\\\ \\frac{1}{0.02}\\operatorname{artanh}\u2061(0.02v) & =gt+{C}_{1} \\\\ \\operatorname{artanh}\u2061(0.02v) & =\\frac{1}{50}gt+C \\\\ 0.02v & =\\operatorname{tanh}\u2061(\\frac{1}{50}gt+C) \\\\ v(t) & =50(\\frac{1}{50}gt+C),\\end{aligned}\n$$\n\nwhere $C=0.02{C}_{1}$ is a constant of integration.\n\nWe're told that the container is released with an initial velocity of $25\\,\\text{m/s}.$ So, we can apply the initial condition $v(0)=25,$ and solve for $C:$\n\n$$\n\\begin{aligned}v(0) & =50(\\frac{1}{50}g\\cdot 0+C) \\\\ 25 & =50\\operatorname{tanh}\u2061(C) \\\\ 0.5 & =\\operatorname{tanh}\u2061(C) \\\\ C & =\\operatorname{artanh}\u2061(0.5)\u22480.549\\end{aligned}\n$$\n\nTherefore, we have the following expression for $v(t):$\n\n$$\nv(t)\u224850\\operatorname{tanh}\u2061(\\frac{1}{50}gt+0.549)\n$$\n\nFinally, evaluating $\\frac{1}{50}g,$ we have\n\n$$\nv(t)=50\\operatorname{tanh}\u2061(0.196t+0.549).\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "v(t)=0.02\\operatorname{tanh}\u2061(0.196t+0.549)",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
