@@ -76,6 +76,29 @@ def _formula_html(html):
     return str(soup)
 
 
+def _tag_source_svgs(html):
+    """Keep original SVG bytes through HTML parsers that lowercase SVG attributes."""
+    from image_library import _SVGSpans
+    spans = _SVGSpans(html).spans
+    originals = {index: html[start:end] for index, (start, end) in enumerate(spans)}
+    for index in reversed(range(len(spans))):
+        start, end = spans[index]
+        marked = re.sub(r'<svg\b', '<svg data-capture-svg-source="' + str(index) + '"',
+                        html[start:end], count=1, flags=re.I)
+        html = html[:start] + marked + html[end:]
+    return html, originals
+
+
+def _restore_source_svgs(html, originals):
+    from image_library import _SVGSpans
+    for start, end in reversed(_SVGSpans(html).spans):
+        marker = re.search(r'data-capture-svg-source="(\d+)"', html[start:end])
+        if marker is None or int(marker[1]) not in originals:
+            raise ValueError('Original tutorial SVG bytes cannot be resolved')
+        html = html[:start] + originals[int(marker[1])] + html[end:]
+    return html
+
+
 def html_to_markdown(html):
     """Render source text, math, tables and canonical image paths; discard UI/comments."""
     from bs4 import BeautifulSoup, Comment, NavigableString
@@ -205,6 +228,7 @@ def capture_lesson(reader, state, directory, topic):
         raise AccessBlocked('Lesson source request returned an authentication or challenge page')
     source_file = directory / 'lesson-topic.html'
     source_file.write_text(html)
+    tagged_html, original_svgs = _tag_source_svgs(html)
     library = ImageLibrary(Path(getattr(reader.args, 'math_root', '/media/jake/SSD/EDB/math')))
 
     def fetch(url):
@@ -215,13 +239,13 @@ def capture_lesson(reader, state, directory, topic):
         return item.body(), item.headers.get('content-type', '').split(';')[0]
 
     def render(fragment):
-        cleaned = _formula_html(fragment)
+        cleaned = _restore_source_svgs(_formula_html(fragment), original_svgs)
         localized = capture_html_images(cleaned, page_url=url, fetch_response=fetch,
                                         library=library, evidence_dir=directory,
                                         document_html=html)
         return html_to_markdown(localized)
 
-    definition, tutorials, examples = parse_lesson_html(html, state['topic_id'], render)
+    definition, tutorials, examples = parse_lesson_html(tagged_html, state['topic_id'], render)
     definition['source_file'] = str(source_file.resolve())
     # Resolve by canonical example ID, never by a changed title alone.
     existing = topic.get(':topic/knowledge-points', [])

@@ -226,6 +226,7 @@ class ActivityTests(unittest.TestCase):
         <div class="step" stepId="333" stepType="tutorial" contentId="9">
          <div class="stepHeader"><div class="stepName">Intro</div></div>
          <p>Diagram <img src="/graphics/example.png"></p>
+         <svg viewBox="0 0 7 3" preserveAspectRatio="xMidYMid meet"><path d="M0 0 L7 3"/></svg>
         </div><div class="step" stepId="444" stepType="example" contentId="10">
          <div class="stepName">Example: Compute</div>
          <div class="exampleQuestion"><p>Find it.</p></div>
@@ -250,6 +251,11 @@ class ActivityTests(unittest.TestCase):
             self.assertEqual((directory / 'lesson-topic.html').read_text(), html)
             self.assertIn('images/', state['tutorials'][0]['content'])
             self.assertEqual(len(list((root / 'images').glob('*/*.png'))), 1)
+            svg_files = list((root / 'images').glob('*/*.svg'))
+            self.assertEqual(len(svg_files), 1)
+            self.assertIn('viewBox="0 0 7 3"', svg_files[0].read_text())
+            self.assertIn('preserveAspectRatio="xMidYMid meet"', svg_files[0].read_text())
+            self.assertNotIn('viewbox=', svg_files[0].read_text())
             example_capture = json.loads((directory / 'lesson-example-10.json').read_text())
             self.assertEqual(example_capture['worked_solution'], 'Here it is.')
             self.assertIn('exampleExplanation', example_capture['html'])
