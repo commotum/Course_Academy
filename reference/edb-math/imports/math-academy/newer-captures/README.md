@@ -1,10 +1,10 @@
-# Newer Math Academy captures — prepared
+# Newer Math Academy captures — imported
 
 Supporting documentation is stored under `/home/jake/Developer/Course_Academy/reference/edb-math`. Database files, images, schema, seeds, and prepared transaction EDNs remain under `/media/jake/SSD/EDB/math`; relative data paths below refer to that database folder.
 
-Nothing has been transacted. `math` remains at basis **71**.
+All **61 original batches are committed**, taking `math` from basis **71 to 132**, with **`:org/Math-Academy`** as source. Full post-commit verification passed for content, answer structures and keys, question-bank membership, all six updated lesson routes, multipart ordering, and the retained history of the replaced tutorial. Assistant corrections have not been applied.
 
-`1-originals/` contains **61 ordered EDN batches**, to be transacted as **`:org/Math-Academy`**. All passed EDB’s noncommitting `with` validation. Their contents are:
+`1-originals/` contains **61 ordered EDN batches**, committed as **`:org/Math-Academy`**. All passed EDB’s noncommitting `with` validation. Their contents are:
 
 - **19,700 practice questions** with **23,108 complete answer fields**, original choices, and confirmed keys. **17,445** of those question identities are new to `math`.
 - **2,823 canonical worked examples**, preserving their `e-` identities and canonical-example roles.
@@ -19,6 +19,6 @@ The reviewed input is **2,198 verified completed captures** across the four stre
 
 The original question/example/multipart images are already in `math/images/`. Available tutorial graphics have also been copied there by SHA-256, using the same two-character folders and preserving PNG/SVG extensions. EDN references relative image paths; no image bytes enter EDB. Original captures remain in place.
 
-`2-corrections/` contains **74 later transaction drafts** representing **88 verified correction events on 83 entities**. Review `correction-review.md`. Apply these only **after the original MA content**, using the **assistant source that will be created later**. The assistant source has not been created. Do not attribute these corrections to Jake or MA. All 83 affected original entities are included in the ready original batches.
+`2-corrections/` contains **74 later transaction drafts** representing **88 verified correction events on 83 entities**. Review `correction-review.md`. Apply these only **after the original MA content**, using the **assistant source that will be created later**. The assistant source has not been created. Do not attribute these corrections to Jake or MA. All 83 affected original entities are included in the committed original batches.
 
 Read `full-content-review.md` for sources, transformations, exclusions, and limitations. `original-batches.json` is the exact original transaction order; `correction-batches.json` is the later correction order. `original-preview-validation.json` and `structural-validation.json` record validation. An EDB `with` result showing a hypothetical later basis is a preview; it did not commit.
