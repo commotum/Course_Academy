@@ -65,8 +65,12 @@ class CoveredDropdownOptionTests(unittest.TestCase):
 
     def test_hidden_option_is_rejected(self):
         self.page.locator('#option').evaluate("n=>n.style.display='none'")
-        with self.assertRaisesRegex(ValueError, 'no exposed click target'):
+        # Playwright may reject the hidden option while scrolling, before the
+        # exposed-point check can raise its own error. Neither path may click.
+        with self.assertRaises((ValueError, PlaywrightTimeout)) as rejected:
             click_select_option(self.page.locator('#option').element_handle())
+        if isinstance(rejected.exception, ValueError):
+            self.assertIn('no exposed click target', str(rejected.exception))
         self.assertIsNone(self.page.evaluate('window.selected'))
 
 
