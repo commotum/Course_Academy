@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "The charge $q(t),$ in coulombs, and current $I(t),$ in amperes, in a series RCL circuit are related by the equation\n\n$$\n\\frac{dI}{dt}+5I+6q=12.\n$$\n\nFind an equation for the current in the circuit, expressing your answer in terms of time $t$ (in seconds) only, and given that the initial charge on the capacitor is $\\frac{9}{20}\\,\\text{C}$ and the initial current is $\\frac{9}{10}\\,\\text{A}.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "I(t)=-\\frac{33}{5}{e}^{-3t}+\\frac{15}{2}{e}^{-2t}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "I(t)=-\\frac{24}{5}{e}^{-3t}+\\frac{33}{5}{e}^{-2t}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "I(t)=\\frac{15}{2}{e}^{-3t}-\\frac{33}{5}{e}^{-2t}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "I(t)=\\frac{33}{5}{e}^{-3t}+\\frac{24}{5}{e}^{-2t}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "I(t)=\\frac{15}{2}{e}^{-3t}+\\frac{33}{5}{e}^{-2t}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14094599,
+    "task_type": "lesson",
+    "topic_id": 6726,
+    "topic_title": "Modeling Current in RCL Circuits With Second-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-344046",
+        "problem": "A series RCL circuit has a source electromotive force (EMF) of $10\\,\\text{V},$ a resistor of resistance $13\\,\u03a9,$ a capacitor of capacitance $0.2\\,\\text{F},$ and an inductor of inductance $6\\,\\text{H}.$ Find, in amperes, the amount of current in the circuit after $0.3$ seconds, given that the initial charge on the capacitor is $\\frac{2}{5}\\,\\text{C}$ and the initial current is $\\frac{3}{2}\\,\\text{A}.$\n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+        "worked_solution": "The diagram for our circuit is shown below.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14094599/assets/7c1973678326840251311631211043fc6fab84764e7123e0381b03380cbccd00.png)\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs.\n\n$$\nI=\\frac{dq}{dt}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RCL circuit, there are three voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=13\\,\u03a9.$ So,\n\n$$\n{V}_{R}=13I.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{C}=\\frac{q}{0.2}=5q.\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=6\\,\\text{H}.$ Hence,\n\n$$\n{V}_{L}=6\\,\\frac{dI}{dt}.\n$$\n\nTherefore, by Kirchhoff's voltage law, these values are related by the equation\n\n$$\n10=13I+5q+6\\,\\frac{dI}{dt}.\n$$\n\nDifferentiating with respect to $t,$ the differential equation governing the current in the circuit is\n\n$$\n\\begin{aligned}\\frac{d}{dt}(10) & =\\frac{d}{dt}(13I+5q+6\\,\\frac{dI}{dt}) \\\\ 0 & =13\\,\\frac{dI}{dt}+5\\,\\frac{dq}{dt}+6\\,\\frac{{d}^{2}I}{d{t}^{2}},\\end{aligned}\n$$\n\nwhich, when substituting in $I=\\frac{dq}{dt},$ gives\n\n$$\n\\frac{{d}^{2}I}{d{t}^{2}}+\\frac{13}{6}\\cdot \\frac{dI}{dt}+\\frac{5}{6}I=0.\n$$\n\nThe given equation is a second-order linear homogeneous equation with constant coefficients. To find the general solution, we must take a linear combination of two linearly independent solutions.\n\nAssuming the solutions take the form $I={e}^{\\lambda t},$ we obtain two solutions, namely, $I={e}^{-5t/3}$ and $I={e}^{-t/2}.$\nSo, the general solution in our case is\n\n$$\nI(t)=A{e}^{-5t/3}+B{e}^{-t/2}.\n$$\n\nWe're told that the circuit starts with an initial charge of $\\frac{2}{5}\\,\\text{C}$ on the capacitor and an initial current of $\\frac{3}{2}\\,\\text{A}.$\nNow, solving the Kirchhoff's law equation for $\\frac{dI}{dt},$ we have\n\n$$\n\\frac{dI}{dt}=\\frac{5}{3}-\\frac{13}{6}I-\\frac{5}{6}q.\n$$\n\nSo, we can apply the initial conditions $I(0)=\\frac{3}{2}$ and \n\n$$\n\\begin{aligned}{I}^{\u2032}(0) & =\\frac{5}{3}-\\frac{13}{6}I(0)-\\frac{5}{6}q(0) \\\\  & =\\frac{5}{3}-\\frac{13}{6}\\cdot \\frac{3}{2}-\\frac{5}{6}\\cdot \\frac{2}{5} \\\\  & =-\\frac{23}{12},\\end{aligned}\n$$\n\nand solve for $A$ and $B.$\n\n- Substituting $I(0)=\\frac{3}{2}$ into our general solution gives\n\n$$\n\\begin{aligned}\\frac{3}{2} & =A{e}^{-5(0)/3}+B{e}^{-0/2} \\\\ \\frac{3}{2} & =A+B.\\end{aligned}\n$$\n\n- Differentiating $I,$ we get\n\n$$\n{I}^{\u2032}=-\\frac{5}{3}A{e}^{-5t/3}-\\frac{1}{2}B{e}^{-t/2}\n$$\n\nSubstituting in ${I}^{\u2032}(0)=-\\frac{23}{12}$ gives\n\n$$\n\\begin{aligned}-\\frac{23}{12} & =-\\frac{5}{3}A{e}^{-5(0)/3}-\\frac{1}{2}B{e}^{-0/2} \\\\ -\\frac{23}{12} & =-\\frac{5}{3}A-\\frac{1}{2}B.\\end{aligned}\n$$\n\nPutting the two equations in $A$ and $B$ together gives the following system:\n\n$$\n{\\begin{aligned}\\frac{3}{2}=A+B \\\\ -\\frac{23}{12}=-\\frac{5}{3}A-\\frac{1}{2}B\\end{aligned}\n$$\n\nSolving this system gives $A=1$ and $B=\\frac{1}{2}.$ Therefore, the equation for the current (in amperes) in the circuit is\n\n$$\nI(t)={e}^{-5t/3}+\\frac{1}{2}{e}^{-t/2}.\n$$\n\nFinally, the current in the circuit after $0.3$ seconds, in amperes, is\n\n$$\nI(0.3)={e}^{-5(0.3)/3}+\\frac{1}{2}{e}^{-(0.3)/2}\u22481.037,\n$$\n\nrounded to three decimal places.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "1.037",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
