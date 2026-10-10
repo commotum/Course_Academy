@@ -1,0 +1,71 @@
+{
+  "mode": "verify",
+  "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14094599/assets/5decb376a08854254c72dc477de747210f462643893fdd060eb75b63c943981c.png)\n\nConsider the RCL circuit shown above. Given that the current $I(t)$ in the circuit at time $t$ seconds is given by\n\n$$\nI(t)=A{e}^{-2t}+B{e}^{-t}+\\frac{P}{26}\\operatorname{cos}\u2061(3t)+\\frac{Q}{26}\\operatorname{sin}\u2061(3t),\n$$\n\nwhere $A,$ $B,$ $P,$ and $Q$ are constants, find the value of $P+Q.$\n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+  "worked_solution": "The diagram shows a series RCL circuit with a source electromotive force (EMF) of $5\\operatorname{sin}\u2061(3t)\\,\\text{V},$ a resistor of resistance $3\\,\u03a9,$ a capacitor of capacitance $0.5\\,\\text{F},$ and an inductor of inductance $1\\,\\text{H}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs.\n\n$$\nI=\\frac{dq}{dt}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RCL circuit, there are three voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=3\\,\u03a9.$ So,\n\n$$\n{V}_{R}=3I.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{C}=\\frac{q}{0.5}=2q.\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=1\\,\\text{H}.$ Hence,\n\n$$\n{V}_{L}=1\\,\\frac{dI}{dt}.\n$$\n\nTherefore, by Kirchhoff's voltage law, these values are related by the equation\n\n$$\n5\\operatorname{sin}\u2061(3t)=3I+2q+1\\,\\frac{dI}{dt}.\n$$\n\nDifferentiating with respect to $t,$ the differential equation governing the current in the circuit is\n\n$$\n\\begin{aligned}\\frac{d}{dt}(5\\operatorname{sin}\u2061(3t)) & =\\frac{d}{dt}(3I+2q+1\\,\\frac{dI}{dt}) \\\\ 15\\operatorname{cos}\u2061(3t) & =3\\,\\frac{dI}{dt}+2I+1\\,\\frac{{d}^{2}I}{d{t}^{2}},\\end{aligned}\n$$\n\nwhich, when substituting in $I=\\frac{dq}{dt},$ gives\n\n$$\n\\frac{{d}^{2}I}{d{t}^{2}}+3\\cdot \\frac{dI}{dt}+2I=15\\operatorname{cos}\u2061(3t).\n$$\n\nThe given equation is a second-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution ${I}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{{d}^{2}{I}_{c}}{d{t}^{2}}+3\\cdot \\frac{d{I}_{c}}{dt}+2{I}_{c}=0.\n$$\n\nSolving using an integration technique, such as a trial solution, we obtain the complementary solution\n\n$$\n{I}_{c}(t)=A{e}^{-2t}+B{e}^{-t},\n$$\n\nwhere $A$ and $B$ are constants.\n\n- Next, we find a particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $3t.$ So, we assume that the particular solution is also sinusoidal with argument $3t,$ i.e.,\n\n$$\n{I}_{p}(t)=\\alpha \\operatorname{cos}\u2061(3t)+\\beta \\operatorname{sin}\u2061(3t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute this, as well as\n\n$$\n\\begin{aligned}\\frac{d{I}_{p}}{dt} & =-3\\alpha \\operatorname{sin}\u2061(3t)+3\\beta \\operatorname{cos}\u2061(3t), \\\\ \\frac{{d}^{2}{I}_{p}}{d{t}^{2}} & =-9\\alpha \\operatorname{cos}\u2061(3t)-9\\beta \\operatorname{sin}\u2061(3t).\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}(-9\\alpha \\operatorname{cos}\u2061(3t)-9\\beta \\operatorname{sin}\u2061(3t))+3(-3\\alpha \\operatorname{sin}\u2061(3t)+3\\beta \\operatorname{cos}\u2061(3t))\\,\\,\\, \\\\ +2(\\alpha \\operatorname{cos}\u2061(3t)+\\beta \\operatorname{sin}\u2061(3t)) & =15\\operatorname{cos}\u2061(3t) \\\\ (-7\\alpha +9\\beta )\\operatorname{cos}\u2061(3t)+(-9\\alpha -7\\beta )\\operatorname{sin}\u2061(3t) & =15\\operatorname{cos}\u2061(3t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n{\\begin{aligned}-7\\alpha +9\\beta =15\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}\u2061(3t)) \\\\ -9\\alpha -7\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}\u2061(3t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{21}{26}$ and $\\beta =\\frac{27}{26}.$ Therefore, the particular solution is\n\n$$\n{I}_{p}(t)=-\\frac{21}{26}\\operatorname{cos}\u2061(3t)+\\frac{27}{26}\\operatorname{sin}\u2061(3t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nI(t)={I}_{c}(t)+{I}_{p}(t)=A{e}^{-2t}+B{e}^{-t}-\\frac{21}{26}\\operatorname{cos}\u2061(3t)+\\frac{27}{26}\\operatorname{sin}\u2061(3t).\n$$\n\nTherefore, we have $P=-21$ and $Q=27,$ and\n\n$$\nP+Q=-21+27=6.\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "4"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "12"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-6"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "6"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "8"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "d59b177a4e0f97cdb672bcefff8582e0314694d20d4d5bff5a9583ff39606515"
+  },
+  "displayed_images": [
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14094599/assets/5decb376a08854254c72dc477de747210f462643893fdd060eb75b63c943981c.png"
+  ],
+  "activity_context": {
+    "task_id": 14094599,
+    "task_type": "lesson",
+    "topic_id": 6726,
+    "topic_title": "Modeling Current in RCL Circuits With Second-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-345287",
+        "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14094599/assets/5decb376a08854254c72dc477de747210f462643893fdd060eb75b63c943981c.png)\n\nConsider the RCL circuit shown above. Given that the current $I(t)$ in the circuit at time $t$ seconds is given by\n\n$$\nI(t)=A{e}^{-2t}+B{e}^{-t}+\\frac{P}{26}\\operatorname{cos}\u2061(3t)+\\frac{Q}{26}\\operatorname{sin}\u2061(3t),\n$$\n\nwhere $A,$ $B,$ $P,$ and $Q$ are constants, find the value of $P+Q.$\n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+        "worked_solution": "The diagram shows a series RCL circuit with a source electromotive force (EMF) of $5\\operatorname{sin}\u2061(3t)\\,\\text{V},$ a resistor of resistance $3\\,\u03a9,$ a capacitor of capacitance $0.5\\,\\text{F},$ and an inductor of inductance $1\\,\\text{H}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs.\n\n$$\nI=\\frac{dq}{dt}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RCL circuit, there are three voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=3\\,\u03a9.$ So,\n\n$$\n{V}_{R}=3I.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{C}=\\frac{q}{0.5}=2q.\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=1\\,\\text{H}.$ Hence,\n\n$$\n{V}_{L}=1\\,\\frac{dI}{dt}.\n$$\n\nTherefore, by Kirchhoff's voltage law, these values are related by the equation\n\n$$\n5\\operatorname{sin}\u2061(3t)=3I+2q+1\\,\\frac{dI}{dt}.\n$$\n\nDifferentiating with respect to $t,$ the differential equation governing the current in the circuit is\n\n$$\n\\begin{aligned}\\frac{d}{dt}(5\\operatorname{sin}\u2061(3t)) & =\\frac{d}{dt}(3I+2q+1\\,\\frac{dI}{dt}) \\\\ 15\\operatorname{cos}\u2061(3t) & =3\\,\\frac{dI}{dt}+2I+1\\,\\frac{{d}^{2}I}{d{t}^{2}},\\end{aligned}\n$$\n\nwhich, when substituting in $I=\\frac{dq}{dt},$ gives\n\n$$\n\\frac{{d}^{2}I}{d{t}^{2}}+3\\cdot \\frac{dI}{dt}+2I=15\\operatorname{cos}\u2061(3t).\n$$\n\nThe given equation is a second-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution ${I}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{{d}^{2}{I}_{c}}{d{t}^{2}}+3\\cdot \\frac{d{I}_{c}}{dt}+2{I}_{c}=0.\n$$\n\nSolving using an integration technique, such as a trial solution, we obtain the complementary solution\n\n$$\n{I}_{c}(t)=A{e}^{-2t}+B{e}^{-t},\n$$\n\nwhere $A$ and $B$ are constants.\n\n- Next, we find a particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $3t.$ So, we assume that the particular solution is also sinusoidal with argument $3t,$ i.e.,\n\n$$\n{I}_{p}(t)=\\alpha \\operatorname{cos}\u2061(3t)+\\beta \\operatorname{sin}\u2061(3t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute this, as well as\n\n$$\n\\begin{aligned}\\frac{d{I}_{p}}{dt} & =-3\\alpha \\operatorname{sin}\u2061(3t)+3\\beta \\operatorname{cos}\u2061(3t), \\\\ \\frac{{d}^{2}{I}_{p}}{d{t}^{2}} & =-9\\alpha \\operatorname{cos}\u2061(3t)-9\\beta \\operatorname{sin}\u2061(3t).\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}(-9\\alpha \\operatorname{cos}\u2061(3t)-9\\beta \\operatorname{sin}\u2061(3t))+3(-3\\alpha \\operatorname{sin}\u2061(3t)+3\\beta \\operatorname{cos}\u2061(3t))\\,\\,\\, \\\\ +2(\\alpha \\operatorname{cos}\u2061(3t)+\\beta \\operatorname{sin}\u2061(3t)) & =15\\operatorname{cos}\u2061(3t) \\\\ (-7\\alpha +9\\beta )\\operatorname{cos}\u2061(3t)+(-9\\alpha -7\\beta )\\operatorname{sin}\u2061(3t) & =15\\operatorname{cos}\u2061(3t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n{\\begin{aligned}-7\\alpha +9\\beta =15\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}\u2061(3t)) \\\\ -9\\alpha -7\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}\u2061(3t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{21}{26}$ and $\\beta =\\frac{27}{26}.$ Therefore, the particular solution is\n\n$$\n{I}_{p}(t)=-\\frac{21}{26}\\operatorname{cos}\u2061(3t)+\\frac{27}{26}\\operatorname{sin}\u2061(3t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nI(t)={I}_{c}(t)+{I}_{p}(t)=A{e}^{-2t}+B{e}^{-t}-\\frac{21}{26}\\operatorname{cos}\u2061(3t)+\\frac{27}{26}\\operatorname{sin}\u2061(3t).\n$$\n\nTherefore, we have $P=-21$ and $Q=27,$ and\n\n$$\nP+Q=-21+27=6.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "8",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
