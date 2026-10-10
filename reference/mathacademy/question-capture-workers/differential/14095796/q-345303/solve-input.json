@@ -1,0 +1,48 @@
+{
+  "mode": "solve",
+  "problem": "Find the solution $y(t)$ given that the Laplace transform of the initial value problem\n\n$$\n{y}^{\u2033}(t)+5{y}^{\u2032}(t)+4y(t)={u}_{3}(t),\\,y(0)=0,\\,{y}^{\u2032}(0)=0,\n$$\n\nis given by\n\n$$\n{s}^{2}Y(s)+5sY(s)+4Y(s)=\\frac{{e}^{-3s}}{s}.\n$$\n\nThe solution is $y(t)=u(t-3)\\cdot (\\frac{1}{4}-\\frac{1}{3}{e}^{-(t-3)}\\,+\\,$\n{{field-1}}\n$).$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14095796,
+    "task_type": "lesson",
+    "topic_id": 6728,
+    "topic_title": "Solving Second-Order ODEs With Time-Delayed Forcing Using Laplace Transforms",
+    "examples": [
+      {
+        "math_academy_id": "e-21903",
+        "knowledge_point": "Solving a Second-Order Initial Value Problem With Step Function Forcing",
+        "problem": "Find the solution $y(t)$ given that the Laplace transform of the initial value problem\n\n$$\ny''(t) + y(t) = u_2(t), \\qquad y(0) = 0, \\qquad y'(0)=0\n$$\n\nis given by\n\n$$\ns^2Y(s) + Y(s) = \\dfrac{e^{-2s}}{s}.\n$$",
+        "worked_solution": "Using the transformed equation, we solve for $Y(s)$:\n\n$$\n\\begin{aligned}({s}^{2}+1)Y(s) & =\\frac{{e}^{-2s}}{s} \\\\ Y(s) & ={e}^{-2s}\\cdot \\frac{1}{s({s}^{2}+1)}\\end{aligned}\n$$\n\nTo find the inverse transform, we first use partial fraction decomposition on the algebraic part:\n\n$$\n\\dfrac{1}{s(s^2+1)} = \\dfrac{A}{s} + \\dfrac{Bs+C}{s^2+1}\n$$\n\nSolving for the constants, we find $A=1$, $B=-1$, and $C=0$, giving:\n\n$$\n\\dfrac{1}{s(s^2+1)} = \\dfrac{1}{s} - \\dfrac{s}{s^2+1}\n$$\n\nNow, we apply the inverse Laplace transform. Let \n\n$$\nF(s) = \\frac{1}{s} - \\frac{s}{s^2+1},\n$$\n\nthen, we have \n\n$$\nf(t) = 1 - \\cos(t).\n$$\n\nAccording to the second shifting theorem, \n\n$$\n\\mathcal{L}^{-1}\\{e^{-as}F(s)\\} = u_a(t)f(t-a).\n$$\n\nThus, we have\n\n$$\n\\begin{aligned}y(t) & ={L}^{-1}{{e}^{-2s}(\\frac{1}{s}-\\frac{s}{{s}^{2}+1})} \\\\ y(t) & ={u}_{2}(t)(1-\\operatorname{cos}\u2061(t-2))\\end{aligned}\n$$\n\n$$\ny(t) = u(t-2)\\left(1-\\cos(t-2)\\right).\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14095796/example-21903.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-345251",
+        "problem": "Find the Laplace transform $Y(s)=L{y(t)}$ if\n\n$$\n{y}^{\u2033}+5{y}^{\u2032}+6y=4{u}_{1}(t){e}^{-(t-1)},\\,y(0)=0,\\,{y}^{\u2032}(0)=0,\n$$\n\nwhere ${u}_{1}(t)=u(t-1)$ is the unit step function.",
+        "worked_solution": "First, we take the Laplace transform of both sides and use the addition and scalar multiplication properties of the Laplace transform:\n\n$$\n\\begin{aligned}L{{y}^{\u2033}+5{y}^{\u2032}+6y} & =L{4{u}_{1}(t){e}^{-(t-1)}} \\\\ L{{y}^{\u2033}}+5L{{y}^{\u2032}}+6L{y} & =L{4{u}_{1}(t){e}^{-(t-1)}}\\end{aligned}\n$$\n\nTo calculate $L{{y}^{\u2032}},$ we use the formula for the Laplace transform of a first derivative and the initial condition $y(0)=0:$\n\n$$\nL{{y}^{\u2032}}=sY(s)-y(0)=sY(s)\n$$\n\nNow, to calculate $L{{y}^{\u2033}},$ we use the formula for the Laplace transform of a second derivative and the initial conditions $y(0)=0$ and ${y}^{\u2032}(0)=0:$\n\n$$\nL{{y}^{\u2033}}={s}^{2}Y(s)-sy(0)-{y}^{\u2032}(0)={s}^{2}Y(s)\n$$\n\nFor the right-hand side, we use the second shifting theorem:\n\n$$\nL{u(t-a)f(t-a)}={e}^{-as}F(s)\n$$\n\nHere, $a=1$ and $f(t-1)=4{e}^{-(t-1)}$, so $f(t)=4{e}^{-t}.$ The transform of $f(t)$ is\n\n$$\nF(s)=L{4{e}^{-t}}=\\frac{4}{s+1}.\n$$\n\nApplying the shift, we get\n\n$$\nL{4{u}_{1}(t){e}^{-(t-1)}}={e}^{-s}\\cdot \\frac{4}{s+1}=\\frac{4{e}^{-s}}{s+1}.\n$$\n\nSubstituting these into the differential equation:\n\n$$\n\\begin{aligned}{s}^{2}Y(s)+5sY(s)+6Y(s) & =\\frac{4{e}^{-s}}{s+1} \\\\ ({s}^{2}+5s+6)Y(s) & =\\frac{4{e}^{-s}}{s+1} \\\\ (s+3)(s+2)Y(s) & =\\frac{4{e}^{-s}}{s+1} \\\\ Y(s) & =\\frac{4{e}^{-s}}{(s+3)(s+2)(s+1)}\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "Y(s)=\\frac{4{e}^{-s}}{(s+3)(s+2)(s+1)}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

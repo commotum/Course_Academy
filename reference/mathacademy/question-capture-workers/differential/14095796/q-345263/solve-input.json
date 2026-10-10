@@ -1,0 +1,39 @@
+{
+  "mode": "solve",
+  "problem": "Find the solution $y(t)$ given that the Laplace transform of the initial value problem\n\n$$\n{y}^{\u2033}(t)+y(t)={u}_{1}(t),\\,y(0)=0,\\,{y}^{\u2032}(0)=0,\n$$\n\nis given by\n\n$$\n{s}^{2}Y(s)+Y(s)=\\frac{{e}^{-s}}{s}.\n$$\n\nThe solution is $y(t)=u(t-1)\\,\\cdot \\,($\n{{field-1}}\n$).$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14095796,
+    "task_type": "lesson",
+    "topic_id": 6728,
+    "topic_title": "Solving Second-Order ODEs With Time-Delayed Forcing Using Laplace Transforms",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-345303",
+        "problem": "Find the solution $y(t)$ given that the Laplace transform of the initial value problem\n\n$$\n{y}^{\u2033}(t)+5{y}^{\u2032}(t)+4y(t)={u}_{3}(t),\\,y(0)=0,\\,{y}^{\u2032}(0)=0,\n$$\n\nis given by\n\n$$\n{s}^{2}Y(s)+5sY(s)+4Y(s)=\\frac{{e}^{-3s}}{s}.\n$$\n\nThe solution is $y(t)=u(t-3)\\cdot (\\frac{1}{4}-\\frac{1}{3}{e}^{-(t-3)}\\,+\\,$\n{{field-1}}\n$).$",
+        "worked_solution": "Using the transformed equation, we solve for $Y(s)$:\n\n$$\n\\begin{aligned}{s}^{2}Y(s)+5sY(s)+4Y(s) & =\\frac{{e}^{-3s}}{s} \\\\ ({s}^{2}+5s+4)Y(s) & =\\frac{{e}^{-3s}}{s} \\\\ (s+1)(s+4)Y(s) & =\\frac{{e}^{-3s}}{s} \\\\ Y(s) & ={e}^{-3s}\\cdot \\frac{1}{s(s+1)(s+4)}\\end{aligned}\n$$\n\nTo find the inverse transform, we first use partial fraction decomposition on the algebraic part:\n\n$$\n\\frac{1}{s(s+1)(s+4)}=\\frac{A}{s}+\\frac{B}{s+1}+\\frac{C}{s+4}\n$$\n\nSolving for the constants, we find $A=\\frac{1}{4}$, $B=-\\frac{1}{3}$, and $C=\\frac{1}{12}$, giving:\n\n$$\n\\frac{1}{s(s+1)(s+4)}=\\frac{1}{4s}-\\frac{1}{3(s+1)}+\\frac{1}{12(s+4)}\n$$\n\n \n\nNow, we apply the inverse Laplace transform. Let \n\n$$\nF(s)=\\frac{1}{4s}-\\frac{1}{3(s+1)}+\\frac{1}{12(s+4)},\n$$\n\nthen, we have \n\n$$\nf(t)=\\frac{1}{4}-\\frac{1}{3}{e}^{-t}+\\frac{1}{12}{e}^{-4t}.\n$$\n\nAccording to the second shifting theorem \n\n$$\n{L}^{-1}{{e}^{-as}F(s)}={u}_{a}(t)f(t-a).\n$$\n\nThus, we have\n\n$$\n\\begin{aligned}y(t) & ={L}^{-1}{{e}^{-3s}F(s)} \\\\ y(t) & ={u}_{3}(t)\\,f(t-3) \\\\ y(t) & =u(t-3)(\\frac{1}{4}-\\frac{1}{3}{e}^{-(t-3)}+\\frac{1}{12}{e}^{-4(t-3)}).\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{1}{12}e^{-4(t-3)}",
+            "observed_mathquill_latex": "\\frac{1}{12}e^{-4\\left(t-3\\right)}"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
