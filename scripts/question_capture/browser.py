@@ -187,6 +187,24 @@ def click_select_frame(frame):
     frame.click(position=position)
 
 
+def click_select_option(option):
+    """Click an exposed point of the captured option without forcing overlays."""
+    position = option.evaluate('''n => {
+      const r=n.getBoundingClientRect();
+      if(!n.getClientRects().length || getComputedStyle(n).visibility==='hidden') return null;
+      for(const x of [r.width/2,2,r.width-2,4,r.width-4])
+        for(const y of [r.height/2,2,r.height-2,4,r.height-4]) {
+          if(x<=0 || y<=0 || x>=r.width || y>=r.height) continue;
+          const hit=document.elementFromPoint(r.left+x,r.top+y);
+          if(hit && (hit===n || n.contains(hit))) return {x,y};
+        }
+      return null;
+    }''')
+    if position is None:
+        raise ValueError('Dropdown option has no exposed click target; stop before Submit')
+    option.click(position=position)
+
+
 def deduplicate_math_editor(html):
     """Keep the first identical editor script tag; preserve all other page HTML."""
     seen = set()
@@ -1346,7 +1364,7 @@ class CaptureBrowser:
                         normalize(expected['value'],'text') == normalize(observed['value'],'text'))
                     if not already_selected:
                         click_select_frame(selected)
-                        option.click()
+                        click_select_option(option)
                         observed = selected.evaluate(SELECT_SNAPSHOT)
                     if (expected['errors'] or observed['errors'] or expected['images'] != observed['images'] or
                             normalize(expected['value'],'text') != normalize(observed['value'],'text')):

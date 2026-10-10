@@ -1,0 +1,369 @@
+{
+  "mode": "verify",
+  "problem": "$$\nA=[\\begin{aligned}1 & 1 \\\\ -1 & -1 \\\\ -1 & -1\\end{aligned}],\\,\u03a3=[\\begin{aligned}\\sqrt{6} & 0 \\\\ 0 & 0 \\\\ 0 & 0\\end{aligned}],\\,V=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]\n$$\n\nConsider the matrices shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$  select the correct options in the computations of the matrix $U$ below.From the matrix $\u03a3,$ we deduce the singular values ${\\sigma }_{1}=\\sqrt{6}$ and ${\\sigma }_{2}=0.$\n\nNow, we compute the $1$st column of $U.$ It is given by:\n\n|  |  | {{field-1}} |  |  |\n| --- | --- | --- | --- | --- |\n| ${u}_{1}=\\,\\,$ |  | {{field-2}} |  |  |\n|  |  | $-\\frac{1}{\\sqrt{3}}$ |  |  |\n\nSince the second singular value is ${\\sigma }_{2}=0$, and we do not have the third singular value, we can't use the same formula to find the second and third columns of $U.$ But we know that $U$ must be orthogonal.\n\nHence, we must find vectors $u=[{x}_{1},{x}_{2},{x}_{3}]^{T}$ such that ${u}_{1}\\cdot u=0,$ which is equivalent to\n\n$$\n{{field-3}}.\n$$\n\nChoosing ${x}_{2}$ and ${x}_{3}$ as free variables, the general solution is given by:\n\n|  |  | {{field-4}} |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | {{field-5}} |  |  |\n|  |  | ${x}_{3}$ |  |  |\n\nthat we can rewrite as:\n\n$$\n[\\begin{aligned}{x}_{2}+{x}_{3} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}{{[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]}_{\u23df}}_{{b}_{1}}+{x}_{3}{{[\\begin{aligned}1 \\\\ 0 \\\\ 1\\end{aligned}]}_{\u23df}}_{{b}_{2}}.\n$$\n\nNext, we orthogonalize ${b}_{1}$ and ${b}_{2}$ using the Gram-Schmidt process to get the corresponding orthogonal vectors ${c}_{1}$ and ${c}_{2}.$\n\nLet ${c}_{1}={b}_{1},$ then:\n\n|  |  | {{field-6}} |  |  |\n| --- | --- | --- | --- | --- |\n| ${c}_{2}=\\frac{1}{2}\\,\\,$ |  | $-1$ |  |  |\n|  |  | {{field-7}} |  |  |\n\nFinally, normalizing orthogonal vectors ${c}_{1}$ and ${c}_{2},$ we obtain the second and third columns of $U:$   \n\n| | ${u}_{2}=\\,\\,$ |  | {{field-8}} |  |  |\n| --- | --- | --- | --- | --- |\n|  | $\\frac{1}{\\sqrt{2}}$ |  |  |  |\n|  | {{field-9}} |  |  |  | | | ${u}_{3}=\\,\\,$ |  | {{field-10}} |  |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-11}} |  |  |  |\n|  | $\\frac{2}{\\sqrt{6}}$ |  |  |  | |  |  |  |\n| --- | --- | --- | --- | --- |\n| ${u}_{2}=\\,\\,$ |  | {{field-8}} |  |  |\n|  | $\\frac{1}{\\sqrt{2}}$ |  |  |  |\n|  | {{field-9}} |  |  |  |\n| ${u}_{3}=\\,\\,$ |  | {{field-10}} |  |  |\n|  | {{field-11}} |  |  |  |\n|  | $\\frac{2}{\\sqrt{6}}$ |  |  |  |",
+  "worked_solution": "Recall that if  $A=U\u03a3{V}^{T}$ is a singular value decomposition of a $3\\times 2$ matrix $A,$ then\n\n- $\u03a3$ is a $3\\times 2$ matrix with nonnegative elements on the main diagonal and zeroes outside the main diagonal,\n\n- $U$ is an orthogonal $3\\times 3$ matrix,\n\n- $V$ is an orthogonal $2\\times 2$ matrix.\n\nFrom the matrix $\u03a3,$ we deduce that ${\\sigma }_{1}=\\sqrt{6}$ and ${\\sigma }_{2}=0.$\nAlso, the columns ${v}_{1}$ and ${v}_{2}$ of $V$ give us the right singular vectors of $A.$\n\nTherefore, we can compute the first column of $U$ as follows:\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{\\sqrt{6}}[\\begin{aligned}1 & 1 \\\\ -1 & -1 \\\\ -1 & -1\\end{aligned}][\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{6}}[\\begin{aligned}\\frac{2}{\\sqrt{2}} \\\\ -\\frac{2}{\\sqrt{2}} \\\\ -\\frac{2}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}\\frac{1}{\\sqrt{3}} \\\\ -\\frac{1}{\\sqrt{3}} \\\\ -\\frac{1}{\\sqrt{3}}\\end{aligned}]\\end{aligned}\n$$\n\n  \n\nSince the second singular value is ${\\sigma }_{2}=0$, and we do not have the third singular value, we can't use the same formula to find the second and third columns of $U.$ But we know that $U$ must be orthogonal. Hence, we must find vectors \n\n$$\nu=[\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]\n$$\n\nsuch that ${u}_{1}\\cdot u=0$ and $\u2016u\u2016=1.$\n\nSolving ${u}_{1}\\cdot u=0,$ which is equivalent to\n\n$$\n\\frac{1}{\\sqrt{3}}{x}_{1}-\\frac{1}{\\sqrt{3}}{x}_{2}-\\frac{1}{\\sqrt{3}}{x}_{3}=0\\,\u27f9\\,{x}_{1}-{x}_{2}-{x}_{3}=0,\n$$\n\nwe get the general solution \n\n$$\n[\\begin{aligned}{x}_{2}+{x}_{3} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}{{[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]}_{\u23df}}_{{b}_{1}}+{x}_{3}{{[\\begin{aligned}1 \\\\ 0 \\\\ 1\\end{aligned}]}_{\u23df}}_{{b}_{2}},\n$$\n\nwhere ${x}_{2}$ and ${x}_{3}$ are free variables. \n\nNotice that the two linearly independent solutions ${b}_{1}$ and ${b}_{2}$ are *not* mutually orthogonal. Therefore, we have to orthogonalize them using the Gram-Schmidt process. So, let \n\n$$\n{c}_{1}={b}_{1}=[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}].\n$$\n\nThen,\n\n$$\n\\begin{aligned}{c}_{2} & ={b}_{2}-\\frac{{b}_{2}\\cdot {c}_{1}}{{c}_{1}\\cdot {c}_{1}}{c}_{1}=[\\begin{aligned}1 \\\\ 0 \\\\ 1\\end{aligned}]-\\frac{1}{2}[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]=\\frac{1}{2}[\\begin{aligned}1 \\\\ -1 \\\\ 2\\end{aligned}].\\end{aligned}\n$$\n\nFinally, normalizing orthogonal vectors ${c}_{1}$ and ${c}_{2},$ we obtain the second and third columns of $U:$   \n\n$$\n{u}_{2}=[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} \\\\ 0\\end{aligned}],\\,{u}_{3}=[\\begin{aligned}\\frac{1}{\\sqrt{6}} \\\\ -\\frac{1}{\\sqrt{6}} \\\\ \\frac{2}{\\sqrt{6}}\\end{aligned}]\n$$\n\nSo, the matrix $U$ could be the following:\n\n$$\nU=[\\begin{aligned}\\frac{1}{\\sqrt{3}} & \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{6}} \\\\ -\\frac{1}{\\sqrt{3}} & \\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{6}} \\\\ -\\frac{1}{\\sqrt{3}} & 0 & \\frac{2}{\\sqrt{6}}\\end{aligned}]\n$$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "-\\frac{1}{\\sqrt{3}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "-\\frac{2}{\\sqrt{3}}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{2}{\\sqrt{3}}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{3}}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "-\\frac{1}{\\sqrt{3}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{2}{\\sqrt{3}}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{3}}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "-\\frac{2}{\\sqrt{3}}"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{x}_{1}+{x}_{2}+{x}_{3}=0"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "{x}_{1}-{x}_{2}-{x}_{3}=0"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "-{x}_{1}-{x}_{2}+2{x}_{3}=0"
+        }
+      ]
+    },
+    {
+      "key": "field-4",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{x}_{2}+{x}_{3}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "-{x}_{2}+{x}_{3}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "{x}_{2}-{x}_{3}"
+        }
+      ]
+    },
+    {
+      "key": "field-5",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{x}_{2}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "2{x}_{2}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "-{x}_{2}"
+        }
+      ]
+    },
+    {
+      "key": "field-6",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "-1"
+        }
+      ]
+    },
+    {
+      "key": "field-7",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "-2"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "key": "field-8",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{2}{\\sqrt{2}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{2}}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "-\\frac{1}{\\sqrt{2}}"
+        }
+      ]
+    },
+    {
+      "key": "field-9",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{2}{\\sqrt{2}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "-\\frac{1}{\\sqrt{2}}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{2}}"
+        }
+      ]
+    },
+    {
+      "key": "field-10",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{2}{\\sqrt{6}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{6}}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "-\\frac{2}{\\sqrt{6}}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "-\\frac{1}{\\sqrt{6}}"
+        }
+      ]
+    },
+    {
+      "key": "field-11",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "-\\frac{2}{\\sqrt{6}}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{1}{\\sqrt{6}}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{2}{\\sqrt{6}}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "-\\frac{1}{\\sqrt{6}}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "18092a02e8ef9d6974e2122878e32df5cd3522fee9cc98b10b97025508441eb9"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14095212,
+    "task_type": "lesson",
+    "topic_id": 3133,
+    "topic_title": "Singular Value Decomposition of Larger Matrices",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-363837",
+        "problem": "$$\nA=[\\begin{aligned}1 & 1 \\\\ -1 & -1 \\\\ -1 & -1\\end{aligned}],\\,\u03a3=[\\begin{aligned}\\sqrt{6} & 0 \\\\ 0 & 0 \\\\ 0 & 0\\end{aligned}],\\,V=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]\n$$\n\nConsider the matrices shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$  select the correct options in the computations of the matrix $U$ below.From the matrix $\u03a3,$ we deduce the singular values ${\\sigma }_{1}=\\sqrt{6}$ and ${\\sigma }_{2}=0.$\n\nNow, we compute the $1$st column of $U.$ It is given by:\n\n|  |  | {{field-1}} |  |  |\n| --- | --- | --- | --- | --- |\n| ${u}_{1}=\\,\\,$ |  | {{field-2}} |  |  |\n|  |  | $-\\frac{1}{\\sqrt{3}}$ |  |  |\n\nSince the second singular value is ${\\sigma }_{2}=0$, and we do not have the third singular value, we can't use the same formula to find the second and third columns of $U.$ But we know that $U$ must be orthogonal.\n\nHence, we must find vectors $u=[{x}_{1},{x}_{2},{x}_{3}]^{T}$ such that ${u}_{1}\\cdot u=0,$ which is equivalent to\n\n$$\n{{field-3}}.\n$$\n\nChoosing ${x}_{2}$ and ${x}_{3}$ as free variables, the general solution is given by:\n\n|  |  | {{field-4}} |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | {{field-5}} |  |  |\n|  |  | ${x}_{3}$ |  |  |\n\nthat we can rewrite as:\n\n$$\n[\\begin{aligned}{x}_{2}+{x}_{3} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}{{[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]}_{\u23df}}_{{b}_{1}}+{x}_{3}{{[\\begin{aligned}1 \\\\ 0 \\\\ 1\\end{aligned}]}_{\u23df}}_{{b}_{2}}.\n$$\n\nNext, we orthogonalize ${b}_{1}$ and ${b}_{2}$ using the Gram-Schmidt process to get the corresponding orthogonal vectors ${c}_{1}$ and ${c}_{2}.$\n\nLet ${c}_{1}={b}_{1},$ then:\n\n|  |  | {{field-6}} |  |  |\n| --- | --- | --- | --- | --- |\n| ${c}_{2}=\\frac{1}{2}\\,\\,$ |  | $-1$ |  |  |\n|  |  | {{field-7}} |  |  |\n\nFinally, normalizing orthogonal vectors ${c}_{1}$ and ${c}_{2},$ we obtain the second and third columns of $U:$   \n\n| | ${u}_{2}=\\,\\,$ |  | {{field-8}} |  |  |\n| --- | --- | --- | --- | --- |\n|  | $\\frac{1}{\\sqrt{2}}$ |  |  |  |\n|  | {{field-9}} |  |  |  | | | ${u}_{3}=\\,\\,$ |  | {{field-10}} |  |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-11}} |  |  |  |\n|  | $\\frac{2}{\\sqrt{6}}$ |  |  |  | |  |  |  |\n| --- | --- | --- | --- | --- |\n| ${u}_{2}=\\,\\,$ |  | {{field-8}} |  |  |\n|  | $\\frac{1}{\\sqrt{2}}$ |  |  |  |\n|  | {{field-9}} |  |  |  |\n| ${u}_{3}=\\,\\,$ |  | {{field-10}} |  |  |\n|  | {{field-11}} |  |  |  |\n|  | $\\frac{2}{\\sqrt{6}}$ |  |  |  |",
+        "worked_solution": "Recall that if  $A=U\u03a3{V}^{T}$ is a singular value decomposition of a $3\\times 2$ matrix $A,$ then\n\n- $\u03a3$ is a $3\\times 2$ matrix with nonnegative elements on the main diagonal and zeroes outside the main diagonal,\n\n- $U$ is an orthogonal $3\\times 3$ matrix,\n\n- $V$ is an orthogonal $2\\times 2$ matrix.\n\nFrom the matrix $\u03a3,$ we deduce that ${\\sigma }_{1}=\\sqrt{6}$ and ${\\sigma }_{2}=0.$\nAlso, the columns ${v}_{1}$ and ${v}_{2}$ of $V$ give us the right singular vectors of $A.$\n\nTherefore, we can compute the first column of $U$ as follows:\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{\\sqrt{6}}[\\begin{aligned}1 & 1 \\\\ -1 & -1 \\\\ -1 & -1\\end{aligned}][\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{6}}[\\begin{aligned}\\frac{2}{\\sqrt{2}} \\\\ -\\frac{2}{\\sqrt{2}} \\\\ -\\frac{2}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}\\frac{1}{\\sqrt{3}} \\\\ -\\frac{1}{\\sqrt{3}} \\\\ -\\frac{1}{\\sqrt{3}}\\end{aligned}]\\end{aligned}\n$$\n\n  \n\nSince the second singular value is ${\\sigma }_{2}=0$, and we do not have the third singular value, we can't use the same formula to find the second and third columns of $U.$ But we know that $U$ must be orthogonal. Hence, we must find vectors \n\n$$\nu=[\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]\n$$\n\nsuch that ${u}_{1}\\cdot u=0$ and $\u2016u\u2016=1.$\n\nSolving ${u}_{1}\\cdot u=0,$ which is equivalent to\n\n$$\n\\frac{1}{\\sqrt{3}}{x}_{1}-\\frac{1}{\\sqrt{3}}{x}_{2}-\\frac{1}{\\sqrt{3}}{x}_{3}=0\\,\u27f9\\,{x}_{1}-{x}_{2}-{x}_{3}=0,\n$$\n\nwe get the general solution \n\n$$\n[\\begin{aligned}{x}_{2}+{x}_{3} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}{{[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]}_{\u23df}}_{{b}_{1}}+{x}_{3}{{[\\begin{aligned}1 \\\\ 0 \\\\ 1\\end{aligned}]}_{\u23df}}_{{b}_{2}},\n$$\n\nwhere ${x}_{2}$ and ${x}_{3}$ are free variables. \n\nNotice that the two linearly independent solutions ${b}_{1}$ and ${b}_{2}$ are *not* mutually orthogonal. Therefore, we have to orthogonalize them using the Gram-Schmidt process. So, let \n\n$$\n{c}_{1}={b}_{1}=[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}].\n$$\n\nThen,\n\n$$\n\\begin{aligned}{c}_{2} & ={b}_{2}-\\frac{{b}_{2}\\cdot {c}_{1}}{{c}_{1}\\cdot {c}_{1}}{c}_{1}=[\\begin{aligned}1 \\\\ 0 \\\\ 1\\end{aligned}]-\\frac{1}{2}[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]=\\frac{1}{2}[\\begin{aligned}1 \\\\ -1 \\\\ 2\\end{aligned}].\\end{aligned}\n$$\n\nFinally, normalizing orthogonal vectors ${c}_{1}$ and ${c}_{2},$ we obtain the second and third columns of $U:$   \n\n$$\n{u}_{2}=[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} \\\\ 0\\end{aligned}],\\,{u}_{3}=[\\begin{aligned}\\frac{1}{\\sqrt{6}} \\\\ -\\frac{1}{\\sqrt{6}} \\\\ \\frac{2}{\\sqrt{6}}\\end{aligned}]\n$$\n\nSo, the matrix $U$ could be the following:\n\n$$\nU=[\\begin{aligned}\\frac{1}{\\sqrt{3}} & \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{6}} \\\\ -\\frac{1}{\\sqrt{3}} & \\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{6}} \\\\ -\\frac{1}{\\sqrt{3}} & 0 & \\frac{2}{\\sqrt{6}}\\end{aligned}]\n$$",
+        "actual_result": "Partial Credit",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{1}{\\sqrt{3}}",
+            "submitted_option": "3"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "-\\frac{1}{\\sqrt{3}}",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "{x}_{1}-{x}_{2}-{x}_{3}=0",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-4",
+            "submitted_value": "{x}_{2}+{x}_{3}",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-5",
+            "submitted_value": "{x}_{2}",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-6",
+            "submitted_value": "1",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-7",
+            "submitted_value": "2",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-8",
+            "submitted_value": "\\frac{1}{\\sqrt{2}}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-9",
+            "submitted_value": "0",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-10",
+            "submitted_value": "\\frac{1}{\\sqrt{6}}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-11",
+            "submitted_value": "-\\frac{1}{\\sqrt{6}}",
+            "submitted_option": "3"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
