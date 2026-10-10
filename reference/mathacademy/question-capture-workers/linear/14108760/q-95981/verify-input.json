@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "$$\nA=[\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}],\\,\u03a3=[\\begin{aligned}\\sqrt{10} & 0 \\\\ 0 & 0\\end{aligned}]\n$$\n\nConsider the matrices $A$ and $\u03a3$ shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$ which of the following could be the matrices $U$ and $V?$",
+  "worked_solution": "Let's find the singular value decomposition of $A$ using the usual algorithm.\n\n- **Step 1.** Compute ${A}^{T}\\,A:$\n\n$$\n\\begin{aligned}{A}^{T}\\,A & ={[\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}]}^{T}[\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}2 & -2 \\\\ -1 & 1\\end{aligned}][\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}8 & -4 \\\\ -4 & 2\\end{aligned}]\\end{aligned}\n$$\n\n- **Step 2.** Find the singular values: Notice that from the matrix $\u03a3,$ we can deduce that ${\\sigma }_{1}=\\sqrt{10}$ and ${\\sigma }_{2}=0$ without solving the characteristic equation.\n\n- **Step 3.** Find the right singular vectors of $A$ (i.e., the unit eigenvectors of ${A}^{T}\\,A$):\n\n- For ${\\lambda }_{1}={\\sigma }_{1}^{2}=10,$ we have \n\n$$\n\\begin{aligned}{A}^{T}\\,A-10I & =[\\begin{aligned}8 & -4 \\\\ -4 & 2\\end{aligned}]-10[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-2 & -4 \\\\ -4 & -8\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-10I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{1}=[\\begin{aligned}-\\frac{2}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}}\\end{aligned}].\n$$\n\n- For ${\\lambda }_{2}={\\sigma }_{2}^{2}=0,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-0I & =[\\begin{aligned}8 & -4 \\\\ -4 & 2\\end{aligned}]-0[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}8 & -4 \\\\ -4 & 2\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-0I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{2}=[\\begin{aligned}\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}].\n$$\n\n- **Step 4.** Find the left singular vectors of $A$ (i.e., the unit eigenvectors of $A{A}^{T}$): Since the first singular value is not zero, and we know the corresponding singular right vector, we can compute the first column of $U$ as follows:\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{\\sqrt{10}}[\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}][\\begin{aligned}-\\frac{2}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}}\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{10}}[\\begin{aligned}-\\sqrt{5} \\\\ \\sqrt{5}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\n  \n\nSince the second singular value is ${\\sigma }_{2}=0$, we can't use the same formula to find the second column of $U.$ But we know that $U$ must be orthogonal. Hence, we must find a vector\n\n$$\n{u}_{2}=[\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}]\n$$\n\nsuch that \n\n$$\n{u}_{1}\\cdot {u}_{2}=0\\,\\text{and}\\,\u2016{u}_{2}\u2016=1.\n$$\n\n \n\nSolving ${u}_{1}\\cdot {u}_{2}=0,$ which is equivalent to\n\n$$\n-\\frac{1}{\\sqrt{2}}{x}_{1}+\\frac{1}{\\sqrt{2}}{x}_{2}=0,\n$$\n\nwe get a nonzero solution $[\\begin{aligned}1 \\\\ 1\\end{aligned}].$ Normalizing this vector, we finally obtain the  second column of $U:$ \n\n$$\n{u}_{2}=\\frac{1}{\\sqrt{2}}[\\begin{aligned}1 \\\\ 1\\end{aligned}]=[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\n$$\n\nFinally, we construct the matrices $U$ and $V:$\n\n$$\nU=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}],\\,V=[\\begin{aligned}-\\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}}\\end{aligned}]\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$U=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}}\\end{aligned}]$ and $V=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$U=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$ and $V=[\\begin{aligned}-\\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}}\\end{aligned}]$"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$U=[\\begin{aligned}-\\frac{3}{\\sqrt{10}} & \\frac{1}{\\sqrt{10}} \\\\ \\frac{1}{\\sqrt{10}} & \\frac{3}{\\sqrt{10}}\\end{aligned}]$ and $V=[\\begin{aligned}-\\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}}\\end{aligned}]$"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$U=[\\begin{aligned}1 & 0 \\\\ 0 & -1\\end{aligned}]$ and $V=[\\begin{aligned}\\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}}\\end{aligned}]$"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$U=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$ and $V=[\\begin{aligned}1 & 0 \\\\ 0 & -1\\end{aligned}]$"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "fb61373969778d47b644cc58296d34a3aedd665d8e9ee0fd9b6aad8d64d9a8fe"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14108760,
+    "task_type": "review",
+    "topic_id": 3278,
+    "topic_title": "Singular Value Decomposition of 2x2 Matrices With Zero or Repeated Eigenvalues",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-95981",
+        "problem": "$$\nA=[\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}],\\,\u03a3=[\\begin{aligned}\\sqrt{10} & 0 \\\\ 0 & 0\\end{aligned}]\n$$\n\nConsider the matrices $A$ and $\u03a3$ shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$ which of the following could be the matrices $U$ and $V?$",
+        "worked_solution": "Let's find the singular value decomposition of $A$ using the usual algorithm.\n\n- **Step 1.** Compute ${A}^{T}\\,A:$\n\n$$\n\\begin{aligned}{A}^{T}\\,A & ={[\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}]}^{T}[\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}2 & -2 \\\\ -1 & 1\\end{aligned}][\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}8 & -4 \\\\ -4 & 2\\end{aligned}]\\end{aligned}\n$$\n\n- **Step 2.** Find the singular values: Notice that from the matrix $\u03a3,$ we can deduce that ${\\sigma }_{1}=\\sqrt{10}$ and ${\\sigma }_{2}=0$ without solving the characteristic equation.\n\n- **Step 3.** Find the right singular vectors of $A$ (i.e., the unit eigenvectors of ${A}^{T}\\,A$):\n\n- For ${\\lambda }_{1}={\\sigma }_{1}^{2}=10,$ we have \n\n$$\n\\begin{aligned}{A}^{T}\\,A-10I & =[\\begin{aligned}8 & -4 \\\\ -4 & 2\\end{aligned}]-10[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-2 & -4 \\\\ -4 & -8\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-10I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{1}=[\\begin{aligned}-\\frac{2}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}}\\end{aligned}].\n$$\n\n- For ${\\lambda }_{2}={\\sigma }_{2}^{2}=0,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-0I & =[\\begin{aligned}8 & -4 \\\\ -4 & 2\\end{aligned}]-0[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}8 & -4 \\\\ -4 & 2\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-0I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{2}=[\\begin{aligned}\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}].\n$$\n\n- **Step 4.** Find the left singular vectors of $A$ (i.e., the unit eigenvectors of $A{A}^{T}$): Since the first singular value is not zero, and we know the corresponding singular right vector, we can compute the first column of $U$ as follows:\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{\\sqrt{10}}[\\begin{aligned}2 & -1 \\\\ -2 & 1\\end{aligned}][\\begin{aligned}-\\frac{2}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}}\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{10}}[\\begin{aligned}-\\sqrt{5} \\\\ \\sqrt{5}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\n  \n\nSince the second singular value is ${\\sigma }_{2}=0$, we can't use the same formula to find the second column of $U.$ But we know that $U$ must be orthogonal. Hence, we must find a vector\n\n$$\n{u}_{2}=[\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}]\n$$\n\nsuch that \n\n$$\n{u}_{1}\\cdot {u}_{2}=0\\,\\text{and}\\,\u2016{u}_{2}\u2016=1.\n$$\n\n \n\nSolving ${u}_{1}\\cdot {u}_{2}=0,$ which is equivalent to\n\n$$\n-\\frac{1}{\\sqrt{2}}{x}_{1}+\\frac{1}{\\sqrt{2}}{x}_{2}=0,\n$$\n\nwe get a nonzero solution $[\\begin{aligned}1 \\\\ 1\\end{aligned}].$ Normalizing this vector, we finally obtain the  second column of $U:$ \n\n$$\n{u}_{2}=\\frac{1}{\\sqrt{2}}[\\begin{aligned}1 \\\\ 1\\end{aligned}]=[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\n$$\n\nFinally, we construct the matrices $U$ and $V:$\n\n$$\nU=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}],\\,V=[\\begin{aligned}-\\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}}\\end{aligned}]\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$U=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}}\\end{aligned}]$ and $V=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
