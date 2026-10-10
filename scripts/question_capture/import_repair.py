@@ -11,7 +11,7 @@ import time
 import uuid
 from pathlib import Path
 
-from core import atomic_json
+from core import atomic_json, journal
 from database import StaleBasis
 from provenance import ReconciliationReview
 from solver import Solver, process_token, run_cli
@@ -260,6 +260,22 @@ def repair(args, directory, error):
 
 
 def import_with_repair(db, content, directory, state, args, *, revisit=True,can_repair=None):
+    if getattr(args,'capture_only',False):
+        # Preserve the capture for later source review, without touching old
+        # import intents or invoking reconciliation, previews, repairs or EDB.
+        source = Path(directory)/'content.json'
+        result = {'deferred':True,'reason':'capture-only','database_writes':0,
+                  'content_file':str(source),
+                  'content_sha256':hashlib.sha256(source.read_bytes()).hexdigest()}
+        atomic_json(Path(directory)/'import-deferred.json',result)
+        state.update(capture_only=True,import_deferred=True)
+        if state.get('deferred_error',{}).get('phase') in ('import','queue-after'):
+            state.pop('deferred_error',None)
+        atomic_json(Path(directory)/'state.json',state)
+        journal(args.state_dir/'journal.jsonl','content_import_deferred',
+                task_id=state.get('task_id',content.get('task_id')),directory=str(directory),**result)
+        logging.info('Capture %s saved; database import deferred',content.get('task_id'))
+        return result
     try:
         return db.import_content(content,Path(directory)/'edb-import',not args.preview)
     except Exception as error:

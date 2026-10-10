@@ -39,6 +39,7 @@ def arguments(argv=None):
     parser.add_argument('--resume',type=Path,help='Select a saved run first; saved activities in the live queue also recover automatically')
     parser.add_argument('--limit',type=int,help='Maximum attempted activities; default keeps running until the queue is empty or interrupted')
     parser.add_argument('--preview',action='store_true',help='Preview EDB writes. With run, MA answers are still submitted.')
+    parser.add_argument('--capture-only',action='store_true',help='Run MA activities and save evidence; skip all EDB imports, previews and backlog sweeps. Database lookups are read-only.')
     parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting an activity')
     parser.add_argument('--headless',action='store_true',help='Default is a visible Chromium window')
     parser.add_argument('--browser-spec',help='Optional existing browser cookie source, using the original MA cookiekit syntax')
@@ -114,6 +115,8 @@ def arguments(argv=None):
         parser.error('Invalid limit, timeout, or rest frequency')
     if args.command=='import-saved' and not args.content:
         parser.error('import-saved requires --content')
+    if args.capture_only and (args.command!='run' or args.preview):
+        parser.error('--capture-only requires run and cannot be combined with --preview')
     if args.resume and (args.command!='run' or args.dry_run):
         parser.error('--resume requires run without --dry-run')
     if args.batch_checkpoint and (args.command!='run' or args.dry_run):
@@ -370,7 +373,7 @@ def record_failure(args, browser, state, directory, phase, error):
               'exception_type':type(error).__name__, 'message':str(error),
               'traceback':''.join(traceback.format_exception(type(error),error,error.__traceback__)),
               'configuration':{k:getattr(args,k,None) for k in
-                               ('limit','preview','timeout_ms','solver_timeout','solver_model','seed','ui_delay_ms',
+                               ('limit','preview','capture_only','timeout_ms','solver_timeout','solver_model','seed','ui_delay_ms',
                                 'edb_bin','database')},
               'source_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest()
                                for p in Path(__file__).parent.iterdir() if p.suffix in ('.py','.js')},
@@ -415,6 +418,8 @@ def record_failure(args, browser, state, directory, phase, error):
 def run(args):
     if args.command == 'run':
         clear_queue_wait(args.state_dir)
+        if args.capture_only:
+            logging.info('CAPTURE ONLY: saving source evidence locally; database imports, previews and saved-import sweeps are disabled')
     if args.command=='import-saved':
         content = json.loads(args.content.read_text())
         from import_repair import import_with_repair

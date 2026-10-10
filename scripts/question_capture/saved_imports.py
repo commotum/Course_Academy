@@ -195,6 +195,8 @@ def complete(args, directory, state, result):
     if not changed:
         return
     state[flag] = True
+    if flag == 'import_complete':
+        state.pop('import_deferred',None)
     if state.get('history_complete') or state.get('deferred_error',{}).get('phase') in ('import','queue-after'):
         state.pop('deferred_error',None)
     atomic_json(directory/'state.json',state)
@@ -211,7 +213,7 @@ def sweep(db, args, *, trigger, exclude=(), repair_budget=None):
     created intent artifacts cannot cause an unchanged failure to loop. Only
     Database.import_content may recover, preview, plan, commit or verify.
     """
-    if getattr(args,'dry_run',False):
+    if getattr(args,'dry_run',False) or getattr(args,'capture_only',False):
         return []
     sources = sorted(args.output.glob('*/state.json'))
     states = []

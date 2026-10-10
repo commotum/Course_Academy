@@ -55,6 +55,8 @@ class Database:
         self.env.setdefault('EDB_POSTGRES_URL', 'host=/home/jake/Developer/Course_Academy/.local/edb/run dbname=course_academy user=edb_peer sslmode=disable')
 
     def command(self, command, *options):
+        if getattr(self.args,'capture_only',False) and command not in ('status','query','pull'):
+            raise RuntimeError('Capture-only mode permits only read-only EDB commands')
         return subprocess.run([self.args.edb_bin, command, '--database', self.args.database, *map(str, options)],
                               env=self.env, check=True, capture_output=True, text=True, timeout=210).stdout
 
@@ -351,6 +353,8 @@ class Database:
         return {content['topic_id']:self.topic(content['topic_id'],directory,basis)}
 
     def import_content(self, content, directory, apply=True):
+        if getattr(self.args,'capture_only',False):
+            raise RuntimeError('Database imports are disabled in capture-only mode')
         # Replan ordinary contention locally, including a confirmed rejection
         # after preview. Unknown commit outcomes keep their exact saved intent.
         for attempt in range(3):

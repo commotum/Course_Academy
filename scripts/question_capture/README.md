@@ -5,6 +5,24 @@ add captured **content only** to EDB.
 The entry point is `python scripts/question_capture`; the code is self-contained
 apart from Playwright, the EDB CLI, a solver command, and the native comparison helper.
 
+The fleet is currently configured with `"capture_only": true` in `workers.json`.
+`cap` and `scripts/ma-workers start` therefore capture without importing. MA
+activities, answers, history, assets, progress snapshots and `content.json` are
+saved in the usual per-account folders. Each finished capture writes
+`import-deferred.json` with its content-file hash and marks `import_deferred` in
+its checkpoint. It does not claim a database import completed. Startup and
+end-of-batch import sweeps, EDB previews and import repairs are skipped, including
+recovery of old pending transaction intents. Topic and priority lookups still
+read the existing `course-academy-v2` database; this mode does not use the new
+`math` database as an import target. EDB command execution permits only status,
+query and pull. Review the saved source evidence for a later attributed import.
+
+For an explicit capture-only launch, use `scripts/ma-workers start --capture-only`
+or `python scripts/question_capture run --capture-only`. This mode still performs
+and submits MA activities; `--dry-run` remains queue inspection only. Re-enabling
+fleet imports requires changing the configuration; do that only after adapting
+the importer to the new database and source attribution.
+
 Capture uses an independently copied, verified EDB executable at
 `.local/edb/capture-runtime/edb`. Rebuilding or changing branches in the EDB
 development checkout does not replace it. Its hash and the database compatibility

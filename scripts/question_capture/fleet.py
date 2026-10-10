@@ -83,7 +83,7 @@ def ready(worker):
                 (worker['profile']/'Default/Cookies').is_file())
 
 
-def worker_command(data, worker, *, dry_run=False, limit=None):
+def worker_command(data, worker, *, dry_run=False, limit=None, capture_only=None):
     auth=read_json(worker['auth_file'])
     course_id=auth.get('course_id') or worker.get('course_id')
     command=[sys.executable,'-u',str(PACKAGE),'run','--headless',
@@ -102,6 +102,8 @@ def worker_command(data, worker, *, dry_run=False, limit=None):
     for other in data['workers']:
         command += ['--capture-root',str(other['output'])]
     if dry_run:command.append('--dry-run')
+    if (data.get('capture_only',False) if capture_only is None else capture_only):
+        command.append('--capture-only')
     if limit is not None:command += ['--limit',str(limit)]
     return command
 
@@ -200,7 +202,7 @@ def ensure_layout(data):
     return windows
 
 
-def start(data, workers, *, dry_run=False, limit=None):
+def start(data, workers, *, dry_run=False, limit=None, capture_only=None):
     FLEET_DIR.mkdir(parents=True,exist_ok=True)
     with file_lock(FLEET_DIR/'launch.lock'):
         windows=ensure_layout(data)
@@ -216,17 +218,19 @@ def start(data, workers, *, dry_run=False, limit=None):
                 print(worker['id']+': window is busy; leaving it alone');continue
             pane=candidates[0][0]
             args=[worker['id']]+(['--dry-run'] if dry_run else [])
+            if (data.get('capture_only',False) if capture_only is None else capture_only):
+                args.append('--capture-only')
             if limit is not None:args += ['--limit',str(limit)]
             tmux('respawn-pane','-k','-t',pane,'-c',str(ROOT),invocation(data,'worker',*args))
             print(worker['id']+': starting'+(' (queue inspection only)' if dry_run else ''))
 
 
-def run_worker(data, worker, *, dry_run=False, limit=None):
+def run_worker(data, worker, *, dry_run=False, limit=None, capture_only=None):
     root=worker['supervision'];root.mkdir(parents=True,exist_ok=True);os.chmod(root,0o700)
     with file_lock(root/'fleet-supervisor.lock'):
         if capture_running(worker):
             print('Existing worker owns this account; no duplicate started.');return 0
-        command=worker_command(data,worker,dry_run=dry_run,limit=limit)
+        command=worker_command(data,worker,dry_run=dry_run,limit=limit,capture_only=capture_only)
         stop=threading.Event()
         original={sig:signal.signal(sig,lambda *_:stop.set()) for sig in (signal.SIGINT,signal.SIGTERM)}
         log=root/('console-'+str(time.time_ns())+'.log')
@@ -328,7 +332,7 @@ def worker_status(worker):
     if not running and ready(worker) and not runtime.get('exit_code'):
         if state.get('activity_complete') and not state.get('history_complete'):
             status='HISTORY PENDING'
-        elif state.get('history_complete') and state.get('deferred_error',{}).get('phase')=='import':
+        elif state.get('history_complete') and (state.get('import_deferred') or state.get('deferred_error',{}).get('phase')=='import'):
             status='IMPORT PENDING'
         elif state.get('activity_complete') and state.get('history_complete'):
             status='COMPLETE'
@@ -359,6 +363,7 @@ def worker_status(worker):
         recent_activities=[{'task_id':mid,'date':date,**task} for date,tasks in sorted(read_json(worker['state_dir']/'daily-xp.json').items())
                 for mid,task in reversed(list(tasks.items()))][-20:]
     if state.get('activity_complete') and not state.get('history_complete'):detail='Saving explanations'
+    elif state.get('import_deferred'):detail='Capture saved · import deferred'
     elif state.get('history_complete') and not state.get('import_complete'):detail='Importing capture'
     elif state.get('import_complete'):detail=state.get('task_type','Activity').capitalize()+' complete'
     else:detail='Capturing '+state.get('task_type','activity') if state else 'No activity yet'
@@ -379,6 +384,7 @@ def worker_status(worker):
             'daily_xp':xp,'percent_complete':stats.get('percent_complete'),
             'activity_counts':activity_counts(ledger.values()),'recent_activities':recent_activities,
             'database_questions':import_totals(worker['state_dir']),'detail':detail,
+            'capture_only':'--capture-only' in runtime.get('command',[]),
             'stats_observed_at':stats.get('observed_at')}
 
 
@@ -412,6 +418,7 @@ def main(argv=None):
         sub=subs.add_parser(name);sub.add_argument('workers',nargs='*')
         if name in ('start','worker'):
             sub.add_argument('--dry-run',action='store_true');sub.add_argument('--limit',type=int)
+            sub.add_argument('--capture-only',action='store_true',default=None)
         if name=='start':sub.add_argument('--attach',action='store_true')
         if name=='status':sub.add_argument('--compact',action='store_true');sub.add_argument('--json',action='store_true')
         if name=='save-profile':sub.add_argument('--browser-spec',required=True)
@@ -424,7 +431,7 @@ def main(argv=None):
         parser.error(args.command+' requires one worker name')
     try:
         if args.command=='start':
-            start(data,workers,dry_run=args.dry_run,limit=args.limit)
+            start(data,workers,dry_run=args.dry_run,limit=args.limit,capture_only=args.capture_only)
             if args.attach:os.execvp('tmux',['tmux','attach-session','-t',data['session']])
         elif args.command=='layout':ensure_layout(data)
         elif args.command=='attach':os.execvp('tmux',['tmux','attach-session','-t',data['session']])
@@ -434,7 +441,7 @@ def main(argv=None):
                 if args.command=='check' and not (worker['profile']/'Default/Cookies').exists():
                     print(worker['id']+': not configured');continue
                 save_profile(worker,getattr(args,'browser_spec',None))
-        elif args.command=='worker':return run_worker(data,workers[0],dry_run=args.dry_run,limit=args.limit)
+        elif args.command=='worker':return run_worker(data,workers[0],dry_run=args.dry_run,limit=args.limit,capture_only=args.capture_only)
         elif args.command=='status':
             rows=[worker_status(w) for w in workers]
             print(json.dumps(rows,indent=2) if args.json else render(rows,compact=args.compact,color=sys.stdout.isatty()))
