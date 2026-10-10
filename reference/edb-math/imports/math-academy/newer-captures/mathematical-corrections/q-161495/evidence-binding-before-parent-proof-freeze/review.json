@@ -1,0 +1,179 @@
+{
+  "question": "q-161495",
+  "original_content": {
+    "math_academy_id": "q-161495",
+    "knowledge_point_id": "fa3dc44f-86e9-58c8-96da-3f517ff52007",
+    "knowledge_point": "Representing a Triple Integral as a Mixed or Repeated Integral",
+    "problem": "The triple integral\n\n$$\n{\u222d}_{R}f(x,y,z)\\,\\text{d}V={\\int }_{a}^{b}{\\int }_{\u2217}^{\u2217}{\\int }_{\u2217}^{\u2217}f(x,y,z)\\,dz\\,dx\\,dy\n$$\n\nis defined over the type I region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,0\\le x\\le {y}^{2},\\,-2\\le y\\le 4,\\,0\\le z\\le 1+xy}.\n$$\n\nWhat is $a+b?$",
+    "worked_solution": "A type I region in three-dimensional space can be written as\n\n$$\nR={(x,y,z)\\,:\\,(x,y)\\in D,\\,{u}_{1}(x,y)\\le z\\le {u}_{2}(x,y)}.\n$$\n\nA typical three-dimensional type I region can be visualized schematically, as shown below.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14062541/assets/1bd4b6d0b1aa955921c1f7855d3fbd95417072a67504d9de9be44dfbbed592e5.png)\n\n \n\nIf $R$ is a type I region, we can express the triple integral of $f(x,y,z)$ over $R$ as a mixed integral, as follows:\n\n$$\n{\u222d}_{R}f(x,y,z)\\,\\text{d}V={\u222c}_{D}[{\\int }_{{u}_{1}(x,y)}^{{u}_{2}(x,y)}f(x,y,z)\\,\\text{d}z]\\,\\text{d}A\n$$\n\nIn our case, we have\n\n$$\n{u}_{1}(x,y)=0,\\,{u}_{2}(x,y)=1+xy.\n$$\n\nTherefore, our triple integral can be written as\n\n$$\n{\u222d}_{R}f(x,y,z)\\,\\text{d}V={\u222c}_{D}[{\\int }_{0}^{1+xy}f(x,y,z)\\,dz]dA.\n$$\n\nNow, the region $D$ is given by\n\n$$\nD={(x,y)\\,:\\,0\\le x\\le {y}^{2},\\,-2\\le y\\le 4}.\n$$\n\nTherefore, by expressing the double integral over $D$ as a repeated integral, we get\n\n$$\n\\begin{aligned}{\u222c}_{D}[{\\int }_{0}^{1+xz}f(x,y,z)\\,dz]dA & ={\\int }_{-2}^{4}{\\int }_{0}^{{y}^{2}}[{\\int }_{0}^{1+xy}f(x,y,z)\\,dz]dx\\,\\text{d}y \\\\  & ={\\int }_{-2}^{4}{\\int }_{0}^{{y}^{2}}{\\int }_{0}^{1+xy}f(x,y,z)\\,dz\\,dx\\,dy.\\end{aligned}\n$$\n\nFinally, \n\n$$\na+b=-2+4=2.\n$$",
+    "answer_fields": [
+      {
+        "key": "selection",
+        "type": "radio",
+        "choices": [
+          {
+            "type": "math",
+            "value": "1+xy"
+          },
+          {
+            "type": "math",
+            "value": "6"
+          },
+          {
+            "type": "math",
+            "value": "2"
+          },
+          {
+            "type": "math",
+            "value": "{y}^{2}"
+          },
+          {
+            "type": "math",
+            "value": "1+xy+{y}^{2}"
+          }
+        ],
+        "correct_value": "2",
+        "choices_complete": true,
+        "correct_origin": "model_interpretation"
+      }
+    ],
+    "difficulty": "moderate",
+    "provenance": {
+      "activity_question": "question-161495",
+      "kp_title": "Representing a Triple Integral as a Mixed or Repeated Integral",
+      "kp_href": null
+    }
+  },
+  "corrected_content": {
+    "math_academy_id": "q-161495",
+    "knowledge_point_id": "fa3dc44f-86e9-58c8-96da-3f517ff52007",
+    "knowledge_point": "Representing a Triple Integral as a Mixed or Repeated Integral",
+    "problem": "The triple integral\n\n$$\n{\u222d}_{R}f(x,y,z)\\,\\text{d}V={\\int }_{a}^{b}{\\int }_{\u2217}^{\u2217}{\\int }_{\u2217}^{\u2217}f(x,y,z)\\,dz\\,dx\\,dy\n$$\n\nis defined over the type I region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,0\\le x\\le {y}^{2},\\,-2\\le y\\le 4,\\,0\\le z\\le 1+xy}.\n$$\n\nUse $[a,b]$ as the full nonempty projection of the exactly specified region $R$ onto the $y$ axis. The inner limits may be piecewise. What is $a+b?$",
+    "worked_solution": "The inequalities defining $R$ are retained exactly. For every $y\\in[-2,4]$, choosing $x=0$ leaves the nonempty fiber $0\\le z\\le1$. Thus the full nonempty $y$ projection is $[a,b]=[-2,4]$ and $a+b=2$.\n\nThe base must also satisfy $1+xy\\ge0$. When $y<0$, this requires $x\\le-1/y$. The bounds $y^2$ and $-1/y$ meet at $y=-1$. Hence\n\n$$\\iiint_R f\\,dV=\\int_{-2}^{-1}\\int_0^{-1/y}\\int_0^{1+xy}f(x,y,z)\\,dz\\,dx\\,dy+\\int_{-1}^4\\int_0^{y^2}\\int_0^{1+xy}f(x,y,z)\\,dz\\,dx\\,dy.$$\n\nOn the first branch the $x$ cap is $-1/y$; on the second it is $y^2$. The source solution used $x\\le y^2$ throughout and therefore included reversed $z$ bounds for some negative $y$. Its isolated expression $1+xz$ is also a transcription error: the upper $z$ bound is $1+xy$. These solution errors do not change the correct endpoint sum $2$.",
+    "answer_fields": [
+      {
+        "key": "selection",
+        "type": "radio",
+        "choices": [
+          {
+            "type": "math",
+            "value": "1+xy"
+          },
+          {
+            "type": "math",
+            "value": "6"
+          },
+          {
+            "type": "math",
+            "value": "2"
+          },
+          {
+            "type": "math",
+            "value": "{y}^{2}"
+          },
+          {
+            "type": "math",
+            "value": "1+xy+{y}^{2}"
+          }
+        ],
+        "correct_value": "2",
+        "choices_complete": true,
+        "correct_origin": "model_interpretation"
+      }
+    ],
+    "difficulty": "moderate",
+    "provenance": {
+      "activity_question": "question-161495",
+      "kp_title": "Representing a Triple Integral as a Mixed or Repeated Integral",
+      "kp_href": null
+    }
+  },
+  "rationale": "Retain original R exactly, require its full actual nonempty projection, enforce ordered fibers, and distinguish source printed interval/accepted key from study mathematics. q161496 projection [1,8/3], answer11/3; q161495 projection[-2,4], answer2 with cap split at-1.",
+  "source_sha256": {
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14062541/content.json": "df8e85f93283e693ad2a21bc42b3f0fb14bed76353e507622b3ada74589c45a8",
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14062541/q-161495-after.json": "d48f10e661d912168e7a2d631745b8803637cbad0f663be45b2f3be1b53491bd",
+    "/home/jake/Developer/Course_Academy/.local/question_capture-fleet/mvc-empty-fibers-14062541/independent-math.json": "1e80925b26ca8327fe77de013995fefc02fcdeb7c4b5337f60f7b79d786bc3f6",
+    "/home/jake/Developer/Course_Academy/.local/question_capture-fleet/mvc-empty-fibers-14062541/parent-independent-math.json": "4351897c56c2d8d66e22522290a5727856cedf7585dd96e0eefa08ad0747445e"
+  },
+  "source_grade": "Incorrect",
+  "source_accepted_key_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14062541/q-161495-after.json",
+  "independent_math": "/home/jake/Developer/Course_Academy/.local/question_capture-fleet/mvc-empty-fibers-14062541/independent-math.json",
+  "parent_independent_math": "/home/jake/Developer/Course_Academy/.local/question_capture-fleet/mvc-empty-fibers-14062541/parent-independent-math.json",
+  "original_database_question": {
+    ":db/id": 17592186344229,
+    ":knowledge-point/_questions": [
+      {
+        ":knowledge-point/id": "fa3dc44f-86e9-58c8-96da-3f517ff52007",
+        ":knowledge-point/title": "Representing a Triple Integral as a Mixed or Repeated Integral"
+      }
+    ],
+    ":question/answer-fields": [
+      {
+        ":answer-field/choices": [
+          {
+            ":answer/id": "070f7b7d-4de6-59d3-8631-f2f1dd96090f",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "1+xy",
+            ":db/id": 17592186344231
+          },
+          {
+            ":answer/id": "ac513e85-3ea0-5377-8564-d9e202173bbc",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "{y}^{2}",
+            ":db/id": 17592186344232
+          },
+          {
+            ":answer/id": "93887add-252d-5b7d-ae86-15a575f894eb",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "1+xy+{y}^{2}",
+            ":db/id": 17592186344233
+          },
+          {
+            ":answer/id": "7456e408-cfa2-5ab0-8417-8be0c717e02b",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "2",
+            ":db/id": 17592186344234
+          },
+          {
+            ":answer/id": "2ea23d3f-5ab8-533a-976a-1c4db5d09553",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "6",
+            ":db/id": 17592186344235
+          }
+        ],
+        ":answer-field/correct": {
+          ":answer/id": "7456e408-cfa2-5ab0-8417-8be0c717e02b",
+          ":answer/type": {
+            ":db/ident": ":answer.type/math"
+          },
+          ":answer/value": "2",
+          ":db/id": 17592186344234
+        },
+        ":answer-field/id": "780a5649-9207-53ae-9fbc-ca4e87b29e38",
+        ":answer-field/key": "selection",
+        ":answer-field/type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        ":db/id": 17592186344230
+      }
+    ],
+    ":question/difficulty": {
+      ":db/id": 17592186045465,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    ":question/id": "26712122-d955-52e5-a48d-0c18c4785850",
+    ":question/math-academy-id": "q-161495",
+    ":question/problem": "The triple integral\n\n$$\n{\u222d}_{R}f(x,y,z)\\,\\text{d}V={\\int }_{a}^{b}{\\int }_{\u2217}^{\u2217}{\\int }_{\u2217}^{\u2217}f(x,y,z)\\,dz\\,dx\\,dy\n$$\n\nis defined over the type I region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,0\\le x\\le {y}^{2},\\,-2\\le y\\le 4,\\,0\\le z\\le 1+xy}.\n$$\n\nWhat is $a+b?$",
+    ":question/worked-solution": "A type I region in three-dimensional space can be written as\n\n$$\nR={(x,y,z)\\,:\\,(x,y)\\in D,\\,{u}_{1}(x,y)\\le z\\le {u}_{2}(x,y)}.\n$$\n\nA typical three-dimensional type I region can be visualized schematically, as shown below.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14062541/assets/1bd4b6d0b1aa955921c1f7855d3fbd95417072a67504d9de9be44dfbbed592e5.png)\n\n \n\nIf $R$ is a type I region, we can express the triple integral of $f(x,y,z)$ over $R$ as a mixed integral, as follows:\n\n$$\n{\u222d}_{R}f(x,y,z)\\,\\text{d}V={\u222c}_{D}[{\\int }_{{u}_{1}(x,y)}^{{u}_{2}(x,y)}f(x,y,z)\\,\\text{d}z]\\,\\text{d}A\n$$\n\nIn our case, we have\n\n$$\n{u}_{1}(x,y)=0,\\,{u}_{2}(x,y)=1+xy.\n$$\n\nTherefore, our triple integral can be written as\n\n$$\n{\u222d}_{R}f(x,y,z)\\,\\text{d}V={\u222c}_{D}[{\\int }_{0}^{1+xy}f(x,y,z)\\,dz]dA.\n$$\n\nNow, the region $D$ is given by\n\n$$\nD={(x,y)\\,:\\,0\\le x\\le {y}^{2},\\,-2\\le y\\le 4}.\n$$\n\nTherefore, by expressing the double integral over $D$ as a repeated integral, we get\n\n$$\n\\begin{aligned}{\u222c}_{D}[{\\int }_{0}^{1+xz}f(x,y,z)\\,dz]dA & ={\\int }_{-2}^{4}{\\int }_{0}^{{y}^{2}}[{\\int }_{0}^{1+xy}f(x,y,z)\\,dz]dx\\,\\text{d}y \\\\  & ={\\int }_{-2}^{4}{\\int }_{0}^{{y}^{2}}{\\int }_{0}^{1+xy}f(x,y,z)\\,dz\\,dx\\,dy.\\end{aligned}\n$$\n\nFinally, \n\n$$\na+b=-2+4=2.\n$$"
+  }
+}
