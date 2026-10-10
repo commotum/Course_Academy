@@ -111,7 +111,7 @@ if not d.get('resolved_by_held_next'):
  d['counts'].update(previous_held_remaining=len(old_ids),latest_held=len(latest),overlap_remaining=len(old_ids&latest),latest_only=len(latest-old_ids),unique_held_questions=1161,resolved_by_held_next=103)
  d['database_basis_reviewed']=156;d['updated_at']=datetime.now(timezone.utc).isoformat()
  d['resolved_by_held_next']={'source':SOURCE,'basis_after':156,'manifest':str(ROOT/'manifest.json'),'verification':str(ROOT/'committed-content-verification.json'),'question_ids':sorted(selected)}
- d['remaining_pattern_counts']={'radio_mixed_prose_and_math':381,'radio_prose_only':138,'radio_complete_formula_needs_answer_binding':235,'radio_other_math_matching':332,'radio_set_brace_normalization_ambiguity':0,'select_questions':75,'select_questions_needing_one_field':75,'select_questions_with_normalized_prompt_placement_gaps':0}
+ d['remaining_pattern_counts']={'radio_mixed_prose_and_math':381,'radio_prose_only':138,'radio_complete_formula_needs_answer_binding':235,'radio_other_math_matching':332,'radio_set_brace_normalization_ambiguity':0,'select_questions':75,'select_questions_needing_one_field':69,'select_questions_with_normalized_prompt_placement_gaps':0}
  d['status_note']='Held means the captured version still needs source answer verification. Some IDs already have earlier authoritative content in math. Recovery reconciled 1,343 questions at basis 153 and a further 103 at basis 156 (81 new, 21 updated, one already current); verified IDs have been removed.'
  atomic_json(index,d)
 assert len(read(index)['questions'])==1161 and set(q['math_academy_id'] for q in read(index)['questions']).isdisjoint(selected)

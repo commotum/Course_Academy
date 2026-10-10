@@ -1,0 +1,179 @@
+Remaining held Math Academy questions — analysis at math basis 156
+
+The three prepared batches committed at bases 154, 155 and 156. Readback verified
+103 questions and all 145 fields: 81 new, 21 updates, and q-14144 already current.
+All 103 now reimport as no-ops. All 53 planned retractions matched the receipts;
+176 earlier field/answer entities, containing 670 attributed facts, remain intact.
+The held index now contains exactly 1,161 questions, excluding both completed
+recovery batches. This analysis does not mark any additional question ready.
+
+The main bottleneck is source-to-answer matching. The evidence inventory confirms
+that all 1,161 selected captures have a prompt, worked solution, original answer
+choices, and before-answer HTML. All 279 prompt/solution image references (274
+unique paths) point to existing saved files. Image availability alone is not an
+answer verification or a validation of image meaning.
+
+Current inventory (exclusive categories, totaling 1,161)
+
+  381  Radio choices combining prose and math.
+  138  Radio choices requiring prose/statement matching.
+  235  Radio candidate already present as a complete mathematical expression,
+       but not yet bound to the requested answer.
+  332  Other radio expression/representation/conclusion matching.
+   75  Select questions requiring one or more field-specific source bindings.
+
+These categories describe the prior audit's unresolved matching cases. They do
+not establish whether an old candidate is correct. The current source files were
+reread and checked against the analysis inputs; all IDs were intersected with the
+post-commit held index. No solver answer or correct_origin label was promoted.
+
+Why they remain held
+
+1. Multi-part and paraphrased choices need all clauses checked together.
+
+   The 519 prose/mixed radio questions include 273 choices containing two or more
+   math fragments. Examples include pairs of intercepts, multiple axes, several
+   eigenvalues, or a result together with its classification. A source may state
+   these in separate paragraphs; the old matcher largely expects one terminal
+   expression or a narrowly formatted concluding sentence.
+
+   q-15692 asks for both y-intercepts. The solution explicitly gives
+   (0,4-sqrt(5)) and (0,4+sqrt(5)); the original option joins them with 'and'.
+   q-16455 asks for major and minor axis lengths. The source names 4 sqrt(2)
+   and 2 separately, and their requested order matters.
+
+   A separate overlapping flag finds 83 radio candidates naming Roman-numbered
+   statements. Each statement and its original order must be retained. q-29163
+   says only equation III has no solutions, while its choice says 'III only'.
+   This is a wording/statement-label match, not a new mathematical solution.
+
+2. The requested answer is often not the final mathematical expression.
+
+   Of the 235 literal-match cases, 154 match only earlier source formulas;
+   81 include a match in the final formula. Later formulas can be verification
+   steps, examples, comparison values, or incidental variables. Literal presence
+   alone cannot determine the requested answer or its scope.
+
+   q-31862 asks for row operations. The source explicitly lists both operations,
+   then finishes with the inverse matrix. Selecting the final matrix would be
+   wrong for this prompt.
+   q-31634 ends by identifying t=5 as the only simultaneous stationary time,
+   followed by incidental mentions of t in the prose. The whole conclusion must
+   be bound to the question instead of extracting the last inline variable.
+
+   Twenty-three remaining radio solutions contain an explicit 'correct answer'
+   phrase. Even these can miss narrow extraction rules: q-22428 says
+   'Therefore, the correct answer is, "I and III only."' and then includes an
+   explanatory image. The comma after 'is' and the trailing image defeat the
+   earlier strict patterns. These are promising review candidates, not yet keys.
+
+3. Equivalent source presentations need structure-preserving interpretation.
+
+   The remaining 332 radio math cases include notation differences, equation
+   chains, combined results, and nested mathematical layouts. Across all radio
+   categories, 163 candidate answers contain a matrix/aligned expression, four
+   solutions have nested outer aligned environments, 15 candidates contain
+   measurement units, and 12 answers are Markdown tables. These flags overlap;
+   they are not 332 additional exclusive subcategories.
+
+   q-1393: source concludes 10i-2j+30k; the option is <10,-2,30>.
+   q-1913: source and option put the two derivative terms in opposite order.
+   q-2194: the integral conclusion is wrapped in two aligned environments.
+   q-6836: source gives dy/dx = intermediate fraction = final expression;
+           the option combines the original left side with the final right side.
+   q-3435: one option combines p+q=80 with both roots, stated in different places.
+   q-2939: the source uses km/h across separate text nodes; the option uses one.
+
+   Recovery should copy/match source-supported expressions, preserving complete
+   factors, matrix shape, vectors, constants, signs, domains and units. Broad
+   algebraic equivalence or substring matching would mask genuinely different
+   choices. None of these diagnostic examples authorizes a transaction yet.
+
+4. Select grading often confirms every field except the intentionally wrong one.
+
+   The 75 select questions have 239 fields. The prior source audit confirms 153
+   fields and leaves 86 unconfirmed:
+
+      69 questions need one field (62 need only field-1).
+       5 questions need two fields.
+       1 question, q-335673, needs all seven fields.
+
+   All 75 prompts contain their expected field placeholders. The seven known
+   damaged select layouts were repaired and committed, so missing placement is
+   no longer a blocker in this remainder. Matrix/table geometry still needs
+   review even when every placeholder is present.
+
+   Capture intent is W for 70 selects, skip for three, and C for two. In a common
+   case, q-335460, the captured first field says Incorrect with no source_correct
+   key; the other two fields have explicit Correct/source_correct values. Its
+   worked solution spells out the completed sentence, but the old multi-field
+   matcher handles equations and tables rather than general prose templates.
+
+   The 75 selects group as follows:
+      24 classifications or logical qualifiers
+      17 numeric/symbolic results needing field context
+      14 Fourier formulas or convergence conditions
+      11 proof-line justifications
+       7 variation-of-parameters intermediate forms
+       2 matrix/vector-entry questions
+
+   q-335422 requires the justification for a particular L1-to-L2 proof step.
+   q-337376 asks for the VOP assumed form in field-1, not the final particular
+   solution. The source explicitly presents y_p(x)=u(x)e^(3x) before simplifying.
+   q-343395 asks for an early cosine evaluation, a continuity classification,
+   f(0), and an infinite sum. Its early chain says cos(...*0)=cos(0)=1; a matcher
+   comparing the complete template directly to the chain can miss field-1.
+   q-335673 was skipped, so no directly graded keys were captured; the solution
+   supplies a 2x2 Jacobian, two eigenvalues, and an unstable-saddle classification
+   that must be bound to seven separate fields.
+
+   Multiple-unconfirmed questions:
+   q-335673, q-343341, q-343395, q-343438, q-343445, q-343446.
+
+5. Wrong submissions and genuine discrepancies require separate handling.
+
+   Across the selected captures for all remaining questions, 1,149 were intended
+   wrong, six skipped, four intended correct, and two lack an intent label.
+   Their recorded grades are 1,159 Incorrect, one No Credit, and one Correct.
+   This explains why submissions cannot supply the missing answer authority.
+
+   Two remaining select fields have competing saved agent candidates:
+   - q-339169: 'has a unique solution' versus 'has at most one solution'. The
+     first was submitted and graded Incorrect. The saved source conclusion says
+     'has at most one solution'. Retain the source's exact logical qualifier.
+   - q-342410: 'a regular singular' versus 'an irregular singular' at x=-1.
+     The submitted regular-singular choice was graded Incorrect; the source
+     explicitly calls it irregular singular. Each point needs its own binding.
+
+   q-4772 is a genuine unit disagreement: prompt/options use centimeters, while
+   the worked solution states meters. Do not convert or silently correct it.
+
+   q-64676 has a recorded Correct grade but no submitted-option/value binding in
+   the saved before fields. The grade label alone cannot identify its key.
+
+Recommended next recovery order
+
+  1. Review the 23 explicit-answer-phrase radio cases and the 69 selects missing
+     one field, prioritizing proof-line and VOP bindings. These sets are disjoint.
+  2. Review the 235 literal-expression cases with prompt-aware answer-role checks,
+     including all later qualifications and verification steps.
+  3. Match the 519 prose/compound options clause by clause, retaining Roman labels
+     and the requested order of quantities.
+  4. Handle representation changes and matrix/table entries with structural
+     parsing. Keep source contradictions in a separate review queue.
+
+This is a review priority, not a count of additional ready questions. Every field
+still needs source authority from the same captured question version before a
+new batch is prepared.
+
+Files
+
+  summary.json: exact counts and overlapping diagnostics.
+  questions.json: all 1,161 IDs, original source locations, prompts, solutions,
+                  candidates, field audit details and diagnostic flags.
+  source-hashes.json: original state/content/asset-manifest hashes.
+  image-availability.json: every prompt/solution image reference checked.
+  select-audit-input.json: the current-held-only prior source-field audit.
+  analyze.py: reproducible descriptive analysis; no EDB or answer-key writes.
+  ../committed-content-verification.json: committed content/readback verification.
+  ../commits/: exact intents, receipts, per-batch readbacks and verification.
