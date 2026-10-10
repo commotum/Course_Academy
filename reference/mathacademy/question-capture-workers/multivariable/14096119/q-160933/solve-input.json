@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{\u222c}_{D}(2x-y){e}^{(2x-y)^{2}}\\,dxdy,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(2,3),$ $(4,7),$ $(4,6),$ and $(2,2).$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{e}^{3}-2e+1"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{e}^{3}-{e}^{2}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{e}^{4}-2{e}^{2}+3"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{e}^{4}-e"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "4{e}^{2}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096119,
+    "task_type": "lesson",
+    "topic_id": 4132,
+    "topic_title": "Computing Double Integrals Using a Change of Variables",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-160901",
+        "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{\u222c}_{D}x\\operatorname{sin}\u2061(\\pi (x+y))\\,dxdy,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(0,0),$ $(1,-1),$ $(1,0),$ and $(0,1).$",
+        "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=x\\operatorname{sin}\u2061(\\pi (x+y))\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\,v=x+y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(0,0) & =(0,0+0) \\\\  & =(0,0) \\\\ {T}^{-1}(1,-1) & =(1,1+(-1)) \\\\  & =(1,0) \\\\ {T}^{-1}(1,0) & =(1,1+0) \\\\  & =(1,1) \\\\ {T}^{-1}(0,1) & =(0,0+1) \\\\  & =(0,1)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\u0394={(u,v)\\,:\\,0\\le u\\le 1,\\,0\\le v\\le 1}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14096119/assets/5be3ed729654d60b6084200334086b35f093e461bfa2f0eb9d8f0c323f007fb3.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 \\\\ 1 & 1\\end{aligned}| \\\\  & =1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}x\\operatorname{sin}\u2061(\\pi (x+y))\\,\\text{d}x\\text{d}y & ={\u222c}_{\u0394}u\\operatorname{sin}\u2061(\\pi v)\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}u\\operatorname{sin}\u2061(\\pi v)\\,|1|\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{0}^{1}{\\int }_{0}^{1}u\\operatorname{sin}\u2061(\\pi v)\\,\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{1}\\operatorname{sin}\u2061(\\pi v)\\,\\text{d}v{\\int }_{0}^{1}u\\,\\text{d}u \\\\  & ={[-\\frac{\\operatorname{cos}\u2061(\\pi v)}{\\pi }]}_{0}^{1}\\cdot {[\\frac{1}{2}{u}^{2}]}_{0}^{1}\\,\\text{d}v \\\\  & =\\frac{2}{\\pi }\\cdot \\frac{1}{2} \\\\  & =\\frac{1}{\\pi }.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{1}{\\pi }",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{\u222c}_{D}x\\operatorname{sin}\u2061(x+y)\\,dxdy,\n$$\n\nwhere $D={(x,y)\\,:\\,1\\le x\\le 3,\\,|x+y|\\le \\frac{\\pi }{2}}.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "4"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-6"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "-4"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "8"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096119,
+    "task_type": "lesson",
+    "topic_id": 4132,
+    "topic_title": "Computing Double Integrals Using a Change of Variables",
+    "examples": [
+      {
+        "math_academy_id": "e-12327",
+        "knowledge_point": "Cases When the Transformation Is Inferred From the Domain",
+        "problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\displaystyle\n\\iint\\limits_D \\dfrac{y-x}{x+y} \\: \\mathrm{d}x \\mathrm{d}y,\n$$\n\nwhere $D = \\left\\{ (x,y) \\: : \\: 0 \\leq y-x \\leq 1, \\: 1 \\leq x+y \\leq 4 \\right\\}.$",
+        "worked_solution": "Let's define a transformation $\\mathbf{T}$ as follows:\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14096119/assets/039187200f0587407c67e8663de037df0a9e71155e91c4ea497e9d10d66d9119.png)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n\\iint\\limits_{D} f(x,y) \\ \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\ f(x(u,v), y(u,v)) \\:  \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf{T}.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe inequalities that define the region $D,$\n\n$$\n0 \\leq y-x \\leq 1, \\qquad 1 \\leq x+y \\leq 4,\n$$\n\nsuggest that we use the change of variables \n\n$$\nu = y-x \\quad \\text{and} \\quad v = x+y.\n$$\n\nThis change of variables gives us the *inverse* function $\\mathbf T^{-1},$ that is\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14096119/assets/e7adae8ec845db2e091e9813a338b05895ebca800371df4841d327739863b863.png)\n\n**Step 2**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & ={(u,v)\\,:\\,0\\le u\\le 1,\\,1\\le v\\le 4}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}.$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-1 & \\text{\u00a0}\\text{\u00a0}1 \\\\ 1 & 1\\end{aligned}| \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $\\mathbf T.$\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} = -\\dfrac{1}{2}.\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$ In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral.\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}\\frac{y-x}{x+y}\\,\\text{d}x\\text{d}y & ={\u222c}_{\u0394}\\frac{u}{v}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}\\frac{u}{v}\\,|-\\frac{1}{2}|\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}[{\\int }_{0}^{1}\\frac{u}{v}\\,du]dv \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}\\frac{1}{v}[{\\int }_{0}^{1}u\\,du]dv \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}\\frac{1}{v}{[\\frac{{u}^{2}}{2}]}_{0}^{1}\\,dv \\\\  & =\\frac{1}{4}{\\int }_{1}^{4}\\frac{1}{v}\\,dv \\\\  & =\\frac{1}{4}\\operatorname{ln}\u2061|v|\\,{|}_{1}^{4} \\\\  & =\\frac{1}{4}(\\operatorname{ln}\u20614-\\operatorname{ln}\u20611) \\\\  & =\\frac{1}{2}\\,\\operatorname{ln}\u20612.\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14096119/example-12327.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-38369",
+        "problem": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD={(x,y)\\,:\\,0\\le 2x+y\\le 5,\\,0\\le y\\le 1}.\n$$\n\n  \n\nBy performing the change of variables $u=2x+y$ and $v=y,$ the integral \n\n$$\n{\u222c}_{D}(2xy+{x}^{2})\\,dx\\,dy\n$$\n\ncan be written in terms of $u$ and $v$ as",
+        "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=2x+y,\\,v=y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & ={(u,v)\\,:\\,0\\le u\\le 5,\\,0\\le v\\le 1}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}2 & 1 \\\\ 0 & \\text{\u00a0}\\text{\u00a0}1\\end{aligned}| \\\\  & =2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nIn this case, we first need to solve the transformation equations\n\n$$\nu=2x+y,\\,v=y\n$$\n\n \nfor $x$ and $y$, which gives\n\n$$\nx=\\frac{u-v}{2},\\,y=v.\n$$\n\n \n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(2xy+{x}^{2})\\,dx\\,dy & ={\u222c}_{\u0394}[2\\cdot \\frac{u-v}{2}\\cdot v+{(\\frac{u-v}{2})}^{2}]|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}(uv-{v}^{2}+\\frac{{u}^{2}-2uv+{v}^{2}}{4})\\frac{1}{2}\\,du\\,dv \\\\  & =\\frac{1}{8}{\\int }_{0}^{1}{\\int }_{0}^{5}(2uv-3{v}^{2}+{u}^{2})\\,du\\,dv.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "\\frac{1}{8}{\\int }_{0}^{1}{\\int }_{0}^{5}(2uv-3{v}^{2}+{u}^{2})\\,du\\,dv",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

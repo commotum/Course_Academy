@@ -1,0 +1,71 @@
+{
+  "mode": "verify",
+  "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{\u222c}_{D}(2x-y){e}^{(2x-y)^{2}}\\,dxdy,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(2,3),$ $(4,7),$ $(4,6),$ and $(2,2).$",
+  "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=(2x-y){e}^{(2x-y)^{2}}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\,v=2x-y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(2,3) & =(2,2(2)-3) \\\\  & =(2,1) \\\\ {T}^{-1}(4,7) & =(4,2(4)-7) \\\\  & =(4,1) \\\\ {T}^{-1}(4,6) & =(4,2(4)-6) \\\\  & =(4,2) \\\\ {T}^{-1}(2,2) & =(2,2(2)-2) \\\\  & =(2,2)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\u0394={(u,v)\\,:\\,2\\le u\\le 4,\\,1\\le v\\le 2}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14096119/assets/e11ecccc49394915edd90a58c77ac96e08f22eb5a41d7e7eb6bdbb5af2890c94.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 \\\\ 2 & -1\\end{aligned}| \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=-1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(2x-y){e}^{(2x-y)^{2}}\\,\\text{d}x\\text{d}y & ={\u222c}_{\u0394}v{e}^{{v}^{2}}\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}v{e}^{{v}^{2}}\\,|-1|\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{1}^{2}{\\int }_{2}^{4}v{e}^{{v}^{2}}\\,\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{1}^{2}v{e}^{{v}^{2}}\\,\\text{d}v{\\int }_{2}^{4}\\,\\text{d}u \\\\  & ={[\\frac{1}{2}{e}^{{v}^{2}}]}_{1}^{2}\\cdot {[u]}_{2}^{4} \\\\  & =\\frac{1}{2}({e}^{4}-e)\\cdot 2 \\\\  & ={e}^{4}-e.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{e}^{3}-2e+1"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{e}^{3}-{e}^{2}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{e}^{4}-2{e}^{2}+3"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{e}^{4}-e"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "4{e}^{2}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "2f8644a67fb542274d666240e590f7146f0946a205f890c19b60eea30ce8152b"
+  },
+  "displayed_images": [
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14096119/assets/e11ecccc49394915edd90a58c77ac96e08f22eb5a41d7e7eb6bdbb5af2890c94.png"
+  ],
+  "activity_context": {
+    "task_id": 14096119,
+    "task_type": "lesson",
+    "topic_id": 4132,
+    "topic_title": "Computing Double Integrals Using a Change of Variables",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-160933",
+        "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{\u222c}_{D}(2x-y){e}^{(2x-y)^{2}}\\,dxdy,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(2,3),$ $(4,7),$ $(4,6),$ and $(2,2).$",
+        "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=(2x-y){e}^{(2x-y)^{2}}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\,v=2x-y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(2,3) & =(2,2(2)-3) \\\\  & =(2,1) \\\\ {T}^{-1}(4,7) & =(4,2(4)-7) \\\\  & =(4,1) \\\\ {T}^{-1}(4,6) & =(4,2(4)-6) \\\\  & =(4,2) \\\\ {T}^{-1}(2,2) & =(2,2(2)-2) \\\\  & =(2,2)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\u0394={(u,v)\\,:\\,2\\le u\\le 4,\\,1\\le v\\le 2}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14096119/assets/e11ecccc49394915edd90a58c77ac96e08f22eb5a41d7e7eb6bdbb5af2890c94.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 \\\\ 2 & -1\\end{aligned}| \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=-1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(2x-y){e}^{(2x-y)^{2}}\\,\\text{d}x\\text{d}y & ={\u222c}_{\u0394}v{e}^{{v}^{2}}\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}v{e}^{{v}^{2}}\\,|-1|\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{1}^{2}{\\int }_{2}^{4}v{e}^{{v}^{2}}\\,\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{1}^{2}v{e}^{{v}^{2}}\\,\\text{d}v{\\int }_{2}^{4}\\,\\text{d}u \\\\  & ={[\\frac{1}{2}{e}^{{v}^{2}}]}_{1}^{2}\\cdot {[u]}_{2}^{4} \\\\  & =\\frac{1}{2}({e}^{4}-e)\\cdot 2 \\\\  & ={e}^{4}-e.\\end{aligned}\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "4{e}^{2}",
+            "submitted_option": "e",
+            "observed_selected_option": "e"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
