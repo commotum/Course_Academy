@@ -1,0 +1,45 @@
+{
+  "mode": "solve",
+  "problem": "$$\n{x}^{\u2032}(t)=[\\begin{aligned}-2 & 0 \\\\ 5 & 3\\end{aligned}]x(t)+\\overset{f(t)}{\\overset{\u23de}{[\\begin{aligned}2{e}^{t} \\\\ 3{e}^{t}\\end{aligned}]}},\\,\u03a6=[\\begin{aligned}0 & {e}^{-2t} \\\\ {e}^{3t} & -{e}^{-2t}\\end{aligned}]\n$$\n\nConsider the system of differential equations and the fundamental matrix of the corresponding homogeneous system above. Using the method of variation of parameters, compute ${\u03a6}^{-1}\\,f(t)$ and the particular solution ${x}_{p}(t)$ of the system.\n\n| ${\u03a6}^{-1}\\,f(t)=\\,\\,$ |  | {{field-1}} |  | $\\,,\\,$ | ${x}_{p}(t)={e}^{t}\\,\\,$ |  | {{field-2}} |  |  |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n|  | $2{e}^{3t}$ |  |  | $\\frac{-19}{6}$ |  |  |  |  |  |",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    },
+    {
+      "key": "field-2",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14093913,
+    "task_type": "review",
+    "topic_id": 3187,
+    "topic_title": "Solving Systems of ODEs Using Variation of Parameters",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-337219",
+        "problem": "$$\n{x}^{\u2032}(t)=[\\begin{aligned}3 & -2 \\\\ 2 & -2\\end{aligned}]x(t)+[\\begin{aligned}5t \\\\ 7t\\end{aligned}]\n$$\n\nConsider the system of differential equations. Using the method of variation of parameters, the general solution of the equation can be written in the form\n\n| $x(t)={c}_{1}[\\begin{aligned}1 \\\\ 2\\end{aligned}]{e}^{-t}+{c}_{2}[\\begin{aligned}2 \\\\ 1\\end{aligned}]{e}^{2t}+\\,\\,\\frac{1}{4}$ |  | $8t-14$ |  | . |\n| --- | --- | --- | --- | --- |\n|  | {{field-1}} |  |  |  |",
+        "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nNotice that we are given that\n\n$$\n{x}_{c}(t)={c}_{1}[\\begin{aligned}1 \\\\ 2\\end{aligned}]{e}^{-t}+{c}_{2}[\\begin{aligned}2 \\\\ 1\\end{aligned}]{e}^{2t}.\n$$\n\nWe'll look for a particular solution in the form\n\n$$\n{x}_{p}(t)=\u03a6\\,u(t)\n$$\n\nwhere $\u03a6$ is a fundamental matrix for the corresponding homogeneous system, $f(t)$ is the forcing column vector and\n\n$$\nu(t)=\\int {\u03a6}^{-1}\\,f(t)\\,\\text{d}t.\n$$\n\nIn our case,\n\n$$\n\u03a6=[\\begin{aligned}{e}^{-t} & 2{e}^{2t} \\\\ 2{e}^{-t} & {e}^{2t}\\end{aligned}],\\,f(t)=[\\begin{aligned}5t \\\\ 7t\\end{aligned}].\n$$\n\nSince $\u03a6$ is a fundamental matrix, it must be invertible. Using the formula for the inverse of a $2\\times 2$ matrix, we get the following:\n\n$$\n\\begin{aligned}{\u03a6}^{-1} & =\\frac{1}{{e}^{-t}\\cdot {e}^{2t}-2{e}^{2t}\\cdot 2{e}^{-t}}[\\begin{aligned}{e}^{2t} & -2{e}^{2t} \\\\ -2{e}^{-t} & {e}^{-t}\\end{aligned}] \\\\  & =-\\frac{{e}^{-t}}{3}[\\begin{aligned}{e}^{2t} & -2{e}^{2t} \\\\ -2{e}^{-t} & {e}^{-t}\\end{aligned}] \\\\  & =\\frac{1}{3}[\\begin{aligned}-{e}^{t} & 2{e}^{t} \\\\ 2{e}^{-2t} & -{e}^{-2t}\\end{aligned}] \\\\ {\u03a6}^{-1}\\,f(t) & =\\frac{1}{3}[\\begin{aligned}-{e}^{t} & 2{e}^{t} \\\\ 2{e}^{-2t} & -{e}^{-2t}\\end{aligned}][\\begin{aligned}5t \\\\ 7t\\end{aligned}] \\\\  & =[\\begin{aligned}3t{e}^{t} \\\\ t{e}^{-2t}\\end{aligned}]\\end{aligned}\n$$\n\nNow, using our formula for $u(t),$ we obtain\n\n$$\n\\begin{aligned}u(t) & =\\int {\u03a6}^{-1}\\,f(t)\\,\\text{d}t \\\\  & =\\int [\\begin{aligned}3t{e}^{t} \\\\ t{e}^{-2t}\\end{aligned}]\\,\\text{d}t \\\\  & =[\\begin{aligned}\\int 3t{e}^{t}\\,\\text{d}t \\\\ \\int t{e}^{-2t}\\,\\text{d}t\\end{aligned}].\\end{aligned}\n$$\n\nIntegrating the components by parts, we get the following:\n\n- For the first component, let $u=3t$ and $\\text{d}v={e}^{t}\\,\\text{d}t.$ Then, $\\text{d}u=3\\,\\text{d}t$ and $v={e}^{t}.$ So,\n\n$$\n\\begin{aligned}\\int 3t{e}^{t}\\,\\text{d}t & =(3t)\\cdot {e}^{t}-\\int {e}^{t}\\cdot (3\\,\\text{d}t) \\\\  & =3t{e}^{t}-3{e}^{t} \\\\  & =3{e}^{t}(t-1).\\end{aligned}\n$$\n\n- For the second component, let $u=t$ and $\\text{d}v={e}^{-2t}\\,\\text{d}t.$ Then, $\\text{d}u=1\\,\\text{d}t$ and $v=-\\frac{1}{2}{e}^{-2t}.$ So,\n\n$$\n\\begin{aligned}\\int t{e}^{-2t}\\,\\text{d}t & =(t)\\cdot (-\\frac{{e}^{-2t}}{2})-\\int (-\\frac{{e}^{-2t}}{2})\\cdot (1\\,\\text{d}t) \\\\  & =-\\frac{t{e}^{-2t}}{2}-\\frac{{e}^{-2t}}{4} \\\\  & =-\\frac{{e}^{-2t}}{4}(2t+1).\\end{aligned}\n$$\n\nTherefore, our particular solution is\n\n$$\n\\begin{aligned}{x}_{p}(t) & =\u03a6\\,u(t) \\\\  & =[\\begin{aligned}{e}^{-t} & 2{e}^{2t} \\\\ 2{e}^{-t} & {e}^{2t}\\end{aligned}][\\begin{aligned}3{e}^{t}(t-1) \\\\ -\\frac{{e}^{-2t}}{4}(2t+1)\\end{aligned}] \\\\  & =\\frac{1}{4}[\\begin{aligned}12(t-1)-2(2t+1) \\\\ 24(t-1)-(2t+1)\\end{aligned}] \\\\  & =\\frac{1}{4}[\\begin{aligned}8t-14 \\\\ 22t-25\\end{aligned}].\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "22t-25",
+            "observed_mathquill_latex": "22t-25"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
