@@ -1,0 +1,65 @@
+{
+  "mode": "solve",
+  "problem": "A store collected data about its profits (in thousands of dollars) for the year's first five months. This data is shown below.\n\n| Month $(x)$ | **$1$** | **$2$** | **$3$** | **$4$** | **$5$** |\n| --- | --- | --- | --- | --- | --- |\n| Profit $(y)$ | $12$ | $15$ | $16$ | $15$ | $20$ |\n\nFind the line of the form $y={\\beta }_{0}+{\\beta }_{1}x$ that best fits the data above. According to the model, what will be the profit in the $6$th month, assuming the trend continues?\n\n*Hint: You can use the fact that*\n\n$$\n({X}^{T}\\,X)^{-1}=\\frac{1}{10}[\\begin{aligned}11 & -3 \\\\ -3 & 1\\end{aligned}],\\,{X}^{T}y=[\\begin{aligned}78 \\\\ 250\\end{aligned}],\n$$\n\n*where $X$ is the corresponding design matrix and $y$ is the observation vector.*",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$$24\\,600$"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$$34\\,000$"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$$20\\,400$"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$$37\\,300$"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$$39\\,200$"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14095028,
+    "task_type": "review",
+    "topic_id": 2169,
+    "topic_title": "Linear Regression With Matrices",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-41742",
+        "problem": "A store collected data about its profits (in thousands of dollars) for the first five months since opening. This data is shown below.\n\n| Month $(x)$ | **$1$** | **$2$** | **$3$** | **$4$** | **$5$** |\n| --- | --- | --- | --- | --- | --- |\n| Profit $(y)$ | $8.3$ | $5.1$ | $10.9$ | $10.7$ | $9.5$ |\n\nFind the line of the form $y={\\beta }_{0}+{\\beta }_{1}x$ that best fits the data above. According to the model, what will be the profit in the $6$th month, assuming that the trend continues?\n\n*Hint: You can use the fact that*\n\n$$\n({X}^{T}\\,X)^{-1}=\\frac{1}{10}[\\begin{aligned}11 & -3 \\\\ -3 & 1\\end{aligned}],\\,{X}^{T}y=[\\begin{aligned}44.5 \\\\ 141.5\\end{aligned}],\n$$\n\n*where $X$ is the corresponding design matrix and $y$ is the observation vector.*",
+        "worked_solution": "The coefficients of the line that best fits the data can be found as the least-squares solution $\\overset{^}{\\beta }$ to the system \n\n$$\n\\begin{aligned}\\overset{X}{\\overset{\u23de}{[\\begin{aligned}1 & 1 \\\\ 1 & 2 \\\\ 1 & 3 \\\\ 1 & 4 \\\\ 1 & 5\\end{aligned}]}}\\overset{\\beta }{\\overset{\u23de}{[\\begin{aligned}{\\beta }_{0} \\\\ {\\beta }_{1}\\end{aligned}]}} & =\\overset{y}{\\overset{\u23de}{[\\begin{aligned}8.3 \\\\ 5.1 \\\\ 10.9 \\\\ 10.7 \\\\ 9.5\\end{aligned}]}},\\end{aligned}\n$$\n\nwhere $X$ is the design matrix, $\\beta $ is the parameter vector, and $y$ is the observation vector.\n\nPre-multiplying this equation by ${X}^{T},$ we obtain the corresponding normal equation\n\n$$\n{X}^{T}\\,X\\overset{^}{\\beta }={X}^{T}y.\n$$\n\nSince the columns of $X$ are linearly independent, the matrix ${X}^{T}X$ is invertible and \n\n$$\n\\overset{^}{\\beta }=({X}^{T}\\,X)^{-1}{X}^{T}y.\n$$\n\nSubstituting the given values of $({X}^{T}X)^{-1}$ and ${X}^{T}y$ into the formula, we get\n\n$$\n\\begin{aligned}\\overset{^}{\\beta } & =({X}^{T}\\,X)^{-1}{X}^{T}\\,y \\\\  & =\\frac{1}{10}[\\begin{aligned}11 & -3 \\\\ -3 & 1\\end{aligned}]\\cdot [\\begin{aligned}44.5 \\\\ 141.5\\end{aligned}] \\\\  & =[\\begin{aligned}6.5 \\\\ 0.8\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, we have the line $y=6.5+0.8x.$\n\nFinally, to predict the profit in the $6$th month, we substitute $x=6$ into the equation of the line:\n\n$$\n\\begin{aligned}y & =6.5+0.8(6) \\\\  & =11.3\\end{aligned}\n$$\n\nSo, according to the model, the profit in the $6$th month will be $$11\\,300.$\n\n**Note**: Since we're extrapolating ($x=6$ is not within the range of the original set of $x$-values), our result *may* be unreliable.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$$11\\,300$",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
