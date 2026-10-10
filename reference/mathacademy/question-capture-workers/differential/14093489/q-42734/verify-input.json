@@ -1,0 +1,78 @@
+{
+  "mode": "verify",
+  "problem": "Let $V=C[\\pi ,2\\pi ]$ be the vector space of all functions that are continuous on $[\\pi ,2\\pi ],$ equipped with the inner product \n\n$$\n\u27e8x(t),y(t)\u27e9={\\int }_{\\pi }^{2\\pi }x(t)y(t)\\,\\text{d}t.\n$$\n\nCalculate the norm of the vector $f(t)=\\operatorname{cos}\u2061t.$",
+  "worked_solution": "The norm of a vector $f(t)$ with respect to an inner product $\u27e8\\cdot ,\\cdot \u27e9$ is defined as\n\n$$\n\u2016f(t)\u2016=\\sqrt{\u27e8f(t),f(t)\u27e9}.\n$$\n\nComputing the inner product using our definition, we get\n\n$$\n\\begin{aligned}\u27e8f(t),f(t)\u27e9 & ={\\int }_{\\pi }^{2\\pi }(f(t))^{2}\\,\\text{d}t \\\\  & ={\\int }_{\\pi }^{2\\pi }\\,{cos}^{2}\u2061t\\,\\text{d}t \\\\  & ={\\int }_{\\pi }^{2\\pi }(\\frac{1+\\operatorname{cos}\u20612t}{2})\\,\\text{d}t \\\\  & ={\\int }_{\\pi }^{2\\pi }(\\frac{1}{2}+\\frac{\\operatorname{cos}\u20612t}{2})\\,\\text{d}t \\\\  & =(\\frac{t}{2}+\\frac{\\operatorname{sin}\u20612t}{4}){|}_{\\pi }^{2\\pi } \\\\  & =(\\frac{2\\pi }{2}+\\frac{\\operatorname{sin}\u20614\\pi }{4})-(\\frac{\\pi }{2}+\\frac{\\operatorname{sin}\u20612\\pi }{4}) \\\\  & =(\\pi +0)-(\\frac{\\pi }{2}+0) \\\\  & =\\frac{\\pi }{2}.\\end{aligned}\n$$\n\nNote that we made use of the trigonometric identity \n\n$$\n{cos}^{2}\u2061t=\\frac{1+\\operatorname{cos}\u20612t}{2}.\n$$\n\nFinally then,\n\n$$\n\\begin{aligned}\u2016f(t)\u2016 & =\\sqrt{\\frac{\\pi }{2}}.\\end{aligned}\n$$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\sqrt{\\pi }"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "\\sqrt{\\frac{3\\pi }{2}}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\sqrt{\\frac{\\pi }{2}}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "2\\sqrt{\\pi }"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "0"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14093489,
+    "task_type": "assessment",
+    "topic_id": null,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-332538",
+        "problem": "",
+        "worked_solution": "To find the general solution of an inhomogeneous first-order linear equation, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{\\text{d}{y}_{c}}{\\text{d}x}+4{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-4x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nThe right-hand side of the inhomogeneous equation is a polynomial of degree $1.$ Therefore, we assume that the particular solution is also a polynomial of degree $1,$ i.e.,\n\n$$\n{y}_{p}(x)=\\alpha x+\\beta \n$$\n\nwhere $\\alpha $ and $\\beta $ are constants to be determined. \n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n\\frac{\\text{d}{y}_{p}}{\\text{d}x}=\\alpha .\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute ${y}_{p}$ and ${y}_{p}^{\u2032}$ into the differential equation:\n\n$$\n\\alpha +4(\\alpha x+\\beta )=-4x-5\n$$\n\nWe then group the terms on the left-hand side, as follows:\n\n$$\n4\\alpha x+(\\alpha +4\\beta )=-4x-5\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\begin{aligned}{\\begin{aligned}4\\alpha =-4\\, & (\\text{equating the coefficients of}\\,\\,x) \\\\ \\alpha +4\\beta =-5\\, & (\\text{equating the constants})\\end{aligned}\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-1,\\,\\beta =-1.$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-x-1.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-4x}-x-1.\n$$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "Ae^{-4x}-x",
+            "observed_mathquill_latex": "Ae^{-4x}-x"
+          }
+        ]
+      },
+      {
+        "math_academy_id": "q-253487",
+        "problem": "",
+        "worked_solution": "A linear recurrence relation (with constant coefficients) is **homogeneous** if the forcing function is zero. \n\nIn other words, the linear recurrence relation\n\n$$\n{a}_{n}={s}_{1}{a}_{n-1}+{s}_{2}{a}_{n-2}+\u2026+{s}_{k}{a}_{n-k}+g(n),\n$$\n\nis homogeneous if $g(n)=0$ for all $n,$ and ${s}_{i}$ is constant for each $i.$\n\nLet's examine each recurrence relation in turn.\n\n- ${a}_{n}$ is not homogeneous. The term $2$ of the expression doesn't contain preceding terms of the relation.\n\n- ${b}_{n}$ is homogeneous. The terms of the expression each contain a preceding term, ${b}_{n-1}$ and ${b}_{n-2}.$\n\n- ${c}_{n}$ is homogeneous. The term of the expression contains a preceding term, ${c}_{n-1}.$\n\nTherefore, the correct answer is \"II and III only.\"",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "II and III only",
+            "submitted_option": "d",
+            "observed_selected_option": "d"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
