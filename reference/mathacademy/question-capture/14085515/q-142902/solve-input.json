@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "| $f$ | $Y=1$ | $Y=3$ | $Y=5$ |\n| --- | --- | --- | --- |\n| $X=2$ | $\\frac{5}{27}$ | $\\frac{2}{9}$ | $\\frac{1}{9}$ |\n| $X=4$ | $\\frac{1}{9}$ | $\\frac{8}{27}$ | $\\frac{2}{27}$ |\n\nCompute ${f}_{X|Y}(4\\,|\\,1)$ given that the discrete random variables $X$ and $Y$ have the joint probability mass function $f(x,y)$ shown in the table above.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "\\frac{2}{3}"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "\\frac{3}{8}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "\\frac{8}{13}"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "\\frac{5}{8}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "\\frac{3}{14}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14085515,
+    "task_type": "lesson",
+    "topic_id": 3003,
+    "topic_title": "Conditional Distributions for Discrete Random Variables",
+    "examples": [
+      {
+        "math_academy_id": "e-10050",
+        "knowledge_point": "Computing the Value of a Conditional Probability Mass Function at a Point",
+        "problem": "| $f$ | $Y=0$ | $Y=1$ | $Y=2$ |\n| --- | --- | --- | --- |\n| $X=1$ | $\\dfrac{1}{6}$ | $\\dfrac{1}{9}$ | $\\dfrac{1}{6}$ |\n| $X=2$ | $\\dfrac{1}{18}$ | $\\dfrac{1}{18}$ | $\\dfrac{1}{6}$ |\n| $X=3$ | $\\dfrac{1}{9}$ | $\\dfrac{1}{9}$ | $\\dfrac{1}{18}$ |\n\nCompute $f_{X|Y}(2 \\,|\\, 2)$ given that the discrete random variables $X$ and $Y$ have the joint probability mass function $f(x,y)$ shown in the table above.",
+        "worked_solution": "The conditional probability mass function $f_{X|Y}(x\\,|\\,y)$ is defined as\n\n$$\nf_{X|Y}(x\\,|\\,y) = P(X = x \\,|\\, Y=y).\n$$\n\nTherefore, we're required to compute the conditional probability\n\n$$\nf_{X|Y}(2 \\,|\\, 2) = P(X = 2 \\,|\\, Y = 2).\n$$\n\nBy the multiplication law for conditional probability, we have\n\n$$\nP(X = 2 \\,|\\, Y = 2) = \\dfrac{P(X = 2, Y = 2)}{P(Y = 2)} = \\dfrac{f(2,2)}{f_Y(2)}\n$$\n\nwhere $f(x,y)$ is the joint probability mass function of $X$ and $Y,$ and $f_Y(y)$ is the marginal distribution of $Y.$\n\nRecall that the marginal distribution for $Y$ corresponds to the column totals. Thus, \n\n$$\n\\begin{aligned}{f}_{Y}(2) & =f(1,2)+f(2,2)+f(3,2) \\\\  & =\\frac{1}{6}+\\frac{1}{6}+\\frac{1}{18} \\\\  & =\\frac{7}{18}.\\end{aligned}\n$$\n\nFrom the given table, $f(2,2) = \\dfrac{1}{6}.$ \n\nFinally, substituting  $f_Y(2) = \\dfrac{7}{18}$ and $f(2,2) = \\dfrac{1}{6}$ in our formula above, we obtain \n\n$$\n\\begin{aligned}{f}_{X|Y}(2\\,|\\,2) & =P(X=2\\,|\\,Y=2) \\\\  & =\\frac{f(2,2)}{{f}_{Y}(2)} \\\\  & =\\frac{(\\frac{1}{6})}{(\\frac{7}{18})} \\\\  & =\\frac{3}{7}.\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14085515/example-10050.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-114434",
+        "problem": "| $f$ | $Y=0$ | $Y=1$ | $Y=2$ |\n| --- | --- | --- | --- |\n| $X=0$ | $0.2$ | $0$ | $0$ |\n| $X=1$ | $0$ | $0.1$ | $0.15$ |\n| $X=2$ | $0$ | $0.25$ | $0.05$ |\n| $X=3$ | $0.1$ | $0$ | $0.15$ |\n\nCompute $P(0\\le Y\\le 1\\,|\\,X=3)$ given that the discrete random variables $X$ and $Y$ have the joint probability mass function $f(x,y)$ shown in the table above.",
+        "worked_solution": "By the multiplication law for conditional probability, the required conditional probability is given by\n\n$$\n\\begin{aligned}P(0\\le Y\\le 1\\,|\\,X=3) & =\\frac{P((0\\le Y\\le 1),X=3)}{P(X=3)} \\\\  & =\\frac{P(X=3,(0\\le Y\\le 1))}{P(X=3)} \\\\  & =\\frac{P(X=3,Y=0)+P(X=3,Y=1)}{P(X=3)} \\\\  & =\\frac{f(3,0)+f(3,1)}{{f}_{X}(3)},\\end{aligned}\n$$\n\nwhere $f(x,y)$ is the joint probability mass function of $X$ and $Y,$ and ${f}_{X}(x)$ is the marginal distribution of $X.$\n\nRecall that the marginal distribution for $X$ corresponds to the row totals. Thus,\n\n$$\n\\begin{aligned}{f}_{X}(3) & =f(3,0)+f(3,1)+f(3,2) \\\\  & =0.1+0+0.15 \\\\  & =0.25.\\end{aligned}\n$$\n\nFrom the given table, we have that $f(3,0)=0.1$ and $f(3,1)=0.$ \n\nFinally, substituting our values into our formula above, we obtain \n\n$$\n\\begin{aligned}(0\\le Y\\le 1\\,|\\,X=3) & =\\frac{f(3,0)+f(3,1)}{{f}_{X}(3)} \\\\  & =\\frac{0.1+0}{0.25} \\\\  & =\\frac{0.1}{0.25} \\\\  & =0.4.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "0.4",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

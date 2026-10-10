@@ -1,0 +1,39 @@
+{
+  "mode": "solve",
+  "problem": "A supply crate of mass $18\\,\\text{kg}$ is dropped vertically downward with an initial velocity of $2.4\\,\\text{m/s}$ and instantaneous acceleration of $8.2\\,{\\text{m/s}}^{2}.$ Let $v(t)$ be the crate's velocity, in meters per second, $t\\ge 0$ seconds after release, with downward taken as the positive direction. The air resistance on the crate is proportional to its velocity and acts in the direction opposite to motion.\n\nFind, rounded to one decimal place, the velocity of the supply crate after $4$ seconds.\nAssume that only gravity, $g=9.8\\,{\\text{m/s}}^{2},$ and drag act on the crate.\n\nThe velocity of the supply crate after $4$ seconds is\n{{field-1}}$\\,\\text{m/s}.$",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14071771,
+    "task_type": "lesson",
+    "topic_id": 1712,
+    "topic_title": "Falling Body Problems With Linear Drag",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-335220",
+        "problem": "A cargo sensor of mass $40\\,\\text{kg}$ is released from rest and falls vertically downward. Let $v(t)$ be the sensor's velocity, in meters per second, $t\\ge 0$ seconds after release, with downward taken as the positive direction. The air resistance on the sensor is proportional to its velocity and acts in the direction opposite to motion. At a particular moment during the fall, the sensor\u2019s velocity is $10\\,\\text{m/s}$ and its instantaneous acceleration is $8.3\\,{\\text{m/s}}^{2}.$\n\nFind, rounded to one decimal place, the velocity of the cargo sensor after $5$ seconds. Assume that only gravity, $g=9.8\\,{\\text{m/s}}^{2},$ and drag act on the sensor.\n\nThe velocity of the cargo sensor after $5$ seconds is\n{{field-1}}$\\,\\text{m/s}.$",
+        "worked_solution": "First, note that only two forces act on the sensor: the force due to gravity, given by the weight\n\n$$\nw=mg=40\\cdot 9.8=392\\,\\text{N},\n$$\n\nand the force due to drag $D,$ which is proportional to the velocity (and negative since it acts in the negative direction),\n\n$$\nD=-kv,\n$$\n\nwhere $k>0$ is a constant of proportionality. Hence, the resultant force acting on the sensor is\n\n$$\nF=w+D=392-kv.\n$$\n\nApplying Newton's second law, we obtain an inhomogeneous first-order linear equation:\n\n$$\n\\begin{aligned}F & =ma \\\\ 392-kv & =40\\,\\frac{dv}{dt} \\\\ \\frac{dv}{dt}+\\frac{k}{40}v & =9.8\\end{aligned}\n$$\n\nWe're told that, at a particular moment, the sensor\u2019s velocity is $10\\,\\text{m/s}$ and its instantaneous acceleration is $8.3\\,{\\text{m/s}}^{2}.$ Substituting these values into the ODE, we can solve for $k:$\n\n$$\n8.3+\\frac{k}{40}\\cdot 10=9.8\\,\u27f9\\,k=6\\,\\text{kg/s}\n$$\n\nTherefore, we have the following differential equation:\n\n$$\n\\frac{dv}{dt}+\\frac{3}{20}v=9.8\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution ${v}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{d{v}_{c}}{dt}+\\frac{3}{20}{v}_{c}=0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\n{v}_{c}(t)=A{e}^{-3t/20},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is a polynomial of degree $0.$ So, we assume that the particular solution is also a polynomial of degree $0,$ i.e.,\n\n$$\n{v}_{p}(t)=\\alpha .\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${v}_{p}=\\alpha $ and $\\frac{d{v}_{p}}{dt}=(\\alpha )^{\u2032}=0$ into the inhomogeneous equation:\n\n$$\n0+\\frac{3}{20}\\alpha =9.8\\,\u27f9\\,\\alpha =\\frac{196}{3}\n$$\n\nTherefore, the particular solution is ${v}_{p}(t)=\\frac{196}{3}.$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nv(t)={v}_{c}(t)+{v}_{p}(t)=A{e}^{-3t/20}+\\frac{196}{3}.\n$$\n\nWe're told that the sensor is released from rest. So, we can apply the initial condition $v(0)=0,$ and solve for $A:$\n\n$$\n\\begin{aligned}v(0) & =A{e}^{-3(0)/20}+\\frac{196}{3} \\\\ 0 & =A+\\frac{196}{3} \\\\ A & =-\\frac{196}{3}\\end{aligned}\n$$\n\nTherefore, we have the following expression for $v(t):$\n\n$$\nv(t)=-\\frac{196}{3}{e}^{-3t/20}+\\frac{196}{3}\n$$\n\nFinally, the velocity of the cargo sensor after $t=5$ seconds is\n\n$$\nv(5)=-\\frac{196}{3}{e}^{-15/20}+\\frac{196}{3}=34.472\u2026\u224834.5\\,\\text{m/s},\n$$\n\nrounded to one decimal place.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "34.5",
+            "observed_mathquill_latex": "34.5"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
