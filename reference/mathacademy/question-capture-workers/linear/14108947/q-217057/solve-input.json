@@ -1,0 +1,113 @@
+{
+  "mode": "solve",
+  "problem": "Prove that ${\\sum }_{i=1}^{n}4(i-1)i(i+1)=(n-1)n(n+1)(n+2)$ using mathematical induction.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "k"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "i"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "6"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "n"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "text",
+          "value": "true"
+        },
+        {
+          "option": "1",
+          "type": "text",
+          "value": "false"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14108947,
+    "task_type": "lesson",
+    "topic_id": 642,
+    "topic_title": "Mathematical Induction",
+    "examples": [
+      {
+        "math_academy_id": "e-12666",
+        "knowledge_point": "Proving Sums of Series Using Induction",
+        "problem": "Prove that $\\displaystyle \\sum_{i=1}^{n} \\dfrac{1}{4^i} = \\dfrac{1}{3}\\left(1 - \\dfrac{1}{4^n}\\right)$ using mathematical induction.",
+        "worked_solution": "The principle of induction states the following: Suppose we have a sequence of mathematical statements $P(1), P(2), P(3),\\ldots,$ where\n\n- $P(1)$ is true, and\n\n- $P(k)\\Rightarrow P(k+1)$ for every $k\\in\\mathbb N.$\n\nThen, $P(n)$ is true for every $n\\in\\mathbb N.$\n\nIn this case, the general statement $P(n)$ we're required to prove is the following:\n\n$$\n\\sum_{i=1}^n \\dfrac{1}{4^i} = \\dfrac{1}{3}\\left(1 - \\dfrac{1}{4^n}\\right)\n$$\n\nWe start by proving the so-called base case, $P(1).$ To do this, we substitute $n=1$ into both the left-hand side and right-hand side and show that they're equal:\n\nWe proceed using induction on $n.$\n\n**Base Case**: We first prove our statement is true for the base case $n=1.$\nFor the left-hand side, we have\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{1}\\frac{1}{{4}^{i}}=\\frac{1}{{4}^{1}}=\\frac{1}{4},\\end{aligned}\n$$\n\nand for the right-hand side,  we have\n\n$$\n\\begin{aligned}\\frac{1}{3}(1-\\frac{1}{{4}^{1}})=\\frac{1}{3}(\\frac{3}{4})=\\frac{1}{4}.\\end{aligned}\n$$\n\nThus, our statement is true for $n=1.$\n\nNext, we state our inductive hypothesis. Here, we assume that the given statement is true for some $n = k \\geq 1.$ \n\nDue to the base case, we already *know* that the statement is true for *some* value of $k,$ namely $k = 1,$ so this assumption is valid.\n\n**Inductive Hypothesis**: We assume that for some $n = k \\geq 1,$ we have\n\n$$\n\\sum_{i=1}^{k} \\dfrac{1}{4^i} = \\dfrac{1}{3}\\left(1 - \\dfrac{1}{4^k}\\right).\n$$\n\nWe must show that $P(k) \\Rightarrow P(k+1).$ Let's start by writing down $P(k+1).$ This is the first part of the so-called **inductive step**, so let's write that, too.\n\n**Inductive Step**: We're required to prove that\n\n$$\n\\displaystyle \\sum_{i=1}^{k+1} \\dfrac{1}{4^i} = \\dfrac{1}{3}\\left(1 - \\dfrac{1}{4^{k+1}}\\right). \\qquad\\qquad (\\ast)\n$$\n\nThe idea is to rewrite the left-hand side of $(\\ast)$ *using the inductive hypothesis* and apply algebraic techniques to show that this equals the right-hand side.\n\nWhen proving sums of finite series using induction, the key to unlocking the proof is to write the last term on its own, as follows: \n\n$$\n\\sum_{i=1}^{k+1} a_i =  \\left(\\sum_{i=1}^{k} a_i\\right) + a_{k+1}\n$$\n\nLet's apply this technique in this case:\n\nWe write\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{k+1}\\frac{1}{{4}^{i}} & =({\\sum }_{i=1}^{k}\\frac{1}{{4}^{i}})+(\\frac{1}{{4}^{k+1}}).\\end{aligned}\n$$\n\nBy the inductive hypothesis, we have\n\n$$\n\\begin{aligned}({\\sum }_{i=1}^{k}\\frac{1}{{4}^{i}})+(\\frac{1}{{4}^{k+1}}) & =\\frac{1}{3}(1-\\frac{1}{{4}^{k}})+\\frac{1}{{4}^{k+1}} \\\\  & =\\frac{1}{3}-\\frac{1}{3\\cdot {4}^{k}}+\\frac{1}{{4}^{k+1}} \\\\  & =\\frac{1}{3}-\\frac{1}{{4}^{k}}(\\frac{1}{3}-\\frac{1}{4}) \\\\  & =\\frac{1}{3}-\\frac{1}{{4}^{k}}(\\frac{1}{12}) \\\\  & =\\frac{1}{3}-\\frac{1}{{4}^{k}}(\\frac{1}{3\\cdot 4}) \\\\  & =\\frac{1}{3}-\\frac{1}{3\\cdot {4}^{k+1}} \\\\  & =\\frac{1}{3}(1-\\frac{1}{{4}^{k+1}}),\\end{aligned}\n$$\n\nas required.\n\nSince we've shown that the left-hand side of $(\\ast)$ equals the right-hand side, our proof is complete. So let's write down our conclusion. \n\nTherefore, by the principle of induction, $\\displaystyle \\sum_{i=1}^{n} \\dfrac{1}{4^i} = \\dfrac{1}{3}\\left(1 - \\dfrac{1}{4^n}\\right)$ is true for all $n\\geq 1.$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14108947/example-12666.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-182716",
+        "problem": "If $S(k)={\\sum }_{i=1}^{k}(-4)^{i},$ then $S(k+1)=$",
+        "worked_solution": "We need to express the summation $S(k+1)$ in terms of $S(k).$\n\nLet ${a}_{i}$ for $i\\ge 1$ be a sequence, and let $S(k)$ denote the sum of the first $k$ terms.\n\n$$\nS(k)={\\sum }_{i=1}^{k}{a}_{i}\n$$\n\nWe can always express $S(k+1)$ in terms of $S(k)$ by writing the last term on its own, as follows: \n\n$$\n{\\sum }_{i=1}^{k+1}{a}_{i}=({\\sum }_{i=1}^{k}{a}_{i})+{a}_{k+1}.\n$$\n\nIn our case, we have ${a}_{i}=(-4)^{i}.$ Therefore,\n\n$$\n\\begin{aligned}{a}_{k+1}=(-4)^{k+1}.\\end{aligned}\n$$\n\nHence,\n\n$$\n{\\sum }_{i=1}^{k+1}(-4)^{i}=({\\sum }_{i=1}^{k}(-4)^{i})+((-4)^{k+1}),\n$$\n\nwhich we can write as \n\n$$\nS(k+1)=S(k)+(-4)^{k+1}.\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "S(k)+(-4)^{k+1}",
+            "submitted_option": "b",
+            "observed_selected_option": "b"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
