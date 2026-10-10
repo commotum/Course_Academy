@@ -1,0 +1,305 @@
+{
+  "mode": "verify",
+  "problem": "Prove that ${\\sum }_{i=2}^{n}{3}^{i}=\\frac{1}{2}({3}^{n+1}-9)$ using mathematical induction.",
+  "worked_solution": "A variant of the principle of induction states the following: Let ${n}_{0}$ be an integer. Suppose we have a sequence of mathematical statements $P({n}_{0}),P({n}_{0}+1),P({n}_{0}+2),\u2026,$ where\n\n- $P({n}_{0})$ is true, and\n\n- $P(k)\u21d2P(k+1)$ for every natural number $k\\ge {n}_{0}.$\n\nThen, $P(n)$ is true for every natural number $n\\ge {n}_{0}.$\n\nIn this case, the general statement $P(n)$ we're required to prove is the following:\n\n$$\n{\\sum }_{i=2}^{n}{3}^{i}=\\frac{1}{2}({3}^{n+1}-9)\n$$\n\nWe start by proving the so-called base case, $P(2).$ To do this, we substitute $n=2$ into both the left-hand side and right-hand side and show that they're equal:\n\nWe proceed using induction on $n.$\n\n**Base Case**: We first prove our statement is true for the base case $n=2.$\nFor the left-hand side, we have\n\n$$\n\\begin{aligned}{\\sum }_{i=2}^{2}{3}^{i}={3}^{2}=9,\\end{aligned}\n$$\n\nand for the right-hand side, we have\n\n$$\n\\begin{aligned}\\frac{1}{2}({3}^{2+1}-9)=\\frac{1}{2}(18)=9.\\end{aligned}\n$$\n\nThus, our statement is true for $n=2.$\n\nNext, we state our inductive hypothesis. Here, we assume that the given statement is true for some $n=k\\ge 2.$ \n\nDue to the base case, we already *know* that the statement is true for *some* value of $k,$ namely $k=2,$ so this assumption is valid.\n\n**Inductive Hypothesis**: We assume that for some $n=k\\ge 2,$ we have\n\n$$\n{\\sum }_{i=2}^{k}{3}^{i}=\\frac{1}{2}({3}^{k+1}-9).\n$$\n\nWe must show that $P(k)\u21d2P(k+1).$ Let's start by writing down $P(k+1).$ This is the first part of the so-called **inductive step**, so let's write that, too.\n\n**Inductive Step**: We're required to prove that\n\n$$\n{\\sum }_{i=2}^{k+1}{3}^{i}=\\frac{1}{2}({3}^{k+2}-9).\\,\\,(\u2217)\n$$\n\nThe idea is to rewrite the left-hand side of $(\u2217)$ *using the inductive hypothesis* and apply algebraic techniques to show that this equals the right-hand side.\n\nWhen proving sums of finite series using induction, the key to unlocking the proof is to write the last term on its own, as follows: \n\n$$\n{\\sum }_{i=1}^{k+1}{a}_{i}=({\\sum }_{i=1}^{k}{a}_{i})+{a}_{k+1}\n$$\n\nLet's apply this technique in this case:\n\nWe write\n\n$$\n{\\sum }_{i=2}^{k+1}{3}^{i}=({\\sum }_{i=2}^{k}{3}^{i})+{3}^{k+1}.\n$$\n\nBy the inductive hypothesis, we have\n\n$$\n\\begin{aligned}({\\sum }_{i=2}^{k}{3}^{i})+{3}^{k+1} & =\\frac{1}{2}({3}^{k+1}-9)+{3}^{k+1} \\\\  & =\\frac{3}{2}\\cdot {3}^{k+1}-\\frac{9}{2} \\\\  & =\\frac{1}{2}\\cdot {3}^{k+2}-\\frac{9}{2} \\\\  & =\\frac{1}{2}({3}^{k+2}-9),\\end{aligned}\n$$\n\nas required.\n\nSince we've shown that the left-hand side of $(\u2217)$ equals the right-hand side, our proof is complete. So let's write down our conclusion. \n\nTherefore, by the principle of induction, ${\\sum }_{i=2}^{n}{3}^{i}=\\frac{1}{2}({3}^{n+1}-9)$ is true for all $n\\ge 2.$\n\nPROOF\n\nWe proceed using induction on $n.$\n\n**Base Case**: We first prove that our statement is true for the base case $n=\\,$$2$.\n\nFor the left-hand side, we have\n\n$$\n\\begin{aligned}{\\sum }_{i=2}^{2}{3}^{i}=9\\end{aligned}\n$$\n\nwhich equals the right-hand side. Thus, our statement is true for $n=2.$\n\n**Inductive Hypothesis**: We assume that for some $n=$ $k\\ge 2$, we have\n\n$$\n{\\sum }_{i=2}^{k}{3}^{i}=\\frac{1}{2}\\cdot \\,({3}^{k+1}-9).\n$$\n\n**Inductive Step**: To prove $P(k+1),$ we write\n\n$$\n{\\sum }_{i=2}^{k+1}{3}^{i}=({\\sum }_{i=2}^{k}{3}^{i})+{3}^{k+1}.\n$$\n\nBy the inductive hypothesis, we have\n\n$$\n\\begin{aligned}({\\sum }_{i=2}^{k}{3}^{i})+{3}^{k+1} & =\\frac{1}{2}({3}^{k+1}-9)+{3}^{k+1} \\\\  & =\\frac{1}{2}({3}^{k+2}-9),\\end{aligned}\n$$\n\nas required.\n\nTherefore, by the principle of induction, ${\\sum }_{i=2}^{n}{3}^{i}=\\frac{1}{2}({3}^{n+1}-9)$ is true for all $n\\ge 2$.",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "2"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "k"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "n"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "i"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "3"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "9"
+        },
+        {
+          "option": "4",
+          "type": "math",
+          "value": "6"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "text",
+          "value": "true"
+        },
+        {
+          "option": "1",
+          "type": "text",
+          "value": "false"
+        }
+      ]
+    },
+    {
+      "key": "field-4",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "k>3"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "k\\ge 2"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "k=2"
+        }
+      ]
+    },
+    {
+      "key": "field-5",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{3}^{k+2}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "({3}^{k+1}-3)"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "({3}^{k+1}-9)"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "({3}^{k+2}-9)"
+        }
+      ]
+    },
+    {
+      "key": "field-6",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "{3}^{k+1}-9"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "{3}^{k+1}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "{3}^{k}-9"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "{3}^{k}"
+        }
+      ]
+    },
+    {
+      "key": "field-7",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{1}{2}({3}^{k+2}-9)+{3}^{k+1}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{1}{2}({3}^{k+1}-9)+({3}^{k}-9)"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{1}{2}({3}^{k+1}-9)+{3}^{k+1}"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{1}{2}\\cdot {3}^{k+2}+({3}^{k}-9)"
+        }
+      ]
+    },
+    {
+      "key": "field-8",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{1}{2}({3}^{k+2}-9)"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{1}{2}({3}^{k+2}-3)"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{1}{2}({3}^{k+1}-1)"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "\\frac{1}{2}({3}^{k+1}-3)"
+        }
+      ]
+    },
+    {
+      "key": "field-9",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "n=2"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "n\\ge 1"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "n\\ge 2"
+        },
+        {
+          "option": "3",
+          "type": "math",
+          "value": "n=1"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "f494f9c864332f19c7f289def2efae492260a204174ee66c09117cfab81a751c"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14108947,
+    "task_type": "lesson",
+    "topic_id": 642,
+    "topic_title": "Mathematical Induction",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-182660",
+        "problem": "Prove that ${\\sum }_{i=2}^{n}{3}^{i}=\\frac{1}{2}({3}^{n+1}-9)$ using mathematical induction.",
+        "worked_solution": "A variant of the principle of induction states the following: Let ${n}_{0}$ be an integer. Suppose we have a sequence of mathematical statements $P({n}_{0}),P({n}_{0}+1),P({n}_{0}+2),\u2026,$ where\n\n- $P({n}_{0})$ is true, and\n\n- $P(k)\u21d2P(k+1)$ for every natural number $k\\ge {n}_{0}.$\n\nThen, $P(n)$ is true for every natural number $n\\ge {n}_{0}.$\n\nIn this case, the general statement $P(n)$ we're required to prove is the following:\n\n$$\n{\\sum }_{i=2}^{n}{3}^{i}=\\frac{1}{2}({3}^{n+1}-9)\n$$\n\nWe start by proving the so-called base case, $P(2).$ To do this, we substitute $n=2$ into both the left-hand side and right-hand side and show that they're equal:\n\nWe proceed using induction on $n.$\n\n**Base Case**: We first prove our statement is true for the base case $n=2.$\nFor the left-hand side, we have\n\n$$\n\\begin{aligned}{\\sum }_{i=2}^{2}{3}^{i}={3}^{2}=9,\\end{aligned}\n$$\n\nand for the right-hand side, we have\n\n$$\n\\begin{aligned}\\frac{1}{2}({3}^{2+1}-9)=\\frac{1}{2}(18)=9.\\end{aligned}\n$$\n\nThus, our statement is true for $n=2.$\n\nNext, we state our inductive hypothesis. Here, we assume that the given statement is true for some $n=k\\ge 2.$ \n\nDue to the base case, we already *know* that the statement is true for *some* value of $k,$ namely $k=2,$ so this assumption is valid.\n\n**Inductive Hypothesis**: We assume that for some $n=k\\ge 2,$ we have\n\n$$\n{\\sum }_{i=2}^{k}{3}^{i}=\\frac{1}{2}({3}^{k+1}-9).\n$$\n\nWe must show that $P(k)\u21d2P(k+1).$ Let's start by writing down $P(k+1).$ This is the first part of the so-called **inductive step**, so let's write that, too.\n\n**Inductive Step**: We're required to prove that\n\n$$\n{\\sum }_{i=2}^{k+1}{3}^{i}=\\frac{1}{2}({3}^{k+2}-9).\\,\\,(\u2217)\n$$\n\nThe idea is to rewrite the left-hand side of $(\u2217)$ *using the inductive hypothesis* and apply algebraic techniques to show that this equals the right-hand side.\n\nWhen proving sums of finite series using induction, the key to unlocking the proof is to write the last term on its own, as follows: \n\n$$\n{\\sum }_{i=1}^{k+1}{a}_{i}=({\\sum }_{i=1}^{k}{a}_{i})+{a}_{k+1}\n$$\n\nLet's apply this technique in this case:\n\nWe write\n\n$$\n{\\sum }_{i=2}^{k+1}{3}^{i}=({\\sum }_{i=2}^{k}{3}^{i})+{3}^{k+1}.\n$$\n\nBy the inductive hypothesis, we have\n\n$$\n\\begin{aligned}({\\sum }_{i=2}^{k}{3}^{i})+{3}^{k+1} & =\\frac{1}{2}({3}^{k+1}-9)+{3}^{k+1} \\\\  & =\\frac{3}{2}\\cdot {3}^{k+1}-\\frac{9}{2} \\\\  & =\\frac{1}{2}\\cdot {3}^{k+2}-\\frac{9}{2} \\\\  & =\\frac{1}{2}({3}^{k+2}-9),\\end{aligned}\n$$\n\nas required.\n\nSince we've shown that the left-hand side of $(\u2217)$ equals the right-hand side, our proof is complete. So let's write down our conclusion. \n\nTherefore, by the principle of induction, ${\\sum }_{i=2}^{n}{3}^{i}=\\frac{1}{2}({3}^{n+1}-9)$ is true for all $n\\ge 2.$\n\nPROOF\n\nWe proceed using induction on $n.$\n\n**Base Case**: We first prove that our statement is true for the base case $n=\\,$$2$.\n\nFor the left-hand side, we have\n\n$$\n\\begin{aligned}{\\sum }_{i=2}^{2}{3}^{i}=9\\end{aligned}\n$$\n\nwhich equals the right-hand side. Thus, our statement is true for $n=2.$\n\n**Inductive Hypothesis**: We assume that for some $n=$ $k\\ge 2$, we have\n\n$$\n{\\sum }_{i=2}^{k}{3}^{i}=\\frac{1}{2}\\cdot \\,({3}^{k+1}-9).\n$$\n\n**Inductive Step**: To prove $P(k+1),$ we write\n\n$$\n{\\sum }_{i=2}^{k+1}{3}^{i}=({\\sum }_{i=2}^{k}{3}^{i})+{3}^{k+1}.\n$$\n\nBy the inductive hypothesis, we have\n\n$$\n\\begin{aligned}({\\sum }_{i=2}^{k}{3}^{i})+{3}^{k+1} & =\\frac{1}{2}({3}^{k+1}-9)+{3}^{k+1} \\\\  & =\\frac{1}{2}({3}^{k+2}-9),\\end{aligned}\n$$\n\nas required.\n\nTherefore, by the principle of induction, ${\\sum }_{i=2}^{n}{3}^{i}=\\frac{1}{2}({3}^{n+1}-9)$ is true for all $n\\ge 2$.",
+        "actual_result": "Partial Credit",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "2",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "9",
+            "submitted_option": "3"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "true",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-4",
+            "submitted_value": "k\\ge 2",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-5",
+            "submitted_value": "({3}^{k+1}-9)",
+            "submitted_option": "2"
+          },
+          {
+            "key": "field-6",
+            "submitted_value": "{3}^{k+1}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-7",
+            "submitted_value": "\\frac{1}{2}({3}^{k+1}-9)+{3}^{k+1}",
+            "submitted_option": "2"
+          },
+          {
+            "key": "field-8",
+            "submitted_value": "\\frac{1}{2}({3}^{k+2}-9)",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-9",
+            "submitted_value": "n\\ge 2",
+            "submitted_option": "2"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
