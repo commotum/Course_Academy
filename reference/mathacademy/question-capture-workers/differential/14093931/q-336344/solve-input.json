@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "Consider a spherical planet with radius $(2\\times {10}^{7})\\,\\text{m}$ and surface gravitational acceleration $g=20\\,{\\text{m/s}}^{2}.$ Which equation best models the velocity $v$ of an object projected radially outward from the planet's surface with an initial velocity of $(6\\times {10}^{4})\\,\\text{m/s},$ where $r$ is the distance from the planet's center to the object. Assume the only force acting on the object is the force due to gravity.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "{v}^{2}=\\frac{1.6\\times {10}^{16}}{r}-(2.8\\times {10}^{9})"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "{v}^{2}=\\frac{1.6\\times {10}^{16}}{r}+(2.8\\times {10}^{9})"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "{v}^{2}=\\frac{0.8\\times {10}^{16}}{r}-(3.6\\times {10}^{9})"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "{v}^{2}=\\frac{0.8\\times {10}^{16}}{r}+(2.8\\times {10}^{9})"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "{v}^{2}=\\frac{1.6\\times {10}^{16}}{{r}^{2}}+(3.6\\times {10}^{9})"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14093931,
+    "task_type": "lesson",
+    "topic_id": 6699,
+    "topic_title": "Modeling Escape Velocity With First-Order ODEs",
+    "examples": [
+      {
+        "math_academy_id": "e-21749",
+        "knowledge_point": "Solving a Radially Projected Model for Velocity",
+        "problem": "Consider a spherical planet with radius $(8\\times10^5)\\,\\textrm{m}$ and surface gravitational acceleration $g = 16\\,\\textrm{m/s}^2.$ Which equation best models the velocity $v$ of an object projected radially outward from the planet's surface with an initial velocity of $(9\\times10^{4})\\,\\textrm{m/s},$ where $r$ is the distance from the planet's center to the object. Assume the only force acting on the object is the force due to gravity.",
+        "worked_solution": "Let $R$ be the planet's radius and $g$ be the planet's surface gravitational acceleration.\n\nAccording to Newton's law of universal gravitation, the magnitude of the inward gravitational force pulling the object toward the planet is\n\n$$\nF_\\text{in} = G\\,\\dfrac{mM}{r^2},\n$$\n\nwhere $G$ is the gravitational constant, $m$ is the object's mass, and $M$ is the planet's mass.\n\nSince this is the only force and it acts inward, the resultant force, taking *outward* as positive, is $F=-F_\\textrm{in}.$\nApplying Newton's second law, $F=ma,$ where $a$ is the acceleration of the object, we have\n\n$$\n\\begin{aligned}F & =-{F}_{\\text{in}} \\\\ ma & =-G\\,\\frac{mM}{{r}^{2}} \\\\ a & =-\\frac{GM}{{r}^{2}}.\\end{aligned}\n$$\n\nIn other words, the acceleration is inversely proportional to the square of the distance, \n\n$$\na=-\\dfrac{k}{r^2},\n$$\n\n with constant of proportionality $k=GM > 0.$\n\nWhen at the surface, $r=R,$ the acceleration of the object due to gravity is $a=-g.$ Substituting into our previous equation, we can solve for $k{:}$\n\n$$\n-g = -\\dfrac{k}{R^2} \n\\quad\\Longrightarrow\\quad\nk = gR^2\n$$\n\nSubstituting back into the equation, we get\n\n$$\na = -\\dfrac{gR^2}{r^2}.\n$$\n\nNow, since acceleration $a$ is the derivative of velocity $v,$ which is the derivative of distance $r,$ we can express acceleration as follows using the chain rule, treating $v$ as a function of $r$ along the trajectory:\n\n$$\n\\begin{aligned}a & =\\frac{dv}{dt} \\\\  & =\\frac{dr}{dt}\\cdot \\frac{dv}{dr} \\\\  & =v\\frac{dv}{dr}\\end{aligned}\n$$\n\nSubstituting this result into our equation, we obtain a separable differential equation for the velocity:\n\n$$\nv\\dfrac{\\mathrm{d}v}{\\mathrm{d}r} = -\\dfrac{gR^2}{r^2}\n$$\n\nSolving using separation of variables, we have\n\n$$\n\\begin{aligned}\\int v\\frac{dv}{dr}\\,dr & =\\int (-\\frac{g{R}^{2}}{{r}^{2}})\\,dr \\\\ \\int v\\,dv & =-g{R}^{2}\\int \\frac{1}{{r}^{2}}\\,dr \\\\ \\frac{{v}^{2}}{2} & =-g{R}^{2}(-\\frac{1}{r})+{C}_{1} \\\\ {v}^{2} & =\\frac{2g{R}^{2}}{r}+C.\\end{aligned}\n$$\n\nNote that $C=2C_1$ is a constant of integration.\n\nLet $v_0$ be the initial velocity of the object. Applying the initial condition $v(R) = v_0,$ we can solve for $C{:}$\n\n$$\n\\begin{aligned}v(R)^{2} & =\\frac{2g{R}^{2}}{R}+C \\\\ {v}_{0}^{2} & =2gR+C \\\\ C & ={v}_{0}^{2}-2gR\\end{aligned}\n$$\n\nTherefore, the equation for the velocity of the object is\n\n$$\nv^2 = \\dfrac{2gR^2}{r} + v_0^2 - 2gR.\n$$\n\nFinally, substituting in the values\n$R=(8\\times10^5),$\n$g=16,$ and\n$v_0=(9\\times10^{4}),$\nwe conclude that the equation for the velocity is\n\n$$\n\\begin{aligned}{v}^{2} & =\\frac{2\\cdot 16\\cdot (8\\times {10}^{5})^{2}}{r}+(9\\times {10}^{4})^{2}-2\\cdot 16\\cdot (8\\times {10}^{5}) \\\\  & =\\frac{2048\\times {10}^{10}}{r}+(81\\times {10}^{8})-(256\\times {10}^{5}) \\\\  & =\\frac{2.048\\times {10}^{13}}{r}+(8.1\\times {10}^{9})-(0.0256\\times {10}^{9}) \\\\  & =\\frac{2.048\\times {10}^{13}}{r}+((8.1-0.0256)\\times {10}^{9}) \\\\  & =\\frac{2.048\\times {10}^{13}}{r}+(8.0744\\times {10}^{9}).\\end{aligned}\n$$",
+        "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14093931/example-21749.png"
+      }
+    ],
+    "feedback": [
+      {
+        "math_academy_id": "q-335975",
+        "problem": "Consider a spherical rocky planet with radius $(5.8\\times {10}^{4})\\,\\text{m}$ and surface gravitational acceleration $g=7.5\\,{\\text{m/s}}^{2}.$ Which differential equation best models the velocity $v$ of an object projected radially outward from the rocky planet, where $r$ is the distance from the rocky planet's center to the object? Assume the only force acting on the object is the force due to gravity.",
+        "worked_solution": "According to Newton's law of universal gravitation, the magnitude of the inward gravitational force pulling the object toward the rocky planet is\n\n$$\n{F}_{\\text{in}}=G\\,\\frac{mM}{{r}^{2}},\n$$\n\nwhere $G$ is the gravitational constant, $m$ is the object's mass, and $M$ is the rocky planet's mass.\n\nSince this is the only force and it acts inward, the resultant force, taking *outward* as positive, is $F=-{F}_{\\text{in}}.$\nApplying Newton's second law, $F=ma,$ where $a$ is the acceleration of the object, we have\n\n$$\n\\begin{aligned}F & =-{F}_{\\text{in}} \\\\ ma & =-G\\,\\frac{mM}{{r}^{2}} \\\\ a & =-\\frac{GM}{{r}^{2}}.\\end{aligned}\n$$\n\nIn other words, the acceleration is inversely proportional to the square of the distance,\n\n$$\na=-\\frac{k}{{r}^{2}},\n$$\n\nwith constant of proportionality $k=GM>0.$\n\nWhen at the surface, $r=(5.8\\times {10}^{4})\\,\\text{m},$ the acceleration of the object due to gravity is $a=-7.5\\,{\\text{m/s}}^{2}.$ Substituting into our previous equation, we can solve for $k:$\n\n$$\n\\begin{aligned}-7.5 & =-\\frac{k}{(5.8\\times {10}^{4})^{2}} \\\\ k & =7.5\\cdot (5.8\\times {10}^{4})^{2} \\\\  & =7.5\\cdot (5.8)^{2}\\times ({10}^{4})^{2} \\\\  & =252.3\\times {10}^{8} \\\\  & =2.523\\times {10}^{10}\\end{aligned}\n$$\n\nSubstituting back into the equation, we get\n\n$$\na=-\\frac{2.523\\times {10}^{10}}{{r}^{2}}.\n$$\n\nFinally, since acceleration $a$ is the derivative of velocity $v,$ which is the derivative of distance $r,$ we can express acceleration as follows using the chain rule, treating $v$ as a function of $r$ along the trajectory:\n\n$$\n\\begin{aligned}a & =\\frac{dv}{dt} \\\\  & =\\frac{dr}{dt}\\cdot \\frac{dv}{dr} \\\\  & =v\\frac{dv}{dr}\\end{aligned}\n$$\n\nTherefore, substituting this result into our equation, we obtain a separable differential equation for the velocity:\n\n$$\nv\\frac{dv}{dr}=-\\frac{2.523\\times {10}^{10}}{{r}^{2}}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "v\\frac{dv}{dr}=-\\frac{2.523\\times {10}^{10}}{{r}^{2}}",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
