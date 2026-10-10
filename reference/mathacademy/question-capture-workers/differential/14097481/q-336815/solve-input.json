@@ -1,0 +1,41 @@
+{
+  "mode": "solve",
+  "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14097481/assets/97d661baf511c1e99ee8eed7fbed2ad02d9f96c452ece5b765a3e2cf657c431b.png)\n\nFind the amplitude of the steady-state current for the RL circuit shown above, rounded to two decimal places.\n\nThe amplitude of the steady-state current is approximately\n{{field-1}} amperes.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "blank",
+      "tag": "mathquill",
+      "choices": []
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14097481/assets/97d661baf511c1e99ee8eed7fbed2ad02d9f96c452ece5b765a3e2cf657c431b.png"
+  ],
+  "activity_context": {
+    "task_id": 14097481,
+    "task_type": "review",
+    "topic_id": 1788,
+    "topic_title": "Modeling RL Circuits With First-Order ODEs",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-336652",
+        "problem": "A series RL circuit has a source electromotive force (EMF) of $6\\,\\text{V},$ a resistance of $30\\,\u03a9,$ and an inductance of $3\\,\\text{H}.$ Find, **rounded to two decimal places**, the circuit's current after $0.02$ seconds given that the initial current is $1\\,\\text{A}.$\n\nThe current after $0.02$ seconds is\n{{field-1}} amperes.",
+        "worked_solution": "Kirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RL circuit, there are two voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=30\\,\u03a9.$\n\n$$\n{V}_{R}=30I\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=3\\,\\text{H}.$\n\n$$\n{V}_{L}=3\\,\\frac{dI}{dt}\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of current $I$ in the circuit is\n\n$$\n6=30I+3\\,\\frac{dI}{dt}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dI}{dt}+10I=2.\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution ${I}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{d{I}_{c}}{dt}+10{I}_{c}=0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\n{I}_{c}(t)=A{e}^{-10t},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is a polynomial of degree $0.$ So, we assume that the particular solution is also a polynomial of degree $0,$ i.e.,\n\n$$\n{I}_{p}(t)=\\alpha .\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${I}_{p}=\\alpha $ and $\\frac{d{I}_{p}}{dt}=(\\alpha )^{\u2032}=0,$ into the inhomogeneous equation:\n\n$$\n0+10\\alpha =2\\,\u27f9\\,\\alpha =\\frac{1}{5}\n$$\n\nTherefore, the particular solution is ${I}_{p}(t)=\\frac{1}{5}.$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nI(t)={I}_{c}(t)+{I}_{p}(t)=A{e}^{-10t}+\\frac{1}{5}.\n$$\n\nWe're told that the circuit starts with an initial current of $1\\,\\text{A}.$ So, we can apply the initial condition $I(0)=1,$ and solve for $A:$\n\n$$\n\\begin{aligned}I(0) & =1 \\\\ A{e}^{-10(0)}+\\frac{1}{5} & =1 \\\\ A & =\\frac{4}{5}\\end{aligned}\n$$\n\nTherefore, we have the following expression for $I(t):$\n\n$$\nI(t)=\\frac{4}{5}{e}^{-10t}+\\frac{1}{5}=\\frac{1}{5}(4{e}^{-10t}+1)\n$$\n\nFinally, the current in the circuit after $t=0.02$ seconds is\n\n$$\nI(0.02)=\\frac{1}{5}(4{e}^{-10(0.02)}+1)\u22480.85\\,\\text{A},\n$$\n\nrounded to two decimal places.",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "0.85",
+            "observed_mathquill_latex": "0.85"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
