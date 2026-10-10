@@ -1,7 +1,9 @@
+;; Course and owned learning outcome schema.
+;; Combines the former 2-1-course.edn and 2-2-course-outcome.edn files.
+[
 ;; Course model for EDB. Install before creating course entities.
 ;; Request :db/ensure [:course/identity-validate] for an ID-only placeholder.
 ;; Request :db/ensure [:course/validate] when its required data is ready.
-[
  {:db/ident :course/id
   :db/valueType :db.type/uuid
   :db/cardinality :db.cardinality/one
@@ -62,4 +64,32 @@
  {:db/ident :course/validate
   :db.entity/attrs [:course/id :course/title :course/units]
   :db/doc "Requires our identity, a title, and at least one unit ref when explicitly ensured. The Math Academy identifier, course code, school, description, overview, outcomes, and next courses are optional. Nonempty titles, reference target types, outcome indexes unique within this course, and prevention of self-links and cycles require application validation."}
+
+;; One course-level learning outcome, owned through :course/outcomes.
+;; Flat and grouped lists use the same model; category is optional.
+;; Request :db/ensure [:course-outcome/validate] when writing an outcome.
+ {:db/ident :course-outcome/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of a learning outcome owned by one course."}
+
+ {:db/ident :course-outcome/index
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "1-based display order across all outcomes in the course, continuing across category headings. Must be positive and unique within that course, not globally unique."}
+
+ {:db/ident :course-outcome/category
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional category heading, for example Differentiation. Omit for an ungrouped outcome. This is a display grouping within the course, not a reference to a curriculum unit or module."}
+
+ {:db/ident :course-outcome/text
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "The course-level capability stated by one outcome bullet, stored as Markdown supporting LaTeX. Excludes the bullet marker, category heading, and shared introductory sentence."}
+
+ {:db/ident :course-outcome/validate
+  :db.entity/attrs [:course-outcome/id :course-outcome/index :course-outcome/text]
+  :db/doc "Requires identity, index, and outcome text when explicitly ensured. Category is optional. Nonempty text and category labels, positive indexes, index uniqueness within the course, and ownership by exactly one course require additional validation."}
 ]

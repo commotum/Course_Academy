@@ -22,7 +22,7 @@ impl Fixture {
     fn new() -> Result<Self> {
         let mut db = Database::bootstrap()?;
         for (index, schema) in [
-            include_str!("../schema/data/2-1-course.edn"),
+            include_str!("../schema/data/2-course.edn"),
             include_str!("../schema/data/5-1-topic.edn"),
             include_str!("../schema/content/0-activity.edn"),
             include_str!("../schema/content/1-step.edn"),
