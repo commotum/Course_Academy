@@ -1,7 +1,7 @@
+[
 ;; Learner identity, study preferences, overall accuracy, knowledge profile, and task history.
 ;; Required-attribute specs are opt-in: request :db/ensure on each write.
 ;; Ranges, reference targets, and formulas are application contracts.
-[
  {:db/ident :learner/id
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
@@ -42,7 +42,7 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/isComponent true
-  :db/doc "Optional owned overall performance record, defined in 1-2-learner-performance.edn. Holds accuracy and evidence mass across topics. Find its learner through learner/_performance; no duplicate learner ref is needed. Ensure performance/validate separately on each performance write. Retracting the learner also retracts this record."}
+  :db/doc "Optional owned overall performance record, defined in 1-learner.edn. Holds accuracy and evidence mass across topics. Find its learner through learner/_performance; no duplicate learner ref is needed. Ensure performance/validate separately on each performance write. Retracting the learner also retracts this record."}
 
  {:db/ident :learner/knowledge-profile
   :db/valueType :db.type/ref
@@ -53,10 +53,37 @@
  {:db/ident :learner/activity
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Optional collection of learner-specific tasks, including attempts and their history. Each task references a shared activity definition and records its status, elapsed working time, and XP. Status includes completed and failed; there is no separate task outcome. Tasks are defined in 2-1-learner-task.edn and own the items defined in 2-2-learner-task-item.edn. Calendar timestamps and history order come from status transactions. Validate each task and its learner association separately. These ordinary refs do not establish component ownership."}
+  :db/doc "Optional collection of learner-specific tasks, including attempts and their history. Each task references a shared activity definition and records its status, elapsed working time, and XP. Status includes completed and failed; there is no separate task outcome. Tasks are defined in 3-learner-task.edn and own the items defined in 3-learner-task.edn. Calendar timestamps and history order come from status transactions. Validate each task and its learner association separately. These ordinary refs do not establish component ownership."}
 
  {:db/ident :learner/validate
   :db.entity/attrs [:learner/id]
   :db.entity/preds course-academy.progress/valid-profile?
   :db/doc "Learner identity and knowledge-profile ownership/uniqueness. Overall performance is optional and its child record must be separately ensured with performance/validate. This spec does not validate performance ownership or values."}
+
+;; Overall performance across topics, owned through learner/performance.
+;; Locate this record through its learner; no separate domain ID or learner backref is needed.
+;; Required-attribute specs are opt-in; ownership and numeric ranges are application contracts.
+ {:db/ident :performance/assessment-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global assessment-only exponentially weighted accuracy in [0,1]. Equal averaging with practice accuracy is described publicly; the precise update rate and prior are local parameters. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :performance/practice-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :performance/assessment-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global nonnegative effective assessment evidence mass under the local update, distinct from assessment accuracy. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :performance/practice-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Learner-global nonnegative effective non-assessment evidence mass under the local update, distinct from practice accuracy. Update from direct observed answers once, not from every propagated topic update."}
+
+ {:db/ident :performance/validate
+  :db.entity/attrs [:performance/assessment-accuracy :performance/practice-accuracy :performance/assessment-mass :performance/practice-mass]
+  :db/doc "Requires all four values for the complete overall performance estimate. Effective accuracy is the mean of the two accuracy fields; do not persist another independently mutable copy. The writer checks exactly one learner owner, finite accuracy in [0,1], and finite nonnegative evidence mass. Update the existing child through learner/performance rather than replacing it for each observation."}
 ]
