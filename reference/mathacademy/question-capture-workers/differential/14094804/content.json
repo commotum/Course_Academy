@@ -1,0 +1,368 @@
+{
+  "task_id": 14094804,
+  "task_type": "review",
+  "topic_id": 6717,
+  "content_only": true,
+  "source_url": "https://mathacademy.com/learn?taskId=14094804",
+  "sequence_policy": {
+    "scope": "whole review",
+    "CWCWC": 0.7,
+    "WCWCC": 0.30000000000000004,
+    "sequence": "WCWCC",
+    "continuation": "repeat saved pattern until site completion"
+  },
+  "questions": [
+    {
+      "math_academy_id": "q-340883",
+      "knowledge_point_id": "8ec39e02-0c39-5aa4-90e2-3477259d6262",
+      "knowledge_point": "Finding Laplace Transforms of Step Functions",
+      "problem": "Use the definition of Laplace transforms to calculate $F(s)=L{f(t)}$ for $f(t)=u(t-2)+u(t-5),$ where $u$ is the unit step function.$\\,F(s)=L{f(t)}=$ {{field-1}},\nvalid for {{field-2}}.",
+      "worked_solution": "We apply the definition of the Laplace transform:\n\n$$\n\\begin{aligned}L{f(t)} & =F(s)={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t\\end{aligned}\n$$\n\nRecall that the unit step function is defined as\n\n$$\n\\begin{aligned}u(t)={\\begin{aligned}0,\\, & t<0 \\\\ 1,\\, & t\\ge 0.\\end{aligned}\\end{aligned}\n$$\n\nSo, for the piecewise functions $u(t-2)$ and $u(t-5),$ we have \n\n$$\n\\begin{aligned}u(t-2) & ={\\begin{aligned}0,\\, & t<2 \\\\ 1,\\, & t\\ge 2\\end{aligned} \\\\ u(t-5) & ={\\begin{aligned}0,\\, & t<5 \\\\ 1,\\, & t\\ge 5.\\end{aligned}\\end{aligned}\n$$\n\nTherefore,\n\n$$\nu(t-2)+u(t-5)={\\begin{aligned}0,\\, & t<2 \\\\ 1,\\, & 2\\le t<5 \\\\ 2,\\, & t\\ge 5.\\end{aligned}\n$$\n\nSo, for our Laplace transform, we have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{2}^{5}0\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{2}^{5}1\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{5}^{\\infty }2\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{2}^{5}{e}^{-st}\\,\\text{d}t+{\\int }_{5}^{\\infty }2{e}^{-st}\\,\\text{d}t.\\end{aligned}\n$$\n\nNote that the second integral diverges for $s\\le 0.$\n\nFor $s>0,$ we calculate our Laplace transform as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{2}^{5}{e}^{-st}\\,\\text{d}t+{\\int }_{5}^{\\infty }2{e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{2}^{5}{e}^{-st}\\,\\text{d}t+2{lim}_{a\\to \\infty }{\\int }_{5}^{a}{e}^{-st}\\,\\text{d}t \\\\  & ={[-\\frac{{e}^{-st}}{s}]}_{2}^{5}+2{lim}_{a\\to \\infty }{(-\\frac{{e}^{-st}}{s})|}_{5}^{a} \\\\  & =-\\frac{{e}^{-5s}}{s}+\\frac{{e}^{-2s}}{s}-\\frac{2}{s}\\cdot {lim}_{a\\to \\infty }({e}^{-sa}-{e}^{-5s}) \\\\  & =\\frac{{e}^{-2s}}{s}-\\frac{{e}^{-5s}}{s}-\\frac{2}{s}(0-{e}^{-5s}) \\\\  & =\\frac{{e}^{-2s}}{s}-\\frac{{e}^{-5s}}{s}+\\frac{2{e}^{-5s}}{s} \\\\  & =\\frac{{e}^{-2s}}{s}+\\frac{{e}^{-5s}}{s}\\end{aligned}\n$$\n\nTherefore, the Laplace transform of $f(t)$ is\n\n$$\nL{f(t)}=\\frac{{e}^{-2s}}{s}+\\frac{{e}^{-5s}}{s},\\,s>0.\n$$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{{e}^{-2s}}{s}-\\frac{{e}^{-5s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{2{e}^{-2s}}{s}-\\frac{5{e}^{-5s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{2{e}^{-2s}}{s}+\\frac{5{e}^{-5s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{e}^{-5s}}{s}-\\frac{{e}^{-2s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{e}^{-2s}}{s}+\\frac{{e}^{-5s}}{s}"
+            }
+          ],
+          "correct_value": "\\frac{{e}^{-2s}}{s}+\\frac{{e}^{-5s}}{s}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "s>0"
+            },
+            {
+              "type": "math",
+              "value": "s>2"
+            },
+            {
+              "type": "math",
+              "value": "s>5"
+            }
+          ],
+          "correct_value": "s>0",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        }
+      ],
+      "source_answer_policy": {
+        "version": "revealed-ma-answer-v1",
+        "feedback_sha256": "61e80f7959af9c99d5669dfad690cf89a5d9766a60e4a6504d556bc4546e2737"
+      },
+      "knowledge_point_source_id": 6641,
+      "difficulty": "hard",
+      "provenance": {
+        "activity_question": "question-340883",
+        "kp_title": "Finding Laplace Transforms of Step Functions",
+        "kp_href": "/topics/6717#6641"
+      }
+    },
+    {
+      "math_academy_id": "q-341396",
+      "knowledge_point_id": "8ec39e02-0c39-5aa4-90e2-3477259d6262",
+      "knowledge_point": "Finding Laplace Transforms of Step Functions",
+      "problem": "Use the definition of Laplace transforms to calculate $F(s)=L{f(t)},$ where $f(t)=u(t-7)$ and $u$ is the unit step function.\n\n$F(s)=L{f(t)}=$\n{{field-1}},\nvalid for $s\\,$\n{{field-2}}{{field-3}}.",
+      "worked_solution": "We apply the definition of the Laplace transform:\n\n$$\n\\begin{aligned}L{f(t)} & =F(s)={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t\\end{aligned}\n$$\n\nRecall that the unit step function is defined as\n\n$$\n\\begin{aligned}u(t)={\\begin{aligned}0,\\, & t<0 \\\\ 1,\\, & t\\ge 0.\\end{aligned}\\end{aligned}\n$$\n\nSo, for the piecewise function \n\n$$\n\\begin{aligned}u(t-7)={\\begin{aligned}0,\\, & t<7 \\\\ 1,\\, & t\\ge 7\\end{aligned}\\end{aligned}\n$$\n\nwe have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }u(t-7){e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{7}0\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{7}^{\\infty }1\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{7}^{\\infty }{e}^{-st}\\,\\text{d}t.\\end{aligned}\n$$\n\nNote that this improper integral diverges if $s\\le 0.$\n\nFor $s>0,$ we calculate this integral as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{7}^{\\infty }{e}^{-st}\\,\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{\\int }_{7}^{a}{e}^{-st}\\,\\text{d}t \\\\  & ={lim}_{a\\to \\infty }{(-\\frac{{e}^{-st}}{s})|}_{7}^{a} \\\\  & =-\\frac{1}{s}\\cdot {lim}_{a\\to \\infty }({e}^{-sa}-{e}^{-7s}) \\\\  & =-\\frac{1}{s}(0-{e}^{-7s}) \\\\  & =\\frac{{e}^{-7s}}{s}\\end{aligned}\n$$\n\nTherefore, the Laplace transform of $f(t)$ is\n\n$$\nL{f(t)}=\\frac{{e}^{-7s}}{s},\\,s>0.\n$$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{e^{-7s}}{s}"
+            }
+          ],
+          "correct_value": "\\frac{e^{-7s}}{s}",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": ">"
+            }
+          ],
+          "correct_value": ">",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0"
+            }
+          ],
+          "correct_value": "0",
+          "choices_complete": false,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "knowledge_point_source_id": 6641,
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-341396",
+        "kp_title": "Finding Laplace Transforms of Step Functions",
+        "kp_href": "/topics/6717#6641"
+      }
+    },
+    {
+      "math_academy_id": "q-341448",
+      "knowledge_point_id": "424fc261-d1ca-5bf0-b085-7af1de6cc7cc",
+      "knowledge_point": "Finding Laplace Transforms of Other Piecewise Continuous Functions",
+      "problem": "Use the definition of Laplace transforms to calculate $F(s)=L{f(t)},$ where $f(t)$ is given by \n\n$$\nf(t)={\\begin{aligned}2,\\, & t\\le 3 \\\\ {e}^{t}\\, & t>3.\\end{aligned}\n$$\n\n$\\,F(s)=L{f(t)}=$ {{field-1}},\nvalid for {{field-2}}.",
+      "worked_solution": "We apply the definition of the Laplace transform:\n\n$$\n\\begin{aligned}L{f(t)} & =F(s)={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t\\end{aligned}\n$$\n\nSo, for the piecewise function \n\n$$\nf(t)={\\begin{aligned}2,\\, & t\\le 3 \\\\ {e}^{t}\\, & t>3\\end{aligned}\n$$\n\nwe have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}2\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{3}^{\\infty }{e}^{t}\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}2\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{3}^{\\infty }{e}^{t-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}2{e}^{-st}\\,\\text{d}t+{\\int }_{3}^{\\infty }{e}^{(1-s)t}\\,\\text{d}t.\\end{aligned}\n$$\n\nNote that the improper integral diverges if $s\\le 1.$\n\nFor $s>1,$ we calculate our Laplace transform as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{3}2{e}^{-st}\\,\\text{d}t+{\\int }_{3}^{\\infty }{e}^{(1-s)t}\\,\\text{d}t \\\\  & =-\\frac{2}{s}{[{e}^{-st}]}_{0}^{3}+{\\int }_{3}^{\\infty }{e}^{(1-s)t}\\,\\text{d}t \\\\  & =\\frac{2}{s}-\\frac{2{e}^{-3s}}{s}+{lim}_{a\\to \\infty }{\\int }_{3}^{a}{e}^{(1-s)t}\\,\\text{d}t \\\\  & =\\frac{2}{s}-\\frac{2{e}^{-3s}}{s}+{lim}_{a\\to \\infty }{(\\frac{{e}^{(1-s)t}}{1-s})|}_{3}^{a} \\\\  & =\\frac{2}{s}-\\frac{2{e}^{-3s}}{s}+\\frac{1}{1-s}\\cdot {lim}_{a\\to \\infty }({e}^{(1-s)a}-{e}^{3(1-s)}) \\\\  & =\\frac{2}{s}-\\frac{2{e}^{-3s}}{s}+\\frac{1}{1-s}\\cdot (0-{e}^{3(1-s)}) \\\\  & =\\frac{2}{s}-\\frac{2{e}^{-3s}}{s}+\\frac{{e}^{3(1-s)}}{s-1}\\end{aligned}\n$$\n\nvalid for $s>1.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{2}{s}+\\frac{{e}^{-3s}}{s}+\\frac{{e}^{3(1-s)}}{s-1}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{2}{s}-\\frac{2{e}^{-3s}}{s}+\\frac{{e}^{3(s-1)}}{s-1}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{2}{s}-\\frac{2{e}^{-3s}}{s}+\\frac{{e}^{3(1-s)}}{s-1}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{2}{s}-\\frac{2{e}^{-3s}}{s}+\\frac{{e}^{3(1-s)}}{s+1}"
+            }
+          ],
+          "correct_value": "\\frac{2}{s}-\\frac{2{e}^{-3s}}{s}+\\frac{{e}^{3(1-s)}}{s-1}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "s>1"
+            },
+            {
+              "type": "math",
+              "value": "s\\ge 0"
+            },
+            {
+              "type": "math",
+              "value": "s>3"
+            },
+            {
+              "type": "math",
+              "value": "s\\ge 1"
+            },
+            {
+              "type": "math",
+              "value": "s\\ge 3"
+            },
+            {
+              "type": "math",
+              "value": "s>0"
+            }
+          ],
+          "correct_value": "s>1",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        }
+      ],
+      "source_answer_policy": {
+        "version": "revealed-ma-answer-v1",
+        "feedback_sha256": "02cfd970aa4165050c45263f3b3dc4dd400bf948f00cb91b61dbab3536bb0ef0"
+      },
+      "knowledge_point_source_id": 21842,
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-341448",
+        "kp_title": "Finding Laplace Transforms of Other Piecewise Continuous Functions",
+        "kp_href": "/topics/6717#21842"
+      }
+    },
+    {
+      "math_academy_id": "q-341480",
+      "knowledge_point_id": "424fc261-d1ca-5bf0-b085-7af1de6cc7cc",
+      "knowledge_point": "Finding Laplace Transforms of Other Piecewise Continuous Functions",
+      "problem": "Use the definition of Laplace transforms to calculate $F(s)=L{f(t)},$ where $f(t)$ is given by \n\n$$\nf(t)={\\begin{aligned}{e}^{-2t},\\, & t\\le 3 \\\\ 1\\, & t>3.\\end{aligned}\n$$\n\n$\\,F(s)=L{f(t)}=$ {{field-1}},\nvalid for {{field-2}}.",
+      "worked_solution": "We apply the definition of the Laplace transform:\n\n$$\n\\begin{aligned}L{f(t)} & =F(s)={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t\\end{aligned}\n$$\n\nSo, for the piecewise function \n\n$$\nf(t)={\\begin{aligned}{e}^{-2t},\\, & t\\le 3 \\\\ 1\\, & t>3\\end{aligned}\n$$\n\nwe have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}{e}^{-2t}\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{3}^{\\infty }1\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}{e}^{-2t-st}\\,\\text{d}t+{\\int }_{3}^{\\infty }1\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{3}{e}^{-(2+s)t}\\,\\text{d}t+{\\int }_{3}^{\\infty }{e}^{-st}\\,\\text{d}t.\\end{aligned}\n$$\n\nNote that the improper integral diverges if $s\\le 0.$\n\nFor $s>0,$ we calculate our Laplace transform as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{3}{e}^{-(2+s)t}\\,\\text{d}t+{\\int }_{3}^{\\infty }{e}^{-st}\\,\\text{d}t \\\\  & =\\frac{1}{-(2+s)}{[{e}^{-(2+s)t}]}_{0}^{3}+{\\int }_{3}^{\\infty }{e}^{-st}\\,\\text{d}t \\\\  & =\\frac{1-{e}^{-3(2+s)}}{2+s}+{lim}_{a\\to \\infty }{\\int }_{3}^{a}{e}^{-st}\\,\\text{d}t \\\\  & =\\frac{1-{e}^{-3(2+s)}}{2+s}+{lim}_{a\\to \\infty }{(\\frac{-{e}^{-st}}{s})|}_{3}^{a} \\\\  & =\\frac{1-{e}^{-3(2+s)}}{2+s}-\\frac{1}{s}\\cdot {lim}_{a\\to \\infty }({e}^{-as}-{e}^{-3s}) \\\\  & =\\frac{1-{e}^{-3(2+s)}}{2+s}-\\frac{1}{s}\\cdot (0-{e}^{-3s}) \\\\  & =\\frac{1-{e}^{-3(2+s)}}{2+s}+\\frac{{e}^{-3s}}{s}\\end{aligned}\n$$\n\nvalid for $s>0.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{{e}^{-3(2+s)}}{s+2}+\\frac{{e}^{-3s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{e}^{-3(2+s)}-1}{s+2}-\\frac{{e}^{-3s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1-{e}^{-3(2+s)}}{2+s}+\\frac{{e}^{-3s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{e}^{3(2+s)}}{s+2}+\\frac{{e}^{-3s}}{s}"
+            }
+          ],
+          "correct_value": "\\frac{1-{e}^{-3(2+s)}}{2+s}+\\frac{{e}^{-3s}}{s}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "s>-2"
+            },
+            {
+              "type": "math",
+              "value": "s>3"
+            },
+            {
+              "type": "math",
+              "value": "s\\ge -2"
+            },
+            {
+              "type": "math",
+              "value": "s\\ge 0"
+            },
+            {
+              "type": "math",
+              "value": "s\\ge 3"
+            },
+            {
+              "type": "math",
+              "value": "s>0"
+            }
+          ],
+          "correct_value": "s>0",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "knowledge_point_source_id": 21842,
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-341480",
+        "kp_title": "Finding Laplace Transforms of Other Piecewise Continuous Functions",
+        "kp_href": "/topics/6717#21842"
+      }
+    },
+    {
+      "math_academy_id": "q-341482",
+      "knowledge_point_id": "424fc261-d1ca-5bf0-b085-7af1de6cc7cc",
+      "knowledge_point": "Finding Laplace Transforms of Other Piecewise Continuous Functions",
+      "problem": "Use the definition of Laplace transforms to calculate $F(s)=L{f(t)},$ where $f(t)$ is given by \n\n$$\nf(t)={\\begin{aligned}{e}^{-t},\\, & t\\le 4 \\\\ 2\\, & t>4.\\end{aligned}\n$$\n\n$\\,F(s)=L{f(t)}=$ {{field-1}},\nvalid for {{field-2}}.",
+      "worked_solution": "We apply the definition of the Laplace transform:\n\n$$\n\\begin{aligned}L{f(t)} & =F(s)={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t\\end{aligned}\n$$\n\nSo, for the piecewise function \n\n$$\nf(t)={\\begin{aligned}{e}^{-t},\\, & t\\le 4 \\\\ 2\\, & t>4\\end{aligned}\n$$\n\nwe have\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{\\infty }f(t){e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{4}{e}^{-t}\\cdot {e}^{-st}\\,\\text{d}t+{\\int }_{4}^{\\infty }2\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{4}{e}^{-t-st}\\,\\text{d}t+{\\int }_{4}^{\\infty }2\\cdot {e}^{-st}\\,\\text{d}t \\\\  & ={\\int }_{0}^{4}{e}^{-(1+s)t}\\,\\text{d}t+{\\int }_{4}^{\\infty }2{e}^{-st}\\,\\text{d}t.\\end{aligned}\n$$\n\nNote that the improper integral diverges if $s\\le 0.$\n\nFor $s>0,$ we calculate our Laplace transform as follows:\n\n$$\n\\begin{aligned}F(s) & ={\\int }_{0}^{4}{e}^{-(1+s)t}\\,\\text{d}t+{\\int }_{4}^{\\infty }2{e}^{-st}\\,\\text{d}t \\\\  & =\\frac{1}{-(1+s)}{[{e}^{-(1+s)t}]}_{0}^{4}+{\\int }_{4}^{\\infty }2{e}^{-st}\\,\\text{d}t \\\\  & =\\frac{1-{e}^{-4(1+s)}}{1+s}+{lim}_{a\\to \\infty }{\\int }_{4}^{a}2{e}^{-st}\\,\\text{d}t \\\\  & =\\frac{1-{e}^{-4(1+s)}}{1+s}+{lim}_{a\\to \\infty }{(\\frac{-2{e}^{-st}}{s})|}_{4}^{a} \\\\  & =\\frac{1-{e}^{-4(1+s)}}{1+s}-\\frac{2}{s}\\cdot {lim}_{a\\to \\infty }({e}^{-as}-{e}^{-4s}) \\\\  & =\\frac{1-{e}^{-4(1+s)}}{1+s}-\\frac{2}{s}\\cdot (0-{e}^{-4s}) \\\\  & =\\frac{1-{e}^{-4(1+s)}}{1+s}+\\frac{2{e}^{-4s}}{s}\\end{aligned}\n$$\n\nvalid for $s>0.$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{1-{e}^{-4(1+s)}}{1+s}+\\frac{2{e}^{-4s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1-{e}^{-4(1+s)}}{1+s}-\\frac{2{e}^{-4s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{e}^{4(1+s)}}{s+1}+\\frac{2{e}^{-4s}}{s}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{e}^{-4(1+s)}-1}{s+1}-\\frac{2{e}^{-4s}}{s}"
+            }
+          ],
+          "correct_value": "\\frac{1-{e}^{-4(1+s)}}{1+s}+\\frac{2{e}^{-4s}}{s}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "s>4"
+            },
+            {
+              "type": "math",
+              "value": "s\\ge -1"
+            },
+            {
+              "type": "math",
+              "value": "s>0"
+            },
+            {
+              "type": "math",
+              "value": "s>-1"
+            },
+            {
+              "type": "math",
+              "value": "s\\ge 4"
+            },
+            {
+              "type": "math",
+              "value": "s\\ge 0"
+            }
+          ],
+          "correct_value": "s>0",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "knowledge_point_source_id": 21842,
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-341482",
+        "kp_title": "Finding Laplace Transforms of Other Piecewise Continuous Functions",
+        "kp_href": "/topics/6717#21842"
+      }
+    }
+  ],
+  "canonical_examples": []
+}
