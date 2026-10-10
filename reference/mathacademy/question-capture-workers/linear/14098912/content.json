@@ -1,0 +1,524 @@
+{
+  "task_id": 14098912,
+  "task_type": "review",
+  "topic_id": 3133,
+  "content_only": true,
+  "source_url": "https://mathacademy.com/learn?taskId=14098912",
+  "sequence_policy": {
+    "scope": "whole review",
+    "CWCWC": 0.7,
+    "WCWCC": 0.30000000000000004,
+    "sequence": "CWCWC",
+    "continuation": "repeat saved pattern until site completion"
+  },
+  "questions": [
+    {
+      "math_academy_id": "q-98797",
+      "knowledge_point_id": "8b36c482-75a0-5413-8e3e-4a72e3ddb26a",
+      "knowledge_point": "Finding the First Factor in the SVD of a Rectangular Matrix",
+      "problem": "$$\nA=[\\begin{aligned}1 & -3 \\\\ 4 & 4 \\\\ -3 & 1\\end{aligned}],\\,\u03a3=[\\begin{aligned}6 & 0 \\\\ 0 & 4 \\\\ 0 & 0\\end{aligned}],\\,V=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]\n$$\n\nConsider the matrices shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$ which of the following could be the $3$rd column of the matrix $U?$",
+      "worked_solution": "Recall that if  $A=U\u03a3{V}^{T}$ is a singular value decomposition of a $3\\times 2$ matrix $A,$ then\n\n- $\u03a3$ is a $3\\times 2$ matrix with nonnegative elements on the main diagonal and zeroes outside the main diagonal,\n\n- $U$ is an orthogonal $3\\times 3$ matrix,\n\n- $V$ is an orthogonal $2\\times 2$ matrix.\n\nFrom the matrix $\u03a3,$ we deduce that ${\\sigma }_{1}=6$ and ${\\sigma }_{2}=4.$\nAlso, the columns ${v}_{1}$ and ${v}_{2}$ of $V$ give us the right singular vectors of $A.$\n\nTherefore, we can compute the $1$st and $2$nd columns of $U$ as follows:\n\n- First, we compute ${u}_{1}:$\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{6}[\\begin{aligned}1 & -3 \\\\ 4 & 4 \\\\ -3 & 1\\end{aligned}][\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{6}[\\begin{aligned}-\\frac{2}{\\sqrt{2}} \\\\ \\frac{8}{\\sqrt{2}} \\\\ -\\frac{2}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{1}{3\\sqrt{2}} \\\\ \\frac{4}{3\\sqrt{2}} \\\\ -\\frac{1}{3\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\n- Then, we compute ${u}_{2}:$\n\n$$\n\\begin{aligned}{u}_{2} & =\\frac{1}{{\\sigma }_{2}}A{v}_{2} \\\\  & =\\frac{1}{4}[\\begin{aligned}1 & -3 \\\\ 4 & 4 \\\\ -3 & 1\\end{aligned}][\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{4}[\\begin{aligned}-\\frac{4}{\\sqrt{2}} \\\\ 0 \\\\ \\frac{4}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ 0 \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\nSince we do not have the third singular value, we can't use the same formula to find the third column of $U.$ But we know that $U$ must be orthogonal. Hence, we must find a vector \n\n$$\n{u}_{3}=[\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]\n$$\n\nsuch that \n\n$$\n{\\begin{aligned}{u}_{1}\\cdot {u}_{3}=0 \\\\ {u}_{2}\\cdot {u}_{3}=0,\\end{aligned}\\,\u2016{u}_{3}\u2016=1.\n$$\n\nSolving this system, which is equivalent to\n\n$$\n{\\begin{aligned}-\\frac{1}{3\\sqrt{2}}{x}_{1}+\\frac{4}{3\\sqrt{2}}{x}_{2}-\\frac{1}{3\\sqrt{2}}{x}_{3}=0 \\\\ -\\frac{1}{\\sqrt{2}}{x}_{1}+\\frac{1}{\\sqrt{2}}{x}_{3}=0\\end{aligned}\\,\u27f9\\,{\\begin{aligned}-{x}_{1}+4{x}_{2}-{x}_{3}=0 \\\\ -{x}_{1}+{x}_{3}=0,\\end{aligned}\n$$\n\nwe get the nonzero normalized solution \n\n$$\n{u}_{3}=[\\begin{aligned}\\frac{2}{3} \\\\ \\frac{1}{3} \\\\ \\frac{2}{3}\\end{aligned}].\n$$\n\nFinally, we construct the matrix $U:$\n\n$$\nU=[\\begin{aligned}-\\frac{1}{3\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} & \\frac{2}{3} \\\\ \\frac{4}{3\\sqrt{2}} & 0 & \\frac{1}{3} \\\\ -\\frac{1}{3\\sqrt{2}} & \\frac{1}{\\sqrt{2}} & \\frac{2}{3}\\end{aligned}]\n$$",
+      "answer_fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-\\frac{1}{3\\sqrt{2}} \\\\ \\frac{4}{3\\sqrt{2}} \\\\ -\\frac{1}{3\\sqrt{2}}\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}\\frac{2}{3} \\\\ \\frac{1}{3} \\\\ \\frac{2}{3}\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ 0 \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1 \\\\ 0 \\\\ 0\\end{aligned}]"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}0 \\\\ \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]"
+            }
+          ],
+          "correct_value": "[\\begin{aligned}\\frac{2}{3} \\\\ \\frac{1}{3} \\\\ \\frac{2}{3}\\end{aligned}]",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "knowledge_point_source_id": 8634,
+      "difficulty": "moderate",
+      "provenance": {
+        "activity_question": "question-98797",
+        "kp_title": "Finding the First Factor in the SVD of a Rectangular Matrix",
+        "kp_href": "/topics/3133#8634"
+      }
+    },
+    {
+      "math_academy_id": "q-363830",
+      "knowledge_point_id": "a6732620-fad1-5dd3-98c5-07ba59d0b286",
+      "knowledge_point": "Finding the First Factor in the SVD of a Rectangular Matrix: Advanced Cases",
+      "problem": "$$\nA=[\\begin{aligned}1 & 2 \\\\ \\,\\,-1 & \\,\\,-2 \\\\ 0 & 0\\end{aligned}],\\,\u03a3=[\\begin{aligned}\\sqrt{10} & 0 \\\\ 0 & 0 \\\\ 0 & 0\\end{aligned}],\\,V=[\\begin{aligned}\\frac{1}{\\sqrt{5}} & -\\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}}\\end{aligned}]\n$$\n\nConsider the matrices shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$  select the correct options in the computations of the matrix $U$ below.From the matrix $\u03a3,$ we deduce the singular values ${\\sigma }_{1}=\\sqrt{10}$ and ${\\sigma }_{2}=0.$\n\nNow, we compute the $1$st column of $U.$ It is given by:\n\n|  |  | {{field-1}} |  |  |\n| --- | --- | --- | --- | --- |\n| ${u}_{1}=\\,\\,$ |  | {{field-2}} |  |  |\n|  |  | $0$ |  |  |\n\nSince the second singular value is ${\\sigma }_{2}=0$, and we do not have the third singular value, we can't use the same formula to find the second and third columns of $U.$ But we know that $U$ must be orthogonal.\n\nHence, we must find vectors $u=[{x}_{1},{x}_{2},{x}_{3}]^{T}$ such that ${u}_{1}\\cdot u=0,$ which is equivalent to \n\n$$\n{{field-3}}.\n$$\n\nChoosing ${x}_{2}$ and ${x}_{3}$ as free variables, the general solution is given by:\n\n|  |  | {{field-4}} |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | {{field-5}} |  |  |\n|  |  | ${x}_{3}$ |  |  |\n\nthat we can rewrite as\n\n$$\n[\\begin{aligned}{x}_{2} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]+{x}_{3}[\\begin{aligned}0 \\\\ 0 \\\\ 1\\end{aligned}].\n$$\n\nSince the two linearly independent solutions are already mutually orthogonal, we only need to normalize them. Hence, we obtain the second and third columns of $U:$\n\n| | ${u}_{2}=\\,\\,$ |  | {{field-6}} |  |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-7}} |  |  |  |\n|  | $0$ |  |  |  | | | ${u}_{3}=\\,\\,$ |  | $0$ |  |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-8}} |  |  |  |\n|  | {{field-9}} |  |  |  | |  |  |  |\n| --- | --- | --- | --- | --- |\n| ${u}_{2}=\\,\\,$ |  | {{field-6}} |  |  |\n|  | {{field-7}} |  |  |  |\n|  | $0$ |  |  |  |\n| ${u}_{3}=\\,\\,$ |  | $0$ |  |  |\n|  | {{field-8}} |  |  |  |\n|  | {{field-9}} |  |  |  |",
+      "worked_solution": "Recall that if  $A=U\u03a3{V}^{T}$ is a singular value decomposition of a $3\\times 2$ matrix $A,$ then\n\n- $\u03a3$ is a $3\\times 2$ matrix with nonnegative elements on the main diagonal and zeroes outside the main diagonal,\n\n- $U$ is an orthogonal $3\\times 3$ matrix,\n\n- $V$ is an orthogonal $2\\times 2$ matrix.\n\nFrom the matrix $\u03a3,$ we deduce that ${\\sigma }_{1}=\\sqrt{10}$ and ${\\sigma }_{2}=0.$\nAlso, the columns ${v}_{1}$ and ${v}_{2}$ of $V$ give us the right singular vectors of $A.$\n\nTherefore, we can compute the first column of $U$ as follows:\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{\\sqrt{10}}[\\begin{aligned}1 & 2 \\\\ -1 & -2 \\\\ 0 & 0\\end{aligned}][\\begin{aligned}\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{10}}[\\begin{aligned}\\frac{5}{\\sqrt{5}} \\\\ -\\frac{5}{\\sqrt{5}} \\\\ 0\\end{aligned}] \\\\  & =[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ -\\frac{1}{\\sqrt{2}} \\\\ 0\\end{aligned}]\\end{aligned}\n$$\n\nSince the second singular value is ${\\sigma }_{2}=0$, and we do not have the third singular value, we can't use the same formula to find the second and third columns of $U.$ But we know that $U$ must be orthogonal. Hence, we must find vectors \n\n$$\nu=[\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]\n$$\n\nsuch that ${u}_{1}\\cdot u=0$ and $\u2016u\u2016=1.$\n\nSolving ${u}_{1}\\cdot u=0,$ which is equivalent to\n\n$$\n\\frac{1}{\\sqrt{2}}{x}_{1}-\\frac{1}{\\sqrt{2}}{x}_{2}=0\\,\u27f9\\,{x}_{1}-{x}_{2}=0,\n$$\n\nwe get the general solution \n\n$$\n[\\begin{aligned}{x}_{2} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}{{[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]}_{\u23df}}_{{b}_{1}}+{x}_{3}{{[\\begin{aligned}0 \\\\ 0 \\\\ 1\\end{aligned}]}_{\u23df}}_{{b}_{2}},\n$$\n\nwhere ${x}_{2}$ and ${x}_{3}$ are free variables.\n\nNotice that the two linearly independent solutions ${b}_{1}$ and ${b}_{2}$ are mutually orthogonal. Therefore, we only need to normalize them. This gives the second and third columns of $U:$   \n\n$$\n{u}_{2}=[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} \\\\ 0\\end{aligned}]\\,{u}_{3}=[\\begin{aligned}0 \\\\ 0 \\\\ 1\\end{aligned}]\n$$\n\nSo, the matrix $U$ could be the following:\n\n$$\nU=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} & 0 \\\\ -\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} & 0 \\\\ 0 & 0 & 1\\end{aligned}]\n$$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{1}{\\sqrt{2}}"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{2}}"
+            }
+          ],
+          "correct_value": "\\frac{1}{\\sqrt{2}}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{1}{\\sqrt{2}}"
+            },
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{2}}"
+            }
+          ],
+          "correct_value": "-\\frac{1}{\\sqrt{2}}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-3",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "{x}_{1}+{x}_{2}=0"
+            },
+            {
+              "type": "math",
+              "value": "{x}_{1}-{x}_{2}=0"
+            },
+            {
+              "type": "math",
+              "value": "{x}_{2}-{x}_{3}=0"
+            }
+          ],
+          "correct_value": "{x}_{1}-{x}_{2}=0",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-4",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-{x}_{2}"
+            },
+            {
+              "type": "math",
+              "value": "{x}_{2}"
+            },
+            {
+              "type": "math",
+              "value": "{x}_{1}"
+            }
+          ],
+          "correct_value": "{x}_{2}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-5",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-{x}_{1}"
+            },
+            {
+              "type": "math",
+              "value": "{x}_{3}"
+            },
+            {
+              "type": "math",
+              "value": "{x}_{2}"
+            }
+          ],
+          "correct_value": "{x}_{2}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-6",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-\\frac{1}{\\sqrt{2}}"
+            },
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{2}}"
+            }
+          ],
+          "correct_value": "\\frac{1}{\\sqrt{2}}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-7",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{1}{\\sqrt{2}}"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{2}}"
+            }
+          ],
+          "correct_value": "\\frac{1}{\\sqrt{2}}",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-8",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{2}}"
+            },
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{1}{\\sqrt{2}}"
+            }
+          ],
+          "correct_value": "0",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        },
+        {
+          "key": "field-9",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{2}}"
+            },
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{1}{\\sqrt{2}}"
+            }
+          ],
+          "correct_value": "1",
+          "choices_complete": true,
+          "correct_origin": "ma_revealed_solution"
+        }
+      ],
+      "source_answer_policy": {
+        "version": "revealed-ma-answer-v1",
+        "feedback_sha256": "5bb305076617ac2193e5281a2cbb4d8e48eba65dd7e71db1e114f4d812c237d1"
+      },
+      "knowledge_point_source_id": 8633,
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-363830",
+        "kp_title": "Finding the First Factor in the SVD of a Rectangular Matrix: Advanced Cases",
+        "kp_href": "/topics/3133#8633"
+      }
+    },
+    {
+      "math_academy_id": "q-363840",
+      "knowledge_point_id": "a6732620-fad1-5dd3-98c5-07ba59d0b286",
+      "knowledge_point": "Finding the First Factor in the SVD of a Rectangular Matrix: Advanced Cases",
+      "problem": "$$\nA=[\\begin{aligned}4 & 0 \\\\ 3 & 0 \\\\ 0 & 0\\end{aligned}],\\,\u03a3=[\\begin{aligned}5 & 0 \\\\ 0 & 0 \\\\ 0 & 0\\end{aligned}],\\,V=[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]\n$$\n\nConsider the matrices shown above. Given that $A=U\u03a3{V}^{T}$ is a singular value decomposition of $A,$  select the correct options in the computations of the matrix $U$ below.From the matrix $\u03a3,$ we deduce the singular values ${\\sigma }_{1}=5$ and ${\\sigma }_{2}=0.$\n\nNow, we compute the $1$st column of $U.$ It is given by:\n\n|  |  | {{field-1}} |  |  |\n| --- | --- | --- | --- | --- |\n| ${u}_{1}=\\,\\,$ |  | $\\frac{3}{5}$ |  |  |\n|  |  | {{field-2}} |  |  |\n\nSince the second singular value is ${\\sigma }_{2}=0$, and we do not have the third singular value, we can't use the same formula to find the second and third columns of $U.$ But we know that $U$ must be orthogonal.\n\nHence, we must find vectors $u=[{x}_{1},{x}_{2},{x}_{3}]^{T}$ such that ${u}_{1}\\cdot u=0,$ which is equivalent to \n\n$$\n{{field-3}}.\n$$\n\nChoosing ${x}_{2}$ and ${x}_{3}$ as free variables, the general solution is given by:\n\n|  |  | {{field-4}} |  |  |\n| --- | --- | --- | --- | --- |\n|  |  | {{field-5}} |  |  |\n|  |  | ${x}_{3}$ |  |  |\n\nthat we can rewrite as\n\n$$\n[\\begin{aligned}-\\frac{3}{4}{x}_{2} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}[\\begin{aligned}-\\frac{3}{4} \\\\ 1 \\\\ 0\\end{aligned}]+{x}_{3}[\\begin{aligned}0 \\\\ 0 \\\\ 1\\end{aligned}].\n$$\n\nSince the two linearly independent solutions are already mutually orthogonal, we only need to normalize them. Hence, we obtain the second and third columns of $U:$\n\n| | ${u}_{2}=\\,\\,$ |  | {{field-6}} |  |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-7}} |  |  |  |\n|  | $0$ |  |  |  | | | ${u}_{3}=\\,\\,$ |  | $0$ |  |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-8}} |  |  |  |\n|  | {{field-9}} |  |  |  | |  |  |  |\n| --- | --- | --- | --- | --- |\n| ${u}_{2}=\\,\\,$ |  | {{field-6}} |  |  |\n|  | {{field-7}} |  |  |  |\n|  | $0$ |  |  |  |\n| ${u}_{3}=\\,\\,$ |  | $0$ |  |  |\n|  | {{field-8}} |  |  |  |\n|  | {{field-9}} |  |  |  |",
+      "worked_solution": "Recall that if  $A=U\u03a3{V}^{T}$ is a singular value decomposition of a $3\\times 2$ matrix $A,$ then\n\n- $\u03a3$ is a $3\\times 2$ matrix with nonnegative elements on the main diagonal and zeroes outside the main diagonal,\n\n- $U$ is an orthogonal $3\\times 3$ matrix,\n\n- $V$ is an orthogonal $2\\times 2$ matrix.\n\nFrom the matrix $\u03a3,$ we deduce that ${\\sigma }_{1}=5$ and ${\\sigma }_{2}=0.$\nAlso, the columns ${v}_{1}$ and ${v}_{2}$ of $V$ give us the right singular vectors of $A.$\n\nTherefore, we can compute the first column of $U$ as follows:\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{5}[\\begin{aligned}4 & 0 \\\\ 3 & 0 \\\\ 0 & 0\\end{aligned}][\\begin{aligned}1 \\\\ 0\\end{aligned}] \\\\  & =\\frac{1}{5}[\\begin{aligned}4 \\\\ 3 \\\\ 0\\end{aligned}] \\\\  & =[\\begin{aligned}\\frac{4}{5} \\\\ \\frac{3}{5} \\\\ 0\\end{aligned}]\\end{aligned}\n$$\n\nSince the second singular value is ${\\sigma }_{2}=0$, and we do not have the third singular value, we can't use the same formula to find the second and third columns of $U.$ But we know that $U$ must be orthogonal. Hence, we must find vectors \n\n$$\nu=[\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]\n$$\n\nsuch that ${u}_{1}\\cdot u=0$ and $\u2016u\u2016=1.$\n\nSolving ${u}_{1}\\cdot u=0,$ which is equivalent to\n\n$$\n\\frac{4}{5}{x}_{1}+\\frac{3}{5}{x}_{2}=0\\,\u27f9\\,4{x}_{1}+3{x}_{2}=0,\n$$\n\nwe get the general solution \n\n$$\n[\\begin{aligned}-\\frac{3}{4}{x}_{2} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}{{[\\begin{aligned}-\\frac{3}{4} \\\\ 1 \\\\ 0\\end{aligned}]}_{\u23df}}_{{b}_{1}}+{x}_{3}{{[\\begin{aligned}0 \\\\ 0 \\\\ 1\\end{aligned}]}_{\u23df}}_{{b}_{2}},\n$$\n\nwhere ${x}_{2}$ and ${x}_{3}$ are free variables.\n\nNotice that the two linearly independent solutions ${b}_{1}$ and ${b}_{2}$ are mutually orthogonal. Therefore, we only need to normalize them. This gives the second and third columns of $U:$   \n\n$$\n{u}_{2}=[\\begin{aligned}-\\frac{3}{5} \\\\ \\frac{4}{5} \\\\ 0\\end{aligned}]\\,{u}_{3}=[\\begin{aligned}0 \\\\ 0 \\\\ 1\\end{aligned}]\n$$\n\nSo, the matrix $U$ could be the following:\n\n$$\nU=[\\begin{aligned}\\frac{4}{5} & -\\frac{3}{5} & 0 \\\\ \\frac{3}{5} & \\frac{4}{5} & 0 \\\\ 0 & 0 & 1\\end{aligned}]\n$$",
+      "answer_fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{3}{5}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{4}{5}"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "0"
+            }
+          ],
+          "correct_value": "\\frac{4}{5}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{4}{5}"
+            },
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{3}{5}"
+            }
+          ],
+          "correct_value": "0",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-3",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "4{x}_{1}+3{x}_{2}=0"
+            },
+            {
+              "type": "math",
+              "value": "3{x}_{1}+4{x}_{2}=0"
+            },
+            {
+              "type": "math",
+              "value": "4{x}_{1}+3{x}_{2}+{x}_{3}=0"
+            }
+          ],
+          "correct_value": "4{x}_{1}+3{x}_{2}=0",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-4",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-\\frac{3}{4}{x}_{2}"
+            },
+            {
+              "type": "math",
+              "value": "{x}_{2}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{3}{4}{x}_{2}"
+            }
+          ],
+          "correct_value": "-\\frac{3}{4}{x}_{2}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-5",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "{x}_{2}"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{3}{4}{x}_{2}"
+            },
+            {
+              "type": "math",
+              "value": "{x}_{3}"
+            }
+          ],
+          "correct_value": "{x}_{2}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-6",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{4}{5}"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{3}{5}"
+            },
+            {
+              "type": "math",
+              "value": "0"
+            }
+          ],
+          "correct_value": "-\\frac{3}{5}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-7",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{4}{5}"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{3}{5}"
+            }
+          ],
+          "correct_value": "\\frac{4}{5}",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-8",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{4}{5}"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{5}"
+            }
+          ],
+          "correct_value": "0",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        },
+        {
+          "key": "field-9",
+          "type": "select",
+          "choices": [
+            {
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{4}{5}"
+            },
+            {
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{5}"
+            }
+          ],
+          "correct_value": "1",
+          "choices_complete": true,
+          "correct_origin": "ma_successful_grade"
+        }
+      ],
+      "knowledge_point_source_id": 8633,
+      "difficulty": "easy",
+      "provenance": {
+        "activity_question": "question-363840",
+        "kp_title": "Finding the First Factor in the SVD of a Rectangular Matrix: Advanced Cases",
+        "kp_href": "/topics/3133#8633"
+      }
+    }
+  ],
+  "canonical_examples": []
+}
