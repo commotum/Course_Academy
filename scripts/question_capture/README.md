@@ -724,8 +724,11 @@ All paths work when invoked from this repository root.
 
 To finish one already-started activity and exit without consuming fresh queued work, use
 `run --resume CAPTURE_DIRECTORY --capture-only --finish-in-progress`. This saves the
-activity and its history, defers imports, and skips unresolved diagnostic questions
-while retaining their solver evidence. It rejects checkpoints without evidence of
+activity and its history, defers imports, and skips uncertain diagnostic questions
+or dropdowns without an exposed click target while retaining their answer evidence.
+If MA replaces an unsubmitted diagnostic question on resume, the prior question is
+preserved in `diagnostic_displaced_questions` and the replacement gets a separate
+solver directory. It rejects checkpoints without evidence of
 a started activity and reports any remaining capture failure instead of continuing
 to another task.
 

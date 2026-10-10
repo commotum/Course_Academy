@@ -90,12 +90,15 @@ class FinishInProgressTests(unittest.TestCase):
         self.assertEqual(new['source_question_id'],338907)
         self.assertEqual(record['before']['problem'],'old question')
         self.assertNotEqual(new['solver_directory'],'question-023')
-        for unsafe in ({**record,'status':'submitting'}, {**record,'status':'graded'},
-                       {**record,'decision':{'answers':[1]}}):
+        for unsafe in ({**record,'status':'submitting'}, {**record,'status':'graded'}):
             with self.assertRaises(ValueError):
                 replaced_diagnostic_record(unsafe,{'source_question_id':338907},{},None,'question-023')
         with self.assertRaises(ValueError):
             replaced_diagnostic_record(record,{'source_question_id':342755},{},None,'question-023')
+        with_answer={**record,'decision':{'answers':[1]}}
+        fresh=replaced_diagnostic_record(with_answer,{'source_question_id':338907},{},None,'question-023')
+        self.assertNotIn('decision',fresh)
+        self.assertIn('decision',with_answer)
 
 
 if __name__=='__main__':unittest.main()

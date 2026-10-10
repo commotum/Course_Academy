@@ -318,6 +318,24 @@ class DiagnosticReplayTests(unittest.TestCase):
                 ':topic/knowledge-points':[{':knowledge-point/id':stable_id('kp',str(q['knowledge_point_source_id'])),
                                           ':knowledge-point/title':q['history']['kp_title']} for q in qs]}
 
+    def test_drain_skips_uncertain_answers_and_finishes_exam(self):
+        reader=self.reader();reader.args.finish_in_progress=True;state=self.state()
+        reader.solver.solve=Mock(side_effect=ValueError('Solver is uncertain; question saved for review'))
+        self.start(reader,state)
+        self.assertTrue(state['diagnostic_complete'])
+        self.assertEqual(self.submissions,[(0,'skip'),(1,'skip'),(2,'skip'),(3,'skip')])
+        uncertain=[q for q in state['questions'].values() if q.get('decision',{}).get('diagnostic_finish_skip')]
+        self.assertTrue(uncertain)
+        self.assertTrue(all(not q['decision']['confident'] for q in uncertain))
+
+    def test_drain_skips_unfillable_controls_without_submitting_answer(self):
+        reader=self.reader();reader.args.finish_in_progress=True;state=self.state()
+        reader.enter=Mock(side_effect=ValueError('Dropdown option has no exposed click target; stop before Submit'))
+        self.start(reader,state)
+        self.assertTrue(state['diagnostic_complete'])
+        self.assertEqual(self.submissions,[(0,'skip'),(1,'skip'),(2,'skip'),(3,'skip')])
+        self.assertTrue(any(q.get('diagnostic_drain_skipped_answer') for q in state['questions'].values()))
+
     def test_queue_start_adaptive_radio_image_and_mathquill_history_and_import(self):
         reader=self.reader();queue=reader.queue()
         self.assertEqual(queue[0]['diagnostic_id'],2);self.assertEqual(queue[0]['course_id'],54)

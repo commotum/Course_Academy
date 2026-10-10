@@ -1,0 +1,73 @@
+{
+  "mode": "solve",
+  "problem": "At a geological site, an object is found with $75%$ of its original chlorine-36 content. Given that the half-life of chlorine-36 is $301$ thousand years, approximately how old is the object?",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$143$ thousand years"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$112$ thousand years"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$125$ thousand years"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$236$ thousand years"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$92$ thousand years"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14097559,
+    "task_type": "diagnostic",
+    "topic_id": null,
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "question-028",
+        "problem": "Consider the following initial value problem.\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+3y=\\operatorname{sin}\u20612t+\\operatorname{cos}\u20612t,\\,y(0)=1\n$$\n\nSelect the correct options in the reasoning below to find the solution using Laplace transforms. You may make use of the following results:\n\n$$\nL{\\operatorname{sin}\u2061\\omega t}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L{\\operatorname{cos}\u2061\\omega t}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$\n\nLet $Y(s)=L{y(t)}.$ Taking the Laplace transform of both sides of the equation and solving for $Y,$ we have\n\n$$\nY(s)={{field-1}}.\n$$\n\nThe partial fraction decomposition of $Y$ is\n\n$$\nY(s)={{field-2}}.\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny(t)={{field-3}}.\n$$",
+        "worked_solution": "First, we take the Laplace transform of both sides of the differential equation. Using the linearity property, we have\n\n$$\nL{{y}^{\u2032}}+3L{y}=L{\\operatorname{sin}\u20612t}+L{\\operatorname{cos}\u20612t}.\n$$\n\nUsing the formula for the transform of a derivative $L{{y}^{\u2032}}=sY(s)-y(0)$ and the standard trigonometric transforms\n\n$$\nL{\\operatorname{sin}\u20612t}=\\frac{2}{{s}^{2}+4},\\,L{\\operatorname{cos}\u20612t}=\\frac{s}{{s}^{2}+4},\n$$\n\nwe substitute the known values. Note that $y(0)=1:$\n\n$$\n\\begin{aligned}(sY(s)-1)+3Y(s) & =\\frac{2}{{s}^{2}+4}+\\frac{s}{{s}^{2}+4} \\\\ (s+3)Y(s)-1 & =\\frac{s+2}{{s}^{2}+4}\\end{aligned}\n$$\n\nWe rearrange to solve for $Y(s).$ First, add $1$ to the right-hand side and find a common denominator:\n\n$$\n\\begin{aligned}(s+3)Y(s) & =1+\\frac{s+2}{{s}^{2}+4} \\\\ (s+3)Y(s) & =\\frac{{s}^{2}+4}{{s}^{2}+4}+\\frac{s+2}{{s}^{2}+4} \\\\ (s+3)Y(s) & =\\frac{{s}^{2}+s+6}{{s}^{2}+4}\\end{aligned}\n$$\n\nDividing by $(s+3),$ we obtain\n\n$$\nY(s)=\\frac{{s}^{2}+s+6}{(s+3)({s}^{2}+4)}.\n$$\n\nNext, we perform a partial fraction decomposition. Since the denominator has a linear factor $(s+3)$ and an irreducible quadratic factor $({s}^{2}+4),$ we write\n\n$$\n\\frac{{s}^{2}+s+6}{(s+3)({s}^{2}+4)}=\\frac{A}{s+3}+\\frac{Bs+C}{{s}^{2}+4}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n{s}^{2}+s+6=A({s}^{2}+4)+(Bs+C)(s+3)\n$$\n\n- Setting $s=-3,$ we have\n \n\n$$\n(-3)^{2}+(-3)+6=A((-3)^{2}+4)+0\\,\u27f9\\,12=13A\\,\u27f9\\,A=\\frac{12}{13}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n  \n\n$$\n1=A+B\\,\u27f9\\,1=\\frac{12}{13}+B\\,\u27f9\\,B=\\frac{1}{13}.\n$$\n\n- Comparing the constant terms, we have\n \n\n$$\n6=4A+3C\\,\u27f9\\,6=4(\\frac{12}{13})+3C\\,\u27f9\\,C=\\frac{10}{13}.\n$$\n\nThus, the decomposition is\n\n$$\nY(s)=\\frac{(\\frac{12}{13})}{13(s+3)}+\\frac{(\\frac{1}{13}s+\\frac{10}{13})}{{s}^{2}+4}=\\frac{12}{13(s+3)}+\\frac{s+10}{13({s}^{2}+4)}.\n$$\n\nFrom the table of Laplace transforms, we have:\n\n$$\n\\begin{aligned}{L}^{-1}{\\frac{1}{s+3}} & ={e}^{-3t} \\\\ {L}^{-1}{\\frac{s}{{s}^{2}+4}} & =\\operatorname{cos}\u20612t \\\\ {L}^{-1}{\\frac{2}{{s}^{2}+4}} & =\\operatorname{sin}\u20612t\\end{aligned}\n$$\n\nFinally, taking the inverse Laplace transform of $Y(s),$ we get\n\n$$\n\\begin{aligned}y(t) & =\\frac{12}{13}{L}^{-1}{\\frac{1}{s+3}}+\\frac{1}{13}{L}^{-1}{\\frac{s}{{s}^{2}+4}}+\\frac{5}{13}{L}^{-1}{\\frac{2}{{s}^{2}+4}} \\\\ y(t) & =\\frac{12}{13}{e}^{-3t}+\\frac{5}{13}\\operatorname{sin}\u20612t+\\frac{1}{13}\\operatorname{cos}\u20612t.\\end{aligned}\n$$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{{s}^{2}+s+6}{(s+3)({s}^{2}+4)}",
+            "submitted_option": "2"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "\\frac{12}{13(s+3)}+\\frac{s+10}{13({s}^{2}+4)}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "\\frac{12}{13}{e}^{-3t}+\\frac{5}{13}\\operatorname{sin}\u20612t+\\frac{1}{13}\\operatorname{cos}\u20612t",
+            "submitted_option": "3"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}

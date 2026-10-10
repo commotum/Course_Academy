@@ -275,7 +275,7 @@ def diagnostic_decision(reader, item, screenshot, directory, phase):
 def replaced_diagnostic_record(record, view, item, screenshot, slot):
     """Only an unsubmitted question with a new source ID may replace a saved slot."""
     old, new = record.get('source_question_id'), view.get('source_question_id')
-    if (record.get('status') != 'captured' or record.get('decision') or
+    if (record.get('status') != 'captured' or
             type(old) is not int or type(new) is not int or old == new):
         raise ValueError('Restored diagnostic problem differs from saved live capture')
     return {'before':item, 'screenshot':str(screenshot), 'status':'captured',
@@ -439,8 +439,19 @@ def _take_diagnostic(reader, state, directory):
             save()
         reader.pacer.wait('answer', 'diagnostic answer', elapsed=time.monotonic()-question_started)
         if answers_classification(record['classification']):
-            reader.enter(scope, record)
-            reader.verify_entered(scope, record)
+            try:
+                reader.enter(scope, record)
+                reader.verify_entered(scope, record)
+            except ValueError as error:
+                if (not getattr(reader.args, 'finish_in_progress', False) or
+                        str(error) != 'Dropdown option has no exposed click target; stop before Submit'):
+                    raise
+                record['diagnostic_drain_skipped_answer'] = {
+                    'decision':record['decision'], 'classification':record['classification'],
+                    'intended':record['intended'], 'error':str(error)}
+                record.update(classification='unknown', intended='skip')
+                logging.warning('Finishing in-progress diagnostic: skipping an unfillable dropdown; answer evidence retained')
+                save()
         record['status'] = 'submitting'
         save()
         journal(directory/'events.jsonl', 'diagnostic_submission_intent', question=slot, intended=record['intended'])
