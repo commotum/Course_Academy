@@ -1,0 +1,62 @@
+;; One learner-specific task at a shared activity, linked through learner/activity.
+;; Find the learner through the reverse reference.
+;; Required-attribute specs are opt-in; application code checks relationship and value rules.
+[
+ {:db/ident :learner-task.status/locked}
+ {:db/ident :learner-task.status/unlocked}
+ {:db/ident :learner-task.status/started}
+ {:db/ident :learner-task.status/paused}
+ {:db/ident :learner-task.status/completed}
+ {:db/ident :learner-task.status/failed}
+
+ {:db/ident :learner-task/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of this attempt, independent of external identifiers."}
+
+ {:db/ident :learner-task/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional Math Academy taskId. Reconcile within the learner's history; global uniqueness across learners is not established."}
+
+ {:db/ident :learner-task/activity
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Shared activity definition for this learner task. Resolve its title, type, and intended scope through this reference."}
+
+ {:db/ident :learner-task/status
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Locked means not yet eligible for an engine-selected start; unlocked means engine-eligible but not started. Explicit self-directed queue selections may start a prepared locked task directly without an intermediate unlock. Preparation does not start a clock or establish mastery. Started means in progress; paused means suspended and unfinished, including a lesson route whose completed presentations retain deferred practice markers while waiting for fresh questions. Completed means finished under the activity's completion rules; failed means an explicit task-level failure condition ended the attempt. Status transaction history supplies calendar timestamps, including the first start and terminal transition. Pausing does not extend a timed exam's deadline. Question correctness is recorded by task-item/status; no separate task outcome is stored."}
+
+ {:db/ident :learner-task/priority
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Numerical scheduling priority; higher values are served first. Eligible unfinished tasks at or above the application's threshold are required. The application calculates finite values and defines the scale and threshold."}
+
+ {:db/ident :learner-task/elapsed-seconds
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Accumulated working seconds, calculated by summing task-item/elapsed-seconds across this task's items. The application updates this total with the item durations; it is not an independently edited value or the timed-exam deadline. Omit when durations are unknown."}
+
+ {:db/ident :learner-task/xp-earned
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "XP awarded for this attempt, including penalties and bonuses. May be negative or exceed xp-base. Omit when unknown."}
+
+ {:db/ident :learner-task/xp-base
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional nonnegative baseline XP for this attempt, before bonuses or penalties. The displayed denominator is not a maximum."}
+
+ {:db/ident :learner-task/items
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned question, tutorial, and example presentations, linked in order through task-item/next. The reference collection itself is unordered. Repeated presentations have separate item identities."}
+
+ {:db/ident :learner-task/validate
+  :db.entity/attrs [:learner-task/id :learner-task/activity :learner-task/status]
+  :db/doc "Requires identity, activity, and lifecycle state. The application checks one learner association, valid content, enums, and timing; validate child records separately."}
+]

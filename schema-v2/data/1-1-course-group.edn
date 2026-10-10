@@ -1,0 +1,23 @@
+;; A named catalog group, such as Middle School or Mathematical Foundations.
+;; Membership is unordered; course/next supplies progression independently.
+[
+ {:db/ident :course-group/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of this course group."}
+
+ {:db/ident :course-group/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Catalog group title, for example High School - Traditional or Mathematical Foundations."}
+
+ {:db/ident :course-group/courses
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Courses included in this catalog group. Ordinary refs define unordered membership without owning or duplicating courses. Reverse lookup supplies a course's groups. Course/next supplies progression independently; topic/next remains the prerequisite graph. Validate referenced courses separately."}
+
+ {:db/ident :course-group/validate
+  :db.entity/attrs [:course-group/id :course-group/title :course-group/courses]
+  :db/doc "Requires identity, title, and at least one course ref when explicitly ensured. Nonempty titles and reference target types require application validation."}
+]

@@ -1,0 +1,32 @@
+;; Fixed earned-XP rules accepted for Course Academy on 2026-10-04.
+;; These installed identities document version one; coefficients are implemented
+;; in engine/rust/activities.rs, not mutable settings.
+;; Question selection distributions remain in 2-question-weights.edn.
+;; B = base XP; C/N = p, unweighted question accuracy. Each question counts once.
+;; R(x) = floor(x + 0.5), applied once at the end (not bankers' rounding).
+;; Tutorials and canonical worked examples are excluded. Skips earn no credit.
+;; Quizzes include ALL assigned questions, even unanswered ones at expiry; this
+;; scoring denominator does not fabricate learner responses or FIRe evidence.
+;; Task completion/mastery remains independent of the earned-XP amount.
+;; Existing observed/imported awards are authoritative; these rules compute new
+;; local awards and do not recalculate learner history during schema installation.
+;; Full derivation, examples, and evidence: reference/xp-docs/earned-xp-formula-report.md.
+;; Lesson BASE XP: engine/rust/base_xp.rs implements the selected content formula
+;; with expected 60/30/10 difficulty distribution, workload weights 1/2/4, and
+;; max(7, floor(topic/difficulty * unrounded_score + 0.5)). No question labels or
+;; learner outcomes are inputs. Default topic multiplier is 1.0. Persist base*60
+;; as activity/expected-seconds and freeze base as learner-task/xp-base at start.
+;; See reference/THE_PLAN/README.md and xp-docs/expected-distribution-base-xp.md.
+[
+ {:db/ident :xp-weights/lesson-v1
+  :db/doc "Completed lesson: if p < 0.50, XP = -1; else if p = 1, XP = R(1.25 B); else XP = R(B min(1, 1.5 p - 0.30)). Use all ordinary question occurrences across the task, not average per-KP accuracy. A failed completed task still receives this formula's award; unfinished tasks receive no final award."}
+
+ {:db/ident :xp-weights/review-v1
+  :db/doc "Completed review, in order: p < 0.50 -> -1; p = 1 -> B + 2; p >= 2/3 -> B; otherwise final ordinary question incorrect/skipped -> 0; otherwise R(B p). The final outcome must be known in the partial-credit band. The perfect bonus is additive two XP, not a percentage."}
+
+ {:db/ident :xp-weights/assessment-v1
+  :db/doc "Completed or expired quiz/assessment: p < 0.20 -> -1; otherwise max(0, R(1.20 B (p - 0.35) / 0.65)). N is the full assigned question count; C counts correct submissions. Unanswered questions receive no correct credit. Perfect work earns R(1.20 B). Diagnostic placement is a separate policy and does not use this rule."}
+
+ {:db/ident :xp-weights/multistep-v1
+  :db/doc "Completed multistep activity: XP = max(-1, R(B (2.25 p - 1))). Count ordinary question occurrences once regardless of answer-field count. Perfect work earns R(1.25 B). The negative floor applies after rounding."}
+]

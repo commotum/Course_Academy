@@ -1,0 +1,70 @@
+;; Shared activity definition. Learner attempts are recorded separately.
+;; Required-attribute specs are opt-in; request :db/ensure :activity/validate.
+[
+ {:db/ident :activity.type/lesson}
+ {:db/ident :activity.type/review}
+ {:db/ident :activity.type/assessment}
+ {:db/ident :activity.type/diagnostic}
+ {:db/ident :activity.type/assignment}
+
+ {:db/ident :activity/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of the activity definition, independent of learner attempts."}
+
+ {:db/ident :activity/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional verified Math Academy activity-definition identifier. Captured taskId values belong on learner-task; do not substitute a topic or content ID."}
+
+ {:db/ident :activity/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Display title of the activity."}
+
+ {:db/ident :activity/type
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Activity-type enum selecting the application's lesson, review, assessment, diagnostic, or assignment rules. An assignment may contain one multistep problem or several problems."}
+
+ {:db/ident :activity/course
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional course this activity belongs to, such as the school course assigning homework. References a course entity. Independent of the content targeted by activity/scope and assigned-problem/topic-coverage; does not restrict supporting topics to this course."}
+
+ {:db/ident :activity/due
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional calendar deadline, such as an assignment due date. Distinct from a time limit measured after starting."}
+
+ {:db/ident :activity/scope
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional curriculum content targeted by this activity. Lessons and reviews target a topic; diagnostics may target a course, unit, module, or topic. Omit when scope is fully described by the selected content. Course affiliation belongs on activity/course; assignment problem coverage belongs on assigned-problem/topic-coverage. This ordinary ref preserves shared curriculum."}
+
+ {:db/ident :activity/time-limit-seconds
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional positive finite wall-clock limit for the whole activity, measured from the task's first start. Pausing does not extend this limit."}
+
+ {:db/ident :activity/expected-seconds
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional positive finite estimate of the activity's total working time, including adaptive practice. Omit when calculated directly from step estimates."}
+
+ {:db/ident :activity/steps
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Immediate steps owned by this activity. The collection is unordered; first-step and the steps' continuation links define the route. Steps inside referenced multistep content belong to that multistep instead. Validate steps and their referenced content separately."}
+
+ {:db/ident :activity/first-step
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Entry point into the activity; must be a member of activity/steps. This ordinary ref adds no second ownership relationship. Application stopping rules may finish an attempt before every step is presented."}
+
+ {:db/ident :activity/validate
+  :db.entity/attrs [:activity/id :activity/title :activity/type :activity/steps :activity/first-step]
+  :db/doc "Requires identity, title, type, steps, and an entry point. The application checks enum values, step ownership and routing, positive finite timings, and type-specific requirements: topic scope for lessons/reviews and curriculum scope for diagnostics. Assignment deadlines are optional."}
+]

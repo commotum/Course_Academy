@@ -1,0 +1,51 @@
+;; Difficulty distributions owned through policy/question-selection-weights.
+;; One record per activity type in a policy; no reverse policy attribute is needed.
+;; Request :db/ensure :question-weights/validate on each child write.
+[
+ {:db/ident :question-weights/activity-type
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Activity-type enum selecting the distribution's use, initially activity.type/lesson or activity.type/review. Reuses the enums defined in content/0-activity.edn."}
+
+ ;; Initial question set.
+ {:db/ident :question-weights/initial-easy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Relative weight for choosing Easy questions in the initial set. Must be finite and nonnegative; zero excludes this band."}
+
+ {:db/ident :question-weights/initial-moderate
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Relative weight for choosing Moderate questions in the initial set. Must be finite and nonnegative; zero excludes this band."}
+
+ {:db/ident :question-weights/initial-hard
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Relative weight for choosing Hard questions in the initial set. Must be finite and nonnegative; zero excludes this band."}
+
+ ;; Additional questions when the initial set does not satisfy the stopping rule.
+ {:db/ident :question-weights/remedial-easy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Relative weight for choosing Easy questions in the remedial set. Must be finite and nonnegative; zero excludes this band."}
+
+ {:db/ident :question-weights/remedial-moderate
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Relative weight for choosing Moderate questions in the remedial set. Must be finite and nonnegative; zero excludes this band."}
+
+ {:db/ident :question-weights/remedial-hard
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Relative weight for choosing Hard questions in the remedial set. Must be finite and nonnegative; zero excludes this band."}
+
+ {:db/ident :question-weights/validate
+  :db.entity/attrs [:question-weights/activity-type
+                    :question-weights/initial-easy
+                    :question-weights/initial-moderate
+                    :question-weights/initial-hard
+                    :question-weights/remedial-easy
+                    :question-weights/remedial-moderate
+                    :question-weights/remedial-hard]
+  :db/doc "Requires an activity type and all six weights when explicitly ensured. The application checks allowed activity types, finite nonnegative weights, a positive finite total for each distribution, exactly one policy owner, and one record per activity type in that policy. Weights are normalized across eligible bands before selecting a fresh question within the chosen band; an unavailable question supply is not learner failure. Stopping rules remain application code."}
+]

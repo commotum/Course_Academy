@@ -1,0 +1,29 @@
+;; Reusable multipart problem presented through step/content.
+;; Uses the same generic steps as activities; context applies within this problem.
+[
+ {:db/ident :multistep/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of a reusable multipart problem."}
+
+ {:db/ident :multistep/context
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional shared setup, data, diagrams, or instructions in Markdown with LaTeX and image links. Kept available throughout this problem's parts; omit when parts share no setup."}
+
+ {:db/ident :multistep/steps
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Immediate generic steps owned by this problem. The collection is unordered; first-step and step/next define presentation order. Do not also add these steps to the enclosing activity's steps."}
+
+ {:db/ident :multistep/first-step
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Starting step; must be a member of multistep/steps. This ordinary ref adds no second ownership relationship."}
+
+ {:db/ident :multistep/validate
+  :db.entity/attrs [:multistep/id :multistep/steps :multistep/first-step]
+  :db/doc "Requires identity, steps, and an entry point. The application checks single step ownership, a connected acyclic sibling sequence, and acyclic content nesting. Validate steps and their content separately."}
+]

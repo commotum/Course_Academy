@@ -1,0 +1,58 @@
+;; Topic model for EDB. Install before creating topic entities.
+;; Request :db/ensure [:topic/identity-validate] for an ID-only placeholder.
+;; Request :db/ensure [:topic/validate] when its required data is ready.
+;; Request :db/ensure :topic/difficulty-validate for a difficulty-only update.
+;; Owned encompassing relationships are defined in 5-2-encompassing.edn.
+[
+ {:db/ident :topic/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable topic identity, independent of its course memberships."}
+
+ {:db/ident :topic/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Optional original Math Academy topic identifier, taken from topic-id in DATA/Topics.csv or DATA/Lesson-Data tables. Omit for independently created topics."}
+
+ {:db/ident :topic/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Name of the topic, for example Integration by Substitution."}
+
+ {:db/ident :topic/difficulty
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional positive finite lesson workload multiplier, default 1.0. Multiply the unrounded expected-distribution content score before rounding base XP. Calibrate from an authoritative Math Academy lesson base denominator and the first two questions per KP. Values above one are allowed. This is not accuracy and never enters retention or learning speed."}
+
+ {:db/ident :topic/next
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Direct downstream topics that require this topic. A next C means A is a direct prerequisite of C; reverse lookup of topics pointing to C supplies C's prerequisites. This is the authoritative topic dependency graph across all courses. Store direct edges; derive transitive dependencies by traversal. These ordinary refs do not establish ownership. Reference target types and prevention of self-dependencies and cycles require application validation. Distinct from encompassing weights and knowledge-point/key-prerequisites used for targeted remediation."}
+
+ {:db/ident :topic/encompasses
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Optional owned encompassing records, each identifying a component topic and its coverage weight. The containing topic supplies the source: practicing it exercises the referenced topics' skills. Defined in 5-2-encompassing.edn. Writers separately ensure encompassing/validate on each record. Relationships are distinct from prerequisites; duplicate targets, self-links, cycles, and ownership require additional validation."}
+
+ {:db/ident :topic/knowledge-points
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Knowledge points taught within this topic; at least one is required when topic/validate is explicitly ensured. Their question pools are associated with the knowledge points. Instructional order will be defined separately; these references are unordered."}
+
+ {:db/ident :topic/identity-validate
+  :db.entity/attrs [:topic/id]
+  :db/doc "Requires only identity for a placeholder topic when explicitly ensured. Use topic/validate after filling in its required data."}
+
+ {:db/ident :topic/difficulty-validate
+  :db.entity/attrs [:topic/id :topic/difficulty]
+  :db.entity/preds course-academy.topic/valid-difficulty?
+  :db/doc "Requires a topic identity and a strictly positive finite workload multiplier. Does not require a fully populated curriculum topic."}
+
+ {:db/ident :topic/validate
+  :db.entity/attrs [:topic/id :topic/title :topic/knowledge-points]
+  :db.entity/preds course-academy.topic/valid-difficulty?
+  :db/doc "A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure requires identity, title, and at least one knowledge-point reference. The predicate checks difficulty when present. Referenced knowledge points and encompassing records must be validated separately."}
+]

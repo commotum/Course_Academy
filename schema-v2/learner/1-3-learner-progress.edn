@@ -1,0 +1,87 @@
+;; Current topic knowledge owned through learner/knowledge-profile.
+;; Find the learner through the reverse ref; topics remain shared across courses.
+;; Required-attribute specs are opt-in: request :db/ensure on each write.
+;; Ranges, reference targets, and formulas are application contracts.
+[
+ {:db/ident :progress/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable state identity; update it rather than creating another profile for the same learner-topic pair."}
+
+ {:db/ident :progress/topic
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/index true
+  :db/doc "Existing topic entity, shared across course contexts."}
+
+ {:db/ident :progress/repetitions
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative fractional repetition position. Operational state is clamped at zero; it is not an integer count of reviews."}
+
+ {:db/ident :progress/memory
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative model memory value anchored at memory-at. It is not a probability and need not be at most one."}
+
+ {:db/ident :progress/memory-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Time at which the stored memory value applies. Compute elapsed days from this anchor once."}
+
+ {:db/ident :progress/interval-days
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Positive finite interval used to decay this anchored memory until the next update. The local interval function determines its value."}
+
+ {:db/ident :progress/assessment-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Assessment-only exponentially weighted accuracy in [0,1]. Equal averaging with practice accuracy is described publicly; the precise update rate and prior are local parameters."}
+
+ {:db/ident :progress/practice-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence."}
+
+ {:db/ident :progress/expected-assessment-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional initial assessment accuracy forecast in [0,1], frozen before the first local outcome. Direct prerequisite assessment accuracies are weighted by their positive assessment masses; fallback is the learner's mass-weighted topic assessment accuracy, then policy/initial-accuracy. This forecast creates no evidence and does not overwrite observed accuracy. Backfilled values are migration-time estimates."}
+
+ {:db/ident :progress/expected-practice-accuracy
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional initial practice accuracy forecast in [0,1], frozen before the first local outcome. Direct prerequisite practice accuracies are weighted by their positive practice masses; fallback is the learner's mass-weighted topic practice accuracy, then policy/initial-accuracy. Separate from assessment and from the shared topic workload multiplier. Backfilled values are migration-time estimates."}
+
+ {:db/ident :progress/assessment-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative effective assessment evidence mass under the local update, distinct from assessment accuracy."}
+
+ {:db/ident :progress/practice-mass
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Nonnegative effective non-assessment evidence mass under the local update."}
+
+ {:db/ident :progress/learned
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Whether this topic is admitted to retention tracking after a mastery-learning or explicit initialization decision. True alone does not establish current recall."}
+
+ {:db/ident :progress/last-direct-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Last direct qualifying practice time, when known; implicit credit does not replace it."}
+
+ {:db/ident :progress/policy
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Policy used to compute this state, identified by policy/id. Historical reads at the state-change transaction recover the settings used then; current policy values may have been adjusted since."}
+
+ {:db/ident :progress/validate
+  :db.entity/attrs [:progress/id :progress/topic :progress/repetitions :progress/memory :progress/memory-at :progress/interval-days :progress/assessment-accuracy :progress/practice-accuracy :progress/assessment-mass :progress/practice-mass :progress/learned :progress/policy]
+  :db.entity/preds course-academy.progress/valid-progress?
+  :db/doc "Requires one learner owner, one record per topic in that profile, and complete operational state. Ability can exist while learned=false, including after failed initial lessons. Effective accuracy is the mean of the two accuracy strata. Initialization values are explicit local choices, not inferred from XP."}
+]

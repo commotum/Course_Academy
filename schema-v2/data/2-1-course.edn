@@ -1,0 +1,65 @@
+;; Course model for EDB. Install before creating course entities.
+;; Request :db/ensure [:course/identity-validate] for an ID-only placeholder.
+;; Request :db/ensure [:course/validate] when its required data is ready.
+[
+ {:db/ident :course/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable course identity assigned by our application, independent of Math Academy's identifier."}
+
+ {:db/ident :course/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Optional original Math Academy course identifier, taken from course-id in DATA/Courses.csv. Omit for independently created courses."}
+
+ {:db/ident :course/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Course title without its code, for example Algebra I or Vector Calculus II."}
+
+ {:db/ident :course/code
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional short course code, for example AG1 or MTH 255."}
+
+ {:db/ident :course/school
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional name of the school offering the course, for example Oregon State University."}
+
+ {:db/ident :course/description
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional Markdown description of the course's purpose and overall scope. Corresponds to the Course Description section in a course map; store the section body without its heading."}
+
+ {:db/ident :course/overview
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional Markdown overview of what students study and how the major areas connect, including teaching progression where established. Corresponds to the Course Overview section in a course map; store the section body without its heading."}
+
+ {:db/ident :course/outcomes
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Optional owned course outcomes, defined in 2-2-course-outcome.edn. Sort by course-outcome/index for display order; each outcome may have a category heading. Writers must separately ensure course-outcome/validate on each outcome."}
+
+ {:db/ident :course/units
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Units belonging to this course. At least one is required when course/validate is explicitly ensured. These ordinary refs define unordered membership; unit/next supplies navigation between units. Topic/next supplies the underlying knowledge dependencies. Referenced units must be validated separately."}
+
+ {:db/ident :course/next
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional direct downstream courses for curriculum navigation. Ordinary refs preserve shared courses; reverse lookup supplies preceding courses. These links present progression between topic collections. Topic/next remains the authoritative prerequisite graph; course links do not impose additional whole-course completion requirements."}
+
+ {:db/ident :course/identity-validate
+  :db.entity/attrs [:course/id]
+  :db/doc "Requires only identity for a placeholder course when explicitly ensured. Use course/validate after filling in its required data."}
+
+ {:db/ident :course/validate
+  :db.entity/attrs [:course/id :course/title :course/units]
+  :db/doc "Requires our identity, a title, and at least one unit ref when explicitly ensured. The Math Academy identifier, course code, school, description, overview, outcomes, and next courses are optional. Nonempty titles, reference target types, outcome indexes unique within this course, and prevention of self-links and cycles require application validation."}
+]

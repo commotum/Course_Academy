@@ -1,0 +1,34 @@
+;; An answer value owned by exactly one field through answer-field/choices.
+;; The same entity can serve as an authored option or an entered blank response.
+[
+ ;; Enum values: answer representation.
+ {:db/ident :answer.type/math}
+ {:db/ident :answer.type/text}
+ {:db/ident :answer.type/image}
+
+ ;; Answer attributes and validation.
+ {:db/ident :answer/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of a field-scoped answer value. Reuse this entity for repeated identical values within its field; do not share it across fields."}
+
+ {:db/ident :answer/type
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Representation: answer.type/math, answer.type/text, or answer.type/image."}
+
+ {:db/ident :answer/value
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Exact answer content: learner-entered strings are retained verbatim, including empty or malformed math input. Authored math values may use LaTeX without Markdown delimiters; text and image values hold their respective content. Evaluation and normalization are separate from storage."}
+
+ {:db/ident :answer/feedback
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional feedback associated with this answer value, such as an explanation for a radio or select option."}
+
+ {:db/ident :answer/validate
+  :db.entity/attrs [:answer/id :answer/type :answer/value]
+  :db/doc "Requires identity, type, and a string value when explicitly ensured. The application checks supported answer types and field-scoped deduplication, keeps referenced values immutable, and may validate authored image availability. Do not reject an entered value solely because its math syntax is malformed."}
+]

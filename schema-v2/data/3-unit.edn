@@ -1,0 +1,40 @@
+;; Unit model for EDB. Install before creating unit entities.
+;; Request :db/ensure [:unit/identity-validate] for an ID-only placeholder.
+;; Request :db/ensure [:unit/validate] when its required data is ready.
+;; Course membership is stored through :course/units.
+[
+ {:db/ident :unit/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable unit identity assigned by our application, independent of Math Academy's identifier and the unit's order within its course."}
+
+ {:db/ident :unit/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Optional original Math Academy unit identifier, taken from unit-id in DATA/Units.csv. Omit for independently created units."}
+
+ {:db/ident :unit/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Unit title, taken from unit-name in DATA/Units.csv, for example Operations & Algebraic Thinking."}
+
+ {:db/ident :unit/modules
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Modules belonging to this unit. At least one is required when unit/validate is explicitly ensured. These ordinary refs define unordered membership; module/next supplies navigation between modules. Referenced modules must also ensure module/validate."}
+
+ {:db/ident :unit/next
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional direct downstream units for curriculum navigation. Ordinary refs preserve shared units; reverse lookup supplies preceding units. These links present progression between topic collections. Topic/next remains the authoritative prerequisite graph; unit links do not impose additional completion requirements."}
+
+ {:db/ident :unit/identity-validate
+  :db.entity/attrs [:unit/id]
+  :db/doc "Requires only identity for a placeholder unit when explicitly ensured. Use unit/validate after filling in its required data."}
+
+ {:db/ident :unit/validate
+  :db.entity/attrs [:unit/id :unit/title :unit/modules]
+  :db/doc "Requires our identity, a title, and at least one module ref when explicitly ensured. The Math Academy identifier and next units are optional. Nonempty titles, reference target types, and prevention of self-links and cycles require application validation. Referenced modules must be validated separately."}
+]

@@ -1,0 +1,62 @@
+;; Learner identity, study preferences, overall accuracy, knowledge profile, and task history.
+;; Required-attribute specs are opt-in: request :db/ensure on each write.
+;; Ranges, reference targets, and formulas are application contracts.
+[
+ {:db/ident :learner/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable learner identity used by the FIRe engine; not a login credential."}
+
+ {:db/ident :learner/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "The learner's display name."}
+
+ {:db/ident :learner/course
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional course currently selected in the UI. References a shared course entity."}
+
+ {:db/ident :learner/self-directed
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Whether Study uses the learner's explicitly selected topic queue instead of engine recommendations. Applications should treat an absent value as false."}
+
+ {:db/ident :learner/queue
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Unordered topics explicitly selected by the learner for self-directed study. References shared topics across courses. Adding a topic requests preparation from its existing database lesson content regardless of the selected Study mode. When learner/self-directed is true, Study serves these prepared activities even without engine prerequisite eligibility, without marking them unlocked. Ongoing attempts come first, followed by lower global topic/next layers and then higher scheduling priority within a layer. An empty queue does not fall back to engine recommendations. These ordinary refs do not establish ownership. Removing a queued topic preserves the topic and all learner history. Distinct from learner/targets, which records longer-term study destinations."}
+
+ {:db/ident :learner/targets
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Longer-term study destinations selected by the learner, displayed with their prerequisite graph. These ordinary refs point to shared topics across courses. Immediate self-directed activities come from learner/queue. Removing a target preserves its topic and all learner history."}
+
+ {:db/ident :learner/assignments
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Assignments associated with this learner. References activities whose activity/type is activity.type/assignment."}
+
+ {:db/ident :learner/performance
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/isComponent true
+  :db/doc "Optional owned overall performance record, defined in 1-2-learner-performance.edn. Holds accuracy and evidence mass across topics. Find its learner through learner/_performance; no duplicate learner ref is needed. Ensure performance/validate separately on each performance write. Retracting the learner also retracts this record."}
+
+ {:db/ident :learner/knowledge-profile
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Owned, unordered collection of current progress records, one per topic. Find the learner through the reverse reference learner/_knowledge-profile. Ensure learner/validate when changing membership. Partial imports may contain only known progress facts; ensure progress/validate when writing complete operational state for the engine. Retracting the learner also retracts these records, but not their shared topics."}
+
+ {:db/ident :learner/activity
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional collection of learner-specific tasks, including attempts and their history. Each task references a shared activity definition and records its status, elapsed working time, and XP. Status includes completed and failed; there is no separate task outcome. Tasks are defined in 2-1-learner-task.edn and own the items defined in 2-2-learner-task-item.edn. Calendar timestamps and history order come from status transactions. Validate each task and its learner association separately. These ordinary refs do not establish component ownership."}
+
+ {:db/ident :learner/validate
+  :db.entity/attrs [:learner/id]
+  :db.entity/preds course-academy.progress/valid-profile?
+  :db/doc "Learner identity and knowledge-profile ownership/uniqueness. Overall performance is optional and its child record must be separately ensured with performance/validate. This spec does not validate performance ownership or values."}
+]

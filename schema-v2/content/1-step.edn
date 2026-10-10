@@ -1,0 +1,59 @@
+;; A stage owned through activity/steps or multistep/steps; find its owner through the reverse ref.
+;; Content and continuation links are ordinary refs to shared or sibling entities.
+[
+ {:db/ident :step/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of a stage in one activity or multistep problem."}
+
+ {:db/ident :step/math-academy-id
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Optional verified Math Academy step or placement ID. Not a question or content ID."}
+
+ {:db/ident :step/content
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Tutorial, question (including a worked example), multistep, assigned problem, or knowledge point presented at this stage. An assigned problem references its question or multistep and carries its topic mapping. A multistep expands into its own steps; a knowledge point expands into its canonical example question and adaptive practice. Removing the step preserves its content."}
+
+ {:db/ident :step/time-limit-seconds
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional positive finite maximum duration for the whole stage, including any expanded practice. Actual learner timing belongs to task records."}
+
+ {:db/ident :step/expected-seconds
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional positive finite expected workload for the whole stage, including any expanded practice. This estimate is not an enforced limit."}
+
+ {:db/ident :diagnostic-probe/on-correct
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Next step in the same activity after a correct answer. Omit when this outcome ends the diagnostic."}
+
+ {:db/ident :diagnostic-probe/on-incorrect
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Next step in the same activity after an incorrect answer when no retry is taken. Omit when this outcome ends the diagnostic."}
+
+ {:db/ident :diagnostic-probe/on-skipped
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Next step in the same activity when the learner explicitly skips the presented question. Omit when this outcome ends the diagnostic. Unpresented questions do not take this branch."}
+
+ {:db/ident :diagnostic-probe/on-silly-mistake
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional alternate step in the same activity taken when the learner accepts a retry after a submitted incorrect answer. Use a different question on the same topic at the same difficulty, distinguishable from the ordinary incorrect continuation. The completed retry replaces the original result for frontier placement; both presentations remain in history. The application offers the available retry without a timing gate; skips receive no retry. Omit this branch on the alternate step to allow only one retry."}
+
+ {:db/ident :step/next
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional next sibling step under the same activity or multistep owner. The final inner step returns to the enclosing step's continuation. This is presentation order, not a prerequisite edge. Diagnostic steps use outcome branches instead of this linear continuation."}
+
+ {:db/ident :step/validate
+  :db.entity/attrs [:step/id :step/content]
+  :db/doc "Requires identity and content when explicitly ensured. The application checks exactly one owner through activity/steps or multistep/steps, reference targets, positive finite timings, and valid continuation links. Containment must be acyclic. Validate content separately."}
+]
