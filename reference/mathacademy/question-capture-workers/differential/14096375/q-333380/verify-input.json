@@ -1,0 +1,194 @@
+{
+  "mode": "verify",
+  "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=-x(2y-x-1),\\,y(0)=1\n$$\n\nWe wish to approximate the solution using the $2$-step Adams-Bashforth-Moulton method. Given that the step size is $\u0394x=1,$ and that one preliminary step has already been computed using the Runge-Kutta method, complete the next row of the table below.\n\n*Hint: The corrector equation of the two-step Adams-Bashforth-Moulton method is defined as*\n\n$$\n\u0394y=\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x\n$$\n\n*where ${y}_{p}$ denotes the predictor at the current step, and ${y}_{-1}^{\u2032}$ is the estimated slope at the previous point.* \n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | {{field-1}} | {{field-2}} | {{field-3}} | {{field-4}} | {{field-5}} |\n\nTherefore, $y(2)\u2248$\n  {{field-6}}.",
+  "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nthe $2$-Step Adams-Bashforth-Moulton (ABM2) method with step size $\u0394x$ is given by\n\n$$\n\\begin{aligned}\\text{Predictor} & : & \u0394{y}_{p} & =\\frac{1}{2}(3{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x, \\\\ \\text{Corrector} & : & \u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x,\\end{aligned}\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the estimated slope at the current point $(x,y),$\n\n- ${y}_{-1}^{\u2032}=f({x}_{-1},{y}_{-1})$ is the estimated slope at the previous point (${x}_{-1},{y}_{-1}),$ and\n\n- ${y}_{p}^{\u2032}=f({x}_{\\text{new}},{y}_{p})$ is the estimated slope at the predicted new point $({x}_{\\text{new}},{y}_{p})=(x+\u0394x,y+\u0394{y}_{p}).$\n\nWe're told that the first step is calculated using the Runge-Kutta Method, resulting in \n\n$$\ny(1)\u2248\\frac{11}{12}.\n$$\n\nNow, we'll continue from this point, using the $2$-step ABM method.\n\nFirst, we compute the value of ${y}^{\u2032}$ according to the given rule:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =-x(2y-x-1) \\\\  & =-1\\cdot (2\\cdot \\frac{11}{12}-1-1) \\\\  & =\\frac{1}{6}\\end{aligned}\n$$\n\nSo, we add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ |  |  |  |  |\n\nFrom the first row of the table, we see that the slope at the previous point $({x}_{-1},{y}_{-1})=(0,1)$ is ${y}_{-1}^{\u2032}=0.$\n\nNext, we compute $\u0394{y}_{p}$ using the predictor equation:\n\n$$\n\\begin{aligned}\u0394{y}_{p} & =\\frac{1}{2}(3{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{2}(3\\cdot \\frac{1}{6}-0)\\cdot 1 \\\\  & =\\frac{1}{4}\\end{aligned}\n$$\n\nWe add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ |  |  |  |\n\nSo, the coordinates of the predicted new point are\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+1=2, \\\\ {y}_{p} & =y+\u0394{y}_{p}=\\frac{11}{12}+\\frac{1}{4}=\\frac{7}{6}.\\end{aligned}\n$$\n\nLet's add the second value to the table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ | $\\frac{7}{6}$ |  |  |\n\nHence, the slope at this predicted point is\n\n$$\n\\begin{aligned}{y}_{p}^{\u2032} & =-{x}_{\\text{new}}(2{y}_{p}-{x}_{\\text{new}}-1) \\\\  & =-2\\cdot (2\\cdot \\frac{7}{6}-2-1) \\\\  & =\\frac{4}{3}.\\end{aligned}\n$$\n\nWe can add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ | $\\frac{7}{6}$ | $\\frac{4}{3}$ |  |\n\nFinally, we compute $\u0394y$ using the corrector equation:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{12}(5\\cdot \\frac{4}{3}+8\\cdot \\frac{1}{6}-0)\\cdot 1 \\\\  & =\\frac{1}{12}\\cdot 8 \\\\  & =\\frac{2}{3}\\end{aligned}\n$$\n\nTherefore, the completed row is as given below.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ | $\\frac{7}{6}$ | $\\frac{4}{3}$ | $\\frac{2}{3}$ |\n\nThe value of $x$ in the next row is ${x}_{\\text{new}}=2.$ To get the value of $y$ in the next row, we add $\u0394y$ to $y:$\n\n$$\n{y}_{\\text{new}}=y+\u0394y=\\frac{11}{12}+\\frac{2}{3}=\\frac{19}{12}\n$$\n\nAdding these results to our table gives the following:\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ | $\\frac{7}{6}$ | $\\frac{4}{3}$ | $\\frac{2}{3}$ |\n| $2$ | $\\frac{19}{12}$ |  |  |  |  |  |\n\nTherefore, we conclude that $y(2)\u2248\\frac{19}{12}.$",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{1}{6}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{1}{4}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{1}{5}"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{1}{2}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "-\\frac{1}{4}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{1}{4}"
+        }
+      ]
+    },
+    {
+      "key": "field-3",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{7}{6}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{6}{7}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "-\\frac{7}{6}"
+        }
+      ]
+    },
+    {
+      "key": "field-4",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{3}{4}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{4}{3}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "-\\frac{4}{3}"
+        }
+      ]
+    },
+    {
+      "key": "field-5",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "-\\frac{2}{3}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{3}{2}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "\\frac{2}{3}"
+        }
+      ]
+    },
+    {
+      "key": "field-6",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "math",
+          "value": "\\frac{19}{12}"
+        },
+        {
+          "option": "1",
+          "type": "math",
+          "value": "\\frac{12}{19}"
+        },
+        {
+          "option": "2",
+          "type": "math",
+          "value": "-\\frac{19}{12}"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "439403d28775942788734d04c0845ab4f02853b96d6adb7c3c46d6ddeb4c810a"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14096375,
+    "task_type": "review",
+    "topic_id": 6397,
+    "topic_title": "The ABM2 Method",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-333380",
+        "problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}=-x(2y-x-1),\\,y(0)=1\n$$\n\nWe wish to approximate the solution using the $2$-step Adams-Bashforth-Moulton method. Given that the step size is $\u0394x=1,$ and that one preliminary step has already been computed using the Runge-Kutta method, complete the next row of the table below.\n\n*Hint: The corrector equation of the two-step Adams-Bashforth-Moulton method is defined as*\n\n$$\n\u0394y=\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x\n$$\n\n*where ${y}_{p}$ denotes the predictor at the current step, and ${y}_{-1}^{\u2032}$ is the estimated slope at the previous point.* \n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | {{field-1}} | {{field-2}} | {{field-3}} | {{field-4}} | {{field-5}} |\n\nTherefore, $y(2)\u2248$\n  {{field-6}}.",
+        "worked_solution": "For an initial value problem\n\n$$\n{y}^{\u2032}=f(x,y),\\,y(a)=c,\n$$\n\nthe $2$-Step Adams-Bashforth-Moulton (ABM2) method with step size $\u0394x$ is given by\n\n$$\n\\begin{aligned}\\text{Predictor} & : & \u0394{y}_{p} & =\\frac{1}{2}(3{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x, \\\\ \\text{Corrector} & : & \u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x,\\end{aligned}\n$$\n\nwhere\n\n- ${y}^{\u2032}=f(x,y)$ is the estimated slope at the current point $(x,y),$\n\n- ${y}_{-1}^{\u2032}=f({x}_{-1},{y}_{-1})$ is the estimated slope at the previous point (${x}_{-1},{y}_{-1}),$ and\n\n- ${y}_{p}^{\u2032}=f({x}_{\\text{new}},{y}_{p})$ is the estimated slope at the predicted new point $({x}_{\\text{new}},{y}_{p})=(x+\u0394x,y+\u0394{y}_{p}).$\n\nWe're told that the first step is calculated using the Runge-Kutta Method, resulting in \n\n$$\ny(1)\u2248\\frac{11}{12}.\n$$\n\nNow, we'll continue from this point, using the $2$-step ABM method.\n\nFirst, we compute the value of ${y}^{\u2032}$ according to the given rule:\n\n$$\n\\begin{aligned}{y}^{\u2032} & =-x(2y-x-1) \\\\  & =-1\\cdot (2\\cdot \\frac{11}{12}-1-1) \\\\  & =\\frac{1}{6}\\end{aligned}\n$$\n\nSo, we add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ |  |  |  |  |\n\nFrom the first row of the table, we see that the slope at the previous point $({x}_{-1},{y}_{-1})=(0,1)$ is ${y}_{-1}^{\u2032}=0.$\n\nNext, we compute $\u0394{y}_{p}$ using the predictor equation:\n\n$$\n\\begin{aligned}\u0394{y}_{p} & =\\frac{1}{2}(3{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{2}(3\\cdot \\frac{1}{6}-0)\\cdot 1 \\\\  & =\\frac{1}{4}\\end{aligned}\n$$\n\nWe add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ |  |  |  |\n\nSo, the coordinates of the predicted new point are\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+\u0394x=1+1=2, \\\\ {y}_{p} & =y+\u0394{y}_{p}=\\frac{11}{12}+\\frac{1}{4}=\\frac{7}{6}.\\end{aligned}\n$$\n\nLet's add the second value to the table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ | $\\frac{7}{6}$ |  |  |\n\nHence, the slope at this predicted point is\n\n$$\n\\begin{aligned}{y}_{p}^{\u2032} & =-{x}_{\\text{new}}(2{y}_{p}-{x}_{\\text{new}}-1) \\\\  & =-2\\cdot (2\\cdot \\frac{7}{6}-2-1) \\\\  & =\\frac{4}{3}.\\end{aligned}\n$$\n\nWe can add this to our table.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ | $\\frac{7}{6}$ | $\\frac{4}{3}$ |  |\n\nFinally, we compute $\u0394y$ using the corrector equation:\n\n$$\n\\begin{aligned}\u0394y & =\\frac{1}{12}(5{y}_{p}^{\u2032}+8{y}^{\u2032}-{y}_{-1}^{\u2032})\\cdot \u0394x \\\\  & =\\frac{1}{12}(5\\cdot \\frac{4}{3}+8\\cdot \\frac{1}{6}-0)\\cdot 1 \\\\  & =\\frac{1}{12}\\cdot 8 \\\\  & =\\frac{2}{3}\\end{aligned}\n$$\n\nTherefore, the completed row is as given below.\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ | $\\frac{7}{6}$ | $\\frac{4}{3}$ | $\\frac{2}{3}$ |\n\nThe value of $x$ in the next row is ${x}_{\\text{new}}=2.$ To get the value of $y$ in the next row, we add $\u0394y$ to $y:$\n\n$$\n{y}_{\\text{new}}=y+\u0394y=\\frac{11}{12}+\\frac{2}{3}=\\frac{19}{12}\n$$\n\nAdding these results to our table gives the following:\n\n| $\\,x\\,$ | $\\,y\\,$ | $\\,{y}^{\u2032}\\,$ | $\u0394{y}_{p}$ | ${y}_{p}$ | ${y}_{p}^{\u2032}$ | $\u0394y$ |\n| --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $1$ | $0$ | $-$ | $-$ | $-$ | $-\\frac{1}{12}$ |\n| $1$ | $\\frac{11}{12}$ | $\\frac{1}{6}$ | $\\frac{1}{4}$ | $\\frac{7}{6}$ | $\\frac{4}{3}$ | $\\frac{2}{3}$ |\n| $2$ | $\\frac{19}{12}$ |  |  |  |  |  |\n\nTherefore, we conclude that $y(2)\u2248\\frac{19}{12}.$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "\\frac{1}{4}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "\\frac{1}{4}",
+            "submitted_option": "2"
+          },
+          {
+            "key": "field-3",
+            "submitted_value": "\\frac{7}{6}",
+            "submitted_option": "0"
+          },
+          {
+            "key": "field-4",
+            "submitted_value": "\\frac{4}{3}",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-5",
+            "submitted_value": "\\frac{2}{3}",
+            "submitted_option": "2"
+          },
+          {
+            "key": "field-6",
+            "submitted_value": "\\frac{19}{12}",
+            "submitted_option": "0"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
