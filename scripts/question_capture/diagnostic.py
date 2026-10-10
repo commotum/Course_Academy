@@ -16,7 +16,8 @@ VIEW = r'''() => {
   const title=q?.querySelector('.questionWidget-title')?.textContent.trim() || '';
   const number=title.match(/^Question\s+(\d+)$/);
   const circle=q?.querySelector('.questionWidget-choiceLetterCircle');
-  const source=circle?.id.match(/^questionWidget-choiceLetterCircle-(\d+)-/);
+  const source=circle?.id.match(/^questionWidget-choiceLetterCircle-(\d+)-/) ||
+    q?.querySelector('[id^="selectList-"]')?.id.match(/^selectList-(\d+)-/);
   const prompt=q?.querySelector('.questionWidget-text');
   return {url:location.href, instructions:visible(document.querySelector('#initialScreen-startButton')),
     retry:visible(document.querySelector('#retryScreen-noButton')),
@@ -258,6 +259,30 @@ def take_diagnostic(reader, state, directory):
             reader.pacer.backoff(attempt + 1)
 
 
+def diagnostic_decision(reader, item, screenshot, directory, phase):
+    """During a requested drain, skip an unresolved question rather than guess."""
+    try:
+        return reader.solver.solve(item, screenshot, directory, phase)
+    except ValueError as error:
+        if (not getattr(reader.args, 'finish_in_progress', False) or
+                str(error) != 'Solver is uncertain; question saved for review'):
+            raise
+        logging.warning('Finishing in-progress diagnostic: skipping an uncertain question; solver evidence retained')
+        return {'confident':False, 'answers':[], 'explanation':str(error),
+                'diagnostic_finish_skip':True}
+
+
+def replaced_diagnostic_record(record, view, item, screenshot, slot):
+    """Only an unsubmitted question with a new source ID may replace a saved slot."""
+    old, new = record.get('source_question_id'), view.get('source_question_id')
+    if (record.get('status') != 'captured' or record.get('decision') or
+            type(old) is not int or type(new) is not int or old == new):
+        raise ValueError('Restored diagnostic problem differs from saved live capture')
+    return {'before':item, 'screenshot':str(screenshot), 'status':'captured',
+            'sequence_position':record['sequence_position'], 'source_question_id':new,
+            'solver_directory':slot+'-source-'+str(new), 'replaces_unsubmitted_source_question_id':old}
+
+
 def _take_diagnostic(reader, state, directory):
     from browser import by_id, same_question_problem
     from solver import Solver
@@ -359,9 +384,18 @@ def _take_diagnostic(reader, state, directory):
         if state.pop('diagnostic_restored', False):
             # Fresh server navigation restored an unanswered question. Saved
             # answers can be re-entered even when the old checkpoint says submit.
-            item, screenshot = reader.read(scope, directory, slot+'-restored')
+            item, screenshot = reader.read(scope, directory, slot+'-restored-'+str(view.get('source_question_id')))
             if not same_question_problem(record['before'], item):
-                raise ValueError('Restored diagnostic problem differs from saved live capture')
+                if not getattr(reader.args, 'finish_in_progress', False):
+                    raise ValueError('Restored diagnostic problem differs from saved live capture')
+                replacement = replaced_diagnostic_record(record, view, item, screenshot, slot)
+                state.setdefault('diagnostic_displaced_questions', []).append(
+                    {'slot':slot, 'record':record, 'replacement_source_question_id':replacement['source_question_id'],
+                     'observed_at':time.time()})
+                state['questions'][slot] = record = replacement
+                journal(directory/'events.jsonl', 'diagnostic_unsubmitted_question_replaced',
+                        question=slot, old_source_question_id=record['replaces_unsubmitted_source_question_id'],
+                        new_source_question_id=record['source_question_id'])
             record.setdefault('original_before', record['before'])
             record['before'] = item
             record['screenshot'] = str(screenshot)
@@ -395,9 +429,10 @@ def _take_diagnostic(reader, state, directory):
                 item = dict(record['before'])
                 if tid is None:
                     item['diagnostic_policy'] = policy
-                decision = reader.solver.solve(item, Path(record['screenshot']), directory/slot,
+                decision = diagnostic_decision(reader, item, Path(record['screenshot']), directory/record.get('solver_directory',slot),
                                                'diagnostic' if tid is None else 'solve')
-            record['classification'] = classify(policy, decision, tid)
+            record['classification'] = ('unknown' if decision.get('diagnostic_finish_skip') else
+                                        classify(policy, decision, tid))
             record['decision'] = decision
             record['intended'] = 'C' if answers_classification(record['classification']) else 'skip'
             record['diagnostic_policy_sha256'] = fingerprint

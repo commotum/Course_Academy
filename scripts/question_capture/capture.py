@@ -40,6 +40,7 @@ def arguments(argv=None):
     parser.add_argument('--limit',type=int,help='Maximum attempted activities; default keeps running until the queue is empty or interrupted')
     parser.add_argument('--preview',action='store_true',help='Preview EDB writes. With run, MA answers are still submitted.')
     parser.add_argument('--capture-only',action='store_true',help='Run MA activities and save evidence; skip all EDB imports, previews and backlog sweeps. Database lookups are read-only.')
+    parser.add_argument('--finish-in-progress',action='store_true',help='Finish only the explicitly resumed activity, save its history without importing, then exit. Uncertain diagnostic questions skip.')
     parser.add_argument('--dry-run',action='store_true',help='With run: inspect queue and priorities without starting an activity')
     parser.add_argument('--headless',action='store_true',help='Default is a visible Chromium window')
     parser.add_argument('--browser-spec',help='Optional existing browser cookie source, using the original MA cookiekit syntax')
@@ -117,6 +118,12 @@ def arguments(argv=None):
         parser.error('import-saved requires --content')
     if args.capture_only and (args.command!='run' or args.preview):
         parser.error('--capture-only requires run and cannot be combined with --preview')
+    if args.finish_in_progress:
+        if (args.command!='run' or not args.resume or not args.capture_only or args.dry_run or
+                args.batch_checkpoint or args.limit not in (None,1)):
+            parser.error('--finish-in-progress requires run --resume --capture-only, without dry-run, a maintenance checkpoint, or a limit other than 1')
+        args.limit = 1
+        args.no_capture_repair = True
     if args.resume and (args.command!='run' or args.dry_run):
         parser.error('--resume requires run without --dry-run')
     if args.batch_checkpoint and (args.command!='run' or args.dry_run):
@@ -416,6 +423,12 @@ def record_failure(args, browser, state, directory, phase, error):
 
 
 def run(args):
+    if args.finish_in_progress:
+        saved = json.loads((args.resume/'state.json').read_text())
+        if not any(saved.get(key) for key in ('questions','examples','current_kp',
+                    'assessment_started','assessment_question_count','diagnostic_started',
+                    'diagnostic_start_intent','activity_complete')):
+            raise ValueError('Finish-in-progress requires evidence that the saved activity was already started')
     if args.command == 'run':
         clear_queue_wait(args.state_dir)
         if args.capture_only:
@@ -586,6 +599,8 @@ def run(args):
                             if state['task_type'] == 'diagnostic':
                                 state['diagnostic_restored'] = True
                     else:
+                        if args.finish_in_progress:
+                            raise RuntimeError('Finish-in-progress cannot start a new activity')
                         if queue_observation is None:
                             queue_observation = observe_queue(args,db,browser,completed,captured_tasks)
                         activity = queue_observation['selected']
@@ -665,7 +680,7 @@ def run(args):
                         complete(args,directory,state,result)
                         imported_directories.add(directory)
                     print(json.dumps({'run_directory':str(directory),'database':result},indent=2),flush=True)
-                    if queue_observation['selected']:
+                    if queue_observation['selected'] and not args.finish_in_progress:
                         queued_capture_repair(args,pacer,queue_observation['queue'],n+1,completed,captured_tasks)
                     consecutive_failures = 0
                     idle_cycles = 0
@@ -687,6 +702,8 @@ def run(args):
                     logging.warning('%s during %s: %s; diagnostics: %s',type(error).__name__,phase,error,diagnostics)
                     if blocking:
                         raise
+                    if args.finish_in_progress:
+                        raise  # Report incomplete draining; never select another activity.
                     if isinstance(error, RateLimited):
                         # A rejected/ambiguous submission is never replayed here.
                         # Reopen its checkpoint and reconcile the current grade.

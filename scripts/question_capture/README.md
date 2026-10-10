@@ -722,6 +722,13 @@ The default learner is `59d5cf13-351c-4114-be19-4c3bb64ee051`. Override it with
 `EDB_POSTGRES_URL`, `--database`, `--edb-bin`, and `--endpoint` as appropriate.
 All paths work when invoked from this repository root.
 
+To finish one already-started activity and exit without consuming fresh queued work, use
+`run --resume CAPTURE_DIRECTORY --capture-only --finish-in-progress`. This saves the
+activity and its history, defers imports, and skips unresolved diagnostic questions
+while retaining their solver evidence. It rejects checkpoints without evidence of
+a started activity and reports any remaining capture failure instead of continuing
+to another task.
+
 ## Placement diagnostics
 
 `diagnostic.py` handles `/tasks/T/diagnostics/D` separately from fixed-count quizzes.
