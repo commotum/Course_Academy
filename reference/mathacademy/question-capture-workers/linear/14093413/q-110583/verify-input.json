@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "$$\nA=[\\begin{aligned}-3 & -1 & 0 \\\\ 3 & 1 & -1 \\\\ 2 & 1 & -1\\end{aligned}],\\,J=[\\begin{aligned}-1 & 1 & 0 \\\\ 0 & -1 & 1 \\\\ 0 & 0 & -1\\end{aligned}],\\,P=[\\begin{aligned}a & \u2217 & \u2217 \\\\ b & \u2217 & \u2217 \\\\ c & \u2217 & \u2217\\end{aligned}]\n$$\n\nConsider the matrices above. Given that $A=PJ{P}^{-1}$ is a Jordan canonical decomposition of $A,$ find the value of $\\frac{a}{c}.$",
+  "worked_solution": "Since the Jordan matrix $J$ has a single $3\\times 3$ Jordan block corresponding to $\\lambda =-1,$ the columns of $P$ form the following chain: \n\n$$\n\\begin{aligned}{v}_{3}\\overset{A+I\\,}{\\to }{v}_{2}\\overset{A+I\\,}{\\to }{v}_{1}\\overset{A+I\\,}{\\to }0\\end{aligned}\n$$\n\nAs a result, the first column of $P$ is an eigenvector corresponding to $\\lambda =-1.$ \n\nNow, computing $A+I,$ we get\n\n$$\n\\begin{aligned}A+I & =[\\begin{aligned}-3 & -1 & 0 \\\\ 3 & 1 & -1 \\\\ 2 & 1 & -1\\end{aligned}]+[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-2 & -1 & 0 \\\\ 3 & 2 & -1 \\\\ 2 & 1 & 0\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-2 & -1 & 0 & 0 \\\\ 3 & 2 & -1 & 0 \\\\ 2 & 1 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+{R}_{1} \\\\ {R}_{3}:={R}_{3}+{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-2 & -1 & 0 & 0 \\\\ 1 & 1 & -1 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}\u2194{R}_{2}\\end{aligned} \\\\  & \u223c[\\begin{aligned}1 & 1 & -1 & 0 \\\\ -2 & -1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+2{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}1 & 1 & -1 & 0 \\\\ 0 & 1 & -2 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we have ${x}_{2}=2{x}_{3}.$ Substituting this into the first equation, we obtain\n\n$$\n{x}_{1}+2{x}_{3}-{x}_{3}=0\\,\u27f9\\,{x}_{1}=-{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}-{x}_{3} \\\\ 2{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nTherefore, setting ${x}_{3}=1,$ we get  \n\n$$\n{v}_{1}=[\\begin{aligned}a \\\\ b \\\\ c\\end{aligned}]=[\\begin{aligned}-1 \\\\ 2 \\\\ 1\\end{aligned}].\n$$\n\nFinally, $\\frac{a}{c}=\\frac{-1}{1}=-1.$",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "math",
+          "value": "0"
+        },
+        {
+          "option": "b",
+          "type": "math",
+          "value": "-\\frac{1}{2}"
+        },
+        {
+          "option": "c",
+          "type": "math",
+          "value": "1"
+        },
+        {
+          "option": "d",
+          "type": "math",
+          "value": "\\frac{1}{2}"
+        },
+        {
+          "option": "e",
+          "type": "math",
+          "value": "-1"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "523db72fdd517f4635104e66c2be1b10429645aa49632627e9e9c158717a2fd5"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14093413,
+    "task_type": "review",
+    "topic_id": 3639,
+    "topic_title": "Jordan Canonical Decomposition of a 3x3 Matrix",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-110583",
+        "problem": "$$\nA=[\\begin{aligned}-3 & -1 & 0 \\\\ 3 & 1 & -1 \\\\ 2 & 1 & -1\\end{aligned}],\\,J=[\\begin{aligned}-1 & 1 & 0 \\\\ 0 & -1 & 1 \\\\ 0 & 0 & -1\\end{aligned}],\\,P=[\\begin{aligned}a & \u2217 & \u2217 \\\\ b & \u2217 & \u2217 \\\\ c & \u2217 & \u2217\\end{aligned}]\n$$\n\nConsider the matrices above. Given that $A=PJ{P}^{-1}$ is a Jordan canonical decomposition of $A,$ find the value of $\\frac{a}{c}.$",
+        "worked_solution": "Since the Jordan matrix $J$ has a single $3\\times 3$ Jordan block corresponding to $\\lambda =-1,$ the columns of $P$ form the following chain: \n\n$$\n\\begin{aligned}{v}_{3}\\overset{A+I\\,}{\\to }{v}_{2}\\overset{A+I\\,}{\\to }{v}_{1}\\overset{A+I\\,}{\\to }0\\end{aligned}\n$$\n\nAs a result, the first column of $P$ is an eigenvector corresponding to $\\lambda =-1.$ \n\nNow, computing $A+I,$ we get\n\n$$\n\\begin{aligned}A+I & =[\\begin{aligned}-3 & -1 & 0 \\\\ 3 & 1 & -1 \\\\ 2 & 1 & -1\\end{aligned}]+[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-2 & -1 & 0 \\\\ 3 & 2 & -1 \\\\ 2 & 1 & 0\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-2 & -1 & 0 & 0 \\\\ 3 & 2 & -1 & 0 \\\\ 2 & 1 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+{R}_{1} \\\\ {R}_{3}:={R}_{3}+{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}-2 & -1 & 0 & 0 \\\\ 1 & 1 & -1 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}\u2194{R}_{2}\\end{aligned} \\\\  & \u223c[\\begin{aligned}1 & 1 & -1 & 0 \\\\ -2 & -1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+2{R}_{1}\\end{aligned} \\\\  & \u223c[\\begin{aligned}1 & 1 & -1 & 0 \\\\ 0 & 1 & -2 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we have ${x}_{2}=2{x}_{3}.$ Substituting this into the first equation, we obtain\n\n$$\n{x}_{1}+2{x}_{3}-{x}_{3}=0\\,\u27f9\\,{x}_{1}=-{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}-{x}_{3} \\\\ 2{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nTherefore, setting ${x}_{3}=1,$ we get  \n\n$$\n{v}_{1}=[\\begin{aligned}a \\\\ b \\\\ c\\end{aligned}]=[\\begin{aligned}-1 \\\\ 2 \\\\ 1\\end{aligned}].\n$$\n\nFinally, $\\frac{a}{c}=\\frac{-1}{1}=-1.$",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "0",
+            "submitted_option": "a",
+            "observed_selected_option": "a"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
