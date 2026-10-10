@@ -1,0 +1,77 @@
+{
+  "mode": "solve",
+  "problem": "$$\n{\\begin{aligned}{x}^{\u2032}(t)=\\frac{1}{\\pi }\\operatorname{sin}\u2061(\\pi x(t))+y(t) \\\\ {y}^{\u2032}(t)=1-{x}^{2}(t)\\end{aligned}\n$$\n\nConsider the system of differential equations above. What is the behavior of the system's solutions near the equilibrium ${x}^{\u2217}=[1,\\text{\u00a0}0]^{T}?$\n\n$\\,$\nThe equilibrium is an \n{{field-1}}{{field-2}}.",
+  "worked_solution": "",
+  "fields": [
+    {
+      "key": "field-1",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "text",
+          "value": "unstable"
+        },
+        {
+          "option": "1",
+          "type": "text",
+          "value": "asymptotically stable"
+        }
+      ]
+    },
+    {
+      "key": "field-2",
+      "type": "select",
+      "tag": "custom-select",
+      "choices": [
+        {
+          "option": "0",
+          "type": "text",
+          "value": "spiral source"
+        },
+        {
+          "option": "1",
+          "type": "text",
+          "value": "saddle"
+        },
+        {
+          "option": "2",
+          "type": "text",
+          "value": "spiral sink"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14094758,
+    "task_type": "lesson",
+    "topic_id": 6378,
+    "topic_title": "Linear Approximations Near Equilibria",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-335535",
+        "problem": "$$\n{\\begin{aligned}{x}^{\u2032}(t)=x(t)^{2}+y(t)^{2}+x(t) \\\\ {y}^{\u2032}(t)=2x(t)+3y(t)\\end{aligned}\n$$\n\nConsider the system of differential equations above. What is the behavior of the system's solutions near the equilibrium ${x}^{\u2217}=[0,\\text{\u00a0}0]^{T}?$$\\,$\nThe equilibrium is an \n{{field-1}}{{field-2}}.",
+        "worked_solution": "The system can be rewritten in matrix form as \n\n$$\n{x}^{\u2032}=f(x)\n$$\n\nwhere $x=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]$ and \n$f(x)=[\\begin{aligned}{x}^{2}+{y}^{2}+x \\\\ 2x+3y\\end{aligned}].$\n\nWe need to compute the Jacobian matrix (or the total derivative) of $f(x).$ \n\nIn our case, we have the following:\n\n$$\n{f}^{\u2032}(x)=[\\begin{aligned}\\frac{\u2202{f}_{1}}{\u2202x} & \\frac{\u2202{f}_{1}}{\u2202y} \\\\ \\frac{\u2202{f}_{2}}{\u2202x} & \\frac{\u2202{f}_{2}}{\u2202y}\\end{aligned}]\n$$\n\nFirst, we compute the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202{f}_{1}}{\u2202x} & =\\frac{\u2202}{\u2202x}({x}^{2}+{y}^{2}+x)=2x+1,\\, & \\frac{\u2202{f}_{1}}{\u2202y} & =\\frac{\u2202}{\u2202y}({x}^{2}+{y}^{2}+x)=2y \\\\ \\frac{\u2202{f}_{2}}{\u2202x} & =\\frac{\u2202}{\u2202x}(2x+3y)=2,\\, & \\frac{\u2202{f}_{2}}{\u2202y} & =\\frac{\u2202}{\u2202y}(2x+3y)=3\\end{aligned}\n$$\n\nThus, we have\n\n$$\n{f}^{\u2032}(x)=[\\begin{aligned}2x+1 & 2y \\\\ 2 & 3\\end{aligned}].\n$$\n\nNow evaluate the Jacobian at the equilibrium at ${x}^{\u2217}=[\\begin{aligned}0 \\\\ 0\\end{aligned}]$ to get \n\n$$\n{f}^{\u2032}({x}^{\u2217})=[\\begin{aligned}2(0)+1 & 2(0) \\\\ 2 & 3\\end{aligned}]=[\\begin{aligned}1 & 0 \\\\ 2 & 3\\end{aligned}].\n$$\n\nNotice that the matrix is invertible (its determinant is not zero), so the system is almost linear at ${x}^{\u2217}.$\n\nTo find the eigenvalue of the Jacobian matrix, we write down the characteristic equation:\n\n$$\n\\begin{aligned}|\\begin{aligned}1-\\lambda  & 0 \\\\ 2 & 3-\\lambda \\end{aligned}| & =0 \\\\ (1-\\lambda )(3-\\lambda ) & =0\\end{aligned}\n$$\n\nSolving the equation, we get the eigenvalues ${\\lambda }_{1,2}=1,\\text{\u00a0}3.$\n\nFinally, since we both have two real and positive eigenvalues, our equilibrium is an $\\text{unstable}$ $\\text{source}.$",
+        "actual_result": "Correct",
+        "deliberately_incorrect_submission": false,
+        "submitted_fields": [
+          {
+            "key": "field-1",
+            "submitted_value": "unstable",
+            "submitted_option": "1"
+          },
+          {
+            "key": "field-2",
+            "submitted_value": "source",
+            "submitted_option": "2"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
