@@ -1,7 +1,9 @@
 """Math Academy activity definitions: capture source order and preserve EDB identities."""
 import copy
 import re
+import time
 import uuid
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -37,6 +39,16 @@ def identity_ref(entity):
     if ':db/ident' in entity:
         return entity[':db/ident']
     return entity[':db/id']
+
+
+def _point_for_example(points, mid, title):
+    matches = [kp for kp in points if kp.get(':knowledge-point/canonical-example', {}).get(':question/math-academy-id') == mid]
+    if len(matches) > 1:
+        normalize = lambda value: re.sub(r'\s+', ' ', value).strip()
+        matches = [kp for kp in matches if normalize(kp.get(':knowledge-point/title', '')) == normalize(title)]
+        if len(matches) != 1:
+            raise ValueError('Canonical example maps to multiple knowledge points; review source title')
+    return matches[0] if matches else None
 
 
 def _value(value):
@@ -168,12 +180,29 @@ def capture_lesson(reader, state, directory, topic):
     """Read the definition using the current authenticated account, without taking a task."""
     from image_library import ImageLibrary, capture_html_images
     from bs4 import BeautifulSoup
+    from browser import AccessBlocked, RateLimited
     directory = Path(directory)
     url = f'https://mathacademy.com/topics/{state["topic_id"]}'
     response = reader.page.context.request.get(url, timeout=reader.args.timeout_ms)
-    if not response.ok or '/login' in response.url:
-        raise ValueError('Could not capture the authenticated lesson definition')
+
+    def check_response(item):
+        status = getattr(item, 'status', 200)
+        if status == 429:
+            value = item.headers.get('retry-after', '')
+            try:
+                retry = int(value) if re.fullmatch(r'\d{1,7}', value) else max(0, parsedate_to_datetime(value).timestamp() - time.time())
+            except (ValueError, TypeError, OverflowError):
+                retry = 30
+            raise RateLimited(retry)
+        if status in (401, 403) or re.search(r'/(login|signin|session-expired)(?:/|\?|$)', getattr(item, 'url', '')):
+            raise AccessBlocked('Authentication required for lesson source capture; use the login command')
+        if not item.ok:
+            raise ValueError('Lesson source request failed with HTTP ' + str(status))
+
+    check_response(response)
     html = response.text()
+    if BeautifulSoup(html, 'html.parser').select_one('input[type="password"], iframe[src*="captcha"], #challenge-form, .cf-challenge'):
+        raise AccessBlocked('Lesson source request returned an authentication or challenge page')
     source_file = directory / 'lesson-topic.html'
     source_file.write_text(html)
     library = ImageLibrary(Path(getattr(reader.args, 'math_root', '/media/jake/SSD/EDB/math')))
@@ -182,8 +211,7 @@ def capture_lesson(reader, state, directory, topic):
         item = reader.image_responses.get(url)
         if item is None:
             item = reader.page.context.request.get(url, timeout=reader.args.timeout_ms)
-            if not item.ok:
-                raise ValueError('Could not capture lesson image: ' + url)
+        check_response(item)
         return item.body(), item.headers.get('content-type', '').split(';')[0]
 
     def render(fragment):
@@ -196,12 +224,11 @@ def capture_lesson(reader, state, directory, topic):
     definition, tutorials, examples = parse_lesson_html(html, state['topic_id'], render)
     definition['source_file'] = str(source_file.resolve())
     # Resolve by canonical example ID, never by a changed title alone.
-    existing = {kp.get(':knowledge-point/canonical-example', {}).get(':question/math-academy-id'): kp
-                for kp in topic.get(':topic/knowledge-points', [])}
+    existing = topic.get(':topic/knowledge-points', [])
     new_points = []
     for example in examples:
         mid = example['math_academy_id']
-        kp = existing.get(mid)
+        kp = _point_for_example(existing, mid, example['knowledge_point'])
         captured = state.get('examples', {}).get(mid)
         kid = (str(kp[':knowledge-point/id']) if kp else
                captured['knowledge_point_id'] if captured else
@@ -397,8 +424,7 @@ def _lesson(plan, content, topics, snapshot):
                                    'source_id': item['content_id'], 'tutorial_id': str(previous[':step/content'][':tutorial/id']),
                                    'evidence': 'same title and unique position between preserved neighboring sections'})
     tutorials = {t['math_academy_id']: t for t in content.get('tutorials', [])}
-    points = {kp.get(':knowledge-point/canonical-example', {}).get(':question/math-academy-id'): kp
-              for kp in topic.get(':topic/knowledge-points', [])}
+    points = topic.get(':topic/knowledge-points', [])
     new_points = {p['source_example_id']: p for p in content.get('new_knowledge_points', [])}
     sequence = []
     for item, previous in zip(desired, matches):
@@ -420,7 +446,7 @@ def _lesson(plan, content, topics, snapshot):
                                   'tutorial/content': captured['content']})
         else:
             mid = 'e-' + str(item['content_id'])
-            kp = points.get(mid)
+            kp = _point_for_example(points, mid, item['title'])
             if kp:
                 target = plan.entity('knowledge-point', kp[':knowledge-point/id'], kp,
                                      {'knowledge-point/title': item['title']})
@@ -474,7 +500,8 @@ def _multistep(plan, content, topics, snapshot):
         candidates = [target for (attr, ident), target in plan.local.items() if attr == ':question/id'
                       and any(isinstance(f, dict) and f.get(':question/id') == ident and
                               f.get(':question/math-academy-id') == mid for f in plan.question_transaction)]
-        target = candidates[0] if candidates else ref('question/math-academy-id', mid)
+        target = (identity_ref(prev[':step/content']) if prev else
+                  candidates[0] if candidates else ref('question/math-academy-id', mid))
         # Existing entities are safe lookup refs; new entities must use their tempid.
         sequence.append((sid, prev, target))
     refs = [plan.reference('step', sid, prev) for sid, prev, _ in sequence]

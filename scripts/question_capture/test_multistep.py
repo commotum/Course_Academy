@@ -169,7 +169,12 @@ class MultistepTests(unittest.TestCase):
             self.assertEqual(sum(len(q['answer_fields']) for q in content['questions']),7)
             self.assertTrue(all(q['difficulty'] and q['worked_solution'] and q['knowledge_point_id'] for q in content['questions']))
             last = content['questions'][-1]
-            self.assertIn('Lucy',last['problem']); self.assertIn('Earlier part 5:',last['problem'])
+            self.assertEqual(last['problem'],last['local_problem'])
+            self.assertNotIn('Earlier part 5:',last['problem'])
+            self.assertTrue(any('Lucy' in c['problem'] for c in content['shared_contexts']))
+            # Solver-only expansion remains in attempt evidence, separate from
+            # the source part stored in the reusable multistep.
+            self.assertIn('Earlier part 5:',state['questions'][last['math_academy_id']]['before']['problem'])
             self.assertEqual(last['problem'].count('{{field-1}}'),1)
             self.assertIn('| ---',content['questions'][3]['worked_solution'])
             self.assertEqual(content['questions'][1]['answer_fields'][0]['type'],'blank')

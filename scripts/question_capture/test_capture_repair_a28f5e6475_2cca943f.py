@@ -1,5 +1,5 @@
 import copy
-import json
+import tempfile
 import sys
 import unittest
 from pathlib import Path
@@ -8,14 +8,25 @@ from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import browser
-ROOT = Path('/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14099030')
 
 class CompletedReviewTests(unittest.TestCase):
+    def setUp(self):
+        capture = tempfile.TemporaryDirectory()
+        self.addCleanup(capture.cleanup)
+        self.directory = Path(capture.name)
+
     def setup_reader(self):
-        state = json.loads((ROOT / 'state.json').read_text())
-        self.assertEqual(state['questions']['q-149711']['status'], 'submitting')
-        html = (ROOT / 'diagnostics/1791651407989585163/page.html').read_text()
-        self.assertIn('id="task-14099030" class="taskCompleted"', html)
+        # A completed review reached /learn while its last submission was still
+        # pending locally. Keep that interrupted checkpoint in the test: the
+        # real archived task was subsequently recovered and can change again.
+        state = {'task_id': 14099030, 'topic_id': 3179, 'task_type': 'review',
+                 'review_sequence': 'CWCWC', 'knowledge_snapshots': {},
+                 'questions': {
+                     'q-108805': {'status': 'graded', 'actual_result': 'Correct', 'finalized': True},
+                     'q-108839': {'status': 'graded', 'actual_result': 'Incorrect', 'finalized': True},
+                     'q-149711': {'status': 'submitting', 'decision': {'answers': [
+                         {'key': 'selection', 'correct_value': 'source answer'}]}}
+                 }}
         reader = browser.CaptureBrowser.__new__(browser.CaptureBrowser)
         reader.args = SimpleNamespace()
         reader.page = Mock()
@@ -39,7 +50,7 @@ class CompletedReviewTests(unittest.TestCase):
 
     def run_activity(self, reader, state):
         with patch.object(browser, 'atomic_json'), patch.object(browser, 'by_id', return_value=Mock()):
-            reader.activity(state, ROOT, {})
+            reader.activity(state, self.directory, {})
 
     def test_recover_without_submission_or_solver_reset(self):
         reader, state, rows, grades = self.setup_reader()

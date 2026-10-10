@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import re
 import sys
+from urllib.parse import urljoin
 
 VERSION = 'math-academy-originals-v1'
 
@@ -26,6 +27,18 @@ def _answer(value):
             and isinstance(value.get('value'), str) and value['value'].strip()):
         return {'type': value['type'], 'value': value['value']}
     return None
+
+
+def _unique_answers(values):
+    # Repeated displayed option positions may identify the same EDB answer.
+    # Keep those positions in prepared choices, but count typed values once
+    # when deciding whether the source has established an unambiguous key.
+    return list({(value['type'], value['value']): value for value in values if value}.values())
+
+
+def _matching_choices(choices, correct):
+    exact = _unique_answers(choice for choice in choices if choice == correct)
+    return exact or _unique_answers(choice for choice in choices if _same(choice, correct))
 
 
 def _same(a, b):
@@ -80,7 +93,7 @@ def _displayed_history(raw_html, fields, topic, assets):
     if len(nodes) != len(targets):
         return {}, 'history_field_layout_mismatch'
     result = {}
-    source_paths = {a.get('source_url'): a.get('path') or a.get('stored_path')
+    source_paths = {urljoin('https://mathacademy.com', a['source_url']): a.get('path') or a.get('stored_path')
                     for a in assets if a.get('source_url') and (a.get('path') or a.get('stored_path'))}
     for node, field in zip(nodes, targets):
         kind = 'blank' if 'freeResponseTextbox' in node.get('class', []) else 'select'
@@ -93,7 +106,7 @@ def _displayed_history(raw_html, fields, topic, assets):
             continue
         renderer = Renderer(str(topic or ''))
         # A source image answer must reuse saved bytes, not a remote dependency.
-        renderer.asset = lambda url: source_paths.get(url, url)
+        renderer.asset = lambda url: source_paths.get(urljoin('https://mathacademy.com', url), url)
         value = renderer.text(selected)
         if renderer.errors or not value:
             continue
@@ -145,9 +158,9 @@ def _explicit_solution(field, fields, solution):
     for text in candidates:
         value = ({'type': 'math', 'value': text[1:-1].removesuffix('.')}
                  if re.fullmatch(r'\$[^$]+\$', text) else {'type': 'text', 'value': text})
-        for choice in field.get('choices', []):
-            choice = _answer(choice)
-            if choice and _same(choice, value) and choice not in matches:
+        choices = [_answer(c) for c in field.get('choices', []) if _answer(c)]
+        for choice in _matching_choices(choices, value):
+            if choice not in matches:
                 matches.append(choice)
     return matches[0] if len(matches) == 1 else None
 
@@ -160,6 +173,7 @@ def _submitted(field):
         # Match the actual entered value, never a solver option or prediction.
         matches = [_answer(c) for c in field.get('choices', []) if _answer(c)
                    and (c['value'] == value or _same(_answer(c), {'type': c['type'], 'value': value}))]
+        matches = _unique_answers(c for c in matches if c['value'] == value) or _unique_answers(matches)
         return matches[0] if len(matches) == 1 else None
     return {'type': 'math' if field.get('tag') == 'mathquill' else 'text', 'value': value}
 
@@ -238,6 +252,10 @@ def prepare_authoritative_content(content, directory, *, state=None):
                 reasons.append('missing_original_capture')
             if before.get('errors') or source_solution.get('errors'):
                 reasons.append('source_extraction_errors')
+            for item in (before, after, history):
+                identity = re.fullmatch(r'(?:step-([qe])-?|questionExplanation-|question-)([0-9]+)', item.get('dom_id', ''))
+                if identity and ((identity[1] or 'q') + '-' + identity[2]) != mid:
+                    reasons.append('source_question_identity_mismatch')
             problem = before.get('source_problem') or before.get('problem')
             if content.get('task_type') == 'multistep':
                 problem = record.get('local_problem') or before.get('local_problem') or q.get('local_problem') or before.get('problem')
@@ -316,7 +334,7 @@ def prepare_authoritative_content(content, directory, *, state=None):
                 _, correct, origin, stage = sorted(candidates, key=lambda x: x[0])[-1]
                 choices = [_answer(c) for c in raw.get('choices', [])] if kind != 'blank' else [correct]
                 if kind != 'blank':
-                    matches = [choice for choice in choices if _same(choice, correct)]
+                    matches = _matching_choices(choices, correct)
                     if len(matches) == 1:
                         correct = matches[0]
                     elif len(matches) == 0:

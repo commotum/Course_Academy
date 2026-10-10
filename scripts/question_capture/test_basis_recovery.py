@@ -22,6 +22,7 @@ class BasisRecoveryTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.args = arguments(['run', '--state-dir', str(self.root/'state'),
                                '--output', str(self.root/'captures')])
+        self.args.source = None  # These fixtures exercise the legacy import/reconciliation path.
         self.content = {'task_id':1, 'topic_id':1, 'questions':[{'math_academy_id':'q-1'}]}
         self.directory = self.root/'capture'/'edb-import'
         self.db = database.Database(self.args)

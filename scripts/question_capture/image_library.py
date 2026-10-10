@@ -397,10 +397,9 @@ def capture_html_images(html, *, page_url, fetch_response, library,
             url = urljoin(page_url, source)
             if urlsplit(url).scheme not in ('http', 'https'):
                 raise ImagePreparationError('Unsupported captured image URL: ' + url)
-            try:
-                data, mime = fetch_response(url)
-            except Exception as exc:
-                raise ImagePreparationError('Could not download captured image: ' + url) from exc
+            # Preserve the caller's network/access exceptions so its existing
+            # rate-limit and blocked-account handling remains in control.
+            data, mime = fetch_response(url)
             relative = library.put_bytes(data, content_type=mime)
             if evidence_dir is not None:
                 _save_evidence(evidence_dir, relative, data)

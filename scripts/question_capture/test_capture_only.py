@@ -21,7 +21,13 @@ class CaptureOnlyTests(unittest.TestCase):
     def test_fleet_default_and_explicit_option_reach_capture_process(self):
         data = fleet.config()
         for worker in data['workers']:
-            self.assertTrue(arguments(fleet.worker_command(data,worker)[3:]).capture_only)
+            args = arguments(fleet.worker_command(data,worker)[3:])
+            self.assertFalse(args.capture_only)
+            self.assertEqual(args.database, 'math')
+            self.assertEqual(args.source, ':org/Math-Academy')
+            self.assertEqual(args.math_root, Path('/media/jake/SSD/EDB/math'))
+        data['capture_only'] = True
+        self.assertTrue(arguments(fleet.worker_command(data,data['workers'][0])[3:]).capture_only)
         data['capture_only'] = False
         worker = data['workers'][0]
         self.assertFalse(arguments(fleet.worker_command(data,worker)[3:]).capture_only)

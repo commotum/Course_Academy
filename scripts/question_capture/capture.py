@@ -665,7 +665,8 @@ def run(args):
                         content = json.loads((directory/'content.json').read_text())
                     else:
                         content = browser.history(state,directory,topic)
-                    content['capture_version'] = 2
+                    if args.source:
+                        content['capture_version'] = 2
                     atomic_json(directory/'content.json',content)
                     # Record capture completion separately from an EDB receipt. Never retake
                     # a completed MA activity because its database commit needs recovery.

@@ -134,9 +134,11 @@ class ImageLibraryTests(unittest.TestCase):
         self.assertIn(self.expected, rewritten)
         self.assertNotIn('srcset', rewritten)
         self.assertEqual((self.capture/'assets'/Path(self.expected).name).read_bytes(), self.data)
-        with self.assertRaises(ImagePreparationError):
+        blocked = RuntimeError('401: caller-specific access block')
+        with self.assertRaises(RuntimeError) as raised:
             capture_html_images(html, page_url='https://mathacademy.com/topics/1',
-                fetch_response=Mock(side_effect=ValueError('401')), library=self.library)
+                fetch_response=Mock(side_effect=blocked), library=self.library)
+        self.assertIs(raised.exception, blocked)
 
     def test_html_extracts_svg_but_leaves_accessible_math_to_converter(self):
         html = ('<svg style="display:none"><defs><path id="p" d="M0 0 L2 2"/></defs></svg>'

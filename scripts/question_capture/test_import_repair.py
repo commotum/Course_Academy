@@ -14,6 +14,7 @@ class ImportRepairTests(unittest.TestCase):
     def setUp(self):
         self.work=tempfile.TemporaryDirectory();self.root=Path(self.work.name)
         self.args=arguments(['run','--state-dir',str(self.root/'state'),'--output',str(self.root/'captures')])
+        self.args.source = None  # Model-driven normalization repair is legacy-only.
         self.sid=str(uuid.uuid4());self.commands=[]
         self.result={'status':'blocked','summary':'Genuine answer conflict needs source evidence.',
                      'edits':[],'equivalent':[],'distinct':[]}

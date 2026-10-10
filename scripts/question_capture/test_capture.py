@@ -705,7 +705,7 @@ class RunnerTests(unittest.TestCase):
                         self.assertEqual(saved['questions']['q-1']['status'],'submitting')
                     if failure_phase=='import':
                         self.assertTrue(saved['activity_complete'] and saved['history_complete'])
-                        self.assertEqual(json.loads((first/'content.json').read_text()),{'task_id':1})
+                        self.assertEqual(json.loads((first/'content.json').read_text()),{'task_id':1, 'capture_version':2})
                 context.close.assert_called_once()
                 if failure_phase=='import':
                     # Explicit recovery imports the saved content and clears
@@ -722,11 +722,12 @@ class RunnerTests(unittest.TestCase):
                     self.assertNotIn('deferred_error',recovered)
                     self.assertTrue(recovered['preview_complete'])
                     self.assertEqual(selected,[1,2])
-                    self.assertEqual(db.import_content.call_args.args[0],{'task_id':1})
+                    self.assertEqual(db.import_content.call_args.args[0],{'task_id':1, 'capture_version':2})
 
     def test_run_discovers_unfinished_capture_and_import_before_new_activity(self):
         with tempfile.TemporaryDirectory() as work:
             args=arguments(['run','--output',work+'/captures','--state-dir',work+'/state'])
+            args.source = None  # The saved edb-import receipts below predate math imports.
             done=Path(work)/'captures/1'; pending=Path(work)/'captures/2'
             for path in (done,pending):
                 path.mkdir(parents=True)
@@ -1849,7 +1850,11 @@ class DOMTests(unittest.TestCase):
             self.assertEqual(len(state['questions']),6)
             self.assertTrue(state['activity_complete'])
             self.assertTrue(all(q['actual_result']=='Correct' for q in state['questions'].values()))
-            self.assertEqual(len(browser.history(state,work,topic)['questions']),6)
+            # Full topic GET/preparation is covered in test_activities; APIRequestContext
+            # requests are independent of this test's offline page routing.
+            with patch('activities.capture_lesson') as prepare_lesson:
+                self.assertEqual(len(browser.history(state,work,topic)['questions']),6)
+            prepare_lesson.assert_called_once_with(browser, state, work, topic)
 
     def test_actual_radio_selection_mismatch_stops_before_submit(self):
         correct=self.review_fixture(misselect=True)
@@ -1885,7 +1890,11 @@ class DOMTests(unittest.TestCase):
         topic = loads((FIXTURE/'database-before.edn').read_text())[0][0]
         with tempfile.TemporaryDirectory() as work:
             browser.lesson(state,work,topic)
-            content = browser.history(state,work)
+            # Exercise the legacy question/grade/history sequence without making
+            # a topic API request outside this offline page fixture.
+            with patch('activities.capture_lesson') as prepare_lesson:
+                content = browser.history(state,work)
+            prepare_lesson.assert_called_once_with(browser, state, work, None)
             self.assertTrue(state['lesson_complete'])
             self.assertTrue(state['history_complete'])
             self.assertEqual(len(content['questions']),15)

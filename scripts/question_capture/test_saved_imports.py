@@ -49,6 +49,7 @@ class SavedImportTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.args = arguments(['run','--state-dir',str(self.root/'state'),
                                '--output',str(self.root/'captures')])
+        self.args.source = None  # Frozen receipts below belong to the legacy importer.
         self.args.no_import_repair=True  # These offline fixtures never launch a CLI.
         self.db = Mock()
         self.db.import_content.return_value = {'already_complete':True,'database_writes':0}
@@ -204,6 +205,7 @@ class SavedImportTests(unittest.TestCase):
         sweep(self.db,self.args,trigger='startup')
         sweep(self.db,self.args,trigger='batch-end')
         restarted=arguments(['run','--state-dir',str(self.args.state_dir),'--output',str(self.args.output)])
+        restarted.source = None  # Resume the same legacy import mode across restarts.
         sweep(self.db,restarted,trigger='startup')
         self.assertEqual(self.db.import_content.call_count,1)
         state=read_json(directory/'state.json');state['preview_complete']=False

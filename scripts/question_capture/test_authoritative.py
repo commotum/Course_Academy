@@ -62,6 +62,30 @@ class AuthoritativeTests(unittest.TestCase):
         self.assertTrue(report['ready'])
         self.assertEqual(prepared['questions'][0]['answer_fields'][0]['correct_value'], 'wrong')
 
+    def test_duplicate_identical_source_choices_preserve_positions_and_prepare(self):
+        for evidence in ('successful_grade', 'explicit_source'):
+            with self.subTest(evidence=evidence):
+                self.raw['choices'] = [choice('wrong', 'a'), choice('wrong', 'b'), choice('right', 'c')]
+                self.raw.pop('source_correct', None)
+                self.record['actual_result'] = 'Incorrect'
+                if evidence == 'successful_grade':
+                    self.raw['submitted_value'] = 'wrong'
+                    self.record['actual_result'] = 'Correct'
+                else:
+                    self.raw['source_correct'] = {'type': 'text', 'value': 'wrong'}
+                prepared, report = self.prepare()
+                self.assertTrue(report['ready'])
+                answer_field = prepared['questions'][0]['answer_fields'][0]
+                self.assertEqual(answer_field['correct_value'], 'wrong')
+                self.assertEqual([c['value'] for c in answer_field['choices']], ['wrong', 'wrong', 'right'])
+
+    def test_exact_source_value_wins_over_equivalent_choice_serializations(self):
+        self.raw['choices'] = [choice('1/2', 'a', 'math'), choice(r'\frac{1}{2}', 'b', 'math')]
+        self.raw['source_correct'] = {'type': 'math', 'value': r'\frac{1}{2}'}
+        prepared, report = self.prepare()
+        self.assertTrue(report['ready'])
+        self.assertEqual(prepared['questions'][0]['answer_fields'][0]['correct_value'], r'\frac{1}{2}')
+
     def test_failed_submission_does_not_supply_key(self):
         self.raw['submitted_value'] = 'wrong'
         prepared, report = self.prepare()
@@ -201,13 +225,34 @@ class AuthoritativeTests(unittest.TestCase):
 
     def test_canonical_source_absence_does_not_invent_fields(self):
         self.content['questions'] = []
-        self.content['canonical_examples'] = [{'math_academy_id': 'e-99', 'problem': 'Local', 'worked_solution': 'Local'}]
+        self.content['canonical_examples'] = [{'math_academy_id': 'e-99', 'problem': 'Local', 'worked_solution': 'Local',
+            'difficulty': None, 'missing_source_fields': ['answer_fields', 'difficulty']}]
         (self.directory/'example-99.json').write_text(json.dumps({
             'problem': 'Example problem', 'worked_solution': 'Example solution', 'fields': []}))
         prepared, report = self.prepare()
         self.assertTrue(report['ready'])
         self.assertEqual(prepared['canonical_examples'][0]['answer_fields'], [])
         self.assertEqual(prepared['canonical_examples'][0]['problem'], 'Example problem')
+        self.assertEqual(prepared['canonical_examples'][0]['missing_source_fields'], ['answer_fields', 'difficulty'])
+        self.assertIsNone(prepared['canonical_examples'][0]['difficulty'])
+
+    def test_other_question_grade_cannot_supply_key(self):
+        self.raw['submitted_value'] = 'wrong'
+        self.record['actual_result'] = 'Correct'
+        self.record['after']['dom_id'] = 'step-q99'
+        _, report = self.prepare()
+        self.assertFalse(report['ready'])
+        self.assertIn('source_question_identity_mismatch', report['held_questions'][0]['reasons'])
+
+    def test_history_image_answer_reuses_local_source_asset(self):
+        self.before['fields'] = [field('field-1', 'select')]
+        self.before['fields'][0]['choices'] = [choice('/tmp/example.png', 'a', 'image'), choice('/tmp/other.png', 'b', 'image')]
+        self.before['assets'] = [{'source_url': 'https://mathacademy.com/graphics/1.png', 'path': '/tmp/example.png'}]
+        html = '<div class="selectList"><div class="selectListFrame correctSelection"><img src="/graphics/1.png"></div></div>'
+        (self.directory/'activity-metadata.json').write_text(json.dumps([{'id': 'question-12', 'raw_html': html}]))
+        prepared, report = self.prepare()
+        self.assertTrue(report['ready'])
+        self.assertEqual(prepared['questions'][0]['answer_fields'][0]['correct_value'], '/tmp/example.png')
 
     def test_topic_page_example_uses_its_saved_capture(self):
         self.content['questions'] = []

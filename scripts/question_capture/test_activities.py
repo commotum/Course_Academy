@@ -1,9 +1,14 @@
 import copy
+import json
+import tempfile
 import unittest
 import uuid
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import Mock
 
 from activities import (build_activity_transaction, html_to_markdown, parse_lesson_html,
-                        source_uuid, ref)
+                        source_uuid, ref, capture_lesson)
 from edn import kw
 
 
@@ -150,6 +155,37 @@ class ActivityTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'local problem'):
             build_activity_transaction(content, topics, snapshot, [])
 
+    def test_existing_multistep_is_noop_and_reorder_keeps_step_uuids(self):
+        _, topics, snapshot = fixture()
+        mid = source_uuid('multistep', 77)
+        pid = source_uuid('multistep-assigned-problem', 77)
+        aid = source_uuid('multistep-activity', 77)
+        inner = route([{':db/id': 501 + i, ':step/id': uid('inner-' + str(i)),
+                        ':step/content': {':db/id': 601 + i, ':question/id': uid('q-' + str(i)),
+                                          ':question/math-academy-id': 'q-' + str(i)}} for i in (1, 2)])
+        multi = {':db/id': 700, ':multistep/id': mid, ':multistep/context': 'Source setup',
+                 ':multistep/steps': inner, ':multistep/first-step': {':db/id': inner[0][':db/id'], ':step/id': inner[0][':step/id']}}
+        assigned = {':db/id': 701, ':assigned-problem/id': pid, ':assigned-problem/content': multi,
+                    ':assigned-problem/topic-coverage': [topics[1]]}
+        outer = {':db/id': 702, ':step/id': uid('outer'), ':step/content': assigned}
+        activity = {':db/id': 703, ':activity/id': aid, ':activity/title': 'Multipart task',
+                    ':activity/type': {':db/ident': kw('activity.type/assignment')}, ':activity/steps': [outer],
+                    ':activity/first-step': {':db/id': 702, ':step/id': uid('outer')}}
+        snapshot['multisteps'][str(mid)] = multi
+        snapshot['assigned_problems'][str(pid)] = assigned
+        snapshot['activities'][str(aid)] = activity
+        content = {'task_type': 'multistep', 'multistep_id': 77, 'title': 'Multipart task',
+                   'question_order': ['q-1', 'q-2'], 'shared_contexts': [{'problem': 'Source setup'}],
+                   'questions': [{'math_academy_id': 'q-' + str(i), 'topic_id': 1, 'local_problem': 'Part ' + str(i),
+                                  'problem': 'Part ' + str(i)} for i in (1, 2)]}
+        tx, _ = build_activity_transaction(content, topics, snapshot, [])
+        self.assertEqual(tx, [])
+        content['question_order'].reverse()
+        tx, report = build_activity_transaction(content, topics, snapshot, [])
+        self.assertFalse(any(isinstance(f, dict) and ':step/id' in f for f in tx))
+        self.assertTrue(any(isinstance(f, list) and f[1] == ref('step/id', uid('inner-1')) and f[2] == ':step/next' for f in tx))
+        self.assertEqual(report['decisions'][0]['reused_steps'], 2)
+
     def test_source_parser_uses_placement_ids_and_formula_titles(self):
         html = '''<h1 id="topicName">A Lesson</h1>
         <div class="step" stepId="333" stepType="tutorial" contentId="9">
@@ -164,6 +200,69 @@ class ActivityTests(unittest.TestCase):
         self.assertEqual(tutorials[0]['content'], 'Let $x^2$ grow.')
         self.assertEqual(examples[0]['math_academy_id'], 'e-10')
         self.assertEqual(examples[0]['worked_solution'], 'Here it is.')
+
+    def test_capture_definition_downloads_tutorial_images_and_saves_source_examples(self):
+        html = '''<h1 id="topicName">A Lesson</h1>
+        <div class="step" stepId="333" stepType="tutorial" contentId="9">
+         <div class="stepHeader"><div class="stepName">Intro</div></div>
+         <p>Diagram <img src="/graphics/example.png"></p>
+        </div><div class="step" stepId="444" stepType="example" contentId="10">
+         <div class="stepName">Example: Compute</div>
+         <div class="exampleQuestion"><p>Find it.</p></div>
+         <div class="exampleExplanation"><p>Here it is.</p></div></div>'''
+        from io import BytesIO
+        from PIL import Image
+        buffer = BytesIO()
+        Image.new('RGB', (2, 2), 'blue').save(buffer, format='PNG')
+        png = buffer.getvalue()
+        page_response = SimpleNamespace(ok=True, url='https://mathacademy.com/topics/1', text=lambda: html)
+        image_response = SimpleNamespace(ok=True, body=lambda: png, headers={'content-type': 'image/png'})
+        request = Mock()
+        request.get.side_effect = [page_response, image_response]
+        with tempfile.TemporaryDirectory() as folder:
+            directory = Path(folder) / 'capture'
+            directory.mkdir()
+            root = Path(folder) / 'math'
+            reader = SimpleNamespace(page=SimpleNamespace(context=SimpleNamespace(request=request)),
+                                     args=SimpleNamespace(math_root=root, timeout_ms=1000), image_responses={})
+            state = {'topic_id': 1, 'examples': {}}
+            capture_lesson(reader, state, directory, {':topic/knowledge-points': []})
+            self.assertEqual((directory / 'lesson-topic.html').read_text(), html)
+            self.assertIn('images/', state['tutorials'][0]['content'])
+            self.assertEqual(len(list((root / 'images').glob('*/*.png'))), 1)
+            example_capture = json.loads((directory / 'lesson-example-10.json').read_text())
+            self.assertEqual(example_capture['worked_solution'], 'Here it is.')
+            self.assertIn('exampleExplanation', example_capture['html'])
+            self.assertEqual(len(state['lesson_new_knowledge_points']), 1)
+            self.assertEqual(request.get.call_count, 2)
+            from core import atomic_json
+            from saved_imports import eligible
+            question = {'math_academy_id': 'q-1', 'problem': 'Problem', 'worked_solution': 'Solution'}
+            state.update(task_id=1, task_type='lesson', activity_complete=True, lesson_complete=True,
+                         history_complete=True, completion="You've completed the lesson.",
+                         questions={'q-1': {'finalized': True, 'history': {'worked_solution': 'Solution'}, 'content': question}})
+            content = {'task_id': 1, 'task_type': 'lesson', 'capture_version': 2, 'content_only': True,
+                       'questions': [question], 'canonical_examples': state['lesson_examples'],
+                       'tutorials': state['tutorials'], 'lesson_definition': state['lesson_definition'],
+                       'new_knowledge_points': state['lesson_new_knowledge_points']}
+            atomic_json(directory / 'activity-metadata.json', [{'id': 'question-1'}])
+            self.assertTrue(eligible(directory, state, content))
+            (directory / 'lesson-topic.html').unlink()
+            self.assertFalse(eligible(directory, state, content))
+
+    def test_source_get_uses_rate_limit_and_authentication_exceptions(self):
+        from browser import AccessBlocked, RateLimited
+        for status, exception in ((429, RateLimited), (403, AccessBlocked)):
+            request = Mock()
+            request.get.return_value = SimpleNamespace(status=status, ok=False,
+                headers={'retry-after': '7'}, url='https://mathacademy.com/topics/1')
+            reader = SimpleNamespace(page=SimpleNamespace(context=SimpleNamespace(request=request)),
+                                     args=SimpleNamespace(timeout_ms=1000))
+            with tempfile.TemporaryDirectory() as directory:
+                with self.assertRaises(exception) as caught:
+                    capture_lesson(reader, {'topic_id': 1}, directory, {})
+                if status == 429:
+                    self.assertEqual(caught.exception.retry_after, 7)
 
 
 if __name__ == '__main__':

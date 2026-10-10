@@ -77,7 +77,27 @@ def eligible(directory, state, content):
     if (not isinstance(metadata,list) or len(metadata) != len(records) or
             {q['id'].replace('question-','q-') for q in metadata} != set(records)):
         return False
-    examples = list(state.get('examples',{}).values())
+    definition = content.get('lesson_definition')
+    if content.get('task_type','lesson') == 'lesson' and content.get('capture_version') == 2 and not definition:
+        return False
+    if definition:
+        # Full topic definitions include canonical sections not visited in this
+        # learner attempt. Validate the durable source capture, not only state.examples.
+        examples = state.get('lesson_examples', [])
+        saved = read_json(directory/'lesson-definition.json')
+        if (content.get('task_type','lesson') != 'lesson' or not definition.get('complete') or
+                not definition.get('steps') or definition != state.get('lesson_definition') or
+                definition != saved.get('lesson_definition') or
+                content.get('tutorials') != state.get('tutorials') or
+                content.get('tutorials') != saved.get('tutorials') or
+                examples != saved.get('canonical_examples') or
+                content.get('new_knowledge_points',[]) != state.get('lesson_new_knowledge_points',[]) or
+                content.get('new_knowledge_points',[]) != saved.get('new_knowledge_points',[]) or
+                Path(definition.get('source_file','')).resolve() != (directory/'lesson-topic.html').resolve() or
+                not (directory/'lesson-topic.html').is_file()):
+            return False
+    else:
+        examples = list(state.get('examples',{}).values())
     if sorted(examples,key=lambda q:q['math_academy_id']) != sorted(content.get('canonical_examples',[]),key=lambda q:q['math_academy_id']):
         return False
     return True
@@ -129,7 +149,7 @@ def retry_key(directory, state, generation, args, prior_evidence=()):
              'edb-import/transaction.edn','edb-import/reconciliation.edn']
     if getattr(args,'source',None):
         names = [name.replace('edb-import/','edb-import-math/') for name in names]
-        names += ['lesson-definition.json','lesson-source.html']
+        names += ['lesson-definition.json','lesson-topic.html']
     from provenance import field_layout_retry_evidence
     digest.update(json.dumps(field_layout_retry_evidence(directory),sort_keys=True).encode())
     names += [str(p.relative_to(directory)) for p in sorted(directory.glob('example-*.json'))]
