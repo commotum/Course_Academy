@@ -19,7 +19,7 @@ from answer_policy import BEST_EFFORT, SOURCE_ANSWER, binding, best_effort, sour
 
 def restored_choice_identity(value, kind, source_html=''):
     """Retain literal set fences without treating TeX grouping as a set."""
-    if kind == 'math' and re.fullmatch(r'\{[{}A-Za-z0-9,\s.+\-…]+\}', value.strip()):
+    if kind == 'math' and re.fullmatch(r'\{[{}∅A-Za-z0-9,\s.+\-…]+\}', value.strip()):
         fences = re.findall(r'<mo\b[^>]*>\s*([{}])\s*</mo>', source_html)
         literal = (fences.count('{') == value.count('{') and
                    fences.count('}') == value.count('}'))

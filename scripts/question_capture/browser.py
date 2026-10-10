@@ -170,6 +170,7 @@ def by_id(scope, identifier):
 def click_select_frame(frame):
     """Open MA's original menu through frame padding, avoiding child mousedown."""
     frame.scroll_into_view_if_needed()
+    frame.evaluate("n => n.scrollIntoView({block:'center', inline:'nearest', behavior:'instant'})")
     position = frame.evaluate('''n => {
       const r=n.getBoundingClientRect();
       // The original window mousedown handler immediately hides a menu when
@@ -189,6 +190,7 @@ def click_select_frame(frame):
 
 def click_select_option(option):
     """Click an exposed point of the captured option without forcing overlays."""
+    option.scroll_into_view_if_needed()
     position = option.evaluate('''n => {
       const r=n.getBoundingClientRect();
       if(!n.getClientRects().length || getComputedStyle(n).visibility==='hidden') return null;
