@@ -8,14 +8,14 @@ Nothing has been transacted. `math` remains at basis **71**.
 
 - **19,700 practice questions** with **23,108 complete answer fields**, original choices, and confirmed keys. **17,445** of those question identities are new to `math`.
 - **2,823 canonical worked examples**, preserving their `e-` identities and canonical-example roles.
-- **1,998 tutorials**, including **12 new tutorial identities**.
+- **1,998 tutorials**, including **11 new tutorial identities** and **one update to an existing tutorial**.
 - **28 multipart problems**, with captured context and part order, wrapped as reusable assignment activities with their MA titles.
 - **28 distinct assessment/diagnostic instruction bodies** from **37 captures**.
 - **3 new knowledge points**, attached to their existing topics. **No new topics**.
 
 The reviewed input is **2,198 verified completed captures** across the four streams. **12 unfinished activities are excluded**.
 
-`held-questions.json` preserves **2,103 questions** with captured controls and solutions whose full keys could not be confirmed without interpretation. They are absent from the ready transactions. All **35 previously missing graphics** were recovered through the separately verified account for each capture stream; all **27 affected tutorials** are now in the ready batches. `held-tutorials.json` is empty. See `graphic-recovery.json`. `unplaced-tutorials.json` indexes the 12 new tutorials without a verified generic lesson placement. Their content is prepared, but a complete teaching sequence is not invented.
+`held-questions.json` preserves **2,103 questions** with captured controls and solutions whose full keys could not be confirmed without interpretation. They are absent from the ready transactions. All **35 previously missing graphics** were recovered through the separately verified account for each capture stream; all **27 affected tutorials** are now in the ready batches. `held-tutorials.json` is empty. See `graphic-recovery.json`. `unplaced-tutorials.json` indexes the 11 new tutorials without a verified generic lesson placement. Their content is prepared, but a complete teaching sequence is not invented.
 
 The original question/example/multipart images are already in `math/images/`. Available tutorial graphics have also been copied there by SHA-256, using the same two-character folders and preserving PNG/SVG extensions. EDN references relative image paths; no image bytes enter EDB. Original captures remain in place.
 
