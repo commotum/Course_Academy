@@ -1,0 +1,137 @@
+# Seed data inventory and provenance
+
+Reviewed: 2026-10-09
+
+The original `schema` directory contains **11 seed files**: ten curriculum files and one local engine-configuration file. There are also separately generated lesson-import batches. None of these seed files or lesson batches had been imported into the new `math` database at the time of this review; schema installation was complete at basis 22.
+
+The seeds contain three kinds of information: captured Math Academy facts, locally derived organization, and deliberately chosen defaults. These origins need to remain distinguishable during import.
+
+## Existing seed files
+
+| Seed file | Contents | Origin and transformation |
+|---|---|---|
+| [data/1-2-course-groups.edn](../schema/data/1-2-course-groups.edn) | Nine catalog groups, 38 course memberships, and 42 suggested course-navigation links. | Local catalog organization modeled on Math Academy's course picker. The University group adds six Oregon State courses. Navigation links are suggested continuations, not topic prerequisites. |
+| [data/2-3-courses.edn](../schema/data/2-3-courses.edn) | 32 Math Academy courses: identifiers, titles, codes, descriptions, overviews, and 1,054 learning outcomes. | Identities and titles come from `MA/DATA/Courses.csv`. Descriptions, overviews, and outcomes come from `MA/DATA/Course-Maps/*.md`, produced by extracting saved Math Academy Overview HTML. Short course codes are locally assigned, with Codex assistance. |
+| [data/2-4-oregon-state-courses.edn](../schema/data/2-4-oregon-state-courses.edn) | Six Oregon State courses and 62 learning outcomes: MTH 251, 252, 254, 255, 256, and 341. | The local Markdown documents in `sequences-graphs/Oregon_State_Course_Maps`. These are written course maps; the seed does not establish that every sentence or outcome is verbatim official university wording. |
+| [data/3-2-units.edn](../schema/data/3-2-units.edn) | 315 unit identities and titles. | `MA/DATA/Units.csv`, consolidated from per-course curriculum extraction. Math Academy IDs originate in saved table-of-contents HTML; application UUIDs are locally generated. |
+| [data/3-3-course-units.edn](../schema/data/3-3-course-units.edn) | 315 course-to-unit memberships and 283 unit-navigation links. | Joins `Courses.csv` with `Units.csv` using course-local codes. Navigation is derived from numeric unit order, not prerequisite relationships. |
+| [data/4-2-modules.edn](../schema/data/4-2-modules.edn) | 1,122 module identities and titles. | `MA/DATA/Modules.csv`, derived from saved course contents. Math Academy IDs and names are extracted; application UUIDs are locally generated. |
+| [data/4-3-unit-modules.edn](../schema/data/4-3-unit-modules.edn) | 1,122 unit-to-module memberships and 807 module-navigation links. | The normalized unit/module hierarchy. Module-navigation links are derived from numeric order within units. |
+| [data/5-3-topics.edn](../schema/data/5-3-topics.edn) | 2,971 named topics plus four ID-only placeholders. | Named topics come from `MA/DATA/Topics.csv`. The placeholders—5555, 6050, 6737, and 6747—exist because prerequisite records reference them despite their absence from the named catalog. |
+| [data/5-4-module-topics.edn](../schema/data/5-4-module-topics.edn) | 7,555 module-to-topic memberships. | `MA/DATA/Catalog.csv`, which records course-local topic placements. A shared topic keeps one identity even when it appears in several courses. |
+| [data/5-5-prerequisites.edn](../schema/data/5-5-prerequisites.edn) | 6,560 direct topic-prerequisite relationships. | `MA/DATA/Prerequisites.csv`, combining captured course graphs and prerequisite lists in lesson tables of contents. The EDN reverses the CSV direction to store prerequisite → dependent through `topic/next`. |
+| [engine/4-default-fire-policy.edn](../schema/engine/4-default-fire-policy.edn) | One starting FIRe policy and two question-selection distributions, for lessons and reviews. | Local reconstruction defaults, explicitly not recovered Math Academy parameters. Selection weights were informed by a selected sample of 22 completed lessons and 20 reviews recorded on October 3. Observed question frequencies do not establish Math Academy's actual selection probabilities. |
+
+## Math Academy curriculum sources
+
+The source chain is:
+
+1. Saved course metadata, table-of-contents HTML, overview HTML, and graph HTML in [MA/COURSES/Math-Academy](/home/jake/Developer/MA/COURSES/Math-Academy).
+2. Per-course graph CSVs and Markdown course maps produced by the MA pipeline.
+3. Consolidated CSVs and course maps in [MA/DATA](/home/jake/Developer/MA/DATA).
+4. The curriculum EDN seed files in `schema/data`.
+
+The [course-map extractor](/home/jake/Developer/MA/PIPELINE/Math-Academy/1-Build-Course-Data/2-Maps/maps.py) extracts description, overview, and outcome sections from saved Overview HTML. These Markdown maps are an extraction step, rather than evidence that the prose was independently generated by an LLM.
+
+The [course-index prompt](/home/jake/Developer/MA/PIPELINE/Math-Academy/1-Build-Course-Data/1-Index/prompt-build-course-index.md) asks Codex to propose a unique three-character mnemonic course code. Those codes are local naming conventions, separate from Math Academy's numeric course identifiers.
+
+Course-local unit, module, and topic codes describe hierarchy and display order. They are locally normalized representations. Application UUIDs likewise provide local identities; they are not identifiers published by Math Academy.
+
+The [pipeline overview](../reference/mathacademy-pipeline.md) describes the capture, consolidation, and lesson-update stages.
+
+## Prerequisite provenance
+
+The prerequisite seed exactly represents the relationships in [MA/DATA/Prerequisites.csv](/home/jake/Developer/MA/DATA/Prerequisites.csv), with direction reversed for `topic/next`.
+
+The source sets contain:
+
+| Evidence | Unique topic-prerequisite edges |
+|---|---:|
+| Saved per-course graph CSVs | 4,205 |
+| Prerequisite lists in saved lesson tables of contents | 6,537 |
+| Union of both sources | 6,560 |
+| Global CSV and EDN seed | 6,560 |
+
+The union matches the global CSV exactly: no final edge was unexplained by those source sets, and no source edge was missing from the final set.
+
+The [graph extractor](/home/jake/Developer/MA/PIPELINE/Math-Academy/1-Build-Course-Data/3-Graphs/2-Prerequisites/prerequisites.py) reads directed edges from saved graph HTML. The [lesson prerequisite updater](/home/jake/Developer/MA/PIPELINE/Math-Academy/4-Update/1-Prerequisites/prerequisites.py) adds topic-level edges from each lesson JSON's `toc.topic_prerequisites`.
+
+These are topic prerequisites. They are distinct from the step-level key prerequisites in [MA/DATA/Lesson-Data/Key-Prerequisites.csv](/home/jake/Developer/MA/DATA/Lesson-Data/Key-Prerequisites.csv). The updater does not promote those step-level relationships into topic prerequisites.
+
+## Local catalog organization
+
+The course-group seed contains both catalog grouping and suggested course navigation. Its groups follow the Math Academy picker, with local changes such as placing Oregon State courses in University. Its `course/next` links present suggested continuations and branches; they do not establish whole-course readiness gates or replace the topic prerequisite graph.
+
+This seed should therefore be described as local catalog organization based on Math Academy's catalog, rather than treating all its relationships as directly captured Math Academy facts.
+
+## Oregon State course maps
+
+The immediate sources are the six `MTH_*.md` files in [Oregon_State_Course_Maps](../sequences-graphs/Oregon_State_Course_Maps):
+
+- MTH 251 — Differential Calculus
+- MTH 252 — Integral Calculus
+- MTH 254 — Vector Calculus I
+- MTH 255 — Vector Calculus II
+- MTH 256 — Applied Differential Equations
+- MTH 341 — Linear Algebra I
+
+The seed preserves descriptions, overviews, outcome categories, and outcome order from these local documents. It does not supply unit/topic mappings.
+
+None of the six course maps contains a source URL. Their exact upstream catalog or syllabus references need to be recovered before describing all outcomes as officially published university outcomes. Until then, their supported description is **local course-map compilations**. The neighboring research and writing guides describe an intended workflow; they do not prove which sources or authors produced each existing statement.
+
+## Local FIRe configuration
+
+The [default policy seed](../schema/engine/4-default-fire-policy.edn) creates local starting settings for retention, review timing, accuracy updates, speed adjustments, and question selection. Its comments explicitly state that these defaults are not claimed to be Math Academy parameters.
+
+Its question-selection weights are:
+
+| Activity and selection phase | Easy | Moderate | Hard |
+|---|---:|---:|---:|
+| Lesson initial | 60 | 30 | 10 |
+| Lesson remedial | 45 | 55 | 0 |
+| Review initial | 40 | 40 | 20 |
+| Review remedial | 90 | 10 | 0 |
+
+These are relative weights. They were informed by [question-difficulty observations](../reference/question-difficulty-observations-2026-10-03.json), a selected sample of completed-task DOM records. The observation file explicitly notes that completed results do not expose candidate-bank distributions or selection probabilities.
+
+The policy seed contains configuration, not learner history or progress. The fixed XP-rule identities in `engine/3-xp-weights.edn` were already installed during schema setup and are separate from this remaining default-policy seed.
+
+## Separately generated lesson seed
+
+There are **40 generated EDN batches** under [.local/edb/lesson-seed](../.local/edb/lesson-seed). These are outside the eleven seed files listed above.
+
+The [lesson seed generator](../scripts/generate_ma_lesson_seed.py) reads:
+
+- Archived JSON and Markdown in `MA/DATA/Lessons`.
+- `MA/DATA/Lesson-Data/Questions.csv`.
+- `MA/DATA/Lesson-Data/Key-Prerequisites.csv`.
+
+The existing [manifest](../.local/edb/lesson-seed/manifest.json) reports:
+
+| Content | Count |
+|---|---:|
+| Lesson activities | 2,964 |
+| Ordered steps | 15,652 |
+| Tutorials | 6,016 |
+| Knowledge points | 9,636 |
+| Canonical worked examples | 9,636 |
+| Practice questions | 19,646 |
+| Answer fields | 22,840 |
+
+This is the archived lesson baseline. It does not reproduce later answer-key generation, repairs, reconciliations, or new automated captures. The generator explicitly avoids asserting correct answers that the archived source does not establish; its output identifies answers as unverified and does not ensure complete question/field specifications.
+
+The existing batches are inventory evidence, not a certification that they are ready for the new database. Their schema compatibility and external image references require review before use.
+
+## Verification and limits
+
+During this review:
+
+- Course, unit, module, and named-topic IDs and titles matched their corresponding global CSV inputs without differences.
+- The four additional topic records were confirmed as ID-only placeholders.
+- Seed entity, membership, navigation, and nested outcome counts were read from the actual EDN files.
+- The prerequisite seed was compared with the global CSV and the union of graph and lesson-TOC evidence.
+- Lesson counts were read from the existing generated-seed manifest.
+
+This establishes the immediate source files and the inspected transformations. It does not reconstruct the author, model, original creation time, or complete edit history of every seed assertion. Unknown historical attribution should remain unknown until supported by records.
+
+No seed data was transacted as part of this review.
