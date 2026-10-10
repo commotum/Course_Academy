@@ -1,0 +1,69 @@
+{
+  "mode": "verify",
+  "problem": "A small business collected data on the number of hours of telephone usage and the total amount (in hundreds of dollars) of the company's weekly operating expenses. This data is shown below.   \n\n| Hours $(x)$ | **$2$** | **$2.4$** | **$2.8$** | **$3.2$** | **$3.6$** |\n| --- | --- | --- | --- | --- | --- |\n| Expenses $(y)$ | $4$ | $5$ | $6$ | $7$ | $8$ |\n\nFind the line of the form $y={\\beta }_{0}+{\\beta }_{1}x$ that best fits the data above. According to the model, what will be the company's weekly operating expenses if the telephone is used for a total of $4$ hours per week, assuming the trend continues?\n\n*Hint: You can use the fact that*\n\n$$\n({X}^{T}\\,X)^{-1}=\\frac{1}{8}[\\begin{aligned}40.8 & -14 \\\\ -14 & 5\\end{aligned}],\\,{X}^{T}y=[\\begin{aligned}30 \\\\ 88\\end{aligned}],\n$$\n\n*where $X$ is the corresponding design matrix and $y$ is the observation vector.*",
+  "worked_solution": "The coefficients of the line that best fits the data can be found as the least-squares solution $\\overset{^}{\\beta }$ to the system \n\n$$\n\\begin{aligned}\\overset{X}{\\overset{\u23de}{[\\begin{aligned}1 & 2 \\\\ 1 & 2.4 \\\\ 1 & 2.8 \\\\ 1 & 3.2 \\\\ 1 & 3.6\\end{aligned}]}}\\overset{\\beta }{\\overset{\u23de}{[\\begin{aligned}{\\beta }_{0} \\\\ {\\beta }_{1}\\end{aligned}]}} & =\\overset{y}{\\overset{\u23de}{[\\begin{aligned}4 \\\\ 5 \\\\ 6 \\\\ 7 \\\\ 8\\end{aligned}]}},\\end{aligned}\n$$\n\nwhere $X$ is the design matrix, $\\beta $ is the parameter vector, and $y$ is the observation vector.\n\nPre-multiplying this equation by ${X}^{T},$ we obtain the corresponding normal equation\n\n$$\n{X}^{T}\\,X\\overset{^}{\\beta }={X}^{T}y.\n$$\n\nSince the columns of $X$ are linearly independent, the matrix ${X}^{T}X$ is invertible and \n\n$$\n\\overset{^}{\\beta }=({X}^{T}\\,X)^{-1}{X}^{T}y.\n$$\n\nSubstituting the given values of $({X}^{T}X)^{-1}$ and ${X}^{T}y$ into the formula, we get\n\n$$\n\\begin{aligned}\\overset{^}{\\beta } & =({X}^{T}\\,X)^{-1}{X}^{T}\\,y \\\\  & =\\frac{1}{8}[\\begin{aligned}40.8 & -14 \\\\ -14 & 5\\end{aligned}]\\cdot [\\begin{aligned}30 \\\\ 88\\end{aligned}] \\\\  & =[\\begin{aligned}-1 \\\\ 2.5\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, we have the line $y=-1+2.5x.$\n\nFinally, to predict the amount of the company's weekly operating expenses if the telephone is used for a total of $4$ hours, we substitute $x=4$ into the equation of the line:\n\n$$\n\\begin{aligned}y & =-1+2.5(4) \\\\  & =9\\end{aligned}\n$$\n\nSo, according to the model, the company's weekly operating expenses will be $$900.$ \n\n**Note**: Since we're extrapolating ($x=4$ is not within the range of the original set of $x$-values), our result *may* be unreliable.",
+  "fields": [
+    {
+      "key": "selection",
+      "type": "radio",
+      "choices": [
+        {
+          "option": "a",
+          "type": "text",
+          "value": "$$850$"
+        },
+        {
+          "option": "b",
+          "type": "text",
+          "value": "$$900$"
+        },
+        {
+          "option": "c",
+          "type": "text",
+          "value": "$$1\\,050$"
+        },
+        {
+          "option": "d",
+          "type": "text",
+          "value": "$$875$"
+        },
+        {
+          "option": "e",
+          "type": "text",
+          "value": "$$950$"
+        }
+      ]
+    }
+  ],
+  "choice_confidence_policy": "equivalent-choices-v1",
+  "source_answer_policy": {
+    "version": "revealed-ma-answer-v1",
+    "feedback_sha256": "cf1375084aa16ed08760382362b2e4baca72fd27e3e0beeb12c81a58870004e2"
+  },
+  "displayed_images": [],
+  "activity_context": {
+    "task_id": 14095028,
+    "task_type": "review",
+    "topic_id": 2169,
+    "topic_title": "Linear Regression With Matrices",
+    "examples": [],
+    "feedback": [
+      {
+        "math_academy_id": "q-41741",
+        "problem": "A small business collected data on the number of hours of telephone usage and the total amount (in hundreds of dollars) of the company's weekly operating expenses. This data is shown below.   \n\n| Hours $(x)$ | **$2$** | **$2.4$** | **$2.8$** | **$3.2$** | **$3.6$** |\n| --- | --- | --- | --- | --- | --- |\n| Expenses $(y)$ | $4$ | $5$ | $6$ | $7$ | $8$ |\n\nFind the line of the form $y={\\beta }_{0}+{\\beta }_{1}x$ that best fits the data above. According to the model, what will be the company's weekly operating expenses if the telephone is used for a total of $4$ hours per week, assuming the trend continues?\n\n*Hint: You can use the fact that*\n\n$$\n({X}^{T}\\,X)^{-1}=\\frac{1}{8}[\\begin{aligned}40.8 & -14 \\\\ -14 & 5\\end{aligned}],\\,{X}^{T}y=[\\begin{aligned}30 \\\\ 88\\end{aligned}],\n$$\n\n*where $X$ is the corresponding design matrix and $y$ is the observation vector.*",
+        "worked_solution": "The coefficients of the line that best fits the data can be found as the least-squares solution $\\overset{^}{\\beta }$ to the system \n\n$$\n\\begin{aligned}\\overset{X}{\\overset{\u23de}{[\\begin{aligned}1 & 2 \\\\ 1 & 2.4 \\\\ 1 & 2.8 \\\\ 1 & 3.2 \\\\ 1 & 3.6\\end{aligned}]}}\\overset{\\beta }{\\overset{\u23de}{[\\begin{aligned}{\\beta }_{0} \\\\ {\\beta }_{1}\\end{aligned}]}} & =\\overset{y}{\\overset{\u23de}{[\\begin{aligned}4 \\\\ 5 \\\\ 6 \\\\ 7 \\\\ 8\\end{aligned}]}},\\end{aligned}\n$$\n\nwhere $X$ is the design matrix, $\\beta $ is the parameter vector, and $y$ is the observation vector.\n\nPre-multiplying this equation by ${X}^{T},$ we obtain the corresponding normal equation\n\n$$\n{X}^{T}\\,X\\overset{^}{\\beta }={X}^{T}y.\n$$\n\nSince the columns of $X$ are linearly independent, the matrix ${X}^{T}X$ is invertible and \n\n$$\n\\overset{^}{\\beta }=({X}^{T}\\,X)^{-1}{X}^{T}y.\n$$\n\nSubstituting the given values of $({X}^{T}X)^{-1}$ and ${X}^{T}y$ into the formula, we get\n\n$$\n\\begin{aligned}\\overset{^}{\\beta } & =({X}^{T}\\,X)^{-1}{X}^{T}\\,y \\\\  & =\\frac{1}{8}[\\begin{aligned}40.8 & -14 \\\\ -14 & 5\\end{aligned}]\\cdot [\\begin{aligned}30 \\\\ 88\\end{aligned}] \\\\  & =[\\begin{aligned}-1 \\\\ 2.5\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, we have the line $y=-1+2.5x.$\n\nFinally, to predict the amount of the company's weekly operating expenses if the telephone is used for a total of $4$ hours, we substitute $x=4$ into the equation of the line:\n\n$$\n\\begin{aligned}y & =-1+2.5(4) \\\\  & =9\\end{aligned}\n$$\n\nSo, according to the model, the company's weekly operating expenses will be $$900.$ \n\n**Note**: Since we're extrapolating ($x=4$ is not within the range of the original set of $x$-values), our result *may* be unreliable.",
+        "actual_result": "Incorrect",
+        "deliberately_incorrect_submission": true,
+        "submitted_fields": [
+          {
+            "key": "selection",
+            "submitted_value": "$$1\\,050$",
+            "submitted_option": "c",
+            "observed_selected_option": "c"
+          }
+        ]
+      }
+    ],
+    "shared_contexts": []
+  }
+}
