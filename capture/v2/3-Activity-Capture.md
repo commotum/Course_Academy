@@ -49,9 +49,12 @@ A lesson teaches one topic through tutorials and knowledge points. Each knowledg
 
 1. Capture each tutorial's title, body, images, and source ID. Capture each canonical example's title, problem, worked solution, images, and `e-N` ID, and pass it to the sub-agent before the associated practice.
 2. Capture and answer the practice questions, retaining their knowledge-point association and every revealed result. Follow Math Academy's completion state even when it serves fewer questions or ends the lesson unsuccessfully.
-3. After history review, capture `/topics/<topic-id>` for the complete lesson: tutorial and example content, verified placement/content IDs, titles, and order, including sections this attempt did not visit. Database Preparation compares that definition with the existing lesson and preserves existing identities when updating it.
+3. At completion, save Math Academy's displayed base-XP denominator and its source evidence: for “8 of 13 XP,” save 13 as the base. Preserve the first two distinct practice questions per knowledge point in presentation order, with their problems, answer fields, and worked solutions completed from history.
+4. After history review, capture `/topics/<topic-id>` for the complete lesson: tutorial and example content, verified placement/content IDs, titles, and order, including sections this attempt did not visit. Database Preparation compares that definition with the existing lesson and preserves existing identities when updating it.
 
 Lesson steps point to tutorials and knowledge points. Served practice questions join the knowledge point's pool, rather than becoming permanent lesson steps. Failed lessons and retakes share the definition but retain separate attempt evidence.
+
+**Topic difficulty:** Database Preparation uses those question samples, all tutorials, and all canonical examples with the [existing workload formula](../../reference/xp-docs/expected-distribution-base-xp.md). It applies the expected 1.6 difficulty weight to the per-KP solution measurements, then calculates `topic/difficulty = observed base XP / unrounded workload score`, retaining the formula's seven-XP minimum handling. Save the inputs and formula version with this derived value. Missing inputs go to content recovery before calibration.
 
 ## 3.3. Review
 

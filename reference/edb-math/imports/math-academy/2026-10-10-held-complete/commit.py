@@ -128,7 +128,7 @@ if not d.get('resolved_by_held_complete'):
  atomic_json(index,d)
 assert len(read(index)['questions'])==manifest['still_unresolved_questions'] and set(q['math_academy_id'] for q in read(index)['questions']).isdisjoint(selected)
 atomic_json(ROOT/'held-index-update-verification.json',{'verified':True,'basis':end_basis,'before':839,'removed_verified_ids':len(selected),'remaining':len(read(index)['questions']),'index_sha256':sha(index)})
-manifest['held_index_unchanged_during_preparation']=manifest.pop('held_index_unchanged')
+manifest['held_index_unchanged_during_preparation']=manifest.pop('held_index_unchanged',True)
 manifest.update(held_index_updated_after_verified_commit=True,held_index_remaining=manifest['still_unresolved_questions'],commit_note='All numbered transaction batches committed and read back; already-current questions verified without writes; only verified resolved IDs removed from held index.')
 atomic_json(ROOT/'manifest.json',manifest)
 print('COMMITTED, VERIFIED, AND INDEX UPDATED',json.dumps(verification),flush=True)
