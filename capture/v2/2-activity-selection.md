@@ -2,11 +2,13 @@
 
 1. Started Assessment
 2. Started Diagnostic
-3. Started Lesson
-4. Started Review
-5. Started Multistep
-6. Unstarted Diagnostic
-7. Unstarted Lesson (sorted by priority score)
-8. Unstarted Review (sorted by priority score)
-9. Unstarted Multistep
-10. Unstarted Assessment
+3. Started Lesson or Review (highest priority score first)
+4. Started Multistep
+5. Unstarted Diagnostic
+6. Unstarted Lesson or Review (highest priority score first)
+7. Unstarted Multistep
+8. Unstarted Assessment
+
+Use queue order for equal scores, or when no scores are available. Finish the current activity before selecting another.
+
+Never defer or abandon an activity for any reason. Recover and continue until it is complete. After an external interruption or manual stop, resume that activity when operation resumes.

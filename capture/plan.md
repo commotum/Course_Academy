@@ -4,7 +4,7 @@ Design a fresh capture system with small, clearly separated modules. Use the exi
 
 We will work through the stages in order. For each stage, propose a simple design, discuss it with Jake, record the decisions here, and draw its flow chart. Settle how the stages fit together before replacing the running system.
 
-**1. Queue Processing is agreed at the stage level.** Current discussion: **2. Activity Selection / Priorities**. The later sections below are starting proposals, not agreed specifications.
+**Queue Processing and the Activity Selection priority order are agreed.** The priority-score calculation remains to be defined. The later sections below are starting proposals, not agreed specifications.
 
 ## What we have agreed
 
@@ -13,7 +13,7 @@ We will work through the stages in order. For each stage, propose a simple desig
 - Queue Processing handles the activity queue only. Course summaries, the completed-activity list, and XP tracking belong to Post-Activity Processing.
 - Activity Capture includes doing the activity and reviewing its activity history page afterward. Each activity type has its own capture path.
 - Post-Activity Processing contains the general actions shared by all activity types and has its own separate stage.
-- Once an activity starts, keep working toward its completion. Ambiguous questions, uncertain answers, or content that is difficult to import must not cause the script or agent to abandon it.
+- Never defer or abandon an activity for any reason. Recover and continue until it is complete. After an external interruption or manual stop, resume that activity when operation resumes. Ambiguous questions, uncertain answers, and difficult imports must not cause the script or agent to move on from an unfinished activity.
 - Define a completion behavior for each activity type, including what to do when an answer is uncertain. Decide those behaviors during the relevant stage interview.
 - Save enough progress to continue after an external interruption or manual stop. After an interruption, check what Math Academy already accepted before repeating an action.
 - Put content recovery in Database Preparation. Finishing an activity and having its content ready for the database are separate milestones.
@@ -63,13 +63,13 @@ Queue reading must be fault tolerant and continue. Routine retry and recovery de
 
 **Job:** choose an activity and explain why it serves our capture goals.
 
-Agreed form: prioritize ten combinations of activity type and status. The five base types are Lesson, Review, Assessment, Multistep, and Diagnostic. Each is either started (begun but not completed) or unstarted. Choose the first available entry in the agreed order.
+Agreed form: prioritize the five base activity types—Lesson, Review, Assessment, Multistep, and Diagnostic—in either started (begun but not completed) or unstarted form. Rank Lessons and Reviews together by priority score within each status group. This gives eight priority levels covering the same ten type/status combinations. Choose the first available level, then the highest-scoring Lesson or Review within that level.
 
 Use the queue record, desired content, existing captured content, and the account's Math Academy progress. Pass the selected activity and its reason to Activity Capture, which applies the activity's answer and completion policy.
 
-The proposed priority order is listed in `v2/2-activity-selection.md`: started Assessment, Diagnostic, Lesson, Review, Multistep; then unstarted Diagnostic, Lesson, Review, Multistep, Assessment. Finish started activities first, giving timed assessments first priority. Among unstarted activities, handle placement before lessons and practice; an assessment offered alone will still be selected even though it ranks last. This is the assistant's recommended order for review, not a user-confirmed order.
+The agreed order is listed in `v2/2-activity-selection.md`: started Assessment, Diagnostic, Lesson/Review by score, Multistep; then unstarted Diagnostic, Lesson/Review by score, Multistep, Assessment. Started activities come before unstarted ones. Comparing scores happens when choosing or resuming an activity; changing scores must not interrupt the activity currently being captured. Use queue order for equal scores or when none are available. An assessment offered alone will still be selected even though unstarted assessments rank last.
 
-This replaces the earlier draft's mixture of activity types, requirements, repeats, and capture goals. Any rules for choosing between activities within the same type/status can be discussed after the ten-item order is set.
+This replaces the earlier draft's mixture of activity types, requirements, repeats, and capture goals. The priority-score calculation remains to be defined.
 
 Jake expects a required assessment to be the only displayed queue option. Treat that as an observation to verify when needed, rather than a separate priority category.
 
