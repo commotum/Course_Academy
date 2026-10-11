@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-137930",
+      "sequence_position": 5,
+      "problem": "$$\nA=[\\begin{aligned}2 & 6 \\\\ -1 & -3 \\\\ 1 & 3\\end{aligned}],\\,b=[\\begin{aligned}-22 \\\\ 11 \\\\ 7\\end{aligned}],\\,W=[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 2 & 0 \\\\ 0 & 0 & 1\\end{aligned}].\n$$\n\nConsider the matrices $A$ and $W,$ and the vector $b$ shown above. If the general solution for the weighted least-squares problem $W\\,Ax=Wb$ is \n\n$$\n[\\begin{aligned}a \\\\ 0\\end{aligned}]+{x}_{2}[\\begin{aligned}b \\\\ c\\end{aligned}],\\,{x}_{2}\\in R,\n$$\n\nwhat is the value of  $a+\\frac{b}{c}?$",
+      "worked_solution": "To get the normal equation corresponding to $W\\,Ax=Wb,$ we pre-multiply both sides of the equation by $(W\\,A)^{T}:$\n\n$$\n\\begin{aligned}(W\\,A)^{T}\\cdot W\\,Ax & =(W\\,A)^{T}\\cdot Wb \\\\ {A}^{T}({W}^{T}W)Ax & ={A}^{T}({W}^{T}W)b\\end{aligned}\n$$\n\nNow, since\n\n$$\n{W}^{T}W=[\\begin{aligned}{1}^{2} & 0 & 0 \\\\ 0 & {2}^{2} & 0 \\\\ 0 & 0 & {1}^{2}\\end{aligned}]=[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & 1\\end{aligned}],\n$$\n\nour normal equation can be written as follows:\n\n$$\n\\begin{aligned}[\\begin{aligned}2 & -1 & 1 \\\\ 6 & -3 & 3\\end{aligned}][\\begin{aligned}1 & 0 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & 1\\end{aligned}][\\begin{aligned}2 & 6 \\\\ -1 & -3 \\\\ 1 & 3\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}2 & -1 & 1 \\\\ 6 & -3 & 3\\end{aligned}][\\begin{aligned}1 & 0 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & 1\\end{aligned}][\\begin{aligned}-22 \\\\ 11 \\\\ 7\\end{aligned}] \\\\ [\\begin{aligned}2 & -1 & 1 \\\\ 6 & -3 & 3\\end{aligned}][\\begin{aligned}2 & 6 \\\\ -4 & -12 \\\\ 1 & 3\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}2 & -1 & 1 \\\\ 6 & -3 & 3\\end{aligned}][\\begin{aligned}-22 \\\\ 44 \\\\ 7\\end{aligned}] \\\\ [\\begin{aligned}9 & 27 \\\\ 27 & 81\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}-81 \\\\ -243\\end{aligned}]\\end{aligned}\n$$\n\nNow, we solve the system corresponding to the above matrix equation using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}9 & 27 & -81 \\\\ 27 & 81 & -243\\end{aligned}] & {R}_{2}:={R}_{2}-3{R}_{1} \\\\  & ∼[\\begin{aligned}9 & 27 & -81 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we have \n\n$$\n{x}_{1}=-9-3{x}_{2}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}-9-3{x}_{2} \\\\ {x}_{2}\\end{aligned}]=[\\begin{aligned}-9 \\\\ 0\\end{aligned}]+{x}_{2}[\\begin{aligned}-3 \\\\ 1\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nTherefore, we have\n\n$$\na+\\frac{b}{c}=-9+\\frac{(-3)}{1}=-12.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117338/observations/history-q-137930-51e46f73c3c889211bfd.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14117338",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117338/observations/history-solution-q-137930-bc412318216c0f9b5e6c.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "-6"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "15"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "6"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "-12"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "-3"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q137930",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "-12",
+                "option": "d",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "To get the normal equation corresponding to $W\\,Ax=Wb,$ we pre-multiply both sides of the equation by $(W\\,A)^{T}:$\n\n$$\n\\begin{aligned}(W\\,A)^{T}\\cdot W\\,Ax & =(W\\,A)^{T}\\cdot Wb \\\\ {A}^{T}({W}^{T}W)Ax & ={A}^{T}({W}^{T}W)b\\end{aligned}\n$$\n\nNow, since\n\n$$\n{W}^{T}W=[\\begin{aligned}{1}^{2} & 0 & 0 \\\\ 0 & {2}^{2} & 0 \\\\ 0 & 0 & {1}^{2}\\end{aligned}]=[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & 1\\end{aligned}],\n$$\n\nour normal equation can be written as follows:\n\n$$\n\\begin{aligned}[\\begin{aligned}2 & -1 & 1 \\\\ 6 & -3 & 3\\end{aligned}][\\begin{aligned}1 & 0 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & 1\\end{aligned}][\\begin{aligned}2 & 6 \\\\ -1 & -3 \\\\ 1 & 3\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}2 & -1 & 1 \\\\ 6 & -3 & 3\\end{aligned}][\\begin{aligned}1 & 0 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & 1\\end{aligned}][\\begin{aligned}-22 \\\\ 11 \\\\ 7\\end{aligned}] \\\\ [\\begin{aligned}2 & -1 & 1 \\\\ 6 & -3 & 3\\end{aligned}][\\begin{aligned}2 & 6 \\\\ -4 & -12 \\\\ 1 & 3\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}2 & -1 & 1 \\\\ 6 & -3 & 3\\end{aligned}][\\begin{aligned}-22 \\\\ 44 \\\\ 7\\end{aligned}] \\\\ [\\begin{aligned}9 & 27 \\\\ 27 & 81\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}] & =[\\begin{aligned}-81 \\\\ -243\\end{aligned}]\\end{aligned}\n$$\n\nNow, we solve the system corresponding to the above matrix equation using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}9 & 27 & -81 \\\\ 27 & 81 & -243\\end{aligned}] & {R}_{2}:={R}_{2}-3{R}_{1} \\\\  & ∼[\\begin{aligned}9 & 27 & -81 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we have \n\n$$\n{x}_{1}=-9-3{x}_{2}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}-9-3{x}_{2} \\\\ {x}_{2}\\end{aligned}]=[\\begin{aligned}-9 \\\\ 0\\end{aligned}]+{x}_{2}[\\begin{aligned}-3 \\\\ 1\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nTherefore, we have\n\n$$\na+\\frac{b}{c}=-9+\\frac{(-3)}{1}=-12.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117338/observations/step-q137930-44644c7aa3a6eb764b1a.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12af5-e482-7632-bf47-c35de96cf548",
+  "previous_failures": []
+}
