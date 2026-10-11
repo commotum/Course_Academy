@@ -87,7 +87,8 @@ An answer can be equivalent to the stated solution without being in the same dis
 explain the equivalence. Merely being the only plausible choice is not captured MA answer evidence.
 
 For match_topic, classify the tested skill against ONLY the supplied course/prerequisite topic IDs;
-return null when unsupported. For resolve_identity, compare candidate source identities and
+when topic_catalog_reused is true, use the previously supplied topic_catalog_id in this session.
+Return null when unsupported. For resolve_identity, compare candidate source identities and
 content evidence; return an existing candidate only when it is the same continuing object.
 For interpret_page, choose an allowed recovery action from the captured visible page. For
 advance on an unknown page, select one current observed buttons entry and return its EXACT
@@ -235,6 +236,7 @@ class SolverClient:
                         'previous_failures': failures}
             if not self.state.get('session_id') or self.config.solver_command:
                 envelope['conversation'] = self._conversation(task, payload)
+            envelope = self._delivery_envelope(task, payload, envelope)
             atomic_json(prefix.with_suffix('.input.json'), envelope)
             try:
                 result, session = self._call(envelope, prefix, schema_file, min(remaining, total_timeout / attempts if attempt < attempts - 1 else remaining))
@@ -242,6 +244,9 @@ class SolverClient:
                 atomic_json(logical / 'result.json', result)
                 if session:
                     self.state['session_id'] = session
+                    if task == 'match_topic' and not self.config.solver_command:
+                        self.state['topic_catalog'] = {'session_id': session,
+                            'catalog_id': self._topic_catalog_id(payload)}
                 if identity not in self.state['turns']:
                     self.state['turns'].append(identity)
                 atomic_json(logical / 'request.json', {'task': task, 'payload': payload})
@@ -255,6 +260,24 @@ class SolverClient:
                     raise
                 replace_session = _session_invalid(error)
         raise SolverUnavailable('; '.join(failures) or 'Solver deadline elapsed')
+
+    @staticmethod
+    def _topic_catalog_id(payload):
+        return hashlib.sha256(json.dumps(payload.get('topics', []), sort_keys=True,
+                                         ensure_ascii=False, default=str).encode()).hexdigest()
+
+    def _delivery_envelope(self, task, payload, envelope):
+        if task != 'match_topic' or self.config.solver_command:
+            return envelope
+        catalog_id = self._topic_catalog_id(payload)
+        catalog = self.state.get('topic_catalog') or {}
+        session = self.state.get('session_id')
+        reused = bool(session and catalog.get('session_id') == session and catalog.get('catalog_id') == catalog_id)
+        delivered = {**payload, 'topic_catalog_id': catalog_id}
+        if reused:
+            delivered.pop('topics', None)
+            delivered['topic_catalog_reused'] = True
+        return {**envelope, 'payload': delivered}
 
     def _dependency_fingerprint(self):
         # A repaired CLI/configuration or contract must invalidate a deterministic

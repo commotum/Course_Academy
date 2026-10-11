@@ -153,12 +153,9 @@ def task_payload(task, payload):
         question = {**payload.get('question', {})}
         if payload.get('screenshot'):
             question.setdefault('screenshot', payload['screenshot'])
-        course_topics = [str(topic.get('topic_id', topic.get('math_academy_id', topic.get('id'))))
-                         if isinstance(topic, dict) else str(topic) for topic in payload.get('course_topics', [])]
-        # Python computes prerequisite distance after classification; the agent
-        # needs candidate authored titles and course membership, not the graph.
-        return {'evidence_contract': task + ':1', 'question': compact_question(question), 'topics': topics,
-                'course_topic_ids': course_topics}
+        # Python computes course/prerequisite distances. Classification needs
+        # the authored candidate topics; no duplicate graph/course catalog.
+        return {'evidence_contract': task + ':1', 'question': compact_question(question), 'topics': topics}
     if task == 'interpret_page':
         observation = payload.get('observation') or {}
         return {'evidence_contract': task + ':1', 'observation': _pick(observation, ('kind', 'key', 'buttons', 'grade', 'accepted',

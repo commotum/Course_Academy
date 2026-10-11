@@ -389,6 +389,20 @@ class ActivityCapture:
             question['topic_id'] = topic_id(bound)
         if question.get('topic_id') is not None:
             return
+        source_id = question.get('math_academy_id')
+        lookup = getattr(self.context_provider, 'question_topic', None)
+        if source_id and lookup:
+            try:
+                source_binding = lookup(source_id)
+            except StopRequested:
+                raise
+            except Exception as error:
+                source_binding = None
+                self._event('question_topic_lookup_unavailable', question=source_id, error=str(error))
+            if source_binding and source_binding.get('topic_id') is not None:
+                question['topic_id'] = str(source_binding['topic_id'])
+                question['topic_match'] = source_binding
+                return
         topics = context.get('topics') or context.get('all_topics') or context.get('course_topics', [])
         distances = self.state['policy']['distances']
         topics = [topic for topic in topics if topic_id(topic) in distances]

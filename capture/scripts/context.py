@@ -55,6 +55,17 @@ class ContextProvider:
         context.update(self._targets())
         return context
 
+    def question_topic(self, question_id):
+        if not question_id:
+            return None
+        try:
+            return self.pipeline_factory().question_topic(question_id)
+        except StopRequested:
+            raise
+        except Exception as error:
+            logging.warning("Exact question topic unavailable after %s", type(error).__name__)
+            return None
+
     def _targets(self):
         key = self._identity_key(self.config.learner_id)
         path = self.config.state_root / "context" / ("targets-" + key + ".json")

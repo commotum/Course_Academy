@@ -156,6 +156,24 @@ class EDBClient:
         return {'basis': basis, 'entities': list(entities.values()), 'attributes': attributes,
                 'idents': sources, 'facts': facts}
 
+    def question_topic(self, question_id, directory):
+        """Read one exact MA question binding, including topics outside the course."""
+        if not isinstance(question_id, str) or not re.fullmatch(r'[qe]-\d+', question_id):
+            return None
+        basis = self.basis()
+        rows = self.query("""[:find ?id :in $ ?question :where
+            [?source :db/ident :org/Math-Academy]
+            [?q :question/math-academy-id ?question _ ?source]
+            (or [?kp :knowledge-point/questions ?q]
+                [?kp :knowledge-point/canonical-example ?q])
+            [?t :topic/knowledge-points ?kp] [?t :topic/math-academy-id ?id]]""",
+            [question_id], directory, 'question-topic', basis)
+        topics = {str(row[0]) for row in rows}
+        if len(topics) != 1:
+            return None
+        return {'question_id': question_id, 'topic_id': topics.pop(), 'basis': basis,
+                'source': 'database_math_academy_question_binding'}
+
     def targets(self, directory):
         basis = self.basis()
         learner_id = self.config.learner_id

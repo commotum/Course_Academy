@@ -219,6 +219,21 @@ class CaptureTests(unittest.TestCase):
         self.assertGreater(recoveries[0], failures[-1])
         self.assertEqual(events[-1]['event'], 'judgment_saved')
 
+    def test_exact_question_topic_binding_skips_agent_classification(self):
+        class Context:
+            def __call__(self, activity):
+                return {'course_topics': ['7'], 'topics': [{'topic_id': '7', 'title': 'Addition'}], 'graph': {}}
+            def question_topic(self, source_id):
+                self.lookup_id = source_id
+                return {'question_id': source_id, 'topic_id': '7', 'basis': 5,
+                        'source': 'database_math_academy_question_binding'}
+        provider = Context()
+        capture = ActivityCapture(self.config, Browser([question(topic_id=None)], 'diagnostic'), self.stop,
+            provider, solver=self.agent, clock=lambda: self.clock_value, sleeper=self.sleep)
+        capture.run({'task_id': '99', 'kind': 'diagnostic', 'title': 'Sample', 'details': {}}, self.directory)
+        self.assertEqual(provider.lookup_id, 'q-1')
+        self.assertFalse(any(call[0] == 'match_topic' for call in self.agent.calls))
+
     def test_deterministic_final_agent_error_does_not_loop(self):
         class InvalidAgent(Agent):
             def request(self, task, payload, **options):

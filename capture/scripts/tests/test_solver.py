@@ -71,6 +71,25 @@ class SolverTests(unittest.TestCase):
             self.assertEqual(client.request('solve_question', self.payload), self.result)
         self.assertEqual(invoke.call_count, 2)
 
+    def test_topic_catalog_delivered_once_per_session_and_refreshed_when_changed(self):
+        client = SolverClient(self.config, self.root, self.stop)
+        envelopes = []
+        def classify(envelope, *args):
+            envelopes.append(envelope)
+            return {'topic_id': '2', 'confidence': 1, 'reasoning': 'Exact candidate skill'}, 'same'
+        topics = [{'topic_id': '2', 'title': 'Addition'}]
+        with patch.object(client, '_call', side_effect=classify):
+            client.request('match_topic', {'question': {'problem': 'Add 1+1'}, 'topics': topics})
+            client.request('match_topic', {'question': {'problem': 'Add 2+2'}, 'topics': topics})
+            client.request('match_topic', {'question': {'problem': 'Add 3+3'}, 'topics': topics + [{'topic_id': '3', 'title': 'Subtraction'}]})
+            client.request('match_topic', {'question': {'problem': 'Add 4+4'}, 'topics': topics}, force_new=True)
+        self.assertIn('topics', envelopes[0]['payload'])
+        self.assertNotIn('topics', envelopes[1]['payload'])
+        self.assertTrue(envelopes[1]['payload']['topic_catalog_reused'])
+        self.assertIn('topics', envelopes[2]['payload'])
+        self.assertIn('topics', envelopes[3]['payload'])
+        self.assertIsNone(envelopes[3]['session_id'])
+
     def test_legacy_raw_capture_session_is_rotated_once_with_results_preserved(self):
         directory = self.root / 'solver'
         directory.mkdir()

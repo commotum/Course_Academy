@@ -9,6 +9,8 @@ from scripts.cli import configuration, parser
 from scripts.config import Config
 from scripts.context import ContextProvider
 from scripts.database.client import EDBClient
+from scripts.database.pipeline import DatabasePipeline
+from scripts.runtime import StopRequested
 from scripts.selection import choose
 from scripts.storage import atomic_json
 
@@ -104,6 +106,68 @@ class TargetTests(unittest.TestCase):
             parser().parse_args(['run', '--target', '8'])
         self.assertIn(':learner/targets', errors.getvalue())
         self.assertFalse(hasattr(configuration(parser().parse_args(['check'])), 'targets'))
+
+
+class ExactQuestionBindingTests(unittest.TestCase):
+    def test_exact_binding_query_is_scoped_and_pinned(self):
+        calls=[]
+        class Client(EDBClient):
+            def __init__(self):pass
+            def basis(self):return 17
+            def query(self,source,inputs,directory,name,basis=None):
+                calls.append((source,inputs,name,basis))
+                return [[209],[209]]
+        client=Client()
+        with tempfile.TemporaryDirectory() as directory:
+            config=Config(repo_root=Path(directory),profile=Path(directory)/'profile')
+            pipeline=DatabasePipeline(config,threading.Event(),client=client)
+            binding=pipeline.question_topic('q-391')
+        self.assertEqual(binding['topic_id'],'209')
+        self.assertEqual(binding['question_id'],'q-391')
+        self.assertEqual(binding['basis'],17)
+        self.assertEqual(binding['source'],'database_math_academy_question_binding')
+        source,inputs,name,basis=calls[0]
+        self.assertEqual(inputs,['q-391'])
+        self.assertEqual((name,basis),('question-topic',17))
+        self.assertIn(':question/math-academy-id ?question _ ?source',source)
+        self.assertIn(':org/Math-Academy',source)
+        self.assertIn(':knowledge-point/questions',source)
+        self.assertIn(':knowledge-point/canonical-example',source)
+        self.assertNotIn(':course/',source)
+        self.assertNotIn(':topic/next',source)
+        self.assertNotIn(':learner/',source)
+
+    def test_absent_and_ambiguous_binding_remain_unknown(self):
+        class Client(EDBClient):
+            def __init__(self):self.rows=[];self.calls=0
+            def basis(self):self.calls+=1;return 17
+            def query(self,*args):return self.rows
+        client=Client()
+        for source_id in (None,'','391','unavailable'):
+            self.assertIsNone(client.question_topic(source_id,Path('/tmp')))
+        self.assertEqual(client.calls,0)
+        self.assertIsNone(client.question_topic('q-391',Path('/tmp')))
+        client.rows=[[209],[210]]
+        self.assertIsNone(client.question_topic('q-391',Path('/tmp')))
+
+    def test_provider_uses_lookup_and_falls_back_when_database_is_unavailable(self):
+        calls=[]
+        class Pipeline:
+            def question_topic(_,source_id):
+                calls.append(source_id)
+                if source_id=='q-1':return {'question_id':source_id,'topic_id':'209','basis':17,'source':'database_math_academy_question_binding'}
+                if source_id=='q-2':raise ConnectionError('offline')
+                if source_id=='q-3':raise StopRequested()
+                return None
+        with tempfile.TemporaryDirectory() as directory:
+            config=Config(repo_root=Path(directory),profile=Path(directory)/'profile')
+            provider=ContextProvider(config,Pipeline)
+            self.assertIsNone(provider.question_topic(None))
+            self.assertEqual(provider.question_topic('q-1')['topic_id'],'209')
+            self.assertIsNone(provider.question_topic('q-2'))
+            self.assertIsNone(provider.question_topic('q-4'))
+            with self.assertRaises(StopRequested):provider.question_topic('q-3')
+        self.assertEqual(calls,['q-1','q-2','q-4','q-3'])
 
 
 if __name__ == '__main__':
