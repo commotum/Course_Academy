@@ -19,12 +19,13 @@ if not __package__:
     __package__ = 'scripts'
 
 from .config import Config
+from .courses import course_label
 from .fleet import ACCOUNTS
 from .monitor import process_running, render, snapshot
 from .runtime import shutdown_signals
 from .storage import atomic_json, file_lock, read_json
 
-WINDOWS = dict(zip(ACCOUNTS, ('Mathematical Methods', 'Linear Algebra', 'Multivariable Calculus', 'Differential Equations')))
+LEGACY_WINDOWS = dict(zip(ACCOUNTS, ('Mathematical Methods', 'Linear Algebra', 'Multivariable Calculus', 'Differential Equations')))
 SCRIPT = Path(__file__).resolve()
 
 
@@ -67,18 +68,29 @@ def ensure_layout(args):
     session = args.session
     repo = config_for(args, ACCOUNTS[0]).repo_root
     if tmux('has-session', '-t', '=' + session, check=False).returncode:
-        tmux('new-session', '-d', '-s', session, '-n', WINDOWS[ACCOUNTS[0]], '-c', repo, 'exec bash')
+        tmux('new-session', '-d', '-s', session, '-n', course_label(config_for(args, ACCOUNTS[0])), '-c', repo, 'exec bash')
+        tmux('set-window-option', '-t', session + ':', '@capture_account', ACCOUNTS[0])
         tmux('set-option', '-t', session, '@capture_version', '2')
     elif tmux('show-options', '-v', '-t', session, '@capture_version', check=False).stdout.strip() != '2':
         raise RuntimeError(f'Session {session!r} belongs to another program; use a different --session')
-    rows = tmux('list-windows', '-t', session, '-F', '#{window_id}\t#{window_name}').stdout.splitlines()
-    windows = {name: wid for wid, name in (row.split('\t', 1) for row in rows)}
+    rows = tmux('list-windows', '-t', session, '-F', '#{window_id}\t#{window_name}\t#{@capture_account}').stdout.splitlines()
+    windows, untagged = {}, {}
+    for row in rows:
+        wid, name, account = row.split('\t')
+        if account in ACCOUNTS:
+            windows[account] = wid
+        elif not account:
+            untagged[name] = wid
     panes = {}
-    for account, name in WINDOWS.items():
-        if name not in windows:
-            windows[name] = tmux('new-window', '-d', '-P', '-F', '#{window_id}', '-t', session,
-                                 '-n', name, '-c', repo, 'exec bash').stdout.strip()
-        window = windows[name]
+    for account in ACCOUNTS:
+        name = course_label(config_for(args, account))
+        if account not in windows:
+            legacy = untagged.pop(LEGACY_WINDOWS[account], None)
+            windows[account] = legacy or tmux('new-window', '-d', '-P', '-F', '#{window_id}', '-t', session,
+                                             '-n', name, '-c', repo, 'exec bash').stdout.strip()
+        window = windows[account]
+        tmux('set-window-option', '-t', window, '@capture_account', account)
+        tmux('rename-window', '-t', window, name)
         tmux('set-window-option', '-t', window, 'automatic-rename', 'off')
         tmux('set-window-option', '-t', window, 'remain-on-exit', 'on')
         rows = tmux('list-panes', '-t', window, '-F', '#{pane_id}\t#{@capture_dashboard}').stdout.splitlines()
@@ -86,7 +98,7 @@ def ensure_layout(args):
         if len(candidates) != 1:
             raise RuntimeError(f'{name}: expected one capture log pane; leave other panes untouched')
         panes[account] = candidates[0]
-    first = windows[WINDOWS[ACCOUNTS[0]]]
+    first = windows[ACCOUNTS[0]]
     rows = tmux('list-panes', '-t', first, '-F', '#{pane_id}\t#{@capture_dashboard}\t#{pane_dead}').stdout.splitlines()
     dashboard = next((row.split('\t') for row in rows if row.split('\t')[1] == '1'), None)
     if dashboard is None:
@@ -99,6 +111,16 @@ def ensure_layout(args):
     tmux('set-option', '-t', session, 'status-right-length', '65')
     tmux('set-option', '-t', session, 'status-right', '#(' + invocation(args, 'status', '--compact') + ')')
     return panes
+
+
+def refresh_window_titles(args):
+    rows = tmux('list-windows', '-t', args.session, '-F', '#{window_id}\t#{window_name}\t#{@capture_account}', check=False)
+    for row in rows.stdout.splitlines():
+        wid, name, account = row.split('\t')
+        if account in ACCOUNTS:
+            current = course_label(config_for(args, account))
+            if current != name:
+                tmux('rename-window', '-t', wid, current)
 
 
 def profile_busy(config):
@@ -181,7 +203,7 @@ def supervise(args, account):
                 output.seek(0, os.SEEK_END)
                 position = output.tell()
                 while not stop.is_set():
-                    print(f'{WINDOWS[account]}: new capture starting; checkpoint recovery enabled', flush=True)
+                    print(f'{course_label(config)}: new capture starting; checkpoint recovery enabled', flush=True)
                     try:
                         child = subprocess.Popen(record['command'], cwd=config.repo_root, stdout=output,
                                                  stderr=subprocess.STDOUT, start_new_session=True)
@@ -295,6 +317,7 @@ def main(argv=None):
         elif args.command == 'dashboard':
             try:
                 while True:
+                    refresh_window_titles(args)
                     print('\033[?25l\033[H' + render([snapshot(config_for(args, account)) for account in accounts], color=True) + '\033[J', end='', flush=True)
                     time.sleep(5)
             finally:

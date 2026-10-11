@@ -1,5 +1,6 @@
 """Fresh learner targets with a cached course graph for resilient selection."""
 import hashlib
+import json
 import logging
 import threading
 import time
@@ -16,17 +17,27 @@ class ContextProvider:
         self._last = {}
         self._lock = threading.Lock()
 
+    def _identity_key(self, *values):
+        # A shared state directory must not mix snapshots from different databases.
+        identity = [str(self.config.database), str(self.config.endpoint),
+                    str(self.config.postgres_url or ""), *map(str, values)]
+        return hashlib.sha256(json.dumps(identity).encode()).hexdigest()[:24]
+
     def _path(self, activity):
         course = str(activity.get("course_id") or self.config.course_id or "unknown")
         if not course.isalnum():
             course = "unknown"
-        return self.config.state_root / "context" / (course + ".json")
+        return self.config.state_root / "context" / (course + "-" + self._identity_key(course) + ".json")
 
     def __call__(self, activity):
         path = self._path(activity)
+        saved = read_json(path, None)
+        # Course content changes much less often than learner priorities. Reuse the
+        # persisted graph across restarts; failures can retry after one minute.
+        refresh_due = not saved or time.time() - saved.get("cached_at", 0) >= 3600
         with self._lock:
             current = self._threads.get(str(path))
-            if (not current or not current.is_alive()) and time.monotonic() - self._last.get(str(path), -1000) >= 60:
+            if refresh_due and (not current or not current.is_alive()) and time.monotonic() - self._last.get(str(path), float("-inf")) >= 60:
                 current = threading.Thread(target=self._refresh, args=(activity, path), daemon=True, name="capture-context")
                 self._threads[str(path)] = current
                 self._last[str(path)] = time.monotonic()
@@ -34,8 +45,9 @@ class ContextProvider:
         if not path.exists() and current:
             # Obtain the first diagnostic graph before starting whenever possible.
             # A genuinely unavailable database still has the explicit unknown-topic fallback.
-            current.join(timeout=30 if activity.get("kind") == "diagnostic" else 2)
+            current.join(timeout=30)
         context = read_json(path, {"graph": {}, "targets": [], "course_topics": [], "snapshot_unavailable": True})
+        context["context_refresh_pending"] = bool(not path.exists() and current and current.is_alive())
         # Graph refresh can lag, but every selection rereads the persisted target
         # set. Never reuse the old cache's assignment union or CLI overrides.
         context.pop("targets", None)
@@ -44,8 +56,7 @@ class ContextProvider:
         return context
 
     def _targets(self):
-        identity = f"{self.config.database}:{self.config.learner_id}"
-        key = hashlib.sha256(identity.encode()).hexdigest()[:16]
+        key = self._identity_key(self.config.learner_id)
         path = self.config.state_root / "context" / ("targets-" + key + ".json")
         try:
             targets = dict(self.pipeline_factory().targets())

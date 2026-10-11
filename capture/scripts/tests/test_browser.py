@@ -199,6 +199,29 @@ class OfflineBrowserTests(unittest.TestCase):
         self.assertIsNone(self.page.evaluate("window.submissions"))
         self.assertTrue(self.adapter.state["restored"])
 
+    def test_pending_assessment_submission_reloads_before_confirming_again(self):
+        self.adapter.activity["kind"] = "assessment"
+        self.page.set_content('<button id="submitTestButton" onclick="window.clicked=true">Submit test</button>')
+        self.adapter.state["pending_action"] = {"action": "submit_assessment"}
+        self.adapter.state["restored"] = False
+        reloads = []
+        self.adapter._goto = lambda url: reloads.append(url)
+        result = self.adapter.respond({"key": "assessment-submit"}, {"action": "submit_assessment"}, self.directory)
+        self.assertEqual(len(reloads), 1)
+        self.assertIsNone(self.page.evaluate("window.clicked"))
+        self.assertTrue(result["not_submitted"])
+
+    def test_pending_continue_reloads_before_clicking_again(self):
+        self.page.set_content('<div class="step" id="step-t1"><p>Read this.</p><button id="continueButton-t1" onclick="window.clicked=true">Continue</button></div>')
+        observation = self.adapter._view()
+        self.adapter.state["pending_action"] = {"action": "advance", "key": observation["key"]}
+        self.adapter.state["restored"] = False
+        reloads = []
+        self.adapter._goto = lambda url: reloads.append(url)
+        self.adapter.advance(observation, self.directory)
+        self.assertEqual(len(reloads), 1)
+        self.assertIsNone(self.page.evaluate("window.clicked"))
+
     def test_assessment_minutes_label_supplies_actual_timer_budget(self):
         self.page.set_content('<span id="timeRemaining">15 minutes remaining</span>')
         self.assertEqual(self.adapter._remaining(), 900)
@@ -251,6 +274,11 @@ class OfflineBrowserTests(unittest.TestCase):
         result = self.adapter.postprocess(self.adapter.activity, self.directory)
         self.assertEqual(result["completion"]["earned_xp"], 3)
         self.assertEqual(self.adapter.state["completion"], {"earned_xp": 99, "base_xp": 100})
+        first = result["dashboard"]["html_path"]
+        second = self.adapter.postprocess(self.adapter.activity, self.directory)
+        self.assertNotEqual(first, second["dashboard"]["html_path"])
+        self.assertTrue(Path(first).exists())
+        self.assertEqual(len(list((self.directory / "post-activity").glob("*/observations.json"))), 2)
 
     def test_unknown_page_agent_can_choose_a_current_idless_continue(self):
         self.page.set_content('''<div><button onclick="this.remove();document.getElementById('finalScreen').style.display='block';window.recoveryClicks=(window.recoveryClicks||0)+1">Continue</button></div><div id="finalScreen" style="display:none">Done</div>''')

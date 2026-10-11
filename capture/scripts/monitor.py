@@ -6,10 +6,9 @@ import shutil
 import time
 
 from .outbox import FINAL, target_id
+from .courses import course_label, current_course
 from .storage import read_json
 
-LABELS = {'foundations': 'Mathematical Methods', 'linear': 'Linear Algebra',
-          'multivariable': 'Multivariable Calculus', 'differential': 'Differential Equations'}
 STAGES = {'activity': 'Answering', 'history': 'Reviewing history', 'complete': 'Capture saved',
           'capturing': 'Capturing', 'selecting': 'Selecting', 'waiting_for_queue': 'Waiting for queue',
           'recovering': 'Recovering', 'stopped': 'Stopped', 'starting': 'Starting'}
@@ -103,7 +102,7 @@ def snapshot(config, running=None):
         if item.get('error'):
             errors.append('Import: ' + _error(item['error']))
             break
-    return {'account': config.account, 'label': LABELS.get(config.account, config.account),
+    return {'account': config.account, 'label': course_label(config), 'course_id': current_course(config).get('course_id'),
             'running': is_running, 'status': 'RUNNING' if is_running else 'STOPPED',
             'pid': worker.get('pid'), 'uptime': max(0, int(time.time() - started))
                 if is_running and isinstance(started, (int, float)) else None,
@@ -155,6 +154,10 @@ def render(rows, compact=False, color=False):
             return '│ ' + text.ljust(inner) + ' │'
         label = ('● ' if row.get('running') else '○ ') + _text(row.get('label', row.get('account', 'Account')))
         state = row.get('status', 'STOPPED')
+        available = max(5, inner - len(state) - 2)
+        if len(label) > available:
+            tail = min(12, available // 2)
+            label = label[:available - tail - 1] + '…' + label[-tail:]
         first = label + ' ' * max(2, inner - len(label) - len(state)) + state
         body = contents(row)
         body += [''] * (height - len(body))

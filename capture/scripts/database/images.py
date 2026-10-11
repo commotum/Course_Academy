@@ -30,6 +30,21 @@ def extension(data: bytes) -> str:
             raise MissingImage('Image bytes are neither a supported raster nor SVG') from error
         if root.tag.rsplit('}', 1)[-1].lower() != 'svg':
             raise MissingImage('Downloaded response is not an image')
+        ids = {node.attrib['id'] for node in root.iter() if 'id' in node.attrib}
+        references = set()
+        for node in root.iter():
+            for name, value in node.attrib.items():
+                if name.rsplit('}', 1)[-1] == 'href':
+                    if value.startswith('#'):
+                        references.add(value[1:])
+                    elif not value.startswith('data:image/'):
+                        raise MissingImage('SVG has an unresolved external reference: ' + value)
+                for target in re.findall(r'url\(\s*["\']?([^\s)"\']+)', value):
+                    if not target.startswith('#'):
+                        raise MissingImage('SVG has an unresolved external reference: ' + target)
+                    references.add(target[1:])
+        if references - ids:
+            raise MissingImage('SVG references missing definitions: ' + ', '.join(sorted(references - ids)))
         return 'svg'
 
 
@@ -39,6 +54,7 @@ class ImageLibrary:
         self.capture = Path(capture_directory)
         self.mapping: dict[str, str] = {}
         self.saved: dict[str, dict] = {}
+        self.expected_hashes: dict[str, str] = {}
         for name in ('assets/manifest.json', 'asset-map.json', 'images.json'):
             path = self.capture / name
             if path.is_file():
@@ -52,6 +68,8 @@ class ImageLibrary:
             local = next((node[k] for k in ('local_path', 'path', 'file', 'saved_path', 'relative_path')
                           if isinstance(node.get(k), str)), None)
             if local:
+                if isinstance(node.get('sha256'), str):
+                    self.expected_hashes[local] = node['sha256']
                 for key in ('url', 'source_url', 'original_url', 'src'):
                     if isinstance(node.get(key), str):
                         self.mapping[node[key]] = local
@@ -118,7 +136,11 @@ class ImageLibrary:
             candidates.insert(0, Path(raw))
         for path in candidates:
             if path.is_file():
-                return self.store(path.read_bytes(), source)
+                data = path.read_bytes()
+                expected = self.expected_hashes.get(mapped)
+                if expected and hashlib.sha256(data).hexdigest() != expected:
+                    raise MissingImage('Captured image differs from its source manifest: ' + source)
+                return self.store(data, source)
         raise MissingImage('Image file is unavailable: ' + source)
 
     def text(self, value: str) -> str:

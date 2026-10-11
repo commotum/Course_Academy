@@ -34,6 +34,14 @@ def source_uuid(kind, value):
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False, default=str).encode()).hexdigest()
 
+def activity_identity(content, kind):
+    """Use the same authored route identity for preparation and snapshot reads."""
+    verified_id = content.get('activity_definition_id')
+    order = content.get('question_order') or [q['math_academy_id'] for q in content.get('questions', [])]
+    route = [(mid, (content.get('question_outcomes') or {}).get(mid)) for mid in order]
+    return source_uuid(kind, verified_id if verified_id else digest([content.get('course_id'), content.get('topic_id'), route]))
+
+
 def scalar(value):
     return value.get(':db/id', value.get(':db/ident')) if isinstance(value, dict) else value
 
@@ -137,8 +145,42 @@ class Preparation:
         self.resolve = resolve
         self.decisions, self.omissions = [], []
 
+    def identity_candidate(self, entity):
+        """Relevant authored content without entire topic practice pools."""
+        reference_keys = {'step/next', 'activity/first-step', 'multistep/first-step',
+                          'activity/scope', 'activity/course', 'topic/knowledge-points',
+                          'assigned-problem/topic-coverage'}
+        identity_keys = {':db/id', ':db/ident'} | {':' + k + '/' + name for k in KINDS + ('course',)
+                                                for name in ('id', 'math-academy-id', 'title')}
+        def reference(value):
+            if isinstance(value, dict):
+                return {key: val for key, val in value.items() if key in identity_keys}
+            if isinstance(value, list):
+                return [reference(item) for item in value]
+            return value
+        def summarize(value):
+            if isinstance(value, list):
+                return [summarize(item) for item in value]
+            if not isinstance(value, dict):
+                return value
+            full = self.snapshot.entities.get(value.get(':db/id'), value)
+            result = {}
+            for key, child in full.items():
+                attr = str(key).lstrip(':')
+                if attr == 'knowledge-point/questions':
+                    result['practice_question_count'] = len(child)
+                elif key in identity_keys or attr in ALLOWED:
+                    result[key] = reference(child) if attr in reference_keys or attr.startswith('diagnostic-probe/') else summarize(child)
+            return result
+        return summarize(entity)
+
     def choose(self, kind, captured, candidates):
-        payload = {'kind': kind, 'captured': captured, 'candidates': candidates,
+        if captured.get('math_academy_id') and ('problem' in captured or 'answer_fields' in captured):
+            from ..activity.task_payload import compact_question
+            compact = compact_question(captured)
+            compact.update({key: captured[key] for key in ('topic_id', 'knowledge_point_id', 'kp_id', 'knowledge_point', 'kp_title', 'title') if key in captured})
+            captured = compact
+        payload = {'kind': kind, 'captured': captured, 'candidates': [self.identity_candidate(candidate) for candidate in candidates],
                    'instruction': 'Choose a supported existing identity, new only for distinct new content, or unavailable. Do not invent evidence.'}
         if self.resolve is None:
             raise ValueError('Identity judgment required: ' + kind)
@@ -320,11 +362,11 @@ class Preparation:
             try:
                 candidate_plan = copy.deepcopy(plan)
                 if kind == 'multistep':
-                    self.multistep(candidate_plan, content, topic_map, question_targets)
+                    self.multistep(candidate_plan, content, topic_map, question_targets, library)
                 else:
                     self.activity(candidate_plan, content, topic_map, question_targets, kind)
                 plan = candidate_plan
-            except UnsupportedContent as error:
+            except (UnsupportedContent, MissingImage) as error:
                 self.omissions.append({'kind': kind, 'reason': str(error), 'final': True})
         batches = [plan.finish()]
         calibration = None
@@ -525,7 +567,7 @@ class Preparation:
         if definition.get('title'):
             plan.set(topic[':db/id'], topic, 'topic/title', definition['title'])
 
-    def multistep(self, plan, content, topics, questions):
+    def multistep(self, plan, content, topics, questions, library=None):
         source = content.get('multistep_id')
         order = content.get('question_order') or [q['math_academy_id'] for q in content['questions']]
         if not source or not order or any(mid not in questions for mid in order) or len(set(order)) != len(order):
@@ -542,6 +584,8 @@ class Preparation:
             children.append((f'{index}:{mid}', target, previous, None))
         contexts = content.get('shared_contexts', [])
         context = content.get('shared_context') or '\n\n'.join(c.get('problem', c.get('content', '')) for c in contexts)
+        context = markdown(library.text(context) if library else context)
+        content['shared_context'] = context
         multi, _ = self.sequence(plan, 'multistep', uid, old, {'multistep/context': context or None}, children)
         pid = source_uuid('multistep-assigned-problem', source)
         pold = self.exact('assigned-problem/id', pid)
@@ -563,8 +607,7 @@ class Preparation:
         # Task IDs identify attempts, not definitions. An observed route variant has
         # its own stable internal identity and no invented MA definition identifier.
         verified_id = content.get('activity_definition_id')
-        route = [(mid, (content.get('question_outcomes') or {}).get(mid)) for mid in order]
-        aid = source_uuid(kind, verified_id if verified_id else digest([content.get('course_id'), content.get('topic_id'), route]))
+        aid = activity_identity(content, kind)
         old = self.exact('activity/math-academy-id', int(verified_id)) if verified_id else self.exact('activity/id', aid)
         if old:
             aid = old[':activity/id']

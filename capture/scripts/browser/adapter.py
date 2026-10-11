@@ -13,15 +13,40 @@ import time
 from pathlib import Path
 from urllib.parse import urljoin
 
+from ..courses import record_current_course
 from ..runtime import check_stop
 from ..storage import atomic_json, atomic_text, read_json
 from .assets import AssetCapture
-from .entry import by_id, enter
+from .entry import by_id, enter, verify_entered
 from .parsing import (BASE, LEARN, activity_from_url, parse_dashboard, parse_history_metadata,
                       parse_lesson_structure, parse_progress, parse_queue, parse_xp, question_identity)
 
 EXTRACT = (Path(__file__).parent / "extract.js").read_text()
 VIEW = (Path(__file__).parent / "view.js").read_text()
+RESPONSE_STATE = r'''n => ({
+  feedback:n.querySelector('.questionWidget-feedback')?.textContent.trim() || '',
+  grades:[...n.querySelectorAll('.correctSelection,.correctSelectionMultipleAttempts,.incorrectSelection')]
+    .map((f,i)=>[f.closest('.selectList')?.id || f.id || i,f.className])
+})'''
+RESPONSE_READY = r'''old => {
+  const n=document.querySelector(old.selector);
+  if(!n) return true;
+  const visible=n=>!!n?.getClientRects().length && getComputedStyle(n).visibility!=='hidden';
+  if(n.querySelector('.questionWidget-result,.correctAnswerText,.incorrectAnswerText')?.textContent.trim() ||
+     visible(document.querySelector('#retryScreen-noButton')) || visible(document.querySelector('#finalScreen')))
+    return true;
+  const feedback=n.querySelector('.questionWidget-feedback');
+  if(visible(feedback) && feedback.textContent.trim() && feedback.textContent.trim()!==old.before.feedback) return true;
+  const grades=[...n.querySelectorAll('.correctSelection,.correctSelectionMultipleAttempts,.incorrectSelection')]
+    .map((f,i)=>[f.closest('.selectList')?.id || f.id || i,f.className]);
+  if(grades.length && JSON.stringify(grades)!==JSON.stringify(old.before.grades)) return true;
+  // Another incorrect proof attempt may produce identical feedback/classes.
+  // In that case wait until MA finishes its request and enables another try.
+  const frames=[...n.querySelectorAll('.selectListFrame,.selectListFrameDisabled')];
+  const submit=n.querySelector('.questionWidget-submitButton,.submitButton');
+  return !!frames.length && frames.every(f=>f.matches('.correctSelection,.correctSelectionMultipleAttempts,.incorrectSelection')) &&
+    !visible(n.querySelector('.questionWidget-spinner')) && !!submit && !submit.disabled && !submit.classList.contains('disabledButton');
+}'''
 
 
 class BrowserUnavailable(RuntimeError):
@@ -129,6 +154,7 @@ class MathAcademyBrowser:
 
     def queue(self, directory):
         self._goto(LEARN)
+        record_current_course(self.config, self.page.content(), self.page.url)
         active = activity_from_url(self.page.url)
         if active:
             active["course_id"] = self.config.course_id
@@ -182,6 +208,7 @@ class MathAcademyBrowser:
         if not url:
             raise BrowserUnavailable("Pinned task has no link yet; reread its queue")
         self._goto(urljoin(BASE, url))
+        record_current_course(self.config, self.page.content(), self.page.url)
         # Server state, not the previous click's success, decides what to do next.
         if self.state.get("assessment_filled"):
             self.state["assessment_filled_before_reload"] = self.state.pop("assessment_filled")
@@ -239,13 +266,26 @@ class MathAcademyBrowser:
         if not scope.is_visible():
             self.page.locator("#questionNavigator .questionButton").nth(view["ids"].index(qid)).click()
             scope.wait_for(state="visible")
+            view = self._view()
         return {"kind": "question", "selector": "[id=" + json.dumps(qid) + "]", "key": qid,
-                "sequence_position": view["ids"].index(qid) + 1, "accepted": False, "assessment": True}
+                "sequence_position": view["ids"].index(qid) + 1, "accepted": False, "assessment": True,
+                "ready": view.get("question_ready", {}).get(qid, True)}
+
+    def _ready_view(self):
+        while True:
+            view = self._view()
+            if view["kind"] == "assessment":
+                view = self._assessment_view(view)
+            if view.get("ready") is not False:
+                return view
+            # Source controls and MathJax finish asynchronously. Never send a
+            # half-rendered question to the solver or save it as captured content.
+            self.page.wait_for_function("old => {const v=(" + VIEW + ")(); return "
+                "v.kind === 'assessment' ? v.question_ready?.[old.key] !== false : v.ready !== false;}",
+                arg={"key": view["key"]}, timeout=self.config.timeout_ms)
 
     def observe(self, directory):
-        view = self._view()
-        if view["kind"] == "assessment":
-            view = self._assessment_view(view)
+        view = self._ready_view()
         observation = {**view, "remaining_seconds": self._remaining(), "source_url": self.page.url, "observed_at": time.time()}
         if view["kind"] in ("question", "example", "tutorial"):
             scope = self.page.locator(view["selector"])
@@ -273,8 +313,12 @@ class MathAcademyBrowser:
             observation["can_dont_know"] = scope.locator(".questionWidget-skipButton:visible").count() > 0
             observation["can_skip"] = observation["can_dont_know"]
             if item.get("proof_feedback") or any(f.get("source_result") for f in item["fields"]):
-                self.state.pop("pending_action", None)
-                self._save()
+                pending = self.state.get("pending_action", {})
+                if (pending.get("action") not in ("submit", "dont_know", "skip") or self.state.get("restored")
+                    or (pending.get("response_before") is not None and self.page.evaluate(RESPONSE_READY,
+                        {"selector": view["selector"], "before": pending["response_before"]}))):
+                    self.state.pop("pending_action", None)
+                    self._save()
             if view["kind"] in ("question", "example"):
                 observation["question"] = item
             else:
@@ -320,17 +364,25 @@ class MathAcademyBrowser:
         self._save()
 
     def respond(self, observation, responses, directory):
+        try:
+            return self._respond(observation, responses, directory)
+        except Exception as error:
+            # A durable submit intent means the server may have accepted it.
+            # Entry/readback failures before that point are not learner attempts.
+            error.submitted = self.state.get("pending_action", {}).get("action") in (
+                "submit", "dont_know", "skip", "submit_assessment")
+            raise
+
+    def _respond(self, observation, responses, directory):
         check_stop(self.stop_event)
         action = responses.get("action") if isinstance(responses, dict) else None
         if action == "submit_assessment":
             return self._submit_assessment(observation, directory)
-        current = self._view()
+        current = self._ready_view()
         if current.get("accepted") or current["kind"] == "complete":
-            return  # A response already accepted by MA is never repeated.
-        if current["kind"] == "assessment":
-            current = self._assessment_view(current)
+            return {"unknown_outcome": True, "not_submitted": True}  # Already accepted.
         if current.get("selector") != observation.get("selector"):
-            return  # The site moved on; capture its new presentation first.
+            return {"unknown_outcome": True, "not_submitted": True}  # Observe the new presentation.
         pending = self.state.get("pending_action", {})
         if pending.get("action") in ("submit", "dont_know", "skip") and not self.state.get("restored"):
             # Read-only reload asks the server whether the earlier request took.
@@ -338,13 +390,14 @@ class MathAcademyBrowser:
             self._goto(self.page.url)
             self.state["restored"] = True
             self._save()
-            return
+            return {"unknown_outcome": True, "not_submitted": True}
         scope = self.page.locator(current["selector"])
         if action in ("dont_know", "skip"):
             button = scope.locator(".questionWidget-skipButton:visible").first
             if not button.count():
                 button = self.page.get_by_text(re.compile(r"^(Don't Know|I Don't Know|Skip)$", re.I)).filter(visible=True).first
-            self._intent(observation, action)
+            response_before = scope.evaluate(RESPONSE_STATE)
+            self._intent(observation, action, response_before=response_before)
             button.click()
         else:
             fresh = self._read(scope, directory, observation["key"] + "-before-entry")
@@ -356,14 +409,10 @@ class MathAcademyBrowser:
                 if field["key"] not in answers:
                     raise ValueError("Missing response for answer field " + field["key"])
                 entered.append(enter(scope, field, answers[field["key"]]))
-            # Blur the active math editor so its floating symbol palette cannot
-            # cover Submit or sanitize an entry after its readback.
-            prompt = scope.locator(".questionWidget-text,.questionText").first
-            if prompt.count() and prompt.is_visible():
-                prompt.click(position={"x": 1, "y": 1})
             self._intent(observation, "entered", responses=entered)
-            self._evidence(self.page, Path(directory) / "observations", observation["key"] + "-entered")
             if self.activity.get("kind") == "assessment":
+                self._settle_entry(scope, fresh, entered)
+                self._evidence(self.page, Path(directory) / "observations", observation["key"] + "-entered")
                 qid = scope.get_attribute("id")
                 self.state.setdefault("assessment_filled", {})[qid] = entered
                 self.state.pop("pending_action", None)
@@ -374,22 +423,40 @@ class MathAcademyBrowser:
                 submit = by_id(self.page, current["step_id"].replace("step-", "submitButton-"))
             # MA's MathEditor polls changes every 200ms before enabling Submit.
             self.page.wait_for_function("n => !n.disabled && !n.classList.contains('disabledButton')", arg=submit.element_handle(), timeout=self.config.timeout_ms)
-            self._intent(observation, "submit", responses=entered)
+            self._settle_entry(scope, fresh, entered)
+            self._evidence(self.page, Path(directory) / "observations", observation["key"] + "-entered")
+            if submit.evaluate("n => n.disabled || n.classList.contains('disabledButton')"):
+                raise ValueError("Submit became disabled while answer fields settled")
+            response_before = scope.evaluate(RESPONSE_STATE)
+            self._intent(observation, "submit", responses=entered, response_before=response_before)
             submit.click()
         # Wait for evidence, never automatically click Submit twice after timeout.
-        self.page.wait_for_function(r'''old => {
-          const n=document.querySelector(old.selector);
-          return !n || !!n.querySelector('.questionWidget-result,.correctAnswerText,.incorrectAnswerText')?.textContent.trim() ||
-            !!n.querySelector('.questionWidget-feedback')?.textContent.trim() ||
-            !!document.querySelector('#retryScreen-noButton')?.getClientRects().length ||
-            !!document.querySelector('#finalScreen')?.getClientRects().length ||
-            [...n.querySelectorAll('.correctSelection,.incorrectSelection')].length > old.graded;
-        }''', arg={"selector": current["selector"], "graded": sum(bool(f.get("source_result")) for f in observation.get("question", {}).get("fields", []))})
+        self.page.wait_for_function(RESPONSE_READY, arg={"selector": current["selector"], "before": response_before},
+                                    timeout=self.config.timeout_ms)
+
+    def _settle_entry(self, scope, fresh, entered):
+        if any(field.get("tag") == "mathquill" and not field.get("disabled")
+               and field.get("source_result") != "Correct" for field in fresh["fields"]):
+            # Native blur dismisses the editor without MA's question-background
+            # click handler, which clears radio choices. Then let its 200ms
+            # change poll finish before checking for sanitized values.
+            scope.locator('.mq-textarea textarea').evaluate_all('(editors) => editors.forEach(e => e.blur())')
+            self.page.wait_for_function("() => [...document.querySelectorAll('[id=\"mathEditorToolbox\"]')].every(n => "
+                "!n.getClientRects().length || ['hidden','collapse'].includes(getComputedStyle(n).visibility))",
+                timeout=self.config.timeout_ms)
+            self.page.wait_for_timeout(250)
+        verify_entered(scope, fresh, entered)
 
     def _submit_assessment(self, observation, directory):
         view = self._view()
         if view["kind"] == "complete":
             return
+        pending = self.state.get("pending_action", {})
+        if pending.get("action") == "submit_assessment" and not self.state.get("restored"):
+            self._goto(self.page.url)
+            self.state["restored"] = True
+            self._save()
+            return {"unknown_outcome": True, "not_submitted": True}
         dialog = self.page.locator("#confirmationDialog:visible")
         if not dialog.count():
             self._intent(observation, "open_assessment_confirmation")
@@ -418,6 +485,13 @@ class MathAcademyBrowser:
             raise BrowserUnavailable("No supported continuation is visible; reread the same activity")
         # Re-observation can show a later step after an interrupted Continue click.
         if current.get("key") != observation.get("key") and not observation["key"].startswith(current.get("key", "") + ":fields:"):
+            return
+        pending = self.state.get("pending_action", {})
+        if (pending.get("action") == "advance" and pending.get("key") == observation.get("key")
+                and not self.state.get("restored")):
+            self._goto(self.page.url)
+            self.state["restored"] = True
+            self._save()
             return
         self._intent(observation, "advance", button=button)
         self.page.locator(button).click()
@@ -552,7 +626,7 @@ class MathAcademyBrowser:
         source_state = read_json(capture_directory / "browser-state.json", {}) or {}
         if source_state.get("task_id") != str(activity["task_id"]):
             source_state = self.state if self.state.get("task_id") == str(activity["task_id"]) else {}
-        directory = capture_directory / "post-activity"
+        directory = capture_directory / "post-activity" / str(time.time_ns())
         page = self.context.new_page()
         result = {"task_id": str(activity["task_id"]), "account": self.config.account,
                   "completion": deepcopy(source_state.get("completion", {})), "courses": [], "pending_reads": [], "observed_at": time.time()}

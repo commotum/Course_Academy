@@ -13,6 +13,7 @@ from ..storage import append_event, atomic_json, read_json
 from .evidence import capture_gaps, finalize_answers, merge_question, question_key
 from .policy import AnswerPolicy, answer_fields, override, responses_for, topic_id
 from .solver import SolverClient, SolverUnavailable, validate_result
+from .task_payload import task_payload, semantic_identity, feedback_evidence
 
 
 class ActivityCapture:
@@ -40,7 +41,7 @@ class ActivityCapture:
             raise ValueError('Capture directory belongs to another task')
         if self.solver is None:
             self.solver = SolverClient(self.config, self.directory, self.stop_event)
-        if self.state.get('context') is None:
+        if self.state.get('context') is None or self.state['context'].get('unavailable') or self.state['context'].get('snapshot_unavailable'):
             try:
                 self.state['context'] = self.context_provider(activity) if self.context_provider else {}
             except StopRequested:
@@ -48,7 +49,7 @@ class ActivityCapture:
             except Exception as error:
                 # The database provider may use its own last good snapshot. An absent
                 # graph is an explicit unknown-topic diagnostic action, not a halt.
-                self.state['context'] = {'unavailable': str(error)}
+                self.state['context'] = {'unavailable': str(error), 'snapshot_unavailable': True}
             self._save()
         self.policy = AnswerPolicy(activity, self.state['policy'], self.state['context'], self.rng, self.clock)
         if self.state['stage'] == 'activity':
@@ -85,12 +86,18 @@ class ActivityCapture:
         while True:
             check_stop(self.stop_event)
             try:
-                return getattr(self.browser, method)(*args)
+                result = getattr(self.browser, method)(*args)
+                if self.state.get('pending_browser_error') and not (isinstance(result, dict) and result.get('unknown_outcome')):
+                    previous = self.state.pop('pending_browser_error')
+                    self._event('browser_recovered', method=method, previous_error=previous)
+                    self._save()
+                return result
             except StopRequested:
                 raise
             except Exception as error:
                 attempts += 1
                 self.state['recoveries'] += 1
+                self.state['pending_browser_error'] = {'method': method, 'error': str(error), 'attempt': attempts}
                 self._save()
                 self._event('browser_retry', method=method, error=str(error), attempt=attempts)
                 logging.warning('%s task %s: %s; retrying', method, self.activity['task_id'], error)
@@ -98,7 +105,8 @@ class ActivityCapture:
                 # A timed-out Start/Continue/Submit may already have succeeded.
                 # Return to observation before ANY further state-changing action.
                 if method in ('respond', 'advance', 'recover'):
-                    return {'unknown_outcome': True, 'error': str(error)}
+                    return {'unknown_outcome': True, 'error': str(error),
+                            'entry_failed': getattr(error, 'submitted', None) is False}
                 if attempts % 3 == 0 and hasattr(self.browser, 'restart'):
                     try:
                         self.browser.restart()
@@ -192,7 +200,10 @@ class ActivityCapture:
             if str(field.get('source_result', '')).lower() != 'correct':
                 continue
             submitted = next((response for submission in reversed(record['submissions'])
-                              for response in submission.get('responses', []) if response['key'] == field['key']), None)
+                              for response in submission.get('responses', []) if response['key'] == field['key']
+                              and submission.get('outcome') not in ('entry_failed', 'not_submitted')
+                              and (submission.get('outcome') == 'observe_to_confirm'
+                                   or str(response.get('value')) == str((field.get('source_selected') or field.get('source_correct') or {}).get('value')))), None)
             if submitted is not None:
                 field['correct_value'] = submitted['value']
                 if submitted.get('value_type'):
@@ -243,15 +254,24 @@ class ActivityCapture:
         source_preferred = bool(record['submissions']) and any(a.get('ma_value') is not None for a in solution.get('answers', []))
         if source_preferred:
             override(decision, 'C', "Use Math Academy's revealed expected response to advance")
-        if repeated >= 2 and record['submissions']:
+        source_rejection = bool(question.get('proof_feedback')) or any(
+            str(field.get('source_result', '')).lower() in ('incorrect', 'partial credit')
+            for field in answer_fields(question))
+        feedback_binding = semantic_identity('source_feedback', {
+            'feedback': feedback_evidence(question),
+            'fields': [{'key': field.get('key'), 'source_result': field.get('source_result'),
+                        'source_selected': field.get('source_selected')} for field in answer_fields(question)]})
+        actual_attempts = any(submission.get('outcome') not in ('entry_failed', 'not_submitted') for submission in record['submissions'])
+        if (source_rejection and actual_attempts
+                and record.get('reconsidered_feedback') != feedback_binding):
             # A rejected/partial response gets new observed evidence and a focused
             # reconsideration, rather than an infinite replay of the same answer.
             payload = self._question_payload(question, observation, record)
             payload['recovery'] = 'The current response has not advanced; inspect the revealed feedback and any additional fields.'
             try:
-                solution = self.solver.request('solve_question', payload, force_new=repeated >= 4,
-                                               timeout=self._solver_budget(observation))
+                solution = self.solver.request('solve_question', payload, timeout=self._solver_budget(observation))
                 record['solution'] = solution
+                record['reconsidered_feedback'] = feedback_binding
                 source_preferred = any(a.get('ma_value') is not None for a in solution.get('answers', []))
             except SolverUnavailable as error:
                 self._event('solver_reconsider_unavailable', key=key, error=str(error))
@@ -293,7 +313,9 @@ class ActivityCapture:
         self._save()
         result = self._browser_call('respond', observation, responses, self.directory)
         submission['returned_at'] = self.clock()
-        submission['outcome'] = 'unknown' if isinstance(result, dict) and result.get('unknown_outcome') else 'observe_to_confirm'
+        submission['outcome'] = ('not_submitted' if isinstance(result, dict) and result.get('not_submitted') else
+                                 'entry_failed' if isinstance(result, dict) and result.get('entry_failed') else
+                                 'unknown' if isinstance(result, dict) and result.get('unknown_outcome') else 'observe_to_confirm')
         self._save()
 
     @staticmethod
@@ -316,12 +338,14 @@ class ActivityCapture:
             question['knowledge_point_id'] = str(identity)
 
     def _question_payload(self, question, observation, record):
-        return {'activity': self.activity, 'question': question, 'observation': observation,
-                'previous_submissions': record.get('submissions', []),
-                'shared_context': self.state.get('shared_context'),
-                'instructional_content': [s for s in self.state['steps'] if s.get('kind') in ('tutorial', 'example')],
-                'earlier_parts': [{'question': r['question'], 'feedback': r.get('feedback'), 'solution': r.get('solution')}
-                                 for r in self.state['presentations'].values() if r['key'] != record['key']]}
+        # Independent lesson/review questions need no preceding practice archive.
+        payload = {'question': question, 'observation': observation,
+                   'previous_submissions': record.get('submissions', [])}
+        if self.activity['kind'] == 'multistep':
+            payload.update(activity={'kind': 'multistep'}, shared_context=self.state.get('shared_context'),
+                earlier_parts=[r for r in self.state['presentations'].values()
+                               if r['key'] != record['key'] and r.get('observed_position', 0) < record.get('observed_position', 0)])
+        return task_payload('solve_question', payload)
 
     def _solver_budget(self, observation):
         remaining = observation.get('remaining_seconds')
@@ -336,6 +360,16 @@ class ActivityCapture:
 
     def _classify(self, question, observation):
         context = self.state['context']
+        if self.context_provider and (context.get('unavailable') or context.get('snapshot_unavailable')):
+            try:
+                context = self.context_provider(self.activity)
+                self.state['context'] = context
+                self.policy.refresh_context(context)
+                self._save()
+            except StopRequested:
+                raise
+            except Exception as error:
+                self._event('context_unavailable', error=str(error))
         bindings = context.get('question_topics', context.get('source_question_bindings', {}))
         bound = bindings.get(question.get('math_academy_id'))
         if bound:
@@ -345,6 +379,9 @@ class ActivityCapture:
         topics = context.get('topics') or context.get('all_topics') or context.get('course_topics', [])
         distances = self.state['policy']['distances']
         topics = [topic for topic in topics if topic_id(topic) in distances]
+        if not topics:
+            question['topic_match'] = {'topic_id': None, 'reasoning': 'No course topic context available'}
+            return
         graph = {str(source): [target for target in targets if topic_id(target) in distances]
                  for source, targets in context.get('graph', {}).items() if str(source) in distances}
         try:
@@ -412,26 +449,30 @@ class ActivityCapture:
                 self._normalize_kp(question, example=name == 'canonical_examples')
                 key = name + ':' + question_key(question)
                 presentations = self._question_presentations(question)
-                evidence_hash = hashlib.sha256(json.dumps({'question': question, 'presentations': presentations}, sort_keys=True).encode()).hexdigest()
+                payload = {'question': question, 'presentations': presentations,
+                           'source_limitations': content['source_limitations']}
+                if self.activity['kind'] == 'multistep':
+                    payload.update(activity={'kind': 'multistep'}, shared_context=content.get('multistep'),
+                        earlier_parts=[r for r in self.state['presentations'].values()
+                            if r not in presentations and (r['question'].get('sequence_position') or r.get('observed_position', -1) + 1)
+                            < (question.get('sequence_position') or index + 1)])
+                payload = task_payload('judge_question', payload)
+                evidence_hash = semantic_identity('judge_question', payload)
                 saved = self.state['judgments'].get(key)
                 if saved and saved.get('evidence_hash') == evidence_hash:
                     judgment = saved
                 else:
-                    payload = {'question': question, 'presentations': presentations,
-                        'activity': self.activity, 'source_limitations': content['source_limitations'],
-                        'instructional_content': content.get('tutorials', []),
-                        'shared_context': content.get('multistep'),
-                        'final_review': True}
-                    attempt = 0
-                    while True:
+                    attempts = max(1, int(getattr(self.config, 'solver_attempts', 2)))
+                    for attempt in range(attempts):
                         check_stop(self.stop_event)
                         try:
-                            judgment = self.solver.request('judge_question', payload, force_new=attempt > 0)
+                            judgment = self.solver.request('judge_question', payload)
                             break
                         except SolverUnavailable as error:
-                            attempt += 1
-                            self._event('final_agent_retry', question=key, error=str(error), attempt=attempt)
-                            self.sleep(backoff(attempt, self.config.retry_delay, self.config.recovery_max_delay))
+                            self._event('final_agent_retry', question=key, error=str(error), attempt=attempt + 1)
+                            if not getattr(error, 'retryable', True) or attempt + 1 == attempts:
+                                raise
+                            self.sleep(backoff(attempt + 1, self.config.retry_delay, self.config.recovery_max_delay))
                     judgment = {**judgment, 'question_id': question.get('math_academy_id'),
                                 'capture_key': question_key(question), 'record_kind': name,
                                 'evidence_hash': evidence_hash, 'final': True, 'judged_at': self.clock()}

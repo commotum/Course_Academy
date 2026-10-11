@@ -48,10 +48,16 @@ class CaptureRunner:
 
     def _retry_observations(self, browser):
         """Use the browser only between activities; each retry is timestamped."""
-        for source in sorted(self.config.output_root.glob("*/post-activity.json")):
+        pending = []
+        now = time.time()
+        for source in self.config.output_root.glob("*/post-activity.json"):
             saved = read_json(source, {})
-            if not saved.get("missing_observations") or time.time() - saved.get("retry_at", saved.get("observed_at", 0)) < 60:
-                continue
+            last_attempt = saved.get("retry_at", saved.get("observed_at", 0))
+            if saved.get("missing_observations") and now - last_attempt >= 60:
+                pending.append((last_attempt, str(source), source, saved))
+        # Least recently attempted first: one permanently missing dashboard must
+        # not monopolize every gap between activities.
+        for _, _, source, saved in sorted(pending):
             directory = source.parent
             saved["retry_at"] = time.time()
             atomic_json(source, saved)
@@ -59,6 +65,7 @@ class CaptureRunner:
                 activity = read_json(directory / "activity.json")
                 observation = browser.postprocess(activity, directory)
                 observation["late_read"] = True
+                observation["observed_at"] = time.time()
                 record_post_activity(self.config, activity, directory, read_json(directory / "content.json"), observation)
             except StopRequested:
                 raise
@@ -74,7 +81,13 @@ class CaptureRunner:
             if not any(item.get("started") for item in queue):
                 self._retry_observations(browser)
             completed = read_json(self.config.state_root / "completed.json", {})
+            if not choose(queue, completed=completed):
+                self._status("waiting_for_queue", queue_count=len(queue))
+                return False
             context = self.context({"course_id": self.config.course_id})
+            if context.get("context_refresh_pending"):
+                self._status("waiting_for_context", course_id=self.config.course_id)
+                return False
             activity = choose(queue, context, completed)
             if not activity:
                 self._status("waiting_for_queue", queue_count=len(queue))
@@ -121,6 +134,7 @@ class CaptureRunner:
 
     def run(self):
         failures = 0
+        dependency_error = None
         # The legacy profile lock also prevents the old worker and the rewrite
         # from submitting work on the same account at the same time.
         locks = sorted({self.config.state_root / "capture.lock", self.config.profile.parent / "capture.lock"}, key=str)
@@ -135,11 +149,26 @@ class CaptureRunner:
                             try:
                                 made_progress = self.cycle(browser)
                                 failures = 0
+                                dependency_error = None
                                 if not made_progress:
                                     wait(self.stop_event, max(1, self.config.retry_delay))
                             except StopRequested:
                                 raise
                             except Exception as error:
+                                if getattr(error, "retryable", True) is False:
+                                    # A solver configuration/schema failure cannot be
+                                    # repaired by relaunching the browser. Keep the
+                                    # task pinned while the solver checks for changed
+                                    # configuration/evidence on its next request.
+                                    detail = str(error)[:1200]
+                                    self._status("waiting_for_solver_dependency", error_type=type(error).__name__, detail=detail,
+                                                 active=read_json(self.active_path, None))
+                                    if dependency_error != detail:
+                                        append_event(self.config.state_root / "events.jsonl", "solver_dependency", detail=detail)
+                                        logging.warning("Pinned activity awaits solver dependency: %s", detail)
+                                        dependency_error = detail
+                                    wait(self.stop_event, max(1, self.config.recovery_max_delay))
+                                    continue
                                 failures += 1
                                 logging.exception("Recovering the current activity after %s", type(error).__name__)
                                 self._status("recovering", error_type=type(error).__name__, attempts=failures)

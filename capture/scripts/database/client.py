@@ -101,6 +101,11 @@ class EDBClient:
             identity = source_uuid('multistep-activity', content['multistep_id'])
             activities += self.query('[:find (pull ?a ' + ACTIVITY_PULL + ') :in $ ?id :where [?a :activity/id ?id]]',
                                      [identity], directory, 'multistep-activity', basis)
+        kind = content.get('task_type') or content.get('kind')
+        if kind in ('review', 'assessment', 'diagnostic') and not definition_id:
+            from .prepare import activity_identity
+            activities += self.query('[:find (pull ?a ' + ACTIVITY_PULL + ') :in $ ?id :where [?a :activity/id ?id]]',
+                                     [activity_identity(content, kind)], directory, 'activity-route', basis)
         course_rows = []
         if content.get('course_id'):
             course_rows = self.query('[:find (pull ?c [:db/id :course/id :course/math-academy-id]) :in $ ?id :where [?c :course/math-academy-id ?id]]',
@@ -112,10 +117,27 @@ class EDBClient:
                                 [], directory, 'attributes', basis)
         sources = self.query('[:find ?e ?ident :where [?e :db/ident ?ident]]', [], directory, 'idents', basis)
         entities = {}
+        def merge(previous, incoming):
+            # Pulls at one basis can describe the same reference at different
+            # depths. Keep complete answer fields when an activity later pulls
+            # only their IDs, while respecting the incoming member set.
+            if isinstance(previous, dict) and isinstance(incoming, dict):
+                result = dict(previous)
+                for key, value in incoming.items():
+                    result[key] = merge(result[key], value) if key in result else value
+                return result
+            if isinstance(previous, list) and isinstance(incoming, list):
+                by_id = {v[':db/id']: v for v in previous if isinstance(v, dict) and ':db/id' in v}
+                return [merge(by_id[v[':db/id']], v) if isinstance(v, dict) and v.get(':db/id') in by_id else v
+                        for v in incoming]
+            if isinstance(previous, dict) and incoming == previous.get(':db/id'):
+                return previous
+            return incoming
         def collect(value):
             if isinstance(value, dict):
                 if ':db/id' in value:
-                    entities.setdefault(value[':db/id'], {}).update(value)
+                    eid = value[':db/id']
+                    entities[eid] = merge(entities.get(eid, {}), value)
                 for child in value.values():
                     collect(child)
             elif isinstance(value, list):

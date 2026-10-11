@@ -108,6 +108,88 @@ def pick_choice(field, response):
     raise ValueError("Response does not match a current answer choice: " + field["key"])
 
 
+def choice_content(control):
+    """Compare source content regardless of hidden-menu layout or MathJax CSS."""
+    return control.evaluate(r'''node => {
+      const clean=text=>text.replace(/\s+/g,' ').trim();
+      const shape=n=>n.nodeType===Node.TEXT_NODE ? clean(n.textContent) :
+        [n.localName, Array.from(n.attributes || []).filter(a=>!['id','class','style'].includes(a.name))
+          .map(a=>[a.name,a.value]).sort(), Array.from(n.childNodes).map(shape).filter(v=>v!=='')];
+      return {text:clean(node.textContent),
+        math:Array.from(node.querySelectorAll('math')).map(shape),
+        images:Array.from(node.querySelectorAll('img')).map(n=>n.currentSrc || n.src || n.getAttribute('src'))};
+    }''')
+
+
+def click_dropdown(control, direct=False):
+    """Use an exposed source element point; never click through an overlay."""
+    control.scroll_into_view_if_needed()
+    if direct:
+        control.evaluate("n=>n.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'})")
+    point = control.evaluate(r'''(n,direct)=>{
+      const r=n.getBoundingClientRect();
+      if(!n.getClientRects().length || getComputedStyle(n).visibility==='hidden') return null;
+      const xs=direct ? [2,r.width-2,4,r.width-4,r.width/2] : [r.width/2,2,r.width-2,4,r.width-4];
+      for(const x of xs) for(const y of [2,r.height-2,4,r.height-4,r.height/2]) {
+        if(x<=0 || y<=0 || x>=r.width || y>=r.height) continue;
+        const hit=document.elementFromPoint(r.left+x,r.top+y);
+        if(hit && (hit===n || (!direct && n.contains(hit)))) return {x,y};
+      }
+      return null;
+    }''', direct)
+    if point is None:
+        raise ValueError("Dropdown has no exposed " + ("frame" if direct else "option") + " click target")
+    control.click(position=point)
+
+
+def verify_entered(scope, question, answers):
+    """Read fields again after MA polling and blur, without changing any value."""
+    answers = {answer['key']: answer for answer in answers} if isinstance(answers, list) else answers
+    verified = []
+    for field in question['fields']:
+        if field.get('source_result') == 'Correct' or field.get('disabled'):
+            continue
+        if field['key'] not in answers:
+            raise ValueError('Missing entered response for answer field ' + field['key'])
+        answer = answers[field['key']]
+        value = answer.get('value', answer.get('correct_value', ''))
+        if field['type'] in ('radio', 'select'):
+            choice = pick_choice(field, answer)
+            if field['type'] == 'radio':
+                control = by_id(scope, choice['dom_id']) if choice.get('dom_id') else scope.locator(
+                    '.questionWidget-choiceLetterCircle,.choiceLetterCircle').nth(field['choices'].index(choice))
+                if not control.evaluate("n=>n.classList.contains('selectedChoice') || n.style.backgroundColor==='rgb(64, 64, 64)' || n.getAttribute('aria-checked')==='true'"):
+                    raise ValueError('Radio selection changed before submission')
+            elif field.get('tag') == 'select':
+                if by_id(scope, field['dom_id']).input_value() != str(choice['option']):
+                    raise ValueError('Select value changed before submission')
+            else:
+                control = by_id(scope, field['dom_id']) if field.get('dom_id') else scope.locator('.selectList').nth(field.get('dom_index', 0))
+                frame = control.locator('.selectListFrame, .selectListFrameDisabled').first
+                expected = answer.get('choice_content')
+                if expected is None:
+                    option = by_id(control, choice['dom_id']) if choice.get('dom_id') else control.locator(
+                        '.selectListOptions > .selectListOption').nth(field['choices'].index(choice))
+                    expected = choice_content(option)
+                if frame.locator('.selectListSelectedText').count() or choice_content(frame) != expected:
+                    raise ValueError('Custom select readback differs before submission')
+        elif field.get('tag') == 'mathquill':
+            control = scope.locator('.matheditor-wrapper-answer').nth(field.get('dom_index', 0))
+            if control.locator('.mq-latex-command-input').count():
+                raise ValueError('Unfinished MathQuill command before submission')
+            observed = control.evaluate('node=>{const field=(' + MATH_FIELD + ')(node);return field?.latex();}')
+            if not isinstance(observed, str) or normalized_math(observed) != normalized_math(value):
+                raise ValueError('Math editor value changed before submission: ' + repr(observed) + ' != ' + repr(value))
+        else:
+            control = by_id(scope, field['dom_id']) if field.get('dom_id') else scope.locator(
+                "input:not([type='hidden']),textarea,[contenteditable='true']").nth(field.get('dom_index', 0))
+            observed = control.inner_text() if control.get_attribute('contenteditable') == 'true' else control.input_value()
+            if observed != str(value):
+                raise ValueError('Answer field changed before submission')
+        verified.append(answer)
+    return verified
+
+
 def enter(scope, field, response):
     """A replay may refill an unsubmitted response; never repeat a graded one."""
     if field.get("source_result") == "Correct" or field.get("disabled"):
@@ -138,18 +220,19 @@ def enter(scope, field, response):
             handle = option.element_handle()
             if handle is None:
                 raise ValueError("Captured dropdown option is not present")
-            expected = handle.inner_text().strip()
-            point = frame.evaluate(r'''n=>{const r=n.getBoundingClientRect();
-              for(const x of [2,r.width-2,r.width/2]) for(const y of [2,r.height-2,r.height/2])
-                if(x>0&&y>0&&x<r.width&&y<r.height&&document.elementFromPoint(r.left+x,r.top+y)===n) return {x,y};
-              return null;}''')
-            frame.click(**({"position": point} if point else {}))
-            handle.click()
+            expected = choice_content(handle)
+            # The window mousedown handler hides menus clicked through a
+            # formula child; use the frame itself after bringing it on screen.
+            click_dropdown(frame, direct=True)
+            click_dropdown(handle)
             if control.locator(".selectListFrame .selectListSelectedText").count():
                 raise ValueError("Custom select still shows an unselected placeholder")
-            if frame.inner_text().strip() != expected:
+            if choice_content(frame) != expected:
                 raise ValueError("Custom select readback differs from selected source option")
-        return {"key": field["key"], "option": choice["option"], "value": choice["value"], "value_type": choice["type"]}
+        entered = {"key": field["key"], "option": choice["option"], "value": choice["value"], "value_type": choice["type"]}
+        if field['type'] == 'select' and field.get('tag') != 'select':
+            entered['choice_content'] = expected
+        return entered
     if field.get("tag") == "mathquill":
         control = scope.locator(".matheditor-wrapper-answer").nth(field.get("dom_index", 0))
         # Use the editor's public write API so fractions, roots and matrices keep

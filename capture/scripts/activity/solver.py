@@ -11,10 +11,21 @@ import time
 
 from ..runtime import StopRequested
 from ..storage import atomic_json, atomic_text, read_json
+from .task_payload import task_payload, semantic_identity
 
 
 class SolverUnavailable(RuntimeError):
-    pass
+    def __init__(self, message, *, retryable=True, session_invalid=False):
+        super().__init__(message)
+        self.retryable = retryable
+        self.session_invalid = session_invalid
+
+
+def _session_invalid(error):
+    return getattr(error, 'session_invalid', False) or bool(re.search(
+        r'session.*(?:expired|not found|invalid)|thread.*(?:not found|invalid)|context window.*(?:exceeded|full)',
+        str(error), re.I))
+
 
 
 def _object(properties):
@@ -83,8 +94,9 @@ selector and text as button_selector and button_text. Use null for both when no 
 selected. Do not invent selectors, scripts, navigation URLs, or a completion state. Never
 choose a control that quits, abandons, leaves the activity, returns to its queue, deletes data,
 or logs out. The caller rechecks current visibility and text before clicking.
-Earlier turns belong to this activity. Use its examples, shared context, and confirmed parts,
-but solve the current question and inspect its current choices anew.
+Earlier turns belong to this activity, but the current normalized evidence contract is
+authoritative for its fields, choices and source grades. Replacement sessions receive only
+relevant answer summaries; all necessary shared setup and prior parts are in this payload.
 '''
 
 
@@ -174,26 +186,36 @@ class SolverClient:
 
     def request(self, task, payload, force_new=False, timeout=None):
         """One logical turn; exact completed requests are replayed from durable results."""
-        identity = hashlib.sha256(json.dumps({'task': task, 'payload': payload}, sort_keys=True, default=str).encode()).hexdigest()
+        source_payload = payload
+        payload = task_payload(task, payload)
+        identity = hashlib.sha256(json.dumps({'evidence': semantic_identity(task, payload),
+            'instructions': INSTRUCTIONS, 'schema': _schema(task),
+            'model': self.config.solver_model, 'command': self.config.solver_command}, sort_keys=True).encode()).hexdigest()
         logical = self.directory / identity
         logical.mkdir(exist_ok=True)
         cached = read_json(logical / 'result.json')
         if cached is not None and not force_new:
             validate_result(task, payload, cached)
             return cached
+        failure = read_json(logical / 'nonretryable-failure.json')
+        if failure and not force_new:
+            raise SolverUnavailable(failure['error'], retryable=False)
+        atomic_json(logical / 'source-request.json', {'task': task, 'payload': source_payload})
         schema_file = logical / 'schema.json'
         atomic_json(schema_file, _schema(task))
         failures = []
         attempts = max(1, int(getattr(self.config, 'solver_attempts', 2)))
         total_timeout = float(timeout if timeout is not None else self.config.solver_timeout)
         deadline = time.monotonic() + max(.1, total_timeout)
+        replace_session = force_new
         for attempt in range(attempts):
             if self.stop_event.is_set():
                 raise StopRequested()
-            if force_new or attempt:
+            if replace_session:
                 self.state['session_id'] = None
                 self.state['generation'] += 1
                 atomic_json(self.state_path, self.state)
+                replace_session = False
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 break
@@ -201,7 +223,7 @@ class SolverClient:
             envelope = {'task': task, 'payload': payload, 'session_id': self.state.get('session_id'),
                         'previous_failures': failures}
             if not self.state.get('session_id') or self.config.solver_command:
-                envelope['conversation'] = self._conversation()
+                envelope['conversation'] = self._conversation(task, payload)
             atomic_json(prefix.with_suffix('.input.json'), envelope)
             try:
                 result, session = self._call(envelope, prefix, schema_file, min(remaining, total_timeout / attempts if attempt < attempts - 1 else remaining))
@@ -217,16 +239,27 @@ class SolverClient:
             except (OSError, ValueError, subprocess.SubprocessError, SolverUnavailable) as error:
                 failures.append(str(error))
                 atomic_json(prefix.with_suffix('.failure.json'), {'error': str(error), 'time': time.time()})
+                if not getattr(error, 'retryable', True):
+                    atomic_json(logical / 'nonretryable-failure.json', {'error': str(error), 'time': time.time()})
+                    raise
+                replace_session = _session_invalid(error)
         raise SolverUnavailable('; '.join(failures) or 'Solver deadline elapsed')
 
-    def _conversation(self):
-        turns = []
-        for identity in self.state['turns']:
-            request = read_json(self.directory / identity / 'request.json')
-            result = read_json(self.directory / identity / 'result.json')
-            if request and result:
-                turns.append({'request': request, 'result': result})
-        return turns
+    def _conversation(self, task, payload):
+        """A replacement needs relevant answers, never a replay of source captures."""
+        question = payload.get('question') or {}
+        identity, problem = question.get('math_academy_id'), question.get('problem')
+        if task not in ('solve_question', 'judge_question') or not question:
+            return []
+        for turn in reversed(self.state['turns']):
+            request = read_json(self.directory / turn / 'request.json')
+            result = read_json(self.directory / turn / 'result.json')
+            prior = (request or {}).get('payload', {}).get('question', {})
+            if request and result and ((identity and identity == prior.get('math_academy_id'))
+                                      or (not identity and problem and problem == prior.get('problem'))):
+                return [{'task': request['task'], 'question_id': identity,
+                         'status': result.get('status'), 'answers': result.get('answers', [])}]
+        return []
 
     def _recover_process(self):
         """A killed controller can leave its read-only solver behind; replace only that child."""
@@ -307,7 +340,9 @@ class SolverClient:
                 os.fsync(output.fileno())
                 os.fsync(errors.fileno())
                 if process.returncode:
-                    raise SolverUnavailable('Agent process exited %s: %s' % (process.returncode, error_path.read_text()[-1000:]))
+                    message = 'Agent process exited %s: %s' % (process.returncode, error_path.read_text()[-1000:])
+                    deterministic = bool(re.search(r'Exceeded max length|maximum.*(?:length|bytes)|unexpected argument|invalid (?:argument|value)|unrecognized (?:argument|option)|model.*(?:not found|not supported|does not exist)', message, re.I))
+                    raise SolverUnavailable(message, retryable=not deterministic)
             finally:
                 if process.poll() is None:
                     os.killpg(process.pid, signal.SIGTERM)
@@ -336,7 +371,7 @@ def _image_paths(payload):
             for child in value:
                 visit(child)
     visit(payload)
-    return found[:12]
+    return found
 
 
 def _process_token(pid):

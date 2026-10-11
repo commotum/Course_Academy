@@ -48,8 +48,9 @@ class Config:
         old_state = self.repo_root / ".local" / ("question_capture" if self.account == "foundations" else "question_capture-workers/" + self.account)
         self.profile = Path(self.profile or old_state / "browser-profile").resolve()
         auth = read_json(old_state / "profile-auth.json", {})
+        enrolled = read_json(self.state_root / "current-course.json", {}) or {}
         defaults = {"foundations": "154", "linear": "55", "multivariable": "54", "differential": "61"}
-        self.course_id = str(self.course_id or auth.get("course_id") or defaults.get(self.account) or "") or None
+        self.course_id = str(self.course_id or enrolled.get("course_id") or auth.get("course_id") or defaults.get(self.account) or "") or None
         if self.source != ":org/Math-Academy":
             raise ValueError("Original captured content must use :org/Math-Academy")
         if self.timeout_ms <= 0 or self.solver_timeout <= 0 or self.retry_delay <= 0:

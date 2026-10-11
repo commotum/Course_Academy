@@ -58,7 +58,8 @@ class PipelineTests(unittest.TestCase):
         record(self.config, self.activity("1"), first, {}, {"completion": {"earned_xp": -5}})
         second_activity = self.activity("2")
         second_activity["details"]["force_correct"] = True
-        record(self.config, second_activity, second, {}, {"completion": {"earned_xp": 10}})
+        record(self.config, second_activity, second, {"attempts": [{"accepted": True, "grade": "Correct"}]},
+               {"completion": {"earned_xp": 10}})
         record(self.config, self.activity("1"), first, {}, {"completion": {"earned_xp": -5}})
         ledger = read_json(self.config.state_root / "xp.json")
         self.assertEqual(sum(item["earned_xp"] for item in ledger.values()), 5)
@@ -68,6 +69,7 @@ class PipelineTests(unittest.TestCase):
         self.assertFalse(retake_policy(self.config, self.activity("3"))["details"]["force_correct"])
 
     def test_pending_oldest_write_blocks_later_writes_but_does_not_drop_them(self):
+        self.config.retry_delay = 30
         first, second = self.finished("1"), self.finished("2")
         path1, path2 = enqueue(self.config, first), enqueue(self.config, second)
         calls = []
@@ -75,6 +77,7 @@ class PipelineTests(unittest.TestCase):
         class Database:
             def process(_, directory, apply=True):
                 calls.append(directory.name)
+                atomic_json(directory / "database/request.json", {"request_key": "unresolved"})
                 raise TimeoutError("receipt outcome unknown")
 
         worker = DatabaseWorker(self.config, self.stop, Database)
@@ -82,6 +85,38 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(calls, ["1"])
         self.assertEqual(read_json(path2)["attempts"], 0)
         self.assertEqual(worker.process_one()["status"], "waiting")
+
+    def test_preparation_backoff_allows_later_import_without_discarding_failure(self):
+        self.config.retry_delay = 30
+        first, second = self.finished("1"), self.finished("2")
+        path1, path2 = enqueue(self.config, first), enqueue(self.config, second)
+        calls=[]
+        class Database:
+            def process(_, directory, apply=True):
+                calls.append(directory.name)
+                return {"status":"pending", "reason":"Unsupported preparation", "unknown_or_unverified_commit":False} if directory.name=="1" else {"status":"verified"}
+        worker=DatabaseWorker(self.config,self.stop,Database)
+        self.assertEqual(worker.process_one()["status"],"pending")
+        self.assertEqual(worker.process_one()["status"],"verified")
+        self.assertEqual(calls,["1","2"])
+        self.assertEqual(read_json(path1)["status"],"pending")
+        self.assertEqual(read_json(path2)["status"],"verified")
+
+    def test_unresolved_request_blocks_new_writes_even_if_newer(self):
+        self.config.retry_delay = 30
+        first, second=self.finished("1"),self.finished("2")
+        enqueue(self.config,first); enqueue(self.config,second)
+        atomic_json(second / "database/request.json", {"request_key":"unresolved"})
+        calls=[]
+        class Database:
+            def process(_,directory,apply=True):
+                calls.append(directory.name)
+                return {"status":"pending", "unknown_or_unverified_commit":True}
+        worker=DatabaseWorker(self.config,self.stop,Database)
+        self.assertEqual(worker.process_one()["status"],"pending")
+        self.assertEqual(calls,["2"])
+        self.assertEqual(worker.process_one()["status"],"waiting")
+        self.assertEqual(calls,["2"])
 
     def test_saved_capture_continues_while_database_is_down(self):
         calls = []

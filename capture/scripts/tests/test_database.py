@@ -9,6 +9,7 @@ import uuid
 from pathlib import Path
 from types import SimpleNamespace
 
+from scripts.database.client import EDBClient
 from scripts.database.edn import dumps, loads, kw
 from scripts.database.images import ImageLibrary, MissingImage
 from scripts.database.evidence import authoritative_question, UnsupportedContent, image_answer
@@ -72,7 +73,71 @@ class ImageTests(unittest.TestCase):
             self.assertEqual(lib.text('![x](x.svg)'),f'![x]({relative})')
             with self.assertRaises(MissingImage): lib.resolve('https://example.test/x.svg')
 
+    def test_svg_requires_original_local_dependencies(self):
+        with tempfile.TemporaryDirectory() as d:
+            library=ImageLibrary(Path(d)/'math',Path(d))
+            for body in ('<use href="https://example.test/shape.svg#graph"/>','<use href="#missing"/>'):
+                with self.subTest(body=body), self.assertRaises(MissingImage):
+                    library.store(('<svg xmlns="http://www.w3.org/2000/svg">'+body+'</svg>').encode(),'diagram')
+            data=b'<svg xmlns="http://www.w3.org/2000/svg"><defs><path id="graph" d="M0 0"/></defs><use href="#graph"/></svg>'
+            relative=library.store(data,'diagram')
+            self.assertEqual((Path(d)/'math'/relative).read_bytes(),data)
+
+    def test_manifest_hash_guards_original_source_bytes(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);capture=root/'capture';(capture/'assets').mkdir(parents=True)
+            data=b'<svg xmlns="http://www.w3.org/2000/svg"/>'
+            (capture/'assets/x.svg').write_bytes(data)
+            atomic_json(capture/'assets/manifest.json',{'https://example.test/x.svg':{'path':'assets/x.svg','sha256':'0'*64}})
+            with self.assertRaises(MissingImage):
+                ImageLibrary(root/'math',capture).resolve('https://example.test/x.svg')
+            atomic_json(capture/'assets/manifest.json',{'https://example.test/x.svg':{'path':'assets/x.svg','sha256':hashlib.sha256(data).hexdigest()}})
+            self.assertTrue(ImageLibrary(root/'math',capture).resolve('https://example.test/x.svg').startswith('images/'))
+
 class PrepareTests(unittest.TestCase):
+    def test_multistep_context_images_are_localized_and_markdown(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d); capture=root/'capture'; capture.mkdir()
+            data=b'<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0"/></svg>'
+            (capture/'context.svg').write_bytes(data)
+            library=ImageLibrary(root/'math',capture)
+            q=question(); q['knowledge_point_id']=str(source_snapshot()['entities'][1][':knowledge-point/id'])
+            content={'questions':[q], 'task_type':'multistep', 'multistep_id':20,
+                     'question_order':['q-11'], 'shared_contexts':[{'problem':'<p>Use this diagram:</p><img src="context.svg">'}]}
+            prepared=Preparation(source_snapshot()).prepare(content,library)
+            relative='images/'+hashlib.sha256(data).hexdigest()[:2]+'/'+hashlib.sha256(data).hexdigest()+'.svg'
+            contexts=[row[2] for batch in prepared['batches'] for row in batch['assertions'] if row[1]==':multistep/context']
+            self.assertEqual(contexts,['Use this diagram:\n\n![]('+relative+')'])
+            self.assertEqual(prepared['content']['shared_context'],contexts[0])
+            self.assertEqual((root/'math'/relative).read_bytes(),data)
+
+    def test_missing_multistep_image_omits_structure(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d); q=question(); q['knowledge_point_id']=str(source_snapshot()['entities'][1][':knowledge-point/id'])
+            prepared=Preparation(source_snapshot()).prepare({'questions':[q], 'task_type':'multistep',
+                'multistep_id':20, 'shared_context':'![diagram](https://example.test/missing.svg)'},ImageLibrary(root/'math',root))
+            self.assertTrue(any(row['kind']=='multistep' and row['final'] for row in prepared['omissions']))
+            self.assertNotIn(':multistep/context',dumps(prepared['batches']))
+            self.assertIn(':question/problem',dumps(prepared['batches']))
+
+    def test_identity_payload_uses_content_and_preserves_existing_uuid(self):
+        snap=source_snapshot(); point=snap['entities'][1]
+        point[':knowledge-point/questions']=[{':db/id':100+i,':question/math-academy-id':'q-'+str(i)} for i in range(200)]
+        captured=question();captured['html']='redundant page markup '*100
+        calls=[]
+        def resolve(task,payload):
+            calls.append((task,payload))
+            return {'decision':'existing','entity_id':str(point[':knowledge-point/id']),'evidence':'Same canonical example'}
+        prep=Preparation(snap,resolve=resolve)
+        chosen=prep.choose('knowledge-point revision',captured,[point])
+        self.assertEqual(chosen[':knowledge-point/id'],point[':knowledge-point/id'])
+        payload=calls[0][1]
+        self.assertNotIn('html',payload['captured'])
+        self.assertEqual(payload['captured']['fields'][0]['evidence'],captured['answer_fields'][0]['evidence'])
+        self.assertNotIn(':knowledge-point/questions',payload['candidates'][0])
+        self.assertEqual(payload['candidates'][0]['practice_question_count'],200)
+        self.assertEqual(payload['candidates'][0][':knowledge-point/canonical-example'][':question/worked-solution'],'$1+1=2$')
+
     def test_repeated_scalar_updates_have_one_final_guard(self):
         snapshot=source_snapshot(); old=snapshot['entities'][1]
         plan=Plan(Snapshot(snapshot)); target=plan.entity('knowledge-point',old[':knowledge-point/id'],old)
@@ -192,6 +257,51 @@ class FakeClient:
             return text
         return dumps(report)
 
+class QueryBackedFakeClient(FakeClient):
+    """Use production snapshot selection with realistic shallow activity pulls."""
+    def __init__(self):
+        super().__init__()
+        self.queries=[]
+        self.idents.update({':activity.type/diagnostic':906, ':activity.type/assessment':907, ':activity.type/review':908})
+        self.attrs['activity/course']['type']=':db.type/ref'
+        self.attrs.update({'course/id':{'id':800,'type':':db.type/uuid','many':False},
+                           'course/math-academy-id':{'id':801,'type':':db.type/long','many':False}})
+        self.facts[(50,'course/id')]=[(source_uuid('course',7),900)]
+        self.facts[(50,'course/math-academy-id')]=[(7,900)]
+
+    def snapshot(self,content,directory,basis):
+        return EDBClient.snapshot(self,content,directory,basis)
+
+    def query(self,source,inputs,directory,name,basis=None):
+        self.queries.append((name,inputs,basis))
+        snapshot=FakeClient.snapshot(self,{},directory,basis)
+        entities=snapshot['entities']
+        def rows(attr,wanted):
+            return [[e] for e in entities if e.get(attr) in wanted]
+        def shallow(value):
+            if isinstance(value,dict):
+                result={k:shallow(v) for k,v in value.items()}
+                if ':question/id' in result:
+                    result[':question/answer-fields']=[{':db/id':f[':db/id']} for f in result.get(':question/answer-fields',[])]
+                    if isinstance(result.get(':question/difficulty'),dict):
+                        result[':question/difficulty']={':db/id':result[':question/difficulty'][':db/id']}
+                return result
+            return [shallow(v) for v in value] if isinstance(value,list) else value
+        if name.startswith('topic-'):return rows(':topic/math-academy-id',inputs)
+        if name.startswith('questions-'):return rows(':question/math-academy-id',inputs[0])
+        if name.startswith('activities-'):
+            tids={e[':db/id'] for e in entities if e.get(':topic/math-academy-id') in inputs}
+            return shallow([[e] for e in entities if ':activity/id' in e and e.get(':activity/scope',{}).get(':db/id') in tids])
+        if name in ('activity-route','multistep-activity'):return shallow(rows(':activity/id',inputs))
+        if name=='activity-definition':return shallow(rows(':activity/math-academy-id',inputs))
+        if name=='course':return rows(':course/math-academy-id',inputs)
+        if name=='tutorials':return rows(':tutorial/math-academy-id',inputs[0])
+        if name=='attributes':return snapshot['attributes']
+        if name=='idents':return snapshot['idents']
+        if name.startswith('facts-'):return [row for row in snapshot['facts'] if row[0] in inputs[0]]
+        raise AssertionError('Unexpected snapshot query: '+name)
+
+
 class PipelineTests(unittest.TestCase):
     def setup(self, directory):
         root=Path(directory); capture=root/'capture';capture.mkdir()
@@ -241,6 +351,27 @@ class PipelineTests(unittest.TestCase):
                 result=pipeline.process(capture);self.assertEqual(result['status'],'verified',result)
                 self.assertFalse(result.get('omissions'))
                 self.assertEqual(pipeline.process(capture)['status'],'no_changes')
+
+    def test_course_routes_reimport_without_changes(self):
+        for kind in ('diagnostic','assessment','review'):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as d:
+                capture,cfg=self.setup(d); client=QueryBackedFakeClient()
+                content=json.loads((capture/'content.json').read_text())
+                content.pop('topic_id')
+                content.update(task_type=kind,course_id=7,question_order=['q-11'],question_outcomes={'q-11':'correct'})
+                atomic_json(capture/'content.json',content)
+                pipeline=DatabasePipeline(cfg,threading.Event(),client=client)
+                result=pipeline.process(capture)
+                self.assertEqual(result['status'],'verified',result)
+                self.assertEqual(client.t,2)
+                self.assertEqual(pipeline.process(capture)['status'],'no_changes')
+                self.assertEqual(client.t,2)
+                routes=[query for query in client.queries if query[0]=='activity-route']
+                self.assertTrue(routes)
+                self.assertTrue(all(query[2] in (1,2) for query in routes))
+                snapshot=client.snapshot(content,Path(d),2)
+                q=next(e for e in snapshot['entities'] if e.get(':question/math-academy-id')=='q-11')
+                self.assertEqual(q[':question/answer-fields'][0][':answer-field/correct'][':answer/type'][':db/ident'],':answer.type/math')
 
     def test_unknown_outcome_replays_exact_key(self):
         with tempfile.TemporaryDirectory() as d:

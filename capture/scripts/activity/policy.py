@@ -40,8 +40,16 @@ class AnswerPolicy:
         self.state.setdefault('patterns', {})
         self.state.setdefault('counts', {})
         self.state.setdefault('decisions', {})
-        self.state.setdefault('distances', prerequisite_distances(
-            self.context.get('course_topics', []), self.context.get('graph', {})))
+        self.state.setdefault('distances', {})
+        self.refresh_context(self.context)
+
+    def refresh_context(self, context):
+        """Recovered graph changes future classifications, never saved intentions."""
+        self.context = context or {}
+        if not self.context.get('snapshot_unavailable') and not self.context.get('unavailable'):
+            if 'course_topics' in self.context and 'graph' in self.context:
+                self.state['distances'] = prerequisite_distances(
+                    self.context['course_topics'], self.context['graph'])
 
     def decide(self, key, question, started_at=None):
         if key in self.state['decisions']:

@@ -62,7 +62,16 @@ def finalize_answers(question, presentations, judgment):
             submissions = presentation.get('submissions', [])
             if not submissions:
                 continue
-            submission = submissions[-1]
+            selected = field.get('source_selected') or field.get('source_correct') or {}
+            verified = [submission for submission in submissions
+                if submission.get('outcome') not in ('entry_failed', 'not_submitted')
+                and (submission.get('outcome') == 'observe_to_confirm'
+                     or any(str(response.get('key')) == key and response.get('value') is not None
+                            and str(response['value']) == str(selected.get('value'))
+                            for response in submission.get('responses', [])))]
+            if not verified:
+                continue
+            submission = verified[-1]
             # Successful overall grading confirms every submitted field. Accepted only
             # means the UI received it; that does not establish correctness.
             field_grades = feedback.get('field_grades', {})
