@@ -9,6 +9,11 @@ lesson eligibility, response grading, lesson XP, and per-answer FIRe updates.
 Its durable EDB integration is in `scripts/learning_api.rs`. Review and
 assessment scheduling for that interface remains to be connected.
 
+Target-based planning reads its target set only from `learner/targets`. Linked
+assignments provide deadline context for topics already in that set. Completing
+or failing an assignment leaves targets and their priority weights unchanged;
+explicitly removing a target takes effect even while its assignment stays linked.
+
 Earned XP uses the fixed version-one rules documented in
 [3-xp-weights.edn](../../schema/engine/3-xp-weights.edn) and the
 [formula report](../../reference/xp-docs/earned-xp-formula-report.md).

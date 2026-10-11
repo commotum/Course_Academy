@@ -863,28 +863,22 @@ fn target_support(
         .into_iter()
         .map(|topic| (topic, None))
         .collect();
-    let mut completed = BTreeSet::new();
-    for task in s.refs(learner, "learner/activity")? {
-        if ident(s, task, "learner-task/status")? == "learner-task.status/completed" {
-            completed.insert(s.reference(task, "learner-task/activity")?);
-        }
-    }
     for assignment in s.refs(learner, "learner/assignments")? {
         if ident(s, assignment, "activity/type")? != "activity.type/assignment" {
             return Err("learner/assignments must reference assignment activities".into());
         }
-        // A completed assignment no longer calls for preparation. Failed
-        // attempts retain their mapping and deadline for another attempt.
-        if completed.contains(&assignment) {
-            continue;
-        }
+        // Assignment enrollment writes coverage into learner/targets. Planning
+        // only adds deadline context to that set, so explicit target removals
+        // remain effective. Assignment completion never changes priorities.
         let due = s
             .entity(assignment)?
             .get("activity/due")
             .map(crate::schema::parse_instant)
             .transpose()?;
         for topic in assignment_targets(s, assignment)? {
-            let entry = targets.entry(topic).or_default();
+            let Some(entry) = targets.get_mut(&topic) else {
+                continue;
+            };
             if let Some(due) = due {
                 *entry = Some(entry.map_or(due, |previous| previous.min(due)));
             }
@@ -893,7 +887,7 @@ fn target_support(
     let mut support: BTreeMap<u64, TargetSupport> = BTreeMap::new();
     for (target, due) in targets {
         if !s.entity(target)?.contains_key("topic/id") {
-            return Err("study targets and assignment coverage must reference topics".into());
+            return Err("learner/targets must reference topics".into());
         }
         // One breadth-first traversal per distinct target counts a shared
         // ancestor once, even through diamonds or cycles. Ready topics close
@@ -2449,7 +2443,7 @@ mod tests {
     }
 
     #[test]
-    fn planner_uses_nested_assignment_coverage_and_earliest_deadline_without_requiring_work() {
+    fn planner_uses_nested_assignment_deadlines_only_for_selected_targets() {
         let at = planning_time();
         let mut s = planning_fixture(&[80, 83]);
         let later = planning_lesson(&mut s, 80, &[]);
@@ -2505,6 +2499,13 @@ mod tests {
             716,
             json!({"step/id":id(716),"step/content":712}),
         );
+        // Merely storing mapped assignments does not affect a learner's plan.
+        let unlinked = plan_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(
+            unlinked.iter().map(|p| p.activity).collect::<Vec<_>>(),
+            [later, sooner, 20]
+        );
+        assert!(unlinked.iter().all(|p| p.due.is_none()));
         s.entities
             .get_mut(&1)
             .unwrap()
@@ -2524,11 +2525,38 @@ mod tests {
         let overdue = plan_candidates(&s, 1, 5, at + chrono::Duration::days(10)).unwrap();
         assert!(overdue.iter().all(|p| p.priority.is_finite()));
         assert_eq!(overdue[0].activity, later); // equal scores use topic IDs
+        // Removing a target wins even while both assignments still reference it.
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/targets".into(), json!([80]));
+        let remaining = plan_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(
+            remaining.iter().map(|p| p.activity).collect::<Vec<_>>(),
+            [later, 20]
+        );
+        assert_eq!(remaining[0].due, Some(at + chrono::Duration::days(7)));
         s.entities
             .get_mut(&1)
             .unwrap()
             .insert("learner/targets".into(), json!([]));
-        assert_eq!(plan_candidates(&s, 1, 5, at).unwrap()[0].activity, sooner);
+        let empty = plan_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(empty.iter().map(|p| p.activity).collect::<Vec<_>>(), [20]);
+        assert_eq!(empty[0].target_count, 0);
+        assert_eq!(empty[0].due, None);
+        // A later explicit addition immediately restores its own target weight
+        // and earliest deadline, without restoring other assignment mappings.
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/targets".into(), json!([83]));
+        let restored = plan_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(
+            restored.iter().map(|p| p.activity).collect::<Vec<_>>(),
+            [sooner, 20]
+        );
+        assert_eq!(restored[0].target_topics, [83]);
+        assert_eq!(restored[0].due, Some(at + chrono::Duration::hours(25)));
         s.entities
             .get_mut(&1)
             .unwrap()
@@ -2537,7 +2565,7 @@ mod tests {
     }
 
     #[test]
-    fn completed_assignments_stop_preparation_but_explicit_targets_and_failed_attempts_remain() {
+    fn assignment_completion_and_failure_preserve_targets_and_priorities() {
         let at = planning_time();
         let mut s = planning_fixture(&[80]);
         let lesson = planning_lesson(&mut s, 80, &[]);
@@ -2556,40 +2584,47 @@ mod tests {
             702,
             json!({"assigned-problem/id":id(702),"assigned-problem/topic-coverage":[80],"assigned-problem/content":20080}),
         );
-        put(
-            &mut s.entities,
-            600,
-            json!({"learner-task/id":id(600),"learner-task/activity":700,"learner-task/status":"learner-task.status/completed","learner-task/items":[]}),
-        );
         s.entities
             .get_mut(&1)
             .unwrap()
             .insert("learner/assignments".into(), json!([700]));
+        let plan = plan_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(plan[0].activity, lesson);
+        assert_eq!(plan[0].target_count, 1);
+        assert_eq!(plan[0].due, Some(at - chrono::Duration::days(1)));
+        let expected = serde_json::to_value(&plan).unwrap();
+
         s.entities
             .get_mut(&1)
             .unwrap()
             .insert("learner/activity".into(), json!([600]));
-
-        let plan = plan_candidates(&s, 1, 5, at).unwrap();
-        assert_eq!(plan[0].activity, lesson);
-        assert_eq!(plan[0].target_count, 1);
-        assert_eq!(plan[0].due, None);
-        assert_eq!(plan[0].reason, "One of your study targets");
+        for status in ["started", "paused", "failed", "completed"] {
+            put(
+                &mut s.entities,
+                600,
+                json!({"learner-task/id":id(600),"learner-task/activity":700,"learner-task/status":format!("learner-task.status/{status}"),"learner-task/items":[]}),
+            );
+            assert_eq!(
+                serde_json::to_value(plan_candidates(&s, 1, 5, at).unwrap()).unwrap(),
+                expected,
+                "assignment status {status} must not change planning"
+            );
+            assert_eq!(s.refs(1, "learner/targets").unwrap(), [80]);
+        }
 
         s.entities
             .get_mut(&1)
             .unwrap()
             .insert("learner/targets".into(), json!([]));
-        let plan = plan_candidates(&s, 1, 5, at).unwrap();
-        assert_eq!(plan.iter().map(|p| p.activity).collect::<Vec<_>>(), [20]);
-
-        s.entities.get_mut(&600).unwrap().insert(
-            "learner-task/status".into(),
-            json!("learner-task.status/failed"),
-        );
-        let plan = plan_candidates(&s, 1, 5, at).unwrap();
-        assert_eq!(plan[0].activity, lesson);
-        assert_eq!(plan[0].due, Some(at - chrono::Duration::days(1)));
+        for status in ["completed", "failed"] {
+            s.entities.get_mut(&600).unwrap().insert(
+                "learner-task/status".into(),
+                json!(format!("learner-task.status/{status}")),
+            );
+            let plan = plan_candidates(&s, 1, 5, at).unwrap();
+            assert_eq!(plan.iter().map(|p| p.activity).collect::<Vec<_>>(), [20]);
+            assert_eq!(plan[0].due, None);
+        }
     }
 
     #[test]
