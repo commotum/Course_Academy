@@ -56,10 +56,15 @@ def _index(snapshot):
     courses = snapshot.get('progress') or snapshot.get('courses') or []
     if not isinstance(courses, list):
         return {}, []
-    rows, duplicates = {}, set()
+    rows, duplicates, issues = {}, set(), []
     for course in courses:
         if not isinstance(course, dict) or course.get('course_id') is None:
             continue
+        issues.extend({**issue, 'course_id': str(course['course_id'])}
+                      for issue in course.get('parse_issues', []) if isinstance(issue, dict))
+        observed_at = course.get('captured_at')
+        if observed_at is None:
+            observed_at = course.get('observed_at', snapshot.get('observed_at'))
         for topic in course.get('topics') or []:
             if not isinstance(topic, dict) or topic.get('topic_id') is None:
                 continue
@@ -67,11 +72,11 @@ def _index(snapshot):
             if key in rows:
                 duplicates.add(key)
             rows[key] = {**topic, **color_observation(topic),
-                         'observed_at': course.get('captured_at', course.get('observed_at', snapshot.get('observed_at')))}
+                         'observed_at': observed_at}
     for key in duplicates:
         rows.pop(key, None)
-    return rows, [{'course_id': course, 'topic_id': topic, 'reason': 'duplicate_topic_identity'}
-                  for course, topic in sorted(duplicates)]
+    return rows, issues + [{'course_id': course, 'topic_id': topic, 'reason': 'duplicate_topic_identity'}
+                          for course, topic in sorted(duplicates)]
 
 
 def compare_progress(baseline, observation):

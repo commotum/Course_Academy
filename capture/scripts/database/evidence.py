@@ -88,8 +88,16 @@ def authoritative_question(original: dict, *, example=False) -> dict:
     if required_errors and not q.get('source_errors_resolved'):
         raise UnsupportedContent('Source extraction contains unresolved errors: ' + '; '.join(map(str, required_errors)))
     q['answer_fields'] = q.get('answer_fields', q.get('fields', []))
+    if q.get('answer_fields_complete') is False or q.get('fields_complete') is False:
+        raise UnsupportedContent('Source answer-field capture is explicitly incomplete')
     if not example and not q['answer_fields']:
         raise UnsupportedContent('Practice question requires complete answer fields')
+    # These tokens are emitted by the browser extractor for observed controls.
+    # Do not interpret arbitrary doubled TeX braces as missing answer widgets.
+    placeholders = set(re.findall(r'\{\{(field-\d+)\}\}', q['problem']))
+    missing = placeholders - {field.get('key') for field in q['answer_fields']}
+    if missing:
+        raise UnsupportedContent('Source answer fields are missing captured controls: ' + ', '.join(sorted(missing)))
     if example and not q.get('worked_solution'):
         raise UnsupportedContent('Canonical example requires its worked solution')
     keys = set()

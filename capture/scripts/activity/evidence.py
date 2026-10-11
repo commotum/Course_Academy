@@ -14,10 +14,71 @@ def question_key(question):
                    str(question.get('problem', '')).encode()).hexdigest()[:16])
 
 
+def _extraction_parts(record):
+    """The adapter records which source sections a read actually inspected."""
+    if 'extraction_parts' in record:
+        return set(record['extraction_parts'])
+    # Older captures have no section metadata. A solution fragment cannot vouch
+    # for a prompt or fields retained from an earlier live capture.
+    if str(record.get('dom_id', '')).startswith('questionExplanation-'):
+        return {'solution'}
+    parts = {'problem'} if 'problem' in record else set()
+    if answer_fields(record):
+        parts.add('fields')
+    if (record.get('worked_solution') or record.get('solution_evidence') or
+            re.search(r'(?:exampleExplanation|questionWidget-explanation|questionExplanation)', record.get('html', ''))):
+        parts.add('solution')
+    return parts
+
+
+def _recaptured_error(error, before, after):
+    """Clear a capture failure only when a clean read replaced its source scope."""
+    if after.get('errors') != [] or not (after.get('html_path') or after.get('source_file')):
+        return False
+    identity = before.get('math_academy_id')
+    if not identity or str(identity) != str(after.get('math_academy_id')):
+        return False
+    if str(before.get('source_id', '')).startswith('unreconciled:'):
+        return False
+    error = str(error)
+    if error.startswith('Screenshot unavailable:'):
+        return bool(after.get('screenshot'))
+    if error.startswith(('History expansion:',)):
+        needed = {'solution'}
+    elif error.startswith(('Unsupported math editor:', 'Select frame has no ID:',
+                           'Unsupported input type:', 'Choice circle has no observed ID')):
+        needed = {'fields'}
+    elif error.startswith(('Unsupported MathML', 'SVG formula has no local title or MathML',
+                           'MathJax formula has no assistive MathML', 'Image unavailable:',
+                           'Graphic rendering unavailable:', 'Visual asset is not rendered',
+                           'Source rendering remained incomplete:', 'Lesson source rendering:')):
+        # Legacy MathML/image messages have no exact node location. Require all
+        # previously inspected sections rather than guessing which one failed.
+        needed = _extraction_parts(before)
+    else:
+        return False  # An authored source error or unknown finding is not a capture failure.
+    covered = _extraction_parts(after)
+    if not needed or not needed <= covered:
+        return False
+    if ('problem' in needed and not after.get('problem') or
+            'solution' in needed and not after.get('worked_solution')):
+        return False
+    if 'fields' in needed:
+        fields = answer_fields(after)
+        old_keys = {str(field.get('key')) for field in answer_fields(before)}
+        if (not fields or after.get('answer_fields_complete') is False or
+                not old_keys <= {str(field.get('key')) for field in fields} or
+                any(field.get('choices_complete') is False for field in fields
+                    if field.get('type') in ('radio', 'select', 'checkbox', 'multi-select'))):
+            return False
+    return not any(asset.get('unavailable') or asset.get('render_unavailable') for asset in after.get('assets', []))
+
+
 def merge_question(before, after):
     result = deepcopy(before)
     for key, value in after.items():
-        if value is not None and value != '' and value != [] and key not in ('fields', 'answer_fields'):
+        if value is not None and value != '' and value != [] and key not in (
+                'fields', 'answer_fields', 'errors', 'extraction_error_history', 'extraction_parts'):
             result[key] = deepcopy(value)
     old = {str(f.get('key', i)): deepcopy(f) for i, f in enumerate(answer_fields(before))}
     for i, field in enumerate(answer_fields(after)):
@@ -29,6 +90,27 @@ def merge_question(before, after):
     if old:
         result['fields'] = list(old.values())
         result['answer_fields'] = deepcopy(result['fields'])
+    # Empty errors means a successful observed read, not an absent update. Keep
+    # unsuccessful originals and their resolution separately from current gaps.
+    resolved = [error for error in before.get('errors', []) if _recaptured_error(error, before, after)]
+    if 'errors' in before or 'errors' in after:
+        result['errors'] = list(dict.fromkeys(error for error in before.get('errors', []) + after.get('errors', [])
+                                             if error not in resolved))
+    history = deepcopy(before.get('extraction_error_history', []))
+    for record in after.get('extraction_error_history', []):
+        if record not in history:
+            history.append(deepcopy(record))
+    if resolved:
+        evidence = lambda record: {key: deepcopy(record[key]) for key in
+            ('html_path', 'source_file', 'solution_evidence', 'captured_at', 'source_url') if record.get(key) is not None}
+        record = {'errors': resolved, 'source': evidence(before), 'replaced_by': evidence(after),
+                  'recaptured_parts': sorted(_extraction_parts(after))}
+        if record not in history:
+            history.append(record)
+    if history:
+        result['extraction_error_history'] = history
+    if 'extraction_parts' in before or 'extraction_parts' in after:
+        result['extraction_parts'] = sorted(_extraction_parts(before) | _extraction_parts(after))
     return result
 
 

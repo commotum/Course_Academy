@@ -41,7 +41,9 @@ class UnreconciledPreparationTests(unittest.TestCase):
     def test_every_unresolved_original_gets_its_own_judgment_and_supported_content_survives(self):
         content = captured()
         original = deepcopy(content)
-        result = Preparation(source_snapshot()).prepare(content)
+        def resolve(task, payload):
+            return next(j for j in content['judgments'] if j['capture_key'] == payload['capture_key'])
+        result = Preparation(source_snapshot(), resolve=resolve).prepare(content)
         omitted = [o for o in result['omissions'] if o['kind'] == 'question']
         self.assertEqual([o['capture_key'] for o in omitted], ['unreconciled:one', 'unreconciled:two'])
         self.assertEqual([o['judgment']['reasoning'] for o in omitted],
@@ -55,10 +57,12 @@ class UnreconciledPreparationTests(unittest.TestCase):
         self.assertEqual(content, original)
 
     def test_capture_key_judgment_fallback_does_not_cross_record_kinds(self):
-        content = {'judgments': [final('unreconciled:one', 'Wrong example', 'canonical_examples'),
-                                final('unreconciled:one', 'Right question')]}
+        q = unresolved('unreconciled:one', 'Question')
+        error = UnsupportedContent('Missing identity')
+        saved = Preparation(source_snapshot(), resolve=lambda task,payload: final('unreconciled:one', 'Right question')).final_judgment({}, q, error)
+        content = {'judgments': [{**saved, 'record_kind': 'canonical_examples', 'reasoning': 'Wrong example'}, saved]}
         result = Preparation(source_snapshot()).final_judgment(content,
-            unresolved('unreconciled:one', 'Question'), UnsupportedContent('Missing identity'))
+            q, error)
         self.assertEqual(result['reasoning'], 'Right question')
 
     def test_missing_key_cannot_reuse_an_unrelated_null_id_judgment(self):
@@ -96,7 +100,11 @@ class UnreconciledPreparationTests(unittest.TestCase):
                 atomic_json(target / 'capture-complete.json', {'task_id': target.name})
                 atomic_json(target / 'content.json', content)
                 enqueue(config, target)
-            pipeline = lambda: DatabasePipeline(config, stop, client=client)
+            calls = []
+            def resolve(task, payload):
+                calls.append(payload['capture_key'])
+                return final(payload['capture_key'], 'Source identity unavailable')
+            pipeline = lambda: DatabasePipeline(config, stop, client=client, resolver=resolve)
             worker = DatabaseWorker(config, stop, pipeline)
             first_result = worker.process_one()
             self.assertEqual(first_result['status'], 'verified')
@@ -107,6 +115,7 @@ class UnreconciledPreparationTests(unittest.TestCase):
             self.assertFalse(worker.pending())
             no_changes = pipeline().process(first)
             self.assertEqual(no_changes['status'], 'no_changes')
+            self.assertEqual(calls, ['unreconciled:one', 'unreconciled:two'])
             stored_ids = {value for (entity, attr), values in client.facts.items()
                           if attr == 'question/math-academy-id' for value, source in values}
             self.assertTrue({'q-11', 'q-12'} <= stored_ids)

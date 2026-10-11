@@ -323,6 +323,17 @@ class MathAcademyBrowser:
 
     def _read(self, scope, directory, label, prior=None):
         item = scope.evaluate(EXTRACT)
+        # Record source coverage before combining independently read history
+        # prompts and explanations. A solution-only reread cannot clear a failed
+        # prompt or answer control from an earlier capture.
+        item['extraction_parts'] = scope.evaluate(r'''node => {
+          if(node.matches('.questionExplanation')) return ['solution'];
+          const parts=[];
+          if(node.querySelector('.exampleQuestion,.questionWidget-text,.questionText,.questionWidget-graphic,#questionGraphic,.questionGraphicFrame')) parts.push('problem');
+          if(node.querySelector('.questionWidget-choiceLetterCircle,.choiceLetterCircle,.matheditor-wrapper-answer,.selectList,input:not([type="hidden"]),textarea,select')) parts.push('fields');
+          if(node.querySelector('.exampleExplanation,.questionWidget-explanation,.questionExplanation')) parts.push('solution');
+          return parts;
+        }''')
         item = self.assets.collect(item, scope, directory, label, prior=prior)
         key = fingerprint({"html": item.get("html"), "url": self.page.url})
         target = Path(directory) / "observations" / (re.sub(r"[^a-zA-Z0-9_-]", "-", label) + "-" + key)
@@ -810,6 +821,7 @@ class MathAcademyBrowser:
                 item["worked_solution"] = solution["worked_solution"]
                 item["assets"] = item.get("assets", []) + solution.get("assets", [])
                 item["errors"] = list(dict.fromkeys(item.get("errors", []) + solution.get("errors", [])))
+                item["extraction_parts"] = sorted(set(item.get("extraction_parts", [])) | set(solution.get("extraction_parts", [])))
                 item["solution_evidence"] = solution["html_path"]
             except StopRequested:
                 raise

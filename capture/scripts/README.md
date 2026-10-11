@@ -46,7 +46,7 @@ New environments need Python 3.10+, [requirements.txt](requirements.txt), Playwr
 | Activity Selection | `selection.py`, `context.py` | Apply the agreed activity/status order; rank Lessons and Reviews by downstream targets. |
 | Activity Capture | `activity/capture.py`, `policy.py`, `solver.py`, `evidence.py` | Save steps, answer questions, reconcile accepted actions, review history and full lessons, and close question judgments. |
 | Browser access | `browser/` | Read source pages, enter and verify responses, navigate, and collect original images. |
-| Post-Activity Processing | `post_activity.py` | Save dashboard/progress observations, count XP once, and retain retake instructions. |
+| Post-Activity Processing | `post_activity.py`, `progress.py` | Save dashboard/progress observations, compare topic colors and bands by course, count XP once, and retain retake instructions. |
 | Database Preparation | `database/prepare.py`, `images.py`, `difficulty.py` | Resolve identities, prepare content and relationships, localize images, and calculate lesson difficulty. |
 | Database Commit | `database/commit.py`, `client.py`, `pipeline.py` | Preview, submit, recover exact requests, and verify receipts and content. |
 | Continuous operation | `runner.py`, `outbox.py`, `fleet.py`, `terminal.py`, `monitor.py`, `storage.py` | Pin the current activity, save checkpoints, recover failures, and serialize imports across accounts. |
@@ -60,6 +60,7 @@ The implementation has no runtime dependency on `scripts/question_capture`.
 | `.local/capture/<account>/` | Active task, pacing and cooldown state, cached course graph, XP ledger and daily totals, retake instructions, status. |
 | `reference/mathacademy/capture/<account>/<task-id>/` | Original HTML, screenshots, downloaded images, submissions, agent sessions/judgments, content, and post-activity observations. |
 | `reference/mathacademy/capture/<account>/queue/` | Queue HTML, screenshots, expanded card details, and normalized selection inputs. |
+| The capture's `progress-before.json`, `progress-comparison.json`, and `post-activity.json` | Immutable comparison baseline, before/after topic colors and bands, and timestamped observation/comparison history, including late reads. |
 | The capture's `database/` folder | Prepared EDN, source decisions, previews, exact requests, receipts, and verification. |
 | `reference/mathacademy/capture-database/` | Ordered pending imports shared by all accounts. |
 | `/media/jake/SSD/EDB/math/images/<first-two-hash-characters>/<sha256>.<extension>` | Original image bytes, deduplicated by SHA-256. Content uses relative `images/...` references. |
@@ -67,6 +68,8 @@ The implementation has no runtime dependency on `scripts/question_capture`.
 `capture-complete.json` means source review and question judgments are saved. `import-status.json` separately records whether the database import is pending or verified. A database outage does not cause the activity to be repeated or block the next capture. An unknown commit outcome blocks later database writes until its exact saved request is resolved.
 
 An agent's final finding that source evidence is unavailable stays with the capture. Preparation excludes the unsupported entity and dependent references, preserves the reason, and continues with supported content. Submitted guesses never become confirmed source answers.
+
+Preparation rejects explicit incomplete-field sets and requires a final judgment for each newly discovered source gap, bound to the current evidence. Successful recaptures clear only the extraction failures they resolve, preserving their provenance and the original source artifacts. Topic display comparisons use course and topic IDs together; missing or unknown colors never become an inferred band or loss of progress. The 0–6 bands describe the display, not exact internal learner state.
 
 Original content uses `:org/Math-Academy`, including source errors. Agent corrections remain separate evidence for later separately sourced transactions. Learner attempts, XP, and progress are saved locally. Calculated topic difficulty is also saved locally unless `--derived-source` names an existing source for it.
 

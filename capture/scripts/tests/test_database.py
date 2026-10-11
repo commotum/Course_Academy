@@ -181,14 +181,14 @@ class PrepareTests(unittest.TestCase):
 
     def test_missing_fields_final_omission(self):
         q=question(); q['answer_fields']=[]
-        result=Preparation(source_snapshot()).prepare({'questions':[q],'judgments':[{'question_id':'q-11','status':'unavailable','reasoning':'No source fields'}]})
+        result=Preparation(source_snapshot(),resolve=lambda task,payload: {'status':'unavailable','reasoning':'No source fields','answers':[]}).prepare({'questions':[q]})
         self.assertFalse(result['batches'])
         self.assertTrue(result['omissions'][0]['final'])
 
     def test_saved_plain_judgment_cannot_overwrite_structured_source_evidence(self):
         q=question();q['answer_fields'][0]['choices']=[{'type':'math','value':'3'}]
-        prepared=Preparation(source_snapshot()).prepare({'questions':[q],'judgments':[{
-            'question_id':'q-11','status':'confirmed','answers':[{'key':'x','ma_value':'3','ma_evidence':'My reasoning says 3'}]}]})
+        prepared=Preparation(source_snapshot(),resolve=lambda task,payload: {
+            'status':'confirmed','reasoning':'My reasoning says 3','answers':[{'key':'x','ma_value':'3','ma_evidence':'My reasoning says 3'}]}).prepare({'questions':[q]})
         self.assertFalse(prepared['batches'])
         self.assertTrue(prepared['omissions'][0]['final'])
         self.assertIn('typed source choice',prepared['omissions'][0]['reason'])
@@ -214,7 +214,7 @@ class PrepareTests(unittest.TestCase):
         content={'task_type':'lesson','questions':qs,'canonical_examples':[ex],'lesson_definition':{'complete':True},'base_xp':13,
                  'judgments':[{'question_id':'q-1','status':'unavailable','reasoning':'Source missing'}],
                  'lesson_workload_sample':{'questions_by_knowledge_point':{'kp':['q-1','q-2']}}}
-        result=Preparation(source_snapshot()).prepare(content)
+        result=Preparation(source_snapshot(),resolve=lambda task,payload: {'status':'unavailable','reasoning':'Source missing','answers':[]}).prepare(content)
         self.assertIn('selected first-two question is unsupported',result['calibration']['not_transacted'])
 
 class FakeClient:

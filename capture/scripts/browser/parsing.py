@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import re
-from urllib.parse import urljoin
+from urllib.parse import parse_qs, urljoin, urlsplit
 
 from ..progress import color_observation
 
@@ -168,15 +168,22 @@ def parse_dashboard(html, task_id):
 def parse_progress(html, course_id):
     page = soup(html)
     topics = []
+    issues = []
     for row in page.select(".moduleTopics tr"):
         link = row.select_one(".topicLink")
         match = re.search(r"/topics/(\d+)", link.get("href", "")) if link else None
         if not match:
+            continue
+        source_courses = parse_qs(urlsplit(link["href"]).query).get("courseId", [])
+        if any(source != str(course_id) for source in source_courses):
+            issues.append({"reason": "conflicting_course_identity", "course_id": str(course_id),
+                           "topic_id": match[1], "href": link["href"],
+                           "source_course_ids": source_courses})
             continue
         circle = row.select_one(".topicCircle")
         topic = {"topic_id": match[1], "title": text(link), "href": link["href"],
                  "circle_style": circle.get("style") if circle else None,
                  "displayed_progress": text(row.select_one(".topicProgress"))}
         topics.append({**topic, **color_observation(topic)})
-    return {"course_id": str(course_id), "topics": topics,
+    return {"course_id": str(course_id), "topics": topics, "parse_issues": issues,
             "displayed_progress": text(page.select_one("#courseProgress, .courseProgress, #courseCompletion"))}

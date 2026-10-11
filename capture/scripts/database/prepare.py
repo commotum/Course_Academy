@@ -10,6 +10,7 @@ from .images import ImageLibrary, MissingImage
 from .text import markdown
 from .difficulty import calibrate
 from ..activity.evidence import question_key
+from ..activity.task_payload import semantic_identity, task_payload
 
 MA_SOURCE = ':org/Math-Academy'
 KINDS = ('topic', 'knowledge-point', 'question', 'answer-field', 'answer', 'tutorial',
@@ -147,6 +148,7 @@ class Preparation:
         self.snapshot = Snapshot(snapshot)
         self.resolve = resolve
         self.decisions, self.omissions = [], []
+        self.gap_judgments = {}
 
     def identity_candidate(self, entity):
         """Relevant authored content without entire topic practice pools."""
@@ -247,6 +249,13 @@ class Preparation:
                         evidence = answer.get('ma_evidence') or answer.get('evidence')
                         if isinstance(evidence, dict) and evidence and answer.get('ma_value') is not None:
                             field.update(correct_value=answer['ma_value'], evidence=evidence)
+                        elif (answer.get('ma_basis') == 'worked_solution' and isinstance(evidence, str)
+                              and evidence.strip() and evidence in repaired.get('worked_solution', '')
+                              and answer.get('ma_value') is not None):
+                            source = repaired.get('solution_evidence') or repaired.get('source_file') or repaired.get('html_path')
+                            field.update(correct_value=answer['ma_value'], evidence={
+                                'kind': 'worked_solution', 'value': answer['ma_value'],
+                                'solution_quote': evidence, 'source_file': source, 'matches_worked_solution': True})
                     try:
                         q = authoritative_question(repaired, example=example)
                         if library:
@@ -257,6 +266,9 @@ class Preparation:
                         kept.append(q)
                         records.append((q, example))
                     except (UnsupportedContent, MissingImage) as final_error:
+                        # A checked answer repair can expose a different source
+                        # gap. Close that finding too, without another repair loop.
+                        judgment = self.final_judgment(content, repaired, final_error, record_kind=bucket)
                         self.omissions.append({'kind': 'question', 'id': original.get('math_academy_id'),
                             'capture_key': capture_key, 'record_kind': bucket,
                             'observed_math_academy_id': original.get('observed_math_academy_id'),
@@ -401,18 +413,32 @@ class Preparation:
         identity = question.get('math_academy_id') or None
         capture_key = question_key(question)
         record_kind = record_kind or ('canonical_examples' if str(identity).startswith('e-') else 'questions')
-        judgment = next((j for j in judgments if
-                         j.get('record_kind', record_kind) == record_kind and
+        payload = task_payload('judge_question', {'question': question, 'gap': str(error),
+            'source_limitations': content.get('source_limitations', [])})
+        # Preparation can find gaps beyond answer correctness. Keep their scope
+        # in the existing solver contract and bind even omitted compact metadata
+        # (for example legacy fields_complete or original asset errors).
+        payload.update(record_kind=record_kind, capture_key=capture_key,
+                       source_evidence_hash=semantic_identity('preparation_source', question))
+        payload['question'].update({key: copy.deepcopy(question[key]) for key in
+            ('fields_complete', 'topic_id', 'knowledge_point_id', 'kp_id', 'difficulty',
+             'observed_math_academy_id', 'source_errors_resolved', 'asset_errors') if key in question})
+        evidence_hash = semantic_identity('judge_question', payload)
+        judgment = self.gap_judgments.get(evidence_hash) or next((j for j in judgments if
+                         j.get('record_kind') == record_kind and j.get('gap') == str(error) and
+                         j.get('evidence_hash') == evidence_hash and
                          ((identity is not None and str(j.get('question_id')) == str(identity)) or
                           (identity is None and j.get('capture_key') == capture_key)) and
                          j.get('status') in ('confirmed', 'source_error', 'unavailable', 'ambiguous')), None)
         if not judgment:
             if self.resolve is None:
                 raise ValueError('Source gap requires a final capture judgment: ' + str(error))
-            judgment = self.resolve('judge_question', {'question': question, 'gap': str(error),
-                'instruction': 'Resolve from saved source evidence now. Return final status confirmed/source_error/ambiguous/unavailable, reasoning, and answers with checked ma_evidence. Never invent a Math Academy fact.'})
+            judgment = self.resolve('judge_question', payload)
         if judgment.get('status') not in ('confirmed', 'source_error', 'unavailable', 'ambiguous'):
             raise ValueError('Agent returned no final source judgment')
+        judgment = {**judgment, 'question_id': identity, 'capture_key': capture_key,
+                    'record_kind': record_kind, 'gap': str(error), 'evidence_hash': evidence_hash, 'final': True}
+        self.gap_judgments[evidence_hash] = judgment
         return judgment
 
     def omit_or_resolve(self, content, question, error):
