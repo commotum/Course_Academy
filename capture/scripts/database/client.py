@@ -37,7 +37,13 @@ class EDBClient:
             raise StopRequested()
         if getattr(self.config, 'capture_only', False) and command not in ('status', 'query', 'pull', 'with'):
             raise ValueError('Capture-only mode does not submit transactions')
-        args = [str(self.config.edb_bin), command, '--database', str(self.config.database), *map(str, options)]
+        executable = self.config.edb_bin
+        if command == 'with':
+            executable = getattr(self.config, 'preview_bin', None)
+            if executable is None:
+                from .preview import preview_executable
+                executable = preview_executable(self.config, self.stop_event)
+        args = [str(executable), command, '--database', str(self.config.database), *map(str, options)]
         result = subprocess.run(args, env=self.environment, capture_output=True, text=True, timeout=timeout)
         if result.returncode:
             # Only an explicit stale-basis rejection proves the saved request did not commit.

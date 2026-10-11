@@ -12,6 +12,10 @@ Python commits the validated transactions from Database Preparation. This stage 
 
 Python classifies commit outcomes and routes rejected plans back to Database Preparation. Source-content gaps return to Activity Capture's agent through Preparation for a decision now. An interrupted commit or verification resumes from its saved state; it never causes the Math Academy activity to be repeated.
 
+Bind each prepared snapshot and new durable request to EDB's immutable database lineage, in addition to its configured connection and basis. Check that lineage before submitting or reusing a saved receipt. Rebuilding a database under the same name does not make its numeric entity IDs interchangeable with the previous database. Retain a request with a different or unknown lineage unchanged for reconciliation; never silently retarget it or replay an old migration transaction.
+
+Speculative previews use the same native schema predicates as the deployed writer, including answer-field validation. The capture preview helper can only evaluate `with`; it cannot commit or start a writer. Normal reads and durable submissions continue through the configured EDB CLI and writer socket.
+
 Keep completed captures, agent decisions, original images, and pending database work durably under `reference/` before selecting another activity. Retry temporary writer or connection failures with backoff while capture proceeds.
 
 Process pending captures in their saved order through one database worker; establish any unknown commit outcome before later writes, and reprepare against the current basis when required. Pending persistence is distinct from completed question judgments; it is never reported as a successful import. Recovery runs automatically without asking Jake or exiting the capture loop. If durable storage itself is unavailable, retain the current state and retry saving before advancing.
