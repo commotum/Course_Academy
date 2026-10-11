@@ -2,8 +2,9 @@
 
 Do the activity, then review its activity history page.
 
-1. [Assessment](3-1-Assessment.md)
-2. [Diagnostic](3-2-Diagnostic.md)
-3. [Lesson](3-3-Lesson.md)
-4. [Review](3-4-Review.md)
-5. [Multistep](3-5-Multistep.md)
+1. [Questions — shared capture process](3-1-Questions.md)
+2. [Assessment](3-2-Assessment.md)
+3. [Diagnostic](3-3-Diagnostic.md)
+4. [Lesson](3-4-Lesson.md)
+5. [Review](3-5-Review.md)
+6. [Multistep](3-6-Multistep.md)

@@ -34,6 +34,8 @@ The existing source rules still apply: preserve Math Academy's original content,
 
 **Shared tools, separate activity rules.** Reuse answer-field handling, image collection, page reading, and saved progress. Each activity type specifies its own sequence and answer policy. Avoid one large function containing every activity's exceptions.
 
+The shared question process is described in `v2/3-1-Questions.md`. It captures questions, responses, and source feedback for all five activity types. The activity modules control navigation, answer/skip policy, submission timing, and history-page review.
+
 **One way to read and write the database.** Selection and preparation receive the database information they need through a shared interface. Transaction/Commit owns database writes. Keep account login, queue state, and activity progress separate for each account while sharing the content database and image library.
 
 These are proposed boundaries. Choose implementation details as the stage discussions reveal what is needed.
@@ -86,18 +88,17 @@ Each activity's chart covers both parts:
 
 Together, these form Activity Capture. Each activity type then hands off to the shared Post-Activity Processing stage. Missing evidence becomes recovery work without changing the fact that the activity finished. Discuss any additional source pages, such as the full lesson page, when designing that activity's capture path.
 
-Prepare a separate chart and interview for each path:
+Use `v2/3-0-Activity-Capture.md` as the index. Keep question handling in `v2/3-1-Questions.md`, and prepare a separate activity document for each base type:
 
 | Path | Main questions to settle |
 |---|---|
-| New Lesson | Which tutorials and examples must be visited? How should practice be answered? How do we obtain the complete lesson and its step order? |
-| Failed Lesson | What changes when repeating a failed lesson? How do we link the repeat to earlier evidence and capture anything previously missed? |
-| Review | How do we answer, collect more reusable questions, and retain their knowledge-point associations? |
-| Assessment | How do we fill and submit the whole test, handle its time limit, and collect feedback afterward? Include quiz retakes here. |
-| Multistep | How do we preserve shared context, each question, dependencies between parts, and their order? |
-| Diagnostic | Which skills should we demonstrate or skip to reach the lessons we want? How do existing captures and missing lessons determine that behavior? |
+| [Assessment](v2/3-2-Assessment.md) | How do we fill and submit the whole test, handle its time limit, and collect feedback afterward? Include quiz retakes here. |
+| [Diagnostic](v2/3-3-Diagnostic.md) | Which skills should we demonstrate or skip to reach the lessons we want? How do existing captures and missing lessons determine that behavior? |
+| [Lesson](v2/3-4-Lesson.md) | Which tutorials and examples must be visited? How do we obtain the complete lesson and step order? What changes for a failed lesson being repeated? |
+| [Review](v2/3-5-Review.md) | How do we answer, collect more reusable questions, and retain their knowledge-point associations? |
+| [Multistep](v2/3-6-Multistep.md) | How do we preserve shared context, each question, dependencies between parts, and their order? |
 
-Proposal: New Lesson and Failed Lesson get separate charts and policies but share lesson-handling code. Resuming an interrupted activity continues that activity; it is not another activity type.
+New and failed lessons are paths within Lesson capture. Resuming an interrupted activity continues that activity; it is not another activity type.
 
 For every path, explicitly agree on what happens when the agent is uncertain, a field behaves unexpectedly, submission feedback is unclear, or the browser loses its place. The goal remains completion. Do not silently reuse the old intentional-correct/incorrect sequences.
 
@@ -133,7 +134,7 @@ Discuss batch size, automatic versus reviewed commits, concurrent accounts, retr
 
 - `v1/` holds the charts describing the old system.
 - `v2/` will hold the agreed designs for the replacement. Start with `1-queue-processing.dots`, then `2-activity-selection.dots`.
-- Add six Activity Capture charts, each covering doing the activity and reviewing its history page. Add a separate Post-Activity Processing chart for the general actions shared by all activities, followed by preparation and commit charts.
+- Keep one shared Questions document and five Activity Capture documents, each covering doing the activity and reviewing its history page. Add their charts as the designs are settled, then a separate Post-Activity Processing chart, followed by preparation and commit charts.
 - Update this plan as decisions are made. Keep unanswered questions visible rather than filling them with assumptions.
 - After the designs fit together, agree on the implementation sequence and checks using saved captures. Test completion and recovery before switching live accounts to the replacement.
 
