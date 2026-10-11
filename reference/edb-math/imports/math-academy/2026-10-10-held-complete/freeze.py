@@ -64,6 +64,7 @@ def main():
     raw = read(ORIGINAL / 'recovery-input.json')
     assert held == set(rows) and len(held) == starting['held'] == 839
     final, events, worker_of = {}, [], {}
+    supplemental = read(ROOT / 'supplemental-revision-reasons.json')
     for worker in WORKERS:
         assigned = read(ROOT / worker / 'assignment.json')
         submitted = {}
@@ -74,7 +75,7 @@ def main():
             mid = record['id']
             assert mid in assigned, (worker, mid, 'unassigned')
             if mid in submitted:
-                assert record.get('revision_reason'), (mid, 'unexplained revision')
+                assert record.get('revision_reason') or supplemental.get(worker + '/' + mid), (mid, 'unexplained revision')
             submitted[mid] = record
             events.append(dict(record, reviewer=worker))
         assert set(submitted) == set(assigned), (worker, 'incomplete coverage', sorted(set(assigned)-set(submitted)))
@@ -118,7 +119,9 @@ def main():
             assert decision['hold_reason'] in HOLD_REASONS and decision.get('explanation'), mid
             holds[mid] = dict(decision, source_hashes=local_hashes,
                               source_problem=problem, source_quote=solution,
-                              solution_location=location, reviewer=worker_of[mid])
+                              solution_location=location, reviewer=worker_of[mid],
+                              original_before_fields=copy.deepcopy(before['fields']),
+                              before_layout_sha256=hashlib.sha256(json.dumps(before, sort_keys=True, ensure_ascii=False).encode()).hexdigest())
             continue
         assert len(decision['fields']) == len(before['fields']), (mid, 'incomplete fields')
         assert len({f['key'] for f in decision['fields']}) == len(decision['fields'])
@@ -136,7 +139,14 @@ def main():
             assert Path(loc['file']) == path / 'state.json', (mid, 'different capture')
             cited = pointer(state, loc['json_pointer'])
             if loc['json_pointer'].endswith('/worked_solution'):
-                assert loc == location and f['source_quote'] in solution, (mid, 'quote/location mismatch')
+                assert loc['json_pointer'] in {f'/questions/{mid}/after/worked_solution', f'/questions/{mid}/history/worked_solution'}
+                assert cited == solution and f['source_quote'] in cited, (mid, 'quote/location mismatch')
+                observed_stage = rec[loc['json_pointer'].split('/')[3]]
+                observed_problem = observed_stage.get('source_problem') or observed_stage.get('problem')
+                if observed_problem:
+                    assert observed_problem == problem, (mid, 'different observed prompt')
+                if observed_stage.get('fields'):
+                    assert [(g['key'], g['type'], [answer(c) for c in g['choices']]) for g in observed_stage['fields']] == [(g['key'], g['type'], [answer(c) for c in g['choices']]) for g in before['fields']], (mid, 'different observed field version')
             else:
                 assert loc['json_pointer'].endswith('/source_correct')
                 assert cited == f['answer'], (mid, 'grade answer mismatch')
@@ -167,12 +177,16 @@ def main():
                 assert decision['restored_problem'] == restored, (mid, 'Roman statement restoration mismatch')
             assert any(re.search(r'\b(?:I|II|III)\b', c['value']) for field in before['fields'] for c in field['choices'])
             audit['restored_problem'] = restored
+            audit['restoration_type'] = 'roman_statement_labels'
             audit['layout_note'] = 'Restore original I/II/III ordered statement labels, preserving all statement text and order from the captured questionStatements list.'
             restored_count += 1
             situations['roman_labels_restored_from_html'].append(mid)
         elif decision.get('restored_problem'):
             audit['restored_problem'] = decision['restored_problem']
             audit['layout_note'] = decision['layout_note']
+            audit['restoration_type'] = 'select_field_layout' if rows[mid]['category'] == 'select_field_binding' else 'phantom_mathml_blank'
+            if rows[mid]['category'] == 'select_field_binding':
+                audit['layout_recovery'] = {'method': 'captured_HTML_field_geometry', 'note': decision['layout_note']}
         reviewed[mid] = audit
         used[mid] = {'occurrences': [copy.deepcopy(o)]}
     assert set(reviewed) | set(holds) == held and not set(reviewed) & set(holds)
