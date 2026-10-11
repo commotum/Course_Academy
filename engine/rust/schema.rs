@@ -771,6 +771,7 @@ fn check_responses(
     item: u64,
     additions: &[Value],
     new: &BTreeMap<String, Record>,
+    require_complete: bool,
 ) -> Result<Vec<Value>> {
     let mut responses: Vec<Value> = s
         .refs(item, "task-item/responses")?
@@ -778,7 +779,7 @@ fn check_responses(
         .map(Value::from)
         .collect();
     responses.extend_from_slice(additions);
-    if responses.is_empty() && new.is_empty() {
+    if responses.is_empty() && new.is_empty() && !require_complete {
         return Ok(vec![]);
     }
     let q = s.reference(item, "task-item/content")?;
@@ -790,38 +791,48 @@ fn check_responses(
     let mut used = BTreeSet::new();
     let mut ownership = vec![];
     for response in responses {
-        let field =
-            if let Some((temp, r)) = response.as_str().and_then(|x| new.get(x).map(|r| (x, r))) {
-                used.insert(temp.to_owned());
-                let field = s.eid(&r["field"])?;
-                if s.ident(&json!(s.reference(field, "answer-field/type")?))?
-                    != "answer-field.type/blank"
+        let field = if let Some((temp, r)) =
+            response.as_str().and_then(|x| new.get(x).map(|r| (x, r)))
+        {
+            used.insert(temp.to_owned());
+            let field = s.eid(&r["field"])?;
+            let kind = s.ident(&json!(s.reference(field, "answer-field/type")?))?;
+            if !matches!(
+                kind.as_str(),
+                "answer-field.type/blank" | "answer-field.type/free"
+            ) {
+                return Err("new entered answers require a blank or free field".into());
+            }
+            if kind == "answer-field.type/free" && s.ident(&r["answer/type"])? != "answer.type/text"
+            {
+                return Err("written free responses use text answer entities".into());
+            }
+            let answer_type = s.eid(&r["answer/type"])?;
+            for prior in s.refs(field, "answer-field/choices")? {
+                let old = s.entity(prior)?;
+                if s.eid(&old["answer/type"])? == answer_type
+                    && old["answer/value"] == r["answer/value"]
                 {
-                    return Err("new entered answers require a blank field".into());
+                    return Err("reuse the existing answer value in this field".into());
                 }
-                let answer_type = s.eid(&r["answer/type"])?;
-                for prior in s.refs(field, "answer-field/choices")? {
-                    let old = s.entity(prior)?;
-                    if s.eid(&old["answer/type"])? == answer_type
-                        && old["answer/value"] == r["answer/value"]
-                    {
-                        return Err("reuse the existing answer value in this field".into());
-                    }
-                }
-                ownership.push(json!({"db/id":field,"answer-field/choices":[temp],
+            }
+            ownership.push(json!({"db/id":field,"answer-field/choices":[temp],
                                       "db/ensure":keyword("answer-field/validate")}));
-                field
-            } else {
-                let id = s.eid(&response)?;
-                let owners = s.owners(id, "answer-field/choices")?;
-                if owners.len() != 1 || !s.types(id)?.contains("answer") {
-                    return Err("answer must belong to exactly one field".into());
-                }
-                owners[0]
-            };
+            field
+        } else {
+            let id = s.eid(&response)?;
+            let owners = s.owners(id, "answer-field/choices")?;
+            if owners.len() != 1 || !s.types(id)?.contains("answer") {
+                return Err("answer must belong to exactly one field".into());
+            }
+            owners[0]
+        };
         if !fields.contains(&field) || !seen.insert(field) {
             return Err("response field outside question or answered twice".into());
         }
+    }
+    if require_complete && seen != fields.into_iter().collect() {
+        return Err("answer every field before completing a free response question".into());
     }
     if used != new.keys().cloned().collect() {
         return Err("new answers must attach to this item".into());
@@ -854,7 +865,15 @@ pub fn completion_transaction(
         return Err("completion requires terminal item status".into());
     }
     let content = s.reference(item, "task-item/content")?;
-    let is_gradable = s.types(content)?.contains("question") && !s.is_example(content);
+    let is_question = s.types(content)?.contains("question") && !s.is_example(content);
+    let has_free = is_question && crate::learning::has_free_fields(s, content)?;
+    let is_gradable = is_question && !has_free;
+    if has_free && terminal_name != "task-item.status/completed" {
+        return Err("free response questions complete without an automatic grade".into());
+    }
+    if has_free && engine.snapshot() != loaded.engine.snapshot() {
+        return Err("free response completion cannot change correctness or mastery state".into());
+    }
     if is_gradable == (terminal_name == "task-item.status/completed") {
         return Err("item terminal status does not match its content".into());
     }
@@ -921,6 +940,13 @@ pub fn completion_transaction(
             }
             change.insert("db/ensure".into(), keyword("task-item/validate"));
         } else if target.as_u64() == Some(task) {
+            if has_free
+                && ["learner-task/xp-earned", "learner-task/xp-base"]
+                    .iter()
+                    .any(|key| change.contains_key(*key))
+            {
+                return Err("free response completion does not award XP".into());
+            }
             change = task_change(s, &Value::Object(change), task, at)?;
         } else if let Some(t) = target.as_str().filter(|t| {
             !t.is_empty() && !t.starts_with(':') && !t.starts_with("engine-") && *t != "edb.tx"
@@ -957,7 +983,7 @@ pub fn completion_transaction(
         }
         forms.push(Value::Object(change));
     }
-    forms.extend(check_responses(s, item, &responses, &new)?);
+    forms.extend(check_responses(s, item, &responses, &new, has_free)?);
     if !targets.contains(&task.to_string()) {
         forms.push(Value::Object(task_change(
             s,

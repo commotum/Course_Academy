@@ -3,8 +3,10 @@ from __future__ import annotations
 import hashlib
 import os
 import re
+import shlex
 import subprocess
 import tempfile
+import uuid
 from pathlib import Path
 from .edn import dumps, loads, kw
 from ..storage import atomic_text
@@ -45,11 +47,28 @@ class EDBClient:
             raise subprocess.CalledProcessError(result.returncode, args, result.stdout, diagnostic)
         return result.stdout
 
+    def status(self):
+        """Read the immutable database lineage alongside its current basis."""
+        lines = re.findall(r'^STATUS\s+(.+)$', self.command('status', timeout=30), re.M)
+        if len(lines) != 1:
+            raise ValueError('EDB status omitted an unambiguous database identity')
+        pairs = [token.split('=', 1) for token in shlex.split(lines[0]) if '=' in token]
+        for key in ('database', 'lineage', 'basis_t'):
+            if sum(name == key for name, value in pairs) != 1:
+                raise ValueError('EDB status omitted an unambiguous ' + key)
+        values = dict(pairs)
+        if values['database'] != str(self.config.database):
+            raise ValueError('EDB status returned a different database')
+        if not re.fullmatch(r'\d+', values['basis_t']):
+            raise ValueError('EDB status returned an invalid basis')
+        try:
+            lineage = str(uuid.UUID(values['lineage']))
+        except ValueError as error:
+            raise ValueError('EDB status returned an invalid database lineage') from error
+        return {'database': values['database'], 'lineage': lineage, 'basis': int(values['basis_t'])}
+
     def basis(self):
-        match = re.search(r'\bbasis_t=(\d+)', self.command('status', timeout=30))
-        if not match:
-            raise ValueError('EDB status omitted the current basis')
-        return int(match[1])
+        return self.status()['basis']
 
     def query(self, source, inputs, directory, name, basis=None):
         directory = Path(directory)
@@ -65,6 +84,9 @@ class EDBClient:
         return loads(text)
 
     def snapshot(self, content, directory, basis):
+        # Numeric entity IDs and transaction bases only identify facts within
+        # one lineage. Bind the reads before preparing a durable write request.
+        identity = self.status()
         topics = {int(q.get('topic_id') or content.get('topic_id')) for q in
                   content.get('questions', []) + content.get('canonical_examples', [])
                   if q.get('topic_id') or content.get('topic_id')}
@@ -156,7 +178,7 @@ class EDBClient:
         for start in range(0, len(ids), 100):
             facts += self.query('[:find ?e ?a ?v ?s :in $ [?e ...] :where [?e ?a ?v _ ?s]]',
                                 [ids[start:start + 100]], directory, 'facts-' + str(start), basis)
-        return {'basis': basis, 'entities': list(entities.values()), 'attributes': attributes,
+        return {'basis': basis, 'lineage': identity['lineage'], 'entities': list(entities.values()), 'attributes': attributes,
                 'idents': sources, 'facts': facts}
 
     def question_topic(self, question_id, directory):

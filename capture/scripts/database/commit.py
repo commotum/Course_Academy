@@ -83,8 +83,14 @@ class Committer:
     def save_request(self, batch, snapshot, content_hash):
         if self.pending():
             raise ValueError('A prior exact request must be recovered before creating another')
+        status = self.client.status()
+        if status['database'] != str(self.config.database) or not status.get('lineage'):
+            raise ValueError('Cannot bind request to the configured database lineage')
+        if snapshot.get('lineage') != status['lineage']:
+            raise ValueError('Preparation snapshot belongs to another or unknown database lineage; prepare it again')
         transaction = (self.directory / 'transaction.edn').read_text()
         request = {**connection_identity(self.config), 'basis': snapshot['basis'], 'source': batch['source'],
+                   'database_lineage': status['lineage'],
                    'request_key': 'capture-' + str(uuid.uuid4()), 'transaction': transaction,
                    'transaction_sha256': hashlib.sha256(transaction.encode()).hexdigest(),
                    'content_sha256': content_hash, 'batch_edn': dumps(batch), 'snapshot_edn': dumps(snapshot)}
@@ -96,6 +102,11 @@ class Committer:
     def submit(self, request):
         if any(request[k] != v for k,v in connection_identity(self.config).items()):
             raise ValueError('Pending request belongs to another database connection; retaining it unchanged')
+        if not request.get('database_lineage'):
+            raise ValueError('Pending request has no database lineage; retaining it unchanged for reconciliation')
+        status = self.client.status()
+        if status['database'] != request['database'] or status['lineage'] != request['database_lineage']:
+            raise ValueError('Pending request belongs to another database lineage; retaining it unchanged')
         if hashlib.sha256(request['transaction'].encode()).hexdigest() != request['transaction_sha256']:
             raise ValueError('Saved request integrity check failed')
         tx_path = self.directory / 'transaction.edn'

@@ -19,7 +19,7 @@ ALLOWED = {f'{kind}/{name}' for kind, names in {
     'topic': ('id', 'math-academy-id', 'title', 'knowledge-points', 'difficulty'),
     'knowledge-point': ('id', 'title', 'canonical-example', 'questions'),
     'question': ('id', 'math-academy-id', 'problem', 'worked-solution', 'difficulty', 'requires-calculator', 'answer-fields'),
-    'answer-field': ('id', 'key', 'type', 'presentation', 'choices', 'correct'),
+    'answer-field': ('id', 'key', 'type', 'choices', 'correct'),
     'answer': ('id', 'type', 'value', 'feedback'),
     'tutorial': ('id', 'math-academy-id', 'title', 'content'),
     'activity': ('id', 'math-academy-id', 'title', 'type', 'scope', 'course', 'steps', 'first-step', 'time-limit-seconds', 'expected-seconds'),
@@ -461,7 +461,7 @@ class Preparation:
             plan.set(target, old, attr, value)
         fields = []
         for field in question.get('answer_fields', []):
-            signature = [field['key'], field['type'], sorted({(c['type'], c['value']) for c in field['choices']}), field['correct_type'], field['correct_value'], field.get('presentation')]
+            signature = [field['key'], field['type'], sorted({(c['type'], c['value']) for c in field['choices']}), field['correct_type'], field['correct_value']]
             previous = None
             for candidate in (old or {}).get(':question/answer-fields', []):
                 ctype = candidate.get(':answer-field/type', {})
@@ -469,7 +469,7 @@ class Preparation:
                 correct = candidate.get(':answer-field/correct', {})
                 choices = [(c[':answer/type'][':db/ident'].rsplit('/',1)[-1], c[':answer/value']) for c in candidate.get(':answer-field/choices', [])]
                 correct_type = correct.get(':answer/type', {}).get(':db/ident', '').rsplit('/',1)[-1]
-                stored = [candidate.get(':answer-field/key'), str(ctype).rsplit('/',1)[-1], sorted(set(choices)), correct_type, correct.get(':answer/value'), candidate.get(':answer-field/presentation')]
+                stored = [candidate.get(':answer-field/key'), str(ctype).rsplit('/',1)[-1], sorted(set(choices)), correct_type, correct.get(':answer/value')]
                 if stored == signature:
                     previous = candidate
                     break
@@ -487,8 +487,6 @@ class Preparation:
                     correct = at
             for attr, value in (('answer-field/key',field['key']), ('answer-field/type',kw('answer-field.type/' + field['type'])), ('answer-field/correct',correct)):
                 plan.set(ft, previous, attr, value)
-            if field.get('presentation'):
-                plan.set(ft, previous, 'answer-field/presentation', field['presentation'])
             plan.set(ft, previous, 'answer-field/choices', choices, many=True)
             fields.append(ft)
         if fields or not example:

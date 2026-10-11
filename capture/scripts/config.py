@@ -17,6 +17,7 @@ class Config:
     output_root: Path | None = None
     math_root: Path = Path("/media/jake/SSD/EDB/math")
     edb_bin: Path | None = None
+    preview_bin: Path | None = None
     endpoint: str = "/tmp/edb-math/writer.sock"
     database: str = "math"
     postgres_url: str = "host=/tmp/edb-math port=55432 dbname=math user=edb_peer sslmode=disable options='-c search_path=public'"
@@ -62,6 +63,8 @@ class Config:
         self.output_root = Path(self.output_root or self.repo_root / "reference/mathacademy/capture" / self.account).resolve()
         self.math_root = Path(self.math_root).resolve()
         self.edb_bin = Path(self.edb_bin or os.environ.get("EDB_BIN", self.repo_root / ".local/edb/capture-runtime/math-edb")).resolve()
+        if self.preview_bin is not None:
+            self.preview_bin = Path(self.preview_bin).resolve()
         old_state = self.repo_root / ".local" / ("question_capture" if self.account == "foundations" else "question_capture-workers/" + self.account)
         self.profile = Path(self.profile or old_state / "browser-profile").resolve()
         auth = read_json(old_state / "profile-auth.json", {})

@@ -508,7 +508,7 @@ pub(super) fn mutate(
         let (value, answer) = if matches!(kind.as_str(), "blank" | "free") {
             let value = response["value"]
                 .as_str()
-                .ok_or("Blank response must contain a string value")?;
+                .ok_or("Entered response must contain a string value")?;
             if value.len() > if kind == "free" { 64000 } else { 4096 } {
                 return Err("Response is too long".into());
             }

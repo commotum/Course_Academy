@@ -36,6 +36,7 @@ def parser():
     cli.add_argument("--learner-id", help="Learner identity whose persisted :learner/targets determine priority")
     cli.add_argument("--math-root", type=Path)
     cli.add_argument("--edb-bin", type=Path)
+    cli.add_argument("--preview-bin", type=Path, help="Native EDB preview executable; default builds the shared schema predicates locally")
     cli.add_argument("--endpoint")
     cli.add_argument("--database")
     cli.add_argument("--postgres-url")

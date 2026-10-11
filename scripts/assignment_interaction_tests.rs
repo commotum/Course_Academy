@@ -576,6 +576,15 @@ fn assignment_checkbox_unchecked_is_explicit_false_and_foreign_answers_are_rejec
     let item = *item_map(&focused, task, &occurrences(&focused, f.activity)?)?
         .get(&f.second)
         .unwrap();
+    let foreign = focused.reference(f.first_field, "answer-field/correct")?;
+    assert!(
+        f.act(
+            "assignment-answer",
+            json!({"itemId":item,"responses":[{"fieldId":f.second_field,"choiceId":foreign}]}),
+            2500
+        )
+        .is_err()
+    );
     let saved = f.act(
         "assignment-answer",
         json!({"itemId":item,"responses":[{"fieldId":f.second_field,"choiceId":f.right}]}),
@@ -583,5 +592,67 @@ fn assignment_checkbox_unchecked_is_explicit_false_and_foreign_answers_are_rejec
     )?;
     assert_eq!(status(&saved, item, "task-item/status")?, "correct");
     assert_eq!(saved.refs(item, "task-item/responses")?, vec![f.right]);
+    Ok(())
+}
+
+#[test]
+fn mixed_free_assignment_reuses_text_even_when_reference_is_math_without_partial_grade()
+-> Result<()> {
+    let mut f = Fixture::new()?;
+    let before = f.snapshot()?;
+    let question = before.reference(f.first, "step/content")?;
+    let report = offline_tx(
+        &f.db,
+        &format!(
+            r#"[
+      {{:db/id "reference" :answer/id #uuid "00000000-0000-4000-8000-000000000050" :answer/type :answer.type/math :answer/value "2"}}
+      {{:db/id "entered" :answer/id #uuid "00000000-0000-4000-8000-000000000051" :answer/type :answer.type/text :answer/value "2"}}
+      {{:db/id "written" :answer-field/id #uuid "00000000-0000-4000-8000-000000000052" :answer-field/key "reasoning" :answer-field/type :answer-field.type/free :answer-field/choices ["reference" "entered"] :answer-field/correct "reference" :db/ensure :answer-field/validate}}
+      {{:db/id {question} :question/answer-fields ["written"]}}
+    ]"#
+        ),
+        1100,
+        engine_source(),
+    )?;
+    let free = report.tempids["written"];
+    let entered = report.tempids["entered"];
+    let reference = report.tempids["reference"];
+    f.db = report.db_after;
+    let focused = f.focus(f.first, 2000)?;
+    let task = focused
+        .refs(f.learner, "learner/activity")?
+        .into_iter()
+        .find(|task| focused.reference(*task, "learner-task/activity").ok() == Some(f.activity))
+        .unwrap();
+    let item = item_map(&focused, task, &occurrences(&focused, f.activity)?)?[&f.first];
+    // The blank's deliberately incorrect answer cannot turn the mixed question
+    // into an automatically incorrect observation.
+    let saved = f.act(
+        "assignment-answer",
+        json!({"itemId":item,"responses":[
+            {"fieldId":f.first_field,"value":"99"}, {"fieldId":free,"value":"2"}
+        ]}),
+        3000,
+    )?;
+    assert_eq!(status(&saved, item, "task-item/status")?, "completed");
+    assert_eq!(saved.refs(free, "answer-field/choices")?.len(), 2);
+    assert!(saved.refs(item, "task-item/responses")?.contains(&entered));
+    assert!(
+        !saved
+            .refs(item, "task-item/responses")?
+            .contains(&reference)
+    );
+    assert_eq!(saved.entity(f.progress)?, before.entity(f.progress)?);
+    let page = assignment_reader::detail(&saved, f.learner, ASSIGNMENT)?;
+    let fields = page["assignment"]["steps"][0]["content"]["fields"]
+        .as_array()
+        .unwrap();
+    let field = fields
+        .iter()
+        .find(|field| field["entityId"] == free)
+        .unwrap();
+    assert_eq!(field["response"]["type"], "text");
+    assert_eq!(field["correctAnswer"]["type"], "math");
+    assert_eq!(field["choices"], json!([]));
     Ok(())
 }

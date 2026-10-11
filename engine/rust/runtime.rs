@@ -1860,6 +1860,59 @@ mod tests {
         }
     }
     #[test]
+    fn free_completion_boundary_accepts_neutral_owned_responses_and_rejects_grade_or_credit() {
+        let mut f = Fixture::new("review");
+        f.seed(20, 1.0);
+        f.put(900, json!({"db/ident":"answer-field.type/free"}));
+        f.put(901, json!({"db/ident":"answer.type/text"}));
+        f.put(902,json!({"answer-field/id":uuid(902),"answer-field/key":"reasoning","answer-field/type":900}));
+        f.set(100, "question/answer-fields", json!([902]));
+        let item = f.present(100);
+        let loaded = f.load();
+        let at = start() + Duration::seconds(1);
+        let changes = vec![
+            json!({"db/id":item,"task-item/status":keyword("task-item.status/completed"),"task-item/responses":["written"]}),
+            json!({"db/id":"written","field":902,"answer/id":uuid(903),"answer/type":901,"answer/value":"**Proof:** $x=y$"}),
+        ];
+        let plan =
+            completion_transaction(&loaded, item, at, changes.clone(), &loaded.engine).unwrap();
+        assert!(
+            plan.forms
+                .iter()
+                .any(|form| form.get("answer/value") == Some(&json!("**Proof:** $x=y$")))
+        );
+        assert!(
+            !plan
+                .forms
+                .iter()
+                .any(|form| form.get("task-item/performance").is_some())
+        );
+        let mut graded = changes.clone();
+        graded[0]["task-item/status"] = keyword("task-item.status/correct");
+        assert!(completion_transaction(&loaded, item, at, graded, &loaded.engine).is_err());
+        let empty =
+            vec![json!({"db/id":item,"task-item/status":keyword("task-item.status/completed")})];
+        assert!(completion_transaction(&loaded, item, at, empty, &loaded.engine).is_err());
+        let mut wrong_type = changes.clone();
+        wrong_type[1]["answer/type"] = keyword("answer.type/math");
+        assert!(completion_transaction(&loaded, item, at, wrong_type, &loaded.engine).is_err());
+        let mut with_performance = changes.clone();
+        with_performance[0]["task-item/performance"] = json!(1.0);
+        assert!(
+            completion_transaction(&loaded, item, at, with_performance, &loaded.engine).is_err()
+        );
+        let mut with_xp = changes.clone();
+        with_xp.push(json!({"db/id":3,"learner-task/xp-earned":1}));
+        assert!(completion_transaction(&loaded, item, at, with_xp, &loaded.engine).is_err());
+        let mut credited = loaded.engine.clone();
+        credited.global_ability.clear();
+        // An explicit state alteration is forbidden even if supplied by a caller
+        // rather than by the ordinary assignment response collector.
+        credited.states.clear();
+        assert!(completion_transaction(&loaded, item, at, changes, &credited).is_err());
+    }
+
+    #[test]
     fn completion_rejections_are_atomic_and_repeated_plans_identical() {
         let mut f = Fixture::new("review");
         f.seed(20, 0.0);

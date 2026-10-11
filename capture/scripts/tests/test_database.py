@@ -221,6 +221,7 @@ class FakeClient:
     """Minimal source-aware fact store; applies real prepared forms and readbacks."""
     def __init__(self):
         self.t=1; self.next_id=1000; self.receipts={}; self.calls=[]; self.timeout_once=False
+        self.database='math'; self.lineage='01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'
         self.idents={':org/Math-Academy':900,':answer-field.type/blank':901,':answer.type/math':902,':question.difficulty/easy':903,
             ':activity.type/lesson':904, ':activity.type/assignment':905}
         many={'topic/knowledge-points','knowledge-point/questions','question/answer-fields','answer-field/choices','activity/steps','multistep/steps','assigned-problem/topic-coverage'}
@@ -234,6 +235,7 @@ class FakeClient:
                 for val in values:
                     self.facts.setdefault((e[':db/id'],a[1:]),[]).append((val[':db/id'] if isinstance(val,dict) else val,900))
     def basis(self):return self.t
+    def status(self):return {'database':self.database,'lineage':self.lineage,'basis':self.t}
     def snapshot(self,content,directory,basis):
         def pull(eid, depth=0):
             result={':db/id':eid}
@@ -243,7 +245,7 @@ class FakeClient:
                 vals=[pull(v,depth+1) if self.attrs[a]['type']==':db.type/ref' and depth<5 else v for v,s in values]
                 result[':'+a]=vals if self.attrs[a]['many'] else vals[-1]
             return result
-        return {'basis':basis,'entities':[pull(eid) for eid in sorted({e for e,a in self.facts})],
+        return {'basis':basis,'lineage':self.lineage,'entities':[pull(eid) for eid in sorted({e for e,a in self.facts})],
             'attributes':[[v['id'],kw(a),kw(v['type']),kw('db.cardinality/'+('many' if v['many'] else 'one'))] for a,v in self.attrs.items()],
             'idents':[[v,kw(k)] for k,v in self.idents.items()],
             'facts':[[e,self.attrs[a]['id'],v,s] for (e,a),values in self.facts.items() for v,s in values]}
@@ -336,7 +338,7 @@ class QueryBackedFakeClient(FakeClient):
 class PipelineTests(unittest.TestCase):
     def setup(self, directory):
         root=Path(directory); capture=root/'capture';capture.mkdir()
-        cfg=SimpleNamespace(database='test',endpoint='test',math_root=root/'math',postgres_url='',source=':org/Math-Academy',derived_source=None,state_root=root/'state')
+        cfg=SimpleNamespace(database='math',endpoint='test',math_root=root/'math',postgres_url='',source=':org/Math-Academy',derived_source=None,state_root=root/'state')
         q=question();q['knowledge_point_id']=str(source_snapshot()['entities'][1][':knowledge-point/id'])
         atomic_json(capture/'content.json',{'task_type':'lesson','topic_id':1,'questions':[q]})
         atomic_json(capture/'capture-complete.json',{'complete':True})
