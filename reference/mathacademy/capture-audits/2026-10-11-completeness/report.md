@@ -113,7 +113,7 @@ Evidence: [standalone-captures.json](standalone-captures.json), [database-covera
 
 ## Checks that passed and repair order
 
-All 6,427 manifested legacy asset files checked passed SHA-256 validation; the new-engine audit checked 140 original asset files with no missing/hash findings, and all 25 standalone diagnostic manifest assets passed. The new snapshot has final judgments for all 318 question records and 52 examples; its 44 tutorials and canonical lesson step coverage have no detected structural gaps. These checks do not excuse the separate missing-body findings.
+All 6,427 manifested legacy asset files checked passed SHA-256 validation; the new-engine audit checked 140 original asset files with no missing/hash findings, and all 25 standalone diagnostic manifest assets passed. All 6,725 unique absolute local image references in normalized question/solution/tutorial Markdown and image choices resolve to existing files; see [image-reference-integrity.json](image-reference-integrity.json). The new snapshot has final judgments for all 318 question records and 52 examples; its 44 tutorials and canonical lesson step coverage have no detected structural gaps. These checks do not excuse the separate missing-body findings.
 
 Repair full-body extraction and proof completeness first, then reprocess the seven affected captures and quiz. Add post-finalization source validation and visible omission reporting, reconcile prepared repairs back into capture evidence, and backfill historical progress. Treat legacy provenance and standalone database reconciliation as explicit recovery inventories rather than changing guesses into confirmed facts.
 
