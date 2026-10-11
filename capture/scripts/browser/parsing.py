@@ -4,6 +4,8 @@ from __future__ import annotations
 import re
 from urllib.parse import urljoin
 
+from ..progress import color_observation
+
 BASE = "https://mathacademy.com"
 LEARN = BASE + "/learn"
 
@@ -172,8 +174,9 @@ def parse_progress(html, course_id):
         if not match:
             continue
         circle = row.select_one(".topicCircle")
-        topics.append({"topic_id": match[1], "title": text(link), "href": link["href"],
-                       "circle_style": circle.get("style") if circle else None,
-                       "displayed_progress": text(row.select_one(".topicProgress"))})
+        topic = {"topic_id": match[1], "title": text(link), "href": link["href"],
+                 "circle_style": circle.get("style") if circle else None,
+                 "displayed_progress": text(row.select_one(".topicProgress"))}
+        topics.append({**topic, **color_observation(topic)})
     return {"course_id": str(course_id), "topics": topics,
             "displayed_progress": text(page.select_one("#courseProgress, .courseProgress, #courseCompletion"))}

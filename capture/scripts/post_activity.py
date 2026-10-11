@@ -4,6 +4,7 @@ from pathlib import Path
 import time
 
 from .activity.evidence import correct_grade
+from .progress import compare_progress
 from .storage import atomic_json, read_json
 
 
@@ -81,16 +82,27 @@ def record(config, activity, directory, content, observation):
     # Later reads describe the account at their own read time, not task completion.
     if not (directory / "progress-before.json").exists():
         atomic_json(directory / "progress-before.json", prior_progress)
+    baseline = read_json(directory / "progress-before.json", {})
+    comparison = compare_progress(baseline, {**observation, 'observed_at': observed_at})
+    comparison.update(task_id=task_id, baseline_source='progress-before.json')
+    atomic_json(directory / "progress-comparison.json", comparison)
     if progress and observed_at >= prior_progress.get("observed_at", 0):
         atomic_json(config.state_root / "progress.json", {"observed_at": observed_at, "progress": progress})
     history = list(previous.get("observation_history", []))
     if not history and previous.get("observations") is not None:
         history.append({"observed_at": previous.get("observed_at"), "observations": previous["observations"]})
-    history.append({"observed_at": observed_at, "observations": observation})
+    entry = {"observed_at": observed_at, "observations": observation, "progress_comparison": comparison}
+    existing_read = next((index for index, item in enumerate(history)
+                         if item.get('observed_at') == observed_at and item.get('observations') == observation), None)
+    if existing_read is None:
+        history.append(entry)
+    else:
+        history[existing_read] = {**history[existing_read], **entry}
     atomic_json(directory / "post-activity.json", {**previous,
         "first_observed_at": previous.get("first_observed_at", previous.get("observed_at", observed_at)),
         "observed_at": observed_at, "completion": completion,
-        "observations": observation, "observation_history": history, "accounting_complete": True,
+        "observations": observation, "observation_history": history, "progress_comparison": comparison,
+        "accounting_complete": True,
         "missing_observations": observation.get("missing", observation.get("pending_reads", [])), "learner_database_writes": 0})
     return completion
 
