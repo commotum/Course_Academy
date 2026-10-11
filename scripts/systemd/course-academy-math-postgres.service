@@ -1,0 +1,15 @@
+[Unit]
+Description=Course Academy math PostgreSQL
+StartLimitIntervalSec=0
+
+[Service]
+Type=notify
+NotifyAccess=main
+WorkingDirectory=%h/Developer/Course_Academy
+ExecStart=/bin/bash %h/Developer/Course_Academy/scripts/start_local_edb.sh --postgres
+Restart=always
+RestartSec=5
+TimeoutStartSec=75
+TimeoutStopSec=75
+KillMode=mixed
+UMask=0077
