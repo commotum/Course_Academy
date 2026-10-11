@@ -1,13 +1,12 @@
 # 2. Activity Selection
 
-Ten choices to put in priority order:
-
-| Activity | Started | Unstarted |
-|---|---|---|
-| Lesson | Started Lesson | Unstarted Lesson |
-| Review | Started Review | Unstarted Review |
-| Assessment | Started Assessment | Unstarted Assessment |
-| Multistep | Started Multistep | Unstarted Multistep |
-| Diagnostic | Started Diagnostic | Unstarted Diagnostic |
-
-Started means begun but not completed. The priority order is still to be decided.
+1. Started Assessment
+2. Started Diagnostic
+3. Started Lesson
+4. Started Review
+5. Started Multistep
+6. Unstarted Diagnostic
+7. Unstarted Lesson (sorted by priority score)
+8. Unstarted Review (sorted by priority score)
+9. Unstarted Multistep
+10. Unstarted Assessment

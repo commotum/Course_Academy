@@ -67,7 +67,9 @@ Agreed form: prioritize ten combinations of activity type and status. The five b
 
 Use the queue record, desired content, existing captured content, and the account's Math Academy progress. Pass the selected activity and its reason to Activity Capture, which applies the activity's answer and completion policy.
 
-The ten choices are listed in `v2/2-activity-selection.md`; their priority order is not yet decided. This replaces the earlier draft's mixture of activity types, requirements, repeats, and capture goals. Any rules for choosing between activities within the same type/status can be discussed after the ten-item order is set.
+The proposed priority order is listed in `v2/2-activity-selection.md`: started Assessment, Diagnostic, Lesson, Review, Multistep; then unstarted Diagnostic, Lesson, Review, Multistep, Assessment. Finish started activities first, giving timed assessments first priority. Among unstarted activities, handle placement before lessons and practice; an assessment offered alone will still be selected even though it ranks last. This is the assistant's recommended order for review, not a user-confirmed order.
+
+This replaces the earlier draft's mixture of activity types, requirements, repeats, and capture goals. Any rules for choosing between activities within the same type/status can be discussed after the ten-item order is set.
 
 Jake expects a required assessment to be the only displayed queue option. Treat that as an observation to verify when needed, rather than a separate priority category.
 
