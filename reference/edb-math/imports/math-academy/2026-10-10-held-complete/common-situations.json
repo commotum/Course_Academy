@@ -1,0 +1,2910 @@
+{
+  "created_at_utc": "2026-10-11T02:53:34.936619+00:00",
+  "scope": "Consolidated common situations and final content holds for all 839 reviewed Math Academy questions.",
+  "status": "Committed and verified: all 21 batches and final readbacks passed at basis 186; the held index was updated to the 26 independently confirmed content holds.",
+  "transaction_status": {
+    "all_batches_committed": true,
+    "per_batch_readbacks_passed": true,
+    "aggregate_readback_verified": true,
+    "aggregate_status": "All 813 final question checks passed at basis186 using <=40-question readback groups after an aggregate query/value-byte-limit failure; the 21 existing durable receipts were reused, with no additional commits.",
+    "held_index_update": "verified;813 removed,26 retained",
+    "basis_before": 165,
+    "database": "math",
+    "source": ":org/Math-Academy",
+    "basis_after": 186
+  },
+  "metrics": {
+    "reviewed": 839,
+    "ready_questions": 813,
+    "ready_fields": 834,
+    "new_questions": 709,
+    "updated_questions": 101,
+    "already_current_questions": 3,
+    "transacted_questions": 810,
+    "transaction_edns": 21,
+    "final_held_questions": 26,
+    "hold_reason_counts": {
+      "math_academy_wrong_key": 5,
+      "contradictory_source": 2,
+      "multiple_correct_options": 19
+    },
+    "restored_roman_lists": 80,
+    "restored_phantom_blank_layouts": 11,
+    "restored_jacobian_select_layouts": 1,
+    "source_discrepancy_records": 48,
+    "notation_only_candidate_differences": 2,
+    "schema_capacity_holdouts": 0,
+    "old_component_entities_preserved": 624,
+    "old_component_facts_preserved": 2395,
+    "planned_retractions_verified": 199
+  },
+  "hold_label_note": "The math_academy_wrong_key bucket includes malformed source content and a convention conflict. It does not mean that all five are proven erroneous captured grading decisions. All 26 have independently confirmed specific content findings; no field-matching-only holds remain.",
+  "authority_policy": "Every ready field was tied to full original prompt, complete saved worked solution, original before choices/layout and same captured version. Original options and source text remain verbatim. No unsupported independently authored key or silent Math Academy repair was used.",
+  "recurring_patterns": [
+    {
+      "id": "source_authority_and_full_field_binding",
+      "title": "Saved solution authority and exact requested roles",
+      "explanation": "Bind every answer field to its original prompt role, complete saved Math Academy solution, original before choices and the same captured field version. Wrong submissions and old candidate answers are not keys. Match prose semantically, translate quantifiers without changing order or domains, and derive the requested complete expression from the source equation chain rather than requiring a literal last-line match.",
+      "situation_types": [
+        "saved_solution_field_binding",
+        "equation_chain_conclusion",
+        "prose_semantic_choice",
+        "quantifier_order_translation",
+        "intentional_wrong_submission"
+      ],
+      "tag_counts": {
+        "saved_solution_field_binding": 273,
+        "equation_chain_conclusion": 79,
+        "prose_semantic_choice": 196
+      },
+      "examples": [
+        {
+          "id": "q-175404",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-183573",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-86413",
+          "final_status": "ready"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "statement_and_blank_layout_restoration",
+      "title": "Roman labels, phantom blanks and field geometry",
+      "explanation": "Restore presentation information from captured HTML without changing mathematics or options: 80 original I/II/III lists, 11 disappearing phantom MathML blank layouts, and one Jacobian select layout. Every select is checked separately in the original row, column or narrative position.",
+      "situation_types": [
+        "roman_statement_subset",
+        "roman_labels_restored_from_html",
+        "phantom_blank_restoration",
+        "blank_box_layout",
+        "select_slot_binding"
+      ],
+      "tag_counts": {
+        "roman_statement_subset": 76,
+        "roman_labels_restored_from_html": 80,
+        "phantom_blank_restoration": 3,
+        "select_slot_binding": 6
+      },
+      "examples": [
+        {
+          "id": "q-101736",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-157052",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-163100",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-335673",
+          "final_status": "ready"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "complete_matrix_and_paired_answers",
+      "title": "Complete matrices and paired eigenvalue answers",
+      "explanation": "Retain nested matrix rows, all signs and entries, complete factors and ordered vector columns. Check paired diagonal/eigenvector matrices together using AP=PD, and pair complex conjugate eigenvalues with their corresponding vector signs. Regression matrices retain the original powers and intercept convention.",
+      "situation_types": [
+        "ordered_matrix_pairs",
+        "complex_conjugate_sign_binding",
+        "nested_matrix_preservation",
+        "ordered_matrix_row_operations",
+        "regression_design_columns"
+      ],
+      "tag_counts": {
+        "nested_matrix_preservation": 7,
+        "regression_design_columns": 3
+      },
+      "examples": [
+        {
+          "id": "q-37088",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-39130",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-80825",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-139651",
+          "final_status": "ready"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "vectors_domains_and_qualifiers",
+      "title": "Vectors, domains, units and qualifiers",
+      "explanation": "Check every vector component, scalar factor, unit, parameter interval, orientation, start point and excluded endpoint. Inverse trigonometric answers must lie in the principal range. Physical problems retain positive-root and growth/removal sign conventions; second ODE solutions must be independent.",
+      "situation_types": [
+        "complete_vector_and_domain",
+        "domain_and_qualifier_binding",
+        "inverse_trig_principal_range",
+        "orientation_startpoint_qualifiers",
+        "sign_and_positive_parameter_qualifier",
+        "second_independent_solution"
+      ],
+      "tag_counts": {
+        "complete_vector_and_domain": 20,
+        "domain_and_qualifier_binding": 6,
+        "inverse_trig_principal_range": 3,
+        "orientation_startpoint_qualifiers": 5,
+        "sign_and_positive_parameter_qualifier": 5,
+        "second_independent_solution": 1
+      },
+      "examples": [
+        {
+          "id": "q-126838",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-117010",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-15856",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-64953",
+          "final_status": "ready"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "blank_factor_and_bounds",
+      "title": "Integral factors and bounds",
+      "explanation": "Determine whether the blank asks for a numerator, one factor, a full integrand or a Jacobian. A factor already outside the blank is not repeated inside it. Preserve all original integration limits and parameter domains.",
+      "situation_types": [
+        "full_integral_factor_and_bounds",
+        "full_integrand_jacobian_factor",
+        "factor_outside_blank"
+      ],
+      "tag_counts": {
+        "full_integral_factor_and_bounds": 9,
+        "full_integrand_jacobian_factor": 1,
+        "factor_outside_blank": 1
+      },
+      "examples": [
+        {
+          "id": "q-160838",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-161198",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-161879",
+          "final_status": "ready"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "original_visual_evidence",
+      "title": "Graphs, diagrams and highlighted entries",
+      "explanation": "Inspect original assets when they determine the answer: holes and filled endpoints, sign changes rather than touches, slope fields, orientation, shading, highlighted matrix entries, and ellipse radii. Local flat extrema follow the source’s non-strict definition. Correct verbal bindings through appended revisions when necessary.",
+      "situation_types": [
+        "graph_continuity_visual",
+        "graph_sign_change_not_touch",
+        "slope_field_visual",
+        "graph_or_highlight_evidence",
+        "nonstrict_flat_extrema",
+        "graph_binding_correction"
+      ],
+      "tag_counts": {
+        "slope_field_visual": 2,
+        "graph_or_highlight_evidence": 6
+      },
+      "examples": [
+        {
+          "id": "q-47559",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-31213",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-115479",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-162747",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-164152",
+          "final_status": "ready"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "recoverable_source_display_errors",
+      "title": "Earlier complete evidence despite later source errors",
+      "explanation": "A later source typo does not establish a wrong key when a complete earlier saved calculation uniquely supports an original option. Record the conflicting text and preserve the source verbatim. This includes matrix signs, units, coefficient errors, Roman labels and incidental prose.",
+      "situation_types": [
+        "matrix_intermediate_final_conflict",
+        "harmless_solution_unit_typo",
+        "substantive_coefficient_conflict",
+        "source_label_typo",
+        "source_exposition_typo"
+      ],
+      "tag_counts": {
+        "matrix_intermediate_final_conflict": 1,
+        "harmless_solution_unit_typo": 1,
+        "source_label_typo": 2,
+        "source_exposition_typo": 1
+      },
+      "examples": [
+        {
+          "id": "q-31954",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-4772",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-345274",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-128139",
+          "final_status": "ready"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "explicit_source_conventions",
+      "title": "Explicit conventions and inherited domains",
+      "explanation": "Apply a clearly stated source convention where the original prompt and options admit it, with a caveat rather than silently redefining a theorem or domain. Examples include rectangular singular-value padding, non-strict extrema, formal IVP classification, closed-segment directional equality, and plane descriptions on an inherited function domain.",
+      "situation_types": [
+        "rectangular_singular_value_convention",
+        "formal_ivp_classification",
+        "mvt_endpoint_convention",
+        "level_surface_domain_convention"
+      ],
+      "tag_counts": {
+        "mvt_endpoint_convention": 1,
+        "level_surface_domain_convention": 1
+      },
+      "examples": [
+        {
+          "id": "q-95354",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-339256",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-106585",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-129197",
+          "final_status": "ready"
+        },
+        {
+          "id": "q-129198",
+          "final_status": "ready"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "equal_integrals_not_unique_pointwise_integrands",
+      "title": "Equal definite integrals create option ambiguities",
+      "explanation": "When the prompt asks for an equivalent integral or an equation’s missing expression, the intended pointwise integrand may be correct without being unique. Symmetry, periodic shifts and equal moments prove that other original options give the same integral. Fourteen final holds fall in this group; their mathematical equalities are proved, while the content defect is failure to specify the intended pointwise construction.",
+      "situation_types": [
+        "multiple_integral_expressions_same_value",
+        "period_shift_equivalent_integrals"
+      ],
+      "tag_counts": {
+        "multiple_integral_expressions_same_value": 13
+      },
+      "examples": [
+        {
+          "id": "q-123458",
+          "final_status": "held"
+        },
+        {
+          "id": "q-126539",
+          "final_status": "held"
+        },
+        {
+          "id": "q-126564",
+          "final_status": "held"
+        },
+        {
+          "id": "q-161862",
+          "final_status": "held"
+        },
+        {
+          "id": "q-161906",
+          "final_status": "held"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "equivalent_geometric_or_algebraic_options",
+      "title": "Equivalent lines, axes and algebraic expressions",
+      "explanation": "Nonzero direction scaling and base-point shifts preserve a line; sign reversal and reordering preserve unoriented principal axes when no order is requested; split polynomial terms can simplify to the same expression. Check complete original options for duplicates before claiming a unique answer.",
+      "situation_types": [
+        "equivalent_line_parametrizations",
+        "unoriented_principal_axes_duplicate",
+        "complete_expression_equivalence"
+      ],
+      "tag_counts": {
+        "equivalent_line_parametrizations": 2,
+        "complete_expression_equivalence": 2
+      },
+      "examples": [
+        {
+          "id": "q-32876",
+          "final_status": "held"
+        },
+        {
+          "id": "q-36754",
+          "final_status": "held"
+        },
+        {
+          "id": "q-97990",
+          "final_status": "held"
+        },
+        {
+          "id": "q-79945",
+          "final_status": "held"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "wording_and_convention_ambiguities",
+      "title": "Wording and convention holds",
+      "explanation": "An undefined proportionality coefficient, a derivative-order reading or coefficient-only treatment of an augmented matrix can conflict with the literal request. Preserve the finding as a wording/convention issue; do not turn it into an unsupported assertion that captured grading rejected a mathematically correct option.",
+      "situation_types": [
+        "undefined_proportionality_constant",
+        "derivative_role_mismatch",
+        "augmented_echelon_convention_conflict"
+      ],
+      "tag_counts": {
+        "undefined_proportionality_constant": 1,
+        "derivative_role_mismatch": 1
+      },
+      "examples": [
+        {
+          "id": "q-51252",
+          "final_status": "held"
+        },
+        {
+          "id": "q-79315",
+          "final_status": "held"
+        },
+        {
+          "id": "q-72575",
+          "final_status": "held"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    },
+    {
+      "id": "proven_domain_and_logical_defects",
+      "title": "Substantive domain and logical defects",
+      "explanation": "Declared domains must define the object, and an asserted necessary conclusion must follow. Undefined sequence terms, singular polar endpoints, impossible real loci, and the invalid converse from one tangent overestimate to neighborhood concavity remain held; no repaired prompt or unsupported replacement key is imported.",
+      "situation_types": [
+        "source_domain_defect",
+        "singular_endpoint_path",
+        "nonexistent_real_quadratic_level",
+        "invalid_converse_of_concavity"
+      ],
+      "tag_counts": {
+        "source_domain_defect": 1,
+        "invalid_converse_of_concavity": 1
+      },
+      "examples": [
+        {
+          "id": "q-123316",
+          "final_status": "held"
+        },
+        {
+          "id": "q-123439",
+          "final_status": "held"
+        },
+        {
+          "id": "q-79044",
+          "final_status": "held"
+        },
+        {
+          "id": "q-97995",
+          "final_status": "held"
+        },
+        {
+          "id": "q-115261",
+          "final_status": "held"
+        }
+      ],
+      "counts_note": "Tags overlap; summed tag counts are not question coverage."
+    }
+  ],
+  "resolved_earlier_evidence_examples": [
+    {
+      "id": "q-4772",
+      "final_status": "ready",
+      "explanation": "The complete saved differentiation gives acceleration 2. Original displacement and options use centimeters and seconds, so the unique original answer is 2 cm/s². The final meter unit labels are retained as source errors; no answer conversion or invented key was used.",
+      "source_disagreements": [
+        "Saved final solution labels its dimensionally correct second-derivative calculation with m/s²; original prompt and original correct choice both use cm/s²."
+      ],
+      "review_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/final-decisions.json",
+      "review_json_pointer": "/q-4772"
+    },
+    {
+      "id": "q-31954",
+      "final_status": "ready",
+      "explanation": "The completed Gauss–Jordan augmented matrix supplies the entire valid inverse with bottom-right −1. A later standalone inverse prints +1. The full earlier matrix supports the unique original option and multiplication verifies the inverse; the captured rejection concerns a different submitted option.",
+      "source_disagreements": [
+        "Final standalone inverse displays bottomright +1, contradicting -1 in the full completed Gauss–Jordan chain. The chain explicitly supports choice b; D times that inverse is identity."
+      ],
+      "review_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/final-decisions.json",
+      "review_json_pointer": "/q-31954"
+    },
+    {
+      "id": "q-345274",
+      "final_status": "ready",
+      "explanation": "The full Step4 lowest-order coefficient is (−7λ²+9λ−5)a₀. The source nonzero-a₀/coefficient-zero rule supports the original equation 7λ²−9λ+5=0. Later displays repeatedly replace 9λ with 2λ; this source coefficient error is documented without treating it as proof of a bad graded key.",
+      "source_disagreements": [
+        "After correctly collecting -7λ²+9λ-5 in Step4, source repeatedly replaces 9λ by2λ in subsequent displays and final indicial equation. This is a source coefficient error; the full earlier coefficient and stated coefficient-zero rule uniquely support original choice e,7λ²-9λ+5=0."
+      ],
+      "review_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/final-decisions.json",
+      "review_json_pointer": "/q-345274"
+    }
+  ],
+  "peer_releases": [
+    {
+      "id": "q-106585",
+      "decision": "resolve",
+      "explanation": "Not certainly wrong: standard MVT guarantees an interior witness, while the explicit saved MA convention asks for closed-segment points satisfying its directional equality. Both offered points genuinely satisfy that equality. The original prompt does not explicitly exclude endpoints. Recover intended pair under its stated source convention and record terminology caveat.",
+      "source_review": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/math-academy/2026-10-10-held-complete/math/hold-peer-review.jsonl"
+    },
+    {
+      "id": "q-129197",
+      "decision": "resolve",
+      "explanation": "Revised peer conclusion: prompt asks a geometric description of level surfaces of the given rational function, whose inherent domain already excludesx+6y=0. Source explicitly derives the uniquely correct original plane equationb. On that original domain every level surface is planar and satisfies exactly this equation; ordinary inherited-domain reading suffices. Calling the family full ambient planes would be inaccurate, so record that omission without changing original choice.",
+      "source_review": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/math-academy/2026-10-10-held-complete/math/hold-peer-review.jsonl"
+    },
+    {
+      "id": "q-129198",
+      "decision": "resolve",
+      "explanation": "Earlier complete source explicitly gives x−2y+z=e^c>0. Offered option2 states plane family r² without declaring all-real r; choosing r²=e^c already implies r!=0. Later source all-real-r range is an erroneous display range, recoverable from the complete earlier positive family rather than proof of bad offered key.",
+      "source_review": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/math-academy/2026-10-10-held-complete/math/hold-peer-review.jsonl"
+    },
+    {
+      "id": "q-4772",
+      "decision": "resolve",
+      "explanation": "Full saved source correctly differentiates s(t)=t²+3t to v=2t+3 and then a=2. With original displacement explicitly in centimeters and time in seconds, that earlier complete source calculation supports the unique original choice3, 2 cm/s². Final m/s² labels are erroneous prose units; no conversion or independently authored answer is needed. Preserve the original solution and record this discrepancy, releasing the hold.",
+      "source_review": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/math-academy/2026-10-10-held-complete/compound/hold-peer-review.jsonl"
+    }
+  ],
+  "peer_verification": {
+    "valid": true,
+    "held": 26,
+    "all_final_holds_independently_confirmed": true,
+    "no_matching_only_hold_reasons": true,
+    "held_ids": [
+      "q-115261",
+      "q-123316",
+      "q-123439",
+      "q-123458",
+      "q-126539",
+      "q-126564",
+      "q-126748",
+      "q-161862",
+      "q-161863",
+      "q-161896",
+      "q-161897",
+      "q-161901",
+      "q-161903",
+      "q-161904",
+      "q-161906",
+      "q-161908",
+      "q-161913",
+      "q-32876",
+      "q-36754",
+      "q-51252",
+      "q-72575",
+      "q-79044",
+      "q-79315",
+      "q-79945",
+      "q-97990",
+      "q-97995"
+    ],
+    "peer_release_ids": [
+      "q-106585",
+      "q-129197",
+      "q-129198",
+      "q-4772"
+    ]
+  },
+  "notation_only_differences": [
+    {
+      "id": "q-1913",
+      "difference": "cot rendered with or without \\operatorname; derivative expression is equivalent.",
+      "classification": "notation_only_not_incorrect_key"
+    },
+    {
+      "id": "q-39130",
+      "difference": "TeX \\mp versus Unicode ∓; the eigenvalue/vector sign pairing is unchanged.",
+      "classification": "notation_only_not_incorrect_key"
+    }
+  ],
+  "final_holds": [
+    {
+      "id": "q-115261",
+      "hold_reason": "math_academy_wrong_key",
+      "finding_kind": "proven_invalid_logical_converse",
+      "explanation": "A tangent lying above a function near one base point does not imply concavity throughout that neighborhood. Source reverses a sufficient concavity condition into necessity; none of the offered conclusions must hold under the given assumption.",
+      "interpretation_distinction": "A counterexample disproves the claimed necessary concavity conclusion.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-115261",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14029603/state.json",
+        "json_pointer": "/questions/q-115261/history/worked_solution"
+      },
+      "plain_explanation": "A tangent above the function near one base point does not force concavity throughout that neighborhood. A twice continuously differentiable counterexample has an overestimating tangent and a second derivative that changes sign arbitrarily near the point. The source reverses a sufficient condition into necessity."
+    },
+    {
+      "id": "q-123316",
+      "hold_reason": "contradictory_source",
+      "finding_kind": "proven_undefined_or_nonexistent_object",
+      "explanation": "Statement I is presented as a sequence for n>=1 but n=1 gives division by zero. Saved solution studies its n>=2 tail, which is not the sequence as defined in the unmodified prompt.",
+      "interpretation_distinction": "The declared object is undefined at required points or does not exist over the real domain; an intended repair is not imported.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-123316",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14061665/state.json",
+        "json_pointer": "/questions/q-123316/history/worked_solution"
+      },
+      "plain_explanation": "Statement I declares a_n=n³/(1−n²) for n≥1, but the first term divides by zero. The saved divergence calculation describes the n≥2 tail, not the unmodified sequence."
+    },
+    {
+      "id": "q-123439",
+      "hold_reason": "math_academy_wrong_key",
+      "finding_kind": "proven_undefined_or_nonexistent_object",
+      "explanation": "The original path r=sec³θ is declared on the closed interval [−π/2,π/2], but r is undefined at both endpoints and is unbounded there. The claimed finite-interval arc-length problem therefore lacks a defined closed path and a finite line integral: speed sec³θ√(1+9tan²θ) has divergent endpoint integrals. If read as an improper infinite length, both the MA option 4 and original option 1 have value +∞, so there is still no unique equivalent expression. No source repair or replacement interval is justified.",
+      "interpretation_distinction": "The declared object is undefined at required points or does not exist over the real domain; an intended repair is not imported.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-123439",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14079137/state.json",
+        "json_pointer": "/questions/q-123439/history/worked_solution"
+      },
+      "plain_explanation": "The polar path r=sec³θ is undefined at the declared endpoints ±π/2, and its arc length diverges. Interpreting an improper infinite length still makes more than one original expression equal +∞. No interval repair is imported."
+    },
+    {
+      "id": "q-123458",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "The prompt asks which expression is equivalent to the line integral. Original choice 4 is the MA constructed expression ∫₀²π√(5−3sin4θ)dθ, but original choice 0 ∫₀²π√(5+3sin4θ)dθ and choice 1 ∫₀²π√(5−3cos4θ)dθ have exactly the same value: shifting θ by π/4 changes the sine sign and shifting by π/8 turns sine into cosine, and each integrand has period π/2 with four complete periods integrated. All three are valid equivalent integrals; no restriction to an unchanged pointwise speed expression is given.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-123458",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14079137/state.json",
+        "json_pointer": "/questions/q-123458/history/worked_solution"
+      },
+      "plain_explanation": "Three original integrals have the same value over 0≤θ≤2π: the intended √(5−3sin4θ), √(5+3sin4θ), and √(5−3cos4θ) forms are related by shifts over complete periods. The intended integrand is valid but the equivalent-integral request is not unique."
+    },
+    {
+      "id": "q-126539",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "Both r^3 sin(2theta) and r^2 sin(2theta) integrate to zero over theta 0..2pi, equal to the line integral. The intended pointwise integrand is valid but the question offers multiple expressions satisfying its integral equation.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-126539",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14061894/state.json",
+        "json_pointer": "/questions/q-126539/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        3,
+        4
+      ],
+      "plain_explanation": "The intended r³sin(2θ) and the alternative r²sin(2θ) both integrate to zero over the full angular interval. Both satisfy the displayed integral equality."
+    },
+    {
+      "id": "q-126564",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "Angular sine/cosine terms integrate to zero. Integral of r dr from0to2 and of1 dr from0to2 are both2; therefore all four listed options integrate to4pi, equal to the line integral. Intended pointwise integrand is r-r²cos(theta).",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-126564",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14061894/state.json",
+        "json_pointer": "/questions/q-126564/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "plain_explanation": "Four original choices integrate to 4π: their angular sine/cosine terms vanish, and both ∫₀²r dr and ∫₀²1 dr equal 2. The intended r−r²cosθ is valid but not unique under the equality wording."
+    },
+    {
+      "id": "q-126748",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "With u=sin(t), option0 integrates4u² from-1to1=8/3 and option1 integrates4(1-2u²) from-1to1=8/3. Both give the area in the stated equation; source intended y dx integrand is option1.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-126748",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14095064/state.json",
+        "json_pointer": "/questions/q-126748/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1
+      ],
+      "plain_explanation": "Both original choices 0 and 1 integrate to the area 8/3 under u=sin t. The source intends 4cos t cos2t, but the other offered expression satisfies the same area equation."
+    },
+    {
+      "id": "q-161862",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "F has divergence0, so closed flux is0. D is full centered disk radius2; each option is sum of odd x or odd xy terms, hence all five integrals are0.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161862",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14081085/state.json",
+        "json_pointer": "/questions/q-161862/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "plain_explanation": "The closed flux is zero because div F=0. All five offered integrands are odd in x or contain odd xy terms on the full centered radius-2 disk, so all five integrate to zero."
+    },
+    {
+      "id": "q-161863",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "F divergence0 gives closed flux0; D is x²+y²<=4. All four offered integrands consist of odd x/y monomials and integrate0. Source intended pointwise integrand is option3.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161863",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14094456/state.json",
+        "json_pointer": "/questions/q-161863/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "plain_explanation": "The closed flux is zero. Four original integrands (indices 0,2,3,4) contain odd x/y monomials on x²+y²≤4 and integrate to zero; the intended index3 expression is not unique."
+    },
+    {
+      "id": "q-161896",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "Closed flux0 because divergence F=0. D full unit disk; option1 x sqrt(x²+y²)+y, option3 y/r-y, option4 x/r-x are odd and integrate0. All satisfy displayed integral equality.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161896",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14094456/state.json",
+        "json_pointer": "/questions/q-161896/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        1,
+        3,
+        4
+      ],
+      "plain_explanation": "The closed flux is zero. Original indices 1,3,4 are odd on the full unit disk and integrate to zero, giving three valid expressions for the displayed integral equality."
+    },
+    {
+      "id": "q-161897",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "D full disk radius3. Each possible missing term has zero integral by odd x or odd xy symmetry, leaving the same fixed integral of r-3. All five choices satisfy the stated flux equation; source intended term is -xy/r.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161897",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14094681/state.json",
+        "json_pointer": "/questions/q-161897/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "plain_explanation": "On the full radius-3 disk every offered missing term has zero integral by odd symmetry. All five leave the same fixed integral of r−3; the intended −xy/r term is not unique."
+    },
+    {
+      "id": "q-161901",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "F divergence0 gives flux0. Full disk radius2 is symmetric; all five offered expressions are odd in x or y and have convergent integrals0, including inverse square-root terms.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161901",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14073335/state.json",
+        "json_pointer": "/questions/q-161901/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "plain_explanation": "The closed flux is zero. All five original integrands are odd in x or y on the radius-2 disk, with convergent zero integrals including the inverse square-root terms."
+    },
+    {
+      "id": "q-161903",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "F divergence0 gives flux0. Full disk radius4; all five original expressions are odd in y and integrate0, so all satisfy the integral equality.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161903",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14081085/state.json",
+        "json_pointer": "/questions/q-161903/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "plain_explanation": "The closed flux is zero. All five original expressions are odd in y on the full radius-4 disk and integrate to zero."
+    },
+    {
+      "id": "q-161904",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "F divergence0 gives closed flux0. D full disk radius3; each offered expression is sum of odd x,y,xy/r terms, so all five integrals are0.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161904",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14073335/state.json",
+        "json_pointer": "/questions/q-161904/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "plain_explanation": "The closed flux is zero. Each offered expression combines odd x, y or xy/r terms on the full radius-3 disk, so all five give the same zero integral."
+    },
+    {
+      "id": "q-161906",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "F divergence0 gives closed flux0. Projection between sqrt(4-x²-y²) and1-x/2 is symmetric under y->-y. Every original option is odd in y, so every integral is0.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161906",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14094681/state.json",
+        "json_pointer": "/questions/q-161906/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "plain_explanation": "The closed flux is zero. The projection bounded by √(4−x²−y²) and 1−x/2 is symmetric under y↦−y. Every original option is odd in y and integrates to zero."
+    },
+    {
+      "id": "q-161908",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "F divergence0 gives flux0. Full centered disk radius3; each original offered expression is odd in x or y and has convergent integral0. Source intended x/sqrt(9-x²-y²) is valid but not uniquely valid integral expression.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161908",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14073335/state.json",
+        "json_pointer": "/questions/q-161908/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "plain_explanation": "The closed flux is zero. All original expressions have convergent zero integrals by odd x/y symmetry on the centered radius-3 disk. The intended x/√(9−x²−y²) is valid but not unique."
+    },
+    {
+      "id": "q-161913",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_equal_integrals_with_pointwise_wording_ambiguity",
+      "explanation": "F divergence0 gives closed flux0. Region projection sqrt(x²+y²)<=2-y² is symmetric under x reflection. Options1 x*r,3 x/r,4 x/r+x are odd in x and integrate0.",
+      "interpretation_distinction": "Alternative integral values are mathematically equal; the intended MA integrand is often valid. The hold concerns uniqueness under the actual wording, not a false intended formula.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-161913",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14073335/state.json",
+        "json_pointer": "/questions/q-161913/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        1,
+        3,
+        4
+      ],
+      "plain_explanation": "The closed flux is zero. The projection √(x²+y²)≤2−y² is symmetric under x reflection; original indices 1,3,4 (xr, x/r, x/r+x) all integrate to zero."
+    },
+    {
+      "id": "q-32876",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_duplicate_answers",
+      "explanation": "Both original options0 and1 describe the same tangent line through(-1,0,3/2): directions pi*j+k and its negative are nonzero scalar multiples, and u ranges over all reals. Source intended option0 is correct but option1 also answers the prompt.",
+      "interpretation_distinction": "Original offered answers are demonstrably equivalent for the requested object.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-32876",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14083270/state.json",
+        "json_pointer": "/questions/q-32876/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1
+      ],
+      "plain_explanation": "Original indices 0 and 1 give the same tangent line through (−1,0,3/2): their nonzero directions are opposites and the parameter ranges over all real numbers."
+    },
+    {
+      "id": "q-36754",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_duplicate_answers",
+      "explanation": "Gradient at(0,0,2) is(0,0,1). Options0,1,3 all parametrize the entire z-axis for real t, hence all pass through(0,0,2) and describe the same normal line. Different starting points and nonzero direction scales do not change a line.",
+      "interpretation_distinction": "Original offered answers are demonstrably equivalent for the requested object.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-36754",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/multivariable/14053676/state.json",
+        "json_pointer": "/questions/q-36754/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        1,
+        3
+      ],
+      "plain_explanation": "Original indices 0,1,3 all parametrize the z-axis and pass through (0,0,2). Different base points and nonzero direction scales preserve the same normal line."
+    },
+    {
+      "id": "q-51252",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "undefined_proportionality_coefficient_wording",
+      "explanation": "Prompt does not define k as the actual filling proportionality coefficient; both positive3k and positivek are valid proportionality constants. Thus dV/dt=3kt-200 and kt-200 both describe a filling rate directly proportional to t with200ml/hour leakage. Source intended conventional coefficientk is option4.",
+      "interpretation_distinction": "Uniqueness depends on an unstated definition of k; this is a wording ambiguity, not a demonstrated arithmetic error.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-51252",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14096227/state.json",
+        "json_pointer": "/questions/q-51252/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        0,
+        4
+      ],
+      "plain_explanation": "The prompt leaves k undefined as the actual proportionality coefficient. Both positive k and positive 3k give a filling rate proportional to t, with the same 200 ml/hour leakage. Uniqueness requires a coefficient convention not stated in the prompt."
+    },
+    {
+      "id": "q-72575",
+      "hold_reason": "math_academy_wrong_key",
+      "finding_kind": "augmented_matrix_source_convention_conflict",
+      "explanation": "Prompt asks augmented matrices not in row echelon form. Full augmented A has leading entries in column4 in both rows3 and4 (3,4), violating echelon form. B also fails; original option a (index0) A and B only is correct under standard full-matrix definition. Saved MA solution explicitly judges only coefficient matrices, under which B only (index4) is consistent. Its coefficient-only convention conflicts with the standard augmented-matrix interpretation; hold the MA key rather than silently replacing it.",
+      "interpretation_distinction": "Full augmented-matrix echelon analysis and the source coefficient-block convention differ. Preserve the convention conflict rather than claim proof of incorrect captured grading.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-72575",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14071571/state.json",
+        "json_pointer": "/questions/q-72575/history/worked_solution"
+      },
+      "plain_explanation": "Under the standard full augmented-matrix definition, A has leading entries in column4 in both rows3 and4 and fails echelon form; B also fails. The source tests only coefficient blocks and chooses B only. This is a full-matrix versus coefficient-block convention conflict."
+    },
+    {
+      "id": "q-79044",
+      "hold_reason": "math_academy_wrong_key",
+      "finding_kind": "proven_undefined_or_nonexistent_object",
+      "explanation": "Original prompt calls the locus a circle, but completing both squares yields (x-1)²+(y+3)²=-2, so no real circle exists. Saved MA solution asserts a circle with no x-intercepts and shows a real circle diagram, contradicting original equation. The no-intercepts option is true of the empty locus but does not cure the malformed circle problem; preserve original source and hold substantive content defect.",
+      "interpretation_distinction": "The declared object is undefined at required points or does not exist over the real domain; an intended repair is not imported.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-79044",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/13959190/state.json",
+        "json_pointer": "/questions/q-79044/history/worked_solution"
+      },
+      "plain_explanation": "Completing squares gives (x−1)²+(y+3)²=−2, so the declared real circle does not exist. A no-intercepts option does not cure the malformed circle statement or the source’s real-circle diagram."
+    },
+    {
+      "id": "q-79315",
+      "hold_reason": "contradictory_source",
+      "finding_kind": "derivative_order_wording_conflict",
+      "explanation": "Original says the rate of growth of displacement increases at a rate proportional to time: derivative of that rate is D″=kt. Worked solution instead treats displacement itself as increasing at rate proportional to t and concludes D′=kt. No original option expresses D″=kt; the original statement and source interpretation differ by derivative order.",
+      "interpretation_distinction": "The literal rate-of-growth reading calls for D″; the source reads the statement as D′. This is a source/prompt interpretation conflict.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-79315",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14037103/state.json",
+        "json_pointer": "/questions/q-79315/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [],
+      "plain_explanation": "The literal phrase “rate of growth of displacement increases at a rate proportional to time” asks for D″=kt. The source instead reads displacement itself as increasing at that rate and chooses D′=kt. No original option states the literal second-derivative relation."
+    },
+    {
+      "id": "q-79945",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "proven_duplicate_answers",
+      "explanation": "Original option4 has two cubic terms -1/2(x-pi)^3+1/3(x-pi)^3, summing to -1/6(x-pi)^3. It is algebraically identical to source-intended option1 including all displayed lower terms and ellipsis, so two options answer the Taylor-series request.",
+      "interpretation_distinction": "Original offered answers are demonstrably equivalent for the requested object.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-79945",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/differential/14069991/state.json",
+        "json_pointer": "/questions/q-79945/history/worked_solution"
+      },
+      "valid_choice_indices_zero_based": [
+        1,
+        4
+      ],
+      "plain_explanation": "Original index4 combines −(x−π)³/2+(x−π)³/3=−(x−π)³/6 and is identical to the intended index1 Taylor answer, including all lower-order terms. Both options answer the request."
+    },
+    {
+      "id": "q-97990",
+      "hold_reason": "multiple_correct_options",
+      "finding_kind": "unoriented_unordered_axis_ambiguity",
+      "explanation": "Original options 3 and 4 are both orthonormal principal-axis eigenbases for A=[[-2,2],[2,1]]. Option 4 is the MA saved key ((1,2)/sqrt(5),(-2,1)/sqrt(5)); option 3 merely exchanges the two eigenaxes and reverses the sign of one axis ((-2,1)/sqrt(5),(-1,-2)/sqrt(5)). The prompt asks for principal axes without an ordering or orientation requirement, so both choices are correct.",
+      "interpretation_distinction": "Both bases are principal axes; only an unstated ordering/orientation convention would distinguish them.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-97990",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14076805/state.json",
+        "json_pointer": "/questions/q-97990/history/worked_solution"
+      },
+      "plain_explanation": "Original indices 3 and 4 are both orthonormal principal-axis bases. One exchanges the axes and reverses a sign; the prompt imposes no ordering or orientation requirement."
+    },
+    {
+      "id": "q-97995",
+      "hold_reason": "math_academy_wrong_key",
+      "finding_kind": "proven_undefined_or_nonexistent_object",
+      "explanation": "The original real quadratic curve x^T A x=7 with A=[[-2,2],[2,-2]] does not exist: x^T A x=-2(x_1-x_2)^2 is nonpositive for every real point. The saved MA solution returns an orthonormal eigenbasis as principal axes of a purported curve without addressing the impossible level 7. This is malformed original content, not a missing normalization or field-binding issue.",
+      "interpretation_distinction": "The declared object is undefined at required points or does not exist over the real domain; an intended repair is not imported.",
+      "peer_confirmed": true,
+      "evidence_file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-review.json",
+      "evidence_json_pointer": "/q-97995",
+      "source_solution_location": {
+        "file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14076805/state.json",
+        "json_pointer": "/questions/q-97995/history/worked_solution"
+      },
+      "plain_explanation": "For A=[[-2,2],[2,−2]], xᵀAx=−2(x₁−x₂)²≤0. The declared real curve xᵀAx=7 therefore does not exist; computing an eigenbasis does not resolve the malformed curve request."
+    }
+  ],
+  "final_situation_summary": {
+    "approximation_precision": {
+      "count": 3,
+      "question_ids": [
+        "q-126874",
+        "q-126877",
+        "q-19299"
+      ]
+    },
+    "complete_asymptote_set": {
+      "count": 1,
+      "question_ids": [
+        "q-39793"
+      ]
+    },
+    "complete_coordinate_domain": {
+      "count": 1,
+      "question_ids": [
+        "q-161827"
+      ]
+    },
+    "complete_eigensolution_family": {
+      "count": 5,
+      "question_ids": [
+        "q-324453",
+        "q-327976",
+        "q-327989",
+        "q-333856",
+        "q-334772"
+      ]
+    },
+    "complete_eigenvalue_set": {
+      "count": 1,
+      "question_ids": [
+        "q-140449"
+      ]
+    },
+    "complete_expression_equivalence": {
+      "count": 2,
+      "question_ids": [
+        "q-79945",
+        "q-9461"
+      ]
+    },
+    "complete_matrix": {
+      "count": 3,
+      "question_ids": [
+        "q-32546",
+        "q-32569",
+        "q-32608"
+      ]
+    },
+    "complete_matrix_row_operations": {
+      "count": 5,
+      "question_ids": [
+        "q-73397",
+        "q-73580",
+        "q-75099",
+        "q-75100",
+        "q-75102"
+      ]
+    },
+    "complete_root_set": {
+      "count": 1,
+      "question_ids": [
+        "q-74151"
+      ]
+    },
+    "complete_vector": {
+      "count": 3,
+      "question_ids": [
+        "q-156978",
+        "q-71407",
+        "q-75034"
+      ]
+    },
+    "complete_vector_and_domain": {
+      "count": 20,
+      "question_ids": [
+        "q-106585",
+        "q-126838",
+        "q-126841",
+        "q-126998",
+        "q-126999",
+        "q-127002",
+        "q-131485",
+        "q-131499",
+        "q-131502",
+        "q-131650",
+        "q-131712",
+        "q-20966",
+        "q-32247",
+        "q-36023",
+        "q-37774",
+        "q-42019",
+        "q-42158",
+        "q-73740",
+        "q-74626",
+        "q-74628"
+      ]
+    },
+    "complete_vector_initial_conditions": {
+      "count": 2,
+      "question_ids": [
+        "q-7217",
+        "q-7221"
+      ]
+    },
+    "compound_answer": {
+      "count": 12,
+      "question_ids": [
+        "q-133221",
+        "q-141539",
+        "q-141622",
+        "q-160013",
+        "q-160049",
+        "q-18688",
+        "q-30052",
+        "q-3435",
+        "q-60145",
+        "q-60360",
+        "q-66435",
+        "q-7188"
+      ]
+    },
+    "compound_answer_units": {
+      "count": 1,
+      "question_ids": [
+        "q-7198"
+      ]
+    },
+    "compound_integral_limits": {
+      "count": 2,
+      "question_ids": [
+        "q-162322",
+        "q-162332"
+      ]
+    },
+    "compound_ranges": {
+      "count": 1,
+      "question_ids": [
+        "q-73617"
+      ]
+    },
+    "compound_scalar_vector": {
+      "count": 1,
+      "question_ids": [
+        "q-129224"
+      ]
+    },
+    "convergence_endpoint_check": {
+      "count": 1,
+      "question_ids": [
+        "q-126774"
+      ]
+    },
+    "cramer_column_replacement": {
+      "count": 1,
+      "question_ids": [
+        "q-42982"
+      ]
+    },
+    "decoupling_eigenvector_columns": {
+      "count": 1,
+      "question_ids": [
+        "q-324455"
+      ]
+    },
+    "decrease_rate_magnitude": {
+      "count": 1,
+      "question_ids": [
+        "q-48254"
+      ]
+    },
+    "derivative_role_mismatch": {
+      "count": 1,
+      "question_ids": [
+        "q-79315"
+      ]
+    },
+    "domain_and_qualifier_binding": {
+      "count": 6,
+      "question_ids": [
+        "q-129197",
+        "q-129198",
+        "q-8360",
+        "q-90725",
+        "q-95740",
+        "q-9926"
+      ]
+    },
+    "equation_chain_conclusion": {
+      "count": 79,
+      "question_ids": [
+        "q-12450",
+        "q-124965",
+        "q-125004",
+        "q-125335",
+        "q-126844",
+        "q-127373",
+        "q-127375",
+        "q-131030",
+        "q-131032",
+        "q-132666",
+        "q-132667",
+        "q-15465",
+        "q-15469",
+        "q-162414",
+        "q-162517",
+        "q-16400",
+        "q-17392",
+        "q-17559",
+        "q-19302",
+        "q-19493",
+        "q-20851",
+        "q-20990",
+        "q-2194",
+        "q-33203",
+        "q-33205",
+        "q-345274",
+        "q-345668",
+        "q-35379",
+        "q-3946",
+        "q-48565",
+        "q-48860",
+        "q-48909",
+        "q-49054",
+        "q-51054",
+        "q-60356",
+        "q-64206",
+        "q-64236",
+        "q-64285",
+        "q-64351",
+        "q-64381",
+        "q-65130",
+        "q-6812",
+        "q-6836",
+        "q-6877",
+        "q-70851",
+        "q-70903",
+        "q-73210",
+        "q-73999",
+        "q-75288",
+        "q-75583",
+        "q-77726",
+        "q-79438",
+        "q-79847",
+        "q-79950",
+        "q-79951",
+        "q-8171",
+        "q-8306",
+        "q-83217",
+        "q-83429",
+        "q-8369",
+        "q-86413",
+        "q-86414",
+        "q-87305",
+        "q-87308",
+        "q-8854",
+        "q-89821",
+        "q-93675",
+        "q-93678",
+        "q-93686",
+        "q-93687",
+        "q-93785",
+        "q-93824",
+        "q-93827",
+        "q-94304",
+        "q-9472",
+        "q-98116",
+        "q-98553",
+        "q-98554",
+        "q-98555"
+      ]
+    },
+    "equivalent_line_parametrizations": {
+      "count": 2,
+      "question_ids": [
+        "q-32876",
+        "q-36754"
+      ]
+    },
+    "equivalent_vector_notation": {
+      "count": 1,
+      "question_ids": [
+        "q-1393"
+      ]
+    },
+    "excluded_domain_periodic_set": {
+      "count": 3,
+      "question_ids": [
+        "q-162632",
+        "q-162633",
+        "q-162637"
+      ]
+    },
+    "factor_outside_blank": {
+      "count": 1,
+      "question_ids": [
+        "q-161198"
+      ]
+    },
+    "full_integral_factor_and_bounds": {
+      "count": 9,
+      "question_ids": [
+        "q-15133",
+        "q-15136",
+        "q-15144",
+        "q-15174",
+        "q-15178",
+        "q-15182",
+        "q-15323",
+        "q-21353",
+        "q-40727"
+      ]
+    },
+    "full_integrand_factor": {
+      "count": 4,
+      "question_ids": [
+        "q-160711",
+        "q-161314",
+        "q-161320",
+        "q-161902"
+      ]
+    },
+    "full_integrand_jacobian_factor": {
+      "count": 1,
+      "question_ids": [
+        "q-161879"
+      ]
+    },
+    "graph_asymptote_verified": {
+      "count": 6,
+      "question_ids": [
+        "q-170347",
+        "q-27482",
+        "q-7124",
+        "q-7230",
+        "q-7232",
+        "q-7253"
+      ]
+    },
+    "graph_concavity_visual": {
+      "count": 2,
+      "question_ids": [
+        "q-141738",
+        "q-141740"
+      ]
+    },
+    "graph_endbehavior_intercept_verified": {
+      "count": 1,
+      "question_ids": [
+        "q-38624"
+      ]
+    },
+    "graph_equation_verified": {
+      "count": 3,
+      "question_ids": [
+        "q-12675",
+        "q-6580",
+        "q-6761"
+      ]
+    },
+    "graph_limit_verified": {
+      "count": 1,
+      "question_ids": [
+        "q-67703"
+      ]
+    },
+    "graph_or_highlight_evidence": {
+      "count": 6,
+      "question_ids": [
+        "q-85640",
+        "q-85643",
+        "q-87910",
+        "q-90054",
+        "q-90323",
+        "q-90327"
+      ]
+    },
+    "graph_strict_boundary": {
+      "count": 3,
+      "question_ids": [
+        "q-29384",
+        "q-52413",
+        "q-52461"
+      ]
+    },
+    "growth_removal_signs": {
+      "count": 1,
+      "question_ids": [
+        "q-38324"
+      ]
+    },
+    "harmless_solution_unit_typo": {
+      "count": 1,
+      "question_ids": [
+        "q-4772"
+      ]
+    },
+    "harmless_source_prose_typo": {
+      "count": 3,
+      "question_ids": [
+        "q-129198",
+        "q-345274",
+        "q-90725"
+      ]
+    },
+    "highlighted_matrix_entry": {
+      "count": 2,
+      "question_ids": [
+        "q-125611",
+        "q-13499"
+      ]
+    },
+    "image_boundary_side_verified": {
+      "count": 1,
+      "question_ids": [
+        "q-225023"
+      ]
+    },
+    "image_ellipse_radii_verified": {
+      "count": 4,
+      "question_ids": [
+        "q-6880",
+        "q-79285",
+        "q-79286",
+        "q-79287"
+      ]
+    },
+    "image_quadrant_verified": {
+      "count": 2,
+      "question_ids": [
+        "q-124965",
+        "q-42043"
+      ]
+    },
+    "image_set_interior_verified": {
+      "count": 2,
+      "question_ids": [
+        "q-158314",
+        "q-161718"
+      ]
+    },
+    "invalid_converse_of_concavity": {
+      "count": 1,
+      "question_ids": [
+        "q-115261"
+      ]
+    },
+    "inverse_trig_principal_range": {
+      "count": 3,
+      "question_ids": [
+        "q-117010",
+        "q-117012",
+        "q-117369"
+      ]
+    },
+    "level_surface_domain_convention": {
+      "count": 1,
+      "question_ids": [
+        "q-129197"
+      ]
+    },
+    "mass_division_and_drag_sign": {
+      "count": 1,
+      "question_ids": [
+        "q-335312"
+      ]
+    },
+    "matrix_intermediate_final_conflict": {
+      "count": 1,
+      "question_ids": [
+        "q-31954"
+      ]
+    },
+    "matrix_rows_to_system": {
+      "count": 6,
+      "question_ids": [
+        "q-129129",
+        "q-129133",
+        "q-130528",
+        "q-20362",
+        "q-71724",
+        "q-71854"
+      ]
+    },
+    "matrix_shape_required": {
+      "count": 7,
+      "question_ids": [
+        "q-139517",
+        "q-139603",
+        "q-139604",
+        "q-139606",
+        "q-139655",
+        "q-159730",
+        "q-77476"
+      ]
+    },
+    "multiple_integral_expressions_same_value": {
+      "count": 13,
+      "question_ids": [
+        "q-126539",
+        "q-126564",
+        "q-126748",
+        "q-161862",
+        "q-161863",
+        "q-161896",
+        "q-161897",
+        "q-161901",
+        "q-161903",
+        "q-161904",
+        "q-161906",
+        "q-161908",
+        "q-161913"
+      ]
+    },
+    "mvt_endpoint_convention": {
+      "count": 1,
+      "question_ids": [
+        "q-106585"
+      ]
+    },
+    "nested_matrix_preservation": {
+      "count": 7,
+      "question_ids": [
+        "q-31954",
+        "q-80825",
+        "q-86758",
+        "q-94981",
+        "q-95337",
+        "q-95354",
+        "q-95377"
+      ]
+    },
+    "one_sided_limit_role_order": {
+      "count": 1,
+      "question_ids": [
+        "q-36696"
+      ]
+    },
+    "ordered_formula_blanks": {
+      "count": 1,
+      "question_ids": [
+        "q-161457"
+      ]
+    },
+    "ordered_matrix_row_entries": {
+      "count": 1,
+      "question_ids": [
+        "q-32772"
+      ]
+    },
+    "ordered_row_operations": {
+      "count": 2,
+      "question_ids": [
+        "q-31872",
+        "q-31945"
+      ]
+    },
+    "orientation_startpoint_qualifiers": {
+      "count": 5,
+      "question_ids": [
+        "q-15856",
+        "q-6893",
+        "q-78680",
+        "q-79281",
+        "q-79292"
+      ]
+    },
+    "phantom_blank_restoration": {
+      "count": 3,
+      "question_ids": [
+        "q-118389",
+        "q-78559",
+        "q-78561"
+      ]
+    },
+    "physical_positive_root_units": {
+      "count": 1,
+      "question_ids": [
+        "q-135228"
+      ]
+    },
+    "plusminus_complete_points": {
+      "count": 7,
+      "question_ids": [
+        "q-16642",
+        "q-16645",
+        "q-70185",
+        "q-72913",
+        "q-7642",
+        "q-7645",
+        "q-7646"
+      ]
+    },
+    "prose_semantic_choice": {
+      "count": 196,
+      "question_ids": [
+        "q-102548",
+        "q-102843",
+        "q-102851",
+        "q-102908",
+        "q-103125",
+        "q-103892",
+        "q-104223",
+        "q-104236",
+        "q-104693",
+        "q-104701",
+        "q-105248",
+        "q-105281",
+        "q-105338",
+        "q-105591",
+        "q-106678",
+        "q-106775",
+        "q-106784",
+        "q-106944",
+        "q-106999",
+        "q-108462",
+        "q-110294",
+        "q-110554",
+        "q-110569",
+        "q-111172",
+        "q-112432",
+        "q-112457",
+        "q-112500",
+        "q-112612",
+        "q-113176",
+        "q-113527",
+        "q-113554",
+        "q-113746",
+        "q-113767",
+        "q-114262",
+        "q-114399",
+        "q-114402",
+        "q-114418",
+        "q-115134",
+        "q-115265",
+        "q-115311",
+        "q-115313",
+        "q-115348",
+        "q-115364",
+        "q-116618",
+        "q-117084",
+        "q-117086",
+        "q-117247",
+        "q-117737",
+        "q-121237",
+        "q-121242",
+        "q-121278",
+        "q-121317",
+        "q-121322",
+        "q-123331",
+        "q-125549",
+        "q-125564",
+        "q-126222",
+        "q-126278",
+        "q-126287",
+        "q-126995",
+        "q-127770",
+        "q-127826",
+        "q-128461",
+        "q-128506",
+        "q-128519",
+        "q-129213",
+        "q-129217",
+        "q-129222",
+        "q-129231",
+        "q-130217",
+        "q-130448",
+        "q-130772",
+        "q-130778",
+        "q-130927",
+        "q-130930",
+        "q-130935",
+        "q-130946",
+        "q-130954",
+        "q-130955",
+        "q-131188",
+        "q-131273",
+        "q-131302",
+        "q-132204",
+        "q-132852",
+        "q-132856",
+        "q-133929",
+        "q-135440",
+        "q-135468",
+        "q-135556",
+        "q-139278",
+        "q-139546",
+        "q-139550",
+        "q-139749",
+        "q-139750",
+        "q-140046",
+        "q-140401",
+        "q-140555",
+        "q-140822",
+        "q-140997",
+        "q-141140",
+        "q-141187",
+        "q-141310",
+        "q-142315",
+        "q-142915",
+        "q-142928",
+        "q-149548",
+        "q-149594",
+        "q-149597",
+        "q-15692",
+        "q-157052",
+        "q-158036",
+        "q-15805",
+        "q-158569",
+        "q-159764",
+        "q-159797",
+        "q-160037",
+        "q-160465",
+        "q-160473",
+        "q-160608",
+        "q-161455",
+        "q-161463",
+        "q-161814",
+        "q-161816",
+        "q-161819",
+        "q-162150",
+        "q-162365",
+        "q-162747",
+        "q-162811",
+        "q-162812",
+        "q-163092",
+        "q-163100",
+        "q-163771",
+        "q-163834",
+        "q-164152",
+        "q-164267",
+        "q-164272",
+        "q-164311",
+        "q-164400",
+        "q-164401",
+        "q-164403",
+        "q-164416",
+        "q-164417",
+        "q-164476",
+        "q-164477",
+        "q-164479",
+        "q-164481",
+        "q-164510",
+        "q-164547",
+        "q-16455",
+        "q-164553",
+        "q-164555",
+        "q-16465",
+        "q-167165",
+        "q-170558",
+        "q-171016",
+        "q-171998",
+        "q-171999",
+        "q-182507",
+        "q-182570",
+        "q-182592",
+        "q-182595",
+        "q-338623",
+        "q-33987",
+        "q-34403",
+        "q-35833",
+        "q-36780",
+        "q-36905",
+        "q-39936",
+        "q-41957",
+        "q-48611",
+        "q-54242",
+        "q-64676",
+        "q-64677",
+        "q-66508",
+        "q-66509",
+        "q-66514",
+        "q-70275",
+        "q-73953",
+        "q-73984",
+        "q-80999",
+        "q-81202",
+        "q-81985",
+        "q-82627",
+        "q-82630",
+        "q-82720",
+        "q-83001",
+        "q-87862",
+        "q-87893",
+        "q-89252",
+        "q-93099",
+        "q-94754",
+        "q-94989",
+        "q-95399",
+        "q-95997",
+        "q-95998",
+        "q-96084"
+      ]
+    },
+    "rate_sign_units": {
+      "count": 2,
+      "question_ids": [
+        "q-2939",
+        "q-2941"
+      ]
+    },
+    "regression_design_columns": {
+      "count": 3,
+      "question_ids": [
+        "q-139651",
+        "q-139807",
+        "q-42208"
+      ]
+    },
+    "regression_missing_power_column": {
+      "count": 1,
+      "question_ids": [
+        "q-139659"
+      ]
+    },
+    "regression_no_intercept": {
+      "count": 4,
+      "question_ids": [
+        "q-139672",
+        "q-139865",
+        "q-139930",
+        "q-139934"
+      ]
+    },
+    "requested_numerator_only": {
+      "count": 1,
+      "question_ids": [
+        "q-160838"
+      ]
+    },
+    "requested_vector_component": {
+      "count": 1,
+      "question_ids": [
+        "q-161072"
+      ]
+    },
+    "roman_labels_restored_from_html": {
+      "count": 80,
+      "question_ids": [
+        "q-101736",
+        "q-103812",
+        "q-115479",
+        "q-116038",
+        "q-117010",
+        "q-117012",
+        "q-117329",
+        "q-117369",
+        "q-120485",
+        "q-120614",
+        "q-123315",
+        "q-124912",
+        "q-125262",
+        "q-128139",
+        "q-128478",
+        "q-128480",
+        "q-128491",
+        "q-130005",
+        "q-130256",
+        "q-130261",
+        "q-130462",
+        "q-130624",
+        "q-130998",
+        "q-131720",
+        "q-131721",
+        "q-131722",
+        "q-168921",
+        "q-29163",
+        "q-29477",
+        "q-31919",
+        "q-338587",
+        "q-339251",
+        "q-339256",
+        "q-35527",
+        "q-38187",
+        "q-38580",
+        "q-38715",
+        "q-40277",
+        "q-42020",
+        "q-42374",
+        "q-42438",
+        "q-42562",
+        "q-42563",
+        "q-42896",
+        "q-47516",
+        "q-47559",
+        "q-48144",
+        "q-48185",
+        "q-48187",
+        "q-48498",
+        "q-48500",
+        "q-64198",
+        "q-64207",
+        "q-65012",
+        "q-65744",
+        "q-65828",
+        "q-65947",
+        "q-65990",
+        "q-66005",
+        "q-69835",
+        "q-70769",
+        "q-70777",
+        "q-70788",
+        "q-70789",
+        "q-72345",
+        "q-73552",
+        "q-74634",
+        "q-76503",
+        "q-77809",
+        "q-77812",
+        "q-77865",
+        "q-79609",
+        "q-79799",
+        "q-90493",
+        "q-90580",
+        "q-91177",
+        "q-91212",
+        "q-93952",
+        "q-94277",
+        "q-94278"
+      ]
+    },
+    "roman_statement_subset": {
+      "count": 76,
+      "question_ids": [
+        "q-101736",
+        "q-103812",
+        "q-115479",
+        "q-116038",
+        "q-117010",
+        "q-117012",
+        "q-117329",
+        "q-117369",
+        "q-120485",
+        "q-120614",
+        "q-123315",
+        "q-123316",
+        "q-124912",
+        "q-125262",
+        "q-128139",
+        "q-128478",
+        "q-128480",
+        "q-128491",
+        "q-130005",
+        "q-130256",
+        "q-130261",
+        "q-130462",
+        "q-130624",
+        "q-130998",
+        "q-131720",
+        "q-131721",
+        "q-131722",
+        "q-168921",
+        "q-29163",
+        "q-29477",
+        "q-31919",
+        "q-338587",
+        "q-339251",
+        "q-339256",
+        "q-35527",
+        "q-38187",
+        "q-38580",
+        "q-38715",
+        "q-40277",
+        "q-42020",
+        "q-42374",
+        "q-42438",
+        "q-47516",
+        "q-47559",
+        "q-48144",
+        "q-48185",
+        "q-48187",
+        "q-48498",
+        "q-48500",
+        "q-64198",
+        "q-64207",
+        "q-65012",
+        "q-65744",
+        "q-65828",
+        "q-65947",
+        "q-65990",
+        "q-66005",
+        "q-69835",
+        "q-70769",
+        "q-70777",
+        "q-70788",
+        "q-70789",
+        "q-72345",
+        "q-73552",
+        "q-74634",
+        "q-76503",
+        "q-77809",
+        "q-77812",
+        "q-77865",
+        "q-79609",
+        "q-79799",
+        "q-90493",
+        "q-90580",
+        "q-93952",
+        "q-94277",
+        "q-94278"
+      ]
+    },
+    "saved_solution_field_binding": {
+      "count": 273,
+      "question_ids": [
+        "q-103781",
+        "q-103831",
+        "q-104195",
+        "q-10510",
+        "q-105701",
+        "q-106049",
+        "q-106051",
+        "q-106391",
+        "q-106685",
+        "q-106706",
+        "q-106842",
+        "q-106847",
+        "q-106849",
+        "q-106851",
+        "q-106878",
+        "q-106960",
+        "q-108309",
+        "q-108310",
+        "q-108326",
+        "q-108368",
+        "q-108371",
+        "q-108889",
+        "q-109158",
+        "q-109302",
+        "q-109307",
+        "q-109639",
+        "q-110078",
+        "q-110754",
+        "q-110756",
+        "q-112487",
+        "q-112524",
+        "q-112863",
+        "q-113245",
+        "q-116564",
+        "q-117347",
+        "q-118389",
+        "q-119037",
+        "q-120450",
+        "q-120778",
+        "q-122351",
+        "q-122931",
+        "q-123020",
+        "q-123027",
+        "q-123030",
+        "q-123519",
+        "q-123769",
+        "q-123773",
+        "q-123775",
+        "q-123889",
+        "q-175404",
+        "q-175419",
+        "q-176051",
+        "q-176859",
+        "q-177758",
+        "q-177760",
+        "q-18244",
+        "q-182445",
+        "q-182446",
+        "q-182450",
+        "q-18246",
+        "q-183349",
+        "q-183452",
+        "q-183463",
+        "q-183467",
+        "q-183515",
+        "q-183573",
+        "q-183599",
+        "q-21081",
+        "q-216463",
+        "q-216689",
+        "q-225228",
+        "q-26223",
+        "q-30055",
+        "q-31213",
+        "q-31219",
+        "q-32373",
+        "q-32568",
+        "q-32918",
+        "q-332064",
+        "q-333360",
+        "q-335542",
+        "q-335590",
+        "q-335619",
+        "q-335639",
+        "q-335642",
+        "q-335673",
+        "q-339222",
+        "q-339226",
+        "q-339248",
+        "q-343341",
+        "q-343395",
+        "q-343438",
+        "q-343445",
+        "q-343446",
+        "q-34361",
+        "q-34984",
+        "q-35363",
+        "q-35410",
+        "q-35429",
+        "q-35509",
+        "q-35559",
+        "q-35577",
+        "q-35731",
+        "q-35732",
+        "q-35757",
+        "q-35843",
+        "q-35906",
+        "q-36107",
+        "q-36778",
+        "q-37088",
+        "q-37272",
+        "q-37275",
+        "q-37372",
+        "q-37404",
+        "q-37633",
+        "q-37634",
+        "q-37853",
+        "q-37982",
+        "q-38020",
+        "q-38108",
+        "q-38245",
+        "q-38510",
+        "q-38569",
+        "q-39130",
+        "q-39709",
+        "q-40138",
+        "q-40179",
+        "q-40579",
+        "q-41741",
+        "q-41751",
+        "q-42090",
+        "q-42366",
+        "q-42372",
+        "q-42531",
+        "q-42562",
+        "q-42563",
+        "q-42896",
+        "q-42917",
+        "q-43057",
+        "q-43058",
+        "q-43509",
+        "q-47918",
+        "q-47919",
+        "q-48119",
+        "q-48120",
+        "q-48404",
+        "q-49032",
+        "q-51250",
+        "q-51432",
+        "q-54202",
+        "q-59711",
+        "q-62825",
+        "q-64701",
+        "q-65134",
+        "q-68725",
+        "q-68727",
+        "q-68745",
+        "q-69517",
+        "q-70184",
+        "q-70303",
+        "q-70649",
+        "q-70926",
+        "q-70954",
+        "q-70961",
+        "q-71131",
+        "q-71138",
+        "q-71139",
+        "q-71474",
+        "q-71582",
+        "q-71935",
+        "q-71937",
+        "q-71948",
+        "q-72412",
+        "q-72491",
+        "q-72492",
+        "q-72934",
+        "q-73190",
+        "q-73409",
+        "q-73410",
+        "q-73606",
+        "q-73612",
+        "q-73638",
+        "q-73769",
+        "q-73832",
+        "q-73860",
+        "q-73866",
+        "q-73869",
+        "q-74089",
+        "q-74600",
+        "q-76374",
+        "q-77443",
+        "q-77452",
+        "q-77699",
+        "q-77953",
+        "q-77956",
+        "q-78438",
+        "q-78559",
+        "q-78561",
+        "q-79197",
+        "q-79203",
+        "q-79301",
+        "q-79577",
+        "q-80373",
+        "q-80389",
+        "q-80392",
+        "q-80493",
+        "q-80496",
+        "q-80766",
+        "q-81236",
+        "q-81273",
+        "q-81279",
+        "q-81324",
+        "q-81386",
+        "q-81863",
+        "q-83479",
+        "q-83710",
+        "q-83854",
+        "q-83860",
+        "q-84046",
+        "q-84048",
+        "q-84592",
+        "q-86415",
+        "q-86709",
+        "q-86712",
+        "q-86722",
+        "q-86724",
+        "q-87289",
+        "q-87772",
+        "q-88308",
+        "q-90706",
+        "q-91157",
+        "q-91159",
+        "q-91163",
+        "q-91177",
+        "q-91212",
+        "q-93838",
+        "q-94041",
+        "q-94046",
+        "q-94056",
+        "q-94081",
+        "q-94139",
+        "q-94142",
+        "q-94159",
+        "q-94179",
+        "q-94213",
+        "q-94347",
+        "q-94372",
+        "q-94454",
+        "q-94982",
+        "q-94997",
+        "q-95015",
+        "q-95069",
+        "q-95323",
+        "q-95394",
+        "q-95805",
+        "q-95808",
+        "q-95912",
+        "q-95963",
+        "q-95981",
+        "q-96349",
+        "q-96351",
+        "q-96360",
+        "q-96411",
+        "q-96437",
+        "q-96772",
+        "q-96980",
+        "q-97007",
+        "q-97720",
+        "q-99032",
+        "q-99050",
+        "q-99053",
+        "q-99055",
+        "q-99056"
+      ]
+    },
+    "second_independent_solution": {
+      "count": 1,
+      "question_ids": [
+        "q-64953"
+      ]
+    },
+    "select_slot_binding": {
+      "count": 6,
+      "question_ids": [
+        "q-335673",
+        "q-343341",
+        "q-343395",
+        "q-343438",
+        "q-343445",
+        "q-343446"
+      ]
+    },
+    "sign_and_positive_parameter_qualifier": {
+      "count": 5,
+      "question_ids": [
+        "q-143034",
+        "q-143037",
+        "q-38063",
+        "q-38313",
+        "q-79306"
+      ]
+    },
+    "signed_curvature": {
+      "count": 1,
+      "question_ids": [
+        "q-162418"
+      ]
+    },
+    "slope_field_visual": {
+      "count": 2,
+      "question_ids": [
+        "q-115479",
+        "q-116038"
+      ]
+    },
+    "source_domain_defect": {
+      "count": 1,
+      "question_ids": [
+        "q-123316"
+      ]
+    },
+    "source_exposition_typo": {
+      "count": 1,
+      "question_ids": [
+        "q-160429"
+      ]
+    },
+    "source_label_typo": {
+      "count": 2,
+      "question_ids": [
+        "q-128139",
+        "q-130005"
+      ]
+    },
+    "substantive_source_defect": {
+      "count": 6,
+      "question_ids": [
+        "q-123439",
+        "q-123458",
+        "q-72575",
+        "q-79044",
+        "q-97990",
+        "q-97995"
+      ]
+    },
+    "substitution_ode_family": {
+      "count": 2,
+      "question_ids": [
+        "q-17544",
+        "q-79784"
+      ]
+    },
+    "term_order_equivalence": {
+      "count": 2,
+      "question_ids": [
+        "q-161476",
+        "q-1913"
+      ]
+    },
+    "undefined_proportionality_constant": {
+      "count": 1,
+      "question_ids": [
+        "q-51252"
+      ]
+    },
+    "vector_components_consistent_time": {
+      "count": 1,
+      "question_ids": [
+        "q-136291"
+      ]
+    }
+  },
+  "worker_situation_logs": {
+    "prose": [
+      {
+        "situation_type": "roman_statement_subset",
+        "explanation": "Original questionStatements OL determines I/II/III binding, normalized bullets omit labels. Evaluate every original statement and match one original subset option; restore labels from captured order.",
+        "example_id": "q-101736"
+      },
+      {
+        "situation_type": "source_label_typo",
+        "explanation": "Saved solution occasionally mislabels a Roman index in summary, while explicit checked statement texts and computations uniquely support original answer. Preserve source and record discrepancy; ready when requested answer is unambiguous.",
+        "example_id": "q-128139"
+      },
+      {
+        "situation_type": "source_domain_defect",
+        "explanation": "Declared sequence domain includes an undefined term. Correct intended tail classification cannot justify importing malformed original prompt; hold contradictory_source without repairing domain.",
+        "example_id": "q-123316"
+      },
+      {
+        "situation_type": "inverse_trig_principal_range",
+        "explanation": "Check both trig relation and inverse function's principal output range; ordinary reflected trig point outside that range is not an inverse-function point.",
+        "example_id": "q-117010"
+      },
+      {
+        "situation_type": "graph_continuity_visual",
+        "explanation": "Inspect original graph's holes, filled points and unequal branches alongside saved solution; classify removable versus jump from finite one-sided limits.",
+        "example_id": "q-47559"
+      },
+      {
+        "situation_type": "slope_field_visual",
+        "explanation": "Inspect original slope field and compare signs, vertical pole behavior, zero slopes and far-field limits for every listed equation.",
+        "example_id": "q-115479"
+      },
+      {
+        "situation_type": "source_exposition_typo",
+        "explanation": "Harmless source variable/constant/denominator typo can leave requested unique answer intact; record discrepancy and retain complete verbatim source.",
+        "example_id": "q-64207"
+      },
+      {
+        "situation_type": "formal_ivp_classification",
+        "explanation": "Initial versus boundary value classification concerns same versus distinct locations. A formally posed IVP can lack classical solution at a singular coefficient; classification does not imply existence.",
+        "example_id": "q-339256"
+      },
+      {
+        "situation_type": "mvt_endpoint_convention",
+        "explanation": "A source may formulate the directional MVT equality over a closed segment and include an endpoint. Distinguish satisfaction of that displayed equality from the usual theorem’s interior-point condition; hold genuine convention ambiguity instead of silently changing the domain.",
+        "example_id": "q-106585"
+      },
+      {
+        "situation_type": "invalid_converse_of_concavity",
+        "explanation": "A tangent overestimate at one base point is insufficient to force concavity throughout a neighborhood. Check necessity of a claimed conclusion rather than only verifying its familiar sufficient condition.",
+        "example_id": "q-115261"
+      },
+      {
+        "situation_type": "level_surface_domain_defect",
+        "explanation": "Rational and logarithmic level sets inherit the original function domain. Algebraic rearrangement must retain removed denominator-zero points and positive logarithm arguments; hold original options or source families that include forbidden points.",
+        "example_id": "q-129197",
+        "additional_example_id": "q-129198"
+      },
+      {
+        "situation_type": "blank_box_layout",
+        "explanation": "Normalized MathML can omit bordered phantom answer boxes. Inspect their exact original positions and restore the prompt boxes so every derivative variable, gradient coordinate, coefficient, Jacobian entry or matrix factor field has a visible requested role.",
+        "example_id": "q-163100"
+      },
+      {
+        "situation_type": "table_orientation",
+        "explanation": "Conditional distribution answers must follow original table rows, columns and conditioning variable; source label typos do not justify transposing the requested variable.",
+        "example_id": "q-142928"
+      },
+      {
+        "situation_type": "nonstrict_flat_extrema",
+        "explanation": "Under the source’s non-strict local-extremum definition, points in a locally constant segment can count as extrema. Inspect the original graph and distinguish these points from peaks or valleys.",
+        "example_id": "q-162747"
+      },
+      {
+        "situation_type": "graph_binding_correction",
+        "explanation": "Original graph inspection may correct an earlier verbal field-binding description while leaving the independently supported original selection unchanged. Append a replacement with revision_reason and retain the earlier audit event.",
+        "example_id": "q-164152"
+      }
+    ],
+    "compound": [
+      {
+        "situation_type": "intentional_wrong_submission",
+        "explanation": "Submitted option from W capture is not an answer key; bind saved MA worked solution to original before choices.",
+        "examples": [
+          "q-175404",
+          "q-26223"
+        ]
+      },
+      {
+        "situation_type": "quantifier_order_translation",
+        "explanation": "Translate quantified statement preserving domains and quantifier order; truth coincidence does not make a different wording its translation.",
+        "examples": [
+          "q-183573",
+          "q-183599"
+        ]
+      },
+      {
+        "situation_type": "graph_sign_change_not_touch",
+        "explanation": "Inflections require second derivative sign change, confirmed directly from original image.",
+        "examples": [
+          "q-31213",
+          "q-31219"
+        ]
+      },
+      {
+        "situation_type": "harmless_solution_prose_error",
+        "explanation": "Correct unique key can coexist with a prose error: tan(t) is not defined at π/2 despite opening assertion. Preserve source text.",
+        "examples": [
+          "q-32568"
+        ]
+      },
+      {
+        "situation_type": "ordered_matrix_pairs",
+        "explanation": "Compound options include full D and P, not a fragment. Verify AP=PD with columns ordered to corresponding diagonal eigenvalues and retain row/column shape.",
+        "examples": [
+          "q-37088",
+          "q-37275",
+          "q-37634"
+        ]
+      },
+      {
+        "situation_type": "complex_conjugate_sign_binding",
+        "explanation": "Rotation-scaling eigenvalue and vector signs must be paired; ∓ on eigenvalues corresponds to ± on imaginary vector component.",
+        "examples": [
+          "q-38569",
+          "q-39130"
+        ]
+      },
+      {
+        "situation_type": "rectangular_matrix_definition",
+        "explanation": "Source defines singular and diagonal matrices as square. Rectangular noninvertible matrices do not meet singular classification here.",
+        "examples": [
+          "q-71935",
+          "q-71937"
+        ]
+      },
+      {
+        "situation_type": "augmented_echelon_convention_conflict",
+        "explanation": "MA grades only coefficient-block echelon form despite prompt asking augmented matrices; full augmented matrix may violate echelon pivots. Hold conflicting key, preserve stated convention and offered correct alternative.",
+        "examples": [
+          "q-72575"
+        ]
+      },
+      {
+        "situation_type": "phantom_blank_restoration",
+        "explanation": "MathML mphantom blanks disappear from normalization. Restore visible blank placeholders to their original rows and sides and bind requested order from original HTML.",
+        "examples": [
+          "q-78559",
+          "q-78561"
+        ]
+      },
+      {
+        "type": "unoriented_principal_axes_duplicate",
+        "explanation": "Principal axes are unoriented lines; sign reversal and reordering preserve correctness unless the prompt explicitly imposes an order or orientation. Inspect all original options for duplicate valid eigenbases.",
+        "examples": [
+          "q-97990"
+        ]
+      },
+      {
+        "type": "nonexistent_real_quadratic_level",
+        "explanation": "An eigenbasis does not establish existence of a real quadratic curve. Verify the requested level is attained by the quadratic form; semidefinite forms can make a positive or negative level impossible.",
+        "examples": [
+          "q-97995"
+        ]
+      },
+      {
+        "type": "select_slot_binding",
+        "explanation": "Review every select separately using the same original field DOM and choices. Matrix selects need original HTML row/column placement; narrative Fourier selects bind to the exact evaluated factor, regularity, function value and final sum.",
+        "examples": [
+          "q-335673",
+          "q-343341",
+          "q-343395",
+          "q-343438",
+          "q-343445",
+          "q-343446"
+        ]
+      },
+      {
+        "type": "period_shift_equivalent_integrals",
+        "explanation": "For a question asking for an equivalent definite integral, compare values under substitutions and full-period shifts, not only pointwise integrands. Sign or phase changes can produce multiple correct original options.",
+        "examples": [
+          "q-123458"
+        ]
+      },
+      {
+        "type": "singular_endpoint_path",
+        "explanation": "Check that a parametric or polar path exists throughout its declared parameter domain. Undefined endpoints with divergent length are substantive source defects; an isolated finite cusp with piecewise-smooth branches remains valid.",
+        "examples": [
+          "q-123439",
+          "q-123519"
+        ]
+      },
+      {
+        "type": "capture_formatting_artifact",
+        "explanation": "Normalized content may retain a stray command absent from the saved state worked solution. Compare full source versions: if the mathematical statement and original choices agree, use the saved solution evidence and record the formatting discrepancy.",
+        "examples": [
+          "q-183467"
+        ]
+      }
+    ],
+    "math": [
+      {
+        "situation_type": "multiple_integral_expressions_same_value",
+        "explanation": "The prompt asks for a definite integral equality. Distinct offered integrands can have the same definite integral on a verified symmetric domain. Preserve intended MA pointwise integrand; hold when another original option satisfies the stated equality.",
+        "example_ids": [
+          "q-126539",
+          "q-126564",
+          "q-161862",
+          "q-161906"
+        ]
+      },
+      {
+        "situation_type": "equivalent_line_parametrizations",
+        "explanation": "Scaling a nonzero direction or translating the base point along a line preserves the entire line for a real parameter. Multiple original equivalent lines are an actual option ambiguity.",
+        "example_ids": [
+          "q-32876",
+          "q-36754"
+        ]
+      },
+      {
+        "situation_type": "unit_conflict",
+        "explanation": "A prompt/options in centimeters conflict with a saved solution explicitly concluding meters; do not silently convert or repair source units.",
+        "example_ids": [
+          "q-4772"
+        ]
+      },
+      {
+        "situation_type": "matrix_intermediate_final_conflict",
+        "explanation": "Read the complete row-reduction matrix, preserving nested rows and signs. A final standalone matrix can contain a sign typo while an intermediate reduced matrix supplies the valid original answer; consult grading evidence before treating this as a wrong key.",
+        "example_ids": [
+          "q-31954"
+        ]
+      },
+      {
+        "situation_type": "harmless_source_prose_typo",
+        "explanation": "Incorrect incidental labels or intermediate prose can coexist with a uniquely correct derivation and offered answer. Record the disagreement while keeping the source-backed answer ready.",
+        "example_ids": [
+          "q-12450",
+          "q-127373",
+          "q-32608",
+          "q-70903"
+        ]
+      },
+      {
+        "situation_type": "substantive_coefficient_conflict",
+        "explanation": "A final indicial equation contradicting correctly collected derivative coefficients is a substantive source error requiring a specific hold.",
+        "example_ids": [
+          "q-345274"
+        ]
+      },
+      {
+        "situation_type": "nested_matrix_preservation",
+        "explanation": "Keep all original matrix rows, entries, signs and delimiters. Identify the requested complete matrix rather than isolated matching coefficients.",
+        "example_ids": [
+          "q-80825",
+          "q-32608"
+        ]
+      },
+      {
+        "situation_type": "complete_expression_equivalence",
+        "explanation": "Combine full original terms, preserve factors and qualifiers, and check algebraic equivalence. Distinct written options can simplify to the same requested expansion.",
+        "example_ids": [
+          "q-79945"
+        ]
+      },
+      {
+        "situation_type": "undefined_proportionality_constant",
+        "explanation": "An unspecified proportionality constant may absorb a fixed positive scalar. Distinct offered formulas with k and 3k can both satisfy a qualitative proportionality statement.",
+        "example_ids": [
+          "q-51252"
+        ]
+      },
+      {
+        "situation_type": "derivative_role_mismatch",
+        "explanation": "Distinguish a quantity, its rate of change and the rate of growth of that rate. A saved solution assigning the wrong derivative order is substantive.",
+        "example_ids": [
+          "q-79315"
+        ]
+      },
+      {
+        "situation_type": "graph_or_highlight_evidence",
+        "explanation": "Inspect original diagrams, graph endpoints, shading or highlighted matrix entries when text omits essential evidence.",
+        "example_ids": [
+          "q-85640",
+          "q-85643",
+          "q-125611",
+          "q-13499"
+        ]
+      },
+      {
+        "situation_type": "domain_and_qualifier_binding",
+        "explanation": "Read domains, endpoint exclusions, signs and requested qualifiers before choosing algebraically related formulas.",
+        "example_ids": [
+          "q-79784",
+          "q-345668",
+          "q-64953"
+        ]
+      },
+      {
+        "situation_type": "equation_chain_conclusion",
+        "explanation": "The requested quantity may be a complete expression derived in the saved equation chain rather than its final literal substring. Bind the answer to the exact prompt role.",
+        "example_ids": [
+          "q-86413",
+          "q-8306"
+        ]
+      },
+      {
+        "situation_type": "complete_vector_and_domain",
+        "explanation": "Preserve every vector component, scalar factor, parameter interval and excluded endpoint. A correct component alone does not verify a complete offered answer.",
+        "example_ids": [
+          "q-126838",
+          "q-126841",
+          "q-126998",
+          "q-136291"
+        ]
+      },
+      {
+        "situation_type": "compound_answer",
+        "explanation": "Verify all roles of compound scalar/vector/limit/point answers together in original prompt order.",
+        "example_ids": [
+          "q-129224",
+          "q-133221",
+          "q-141539",
+          "q-162322"
+        ]
+      },
+      {
+        "situation_type": "full_integral_factor_and_bounds",
+        "explanation": "Identify the precise blank role: a factor already printed outside a blank must not be duplicated, whereas a numerator, Jacobian or complete integrand must preserve all requested factors.",
+        "example_ids": [
+          "q-160838",
+          "q-161198",
+          "q-161879",
+          "q-15133"
+        ]
+      },
+      {
+        "situation_type": "regression_design_columns",
+        "explanation": "Bind matrix columns to original polynomial powers and intercept convention. An absent power must not be invented and no-intercept models must not acquire a constant column.",
+        "example_ids": [
+          "q-139651",
+          "q-139659",
+          "q-139672"
+        ]
+      },
+      {
+        "situation_type": "ordered_matrix_row_operations",
+        "explanation": "Preserve row-operation sequence and matrix shape; a saved chain can verify a requested operation or entry without treating an isolated coefficient as the complete answer.",
+        "example_ids": [
+          "q-31872",
+          "q-31945",
+          "q-73397",
+          "q-32772"
+        ]
+      },
+      {
+        "situation_type": "orientation_startpoint_qualifiers",
+        "explanation": "Parameterized curves must honor prescribed orientation, start point and parameter range; these constraints can distinguish otherwise geometrically equivalent formulas.",
+        "example_ids": [
+          "q-15856",
+          "q-6893",
+          "q-78680"
+        ]
+      },
+      {
+        "situation_type": "sign_and_positive_parameter_qualifier",
+        "explanation": "Check growth/removal signs, physical positive roots, magnitudes of decrease rates and required parameter positivity.",
+        "example_ids": [
+          "q-143034",
+          "q-135228",
+          "q-48254",
+          "q-335312"
+        ]
+      },
+      {
+        "situation_type": "second_independent_solution",
+        "explanation": "A requested second solution must be independent of the given solution; a repeated first solution is not a valid distractor merely because it satisfies the ODE.",
+        "example_ids": [
+          "q-64953"
+        ]
+      },
+      {
+        "situation_type": "rectangular_singular_value_convention",
+        "explanation": "MA explicitly reports square roots of all eigenvalues of A-transpose A, including padded zeros for wide rectangular matrices. Preserve its stated convention and complete offered triple.",
+        "example_ids": [
+          "q-95354",
+          "q-95377"
+        ]
+      },
+      {
+        "situation_type": "substantive_coefficient_conflict",
+        "explanation": "Revision after full evidence audit: repeated later9-to2 coefficient error in q345274 does not demonstrate bad MA grading. Earlier complete Step4 coefficient and nonzero-a0 coefficient-zero rule authoritatively support uniquely correct offered e. Recover that equation and record later source error prominently.",
+        "example_ids": [
+          "q-345274"
+        ],
+        "revision_reason": "Distinguish source display error from actual wrong key when complete requested answer is explicitly supported earlier."
+      }
+    ]
+  },
+  "historical_log_note": "Worker log entries are retained as audit history. Earlier hold-oriented descriptions for q-106585, q-129197, q-129198, q-4772 and q-345274 are superseded by final ready decisions and the peer/earlier-evidence explanations above.",
+  "input_files": {
+    "final-decisions.json": "771c83ba2a6e136bb4aa1d4cea1a68f950ff490af38155c438b3c3ce95645bc3",
+    "held-review.json": "dbf8ec858ed15a49a03eb3ab8a54980b20e52033c5f7556ab1d804778d8c1dd0",
+    "situation-summary.json": "b6c97b0c8c0410f8135a07bd92ac19545585a7b2d7a176aa0f9d84d2d79ae2ea",
+    "peer-verification.json": "8c8051dacec2d18cc5a6d600c3e888c4c0d37e4f929f9e473cad61dfe4295756",
+    "peer-integration.json": "d9f35643294b920bd42ed481946244641c0580fd6065f399be07064612b7d0fe",
+    "disagreements.json": "e92c0a49131e3045c482b57da3a67d155bc56ec0366ea571ae43644ba51300ce",
+    "commit-verification.json": "9bc01c4725458dcb0890c2ec72f12391c0a2d3284d5d384007e6ae1d43523e55"
+  },
+  "updated_at_utc": "2026-10-11T02:54:53.348373+00:00",
+  "verification_artifacts": {
+    "committed_content": {
+      "file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/committed-content-verification.json",
+      "sha256": "066d3ebaf58fd57d7f075c1fc2a9da71f7d32ab05f08a4fe3ce7f93159ce0e2f",
+      "verification": {
+        "verified": true,
+        "database": "math",
+        "source": ":org/Math-Academy",
+        "basis_before": 165,
+        "basis_after": 186,
+        "questions_verified": 813,
+        "fields_verified": 834,
+        "new_questions": 709,
+        "updated_questions": 101,
+        "already_current_questions": 3,
+        "all_reimports_noop": true,
+        "old_component_entities_preserved": 624,
+        "old_component_facts_preserved": 2395,
+        "remaining_held_untouched_by_receipts": true,
+        "receipt_retractions_verified": 199
+      }
+    },
+    "held_index_update": {
+      "file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/held-index-update-verification.json",
+      "sha256": "723f035b72bdbbc7c49eeb4a8697dd4c3cb718e2985630d2fd09b24de5949f61",
+      "verification": {
+        "verified": true,
+        "basis": 186,
+        "before": 839,
+        "removed_verified_ids": 813,
+        "remaining": 26,
+        "index_sha256": "60e8e5327ad4264963f463efefd4263db5ebd7898bb1bd942e6e0ba33a1f0058",
+        "current_reason_metadata_refreshed": true
+      }
+    },
+    "final_status": {
+      "file": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/final-status-verification.json",
+      "sha256": "dac787967baff6a46f9a16bb112e24b31350ee430f6ce1e2166a3a7a73fb104c",
+      "verification": {
+        "verified": true,
+        "database": "math",
+        "source": ":org/Math-Academy",
+        "basis": 186,
+        "held_index_remaining": 26,
+        "receipt_batches": 21,
+        "reviewed_questions": 839,
+        "resolved_questions": 813,
+        "resolved_fields": 834,
+        "independent_commit_audit": "reference/edb-math/imports/math-academy/2026-10-10-held-complete/math/final-commit-audit.json"
+      }
+    }
+  }
+}

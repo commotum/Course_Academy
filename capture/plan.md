@@ -2,45 +2,51 @@
 
 Design a fresh capture system with small, clearly separated modules. Use the existing script and saved captures to understand Math Academy and preserve useful evidence. Existing behavior is not automatically a requirement for the new build.
 
-We will work through the stages in order. For each stage, propose a simple design, discuss it with Jake, record the decisions here, and draw its flow chart. Settle how the stages fit together before replacing the running system.
+The six stage documents in `docs/` describe the agreed design. Follow [principles.md](principles.md) when building the modules in `scripts/`.
 
-**Queue Processing and the Activity Selection priority order are agreed.** The priority-score calculation remains to be defined. The later sections below are starting proposals, not agreed specifications.
+Lesson and Review priority scores are based on the downstream targets their topics support through the prerequisite graph. Both activity types use the same scoring policy.
 
 ## What we have agreed
 
 - Build fresh rather than continue adding exceptions to the old script.
 - Give each stage a clear job and a defined record to pass to the next stage.
+- Prioritize progress, fault tolerance, and resumability. Math Academy limits which activities appear in the queue; leaving one unfinished can prevent new work from appearing.
 - Queue Processing handles the activity queue only. Course summaries, the completed-activity list, and XP tracking belong to Post-Activity Processing.
 - Activity Capture includes doing the activity and reviewing its activity history page afterward. Each activity type has its own capture path.
 - Post-Activity Processing contains the general actions shared by all activity types and has its own separate stage.
-- Never defer or abandon an activity for any reason. Recover and continue until it is complete. After an external interruption or manual stop, resume that activity when operation resumes. Ambiguous questions, uncertain answers, and difficult imports must not cause the script or agent to move on from an unfinished activity.
-- Define a completion behavior for each activity type, including what to do when an answer is uncertain. Decide those behaviors during the relevant stage interview.
+- Never quit, defer, or abandon an activity because of runtime problems. Every failure has a default next action. Recover and continue; after an external interruption or manual stop, resume that activity when operation resumes.
+- Finish each activity and its question judgments together. A competent agent resolves every question within that process; genuine ambiguity or unavailable evidence receives a final, reasoned finding. Nothing waits for Jake's judgment or a held-question queue.
+- Apply each activity type's answer policy as a default. Override correctness sequences when disagreement, ambiguity, timing, or unexpected behavior requires it to continue; record the planned response, actual response, and reason.
 - Save enough progress to continue after an external interruption or manual stop. After an interruption, check what Math Academy already accepted before repeating an action.
 - Resolve source-content gaps during Activity Capture's final history and lesson-page review. Database Preparation receives checked source content and handles database mapping and transaction construction.
-- Diagnostic behavior uses course membership and shortest prerequisite distance, with the answer probabilities and timing recorded in `v2/3-Activity-Capture.md`.
+- Diagnostic behavior uses course membership and shortest prerequisite distance, with the answer probabilities and timing recorded in `docs/3-Activity-Capture.md`.
 - Keep **Activity Capture** in one design file with the shared process followed by each activity type. Draw Post-Activity Processing separately.
 - Keep the writing and charts understandable without reading the code.
-- Use engineering judgment for routine reliability and implementation choices. Ask Jake only when something is genuinely ambiguous; do not turn ordinary error handling into an interview question.
+- Resolve runtime ambiguity through scripted defaults and focused agent judgment. Never make asking Jake a requirement for continuing an activity.
 
 The existing source rules still apply: preserve Math Academy's original content, including its errors. Keep our corrections separate and apply them later under the appropriate source. A guess submitted to finish an activity does not by itself establish a correct answer for the database.
 
-## Shared foundations — proposed
+## Shared foundations
 
 **One way to work with Math Academy.** A shared browser module reads pages and performs actions such as opening an activity, filling an answer field, submitting, and continuing. It returns the same kinds of records to every activity module. Page selectors, HTML parsing, and browser details live here.
 
 **One capture record.** Use a consistent record for original page evidence, questions, answer fields, submissions, grades, worked solutions, images, lesson structure, and completion. Keep source observations distinguishable from the agent's reasoning and conclusions.
 
-**One way to save and resume progress.** Every activity uses the same mechanism to save its position and record actions before submitting them. Recoverable browser or process failures trigger recovery. An unavailable site or connection leaves the activity waiting to continue, with its progress intact.
+**One way to save and resume progress.** Every activity uses the same mechanism to save its position and record actions before submitting them. Save question evidence, response decisions, agent judgments, and external action outcomes. Browser or process failures trigger automatic recovery; check accepted actions before retrying them. An unavailable dependency triggers retries with backoff, preserving progress. Respect manual stops and resume when operation restarts.
 
 **Shared tools, separate activity rules.** Reuse answer-field handling, image collection, page reading, and saved progress. Each activity type specifies its own sequence and answer policy. Avoid one large function containing every activity's exceptions.
 
-The shared process and activity-specific behavior are described in `v2/3-Activity-Capture.md`, including navigation, answer/skip policy, submission timing, and history-page review.
+The shared process and activity-specific behavior are described in `docs/3-Activity-Capture.md`, including navigation, answer/skip policy, submission timing, and history-page review.
 
 **Python controls the workflow and detects exceptions.** It reads and validates captures, applies policies, performs browser actions, matches known database identities, and builds and submits transactions. It calls agents for mathematical answers, interpretation of source evidence, or ambiguous database identity matches. Each call includes the specific question or detected exception and relevant evidence; the agent returns a structured result that Python checks before acting. Database Commit is entirely scripted.
 
+**Every failure has a next action.** Python retries or changes the failed operation, replaces an unavailable solver, or requests a focused agent decision. Truly unanswerable questions receive a final finding and the best valid response or offered Don't Know/skip. Unexpected exceptions return control to recovery with saved state instead of exiting the capture loop. Repeating the same failed reasoning indefinitely is not progress. See Activity Capture's default actions for question and page failures.
+
+**Keep capture moving after resolution.** Save the completed capture, question judgments, and original images before starting another activity. Pending database work retries automatically in saved order through one database worker while capture continues. Only the capture loop selects activities; background workers report their status. Nonessential account observations also retry without blocking the queue or interfering with the active page. Capture completion and verified import are distinct states. If durable storage is unavailable, retain state and retry saving before advancing.
+
 **One way to read and write the database.** Selection and preparation receive the database information they need through a shared interface. Transaction/Commit owns database writes. Keep account login, queue state, and activity progress separate for each account while sharing the content database and image library.
 
-These are proposed boundaries. Choose implementation details as the stage discussions reveal what is needed.
+Choose implementation details within these boundaries.
 
 ## 1. Queue Processing
 
@@ -71,13 +77,13 @@ Agreed form: prioritize the five base activity types—Lesson, Review, Assessmen
 
 Use the queue record, desired content, existing captured content, and the account's Math Academy progress. Pass the selected activity and its reason to Activity Capture, which applies the activity's answer and completion policy.
 
-The agreed order is listed in `v2/2-activity-selection.md`: started Assessment, Diagnostic, Lesson/Review by score, Multistep; then unstarted Diagnostic, Lesson/Review by score, Multistep, Assessment. Started activities come before unstarted ones. Comparing scores happens when choosing or resuming an activity; changing scores must not interrupt the activity currently being captured. Use queue order for equal scores or when none are available. An assessment offered alone will still be selected even though unstarted assessments rank last.
+The agreed order is listed in `docs/2-activity-selection.md`: started Assessment, Diagnostic, Lesson/Review by score, Multistep; then unstarted Diagnostic, Lesson/Review by score, Multistep, Assessment. Started activities come before unstarted ones. Comparing scores happens when choosing or resuming an activity; changing scores must not interrupt the activity currently being captured. Use queue order for equal scores or when none are available. An assessment offered alone will still be selected even though unstarted assessments rank last.
 
-This replaces the earlier draft's mixture of activity types, requirements, repeats, and capture goals. The priority-score calculation remains to be defined.
+Python calculates Lesson and Review scores from the downstream targets their topics support through the prerequisite graph. Record those targets with the selection reason.
 
 Jake expects a required assessment to be the only displayed queue option. Treat that as an observation to verify when needed, rather than a separate priority category.
 
-Discuss capture goals, what counts as captured, missing lessons versus additional practice questions, required assessments, repeats, and coordination between accounts. Work out how selection and diagnostic behavior cooperate to make wanted lessons available. Do not carry forward the old priority formula or fixed diagnostic topic lists without deciding that they fit.
+Diagnostic behavior follows its separately agreed course-membership and prerequisite-distance policy.
 
 ## 3. Activity Capture
 
@@ -90,44 +96,45 @@ Activity Capture covers both parts:
 
 Together, these form Activity Capture. Before handing off to Post-Activity Processing, Python checks source completeness and fetches missing evidence. It calls the activity's agent when the evidence needs interpretation, including ambiguous answer evidence, and checks the returned result. Lessons also receive the full topic-page review. Recovery does not change the fact that Math Academy already completed the activity.
 
-Use [3-Activity-Capture.md](v2/3-Activity-Capture.md) as the single design document: shared activity/step and question processes, followed by Lesson, Review, Assessment, Diagnostic, and Multistep.
+Use [3-Activity-Capture.md](docs/3-Activity-Capture.md) as the single design document: shared activity/step and question processes, followed by Lesson, Review, Assessment, Diagnostic, and Multistep.
 
 Assessment question counts and time limits belong to Queue Processing. Activity Capture uses those values and observes the current time remaining during a timed activity.
 
 New and failed lessons are paths within Lesson capture. Resuming an interrupted activity continues that activity; it is not another activity type.
 
-Python applies the answer and completion policies recorded for each type. During an activity it preserves uncertainty and continues; during the final source review it resolves missing or conflicting evidence before the capture is handed off. An unavailable source value stays an explicit limitation rather than an invented fact.
+Python applies the answer and completion policies recorded for each type, including their fallback actions. During an activity it preserves uncertainty and continues; during final source review the agent closes every question judgment before handoff. A confirmed source error or genuinely unavailable answer has a recorded final finding, not a request for Jake or a future review. Preserve Math Academy's originals and the agent's separate conclusion.
 
 ## 4. Post-Activity Processing
 
-**Job:** perform the account-level work that follows any completed activity, once, through shared Python code. See [4-post-activity-processing.md](v2/4-post-activity-processing.md).
+**Job:** perform the account-level work that follows any completed activity, once, through shared Python code. See [4-post-activity-processing.md](docs/4-post-activity-processing.md).
 
-This stage owns the course summary, completed-activity list, and XP tracking. The starting proposal also includes saving updated topic progress, comparing it with the previous observation, and recording that the activity has completed. Keep these observations available for later use without automatically treating them as learner facts in EDB.
+This stage owns the course summary, completed-activity list, XP tracking, and updated topic progress. Compare progress with the previous observation and record activity completion. Keep these observations available for later use without automatically treating them as learner facts in EDB.
 
-Discuss exactly which pages to read, when to collect these observations, and how to recover missing observations. Also decide what account information must be collected at startup, before the first activity has finished. A delay here must not cause the system to repeat an already completed activity.
+Read the dashboard and tracked courses' progress pages after capture, as specified in the stage document. Save retake instructions from available completion evidence. Retry missing nonessential observations without blocking capture or repeating the completed activity, recording their actual observation times. Startup reads and retry details are implementation choices.
 
-The shared stage has its own chart, `4-post-activity-processing.dots`. Activity Capture hands off to it after collecting the activity's content and history.
+Activity Capture hands off to this shared stage after collecting and checking the activity's content and history.
 
 ## 5. Database Preparation
 
-**Job:** use Python to turn checked captures into prepared transactions. See [5-database-prep.md](v2/5-database-prep.md).
+**Job:** use Python to turn checked captures into prepared transactions. See [5-database-prep.md](docs/5-database-prep.md).
 
-Reconcile questions, answer fields, solutions, tutorials, knowledge points, lesson steps, and multistep structure with the existing database. Python matches known identities and detects conflicting or ambiguous mappings. Only those cases go to an agent with the candidate entities and source evidence; Python checks the proposed resolution before building EDN. Preserve existing identities for confirmed source revisions. A newly discovered source-content gap returns to Activity Capture's source review.
+Reconcile questions, answer fields, solutions, tutorials, knowledge points, lesson steps, and multistep structure with the existing database. Python matches known identities and detects conflicting or ambiguous mappings. Only those cases go to an agent with the candidate entities and source evidence; Python checks the proposed resolution before building EDN. Preserve existing identities for confirmed source revisions. A newly discovered source-content gap returns directly to Activity Capture's agent for a final judgment now.
 
-Python converts content, stores images using the existing SHA-256 layout under `/media/jake/SSD/EDB/math/images`, builds references and schema relationships, and calculates the topic workload multiplier from the checked lesson inputs. It produces reviewable EDN with separate source attribution for original and derived facts, and validates complete batches. Incomplete or unresolved cases remain explicit; independent complete changes can proceed.
+Python converts content, stores images using the existing SHA-256 layout under `/media/jake/SSD/EDB/math/images`, builds references and schema relationships, and calculates the topic workload multiplier from the checked lesson inputs. It produces reviewable EDN with separate source attribution for original and derived facts, and validates complete batches. An agent's final finding of insufficient evidence excludes only the affected content and dependent references, with an explicit reason. Complete supported content proceeds; no partial question or guessed authoritative answer is imported. An unavailable database leaves a durable completed capture for automatic preparation later, while new capture continues.
 
 ## 6. Database Transaction / Commit
 
-**Job:** use Python to preview, commit, and verify prepared transactions against `/media/jake/SSD/EDB/math`. See [6-database-commit.md](v2/6-database-commit.md).
+**Job:** use Python to preview, commit, and verify prepared transactions against `/media/jake/SSD/EDB/math`. See [6-database-commit.md](docs/6-database-commit.md).
 
 Content interpretation stays in Activity Capture; database identity decisions stay in Preparation. Python checks the prepared changes, submits them with the agreed source, records the receipt, and verifies the database result. It handles exact retries and classifies rejected or unknown outcomes. If a write times out, establish whether it committed before sending a different transaction.
 
-Discuss batch size, automatic versus reviewed commits, concurrent accounts, retry behavior, and what verification is enough to call an import complete.
+Commit validated original content automatically. Preserve corrections already decided by the capture agent separately; later correction transactions follow the originals under their own source. Database work never waits for Jake to judge the content. Batch sizing is an implementation choice; follow the stage document's basis guards, exact retries, and read-back verification. A pending import retries automatically without blocking capture, and is marked complete only after verification.
 
 ## Design files and build sequence
 
-- `v1/` holds the charts describing the old system.
-- `v2/` holds the six stage documents, from `1-queue-processing.md` through `6-database-commit.md`.
+- `docs/` holds the six stage documents, from `1-queue-processing.md` through `6-database-commit.md`.
+- `scripts/` holds the replacement implementation as it is built.
+- `principles.md` holds the rules shared by every phase.
 - Keep one Activity Capture document with the shared process and activity-specific sections. Add charts as the design is settled, with separate Post-Activity Processing, preparation, and commit charts.
 - Update this plan as decisions are made. Keep unanswered questions visible rather than filling them with assumptions.
 - After the designs fit together, agree on the implementation sequence and checks using saved captures. Test completion and recovery before switching live accounts to the replacement.

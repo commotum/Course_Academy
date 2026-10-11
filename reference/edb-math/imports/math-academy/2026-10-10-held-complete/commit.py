@@ -31,6 +31,15 @@ for ref,info in read(ROOT/'image-verification.json')['references'].items():asser
 
 def verify_content(ids,basis,directory):
  directory.mkdir(parents=True,exist_ok=True)
+ if len(ids)>40:
+  reports=[];question_rows=[]
+  for start in range(0,len(ids),40):
+   part=directory/('part-'+str(start//40+1).zfill(3))
+   reports.extend(verify_content(ids[start:start+40],basis,part))
+   question_rows.extend(loads((part/'questions.edn').read_text()))
+  (directory/'questions.edn').write_text(dumps(question_rows))
+  atomic_json(directory/'verification.json',{'verified':True,'basis':basis,'questions':reports,'query_partition_size':40,'reason':'EDB aggregate pull exceeded query/value-byte-limit; all partitions read at the same immutable basis.'})
+  return reports
  current=db.questions(ids,directory,basis=basis)
  tids=sorted({selected[m]['question']['topic_id'] for m in ids})
  topics={t[':topic/math-academy-id']:t for [t] in db.query(TOPIC_QUERY.replace(':in $ ?id',':in $ [?id ...]'),[tids],directory,'topics',basis)}
@@ -69,7 +78,14 @@ for i,b in enumerate(manifest['batches']):
  receipt=db._commit(intent,path,directory)
  assert receipt[':edb/committed'] is True and receipt[':edb/db-before-t']==before and receipt[':edb/db-after-t']==before+1
  validate_receipt(receipt,attributes,source_id,guards['retractions'],guards['immutable_answers'],guards['immutable_fields'])
- verify_content(b['questions'],before+1,directory/'readback')
+ saved_verification=directory/'readback'/'verification.json'
+ if saved_verification.exists():
+  verified_readback=read(saved_verification)
+  assert verified_readback['verified'] and verified_readback['basis']==before+1
+  assert {r['question'] for r in verified_readback['questions']}==set(b['questions'])
+  assert all(r['exact_content'] and r['source_verified'] and r['KP_verified'] and r['reimport_noop'] for r in verified_readback['questions'])
+ else:
+  verify_content(b['questions'],before+1,directory/'readback')
  result={'file':str(path),'sha256':b['sha256'],'basis_before':before,'basis_after':before+1,'source':SOURCE,'committed':True,'verified':True,'questions':len(b['questions']),'datoms':len(receipt[':edb/tx-data']),'retractions':sum(not d[-1] for d in receipt[':edb/tx-data'])}
  atomic_json(directory/'verification.json',result);results.append(result)
  atomic_json(ROOT/'commit-verification.json',{'all_batches_committed':len(results)==len(manifest['batches']),'basis_before':basis,'basis_after':before+1,'source':SOURCE,'batches':results})
@@ -117,14 +133,16 @@ if not d.get('resolved_by_held_complete'):
  counts=collections.Counter(r['category'] for r in remaining.values())
  d['remaining_pattern_counts']={'radio_mixed_prose_and_math':counts['text_choice_with_embedded_math'],'radio_prose_only':counts['prose_choice_requires_statement_matching'],'radio_complete_formula_needs_answer_binding':counts['math_candidate_literal_present_but_not_bound_to_answer'],'radio_other_math_matching':counts['math_candidate_requires_representation_or_conclusion_review'],'select_questions':counts['select_field_binding'],'select_questions_needing_one_field':sum(len(r.get('unconfirmed_fields',[]))==1 for r in remaining.values()),'select_questions_needing_multiple_fields':sum(len(r.get('unconfirmed_fields',[]))>1 for r in remaining.values()),'select_unconfirmed_fields':sum(len(r.get('unconfirmed_fields',[])) for r in remaining.values()),'select_questions_with_normalized_prompt_placement_gaps':0,'radio_set_brace_normalization_ambiguity':0}
  d['remaining_analysis']={'basis':end_basis,'questions':str(ROOT/'remaining-questions.json'),'summary':str(ROOT/'remaining-summary.json'),'previous_detailed_report':str(ROOT.parent/'2026-10-10-held-next/remaining-analysis/REPORT.txt'),'note':'Current IDs only; older report is historical.'}
- atomic_json(ROOT/'remaining-questions.json',remaining)
- atomic_json(ROOT/'remaining-summary.json',{'basis':end_basis,'held':len(remaining),'patterns':d['remaining_pattern_counts']})
- d['status_note']=f'All 839 previously held questions were individually reviewed. {len(selected)} additional source-supported questions verified at basis {end_basis}; remaining IDs have explicit per-question content-error, ambiguity, or authoritative-evidence findings in held-review.json.'
+ d['status_note']=f'All 839 previously held questions were individually reviewed. {len(selected)} additional source-supported questions verified at basis {end_basis}; all remaining IDs have independently confirmed per-question content-error or answer-ambiguity findings in held-review.json. No matching-only or missing-evidence holds remain.'
  holds=read(ROOT/'held-review.json')
  for question in d['questions']:
   mid=question['math_academy_id'];finding=holds[mid]
   question['current_review']={'source':SOURCE,'basis':end_basis,'reason':finding['hold_reason'],'explanation':finding['explanation'],'evidence_file':str(ROOT/'held-review.json')}
+  remaining[mid]['current_review']=question['current_review']
  d['remaining_content_reason_counts']=dict(collections.Counter(h['hold_reason'] for h in holds.values()))
+ d['remaining_pattern_counts_note']='Historical extraction/format categories for these IDs; actual current blocking reasons are in remaining_content_reason_counts and each question/current_review.'
+ atomic_json(ROOT/'remaining-questions.json',remaining)
+ atomic_json(ROOT/'remaining-summary.json',{'basis':end_basis,'held':len(remaining),'content_reason_counts':d['remaining_content_reason_counts'],'all_holds_independently_confirmed':True,'matching_only_holds':0,'missing_evidence_holds':0,'historical_format_patterns':d['remaining_pattern_counts'],'note':d['remaining_pattern_counts_note']})
  atomic_json(index,d)
 assert len(read(index)['questions'])==manifest['still_unresolved_questions'] and set(q['math_academy_id'] for q in read(index)['questions']).isdisjoint(selected)
 atomic_json(ROOT/'held-index-update-verification.json',{'verified':True,'basis':end_basis,'before':839,'removed_verified_ids':len(selected),'remaining':len(read(index)['questions']),'index_sha256':sha(index)})
