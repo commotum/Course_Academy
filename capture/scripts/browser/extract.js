@@ -39,10 +39,14 @@ element => {
     .filter(row => row.closest('table')?.matches('.questionWidget-choicesTable') ||
       [...row.querySelectorAll('.choiceLetterCircle')].some(circle => circle.closest('tr') === row));
   if (rows.length) fields.push({key:'selection', type:'radio', choices:[]});
+  // History renders blank responses as static boxes, with the overall grade
+  // outside this question node. Keep the observed answer position as a field
+  // instead of folding its displayed value into the source problem.
+  const historyQuestion = element.matches('.question[id^="question-"]');
   const nodes = [...element.querySelectorAll('.matheditor-wrapper-answer, .selectList, input:not([type="hidden"]), textarea, select, [contenteditable="true"]' +
-    (['Correct','Incorrect','Skipped Question'].includes(element.querySelector('.questionWidget-result')?.textContent.trim()) ? ', .freeResponseTextbox' : ''))]
-    .filter(n => !n.closest('.questionWidget-explanation, .exampleExplanation') &&
-      !n.parentElement?.closest('.matheditor-wrapper-answer, .selectList, [contenteditable="true"]'));
+    (historyQuestion || ['Correct','Incorrect','Skipped Question'].includes(element.querySelector('.questionWidget-result')?.textContent.trim()) ? ', .freeResponseTextbox' : ''))]
+    .filter(n => !n.closest('.questionWidget-explanation, .exampleExplanation, .questionExplanation, .studentAnswer, .studentAnswerHeader') &&
+      !n.parentElement?.closest('.matheditor-wrapper-answer, .selectList, .freeResponseTextbox, [contenteditable="true"]'));
   for (const n of nodes) {
     const key = 'field-' + (fields.filter(f => f.key !== 'selection').length + 1);
     let type = n.matches('.selectList, select') ? 'select' : 'blank';
@@ -61,6 +65,11 @@ element => {
         graded ? '.selectListFrameDisabled' : '.selectListFrameDisabled.correctSelection, .selectListFrameDisabled.correctSelectionMultipleAttempts');
       f.frame_id = frame?.id;
       if (!f.frame_id) fail('Select frame has no ID: ' + n.id);
+    } else if (n.matches('.freeResponseTextbox')) {
+      f.disabled = true;
+      f.input_html = n.outerHTML;
+      f.rendered_text = n.textContent.trim();
+      f.readonly_history = historyQuestion;
     } else if (n.matches('input') && !['text','number',''].includes(n.getAttribute('type') || '')) {
       fail('Unsupported input type: ' + n.getAttribute('type'));
     }

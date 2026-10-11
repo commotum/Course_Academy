@@ -7,6 +7,7 @@ Multistep: reference/mathacademy/question-capture/14039183.
 Diagnostic/queue regressions: scripts/question_capture/fixtures.
 """
 import hashlib
+from copy import deepcopy
 import json
 import tempfile
 import threading
@@ -24,6 +25,26 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 
 class SourceParsingTests(unittest.TestCase):
+    def test_image_binding_matches_captured_paths_but_rejects_changed_source(self):
+        for tag, source, html in [('img', 'https://mathacademy.com/graphics/q-1-a-1', '<img src="/graphics/q-1-a-1">'),
+                                  ('svg', None, '<svg><path d="M0 0L1 1"/></svg>')]:
+            with self.subTest(tag=tag):
+                raw = {'problem': 'Choose ![](@asset-0@)',
+                       'assets': [{'index': 0, 'tag': tag, 'source_url': source, 'html': html}],
+                       'fields': [{'key': 'selection', 'type': 'radio', 'choices': [
+                           {'option': 'a', 'type': 'image', 'value': '@asset-0@', 'dom_id': 'choice-a'}]}]}
+                captured = deepcopy(raw)
+                captured['assets'][0]['path'] = '/capture/assets/hash.png'
+                captured = replace_markers(captured, {'@asset-0@': '/capture/assets/hash.png'})
+                self.assertEqual(MathAcademyBrowser._binding(raw), MathAcademyBrowser._binding(captured))
+                changed = deepcopy(raw)
+                changed['assets'][0]['html'] += '<!-- changed -->'
+                self.assertNotEqual(MathAcademyBrowser._binding(changed), MathAcademyBrowser._binding(captured))
+                moved = deepcopy(captured)
+                moved['assets'][0]['path'] = '/another/assets/hash.png'
+                moved = replace_markers(moved, {'/capture/assets/hash.png': '/another/assets/hash.png'})
+                self.assertEqual(MathAcademyBrowser._binding(moved), MathAcademyBrowser._binding(captured))
+
     def test_learn_course_percentage_uses_authored_label_and_source_course(self):
         html = (FIXTURES / 'learn-course-progress.html').read_text()
         result = parse_dashboard(html + '<div id="dailyGoalPoints">999/50 XP</div>', '1')

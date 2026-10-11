@@ -654,11 +654,27 @@ class MathAcademyBrowser:
     def _binding(item):
         # Asset paths are local evidence details; bind to the source prompt and
         # actual choices/field order, without result or editable current values.
-        clean = lambda value: re.sub(r"!\[[^]]*\]\([^)]*\)", "<source-image>", value or "")
+        assets = item.get("assets", [])
+        def image_identity(value):
+            asset = next((asset for asset in assets if value in (
+                asset.get("path"), f"@asset-{asset['index']}@")), None)
+            if asset is None:
+                return value
+            return "<source-image:" + fingerprint({k: asset.get(k) for k in
+                ("tag", "source_url", "html")}) + ">"
+
+        def clean(value):
+            value = value or ""
+            return re.sub(r"!\[[^]]*\]\(([^)]+)\)",
+                          lambda match: image_identity(match[1]), value)
+
+        def choice_value(choice):
+            value = choice.get("value")
+            return image_identity(value) if choice.get("type") == "image" else clean(value)
         return {"source_id": question_identity(item.get("dom_id"), item.get("html", "")),
                 "problem": clean(item.get("problem")),
                 "fields": [{**{k: field.get(k) for k in ("key", "type", "tag", "dom_id")},
-                            "choices": [{k: clean(choice.get(k)) if k == "value" else choice.get(k)
+                            "choices": [{k: choice_value(choice) if k == "value" else choice.get(k)
                                          for k in ("option", "value", "type", "dom_id")} for choice in field.get("choices", [])]}
                            for field in item.get("fields", [])]}
 

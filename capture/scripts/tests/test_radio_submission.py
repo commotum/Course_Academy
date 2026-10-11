@@ -29,6 +29,53 @@ class RadioSubmissionTests(unittest.TestCase):
         cls.browser.close()
         cls.playwright.stop()
 
+    def test_captured_image_choice_submits_once_and_changed_source_is_rejected(self):
+        fixture = Path(__file__).parent / 'fixtures' / 'q-94453-diagnostic-radio.html'
+        for changed in (False, True):
+            with self.subTest(changed=changed), tempfile.TemporaryDirectory() as directory:
+                context = self.browser.new_context()
+                self.addCleanup(context.close)
+                context.route('**/*', lambda route: route.abort())
+                page = context.new_page()
+                page.set_default_timeout(2000)
+                page.set_content(fixture.read_text())
+                page.evaluate('''() => {
+                  const widget=document.querySelector('.questionWidget');
+                  const first=widget.querySelector('.questionWidget-choicesTable tr');
+                  first.querySelector('td:last-child').innerHTML='<svg width="10" height="10"><path d="M0 0L10 10"/></svg>';
+                  const submit=widget.querySelector('.questionWidget-submitButton');
+                  window.submissions=0;
+                  widget.querySelectorAll('.questionWidget-choiceLetterCircle').forEach(choice => {
+                    choice.onclick=event=>{event.stopPropagation();choice.style.background='rgb(64, 64, 64)';
+                      submit.disabled=false;submit.classList.remove('disabledButton');};
+                  });
+                  submit.onclick=event=>{event.stopPropagation();++window.submissions;
+                    const result=document.createElement('div');result.className='questionWidget-result';
+                    result.textContent='Correct';widget.append(result);};
+                }''')
+                adapter = MathAcademyBrowser(SimpleNamespace(timeout_ms=2000), threading.Event())
+                adapter.page, adapter.context = page, context
+                adapter.directory = Path(directory)
+                adapter.activity = {'task_id': 'offline', 'kind': 'diagnostic'}
+                current = adapter._view()
+                scope = page.locator(current['selector'])
+                item = adapter._read(scope, directory, 'image-choice')
+                choice = item['fields'][0]['choices'][0]
+                self.assertEqual(choice['type'], 'image')
+                self.assertTrue(Path(choice['value']).is_file())
+                if changed:
+                    scope.locator('.questionWidget-choicesTable tr').first.locator('td:last-child svg path').evaluate(
+                        "n=>n.setAttribute('d','M0 10L10 0')")
+                observation = {**current, 'question': item}
+                result = adapter.respond(observation, [{'key': 'selection', 'value': choice['value'],
+                                                         'option': choice['option']}], directory)
+                if changed:
+                    self.assertTrue(result['not_submitted'])
+                    self.assertEqual(page.evaluate('window.submissions'), 0)
+                else:
+                    adapter.respond(observation, [{'key': 'selection', 'value': choice['value']}], directory)
+                    self.assertEqual(page.evaluate('window.submissions'), 1)
+
     def test_radio_selection_survives_until_submit_in_review_and_diagnostic(self):
         fixtures = Path(__file__).parent / "fixtures"
         for kind, filename in [("review", "q-11294-radio.html"),

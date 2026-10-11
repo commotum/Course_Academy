@@ -1,5 +1,6 @@
 """Successful source rereads replace capture failures without erasing originals."""
 from copy import deepcopy
+import json
 from pathlib import Path
 import tempfile
 import threading
@@ -8,7 +9,7 @@ import unittest
 from unittest.mock import patch
 
 from scripts.activity.capture import ActivityCapture
-from scripts.activity.evidence import capture_gaps, merge_question
+from scripts.activity.evidence import capture_gaps, finalize_answers, merge_question
 from scripts.browser.adapter import EXTRACT, MathAcademyBrowser
 from scripts.database.evidence import authoritative_question, UnsupportedContent
 from scripts.database.prepare import Preparation
@@ -212,6 +213,72 @@ class OfflineExtractionScopesTests(unittest.TestCase):
     def extract(self, markup):
         self.page.set_content(markup)
         return self.page.locator('#q').evaluate(EXTRACT)
+
+    def test_saved_review_history_blanks_keep_live_identity_and_prepare(self):
+        fixture = json.loads((Path(__file__).parent / 'fixtures' /
+                              'review-14114793-history-blanks.json').read_text())
+        expected = {'q-332291': '-2', 'q-332303': '-2x+1',
+                    'q-332541': 'Ae^{-6x}+2x+1', 'q-332544': 'A{e}^{-4x}-2'}
+        records, history = {}, []
+        for row in fixture['questions']:
+            live, source = deepcopy(row['live']), row['history']
+            identity = source['math_academy_id']
+            with self.subTest(identity=identity):
+                self.page.set_content(source['html'])
+                item = self.page.locator('.question').evaluate(EXTRACT)
+                self.assertEqual(item['errors'], [])
+                self.assertEqual(item['problem'], live['problem'])
+                self.assertEqual([f['key'] for f in item['fields']], ['field-1'])
+                self.assertTrue(item['fields'][0]['readonly_history'])
+                self.assertEqual(item['fields'][0]['input_html'],
+                                 self.page.locator('.freeResponseTextbox').evaluate('n=>n.outerHTML'))
+                self.assertNotIn('correct_value', item['fields'][0])
+                item.update({k: source[k] for k in ('math_academy_id', 'sequence_position', 'grade', 'worked_solution')})
+                item.update(html_path='/history-' + identity + '.html', extraction_parts=['problem', 'fields', 'solution'])
+                self.assertTrue(ActivityCapture._source_binding_matches(live, item))
+                key = 'live-' + identity
+                records[key] = {'key': key, 'question': live, 'observed_position': item['sequence_position'] - 1,
+                                'submissions': []}
+                history.append(item)
+        capture = ActivityCapture.__new__(ActivityCapture)
+        capture.activity = {'task_id': '14114793', 'kind': 'review'}
+        capture.state = {'steps': [], 'presentations': records}
+        capture._save = lambda: None
+        content = capture._merge_history({'questions': history})
+        self.assertEqual(len(content['questions']), 4)
+        self.assertEqual(content['source_limitations'], [])
+        for q in content['questions']:
+            presentations = capture._question_presentations(q)
+            self.assertEqual(len(presentations), 1)
+            # A rendered history value/overall grade without a verified attempt
+            # is not enough to promote a learner response into an answer key.
+            unsupported = finalize_answers(q, presentations, {'answers': []})
+            with self.assertRaises(UnsupportedContent):
+                authoritative_question(unsupported)
+            answer = expected[q['math_academy_id']]
+            finalized = finalize_answers(q, presentations, {'answers': [
+                {'key': 'field-1', 'ma_basis': 'worked_solution', 'ma_value': answer,
+                 'value_type': 'math', 'ma_evidence': q['worked_solution']}]})
+            self.assertEqual(authoritative_question(finalized)['answer_fields'][0]['correct_value'], answer)
+            finalized.update(topic_id=1, knowledge_point_id=str(source_snapshot()['entities'][1][':knowledge-point/id']))
+            self.assertFalse(Preparation(source_snapshot()).prepare({'questions': [finalized]})['omissions'])
+
+    def test_history_blanks_exclude_student_answers_and_solution_controls(self):
+        item = self.extract('''<div id="q" class="question"><div class="questionText">Ordinary static content
+            <div class="freeResponseTextbox">2</div></div></div>''')
+        self.assertEqual(item['fields'], [])  # Unscoped static boxes are not controls.
+        self.page.set_content('''<div id="question-1" class="question"><div class="questionText">Enter
+            <div id="freeResponseTextbox-1" class="freeResponseTextbox"><math><mn>2</mn></math></div></div>
+            <div class="studentAnswer"><div class="freeResponseTextbox">999</div><input value="999"></div>
+            <div class="questionExplanation"><div class="freeResponseTextbox">888</div></div></div>''')
+        item = self.page.locator('#question-1').evaluate(EXTRACT)
+        self.assertEqual([field['key'] for field in item['fields']], ['field-1'])
+        self.assertEqual(' '.join(item['problem'].split()), 'Enter {{field-1}}')
+        self.assertEqual(item['fields'][0]['rendered_text'], '2')
+        self.assertNotIn('correct_value', item['fields'][0])
+        changed = deepcopy(item)
+        changed['fields'].append({'key': 'field-2', 'type': 'blank'})
+        self.assertFalse(ActivityCapture._source_binding_matches(item, changed))
 
     def test_real_prompt_error_then_fieldless_history_recovery_prepares(self):
         before = self.extract('''<div id="q"><div class="questionWidget-text">What is
