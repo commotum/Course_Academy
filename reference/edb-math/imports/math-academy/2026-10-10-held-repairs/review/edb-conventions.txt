@@ -1,0 +1,135 @@
+Read-only EDB repair review, 2026-10-10
+
+Observed durable state
+  Independently read using the edb_peer login and the existing math-edb status
+  command: database math, lineage 01a1233a-f21a-7b66-a19a-29c200135e3c,
+  basis_t=187, generation=0. Basis 186 from the held index is stale.
+  Parent snapshot/starting-state.json independently confirms basis 187 and:
+    :org/Math-Academy         17592186045585
+    :agent/gpt-6-astra-ultra  17592186405019
+  Both source entities already exist. No source bootstrap belongs in either
+  prepared transaction.
+  snapshot/no-history.edn is empty: the snapshot query found no attributes
+  configured with :db/noHistory, consistent with history-preserving repairs.
+
+Two stages and source attribution
+  Each transaction has exactly one separately supplied source. All assertions,
+  automatic cardinality-one retractions, explicit link retractions, and the
+  transaction timestamp carry that source. Retractions match E/A/V regardless
+  of the original assertion's source, and do not rewrite its historical source.
+  Therefore originals must be stage 1 under :org/Math-Academy and repairs must
+  be stage 2 under :agent/gpt-6-astra-ultra, not concatenated into one transaction.
+  References:
+    /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:77
+    /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:127
+    /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:141
+    /home/jake/Developer/EDB/docs/04_transactions/06_processing_transactions.md:68
+
+Minimal changes
+  Prompt/solution corrections: assert only the changed cardinality-one values
+  on the existing question lookup reference and request :question/validate.
+  These automatically retract the previous values; no separate explicit
+  retraction is needed. Omitted attributes are unchanged. Never reassert
+  unchanged question/KP identities or relationships under the repair source.
+  Example:
+    {:db/id [:question/math-academy-id "q-N"]
+     :question/problem "corrected prompt"
+     :db/ensure [:question/validate]}
+
+  Changed answer field: explicitly retract only the question-to-old-field link,
+  then attach a new field with a new stable UUID and its own field-scoped answer
+  entities. Preserve all old field and answer definitions; do not retractEntity.
+  New entities request answer/validate and answer-field/validate; the changed
+  question requests question/validate. Old field/answer UUIDs and entities stay
+  available, and prior learner answer references retain their meaning.
+  Do not share an old answer entity between old and replacement fields: choices
+  is a component ownership relation and the local schema requires field-scoped
+  answers, even for identical mathematical values. Cloning values into the new
+  field is necessary under this convention, not an avoidable bulk rewrite.
+  References:
+    scripts/question_capture/math_content.py:140-176
+    schema/content/4-question.edn:37-51
+    schema/content/5-answer-field.edn:29-39
+    schema/content/6-answer.edn:1-13
+    /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:179
+    /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:269
+
+  Stage 2 references stage 1 new entities by unique lookup refs (question/id,
+  question/math-academy-id, answer-field/id), not speculative numeric IDs or
+  stage 1 tempid strings. A lookup ref resolves in db-before; therefore a newly
+  created question is resolvable in the chained stage 2. Within the same stage,
+  newly created entities must instead share a tempid. Tempids are transaction
+  local, and speculative numeric IDs are not reserved for later publication.
+  References:
+    /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:351
+    /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:393
+    /home/jake/Developer/EDB/docs/04_transactions/05_transaction_model.md:49
+
+Validation and history
+  math_database.validate_receipt is parameterized by source_id, so it can check
+  the existing repair source as well as MA despite its MA-specific error text.
+  It verifies six-coordinate datoms, exact expected source, content attribute
+  allowlist, exact approved retractions, and supplied immutable field/answer
+  guards. It does not itself check mathematical correctness, all resulting
+  content, requested source keyword equality, all changed entity scope, or
+  completeness of immutable guards. The parent needs independent guards and
+  readback comparison. Include answer-field/choices in immutable field guards.
+  Import_math cannot author repairs: it explicitly requires the MA source and
+  invokes authoritative-capture preparation. Do not weaken that source check;
+  prepare the separate surgical transaction directly.
+  References:
+    scripts/question_capture/math_database.py:23-47
+    scripts/question_capture/math_database.py:60-64
+    scripts/question_capture/math_database.py:97-98
+
+  If a source were absent, EDB permits a described tempid to serve as its own
+  source: [{:db/id "repair-source" :db/ident :agent/gpt-6-astra-ultra}], with
+  source supplied as the EDN string "repair-source". Its new ident cannot be
+  used as the source in that same transaction. validate_receipt's ordinary
+  content allowlist rejects :db/ident, so such bootstrap needs a separate narrow
+  source-metadata allowance. This is unnecessary at basis 187 and must not be
+  included in this package.
+
+Chained preview helper
+  CLI with accepts neither --basis/--as-of nor a prior speculative receipt as
+  input. Two independent CLI with calls do not validate a sequential pipeline.
+  The helper captures the current DatabaseValue through a read-only Peer and
+  requires its exact basis to equal 187, then executes:
+    stage1 = db.with_edn(originals, instant, :org/Math-Academy)
+    stage2 = stage1.db_after.with_edn(repairs, instant, :agent/gpt-6-astra-ultra)
+  It never opens a writer, uses a transaction client, or publishes a receipt.
+  Original logical EDN is retained for later authorized use; report tempids are
+  used only as preview evidence. Same-millisecond adjacent instants are valid.
+  A fresh independent peer observation at the end must remain at basis 187.
+  References:
+    /home/jake/Developer/EDB/src/bin/edb/data.rs:81-94
+    /home/jake/Developer/EDB/src/bin/edb/data.rs:434-453
+    /home/jake/Developer/EDB/docs/07_peer_api/09_client_api_sync.md:637-649
+    /home/jake/Developer/EDB/docs/07_peer_api/10_client_api_async.md:651-656
+    /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:473
+
+  Helper outputs both stage receipts and exact QUESTION_PULL readbacks for all
+  26 questions. It checks the base field/answer graph survives stage 1, then
+  pulls every original field/answer entity after stage 1 and after stage 2 and
+  checks equality. For each retraction it reads the changed
+  entity's bounded history prefix and checks that original source assertions
+  and the new repair-source retraction are all retained.
+
+  Current math-edb is byte-identical to EDB target/release/edb, SHA256:
+    3a09c745b592016a2de5f05cec96a9afd110be455e35a10252a775999fee4f11
+  It has no extra native registry compared with the generic CLI. The helper
+  uses the same with_edn execution defaults and enforces installed entity specs.
+  It links existing release/deps/libedb_core-2824b6ab39ee5756.rlib; it does not
+  rebuild or change the EDB repository.
+
+  Usage:
+    /tmp/held-repairs-sequential-preview math 187 STAGE1.edn IDS.edn OUTDIR [STAGE2.edn]
+  IDS.edn is a vector of exactly 26 distinct q-N strings. EDB_POSTGRES_URL must
+  use the existing read-only edb_peer login. No writer endpoint is accepted.
+
+  Build (run in Course_Academy; binary output goes to /tmp):
+    rustc --edition=2024 -O \
+      reference/edb-math/imports/math-academy/2026-10-10-held-repairs/preview-helper/sequential-preview.rs \
+      --extern edb_core=/home/jake/Developer/EDB/target/release/deps/libedb_core-2824b6ab39ee5756.rlib \
+      -L dependency=/home/jake/Developer/EDB/target/release/deps \
+      -o /tmp/held-repairs-sequential-preview

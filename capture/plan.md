@@ -139,4 +139,4 @@ Commit validated original content automatically. Preserve corrections already de
 - Update this plan as decisions are made. Keep unanswered questions visible rather than filling them with assumptions.
 - After the designs fit together, agree on the implementation sequence and checks using saved captures. Test completion and recovery before switching live accounts to the replacement.
 
-No implementation changes are authorized by this planning step. Keep the existing capture system running while we design its replacement.
+The replacement is implemented in `scripts/`; see [its README](scripts/README.md) for modules, commands, storage, and recovery. Tests use saved captures and simulated failures; schema checks also use speculative EDB previews. Running workers are switched separately. Downstream target configuration will be added afterward.
