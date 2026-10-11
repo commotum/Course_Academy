@@ -1,0 +1,99 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-160710",
+      "sequence_position": 21,
+      "problem": "Using the change of variables \n\n$$\nu=x-y,\\,v=x+y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the lines $x+y=1,$ $x-y=1$ and the curve ${x}^{2}-{y}^{2}=2.$",
+      "worked_solution": "The area of the required region is given by\n\n$$\n{∬}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\to [\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{∬}_{D}dxdy={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x-y,\\,v=x+y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+y=v$ into the equation of the first line, we get\n\n$$\n\\begin{aligned}x+y=1\\,⟹\\,v=1,\\end{aligned}\n$$\n\nwhile substituting $x-y=u$ into the equation of the second line, we obtain\n\n$$\n\\begin{aligned}x-y=1\\,⟹\\,u=1.\\end{aligned}\n$$\n\nSubstituting $x+y=v$ and $x-y=u$ into the equation of curve, we get\n\n$$\n\\begin{aligned}{x}^{2}-{y}^{2}=2\\,⟹\\,(x-y)(x+y)=2,\\,⟹\\,uv=2.\\end{aligned}\n$$\n\nThe intersection point of the two lines in the $uv$-plane is $(1,1).$\n\nTo find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}{\\begin{aligned}uv=2 \\\\ v=1\\end{aligned}\\,⟹\\,{\\begin{aligned}u=2 \\\\ v=1.\\end{aligned}\\end{aligned}\n$$\n\n \n\nTo find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}{\\begin{aligned}uv=2 \\\\ u=1\\end{aligned}\\,⟹\\,{\\begin{aligned}u=1 \\\\ v=2.\\end{aligned}\\end{aligned}\n$$\n\n \n\nSo, the intersection points are $(1,1),$ $(1,2)$ and $(2,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\nΔ={(u,v)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le \\frac{2}{u}}.\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/assets/4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & -1 \\\\ 1 & \\text{ }\\text{ }1\\end{aligned}| \\\\  & =2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=(2)^{-1}=\\frac{1}{2}.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{∬}_{D}\\text{d}x\\text{d}y & ={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}|\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}[{\\int }_{1}^{2/u}\\,dv]du \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}[v]_{1}^{2/u}\\,du \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}(\\frac{2}{u}-1)du \\\\  & =\\frac{1}{2}{[2\\operatorname{ln}⁡u-u]}_{1}^{2} \\\\  & =\\frac{1}{2}(2\\operatorname{ln}⁡2-2+1) \\\\  & =\\frac{1}{2}(2\\operatorname{ln}⁡2-1) \\\\  & =\\operatorname{ln}⁡2-\\frac{1}{2}\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/observations/history-q-160710-b32304ef930758bf2321.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14111253",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/observations/history-solution-q-160710-5fbafb8dd5a483e0cb7b.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\operatorname{ln}⁡2-3"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\operatorname{ln}⁡2-\\frac{1}{2}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "2\\operatorname{ln}⁡2-\\frac{3}{2}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\operatorname{ln}⁡2-1"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "2\\operatorname{ln}⁡2-2"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/assets/4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437.png",
+          "sha256": "4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437",
+          "source_url": "https://mathacademy.com/graphics/q-160710-e-0",
+          "content_type": "image/png",
+          "representation": "original"
+        },
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/assets/4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437.png",
+          "sha256": "4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437",
+          "source_url": "https://mathacademy.com/graphics/q-160710-e-0",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "diagnostic-21",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\operatorname{ln}⁡2-\\frac{1}{2}",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The area of the required region is given by\n\n$$\n{∬}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\to [\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{∬}_{D}dxdy={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x-y,\\,v=x+y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+y=v$ into the equation of the first line, we get\n\n$$\n\\begin{aligned}x+y=1\\,⟹\\,v=1,\\end{aligned}\n$$\n\nwhile substituting $x-y=u$ into the equation of the second line, we obtain\n\n$$\n\\begin{aligned}x-y=1\\,⟹\\,u=1.\\end{aligned}\n$$\n\nSubstituting $x+y=v$ and $x-y=u$ into the equation of curve, we get\n\n$$\n\\begin{aligned}{x}^{2}-{y}^{2}=2\\,⟹\\,(x-y)(x+y)=2,\\,⟹\\,uv=2.\\end{aligned}\n$$\n\nThe intersection point of the two lines in the $uv$-plane is $(1,1).$\n\nTo find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}{\\begin{aligned}uv=2 \\\\ v=1\\end{aligned}\\,⟹\\,{\\begin{aligned}u=2 \\\\ v=1.\\end{aligned}\\end{aligned}\n$$\n\n \n\nTo find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}{\\begin{aligned}uv=2 \\\\ u=1\\end{aligned}\\,⟹\\,{\\begin{aligned}u=1 \\\\ v=2.\\end{aligned}\\end{aligned}\n$$\n\n \n\nSo, the intersection points are $(1,1),$ $(1,2)$ and $(2,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\nΔ={(u,v)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le \\frac{2}{u}}.\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/assets/4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & -1 \\\\ 1 & \\text{ }\\text{ }1\\end{aligned}| \\\\  & =2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=(2)^{-1}=\\frac{1}{2}.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{∬}_{D}\\text{d}x\\text{d}y & ={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}|\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}[{\\int }_{1}^{2/u}\\,dv]du \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}[v]_{1}^{2/u}\\,du \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}(\\frac{2}{u}-1)du \\\\  & =\\frac{1}{2}{[2\\operatorname{ln}⁡u-u]}_{1}^{2} \\\\  & =\\frac{1}{2}(2\\operatorname{ln}⁡2-2+1) \\\\  & =\\frac{1}{2}(2\\operatorname{ln}⁡2-1) \\\\  & =\\operatorname{ln}⁡2-\\frac{1}{2}\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/observations/diagnostic-21-9976c56336c140e555ca.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12a5b-225e-7b62-84d1-fb577b12d2da",
+  "previous_failures": []
+}

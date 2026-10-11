@@ -1,0 +1,67 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-334450",
+      "sequence_position": 29,
+      "problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}=x-{y}^{3},\\,y(0)=1\n$$\n\nUse the trapezoidal method with one step and Newton's method to approximate $y(1).$ Round your answer to two decimal places.\n\n$y(1)≈$\n{{field-1}}",
+      "worked_solution": "For an initial value problem\n\n$$\n{y}^{′}=f(x,y),\\,y(a)=c,\n$$\n\nthe trapezoidal method with step size $Δx$ is given by\n\n$$\nΔy=\\frac{1}{2}({y}^{′}+{y}_{\\text{new}}^{′})\\cdot Δx,\n$$\n\nwith ${y}_{\\text{new}}^{′}=f({x}_{\\text{new}},{y}_{\\text{new}})$ evaluated at the next $x$ and $y$ values.\n\nSince we want to find the value of $y$ at $x=1,$ we will use a step size of\n\n$$\nΔx=1-0=1.\n$$\n\nNow, let's proceed with the trapezoidal method. In general, $Δy$ is given by\n\n$$\n\\begin{aligned}Δy & =\\frac{1}{2}({y}^{′}+{y}_{\\text{new}}^{′})\\cdot Δx \\\\  & =\\frac{1}{2}((x-{y}^{3})+({x}_{\\text{new}}-({y}_{\\text{new}})^{3}))\\cdot 1 \\\\  & =0.5x-0.5{y}^{3}+0.5{x}_{\\text{new}}-0.5({y}_{\\text{new}})^{3}.\\end{aligned}\n$$\n\nSubstituting this into ${y}_{\\text{new}}=y+Δy,$ we have\n\n$$\n\\begin{aligned}{y}_{\\text{new}} & =y+Δy \\\\ {y}_{\\text{new}} & =y+0.5x-0.5{y}^{3}+0.5{x}_{\\text{new}}-0.5({y}_{\\text{new}})^{3},\\end{aligned}\n$$\n\nand moving all terms to the left-hand side gives the equation\n\n$$\n0.5({y}_{\\text{new}})^{3}+{y}_{\\text{new}}+0.5{y}^{3}-y-0.5{x}_{\\text{new}}-0.5x=0.\n$$\n\nSo, the general form of the function $g$ for step size $Δx=1$ is\n\n$$\ng({y}_{\\text{new}})=0.5({y}_{\\text{new}})^{3}+{y}_{\\text{new}}+0.5{y}^{3}-y-0.5{x}_{\\text{new}}-0.5x.\n$$\n\nNow, in the first step, the new $x$ value is\n\n$$\n{x}_{\\text{new}}=x+Δx=0+1=1.\n$$\n\n Then, the function $g$ is\n\n$$\n\\begin{aligned}g({y}_{\\text{new}}) & =0.5({y}_{\\text{new}})^{3}+{y}_{\\text{new}}+0.5(1)^{3}-1-0.5\\cdot 1-0.5\\cdot 0 \\\\  & =0.5({y}_{\\text{new}})^{3}+{y}_{\\text{new}}-1.\\end{aligned}\n$$\n\nWe use a root-finding method with starting point $y=1$ to solve $g({y}_{\\text{new}})=0.$ We'll use Newton's method:\n\n$$\n({y}_{\\text{new}})_{n+1}=({y}_{\\text{new}})_{n}-\\frac{g({y}_{\\text{new}})}{{g}^{′}({y}_{\\text{new}})}.\n$$\n\nNote that the derivative of $g$ is\n\n$$\n{g}^{′}({y}_{\\text{new}})=1.5({y}_{\\text{new}})^{2}+1.\n$$\n\nTherefore, our Newton's method iterative scheme is as follows:\n\n$$\n({y}_{\\text{new}})_{n+1}=({y}_{\\text{new}})_{n}-\\frac{0.5(({y}_{\\text{new}})_{n})^{3}+({y}_{\\text{new}})_{n}-1}{1.5(({y}_{\\text{new}})_{n})^{2}+1}.\n$$\n\nApplying several iterations of Newton's method starting with $y(0)=1,$ we get the following:\n\n$$\n\\begin{aligned}({y}_{\\text{new}})_{1} & =1 \\\\ ({y}_{\\text{new}})_{2} & =0.8 \\\\ ({y}_{\\text{new}})_{3} & ≈0.771\\,429 \\\\ ({y}_{\\text{new}})_{4} & ≈0.770\\,917\\end{aligned}\n$$\n\nTherefore, we conclude that $y(1)≈0.77,$ rounded to two decimal places.",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/observations/history-q-334450-b05a3110b74f92fe7132.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14111253",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/observations/history-solution-q-334450-e0944837d137ee4fc78f.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "diagnostic-29",
+        "submissions": [
+          {
+            "action": "answer",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "0.77",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          },
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "0.77",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "For an initial value problem\n\n$$\n{y}^{′}=f(x,y),\\,y(a)=c,\n$$\n\nthe trapezoidal method with step size $Δx$ is given by\n\n$$\nΔy=\\frac{1}{2}({y}^{′}+{y}_{\\text{new}}^{′})\\cdot Δx,\n$$\n\nwith ${y}_{\\text{new}}^{′}=f({x}_{\\text{new}},{y}_{\\text{new}})$ evaluated at the next $x$ and $y$ values.\n\nSince we want to find the value of $y$ at $x=1,$ we will use a step size of\n\n$$\nΔx=1-0=1.\n$$\n\nNow, let's proceed with the trapezoidal method. In general, $Δy$ is given by\n\n$$\n\\begin{aligned}Δy & =\\frac{1}{2}({y}^{′}+{y}_{\\text{new}}^{′})\\cdot Δx \\\\  & =\\frac{1}{2}((x-{y}^{3})+({x}_{\\text{new}}-({y}_{\\text{new}})^{3}))\\cdot 1 \\\\  & =0.5x-0.5{y}^{3}+0.5{x}_{\\text{new}}-0.5({y}_{\\text{new}})^{3}.\\end{aligned}\n$$\n\nSubstituting this into ${y}_{\\text{new}}=y+Δy,$ we have\n\n$$\n\\begin{aligned}{y}_{\\text{new}} & =y+Δy \\\\ {y}_{\\text{new}} & =y+0.5x-0.5{y}^{3}+0.5{x}_{\\text{new}}-0.5({y}_{\\text{new}})^{3},\\end{aligned}\n$$\n\nand moving all terms to the left-hand side gives the equation\n\n$$\n0.5({y}_{\\text{new}})^{3}+{y}_{\\text{new}}+0.5{y}^{3}-y-0.5{x}_{\\text{new}}-0.5x=0.\n$$\n\nSo, the general form of the function $g$ for step size $Δx=1$ is\n\n$$\ng({y}_{\\text{new}})=0.5({y}_{\\text{new}})^{3}+{y}_{\\text{new}}+0.5{y}^{3}-y-0.5{x}_{\\text{new}}-0.5x.\n$$\n\nNow, in the first step, the new $x$ value is\n\n$$\n{x}_{\\text{new}}=x+Δx=0+1=1.\n$$\n\n Then, the function $g$ is\n\n$$\n\\begin{aligned}g({y}_{\\text{new}}) & =0.5({y}_{\\text{new}})^{3}+{y}_{\\text{new}}+0.5(1)^{3}-1-0.5\\cdot 1-0.5\\cdot 0 \\\\  & =0.5({y}_{\\text{new}})^{3}+{y}_{\\text{new}}-1.\\end{aligned}\n$$\n\nWe use a root-finding method with starting point $y=1$ to solve $g({y}_{\\text{new}})=0.$ We'll use Newton's method:\n\n$$\n({y}_{\\text{new}})_{n+1}=({y}_{\\text{new}})_{n}-\\frac{g({y}_{\\text{new}})}{{g}^{′}({y}_{\\text{new}})}.\n$$\n\nNote that the derivative of $g$ is\n\n$$\n{g}^{′}({y}_{\\text{new}})=1.5({y}_{\\text{new}})^{2}+1.\n$$\n\nTherefore, our Newton's method iterative scheme is as follows:\n\n$$\n({y}_{\\text{new}})_{n+1}=({y}_{\\text{new}})_{n}-\\frac{0.5(({y}_{\\text{new}})_{n})^{3}+({y}_{\\text{new}})_{n}-1}{1.5(({y}_{\\text{new}})_{n})^{2}+1}.\n$$\n\nApplying several iterations of Newton's method starting with $y(0)=1,$ we get the following:\n\n$$\n\\begin{aligned}({y}_{\\text{new}})_{1} & =1 \\\\ ({y}_{\\text{new}})_{2} & =0.8 \\\\ ({y}_{\\text{new}})_{3} & ≈0.771\\,429 \\\\ ({y}_{\\text{new}})_{4} & ≈0.770\\,917\\end{aligned}\n$$\n\nTherefore, we conclude that $y(1)≈0.77,$ rounded to two decimal places.",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/observations/history-solution-q-334450-e0944837d137ee4fc78f.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14111253/observations/history-q-334450-b05a3110b74f92fe7132.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12a5b-225e-7b62-84d1-fb577b12d2da",
+  "previous_failures": []
+}
