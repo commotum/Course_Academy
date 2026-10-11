@@ -9,6 +9,7 @@ from .evidence import UnsupportedContent, authoritative_question
 from .images import ImageLibrary, MissingImage
 from .text import markdown
 from .difficulty import calibrate
+from ..activity.evidence import question_key
 
 MA_SOURCE = ':org/Math-Academy'
 KINDS = ('topic', 'knowledge-point', 'question', 'answer-field', 'answer', 'tutorial',
@@ -37,7 +38,9 @@ def digest(value):
 def activity_identity(content, kind):
     """Use the same authored route identity for preparation and snapshot reads."""
     verified_id = content.get('activity_definition_id')
-    order = content.get('question_order') or [q['math_academy_id'] for q in content.get('questions', [])]
+    # An unresolved capture key preserves the observed route without claiming a
+    # Math Academy identity. Preparation omits structures that still use it.
+    order = content.get('question_order') or [question_key(q) for q in content.get('questions', [])]
     route = [(mid, (content.get('question_outcomes') or {}).get(mid)) for mid in order]
     return source_uuid(kind, verified_id if verified_id else digest([content.get('course_id'), content.get('topic_id'), route]))
 
@@ -206,14 +209,15 @@ class Preparation:
     def prepare(self, content, library=None, derived_source=None):
         content = copy.deepcopy(content)
         if not content.get('question_order'):
-            content['question_order'] = [q['math_academy_id'] for q in content.get('questions', [])]
+            content['question_order'] = [question_key(q) for q in content.get('questions', [])]
         if not content.get('lesson_workload_sample'):
             groups = {}
             for q in content.get('questions', []):
                 kp = str(q.get('knowledge_point_id') or q.get('kp_id') or '')
                 ids = groups.setdefault(kp, [])
-                if q['math_academy_id'] not in ids and len(ids) < 2:
-                    ids.append(q['math_academy_id'])
+                identity = question_key(q)
+                if identity not in ids and len(ids) < 2:
+                    ids.append(identity)
             content['lesson_workload_sample'] = {'questions_by_knowledge_point': groups,
                 'selection': 'first-two-distinct-practice-questions-in-captured-order', 'base_xp': content.get('base_xp')}
         records = []
@@ -221,10 +225,10 @@ class Preparation:
             seen = set()
             kept = []
             for original in content.get(bucket, []):
-                mid = original.get('math_academy_id')
-                if mid in seen:
+                capture_key = question_key(original)
+                if capture_key in seen:
                     continue
-                seen.add(mid)
+                seen.add(capture_key)
                 try:
                     q = authoritative_question(original, example=example)
                     if library:
@@ -235,7 +239,7 @@ class Preparation:
                     kept.append(q)
                     records.append((q, example))
                 except (UnsupportedContent, MissingImage) as error:
-                    judgment = self.final_judgment(content, original, error)
+                    judgment = self.final_judgment(content, original, error, record_kind=bucket)
                     repaired = copy.deepcopy(original)
                     answers = {a.get('key'): a for a in judgment.get('answers', [])}
                     for field in repaired.get('answer_fields', repaired.get('fields', [])):
@@ -254,6 +258,8 @@ class Preparation:
                         records.append((q, example))
                     except (UnsupportedContent, MissingImage) as final_error:
                         self.omissions.append({'kind': 'question', 'id': original.get('math_academy_id'),
+                            'capture_key': capture_key, 'record_kind': bucket,
+                            'observed_math_academy_id': original.get('observed_math_academy_id'),
                             'reason': str(final_error), 'judgment': judgment, 'final': True})
             content[bucket] = kept
         # A missing dependency removes the affected structure, never imports a partial question.
@@ -388,12 +394,18 @@ class Preparation:
                 'content': content, 'omissions': self.omissions, 'identity_decisions': self.decisions,
                 'calibration': calibration, 'images': library.saved if library else {}}
 
-    def final_judgment(self, content, question, error):
+    def final_judgment(self, content, question, error, record_kind=None):
         judgments = content.get('judgments', [])
         if isinstance(judgments, dict):
             judgments = list(judgments.values())
-        judgment = next((j for j in judgments if j.get('question_id') == question.get('math_academy_id')
-                         and j.get('status') in ('confirmed', 'source_error', 'unavailable', 'ambiguous')), None)
+        identity = question.get('math_academy_id') or None
+        capture_key = question_key(question)
+        record_kind = record_kind or ('canonical_examples' if str(identity).startswith('e-') else 'questions')
+        judgment = next((j for j in judgments if
+                         j.get('record_kind', record_kind) == record_kind and
+                         ((identity is not None and str(j.get('question_id')) == str(identity)) or
+                          (identity is None and j.get('capture_key') == capture_key)) and
+                         j.get('status') in ('confirmed', 'source_error', 'unavailable', 'ambiguous')), None)
         if not judgment:
             if self.resolve is None:
                 raise ValueError('Source gap requires a final capture judgment: ' + str(error))

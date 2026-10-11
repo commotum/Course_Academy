@@ -10,3 +10,7 @@ Python runs this stage after Activity Capture has finished its source review.
 6. Save this stage's progress and pass the capture to Database Preparation. Retry missing nonessential observations separately so they cannot block the next activity. Record each read's actual time; a later progress snapshot must not be labeled as the immediate post-activity state. Do not repeat the completed activity or let background reads disrupt the active activity's browser page.
 
 Learner results and progress remain saved observations for later import. Source-content issues return to Activity Capture; Database Preparation handles the topic-difficulty calculation.
+
+Progress-page reads use the shared navigation waits and a 1-second settling interval before capture. Between-activity pacing is saved only after the completed capture and pending import are durable. It must not repeat post-activity accounting or let a missing observation delay an already started activity.
+
+Implementation gap identified on 2026-10-11: [post_activity.py](../scripts/post_activity.py) saves the baseline and timestamped progress observations but does not calculate an explicit course/topic progress comparison. Step 3 remains a requirement; the timing restorations did not remove comparison code.

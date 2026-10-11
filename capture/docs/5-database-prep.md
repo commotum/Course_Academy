@@ -14,3 +14,13 @@ Python turns the checked capture into reviewable transactions for `/media/jake/S
 Steps 1–8 are scripted in Python; step 4 includes the conditional agent call. Content interpretation and source-page recovery belong to Activity Capture. Keep learner attempts, XP/progress observations, and reasoning as evidence for later import. Save preparation notes with the captures under `reference/`. Previewing and committing transactions belong to the next stage.
 
 Persist the completed capture before preparation. If the database is unavailable, retain this work for automatic retry while capture continues. Read a fresh basis when preparation resumes; pending database work must not lose an activity or cause it to be repeated.
+
+Live questions whose source identity could not be reconciled remain distinct capture records. A capture-local key is evidence identity, not a Math Academy question ID. Match each such record to its own final judgment; do not collapse all missing IDs into one question or borrow another record's judgment. Omit unsupported records and affected structural references with their individual reasons while continuing with supported content and later imports. Preserve the originals for future reconciliation.
+
+Reusing a cached original image requires its bytes to match the recorded SHA-256. A successful refetch repairs a corrupt file at its canonical hash path. Rendering repairs and recovered display copies must retain their provenance and must not be substituted for original source bytes without attribution.
+
+Implementation gaps identified on 2026-10-11, present before the timing restorations. The requirements above remain in force:
+
+- [Source validation](../scripts/database/evidence.py) validates the fields it receives but does not reject an explicit `answer_fields_complete: false` on a new question. Preserving an existing question's omitted fields does not satisfy the prohibition on importing a new partial question.
+- [Preparation's final-judgment lookup](../scripts/database/prepare.py) can reuse an earlier confirmed judgment for a newly discovered gap without asking the agent to consider that gap. Matching the right question is necessary but does not establish that its new gap has been resolved.
+- [Live/history merging](../scripts/activity/evidence.py) ignores an empty replacement `errors` list, so a successful recapture can retain a transient extraction error and cause supported content to be omitted. Original error evidence must remain preserved, while the current record must distinguish resolved extraction failures from authored source errors.

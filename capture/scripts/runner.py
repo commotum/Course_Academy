@@ -114,9 +114,9 @@ class CaptureRunner:
         check_stop(self.stop_event)
         active = read_json(self.active_path, None) or self._recover_orphan()
         if not active:
-            queue = read_queue(browser, self.config.state_root / "queue")
+            queue = read_queue(browser, self.config.output_root / "queue")
             if self._wait_between(queue):
-                queue = read_queue(browser, self.config.state_root / "queue")
+                queue = read_queue(browser, self.config.output_root / "queue")
             if not any(item.get("started") for item in queue):
                 self._retry_observations(browser)
             completed = read_json(self.config.state_root / "completed.json", {})
@@ -125,15 +125,17 @@ class CaptureRunner:
                 self._schedule_queue_retry()
                 return False
             context = self.context({"course_id": self.config.course_id})
-            if context.get("context_refresh_pending"):
-                self._status("waiting_for_context", course_id=self.config.course_id)
-                self._schedule_queue_retry()
-                return False
+            check_stop(self.stop_event)
+            # The provider already gives the first graph a bounded opportunity
+            # to load. Use available scores or queue order while it refreshes;
+            # a started activity must not wait for an optional ranking snapshot.
             activity = choose(queue, context, completed)
             if not activity:
                 self._status("waiting_for_queue", queue_count=len(queue))
                 self._schedule_queue_retry()
                 return False
+            if context.get("context_refresh_pending"):
+                activity['selection']['context_refresh_pending'] = True
             activity = retake_policy(self.config, activity)
             activity.setdefault("course_id", self.config.course_id)
             directory = self.config.output_root / activity["task_id"]

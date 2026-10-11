@@ -305,6 +305,50 @@ class OfflineTimingTests(unittest.TestCase):
         self.assertTrue(result['lesson_definition']['issues'])
         self.assertTrue(result['canonical_examples'][0]['errors'])
 
+    def _delayed_retry_page(self):
+        self.page.set_content('''<div id="questionContainer"><div class="questionWidget-title">Question 1</div>
+          <div class="questionWidget-text">Old question</div><div class="questionWidget-result">Incorrect</div></div>
+          <button id="nextButton" onclick="window.nextClicks++">Next</button>
+          <div id="retryScreen"><button id="retryScreen-yesButton" onclick="beginRetry()">Yes</button>
+          <button id="retryScreen-noButton" onclick="beginRetry()">No</button></div>
+          <script>window.nextClicks=1; window.retryClicks=0;
+          function finishRetry() {document.querySelector('.questionWidget-title').textContent='Question 2';
+            document.querySelector('.questionWidget-result').textContent='';
+            document.querySelector('#questionContainer').insertAdjacentHTML('beforeend','<input id="answer">');
+            document.getElementById('nextButton').style.display='none';}
+          function beginRetry() {window.retryClicks++;document.getElementById('retryScreen').style.display='none';
+            if(window.finishAfter) setTimeout(finishRetry,window.finishAfter);}</script>''')
+
+    def test_retry_transition_waits_for_new_ready_question_after_overlay_hides(self):
+        for retry in (True, False):
+            with self.subTest(retry=retry):
+                self.adapter.state = {}
+                self._delayed_retry_page()
+                self.page.evaluate('window.finishAfter=200')
+                observation = {**self.adapter._view(), 'retry_diagnostic': retry}
+                self.adapter.advance(observation, self.directory)
+                self.assertEqual(self.adapter._view()['key'], 'diagnostic-2')
+                self.assertEqual(self.page.evaluate('window.nextClicks'), 1)
+                self.assertEqual(self.page.evaluate('window.retryClicks'), 1)
+
+    def test_retry_timeout_keeps_intent_until_new_question_is_observed(self):
+        self._delayed_retry_page()
+        self.adapter.config.timeout_ms = 100
+        observation = {**self.adapter._view(), 'retry_diagnostic': True}
+        with self.assertRaises(Exception):
+            self.adapter.advance(observation, self.directory)
+        self.assertEqual(self.adapter.state['pending_action']['diagnostic_previous_key'], 'diagnostic-1')
+        # A reread must not treat the old accepted grade as new permission to
+        # click Next, or clear the retry intent while its request is pending.
+        with self.assertRaises(Exception):
+            self.adapter.observe(self.directory)
+        self.assertIn('pending_action', self.adapter.state)
+        self.page.evaluate('finishRetry()')
+        self.adapter.config.timeout_ms = 1500
+        self.assertEqual(self.adapter.observe(self.directory)['key'], 'diagnostic-2')
+        self.assertEqual(self.page.evaluate('window.nextClicks'), 1)
+        self.assertEqual(self.page.evaluate('window.retryClicks'), 1)
+
     def test_policy_can_accept_offered_diagnostic_retry(self):
         self.page.set_content('''<div id="retryScreen"><button id="retryScreen-yesButton"
           onclick="this.parentNode.remove();document.body.innerHTML='<div id=finalScreen>Done</div>';window.accepted=true">Yes</button>

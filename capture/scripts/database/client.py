@@ -76,7 +76,10 @@ class EDBClient:
               {:knowledge-point/canonical-example [:db/id :question/id :question/math-academy-id]}
               {:knowledge-point/questions [:db/id :question/id :question/math-academy-id]}]}])
               :in $ ?id :where [?t :topic/math-academy-id ?id]]''', [tid], directory, 'topic-' + str(tid), basis)
-        mids = {q['math_academy_id'] for q in content.get('questions', []) + content.get('canonical_examples', [])}
+        # Unreconciled live originals remain capture evidence. They have no
+        # verified source identity to query and will receive explicit omissions.
+        mids = {q['math_academy_id'] for q in content.get('questions', []) + content.get('canonical_examples', [])
+                if isinstance(q.get('math_academy_id'), str) and re.fullmatch(r'[qe]-\d+', q['math_academy_id'])}
         # Existing examples can be revisions with changed MA IDs; include them in the complete pull.
         if content.get('canonical_examples'):
             for row in topic_rows:

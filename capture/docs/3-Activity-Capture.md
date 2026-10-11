@@ -46,6 +46,28 @@ Finish the activity and its question judgments as one unit of work. Math Academy
 
 **C** means intended correct; **W** means intentionally incorrect. The sub-agent solves for the correct answer in both cases. Record intended responses separately from actual grades. The sequences and probabilities below are defaults: completion takes precedence when a disagreement, ambiguous question, timer, or unexpected behavior requires a different response. Save the planned response, actual response, and reason for deviation. Continue the sequence at its next position rather than restarting it.
 
+### Timing and browser readiness
+
+Browser latency, answer pacing, and recovery waits serve different purposes. Their defaults are configured in [config.py](../scripts/config.py):
+
+| Timing | Default and scope |
+|---|---|
+| Browser interaction latency | At least **500 ms**, including connections to an existing browser. Configuration cannot lower this minimum. |
+| Event waits | Random **0.8–2.5 seconds** around navigation, field selection, continuation, history expansion, and assessment confirmation. |
+| Lesson, review, and multistep answer pacing | Random **5–12 seconds** from observing the question to submitting its response. Capture and solving time count toward this target. |
+| Assessment pacing | A saved schedule targeting **70–85%** of the stated time limit, bounded by the remaining time as described below. |
+| Diagnostic answer pacing | The separate course/prerequisite policy in §3.5. The ordinary 5–12 second answer wait does **not** apply. |
+| Browser timeout | **45 seconds**, shortened when an active assessment has less time available. Expired assessments still allow bounded reads to recover their results. |
+| Solver request budget | **300 seconds total**, including retries; assessment requests receive a smaller budget when needed. |
+
+Save each sampled answer delay and submission due time before acting. Resume the remaining wait without drawing again. A newly revealed editable stage can have its own ordinary answer delay; rereading or retrying that same stage must not restart it. When solving takes longer than the target, add no further answer wait. All deliberate waits remain interruptible, and assessment deadlines shorten optional pacing. Between-activity rests belong to [Activity Selection](2-activity-selection.md).
+
+Wait for question fields, rendered mathematics, canonical examples, tutorials, revealed explanations, and expanded history content before extracting them. Check images and diagrams for at least 500 ms of stable rendering; retry broken images with recovery backoff. MathEditor entry allows its initial 500 ms poll and a subsequent 200 ms poll before readback. Verify values again after saving evidence, and recheck the question identity, problem, and current fields before submission. Delayed rendering, a reused diagnostic container, or shuffled choices must not send an old answer to a new question. Readiness timeouts preserve readable content and explicit errors for recovery and agent judgment.
+
+Keep original source bytes separate from browser compatibility repairs. Remove identical duplicate MathEditor script tags only after saving the original HTML response and a transformation record under the account's `reference/` capture directory. Preserve raw SVG sources and image hashes alongside any rendering support. Retry transient screenshot/font failures; retain an explicit error if evidence remains unavailable.
+
+History alignment requires agreement on the problem, answer fields, and choices as well as source IDs or position. Position alone cannot attach a different question's ID or grade. Preserve conflicting originals and unresolved live presentations separately, and withhold a history grade when repeated presentations make its recipient ambiguous. Completeness checks include tutorials, canonical examples, images, extraction errors, and every declared lesson step. A final unavailable judgment preserves the gap; it does not silently remove the missing evidence.
+
 ### Default actions when something goes wrong
 
 | Situation | Default action |
@@ -58,6 +80,10 @@ Finish the activity and its question judgments as one unit of work. Math Academy
 | The site or connection is unavailable | Save progress and retry automatically with backoff. Resume the same activity when access returns; do not abandon it or ask Jake to resolve its questions. |
 
 Each recovery attempt must obtain new evidence, change the attempted action, or wait for an unavailable dependency. Repeating the same unsuccessful reasoning indefinitely is not progress. A final finding of ambiguity or missing evidence is recorded for this capture; new evidence in a future capture can revise it.
+
+Repeated browser failures start with a 30-second recovery wait, increase by 30 seconds per failure to a 180-second cap, and add up to 5 seconds of jitter. Save failure counts across re-observation and restart; seeing the same accepted question does not prove that a failed Continue succeeded. Repeated entry or continuation failures receive focused reconsideration or a reload, followed by a fresh observation before another action.
+
+HTTP 429 responses, including asynchronous requests, save an account-wide cooldown using `Retry-After` seconds or its HTTP date. Resume that cooldown after a restart and reconcile uncertain submissions with the server before retrying. Temporary solver capacity failures allow up to two retries with 30–60 second waits within the request budget, preserving the session where possible. These waits do not abandon the pinned activity or turn a timed-out action into permission to submit twice.
 
 ## 3.2. Lesson
 
@@ -94,6 +120,10 @@ An assessment presents a fixed set of questions under a time limit. It may span 
 2. Capture and fill every question using the shared process. Save the entered answers before submitting the whole assessment. As time runs short, use the best available responses and submit before the timer expires.
 3. Confirm completion, then expand every history question to collect grades, worked solutions, correct-answer evidence, difficulty, and topic/knowledge-point references. Preserve timeout or unanswered questions if they occur.
 
+For an assessment started by capture, save the start time, absolute deadline, and question schedule before clicking Start. Spread the sampled 70–85% target across the question count; preserve that schedule on resume. An already running assessment uses its observed remaining time without inventing a new full-duration schedule. Wait for the question navigator and initial question rendering, and save the full initial question DOM before entering answers; record any readiness failures.
+
+Use the earliest saved or observed deadline. Minute-only countdown labels use their conservative lower bound. Recheck the visible timer during longer pacing waits and check the deadline again after solving and before entry or submission. Optional pacing leaves 15 seconds per remaining question and a final submission reserve of 5% of the time limit, bounded to 15–60 seconds. Divide the remaining solver budget among unanswered questions. When the reserve is reached, submit the whole assessment with the responses already entered and finish unanswered questions' judgments from history. Record the timing deviation and actual outcome. A restart never grants extra assessment time.
+
 ## 3.5. Diagnostic
 
 A diagnostic adapts to answers and skips to determine placement. It has an observed path rather than a fixed question list known in advance.
@@ -118,6 +148,8 @@ If the database is unavailable, use the latest saved course-topic and prerequisi
 Check course membership first: a topic in the course keeps the 50/50 policy even if it is also a prerequisite of another course topic. An unknown topic or one with no path to the course is not a distant prerequisite; capture it, record the uncertainty, and choose Don't Know.
 
 Draw each correct-answer delay uniformly within its range. Capture and solving time count toward that delay; wait only for the remaining time. If solving takes longer, submit when ready. **Don't Know has no deliberate wait** after capturing and classifying the question. Save the response decision, sampled delay, and question start time so resuming does not redraw or restart the wait.
+
+The shared 500 ms browser latency and readiness checks still apply to diagnostics, including Don't Know. The ordinary 5–12 second answer pacing adds no extra delay here. For an offered retry after an intended correct prerequisite response, accept at most one consecutive retry; otherwise decline it. Save the choice for that offer so repeated observations or restarts cannot toggle it. Wait for a new numbered question or completion after the retry screen closes before continuing.
 
 ### Capture sequence
 

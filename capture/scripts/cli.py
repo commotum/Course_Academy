@@ -111,7 +111,7 @@ def main(argv=None):
                     for lock in sorted({config.state_root / "capture.lock", config.profile.parent / "capture.lock"}, key=str):
                         stack.enter_context(file_lock(lock, blocking=False))
                     browser = stack.enter_context(MathAcademyBrowser(config, stop))
-                    queue = read_queue(browser, config.state_root / "queue")
+                    queue = read_queue(browser, config.output_root / "queue")
                     context = ContextProvider(config, lambda: DatabasePipeline(config, stop))({"course_id": config.course_id})
                     print(json.dumps({"activities": queue, "selected": choose(queue, context)}, indent=2))
             elif args.command == "prepare":

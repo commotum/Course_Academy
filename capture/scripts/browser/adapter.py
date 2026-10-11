@@ -418,9 +418,21 @@ class MathAcademyBrowser:
                 "sequence_position": view["ids"].index(qid) + 1, "accepted": False, "assessment": True,
                 "ready": view.get("question_ready", {}).get(qid, True)}
 
+    def _wait_diagnostic_transition(self, previous_key):
+        # The retry overlay disappears before its asynchronous request supplies
+        # the next question. The old grade/Next button are still visible then.
+        self.page.wait_for_function("previous => {const v=(" + VIEW + ")(); return v.kind==='complete' || "
+            "(v.kind==='question' && v.key!==previous && v.ready!==false);}",
+            arg=previous_key, timeout=self.timeout_ms())
+
     def _ready_view(self):
         while True:
             view = self._view()
+            pending = self.state.get("pending_action", {})
+            if ("diagnostic_previous_key" in pending and pending["diagnostic_previous_key"] == view.get("key")
+                    and pending.get("action") == "advance" and not self.state.get("restored")):
+                self._wait_diagnostic_transition(pending["diagnostic_previous_key"])
+                continue
             if view["kind"] == "assessment":
                 view = self._assessment_view(view)
             if view.get("ready") is not False:
@@ -682,6 +694,13 @@ class MathAcademyBrowser:
 
     def advance(self, observation, directory):
         current = self._view()
+        pending = self.state.get("pending_action", {})
+        if ("diagnostic_previous_key" in pending and pending["diagnostic_previous_key"] == current.get("key")
+                and pending.get("action") == "advance" and not self.state.get("restored")):
+            self._wait_diagnostic_transition(pending["diagnostic_previous_key"])
+            self.state.pop("pending_action", None)
+            self._save()
+            return
         if current["kind"] == "complete" or current["kind"] == "assessment":
             return
         if current.get("reload_required"):
@@ -706,11 +725,19 @@ class MathAcademyBrowser:
             retry = self.page.locator("#retryScreen-yesButton:visible")
             if retry.count():
                 button = "#retryScreen-yesButton"
+        transition = {}
+        if current.get("action") == "decline_retry":
+            title = self.page.locator("#questionContainer .questionWidget-title")
+            number = re.search(r"Question\s+(\d+)", title.inner_text()) if title.count() else None
+            transition["diagnostic_previous_key"] = "diagnostic-" + number[1] if number else None
         self._pause("continue activity")
-        self._intent(observation, "advance", button=button)
+        self._intent(observation, "advance", button=button, **transition)
         self.page.locator(button).click()
-        previous = current.get("key")
-        self.page.wait_for_function("previous => (" + VIEW + ")().key !== previous", arg=previous)
+        if transition:
+            self._wait_diagnostic_transition(transition["diagnostic_previous_key"])
+        else:
+            previous = current.get("key")
+            self.page.wait_for_function("previous => (" + VIEW + ")().key !== previous", arg=previous)
         self.state["activity_url"] = self.page.url
         self.state.pop("pending_action", None)
         self._save()

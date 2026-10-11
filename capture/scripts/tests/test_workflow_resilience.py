@@ -90,15 +90,21 @@ class WorkflowResilienceTests(unittest.TestCase):
                 return [self.activity()]
         self.assertFalse(runner.cycle(CompletedBrowser()))
 
-    def test_pending_graph_cannot_pin_a_queue_order_selection(self):
-        runner = CaptureRunner(self.config, self.stop, pipeline_factory=lambda: None)
+    def test_pending_graph_uses_documented_queue_order_fallback_and_pins_selection(self):
+        class Capture:
+            def run(_, activity, directory):
+                raise StopRequested()
+        runner = CaptureRunner(self.config, self.stop, capture_factory=lambda b, c: Capture(), pipeline_factory=lambda: None)
         runner.context = lambda activity: {'context_refresh_pending': True}
         class Browser:
             def queue(_, directory):
-                return [self.activity()]
-        self.assertFalse(runner.cycle(Browser()))
-        self.assertFalse(runner.active_path.exists())
-        self.assertEqual(read_json(self.config.state_root / 'status.json')['status'], 'waiting_for_context')
+                return [self.activity('1'), self.activity('2')]
+        with self.assertRaises(StopRequested):
+            runner.cycle(Browser())
+        activity = read_json(runner.active_path)['activity']
+        self.assertEqual(activity['task_id'], '1')
+        self.assertTrue(activity['selection']['context_refresh_pending'])
+        self.assertEqual(activity['selection']['score_reason'], 'no_target_configuration_queue_order')
 
     def test_late_reads_preserve_baseline_initial_observation_and_completion_evidence(self):
         directory = self.config.output_root / '1'

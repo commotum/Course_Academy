@@ -16,3 +16,5 @@ Use queue order for equal scores, or when no scores are available. Finish the cu
 Use the latest saved target and graph data if the database is temporarily unavailable. Missing scores use the queue-order fallback. A completed activity whose capture and question judgments are saved does not block selection while its database import retries.
 
 Never defer or abandon an activity for any reason. Recover and continue until it is complete. After an external interruption or manual stop, resume that activity when operation resumes.
+
+Between completed activities, wait a sampled 10–25 seconds. Every 20 completed activities, add a sampled 2–6 minute rest. Save the completion count and absolute due time in the account's `pacing.json`; a repeated handoff or restart must not draw another wait. Recheck the queue after waiting. A saved active activity, an unfinished saved selection, or a task already started on Math Academy bypasses these rests. A pending graph refresh uses the available context and the fallback above, with the missing context recorded in the selection evidence.

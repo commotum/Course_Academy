@@ -59,6 +59,7 @@ The implementation has no runtime dependency on `scripts/question_capture`.
 |---|---|
 | `.local/capture/<account>/` | Active task, queue, cached course graph, XP ledger and daily totals, retake instructions, status. |
 | `reference/mathacademy/capture/<account>/<task-id>/` | Original HTML, screenshots, downloaded images, submissions, agent sessions/judgments, content, and post-activity observations. |
+| `reference/mathacademy/capture/<account>/queue/` | Queue HTML, screenshots, expanded card details, and normalized selection inputs. |
 | The capture's `database/` folder | Prepared EDN, source decisions, previews, exact requests, receipts, and verification. |
 | `reference/mathacademy/capture-database/` | Ordered pending imports shared by all accounts. |
 | `/media/jake/SSD/EDB/math/images/<first-two-hash-characters>/<sha256>.<extension>` | Original image bytes, deduplicated by SHA-256. Content uses relative `images/...` references. |
