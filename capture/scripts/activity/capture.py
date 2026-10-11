@@ -106,12 +106,14 @@ class ActivityCapture:
                    60 if unit.lower().startswith('minute') else 1) for amount, unit in units) or None
 
     def _start_assessment_timing(self, observation):
-        if self.state.get('assessment_timing'):
+        timing = self.state.setdefault('assessment_timing', {})
+        if timing.get('started_at') is not None or timing.get('deadline_at') is not None:
             return
         details = self.activity.get('details', {})
         seconds = self._time_limit(details.get('time_limit') or observation.get('time_limit'))
-        timing = {'started_at': self.clock(), 'question_count': details.get('question_count'),
-                  'time_limit_seconds': seconds, 'started_by_capture': True}
+        timing.update(started_at=self.clock(),
+                      question_count=timing.get('question_count') or details.get('question_count'),
+                      time_limit_seconds=seconds, started_by_capture=True)
         if seconds:
             timing['deadline_at'] = timing['started_at'] + seconds
         self.state['assessment_timing'] = timing
@@ -202,9 +204,10 @@ class ActivityCapture:
 
     def _pace_answer(self, record, observation):
         due = record['decision']['submit_at']
+        budget = max(0, due - self.clock())
         while True:
             check_stop(self.stop_event)
-            delay = max(0, due - self.clock())
+            delay = min(budget, max(0, due - self.clock()))
             available = self._remaining_seconds(observation)
             if available is not None:
                 timing = self.state.get('assessment_timing') or {}
@@ -217,13 +220,10 @@ class ActivityCapture:
             if delay <= 0:
                 return
             chunk = min(30, delay)
-            before = self.clock()
             self.sleep(chunk)
-            # Injected test sleepers may record waits without advancing their
-            # clock. A real sleep always advances it.
-            if self.clock() <= before:
-                return
-            timer = getattr(self.browser, 'remaining_seconds', None)
+            budget -= chunk
+            timer = (getattr(self.browser, 'read_remaining_seconds', None)
+                     or getattr(self.browser, 'remaining_seconds', None))
             if available is not None and timer:
                 try:
                     seconds = timer()
@@ -236,6 +236,8 @@ class ActivityCapture:
 
     def _diagnostic_retry(self, observation):
         record = next(reversed(self.state['presentations'].values()), {}) if self.state['presentations'] else {}
+        if 'diagnostic_retry_taken' in record:
+            return {**observation, 'retry_diagnostic': record['diagnostic_retry_taken']}
         decision = record.get('decision', {})
         take = bool(decision.get('intended') == 'C' and decision.get('distance', 0)
                     and not self.state.get('diagnostic_retry_active'))
@@ -252,8 +254,10 @@ class ActivityCapture:
                 result = getattr(self.browser, method)(*args)
                 pending = self.state.get('pending_browser_error') or {}
                 observed_progress = method == 'observe' and isinstance(result, dict) and (
-                    result.get('accepted') or result.get('kind') == 'complete'
-                    or pending.get('observation_key') and result.get('key') != pending['observation_key'])
+                    (result.get('accepted') and pending.get('method') == 'respond')
+                    or result.get('kind') == 'complete'
+                    or (pending.get('observation_key') and result.get('key') is not None
+                        and result['key'] != pending['observation_key']))
                 recovered = pending and (method == pending['method'] or observed_progress or self.state.get('stage') == 'history')
                 if recovered and not (isinstance(result, dict) and result.get('unknown_outcome')):
                     previous = self.state.pop('pending_browser_error')
@@ -281,7 +285,7 @@ class ActivityCapture:
                 available = self._remaining_seconds()
                 # Ordinary recovery must leave enough time to submit the whole
                 # assessment. A server throttle is never shortened into a retry.
-                if available is not None and not getattr(error, 'retry_after', 0):
+                if available is not None and available > 0 and method != 'open' and not getattr(error, 'retry_after', 0):
                     delay = min(delay, max(0, available - self._submission_reserve()))
                 self.sleep(delay)
                 # A timed-out Start/Continue/Submit may already have succeeded.
@@ -412,6 +416,10 @@ class ActivityCapture:
                 if self.activity['kind'] == 'diagnostic' and str(observation['grade']).lower() in ('correct', 'full credit', 'skipped question'):
                     self.state['diagnostic_retry_active'] = False
             self._save()
+            failure = self.state.get('pending_browser_error') or {}
+            if repeated >= 3 and failure.get('method') == 'advance':
+                self._recover_page(observation, repeated)
+                return
             self._browser_call('advance', observation, self.directory)
             return
         # A source-visible editable question means an unknown response did not
@@ -687,7 +695,7 @@ class ActivityCapture:
             self._save()
         content = self._merge_history(history)
         gaps = capture_gaps(content)
-        if gaps and not self.state.get('source_recovery_attempted'):
+        if any(not gap.get('final') for gap in gaps) and not self.state.get('source_recovery_attempted'):
             self.state['source_recovery_attempted'] = True
             self.state['source_gaps'] = gaps
             self._save()

@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import timezone
 from email.utils import parsedate_to_datetime
 import hashlib
+import math
 import re
 import time
 from urllib.parse import urlparse
@@ -14,7 +15,8 @@ from ..storage import append_event, atomic_bytes, atomic_json, read_json
 def retry_after_seconds(value, now=None, default=30):
     now = time.time() if now is None else now
     try:
-        return max(0.0, float(value))
+        numeric = float(value)
+        return max(0.0, numeric) if math.isfinite(numeric) else float(default)
     except (TypeError, ValueError):
         try:
             stamp = parsedate_to_datetime(value)
@@ -49,6 +51,7 @@ class BrowserSafety:
         self.cooldown_until = 0
         self.reconcile_required = False
         self.events = []
+        self.original_documents = {}
         root = getattr(browser.config, 'state_root', None)
         self.cooldown_path = root / 'browser-cooldown.json' if root else None
         if self.cooldown_path:
@@ -117,6 +120,7 @@ class BrowserSafety:
                           'source_file': str(target.resolve()), 'transformation': 'remove_identical_duplicate_math_editor_script_tags',
                           'rendered_sha256': hashlib.sha256(cleaned.encode()).hexdigest()}
                 atomic_json(target.with_suffix('.json'), record)
+                self.original_documents[request.url] = record
                 self.event('document_repair', **record)
                 return route.fulfill(response=response, body=cleaned)
             return route.fulfill(response=response)

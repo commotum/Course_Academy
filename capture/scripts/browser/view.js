@@ -16,7 +16,7 @@
     // A restored grade can replace its editable fields with static content.
     if (grade || visible(continuation)) {
       const solution=n.querySelector('.questionWidget-explanation,.questionExplanation');
-      return mathReady(n) && (!solution || !visible(solution) || hasContent(solution));
+      return mathReady(n) && (!solution || hasContent(solution));
     }
     return hasContent(n.querySelector('.questionWidget-text,.questionText')) && mathReady(n) &&
       !!n.querySelector('.questionWidget-choiceLetterCircle,.choiceLetterCircle,.matheditor-wrapper-answer,.selectList,input:not([type="hidden"]),textarea,select,[contenteditable="true"]');

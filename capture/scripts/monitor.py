@@ -12,6 +12,7 @@ from .storage import read_json
 STAGES = {'activity': 'Answering', 'history': 'Reviewing history', 'complete': 'Capture saved',
           'capturing': 'Capturing', 'selecting': 'Selecting', 'waiting_for_queue': 'Waiting for queue',
           'recovering': 'Recovering', 'stopped': 'Stopped', 'starting': 'Starting',
+          'pacing': 'Resting between activities',
           'waiting_for_context': 'Reading course topics',
           'waiting_for_solver_dependency': 'Waiting for solver recovery'}
 

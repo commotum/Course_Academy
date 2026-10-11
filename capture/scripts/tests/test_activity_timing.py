@@ -139,8 +139,10 @@ class ActivityTimingTests(unittest.TestCase):
         capture=self.capture(activity={'task_id':'99','kind':'diagnostic','details':{}})
         capture.state['presentations']['q1']={'decision':{'intended':'C','distance':1}}
         self.assertTrue(capture._diagnostic_retry({'action':'decline_retry'})['retry_diagnostic'])
+        self.assertTrue(capture._diagnostic_retry({'action':'decline_retry'})['retry_diagnostic'])
+        capture.state['presentations']['q2']={'decision':{'intended':'C','distance':1}}
         self.assertFalse(capture._diagnostic_retry({'action':'decline_retry'})['retry_diagnostic'])
-        capture.state['presentations']['q1']['decision']['intended']='D'
+        capture.state['presentations']['q3']={'decision':{'intended':'D','distance':1}}
         self.assertFalse(capture._diagnostic_retry({'action':'decline_retry'})['retry_diagnostic'])
         self.assertEqual(self.delays,[])
 

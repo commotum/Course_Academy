@@ -14,7 +14,7 @@ from pathlib import Path
 from urllib.parse import urljoin
 
 from ..courses import record_current_course
-from ..runtime import check_stop
+from ..runtime import StopRequested, check_stop
 from ..storage import atomic_json, atomic_text, read_json
 from ..timing import Pacer
 from .assets import AssetCapture
@@ -135,7 +135,14 @@ class MathAcademyBrowser:
 
     def timeout_ms(self, reserve=0):
         remaining = self.remaining_seconds()
-        return max(1, min(self.config.timeout_ms, int((remaining - reserve) * 1000))) if remaining is not None else self.config.timeout_ms
+        if remaining is None:
+            return self.config.timeout_ms
+        if remaining <= 0:
+            # An expired saved timer must still allow reading server results.
+            # Answer entry has a separate deadline guard; read-only recovery
+            # remains possible after the test has ended remotely.
+            return min(self.config.timeout_ms, 5000)
+        return max(1, min(self.config.timeout_ms, int((remaining - reserve) * 1000)))
 
     def _pause(self, reason, reserve=0):
         deadline = self.deadline_at - reserve if self.deadline_at is not None else None
@@ -231,10 +238,13 @@ class MathAcademyBrowser:
         errors = []
         try:
             self._screenshot(page, path=str(screenshot), full_page=True)
+        except StopRequested:
+            raise
         except Exception as error:
             errors.append("Screenshot unavailable: " + str(error))
         return {"html_path": str(target.resolve()), "screenshot": str(screenshot.resolve()) if screenshot.exists() else None,
-                "captured_at": time.time(), "source_url": page.url, "evidence_errors": errors}
+                "captured_at": time.time(), "source_url": page.url, "evidence_errors": errors,
+                "original_document": self.safety.original_documents.get(page.url)}
 
     def queue(self, directory):
         self._goto(LEARN)
@@ -269,6 +279,8 @@ class MathAcademyBrowser:
                     item["position"] = initial_item["position"]
                     item["course_id"] = initial_item["course_id"] or self.config.course_id
                 atomic_text(Path(directory) / f"queue-card-{item['task_id']}.html", card.evaluate("n=>n.outerHTML"))
+            except StopRequested:
+                raise
             except Exception as error:
                 item["details"]["expansion_error"] = str(error)
             records.append(item)
@@ -313,6 +325,8 @@ class MathAcademyBrowser:
         screenshot = target.with_suffix(".png")
         try:
             self._screenshot(scope, path=str(screenshot))
+        except StopRequested:
+            raise
         except Exception as error:
             item.setdefault("errors", []).append("Screenshot unavailable: " + str(error))
         for field in item.get("fields", []):
@@ -386,9 +400,14 @@ class MathAcademyBrowser:
         scope = by_id(self.page, qid)
         if not scope.is_visible():
             self._pause("assessment navigation", reserve=15)
-            self.page.locator("#questionNavigator .questionButton").nth(view["ids"].index(qid)).click()
-            scope.wait_for(state="visible")
-            view = self._view()
+            try:
+                self.page.locator("#questionNavigator .questionButton").nth(view["ids"].index(qid)).click()
+                scope.wait_for(state="visible")
+                view = self._view()
+            except Exception as error:
+                check_stop(self.stop_event)
+                return {"kind": "unknown", "key": "assessment-navigator", "selector": "body", "buttons": [],
+                        "readiness_errors": ["Assessment navigator did not reveal its question: " + str(error)]}
         return {"kind": "question", "selector": "[id=" + json.dumps(qid) + "]", "key": qid,
                 "sequence_position": view["ids"].index(qid) + 1, "accepted": False, "assessment": True,
                 "ready": view.get("question_ready", {}).get(qid, True)}
@@ -400,8 +419,8 @@ class MathAcademyBrowser:
                 view = self._assessment_view(view)
             if view.get("ready") is not False:
                 return view
-            # Source controls and MathJax finish asynchronously. Never send a
-            # half-rendered question to the solver or save it as captured content.
+            # Source controls and MathJax finish asynchronously. Wait first;
+            # preserve explicit rendering errors if the source never completes.
             try:
                 self.page.wait_for_function("old => {const v=(" + VIEW + ")(); return "
                     "v.kind === 'assessment' ? v.question_ready?.[old.key] !== false : v.ready !== false;}",
@@ -417,6 +436,7 @@ class MathAcademyBrowser:
                     return {**view, "readiness_errors": [issue]}
                 buttons = self.page.locator("button,a,[role=button],.button").evaluate_all(r'''nodes => nodes
                   .filter(n=>n.id && n.getClientRects().length && !/submit|don't know|skip|quit|exit/i.test(n.textContent))
+                  .filter(n=>n.localName!=='a' || !n.getAttribute('href') || n.getAttribute('href')==='#' || /^javascript:/i.test(n.getAttribute('href')))
                   .map(n=>({selector:'#'+CSS.escape(n.id),text:n.textContent.trim()})).filter(n=>n.text)''')
                 return {"kind": "unknown", "key": "unready-" + view["key"], "selector": "body",
                         "buttons": buttons, "readiness_errors": [issue], "source_view_kind": view["kind"]}
@@ -552,6 +572,8 @@ class MathAcademyBrowser:
             button.click()
         else:
             fresh = self._read(scope, directory, observation["key"] + "-before-entry")
+            if expected.get("problem") is not None and self._binding(expected) != self._binding(fresh):
+                return {"unknown_outcome": True, "not_submitted": True}
             answers = {a["key"]: a for a in (responses.get("responses", responses.get("answers", [])) if isinstance(responses, dict) else responses)}
             entered = []
             for field in fresh["fields"]:
@@ -562,12 +584,20 @@ class MathAcademyBrowser:
                 if self.activity.get("kind") == "assessment" and self.remaining_seconds() is not None and self.remaining_seconds() <= 15:
                     return {"unknown_outcome": True, "not_submitted": True, "deadline_reached": True}
                 self._pause("answer field selection", reserve=15 if self.activity.get("kind") == "assessment" else 0)
+                visible = self._view()
+                if ((visible.get("key") != current.get("key") and visible["kind"] != "assessment") or
+                        (fresh.get("problem") is not None and self._binding(fresh) != self._binding(scope.evaluate(EXTRACT)))):
+                    return {"unknown_outcome": True, "not_submitted": True}
                 entered.append(enter(scope, field, answers[field["key"]]))
             self._intent(observation, "entered", responses=entered)
             if self.activity.get("kind") == "assessment":
                 self._settle_entry(scope, fresh, entered)
                 self._evidence(self.page, Path(directory) / "observations", observation["key"] + "-entered")
                 verify_entered(scope, fresh, entered)
+                visible = self._view()
+                if (visible["kind"] != "assessment" or (fresh.get("problem") is not None and
+                        self._binding(fresh) != self._binding(scope.evaluate(EXTRACT)))):
+                    return {"unknown_outcome": True, "not_submitted": True}
                 qid = scope.get_attribute("id")
                 self.state.setdefault("assessment_filled", {})[qid] = entered
                 self.state.pop("pending_action", None)
@@ -581,7 +611,8 @@ class MathAcademyBrowser:
             self._settle_entry(scope, fresh, entered)
             self._evidence(self.page, Path(directory) / "observations", observation["key"] + "-entered")
             verify_entered(scope, fresh, entered)
-            if self._binding(fresh) != self._binding(scope.evaluate(EXTRACT)):
+            if (self._view().get("key") != current.get("key") or (fresh.get("problem") is not None and
+                    self._binding(fresh) != self._binding(scope.evaluate(EXTRACT)))):
                 return {"unknown_outcome": True, "not_submitted": True}
             if submit.evaluate("n => n.disabled || n.classList.contains('disabledButton')"):
                 raise ValueError("Submit became disabled while answer fields settled")
@@ -597,7 +628,8 @@ class MathAcademyBrowser:
         # Asset paths are local evidence details; bind to the source prompt and
         # actual choices/field order, without result or editable current values.
         clean = lambda value: re.sub(r"!\[[^]]*\]\([^)]*\)", "<source-image>", value or "")
-        return {"problem": clean(item.get("problem")),
+        return {"source_id": question_identity(item.get("dom_id"), item.get("html", "")),
+                "problem": clean(item.get("problem")),
                 "fields": [{**{k: field.get(k) for k in ("key", "type", "tag", "dom_id")},
                             "choices": [{k: clean(choice.get(k)) if k == "value" else choice.get(k)
                                          for k in ("option", "value", "type", "dom_id")} for choice in field.get("choices", [])]}
@@ -607,8 +639,8 @@ class MathAcademyBrowser:
         if any(field.get("tag") == "mathquill" and not field.get("disabled")
                and field.get("source_result") != "Correct" for field in fresh["fields"]):
             # Native blur dismisses the editor without MA's question-background
-            # click handler, which clears radio choices. Then let its 200ms
-            # initial 500ms poll and a subsequent 200ms poll finish before readback.
+            # click handler, which clears radio choices. Let its initial 500ms
+            # poll and a subsequent 200ms poll finish before readback.
             scope.locator('.mq-textarea textarea').evaluate_all('(editors) => editors.forEach(e => e.blur())')
             self.page.wait_for_function("() => [...document.querySelectorAll('[id=\"mathEditorToolbox\"]')].every(n => "
                 "!n.getClientRects().length || ['hidden','collapse'].includes(getComputedStyle(n).visibility))",
@@ -743,7 +775,10 @@ class MathAcademyBrowser:
                                       prior=self.state.get("live_records", {}).get(info["math_academy_id"]))
                 item["worked_solution"] = solution["worked_solution"]
                 item["assets"] = item.get("assets", []) + solution.get("assets", [])
+                item["errors"] = list(dict.fromkeys(item.get("errors", []) + solution.get("errors", [])))
                 item["solution_evidence"] = solution["html_path"]
+            except StopRequested:
+                raise
             except Exception as error:
                 item = self._read(node, directory, "history-" + info["math_academy_id"])
                 item.setdefault("errors", []).append("History expansion: " + str(error))
@@ -834,6 +869,8 @@ class MathAcademyBrowser:
                 if dashboard["activity"]:
                     result["completion"].update(dashboard["activity"])
                 urls = dashboard["course_urls"]
+            except StopRequested:
+                raise
             except Exception as error:
                 result["pending_reads"].append({"url": LEARN, "error": str(error)})
                 urls = [f"{BASE}/courses/{self.config.course_id}/progress"] if self.config.course_id else []
@@ -845,6 +882,8 @@ class MathAcademyBrowser:
                     course = parse_progress(page.content(), re.search(r"/courses/(\d+)", url)[1])
                     course.update(self._evidence(page, directory, "course-" + course["course_id"]))
                     result["courses"].append(course)
+                except StopRequested:
+                    raise
                 except Exception as error:
                     result["pending_reads"].append({"url": url, "error": str(error), "failed_at": time.time()})
             result["completion"].update(task_id=str(activity["task_id"]), kind=activity["kind"], topic_id=activity.get("topic_id"))
