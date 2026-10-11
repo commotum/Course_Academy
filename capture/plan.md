@@ -4,7 +4,7 @@ Design a fresh capture system with small, clearly separated modules. Use the exi
 
 We will work through the stages in order. For each stage, propose a simple design, discuss it with Jake, record the decisions here, and draw its flow chart. Settle how the stages fit together before replacing the running system.
 
-Current discussion: **1. Queue Processing**. The later sections below are starting proposals, not agreed specifications.
+**1. Queue Processing is agreed at the stage level.** Next: Activity Selection / Priorities. The later sections below are starting proposals, not agreed specifications.
 
 ## What we have agreed
 
@@ -20,6 +20,7 @@ Current discussion: **1. Queue Processing**. The later sections below are starti
 - Diagnostic behavior must take account of lessons already captured and lessons we want to capture. Define what “captured” means before using it in that policy.
 - Give each activity type one **Activity Capture** design file covering the activity itself and its history-page review. Draw Post-Activity Processing separately.
 - Keep the writing and charts understandable without reading the code.
+- Use engineering judgment for routine reliability and implementation choices. Ask Jake about choices that affect capture goals, content, source attribution, or intended behavior; do not turn ordinary error handling into an interview question.
 
 The existing source rules still apply: preserve Math Academy's original content, including its errors. Keep our corrections separate and apply them later under the appropriate source. A guess submitted to finish an activity does not by itself establish a correct answer for the database.
 
@@ -41,22 +42,22 @@ These are proposed boundaries. Choose implementation details as the stage discus
 
 **Job:** produce a reliable record of what the account's queue page shows.
 
-Starting proposal:
+Agreed actions:
 
 - Read the activities in their displayed order, keeping Math Academy's identifiers and wording.
-- Expand every unlocked activity card to collect its available details. This is a proposal to discuss, not a carryover of the old selective rules.
+- Default to expanding every activity in the queue, collecting its links, and recording any details.
 - Record each activity's type, title, links, progress, and available details, including assessment requirements and retake labels.
 - Preserve unexpected cards or missing fields as observations so later stages can respond to them.
-- Return a saved queue record. Activity Selection uses that record to decide what to do.
+- Recover from read errors where possible and continue with the usable queue details.
+- Save the extracted queue details in their displayed order alongside the queue's HTML. Activity Selection uses that record to decide what to do.
 
 Agreed scope: the activity queue only. The course summary, completed-activity list, and XP calculations move to the shared Post-Activity Processing stage.
 
-Decisions to make now:
+Agreed card handling: default to expanding every activity shown in the queue, collecting its links, and recording any details. Jake noted that the cards previously left closed do not contain additional details and does not expect locked activities to appear in the queue. No separate locked-activity handling is planned.
 
-1. Expand every unlocked card, or only certain types?
-2. Include locked activities when shown, and which details matter?
-3. What original evidence should accompany the record: structured fields, card HTML, page HTML, screenshots?
-4. How should this stage refresh or recover an incomplete page read?
+Agreed evidence: save the queue's HTML alongside the extracted details so a bad read can be reviewed from the saved page.
+
+Queue reading must be fault tolerant and continue. Routine retry and recovery details are implementation decisions; an unreadable card must not prevent processing the rest of the queue.
 
 ## 2. Activity Selection / Priorities
 
