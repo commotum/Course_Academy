@@ -50,6 +50,17 @@ def main():
     target = learner_rows[0][0]
     assert not any(target.get(a) for a in [':learner/activity', ':learner/knowledge-profile',
                                           ':learner/performance', ':learner/course']), target
+    reviewed = json.loads((ARCHIVE / 'supplemental-mapping.json').read_text())['answer_maps']
+    question_ids = sorted({r['question_ma_id'] for r in reviewed.values()})
+    response_pattern = ('[:db/id :question/id :question/math-academy-id :question/problem '
+                        '{:question/answer-fields [:db/id :answer-field/id :answer-field/key '
+                        '{:answer-field/type [:db/id :db/ident]} '
+                        '{:answer-field/choices [:db/id :answer/id :answer/value '
+                        '{:answer/type [:db/id :db/ident]}]} '
+                        '{:answer-field/correct [:db/id :answer/id :answer/value]}]}]')
+    db.query('[:find ?id (pull ?e ' + response_pattern + ') :in $ [?id ...] '
+             ':where [?e :question/math-academy-id ?id]]',
+             [question_ids], OUT / 'new', 'response-questions', basis)
 
     owned = {r[':db/id']: r for r in read_edn(ARCHIVE / 'source-records.edn')}
     cache = {}
@@ -115,9 +126,11 @@ def main():
             identities[e] = [kw(a), scalar(a, r[a])]
     identities[old_learner[':db/id']] = learner_ref
 
+    local_refs = {}
+
     def reference(e):
         assert e in identities, ('unmapped reference', e, cache.get(e))
-        return identities[e]
+        return local_refs.get(e, identities[e])
 
     def translate(a, value):
         typ, card = schema[a]
@@ -178,8 +191,17 @@ def main():
         text = header + '[\n' + '\n'.join(' ' + dumps(f) for f in forms) + '\n]\n'
         path = OUT / filename
         path.write_text(text)
-        # Verify the serialized payload is identical to the intended forms.
-        assert read_edn(path) == forms
+        # The codec reads instants as strings; normalize that representation only.
+        def normalized(value):
+            if isinstance(value, Tagged):
+                assert value.tag == 'inst'
+                return value.value
+            if isinstance(value, dict):
+                return {k: normalized(v) for k, v in value.items()}
+            if isinstance(value, list):
+                return [normalized(v) for v in value]
+            return value
+        assert read_edn(path) == normalized(forms)
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         stage = {'file': filename, 'source': source, 'source_eid': sources[source],
                  'sha256': digest, 'request_key': 'learner-history-' + digest,
@@ -210,10 +232,27 @@ def main():
          'Original FIRe policy and its two owned question-selection weight records.', policies=1, question_weight_records=2)
 
     # Newly authored content is a prerequisite with its own actual author source.
+    current_questions = {row[0]: row[1] for row in read_edn(OUT / 'new/response-questions.edn')}
+    content_prerequisites = []
     for question in ['q-96676', 'q-11914']:
         path = AUTHORED / (question + '.edn')
         assert ':agent/gpt-6.1-sol-high' in path.read_text()
-        stages.append({'file': str(path.relative_to(ROOT)) if False else '../../authored-answer-fields/2026-10-11/' + path.name,
+        expected_fields = [r for r in read_edn(path) if ':answer-field/id' in r]
+        actual_fields = current_questions[question].get(':question/answer-fields', [])
+        if actual_fields:
+            assert {f[':answer-field/id'] for f in actual_fields} == {f[':answer-field/id'] for f in expected_fields}
+            expected_answers = {r[':db/id']: r for r in read_edn(path) if ':answer/id' in r}
+            for expected_field in expected_fields:
+                actual = next(f for f in actual_fields if f[':answer-field/id'] == expected_field[':answer-field/id'])
+                assert actual[':answer-field/key'] == expected_field[':answer-field/key']
+                assert actual[':answer-field/type'][':db/ident'] == expected_field[':answer-field/type']
+                assert actual[':answer-field/correct'][':answer/id'] == expected_answers[expected_field[':answer-field/correct']][':answer/id']
+                assert {a[':answer/id']: a[':answer/value'] for a in actual[':answer-field/choices']} == {
+                    expected_answers[a][':answer/id']: expected_answers[a][':answer/value'] for a in expected_field[':answer-field/choices']}
+            content_prerequisites.append({'question': question, 'already_present': True, 'verified_basis': basis,
+                                           'field_ids': [str(f[':answer-field/id']) for f in actual_fields]})
+            continue
+        stages.append({'file': '../../authored-answer-fields/2026-10-11/' + path.name,
                        'source': ':agent/gpt-6.1-sol-high', 'source_eid': sources[':agent/gpt-6.1-sol-high'],
                        'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
                        'request_key': 'authored-answer-fields-' + hashlib.sha256(path.read_bytes()).hexdigest(),
@@ -221,6 +260,9 @@ def main():
 
     updated = {e: r for e, r in progress.items() if e not in baseline or r != baseline[e]}
     assert len(updated) == 8 and len(set(progress) - set(baseline)) == 2
+    local_refs.update({e: f'task-{e}' for e in tasks})
+    local_refs.update({e: f'item-{e}' for e in items})
+    local_refs.update({e: f'new-progress-{e}' for e in set(progress) - set(baseline)})
     engine_forms = []
     for e, r in sorted(updated.items()):
         engine_forms.append(form(r, reference(e) if e in baseline else f'new-progress-{e}', ensure='progress/validate'))
@@ -241,14 +283,14 @@ def main():
          'Later progress, ten lesson attempts, 88 presentations, original judgments, durations, XP, and overall performance.',
          allow_retractions=changed_attrs, updated_baseline_records=6, additional_progress_records=2,
          lesson_tasks=10, presentation_records=88)
+    local_refs.clear()
 
     old_answers = {r[0][':db/id']: r[0] for r in read_edn(OUT / 'old/all-saved-answers.edn')}
-    current_questions = {row[0]: row[1] for row in read_edn(OUT / 'new/response-questions.edn')}
-    reviewed = json.loads((ARCHIVE / 'supplemental-mapping.json').read_text())['answer_maps']
     authored_forms = {q: read_edn(AUTHORED / (q + '.edn')) for q in ['q-96676', 'q-11914']}
     authored_answers = {q: {r[':db/id']: r for r in fs if ':answer/id' in r} for q, fs in authored_forms.items()}
     authored_fields = {q: [r for r in fs if ':answer-field/id' in r] for q, fs in authored_forms.items()}
     response_forms, response_audit, entered = [], [], set()
+    entered_tempids = {}
     for e, item in sorted(items.items()):
         saved = refs(item.get(':task-item/responses', []))
         if not saved:
@@ -292,6 +334,7 @@ def main():
                 choices = field[':answer-field/choices']
                 assert all(c[':answer/id'] != answer_ref[1] and c[':answer/value'] != answer[':answer/value'] for c in choices)
                 identities[answer_eid] = answer_ref
+                entered_tempids[str(answer_ref[1])] = f'entered-answer-{answer_eid}'
                 if answer_eid not in entered:
                     response_forms.append(form(answer, f'entered-answer-{answer_eid}', ensure='answer/validate'))
                     response_forms.append([kw('db/add'), [kw('answer-field/id'), field_id], kw('answer-field/choices'), f'entered-answer-{answer_eid}'])
@@ -310,7 +353,8 @@ def main():
                     assert selected[0][':answer/value'] == answer[':answer/value']
                 destination_answers.append([kw('answer/id'), selected_id])
                 reason = reconciliation.get('reason', 'Reviewed current-field answer identity mapping.')
-        response_forms.append({kw('db/id'): reference(e), kw('task-item/responses'): destination_answers,
+        response_forms.append({kw('db/id'): reference(e),
+                               kw('task-item/responses'): [entered_tempids.get(str(ref[1]), ref) for ref in destination_answers],
                                kw('db/ensure'): kw('task-item/validate')})
         response_audit.append({'item_id': str(item[':task-item/id']), 'question': question,
                                'old_answer_id': str(answer[':answer/id']), 'old_answer_value': answer[':answer/value'],
@@ -327,13 +371,14 @@ def main():
                'new_progress_records': 2, 'final_progress': 1041, 'policies': 1, 'question_weights': 2,
                'completed_lessons': 4, 'paused_lessons': 6, 'presentations': 88, 'saved_submissions': 44,
                'answer_references': 47, 'entered_answers': 7, 'correct': 40, 'incorrect': 4,
-               'xp': sum(r[':learner-task/xp-earned'] for r in tasks.values()),
+               'xp': sum(r.get(':learner-task/xp-earned', 0) for r in tasks.values()),
                'seconds': sum(r[':learner-task/elapsed-seconds'] for r in tasks.values()),
                'explicit_progress_instants': sum(schema[a][0] == ':db.type/instant' for r in progress.values() for a in r if a != ':db/id')}
     assert summary['xp'] == 37 and abs(summary['seconds'] - 8344.367) < 1e-6 and summary['explicit_progress_instants'] == 16
     manifest = {'committed': False, 'source_database': 'course-academy-v2', 'source_basis': OLD_BASIS,
                 'original_baseline_basis': BASELINE_BASIS, 'destination_database': 'math', 'destination_basis': basis,
-                'learner': LEARNER, 'transactions': stages, 'summary': summary,
+                'learner': LEARNER, 'transactions': stages, 'content_prerequisites': content_prerequisites,
+                'summary': summary,
                 'timing': 'Preserve all 16 explicit progress instants and saved durations. Original lifecycle and intermediate progress transaction times are archived, not backdated into the destination. Destination transaction times will be import times.',
                 'identity_note': 'Original domain UUID/string identities are preserved for topics, progress, policy, tasks, items, and entered answers. Numeric EIDs are database-local and are not copied.',
                 'excluded': ['470 local request journals', 'untouched task queue', 'old paused assignment', 'legacy answer fields and their banks']}

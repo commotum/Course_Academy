@@ -1,5 +1,7 @@
 # Prepared learner-history migration
 
+**Superseded:** this preparation targets the earlier database and uses a single source for mixed-origin facts. Do not apply it to the fresh database. Use the source-separated preparation in [../2026-10-11-separated/README.md](../2026-10-11-separated/README.md). The files below remain as original audit evidence.
+
 Status: prepared and validated in memory; **not committed**. The user requires an explicit go-ahead before any database transaction. The application changes are also not activated in the running service.
 
 The source is `course-academy-v2` at basis 2892. The proposed destination is `math` at basis 252. The transaction uses `:application/ca-engine` (17592186407927) as the source of every new fact. `intent.json` records the exact transaction digest, retry key, and destination basis guard.

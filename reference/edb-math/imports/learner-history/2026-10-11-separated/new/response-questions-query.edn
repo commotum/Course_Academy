@@ -1,1 +1,1 @@
-[:find ?id (pull ?e [*]) :in $ [?id ...] :where [?e :question/math-academy-id ?id]]
+[:find ?id (pull ?e [:db/id :question/id :question/math-academy-id :question/problem {:question/answer-fields [:db/id :answer-field/id :answer-field/key {:answer-field/type [:db/id :db/ident]} {:answer-field/choices [:db/id :answer/id :answer/value {:answer/type [:db/id :db/ident]}]} {:answer-field/correct [:db/id :answer/id :answer/value]}]}]) :in $ [?id ...] :where [?e :question/math-academy-id ?id]]
