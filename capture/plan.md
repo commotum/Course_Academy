@@ -4,7 +4,7 @@ Design a fresh capture system with small, clearly separated modules. Use the exi
 
 We will work through the stages in order. For each stage, propose a simple design, discuss it with Jake, record the decisions here, and draw its flow chart. Settle how the stages fit together before replacing the running system.
 
-**1. Queue Processing is agreed at the stage level.** Next: Activity Selection / Priorities. The later sections below are starting proposals, not agreed specifications.
+**1. Queue Processing is agreed at the stage level.** Current discussion: **2. Activity Selection / Priorities**. The later sections below are starting proposals, not agreed specifications.
 
 ## What we have agreed
 
@@ -20,7 +20,7 @@ We will work through the stages in order. For each stage, propose a simple desig
 - Diagnostic behavior must take account of lessons already captured and lessons we want to capture. Define what “captured” means before using it in that policy.
 - Give each activity type one **Activity Capture** design file covering the activity itself and its history-page review. Draw Post-Activity Processing separately.
 - Keep the writing and charts understandable without reading the code.
-- Use engineering judgment for routine reliability and implementation choices. Ask Jake about choices that affect capture goals, content, source attribution, or intended behavior; do not turn ordinary error handling into an interview question.
+- Use engineering judgment for routine reliability and implementation choices. Ask Jake only when something is genuinely ambiguous; do not turn ordinary error handling into an interview question.
 
 The existing source rules still apply: preserve Math Academy's original content, including its errors. Keep our corrections separate and apply them later under the appropriate source. A guess submitted to finish an activity does not by itself establish a correct answer for the database.
 
@@ -63,7 +63,13 @@ Queue reading must be fault tolerant and continue. Routine retry and recovery de
 
 **Job:** choose an activity and explain why it serves our capture goals.
 
-Use the queue record, desired content, existing captured content, and the account's Math Academy progress. Produce an activity plan containing the choice, its reason, and the answer/completion policy Activity Capture should follow.
+Agreed form: prioritize ten combinations of activity type and status. The five base types are Lesson, Review, Assessment, Multistep, and Diagnostic. Each is either started (begun but not completed) or unstarted. Choose the first available entry in the agreed order.
+
+Use the queue record, desired content, existing captured content, and the account's Math Academy progress. Pass the selected activity and its reason to Activity Capture, which applies the activity's answer and completion policy.
+
+The ten choices are listed in `v2/2-activity-selection.md`; their priority order is not yet decided. This replaces the earlier draft's mixture of activity types, requirements, repeats, and capture goals. Any rules for choosing between activities within the same type/status can be discussed after the ten-item order is set.
+
+Jake expects a required assessment to be the only displayed queue option. Treat that as an observation to verify when needed, rather than a separate priority category.
 
 Discuss capture goals, what counts as captured, missing lessons versus additional practice questions, required assessments, repeats, and coordination between accounts. Work out how selection and diagnostic behavior cooperate to make wanted lessons available. Do not carry forward the old priority formula or fixed diagnostic topic lists without deciding that they fit.
 
