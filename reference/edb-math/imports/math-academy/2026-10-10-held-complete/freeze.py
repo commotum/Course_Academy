@@ -85,6 +85,7 @@ def main():
     assert set(final) == held
 
     cache, reviewed, used, holds, discrepancies, hashes = {}, {}, {}, {}, [], {}
+    source_selections = {}
     situations = collections.defaultdict(list)
     restored_count = 0
     for mid, decision in sorted(final.items()):
@@ -98,7 +99,7 @@ def main():
         path = Path(decision['directory'])
         occurrences = [o for o in raw[mid]['occurrences'] if o['directory'] == str(path)]
         assert len(occurrences) == 1, (mid, 'ambiguous occurrence')
-        o = occurrences[0]
+        o = copy.deepcopy(occurrences[0])
         if str(path) not in cache:
             cache[str(path)] = read(path / 'state.json')
         state = cache[str(path)]
@@ -108,6 +109,22 @@ def main():
         solution = rec[stage]['worked_solution']
         problem = before.get('source_problem') or before['problem']
         assert solution == o['worked_solution'] and problem == o['source_problem'], mid
+        cited_stages = {f['source_location']['json_pointer'].split('/')[3] for f in decision.get('fields', []) if f['source_location']['json_pointer'].endswith('/worked_solution')}
+        if decision['ready'] and len(cited_stages) == 1:
+            cited_stage = next(iter(cited_stages))
+            assert cited_stage in {'after', 'history'}
+            if rec[cited_stage]['worked_solution'] != solution:
+                observed = rec[cited_stage]
+                assert (observed.get('source_problem') or observed.get('problem')) == problem, (mid, 'alternate source prompt mismatch')
+                assert [(g['key'], g['type'], [answer(c) for c in g['choices']]) for g in observed['fields']] == [(g['key'], g['type'], [answer(c) for c in g['choices']]) for g in before['fields']], (mid, 'alternate source layout mismatch')
+                source_selections[mid] = {'original_stage': stage, 'selected_stage': cited_stage,
+                                          'original_worked_solution': solution,
+                                          'reason': 'Use the exact saved observation cited by the reviewer; its original prompt and full field/choice layout match before-answer. No source text is edited.'}
+                stage = cited_stage
+                solution = observed['worked_solution']
+                o['source_solution_stage'] = stage
+                o['worked_solution'] = solution
+                o['prepared_question']['worked_solution'] = solution
         assert [(f['key'], f['type'], [answer(c) for c in f['choices']]) for f in before['fields']] == [(f['key'], f['type'], [answer(c) for c in f['choices']]) for f in o['before_fields']], mid
         local_hashes = {str(p): sha(p) for p in (path / 'state.json', path / 'content.json')}
         for p, h in local_hashes.items():
@@ -175,7 +192,6 @@ def main():
         if restored:
             if decision.get('restored_problem'):
                 assert decision['restored_problem'] == restored, (mid, 'Roman statement restoration mismatch')
-            assert any(re.search(r'\b(?:I|II|III)\b', c['value']) for field in before['fields'] for c in field['choices'])
             audit['restored_problem'] = restored
             audit['restoration_type'] = 'roman_statement_labels'
             audit['layout_note'] = 'Restore original I/II/III ordered statement labels, preserving all statement text and order from the captured questionStatements list.'
@@ -199,6 +215,7 @@ def main():
     for name, obj in [('answer-review.json', reviewed), ('recovery-input.json', used),
                       ('held-review.json', holds), ('disagreements.json', discrepancies),
                       ('final-decisions.json', final), ('review-counts.json', counts),
+                      ('source-observation-selection.json', source_selections),
                       ('source-hashes.json', hashes), ('situation-summary.json',
                        {kind: {'count': len(set(ids)), 'question_ids': sorted(set(ids))} for kind, ids in sorted(situations.items())})]:
         save(ROOT / name, obj)

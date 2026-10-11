@@ -1,0 +1,2754 @@
+{
+  "audited_at_utc": "2026-10-11T02:41:09.939670+00:00",
+  "mode": "read-only; no database calls; only this report written",
+  "transaction_code_status": "pass",
+  "freeze_integration_status": "blocked_by_source_stage_mismatch",
+  "script_sha256": {
+    "prepare.py": "109735d3bb3b1ab0afeb958a1055197f8baab3b02b41a24d567efdcca6c7764f",
+    "finalize.py": "baee303083c2b530206826f7a9a808bc12285fb0072bc753f3137b20cbb025d3",
+    "commit.py": "9455040f06502f65c120227d29d5e09577278cd45ce68a4bf01e4f864ea540a9",
+    "freeze.py": "4f4a719bd9c63bd84e9fdeb54de1b56c77472c556ba4acadf1b02d5396a0ac71"
+  },
+  "comparison_baseline": "reference/edb-math/imports/math-academy/2026-10-10-held-literal",
+  "observed_review_counts": {
+    "ready": 813,
+    "ready_fields": 834,
+    "held": 26
+  },
+  "checks": [
+    {
+      "check": "initial basis and held-count adaptation",
+      "result": "pass",
+      "evidence": "prepare.py lines28/32, finalize.py lines19/21/37/71, commit.py line24 consistently use basis165 and initial839 holds."
+    },
+    {
+      "check": "disjoint transaction question chunks <=40",
+      "result": "pass",
+      "evidence": "prepare.py lines152-165 partition sorted groups in40-question sets, reject overlap and assert complete group coverage; finalize.py verifies transaction ID uniqueness and selected/no-op union."
+    },
+    {
+      "check": "dynamic final basis",
+      "result": "pass",
+      "evidence": "commit.py line25 computes basis + len(manifest[batches]); each durable receipt must advance exactly one basis; final db.basis is checked against end_basis."
+    },
+    {
+      "check": "existing UUID and history preservation",
+      "result": "pass",
+      "evidence": "prepare.py lines41-42 reject noHistory for content components; lines90-92 guard old answers and field definitions; preview and committed readback check existing UUIDs; commit.py lines78-84 compare old component facts exactly."
+    },
+    {
+      "check": "exact planned receipt retractions and MA provenance",
+      "result": "pass",
+      "evidence": "prepare and commit call math_database.validate_receipt for previews and actual receipts; it requires every six-column datom source equal :org/Math-Academy and actual retractions equal planned set, and forbids immutable component edits."
+    },
+    {
+      "check": "all ready fields and already-current source verification",
+      "result": "pass",
+      "evidence": "prepare.py validates every original field/choice and layout. finalize.py verifies MA source on reused correct-field facts and exact no-op signatures. commit.py verifies every selected question and current correct-field source, including already-current IDs, and verifies a reimport is a no-op."
+    },
+    {
+      "check": "held index update only after all committed readbacks",
+      "result": "pass",
+      "evidence": "commit.py lines73-103 require all batch receipts, final readback for sorted(selected), preserved old-component facts and content-only receipt scope before the index filtering branch at lines104-128."
+    },
+    {
+      "check": "adaptation paths and durable request identity",
+      "result": "pass",
+      "evidence": "SSD destination and request keys use held-complete; retry intents bind database, endpoint, source, basis, transaction hash, connection hash and reconciliation hash; _commit retries the exact request with basis guard."
+    },
+    {
+      "check": "full review input coverage and exact local evidence",
+      "result": "pass",
+      "evidence": "839 unique assigned IDs cover the held index exactly. Every ready field matched an original before choice and its source quotation resolved exactly in its cited same-question state pointer; original recovery occurrences match state prompts/fields. Held index hash remains the starting hash; held IDs are disjoint from prior literal selected IDs."
+    }
+  ],
+  "material_findings": [
+    {
+      "severity": "blocking_integration",
+      "location": "freeze.py:142",
+      "summary": "Freeze demands review pointer equal recovery occurrence stage. Current ready reviews have 295 mismatched field pointers across 274 questions, so freeze will assert before transaction preparation.",
+      "identical_complete_solution_fields": 294,
+      "different_complete_solution_fields": [
+        {
+          "id": "q-183467",
+          "reviewer": "compound",
+          "field": "selection",
+          "review_pointer": "/questions/q-183467/after/worked_solution",
+          "occurrence_pointer": "/questions/q-183467/history/worked_solution",
+          "complete_solutions_identical": false,
+          "quote_present_in_occurrence_solution": false
+        }
+      ],
+      "recommended_resolution": "For identical complete solutions, explicitly canonicalize evidence locations with retained audit metadata or append reviewed pointer revisions. For q-183467 preserve the actually reviewed after source as the chosen same-version occurrence, or append a review with an exact history quotation; do not merely relabel its existing after quotation as history.",
+      "q183467_difference": "history includes \\text{\\boldsymbol} immediately before \\notin N; after does not. The full after quotation is absent from history even though the mathematical statement is the same."
+    }
+  ],
+  "concrete_artifacts_not_yet_available": [
+    "manifest.json",
+    "answer-review.json",
+    "selected-content.json",
+    "preview-verification.json",
+    "verification.json"
+  ],
+  "limitations": [
+    "This audits code and current review input evidence. It does not certify future prepared EDNs, previews, durable receipts, or database readbacks, which have not been generated at this audit snapshot."
+  ],
+  "source_occurrence_errors": [],
+  "source_stage_mismatches": [
+    {
+      "id": "q-175404",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-175404/after/worked_solution",
+      "occurrence_pointer": "/questions/q-175404/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-175419",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-175419/after/worked_solution",
+      "occurrence_pointer": "/questions/q-175419/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-176051",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-176051/after/worked_solution",
+      "occurrence_pointer": "/questions/q-176051/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-176859",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-176859/after/worked_solution",
+      "occurrence_pointer": "/questions/q-176859/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-177758",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-177758/after/worked_solution",
+      "occurrence_pointer": "/questions/q-177758/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-177760",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-177760/after/worked_solution",
+      "occurrence_pointer": "/questions/q-177760/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-18244",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-18244/after/worked_solution",
+      "occurrence_pointer": "/questions/q-18244/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-182445",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-182445/after/worked_solution",
+      "occurrence_pointer": "/questions/q-182445/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-182446",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-182446/after/worked_solution",
+      "occurrence_pointer": "/questions/q-182446/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-182450",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-182450/after/worked_solution",
+      "occurrence_pointer": "/questions/q-182450/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-18246",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-18246/after/worked_solution",
+      "occurrence_pointer": "/questions/q-18246/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-183349",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-183349/after/worked_solution",
+      "occurrence_pointer": "/questions/q-183349/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-183452",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-183452/after/worked_solution",
+      "occurrence_pointer": "/questions/q-183452/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-183463",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-183463/after/worked_solution",
+      "occurrence_pointer": "/questions/q-183463/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-183467",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-183467/after/worked_solution",
+      "occurrence_pointer": "/questions/q-183467/history/worked_solution",
+      "complete_solutions_identical": false,
+      "quote_present_in_occurrence_solution": false
+    },
+    {
+      "id": "q-183515",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-183515/after/worked_solution",
+      "occurrence_pointer": "/questions/q-183515/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-183573",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-183573/after/worked_solution",
+      "occurrence_pointer": "/questions/q-183573/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-183599",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-183599/after/worked_solution",
+      "occurrence_pointer": "/questions/q-183599/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-21081",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-21081/after/worked_solution",
+      "occurrence_pointer": "/questions/q-21081/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-216463",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-216463/after/worked_solution",
+      "occurrence_pointer": "/questions/q-216463/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-216689",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-216689/after/worked_solution",
+      "occurrence_pointer": "/questions/q-216689/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-225228",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-225228/after/worked_solution",
+      "occurrence_pointer": "/questions/q-225228/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-26223",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-26223/after/worked_solution",
+      "occurrence_pointer": "/questions/q-26223/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-30055",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-30055/after/worked_solution",
+      "occurrence_pointer": "/questions/q-30055/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-31213",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-31213/after/worked_solution",
+      "occurrence_pointer": "/questions/q-31213/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-31219",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-31219/after/worked_solution",
+      "occurrence_pointer": "/questions/q-31219/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-32373",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-32373/after/worked_solution",
+      "occurrence_pointer": "/questions/q-32373/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-32568",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-32568/after/worked_solution",
+      "occurrence_pointer": "/questions/q-32568/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-32918",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-32918/after/worked_solution",
+      "occurrence_pointer": "/questions/q-32918/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-332064",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-332064/after/worked_solution",
+      "occurrence_pointer": "/questions/q-332064/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-333360",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-333360/after/worked_solution",
+      "occurrence_pointer": "/questions/q-333360/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335542",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-335542/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335542/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335590",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-335590/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335590/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335619",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-335619/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335619/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335639",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-335639/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335639/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335642",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-335642/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335642/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-339222",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-339222/after/worked_solution",
+      "occurrence_pointer": "/questions/q-339222/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-339226",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-339226/after/worked_solution",
+      "occurrence_pointer": "/questions/q-339226/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-339248",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-339248/after/worked_solution",
+      "occurrence_pointer": "/questions/q-339248/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-34361",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-34361/after/worked_solution",
+      "occurrence_pointer": "/questions/q-34361/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-34984",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-34984/after/worked_solution",
+      "occurrence_pointer": "/questions/q-34984/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35363",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35363/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35363/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35410",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35410/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35410/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35429",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35429/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35429/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35509",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35509/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35509/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35559",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35559/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35559/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35577",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35577/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35577/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35731",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35731/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35731/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35732",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35732/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35732/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35757",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35757/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35757/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35843",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35843/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35843/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-35906",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-35906/after/worked_solution",
+      "occurrence_pointer": "/questions/q-35906/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-36107",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-36107/after/worked_solution",
+      "occurrence_pointer": "/questions/q-36107/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-36778",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-36778/after/worked_solution",
+      "occurrence_pointer": "/questions/q-36778/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-37088",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-37088/after/worked_solution",
+      "occurrence_pointer": "/questions/q-37088/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-37272",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-37272/after/worked_solution",
+      "occurrence_pointer": "/questions/q-37272/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-37275",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-37275/after/worked_solution",
+      "occurrence_pointer": "/questions/q-37275/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-37372",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-37372/after/worked_solution",
+      "occurrence_pointer": "/questions/q-37372/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-37404",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-37404/after/worked_solution",
+      "occurrence_pointer": "/questions/q-37404/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-37633",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-37633/after/worked_solution",
+      "occurrence_pointer": "/questions/q-37633/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-37634",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-37634/after/worked_solution",
+      "occurrence_pointer": "/questions/q-37634/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-37853",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-37853/after/worked_solution",
+      "occurrence_pointer": "/questions/q-37853/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-37982",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-37982/after/worked_solution",
+      "occurrence_pointer": "/questions/q-37982/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-38020",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-38020/after/worked_solution",
+      "occurrence_pointer": "/questions/q-38020/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-38108",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-38108/after/worked_solution",
+      "occurrence_pointer": "/questions/q-38108/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-38245",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-38245/after/worked_solution",
+      "occurrence_pointer": "/questions/q-38245/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-38510",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-38510/after/worked_solution",
+      "occurrence_pointer": "/questions/q-38510/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-38569",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-38569/after/worked_solution",
+      "occurrence_pointer": "/questions/q-38569/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-39130",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-39130/after/worked_solution",
+      "occurrence_pointer": "/questions/q-39130/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-39709",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-39709/after/worked_solution",
+      "occurrence_pointer": "/questions/q-39709/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-40138",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-40138/after/worked_solution",
+      "occurrence_pointer": "/questions/q-40138/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-40179",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-40179/after/worked_solution",
+      "occurrence_pointer": "/questions/q-40179/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-40579",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-40579/after/worked_solution",
+      "occurrence_pointer": "/questions/q-40579/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-41741",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-41741/after/worked_solution",
+      "occurrence_pointer": "/questions/q-41741/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-41751",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-41751/after/worked_solution",
+      "occurrence_pointer": "/questions/q-41751/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-42090",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-42090/after/worked_solution",
+      "occurrence_pointer": "/questions/q-42090/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-42366",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-42366/after/worked_solution",
+      "occurrence_pointer": "/questions/q-42366/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-42372",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-42372/after/worked_solution",
+      "occurrence_pointer": "/questions/q-42372/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-42531",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-42531/after/worked_solution",
+      "occurrence_pointer": "/questions/q-42531/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-42562",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-42562/after/worked_solution",
+      "occurrence_pointer": "/questions/q-42562/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-42563",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-42563/after/worked_solution",
+      "occurrence_pointer": "/questions/q-42563/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-42896",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-42896/after/worked_solution",
+      "occurrence_pointer": "/questions/q-42896/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-42917",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-42917/after/worked_solution",
+      "occurrence_pointer": "/questions/q-42917/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-43057",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-43057/after/worked_solution",
+      "occurrence_pointer": "/questions/q-43057/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-43058",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-43058/after/worked_solution",
+      "occurrence_pointer": "/questions/q-43058/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-43509",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-43509/after/worked_solution",
+      "occurrence_pointer": "/questions/q-43509/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-47918",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-47918/after/worked_solution",
+      "occurrence_pointer": "/questions/q-47918/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-47919",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-47919/after/worked_solution",
+      "occurrence_pointer": "/questions/q-47919/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-48119",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-48119/after/worked_solution",
+      "occurrence_pointer": "/questions/q-48119/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-48120",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-48120/after/worked_solution",
+      "occurrence_pointer": "/questions/q-48120/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-48404",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-48404/after/worked_solution",
+      "occurrence_pointer": "/questions/q-48404/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-49032",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-49032/after/worked_solution",
+      "occurrence_pointer": "/questions/q-49032/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-51250",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-51250/after/worked_solution",
+      "occurrence_pointer": "/questions/q-51250/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-51432",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-51432/after/worked_solution",
+      "occurrence_pointer": "/questions/q-51432/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-54202",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-54202/after/worked_solution",
+      "occurrence_pointer": "/questions/q-54202/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-59711",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-59711/after/worked_solution",
+      "occurrence_pointer": "/questions/q-59711/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-62825",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-62825/after/worked_solution",
+      "occurrence_pointer": "/questions/q-62825/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-64701",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-64701/after/worked_solution",
+      "occurrence_pointer": "/questions/q-64701/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-65134",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-65134/after/worked_solution",
+      "occurrence_pointer": "/questions/q-65134/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-68725",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-68725/after/worked_solution",
+      "occurrence_pointer": "/questions/q-68725/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-68727",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-68727/after/worked_solution",
+      "occurrence_pointer": "/questions/q-68727/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-68745",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-68745/after/worked_solution",
+      "occurrence_pointer": "/questions/q-68745/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-69517",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-69517/after/worked_solution",
+      "occurrence_pointer": "/questions/q-69517/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-70184",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-70184/after/worked_solution",
+      "occurrence_pointer": "/questions/q-70184/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-70303",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-70303/after/worked_solution",
+      "occurrence_pointer": "/questions/q-70303/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-70649",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-70649/after/worked_solution",
+      "occurrence_pointer": "/questions/q-70649/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-70926",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-70926/after/worked_solution",
+      "occurrence_pointer": "/questions/q-70926/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-70954",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-70954/after/worked_solution",
+      "occurrence_pointer": "/questions/q-70954/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-70961",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-70961/after/worked_solution",
+      "occurrence_pointer": "/questions/q-70961/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-71131",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-71131/after/worked_solution",
+      "occurrence_pointer": "/questions/q-71131/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-71138",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-71138/after/worked_solution",
+      "occurrence_pointer": "/questions/q-71138/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-71139",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-71139/after/worked_solution",
+      "occurrence_pointer": "/questions/q-71139/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-71474",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-71474/after/worked_solution",
+      "occurrence_pointer": "/questions/q-71474/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-71582",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-71582/after/worked_solution",
+      "occurrence_pointer": "/questions/q-71582/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-71935",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-71935/after/worked_solution",
+      "occurrence_pointer": "/questions/q-71935/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-71937",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-71937/after/worked_solution",
+      "occurrence_pointer": "/questions/q-71937/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-71948",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-71948/after/worked_solution",
+      "occurrence_pointer": "/questions/q-71948/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-72412",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-72412/after/worked_solution",
+      "occurrence_pointer": "/questions/q-72412/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-72491",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-72491/after/worked_solution",
+      "occurrence_pointer": "/questions/q-72491/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-72492",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-72492/after/worked_solution",
+      "occurrence_pointer": "/questions/q-72492/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-72934",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-72934/after/worked_solution",
+      "occurrence_pointer": "/questions/q-72934/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73190",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73190/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73190/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73409",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73409/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73409/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73410",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73410/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73410/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73606",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73606/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73606/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73612",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73612/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73612/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73638",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73638/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73638/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73769",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73769/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73769/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73832",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73832/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73832/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73860",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73860/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73860/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73866",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73866/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73866/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-73869",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-73869/after/worked_solution",
+      "occurrence_pointer": "/questions/q-73869/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-74089",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-74089/after/worked_solution",
+      "occurrence_pointer": "/questions/q-74089/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-74600",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-74600/after/worked_solution",
+      "occurrence_pointer": "/questions/q-74600/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-76374",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-76374/after/worked_solution",
+      "occurrence_pointer": "/questions/q-76374/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-77443",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-77443/after/worked_solution",
+      "occurrence_pointer": "/questions/q-77443/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-77452",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-77452/after/worked_solution",
+      "occurrence_pointer": "/questions/q-77452/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-77699",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-77699/after/worked_solution",
+      "occurrence_pointer": "/questions/q-77699/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-77953",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-77953/after/worked_solution",
+      "occurrence_pointer": "/questions/q-77953/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-77956",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-77956/after/worked_solution",
+      "occurrence_pointer": "/questions/q-77956/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-78438",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-78438/after/worked_solution",
+      "occurrence_pointer": "/questions/q-78438/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-78559",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-78559/after/worked_solution",
+      "occurrence_pointer": "/questions/q-78559/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-78561",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-78561/after/worked_solution",
+      "occurrence_pointer": "/questions/q-78561/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-79197",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-79197/after/worked_solution",
+      "occurrence_pointer": "/questions/q-79197/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-79203",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-79203/after/worked_solution",
+      "occurrence_pointer": "/questions/q-79203/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-79301",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-79301/after/worked_solution",
+      "occurrence_pointer": "/questions/q-79301/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-79577",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-79577/after/worked_solution",
+      "occurrence_pointer": "/questions/q-79577/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-80373",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-80373/after/worked_solution",
+      "occurrence_pointer": "/questions/q-80373/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-80389",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-80389/after/worked_solution",
+      "occurrence_pointer": "/questions/q-80389/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-80392",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-80392/after/worked_solution",
+      "occurrence_pointer": "/questions/q-80392/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-80493",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-80493/after/worked_solution",
+      "occurrence_pointer": "/questions/q-80493/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-80496",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-80496/after/worked_solution",
+      "occurrence_pointer": "/questions/q-80496/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-80766",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-80766/after/worked_solution",
+      "occurrence_pointer": "/questions/q-80766/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-81236",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-81236/after/worked_solution",
+      "occurrence_pointer": "/questions/q-81236/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-81273",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-81273/after/worked_solution",
+      "occurrence_pointer": "/questions/q-81273/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-81279",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-81279/after/worked_solution",
+      "occurrence_pointer": "/questions/q-81279/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-81324",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-81324/after/worked_solution",
+      "occurrence_pointer": "/questions/q-81324/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-81386",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-81386/after/worked_solution",
+      "occurrence_pointer": "/questions/q-81386/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-81863",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-81863/after/worked_solution",
+      "occurrence_pointer": "/questions/q-81863/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-83479",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-83479/after/worked_solution",
+      "occurrence_pointer": "/questions/q-83479/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-83710",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-83710/after/worked_solution",
+      "occurrence_pointer": "/questions/q-83710/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-83854",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-83854/after/worked_solution",
+      "occurrence_pointer": "/questions/q-83854/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-83860",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-83860/after/worked_solution",
+      "occurrence_pointer": "/questions/q-83860/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-84046",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-84046/after/worked_solution",
+      "occurrence_pointer": "/questions/q-84046/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-84048",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-84048/after/worked_solution",
+      "occurrence_pointer": "/questions/q-84048/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-84592",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-84592/after/worked_solution",
+      "occurrence_pointer": "/questions/q-84592/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-86415",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-86415/after/worked_solution",
+      "occurrence_pointer": "/questions/q-86415/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-86709",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-86709/after/worked_solution",
+      "occurrence_pointer": "/questions/q-86709/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-86712",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-86712/after/worked_solution",
+      "occurrence_pointer": "/questions/q-86712/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-86722",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-86722/after/worked_solution",
+      "occurrence_pointer": "/questions/q-86722/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-86724",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-86724/after/worked_solution",
+      "occurrence_pointer": "/questions/q-86724/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-87289",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-87289/after/worked_solution",
+      "occurrence_pointer": "/questions/q-87289/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-87772",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-87772/after/worked_solution",
+      "occurrence_pointer": "/questions/q-87772/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-88308",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-88308/after/worked_solution",
+      "occurrence_pointer": "/questions/q-88308/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-90706",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-90706/after/worked_solution",
+      "occurrence_pointer": "/questions/q-90706/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-91157",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-91157/after/worked_solution",
+      "occurrence_pointer": "/questions/q-91157/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-91159",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-91159/after/worked_solution",
+      "occurrence_pointer": "/questions/q-91159/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-91163",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-91163/after/worked_solution",
+      "occurrence_pointer": "/questions/q-91163/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-91177",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-91177/after/worked_solution",
+      "occurrence_pointer": "/questions/q-91177/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-91212",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-91212/after/worked_solution",
+      "occurrence_pointer": "/questions/q-91212/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-93838",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-93838/after/worked_solution",
+      "occurrence_pointer": "/questions/q-93838/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94041",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94041/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94041/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94046",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94046/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94046/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94056",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94056/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94056/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94081",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94081/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94081/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94139",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94139/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94139/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94142",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94142/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94142/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94159",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94159/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94159/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94179",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94179/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94179/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94213",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94213/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94213/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94347",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94347/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94347/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94372",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94372/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94372/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94454",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94454/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94454/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94982",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94982/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94982/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-94997",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-94997/after/worked_solution",
+      "occurrence_pointer": "/questions/q-94997/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-95015",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-95015/after/worked_solution",
+      "occurrence_pointer": "/questions/q-95015/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-95069",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-95069/after/worked_solution",
+      "occurrence_pointer": "/questions/q-95069/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-95323",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-95323/after/worked_solution",
+      "occurrence_pointer": "/questions/q-95323/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-95394",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-95394/after/worked_solution",
+      "occurrence_pointer": "/questions/q-95394/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-95805",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-95805/after/worked_solution",
+      "occurrence_pointer": "/questions/q-95805/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-95808",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-95808/after/worked_solution",
+      "occurrence_pointer": "/questions/q-95808/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-95912",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-95912/after/worked_solution",
+      "occurrence_pointer": "/questions/q-95912/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-95963",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-95963/after/worked_solution",
+      "occurrence_pointer": "/questions/q-95963/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-95981",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-95981/after/worked_solution",
+      "occurrence_pointer": "/questions/q-95981/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-96349",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-96349/after/worked_solution",
+      "occurrence_pointer": "/questions/q-96349/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-96351",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-96351/after/worked_solution",
+      "occurrence_pointer": "/questions/q-96351/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-96360",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-96360/after/worked_solution",
+      "occurrence_pointer": "/questions/q-96360/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-96411",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-96411/after/worked_solution",
+      "occurrence_pointer": "/questions/q-96411/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-96437",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-96437/after/worked_solution",
+      "occurrence_pointer": "/questions/q-96437/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-96772",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-96772/after/worked_solution",
+      "occurrence_pointer": "/questions/q-96772/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-96980",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-96980/after/worked_solution",
+      "occurrence_pointer": "/questions/q-96980/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-97007",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-97007/after/worked_solution",
+      "occurrence_pointer": "/questions/q-97007/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-97720",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-97720/after/worked_solution",
+      "occurrence_pointer": "/questions/q-97720/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-99032",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-99032/after/worked_solution",
+      "occurrence_pointer": "/questions/q-99032/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-99050",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-99050/after/worked_solution",
+      "occurrence_pointer": "/questions/q-99050/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-99053",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-99053/after/worked_solution",
+      "occurrence_pointer": "/questions/q-99053/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-99055",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-99055/after/worked_solution",
+      "occurrence_pointer": "/questions/q-99055/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-99056",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-99056/after/worked_solution",
+      "occurrence_pointer": "/questions/q-99056/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335673",
+      "reviewer": "compound",
+      "field": "field-1",
+      "review_pointer": "/questions/q-335673/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335673/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335673",
+      "reviewer": "compound",
+      "field": "field-2",
+      "review_pointer": "/questions/q-335673/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335673/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335673",
+      "reviewer": "compound",
+      "field": "field-3",
+      "review_pointer": "/questions/q-335673/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335673/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335673",
+      "reviewer": "compound",
+      "field": "field-4",
+      "review_pointer": "/questions/q-335673/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335673/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335673",
+      "reviewer": "compound",
+      "field": "field-5",
+      "review_pointer": "/questions/q-335673/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335673/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335673",
+      "reviewer": "compound",
+      "field": "field-6",
+      "review_pointer": "/questions/q-335673/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335673/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-335673",
+      "reviewer": "compound",
+      "field": "field-7",
+      "review_pointer": "/questions/q-335673/after/worked_solution",
+      "occurrence_pointer": "/questions/q-335673/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343341",
+      "reviewer": "compound",
+      "field": "field-1",
+      "review_pointer": "/questions/q-343341/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343341/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343341",
+      "reviewer": "compound",
+      "field": "field-2",
+      "review_pointer": "/questions/q-343341/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343341/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343341",
+      "reviewer": "compound",
+      "field": "field-3",
+      "review_pointer": "/questions/q-343341/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343341/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343341",
+      "reviewer": "compound",
+      "field": "field-4",
+      "review_pointer": "/questions/q-343341/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343341/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343395",
+      "reviewer": "compound",
+      "field": "field-1",
+      "review_pointer": "/questions/q-343395/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343395/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343395",
+      "reviewer": "compound",
+      "field": "field-2",
+      "review_pointer": "/questions/q-343395/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343395/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343395",
+      "reviewer": "compound",
+      "field": "field-3",
+      "review_pointer": "/questions/q-343395/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343395/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343395",
+      "reviewer": "compound",
+      "field": "field-4",
+      "review_pointer": "/questions/q-343395/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343395/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343438",
+      "reviewer": "compound",
+      "field": "field-1",
+      "review_pointer": "/questions/q-343438/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343438/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343438",
+      "reviewer": "compound",
+      "field": "field-2",
+      "review_pointer": "/questions/q-343438/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343438/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343438",
+      "reviewer": "compound",
+      "field": "field-3",
+      "review_pointer": "/questions/q-343438/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343438/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343438",
+      "reviewer": "compound",
+      "field": "field-4",
+      "review_pointer": "/questions/q-343438/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343438/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343445",
+      "reviewer": "compound",
+      "field": "field-1",
+      "review_pointer": "/questions/q-343445/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343445/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343445",
+      "reviewer": "compound",
+      "field": "field-2",
+      "review_pointer": "/questions/q-343445/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343445/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343445",
+      "reviewer": "compound",
+      "field": "field-3",
+      "review_pointer": "/questions/q-343445/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343445/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343445",
+      "reviewer": "compound",
+      "field": "field-4",
+      "review_pointer": "/questions/q-343445/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343445/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343446",
+      "reviewer": "compound",
+      "field": "field-1",
+      "review_pointer": "/questions/q-343446/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343446/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343446",
+      "reviewer": "compound",
+      "field": "field-2",
+      "review_pointer": "/questions/q-343446/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343446/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343446",
+      "reviewer": "compound",
+      "field": "field-3",
+      "review_pointer": "/questions/q-343446/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343446/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-343446",
+      "reviewer": "compound",
+      "field": "field-4",
+      "review_pointer": "/questions/q-343446/after/worked_solution",
+      "occurrence_pointer": "/questions/q-343446/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-103781",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-103781/after/worked_solution",
+      "occurrence_pointer": "/questions/q-103781/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-103831",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-103831/after/worked_solution",
+      "occurrence_pointer": "/questions/q-103831/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-104195",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-104195/after/worked_solution",
+      "occurrence_pointer": "/questions/q-104195/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-10510",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-10510/after/worked_solution",
+      "occurrence_pointer": "/questions/q-10510/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-105701",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-105701/after/worked_solution",
+      "occurrence_pointer": "/questions/q-105701/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106049",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106049/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106049/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106051",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106051/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106051/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106391",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106391/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106391/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106685",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106685/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106685/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106706",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106706/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106706/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106842",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106842/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106842/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106847",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106847/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106847/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106849",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106849/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106849/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106851",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106851/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106851/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106878",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106878/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106878/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-106960",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-106960/after/worked_solution",
+      "occurrence_pointer": "/questions/q-106960/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-108309",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-108309/after/worked_solution",
+      "occurrence_pointer": "/questions/q-108309/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-108310",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-108310/after/worked_solution",
+      "occurrence_pointer": "/questions/q-108310/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-108326",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-108326/after/worked_solution",
+      "occurrence_pointer": "/questions/q-108326/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-108368",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-108368/after/worked_solution",
+      "occurrence_pointer": "/questions/q-108368/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-108371",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-108371/after/worked_solution",
+      "occurrence_pointer": "/questions/q-108371/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-108889",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-108889/after/worked_solution",
+      "occurrence_pointer": "/questions/q-108889/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-109158",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-109158/after/worked_solution",
+      "occurrence_pointer": "/questions/q-109158/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-109302",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-109302/after/worked_solution",
+      "occurrence_pointer": "/questions/q-109302/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-109307",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-109307/after/worked_solution",
+      "occurrence_pointer": "/questions/q-109307/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-109639",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-109639/after/worked_solution",
+      "occurrence_pointer": "/questions/q-109639/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-110078",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-110078/after/worked_solution",
+      "occurrence_pointer": "/questions/q-110078/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-110754",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-110754/after/worked_solution",
+      "occurrence_pointer": "/questions/q-110754/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-110756",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-110756/after/worked_solution",
+      "occurrence_pointer": "/questions/q-110756/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-112487",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-112487/after/worked_solution",
+      "occurrence_pointer": "/questions/q-112487/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-112524",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-112524/after/worked_solution",
+      "occurrence_pointer": "/questions/q-112524/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-112863",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-112863/after/worked_solution",
+      "occurrence_pointer": "/questions/q-112863/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-113245",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-113245/after/worked_solution",
+      "occurrence_pointer": "/questions/q-113245/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-116564",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-116564/after/worked_solution",
+      "occurrence_pointer": "/questions/q-116564/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-117347",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-117347/after/worked_solution",
+      "occurrence_pointer": "/questions/q-117347/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-118389",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-118389/after/worked_solution",
+      "occurrence_pointer": "/questions/q-118389/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-119037",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-119037/after/worked_solution",
+      "occurrence_pointer": "/questions/q-119037/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-120450",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-120450/after/worked_solution",
+      "occurrence_pointer": "/questions/q-120450/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-120778",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-120778/after/worked_solution",
+      "occurrence_pointer": "/questions/q-120778/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-122351",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-122351/after/worked_solution",
+      "occurrence_pointer": "/questions/q-122351/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-122931",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-122931/after/worked_solution",
+      "occurrence_pointer": "/questions/q-122931/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-123020",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-123020/after/worked_solution",
+      "occurrence_pointer": "/questions/q-123020/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-123027",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-123027/after/worked_solution",
+      "occurrence_pointer": "/questions/q-123027/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-123030",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-123030/after/worked_solution",
+      "occurrence_pointer": "/questions/q-123030/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-123519",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-123519/after/worked_solution",
+      "occurrence_pointer": "/questions/q-123519/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-123769",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-123769/after/worked_solution",
+      "occurrence_pointer": "/questions/q-123769/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-123773",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-123773/after/worked_solution",
+      "occurrence_pointer": "/questions/q-123773/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-123775",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-123775/after/worked_solution",
+      "occurrence_pointer": "/questions/q-123775/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-123889",
+      "reviewer": "compound",
+      "field": "selection",
+      "review_pointer": "/questions/q-123889/after/worked_solution",
+      "occurrence_pointer": "/questions/q-123889/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    },
+    {
+      "id": "q-4772",
+      "reviewer": "math",
+      "field": "selection",
+      "review_pointer": "/questions/q-4772/after/worked_solution",
+      "occurrence_pointer": "/questions/q-4772/history/worked_solution",
+      "complete_solutions_identical": true,
+      "quote_present_in_occurrence_solution": true
+    }
+  ]
+}
