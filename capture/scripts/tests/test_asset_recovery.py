@@ -70,7 +70,8 @@ class AssetRecovery(unittest.TestCase):
         self.browser.context.request.get.assert_not_called()
 
     def test_corrupt_manifest_bytes_are_refetched(self):
-        path = self.directory / 'bad.png'
+        path = self.directory / 'assets' / (hashlib.sha256(PNG).hexdigest() + '.png')
+        path.parent.mkdir()
         path.write_bytes(b'corruption')
         atomic_json(self.directory / 'assets/manifest.json', {self.url: {'path': str(path),
             'sha256': hashlib.sha256(PNG).hexdigest(), 'content_type': 'image/png', 'representation': 'original'}})
@@ -125,6 +126,24 @@ class AssetRecovery(unittest.TestCase):
         self.assertLessEqual(now[0], self.browser.deadline_at)
         self.assertIn('error', result[0])
         self.assertTrue(all(call.kwargs['timeout'] <= 250 for call in scope.evaluate.call_args_list))
+
+    def test_broken_image_uses_shared_backoff_then_a_fresh_readiness_window(self):
+        now, sleeps = [100.0], []
+        def sleep(seconds, **_):
+            sleeps.append(seconds)
+            now[0] += seconds
+        self.browser.pacer = SimpleNamespace(sleep=sleep, backoff=Mock(return_value=30))
+        node = Mock()
+        scope = SimpleNamespace(evaluate=Mock(return_value=[{'index': 0, 'ready': False, 'broken': True}]),
+                                locator=Mock(return_value=SimpleNamespace(nth=lambda _: node)))
+        capture = AssetCapture(self.browser)
+        with patch('scripts.browser.assets.time.monotonic', lambda: now[0]):
+            capture._rendered_assets({'assets': [{'tag': 'img', 'index': 0}]}, scope)
+        self.browser.pacer.backoff.assert_called_once_with(1)
+        self.assertEqual(sleeps[0], 30)
+        node.evaluate.assert_called_once()
+        self.assertGreaterEqual(now[0], 131)
+        self.assertLess(now[0], 131.2)
 
 
 class GraphicDOM(unittest.TestCase):

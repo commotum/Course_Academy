@@ -2607,6 +2607,7 @@ mod integration {
         db: &DatabaseValue,
         transaction: &str,
         at: i64,
+        source: EntityRef,
     ) -> Result<edb_core::SpeculativeTransactionReport> {
         let mut registry = edb_core::NativeRegistry::builder();
         type Predicate =
@@ -2646,7 +2647,7 @@ mod integration {
         Ok(db.with_forms_with_execution_options(
             &edb_core::edn_transaction::read_edn_transaction(transaction)?,
             at,
-            engine_source(),
+            source,
             edb_core::SpeculationLimits::default(),
             &edb_core::TransactionExecutionOptions {
                 native: registry.build(),
@@ -2656,16 +2657,32 @@ mod integration {
     }
 
     #[test]
-    #[ignore = "reads live math and previews LEARNING_HISTORY_MIGRATION_TX without durable writes"]
+    #[ignore = "reads live math and previews a migration manifest or transaction without durable writes"]
     fn preview_history_migration() -> Result<()> {
-        let transaction_path = PathBuf::from(std::env::var("LEARNING_HISTORY_MIGRATION_TX")?);
-        let transaction = std::fs::read_to_string(&transaction_path)?;
-        let intent: Json = serde_json::from_slice(&std::fs::read(
-            transaction_path.with_file_name("intent.json"),
-        )?)?;
-        let expected_basis = intent["destination_basis"]
+        let (input_path, manifest) =
+            if let Some(path) = std::env::var_os("LEARNING_HISTORY_MIGRATION_MANIFEST") {
+                let path = PathBuf::from(path);
+                let manifest: Json = serde_json::from_slice(&std::fs::read(&path)?)?;
+                (path, manifest)
+            } else {
+                let path = PathBuf::from(std::env::var("LEARNING_HISTORY_MIGRATION_TX")?)
+                    .canonicalize()?;
+                let intent: Json =
+                    serde_json::from_slice(&std::fs::read(path.with_file_name("intent.json"))?)?;
+                let manifest = json!({
+                    "destination_basis":intent["destination_basis"],
+                    "transactions":[{"file":path,"source":intent["source"],
+                        "source_eid":intent["source_eid"],"sha256":intent["transaction_sha256"]}],
+                });
+                (path, manifest)
+            };
+        let expected_basis = manifest["destination_basis"]
             .as_u64()
-            .ok_or("migration intent is missing destination_basis")?;
+            .ok_or("migration manifest is missing destination_basis")?;
+        let stages = manifest["transactions"]
+            .as_array()
+            .filter(|stages| !stages.is_empty())
+            .ok_or("migration manifest must contain ordered transactions")?;
         let config = if std::env::var_os("EDB_POSTGRES_URL").is_some() {
             postgres_config_from_env()?
         } else {
@@ -2695,22 +2712,134 @@ mod integration {
             .refs(learner, "learner/activity")?
             .into_iter()
             .collect();
-        let preview = preview_with(&base, &transaction, Utc::now().timestamp_millis())?;
-        let source = before
+        let engine_source_eid = before
             .entities
             .iter()
             .find_map(|(&eid, record)| {
                 (record.get("db/ident") == Some(&kw(ENGINE_SOURCE))).then_some(eid)
             })
             .ok_or("application/ca-engine source is not registered")?;
-        assert!(
-            preview
-                .tx_data
-                .iter()
-                .all(|datom| datom.added && datom.source == source),
-            "migration must only add facts attributed to the application engine"
-        );
-        let s = snapshot(&preview.db_after)?;
+        let mut migrated = base.clone();
+        let mut stage_reports = vec![];
+        let preview_at = Utc::now().timestamp_millis();
+        let mut all_engine_source = true;
+        let mut introduced_facts = Vec::<edb_core::Datom>::new();
+        let mut all_added = true;
+        for (index, stage) in stages.iter().enumerate() {
+            let file = stage["file"]
+                .as_str()
+                .ok_or("migration stage is missing file")?;
+            let path = input_path
+                .parent()
+                .ok_or("migration input has no parent directory")?
+                .join(file);
+            let transaction = std::fs::read_to_string(&path)?;
+            let source_name = stage["source"]
+                .as_str()
+                .ok_or("migration stage is missing source")?
+                .trim_start_matches(':');
+            let (namespace, name) = source_name
+                .split_once('/')
+                .ok_or("migration source must be a qualified ident")?;
+            let source_ident = Keyword::new(namespace, name);
+            let source = migrated
+                .entid(&source_ident)
+                .ok_or_else(|| format!("migration source {source_name} is not registered"))?;
+            if let Some(expected) = stage.get("source_eid").filter(|value| !value.is_null()) {
+                assert_eq!(
+                    Some(source),
+                    expected.as_u64(),
+                    "migration stage {index} source ident does not match its recorded EID"
+                );
+            } else {
+                assert!(
+                    base.entid(&source_ident).is_none()
+                        && introduced_facts.iter().any(|fact| {
+                            fact.entity == source
+                                && fact.value == Value::Keyword(source_ident.clone())
+                                && migrated.schema().attribute(fact.attribute).is_ok_and(
+                                    |attribute| attribute.ident == Keyword::new("db", "ident"),
+                                )
+                        }),
+                    "migration stage {index} may omit source_eid only for a source ident introduced by an earlier stage"
+                );
+            }
+            let preview = preview_with(
+                &migrated,
+                &transaction,
+                preview_at,
+                EntityRef::Ident(source_ident),
+            )?;
+            let allowed_retractions: BTreeSet<String> = stage
+                .get("allow_retractions")
+                .map(|value| {
+                    value
+                        .as_array()
+                        .ok_or("allow_retractions must be an attribute list")?
+                        .iter()
+                        .map(|attribute| {
+                            attribute
+                                .as_str()
+                                .map(|name| name.trim_start_matches(':').to_owned())
+                                .ok_or("allowed retraction attribute must be an ident")
+                        })
+                        .collect::<std::result::Result<_, _>>()
+                })
+                .transpose()?
+                .unwrap_or_default();
+            assert!(
+                allowed_retractions.is_empty()
+                    || (source == engine_source_eid
+                        && allowed_retractions
+                            .iter()
+                            .all(|name| name.starts_with("progress/"))),
+                "only an engine stage may replace explicitly allowed imported progress attributes"
+            );
+            assert!(
+                preview.tx_data.iter().all(|datom| datom.source == source),
+                "migration stage {index} must attribute facts to its declared source"
+            );
+            let mut retractions = vec![];
+            for datom in preview.tx_data.iter().filter(|datom| !datom.added) {
+                let attribute = preview.db_before.schema().attribute(datom.attribute)?;
+                let name = attribute.ident.qualified_name();
+                assert!(
+                    allowed_retractions.contains(&name),
+                    "migration stage {index} retracts undeclared attribute {name}"
+                );
+                let earlier = introduced_facts
+                    .iter()
+                    .rev()
+                    .find(|earlier| {
+                        earlier.entity == datom.entity
+                            && earlier.attribute == datom.attribute
+                            && earlier.value == datom.value
+                    })
+                    .ok_or_else(|| {
+                        format!(
+                            "migration stage {index} would retract a preexisting fact on {} {name}",
+                            datom.entity
+                        )
+                    })?;
+                retractions.push(json!({
+                    "entity":datom.entity,"attribute":format!(":{name}"),"value":value(&datom.value)?,
+                    "asserted_source_eid":earlier.source,"retraction_source_eid":datom.source,
+                }));
+            }
+            all_added &= retractions.is_empty();
+            introduced_facts.extend(preview.tx_data.iter().filter(|datom| datom.added).cloned());
+            all_engine_source &= source == engine_source_eid;
+            stage_reports.push(json!({
+                "index":index,"file":file,"source":format!(":{source_name}"),"source_eid":source,
+                "sha256":stage["sha256"],"destination_basis":preview.db_before.basis_t(),
+                "preview_basis":preview.db_after.basis_t(),
+                "added_datoms":preview.tx_data.iter().filter(|datom| datom.added).count(),
+                "all_added":retractions.is_empty(),"allowed_retractions":retractions,
+                "preexisting_facts_unchanged":true,"declared_source_validated":true,"native_predicates_validated":true,
+            }));
+            migrated = preview.db_after;
+        }
+        let s = snapshot(&migrated)?;
         let tasks: Vec<_> = s
             .refs(learner, "learner/activity")?
             .into_iter()
@@ -2723,8 +2852,10 @@ mod integration {
         );
         profile_json(&s, learner)?;
         home(&s, learner)?;
+        assert_eq!(s.refs(learner, "learner/knowledge-profile")?.len(), 1041);
         let (mut completed, mut paused, mut answered, mut response_refs, mut rendered_responses) =
             (0, 0, 0, 0, 0);
+        let (mut correct, mut incorrect, mut total_seconds, mut total_xp) = (0, 0, 0.0, 0.0);
         let at = Utc::now();
         let mut task_reports = vec![];
         for task in tasks {
@@ -2763,6 +2894,8 @@ mod integration {
                 .get("learner-task/elapsed-seconds")
                 .and_then(Json::as_f64)
                 .ok_or("migrated task has no saved elapsed time")?;
+            total_seconds += saved;
+            total_xp += number(&s, task, "learner-task/xp-earned");
             let mut item_total = 0.0;
             for item in chain {
                 let elapsed = s
@@ -2778,6 +2911,13 @@ mod integration {
                 let responses = s.refs(item, "task-item/responses")?;
                 answered += usize::from(!responses.is_empty());
                 response_refs += responses.len();
+                if !responses.is_empty() {
+                    match status(&s, item, "task-item/status")?.as_str() {
+                        "correct" => correct += 1,
+                        "incorrect" => incorrect += 1,
+                        _ => return Err("a migrated answer has a non-graded status".into()),
+                    }
+                }
             }
             assert!(
                 (saved - item_total).abs() < 1e-6,
@@ -2819,10 +2959,18 @@ mod integration {
                     eprintln!("Task {task} remains paused pending fresh practice questions");
                 } else {
                     let resumed = preview_with(
-                        &preview.db_after,
+                        &migrated,
                         &schema::edn(&json!(forms))?,
                         resumed_at.timestamp_millis(),
+                        engine_source(),
                     )?;
+                    assert!(
+                        resumed
+                            .tx_data
+                            .iter()
+                            .all(|datom| datom.source == engine_source_eid),
+                        "resuming imported work must be attributed to the application engine"
+                    );
                     let resumed_snapshot = snapshot(&resumed.db_after)?;
                     assert_eq!(
                         status(&resumed_snapshot, task, "learner-task/status")?,
@@ -2847,6 +2995,9 @@ mod integration {
             answered, 44,
             "all saved answer submissions must be retained"
         );
+        assert_eq!((correct, incorrect), (40, 4));
+        assert_eq!(total_xp, 37.0);
+        assert!((total_seconds - 8344.367).abs() < 1e-6);
         assert_eq!(
             rendered_responses, response_refs,
             "every saved response must be visible in task history"
@@ -2856,15 +3007,19 @@ mod integration {
         );
         let report_path = std::env::var_os("LEARNING_HISTORY_MIGRATION_REPORT")
             .map(PathBuf::from)
-            .unwrap_or_else(|| transaction_path.with_file_name("application-preview.json"));
+            .unwrap_or_else(|| input_path.with_file_name("application-preview.json"));
         std::fs::write(
             report_path,
             serde_json::to_vec_pretty(&json!({
                 "committed":false,"speculative":true,"status":"passed","destination_basis":before.basis_t,
-                "preview_basis":s.basis_t,"source":format!(":{ENGINE_SOURCE}"),"durable_writes":0,
-                "all_added":true,"all_engine_source":true,"native_predicates_validated":true,
+                "preview_basis":s.basis_t,"durable_writes":0,"stages":stage_reports,
+                "all_added":all_added,"preexisting_facts_unchanged":true,
+                "all_engine_source":all_engine_source,"declared_sources_validated":true,
+                "native_predicates_validated":true,"resume_source":format!(":{ENGINE_SOURCE}"),
                 "profile_rendered":true,"home_rendered":true,
                 "completed_tasks":completed,"paused_tasks":paused,"answered_items":answered,
+                "progress_records":1041,"correct_items":correct,"incorrect_items":incorrect,
+                "elapsed_seconds":total_seconds,"xp_earned":total_xp,
                 "response_refs":response_refs,"rendered_responses":rendered_responses,"tasks":task_reports,
             }))?,
         )?;

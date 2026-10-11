@@ -133,6 +133,12 @@ class MathAcademyBrowser:
     def remaining_seconds(self):
         return None if self.deadline_at is None else max(0.0, self.deadline_at - time.time())
 
+    def read_remaining_seconds(self):
+        """Read the visible countdown while retaining the saved absolute bound."""
+        live, saved = self._remaining(), self.remaining_seconds()
+        values = [value for value in (live, saved) if value is not None]
+        return min(values) if values else None
+
     def timeout_ms(self, reserve=0):
         remaining = self.remaining_seconds()
         if remaining is None:
@@ -667,6 +673,7 @@ class MathAcademyBrowser:
             dialog.wait_for(state="visible")
         if not re.search(r"submit\s+this\s+test", dialog.inner_text(), re.I):
             raise BrowserUnavailable("Unexpected confirmation; retain the test and reread its page")
+        self._pause("assessment confirmation", reserve=15)
         self._intent(observation, "submit_assessment")
         dialog.get_by_text("Yes", exact=True).click()
         self.page.locator("#finalScreen").wait_for(state="visible")

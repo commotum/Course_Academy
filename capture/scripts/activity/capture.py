@@ -417,7 +417,10 @@ class ActivityCapture:
                     self.state['diagnostic_retry_active'] = False
             self._save()
             failure = self.state.get('pending_browser_error') or {}
-            if repeated >= 3 and failure.get('method') == 'advance':
+            if (repeated >= 3 and failure.get('method') == 'advance'
+                    and failure.get('attempt', 0) > record.get('continuation_recovery_attempt', 0)):
+                record['continuation_recovery_attempt'] = failure['attempt']
+                self._save()
                 self._recover_page(observation, repeated)
                 return
             self._browser_call('advance', observation, self.directory)
@@ -746,12 +749,34 @@ class ActivityCapture:
         content['lesson_workload_sample'] = self._lesson_sample(content)
         return content
 
+    @staticmethod
+    def _source_binding_matches(before, after):
+        """History positions and permanent IDs still need matching source content."""
+        def binding(question):
+            def text(value):
+                value = str(value) if value is not None else ''
+                for asset in question.get('assets', []):
+                    if asset.get('sha256'):
+                        for name in ('path', 'source_url'):
+                            if asset.get(name):
+                                value = value.replace(asset[name], '@image:' + asset['sha256'])
+                return re.sub(r'\s+', ' ', value).strip()
+            fields = [{'key': str(field.get('key', index)), 'type': field.get('type'),
+                       'choices': sorted((str(choice.get('type')), text(choice.get('value')))
+                                         for choice in field.get('choices', []))}
+                      for index, field in enumerate(answer_fields(question))]
+            return text(question.get('problem')), sorted(fields, key=lambda field: field['key'])
+        return bool(before.get('problem') and after.get('problem')) and binding(before) == binding(after)
+
     def _question_presentations(self, question):
         identity = question.get('math_academy_id')
         position = question.get('sequence_position')
         return [r for r in self.state['presentations'].values()
-                if (identity and r['question'].get('math_academy_id') == identity) or
-                (not r['question'].get('math_academy_id') and position is not None and r.get('observed_position', -1) + 1 == position)]
+                if self._source_binding_matches(r['question'], question) and
+                ((identity and str(r['question'].get('math_academy_id')) == str(identity)) or
+                 (question.get('live_presentation_key') is not None and question['live_presentation_key'] == r.get('key')) or
+                 (not r['question'].get('math_academy_id') and position is not None and
+                  r.get('observed_position', -1) + 1 == position))]
 
     def _merge_history(self, history):
         content = {'task_id': str(self.activity['task_id']), 'kind': self.activity['kind'],
@@ -759,25 +784,61 @@ class ActivityCapture:
                    'course_id': self.activity.get('course_id'), 'activity': self.activity,
                    'questions': [], 'canonical_examples': [], 'tutorials': [],
                    'observed_steps': deepcopy(self.state['steps'])}
-        live = {'questions': [deepcopy(r['question']) for r in self.state['presentations'].values()],
+        sources = history.get('questions', [])
+        records = list(self.state['presentations'].values())
+        limitations, questions = [], []
+        # A missed/repeated diagnostic presentation shifts history positions.
+        # Never grant an ID or grade from the position without source agreement.
+        for record in records:
+            question = record['question']
+            if not question.get('math_academy_id'):
+                matching = [q for q in sources if q.get('math_academy_id') and
+                    q.get('sequence_position') == record.get('observed_position', -1) + 1 and
+                    self._source_binding_matches(question, q)]
+                if len(matching) == 1:
+                    question['math_academy_id'] = matching[0]['math_academy_id']
+
+        for record in records:
+            question = record['question']
+            identity = question.get('math_academy_id')
+            same_id = [q for q in sources if identity is not None and str(q.get('math_academy_id')) == str(identity)]
+            matching = [q for q in same_id if self._source_binding_matches(question, q)]
+            repeated = [r for r in records if (r['question'].get('math_academy_id') is None or
+                        str(r['question'].get('math_academy_id')) == str(identity)) and
+                        self._source_binding_matches(question, r['question'])]
+            positioned = [q for q in matching if q.get('sequence_position') == record.get('observed_position', -1) + 1]
+            if len(positioned) == 1 and (len(repeated) == 1 or len(repeated) == len(matching)):
+                record['feedback'] = {**record.get('feedback', {}), **positioned[0]}
+            elif positioned:
+                limitations.append({'question': str(identity), 'presentation_key': record.get('key'),
+                    'reason': 'History grade cannot be assigned unambiguously across repeated presentations'})
+
+            live_question = deepcopy(question)
+            if (same_id and not matching) or not identity:
+                if same_id or sources:
+                    limitations.append({'question': str(identity) if identity is not None else question_key(question),
+                        'presentation_key': record.get('key'),
+                        'reason': 'Live source content did not match the history identity and position'})
+                if same_id:
+                    # Keep conflicting originals without letting the ID merge
+                    # overwrite one problem or promote its grade onto the other.
+                    live_question['observed_math_academy_id'] = live_question.pop('math_academy_id')
+                live_question['source_id'] = 'unreconciled:' + str(record.get('key'))
+                live_question['live_presentation_key'] = record.get('key')
+            feedback = record.get('feedback') or {}
+            if feedback.get('problem') and not self._source_binding_matches(question, feedback):
+                record['unmatched_history_feedback'] = feedback
+                record['feedback'] = {}
+            questions.append(live_question)
+
+        live = {'questions': questions,
                 'canonical_examples': [s['question'] for s in self.state['steps'] if s.get('kind') == 'example' and s.get('question')],
                 'tutorials': [s.get('tutorial', s) for s in self.state['steps'] if s.get('kind') == 'tutorial']}
         content = self._merge_content(content, live)
-        # Diagnostic source IDs are revealed in history. Align source positions only
-        # when the live question did not already provide a permanent identity.
-        for question in history.get('questions', []):
-            position = question.get('sequence_position')
-            if position is not None:
-                for record in self.state['presentations'].values():
-                    if record['observed_position'] + 1 == position and not record['question'].get('math_academy_id'):
-                        record['question']['math_academy_id'] = question.get('math_academy_id')
-                        for old in content['questions']:
-                            if not old.get('math_academy_id') and self._answer_binding(old) == self._answer_binding(record['question']):
-                                old['math_academy_id'] = question.get('math_academy_id')
-                    if record['observed_position'] + 1 == position and record['question'].get('math_academy_id') == question.get('math_academy_id'):
-                        record['feedback'] = {**record.get('feedback', {}), **question}
         self._save()
-        return self._merge_content(content, history)
+        content = self._merge_content(content, history)
+        content['source_limitations'] = content.get('source_limitations', []) + limitations
+        return content
 
     @staticmethod
     def _merge_content(before, after):

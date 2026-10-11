@@ -264,6 +264,25 @@ class OfflineTimingTests(unittest.TestCase):
         self.assertEqual(self.page.locator('.questionButton').count(), 1)
         self.assertFalse(self.adapter.state.get('assessment_readiness_errors'))
 
+    def test_visible_timer_can_shorten_but_never_extend_saved_deadline(self):
+        self.page.set_content('<span id="timeRemaining">00:09</span>')
+        self.adapter.set_deadline(time.time() + 100)
+        self.assertEqual(self.adapter.read_remaining_seconds(), 9)
+        self.adapter.set_deadline(time.time() + 5)
+        self.assertLessEqual(self.adapter.read_remaining_seconds(), 5)
+
+    def test_expired_assessment_can_still_confirm_submission(self):
+        self.adapter.activity['kind'] = 'assessment'
+        self.adapter.set_deadline(time.time() - 10)
+        self.page.set_content('''<button id="submitTestButton" onclick="document.getElementById('confirmationDialog').style.display='block'">Submit</button>
+          <div id="confirmationDialog" style="display:none">Submit this test?<button
+          onclick="document.getElementById('finalScreen').style.display='block'">Yes</button></div>
+          <div id="finalScreen" style="display:none">Complete</div>''')
+        with patch.object(self.adapter, '_pause', wraps=self.adapter._pause) as pause:
+            self.adapter.respond({'key': 'submit-assessment'}, {'action': 'submit_assessment'}, self.directory)
+        pause.assert_called_once_with('assessment confirmation', reserve=15)
+        self.assertTrue(self.page.locator('#finalScreen').is_visible())
+
     def test_expired_assessment_deadline_allows_server_reconciliation(self):
         self.adapter.activity['kind'] = 'assessment'
         expired = time.time() - 10

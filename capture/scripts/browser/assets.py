@@ -217,8 +217,14 @@ class AssetCapture:
                 if state.get("broken") and index not in reloaded:
                     # The old engine retried one completed-but-broken DOM image.
                     # Keep its source unchanged and use the shared cooldown first.
+                    if not reloaded:
+                        pacer = getattr(self.browser, "pacer", None)
+                        delay = pacer.backoff(1) if pacer else getattr(config, "retry_delay", 30)
+                        self._sleep(max(minimum, delay))
+                        # The finite readiness window starts afresh after the
+                        # recovery backoff; all broken images share that pause.
+                        deadline = time.monotonic() + timeout
                     reloaded.add(index)
-                    self._sleep(minimum)
                     if hasattr(self.browser, "_wait_cooldown"):
                         self.browser._wait_cooldown()
                     self._check_stop()
@@ -351,7 +357,7 @@ class AssetCapture:
                 extension = image_extension(data, mime)
                 digest = hashlib.sha256(data).hexdigest()
                 path = directory / "assets" / (digest + "." + extension)
-                if not path.exists():
+                if not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
                     atomic_bytes(path, data)
                 asset.update(path=str(path.resolve()), sha256=digest, content_type=mime,
                              representation=representation, captured_from=evidence_id)

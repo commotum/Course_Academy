@@ -100,6 +100,31 @@ class ActivityRecoveryRegressions(unittest.TestCase):
         restored._start_assessment_timing({'kind': 'instructions', 'action': 'start'})
         self.assertEqual(restored.state['assessment_timing'], plan)
 
+    def test_continue_is_retried_after_recovery_reloads_same_accepted_question(self):
+        class ReloadRepairsContinue(Browser):
+            def __init__(self):
+                super().__init__([question()])
+                self.accepted = True
+                self.restarts = 0
+
+            def advance(self, *args):
+                if not self.restarts:
+                    self.advances += 1
+                    raise TimeoutError('Continue control did not advance')
+                super().advance(*args)
+
+            def restart(self):
+                self.restarts += 1
+                if self.restarts > 1:
+                    raise AssertionError('Recovery must retry Continue before reloading again')
+
+        browser = ReloadRepairsContinue()
+        capture = self.capture(browser)
+        capture._execute()
+        self.assertEqual(browser.advances, 4)
+        self.assertEqual(browser.restarts, 1)
+        self.assertEqual(capture.state['stage'], 'history')
+
     def test_same_diagnostic_retry_offer_keeps_saved_yes_decision_after_resume(self):
         capture = self.capture(kind='diagnostic')
         capture.state['presentations']['q1'] = {'decision': {'intended': 'C', 'distance': 1}}

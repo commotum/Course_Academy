@@ -103,6 +103,23 @@ class ActivityTimingTests(unittest.TestCase):
         capture._observe_timing({'remaining_seconds':120,'observed_at':1000})
         self.assertEqual(capture._remaining_seconds(),90)  # An optimistic read never extends it.
 
+    def test_answer_pacing_rechecks_visible_timer_before_another_wait(self):
+        class TimerBrowser(Browser):
+            timer_reads = 0
+            def read_remaining_seconds(self):
+                self.timer_reads += 1
+                return 40
+        browser = TimerBrowser([])
+        capture = self.capture(browser, activity={'task_id':'99','kind':'assessment',
+            'details':{'question_count':4,'time_limit':'15 minutes'}})
+        capture._start_assessment_timing({'action':'start'})
+        record = {'decision':{'submit_at':1300}}
+        capture._pace_answer(record, {'sequence_position':1})
+        self.assertEqual(browser.timer_reads, 1)
+        self.assertEqual(self.delays, [30])
+        self.assertEqual(capture._remaining_seconds(), 40)
+        self.assertIn('timing_deviation', record['decision'])
+
     def test_repeated_action_failures_back_off_across_reobservations_and_resume(self):
         class Broken(Browser):
             def respond(self,*args):

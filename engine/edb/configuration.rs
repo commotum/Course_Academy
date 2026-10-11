@@ -85,9 +85,7 @@ pub fn valid_topic_difficulty(db: &DatabaseValue, entity: u64) -> Result<bool, S
     match value(db, entity, "topic", "difficulty")? {
         // General topic validation permits unknown difficulty.
         None => Ok(true),
-        Some(Value::Double(difficulty)) => {
-            Ok(difficulty.is_finite() && difficulty > 0.0)
-        }
+        Some(Value::Double(difficulty)) => Ok(difficulty.is_finite() && difficulty > 0.0),
         _ => Ok(false),
     }
 }

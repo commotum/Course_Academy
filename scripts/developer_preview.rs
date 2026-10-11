@@ -49,7 +49,10 @@ pub(super) fn active_tasks(s: &EntitySnapshot, learner: u64) -> Result<Json> {
 
 fn activity_id(s: &EntitySnapshot, learner: u64, body: &Json) -> Result<u64> {
     if body.get("topicId").is_some_and(|v| !v.is_null()) {
-        if ["activityId", "taskId"].iter().any(|key| body.get(*key).is_some_and(|v| !v.is_null())) {
+        if ["activityId", "taskId"]
+            .iter()
+            .any(|key| body.get(*key).is_some_and(|v| !v.is_null()))
+        {
             return Err("Provide one topic, activity, or task ID".into());
         }
         return topic_lesson(s, required(body, "topicId")?);
