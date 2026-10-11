@@ -1,0 +1,153 @@
+// Current implemented selection logic, traced 2026-10-10.
+// Scope: read one account's live queue, choose or recover an activity, and gate Start.
+// Source paths are relative to Course_Academy/capture/v2/.
+// ../../scripts/question_capture/browser.py: EXTRACT_QUEUE, queue, start
+// ../../scripts/question_capture/capture.py: observe_queue, queued_resume, run
+// ../../scripts/question_capture/core.py: choose_activity, choose_topic_activity,
+//   assessment_requirement, assessment_can_start
+// ../../scripts/question_capture/database.py: priorities, capture_priority_context
+// ../../scripts/question_capture/priorities.py: capture_scores
+// ../../scripts/question_capture/retry_policy.py: update_policy, apply_policy
+// Render: dot -Tsvg 1-activity-selection.dots -o 1-activity-selection.svg
+// A and B are continuation labels, used to avoid long crossing return arrows.
+
+digraph ActivitySelection {
+  graph [label="1. Activity Selection\nCourse Academy - current queue decision process",
+    labelloc=t, labeljust=l, fontname="DejaVu Sans", fontsize=23,
+    bgcolor="white", rankdir=TB, nodesep=0.38, ranksep=0.48,
+    pad=0.35, splines=polyline, outputorder=edgesfirst, newrank=true];
+  node [shape=box, style=filled, fillcolor="#f3f4f6", color="#374151",
+    fontcolor="#111827", fontname="DejaVu Sans", fontsize=12,
+    margin="0.18,0.13", penwidth=1.1];
+  edge [color="#64748b", arrowsize=0.7, penwidth=1.1,
+    fontname="DejaVu Sans", fontsize=10, fontcolor="#475569"];
+
+  subgraph cluster_inputs {
+    label="Read and interpret this account's queue";
+    fontname="DejaVu Sans"; fontsize=17; color="#cbd5e1"; style=rounded;
+    Begin [label="A fresh queue selection is needed\nRun independently for each signed-in account",
+      fillcolor="#111827", fontcolor=white, fontsize=14];
+    Boundary [label="A saved run already chosen for resumption bypasses this ranking.\nThis chart ends at the activity handoff; capture and import follow later.",
+      shape=note, fillcolor=white, color="#cbd5e1"];
+    Queue [label="Read /learn in displayed queue order\nVisible unlocked cards: #incompleteTasks .taskUnlocked\nRead type, task/topic IDs, Start link, and progress\nExpand assessment details and missing diagnostic/multistep links",
+      URL="../../scripts/question_capture/browser.py"];
+    ForcedResume [label="Forced redirect to unfinished Assessment/Diagnostic\nRestore its saved capture if available\nOtherwise retain failure evidence for recovery",
+      shape=oval, fillcolor="#fffbeb"];
+    Queue -> ForcedResume [label="queue redirected", style=dashed, color="#d97706"];
+    Metadata [label="Classify each Assessment / Quiz\nRead Questions, Time limit, Notes, and retake title\nKeep required / optional / unknown separate"];
+    AssessmentRules [label="ASSESSMENT CLASSIFICATION (first matching rule)\l1. Notes: optional until N more XP -> optional when N > 0; required at 0\l2. Notes: required / must take or complete -> required\l3. No Notes + sole queue card + complete details -> required\l4. Otherwise -> unknown\l\lRetake: title ends '(Retake)' or Notes say 'quiz retake'.\lComplete details: positive integer Questions and Time limit in minutes.\lA retake with optional/unknown status needs complete details to start.\l",
+      shape=note, fillcolor="#eff6ff", fontsize=11,
+      URL="../../scripts/question_capture/core.py"];
+    History [label="Read local history + MA completed Lesson/Review outcomes\nExclude all task IDs already saved, captured, or observed completed\nUpdate pending perfect retakes from negative-XP Lesson/Review outcomes"];
+    TopicRules [label="LESSON TOPIC EXCLUSIONS\lNormally exclude a topic with a successfully captured Lesson.\lAllow it again when a pending perfect Lesson retake exists, OR\la verified fresh assignment has a new task ID, zero progress,\land matching card ID, Start ID, and canonical Lesson URL.\lKeep other old tasks for that topic excluded.\lCompleted Lesson topics do not exclude Reviews or Multisteps.\l",
+      shape=note, fillcolor="#eff6ff", fontsize=11];
+    Eligible [label="Identify fresh candidates\nSupported type and matching Start URL; not in progress\nTask ID not excluded; Lesson topic allowed\nRetain nonoptional Assessments that fail selection for inspection",
+      tooltip="Tests used for the final inspection branch are fresh and uncaptured, but need not be capture_supported."];
+    Begin -> Queue -> Metadata -> History -> Eligible;
+    Boundary -> Begin [style=dotted, constraint=false];
+    AssessmentRules -> Metadata [style=dotted];
+    TopicRules -> Eligible [style=dotted];
+    { rank=same; Begin; Boundary; }
+    { rank=same; Metadata; AssessmentRules; }
+    { rank=same; Eligible; TopicRules; }
+  }
+
+  subgraph cluster_choice {
+    label="Choose the first matching branch - stop evaluating once selected";
+    fontname="DejaVu Sans"; fontsize=17; color="#cbd5e1"; style=rounded;
+    D1 [label="1. Eligible Diagnostic?", shape=diamond, fillcolor="#eef2ff"];
+    P1 [label="Select first Diagnostic in queue\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
+    D2 [label="2. Eligible required\nAssessment?", shape=diamond, fillcolor="#eef2ff"];
+    P2 [label="Select first required Assessment\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
+    D3 [label="3. Eligible Assessment\nquiz retake?", shape=diamond, fillcolor="#eef2ff"];
+    P3 [label="Select first eligible quiz retake\nRequired, or complete Questions/Time limit\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
+    D4 [label="4. Eligible Lesson or Review\nwith a finite priority score?", shape=diamond, fillcolor="#eef2ff"];
+    P4 [label="Select highest-scoring Lesson or Review\nTies: smallest MA topic ID, then Lesson over Review\nIf still tied, first in queue\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
+    D5 [label="5. Any eligible Review?", shape=diamond, fillcolor="#eef2ff"];
+    P5 [label="Select first Review in queue\nFallback when no Lesson/Review was ranked\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
+    D6 [label="6. Any eligible Lesson,\nReview, or Multistep?", shape=diamond, fillcolor="#eef2ff"];
+    P6 [label="Select first remaining activity in queue\nMultisteps enter here; they are not priority-ranked\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
+    D7 [label="7. Eligible optional Assessment\nwith complete details?", shape=diamond, fillcolor="#eef2ff"];
+    P7 [label="Select first optional Assessment as fallback\nRecord excluded task IDs for the Start recheck\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
+    D8 [label="8. Any remaining fresh, uncaptured\nnonoptional Assessment?", shape=diamond, fillcolor="#eef2ff"];
+    Inspect [label="Flag Assessment for eligibility/layout inspection\nIncludes unknown requirement or unsupported required test\nSave selection; report in dry-run, otherwise defer before Start",
+      fillcolor="#fffbeb"];
+    None [label="No fresh activity selected\nContinue at B", shape=oval, fillcolor="#fffbeb"];
+    Eligible -> D1;
+    D1 -> D2 -> D3 -> D4 -> D5 -> D6 -> D7 -> D8 [label="no", weight=10];
+    D1 -> P1 [label="yes", color="#059669"];
+    D2 -> P2 [label="yes", color="#059669"];
+    D3 -> P3 [label="yes", color="#059669"];
+    D4 -> P4 [label="yes", color="#059669"];
+    D5 -> P5 [label="yes", color="#059669"];
+    D6 -> P6 [label="yes", color="#059669"];
+    D7 -> P7 [label="yes", color="#059669"];
+    D8 -> Inspect [label="yes", color="#d97706"];
+    D8 -> None [label="no"];
+    { rank=same; D1; P1; } { rank=same; D2; P2; }
+    { rank=same; D3; P3; } { rank=same; D4; P4; }
+    { rank=same; D5; P5; } { rank=same; D6; P6; }
+    { rank=same; D7; P7; } { rank=same; D8; Inspect; }
+  }
+
+  Scores [label="HOW LESSON / REVIEW SCORES ARE CALCULATED\lRead-only inputs from math: learner targets, incomplete assignments,\learliest due dates, topic/next and KP key-prerequisite links.\lUse this capture account's latest saved course-progress snapshot.\l\lOnly self-directed mode contributes targets and assignments.\lFor each target, walk backward through prerequisites; stop expanding\la topic when all its observed progress bands are nonzero.\l\lEvery queued Lesson/Review topic starts at score 1.\lIf it supports targets, add:\l  1000c/(1+c) + 100/(1+r) + 100/(1+d)\lIf a supporting target has a due date, also add:\l  250/(1+h/24)\lc = number of supported targets\lr = smallest remaining unready-topic count among those target walks\ld = shortest distance to a supported target\lh = whole hours until earliest due date, floored at zero\l\lThese computed scores replace stored task scores for queued topics.\lNo effective self-directed targets (including assignments) -> score 1.\lThen the topic-ID tie-break determines the Lesson/Review choice.\lNormal queued Lessons/Reviews therefore have scores; unranked\lbranches are fallbacks. No learner-state writes or eligibility simulation.\l",
+    shape=note, fillcolor="#eff6ff", fontsize=11,
+    URL="../../scripts/question_capture/priorities.py"];
+  Scores -> D4 [style=dotted, constraint=false];
+  { rank=same; Scores; D4; P4; }
+
+  subgraph cluster_selected {
+    label="A. Finish the selected result and check it before Start";
+    fontname="DejaVu Sans"; fontsize=17; color="#cbd5e1"; style=rounded;
+    Selected [label="A - an activity was selected\nAttach all_correct for a matching pending Lesson/Review perfect retake\nThis changes its answer policy, not its selection priority\nSave selected task, reason, priority, exclusions, and queue evidence",
+      fillcolor="#dbeafe"];
+    Dry [label="Dry-run?", shape=diamond, fillcolor="#eef2ff"];
+    Report [label="Report selection and exit\nDo not start an activity", shape=oval, fillcolor="#eff6ff"];
+    Test [label="Selected activity\nis an Assessment?", shape=diamond, fillcolor="#eef2ff"];
+    Recheck [label="Read this Assessment's live details again\nRe-evaluate required / retake / optional status\nFor optional fallback, recheck that no fresh supported\nLesson/Review/Multistep or other eligible Assessment exists\nHonor the saved excluded task IDs"];
+    Allowed [label="Still allowed to start?", shape=diamond, fillcolor="#eef2ff"];
+    Defer [label="Defer before Start\nSave the reason for eligibility/layout recovery",
+      shape=oval, fillcolor="#fffbeb"];
+    Handoff [label="Start the selected activity\nHand off to its capture workflow", shape=oval,
+      fillcolor="#111827", fontcolor=white, fontsize=14];
+    Selected -> Dry;
+    Dry -> Report [label="yes"];
+    Dry -> Test [label="no"];
+    Test -> Recheck [label="yes"];
+    Test -> Handoff [label="no"];
+    Recheck -> Allowed;
+    Allowed -> Handoff [label="yes", color="#059669"];
+    Allowed -> Defer [label="no", color="#d97706"];
+    { rank=same; Dry; Report; }
+    { rank=same; Handoff; Defer; }
+  }
+
+  subgraph cluster_none {
+    label="B. No fresh activity could be selected";
+    fontname="DejaVu Sans"; fontsize=17; color="#cbd5e1"; style=rounded;
+    Recovery [label="B - check saved work\nIf eligible, inspect one outstanding capture failure,\nthen refresh the queue and repeat selection once\nIf a candidate appears, continue at A",
+      fillcolor="#fffbeb"];
+    Saved [label="Still no candidate: queued unfinished\ncapture eligible for resumption?", shape=diamond, fillcolor="#eef2ff"];
+    Resume [label="Resume first eligible saved capture in queue order\nSkip already-resumed, completed, superseded, or deferred failures\nReuse its saved task identity and checkpoint",
+      shape=oval, fillcolor="#ecfdf5"];
+    Nonempty [label="Queue nonempty\nand not dry-run?", shape=diamond, fillcolor="#eef2ff"];
+    Wait [label="Record waiting state; back off\nRefresh queue and repeat selection\nWork remains, but cannot start yet",
+      shape=oval, fillcolor="#fffbeb"];
+    Finish [label="End this selection loop\nQueue empty, or dry-run found no candidate",
+      shape=oval, fillcolor="#eff6ff"];
+    Recovery -> Saved [label="still no candidate"];
+    Saved -> Resume [label="yes"];
+    Saved -> Nonempty [label="no"];
+    Nonempty -> Wait [label="yes"];
+    Nonempty -> Finish [label="no"];
+    { rank=same; Saved; Resume; }
+    { rank=same; Wait; Finish; }
+  }
+  None -> Recovery [style=dashed, color="#d97706"];
+  None -> Selected [style=invis, weight=4];
+  { rank=same; Selected; Recovery; }
+
+  Legend [label="READING THE CHART\nSolid arrows: decision flow; dotted: supporting inputs\nGreen: selected activity; amber: inspect / recover / wait\nA and B: continue at the matching section below\nQueue order means Math Academy's displayed card order",
+    shape=note, fillcolor=white, color="#cbd5e1", fontsize=11];
+  Begin -> Legend [style=invis];
+}
