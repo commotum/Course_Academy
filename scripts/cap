@@ -1,2 +1,4 @@
 #!/bin/bash
-exec /home/jake/Developer/Course_Academy/scripts/ma-workers start --attach "$@"
+set -e
+REPO_DIR="$(cd -- "$(dirname -- "$(readlink -f -- "$0")")/.." && pwd)"
+exec "$REPO_DIR/scripts/ma-workers" start --attach "$@"

@@ -4,7 +4,19 @@ The replacement capture system implements the six stages in [the design](../plan
 
 ## Run
 
-From `/home/jake/Developer/Course_Academy`, use the existing Python environment:
+Run `cap` to start or resume the new capture in tmux and open its dashboard. It uses the `ma-capture` session, with a four-account overview above the Mathematical Methods log and one log window per course. Repeating `cap` reconnects without duplicating running workers. The old `ma` session is left in place.
+
+- `cap linear` starts or resumes just Linear Algebra.
+- `Ctrl-b`, then `d` detaches; capture continues.
+- `Ctrl-b`, then `n` or `p` switches course windows.
+- `scripts/ma-workers attach` opens the dashboard without starting workers.
+- `scripts/ma-workers status` shows current activity, today's XP/completions, and pending imports from the new capture records.
+- `scripts/ma-workers stop` requests a checkpoint stop for all four accounts; add an account name to stop just that one.
+- `scripts/ma-workers start` starts workers without attaching.
+
+The dashboard reads local capture records. Old capture totals are not merged into it. Console logs are saved in `.local/capture/<account>/console.log`. Workers restart from their checkpoints after an unexpected exit; a requested stop leaves them stopped.
+
+For direct commands, from `/home/jake/Developer/Course_Academy`, use the existing Python environment:
 
 ```bash
 /home/jake/Developer/MA/.venv/bin/python capture/scripts check --account linear
@@ -37,7 +49,7 @@ New environments need Python 3.10+, [requirements.txt](requirements.txt), Playwr
 | Post-Activity Processing | `post_activity.py` | Save dashboard/progress observations, count XP once, and retain retake instructions. |
 | Database Preparation | `database/prepare.py`, `images.py`, `difficulty.py` | Resolve identities, prepare content and relationships, localize images, and calculate lesson difficulty. |
 | Database Commit | `database/commit.py`, `client.py`, `pipeline.py` | Preview, submit, recover exact requests, and verify receipts and content. |
-| Continuous operation | `runner.py`, `outbox.py`, `fleet.py`, `storage.py` | Pin the current activity, save checkpoints, recover failures, and serialize imports across accounts. |
+| Continuous operation | `runner.py`, `outbox.py`, `fleet.py`, `terminal.py`, `monitor.py`, `storage.py` | Pin the current activity, save checkpoints, recover failures, and serialize imports across accounts. |
 
 The implementation has no runtime dependency on `scripts/question_capture`.
 
