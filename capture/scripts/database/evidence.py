@@ -40,6 +40,8 @@ def image_answer(field: dict) -> str | None:
 def evidence_value(field: dict, question: dict) -> str:
     evidence = field.get('evidence') or field.get('correct_evidence') or {}
     value = field.get('correct_value')
+    if not isinstance(evidence, dict):
+        raise UnsupportedContent('Correct-answer evidence must be a structured source record')
     kind = evidence.get('kind')
     if kind in ('ma_answer', 'ma_correct_grade'):
         if not evidence.get('source_file') or evidence.get('value') != value:
@@ -53,6 +55,17 @@ def evidence_value(field: dict, question: dict) -> str:
         if (evidence.get('matches_worked_solution') is True and evidence.get('value') == value
                 and evidence.get('source_file') and isinstance(quote, str) and quote.strip()
                 and quote in solution):
+            choices = field.get('choices', [])
+            if choices and not any(choice.get('value') == value for choice in choices):
+                # A solver may repair malformed source TeX. An exact complete
+                # source quote can identify the original choice without treating
+                # the solver's changed spelling as a Math Academy answer value.
+                quoted = [choice for choice in choices if choice.get('value') == quote and
+                          (not field.get('correct_type') or choice.get('type') == field['correct_type'])]
+                if len(quoted) == 1:
+                    field['evidence'] = {**evidence, 'value': quoted[0]['value'], 'agent_value': value,
+                                         'source_choice_quote': True}
+                    return quoted[0]['value']
             return value
         raise UnsupportedContent('Extracted answer has no checked quotation from the worked solution')
     inferred = image_answer(field)

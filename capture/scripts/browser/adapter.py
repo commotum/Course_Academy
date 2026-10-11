@@ -240,7 +240,16 @@ class MathAcademyBrowser:
 
     def _view(self):
         self._check()
-        return self.page.evaluate(VIEW)
+        view = self.page.evaluate(VIEW)
+        if view['kind'] == 'unknown' and self.activity:
+            # A final review answer can return directly to the queue without a
+            # finalScreen. Only this pinned task's completed source card proves
+            # completion; other completed activities are irrelevant.
+            completed = parse_dashboard(self.page.content(), self.activity['task_id'])['activity']
+            if completed:
+                return {'kind': 'complete', 'selector': '#task-' + str(self.activity['task_id']),
+                        'key': 'complete', 'accepted': True}
+        return view
 
     def _remaining(self):
         value = self.page.locator("#timeRemaining, #timer, .testTimer, #testTimer, #remainingTime").first

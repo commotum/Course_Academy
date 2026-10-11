@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import json
 import tempfile
+import traceback
 from pathlib import Path
 from .client import EDBClient, StaleBasis
 from .commit import Committer, VerificationError
@@ -166,5 +167,5 @@ class DatabasePipeline:
             result = {'status': 'pending', 'reason': str(error), 'error_type': type(error).__name__,
                       'unknown_or_unverified_commit': bool(request),
                       'request_key': request.get('request_key') if request else None}
-            atomic_json(directory / 'pending.json', result)
+            atomic_json(directory / 'pending.json', {**result, 'traceback': traceback.format_exc()})
             return result

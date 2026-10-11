@@ -147,6 +147,19 @@ class CaptureTests(unittest.TestCase):
         self.assertTrue((self.directory / 'capture-complete.json').exists())
         self.assertEqual(content['base_xp'], 13)
 
+    def test_last_review_response_can_complete_without_live_feedback(self):
+        class DirectCompletionBrowser(Browser):
+            def respond(self, observation, responses, directory):
+                super().respond(observation, responses, directory)
+                self.index += 1
+                self.accepted = False
+        content = self.run_capture(DirectCompletionBrowser([question()]))
+        presentation = content['attempts'][0]
+        self.assertFalse(presentation.get('accepted', False))
+        self.assertEqual(presentation['feedback']['grade'], 'Correct')
+        self.assertEqual(content['questions'][0]['answer_fields'][0]['correct_value'], '2')
+        self.assertEqual(content['questions'][0]['answer_fields'][0]['evidence']['kind'], 'ma_correct_grade')
+
     def test_unknown_response_outcome_does_not_repeat_accepted_answer(self):
         browser = Browser([question()])
         browser.fail_response_after_acceptance = True

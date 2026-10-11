@@ -241,7 +241,7 @@ class Preparation:
                     for field in repaired.get('answer_fields', repaired.get('fields', [])):
                         answer = answers.get(field.get('key'), {})
                         evidence = answer.get('ma_evidence') or answer.get('evidence')
-                        if evidence and answer.get('ma_value') is not None:
+                        if isinstance(evidence, dict) and evidence and answer.get('ma_value') is not None:
                             field.update(correct_value=answer['ma_value'], evidence=evidence)
                     try:
                         q = authoritative_question(repaired, example=example)

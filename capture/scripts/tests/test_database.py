@@ -54,6 +54,27 @@ class EvidenceTests(unittest.TestCase):
         q['answer_fields'][0]['evidence']['solution_quote'] = 'x=2'
         with self.assertRaises(UnsupportedContent): authoritative_question(q)
 
+    def test_exact_source_choice_quote_preserves_original_tex(self):
+        source=r'{\begin{aligned}x=-2 \\ z=-4y+8\end{aligned}'
+        agent_value=source+'}'
+        q=question();q['worked_solution']='The tangent is $'+source+'$.'
+        q['answer_fields']=[{'key':'selection','type':'radio','choices':[{'type':'math','value':source},{'type':'math','value':'wrong'}],
+            'correct_value':agent_value,'evidence':{'kind':'worked_solution','value':agent_value,
+            'source_file':'solution.html','solution_quote':source,'matches_worked_solution':True}}]
+        accepted=authoritative_question(q)
+        field=accepted['answer_fields'][0]
+        self.assertEqual(field['correct_value'],source)
+        self.assertEqual(field['evidence']['value'],source)
+        self.assertEqual(field['evidence']['agent_value'],agent_value)
+        self.assertEqual(q['answer_fields'][0]['correct_value'],agent_value)
+        self.assertEqual(authoritative_question(accepted)['answer_fields'][0]['correct_value'],source)
+        q['answer_fields'][0]['evidence']['solution_quote']='The tangent is $'+source+'$.'
+        with self.assertRaises(UnsupportedContent):authoritative_question(q)
+
+    def test_plain_agent_evidence_is_not_a_structured_source_record(self):
+        q=question();q['answer_fields'][0]['evidence']='The answer is 2.'
+        with self.assertRaises(UnsupportedContent):authoritative_question(q)
+
     def test_radio_filename_mixed_choices(self):
         field = {'type':'radio','choices':[{'type':'image','value':f'assets/246-a-{i}.png'} for i in (3,1,2)] + [{'type':'text','value':'DNE'}]}
         self.assertEqual(image_answer(field),'assets/246-a-1.png')
@@ -163,6 +184,14 @@ class PrepareTests(unittest.TestCase):
         result=Preparation(source_snapshot()).prepare({'questions':[q],'judgments':[{'question_id':'q-11','status':'unavailable','reasoning':'No source fields'}]})
         self.assertFalse(result['batches'])
         self.assertTrue(result['omissions'][0]['final'])
+
+    def test_saved_plain_judgment_cannot_overwrite_structured_source_evidence(self):
+        q=question();q['answer_fields'][0]['choices']=[{'type':'math','value':'3'}]
+        prepared=Preparation(source_snapshot()).prepare({'questions':[q],'judgments':[{
+            'question_id':'q-11','status':'confirmed','answers':[{'key':'x','ma_value':'3','ma_evidence':'My reasoning says 3'}]}]})
+        self.assertFalse(prepared['batches'])
+        self.assertTrue(prepared['omissions'][0]['final'])
+        self.assertIn('typed source choice',prepared['omissions'][0]['reason'])
 
     def test_unknown_question_judgment_required(self):
         q=question(); q['answer_fields']=[]
@@ -419,6 +448,9 @@ class PipelineTests(unittest.TestCase):
             pipeline=DatabasePipeline(cfg,threading.Event(),client=client)
             first=pipeline.process(capture);self.assertEqual(first['status'],'pending')
             self.assertTrue(first['unknown_or_unverified_commit'])
+            diagnostic=json.loads((capture/'database/pending.json').read_text())
+            self.assertIn('TimeoutError: lost committed response',diagnostic['traceback'])
+            self.assertNotIn('traceback',first)
             result=pipeline.process(capture);self.assertEqual(result['status'],'verified',result)
             calls=[c[1] for c in client.calls if c[0]=='transact']
             self.assertEqual(calls[0],calls[1]);self.assertEqual(client.t,2)

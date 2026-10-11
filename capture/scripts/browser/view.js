@@ -88,5 +88,9 @@
   return {kind:'unknown',selector:'body',key:'unknown',
     reload_required:!!reload && /Reload Required/.test(reload.textContent),
     buttons:[...document.querySelectorAll('button,a,[role="button"],.button')].filter(visible)
+      // Navigation links are not activity recovery actions. Keep real buttons
+      // and local continuation anchors, including MA's anchor-styled buttons.
+      .filter(n => n.localName !== 'a' || !n.getAttribute('href') ||
+        n.getAttribute('href') === '#' || /^javascript:/i.test(n.getAttribute('href')))
       .map(n=>({selector:identifier(n),text:n.textContent.trim()})).filter(n=>n.text)};
 }

@@ -317,6 +317,25 @@ class OfflineBrowserTests(unittest.TestCase):
         self.assertTrue(Path(first).exists())
         self.assertEqual(len(list((self.directory / "post-activity").glob("*/observations.json"))), 2)
 
+    def test_review_completed_dashboard_card_finishes_only_the_pinned_activity(self):
+        self.page.set_content((FIXTURES / 'review-autocompleted-dashboard.html').read_text())
+        self.adapter.activity = {'task_id': '14108723', 'kind': 'review'}
+        observation = self.adapter.observe(self.directory)
+        self.assertEqual(observation['kind'], 'complete')
+        self.assertEqual(observation['completion']['task_id'], '14108723')
+        self.assertEqual((observation['completion']['earned_xp'], observation['completion']['base_xp']), (2, 4))
+        self.assertTrue(self.adapter.state['completed'])
+        self.adapter.activity = {'task_id': '14108724', 'kind': 'review'}
+        self.assertEqual(self.adapter._view()['kind'], 'unknown')
+
+    def test_unknown_page_offers_continuation_controls_without_navigation_links(self):
+        self.page.set_content('<a id="topic" href="/topics/3852">Rank–Nullity</a>'
+            '<a id="course" href="/courses/76">Linear Algebra</a>'
+            '<a id="question" href="/learn?taskId=99">Question details</a>'
+            '<a id="continue" class="button" href="#">Continue</a><button id="retry">Retry</button>')
+        buttons = self.adapter._view()['buttons']
+        self.assertEqual({button['selector'] for button in buttons}, {'#continue', '#retry'})
+
     def test_unknown_page_agent_can_choose_a_current_idless_continue(self):
         self.page.set_content('''<div><button onclick="this.remove();document.getElementById('finalScreen').style.display='block';window.recoveryClicks=(window.recoveryClicks||0)+1">Continue</button></div><div id="finalScreen" style="display:none">Done</div>''')
         observation = self.adapter.observe(self.directory)

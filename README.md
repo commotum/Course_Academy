@@ -1,15 +1,36 @@
 # Course Academy
 
-Run the local study app against the existing EDB database and writer:
+Run the local study app against the `math` EDB database stored at
+`/media/jake/SSD/EDB/math`:
 
 ```bash
 python3 scripts/serve_graph_explorer.py
 ```
 
+The app reads PostgreSQL through `/tmp/edb-math` on port `55432` (database
+`math`, role `edb_peer`) and writes through `/tmp/edb-math/writer.sock`.
+Lesson image paths such as `images/ab/…png` resolve inside the database's
+image library. `EDB_POSTGRES_URL`, `EDB_ENDPOINT`, `EDB_DATABASE`, and
+`EDB_MATH_ROOT` override these defaults; `EDB_ROOT` selects the EDB source/build
+directory. Pending request journals are kept separately for each database.
+For a learner without a selected course, choose one from the Study page's
+profile settings to populate the lesson queue.
+
 The local installation also runs in the background at startup through the user
 service `course-academy.service`. It starts PostgreSQL and the EDB writer first.
 It does not open a browser. The service definitions are in
 [scripts/systemd](scripts/systemd/).
+The math PostgreSQL and writer supervisors reuse already running math processes,
+including those used by capture jobs. The legacy PostgreSQL unit remains separate.
+To install or update the linked user services:
+
+```bash
+systemctl --user link "$PWD/scripts/systemd/course-academy-math-postgres.service" \
+  "$PWD/scripts/systemd/course-academy-writer.service" \
+  "$PWD/scripts/systemd/course-academy.service"
+systemctl --user daemon-reload
+systemctl --user restart course-academy-writer.service course-academy.service
+```
 
 ```bash
 systemctl --user status course-academy.service
