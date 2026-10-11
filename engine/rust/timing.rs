@@ -1,4 +1,4 @@
-//! Task clocks are derived from added status datoms and their transaction times.
+//! Task clocks use status history, with saved duration checkpoints for imports.
 use crate::{
     Result,
     schema::{EntitySnapshot, parse_instant},
@@ -111,16 +111,38 @@ pub fn status_at(snapshot: &EntitySnapshot, entity: u64, attribute: &str) -> Res
 }
 
 pub fn task_started(snapshot: &EntitySnapshot, task: u64) -> Result<DateTime<Utc>> {
-    history(snapshot, task, "learner-task/status")?
+    let events = history(snapshot, task, "learner-task/status")?;
+    if matches!(
+        events[0].1.as_str(),
+        "learner-task.status/paused"
+            | "learner-task.status/completed"
+            | "learner-task.status/failed"
+    ) {
+        // An imported task has no original start in this database. Its first
+        // recorded status is the earliest local bound, even after resuming.
+        saved_elapsed(snapshot, task, "learner-task/elapsed-seconds")?;
+        return Ok(events[0].0);
+    }
+    events
         .into_iter()
         .find(|(_, s)| s == "learner-task.status/started")
         .map(|(at, _)| at)
         .ok_or("task has no recorded start".into())
 }
 
+fn saved_elapsed(snapshot: &EntitySnapshot, entity: u64, attribute: &str) -> Result<f64> {
+    snapshot
+        .entity(entity)?
+        .get(attribute)
+        .and_then(serde_json::Value::as_f64)
+        .filter(|seconds| seconds.is_finite() && *seconds >= 0.0)
+        .ok_or_else(|| format!("imported timing requires finite nonnegative {attribute}"))
+}
+
 pub fn elapsed(snapshot: &EntitySnapshot, item: u64, at: DateTime<Utc>) -> Result<f64> {
     let events = history(snapshot, item, "task-item/status")?;
-    if events[0].1 != "task-item.status/started" {
+    let imported = events[0].1 != "task-item.status/started";
+    if imported && events[0].1 != "task-item.status/paused" && !terminal(&events[0].1) {
         return Err("item timing requires its original start".into());
     }
     let mut total = 0.0;
@@ -145,6 +167,12 @@ pub fn elapsed(snapshot: &EntitySnapshot, item: u64, at: DateTime<Utc>) -> Resul
             }
         }
         previous = Some((time, current));
+    }
+    if imported {
+        // Every timing transition saves the cumulative duration alongside its
+        // new status. The current checkpoint already includes closed intervals
+        // since import; adding those intervals again would double-count them.
+        total = saved_elapsed(snapshot, item, "task-item/elapsed-seconds")?;
     }
     if let Some((before, status)) = previous {
         if status == "task-item.status/started" {
@@ -175,4 +203,143 @@ pub fn active_item(snapshot: &EntitySnapshot, learner: u64) -> Result<Option<u64
         }
     }
     Ok(active)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::schema::{instant_value, keyword};
+    use serde_json::{Value, json};
+
+    fn at(seconds: i64) -> DateTime<Utc> {
+        DateTime::from_timestamp(seconds, 0).unwrap()
+    }
+
+    fn captured(
+        attribute: &str,
+        events: &[(&str, i64)],
+        checkpoint: Option<f64>,
+    ) -> EntitySnapshot {
+        let kind = attribute.split('/').next().unwrap();
+        let prefix = attribute.replace('/', ".");
+        let name = |state: &str| format!("{prefix}/{state}");
+        let mut entities = serde_json::Map::new();
+        let mut entity = serde_json::Map::new();
+        entity.insert(format!("{kind}/id"), json!("imported"));
+        entity.insert(attribute.into(), keyword(&name(events.last().unwrap().0)));
+        if let Some(seconds) = checkpoint {
+            entity.insert(format!("{kind}/elapsed-seconds"), json!(seconds));
+        }
+        entities.insert("1".into(), Value::Object(entity));
+        let mut history = vec![];
+        for (index, (state, seconds)) in events.iter().enumerate() {
+            let ident = name(state);
+            // A repeated status refers to the same enum entity.
+            let enum_id = events.iter().position(|(s, _)| s == state).unwrap() + 10;
+            entities.insert(enum_id.to_string(), json!({"db/ident":keyword(&ident)}));
+            history.push(
+                json!({"entity":1,"attribute":attribute,"value":keyword(&ident),
+                "t":index+1,"at":instant_value(at(*seconds))}),
+            );
+        }
+        EntitySnapshot::from_json(
+            &json!({"entities":entities,"basis_t":events.len(),"status_history":history}),
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn imported_durations_use_the_latest_checkpoint_once() {
+        let paused = captured("task-item/status", &[("paused", 10)], Some(38.789));
+        assert_eq!(elapsed(&paused, 1, at(100)).unwrap(), 38.789);
+        let resumed = captured(
+            "task-item/status",
+            &[("paused", 10), ("started", 20)],
+            Some(38.789),
+        );
+        assert_eq!(elapsed(&resumed, 1, at(23)).unwrap(), 41.789);
+        let paused_again = captured(
+            "task-item/status",
+            &[("paused", 10), ("started", 20), ("paused", 23)],
+            Some(41.789),
+        );
+        assert_eq!(elapsed(&paused_again, 1, at(100)).unwrap(), 41.789);
+        let completed = captured(
+            "task-item/status",
+            &[
+                ("paused", 10),
+                ("started", 20),
+                ("paused", 23),
+                ("started", 30),
+                ("correct", 35),
+            ],
+            Some(46.789),
+        );
+        assert_eq!(elapsed(&completed, 1, at(100)).unwrap(), 46.789);
+        for state in ["completed", "correct", "incorrect", "skipped"] {
+            let terminal = captured("task-item/status", &[(state, 10)], Some(7.25));
+            assert_eq!(elapsed(&terminal, 1, at(100)).unwrap(), 7.25);
+        }
+    }
+
+    #[test]
+    fn imported_timing_still_requires_valid_checkpoints_and_transitions() {
+        for checkpoint in [None, Some(-1.0)] {
+            let snapshot = captured("task-item/status", &[("paused", 10)], checkpoint);
+            assert!(
+                elapsed(&snapshot, 1, at(20))
+                    .unwrap_err()
+                    .contains("elapsed-seconds")
+            );
+        }
+        for states in [
+            vec![("paused", 10), ("correct", 20)],
+            vec![("correct", 10), ("started", 20)],
+        ] {
+            let snapshot = captured("task-item/status", &states, Some(5.0));
+            assert!(
+                elapsed(&snapshot, 1, at(30))
+                    .unwrap_err()
+                    .contains("transition")
+            );
+        }
+        let snapshot = captured("task-item/status", &[("paused", 10)], Some(5.0));
+        assert!(
+            elapsed(&snapshot, 1, at(9))
+                .unwrap_err()
+                .contains("predates")
+        );
+    }
+
+    #[test]
+    fn native_timing_remains_derived_from_full_history() {
+        let snapshot = captured(
+            "task-item/status",
+            &[("started", 10), ("paused", 15), ("started", 20)],
+            Some(100.0),
+        );
+        assert_eq!(elapsed(&snapshot, 1, at(23)).unwrap(), 8.0);
+    }
+
+    #[test]
+    fn imported_task_start_bound_remains_its_first_recorded_status() {
+        for state in ["paused", "completed", "failed"] {
+            let snapshot = captured("learner-task/status", &[(state, 10)], Some(38.789));
+            assert_eq!(task_started(&snapshot, 1).unwrap(), at(10));
+        }
+        let resumed = captured(
+            "learner-task/status",
+            &[("paused", 10), ("started", 20)],
+            Some(38.789),
+        );
+        assert_eq!(task_started(&resumed, 1).unwrap(), at(10));
+        let native = captured(
+            "learner-task/status",
+            &[("unlocked", 10), ("started", 20)],
+            Some(0.0),
+        );
+        assert_eq!(task_started(&native, 1).unwrap(), at(20));
+        let missing = captured("learner-task/status", &[("paused", 10)], None);
+        assert!(task_started(&missing, 1).is_err());
+    }
 }

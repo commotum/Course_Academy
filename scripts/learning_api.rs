@@ -22,6 +22,22 @@ use std::{
     time::{Duration, Instant},
 };
 type Result<T> = std::result::Result<T, Box<dyn Error>>;
+const ENGINE_SOURCE: &str = "application/ca-engine";
+
+fn engine_source() -> EntityRef {
+    EntityRef::Ident(Keyword::new("application", "ca-engine"))
+}
+
+fn saved_request_source(saved: &Json, learner: u64) -> Result<EntityRef> {
+    match saved.get("source") {
+        Some(Json::String(source)) if source == ENGINE_SOURCE => Ok(engine_source()),
+        // The request source participates in exact-retry identity. Preserve
+        // the original source for journals created before engine attribution.
+        None => Ok(EntityRef::Id(learner)),
+        _ => Err("Saved request has an unsupported transaction source".into()),
+    }
+}
+
 fn kw(s: &str) -> Json {
     schema::keyword(s)
 }
@@ -1505,7 +1521,7 @@ impl Application {
             let planning = Instant::now();
             let (forms, result) = mutate(&s, l, action, &body, at)?;
             trace("plan", planning);
-            let saved = json!({"input":body,"edn":schema::edn(&json!(forms))?,"basis":s.basis_t,"at":at.timestamp_millis(),"result":result,"empty":forms.is_empty()});
+            let saved = json!({"input":body,"edn":schema::edn(&json!(forms))?,"basis":s.basis_t,"at":at.timestamp_millis(),"result":result,"empty":forms.is_empty(),"source":ENGINE_SOURCE});
             std::fs::create_dir_all(journal.parent().unwrap())?;
             let staging = journal.with_extension("tmp");
             let mut file = std::fs::File::create(&staging)?;
@@ -1519,7 +1535,7 @@ impl Application {
             let tx = TransactionRequest::from_edn(
                 format!("learning-{learner}-{request}"),
                 saved["edn"].as_str().unwrap(),
-                EntityRef::Id(l),
+                saved_request_source(&saved, l)?,
             )?
             .comparing_basis(saved["basis"].as_u64().unwrap())
             .with_tx_instant(saved["at"].as_i64().unwrap());
@@ -1662,6 +1678,19 @@ fn main() {
 #[cfg(test)]
 mod lesson_progress_tests {
     use super::*;
+
+    #[test]
+    fn request_journals_preserve_their_source_across_exact_retries() {
+        assert!(matches!(
+            saved_request_source(&json!({"source":ENGINE_SOURCE}), 42).unwrap(),
+            EntityRef::Ident(ident) if ident.qualified_name() == ENGINE_SOURCE
+        ));
+        assert!(matches!(
+            saved_request_source(&json!({"edn":"[]"}), 42).unwrap(),
+            EntityRef::Id(42)
+        ));
+        assert!(saved_request_source(&json!({"source":"person/other"}), 42).is_err());
+    }
 
     #[test]
     fn intermediate_steps_do_not_replan_the_entire_study_queue() {
@@ -2566,19 +2595,196 @@ mod study_queue_tests {
 mod integration {
     use super::*;
 
+    #[test]
+    #[ignore = "reads live math and previews LEARNING_HISTORY_MIGRATION_TX without durable writes"]
+    fn preview_history_migration() -> Result<()> {
+        let transaction = std::fs::read_to_string(std::env::var("LEARNING_HISTORY_MIGRATION_TX")?)?;
+        let config = if std::env::var_os("EDB_POSTGRES_URL").is_some() {
+            postgres_config_from_env()?
+        } else {
+            edb_core::PostgresConnectionConfig::parse(
+                "host=/tmp/edb-math port=55432 dbname=math user=edb_peer sslmode=disable options='-c search_path=public'",
+            )?
+        };
+        let database = std::env::var("EDB_DATABASE").unwrap_or("math".into());
+        let conn = Connection::connect_configured(config, database, 256)?;
+        let base = conn.db();
+        let before = snapshot(&base)?;
+        let learner = before
+            .entities
+            .iter()
+            .find_map(|(&eid, record)| {
+                (record.get("learner/id").and_then(Json::as_str)
+                    == Some("59d5cf13-351c-4114-be19-4c3bb64ee051"))
+                .then_some(eid)
+            })
+            .ok_or("migration learner is unavailable")?;
+        let prior_tasks: BTreeSet<_> = before
+            .refs(learner, "learner/activity")?
+            .into_iter()
+            .collect();
+        let preview =
+            base.with_edn(&transaction, Utc::now().timestamp_millis(), engine_source())?;
+        let s = snapshot(&preview.db_after)?;
+        let tasks: Vec<_> = s
+            .refs(learner, "learner/activity")?
+            .into_iter()
+            .filter(|task| !prior_tasks.contains(task))
+            .collect();
+        assert_eq!(
+            tasks.len(),
+            10,
+            "migration must introduce the ten selected lesson tasks"
+        );
+        profile_json(&s, learner)?;
+        home(&s, learner)?;
+        let (mut completed, mut paused, mut answered, mut response_refs, mut rendered_responses) =
+            (0, 0, 0, 0, 0);
+        let at = Utc::now();
+        for task in tasks {
+            let activity = s.reference(task, "learner-task/activity")?;
+            assert_eq!(status(&s, activity, "activity/type")?, "lesson");
+            let state = status(&s, task, "learner-task/status")?;
+            match state.as_str() {
+                "completed" => completed += 1,
+                "paused" => paused += 1,
+                _ => {
+                    return Err(
+                        format!("migrated task {task} has unexpected status {state}").into(),
+                    );
+                }
+            }
+            let view = task_json(&s, learner, task).map_err(|error| {
+                format!(
+                    "render migrated task {task} ({}): {error}",
+                    text(&s, activity, "activity/title")
+                )
+            })?;
+            let chain = items(&s, task)?;
+            practice_state(&s, activity, &chain).map_err(|error| {
+                format!("migrated task {task} does not match its lesson definition: {error}")
+            })?;
+            assert_eq!(
+                view["history"]
+                    .as_array()
+                    .ok_or("task history missing")?
+                    .len()
+                    + 1,
+                chain.len()
+            );
+            let saved = s
+                .entity(task)?
+                .get("learner-task/elapsed-seconds")
+                .and_then(Json::as_f64)
+                .ok_or("migrated task has no saved elapsed time")?;
+            let mut item_total = 0.0;
+            for item in chain {
+                let elapsed = s
+                    .entity(item)?
+                    .get("task-item/elapsed-seconds")
+                    .and_then(Json::as_f64)
+                    .ok_or("migrated item has no saved elapsed time")?;
+                assert!(
+                    (timing::elapsed(&s, item, at)? - elapsed).abs() < 1e-6,
+                    "imported item {item} must retain its saved duration"
+                );
+                item_total += elapsed;
+                let responses = s.refs(item, "task-item/responses")?;
+                answered += usize::from(!responses.is_empty());
+                response_refs += responses.len();
+            }
+            assert!(
+                (saved - item_total).abs() < 1e-6,
+                "task {task} saved time must equal item totals"
+            );
+            assert!((timing::task_elapsed(&s, task, at)? - saved).abs() < 1e-6);
+            assert!(
+                (view["elapsedSeconds"]
+                    .as_f64()
+                    .ok_or("rendered duration missing")?
+                    - saved)
+                    .abs()
+                    < 1e-6
+            );
+            for step in view["history"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|entry| &entry["step"])
+                .chain(std::iter::once(&view["step"]))
+            {
+                rendered_responses += step["fields"]
+                    .as_array()
+                    .ok_or("rendered answer fields missing")?
+                    .iter()
+                    .filter(|field| field.get("response").is_some())
+                    .count();
+            }
+            if state == "paused" {
+                let resumed_at = Utc::now();
+                let (forms, _) = mutate(&s, learner, "resume", &json!({"taskId":task}), resumed_at)
+                    .map_err(|error| {
+                        format!(
+                            "resume migrated task {task} ({}): {error}",
+                            text(&s, activity, "activity/title")
+                        )
+                    })?;
+                if forms.is_empty() {
+                    eprintln!("Task {task} remains paused pending fresh practice questions");
+                } else {
+                    let resumed = preview.db_after.with_edn(
+                        &schema::edn(&json!(forms))?,
+                        resumed_at.timestamp_millis(),
+                        engine_source(),
+                    )?;
+                    let resumed_snapshot = snapshot(&resumed.db_after)?;
+                    assert_eq!(
+                        status(&resumed_snapshot, task, "learner-task/status")?,
+                        "started"
+                    );
+                    task_json(&resumed_snapshot, learner, task)
+                        .map_err(|error| format!("render resumed task {task}: {error}"))?;
+                }
+            }
+            eprintln!(
+                "Previewed {state} task {task}: {}",
+                text(&s, activity, "activity/title")
+            );
+        }
+        assert_eq!((completed, paused), (4, 6));
+        assert_eq!(
+            answered, 44,
+            "all saved answer submissions must be retained"
+        );
+        assert_eq!(
+            rendered_responses, response_refs,
+            "every saved response must be visible in task history"
+        );
+        eprintln!(
+            "Read-only migration preview: {completed} completed, {paused} paused, {answered} answered items, {rendered_responses} rendered field responses"
+        );
+        Ok(())
+    }
+
     fn commit(
         conn: &Connection,
         endpoint: &str,
-        source: u64,
         s: &EntitySnapshot,
         forms: Vec<Json>,
         key: &str,
         at: DateTime<Utc>,
     ) -> Result<EntitySnapshot> {
+        let source = s
+            .entities
+            .iter()
+            .find_map(|(&eid, record)| {
+                (record.get("db/ident") == Some(&kw(ENGINE_SOURCE))).then_some(eid)
+            })
+            .ok_or("application/ca-engine source is not registered")?;
         let tx = TransactionRequest::from_edn(
             key,
             schema::edn(&json!(forms))?.as_str(),
-            EntityRef::Id(source),
+            engine_source(),
         )?
         .comparing_basis(s.basis_t)
         .with_tx_instant(at.timestamp_millis());
@@ -2592,7 +2798,7 @@ mod integration {
         for report in [first.report?, second.report?] {
             assert!(
                 report.tx_data.iter().all(|datom| datom.source == source),
-                "every committed fact must retain the submitting learner's provenance"
+                "every committed fact must retain the application engine's provenance"
             );
         }
         snapshot(&conn.sync_to(first.basis_t, Duration::from_secs(10))?)
@@ -2631,7 +2837,6 @@ mod integration {
         let mut s = commit(
             &conn,
             &endpoint,
-            original,
             &source,
             forms,
             &format!("{id}-setup"),
@@ -2654,7 +2859,7 @@ mod integration {
                 !forms.is_empty(),
                 "available work needs pending task records"
             );
-            s = commit(&conn, &endpoint, l, &s, forms, &format!("{id}-queue"), at)?;
+            s = commit(&conn, &endpoint, &s, forms, &format!("{id}-queue"), at)?;
             let t = task_for(&s, l, activity)?.ok_or("queue did not create task")?;
             assert_eq!(status(&s, t, "learner-task/status")?, "unlocked");
             assert!(
@@ -2669,18 +2874,18 @@ mod integration {
             let at = Utc::now();
             let (forms, result) = mutate(&s, l, "start", &json!({"activityId":activity}), at)?;
             assert_eq!(result["taskId"].as_u64(), Some(t));
-            s = commit(&conn, &endpoint, l, &s, forms, &format!("{id}-start"), at)?;
+            s = commit(&conn, &endpoint, &s, forms, &format!("{id}-start"), at)?;
             let allocated_base = number(&s, t, "learner-task/xp-base");
             assert_eq!(allocated_base, base_xp::activity_base(&s, activity)? as f64);
             let first = *items(&s, t)?.last().unwrap();
             let at = Utc::now();
             let (forms, _) = mutate(&s, l, "pause", &json!({"taskId":t}), at)?;
-            s = commit(&conn, &endpoint, l, &s, forms, &format!("{id}-pause"), at)?;
+            s = commit(&conn, &endpoint, &s, forms, &format!("{id}-pause"), at)?;
             let paused = number(&s, first, "task-item/elapsed-seconds");
             std::thread::sleep(Duration::from_millis(25));
             let at = Utc::now();
             let (forms, _) = mutate(&s, l, "resume", &json!({"taskId":t}), at)?;
-            s = commit(&conn, &endpoint, l, &s, forms, &format!("{id}-resume"), at)?;
+            s = commit(&conn, &endpoint, &s, forms, &format!("{id}-resume"), at)?;
             assert_eq!(
                 number(&s, first, "task-item/elapsed-seconds"),
                 paused,
@@ -2742,15 +2947,7 @@ mod integration {
                     let at = Utc::now();
                     let body = json!({"taskId":t,"itemId":i,"responses":answers});
                     let (forms, _) = mutate(&s, l, "answer", &body, at)?;
-                    s = commit(
-                        &conn,
-                        &endpoint,
-                        l,
-                        &s,
-                        forms,
-                        &format!("{id}-answer-{n}"),
-                        at,
-                    )?;
+                    s = commit(&conn, &endpoint, &s, forms, &format!("{id}-answer-{n}"), at)?;
                     assert_eq!(status(&s, i, "task-item/status")?, "correct");
                     assert!(
                         mutate(&s, l, "answer", &body, Utc::now())?.0.is_empty(),
@@ -2763,7 +2960,6 @@ mod integration {
                 s = commit(
                     &conn,
                     &endpoint,
-                    l,
                     &s,
                     forms,
                     &format!("{id}-continue-{n}"),
@@ -2836,7 +3032,6 @@ mod integration {
         commit(
             &conn,
             &endpoint,
-            original,
             &fresh,
             cleanup,
             &format!("{id}-cleanup"),

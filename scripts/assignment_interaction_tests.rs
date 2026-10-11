@@ -6,6 +6,7 @@ const ASSIGNMENT: &str = "00000000-0000-4000-8000-000000000010";
 
 struct Fixture {
     db: Database,
+    engine: u64,
     learner: u64,
     activity: u64,
     first: u64,
@@ -45,6 +46,7 @@ impl Fixture {
                 .db_after;
         }
         let report = db.with_edn(r#"[
+          {:db/id "engine" :db/ident :application/ca-engine}
           {:db/id "course" :course/id #uuid "00000000-0000-4000-8000-000000000001" :course/title "Test course"}
           {:db/id "topic" :topic/id #uuid "00000000-0000-4000-8000-000000000002" :topic/title "Preserved topic"}
           {:db/id "progress" :progress/id "assignment-test-progress" :progress/topic "topic" :progress/repetitions 2.0}
@@ -67,6 +69,7 @@ impl Fixture {
         ]"#, 1000, EntityRef::Id(DB_SOURCE_SYSTEM))?;
         let id = |name: &str| *report.tempids.get(name).unwrap();
         Ok(Self {
+            engine: id("engine"),
             learner: id("learner"),
             activity: id("assignment"),
             first: id("first"),
@@ -96,14 +99,16 @@ impl Fixture {
             DateTime::from_timestamp_millis(millis).unwrap(),
         )?;
         if !forms.is_empty() {
-            self.db = self
+            let report = self
                 .db
-                .with_edn(
-                    &schema::edn(&json!(forms))?,
-                    millis,
-                    EntityRef::Id(self.learner),
-                )?
-                .db_after;
+                .with_edn(&schema::edn(&json!(forms))?, millis, engine_source())?;
+            assert!(
+                report
+                    .tx_data
+                    .iter()
+                    .all(|datom| datom.source == self.engine)
+            );
+            self.db = report.db_after;
         }
         self.snapshot()
     }
@@ -124,7 +129,7 @@ fn profile_settings_validate_and_pause_a_lesson_atomically() -> Result<()> {
                 r#"[{{:db/id "other" :course/id #uuid "{other}" :course/title "Other course"}}]"#
             ),
             1500,
-            EntityRef::Id(f.learner),
+            engine_source(),
         )?
         .db_after;
     let s = f.snapshot()?;
@@ -138,9 +143,13 @@ fn profile_settings_validate_and_pause_a_lesson_atomically() -> Result<()> {
             .is_empty()
     );
     let (forms, _) = plan(json!({"courseId":other,"selfDirected":true}))?;
-    f.db =
-        f.db.with_edn(&schema::edn(&json!(forms))?, 3000, EntityRef::Id(f.learner))?
-            .db_after;
+    let report = f.db.with_edn(
+        &schema::edn(&json!(forms))?,
+        3000,
+        saved_request_source(&json!({"source":ENGINE_SOURCE}), f.learner)?,
+    )?;
+    assert!(report.tx_data.iter().all(|datom| datom.source == f.engine));
+    f.db = report.db_after;
     let saved = f.snapshot()?;
     let profile = super::super::profile_json(&saved, f.learner)?;
     assert_eq!(profile["course"]["id"], other);
@@ -174,7 +183,7 @@ fn study_course_projects_reverse_group_membership_without_level_schema() -> Resu
        :course-group/courses [[:course/id #uuid "00000000-0000-4000-8000-000000000001"]]}
       {:course-group/id #uuid "00000000-0000-4000-8000-000000000051" :course-group/title "Advanced Placement"
        :course-group/courses [[:course/id #uuid "00000000-0000-4000-8000-000000000001"]]}
-    ]"#, 2000, EntityRef::Id(f.learner))?.db_after;
+    ]"#, 2000, engine_source())?.db_after;
     let view = super::super::course_json(&f.snapshot()?, f.learner)?;
     assert!(view.get("level").is_none());
     let groups = view["groups"].as_array().unwrap();
@@ -198,7 +207,7 @@ fn profile_settings_pause_assignment_timing_and_preserve_work() -> Result<()> {
         DateTime::from_timestamp_millis(4000).unwrap(),
     )?;
     f.db =
-        f.db.with_edn(&schema::edn(&json!(forms))?, 4000, EntityRef::Id(f.learner))?
+        f.db.with_edn(&schema::edn(&json!(forms))?, 4000, engine_source())?
             .db_after;
     let saved = f.snapshot()?;
     assert_eq!(items(&saved, task)?, before_items);
@@ -241,7 +250,7 @@ fn assignment_switches_clocks_without_reordering_or_crediting_lessons() -> Resul
     )?;
     assert_eq!(result["assignmentId"], ASSIGNMENT);
     f.db =
-        f.db.with_edn(&schema::edn(&json!(forms))?, 5000, EntityRef::Id(f.learner))?
+        f.db.with_edn(&schema::edn(&json!(forms))?, 5000, engine_source())?
             .db_after;
     let s = f.snapshot()?;
     assert_eq!(timing::active_item(&s, f.learner)?, None);
@@ -303,12 +312,8 @@ fn assignment_switches_clocks_without_reordering_or_crediting_lessons() -> Resul
     )?;
     if !queue.is_empty() {
         f.db =
-            f.db.with_edn(
-                &schema::edn(&json!(queue))?,
-                10001,
-                EntityRef::Id(f.learner),
-            )?
-            .db_after;
+            f.db.with_edn(&schema::edn(&json!(queue))?, 10001, engine_source())?
+                .db_after;
     }
     let s = f.snapshot()?;
     assert_eq!(s.refs(f.learner, "learner/activity")?, members);
@@ -398,7 +403,7 @@ fn assignment_rejects_incomplete_foreign_and_paused_submissions_without_writes()
                 f.first_field
             ),
             4000,
-            EntityRef::Id(f.learner),
+            engine_source(),
         )?
         .db_after;
     let before = f.db.basis_t();
@@ -422,7 +427,7 @@ fn assignment_repeated_question_steps_have_distinct_owned_presentations() -> Res
         f.db.with_edn(
             &format!("[[:db/add {} :step/content {question}]]", f.second),
             1500,
-            EntityRef::Id(f.learner),
+            engine_source(),
         )?
         .db_after;
     let s = f.focus(f.first, 2000)?;

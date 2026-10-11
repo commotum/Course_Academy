@@ -2047,6 +2047,53 @@ mod tests {
     }
 
     #[test]
+    fn imported_item_duration_survives_resume_pause_and_completion_writes() {
+        let mut f = Fixture::new("assessment");
+        f.seed(20, 0.0);
+        f.seed(21, 0.0);
+        let item = f.present(100);
+        f.set(
+            item,
+            "task-item/status",
+            json!(f.enums["task-item.status/paused"]),
+        );
+        f.set(item, "task-item/elapsed-seconds", json!(38.789));
+        f.set(3, "learner-task/elapsed-seconds", json!(38.789));
+        // Importing a snapshot records the current state, without its old start.
+        f.history.retain(|event| {
+            event.entity != item || event.value != json!(f.enums["task-item.status/started"])
+        });
+        assert_eq!(
+            timing::task_elapsed(&f.load().snapshot, 3, start()).unwrap(),
+            38.789
+        );
+        for (seconds, state, total) in [
+            (10, "started", 38.789),
+            (15, "paused", 43.789),
+            (30, "started", 43.789),
+            (32, "paused", 45.789),
+            (50, "started", 45.789),
+        ] {
+            let transaction =
+                transition_item(&f.load(), item, state, start() + Duration::seconds(seconds))
+                    .unwrap();
+            f.apply(&transaction);
+            assert_eq!(f.entities[&item]["task-item/elapsed-seconds"], total);
+            assert_eq!(f.entities[&3]["learner-task/elapsed-seconds"], total);
+        }
+        let mut options = CompletionOptions::new(start() + Duration::seconds(53));
+        options.result = Some(true);
+        let done = complete_item(&f.load(), item, options).unwrap();
+        f.apply(&done.transaction);
+        assert_eq!(f.entities[&item]["task-item/elapsed-seconds"], 48.789);
+        assert_eq!(f.entities[&3]["learner-task/elapsed-seconds"], 48.789);
+        assert_eq!(
+            timing::task_elapsed(&f.load().snapshot, 3, start() + Duration::seconds(100)).unwrap(),
+            48.789
+        );
+    }
+
+    #[test]
     fn history_is_required_for_writes_and_deadlines_continue_while_paused() {
         let mut f = Fixture::new("assessment");
         f.set(4, "assessment/time-limit-seconds", json!(10.0));
