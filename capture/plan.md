@@ -18,7 +18,7 @@ We will work through the stages in order. For each stage, propose a simple desig
 - Save enough progress to continue after an external interruption or manual stop. After an interruption, check what Math Academy already accepted before repeating an action.
 - Put content recovery in Database Preparation. Finishing an activity and having its content ready for the database are separate milestones.
 - Diagnostic behavior must take account of lessons already captured and lessons we want to capture. Define what “captured” means before using it in that policy.
-- Give each activity type one **Activity Capture** design file covering the activity itself and its history-page review. Draw Post-Activity Processing separately.
+- Keep **Activity Capture** in one design file organized by the content being captured, covering both the activity and its history-page review. Draw Post-Activity Processing separately.
 - Keep the writing and charts understandable without reading the code.
 - Use engineering judgment for routine reliability and implementation choices. Ask Jake only when something is genuinely ambiguous; do not turn ordinary error handling into an interview question.
 
@@ -34,7 +34,7 @@ The existing source rules still apply: preserve Math Academy's original content,
 
 **Shared tools, separate activity rules.** Reuse answer-field handling, image collection, page reading, and saved progress. Each activity type specifies its own sequence and answer policy. Avoid one large function containing every activity's exceptions.
 
-The shared question process is described in `v2/3-1-Questions.md`. It captures questions, responses, and source feedback for all five activity types. The activity modules control navigation, answer/skip policy, submission timing, and history-page review.
+The shared content-capture design is described in `v2/3-Activity-Capture.md`, organized by content type. Activity-specific behavior controls navigation, answer/skip policy, submission timing, and history-page review. The earlier Questions and Assessment drafts remain in place for now.
 
 **One way to read and write the database.** Selection and preparation receive the database information they need through a shared interface. Transaction/Commit owns database writes. Keep account login, queue state, and activity progress separate for each account while sharing the content database and image library.
 
@@ -48,7 +48,7 @@ Agreed actions:
 
 - Read the activities in their displayed order, keeping Math Academy's identifiers and wording.
 - Default to expanding every activity in the queue, collecting its links, and recording any details.
-- Record each activity's type, title, links, progress, and available details, including assessment requirements and retake labels.
+- Record each activity's type, title, links, progress, and available details, including assessment question counts, time limits, requirements, and retake labels.
 - Preserve unexpected cards or missing fields as observations so later stages can respond to them.
 - Recover from read errors where possible and continue with the usable queue details.
 - Save the extracted queue details in their displayed order alongside the queue's HTML. Activity Selection uses that record to decide what to do.
@@ -81,22 +81,18 @@ Discuss capture goals, what counts as captured, missing lessons versus additiona
 
 **Job:** do the activity and then review its activity history page to capture its content and results.
 
-Each activity's chart covers both parts:
+Activity Capture covers both parts:
 
 1. **Do the activity.** Carry it through to Math Academy's completion state, saving the original content and evidence from each interaction.
 2. **Review the activity history page.** Collect the recorded questions, results, grades, and worked solutions, and connect them to the evidence saved while doing the activity.
 
 Together, these form Activity Capture. Each activity type then hands off to the shared Post-Activity Processing stage. Missing evidence becomes recovery work without changing the fact that the activity finished. Discuss any additional source pages, such as the full lesson page, when designing that activity's capture path.
 
-Use `v2/3-0-Activity-Capture.md` as the index. Keep question handling in `v2/3-1-Questions.md`, and prepare a separate activity document for each base type:
+Use [3-Activity-Capture.md](v2/3-Activity-Capture.md) as the single design document, with sections for Questions, Answer Fields and Answers, Worked Solutions, Tutorials and Examples, Activities/Steps/Multisteps, Images, and Submitted Responses and Results.
 
-| Path | Main questions to settle |
-|---|---|
-| [Assessment](v2/3-2-Assessment.md) | How do we fill and submit the whole test, handle its time limit, and collect feedback afterward? Include quiz retakes here. |
-| [Diagnostic](v2/3-3-Diagnostic.md) | Which skills should we demonstrate or skip to reach the lessons we want? How do existing captures and missing lessons determine that behavior? |
-| [Lesson](v2/3-4-Lesson.md) | Which tutorials and examples must be visited? How do we obtain the complete lesson and step order? What changes for a failed lesson being repeated? |
-| [Review](v2/3-5-Review.md) | How do we answer, collect more reusable questions, and retain their knowledge-point associations? |
-| [Multistep](v2/3-6-Multistep.md) | How do we preserve shared context, each question, dependencies between parts, and their order? |
+Keep [3-1-Questions.md](v2/3-1-Questions.md) and [3-2-Assessment.md](v2/3-2-Assessment.md) unchanged for reference while consolidating. The former index and empty activity documents have been removed.
+
+Assessment question counts and time limits belong to Queue Processing. Activity Capture uses those values and observes the current time remaining during a timed activity.
 
 New and failed lessons are paths within Lesson capture. Resuming an interrupted activity continues that activity; it is not another activity type.
 
@@ -110,7 +106,7 @@ This stage owns the course summary, completed-activity list, and XP tracking. Th
 
 Discuss exactly which pages to read, when to collect these observations, and how to recover missing observations. Also decide what account information must be collected at startup, before the first activity has finished. A delay here must not cause the system to repeat an already completed activity.
 
-The shared stage has its own chart, `4-post-activity-processing.dots`. Individual activity charts reference it rather than repeat its steps.
+The shared stage has its own chart, `4-post-activity-processing.dots`. Activity Capture hands off to it after collecting the activity's content and history.
 
 ## 5. Database Preparation
 
@@ -134,7 +130,7 @@ Discuss batch size, automatic versus reviewed commits, concurrent accounts, retr
 
 - `v1/` holds the charts describing the old system.
 - `v2/` will hold the agreed designs for the replacement. Start with `1-queue-processing.dots`, then `2-activity-selection.dots`.
-- Keep one shared Questions document and five Activity Capture documents, each covering doing the activity and reviewing its history page. Add their charts as the designs are settled, then a separate Post-Activity Processing chart, followed by preparation and commit charts.
+- Keep one Activity Capture document organized by content type. Retain the earlier Questions and Assessment drafts for now. Add charts as the design is settled, then a separate Post-Activity Processing chart, followed by preparation and commit charts.
 - Update this plan as decisions are made. Keep unanswered questions visible rather than filling them with assumptions.
 - After the designs fit together, agree on the implementation sequence and checks using saved captures. Test completion and recovery before switching live accounts to the replacement.
 
