@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import re
 import signal
+import shutil
 import subprocess
 import time
 
@@ -182,6 +183,15 @@ class SolverClient:
         self.directory.mkdir(parents=True, exist_ok=True)
         self.state_path = self.directory / 'session.json'
         self.state = read_json(self.state_path, {'session_id': None, 'turns': [], 'generation': 0})
+        if self.state.get('evidence_contract_version') != 1:
+            if self.state.get('session_id'):
+                self.state.setdefault('retired_sessions', []).append({
+                    'session_id': self.state['session_id'], 'generation': self.state.get('generation', 0),
+                    'reason': 'Replace legacy raw-capture conversation with task evidence contracts'})
+                self.state['session_id'] = None
+                self.state['generation'] = self.state.get('generation', 0) + 1
+            self.state['evidence_contract_version'] = 1
+            atomic_json(self.state_path, self.state)
         self._recover_process()
 
     def request(self, task, payload, force_new=False, timeout=None):
@@ -190,7 +200,8 @@ class SolverClient:
         payload = task_payload(task, payload)
         identity = hashlib.sha256(json.dumps({'evidence': semantic_identity(task, payload),
             'instructions': INSTRUCTIONS, 'schema': _schema(task),
-            'model': self.config.solver_model, 'command': self.config.solver_command}, sort_keys=True).encode()).hexdigest()
+            'model': self.config.solver_model, 'command': self.config.solver_command,
+            'dependency': self._dependency_fingerprint()}, sort_keys=True).encode()).hexdigest()
         logical = self.directory / identity
         logical.mkdir(exist_ok=True)
         cached = read_json(logical / 'result.json')
@@ -244,6 +255,17 @@ class SolverClient:
                     raise
                 replace_session = _session_invalid(error)
         raise SolverUnavailable('; '.join(failures) or 'Solver deadline elapsed')
+
+    def _dependency_fingerprint(self):
+        # A repaired CLI/configuration or contract must invalidate a deterministic
+        # failure, while an unchanged request must not launch the same rejected CLI.
+        commands = self.config.solver_command or [str(self.config.codex_bin)]
+        files = [Path(__file__), Path(__file__).with_name('task_payload.py')]
+        for argument in commands:
+            candidate = Path(shutil.which(argument) or argument)
+            if candidate.is_file():
+                files.append(candidate)
+        return [(str(path.resolve()), path.stat().st_size, path.stat().st_mtime_ns) for path in files]
 
     def _conversation(self, task, payload):
         """A replacement needs relevant answers, never a replay of source captures."""

@@ -87,7 +87,12 @@ class ActivityCapture:
             check_stop(self.stop_event)
             try:
                 result = getattr(self.browser, method)(*args)
-                if self.state.get('pending_browser_error') and not (isinstance(result, dict) and result.get('unknown_outcome')):
+                pending = self.state.get('pending_browser_error') or {}
+                observed_progress = method == 'observe' and isinstance(result, dict) and (
+                    result.get('accepted') or result.get('kind') == 'complete'
+                    or pending.get('observation_key') and result.get('key') != pending['observation_key'])
+                recovered = pending and (method == pending['method'] or observed_progress or self.state.get('stage') == 'history')
+                if recovered and not (isinstance(result, dict) and result.get('unknown_outcome')):
                     previous = self.state.pop('pending_browser_error')
                     self._event('browser_recovered', method=method, previous_error=previous)
                     self._save()
@@ -97,7 +102,9 @@ class ActivityCapture:
             except Exception as error:
                 attempts += 1
                 self.state['recoveries'] += 1
-                self.state['pending_browser_error'] = {'method': method, 'error': str(error), 'attempt': attempts}
+                self.state['pending_browser_error'] = {'method': method, 'error': str(error), 'attempt': attempts,
+                    'observation_key': (args[0].get('key') if args and isinstance(args[0], dict)
+                                        else (self.state.get('last_observation') or {}).get('key'))}
                 self._save()
                 self._event('browser_retry', method=method, error=str(error), attempt=attempts)
                 logging.warning('%s task %s: %s; retrying', method, self.activity['task_id'], error)
@@ -341,6 +348,12 @@ class ActivityCapture:
         # Independent lesson/review questions need no preceding practice archive.
         payload = {'question': question, 'observation': observation,
                    'previous_submissions': record.get('submissions', [])}
+        example_id = str(question.get('source_example_id') or 'e-' + str(question.get('kp_id') or ''))
+        example = next((step['question'] for step in reversed(self.state['steps'])
+                        if step.get('kind') == 'example' and step.get('question')
+                        and str(step['question'].get('math_academy_id')) == example_id), None)
+        if example:
+            payload['current_example'] = example
         if self.activity['kind'] == 'multistep':
             payload.update(activity={'kind': 'multistep'}, shared_context=self.state.get('shared_context'),
                 earlier_parts=[r for r in self.state['presentations'].values()
@@ -478,6 +491,7 @@ class ActivityCapture:
                                 'evidence_hash': evidence_hash, 'final': True, 'judged_at': self.clock()}
                     self.state['judgments'][key] = judgment
                     self._save()
+                    self._event('judgment_saved', question=key, status=judgment['status'])
                 content[name][index] = finalize_answers(question, presentations, judgment)
         content['lesson_workload_sample'] = self._lesson_sample(content)
         return content

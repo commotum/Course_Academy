@@ -22,10 +22,24 @@ class Evidence(unittest.TestCase):
 
     def test_correct_grade_confirms_actual_response(self):
         attempt = {'key': 'live', 'feedback': {'grade': 'Correct', 'html_path': '/grade.html'},
-                   'submissions': [{'responses': [{'key': 'x', 'value': '2'}]}]}
+                   'submissions': [{'outcome': 'observe_to_confirm', 'responses': [{'key': 'x', 'value': '2'}]}]}
         field = finalize_answers(self.question, [attempt], {'answers': []})['answer_fields'][0]
         self.assertEqual((field['correct_value'], field['evidence']['grade']), ('2', 'correct'))
         self.assertEqual(field['evidence']['source_file'], '/grade.html')
+
+    def test_failed_or_unverified_entry_cannot_be_confirmed_by_later_grade(self):
+        for outcome in ('entry_failed', 'not_submitted', 'unknown', None):
+            attempt = {'key': 'live', 'feedback': {'grade': 'Correct'},
+                       'submissions': [{'outcome': outcome, 'responses': [{'key': 'x', 'value': '8'}]}]}
+            field = finalize_answers(self.question, [attempt], {'answers': []})['answer_fields'][0]
+            self.assertNotIn('correct_value', field)
+
+    def test_unknown_outcome_can_bind_observed_source_selected_value(self):
+        self.question['fields'][0]['source_selected'] = {'type': 'math', 'value': '2'}
+        attempt = {'key': 'live', 'feedback': {'grade': 'Correct'},
+                   'submissions': [{'outcome': 'unknown', 'responses': [{'key': 'x', 'value': '2'}]}]}
+        field = finalize_answers(self.question, [attempt], {'answers': []})['answer_fields'][0]
+        self.assertEqual(field['correct_value'], '2')
 
     def test_final_source_error_preserves_ma_answer_and_agent_judgment_separately(self):
         question = deepcopy(self.question)

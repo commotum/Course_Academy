@@ -60,13 +60,12 @@ class DatabaseWorker:
                 candidates = self.pending()
                 if not candidates:
                     return {"status": "idle"}
-                # A saved request has an unresolved write outcome and must be
-                # recovered before any new transaction. Failed preparation has
-                # no durable intent, so its backoff need not hold later imports.
+                # Recover any unresolved write before new transactions; keep
+                # unsubmitted captures chronological so older source revisions
+                # cannot overwrite a newer import.
                 unresolved = [pair for pair in candidates
                               if (Path(pair[1]["capture_directory"]) / "database/request.json").exists()]
-                ready = [pair for pair in candidates if pair[1].get("next_attempt_at", 0) <= time.time()]
-                path, item = (unresolved or ready or candidates)[0]
+                path, item = (unresolved or candidates)[0]
                 if item.get("next_attempt_at", 0) > time.time():
                     return {"status": "waiting", "capture_directory": item["capture_directory"]}
                 directory = Path(item["capture_directory"])

@@ -15,7 +15,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from scripts.browser.adapter import EXTRACT, MathAcademyBrowser
-from scripts.browser.assets import AssetCapture, image_extension, replace_markers
+from scripts.browser.assets import AssetCapture, image_extension, replace_markers, standalone_svg
 from scripts.browser.entry import enter, normalized_math, pick_choice, validated_keys, write_math
 from scripts.browser.parsing import (activity_from_url, parse_history_metadata, parse_lesson_structure,
                                     parse_queue, parse_xp, question_identity)
@@ -71,6 +71,35 @@ class SourceParsingTests(unittest.TestCase):
             self.assertEqual(asset["sha256"], hashlib.sha256(original.encode()).hexdigest())
             self.assertEqual(captured["html"], "@asset-0@")
             self.assertIn(asset["path"], captured["problem"])
+
+    def test_inline_svg_assembles_only_observed_shared_definitions(self):
+        source='<svg viewBox="0 0 10 10"><use xlink:href="#graph"/></svg>'
+        definitions={'graph':'<path id="graph" fill="url(#color)" d="M0 0 L10 10"/>',
+                     'color':'<linearGradient id="color"><stop offset="0" stop-color="red"/></linearGradient>'}
+        calls=[]
+        class Page:
+            def evaluate(_,script,ids):
+                calls.append(ids)
+                return {identity:definitions.get(identity) for identity in ids}
+        with tempfile.TemporaryDirectory() as directory:
+            item={"problem":"![](@asset-0@)","html":source,"assets":[{"index":0,"tag":"svg","html":source}]}
+            captured=AssetCapture(SimpleNamespace(page=Page())).collect(item,None,directory,"step")
+            asset=captured['assets'][0]
+            self.assertEqual(asset['html'],source)
+            self.assertEqual(captured['html'],source)
+            self.assertEqual(asset['representation'],'standalone_svg')
+            self.assertEqual(asset['source_sha256'],hashlib.sha256(source.encode()).hexdigest())
+            self.assertEqual(calls,[['graph'],['color']])
+            data=Path(asset['path']).read_bytes()
+            self.assertIn(b'viewBox="0 0 10 10"',data)
+            self.assertIn(definitions['graph'].encode(),data)
+            self.assertIn(definitions['color'].encode(),data)
+            from scripts.database.images import extension
+            self.assertEqual(extension(data),'svg')
+            self.assertEqual(asset['sha256'],hashlib.sha256(data).hexdigest())
+            self.assertEqual([record['id'] for record in asset['standalone_definitions']],['graph','color'])
+        with self.assertRaises(ValueError):
+            standalone_svg(source)
 
     def test_html_error_page_is_not_stored_as_an_image(self):
         with self.assertRaises(ValueError):

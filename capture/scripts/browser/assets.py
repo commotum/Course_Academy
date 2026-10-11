@@ -4,6 +4,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import re
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import unquote_to_bytes
 
@@ -23,6 +24,56 @@ def image_extension(data, content_type=""):
     if (start.startswith(b"<svg") or start.startswith(b"<?xml")) and b"<svg" in start:
         return "svg"
     raise ValueError("Source response is not a supported image: " + content_type)
+
+
+def standalone_svg(source, page=None):
+    """Include only shared definitions referenced by the observed inline SVG."""
+    opener = re.match(r'<svg\b[^>]*>', source, re.I)
+    if not opener:
+        raise ValueError("Invalid inline SVG")
+    declarations = ''
+    if not re.search(r'\bxmlns\s*=', opener[0]):
+        declarations += ' xmlns="http://www.w3.org/2000/svg"'
+    if 'xlink:' in source and 'xmlns:xlink' not in opener[0]:
+        declarations += ' xmlns:xlink="http://www.w3.org/1999/xlink"'
+    index = opener.end() - (2 if opener[0].endswith('/>') else 1)
+    text = source[:index] + declarations + source[index:]
+    root = ET.fromstring(text)
+    known = {node.get('id') for node in root.iter() if node.get('id')}
+    pending, added = [root], []
+    while pending:
+        node = pending.pop()
+        references = set()
+        for child in node.iter():
+            for key, value in child.attrib.items():
+                if key.rsplit('}', 1)[-1] == 'href' and value.startswith('#'):
+                    references.add(value[1:])
+                references.update(re.findall(r'url\(\s*["\']?#([^\s)"\']+)', value))
+            if child.tag.rsplit('}', 1)[-1] == 'style':
+                references.update(re.findall(r'url\(\s*["\']?#([^\s)"\']+)', child.text or ''))
+        missing = sorted(references - known)
+        if not missing:
+            continue
+        definitions = page.evaluate("ids => Object.fromEntries(ids.map(id => [id,document.getElementById(id)?.outerHTML || null]))", missing) if page else {}
+        for identity in missing:
+            if identity in known:
+                continue
+            html = definitions.get(identity)
+            if not html:
+                raise ValueError("Inline SVG is missing source definition: " + identity)
+            wrapped = ET.fromstring('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + html + '</svg>')
+            definition = wrapped[0]
+            known.update(child.get('id') for child in definition.iter() if child.get('id'))
+            added.append({'id': identity, 'html': html})
+            pending.append(definition)
+    if added:
+        index = text.index('>') + 1
+        text = text[:index] + '<defs>' + ''.join(item['html'] for item in added) + '</defs>' + text[index:]
+    # A shared definition can introduce xlink even when the source root did not.
+    if 'xlink:' in text and 'xmlns:xlink' not in text[:text.index('>')]:
+        index = text.index('>')
+        text = text[:index] + ' xmlns:xlink="http://www.w3.org/1999/xlink"' + text[index:]
+    return text.encode('utf-8'), added
 
 
 def replace_markers(item, replacements):
@@ -102,7 +153,13 @@ class AssetCapture:
                 source = asset.get("source_url")
                 representation = "original"
                 if asset["tag"] == "svg":
-                    data, mime = asset["html"].encode("utf-8"), "image/svg+xml"
+                    original = asset["html"].encode("utf-8")
+                    data, definitions = standalone_svg(asset["html"], getattr(self.browser, "page", None))
+                    mime = "image/svg+xml"
+                    if data != original:
+                        representation = "standalone_svg"
+                        asset["source_sha256"] = hashlib.sha256(original).hexdigest()
+                        asset["standalone_definitions"] = definitions
                 elif asset["tag"] == "canvas":
                     node = scope.locator("canvas").nth(asset.get("dom_index", 0))
                     encoded = node.evaluate("n => n.toDataURL('image/png')")

@@ -22,7 +22,7 @@ def _assets(record):
             item = _pick(asset, ('index', 'path', 'local_path', 'image_path', 'sha256', 'source_url', 'content_type', 'representation', 'alt', 'unavailable'))
             # SVGs cannot be attached to Codex as raster images; their source is
             # the actual diagram, not redundant browser markup.
-            if asset.get('tag') == 'svg' or asset.get('content_type') == 'image/svg+xml':
+            if (asset.get('tag') == 'svg' or asset.get('content_type') == 'image/svg+xml') and not (record.get('screenshot') or record.get('screenshot_path')):
                 item.update(_pick(asset, ('html',)))
             assets.append(item)
     return assets
@@ -49,6 +49,14 @@ def compact_question(question):
     assets = _assets(question)
     if assets:
         result['assets'] = assets
+    # The adapter screenshot is scoped to this question. Attach it only when
+    # normalized text lacks the field layout or extraction reported missing math.
+    needs_layout = len(fields) > 1 and any('{{' + str(field['key']) + '}}' not in str(result.get('problem', '')) for field in fields)
+    needs_graphic_fallback = any(asset.get('unavailable') or asset.get('content_type') == 'image/svg+xml'
+        or str(asset.get('path', '')).lower().endswith('.svg') for asset in assets)
+    if result.get('problem') and not result.get('errors') and not needs_layout and not needs_graphic_fallback:
+        result.pop('screenshot', None)
+        result.pop('screenshot_path', None)
     return result
 
 
@@ -106,11 +114,13 @@ def task_payload(task, payload):
     if payload.get('evidence_contract') == task + ':1':
         return deepcopy(payload)
     if task in ('solve_question', 'judge_question'):
-        result = {'evidence_contract': task + ':1', 'question': compact_question(payload.get('question', payload))}
         observation = payload.get('observation') or {}
-        # A history merge may expose field evidence but omit the live graphics.
-        if observation.get('screenshot') and not result['question'].get('screenshot'):
-            result['question']['screenshot'] = observation['screenshot']
+        question = {**payload.get('question', payload)}
+        if observation.get('screenshot'):
+            question.setdefault('screenshot', observation['screenshot'])
+        result = {'evidence_contract': task + ':1', 'question': compact_question(question)}
+        if task == 'solve_question' and payload.get('current_example'):
+            result['current_example'] = compact_question(payload['current_example'])
         feedback = feedback_evidence(observation)
         if feedback:
             # Don't repeat the question's already retained source facts.
@@ -126,18 +136,10 @@ def task_payload(task, payload):
             context = shared_evidence(payload.get('shared_context'))
             if context:
                 result['shared_context'] = context
-            problem = str(result['question'].get('problem') or '')
-            dependencies = payload.get('depends_on') or payload.get('question', {}).get('depends_on')
-            # Independent parts can be solved from their shared setup. Explicit
-            # references to preceding results need answer summaries, not captures.
-            references_prior = bool(dependencies) or bool(re.search(
-                r'previous|earlier|preceding|above|part\s+[a-z0-9(]|your\s+(?:answer|result)|(?:result|answer).*?(?:found|obtained|calculated)|hence|therefore', problem, re.I))
-            if payload.get('earlier_parts') and references_prior:
-                parts = payload['earlier_parts']
-                if dependencies:
-                    allowed = {str(value) for value in (dependencies if isinstance(dependencies, list) else [dependencies])}
-                    parts = [record for record in parts if str(record.get('question', {}).get('math_academy_id')) in allowed]
-                result['earlier_parts'] = [part_summary(record) for record in parts]
+            if payload.get('earlier_parts'):
+                # Earlier multistep answers can be implicit dependencies. Their
+                # compact summaries preserve that context without source replay.
+                result['earlier_parts'] = [part_summary(record) for record in payload['earlier_parts']]
         identity = str(result['question'].get('math_academy_id') or result['question'].get('sequence_position') or '')
         limits = [item for item in payload.get('source_limitations', [])
                   if not isinstance(item, dict) or 'question' not in item or str(item['question']) == identity]
@@ -148,8 +150,15 @@ def task_payload(task, payload):
     if task == 'match_topic':
         topics = [_pick(topic, ('topic_id', 'id', 'math_academy_id', 'title', 'description', 'learning_outcomes'))
                   if isinstance(topic, dict) else topic for topic in payload.get('topics', [])]
-        return {'evidence_contract': task + ':1', 'question': compact_question(payload.get('question', {})), 'topics': topics,
-                **_pick(payload, ('course_topics', 'graph', 'screenshot'))}
+        question = {**payload.get('question', {})}
+        if payload.get('screenshot'):
+            question.setdefault('screenshot', payload['screenshot'])
+        course_topics = [str(topic.get('topic_id', topic.get('math_academy_id', topic.get('id'))))
+                         if isinstance(topic, dict) else str(topic) for topic in payload.get('course_topics', [])]
+        # Python computes prerequisite distance after classification; the agent
+        # needs candidate authored titles and course membership, not the graph.
+        return {'evidence_contract': task + ':1', 'question': compact_question(question), 'topics': topics,
+                'course_topic_ids': course_topics}
     if task == 'interpret_page':
         observation = payload.get('observation') or {}
         return {'evidence_contract': task + ':1', 'observation': _pick(observation, ('kind', 'key', 'buttons', 'grade', 'accepted',
@@ -176,6 +185,12 @@ def semantic_identity(task, payload):
             # An absent attachment is a different evidence state; preserve its
             # basename without tying otherwise equal questions to output roots.
             return {'unavailable_image': path.name}
+        if isinstance(value, str):
+            if value.startswith('/') and Path(value).suffix.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'):
+                return normalize(value, 'path')
+            def image_reference(match):
+                return match[1] + json.dumps(normalize(match[2], 'path'), sort_keys=True) + match[3]
+            return re.sub(r'(!\[[^\]]*\]\()([^\)\s]+)(\))', image_reference, value)
         return value
     return hashlib.sha256(json.dumps({'contract_version': 1, 'task': task,
         'payload': normalize(payload)}, sort_keys=True, ensure_ascii=False, default=str).encode()).hexdigest()

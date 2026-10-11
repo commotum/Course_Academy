@@ -71,6 +71,70 @@ class SolverTests(unittest.TestCase):
             self.assertEqual(client.request('solve_question', self.payload), self.result)
         self.assertEqual(invoke.call_count, 2)
 
+    def test_legacy_raw_capture_session_is_rotated_once_with_results_preserved(self):
+        directory = self.root / 'solver'
+        directory.mkdir()
+        (directory / 'session.json').write_text(json.dumps({'session_id': 'legacy', 'turns': ['old'], 'generation': 3}))
+        old = directory / 'old'
+        old.mkdir()
+        (old / 'request.json').write_text(json.dumps({'task': 'solve_question', 'payload': {
+            **self.payload, 'instructional_content': [{'html': 'raw oversized lessons'}]}}))
+        (old / 'result.json').write_text(json.dumps(self.result))
+        client = SolverClient(self.config, self.root, self.stop)
+        self.assertIsNone(client.state['session_id'])
+        self.assertEqual(client.state['generation'], 4)
+        self.assertEqual(client.state['retired_sessions'][0]['session_id'], 'legacy')
+        self.assertEqual(client._conversation('judge_question', self.payload)[0]['answers'][0]['correct_value'], '2')
+        self.assertEqual(json.loads((old / 'result.json').read_text()), self.result)
+        with patch.object(client, '_call', return_value=(self.result, 'healthy')):
+            client.request('judge_question', self.payload)
+        resumed = SolverClient(self.config, self.root, self.stop)
+        self.assertEqual(resumed.state['session_id'], 'healthy')
+        self.assertEqual(resumed.state['generation'], 4)
+        self.assertEqual(len(resumed.state['retired_sessions']), 1)
+
+    def test_transient_failure_preserves_the_activity_session(self):
+        client = SolverClient(self.config, self.root, self.stop)
+        envelopes = []
+        values = [(self.result, 'same'), SolverUnavailable('Temporary service outage'), (self.result, 'same')]
+        def fake_call(envelope, *args):
+            envelopes.append(envelope)
+            result = values.pop(0)
+            if isinstance(result, Exception):
+                raise result
+            return result
+        with patch.object(client, '_call', side_effect=fake_call):
+            client.request('solve_question', self.payload)
+            client.request('judge_question', self.payload)
+        self.assertEqual(envelopes[1]['session_id'], 'same')
+        self.assertEqual(envelopes[2]['session_id'], 'same')
+        self.assertNotIn('conversation', envelopes[2])
+
+    def test_deterministic_failure_is_not_relaunched_until_dependency_changes(self):
+        client = SolverClient(self.config, self.root, self.stop)
+        failure = SolverUnavailable('invalid CLI option', retryable=False)
+        with patch.object(client, '_call', side_effect=failure) as invoke:
+            for _ in range(2):
+                with self.assertRaises(SolverUnavailable) as raised:
+                    client.request('solve_question', self.payload)
+                self.assertFalse(raised.exception.retryable)
+            self.assertEqual(invoke.call_count, 1)
+        self.config.codex_bin = str(self.root / 'repaired-cli')
+        (self.root / 'repaired-cli').write_text('repaired dependency')
+        with patch.object(client, '_call', return_value=(self.result, 'new')) as invoke:
+            self.assertEqual(client.request('solve_question', self.payload), self.result)
+            self.assertEqual(invoke.call_count, 1)
+
+    def test_replacement_context_contains_no_unrelated_raw_requests(self):
+        client = SolverClient(self.config, self.root, self.stop)
+        with patch.object(client, '_call', return_value=(self.result, 'session')):
+            client.request('solve_question', {**self.payload, 'instructional_content': [{'html': 'raw tutorial'}]})
+        context = client._conversation('judge_question', self.payload)
+        self.assertEqual(context[0]['answers'][0]['correct_value'], '2')
+        self.assertNotIn('request', context[0])
+        self.assertNotIn('raw tutorial', json.dumps(context))
+        self.assertEqual(client._conversation('solve_question', {'question': {'problem': 'Different question'}}), [])
+
     def test_agent_cannot_submit_via_typing_keys(self):
         result = {**self.result, 'answers': [{'key': 'answer', 'correct_keys': [{'key': 'Enter', 'text': None}]}]}
         with self.assertRaises(ValueError):

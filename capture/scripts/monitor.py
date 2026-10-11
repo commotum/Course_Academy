@@ -11,7 +11,9 @@ from .storage import read_json
 
 STAGES = {'activity': 'Answering', 'history': 'Reviewing history', 'complete': 'Capture saved',
           'capturing': 'Capturing', 'selecting': 'Selecting', 'waiting_for_queue': 'Waiting for queue',
-          'recovering': 'Recovering', 'stopped': 'Stopped', 'starting': 'Starting'}
+          'recovering': 'Recovering', 'stopped': 'Stopped', 'starting': 'Starting',
+          'waiting_for_context': 'Reading course topics',
+          'waiting_for_solver_dependency': 'Waiting for solver recovery'}
 
 
 def process_running(record):
@@ -82,8 +84,8 @@ def snapshot(config, running=None):
         stage = 'Post-activity processing' if not (directory / 'post-activity.json').exists() else 'Saving capture'
     if stale_status:
         stage = 'starting'
-    if not stale_status and status.get('status') == 'recovering' and status.get('error_type'):
-        errors.append(str(status['error_type']))
+    if not stale_status and status.get('status') in ('recovering', 'waiting_for_solver_dependency') and status.get('error_type'):
+        errors.append(str(status.get('detail') or status['error_type']))
     if directory:
         try:
             with (directory / 'activity-events.jsonl').open('rb') as events:

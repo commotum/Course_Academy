@@ -33,7 +33,11 @@ def extension(data: bytes) -> str:
         ids = {node.attrib['id'] for node in root.iter() if 'id' in node.attrib}
         references = set()
         for node in root.iter():
-            for name, value in node.attrib.items():
+            css = (node.text or '') if node.tag.rsplit('}', 1)[-1] == 'style' else ''
+            if re.search(r'@import\b', css, re.I):
+                raise MissingImage('SVG has an unresolved stylesheet import')
+            values = list(node.attrib.items()) + ([('style', css)] if css else [])
+            for name, value in values:
                 if name.rsplit('}', 1)[-1] == 'href':
                     if value.startswith('#'):
                         references.add(value[1:])

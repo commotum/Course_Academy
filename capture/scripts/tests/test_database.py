@@ -76,7 +76,9 @@ class ImageTests(unittest.TestCase):
     def test_svg_requires_original_local_dependencies(self):
         with tempfile.TemporaryDirectory() as d:
             library=ImageLibrary(Path(d)/'math',Path(d))
-            for body in ('<use href="https://example.test/shape.svg#graph"/>','<use href="#missing"/>'):
+            for body in ('<use href="https://example.test/shape.svg#graph"/>','<use href="#missing"/>',
+                         '<style>path {fill:url(https://example.test/fill.svg)}</style>',
+                         '<style>@import \"https://example.test/theme.css\";</style>'):
                 with self.subTest(body=body), self.assertRaises(MissingImage):
                     library.store(('<svg xmlns="http://www.w3.org/2000/svg">'+body+'</svg>').encode(),'diagram')
             data=b'<svg xmlns="http://www.w3.org/2000/svg"><defs><path id="graph" d="M0 0"/></defs><use href="#graph"/></svg>'

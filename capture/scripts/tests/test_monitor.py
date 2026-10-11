@@ -69,6 +69,13 @@ class MonitorTests(unittest.TestCase):
         atomic_json(directory / 'post-activity.json', {})
         self.assertEqual(snapshot(self.config)['stage'], 'Saving capture')
 
+    def test_solver_dependency_reason_remains_visible_while_activity_is_pinned(self):
+        self.save('status.json', {'status': 'waiting_for_solver_dependency',
+                  'error_type': 'SolverUnavailable', 'detail': 'Configured model unavailable'})
+        row = snapshot(self.config)
+        self.assertEqual(row['stage'], 'Waiting for solver recovery')
+        self.assertIn('Configured model unavailable', row['errors'])
+
     def test_restarted_worker_is_starting_until_it_writes_a_fresh_status(self):
         self.save('worker.json', {'started_at': datetime.now().timestamp()})
         self.save('status.json', {'status': 'stopped', 'at': 1})

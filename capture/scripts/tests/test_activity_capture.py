@@ -197,6 +197,40 @@ class CaptureTests(unittest.TestCase):
         self.assertTrue(content['judgments'][0]['final'])
         self.assertEqual(len([c for c in self.agent.calls if c[0] == 'judge_question']), 2)
 
+    def test_entry_failures_reuse_solution_and_clear_error_only_after_progress(self):
+        class EntryFailureBrowser(Browser):
+            failures = 3
+            def respond(self, observation, responses, directory):
+                if self.failures:
+                    self.failures -= 1
+                    error = ValueError('Editor entry failed before submit')
+                    error.submitted = False
+                    raise error
+                return super().respond(observation, responses, directory)
+        self.run_capture(EntryFailureBrowser([question()]))
+        self.assertEqual(len([call for call in self.agent.calls if call[0] == 'solve_question']), 1)
+        state = json.loads((self.directory / 'checkpoint.json').read_text())
+        outcomes = [submission['outcome'] for record in state['presentations'].values() for submission in record['submissions']]
+        self.assertEqual(outcomes, ['entry_failed'] * 3 + ['observe_to_confirm'])
+        events = [json.loads(line) for line in (self.directory / 'activity-events.jsonl').read_text().splitlines()]
+        failures = [index for index, event in enumerate(events) if event['event'] == 'browser_retry']
+        recoveries = [index for index, event in enumerate(events) if event['event'] == 'browser_recovered']
+        self.assertTrue(recoveries)
+        self.assertGreater(recoveries[0], failures[-1])
+        self.assertEqual(events[-1]['event'], 'judgment_saved')
+
+    def test_deterministic_final_agent_error_does_not_loop(self):
+        class InvalidAgent(Agent):
+            def request(self, task, payload, **options):
+                if task == 'judge_question':
+                    self.calls.append((task, payload, options))
+                    raise SolverUnavailable('invalid request', retryable=False)
+                return super().request(task, payload, **options)
+        self.agent = InvalidAgent()
+        with self.assertRaises(SolverUnavailable):
+            self.run_capture(Browser([question()]))
+        self.assertEqual(len([call for call in self.agent.calls if call[0] == 'judge_question']), 1)
+
     def test_diagnostic_numbered_live_record_gains_history_identity_without_duplicate(self):
         browser = Browser([question(None)], 'diagnostic')
         content = self.run_capture(browser)

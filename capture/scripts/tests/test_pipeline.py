@@ -86,7 +86,7 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(read_json(path2)["attempts"], 0)
         self.assertEqual(worker.process_one()["status"], "waiting")
 
-    def test_preparation_backoff_allows_later_import_without_discarding_failure(self):
+    def test_preparation_backoff_preserves_source_revision_order(self):
         self.config.retry_delay = 30
         first, second = self.finished("1"), self.finished("2")
         path1, path2 = enqueue(self.config, first), enqueue(self.config, second)
@@ -97,10 +97,11 @@ class PipelineTests(unittest.TestCase):
                 return {"status":"pending", "reason":"Unsupported preparation", "unknown_or_unverified_commit":False} if directory.name=="1" else {"status":"verified"}
         worker=DatabaseWorker(self.config,self.stop,Database)
         self.assertEqual(worker.process_one()["status"],"pending")
-        self.assertEqual(worker.process_one()["status"],"verified")
-        self.assertEqual(calls,["1","2"])
+        self.assertEqual(worker.process_one()["status"],"waiting")
+        self.assertEqual(calls,["1"])
         self.assertEqual(read_json(path1)["status"],"pending")
-        self.assertEqual(read_json(path2)["status"],"verified")
+        self.assertEqual(read_json(path2)["status"],"pending")
+        self.assertEqual(read_json(path2)["attempts"],0)
 
     def test_unresolved_request_blocks_new_writes_even_if_newer(self):
         self.config.retry_delay = 30

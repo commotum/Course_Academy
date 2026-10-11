@@ -33,7 +33,7 @@ class SavedSourceIntegration(unittest.TestCase):
         question = merge_question(live, {**metadata, 'html_path': str(fixtures / 'review-history-question.html'),
                                         'kp_id': str(metadata['knowledge_point_source_id'])})
         attempts = [{'key': 'step-q1396', 'feedback': metadata,
-                     'submissions': [{'responses': [{'key': 'selection', 'value': correct['value'], 'option': 'c'}]}]}]
+                     'submissions': [{'outcome': 'observe_to_confirm', 'responses': [{'key': 'selection', 'value': correct['value'], 'option': 'c'}]}]}]
         # This test supplies the observed correct submission. An independent agent
         # judgment remains separate; it cannot manufacture the source answer.
         judgment = {'status': 'confirmed', 'reasoning': 'Cross product is 2j+4k.', 'answers': []}
