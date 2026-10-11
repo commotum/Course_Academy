@@ -13,4 +13,4 @@ Learner results and progress remain saved observations for later import. Source-
 
 Progress-page reads use the shared navigation waits and a 1-second settling interval before capture. Between-activity pacing is saved only after the completed capture and pending import are durable. It must not repeat post-activity accounting or let a missing observation delay an already started activity.
 
-Implementation gap identified on 2026-10-11: [post_activity.py](../scripts/post_activity.py) saves the baseline and timestamped progress observations but does not calculate an explicit course/topic progress comparison. Step 3 remains a requirement; the timing restorations did not remove comparison code.
+Implementation gap identified on 2026-10-11: [post_activity.py](../scripts/post_activity.py) saves the baseline and timestamped progress observations but does not calculate an explicit course/topic progress comparison. Step 3 remains a requirement. This gap predates the timing restorations.
