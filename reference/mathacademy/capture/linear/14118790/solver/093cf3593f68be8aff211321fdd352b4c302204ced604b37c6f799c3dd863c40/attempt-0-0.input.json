@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-107026",
+      "sequence_position": 5,
+      "problem": "Consider the set of matrices ${A,B,C},$ where \n\n$$\nA=[\\begin{aligned}2 & 0 \\\\ -1 & -1\\end{aligned}],\\,B=[\\begin{aligned}-8 & 3 \\\\ -5 & 4\\end{aligned}],\\,C=[\\begin{aligned}10 & -3 \\\\ 4 & -5\\end{aligned}].\n$$\n\n \nIf the set is linearly dependent, find the value of $\\frac{{x}_{2}}{{x}_{3}}$ from a non-zero solution of ${x}_{1}A+{x}_{2}B+{x}_{3}C=O,$ where $O$ is the $2\\times 2$ zero-matrix.",
+      "worked_solution": "If the set is linearly dependent, then there exist ${x}_{1},{x}_{2},{x}_{3}$ not all zero such that \n\n$$\n{x}_{1}A+{x}_{2}B+{x}_{3}C=O.\n$$\n\nOtherwise, if ${x}_{1}={x}_{2}={x}_{3}=0,$ the set is linearly independent.\n\nSubstituting the matrices $A,$ $B,$ and $C$ into the above equation, we obtain\n\n$$\n\\begin{aligned}{x}_{1}[\\begin{aligned}2 & 0 \\\\ -1 & -1\\end{aligned}]+{x}_{2}[\\begin{aligned}-8 & 3 \\\\ -5 & 4\\end{aligned}]+{x}_{3}[\\begin{aligned}10 & -3 \\\\ 4 & -5\\end{aligned}] & =[\\begin{aligned}0 & 0 \\\\ 0 & 0\\end{aligned}] \\\\ [\\begin{aligned}2{x}_{1} & 0 \\\\ -{x}_{1} & -{x}_{1}\\end{aligned}]+[\\begin{aligned}-8{x}_{2} & 3{x}_{2} \\\\ -5{x}_{2} & 4{x}_{2}\\end{aligned}]+[\\begin{aligned}10{x}_{3} & -3{x}_{3} \\\\ 4{x}_{3} & -5{x}_{3}\\end{aligned}] & =[\\begin{aligned}0 & 0 \\\\ 0 & 0\\end{aligned}] \\\\ [\\begin{aligned}2{x}_{1}-8{x}_{2}+10{x}_{3} & 3{x}_{2}-3{x}_{3} \\\\ -{x}_{1}-5{x}_{2}+4{x}_{3} & -{x}_{1}+4{x}_{2}-5{x}_{3}\\end{aligned}] & =[\\begin{aligned}0 & 0 \\\\ 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nEquating the corresponding entries, we obtain the following system of equations:\n\n$$\n{\\begin{aligned}2{x}_{1}-8{x}_{2}+10{x}_{3}=0 \\\\ 3{x}_{2}-3{x}_{3}=0 \\\\ -{x}_{1}-5{x}_{2}+4{x}_{3}=0 \\\\ -{x}_{1}+4{x}_{2}-5{x}_{3}=0.\\end{aligned}\n$$\n\nNow, we consider the corresponding augmented matrix and reduce it to row echelon form using Gaussian elimination:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}2 & -8 & 10 & 0 \\\\ 0 & 3 & -3 & 0 \\\\ -1 & -5 & 4 & 0 \\\\ -1 & 4 & -5 & 0\\end{aligned}] &  & {R}_{1}:={R}_{1}/2 \\\\  & ∼[\\begin{aligned}1 & -4 & 5 & 0 \\\\ 0 & 3 & -3 & 0 \\\\ -1 & -5 & 4 & 0 \\\\ -1 & 4 & -5 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{1} \\\\ {R}_{4}:={R}_{4}+{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -4 & 5 & 0 \\\\ 0 & 3 & -3 & 0 \\\\ 0 & -9 & 9 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+3{R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -4 & 5 & 0 \\\\ 0 & 3 & -3 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nThe pivot columns are the $1$st and $2$nd. Hence, ${x}_{3}$ is a free variable. \n\nThe system is now\n\n$$\n{\\begin{aligned}{x}_{1}-4{x}_{2}+5{x}_{3}=0 \\\\ 3{x}_{2}-3{x}_{3}=0.\\end{aligned}\n$$\n\nFrom the $2$nd equation, we get ${x}_{2}={x}_{3}.$ Substitute it into the first equation to get\n\n$$\n{x}_{1}-4{x}_{3}+5{x}_{3}=0\\,⟹\\,{x}_{1}=-{x}_{3}.\n$$\n\nTherefore, the general solution is\n$[\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]=[\\begin{aligned}-{x}_{3} \\\\ {x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.$\n\nFinally, for any ${x}_{3}\\ne 0,$ we obtain \n\n$$\n\\frac{{x}_{2}}{{x}_{3}}=\\frac{{x}_{3}}{{x}_{3}}=1.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14118790/observations/history-q-107026-c9e5ad78c12404f7bcf0.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14118790",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14118790/observations/history-solution-q-107026-92c3464ca5afb233bcac.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "-1"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "The set is linearly independent"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q107026",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "1",
+                "option": "e",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "If the set is linearly dependent, then there exist ${x}_{1},{x}_{2},{x}_{3}$ not all zero such that \n\n$$\n{x}_{1}A+{x}_{2}B+{x}_{3}C=O.\n$$\n\nOtherwise, if ${x}_{1}={x}_{2}={x}_{3}=0,$ the set is linearly independent.\n\nSubstituting the matrices $A,$ $B,$ and $C$ into the above equation, we obtain\n\n$$\n\\begin{aligned}{x}_{1}[\\begin{aligned}2 & 0 \\\\ -1 & -1\\end{aligned}]+{x}_{2}[\\begin{aligned}-8 & 3 \\\\ -5 & 4\\end{aligned}]+{x}_{3}[\\begin{aligned}10 & -3 \\\\ 4 & -5\\end{aligned}] & =[\\begin{aligned}0 & 0 \\\\ 0 & 0\\end{aligned}] \\\\ [\\begin{aligned}2{x}_{1} & 0 \\\\ -{x}_{1} & -{x}_{1}\\end{aligned}]+[\\begin{aligned}-8{x}_{2} & 3{x}_{2} \\\\ -5{x}_{2} & 4{x}_{2}\\end{aligned}]+[\\begin{aligned}10{x}_{3} & -3{x}_{3} \\\\ 4{x}_{3} & -5{x}_{3}\\end{aligned}] & =[\\begin{aligned}0 & 0 \\\\ 0 & 0\\end{aligned}] \\\\ [\\begin{aligned}2{x}_{1}-8{x}_{2}+10{x}_{3} & 3{x}_{2}-3{x}_{3} \\\\ -{x}_{1}-5{x}_{2}+4{x}_{3} & -{x}_{1}+4{x}_{2}-5{x}_{3}\\end{aligned}] & =[\\begin{aligned}0 & 0 \\\\ 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nEquating the corresponding entries, we obtain the following system of equations:\n\n$$\n{\\begin{aligned}2{x}_{1}-8{x}_{2}+10{x}_{3}=0 \\\\ 3{x}_{2}-3{x}_{3}=0 \\\\ -{x}_{1}-5{x}_{2}+4{x}_{3}=0 \\\\ -{x}_{1}+4{x}_{2}-5{x}_{3}=0.\\end{aligned}\n$$\n\nNow, we consider the corresponding augmented matrix and reduce it to row echelon form using Gaussian elimination:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}2 & -8 & 10 & 0 \\\\ 0 & 3 & -3 & 0 \\\\ -1 & -5 & 4 & 0 \\\\ -1 & 4 & -5 & 0\\end{aligned}] &  & {R}_{1}:={R}_{1}/2 \\\\  & ∼[\\begin{aligned}1 & -4 & 5 & 0 \\\\ 0 & 3 & -3 & 0 \\\\ -1 & -5 & 4 & 0 \\\\ -1 & 4 & -5 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{1} \\\\ {R}_{4}:={R}_{4}+{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -4 & 5 & 0 \\\\ 0 & 3 & -3 & 0 \\\\ 0 & -9 & 9 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+3{R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -4 & 5 & 0 \\\\ 0 & 3 & -3 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nThe pivot columns are the $1$st and $2$nd. Hence, ${x}_{3}$ is a free variable. \n\nThe system is now\n\n$$\n{\\begin{aligned}{x}_{1}-4{x}_{2}+5{x}_{3}=0 \\\\ 3{x}_{2}-3{x}_{3}=0.\\end{aligned}\n$$\n\nFrom the $2$nd equation, we get ${x}_{2}={x}_{3}.$ Substitute it into the first equation to get\n\n$$\n{x}_{1}-4{x}_{3}+5{x}_{3}=0\\,⟹\\,{x}_{1}=-{x}_{3}.\n$$\n\nTherefore, the general solution is\n$[\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]=[\\begin{aligned}-{x}_{3} \\\\ {x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.$\n\nFinally, for any ${x}_{3}\\ne 0,$ we obtain \n\n$$\n\\frac{{x}_{2}}{{x}_{3}}=\\frac{{x}_{3}}{{x}_{3}}=1.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14118790/observations/step-q107026-b140fa22644e1a4203fd.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12b79-e8d5-77b2-bdee-89f8b9aef9ae",
+  "previous_failures": []
+}

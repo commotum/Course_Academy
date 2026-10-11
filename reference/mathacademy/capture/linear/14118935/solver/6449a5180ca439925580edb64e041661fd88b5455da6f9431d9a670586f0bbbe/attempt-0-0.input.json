@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-136945",
+      "sequence_position": 1,
+      "problem": "$$\nA=[\\begin{aligned}1 & -1 & 0 \\\\ -1 & 1 & 0 \\\\ -2 & 2 & 2\\end{aligned}],\\,b=[\\begin{aligned}0 \\\\ 2 \\\\ -2\\end{aligned}].\n$$\n\n \n\nConsider the matrix $A$ and vector $b$ shown above. If the general least-squares solution of $Ax=b$ is given by\n\n$$\n[\\begin{aligned}-1 \\\\ a \\\\ b\\end{aligned}]+{x}_{2}[\\begin{aligned}c \\\\ 1 \\\\ 0\\end{aligned}],\\,{x}_{2}\\in R\n$$\n\nwhat is the value of $a+3b+c?$",
+      "worked_solution": "The least-squares solution of $Ax=b$ satisfies the corresponding normal equation:\n\n$$\n{A}^{T}\\,Ax={A}^{T}b\n$$\n\nNotice that the columns of $A$ are linearly dependent. So first, let's write down the normal equation in matrix form:\n\n$$\n\\begin{aligned}[\\begin{aligned}1 & -1 & -2 \\\\ -1 & 1 & 2 \\\\ 0 & 0 & 2\\end{aligned}][\\begin{aligned}1 & -1 & 0 \\\\ -1 & 1 & 0 \\\\ -2 & 2 & 2\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}] & =[\\begin{aligned}1 & -1 & -2 \\\\ -1 & 1 & 2 \\\\ 0 & 0 & 2\\end{aligned}][\\begin{aligned}0 \\\\ 2 \\\\ -2\\end{aligned}] \\\\ [\\begin{aligned}6 & -6 & -4 \\\\ -6 & 6 & 4 \\\\ -4 & 4 & 4\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}] & =[\\begin{aligned}2 \\\\ -2 \\\\ -4\\end{aligned}]\\end{aligned}\n$$\n\nNow, we solve the system corresponding to the above matrix equation using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}6 & -6 & -4 & 2 \\\\ -6 & 6 & 4 & -2 \\\\ -4 & 4 & 4 & -4\\end{aligned}] &  & \\begin{aligned}{R}_{1}↔{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}-4 & 4 & 4 & -4 \\\\ -6 & 6 & 4 & -2 \\\\ 6 & -6 & -4 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=\\frac{1}{4}{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 1 & -1 \\\\ -6 & 6 & 4 & -2 \\\\ 6 & -6 & -4 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-6){R}_{1} \\\\ {R}_{3}:={R}_{3}+6{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 1 & -1 \\\\ 0 & 0 & -2 & 4 \\\\ 0 & 0 & 2 & -4\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 1 & -1 \\\\ 0 & 0 & -2 & 4 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $3$rd). Thus, ${x}_{2}$ is a free variable. From the second equation, we have \n\n$$\n{x}_{3}=-2,\n$$\n\nSubstituting this into the first equation, we obtain\n\n$$\n-{x}_{1}+{x}_{2}+(-2)=-1\\,⟹\\,{x}_{1}=-1+{x}_{2}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}-1+{x}_{2} \\\\ {x}_{2} \\\\ -2\\end{aligned}]=[\\begin{aligned}-1 \\\\ 0 \\\\ -2\\end{aligned}]+{x}_{2}[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nTherefore, we have\n\n$$\na+3b+c=0+3\\cdot (-2)+1=-5.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14118935/observations/history-q-136945-16100cc93a3490425403.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14118935",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14118935/observations/history-solution-q-136945-10608554f47da5adc0b7.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "-8"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "-1"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "-5"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q136945",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "-5",
+                "option": "e",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The least-squares solution of $Ax=b$ satisfies the corresponding normal equation:\n\n$$\n{A}^{T}\\,Ax={A}^{T}b\n$$\n\nNotice that the columns of $A$ are linearly dependent. So first, let's write down the normal equation in matrix form:\n\n$$\n\\begin{aligned}[\\begin{aligned}1 & -1 & -2 \\\\ -1 & 1 & 2 \\\\ 0 & 0 & 2\\end{aligned}][\\begin{aligned}1 & -1 & 0 \\\\ -1 & 1 & 0 \\\\ -2 & 2 & 2\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}] & =[\\begin{aligned}1 & -1 & -2 \\\\ -1 & 1 & 2 \\\\ 0 & 0 & 2\\end{aligned}][\\begin{aligned}0 \\\\ 2 \\\\ -2\\end{aligned}] \\\\ [\\begin{aligned}6 & -6 & -4 \\\\ -6 & 6 & 4 \\\\ -4 & 4 & 4\\end{aligned}][\\begin{aligned}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}] & =[\\begin{aligned}2 \\\\ -2 \\\\ -4\\end{aligned}]\\end{aligned}\n$$\n\nNow, we solve the system corresponding to the above matrix equation using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}6 & -6 & -4 & 2 \\\\ -6 & 6 & 4 & -2 \\\\ -4 & 4 & 4 & -4\\end{aligned}] &  & \\begin{aligned}{R}_{1}↔{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}-4 & 4 & 4 & -4 \\\\ -6 & 6 & 4 & -2 \\\\ 6 & -6 & -4 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=\\frac{1}{4}{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 1 & -1 \\\\ -6 & 6 & 4 & -2 \\\\ 6 & -6 & -4 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-6){R}_{1} \\\\ {R}_{3}:={R}_{3}+6{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 1 & -1 \\\\ 0 & 0 & -2 & 4 \\\\ 0 & 0 & 2 & -4\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 1 & -1 \\\\ 0 & 0 & -2 & 4 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $3$rd). Thus, ${x}_{2}$ is a free variable. From the second equation, we have \n\n$$\n{x}_{3}=-2,\n$$\n\nSubstituting this into the first equation, we obtain\n\n$$\n-{x}_{1}+{x}_{2}+(-2)=-1\\,⟹\\,{x}_{1}=-1+{x}_{2}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}-1+{x}_{2} \\\\ {x}_{2} \\\\ -2\\end{aligned}]=[\\begin{aligned}-1 \\\\ 0 \\\\ -2\\end{aligned}]+{x}_{2}[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nTherefore, we have\n\n$$\na+3b+c=0+3\\cdot (-2)+1=-5.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14118935/observations/step-q136945-d9e91b74ce1894bcee98.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12b7d-05a1-7a60-9676-6a1b1be5d88d",
+  "previous_failures": []
+}
