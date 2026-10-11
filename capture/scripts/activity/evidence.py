@@ -31,19 +31,12 @@ def _extraction_parts(record):
     return parts
 
 
-def _recaptured_error(error, before, after):
-    """Clear a capture failure only when a clean read replaced its source scope."""
-    if after.get('errors') != [] or not (after.get('html_path') or after.get('source_file')):
-        return False
-    identity = before.get('math_academy_id')
-    if not identity or str(identity) != str(after.get('math_academy_id')):
-        return False
-    if str(before.get('source_id', '')).startswith('unreconciled:'):
-        return False
+def _error_parts(error, record):
+    """Only known capture failures can be replaced by a later source read."""
     error = str(error)
     if error.startswith('Screenshot unavailable:'):
-        return bool(after.get('screenshot'))
-    if error.startswith(('History expansion:',)):
+        needed = {'screenshot'}
+    elif error.startswith('History expansion:'):
         needed = {'solution'}
     elif error.startswith(('Unsupported math editor:', 'Select frame has no ID:',
                            'Unsupported input type:', 'Choice circle has no observed ID')):
@@ -52,33 +45,71 @@ def _recaptured_error(error, before, after):
                            'MathJax formula has no assistive MathML', 'Image unavailable:',
                            'Graphic rendering unavailable:', 'Visual asset is not rendered',
                            'Source rendering remained incomplete:', 'Lesson source rendering:')):
-        # Legacy MathML/image messages have no exact node location. Require all
-        # previously inspected sections rather than guessing which one failed.
-        needed = _extraction_parts(before)
+        needed = _extraction_parts(record)
     else:
-        return False  # An authored source error or unknown finding is not a capture failure.
-    covered = _extraction_parts(after)
+        return set()  # Authored errors and unknown findings remain unchanged.
+    return set(record.get('extraction_error_parts', {}).get(error, needed))
+
+
+def _recaptured_error(error, before, after):
+    """Clear a capture failure only when a clean read replaced its source scope."""
+    if 'errors' not in after or not (after.get('html_path') or after.get('source_file')):
+        return False
+    identity = before.get('math_academy_id')
+    if not identity or str(identity) != str(after.get('math_academy_id')):
+        return False
+    if str(before.get('source_id', '')).startswith('unreconciled:'):
+        return False
+    needed = _error_parts(error, before)
+    covered = _extraction_parts(after) | ({'screenshot'} if after.get('screenshot') else set())
     if not needed or not needed <= covered:
         return False
+    for current in after.get('errors', []):
+        # Unscoped failures cannot prove any section was clean. New reads carry
+        # exact error scopes, so a solution failure need not block prompt repair.
+        current_parts = _error_parts(current, after)
+        if not current_parts or needed & current_parts:
+            return False
     if ('problem' in needed and not after.get('problem') or
             'solution' in needed and not after.get('worked_solution')):
         return False
     if 'fields' in needed:
         fields = answer_fields(after)
-        old_keys = {str(field.get('key')) for field in answer_fields(before)}
-        if (not fields or after.get('answer_fields_complete') is False or
-                not old_keys <= {str(field.get('key')) for field in fields} or
-                any(field.get('choices_complete') is False for field in fields
-                    if field.get('type') in ('radio', 'select', 'checkbox', 'multi-select'))):
+        keys = [field.get('key') for field in fields]
+        old_keys = {field['key'] for field in answer_fields(before) if isinstance(field.get('key'), str) and field['key']}
+        if (not fields or after.get('answer_fields_complete') is False or after.get('fields_complete') is False or
+                any(not isinstance(key, str) or not key for key in keys) or len(set(keys)) != len(keys) or
+                not old_keys <= set(keys) or
+                set(re.findall(r'\{\{(field-\d+)\}\}', after.get('problem', ''))) - set(keys) or
+                any(field.get('type') not in ('blank', 'radio', 'select') or
+                    (field.get('type') in ('radio', 'select') and
+                     (field.get('choices_complete') is False or len(field.get('choices', [])) < 2))
+                    for field in fields)):
             return False
-    return not any(asset.get('unavailable') or asset.get('render_unavailable') for asset in after.get('assets', []))
+    return not any((asset.get('unavailable') or asset.get('render_unavailable')) and
+                   (not asset.get('extraction_part') or asset['extraction_part'] in needed)
+                   for asset in after.get('assets', []))
+
+
+def _source_evidence(record):
+    return {key: deepcopy(record[key]) for key in
+            ('html_path', 'source_file', 'solution_evidence', 'captured_at', 'source_url')
+            if record.get(key) is not None}
+
+
+def _error_history(record):
+    history = deepcopy(record.get('extraction_error_history', []))
+    if not history and record.get('errors') and _source_evidence(record):
+        history.append({'errors': deepcopy(record['errors']), 'source': _source_evidence(record),
+                        'error_parts': deepcopy(record.get('extraction_error_parts', {}))})
+    return history
 
 
 def merge_question(before, after):
     result = deepcopy(before)
     for key, value in after.items():
         if value is not None and value != '' and value != [] and key not in (
-                'fields', 'answer_fields', 'errors', 'extraction_error_history', 'extraction_parts'):
+                'fields', 'answer_fields', 'errors', 'extraction_error_history', 'extraction_parts', 'extraction_error_parts'):
             result[key] = deepcopy(value)
     old = {str(f.get('key', i)): deepcopy(f) for i, f in enumerate(answer_fields(before))}
     for i, field in enumerate(answer_fields(after)):
@@ -90,20 +121,26 @@ def merge_question(before, after):
     if old:
         result['fields'] = list(old.values())
         result['answer_fields'] = deepcopy(result['fields'])
-    # Empty errors means a successful observed read, not an absent update. Keep
-    # unsuccessful originals and their resolution separately from current gaps.
+    # Empty errors means a successful observed read, not an absent update.
     resolved = [error for error in before.get('errors', []) if _recaptured_error(error, before, after)]
+    retained = [error for error in before.get('errors', []) if error not in resolved]
     if 'errors' in before or 'errors' in after:
-        result['errors'] = list(dict.fromkeys(error for error in before.get('errors', []) + after.get('errors', [])
-                                             if error not in resolved))
-    history = deepcopy(before.get('extraction_error_history', []))
-    for record in after.get('extraction_error_history', []):
+        result['errors'] = list(dict.fromkeys(retained + after.get('errors', [])))
+    error_parts = {}
+    for source, errors in ((before, retained), (after, after.get('errors', []))):
+        for error in errors:
+            parts = _error_parts(error, source)
+            if parts:
+                error_parts[error] = sorted(set(error_parts.get(error, [])) | parts)
+    if error_parts or 'extraction_error_parts' in before or 'extraction_error_parts' in after:
+        result['extraction_error_parts'] = error_parts
+    history = _error_history(before)
+    for record in _error_history(after):
         if record not in history:
-            history.append(deepcopy(record))
+            history.append(record)
     if resolved:
-        evidence = lambda record: {key: deepcopy(record[key]) for key in
-            ('html_path', 'source_file', 'solution_evidence', 'captured_at', 'source_url') if record.get(key) is not None}
-        record = {'errors': resolved, 'source': evidence(before), 'replaced_by': evidence(after),
+        record = {'errors': resolved, 'source': _source_evidence(before), 'replaced_by': _source_evidence(after),
+                  'error_parts': {error: sorted(_error_parts(error, before)) for error in resolved},
                   'recaptured_parts': sorted(_extraction_parts(after))}
         if record not in history:
             history.append(record)

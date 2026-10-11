@@ -323,18 +323,16 @@ class MathAcademyBrowser:
 
     def _read(self, scope, directory, label, prior=None):
         item = scope.evaluate(EXTRACT)
-        # Record source coverage before combining independently read history
-        # prompts and explanations. A solution-only reread cannot clear a failed
-        # prompt or answer control from an earlier capture.
-        item['extraction_parts'] = scope.evaluate(r'''node => {
-          if(node.matches('.questionExplanation')) return ['solution'];
-          const parts=[];
-          if(node.querySelector('.exampleQuestion,.questionWidget-text,.questionText,.questionWidget-graphic,#questionGraphic,.questionGraphicFrame')) parts.push('problem');
-          if(node.querySelector('.questionWidget-choiceLetterCircle,.choiceLetterCircle,.matheditor-wrapper-answer,.selectList,input:not([type="hidden"]),textarea,select')) parts.push('fields');
-          if(node.querySelector('.exampleExplanation,.questionWidget-explanation,.questionExplanation')) parts.push('solution');
-          return parts;
-        }''')
         item = self.assets.collect(item, scope, directory, label, prior=prior)
+        # Asset failures retain the section identified by the source extractor.
+        for asset in item.get('assets', []):
+            identity = asset.get('source_url') or label + ':' + str(asset['index'])
+            for prefix in ('Graphic rendering unavailable: ', 'Image unavailable: '):
+                error = prefix + identity
+                if error in item.get('errors', []) and asset.get('extraction_part'):
+                    parts = item.setdefault('extraction_error_parts', {}).setdefault(error, [])
+                    if asset['extraction_part'] not in parts:
+                        parts.append(asset['extraction_part'])
         key = fingerprint({"html": item.get("html"), "url": self.page.url})
         target = Path(directory) / "observations" / (re.sub(r"[^a-zA-Z0-9_-]", "-", label) + "-" + key)
         atomic_json(target.with_suffix(".json"), item)
@@ -822,12 +820,17 @@ class MathAcademyBrowser:
                 item["assets"] = item.get("assets", []) + solution.get("assets", [])
                 item["errors"] = list(dict.fromkeys(item.get("errors", []) + solution.get("errors", [])))
                 item["extraction_parts"] = sorted(set(item.get("extraction_parts", [])) | set(solution.get("extraction_parts", [])))
+                for error, parts in solution.get('extraction_error_parts', {}).items():
+                    current = item.setdefault('extraction_error_parts', {}).get(error, [])
+                    item['extraction_error_parts'][error] = sorted(set(current) | set(parts))
                 item["solution_evidence"] = solution["html_path"]
             except StopRequested:
                 raise
             except Exception as error:
                 item = self._read(node, directory, "history-" + info["math_academy_id"])
-                item.setdefault("errors", []).append("History expansion: " + str(error))
+                message = "History expansion: " + str(error)
+                item.setdefault("errors", []).append(message)
+                item.setdefault('extraction_error_parts', {})[message] = ['solution']
             questions.append({**item, **info, "result": info["grade"],
                               "topic_id": info.get("topic_id") or activity.get("topic_id")})
         evidence = self._evidence(self.page, directory, "history-expanded")

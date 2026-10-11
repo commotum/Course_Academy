@@ -768,6 +768,19 @@ class ActivityCapture:
             return text(question.get('problem')), sorted(fields, key=lambda field: field['key'])
         return bool(before.get('problem') and after.get('problem')) and binding(before) == binding(after)
 
+    @classmethod
+    def _history_content_matches(cls, before, after):
+        """Fieldless history can refresh source text without confirming a response."""
+        identity = str(before.get('math_academy_id') or '')
+        parts = set(after.get('extraction_parts', []))
+        if (not re.fullmatch(r'q-\d+', identity) or identity != str(after.get('math_academy_id')) or
+                str(before.get('source_id', '')).startswith('unreconciled:') or
+                not {'problem', 'solution'} <= parts or 'fields' in parts or answer_fields(after)):
+            return False
+        # Keep the same normalization of source images and whitespace, but do
+        # not demand controls that this history view explicitly did not expose.
+        return cls._source_binding_matches({**before, 'fields': [], 'answer_fields': []}, after)
+
     def _question_presentations(self, question):
         identity = question.get('math_academy_id')
         position = question.get('sequence_position')
@@ -814,7 +827,8 @@ class ActivityCapture:
                     'reason': 'History grade cannot be assigned unambiguously across repeated presentations'})
 
             live_question = deepcopy(question)
-            if (same_id and not matching) or not identity:
+            content_matches = matching or [q for q in same_id if self._history_content_matches(question, q)]
+            if (same_id and not content_matches) or not identity:
                 if same_id or sources:
                     limitations.append({'question': str(identity) if identity is not None else question_key(question),
                         'presentation_key': record.get('key'),

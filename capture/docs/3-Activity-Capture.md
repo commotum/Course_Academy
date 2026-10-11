@@ -68,6 +68,8 @@ Keep original source bytes separate from browser compatibility repairs. Remove i
 
 History alignment requires agreement on the problem, answer fields, and choices as well as source IDs or position. Position alone cannot attach a different question's ID or grade. Preserve conflicting originals and unresolved live presentations separately, and withhold a history grade when repeated presentations make its recipient ambiguous. Completeness checks include tutorials, canonical examples, images, extraction errors, and every declared lesson step. A final unavailable judgment preserves the gap; it does not silently remove the missing evidence.
 
+Record which source sections each extraction read and which section produced each failure. A successful reread can clear a resolved extraction error for the same question while keeping the original error, source paths, and recovery evidence in `extraction_error_history`. A prompt or solution failure must not label otherwise complete answer controls as incomplete. Preserve authored source errors and failures in sections the reread did not recover. A history page with the same verified question ID and matching problem can supplement the source text while retaining previously captured controls; missing history controls do not establish a grade for a live submission.
+
 ### Default actions when something goes wrong
 
 | Situation | Default action |

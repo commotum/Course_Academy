@@ -1,6 +1,16 @@
 // Pure DOM extraction. No application state, answer keys, or network calls.
 element => {
-  const errors = [];
+  const errors = [], errorParts = {};
+  let part = 'fields';
+  const fail = message => {
+    errors.push(message);
+    errorParts[message] = [...new Set([...(errorParts[message] || []), part])];
+  };
+  const readPart = (name, read) => {
+    const previous = part;
+    part = name;
+    try { return read(); } finally { part = previous; }
+  };
   const emptyFormula = n => n?.localName === 'svg' && n.closest('.mjpage, mjx-container, .MathJax') &&
     n.getAttribute('width') === '0' && n.getAttribute('viewBox')?.trim().split(/\s+/)[2] === '0' &&
     !n.textContent.trim() && !n.querySelector('path,use,text,line,polyline,polygon,circle,ellipse,rect,image,foreignObject');
@@ -43,16 +53,16 @@ element => {
       f.dom_index = [...element.querySelectorAll('.matheditor-wrapper-answer')].indexOf(n);
       f.input_html = n.outerHTML;
       f.rendered_text = n.querySelector('.mq-root-block')?.textContent || '';
-      if (!n.querySelector('.mq-editable-field .mq-textarea textarea')) errors.push('Unsupported math editor: ' + n.id);
+      if (!n.querySelector('.mq-editable-field .mq-textarea textarea')) fail('Unsupported math editor: ' + n.id);
     } else if (n.matches('.selectList')) {
       f.tag = 'custom-select';
       const graded = ['Correct','Incorrect','Partial Credit','Skipped Question'].includes(element.querySelector('.questionWidget-result')?.textContent.trim());
       const frame = n.querySelector('.selectListFrame') || n.querySelector(
         graded ? '.selectListFrameDisabled' : '.selectListFrameDisabled.correctSelection, .selectListFrameDisabled.correctSelectionMultipleAttempts');
       f.frame_id = frame?.id;
-      if (!f.frame_id) errors.push('Select frame has no ID: ' + n.id);
+      if (!f.frame_id) fail('Select frame has no ID: ' + n.id);
     } else if (n.matches('input') && !['text','number',''].includes(n.getAttribute('type') || '')) {
-      errors.push('Unsupported input type: ' + n.getAttribute('type'));
+      fail('Unsupported input type: ' + n.getAttribute('type'));
     }
     fields.push(f); fieldNodes.set(n, key);
   }
@@ -111,12 +121,12 @@ element => {
         if (n.getAttribute('notation') === 'right') return '\\left.' + cs.join('') + '\\right|';
         if (n.getAttribute('notation') === 'box') return '\\boxed{' + cs.join('') + '}';
         if (n.getAttribute('notation')?.includes('strike')) return '\\cancel{' + cs.join('') + '}';
-        errors.push('Unsupported MathML enclosure'); return cs.join('');
+        fail('Unsupported MathML enclosure'); return cs.join('');
       case 'mfenced': return (n.getAttribute('open') || '(') + cs.join(n.getAttribute('separators') || ',') + (n.getAttribute('close') || ')');
       case 'semantics': return cs[0] || '';
       case 'annotation': case 'annotation-xml': return '';
       case 'math': case 'mrow': case 'mn': case 'mtd': case 'mstyle': case 'mpadded': return cs.join('');
-      default: errors.push('Unsupported MathML node: ' + t); return cs.join('');
+      default: fail('Unsupported MathML node: ' + t); return cs.join('');
     }
   }
   function render(n) {
@@ -134,7 +144,7 @@ element => {
       const title = n.querySelector('title');
       const math = title?.querySelector('mjx-assistive-mml math, math');
       const tex = math ? m(math) : title?.textContent?.trim();
-      if (!tex) errors.push('SVG formula has no local title or MathML');
+      if (!tex) fail('SVG formula has no local title or MathML');
       return n.closest('.mjpage__block') ? '\n\n$$\n' + (tex || '') + '\n$$\n\n' : '$' + (tex || '') + '$';
     }
     if (t === 'mjx-container' || t === 'math') {
@@ -144,7 +154,7 @@ element => {
         .find(math => math.closest('.selectList') === n.closest('.selectList'));
       if (!math && emptyFormula(n.querySelector('svg'))) return '';
       if (!math && assets.includes(n.querySelector('svg'))) return render(n.querySelector('svg'));
-      if (!math) { errors.push('MathJax formula has no assistive MathML'); return ''; }
+      if (!math) { fail('MathJax formula has no assistive MathML'); return ''; }
       const previous = formulaFields;
       formulaFields = new Map([...fieldNodes].filter(([control]) => n.contains(control))
         .map(([control,key]) => [control.id.match(/-(\d+)$/)?.[1], key]));
@@ -180,7 +190,7 @@ element => {
   }
   if (rows.length) fields[0].choices = rows.map(row => {
     const circle = row.querySelector('.questionWidget-choiceLetterCircle, [id^="questionWidget-choiceLetterCircle-"], .choiceLetterCircle');
-    if (!circle?.id) errors.push('Choice circle has no observed ID');
+    if (!circle?.id) fail('Choice circle has no observed ID');
     return choice(row.querySelector('.questionWidget-choiceText, .choiceText'), circle?.textContent.trim(), circle?.id);
   });
   for (const [node,key] of fieldNodes) {
@@ -211,14 +221,24 @@ element => {
   const solution = element.matches('.questionExplanation') ? element : element.querySelector('.exampleExplanation, .questionWidget-explanation, .questionExplanation');
   const staged = !!element.querySelector('.proofSection,.questionWidget-healthFrame');
   const finalResult = element.querySelector('.questionWidget-result,.correctAnswerText,.incorrectAnswerText')?.textContent.trim();
+  const fieldErrors = errors.length;
+  const problem = readPart('problem', () => [text(graphic),text(prompt)].filter(Boolean).join('\n\n'));
+  const workedSolution = readPart('solution', () => text(solution));
+  const calculatorInstructions = readPart('problem', () => text(instructions));
+  const parts = [];
+  if (prompt || graphic || instructions) parts.push('problem');
+  if (fields.length) parts.push('fields');
+  if (solution) parts.push('solution');
   return {dom_id:element.id, name:element.querySelector('.stepName,.questionWidget-title')?.textContent.trim(),
-    problem:[text(graphic),text(prompt)].filter(Boolean).join('\n\n'), worked_solution:text(solution),
-    calculator_instructions:text(instructions), fields,
-    answer_fields_complete:fields.length ? errors.length === 0 && (!staged || ['Correct','Incorrect','Partial Credit','Skipped Question'].includes(finalResult)) : null,
+    problem, worked_solution:workedSolution, calculator_instructions:calculatorInstructions, fields,
+    answer_fields_complete:fields.length ? fieldErrors === 0 && (!staged || ['Correct','Incorrect','Partial Credit','Skipped Question'].includes(finalResult)) : null,
     result:element.querySelector('.questionWidget-result, .correctAnswerText, .incorrectAnswerText')?.textContent.trim(),
     proof_feedback:element.querySelector('.questionWidget-feedback')?.textContent.trim(),
     html:element.outerHTML, errors:[...new Set(errors)],
+    extraction_parts:parts, extraction_error_parts:errorParts,
     assets:assets.map((n,index) => ({index, tag:n.localName, html:n.outerHTML,
+      extraction_part:n.closest('.exampleExplanation,.questionWidget-explanation,.questionExplanation') ? 'solution' :
+        n.closest('.questionWidget-choicesTable,.choiceText,.questionWidget-choiceText,.selectList,select') ? 'fields' : 'problem',
       dom_index:[...element.querySelectorAll(n.localName)].indexOf(n),
       source_url:n.localName==='img' ? n.currentSrc || n.src : null}))};
 }

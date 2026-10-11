@@ -64,6 +64,29 @@ class HistoryBindingTests(unittest.TestCase):
         self.assertEqual(capture._question_presentations(history), [])
         self.assertEqual(capture._question_presentations(live), [record])
 
+    def test_explicit_fieldless_history_merges_text_but_cannot_confirm_submission(self):
+        record = presentation(question(identity='q-1'))
+        capture = self.capture([record])
+        history = {'math_academy_id': 'q-1', 'problem': 'One plus one?', 'fields': [],
+                   'worked_solution': 'The answer is 2.', 'extraction_parts': ['problem', 'solution'],
+                   'sequence_position': 1, 'grade': 'Correct'}
+        content = capture._merge_history({'questions': [history]})
+        self.assertEqual(len(content['questions']), 1)
+        self.assertEqual(content['questions'][0]['fields'], record['question']['fields'])
+        self.assertEqual(content['source_limitations'], [])
+        self.assertNotIn('feedback', record)
+        result = finalize_answers(content['questions'][0], [record], {'answers': []})
+        self.assertNotIn('correct_value', result['answer_fields'][0])
+
+    def test_fieldless_history_still_requires_verified_id_scope_and_identical_prompt(self):
+        for change in ({'math_academy_id': None}, {'extraction_parts': ['solution']},
+                       {'problem': 'Three plus three?'}, {'extraction_parts': ['problem', 'solution', 'fields']},
+                       {'fields': [{'key': 'different', 'type': 'blank'}]}):
+            with self.subTest(change=change):
+                history = {'math_academy_id': 'q-1', 'problem': 'One plus one?', 'fields': [],
+                           'worked_solution': 'The answer is 2.', 'extraction_parts': ['problem', 'solution'], **change}
+                self.assertFalse(ActivityCapture._history_content_matches(question(identity='q-1'), history))
+
     def test_deduplicated_history_grade_is_not_assigned_to_first_repeat(self):
         for known in (None, 'q-1'):
             first = presentation(question(identity=known), value='9')
