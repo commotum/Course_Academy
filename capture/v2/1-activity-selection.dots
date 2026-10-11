@@ -1,5 +1,5 @@
 // Current implemented selection logic, traced 2026-10-10.
-// Scope: read one account's live queue, choose or recover an activity, and gate Start.
+// Scope: choose what to do next from one account's queue.
 // Source paths are relative to Course_Academy/capture/v2/.
 // ../../scripts/question_capture/browser.py: EXTRACT_QUEUE, queue, start
 // ../../scripts/question_capture/capture.py: observe_queue, queued_resume, run
@@ -10,9 +10,24 @@
 // ../../scripts/question_capture/retry_policy.py: update_policy, apply_policy
 // Render: dot -Tsvg 1-activity-selection.dots -o 1-activity-selection.svg
 // A and B are continuation labels, used to avoid long crossing return arrows.
+// Details kept out of the visible chart:
+// Queue cards: #incompleteTasks .taskUnlocked. The activity type must match its Start URL.
+// Reassigned lessons require a new task ID, zero progress, and matching card/Start IDs
+// and canonical Lesson URL; other historically blocked tasks remain excluded.
+// Assessment details are complete when Questions and Time limit are positive integers
+// (the latter expressed in minutes). A required assessment can start without that test.
+// Priority: base 1; with c supporting targets add 1000*c/(1+c)+100/(1+r)+100/(1+d).
+// r is the smallest unready-topic count among supporting target walks; d is the
+// shortest distance to a supported target. With an earliest due date, also add
+// 250/(1+h/24), where h=max(0,int(hours until due)). Only self-directed mode adds targets.
+// A prerequisite walk stops expanding a topic when all its observed display bands
+// are nonzero. Scores replace stored task scores for queued Lesson/Review topics.
+// Perfect-retake policy attaches all_correct after selection; it does not raise priority.
+// The final Assessment recheck considers Lesson/Review/Multistep and other startable
+// Assessments as alternatives, honoring the saved excluded task IDs.
 
 digraph ActivitySelection {
-  graph [label="1. Activity Selection\nCourse Academy - current queue decision process",
+  graph [label="1. Which activity do we do next?\nHow the capture script chooses from Math Academy's queue",
     labelloc=t, labeljust=l, fontname="DejaVu Sans", fontsize=23,
     bgcolor="white", rankdir=TB, nodesep=0.38, ranksep=0.48,
     pad=0.35, splines=polyline, outputorder=edgesfirst, newrank=true];
@@ -23,25 +38,25 @@ digraph ActivitySelection {
     fontname="DejaVu Sans", fontsize=10, fontcolor="#475569"];
 
   subgraph cluster_inputs {
-    label="Read and interpret this account's queue";
+    label="See what's available";
     fontname="DejaVu Sans"; fontsize=17; color="#cbd5e1"; style=rounded;
-    Begin [label="A fresh queue selection is needed\nRun independently for each signed-in account",
+    Begin [label="Choose the next activity\nEach account makes its own choice",
       fillcolor="#111827", fontcolor=white, fontsize=14];
-    Boundary [label="A saved run already chosen for resumption bypasses this ranking.\nThis chart ends at the activity handoff; capture and import follow later.",
+    Boundary [label="If the script is already set to resume saved work,\nit continues that activity instead of choosing a new one.",
       shape=note, fillcolor=white, color="#cbd5e1"];
-    Queue [label="Read /learn in displayed queue order\nVisible unlocked cards: #incompleteTasks .taskUnlocked\nRead type, task/topic IDs, Start link, and progress\nExpand assessment details and missing diagnostic/multistep links",
+    Queue [label="Open Math Academy's activity queue\nRead the unlocked activities in the order shown\nOpen their details when needed",
       URL="../../scripts/question_capture/browser.py"];
-    ForcedResume [label="Forced redirect to unfinished Assessment/Diagnostic\nRestore its saved capture if available\nOtherwise retain failure evidence for recovery",
+    ForcedResume [label="Math Academy sends us straight to an unfinished test\nContinue from our saved work, if we have it\nOtherwise save the problem for investigation",
       shape=oval, fillcolor="#fffbeb"];
-    Queue -> ForcedResume [label="queue redirected", style=dashed, color="#d97706"];
-    Metadata [label="Classify each Assessment / Quiz\nRead Questions, Time limit, Notes, and retake title\nKeep required / optional / unknown separate"];
-    AssessmentRules [label="ASSESSMENT CLASSIFICATION (first matching rule)\l1. Notes: optional until N more XP -> optional when N > 0; required at 0\l2. Notes: required / must take or complete -> required\l3. No Notes + sole queue card + complete details -> required\l4. Otherwise -> unknown\l\lRetake: title ends '(Retake)' or Notes say 'quiz retake'.\lComplete details: positive integer Questions and Time limit in minutes.\lA retake with optional/unknown status needs complete details to start.\l",
+    Queue -> ForcedResume [label="sent to a test", style=dashed, color="#d97706"];
+    Metadata [label="Check the assessments\nAre they required, optional, or retakes?\nRead Math Academy's notes, question count, and time limit"];
+    AssessmentRules [label="How do we know an assessment is required?\lMath Academy says it is required, or its optional XP allowance is used up.\lIf it is the only activity, has no Notes, and lists a question count\land time limit, the script also treats it as required.\lOtherwise, the requirement may still be unknown.\l\lRetakes are labeled in the title or Notes. Optional assessments\land retakes that aren't required need a question count and time limit.\l",
       shape=note, fillcolor="#eff6ff", fontsize=11,
       URL="../../scripts/question_capture/core.py"];
-    History [label="Read local history + MA completed Lesson/Review outcomes\nExclude all task IDs already saved, captured, or observed completed\nUpdate pending perfect retakes from negative-XP Lesson/Review outcomes"];
-    TopicRules [label="LESSON TOPIC EXCLUSIONS\lNormally exclude a topic with a successfully captured Lesson.\lAllow it again when a pending perfect Lesson retake exists, OR\la verified fresh assignment has a new task ID, zero progress,\land matching card ID, Start ID, and canonical Lesson URL.\lKeep other old tasks for that topic excluded.\lCompleted Lesson topics do not exclude Reviews or Multisteps.\l",
+    History [label="Check what we've already done\nRead saved activities and Math Academy's completed lessons/reviews\nRemember any lesson or review that lost XP"];
+    TopicRules [label="When can we do a lesson on the same topic again?\lUsually, we skip a topic's lesson once we've captured it successfully.\lWe allow another when a repeat is owed after losing XP,\lor Math Academy has assigned a new, unstarted lesson for that topic.\lReviews and multisteps can still cover topics we've already captured.\l",
       shape=note, fillcolor="#eff6ff", fontsize=11];
-    Eligible [label="Identify fresh candidates\nSupported type and matching Start URL; not in progress\nTask ID not excluded; Lesson topic allowed\nRetain nonoptional Assessments that fail selection for inspection",
+    Eligible [label="Set aside activities we can't start as new work\nSkip activities the script can't handle, ones already underway,\nand ones already saved or completed\nSkip lessons we've already captured, with the exceptions at left",
       tooltip="Tests used for the final inspection branch are fresh and uncaptured, but need not be capture_supported."];
     Begin -> Queue -> Metadata -> History -> Eligible;
     Boundary -> Begin [style=dotted, constraint=false];
@@ -53,26 +68,26 @@ digraph ActivitySelection {
   }
 
   subgraph cluster_choice {
-    label="Choose the first matching branch - stop evaluating once selected";
+    label="Ask these questions in order. The first Yes decides what to do.";
     fontname="DejaVu Sans"; fontsize=17; color="#cbd5e1"; style=rounded;
-    D1 [label="1. Eligible Diagnostic?", shape=diamond, fillcolor="#eef2ff"];
-    P1 [label="Select first Diagnostic in queue\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
-    D2 [label="2. Eligible required\nAssessment?", shape=diamond, fillcolor="#eef2ff"];
-    P2 [label="Select first required Assessment\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
-    D3 [label="3. Eligible Assessment\nquiz retake?", shape=diamond, fillcolor="#eef2ff"];
-    P3 [label="Select first eligible quiz retake\nRequired, or complete Questions/Time limit\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
-    D4 [label="4. Eligible Lesson or Review\nwith a finite priority score?", shape=diamond, fillcolor="#eef2ff"];
-    P4 [label="Select highest-scoring Lesson or Review\nTies: smallest MA topic ID, then Lesson over Review\nIf still tied, first in queue\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
-    D5 [label="5. Any eligible Review?", shape=diamond, fillcolor="#eef2ff"];
-    P5 [label="Select first Review in queue\nFallback when no Lesson/Review was ranked\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
-    D6 [label="6. Any eligible Lesson,\nReview, or Multistep?", shape=diamond, fillcolor="#eef2ff"];
-    P6 [label="Select first remaining activity in queue\nMultisteps enter here; they are not priority-ranked\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
-    D7 [label="7. Eligible optional Assessment\nwith complete details?", shape=diamond, fillcolor="#eef2ff"];
-    P7 [label="Select first optional Assessment as fallback\nRecord excluded task IDs for the Start recheck\nContinue at A", shape=oval, fillcolor="#ecfdf5"];
-    D8 [label="8. Any remaining fresh, uncaptured\nnonoptional Assessment?", shape=diamond, fillcolor="#eef2ff"];
-    Inspect [label="Flag Assessment for eligibility/layout inspection\nIncludes unknown requirement or unsupported required test\nSave selection; report in dry-run, otherwise defer before Start",
+    D1 [label="1. Is there a diagnostic\nwe can start?", shape=diamond, fillcolor="#eef2ff"];
+    P1 [label="Choose the first available diagnostic\nThen go to A below", shape=oval, fillcolor="#ecfdf5"];
+    D2 [label="2. Is there a required assessment\nwe can start?", shape=diamond, fillcolor="#eef2ff"];
+    P2 [label="Choose the first required assessment we can start\nThen go to A below", shape=oval, fillcolor="#ecfdf5"];
+    D3 [label="3. Is there a quiz retake\nwe can start?", shape=diamond, fillcolor="#eef2ff"];
+    P3 [label="Choose the first quiz retake we can start\nThen go to A below", shape=oval, fillcolor="#ecfdf5"];
+    D4 [label="4. Can we choose a lesson or review\nusing its priority score?", shape=diamond, fillcolor="#eef2ff"];
+    P4 [label="Choose the lesson or review with the highest score\nIf tied: lowest Math Academy topic ID wins\nFor the same topic, choose a lesson before a review\nIf still tied, choose the first in the queue\nThen go to A below", shape=oval, fillcolor="#ecfdf5"];
+    D5 [label="5. Is there a review\nwe can start?", shape=diamond, fillcolor="#eef2ff"];
+    P5 [label="Choose the first available review\nThis is used when scores didn't give us a choice\nThen go to A below", shape=oval, fillcolor="#ecfdf5"];
+    D6 [label="6. Is there a lesson, review,\nor multistep we can start?", shape=diamond, fillcolor="#eef2ff"];
+    P6 [label="Choose the first available one in the queue\nMultisteps are chosen here; they don't get priority scores\nThen go to A below", shape=oval, fillcolor="#ecfdf5"];
+    D7 [label="7. Is there an optional assessment\nwe can start?", shape=diamond, fillcolor="#eef2ff"];
+    P7 [label="Choose the first optional assessment we can start\nWe've run out of the choices above\nThen go to A below", shape=oval, fillcolor="#ecfdf5"];
+    D8 [label="8. Is there an unstarted assessment left\nthat isn't clearly optional?", shape=diamond, fillcolor="#eef2ff"];
+    Inspect [label="Don't start it yet\nThe requirement is unclear, or the script can't handle the test\nSave the details so the problem can be investigated",
       fillcolor="#fffbeb"];
-    None [label="No fresh activity selected\nContinue at B", shape=oval, fillcolor="#fffbeb"];
+    None [label="Nothing new we can start\nGo to B below", shape=oval, fillcolor="#fffbeb"];
     Eligible -> D1;
     D1 -> D2 -> D3 -> D4 -> D5 -> D6 -> D7 -> D8 [label="no", weight=10];
     D1 -> P1 [label="yes", color="#059669"];
@@ -90,25 +105,25 @@ digraph ActivitySelection {
     { rank=same; D7; P7; } { rank=same; D8; Inspect; }
   }
 
-  Scores [label="HOW LESSON / REVIEW SCORES ARE CALCULATED\lRead-only inputs from math: learner targets, incomplete assignments,\learliest due dates, topic/next and KP key-prerequisite links.\lUse this capture account's latest saved course-progress snapshot.\l\lOnly self-directed mode contributes targets and assignments.\lFor each target, walk backward through prerequisites; stop expanding\la topic when all its observed progress bands are nonzero.\l\lEvery queued Lesson/Review topic starts at score 1.\lIf it supports targets, add:\l  1000c/(1+c) + 100/(1+r) + 100/(1+d)\lIf a supporting target has a due date, also add:\l  250/(1+h/24)\lc = number of supported targets\lr = smallest remaining unready-topic count among those target walks\ld = shortest distance to a supported target\lh = whole hours until earliest due date, floored at zero\l\lThese computed scores replace stored task scores for queued topics.\lNo effective self-directed targets (including assignments) -> score 1.\lThen the topic-ID tie-break determines the Lesson/Review choice.\lNormal queued Lessons/Reviews therefore have scores; unranked\lbranches are fallbacks. No learner-state writes or eligibility simulation.\l",
+  Scores [label="What makes a lesson or review a higher priority?\lWith self-directed study turned on, the script uses your study goals\land unfinished assignments saved in the math database.\lA topic gets a higher score when:\l- It helps with more of those goals.\l- Fewer unfinished topics remain for a goal it helps with.\l- It is closer to a goal in the chain of prerequisites.\l- An assignment it helps with is due sooner.\l\lThe account's saved Math Academy progress shows which\lprerequisites still need work for this calculation.\l\lWithout those goals, every lesson/review starts with the same\lscore of 1, so the topic-ID rule at left decides.\lLessons and reviews normally all have scores. The next two\lquestions are backups when scoring doesn't choose anything.\l",
     shape=note, fillcolor="#eff6ff", fontsize=11,
     URL="../../scripts/question_capture/priorities.py"];
   Scores -> D4 [style=dotted, constraint=false];
   { rank=same; Scores; D4; P4; }
 
   subgraph cluster_selected {
-    label="A. Finish the selected result and check it before Start";
+    label="A. We've chosen an activity";
     fontname="DejaVu Sans"; fontsize=17; color="#cbd5e1"; style=rounded;
-    Selected [label="A - an activity was selected\nAttach all_correct for a matching pending Lesson/Review perfect retake\nThis changes its answer policy, not its selection priority\nSave selected task, reason, priority, exclusions, and queue evidence",
+    Selected [label="Save which activity we chose and why\nIf this repeats a lesson/review that lost XP, aim to get every answer right\nLosing XP changes how we answer the repeat; it doesn't move it up the queue",
       fillcolor="#dbeafe"];
-    Dry [label="Dry-run?", shape=diamond, fillcolor="#eef2ff"];
-    Report [label="Report selection and exit\nDo not start an activity", shape=oval, fillcolor="#eff6ff"];
-    Test [label="Selected activity\nis an Assessment?", shape=diamond, fillcolor="#eef2ff"];
-    Recheck [label="Read this Assessment's live details again\nRe-evaluate required / retake / optional status\nFor optional fallback, recheck that no fresh supported\nLesson/Review/Multistep or other eligible Assessment exists\nHonor the saved excluded task IDs"];
-    Allowed [label="Still allowed to start?", shape=diamond, fillcolor="#eef2ff"];
-    Defer [label="Defer before Start\nSave the reason for eligibility/layout recovery",
+    Dry [label="Are we only checking what\nthe script would choose?", shape=diamond, fillcolor="#eef2ff"];
+    Report [label="Show the choice and stop\nThis is what --dry-run does", shape=oval, fillcolor="#eff6ff"];
+    Test [label="Did we choose\nan assessment?", shape=diamond, fillcolor="#eef2ff"];
+    Recheck [label="Check the assessment one more time before starting\nIs it still required, a retake, or our last optional choice?\nFor an optional assessment, check that no lesson, review, multistep,\nor other assessment we can start has appeared"];
+    Allowed [label="Does it still meet\nthose conditions?", shape=diamond, fillcolor="#eef2ff"];
+    Defer [label="Don't start it\nSave what changed so we can investigate",
       shape=oval, fillcolor="#fffbeb"];
-    Handoff [label="Start the selected activity\nHand off to its capture workflow", shape=oval,
+    Handoff [label="Start the activity\nBegin answering and capturing its content", shape=oval,
       fillcolor="#111827", fontcolor=white, fontsize=14];
     Selected -> Dry;
     Dry -> Report [label="yes"];
@@ -123,19 +138,19 @@ digraph ActivitySelection {
   }
 
   subgraph cluster_none {
-    label="B. No fresh activity could be selected";
+    label="B. Nothing new is ready to start";
     fontname="DejaVu Sans"; fontsize=17; color="#cbd5e1"; style=rounded;
-    Recovery [label="B - check saved work\nIf eligible, inspect one outstanding capture failure,\nthen refresh the queue and repeat selection once\nIf a candidate appears, continue at A",
+    Recovery [label="Check whether a previous capture problem can be fixed\nIf so, try one repair and read the queue again\nIf that gives us an activity, go to A",
       fillcolor="#fffbeb"];
-    Saved [label="Still no candidate: queued unfinished\ncapture eligible for resumption?", shape=diamond, fillcolor="#eef2ff"];
-    Resume [label="Resume first eligible saved capture in queue order\nSkip already-resumed, completed, superseded, or deferred failures\nReuse its saved task identity and checkpoint",
+    Saved [label="Can we continue a saved,\nunfinished activity in the queue?", shape=diamond, fillcolor="#eef2ff"];
+    Resume [label="Continue the first saved activity we can resume\nPick up where we left off\nSkip activities finished, replaced, already retried, or still blocked",
       shape=oval, fillcolor="#ecfdf5"];
-    Nonempty [label="Queue nonempty\nand not dry-run?", shape=diamond, fillcolor="#eef2ff"];
-    Wait [label="Record waiting state; back off\nRefresh queue and repeat selection\nWork remains, but cannot start yet",
+    Nonempty [label="Are there still activities in the queue,\nand are we running for real?", shape=diamond, fillcolor="#eef2ff"];
+    Wait [label="Wait, then check the queue again\nThere is work listed, but we can't start it yet",
       shape=oval, fillcolor="#fffbeb"];
-    Finish [label="End this selection loop\nQueue empty, or dry-run found no candidate",
+    Finish [label="Stop here\nThe queue is empty, or we were only checking our choice",
       shape=oval, fillcolor="#eff6ff"];
-    Recovery -> Saved [label="still no candidate"];
+    Recovery -> Saved [label="still nothing new"];
     Saved -> Resume [label="yes"];
     Saved -> Nonempty [label="no"];
     Nonempty -> Wait [label="yes"];
@@ -147,7 +162,7 @@ digraph ActivitySelection {
   None -> Selected [style=invis, weight=4];
   { rank=same; Selected; Recovery; }
 
-  Legend [label="READING THE CHART\nSolid arrows: decision flow; dotted: supporting inputs\nGreen: selected activity; amber: inspect / recover / wait\nA and B: continue at the matching section below\nQueue order means Math Academy's displayed card order",
+  Legend [label="How to read this\nFollow the arrows and answer each question\nThe blue notes explain the rules\nA and B point to the sections at the bottom\nFirst in the queue means first on Math Academy's page",
     shape=note, fillcolor=white, color="#cbd5e1", fontsize=11];
   Begin -> Legend [style=invis];
 }
