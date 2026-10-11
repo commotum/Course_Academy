@@ -36,16 +36,24 @@ Minimal changes
      :question/problem "corrected prompt"
      :db/ensure [:question/validate]}
 
-  Changed answer field: explicitly retract only the question-to-old-field link,
-  then attach a new field with a new stable UUID and its own field-scoped answer
-  entities. Preserve all old field and answer definitions; do not retractEntity.
-  New entities request answer/validate and answer-field/validate; the changed
-  question requests question/validate. Old field/answer UUIDs and entities stay
-  available, and prior learner answer references retain their meaning.
-  Do not share an old answer entity between old and replacement fields: choices
-  is a component ownership relation and the local schema requires field-scoped
-  answers, even for identical mathematical values. Cloning values into the new
-  field is necessary under this convention, not an avoidable bulk rewrite.
+  User-selected retention convention: retire each superseded field and its
+  answer components from current state; recover originals through immutable
+  database history. The final repair transaction uses retractEntity on exactly
+  the old fields of q-79044 and q-79945. This recursively retracts both fields,
+  their ten answer components, and all incoming refs including question-to-field
+  links. A separate explicit ownership-link retraction is therefore unnecessary.
+  Both affected questions and graphs first appear in stage 1, and the helper
+  verifies there are no external incoming refs or learner responses that could
+  be removed by this cascade. All other original field/answer entities remain
+  unchanged in current state.
+
+  Replacement fields use new stable UUIDs and their own field-scoped answer
+  entities. New entities request answer/validate and answer-field/validate;
+  changed questions request question/validate. Identical values in a replacement
+  field get new component identities; old identities and values remain in
+  history with their original Math Academy source. Do not share answer entities
+  across original and replacement fields. At stage 2, the complete original
+  graph is recoverable from db_after.as_of(stage1_basis).
   References:
     scripts/question_capture/math_content.py:140-176
     schema/content/4-question.edn:37-51
@@ -53,6 +61,8 @@ Minimal changes
     schema/content/6-answer.edn:1-13
     /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:179
     /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:269
+    /home/jake/Developer/EDB/docs/04_transactions/07_transaction_functions.md:215-242
+    /home/jake/Developer/EDB/src/transaction/assess/mod.rs:1982-2054
 
   Stage 2 references stage 1 new entities by unique lookup refs (question/id,
   question/math-academy-id, answer-field/id), not speculative numeric IDs or
@@ -73,7 +83,12 @@ Validation and history
   guards. It does not itself check mathematical correctness, all resulting
   content, requested source keyword equality, all changed entity scope, or
   completeness of immutable guards. The parent needs independent guards and
-  readback comparison. Include answer-field/choices in immutable field guards.
+  readback comparison. Include answer-field/choices in immutable field guards;
+  exclude only the twelve explicitly authorized retired entities from those
+  guards, and whitelist every exact cascade retraction separately. History
+  assertions and as-of reconstruction are checked by the speculative helper.
+  The user's explicit retirement request supersedes the capture importer's
+  usual current-state immutability guard for these two field graphs only.
   Import_math cannot author repairs: it explicitly requires the MA source and
   invokes authoritative-capture preparation. Do not weaken that source check;
   prepare the separate surgical transaction directly.
@@ -109,11 +124,14 @@ Chained preview helper
     /home/jake/Developer/EDB/docs/04_transactions/04_transaction_data.md:473
 
   Helper outputs both stage receipts and exact QUESTION_PULL readbacks for all
-  26 questions. It checks the base field/answer graph survives stage 1, then
-  pulls every original field/answer entity after stage 1 and after stage 2 and
-  checks equality. For each retraction it reads the changed
-  entity's bounded history prefix and checks that original source assertions
-  and the new repair-source retraction are all retained.
+  26 questions. It checks the base field/answer graph survives stage 1. Stage 2
+  must retire exactly the two authorized field graphs, with no external incoming
+  refs before retirement and no remaining current facts or refs afterward. All
+  non-retiring components must remain equal. The helper reads the entire original
+  graph through stage2.db_after.as_of(stage1_basis) and compares it with stage 1.
+  For each retraction it reads the changed entity's bounded history prefix and
+  checks that original source assertions and the new repair-source retraction
+  are all retained.
 
   Current math-edb is byte-identical to EDB target/release/edb, SHA256:
     3a09c745b592016a2de5f05cec96a9afd110be455e35a10252a775999fee4f11
@@ -133,3 +151,15 @@ Chained preview helper
       --extern edb_core=/home/jake/Developer/EDB/target/release/deps/libedb_core-2824b6ab39ee5756.rlib \
       -L dependency=/home/jake/Developer/EDB/target/release/deps \
       -o /tmp/held-repairs-sequential-preview
+
+Final actual speculative run
+  Stage 1: basis 187 -> 188; 804 datoms, source 17592186045585.
+  Stage 2: basis 188 -> 189; 173 datoms, source 17592186405019.
+  Both completed successfully. Exactly two fields and ten answers retired from
+  current state; originals recovered from stage 2's as-of 188 view; all old
+  assertions and new source-attributed retractions retained in history.
+  Fresh durable observation after both previews: basis 187. Database writes: 0.
+  Proof artifacts are under ../validation, including stage2-retirement.edn,
+  stage2-as-of-stage1-questions.edn,
+  stage2-as-of-stage1-original-components.edn, and
+  stage2-changed-entity-history.edn.

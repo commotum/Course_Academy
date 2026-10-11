@@ -1,0 +1,513 @@
+SURGICAL REPAIR DIFF — PREPARED ONLY, NOT COMMITTED
+All 26 repairs authored and independently reviewed by GPT-6-astra / ultra.
+Old = Math Academy content from stage 1; new = agent repair in stage 2.
+Original choice labels below identify their captured positions.
+
+q-115261
+MA intended choice: C
+
+problem: Replace the invalid one-base-point converse by the tangent characterization of concavity on an interval; strict overestimation excludes the linear distractor.
+--- q-115261/problem/Math-Academy
++++ q-115261/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-Given that the tangent line approximation to the function $f(x)$ at $x=\sqrt{2}$ overestimates the values of the function in the neighborhood of $x=\sqrt{2},$ which of the following must be true?
++Given that the tangent line approximation to a differentiable function $f(x)$ at every point in an open interval containing $x=\sqrt{2}$ strictly overestimates the values of the function at every other point in that interval, which of the following must be true?
+
+worked_solution: Apply the tangent criterion at all base points and explicitly allow equality at the point of tangency.
+--- q-115261/worked_solution/Math-Academy
++++ q-115261/worked_solution/gpt-6-astra-ultra
+@@ -1,9 +1,9 @@
+-Since the tangent line approximation of $f(x)$ at $x=\sqrt{2}$ overestimates the values of the function, we have
++Since the tangent line approximation of $f(x)$ at every point $a$ in the given neighborhood strictly overestimates the values of the function at every other point, we have
+ 
+ $$
+-L(x)>f(x),
++L_a(x)>f(x)\quad (x\ne a),
+ $$
+ 
+-that is, the line $L(x)$ must be above the graph of $f(x)$ near the point  $x=\sqrt{2}.$
++that is, each tangent line $L_a(x)$ lies above the graph of $f(x)$ throughout the neighborhood, with equality only at $x=a.$ A differentiable function whose graph lies below each of its tangent lines on an interval is concave down on that interval.
+ 
+ Therefore, the function must be concave down in the neighborhood of $x=\sqrt{2}.$
+
+
+q-123316
+MA intended choice: D
+
+problem: Start sequence I at n=2, where its denominator is nonzero; preserve its tail, its divergence, and the saved solution.
+--- q-123316/problem/Math-Academy
++++ q-123316/problem/gpt-6-astra-ultra
+@@ -1,5 +1,5 @@
+ Which of the following sequences diverge?
+ 
+-I. ${a}_{n}=\frac{{n}^{3}}{1-{n}^{2}}$ for $n\ge 1$
++I. ${a}_{n}=\frac{{n}^{3}}{1-{n}^{2}}$ for $n\ge 2$
+ II. ${a}_{n}=\frac{3}{n}$ for $n\ge 1$
+ III. ${a}_{n}=\frac{2{n}^{2}-3{n}^{3}}{{n}^{3}+5}$ for $n\ge 1$
+
+
+q-123439
+MA intended choice: E
+
+problem: Exclude the undefined endpoints, explicitly interpret the integrals improperly, and test the pointwise arc-length formula rather than equality of divergent integral values.
+--- q-123439/problem/Math-Academy
++++ q-123439/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-Which of the following is equivalent to ${\int }_{C}\,\text{d}s,$ where $C$ is the path along the polar curve $r={sec}^{3}⁡\theta \,$ for $-\pi /2\le \theta \le \pi /2$ ?
++Which of the following expressions is obtained by using the pointwise polar arc-length integrand for ${\int }_{C}\,\text{d}s,$ where $C$ is the path along the polar curve $r={sec}^{3}⁡\theta \,$ for $-\pi /2<\theta<\pi /2$? Interpret the endpoint integrals as improper integrals.
+
+worked_solution: Correct the isolated upper-limit typo and explain both the infinite length and the pointwise criterion that selects the intended expression.
+--- q-123439/worked_solution/Math-Academy
++++ q-123439/worked_solution/gpt-6-astra-ultra
+@@ -26,4 +26,6 @@
+ 
+ $$
+-\begin{aligned}{\int }_{C}\,\text{d}s & ={\int }_{{\theta }_{1}}^{{\theta }_{2}}\sqrt{{r}^{2}+{(\frac{\text{d}r}{\text{d}\theta })}^{2}}\,\text{d}\theta  \\  & ={\int }_{-\pi /2}^{\pi /2}\sqrt{{({sec}^{3}⁡\theta )}^{2}+{(3{sec}^{3}⁡\theta \operatorname{tan}⁡\theta )}^{2}}\,\text{d}\theta  \\  & ={\int }_{-\pi /2}^{-\pi /2}\sqrt{{sec}^{6}⁡\theta +9{sec}^{6}⁡\theta {tan}^{2}⁡\theta }\,\text{d}\theta  \\  & ={\int }_{-\pi /2}^{\pi /2}\sqrt{{sec}^{6}⁡\theta (1+9{tan}^{2}⁡\theta })\,\text{d}\theta  \\  & ={\int }_{-\pi /2}^{\pi /2}{sec}^{3}⁡\theta \sqrt{1+9{tan}^{2}⁡\theta }\,\text{d}\theta \,.\end{aligned}
++\begin{aligned}{\int }_{C}\,\text{d}s & ={\int }_{{\theta }_{1}}^{{\theta }_{2}}\sqrt{{r}^{2}+{(\frac{\text{d}r}{\text{d}\theta })}^{2}}\,\text{d}\theta  \\  & ={\int }_{-\pi /2}^{\pi /2}\sqrt{{({sec}^{3}⁡\theta )}^{2}+{(3{sec}^{3}⁡\theta \operatorname{tan}⁡\theta )}^{2}}\,\text{d}\theta  \\  & ={\int }_{-\pi /2}^{\pi /2}\sqrt{{sec}^{6}⁡\theta +9{sec}^{6}⁡\theta {tan}^{2}⁡\theta }\,\text{d}\theta  \\  & ={\int }_{-\pi /2}^{\pi /2}\sqrt{{sec}^{6}⁡\theta (1+9{tan}^{2}⁡\theta })\,\text{d}\theta  \\  & ={\int }_{-\pi /2}^{\pi /2}{sec}^{3}⁡\theta \sqrt{1+9{tan}^{2}⁡\theta }\,\text{d}\theta \,.\end{aligned}
+ $$
++
++These endpoint integrals are improper and diverge to $+\infty.$ The requested expression is determined by the pointwise arc-length integrand on $-\pi/2<\theta<\pi/2.$
+
+
+q-123458
+MA intended choice: E
+
+problem: Equal integral values after a phase shift do not identify the arc-length density in the given parameter. The new request tests that density while retaining every choice and the source curve.
+--- q-123458/problem/Math-Academy
++++ q-123458/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-Which of the following is equivalent to ${\int }_{C}\,\text{d}s,$ where $C$ is the path along the polar curve $r=\sqrt{1+\operatorname{sin}⁡4\theta }\,$ for $0\le \theta \le 2\pi $ ?
++Which of the following gives ${\int }_{C}\,\text{d}s$ with the arc-length integrand simplified pointwise in the given polar angle $\theta$ (on each smooth piece, without reparametrizing), where $C$ is the path along the polar curve $r=\sqrt{1+\operatorname{sin}⁡4\theta }\,$ for $0\le \theta \le 2\pi $ ?
+
+worked_solution: The source derivative has a zero denominator at four parameter values where the polar curve has corners. Restrict the derivative to its domain and explicitly apply the existing calculation piecewise; no algebra or result changes.
+--- q-123458/worked_solution/Math-Academy
++++ q-123458/worked_solution/gpt-6-astra-ultra
+@@ -17,5 +17,5 @@
+ $$
+ 
+-Since $r=\sqrt{1+\operatorname{sin}⁡4\theta }\,$ we have
++Where $1+\operatorname{sin}⁡4\theta>0$, $r=\sqrt{1+\operatorname{sin}⁡4\theta }\,$ gives
+ 
+ $$
+@@ -23,5 +23,5 @@
+ $$
+ 
+-Therefore, the expression for our line integral is 
++Applying the arc-length formula piecewise between the finitely many zeros of $r$, the expression for our line integral is 
+ 
+ $$
+
+
+q-126539
+MA intended choice: D
+
+problem: Specify the integrand produced by the stated theorem and coordinate transformation. A different function that happens to have the same double-integral value no longer answers the request.
+--- q-126539/problem/Math-Academy
++++ q-126539/problem/gpt-6-astra-ultra
+@@ -5,3 +5,3 @@
+ $$
+ 
+-where $C$ is the circle ${x}^{2}+{y}^{2}=36$ oriented counterclockwise, what is the missing part of the equation?
++where $C$ is the circle ${x}^{2}+{y}^{2}=36$ oriented counterclockwise, what expression belongs in the blank after applying Green's theorem and changing to polar coordinates $x=r\cos\theta$, $y=r\sin\theta$, with the integrand simplified pointwise before integration?
+
+
+q-126564
+MA intended choice: A
+
+problem: Specify the integrand produced by the stated theorem and coordinate transformation. A different function that happens to have the same double-integral value no longer answers the request.
+--- q-126564/problem/Math-Academy
++++ q-126564/problem/gpt-6-astra-ultra
+@@ -5,3 +5,3 @@
+ $$
+ 
+-where $F(x,y)=⟨xy-\sqrt[3]{x+5},\,x+2y⟩$ and $C$ is the circle ${x}^{2}+{y}^{2}=4$ oriented counterclockwise, what is the missing part of the equation?
++where $F(x,y)=⟨xy-\sqrt[3]{x+5},\,x+2y⟩$ and $C$ is the circle ${x}^{2}+{y}^{2}=4$ oriented counterclockwise, what expression belongs in the blank after applying Green's theorem and changing to polar coordinates $x=r\cos\theta$, $y=r\sin\theta$, with the integrand simplified pointwise before integration?
+
+
+q-126748
+MA intended choice: B
+
+problem: Bind the blank to the differential derived from the supplied P, Q, and parametrization. Another area formula can give the same number without giving this pointwise integrand.
+--- q-126748/problem/Math-Academy
++++ q-126748/problem/gpt-6-astra-ultra
+@@ -9,5 +9,5 @@
+ $$
+ 
+-where $P(x,y)=-y$ and $Q(x,y)=0.$ Determine the missing part of the equation.
++where $P(x,y)=-y$ and $Q(x,y)=0.$ Determine the pointwise integrand obtained from the given $P$, $Q$, and parametrization using Green's theorem, with the sign adjusted for the orientation of $C$.
+ 
+ *Hint: Note that $C$ is negatively oriented.*
+
+worked_solution: The closed curve has a corner at the common endpoint of the parametrization. Piecewise smoothness is sufficient for Green's theorem and is the accurate condition here.
+--- q-126748/worked_solution/Math-Academy
++++ q-126748/worked_solution/gpt-6-astra-ultra
+@@ -1,3 +1,3 @@
+-Our simple, smooth, closed path $C$ is negatively oriented, and  
++Our simple, piecewise smooth, closed path $C$ is negatively oriented, and  
+ 
+ $$
+
+
+q-161862
+MA intended choice: D
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161862/problem/Math-Academy
++++ q-161862/problem/gpt-6-astra-ultra
+@@ -7,3 +7,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+
+q-161863
+MA intended choice: D
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161863/problem/Math-Academy
++++ q-161863/problem/gpt-6-astra-ultra
+@@ -5,3 +5,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+
+q-161896
+MA intended choice: E
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161896/problem/Math-Academy
++++ q-161896/problem/gpt-6-astra-ultra
+@@ -7,3 +7,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+
+q-161897
+MA intended choice: B
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161897/problem/Math-Academy
++++ q-161897/problem/gpt-6-astra-ultra
+@@ -7,3 +7,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+
+q-161901
+MA intended choice: E
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161901/problem/Math-Academy
++++ q-161901/problem/gpt-6-astra-ultra
+@@ -7,3 +7,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+
+q-161903
+MA intended choice: E
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161903/problem/Math-Academy
++++ q-161903/problem/gpt-6-astra-ultra
+@@ -5,3 +5,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+
+q-161904
+MA intended choice: E
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161904/problem/Math-Academy
++++ q-161904/problem/gpt-6-astra-ultra
+@@ -5,3 +5,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+worked_solution: The lower surface was defined as z = h(x,y). Its graph-flux formula must use derivatives of h, matching the source's already-correct substitution on the next line.
+--- q-161904/worked_solution/Math-Academy
++++ q-161904/worked_solution/gpt-6-astra-ultra
+@@ -34,5 +34,5 @@
+ 
+ $$
+-\begin{aligned}{∬}_{{S}_{2}}F\cdot \text{d}S & =-{∬}_{D}(-P\frac{∂g}{∂x}-Q\frac{∂g}{∂y}+R)\text{d}A \\  & =-{∬}_{D}(-(-y)\cdot \frac{x}{\sqrt{9-{x}^{2}-{y}^{2}}}-(0)\cdot \frac{y}{\sqrt{9-{x}^{2}-{y}^{2}}}+x)\,\text{d}A \\  & =-{∬}_{D}(\frac{xy}{\sqrt{9-{x}^{2}-{y}^{2}}}+x)\,\text{d}A.\end{aligned}
++\begin{aligned}{∬}_{{S}_{2}}F\cdot \text{d}S & =-{∬}_{D}(-P\frac{∂h}{∂x}-Q\frac{∂h}{∂y}+R)\text{d}A \\  & =-{∬}_{D}(-(-y)\cdot \frac{x}{\sqrt{9-{x}^{2}-{y}^{2}}}-(0)\cdot \frac{y}{\sqrt{9-{x}^{2}-{y}^{2}}}+x)\,\text{d}A \\  & =-{∬}_{D}(\frac{xy}{\sqrt{9-{x}^{2}-{y}^{2}}}+x)\,\text{d}A.\end{aligned}
+ $$
+ 
+
+
+q-161906
+MA intended choice: C
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161906/problem/Math-Academy
++++ q-161906/problem/gpt-6-astra-ultra
+@@ -5,3 +5,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+worked_solution: The lower surface was defined as z = h(x,y). Its graph-flux formula must use derivatives of h, matching the source's already-correct substitution on the next line.
+--- q-161906/worked_solution/Math-Academy
++++ q-161906/worked_solution/gpt-6-astra-ultra
+@@ -48,5 +48,5 @@
+ 
+ $$
+-\begin{aligned}{∬}_{{S}_{2}}F\cdot \text{d}S & =-{∬}_{D}(-P\frac{∂g}{∂x}-Q\frac{∂g}{∂y}+R)\text{d}A \\  & =-{∬}_{D}(-0\cdot (-\frac{1}{2})-x\cdot 0+y)\,\text{d}A \\  & =-{∬}_{D}y\,\text{d}A.\end{aligned}
++\begin{aligned}{∬}_{{S}_{2}}F\cdot \text{d}S & =-{∬}_{D}(-P\frac{∂h}{∂x}-Q\frac{∂h}{∂y}+R)\text{d}A \\  & =-{∬}_{D}(-0\cdot (-\frac{1}{2})-x\cdot 0+y)\,\text{d}A \\  & =-{∬}_{D}y\,\text{d}A.\end{aligned}
+ $$
+ 
+
+
+q-161908
+MA intended choice: E
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161908/problem/Math-Academy
++++ q-161908/problem/gpt-6-astra-ultra
+@@ -7,3 +7,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+
+q-161913
+MA intended choice: B
+
+problem: The equation alone admits distinct integrands with equal integrals. Require the pointwise sum obtained from the two outward-oriented graph parametrizations, which is the actual computation taught by the worked solution. In a partial-integrand blank, the fixed displayed terms stay in that sum.
+--- q-161913/problem/Math-Academy
++++ q-161913/problem/gpt-6-astra-ultra
+@@ -5,3 +5,3 @@
+ $$
+ 
+-Which of the following could be the missing expression?
++Which expression belongs in the blank when the upper and lower surfaces are parametrized as graphs over $D$ and their outward flux integrands are added pointwise where defined, before integration?
+
+
+q-32876
+MA intended choice: A
+
+problem: A tangent line has no intrinsic direction, so the original opposite vectors describe the same line. Asking that increasing u agree with increasing curve parameter t gives the standard oriented tangent and distinguishes the two parametrizations.
+--- q-32876/problem/Math-Academy
++++ q-32876/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-Which of the following gives the equation of the tangent to the curve $r(t)=\operatorname{sin}⁡\pi t\,i+\operatorname{cos}⁡\pi t\,j+t\,k$ at the point $P(-1,0,\frac{3}{2}),$ valid for real values of $u?$
++Which of the following gives the equation of the tangent to the curve $r(t)=\operatorname{sin}⁡\pi t\,i+\operatorname{cos}⁡\pi t\,j+t\,k$ at the point $P(-1,0,\frac{3}{2}),$ parametrized for real values of $u$ so that increasing $u$ follows the direction of increasing $t$?
+
+worked_solution: The first equation sin(πt) = −1 has infinitely many solutions. The third equation directly and uniquely fixes t = 3/2, as the remainder of the solution requires.
+--- q-32876/worked_solution/Math-Academy
++++ q-32876/worked_solution/gpt-6-astra-ultra
+@@ -19,5 +19,5 @@
+ $$
+ 
+-From the first equation, we get $t=\frac{3}{2}.$ This value also satisfies the other two equations. Therefore, $P(-1,0,\frac{3}{2})$ is at the tip of the vector $r(\frac{3}{2}).$  
++From the third equation, we get $t=\frac{3}{2}.$ This value also satisfies the other two equations. Therefore, $P(-1,0,\frac{3}{2})$ is at the tip of the vector $r(\frac{3}{2}).$  
+ 
+ We calculate ${r}^{′}(t):$ 
+
+
+q-36754
+MA intended choice: A
+
+problem: Fix the origin of the requested line parameter at the stated point. This is the standard point-plus-direction form used in the worked solution and distinguishes the other parametrizations of the same z-axis.
+--- q-36754/problem/Math-Academy
++++ q-36754/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-Find a vector equation of the normal line to the surface ${x}^{2}+\frac{{y}^{2}}{9}+\frac{{z}^{2}}{4}=1$ at the point $(0,0,2).$
++Find a vector equation of the normal line to the surface ${x}^{2}+\frac{{y}^{2}}{9}+\frac{{z}^{2}}{4}=1$ at the point $(0,0,2),$ with parameter $t=0$ at this point.
+
+
+q-51252
+MA intended choice: E
+
+problem: Specify that the proportional rate is the inflow contribution and name its actual coefficient k. Then 3k cannot be treated as an equally valid redefinition of an unnamed constant, and the leak is subtracted from the inflow.
+--- q-51252/problem/Math-Academy
++++ q-51252/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-A tank is being filled with water. The rate of change of the volume of water in the tank $V,$ in milliliters, is directly proportional to the time $t,$ measured in hours. Additionally, the tank is also leaking $200\,\text{ml}$ of water every hour. What is the differential equation that describes the rate of change of the volume of water in the tank, at time $t,$ where $t$ is the time (in hours) since the tank started filling?
++A tank is being filled with water. The rate of change of the volume of water in the tank $V,$ in milliliters, due to inflow is directly proportional to the time $t,$ measured in hours, with positive constant of proportionality $k$. Additionally, the tank is also leaking $200\,\text{ml}$ of water every hour. What is the differential equation that describes the rate of change of the volume of water in the tank, at time $t,$ where $t$ is the time (in hours) since the tank started filling?
+
+
+q-72575
+MA intended choice: E
+
+problem: Ask explicitly about coefficient matrices, which is the object the saved MA solution actually classifies; identify the omitted constants column.
+--- q-72575/problem/Math-Academy
++++ q-72575/problem/gpt-6-astra-ultra
+@@ -1,3 +1,3 @@
+-Which of the following augmented matrices are **not** in row echelon form?
++Which of the following augmented matrices have coefficient matrices that are **not** in row echelon form? Treat the final column of each augmented matrix as its constants column.
+ 
+ $$
+
+worked_solution: Remove the false claim that augmented-matrix echelon form is defined by the coefficient matrix, consistently name the coefficient matrices, and identify B’s actual pivot-order violation.
+--- q-72575/worked_solution/Math-Academy
++++ q-72575/worked_solution/gpt-6-astra-ultra
+@@ -1,3 +1,3 @@
+-Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:
++A coefficient matrix, obtained by omitting the final column of its augmented matrix, is in row echelon form if it satisfies the following conditions:
+ 
+ - All the zero rows (rows with only zeros), if any, are placed at the *bottom* of the matrix.
+@@ -6,5 +6,5 @@
+ With that in mind, let's look at each matrix in turn.
+ 
+-- The matrix $A$ is in row echelon form (both conditions are satisfied).
++- The coefficient matrix of $A$ is in row echelon form (both conditions are satisfied).
+ 
+ $$
+@@ -12,5 +12,5 @@
+ $$
+ 
+-- The matrix $B$ is not in row echelon form since ${b}_{22}\ne 0$ (condition II is violated).
++- The coefficient matrix of $B$ is not in row echelon form since the leading entries of its first two rows are in columns $3$ and $2,$ respectively (condition II is violated).
+ 
+ $$
+@@ -18,5 +18,5 @@
+ $$
+ 
+-- The matrix $C$ is in row echelon form (both conditions are satisfied).
++- The coefficient matrix of $C$ is in row echelon form (both conditions are satisfied).
+ 
+ $$
+@@ -24,3 +24,3 @@
+ $$
+ 
+-Therefore, only $B$ is **not** in row echelon form.
++Therefore, only $B$ has a coefficient matrix that is **not** in row echelon form.
+
+
+q-79044
+MA intended choice: C
+
+problem: Stop asserting that the equation defines a real circle; its real locus is a well-defined empty set.
+--- q-79044/problem/Math-Academy
++++ q-79044/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-Calculate the $x$-intercepts of the circle ${x}^{2}+{y}^{2}-2x+6y+12=0$
++Calculate the $x$-intercepts of the real locus ${x}^{2}+{y}^{2}-2x+6y+12=0$
+
+worked_solution: Preserve the valid x-intercept algebra, replace the false circle wording, and remove the diagram of a nonempty circle that this equation cannot describe.
+--- q-79044/worked_solution/Math-Academy
++++ q-79044/worked_solution/gpt-6-astra-ultra
+@@ -1,5 +1,5 @@
+ We must have $y=0$ at the $x$-intercepts.  
+ 
+-So, we need to substitute $y=0$ into the equation of the circle and solve the resulting equation for $x,$ if possible:
++So, we need to substitute $y=0$ into the equation of the locus and solve the resulting equation for $x,$ if possible:
+ 
+ $$
+@@ -13,5 +13,3 @@
+ $$
+ 
+-Since $(x-1)^{2}\ge 0$ for all values of $x,$ there is no $x$ such that $(x-1)^{2}=-11.$ Therefore, circle has no $x$-intercepts, as shown below.
+-
+-![](images/ea/ea1410ea792ac5fb09316bc6d417c2ba46f84c050491b1e351f360eac50deb6c.png)
++Since $(x-1)^{2}\ge 0$ for all values of $x,$ there is no $x$ such that $(x-1)^{2}=-11.$ Therefore, the locus has no $x$-intercepts.
+
+choice C: Remove the false existence claim from the intended no-intercepts answer.
+--- q-79044/choice C/Math-Academy
++++ q-79044/choice C/gpt-6-astra-ultra
+@@ -1 +1 @@
+-The circle has no $x$-intercepts
++The locus has no $x$-intercepts
+
+
+q-79315
+MA intended choice: D
+
+problem: Delete the extra rate-of-growth layer so the stated proportionality is D′=kt, matching the requested first-order model and the MA choice.
+--- q-79315/problem/Math-Academy
++++ q-79315/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-The rate of growth of a car's displacement increases at a rate that's proportional to the time $t$ since the car started moving. What differential equation describes the rate of change of the car's displacement, $D,$ at time $t?$
++A car's displacement increases at a rate that's proportional to the time $t$ since the car started moving. What differential equation describes the rate of change of the car's displacement, $D,$ at time $t?$
+
+worked_solution: Make the highlighted quotation agree with the repaired prompt; the remaining first-derivative analysis is already correct.
+--- q-79315/worked_solution/Math-Academy
++++ q-79315/worked_solution/gpt-6-astra-ultra
+@@ -1,5 +1,5 @@
+ Let's highlight the important words in the given statement:
+ 
+-*The rate of growth of a **car's displacement** $D(t)$ **increases** at a **rate** that's **proportional** to the **time** $t$ since the car started moving.*
++*A **car's displacement** $D(t)$ **increases** at a **rate** that's **proportional** to the **time** $t$ since the car started moving.*
+ 
+ We note the following:
+
+
+q-79945
+MA intended choice: B
+
+choice E: Change the exponent of the first of the duplicate cubic terms from 3 to 2. This single-character edit makes the distractor a distinct ascending-power Taylor polynomial with an incorrect quadratic coefficient, while preserving the actual source answer and its solution.
+--- q-79945/choice E/Math-Academy
++++ q-79945/choice E/gpt-6-astra-ultra
+@@ -1 +1 @@
+-y=1-(x-\pi )-\frac{1}{2}(x-\pi )^{3}+\frac{1}{3}(x-\pi )^{3}+⋯
++y=1-(x-\pi )-\frac{1}{2}(x-\pi )^{2}+\frac{1}{3}(x-\pi )^{3}+⋯
+
+
+q-97990
+MA intended choice: E
+
+problem: A principal-axis basis can be reordered or sign-reversed. Requiring correspondence to the eigenvalues already labeled λ₁ and λ₂ adds a natural eigenvector-order requirement, distinguishing the reversed pair without imposing an arbitrary sign convention.
+--- q-97990/problem/Math-Academy
++++ q-97990/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-Consider the matrix $A=[\begin{aligned}-2 & 2 \\ 2 & 1\end{aligned}]$ and the quadratic curve ${x}^{T}\,Ax=7.$ Given that $A$ has eigenvalues ${\lambda }_{1}=2$ and ${\lambda }_{2}=-3,$ find the principal axes of the curve.
++Consider the matrix $A=[\begin{aligned}-2 & 2 \\ 2 & 1\end{aligned}]$ and the quadratic curve ${x}^{T}\,Ax=7.$ Given that $A$ has eigenvalues ${\lambda }_{1}=2$ and ${\lambda }_{2}=-3,$ find unit vectors along the principal axes of the curve corresponding to ${\lambda }_{1}$ and ${\lambda }_{2}$, respectively.
+
+
+q-97995
+MA intended choice: A
+
+problem: Ask for the principal-axis directions of the well-defined quadratic form, preserving the given matrix and eigenvalues while removing the impossible level set.
+--- q-97995/problem/Math-Academy
++++ q-97995/problem/gpt-6-astra-ultra
+@@ -1 +1 @@
+-Consider the matrix $A=[\begin{aligned}-2 & 2 \\ 2 & -2\end{aligned}]$ and the quadratic curve ${x}^{T}\,Ax=7.$ Given that $A$ has eigenvalues ${\lambda }_{1}=0$ and ${\lambda }_{2}=-4,$ find the principal axes of the curve.
++Consider the matrix $A=[\begin{aligned}-2 & 2 \\ 2 & -2\end{aligned}]$ and the quadratic form ${x}^{T}\,Ax.$ Given that $A$ has eigenvalues ${\lambda }_{1}=0$ and ${\lambda }_{2}=-4,$ find unit vectors along the principal axes of the quadratic form.
+
+worked_solution: Match the quadratic-form task and correct the independent eigenvector-equation typo for eigenvalue -4; preserve the computed eigenvectors and their normalization.
+--- q-97995/worked_solution/Math-Academy
++++ q-97995/worked_solution/gpt-6-astra-ultra
+@@ -1,7 +1,7 @@
+ Notice that $A$ is symmetric. 
+-The principal axes of the curve 
++The principal axes of the quadratic form 
+ 
+ $$
+-{x}^{T}\,Ax=7
++{x}^{T}\,Ax
+ $$
+ 
+@@ -26,5 +26,5 @@
+ $$
+ 
+-Seeking a non-zero solution of $(A-I)x=0$ gives the eigenvector ${v}_{2}=[\begin{aligned}-1 \\ 1\end{aligned}].$ Dividing ${v}_{2}$ by its norm $‖{v}_{2}‖=\sqrt{2},$ we get 
++Seeking a non-zero solution of $(A+4I)x=0$ gives the eigenvector ${v}_{2}=[\begin{aligned}-1 \\ 1\end{aligned}].$ Dividing ${v}_{2}$ by its norm $‖{v}_{2}‖=\sqrt{2},$ we get 
+ 
+ $$
+@@ -32,5 +32,5 @@
+ $$
+ 
+-Therefore, the principal axes of our curve are
++Therefore, unit vectors along the principal axes of our quadratic form are
+ 
+ $\,$ $\frac{1}{\sqrt{2}}[\begin{aligned}1 \\ 1\end{aligned}]\,$ and $\,\frac{1}{\sqrt{2}}[\begin{aligned}-1 \\ 1\end{aligned}].$
+
+

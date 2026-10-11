@@ -55,6 +55,8 @@ def transaction(path, forms):
 def snapshot():
     start = read(SNAP / 'starting-state.json')
     assert sha(INDEX) == start['held_index_sha256'], 'Held index changed; replan.'
+    assert not any(value and str(attr).split('/')[0] in {':question', ':answer-field', ':answer'}
+                   for attr, value in loads((SNAP / 'no-history.edn').read_text()))
     existing = {q[':question/math-academy-id']: q for [q] in loads((SNAP / 'questions.edn').read_text())}
     topics = {q[':topic/math-academy-id']: q for [q] in loads((SNAP / 'topics.edn').read_text())}
     return start, existing, topics
@@ -210,7 +212,8 @@ def prepare_repair():
     source, repaired = read(ROOT / 'original-content.json'), read(ROOT / 'repaired-content.json')
     existing = stage_questions(1)
     assert set(existing) == set(source)
-    forms, retracts, log = [], [], []
+    forms, retracts, log, retired = [], [], [], set()
+    components = dict(loads((VALID / 'stage1-original-components.edn').read_text()))
     for mid, q in sorted(repaired.items()):
         old = existing[mid]
         target = ref('question/id', old[':question/id'])
@@ -234,7 +237,8 @@ def prepare_repair():
                 answer = old_answers.get((kind, value))
                 # Answers are field-scoped components: never share across fields.
                 # A revised field needs fresh component identities even for its
-                # unchanged values; the old field and all its answers survive.
+                # unchanged values. Superseded entities are retracted from the
+                # current view and survive in immutable, attributed history.
                 link = token + '/answer/' + hashlib.sha256((kind + ':' + value).encode()).hexdigest()
                 forms.append(ensured('answer', **{'db/id': link, 'answer/id': stable_id('answer', link),
                              'answer/type': kw('answer.type/' + kind), 'answer/value': value}))
@@ -249,20 +253,35 @@ def prepare_repair():
             forms.append(ensured('answer-field', **{'db/id': token, 'answer-field/id': stable_id('field', token),
                          'answer-field/key': field['key'], 'answer-field/type': kw('answer-field.type/' + field['type']),
                          'answer-field/choices': links, 'answer-field/correct': correct}))
-            forms.append([kw('db/retract'), target, kw('question/answer-fields'), ref('answer-field/id', previous[':answer-field/id'])])
+            # retractEntity also removes incoming question ownership and the
+            # field's answer components; no redundant link retraction is needed.
+            forms.append([kw('db/retractEntity'), ref('answer-field/id', previous[':answer-field/id'])])
             forms.append([kw('db/add'), target, kw('question/answer-fields'), token])
             retracts.append([old[':db/id'], kw('question/answer-fields'), previous[':db/id']])
-            changes.append({'attribute': ':question/answer-fields', 'operation': 'replace ownership; retain previous field and answers',
+            retiring = {previous[':db/id']} | {a[':db/id'] for a in previous[':answer-field/choices']}
+            for eid in sorted(retiring):
+                for attr, value in components[eid].items():
+                    if attr == ':db/id':
+                        continue
+                    assert '/_' not in attr
+                    for item in value if isinstance(value, list) else [value]:
+                        retracts.append([eid, kw(attr), item[':db/id'] if isinstance(item, dict) else item])
+            retired.update(retiring)
+            changes.append({'attribute': ':question/answer-fields', 'operation': 'retract old field and components; add replacement; retain original assertions in history',
                             'old_field_uuid': str(previous[':answer-field/id']), 'new_field_uuid': str(stable_id('field', token)),
                             'unchanged_values_copied_to_new_field_scoped_entities': copied, 'new_answer_values': created})
         assert changes, mid
         forms.append({kw('db/id'): target, kw('db/ensure'): [kw('question/validate')]})
         log.append({'id': mid, 'changes': changes})
     transaction(TX / '002-astra-surgical-repairs.edn', forms)
-    edn(VALID / 'stage2-guards.edn', dict(guards(existing), retractions=retracts))
+    protected = guards(existing)
+    protected['immutable_answers'] = [eid for eid in protected['immutable_answers'] if eid not in retired]
+    protected['immutable_fields'] = [row for row in protected['immutable_fields'] if row[0] not in retired]
+    edn(VALID / 'stage2-guards.edn', dict(protected, retractions=retracts))
+    edn(VALID / 'stage2-retired-entities.edn', sorted(retired))
     save(ROOT / 'repair-operations.json', log)
     save(ROOT / 'repair-stage-plan.json', {'source': REPAIR_SOURCE, 'questions': len(log), 'forms': len(forms),
-                                          'planned_retractions': len(retracts), 'transacted': False})
+                                          'planned_retractions': len(retracts), 'retired_entities': len(retired), 'transacted': False})
     print('Prepared stage 2:', len(log), 'questions;', len(forms), 'forms;', len(retracts), 'retractions')
 
 
@@ -297,6 +316,7 @@ def validate():
         allowed_q = {q[':db/id'] for q in actual.values()}
         allowed_f = {f[':db/id'] for q in actual.values() for f in q[':question/answer-fields']}
         allowed_a = {a[':db/id'] for q in actual.values() for f in q[':question/answer-fields'] for a in f[':answer-field/choices']}
+        retired = set(loads((VALID / 'stage2-retired-entities.edn').read_text())) if stage == 2 else set()
         for e, a, v, t, s, added in receipt[':edb/tx-data']:
             attr = names[a]
             assert s == srcids[source]
@@ -306,9 +326,9 @@ def validate():
                 if stage == 2:
                     assert attr in {':question/problem', ':question/worked-solution', ':question/answer-fields'}
             elif attr.startswith(':answer-field/'):
-                assert e in allowed_f
+                assert e in allowed_f if added else e in retired
             elif attr.startswith(':answer/'):
-                assert e in allowed_a
+                assert e in allowed_a if added else e in retired
             elif attr.startswith(':knowledge-point/'):
                 assert stage == 1 and attr == ':knowledge-point/questions' and v in allowed_q
             else:
@@ -323,7 +343,8 @@ def validate():
         summary.append({'stage': stage, 'source': source, 'questions': len(actual),
                         'datoms': len(receipt[':edb/tx-data']), 'exact_retractions': len(guard['retractions']),
                         'all_fields_verified': True, 'identities_preserved': True, 'knowledge_points_verified': True,
-                        'old_component_definitions_untouched': True, 'attribution_verified': True})
+                        'retired_component_entities': len(retired), 'unrevised_components_untouched': True,
+                        'original_assertions_preserved_in_history': True, 'attribution_verified': True})
     assert all(sha(path) == value for path, value in read(ROOT / 'source-hashes.json').items())
     helper = loads((VALID / 'manifest.edn').read_text())
     assert helper[':preview/durable-basis-before'] == helper[':preview/durable-basis-after'] == start['basis']
