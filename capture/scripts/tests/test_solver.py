@@ -8,6 +8,8 @@ from unittest.mock import patch
 
 from scripts.activity.solver import SolverClient, SolverUnavailable, validate_result
 from scripts.config import Config
+from scripts.runtime import StopRequested
+from scripts.timing import Pacer
 
 
 class SolverTests(unittest.TestCase):
@@ -166,6 +168,75 @@ class SolverTests(unittest.TestCase):
     def test_final_unavailable_is_a_valid_agent_judgment(self):
         validate_result('judge_question', self.payload,
                         {'status': 'unavailable', 'reasoning': 'The diagram is unavailable and determines the answer.', 'answers': []})
+
+    def test_first_attempt_has_full_deadline_budget(self):
+        self.config.solver_timeout = 300
+        client = SolverClient(self.config, self.root, self.stop)
+        with patch.object(client, '_call', return_value=(self.result, 'same')) as invoke:
+            client.request('solve_question', self.payload)
+        self.assertGreater(invoke.call_args.args[-1], 299)
+
+    def test_capacity_recovery_waits_then_resumes_same_session(self):
+        now = [1000.0]
+        def sleep(seconds):
+            now[0] += seconds
+        self.config.solver_timeout = 100
+        self.config.capacity_min = self.config.capacity_max = 30
+        pacer = Pacer(self.config, self.stop, clock=lambda: now[0], sleeper=sleep)
+        client = SolverClient(self.config, self.root, self.stop, pacer=pacer)
+        client.state['session_id'] = 'same'
+        calls = []
+        def invoke(envelope, prefix, schema, timeout):
+            calls.append((envelope['session_id'], now[0], timeout))
+            if len(calls) == 1:
+                raise SolverUnavailable('Selected model is at capacity. Please try a different model.')
+            return self.result, 'same'
+        with patch('scripts.activity.solver.time.monotonic', side_effect=lambda: now[0]), patch.object(client, '_call', side_effect=invoke):
+            self.assertEqual(client.request('solve_question', self.payload), self.result)
+        self.assertEqual(calls, [('same', 1000, 100), ('same', 1030, 70)])
+
+    def test_capacity_wait_is_bounded_by_short_assessment_budget(self):
+        now = [1000.0]
+        def sleep(seconds):
+            now[0] += seconds
+        pacer = Pacer(self.config, self.stop, clock=lambda: now[0], sleeper=sleep)
+        client = SolverClient(self.config, self.root, self.stop, pacer=pacer)
+        with patch('scripts.activity.solver.time.monotonic', side_effect=lambda: now[0]), patch.object(client, '_call', side_effect=SolverUnavailable('Model is at capacity')) as invoke:
+            with self.assertRaises(SolverUnavailable):
+                client.request('solve_question', self.payload, timeout=4)
+        self.assertEqual(now[0], 1004)
+        self.assertEqual(invoke.call_count, 1)
+
+    def test_capacity_gets_two_retries_but_other_failures_keep_configured_limit(self):
+        self.config.capacity_min = self.config.capacity_max = 0
+        client = SolverClient(self.config, self.root, self.stop)
+        with patch.object(client, '_call', side_effect=[SolverUnavailable('Model at capacity'),
+                SolverUnavailable('Model at capacity'), (self.result, 'same')]) as invoke:
+            self.assertEqual(client.request('solve_question', self.payload), self.result)
+        self.assertEqual(invoke.call_count, 3)
+        with patch.object(client, '_call', side_effect=SolverUnavailable('Temporary transport error')) as invoke:
+            with self.assertRaises(SolverUnavailable):
+                client.request('judge_question', self.payload)
+        self.assertEqual(invoke.call_count, 2)
+
+    def test_capacity_wait_stop_retains_cooldown_for_resume(self):
+        now = [1000.0]
+        def stop_sleep(seconds):
+            now[0] += seconds
+            self.stop.set()
+        self.config.solver_timeout = 100
+        self.config.capacity_min = self.config.capacity_max = 30
+        pacer = Pacer(self.config, self.stop, clock=lambda: now[0], sleeper=stop_sleep)
+        client = SolverClient(self.config, self.root, self.stop, pacer=pacer)
+        with patch.object(client, '_call', side_effect=SolverUnavailable('Model is at capacity')):
+            with self.assertRaises(StopRequested):
+                client.request('solve_question', self.payload)
+        self.stop.clear()
+        pacer.sleeper = lambda seconds: now.__setitem__(0, now[0] + seconds)
+        resumed = SolverClient(self.config, self.root, self.stop, pacer=pacer)
+        with patch.object(resumed, '_call', return_value=(self.result, 'same')):
+            self.assertEqual(resumed.request('solve_question', self.payload), self.result)
+        self.assertEqual(now[0], 1030)
 
     def test_unknown_page_can_only_select_exact_observed_current_control(self):
         payload = {'observation': {'kind': 'unknown', 'buttons': [{'selector': '#continue', 'text': 'Continue'}]}}

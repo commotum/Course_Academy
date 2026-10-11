@@ -16,8 +16,10 @@ from urllib.parse import urljoin
 from ..courses import record_current_course
 from ..runtime import check_stop
 from ..storage import atomic_json, atomic_text, read_json
+from ..timing import Pacer
 from .assets import AssetCapture
 from .entry import by_id, enter, verify_entered
+from .safety import BrowserSafety
 from .parsing import (BASE, LEARN, activity_from_url, parse_dashboard, parse_history_metadata,
                       parse_lesson_structure, parse_progress, parse_queue, parse_xp, question_identity)
 
@@ -70,21 +72,29 @@ class MathAcademyBrowser:
         self.directory = None
         self.state = {}
         self.assets = AssetCapture(self)
+        self.pacer = Pacer(config, stop_event)
+        self.deadline_at = None
+        self.safety = BrowserSafety(self)
 
     def __enter__(self):
         from playwright.sync_api import sync_playwright
         check_stop(self.stop_event)
         self.playwright = sync_playwright().start()
         if self.config.browser_cdp_url:
-            self.browser = self.playwright.chromium.connect_over_cdp(self.config.browser_cdp_url)
+            self.browser = self.playwright.chromium.connect_over_cdp(self.config.browser_cdp_url, slow_mo=max(500, getattr(self.config, "ui_delay_ms", 500)))
             self.context = self.browser.contexts[0]
         else:
             self.config.profile.mkdir(parents=True, exist_ok=True)
             self.context = self.playwright.chromium.launch_persistent_context(
                 str(self.config.profile), headless=self.config.headless,
-                viewport={"width": 1440, "height": 1000}, accept_downloads=False)
+                viewport={"width": 1440, "height": 1000}, accept_downloads=False,
+                slow_mo=max(500, getattr(self.config, "ui_delay_ms", 500)))
         self.context.set_default_timeout(self.config.timeout_ms)
         self.context.on("response", self._response)
+        self.context.route("**/*", self.safety.repair_document)
+        self.context.on("page", self._attach_page_events)
+        for page in self.context.pages:
+            self._attach_page_events(page)
         self.page = next((p for p in self.context.pages if "mathacademy.com" in p.url), None) or self.context.new_page()
         return self
 
@@ -108,12 +118,55 @@ class MathAcademyBrowser:
         if activity and directory:
             self.open(activity, directory, {})
 
+    def _attach_page_events(self, page):
+        page.on("pageerror", lambda error: self.safety.event("page_error", message=str(error)))
+        page.on("console", lambda message: self.safety.event("console", level=message.type, message=message.text)
+                if message.type in ("warning", "error") else None)
+        page.on("requestfailed", lambda request: self.safety.event("request_failed", url=request.url,
+                                                                  reason=request.failure))
+
+    def set_deadline(self, deadline_at):
+        self.deadline_at = float(deadline_at) if deadline_at is not None else None
+        if self.context:
+            self.context.set_default_timeout(self.timeout_ms())
+
+    def remaining_seconds(self):
+        return None if self.deadline_at is None else max(0.0, self.deadline_at - time.time())
+
+    def timeout_ms(self, reserve=0):
+        remaining = self.remaining_seconds()
+        return max(1, min(self.config.timeout_ms, int((remaining - reserve) * 1000))) if remaining is not None else self.config.timeout_ms
+
+    def _pause(self, reason, reserve=0):
+        deadline = self.deadline_at - reserve if self.deadline_at is not None else None
+        self.pacer.wait("event", reason, deadline=deadline)
+        if self.context:
+            self.context.set_default_timeout(self.timeout_ms())
+
+    def _wait_cooldown(self):
+        delay = self.safety.remaining_cooldown()
+        if delay:
+            remaining = self.remaining_seconds()
+            if remaining is not None and delay >= remaining:
+                error = BrowserUnavailable("Rate-limit cooldown extends beyond the assessment deadline")
+                error.retry_after = delay
+                raise error
+            self.pacer.sleep(delay, deadline=self.deadline_at)
+        if self.safety.remaining_cooldown() > .01:
+            error = BrowserUnavailable("Math Academy rate-limit cooldown is still active")
+            error.retry_after = self.safety.remaining_cooldown()
+            raise error
+
     def _response(self, response):
+        self.safety.response(response)
         if response.ok and response.request.resource_type == "image":
             self.image_responses[response.url] = response
 
     def _check(self, page=None):
         check_stop(self.stop_event)
+        self._wait_cooldown()
+        if self.context:
+            self.context.set_default_timeout(self.timeout_ms())
         page = page or self.page
         if page is None or page.is_closed():
             raise BrowserUnavailable("Browser page closed; reconnect to the pinned activity")
@@ -125,16 +178,47 @@ class MathAcademyBrowser:
     def _goto(self, url, page=None):
         page = page or self.page
         check_stop(self.stop_event)
-        response = page.goto(url, wait_until="domcontentloaded", timeout=self.config.timeout_ms)
+        self._wait_cooldown()
+        self._pause("navigation")
+        response = page.goto(url, wait_until="domcontentloaded", timeout=self.timeout_ms())
         if response and response.status in (404, 410):
             raise SourceUnavailable(f"Source page HTTP {response.status}: {url}")
         if response and response.status >= 400:
             raise BrowserUnavailable(f"Source page HTTP {response.status}: {url}")
         self._check(page)
+        self.safety.reconcile_required = False
 
     def _save(self):
         if self.directory:
             atomic_json(self.directory / "browser-state.json", self.state)
+
+    def _screenshot(self, target, **kwargs):
+        for attempt in range(3):
+            try:
+                return target.screenshot(timeout=min(self.timeout_ms(), 10000), **kwargs)
+            except Exception as error:
+                if attempt == 2 or not re.search(r"font", str(error), re.I):
+                    raise
+                self.safety.event("screenshot_font_retry", attempt=attempt + 1)
+                self.pacer.sleep(min(1.0, (attempt + 1) * .5), deadline=self.deadline_at)
+
+    def _settle_content(self, scope, kind="content"):
+        """Wait for authored content and MathML, then a short stable DOM window."""
+        self.page.wait_for_function(r'''({node,kind}) => {
+          const content=n=>!!n && (!!n.textContent.trim() || !!n.querySelector('img,canvas,svg'));
+          const math=[...node.querySelectorAll('mjx-container')].every(n=>n.querySelector('mjx-assistive-mml math,svg'));
+          const prompt=node.querySelector('.exampleQuestion');
+          const solution=node.querySelector('.exampleExplanation');
+          let ready=math && (kind==='example' ? content(prompt)&&content(solution) : content(node));
+          if(kind==='tutorial') {
+            const clone=node.cloneNode(true);clone.querySelectorAll('button,.stepName,[id^="continueButton-"]').forEach(n=>n.remove());
+            ready=math&&content(clone);
+          }
+          if(!ready) return false;
+          const html=node.innerHTML, now=performance.now();
+          if(node.__captureStable?.html!==html) node.__captureStable={html,at:now};
+          return now-node.__captureStable.at>=500;
+        }''', arg={"node": scope.element_handle(), "kind": kind}, timeout=self.timeout_ms())
 
     def _evidence(self, page, directory, stem):
         directory = Path(directory)
@@ -146,7 +230,7 @@ class MathAcademyBrowser:
         screenshot = target.with_suffix(".png")
         errors = []
         try:
-            page.screenshot(path=str(screenshot), full_page=True, timeout=min(self.config.timeout_ms, 10000))
+            self._screenshot(page, path=str(screenshot), full_page=True)
         except Exception as error:
             errors.append("Screenshot unavailable: " + str(error))
         return {"html_path": str(target.resolve()), "screenshot": str(screenshot.resolve()) if screenshot.exists() else None,
@@ -162,6 +246,7 @@ class MathAcademyBrowser:
             active["details"].update(evidence)
             return [active]
         self.page.locator("#incompleteTasks").wait_for(state="attached")
+        self.pacer.sleep(getattr(self.config, "settle_ms", 1000) / 1000, deadline=self.deadline_at)
         # Each card can close its siblings. Save each expanded card before the
         # next click, rather than assuming every card can stay open together.
         initial = parse_queue(self.page.content())
@@ -174,6 +259,7 @@ class MathAcademyBrowser:
                 details = card.locator(".taskDetails, .testDetails").first
                 if not details.count() or not details.is_visible():
                     heading = card.locator(".taskNameUnlocked, [id^='taskName-']").first
+                    self._pause("expand queue card")
                     (heading if heading.count() else card).click()
                 # Expansion asynchronously inserts its start link.
                 card.locator("a.taskStartButton").first.wait_for(state="attached", timeout=min(self.config.timeout_ms, 5000))
@@ -194,6 +280,7 @@ class MathAcademyBrowser:
         previous_task = str((self.activity or {}).get("task_id", ""))
         if previous_task != str(activity["task_id"]):
             self.image_responses.clear()
+        self.set_deadline((checkpoint.get("assessment_timing") or {}).get("deadline_at") if activity.get("kind") == "assessment" else None)
         self.activity, self.directory = dict(activity), Path(directory)
         self.directory.mkdir(parents=True, exist_ok=True)
         self.state = read_json(self.directory / "browser-state.json", {}) or {}
@@ -225,7 +312,7 @@ class MathAcademyBrowser:
         atomic_text(target.with_suffix(".html"), item.get("html", ""))
         screenshot = target.with_suffix(".png")
         try:
-            scope.screenshot(path=str(screenshot), timeout=min(self.config.timeout_ms, 10000))
+            self._screenshot(scope, path=str(screenshot))
         except Exception as error:
             item.setdefault("errors", []).append("Screenshot unavailable: " + str(error))
         for field in item.get("fields", []):
@@ -234,6 +321,7 @@ class MathAcademyBrowser:
                 field.update(correct_value=confirmed["value"], correct_origin="ma_answer",
                              correct_evidence={"kind": "ma_answer", "source_file": str(target.with_suffix(".html").resolve()),
                                                "value": confirmed["value"]})
+        atomic_json(target.with_suffix(".json"), item)
         return {**item, "html_path": str(target.with_suffix(".html").resolve()),
                 "screenshot": str(screenshot.resolve()) if screenshot.exists() else None,
                 "source_url": self.page.url, "captured_at": time.time()}
@@ -261,11 +349,35 @@ class MathAcademyBrowser:
             return int(match[1]) * (3600 if match[3] else 60) + int(match[2]) * (60 if match[3] else 1) + int(match[3] or 0)
         units = re.findall(r"(\d+)\s*(hours?|minutes?|seconds?)", raw, re.I)
         if units:
-            return sum(int(amount) * (3600 if unit.lower().startswith("hour") else 60 if unit.lower().startswith("minute") else 1)
+            seconds = sum(int(amount) * (3600 if unit.lower().startswith("hour") else 60 if unit.lower().startswith("minute") else 1)
                        for amount, unit in units)
+            # MA rounds minute-only labels upward; use their lower bound.
+            if not any(unit.lower().startswith("second") for _, unit in units):
+                seconds = max(0, seconds - (60 if any(unit.lower().startswith("minute") for _, unit in units) else 3600))
+            return seconds
         return None
 
     def _assessment_view(self, view):
+        self.state["assessment_question_count"] = len(view["ids"])
+        navigator = self.page.locator("#questionNavigator")
+        if navigator.count():
+            try:
+                self.page.wait_for_function("count=>document.querySelectorAll('#questionNavigator .questionButton').length===count",
+                                            arg=len(view["ids"]), timeout=self.timeout_ms())
+            except Exception as error:
+                check_stop(self.stop_event)
+                self.state.setdefault("assessment_readiness_errors", []).append("Navigator readiness: " + str(error))
+        if not self.state.get("assessment_initial_evidence"):
+            # Save every initialized question's original DOM before any answer.
+            try:
+                self.page.wait_for_function("() => Object.values((" + VIEW + ")().question_ready || {}).every(Boolean)",
+                                            timeout=self.timeout_ms())
+            except Exception as error:
+                check_stop(self.stop_event)
+                self.state.setdefault("assessment_readiness_errors", []).append("Initial question rendering: " + str(error))
+            if self.directory:
+                self.state["assessment_initial_evidence"] = self._evidence(self.page, self.directory / "observations", "assessment-initial")
+                self._save()
         filled = self.state.setdefault("assessment_filled", {})
         unanswered = [qid for qid in view["ids"] if qid not in filled]
         if not unanswered:
@@ -273,6 +385,7 @@ class MathAcademyBrowser:
         qid = unanswered[0]
         scope = by_id(self.page, qid)
         if not scope.is_visible():
+            self._pause("assessment navigation", reserve=15)
             self.page.locator("#questionNavigator .questionButton").nth(view["ids"].index(qid)).click()
             scope.wait_for(state="visible")
             view = self._view()
@@ -289,16 +402,36 @@ class MathAcademyBrowser:
                 return view
             # Source controls and MathJax finish asynchronously. Never send a
             # half-rendered question to the solver or save it as captured content.
-            self.page.wait_for_function("old => {const v=(" + VIEW + ")(); return "
-                "v.kind === 'assessment' ? v.question_ready?.[old.key] !== false : v.ready !== false;}",
-                arg={"key": view["key"]}, timeout=self.config.timeout_ms)
+            try:
+                self.page.wait_for_function("old => {const v=(" + VIEW + ")(); return "
+                    "v.kind === 'assessment' ? v.question_ready?.[old.key] !== false : v.ready !== false;}",
+                    arg={"key": view["key"]}, timeout=self.timeout_ms())
+            except Exception as error:
+                check_stop(self.stop_event)
+                issue = "Source rendering remained incomplete: " + str(error)
+                self.safety.event("readiness_timeout", key=view.get("key"), reason=issue)
+                # Preserve imperfect source evidence and let the activity agent
+                # judge it. A grade can advance while history recovers its math.
+                item = self.page.locator(view["selector"]).evaluate(EXTRACT)
+                if view.get("accepted") or (item.get("problem") and item.get("fields")):
+                    return {**view, "readiness_errors": [issue]}
+                buttons = self.page.locator("button,a,[role=button],.button").evaluate_all(r'''nodes => nodes
+                  .filter(n=>n.id && n.getClientRects().length && !/submit|don't know|skip|quit|exit/i.test(n.textContent))
+                  .map(n=>({selector:'#'+CSS.escape(n.id),text:n.textContent.trim()})).filter(n=>n.text)''')
+                return {"kind": "unknown", "key": "unready-" + view["key"], "selector": "body",
+                        "buttons": buttons, "readiness_errors": [issue], "source_view_kind": view["kind"]}
 
     def observe(self, directory):
         view = self._ready_view()
-        observation = {**view, "remaining_seconds": self._remaining(), "source_url": self.page.url, "observed_at": time.time()}
+        observed_at, remaining = time.time(), self._remaining()
+        observation = {**view, "remaining_seconds": remaining, "source_url": self.page.url, "observed_at": observed_at,
+                       "deadline_at": self.deadline_at, "question_count": self.state.get("assessment_question_count"),
+                       "browser_events": self.safety.events[-20:]}
         if view["kind"] in ("question", "example", "tutorial"):
             scope = self.page.locator(view["selector"])
             item = self._read(scope, directory, view["key"])
+            if view.get("readiness_errors"):
+                item.setdefault("errors", []).extend(view["readiness_errors"])
             mid = question_identity(item.get("dom_id"), item.get("html", ""), self.activity.get("kind") == "diagnostic")
             item.update(math_academy_id=mid, topic_id=self.activity.get("topic_id"),
                         sequence_position=view.get("sequence_position"), source_step=view.get("source_step"))
@@ -387,10 +520,15 @@ class MathAcademyBrowser:
         action = responses.get("action") if isinstance(responses, dict) else None
         if action == "submit_assessment":
             return self._submit_assessment(observation, directory)
+        self._check()
+        if self.safety.reconcile_required:
+            self._goto(self.page.url)
+            return {"unknown_outcome": True, "not_submitted": True}
         current = self._ready_view()
         if current.get("accepted") or current["kind"] == "complete":
             return {"unknown_outcome": True, "not_submitted": True}  # Already accepted.
-        if current.get("selector") != observation.get("selector"):
+        if (current.get("selector") != observation.get("selector") or
+                current.get("key") != observation.get("key", "").split(":fields:")[0]):
             return {"unknown_outcome": True, "not_submitted": True}  # Observe the new presentation.
         pending = self.state.get("pending_action", {})
         if pending.get("action") in ("submit", "dont_know", "skip") and not self.state.get("restored"):
@@ -401,6 +539,10 @@ class MathAcademyBrowser:
             self._save()
             return {"unknown_outcome": True, "not_submitted": True}
         scope = self.page.locator(current["selector"])
+        expected = observation.get("question") or {}
+        live = scope.evaluate(EXTRACT)
+        if expected.get("problem") is not None and self._binding(expected) != self._binding(live):
+            return {"unknown_outcome": True, "not_submitted": True}
         if action in ("dont_know", "skip"):
             button = scope.locator(".questionWidget-skipButton:visible").first
             if not button.count():
@@ -417,11 +559,15 @@ class MathAcademyBrowser:
                     continue
                 if field["key"] not in answers:
                     raise ValueError("Missing response for answer field " + field["key"])
+                if self.activity.get("kind") == "assessment" and self.remaining_seconds() is not None and self.remaining_seconds() <= 15:
+                    return {"unknown_outcome": True, "not_submitted": True, "deadline_reached": True}
+                self._pause("answer field selection", reserve=15 if self.activity.get("kind") == "assessment" else 0)
                 entered.append(enter(scope, field, answers[field["key"]]))
             self._intent(observation, "entered", responses=entered)
             if self.activity.get("kind") == "assessment":
                 self._settle_entry(scope, fresh, entered)
                 self._evidence(self.page, Path(directory) / "observations", observation["key"] + "-entered")
+                verify_entered(scope, fresh, entered)
                 qid = scope.get_attribute("id")
                 self.state.setdefault("assessment_filled", {})[qid] = entered
                 self.state.pop("pending_action", None)
@@ -431,9 +577,12 @@ class MathAcademyBrowser:
             if not submit.count() and current.get("step_id"):
                 submit = by_id(self.page, current["step_id"].replace("step-", "submitButton-"))
             # MA's MathEditor polls changes every 200ms before enabling Submit.
-            self.page.wait_for_function("n => !n.disabled && !n.classList.contains('disabledButton')", arg=submit.element_handle(), timeout=self.config.timeout_ms)
+            self.page.wait_for_function("n => !n.disabled && !n.classList.contains('disabledButton')", arg=submit.element_handle(), timeout=self.timeout_ms())
             self._settle_entry(scope, fresh, entered)
             self._evidence(self.page, Path(directory) / "observations", observation["key"] + "-entered")
+            verify_entered(scope, fresh, entered)
+            if self._binding(fresh) != self._binding(scope.evaluate(EXTRACT)):
+                return {"unknown_outcome": True, "not_submitted": True}
             if submit.evaluate("n => n.disabled || n.classList.contains('disabledButton')"):
                 raise ValueError("Submit became disabled while answer fields settled")
             response_before = scope.evaluate(RESPONSE_STATE)
@@ -441,22 +590,34 @@ class MathAcademyBrowser:
             submit.click()
         # Wait for evidence, never automatically click Submit twice after timeout.
         self.page.wait_for_function(RESPONSE_READY, arg={"selector": current["selector"], "before": response_before},
-                                    timeout=self.config.timeout_ms)
+                                    timeout=self.timeout_ms())
+
+    @staticmethod
+    def _binding(item):
+        # Asset paths are local evidence details; bind to the source prompt and
+        # actual choices/field order, without result or editable current values.
+        clean = lambda value: re.sub(r"!\[[^]]*\]\([^)]*\)", "<source-image>", value or "")
+        return {"problem": clean(item.get("problem")),
+                "fields": [{**{k: field.get(k) for k in ("key", "type", "tag", "dom_id")},
+                            "choices": [{k: clean(choice.get(k)) if k == "value" else choice.get(k)
+                                         for k in ("option", "value", "type", "dom_id")} for choice in field.get("choices", [])]}
+                           for field in item.get("fields", [])]}
 
     def _settle_entry(self, scope, fresh, entered):
         if any(field.get("tag") == "mathquill" and not field.get("disabled")
                and field.get("source_result") != "Correct" for field in fresh["fields"]):
             # Native blur dismisses the editor without MA's question-background
             # click handler, which clears radio choices. Then let its 200ms
-            # change poll finish before checking for sanitized values.
+            # initial 500ms poll and a subsequent 200ms poll finish before readback.
             scope.locator('.mq-textarea textarea').evaluate_all('(editors) => editors.forEach(e => e.blur())')
             self.page.wait_for_function("() => [...document.querySelectorAll('[id=\"mathEditorToolbox\"]')].every(n => "
                 "!n.getClientRects().length || ['hidden','collapse'].includes(getComputedStyle(n).visibility))",
-                timeout=self.config.timeout_ms)
-            self.page.wait_for_timeout(250)
+                timeout=self.timeout_ms())
+            self.pacer.sleep(.7, deadline=self.deadline_at)
         verify_entered(scope, fresh, entered)
 
     def _submit_assessment(self, observation, directory):
+        self._check()
         view = self._view()
         if view["kind"] == "complete":
             return
@@ -502,6 +663,11 @@ class MathAcademyBrowser:
             self.state["restored"] = True
             self._save()
             return
+        if current.get("action") == "decline_retry" and observation.get("retry_diagnostic"):
+            retry = self.page.locator("#retryScreen-yesButton:visible")
+            if retry.count():
+                button = "#retryScreen-yesButton"
+        self._pause("continue activity")
         self._intent(observation, "advance", button=button)
         self.page.locator(button).click()
         previous = current.get("key")
@@ -525,7 +691,7 @@ class MathAcademyBrowser:
         if proposed not in observation.get("buttons", []):
             raise ValueError("The selected control was not in the captured page")
         current = self._view()
-        if current["kind"] != "unknown" or proposed not in current.get("buttons", []):
+        if (current["kind"] != "unknown" and not (observation.get("source_view_kind") == current["kind"] and current.get("ready") is False)) or (current["kind"] == "unknown" and proposed not in current.get("buttons", [])):
             return  # The site changed; observe its new state before acting.
         button = self.page.locator(selector)
         if button.count() != 1 or not button.is_visible() or button.inner_text().strip() != label:
@@ -537,6 +703,7 @@ class MathAcademyBrowser:
             self._save()
             return
         self._evidence(self.page, Path(directory) / "observations", "before-recovery-control")
+        self._pause("recovery continuation")
         self._intent(observation, "recover_control", button=selector, button_text=label,
                      reasoning=decision.get("reasoning"))
         button.click()
@@ -567,8 +734,10 @@ class MathAcademyBrowser:
             explanation = by_id(self.page, info["dom_id"].replace("question-", "questionExplanation-"))
             try:
                 if not explanation.count() or not explanation.is_visible():
+                    self._pause("expand history explanation")
                     node.locator(".answerDetails").click()
                 explanation.wait_for(state="visible")
+                self._settle_content(explanation)
                 item = self._read(node, directory, "history-" + info["math_academy_id"])
                 solution = self._read(explanation, directory, "history-solution-" + info["math_academy_id"],
                                       prior=self.state.get("live_records", {}).get(info["math_academy_id"]))
@@ -611,6 +780,11 @@ class MathAcademyBrowser:
                 page.locator("div.step[stepid][steptype][contentid]").first.wait_for(state="attached")
             except Exception:
                 self._check(page)
+            self.page = page
+            try:
+                self._settle_content(page.locator("#steps") if page.locator("#steps").count() else page.locator("body"))
+            except Exception:
+                check_stop(self.stop_event)
             definition = parse_lesson_structure(page.content(), activity["topic_id"])
             evidence = self._evidence(page, directory, "lesson-topic")
             definition.update(source_file=evidence["html_path"])
@@ -618,7 +792,19 @@ class MathAcademyBrowser:
             self.page = page
             for step in definition["steps"]:
                 scope = page.locator(f'div.step[stepid="{step["math_academy_id"]}"]')
+                readiness_error = None
+                try:
+                    self._settle_content(scope, step["type"])
+                except Exception as error:
+                    readiness_error = "Lesson source rendering: " + str(error)
                 item = self._read(scope, directory, "lesson-step-" + str(step["math_academy_id"]))
+                if readiness_error:
+                    item.setdefault("errors", []).append(readiness_error)
+                missing = not item.get("problem") or (step["type"] == "example" and not item.get("worked_solution"))
+                if item.get("errors") or missing:
+                    definition["complete"] = False
+                    definition.setdefault("issues", []).append({"step": step["math_academy_id"],
+                        "reason": "Incomplete lesson content or source extraction errors", "source_file": item["html_path"]})
                 if step["type"] == "tutorial":
                     tutorials.append({**item, "math_academy_id": step["content_id"], "title": step["title"], "content": item["problem"]})
                 elif step["type"] == "example":
@@ -655,6 +841,7 @@ class MathAcademyBrowser:
                 try:
                     self._goto(url, page)
                     page.locator(".moduleTopics .topicLink").first.wait_for(state="attached")
+                    self.pacer.sleep(getattr(self.config, "settle_ms", 1000) / 1000, deadline=self.deadline_at)
                     course = parse_progress(page.content(), re.search(r"/courses/(\d+)", url)[1])
                     course.update(self._evidence(page, directory, "course-" + course["course_id"]))
                     result["courses"].append(course)

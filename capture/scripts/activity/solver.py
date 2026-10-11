@@ -12,6 +12,7 @@ import time
 
 from ..runtime import StopRequested
 from ..storage import atomic_json, atomic_text, read_json
+from ..timing import Pacer
 from .task_payload import task_payload, semantic_identity
 
 
@@ -26,6 +27,11 @@ def _session_invalid(error):
     return getattr(error, 'session_invalid', False) or bool(re.search(
         r'session.*(?:expired|not found|invalid)|thread.*(?:not found|invalid)|context window.*(?:exceeded|full)',
         str(error), re.I))
+
+
+def _capacity_failure(error):
+    return bool(re.search(r'(?:model|server|service).*at capacity|overloaded|(?:rate.?limit|too many requests)|\b(?:429|503)\b',
+                          str(error), re.I))
 
 
 
@@ -178,8 +184,9 @@ def validate_result(task, payload, result):
 
 
 class SolverClient:
-    def __init__(self, config, directory, stop_event):
+    def __init__(self, config, directory, stop_event, *, pacer=None):
         self.config, self.stop_event = config, stop_event
+        self.pacer = pacer or Pacer(config, stop_event)
         self.directory = Path(directory) / 'solver'
         self.directory.mkdir(parents=True, exist_ok=True)
         self.state_path = self.directory / 'session.json'
@@ -219,8 +226,15 @@ class SolverClient:
         attempts = max(1, int(getattr(self.config, 'solver_attempts', 2)))
         total_timeout = float(timeout if timeout is not None else self.config.solver_timeout)
         deadline = time.monotonic() + max(.1, total_timeout)
+        cooldown_path = logical / 'capacity-cooldown.json'
+        cooldown = read_json(cooldown_path, {})
+        if cooldown.get('due_at', 0) > self.pacer.clock():
+            self.pacer.sleep(cooldown['due_at'] - self.pacer.clock(),
+                             deadline=self.pacer.clock() + max(0, deadline - time.monotonic()))
         replace_session = force_new
-        for attempt in range(attempts):
+        # Capacity outages had two retries in the original engine. Keep that
+        # allowance separate from ordinary validation/session failures.
+        for attempt in range(max(attempts, 3)):
             if self.stop_event.is_set():
                 raise StopRequested()
             if replace_session:
@@ -239,7 +253,9 @@ class SolverClient:
             envelope = self._delivery_envelope(task, payload, envelope)
             atomic_json(prefix.with_suffix('.input.json'), envelope)
             try:
-                result, session = self._call(envelope, prefix, schema_file, min(remaining, total_timeout / attempts if attempt < attempts - 1 else remaining))
+                # Fast failures leave time for another attempt. A healthy first
+                # turn can use the full budget instead of being cut in half.
+                result, session = self._call(envelope, prefix, schema_file, remaining)
                 validate_result(task, payload, result)
                 atomic_json(logical / 'result.json', result)
                 if session:
@@ -259,6 +275,17 @@ class SolverClient:
                     atomic_json(logical / 'nonretryable-failure.json', {'error': str(error), 'time': time.time()})
                     raise
                 replace_session = _session_invalid(error)
+                capacity = _capacity_failure(error)
+                attempt_limit = max(attempts, 3) if capacity else attempts
+                if attempt + 1 >= attempt_limit:
+                    break
+                if capacity:
+                    remaining = max(0, deadline - time.monotonic())
+                    cooldown = self.pacer.duration('capacity')
+                    atomic_json(cooldown_path, {
+                        'reason': str(error), 'delay': min(cooldown, remaining),
+                        'due_at': self.pacer.clock() + min(cooldown, remaining)})
+                    self.pacer.sleep(cooldown, deadline=self.pacer.clock() + remaining)
         raise SolverUnavailable('; '.join(failures) or 'Solver deadline elapsed')
 
     @staticmethod
@@ -385,7 +412,8 @@ class SolverClient:
                 os.fsync(output.fileno())
                 os.fsync(errors.fileno())
                 if process.returncode:
-                    message = 'Agent process exited %s: %s' % (process.returncode, error_path.read_text()[-1000:])
+                    message = 'Agent process exited %s: %s\n%s' % (
+                        process.returncode, error_path.read_text()[-1000:], output_path.read_text()[-2000:])
                     deterministic = bool(re.search(r'Exceeded max length|maximum.*(?:length|bytes)|unexpected argument|invalid (?:argument|value)|unrecognized (?:argument|option)|model.*(?:not found|not supported|does not exist)', message, re.I))
                     raise SolverUnavailable(message, retryable=not deterministic)
             finally:

@@ -14,11 +14,14 @@ from .queue_processing import read_queue
 from .runtime import StopRequested, backoff, check_stop, wait
 from .selection import choose
 from .storage import append_event, atomic_json, file_lock, read_json
+from .timing import Pacer
 
 
 class CaptureRunner:
-    def __init__(self, config, stop_event, browser_factory=None, capture_factory=None, pipeline_factory=None):
+    def __init__(self, config, stop_event, browser_factory=None, capture_factory=None, pipeline_factory=None, *, pacer=None, clock=None):
         self.config, self.stop_event = config, stop_event
+        self.clock = clock or time.time
+        self.pacer = pacer or Pacer(config, stop_event, clock=self.clock)
         if browser_factory is None:
             from .browser import MathAcademyBrowser
             browser_factory = lambda: MathAcademyBrowser(config, stop_event)
@@ -32,6 +35,40 @@ class CaptureRunner:
         self.context = ContextProvider(config, pipeline_factory)
         self.database_worker = DatabaseWorker(config, stop_event, pipeline_factory)
         self.active_path = config.state_root / "active.json"
+        self.pacing_path = config.state_root / "pacing.json"
+
+    def _schedule_boundary(self, task_id, completed_count):
+        """Save the sampled due time before handing off a completed activity."""
+        state = read_json(self.pacing_path, {})
+        if state.get('last_completed_task') == task_id:
+            return
+        delay = self.pacer.duration('lesson')
+        every = self.config.rest_every
+        rest = self.pacer.duration('rest') if every and completed_count % every == 0 else 0
+        state.update(last_completed_task=task_id, completed_count=completed_count,
+                     boundary_due_at=self.clock() + delay + rest,
+                     boundary_delay=delay, rest_delay=rest, idle_attempts=0, idle_due_at=0)
+        atomic_json(self.pacing_path, state)
+
+    def _schedule_queue_retry(self):
+        state = read_json(self.pacing_path, {})
+        attempt = state.get('idle_attempts', 0) + 1
+        delay = backoff(attempt, self.config.retry_delay, self.config.recovery_max_delay)
+        delay += self.pacer.rng.uniform(0, self.config.recovery_jitter)
+        state.update(idle_attempts=attempt, idle_due_at=self.clock() + delay)
+        atomic_json(self.pacing_path, state)
+
+    def _wait_between(self, queue=()):
+        # A task already started on Math Academy takes precedence over planned
+        # rests, including one that began outside this process.
+        if any(item.get('started') for item in queue) or read_json(self.active_path, None) or self._recover_orphan():
+            return 0
+        state = read_json(self.pacing_path, {})
+        due = max(state.get('boundary_due_at', 0), state.get('idle_due_at', 0))
+        seconds = max(0, due - self.clock())
+        if seconds:
+            self._status('pacing', due_at=due, rest_delay=state.get('rest_delay', 0))
+        return self.pacer.sleep(seconds)
 
     def _status(self, status, **details):
         atomic_json(self.config.state_root / "status.json", {"status": status, "at": time.time(), **details})
@@ -78,19 +115,24 @@ class CaptureRunner:
         active = read_json(self.active_path, None) or self._recover_orphan()
         if not active:
             queue = read_queue(browser, self.config.state_root / "queue")
+            if self._wait_between(queue):
+                queue = read_queue(browser, self.config.state_root / "queue")
             if not any(item.get("started") for item in queue):
                 self._retry_observations(browser)
             completed = read_json(self.config.state_root / "completed.json", {})
             if not choose(queue, completed=completed):
                 self._status("waiting_for_queue", queue_count=len(queue))
+                self._schedule_queue_retry()
                 return False
             context = self.context({"course_id": self.config.course_id})
             if context.get("context_refresh_pending"):
                 self._status("waiting_for_context", course_id=self.config.course_id)
+                self._schedule_queue_retry()
                 return False
             activity = choose(queue, context, completed)
             if not activity:
                 self._status("waiting_for_queue", queue_count=len(queue))
+                self._schedule_queue_retry()
                 return False
             activity = retake_policy(self.config, activity)
             activity.setdefault("course_id", self.config.course_id)
@@ -127,6 +169,7 @@ class CaptureRunner:
         completed = read_json(self.config.state_root / "completed.json", {})
         completed[activity["task_id"]] = {"capture_completed_at": time.time(), "directory": str(directory), "kind": activity["kind"]}
         atomic_json(self.config.state_root / "completed.json", completed)
+        self._schedule_boundary(activity['task_id'], len(completed))
         atomic_json(directory / "handoff-complete.json", {"at": time.time(), "capture_only": self.config.capture_only})
         atomic_json(self.active_path, None)
         self._status("selecting", last_completed=activity["task_id"])
@@ -151,7 +194,7 @@ class CaptureRunner:
                                 failures = 0
                                 dependency_error = None
                                 if not made_progress:
-                                    wait(self.stop_event, max(1, self.config.retry_delay))
+                                    self._wait_between()
                             except StopRequested:
                                 raise
                             except Exception as error:
@@ -173,7 +216,7 @@ class CaptureRunner:
                                 logging.exception("Recovering the current activity after %s", type(error).__name__)
                                 self._status("recovering", error_type=type(error).__name__, attempts=failures)
                                 append_event(self.config.state_root / "events.jsonl", "recovery", error_type=type(error).__name__, detail=str(error)[:1200])
-                                wait(self.stop_event, backoff(failures, self.config.retry_delay, self.config.recovery_max_delay))
+                                self.pacer.sleep(self.pacer.backoff(failures))
                                 # Reconstruct a broken browser; the pinned active record
                                 # makes the next cycle resume this same task.
                                 try:
@@ -186,7 +229,7 @@ class CaptureRunner:
                 failures += 1
                 logging.warning("Capture recovery will retry: %s", type(error).__name__)
                 try:
-                    wait(self.stop_event, backoff(failures, self.config.retry_delay, self.config.recovery_max_delay))
+                    self.pacer.sleep(self.pacer.backoff(failures))
                 except StopRequested:
                     break
         try:

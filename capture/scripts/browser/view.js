@@ -6,10 +6,18 @@
   // ready. Keep that step's identity while the adapter waits to read it.
   const mathReady = n => [...n.querySelectorAll('mjx-container')]
     .every(m => !!m.querySelector('mjx-assistive-mml math,svg'));
+  const tutorialReady = n => {
+    const content=n.cloneNode(true);
+    content.querySelectorAll('.stepName,button,[id^="continueButton-"]').forEach(x=>x.remove());
+    return hasContent(content) && mathReady(n);
+  };
   const questionReady = (n, continuation=null) => {
     const grade = n.querySelector('.questionWidget-result,.correctAnswerText,.incorrectAnswerText')?.textContent.trim();
     // A restored grade can replace its editable fields with static content.
-    if (grade || visible(continuation)) return true;
+    if (grade || visible(continuation)) {
+      const solution=n.querySelector('.questionWidget-explanation,.questionExplanation');
+      return mathReady(n) && (!solution || !visible(solution) || hasContent(solution));
+    }
     return hasContent(n.querySelector('.questionWidget-text,.questionText')) && mathReady(n) &&
       !!n.querySelector('.questionWidget-choiceLetterCircle,.choiceLetterCircle,.matheditor-wrapper-answer,.selectList,input:not([type="hidden"]),textarea,select,[contenteditable="true"]');
   };
@@ -75,7 +83,7 @@
     const next = first('#'+CSS.escape('continueButton-'+token));
     const ready = kind === 'question' ? questionReady(question,next) : kind === 'example' ?
       hasContent(current.querySelector('.exampleQuestion')) &&
-      hasContent(current.querySelector('.exampleExplanation')) && mathReady(current) : mathReady(current);
+      hasContent(current.querySelector('.exampleExplanation')) && mathReady(current) : tutorialReady(current);
     return {kind,selector:identifier(question || current),step_id:current.id,ready,
       key:current.id,accepted:!!grade,grade,name,
       source_example_id:exampleId ? 'e-'+exampleId : null,

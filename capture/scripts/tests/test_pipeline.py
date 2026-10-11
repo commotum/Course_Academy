@@ -18,7 +18,8 @@ class PipelineTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
-        self.config = Config(repo_root=self.root, profile=self.root / "profile", retry_delay=0.01)
+        self.config = Config(repo_root=self.root, profile=self.root / "profile", retry_delay=0.01,
+                             lesson_min=0, lesson_max=0, rest_every=0, recovery_jitter=0)
         self.stop = threading.Event()
 
     def tearDown(self):

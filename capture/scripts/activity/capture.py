@@ -6,10 +6,12 @@ import json
 import logging
 from pathlib import Path
 import random
+import re
 import time
 
 from ..runtime import StopRequested, backoff, check_stop, wait
 from ..storage import append_event, atomic_json, read_json
+from ..timing import Pacer
 from .evidence import capture_gaps, finalize_answers, merge_question, question_key
 from .policy import AnswerPolicy, answer_fields, override, responses_for, topic_id
 from .solver import SolverClient, SolverUnavailable, validate_result
@@ -25,6 +27,7 @@ class ActivityCapture:
         self.clock = clock
         self.sleep = sleeper or (lambda seconds: wait(stop_event, seconds))
         self.rng = rng or random.Random(config.seed)
+        self.pacer = Pacer(config, stop_event, clock=clock, rng=self.rng, sleeper=self.sleep)
 
     def run(self, activity, directory):
         self.directory = Path(directory)
@@ -39,6 +42,11 @@ class ActivityCapture:
             'started_at': self.clock(), 'context': None, 'recoveries': 0})
         if str(self.state['activity']['task_id']) != str(activity['task_id']):
             raise ValueError('Capture directory belongs to another task')
+        if self.state.get('rng_state') and hasattr(self.rng, 'setstate'):
+            def tuples(value):
+                return tuple(tuples(v) for v in value) if isinstance(value, list) else value
+            self.rng.setstate(tuples(self.state['rng_state']))
+        self._set_browser_deadline()
         if self.solver is None:
             self.solver = SolverClient(self.config, self.directory, self.stop_event)
         if self.state.get('context') is None or self.state['context'].get('unavailable') or self.state['context'].get('snapshot_unavailable'):
@@ -76,10 +84,165 @@ class ActivityCapture:
         return content
 
     def _save(self):
+        if hasattr(self.rng, 'getstate'):
+            self.state['rng_state'] = self.rng.getstate()
         atomic_json(self.checkpoint_path, self.state)
 
     def _event(self, event, **values):
         append_event(self.directory / 'activity-events.jsonl', event, **values)
+
+    def _set_browser_deadline(self):
+        deadline = (self.state.get('assessment_timing') or {}).get('deadline_at')
+        if self.state.get('stage') != 'activity':
+            deadline = None
+        setter = getattr(self.browser, 'set_deadline', None)
+        if setter:
+            setter(deadline)
+
+    @staticmethod
+    def _time_limit(value):
+        units = re.findall(r'(\d+(?:\.\d+)?)\s*(hours?|minutes?|seconds?)', str(value or ''), re.I)
+        return sum(float(amount) * (3600 if unit.lower().startswith('hour') else
+                   60 if unit.lower().startswith('minute') else 1) for amount, unit in units) or None
+
+    def _start_assessment_timing(self, observation):
+        if self.state.get('assessment_timing'):
+            return
+        details = self.activity.get('details', {})
+        seconds = self._time_limit(details.get('time_limit') or observation.get('time_limit'))
+        timing = {'started_at': self.clock(), 'question_count': details.get('question_count'),
+                  'time_limit_seconds': seconds, 'started_by_capture': True}
+        if seconds:
+            timing['deadline_at'] = timing['started_at'] + seconds
+        self.state['assessment_timing'] = timing
+        self._assessment_schedule()
+        self._save()  # Saved before Start: a lost acknowledgment cannot restart the clock.
+        self._set_browser_deadline()
+
+    def _assessment_schedule(self):
+        timing = self.state.get('assessment_timing') or {}
+        count, limit = timing.get('question_count'), timing.get('time_limit_seconds')
+        if (not timing.get('started_by_capture') or not count or not limit
+                or 'answer_offsets_seconds' in timing):
+            return
+        low, high = getattr(self.config, 'assessment_time_min', .7), getattr(self.config, 'assessment_time_max', .85)
+        target = float(limit) * self.rng.uniform(low, high)
+        weights = [self.rng.uniform(.65, 1.35) for _ in range(int(count))]
+        cumulative, offsets = 0, []
+        for weight in weights:
+            cumulative += weight
+            offsets.append(target * cumulative / sum(weights))
+        timing.update(target_seconds=target, answer_offsets_seconds=offsets)
+
+    def _observe_timing(self, observation):
+        if self.activity['kind'] != 'assessment' or observation.get('kind') == 'complete':
+            return
+        timing = self.state.setdefault('assessment_timing', {})
+        # An instruction screen before Start has no live assessment clock yet.
+        if observation.get('action') == 'start' and not timing:
+            self.state.pop('assessment_timing', None)
+            return
+        observed_at = float(observation.get('observed_at', self.clock()))
+        deadlines = [timing.get('deadline_at'), observation.get('deadline_at')]
+        if observation.get('remaining_seconds') is not None:
+            deadlines.append(observed_at + max(0, float(observation['remaining_seconds'])))
+        deadlines = [float(value) for value in deadlines if value is not None]
+        if deadlines:
+            timing['deadline_at'] = min(deadlines)
+        count = observation.get('question_count') or self.activity.get('details', {}).get('question_count')
+        if count:
+            timing['question_count'] = int(count)
+        self._assessment_schedule()
+        self._set_browser_deadline()
+        self._save()
+
+    def _remaining_seconds(self, observation=None):
+        if self.activity.get('kind') != 'assessment' or self.state.get('stage') != 'activity':
+            return None
+        deadlines = [(self.state.get('assessment_timing') or {}).get('deadline_at')]
+        if observation and observation.get('remaining_seconds') is not None:
+            deadlines.append(float(observation.get('observed_at', self.clock())) + float(observation['remaining_seconds']))
+        values = [float(value) - self.clock() for value in deadlines if value is not None]
+        return max(0, min(values)) if values else None
+
+    def _submission_reserve(self):
+        limit = (self.state.get('assessment_timing') or {}).get('time_limit_seconds') or 300
+        return max(15, min(60, float(limit) * .05))
+
+    def _submit_if_due(self, observation):
+        remaining = self._remaining_seconds(observation)
+        if remaining is None or remaining > self._submission_reserve():
+            return False
+        self._event('assessment_deadline_submission', remaining_seconds=remaining)
+        self.state['assessment_timing_deviation'] = 'Submit entered answers before the timer expires; judge any unanswered items in history'
+        self._save()
+        self._browser_call('respond', observation, {'action': 'submit_assessment'}, self.directory)
+        return True
+
+    def _prepare_answer_pacing(self, record, observation):
+        decision = record['decision']
+        kind = self.activity['kind']
+        if kind in ('lesson', 'review', 'multistep'):
+            # Each newly revealed proof stage has its own budget; a resumed or
+            # rejected submission does not draw another delay.
+            stage = str(observation.get('key') or record['key'])
+            pacing = record.setdefault('answer_pacing', {})
+            if stage not in pacing:
+                started = (record['started_at'] if not pacing else observation.get('observed_at', self.clock()))
+                delay = self.pacer.duration('answer')
+                pacing[stage] = {'started_at': started, 'delay_seconds': delay, 'submit_at': started + delay}
+            decision.update(pacing[stage])
+        elif kind == 'assessment':
+            timing = self.state.get('assessment_timing') or {}
+            position = observation.get('sequence_position') or observation.get('question', {}).get('sequence_position')
+            offsets = timing.get('answer_offsets_seconds', [])
+            if position and 0 < int(position) <= len(offsets):
+                decision['submit_at'] = timing['started_at'] + offsets[int(position) - 1]
+                decision['delay_seconds'] = max(0, decision['submit_at'] - record['started_at'])
+
+    def _pace_answer(self, record, observation):
+        due = record['decision']['submit_at']
+        while True:
+            check_stop(self.stop_event)
+            delay = max(0, due - self.clock())
+            available = self._remaining_seconds(observation)
+            if available is not None:
+                timing = self.state.get('assessment_timing') or {}
+                count = timing.get('question_count') or 1
+                position = observation.get('sequence_position') or 1
+                allowance = max(0, available - self._submission_reserve() - 15 * max(0, int(count) - int(position)))
+                if delay > allowance:
+                    record['decision']['timing_deviation'] = 'Preserve time for remaining questions and final submission'
+                delay = min(delay, allowance)
+            if delay <= 0:
+                return
+            chunk = min(30, delay)
+            before = self.clock()
+            self.sleep(chunk)
+            # Injected test sleepers may record waits without advancing their
+            # clock. A real sleep always advances it.
+            if self.clock() <= before:
+                return
+            timer = getattr(self.browser, 'remaining_seconds', None)
+            if available is not None and timer:
+                try:
+                    seconds = timer()
+                    if seconds is not None:
+                        self._observe_timing({'remaining_seconds': seconds, 'observed_at': self.clock()})
+                except StopRequested:
+                    raise
+                except Exception as error:
+                    self._event('assessment_timer_read_failed', error=str(error))
+
+    def _diagnostic_retry(self, observation):
+        record = next(reversed(self.state['presentations'].values()), {}) if self.state['presentations'] else {}
+        decision = record.get('decision', {})
+        take = bool(decision.get('intended') == 'C' and decision.get('distance', 0)
+                    and not self.state.get('diagnostic_retry_active'))
+        record['diagnostic_retry_taken'] = take
+        self.state['diagnostic_retry_active'] = take
+        self._save()
+        return {**observation, 'retry_diagnostic': take}
 
     def _browser_call(self, method, *args):
         attempts = 0
@@ -94,26 +257,45 @@ class ActivityCapture:
                 recovered = pending and (method == pending['method'] or observed_progress or self.state.get('stage') == 'history')
                 if recovered and not (isinstance(result, dict) and result.get('unknown_outcome')):
                     previous = self.state.pop('pending_browser_error')
+                    self.state.get('browser_failures', {}).pop(previous.get('failure_key'), None)
                     self._event('browser_recovered', method=method, previous_error=previous)
                     self._save()
                 return result
             except StopRequested:
                 raise
             except Exception as error:
-                attempts += 1
+                key = (args[0].get('key') if args and isinstance(args[0], dict)
+                       else (self.state.get('last_observation') or {}).get('key'))
+                family = re.sub(r'\b\d+(?:\.\d+)?\b', 'N', str(error).split('Call log:')[0])
+                failure_key = hashlib.sha256(json.dumps([method, key, type(error).__name__, family]).encode()).hexdigest()
+                failures = self.state.setdefault('browser_failures', {})
+                attempts = failures.get(failure_key, 0) + 1
+                failures[failure_key] = attempts
                 self.state['recoveries'] += 1
                 self.state['pending_browser_error'] = {'method': method, 'error': str(error), 'attempt': attempts,
-                    'observation_key': (args[0].get('key') if args and isinstance(args[0], dict)
-                                        else (self.state.get('last_observation') or {}).get('key'))}
+                    'observation_key': key, 'failure_key': failure_key}
                 self._save()
                 self._event('browser_retry', method=method, error=str(error), attempt=attempts)
                 logging.warning('%s task %s: %s; retrying', method, self.activity['task_id'], error)
-                self.sleep(backoff(attempts, self.config.retry_delay, self.config.recovery_max_delay))
+                delay = self.pacer.backoff(attempts, retry_after=getattr(error, 'retry_after', 0))
+                available = self._remaining_seconds()
+                # Ordinary recovery must leave enough time to submit the whole
+                # assessment. A server throttle is never shortened into a retry.
+                if available is not None and not getattr(error, 'retry_after', 0):
+                    delay = min(delay, max(0, available - self._submission_reserve()))
+                self.sleep(delay)
                 # A timed-out Start/Continue/Submit may already have succeeded.
                 # Return to observation before ANY further state-changing action.
                 if method in ('respond', 'advance', 'recover'):
                     return {'unknown_outcome': True, 'error': str(error),
                             'entry_failed': getattr(error, 'submitted', None) is False}
+                if method == 'observe' and available is not None and self._remaining_seconds() <= self._submission_reserve():
+                    # Preserve the last known page for final submission even if
+                    # optional capture work can no longer fit before expiry.
+                    previous = self.state.get('last_observation')
+                    if previous:
+                        return {**previous, 'remaining_seconds': self._remaining_seconds(),
+                                'observed_at': self.clock(), 'deadline_recovery': str(error)}
                 if attempts % 3 == 0 and hasattr(self.browser, 'restart'):
                     try:
                         self.browser.restart()
@@ -131,6 +313,7 @@ class ActivityCapture:
             check_stop(self.stop_event)
             observation = self._browser_call('observe', self.directory)
             self.state['last_observation'] = observation
+            self._observe_timing(observation)
             if observation.get('shared_contexts'):
                 self.state['shared_context'] = observation['shared_contexts']
             signature = self._signature(observation)
@@ -139,15 +322,11 @@ class ActivityCapture:
             kind = observation.get('kind', 'unknown')
             if kind == 'complete':
                 self.state.update(stage='history', completion=observation, completed_at=self.clock())
+                self._set_browser_deadline()
                 self._save()
                 return
             if kind == 'question':
-                if (self.activity['kind'] == 'assessment' and observation.get('remaining_seconds') is not None
-                        and float(observation['remaining_seconds']) <= 5):
-                    self._event('assessment_deadline_submission', remaining_seconds=observation['remaining_seconds'])
-                    self.state['assessment_timing_deviation'] = 'Submit entered answers before the timer expires; judge any unanswered items in history'
-                    self._save()
-                    self._browser_call('respond', observation, {'action': 'submit_assessment'}, self.directory)
+                if self._submit_if_due(observation):
                     continue
                 self._question(observation, repeated)
             elif kind in ('tutorial', 'example'):
@@ -162,6 +341,10 @@ class ActivityCapture:
                     self._save()
                     self._browser_call('respond', observation, {'action': 'submit_assessment'}, self.directory)
                 else:
+                    if self.activity['kind'] == 'assessment' and observation.get('action') == 'start':
+                        self._start_assessment_timing(observation)
+                    if self.activity['kind'] == 'diagnostic' and observation.get('action') in ('decline_retry', 'diagnostic_retry'):
+                        observation = self._diagnostic_retry(observation)
                     self._browser_call('advance', observation, self.directory)
             else:
                 self._recover_page(observation, repeated)
@@ -226,6 +409,8 @@ class ActivityCapture:
             record['feedback'] = {**question, **{k: v for k, v in observation.items() if k != 'question'}}
             if observation.get('grade'):
                 record['grade'] = observation['grade']
+                if self.activity['kind'] == 'diagnostic' and str(observation['grade']).lower() in ('correct', 'full credit', 'skipped question'):
+                    self.state['diagnostic_retry_active'] = False
             self._save()
             self._browser_call('advance', observation, self.directory)
             return
@@ -236,7 +421,10 @@ class ActivityCapture:
             record['question'] = merge_question(record['question'], question)
         decision = self.policy.decide(key, question, record['started_at'])
         record['decision'] = decision
+        self._prepare_answer_pacing(record, observation)
         self._save()
+        if self._submit_if_due(observation):
+            return
         if decision['action'] == 'dont_know':
             if observation.get('can_dont_know', True):
                 self._submit(record, observation, {'action': 'dont_know'})
@@ -246,16 +434,34 @@ class ActivityCapture:
         # marks those observations accepted only after verifying the entered values.
         solution = record.get('solution')
         current_binding = self._answer_binding(question)
+        failure = self.state.get('pending_browser_error') or {}
+        if failure.get('method') == 'respond' and failure.get('attempt', 0) >= 4:
+            recovery_key = failure.get('failure_key', '') + ':' + current_binding
+            attempts = record.setdefault('entry_reconsiderations', {}).get(recovery_key, 0)
+            if attempts < 2:
+                record['entry_reconsiderations'][recovery_key] = attempts + 1
+                record['reconsider_reason'] = {'browser_error': failure['error'],
+                    'instruction': 'The answer could not be entered or verified. Check the source fields and return valid alternative entry keys or a supported response.',
+                    'attempt': attempts + 1}
+                record['replace_solver'] = attempts > 0
+                record.pop('solution_binding', None)
+            elif observation.get('can_dont_know') or observation.get('can_skip'):
+                override(decision, 'D', 'Repeated entry failures persist after focused reconsideration; use the offered skip to continue')
+                self._submit(record, observation, {'action': 'dont_know' if observation.get('can_dont_know') else 'skip'})
+                return
         if not solution or record.get('solution_binding') != current_binding:
             payload = self._question_payload(question, observation, record)
             try:
-                solution = self.solver.request('solve_question', payload, timeout=self._solver_budget(observation))
+                solution = self.solver.request('solve_question', payload, timeout=self._solver_budget(observation),
+                                               force_new=bool(record.pop('replace_solver', False)))
                 record.update(solution=solution, solution_binding=current_binding)
             except SolverUnavailable as error:
                 self._event('solver_best_attempt', key=key, error=str(error))
                 solution = {'status': 'unavailable', 'reasoning': str(error), 'answers': []}
                 record['solver_failure'] = str(error)
             self._save()
+        if self._submit_if_due(observation):
+            return
         if (solution.get('status') in ('ambiguous', 'unavailable', 'source_error') or solution.get('confidence', 1) < .5) and decision['intended'] == 'W':
             override(decision, 'C', 'Resolve uncertainty using the best supported response instead of an intentional error')
         source_preferred = bool(record['submissions']) and any(a.get('ma_value') is not None for a in solution.get('answers', []))
@@ -290,15 +496,15 @@ class ActivityCapture:
             else:
                 self._recover_page(observation, repeated)
             return
-        remaining = max(0, decision['submit_at'] - self.clock())
-        deadline = observation.get('remaining_seconds')
-        if deadline is not None and remaining > max(0, float(deadline) - 5):
-            remaining = max(0, float(deadline) - 5)
-            decision['timing_deviation'] = 'Submit before the activity timer expires'
         self._save()
-        self.sleep(remaining)
+        self._pace_answer(record, observation)
+        if self._submit_if_due(observation):
+            return
         # Waiting or solving may have changed the page; read again before writing.
         fresh = self._browser_call('observe', self.directory)
+        self._observe_timing(fresh)
+        if fresh.get('kind') != 'complete' and self._submit_if_due(fresh):
+            return
         if fresh.get('kind') != 'question' or fresh.get('accepted') or str(fresh.get('key') or key).split(':fields:', 1)[0] != key:
             return
         current = fresh.get('question') or question
@@ -323,6 +529,8 @@ class ActivityCapture:
         submission['outcome'] = ('not_submitted' if isinstance(result, dict) and result.get('not_submitted') else
                                  'entry_failed' if isinstance(result, dict) and result.get('entry_failed') else
                                  'unknown' if isinstance(result, dict) and result.get('unknown_outcome') else 'observe_to_confirm')
+        if isinstance(result, dict) and result.get('error'):
+            submission['browser_error'] = result['error']
         self._save()
 
     @staticmethod
@@ -348,6 +556,8 @@ class ActivityCapture:
         # Independent lesson/review questions need no preceding practice archive.
         payload = {'question': question, 'observation': observation,
                    'previous_submissions': record.get('submissions', [])}
+        if record.get('reconsider_reason'):
+            payload['recovery'] = deepcopy(record['reconsider_reason'])
         example_id = str(question.get('source_example_id') or 'e-' + str(question.get('kp_id') or ''))
         example = next((step['question'] for step in reversed(self.state['steps'])
                         if step.get('kind') == 'example' and step.get('question')
@@ -361,11 +571,11 @@ class ActivityCapture:
         return task_payload('solve_question', payload)
 
     def _solver_budget(self, observation):
-        remaining = observation.get('remaining_seconds')
+        remaining = self._remaining_seconds(observation)
         if remaining is None:
             return self.config.solver_timeout
-        available = float(remaining) - 10
-        count = self.activity.get('details', {}).get('question_count')
+        available = float(remaining) - self._submission_reserve()
+        count = (self.state.get('assessment_timing') or {}).get('question_count') or self.activity.get('details', {}).get('question_count')
         position = observation.get('sequence_position') or observation.get('question', {}).get('sequence_position')
         if self.activity['kind'] == 'assessment' and count and position:
             available /= max(1, int(count) - int(position) + 1)
@@ -422,14 +632,21 @@ class ActivityCapture:
             question['topic_match'] = {'topic_id': None, 'reasoning': str(error)}
 
     def _recover_page(self, observation, repeated):
+        if self._submit_if_due(observation):
+            return
         self._event('page_recovery', observation_key=observation.get('key'), repeated=repeated)
         action = 'reload' if repeated >= 3 else 'wait'
         result = None
-        if repeated >= 2:
+        payload = {'observation': observation, 'activity': self.activity,
+                   'browser_error': self.state.get('pending_browser_error'),
+                   'question': observation.get('question')}
+        identity = semantic_identity('interpret_page', task_payload('interpret_page', payload))
+        attempts = self.state.setdefault('page_recovery_attempts', {}).get(identity, 0)
+        if repeated >= 2 and attempts < 2:
             try:
-                payload = {'observation': observation, 'activity': self.activity,
-                           'previous_recovery_count': self.state['recoveries']}
-                result = self.solver.request('interpret_page', payload, timeout=self._solver_budget(observation))
+                self.state['page_recovery_attempts'][identity] = attempts + 1
+                self._save()
+                result = self.solver.request('interpret_page', payload, timeout=self._solver_budget(observation), force_new=attempts > 0)
                 validate_result('interpret_page', payload, result)
                 action = result['action']
                 self._event('page_interpretation', judgment=result)
@@ -448,8 +665,19 @@ class ActivityCapture:
         elif action == 'reload' and hasattr(self.browser, 'restart'):
             self._browser_call('restart')
             self._browser_call('open', self.activity, self.directory, self.state)
+        elif action == 'retry_answer':
+            key = str(observation.get('key', '')).split(':fields:', 1)[0]
+            record = self.state['presentations'].get(key)
+            if record:
+                record.pop('solution_binding', None)
+                record['replace_solver'] = attempts > 0
+                record['reconsider_reason'] = {'instruction': result['reasoning'],
+                    'browser_error': self.state.get('pending_browser_error'), 'retry': attempts + 1}
+                self._save()
         else:
-            self.sleep(backoff(repeated + 1, self.config.retry_delay, self.config.recovery_max_delay))
+            delay = self.pacer.backoff(repeated + 1)
+            remaining = self._remaining_seconds(observation)
+            self.sleep(min(delay, max(0, remaining - self._submission_reserve())) if remaining is not None else delay)
 
     def _review(self):
         history = self.state.get('history')

@@ -1,7 +1,7 @@
 from copy import deepcopy
 import unittest
 
-from scripts.activity.evidence import finalize_answers, merge_question
+from scripts.activity.evidence import capture_gaps, finalize_answers, merge_question
 
 
 class Evidence(unittest.TestCase):
@@ -66,6 +66,50 @@ class Evidence(unittest.TestCase):
         self.question['fields'][0].update(correct_value='2', correct_evidence={'kind': 'ma_answer', 'value': '2', 'source_file': '/source.html'})
         field = finalize_answers(self.question, [], {'answers': []})['answer_fields'][0]
         self.assertEqual(field['evidence']['kind'], 'ma_answer')
+
+    def test_example_missing_solution_and_tutorial_missing_content_need_source_recovery(self):
+        content = {'kind': 'lesson', 'questions': [],
+            'canonical_examples': [{'math_academy_id': 'e-3', 'problem': 'Example', 'worked_solution': '',
+                                    'errors': ['MathJax formula has no assistive MathML']}],
+            'tutorials': [{'math_academy_id': 7, 'title': 'Read this', 'content': ''}],
+            'lesson_definition': {'complete': True, 'steps': [
+                {'type': 'example', 'content_id': 3}, {'type': 'tutorial', 'content_id': 7}]}}
+        gaps = capture_gaps(content)
+        example = next(g for g in gaps if g.get('record_kind') == 'canonical_examples')
+        tutorial = next(g for g in gaps if g.get('record_kind') == 'tutorials')
+        self.assertIn('worked_solution', example['missing'])
+        self.assertIn('extraction_errors', example['missing'])
+        self.assertNotIn('answer_fields', example['missing'])
+        self.assertIn('content', tutorial['missing'])
+
+    def test_incomplete_fields_assets_and_missing_declared_lesson_steps_are_gaps(self):
+        question = deepcopy(self.question)
+        question.update(answer_fields_complete=False,
+                        assets=[{'path': '/original.png', 'sha256': '123', 'render_unavailable': 'not drawn'}])
+        question['fields'][0].update(type='select', choices=[], choices_complete=False)
+        gaps = capture_gaps({'kind': 'lesson', 'questions': [question],
+            'lesson_definition': {'complete': False, 'steps': [{'type': 'example', 'content_id': 9}]}})
+        missing = {m for g in gaps for m in g['missing']}
+        self.assertTrue({'answer_fields_complete', 'answer_choices', 'asset_rendering',
+                         'lesson_definition_complete', 'lesson_step_content'} <= missing)
+
+    def test_final_unavailable_finding_preserves_the_limitation_and_resolution(self):
+        question = deepcopy(self.question)
+        question['worked_solution'] = ''
+        gaps = capture_gaps({'questions': [question], 'judgments': [{'question_id': 'q-1',
+            'record_kind': 'questions', 'final': True, 'status': 'unavailable', 'reasoning': 'Source was removed.'}]})
+        self.assertEqual(gaps[0]['missing'], ['worked_solution'])
+        self.assertTrue(gaps[0]['final'])
+        self.assertEqual(gaps[0]['reason'], 'Source was removed.')
+
+    def test_conflicting_duplicate_source_id_is_not_silently_complete(self):
+        changed = {**self.question, 'problem': 'Different source problem'}
+        gaps = capture_gaps({'questions': [self.question, changed]})
+        self.assertIn('source_identity_conflict', gaps[0]['missing'])
+
+    def test_complete_worked_example_requires_no_interactive_answer_fields(self):
+        example = {'math_academy_id': 'e-1', 'problem': 'One plus one?', 'worked_solution': 'The answer is 2.'}
+        self.assertEqual(capture_gaps({'canonical_examples': [example]}), [])
 
 
 if __name__ == '__main__':

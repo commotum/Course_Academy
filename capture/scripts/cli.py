@@ -46,6 +46,16 @@ def parser():
     cli.add_argument("--codex-bin")
     cli.add_argument("--solver-model")
     cli.add_argument("--solver-timeout", type=float)
+    cli.add_argument("--timeout-ms", type=int)
+    cli.add_argument("--ui-delay-ms", type=int, help="Browser interaction delay; minimum 500 ms")
+    cli.add_argument("--settle-ms", type=int)
+    cli.add_argument("--retry-delay", type=float)
+    cli.add_argument("--recovery-max-delay", type=float)
+    cli.add_argument("--recovery-jitter", type=float)
+    for kind in ('event', 'answer', 'lesson', 'rest', 'capacity', 'assessment-time'):
+        cli.add_argument('--' + kind + '-min', type=float)
+        cli.add_argument('--' + kind + '-max', type=float)
+    cli.add_argument("--rest-every", type=int)
     cli.add_argument("--seed", type=int)
     cli.add_argument("--once", action="store_true", help="For drain: process the oldest pending capture once")
     return cli

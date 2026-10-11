@@ -69,7 +69,7 @@ def compact_submissions(submissions):
     """Repeated identical UI attempts add counts, not repeated mathematical evidence."""
     groups = []
     for submission in submissions:
-        item = _pick(submission, ('action', 'outcome', 'grade', 'field_grades'))
+        item = _pick(submission, ('action', 'outcome', 'grade', 'field_grades', 'browser_error'))
         item['responses'] = [_pick(response, ('key', 'value', 'option', 'value_type'))
                              for response in submission.get('responses', [])]
         signature = json.dumps(item, sort_keys=True, default=str)
@@ -158,9 +158,15 @@ def task_payload(task, payload):
         return {'evidence_contract': task + ':1', 'question': compact_question(question), 'topics': topics}
     if task == 'interpret_page':
         observation = payload.get('observation') or {}
-        return {'evidence_contract': task + ':1', 'observation': _pick(observation, ('kind', 'key', 'buttons', 'grade', 'accepted',
+        result = {'evidence_contract': task + ':1', 'observation': _pick(observation, ('kind', 'key', 'buttons', 'grade', 'accepted',
             'reload_required', 'ready', 'action', 'screenshot', 'html_path', 'visible_text', 'text',
-            'can_dont_know', 'can_skip')), **_pick(payload, ('previous_recovery_count',))}
+            'can_dont_know', 'can_skip'))}
+        question = payload.get('question') or observation.get('question')
+        if question:
+            result['question'] = compact_question(question)
+        if payload.get('browser_error'):
+            result['browser_error'] = _pick(payload['browser_error'], ('method', 'error'))
+        return result
     return deepcopy(payload)
 
 

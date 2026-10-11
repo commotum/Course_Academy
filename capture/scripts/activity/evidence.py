@@ -3,6 +3,7 @@
 from copy import deepcopy
 import hashlib
 import json
+import re
 
 from .policy import answer_fields
 
@@ -110,22 +111,110 @@ def finalize_answers(question, presentations, judgment):
 
 
 def capture_gaps(content):
-    """Optional history metadata is retained as absent; required missing content is explicit."""
+    """Identify incomplete source capture without invalidating a final agent finding.
+
+    These are recovery inputs and preserved limitations, never a reason to defer
+    the activity. Optional history metadata (difficulty, XP, and topic labels) is
+    deliberately not required.
+    """
     gaps = []
-    for question in content.get('questions', []):
+    judgments = content.get('judgments', [])
+    if isinstance(judgments, dict):
+        judgments = list(judgments.values())
+
+    def append(record, name, missing, **details):
+        if not missing:
+            return
+        gap = {'question': question_key(record), 'record_kind': name,
+               'missing': list(dict.fromkeys(missing)), **details}
+        judgment = next((j for j in judgments if j.get('final') and
+            j.get('status') in ('unavailable', 'source_error') and
+            j.get('record_kind', name) == name and
+            ((j.get('question_id') is not None and str(j['question_id']) == str(record.get('math_academy_id')))
+             or j.get('capture_key') == question_key(record))), None)
+        if judgment:
+            gap.update(final=True, judgment_status=judgment['status'], reason=judgment.get('reasoning'))
+        gaps.append(gap)
+
+    def source_gaps(record):
         missing = []
-        if not question.get('problem'):
-            missing.append('problem')
-        if not answer_fields(question):
-            missing.append('answer_fields')
-        if not question.get('worked_solution'):
-            missing.append('worked_solution')
-        if not question.get('math_academy_id'):
-            missing.append('source_question_id')
-        if missing:
-            gaps.append({'question': question_key(question), 'missing': missing})
-    if content.get('kind') == 'lesson' and not content.get('lesson_definition'):
-        gaps.append({'missing': ['lesson_definition']})
-    if content.get('kind') == 'multistep' and not content.get('multistep'):
+        if record.get('errors'):
+            missing.append('extraction_errors')
+        if any(a.get('unavailable') or not a.get('path') or not a.get('sha256') for a in record.get('assets', [])):
+            missing.append('assets')
+        if any(a.get('render_unavailable') for a in record.get('assets', [])):
+            missing.append('asset_rendering')
+        values = [record.get(key, '') for key in ('problem', 'worked_solution', 'content')]
+        values.extend(choice.get('value', '') for field in answer_fields(record) for choice in field.get('choices', []))
+        if any(re.search(r'@asset-\d+@', str(value)) for value in values):
+            missing.append('asset_references')
+        return missing
+
+    for name in ('questions', 'canonical_examples'):
+        seen = {}
+        for question in content.get(name, []):
+            missing = source_gaps(question)
+            if not str(question.get('problem') or '').strip():
+                missing.append('problem')
+            fields = answer_fields(question)
+            # Canonical worked examples need not contain interactive fields.
+            if name == 'questions' and not fields:
+                missing.append('answer_fields')
+            if question.get('answer_fields_complete') is False:
+                missing.append('answer_fields_complete')
+            keys = [str(field.get('key', '')) for field in fields]
+            placeholders = set(re.findall(r'\{\{([^{}]+)\}\}', str(question.get('problem', ''))))
+            if (any(not key for key in keys) or len(keys) != len(set(keys)) or
+                    placeholders - set(keys) or any(not f.get('type') for f in fields)):
+                missing.append('answer_field_structure')
+            if any(f.get('type') in ('select', 'radio', 'checkbox', 'multi-select') and
+                   (not f.get('choices') or f.get('choices_complete') is False) for f in fields):
+                missing.append('answer_choices')
+            if not str(question.get('worked_solution') or '').strip():
+                missing.append('worked_solution')
+            identity = question.get('math_academy_id')
+            if not identity:
+                missing.append('source_question_id')
+            elif str(identity) in seen:
+                # Repeated presentations belong to one source record. Surface an
+                # unresolved merge, especially if the source problem changed.
+                missing.append('duplicate_source_record')
+                before = re.sub(r'\s+', ' ', str(seen[str(identity)].get('problem', ''))).strip()
+                after = re.sub(r'\s+', ' ', str(question.get('problem', ''))).strip()
+                if before != after:
+                    missing.append('source_identity_conflict')
+            if identity:
+                seen[str(identity)] = question
+            append(question, name, missing, **({'errors': question['errors']} if question.get('errors') else {}))
+
+    for tutorial in content.get('tutorials', []):
+        missing = source_gaps(tutorial)
+        if not str(tutorial.get('content') or tutorial.get('problem') or '').strip():
+            missing.append('content')
+        if not tutorial.get('title'):
+            missing.append('title')
+        if not tutorial.get('math_academy_id'):
+            missing.append('source_tutorial_id')
+        append(tutorial, 'tutorials', missing, **({'errors': tutorial['errors']} if tutorial.get('errors') else {}))
+
+    kind = content.get('kind') or content.get('task_type')
+    if kind == 'lesson':
+        definition = content.get('lesson_definition') or {}
+        if not definition:
+            gaps.append({'missing': ['lesson_definition']})
+        else:
+            if not definition.get('complete') or not definition.get('steps') or definition.get('issues'):
+                gaps.append({'missing': ['lesson_definition_complete'], 'issues': definition.get('issues', [])})
+            identities = {'tutorial': {str(q.get('math_academy_id')) for q in content.get('tutorials', [])},
+                          'example': {str(q.get('math_academy_id')) for q in content.get('canonical_examples', [])}}
+            for step in definition.get('steps', []):
+                step_type = step.get('type')
+                identity = str(step.get('content_id'))
+                if step_type == 'example':
+                    identity = 'e-' + identity.removeprefix('e-')
+                if step_type in identities and identity not in identities[step_type]:
+                    gaps.append({'record_kind': step_type, 'source_id': identity,
+                                 'missing': ['lesson_step_content'], 'placement': step.get('math_academy_id')})
+    if kind == 'multistep' and not content.get('multistep'):
         gaps.append({'missing': ['multistep']})
     return gaps

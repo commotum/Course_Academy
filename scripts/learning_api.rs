@@ -2,6 +2,14 @@
 mod assignment_interaction;
 mod assignment_reader;
 mod developer_preview;
+#[cfg(test)]
+#[allow(dead_code)]
+#[path = "../engine/edb/configuration.rs"]
+mod preview_configuration;
+#[cfg(test)]
+#[allow(dead_code)]
+#[path = "../engine/edb/progress.rs"]
+mod preview_progress;
 
 use chrono::{DateTime, Utc};
 use course_academy_engine::{
@@ -2595,10 +2603,69 @@ mod study_queue_tests {
 mod integration {
     use super::*;
 
+    fn preview_with(
+        db: &DatabaseValue,
+        transaction: &str,
+        at: i64,
+    ) -> Result<edb_core::SpeculativeTransactionReport> {
+        let mut registry = edb_core::NativeRegistry::builder();
+        type Predicate =
+            fn(&DatabaseValue, u64) -> std::result::Result<bool, edb_core::SemanticError>;
+        for (namespace, name, predicate) in [
+            (
+                "course-academy.topic",
+                "valid-difficulty?",
+                preview_configuration::valid_topic_difficulty as Predicate,
+            ),
+            (
+                "course-academy.policy",
+                "valid?",
+                preview_configuration::valid_policy as Predicate,
+            ),
+            (
+                "course-academy.progress",
+                "valid-profile?",
+                preview_progress::valid_profile as Predicate,
+            ),
+            (
+                "course-academy.progress",
+                "valid-progress?",
+                preview_progress::valid_progress as Predicate,
+            ),
+        ] {
+            registry.entity_predicate(
+                edb_core::Symbol::new(namespace, name),
+                move |db, entity, control| {
+                    control.check(1)?;
+                    Ok(edb_core::RuntimeValue::Scalar(Value::Bool(predicate(
+                        db, entity,
+                    )?)))
+                },
+            )?;
+        }
+        Ok(db.with_forms_with_execution_options(
+            &edb_core::edn_transaction::read_edn_transaction(transaction)?,
+            at,
+            engine_source(),
+            edb_core::SpeculationLimits::default(),
+            &edb_core::TransactionExecutionOptions {
+                native: registry.build(),
+                ..Default::default()
+            },
+        )?)
+    }
+
     #[test]
     #[ignore = "reads live math and previews LEARNING_HISTORY_MIGRATION_TX without durable writes"]
     fn preview_history_migration() -> Result<()> {
-        let transaction = std::fs::read_to_string(std::env::var("LEARNING_HISTORY_MIGRATION_TX")?)?;
+        let transaction_path = PathBuf::from(std::env::var("LEARNING_HISTORY_MIGRATION_TX")?);
+        let transaction = std::fs::read_to_string(&transaction_path)?;
+        let intent: Json = serde_json::from_slice(&std::fs::read(
+            transaction_path.with_file_name("intent.json"),
+        )?)?;
+        let expected_basis = intent["destination_basis"]
+            .as_u64()
+            .ok_or("migration intent is missing destination_basis")?;
         let config = if std::env::var_os("EDB_POSTGRES_URL").is_some() {
             postgres_config_from_env()?
         } else {
@@ -2609,6 +2676,11 @@ mod integration {
         let database = std::env::var("EDB_DATABASE").unwrap_or("math".into());
         let conn = Connection::connect_configured(config, database, 256)?;
         let base = conn.db();
+        assert_eq!(
+            base.basis_t(),
+            expected_basis,
+            "migration destination advanced; prepare a fresh transaction before previewing"
+        );
         let before = snapshot(&base)?;
         let learner = before
             .entities
@@ -2623,8 +2695,21 @@ mod integration {
             .refs(learner, "learner/activity")?
             .into_iter()
             .collect();
-        let preview =
-            base.with_edn(&transaction, Utc::now().timestamp_millis(), engine_source())?;
+        let preview = preview_with(&base, &transaction, Utc::now().timestamp_millis())?;
+        let source = before
+            .entities
+            .iter()
+            .find_map(|(&eid, record)| {
+                (record.get("db/ident") == Some(&kw(ENGINE_SOURCE))).then_some(eid)
+            })
+            .ok_or("application/ca-engine source is not registered")?;
+        assert!(
+            preview
+                .tx_data
+                .iter()
+                .all(|datom| datom.added && datom.source == source),
+            "migration must only add facts attributed to the application engine"
+        );
         let s = snapshot(&preview.db_after)?;
         let tasks: Vec<_> = s
             .refs(learner, "learner/activity")?
@@ -2641,6 +2726,7 @@ mod integration {
         let (mut completed, mut paused, mut answered, mut response_refs, mut rendered_responses) =
             (0, 0, 0, 0, 0);
         let at = Utc::now();
+        let mut task_reports = vec![];
         for task in tasks {
             let activity = s.reference(task, "learner-task/activity")?;
             assert_eq!(status(&s, activity, "activity/type")?, "lesson");
@@ -2732,10 +2818,10 @@ mod integration {
                 if forms.is_empty() {
                     eprintln!("Task {task} remains paused pending fresh practice questions");
                 } else {
-                    let resumed = preview.db_after.with_edn(
+                    let resumed = preview_with(
+                        &preview.db_after,
                         &schema::edn(&json!(forms))?,
                         resumed_at.timestamp_millis(),
-                        engine_source(),
                     )?;
                     let resumed_snapshot = snapshot(&resumed.db_after)?;
                     assert_eq!(
@@ -2750,6 +2836,11 @@ mod integration {
                 "Previewed {state} task {task}: {}",
                 text(&s, activity, "activity/title")
             );
+            task_reports.push(
+                json!({"task_id":task,"status":state,"title":text(&s,activity,"activity/title"),
+                "elapsed_seconds":saved,"rendered":true,"lesson_route_validated":true,
+                "resume_validated":state == "paused"}),
+            );
         }
         assert_eq!((completed, paused), (4, 6));
         assert_eq!(
@@ -2763,6 +2854,20 @@ mod integration {
         eprintln!(
             "Read-only migration preview: {completed} completed, {paused} paused, {answered} answered items, {rendered_responses} rendered field responses"
         );
+        let report_path = std::env::var_os("LEARNING_HISTORY_MIGRATION_REPORT")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| transaction_path.with_file_name("application-preview.json"));
+        std::fs::write(
+            report_path,
+            serde_json::to_vec_pretty(&json!({
+                "committed":false,"speculative":true,"status":"passed","destination_basis":before.basis_t,
+                "preview_basis":s.basis_t,"source":format!(":{ENGINE_SOURCE}"),"durable_writes":0,
+                "all_added":true,"all_engine_source":true,"native_predicates_validated":true,
+                "profile_rendered":true,"home_rendered":true,
+                "completed_tasks":completed,"paused_tasks":paused,"answered_items":answered,
+                "response_refs":response_refs,"rendered_responses":rendered_responses,"tasks":task_reports,
+            }))?,
+        )?;
         Ok(())
     }
 

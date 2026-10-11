@@ -259,9 +259,9 @@ class OfflineBrowserTests(unittest.TestCase):
         self.assertEqual(len(reloads), 1)
         self.assertIsNone(self.page.evaluate("window.clicked"))
 
-    def test_assessment_minutes_label_supplies_actual_timer_budget(self):
+    def test_assessment_minutes_label_uses_conservative_rounded_budget(self):
         self.page.set_content('<span id="timeRemaining">15 minutes remaining</span>')
-        self.assertEqual(self.adapter._remaining(), 900)
+        self.assertEqual(self.adapter._remaining(), 840)
 
     def test_assessment_entry_is_not_a_grade_and_whole_submit_is_separate(self):
         self.adapter.activity["kind"] = "assessment"

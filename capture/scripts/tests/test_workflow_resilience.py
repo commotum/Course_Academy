@@ -22,7 +22,8 @@ class WorkflowResilienceTests(unittest.TestCase):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         self.root = Path(temp.name)
-        self.config = Config(repo_root=self.root, profile=self.root / 'profile')
+        self.config = Config(repo_root=self.root, profile=self.root / 'profile', retry_delay=.01,
+                             lesson_min=0, lesson_max=0, rest_every=0, recovery_jitter=0)
         self.stop = threading.Event()
 
     def activity(self, task='1'):

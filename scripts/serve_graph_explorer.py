@@ -214,7 +214,8 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     sources = (source, ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
                ROOT / "scripts/developer_preview.rs")
     if test:
-        sources += (ROOT / "scripts/assignment_interaction_tests.rs",)
+        sources += (ROOT / "scripts/assignment_interaction_tests.rs",
+                    ROOT / "engine/edb/progress.rs", ROOT / "engine/edb/configuration.rs")
     fingerprint = hashlib.sha256(b"".join(p.read_bytes() for p in sources) + repr((test, [(str(p), p.stat().st_mtime_ns) for p in libraries.values()])).encode()).hexdigest()[:16]
     output = ROOT / ".local/graph-explorer" / f"learning-{fingerprint}"
     if not output.exists():
