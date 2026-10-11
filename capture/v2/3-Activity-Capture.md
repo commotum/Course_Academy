@@ -77,13 +77,31 @@ An assessment presents a fixed set of questions under a time limit. It may span 
 
 A diagnostic adapts to answers and skips to determine placement. It has an observed path rather than a fixed question list known in advance.
 
-**Answer policy — needs review:** Decide whether to answer correctly or choose **Don't Know** using the lessons already captured in `math` and the lessons we still want to capture. The existing script's prerequisite and covered-topic rules are reference material; the replacement needs its own policy.
+### Before starting
 
-Review what counts as a captured lesson, which lessons should remain available, how prerequisite/knowledge-point matches affect decisions, and when to accept retries. Save the policy and decisions for resuming. For an uncertain match, capture the question and use Don't Know to continue.
+1. Read and save the course's complete topic list, with IDs and titles, through `course/units → unit/modules → module/topics`.
+2. Read the prerequisite graph. For each prerequisite topic, find the shortest directed path to any topic in the course. `topic/next` points from a prerequisite to the topic that requires it: one edge means a direct prerequisite.
+3. Save the course topic list, prerequisite distances, instructions, and policy with the activity. Reuse them when resuming.
 
-1. Save the instructions and the capture information used to make placement decisions.
-2. Capture every question before answering or skipping, including complete answer fields and choices. Save its numbered position when a source question ID is unavailable. Record the chosen action, its reason, any offered retry, feedback, and the next question presented.
-3. Continue until Math Academy ends the diagnostic, then capture its results and history. Match numbered positions to the revealed `q-N` IDs and collect topic/knowledge-point references, difficulty, and worked solutions, including for skipped questions where provided.
+### Answer policy and timing
+
+| Question's topic | Intended response | Time from question appearing to submission |
+|---|---|---|
+| In the course | Independently choose 50% correct or 50% Don't Know | Correct: random 4½–6 minutes. Don't Know: immediate. |
+| Direct prerequisite of a course topic: 1 edge | Correct | Random 1½–2 minutes |
+| Prerequisite 2 edges from the closest course topic | Correct | Random 1–1½ minutes |
+| Prerequisite 3 or more edges from the closest course topic | Correct | Random 30–60 seconds |
+
+Check course membership first: a topic in the course keeps the 50/50 policy even if it is also a prerequisite of another course topic. An unknown topic or one with no path to the course is not a distant prerequisite; capture it, record the uncertainty, and choose Don't Know.
+
+Draw each correct-answer delay uniformly within its range. Capture and solving time count toward that delay; wait only for the remaining time. If solving takes longer, submit when ready. **Don't Know has no deliberate wait** after capturing and classifying the question. Save the response decision, sampled delay, and question start time so resuming does not redraw or restart the wait.
+
+### Capture sequence
+
+1. Capture every question, including all answer fields, choices, and images, before answering or choosing Don't Know. Save its numbered position when a source question ID is unavailable.
+2. Identify its topic from an existing source-question association when available. Otherwise, have the same sub-agent match it against the saved course and prerequisite topics. Use the graph's recorded distance for timing.
+3. Apply the policy above. Record the matched topic, distance, chosen action, timing, any offered retry, feedback, and next question presented. Continue until Math Academy ends the diagnostic.
+4. Capture the results and history. Match numbered positions to the revealed `q-N` IDs and collect topic/knowledge-point references, difficulty, and worked solutions, including for skipped questions where provided.
 
 Record the branches observed without inventing unvisited routes. A diagnostic worked solution remains part of its question; it does not become a canonical example.
 
