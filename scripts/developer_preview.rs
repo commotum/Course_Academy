@@ -89,7 +89,7 @@ fn fields(s: &EntitySnapshot, question: u64) -> Result<Vec<Json>> {
     let mut fields = vec![];
     for field in s.refs(question, "question/answer-fields")? {
         let kind = status(s, field, "answer-field/type")?;
-        let choices = if kind == "blank" {
+        let choices = if matches!(kind.as_str(), "blank" | "free") {
             vec![]
         } else {
             s.refs(field, "answer-field/choices")?
@@ -99,7 +99,7 @@ fn fields(s: &EntitySnapshot, question: u64) -> Result<Vec<Json>> {
         };
         fields.push(json!({
             "id": field, "key": text(s, field, "answer-field/key"),
-            "type": kind, "presentation": text(s, field, "answer-field/presentation"), "choices": choices,
+            "type": kind, "choices": choices,
             "answerType": s.optional_ref(field, "answer-field/correct")?
                 .map(|id| status(s, id, "answer/type")).transpose()?,
             "correctAnswer": s.optional_ref(field, "answer-field/correct")?
@@ -293,7 +293,10 @@ pub(super) fn check_answer(s: &EntitySnapshot, learner: u64, body: &Json) -> Res
         if !fields.contains(&field) || submitted.contains_key(&field) {
             return Err("Each answer field must appear exactly once".into());
         }
-        let (value, response) = if status(s, field, "answer-field/type")? == "blank" {
+        let (value, response) = if matches!(
+            status(s, field, "answer-field/type")?.as_str(),
+            "blank" | "free"
+        ) {
             let value = response["value"]
                 .as_str()
                 .ok_or("Blank response must contain a string value")?;
@@ -317,11 +320,18 @@ pub(super) fn check_answer(s: &EntitySnapshot, learner: u64, body: &Json) -> Res
         submitted.insert(field, value);
         selected.insert(field, response);
     }
-    let correct = learning::grade(s, question, &submitted)?;
+    learning::validate_responses(s, question, &submitted)?;
+    let outcome = if learning::has_free_fields(s, question)? {
+        "completed"
+    } else if learning::grade(s, question, &submitted)? {
+        "correct"
+    } else {
+        "incorrect"
+    };
     for field in presentation["fields"].as_array_mut().unwrap() {
         field["response"] = selected.remove(&field["id"].as_u64().unwrap()).unwrap();
     }
-    presentation["status"] = json!(if correct { "correct" } else { "incorrect" });
+    presentation["status"] = json!(outcome);
     presentation["basis"] = json!(s.basis_t);
     Ok(presentation)
 }

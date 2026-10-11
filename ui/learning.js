@@ -3,13 +3,13 @@ import { romanLists } from './prose-lists.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
 import { developerModeReady, isDeveloperMode } from './developer-mode.js';
 import { attachStepMenu } from './step-menu.js';
-import { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, statementCheckboxControl } from './question-fields.js';
+import { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, checkboxControl, freeInput } from './question-fields.js';
 
 await developerModeReady;
 
 const $ = id => document.getElementById(id);
 const terminal = status => ['completed', 'failed'].includes(status);
-const answered = status => ['correct', 'incorrect', 'skipped'].includes(status);
+const answered = status => ['correct', 'incorrect', 'skipped', 'completed'].includes(status);
 let task = null;
 let busy = false;
 let retryOperation = null;
@@ -589,9 +589,11 @@ function fieldControl(field, readOnly, itemId, promptText = '') {
   const type = short(field.type), response = field.response;
   const choices = choiceOrder(field.choices || [], `${itemId}:${field.id}`);
   const responseId = response?.choiceId ?? response?.id;
-  const checklist = statementCheckboxControl(field, promptText, label => answerValue({ type: 'text', value: label }), readOnly);
+  const checklist = checkboxControl(field, label => answerValue({ type: 'text', value: label }), readOnly);
   if (checklist) {
     set.append(checklist);
+  } else if (type === 'free') {
+    set.append(freeInput(field, label, field.id, value => markdown(value), typeset, readOnly));
   } else if (type === 'blank') {
     set.append(blankInput(field, label, field.id, readOnly));
   } else if (type === 'radio') {
@@ -614,7 +616,7 @@ function fieldControl(field, readOnly, itemId, promptText = '') {
     select.value = responseId == null ? '' : String(responseId);
     set.append(richSelect(select, choices, answerValue, answer => answer.id, typeset));
   }
-  for (const input of set.querySelectorAll('input,select,math-field,.answer-select-trigger')) {
+  for (const input of set.querySelectorAll('input,select,math-field,textarea,.answer-select-trigger')) {
     input.dataset.answerInput = 'true'; input.dataset.readOnly = String(readOnly);
   }
   return set;
@@ -622,7 +624,7 @@ function fieldControl(field, readOnly, itemId, promptText = '') {
 function collectResponses(form, fields) {
   return fields.map(field => {
     const set = [...form.querySelectorAll('[data-field-id]')].find(node => node.dataset.fieldId === String(field.id));
-    if (short(field.type) === 'blank') return { fieldId: field.id, value: set.querySelector('input,math-field').value };
+    if (['blank', 'free'].includes(short(field.type))) return { fieldId: field.id, value: set.querySelector('input,math-field,textarea').value };
     const input = set.querySelector('.answer-choice-value') || set.querySelector('input:checked, select');
     return { fieldId: field.id, choiceId: input?.value ? Number(input.value) : '' };
   });
@@ -666,7 +668,7 @@ function previewContent(data, step, index, archived = false) {
     form.append(prompt, fieldList);
     if (!readOnly) {
       const actions = el('div', 'answer-actions');
-      const check = el('button', 'primary', 'Check preview answer'); check.type = 'submit'; check.dataset.action = 'true';
+      const check = el('button', 'primary', fields.some(field => short(field.type) === 'free') ? 'Preview response' : 'Check preview answer'); check.type = 'submit'; check.dataset.action = 'true';
       const refresh = () => {
         const responses = collectResponses(form, fields);
         const valid = responsesComplete(fields, responses);
@@ -683,7 +685,7 @@ function previewContent(data, step, index, archived = false) {
           const checked = result.step || result;
           data.steps[index] = { ...step, ...checked };
           await renderPreview();
-          announce(checked.status === 'correct' ? 'Correct. Preview only; nothing recorded.' : 'Incorrect. Preview only; nothing recorded.');
+          announce(checked.status === 'completed' ? 'Response preview. Nothing recorded.' : checked.status === 'correct' ? 'Correct. Preview only; nothing recorded.' : 'Incorrect. Preview only; nothing recorded.');
         } catch (error) { showError(error); }
         finally { setBusy(false); }
       });
@@ -704,7 +706,7 @@ function previewContent(data, step, index, archived = false) {
     solution.append(el('summary', 'solution-heading', 'Solution:'));
     for (const field of fields) {
       if (field.correctAnswer) {
-        solution.append(el('p', 'response-summary', `${fieldLabel(field.key)} · correct value:`), answerValue(field.correctAnswer));
+        solution.append(el('p', 'response-summary', `${fieldLabel(field.key)} · ${short(field.type) === 'free' ? 'reference answer' : 'correct value'}:`), answerValue(field.correctAnswer));
         if (field.correctAnswer.feedback) solution.append(markdown(field.correctAnswer.feedback));
       }
     }

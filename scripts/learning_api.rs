@@ -3,6 +3,9 @@ mod assignment_interaction;
 mod assignment_reader;
 mod developer_preview;
 #[cfg(test)]
+#[path = "../engine/edb/answer_fields.rs"]
+mod preview_answer_fields;
+#[cfg(test)]
 #[allow(dead_code)]
 #[path = "../engine/edb/configuration.rs"]
 mod preview_configuration;
@@ -832,12 +835,13 @@ fn task_step_json(
     for f in s.refs(content, "question/answer-fields")? {
         let kind = status(s, f, "answer-field/type")?;
         let mut choices = vec![];
-        if kind != "blank" {
+        if !matches!(kind.as_str(), "blank" | "free") {
             for ch in s.refs(f, "answer-field/choices")? {
                 choices.push(json!({"id":ch,"type":status(s,ch,"answer/type")?,"value":text(s,ch,"answer/value")}));
             }
         }
-        let mut field = json!({"id":f,"key":text(s,f,"answer-field/key"),"type":kind,"presentation":text(s,f,"answer-field/presentation"),"choices":choices});
+        let mut field =
+            json!({"id":f,"key":text(s,f,"answer-field/key"),"type":kind,"choices":choices});
         if kind == "blank" {
             field["answerType"] = json!(
                 s.optional_ref(f, "answer-field/correct")?
@@ -1324,16 +1328,19 @@ fn mutate(
                     if v.len() > 16000 {
                         return Err("Response is too long".into());
                     }
-                    let existing = choices
-                        .into_iter()
-                        .find(|ch| text(s, *ch, "answer/value") == v);
+                    let type_id =
+                        s.reference(s.reference(f, "answer-field/correct")?, "answer/type")?;
+                    let existing = choices.into_iter().find(|ch| {
+                        text(s, *ch, "answer/value") == v
+                            && s.reference(*ch, "answer/type").ok() == Some(type_id)
+                    });
                     let response = if let Some(ch) = existing {
                         json!(ch)
                     } else {
                         let key = format!("response-{f}");
-                        let correct = s.reference(f, "answer-field/correct")?;
-                        forms.push(json!({"db/id":key,"answer/id":{"$uuid":uid()?},"answer/type":s.reference(correct,"answer/type")?,"answer/value":v,"db/ensure":kw("answer/validate")}));
+                        forms.push(json!({"db/id":key,"answer/id":{"$uuid":uid()?},"answer/type":type_id,"answer/value":v,"db/ensure":kw("answer/validate")}));
                         forms.push(add(json!(f), "answer-field/choices", json!(key)));
+                        forms.push(json!([kw("db/ensure"), f, kw("answer-field/validate")]));
                         json!(key)
                     };
                     (v.to_owned(), response)
@@ -1935,10 +1942,7 @@ mod study_queue_tests {
             "question/worked-solution".into(),
             json!("The worked solution."),
         );
-        s.entities
-            .get_mut(&90)
-            .unwrap()
-            .insert("answer-field/presentation".into(), json!("checkbox"));
+
         s.entities.insert(95, json!({"task-item/content":71,"task-item/status":"task-item.status/correct","task-item/next":96,"task-item/responses":[91]}).as_object().unwrap().clone());
         s.entities.insert(
             96,
@@ -1979,7 +1983,7 @@ mod study_queue_tests {
         assert_eq!(entry["number"], 1);
         assert_eq!(entry["step"]["itemId"], 95);
         assert_eq!(entry["step"]["solution"], "The worked solution.");
-        assert_eq!(entry["step"]["fields"][0]["presentation"], "checkbox");
+        assert!(entry["step"]["fields"][0].get("presentation").is_none());
         assert_eq!(entry["step"]["fields"][0]["response"]["value"], "2");
         assert_eq!(entry["step"]["fields"][0]["correctAnswer"]["value"], "2");
         assert_eq!(view["step"]["itemId"], 96);
@@ -2632,6 +2636,11 @@ mod integration {
                 "course-academy.progress",
                 "valid-progress?",
                 preview_progress::valid_progress as Predicate,
+            ),
+            (
+                "course-academy.answer-field",
+                "valid?",
+                preview_answer_fields::valid_field as Predicate,
             ),
         ] {
             registry.entity_predicate(

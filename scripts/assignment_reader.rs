@@ -45,13 +45,16 @@ fn fields(s: &EntitySnapshot, question: u64) -> Result<Vec<Json>> {
     let mut fields = vec![];
     for field in s.refs(question, "question/answer-fields")? {
         let kind = status(s, field, "answer-field/type")?;
-        if !matches!(kind.as_str(), "radio" | "select" | "blank") {
+        if !matches!(
+            kind.as_str(),
+            "radio" | "select" | "blank" | "checkbox" | "free"
+        ) {
             return Err("Unsupported assignment answer field type".into());
         }
         let mut choices = vec![];
         // A blank's choice collection includes its canonical and observed
         // learner values. Neither belongs in a read-only problem display.
-        if kind != "blank" {
+        if !matches!(kind.as_str(), "blank" | "free") {
             for answer in s.refs(field, "answer-field/choices")? {
                 choices.push(json!({
                     "id": identity(s, answer, "answer/id")?,
@@ -65,7 +68,7 @@ fn fields(s: &EntitySnapshot, question: u64) -> Result<Vec<Json>> {
             "id": identity(s, field, "answer-field/id")?,
             "entityId": field,
             "key": text(s, field, "answer-field/key"),
-            "type": kind, "presentation": text(s, field, "answer-field/presentation"),
+            "type": kind,
             "answerType": s.optional_ref(field, "answer-field/correct")?
                 .map(|id| status(s, id, "answer/type")).transpose()?,
             "choices": choices,

@@ -109,6 +109,25 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
 }
 
 fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()> {
+    validate_response_question(s, question)?;
+    if has_free_fields(s, question)? {
+        return Err("free responses do not supply correctness observations for practice".into());
+    }
+    Ok(())
+}
+
+pub fn has_free_fields(s: &EntitySnapshot, question: u64) -> Result<bool> {
+    for field in s.refs(question, "question/answer-fields")? {
+        if ident(s, field, "answer-field/type")? == "answer-field.type/free" {
+            return Ok(true);
+        }
+    }
+    Ok(false)
+}
+
+/// Assignment response collection also supports ungraded written responses.
+/// A free field may begin with no answers and no canonical reference.
+pub fn validate_response_question(s: &EntitySnapshot, question: u64) -> Result<()> {
     nonempty(s, question, "question/problem")?;
     if !s.is_ordinary_question(question)? {
         return Err("practice needs an ordinary question".into());
@@ -125,14 +144,40 @@ fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()> {
         }
         if !matches!(
             ident(s, field, "answer-field/type")?.as_str(),
-            "answer-field.type/radio" | "answer-field.type/select" | "answer-field.type/blank"
+            "answer-field.type/radio"
+                | "answer-field.type/select"
+                | "answer-field.type/blank"
+                | "answer-field.type/checkbox"
+                | "answer-field.type/free"
         ) {
             return Err("unsupported answer field type".into());
         }
         let choices = s.refs(field, "answer-field/choices")?;
-        let correct = s.reference(field, "answer-field/correct")?;
-        if !choices.contains(&correct) {
+        let kind = ident(s, field, "answer-field/type")?;
+        let correct = s.optional_ref(field, "answer-field/correct")?;
+        if kind != "answer-field.type/free" && correct.is_none() {
+            return Err("graded answer field needs a canonical answer".into());
+        }
+        if correct.is_some_and(|answer| !choices.contains(&answer)) {
             return Err("canonical answer must belong to its answer field".into());
+        }
+        if kind == "answer-field.type/checkbox" {
+            let values = choices
+                .iter()
+                .map(|answer| -> Result<String> {
+                    if ident(s, *answer, "answer/type")? != "answer.type/text" {
+                        return Err("checkbox answers must be text true and false".into());
+                    }
+                    Ok(s.entity(*answer)?
+                        .get("answer/value")
+                        .and_then(Value::as_str)
+                        .ok_or("checkbox answer needs a string value")?
+                        .to_owned())
+                })
+                .collect::<Result<BTreeSet<_>>>()?;
+            if choices.len() != 2 || values != BTreeSet::from(["true".into(), "false".into()]) {
+                return Err("checkbox bank must contain exactly true and false".into());
+            }
         }
         for answer in choices {
             if !matches!(
@@ -150,6 +195,7 @@ fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()> {
             }
         }
         if ident(s, field, "answer-field/type")? == "answer-field.type/blank" {
+            let correct = correct.ok_or("blank field needs a canonical answer")?;
             let canonical = s.entity(correct)?["answer/value"].as_str().unwrap();
             if canonical.trim().is_empty() {
                 return Err("canonical blank answer is empty".into());
@@ -1221,11 +1267,55 @@ pub fn candidate_diagnostics(s: &EntitySnapshot, learner: u64, course: u64) -> R
     Ok(json!({"counts":counts,"ready_unlearned":ready_unlearned}))
 }
 
+/// Validate complete submissions independently of whether a question is graded.
+pub fn validate_responses(
+    s: &EntitySnapshot,
+    question: u64,
+    responses: &BTreeMap<u64, String>,
+) -> Result<()> {
+    validate_response_question(s, question)?;
+    let fields: BTreeSet<_> = s
+        .refs(question, "question/answer-fields")?
+        .into_iter()
+        .collect();
+    if fields != responses.keys().copied().collect() {
+        return Err("answer every field of the current question".into());
+    }
+    for field in fields {
+        let submitted = &responses[&field];
+        let kind = ident(s, field, "answer-field/type")?;
+        if submitted.trim().is_empty() {
+            return Err("answer every field before submitting".into());
+        }
+        let limit = if kind == "answer-field.type/free" {
+            64000
+        } else {
+            4096
+        };
+        if submitted.len() > limit {
+            return Err(format!("answer exceeds {limit} bytes").into());
+        }
+        if !matches!(
+            kind.as_str(),
+            "answer-field.type/blank" | "answer-field.type/free"
+        ) {
+            let selected = submitted
+                .parse::<u64>()
+                .map_err(|_| "selected answer must identify an authored choice")?;
+            if !s.refs(field, "answer-field/choices")?.contains(&selected) {
+                return Err("selected answer does not belong to this field".into());
+            }
+        }
+    }
+    Ok(())
+}
+
 /// All fields must be present exactly once. Choice fields contain the selected
 /// answer's decimal entity ID; blanks contain verbatim entered text. References
 /// distinguish choices even when their visible values happen to be identical.
 pub fn grade(s: &EntitySnapshot, question: u64, responses: &BTreeMap<u64, String>) -> Result<bool> {
     validate_question(s, question)?;
+    validate_responses(s, question, responses)?;
     let fields: BTreeSet<_> = s
         .refs(question, "question/answer-fields")?
         .into_iter()
@@ -1823,6 +1913,8 @@ mod tests {
             "learner-task.status/failed",
             "policy.retention-update/decay-before-add",
             "activity.type/assignment",
+            "answer-field.type/checkbox",
+            "answer-field.type/free",
         ]
         .iter()
         .enumerate()
@@ -2937,6 +3029,76 @@ mod tests {
         ] {
             assert!(!equivalent_math(a, b));
         }
+    }
+
+    #[test]
+    fn checkbox_fields_grade_one_question_with_explicit_false_answers() {
+        let mut s = fixture();
+        let mut fields = vec![];
+        let mut responses = BTreeMap::new();
+        for (n, expected) in [false, true, true, false].into_iter().enumerate() {
+            let field = 400 + n as u64;
+            let no = 500 + 2 * n as u64;
+            let yes = no + 1;
+            put(
+                &mut s.entities,
+                no,
+                json!({"answer/id":id(no),"answer/type":"answer.type/text","answer/value":"false"}),
+            );
+            put(
+                &mut s.entities,
+                yes,
+                json!({"answer/id":id(yes),"answer/type":"answer.type/text","answer/value":"true"}),
+            );
+            let correct = if expected { yes } else { no };
+            put(
+                &mut s.entities,
+                field,
+                json!({"answer-field/id":id(field),"answer-field/type":"answer-field.type/checkbox","answer-field/key":format!("option-{n}"),"answer-field/choices":[no,yes],"answer-field/correct":correct}),
+            );
+            fields.push(field);
+            responses.insert(field, correct.to_string());
+        }
+        s.entities
+            .get_mut(&100)
+            .unwrap()
+            .insert("question/answer-fields".into(), json!(fields));
+        assert!(grade(&s, 100, &responses).unwrap());
+        responses.insert(400, "501".into());
+        assert!(!grade(&s, 100, &responses).unwrap());
+        responses.remove(&403);
+        assert!(grade(&s, 100, &responses).is_err());
+        s.entities
+            .get_mut(&500)
+            .unwrap()
+            .insert("answer/value".into(), json!("FALSE"));
+        assert!(validate_response_question(&s, 100).is_err());
+    }
+
+    #[test]
+    fn free_fields_collect_without_canonical_and_never_enter_practice_or_grading() {
+        let mut s = fixture();
+        let field = s.entities.get_mut(&200).unwrap();
+        field.insert("answer-field/type".into(), json!("answer-field.type/free"));
+        field.remove("answer-field/correct");
+        field.remove("answer-field/choices");
+        assert!(validate_response_question(&s, 100).is_ok());
+        let responses = BTreeMap::from([(200, "**Proof:** $x=y$".into())]);
+        assert!(validate_responses(&s, 100, &responses).is_ok());
+        assert!(validate_question(&s, 100).is_err());
+        assert!(grade(&s, 100, &responses).is_err());
+        let field = s.entities.get_mut(&200).unwrap();
+        field.insert("answer-field/choices".into(), json!([300]));
+        field.insert("answer-field/correct".into(), json!(300));
+        assert!(validate_response_question(&s, 100).is_ok());
+        assert!(grade(&s, 100, &responses).is_err());
+        // Adding an automatically gradable field does not make a mixed question
+        // produce a partial correctness observation.
+        s.entities
+            .get_mut(&100)
+            .unwrap()
+            .insert("question/answer-fields".into(), json!([200, 201]));
+        assert!(validate_question(&s, 100).is_err());
     }
 
     #[test]

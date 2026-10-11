@@ -2,7 +2,7 @@ import { marked } from './vendor/marked/marked.esm.js';
 import { romanLists } from './prose-lists.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
 import { developerModeReady, isDeveloperMode } from './developer-mode.js';
-import { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, statementCheckboxControl } from './question-fields.js';
+import { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, checkboxControl, freeInput } from './question-fields.js';
 import { attachTopicMenu } from './topic-menu.js';
 
 await developerModeReady;
@@ -25,7 +25,7 @@ let wantedFocus = null;
 let pauseRequested = false;
 let receivedAt = 0;
 const questionViews = new Map();
-const answered = question => ['correct', 'incorrect', 'skipped'].includes(short(question.status));
+const answered = question => ['correct', 'incorrect', 'skipped', 'completed'].includes(short(question.status));
 const questionKey = question => String(question.stepId ?? question.id);
 const entityId = value => value.entityId ?? value.id;
 
@@ -132,9 +132,11 @@ function fieldControl(field, question, index) {
   const responseId = response?.choiceId ?? response?.entityId ?? response?.id;
   const name = `assignment-${questionKey(question)}-${entityId(field)}`;
   const type = short(field.type);
-  const checklist = statementCheckboxControl(field, question.problem ?? question.markdown, label => answerValue({ type: 'text', value: label }), false, name);
+  const checklist = checkboxControl(field, label => answerValue({ type: 'text', value: label }), false, name);
   if (checklist) {
     set.append(checklist);
+  } else if (type === 'free') {
+    set.append(freeInput(field, label, name, markdown, typeset));
   } else if (type === 'blank') {
     set.append(blankInput(field, label, name));
   } else if (type === 'radio') {
@@ -162,7 +164,7 @@ function fieldControl(field, question, index) {
 function collectResponses(view) {
   return (view.question.fields || []).map(field => {
     const set = [...view.form.querySelectorAll('[data-field-id]')].find(node => node.dataset.fieldId === String(entityId(field)));
-    if (short(field.type) === 'blank') return { fieldId: entityId(field), value: set?.querySelector('input,math-field')?.value || '' };
+    if (['blank', 'free'].includes(short(field.type))) return { fieldId: entityId(field), value: set?.querySelector('input,math-field,textarea')?.value || '' };
     const control = set?.querySelector('.answer-choice-value') || set?.querySelector('input:checked, select');
     return { fieldId: entityId(field), choiceId: control?.value ? Number(control.value) : '' };
   });
@@ -175,9 +177,9 @@ function duration(seconds) {
 function refreshControls() {
   for (const view of questionViews.values()) {
     const question = view.question;
-    const editable = question.gradable === true && !question.isExample && (assignmentData?.preview || !answered(question));
+    const editable = (question.collectable === true || question.gradable === true) && !question.isExample && (assignmentData?.preview || !answered(question));
     const disabled = modeChanging || !editable || view.submitting;
-    for (const input of view.form?.querySelectorAll('input,select,math-field,.answer-select-trigger') || []) input.disabled = disabled;
+    for (const input of view.form?.querySelectorAll('input,select,math-field,textarea,.answer-select-trigger') || []) input.disabled = disabled;
     if (view.check) {
       const valid = responsesComplete(view.question.fields || [], collectResponses(view));
       view.check.disabled = disabled || Boolean(mutationPending || pendingPause || retryOperation) || !valid || (!assignmentData?.preview && !activeQuestion(question));
@@ -218,7 +220,7 @@ function renderQuestionFeedback(view) {
     solution.append(el('summary', 'section-label', 'Worked solution and answer key'));
     (question.fields || []).forEach((field, index) => {
       if (!field.correctAnswer) return;
-      solution.append(el('p', 'response-summary', fieldLabel(field.key, index) + ' · correct answer:'), answerValue(field.correctAnswer));
+      solution.append(el('p', 'response-summary', fieldLabel(field.key, index) + (short(field.type) === 'free' ? ' · reference answer:' : ' · correct answer:')), answerValue(field.correctAnswer));
       if (field.correctAnswer.feedback) solution.append(markdown(field.correctAnswer.feedback));
     });
     if (question.solution) solution.append(markdown(question.solution));
@@ -240,12 +242,12 @@ function questionView(question) {
   node.append(prompt);
   const view = { key, question, node, prompt, form: null, result: el('div', 'assignment-result'), submitting: false };
   const fields = question.fields || [];
-  if (fields.length && fields.every(field => ['blank', 'radio', 'select'].includes(short(field.type)))) {
+  if (fields.length && fields.every(field => ['blank', 'radio', 'select', 'checkbox', 'free'].includes(short(field.type)))) {
     const form = el('form'); view.form = form;
     const fieldList = el('div', 'answer-fields'); view.fieldList = fieldList;
     mountInlineFields(prompt, fieldList, fields, field => fieldControl(field, question, fields.indexOf(field)), entityId);
     form.append(prompt, fieldList);
-    if (question.gradable && !question.isExample) {
+    if ((question.collectable || question.gradable) && !question.isExample) {
       const actions = el('div', 'answer-actions assignment-question-actions');
       if (!assignmentData.preview) {
         view.timer = el('span', 'timer'); actions.append(view.timer);
@@ -255,10 +257,10 @@ function questionView(question) {
         });
         actions.append(view.work);
       }
-      const check = el('button', 'primary', assignmentData.preview ? 'Check preview answer' : 'Check answer');
+      const check = el('button', 'primary', question.gradable ? (assignmentData.preview ? 'Check preview answer' : 'Check answer') : (assignmentData.preview ? 'Preview response' : 'Save response'));
       check.type = 'submit'; view.check = check; actions.append(check); form.append(actions);
       form.addEventListener('focusin', event => {
-        if (!event.target.matches('input,select,math-field,.answer-select-trigger') || assignmentData.preview || modeChanging || answered(view.question)) return;
+        if (!event.target.matches('input,select,math-field,textarea,.answer-select-trigger') || assignmentData.preview || modeChanging || answered(view.question)) return;
         wantedFocus = key; void focusWantedQuestion();
       });
       form.addEventListener('input', refreshControls); form.addEventListener('change', refreshControls);
@@ -445,7 +447,7 @@ function runMutation(operation) {
 function focusWantedQuestion() {
   if (!wantedFocus || mutationPending || pendingPause || retryOperation || isDeveloperMode() || modeChanging || document.hidden) return;
   const view = questionViews.get(wantedFocus);
-  if (!view || answered(view.question) || !view.question.gradable || activeQuestion(view.question)) return;
+  if (!view || answered(view.question) || !(view.question.collectable || view.question.gradable) || activeQuestion(view.question)) return;
   pauseRequested = false;
   return runMutation({ path: '/api/assignment-focus', body: { assignmentId: assignmentData.assignment.id, stepId: view.question.stepId, requestId: crypto.randomUUID() } });
 }

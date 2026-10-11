@@ -1,4 +1,5 @@
 //! Durable EDB writer with Course Academy's native schema predicates.
+mod answer_fields;
 mod configuration;
 mod progress;
 
@@ -45,6 +46,15 @@ fn registry() -> Result<NativeRegistry, SemanticError> {
             Ok(RuntimeValue::Scalar(Value::Bool(progress::valid_progress(
                 db, entity,
             )?)))
+        },
+    )?;
+    builder.entity_predicate(
+        Symbol::new("course-academy.answer-field", "valid?"),
+        |db, entity, control| {
+            control.check(1)?;
+            Ok(RuntimeValue::Scalar(Value::Bool(
+                answer_fields::valid_field(db, entity)?,
+            )))
         },
     )?;
     Ok(builder.build())

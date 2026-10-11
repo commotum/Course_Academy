@@ -1,6 +1,22 @@
 //! Offline native transactions: these tests never connect to the durable database.
 use super::*;
-use edb_core::{DB_SOURCE_SYSTEM, Database};
+use edb_core::{DB_SOURCE_SYSTEM, Database, TxFunctions};
+
+fn offline_tx(
+    db: &Database,
+    transaction: &str,
+    at: i64,
+    source: EntityRef,
+) -> Result<edb_core::TxReport> {
+    let mut functions = TxFunctions::new();
+    preview_answer_fields::register_answer_field_predicates(&mut functions);
+    Ok(db.with_forms(
+        &edb_core::edn_transaction::read_edn_transaction(transaction)?,
+        &functions,
+        at,
+        source,
+    )?)
+}
 
 const ASSIGNMENT: &str = "00000000-0000-4000-8000-000000000010";
 
@@ -45,6 +61,21 @@ impl Fixture {
                 .with_edn(schema, index as i64 + 1, EntityRef::Id(DB_SOURCE_SYSTEM))?
                 .db_after;
         }
+        // The SSD's approved type and field-validation migrations are reproduced
+        // here without changing the repository's legacy schema files.
+        db = offline_tx(
+            &db,
+            r#"[
+          {:db/ident :answer-field.type/checkbox}
+          {:db/ident :answer-field.type/free}
+          [:db/retract :answer-field/validate :db.entity/attrs :answer-field/choices]
+          [:db/retract :answer-field/validate :db.entity/attrs :answer-field/correct]
+          {:db/id :answer-field/validate :db.entity/preds course-academy.answer-field/valid?}
+        ]"#,
+            100,
+            EntityRef::Id(DB_SOURCE_SYSTEM),
+        )?
+        .db_after;
         let report = db.with_edn(r#"[
           {:db/id "engine" :db/ident :application/ca-engine}
           {:db/id "course" :course/id #uuid "00000000-0000-4000-8000-000000000001" :course/title "Test course"}
@@ -99,9 +130,12 @@ impl Fixture {
             DateTime::from_timestamp_millis(millis).unwrap(),
         )?;
         if !forms.is_empty() {
-            let report = self
-                .db
-                .with_edn(&schema::edn(&json!(forms))?, millis, engine_source())?;
+            let report = offline_tx(
+                &self.db,
+                &schema::edn(&json!(forms))?,
+                millis,
+                engine_source(),
+            )?;
             assert!(
                 report
                     .tx_data
@@ -461,5 +495,93 @@ fn assignment_repeated_question_steps_have_distinct_owned_presentations() -> Res
         .unwrap()
         .insert("task-item/content".into(), json!(f.lesson_item));
     assert!(item_map(&wrong_content, task, &occurrences(&s, f.activity)?).is_err());
+    Ok(())
+}
+
+#[test]
+fn assignment_free_responses_are_neutral_verbatim_owned_reused_and_immutable() -> Result<()> {
+    let mut f = Fixture::new()?;
+    let migration = format!(
+        r#"[
+      [:db/retract {field} :answer-field/correct [:answer/id #uuid "00000000-0000-4000-8000-000000000015"]]
+      [:db/retract {field} :answer-field/choices [:answer/id #uuid "00000000-0000-4000-8000-000000000015"]]
+      {{:db/id {field} :answer-field/type :answer-field.type/free :db/ensure :answer-field/validate}}
+    ]"#,
+        field = f.first_field
+    );
+    f.db = offline_tx(&f.db, &migration, 1100, engine_source())?.db_after;
+    let s = f.snapshot()?;
+    assert!(collectable(&s, s.reference(f.first, "step/content")?));
+    assert!(!gradable(&s, s.reference(f.first, "step/content")?));
+    let focused = f.focus(f.first, 2000)?;
+    let task = focused
+        .refs(f.learner, "learner/activity")?
+        .into_iter()
+        .find(|task| focused.reference(*task, "learner-task/activity").ok() == Some(f.activity))
+        .unwrap();
+    let item = *item_map(&focused, task, &occurrences(&focused, f.activity)?)?
+        .get(&f.first)
+        .unwrap();
+    let value = "  **Reasoning:**\n\n\\(x^2 + y^2\\)  ";
+    let saved = f.act(
+        "assignment-answer",
+        json!({"itemId":item,"responses":[{"fieldId":f.first_field,"value":value}]}),
+        3000,
+    )?;
+    assert_eq!(status(&saved, item, "task-item/status")?, "completed");
+    let bank = saved.refs(f.first_field, "answer-field/choices")?;
+    assert_eq!(bank.len(), 1);
+    assert_eq!(saved.refs(item, "task-item/responses")?, bank);
+    assert_eq!(text(&saved, bank[0], "answer/value"), value);
+    assert_eq!(status(&saved, bank[0], "answer/type")?, "text");
+    assert_eq!(saved.entity(f.progress)?, s.entity(f.progress)?);
+    assert!(!saved.entity(item)?.contains_key("task-item/performance"));
+    let basis = saved.basis_t;
+    let retry = f.act(
+        "assignment-answer",
+        json!({"itemId":item,"responses":[{"fieldId":f.first_field,"value":"changed"}]}),
+        4000,
+    )?;
+    assert_eq!(retry.basis_t, basis);
+    let page = assignment_reader::detail(&retry, f.learner, ASSIGNMENT)?;
+    let content = &page["assignment"]["steps"][0]["content"];
+    assert_eq!(content["status"], "completed");
+    assert_eq!(content["gradable"], false);
+    assert_eq!(content["collectable"], true);
+    assert_eq!(content["fields"][0]["choices"], json!([]));
+    assert_eq!(content["fields"][0]["response"]["value"], value);
+    Ok(())
+}
+
+#[test]
+fn assignment_checkbox_unchecked_is_explicit_false_and_foreign_answers_are_rejected() -> Result<()>
+{
+    let mut f = Fixture::new()?;
+    let migration = format!(
+        r#"[
+      {{:db/id {field} :answer-field/type :answer-field.type/checkbox :db/ensure :answer-field/validate}}
+      {{:db/id {right} :answer/value "false"}}
+      {{:db/id [:answer/id #uuid "00000000-0000-4000-8000-000000000019"] :answer/value "true"}}
+    ]"#,
+        field = f.second_field,
+        right = f.right
+    );
+    f.db = offline_tx(&f.db, &migration, 1100, engine_source())?.db_after;
+    let focused = f.focus(f.second, 2000)?;
+    let task = focused
+        .refs(f.learner, "learner/activity")?
+        .into_iter()
+        .find(|task| focused.reference(*task, "learner-task/activity").ok() == Some(f.activity))
+        .unwrap();
+    let item = *item_map(&focused, task, &occurrences(&focused, f.activity)?)?
+        .get(&f.second)
+        .unwrap();
+    let saved = f.act(
+        "assignment-answer",
+        json!({"itemId":item,"responses":[{"fieldId":f.second_field,"choiceId":f.right}]}),
+        3000,
+    )?;
+    assert_eq!(status(&saved, item, "task-item/status")?, "correct");
+    assert_eq!(saved.refs(item, "task-item/responses")?, vec![f.right]);
     Ok(())
 }

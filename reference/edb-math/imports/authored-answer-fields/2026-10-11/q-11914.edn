@@ -1,0 +1,60 @@
+;; Newly authored answer fields for q-11914.
+;; Transaction source: :agent/gpt-6-astra-ultra (supply on the EDB request or with --source).
+;; Prepared only; no transaction has been submitted.
+;; Attach fields to the existing question using its unique Math Academy identifier.
+;; One radio field: one canonical derivative and four newly authored distractors.
+;; Correct derivative: 5/x - 6x + 2, checked against the existing worked solution.
+;; Reviewed same-KP radio questions q-101716, q-11911, q-1919, q-1920, and q-17392.
+;; Closest templates: q-101716 (coefficient, power-rule, and sign errors),
+;; and q-11911 (an option leaves the original linear term undifferentiated).
+;; New options adapt these error families to this question; no option strings are borrowed.
+;; q-1920 has a missing answer key and malformed option and was excluded as a template.
+
+[
+ {:db/id "q-11914-drop-log-coefficient"
+  :answer/id #uuid "91dae272-a571-532b-b8c9-5f1a0d446765"
+  :answer/type :answer.type/math
+  :answer/value "\\frac{1}{x}-6x+2"
+  :answer/feedback "The coefficient 5 multiplies the derivative of ln(x): d[5 ln(x)]/dx = 5/x, not 1/x."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-11914-miss-power-factor"
+  :answer/id #uuid "441d1cc7-ac98-5400-9e91-3512f2bc8afd"
+  :answer/type :answer.type/math
+  :answer/value "\\frac{5}{x}-3x+2"
+  :answer/feedback "The power rule gives d[-3x^2]/dx = -3(2x) = -6x. Include the factor 2 from the exponent."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-11914-correct"
+  :answer/id #uuid "0d5c95ed-e8ad-537b-a8d6-7a28ab66e027"
+  :answer/type :answer.type/math
+  :answer/value "\\frac{5}{x}-6x+2"
+  :answer/feedback "Differentiate term by term: d[5 ln(x)]/dx = 5/x, d[-3x^2]/dx = -6x, and d[2x]/dx = 2."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-11914-change-polynomial-sign"
+  :answer/id #uuid "3b2b9b31-ff69-5fd5-b05e-2f7659ff135f"
+  :answer/type :answer.type/math
+  :answer/value "\\frac{5}{x}+6x+2"
+  :answer/feedback "The negative coefficient remains negative: d[-3x^2]/dx = -6x."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-11914-leave-polynomial-unchanged"
+  :answer/id #uuid "3b96cf13-3041-512c-817b-bce2b6cd16ae"
+  :answer/type :answer.type/math
+  :answer/value "\\frac{5}{x}-3x^{2}+2"
+  :answer/feedback "Differentiate the quadratic term as well: d[-3x^2]/dx = -6x; the original -3x^2 term cannot remain in the derivative."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-11914-selection-field"
+  :answer-field/id #uuid "11eacdbf-0599-50c9-89ae-2687d890483f"
+  :answer-field/key "selection"
+  :answer-field/type :answer-field.type/radio
+  :answer-field/choices ["q-11914-drop-log-coefficient" "q-11914-miss-power-factor" "q-11914-correct" "q-11914-change-polynomial-sign" "q-11914-leave-polynomial-unchanged"]
+  :answer-field/correct "q-11914-correct"
+  :db/ensure :answer-field/validate}
+
+ {:db/id [:question/math-academy-id "q-11914"]
+  :question/answer-fields ["q-11914-selection-field"]
+  :db/ensure :question/validate}
+]

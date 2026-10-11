@@ -125,6 +125,10 @@ fn canonical_responses(s: &EntitySnapshot, question: u64) -> Result<BTreeMap<u64
         .collect()
 }
 
+fn collectable(s: &EntitySnapshot, question: u64) -> bool {
+    learning::validate_response_question(s, question).is_ok()
+}
+
 fn gradable(s: &EntitySnapshot, question: u64) -> bool {
     canonical_responses(s, question)
         .and_then(|responses| Ok(learning::grade(s, question, &responses)?))
@@ -171,10 +175,14 @@ fn enrich_content(
             let state = item
                 .map(|item| status(s, item, "task-item/status"))
                 .transpose()?;
-            let answered = matches!(state.as_deref(), Some("correct" | "incorrect"));
+            let answered = matches!(
+                state.as_deref(),
+                Some("correct" | "incorrect" | "completed")
+            );
             let reveal = preview || answered || content["isExample"] == true;
             content["stepId"] = json!(step);
             content["gradable"] = json!(gradable(s, question));
+            content["collectable"] = json!(collectable(s, question));
             content["itemId"] = json!(item);
             content["status"] = json!(state);
             content["elapsedSeconds"] =
@@ -382,7 +390,7 @@ pub(super) fn mutate(
             .iter()
             .find(|entry| entry.step == step)
             .ok_or("Question step is not part of this assignment")?;
-        if !gradable(s, entry.question) {
+        if !collectable(s, entry.question) {
             return Err("This question has no supported, complete answer fields".into());
         }
         let existing = presentations.get(&step).copied();
@@ -496,23 +504,37 @@ pub(super) fn mutate(
             return Err("Each answer field must appear exactly once".into());
         }
         let choices = s.refs(field, "answer-field/choices")?;
-        let (value, answer) = if status(s, field, "answer-field/type")? == "blank" {
+        let kind = status(s, field, "answer-field/type")?;
+        let (value, answer) = if matches!(kind.as_str(), "blank" | "free") {
             let value = response["value"]
                 .as_str()
                 .ok_or("Blank response must contain a string value")?;
-            if value.len() > 4096 {
+            if value.len() > if kind == "free" { 64000 } else { 4096 } {
                 return Err("Response is too long".into());
             }
-            let existing = choices
-                .into_iter()
-                .find(|answer| text(s, *answer, "answer/value") == value);
+            let type_id = if kind == "free" {
+                s.entities
+                    .iter()
+                    .find(|(_, e)| {
+                        e.get("db/ident")
+                            .is_some_and(|v| s.ident(v).ok().as_deref() == Some("answer.type/text"))
+                    })
+                    .map(|(id, _)| *id)
+                    .ok_or("text answer type is not registered")?
+            } else {
+                s.reference(s.reference(field, "answer-field/correct")?, "answer/type")?
+            };
+            let existing = choices.into_iter().find(|answer| {
+                text(s, *answer, "answer/value") == value
+                    && s.reference(*answer, "answer/type").ok() == Some(type_id)
+            });
             let answer = if let Some(answer) = existing {
                 json!(answer)
             } else {
                 let temp = format!("assignment-response-{field}");
-                let correct = s.reference(field, "answer-field/correct")?;
-                forms.push(json!({"db/id":temp,"answer/id":{"$uuid":uid()?},"answer/type":s.reference(correct,"answer/type")?,"answer/value":value,"db/ensure":kw("answer/validate")}));
+                forms.push(json!({"db/id":temp,"answer/id":{"$uuid":uid()?},"answer/type":type_id,"answer/value":value,"db/ensure":kw("answer/validate")}));
                 forms.push(add(json!(field), "answer-field/choices", json!(temp)));
+                forms.push(json!([kw("db/ensure"), field, kw("answer-field/validate")]));
                 json!(temp)
             };
             (value.to_owned(), answer)
@@ -526,30 +548,30 @@ pub(super) fn mutate(
         submitted.insert(field, value);
         answers.push(answer);
     }
-    let correct = learning::grade(s, entry.question, &submitted)?;
+    learning::validate_responses(s, entry.question, &submitted)?;
+    let outcome = if learning::has_free_fields(s, entry.question)? {
+        "completed"
+    } else if learning::grade(s, entry.question, &submitted)? {
+        "correct"
+    } else {
+        "incorrect"
+    };
     for answer in answers {
         forms.push(add(json!(item), "task-item/responses", answer));
     }
-    transition(
-        s,
-        task,
-        item,
-        if correct { "correct" } else { "incorrect" },
-        at,
-        &mut forms,
-    )?;
+    transition(s, task, item, outcome, at, &mut forms)?;
     // Missing fields are still real unfinished questions. Never manufacture
     // completion or credit from the mapped topics or a partial import.
     let complete = route
         .iter()
         .filter(|entry| !s.is_example(entry.question))
         .all(|entry| {
-            gradable(s, entry.question)
+            collectable(s, entry.question)
                 && presentations.get(&entry.step).is_some_and(|other| {
                     *other == item
                         || matches!(
                             status(s, *other, "task-item/status").as_deref(),
-                            Ok("correct" | "incorrect")
+                            Ok("correct" | "incorrect" | "completed")
                         )
                 })
         });

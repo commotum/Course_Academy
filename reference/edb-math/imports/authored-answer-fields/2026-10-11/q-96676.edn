@@ -1,0 +1,103 @@
+;; Newly authored answer fields for q-96676.
+;; Transaction source: :agent/gpt-6-astra-ultra (supply on the EDB request or with --source).
+;; Prepared only; no transaction has been submitted.
+;; Attach fields to the existing question using its unique Math Academy identifier.
+;; Each authored checkbox is a separate field with field-owned true/false text answers.
+;; Submit true when checked and false when unchecked; grade all four fields.
+;; Field keys I, II, and III identify the existing Roman-labelled equations.
+;; None is an explicit fourth option here; it is not automatically added to other questions.
+;; Correct values: I=false, II=true, III=true, None=false.
+
+[
+ {:db/id "q-96676-i-false"
+  :answer/id #uuid "6fddfc61-ae75-5f4b-8b2e-b3415ea0d369"
+  :answer/type :answer.type/text
+  :answer/value "false"
+  :answer/feedback "Equation I contains y'', so its highest derivative is second order."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-96676-i-true"
+  :answer/id #uuid "c834636a-bbd4-5759-b671-beb2e4da2abb"
+  :answer/type :answer.type/text
+  :answer/value "true"
+  :answer/feedback "Equation I contains y'', so its highest derivative is second order."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-96676-i-field"
+  :answer-field/id #uuid "32f8bc9f-67ba-586b-b99e-1e38a930e19b"
+  :answer-field/key "I"
+  :answer-field/type :answer-field.type/checkbox
+  :answer-field/choices ["q-96676-i-false" "q-96676-i-true"]
+  :answer-field/correct "q-96676-i-false"
+  :db/ensure :answer-field/validate}
+
+ {:db/id "q-96676-ii-false"
+  :answer/id #uuid "df851142-894b-5bfb-8ece-98c5eb3b201e"
+  :answer/type :answer.type/text
+  :answer/value "false"
+  :answer/feedback "Equation II contains y' and no higher derivative. The factor y^5 does not change the differential order."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-96676-ii-true"
+  :answer/id #uuid "a4f9a0af-45e8-5e36-aa37-2b6d226dc143"
+  :answer/type :answer.type/text
+  :answer/value "true"
+  :answer/feedback "Equation II contains y' and no higher derivative. The factor y^5 does not change the differential order."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-96676-ii-field"
+  :answer-field/id #uuid "22d9436b-ef55-5798-a20b-5e6bc9ca9430"
+  :answer-field/key "II"
+  :answer-field/type :answer-field.type/checkbox
+  :answer-field/choices ["q-96676-ii-false" "q-96676-ii-true"]
+  :answer-field/correct "q-96676-ii-true"
+  :db/ensure :answer-field/validate}
+
+ {:db/id "q-96676-iii-false"
+  :answer/id #uuid "1bb8cc3c-94ce-5d96-9edb-479fa67563b6"
+  :answer/type :answer.type/text
+  :answer/value "false"
+  :answer/feedback "Equation III contains y' and no higher derivative. The square root does not change the differential order."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-96676-iii-true"
+  :answer/id #uuid "6e1d4c62-4dd2-5856-8d10-6a84849ff212"
+  :answer/type :answer.type/text
+  :answer/value "true"
+  :answer/feedback "Equation III contains y' and no higher derivative. The square root does not change the differential order."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-96676-iii-field"
+  :answer-field/id #uuid "495b552a-fc87-5ee2-b05d-892960260624"
+  :answer-field/key "III"
+  :answer-field/type :answer-field.type/checkbox
+  :answer-field/choices ["q-96676-iii-false" "q-96676-iii-true"]
+  :answer-field/correct "q-96676-iii-true"
+  :db/ensure :answer-field/validate}
+
+ {:db/id "q-96676-none-false"
+  :answer/id #uuid "6a781e2b-45dc-581c-b89d-91bc1aa2c572"
+  :answer/type :answer.type/text
+  :answer/value "false"
+  :answer/feedback "Equations II and III are first-order ordinary differential equations."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-96676-none-true"
+  :answer/id #uuid "451d2ac2-9a9b-5a8b-92c5-dbe6e540e9d3"
+  :answer/type :answer.type/text
+  :answer/value "true"
+  :answer/feedback "Equations II and III are first-order ordinary differential equations."
+  :db/ensure :answer/validate}
+
+ {:db/id "q-96676-none-field"
+  :answer-field/id #uuid "9e3890ce-bcc5-5fd3-810f-d1691316f3b1"
+  :answer-field/key "None"
+  :answer-field/type :answer-field.type/checkbox
+  :answer-field/choices ["q-96676-none-false" "q-96676-none-true"]
+  :answer-field/correct "q-96676-none-false"
+  :db/ensure :answer-field/validate}
+
+ {:db/id [:question/math-academy-id "q-96676"]
+  :question/answer-fields ["q-96676-i-field" "q-96676-ii-field" "q-96676-iii-field" "q-96676-none-field"]
+  :db/ensure :question/validate}
+]

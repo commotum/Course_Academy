@@ -52,7 +52,7 @@ function fixture() {
       return prompt;
     };
     typeset = async () => {};
-    return { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, statementCheckboxControl,
+    return { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, checkboxControl, freeInput, responsesComplete,
       render: question => { assignmentData = { basis: 1, preview: false }; const view = questionView(question); refreshControls(); return questionViews.get(questionKey(question)); },
       update: question => applyAssignment({ basis: 2, preview: false, assignment: { steps: [{ content: question }] } }, generation),
       responses: view => collectResponses(view),
@@ -174,54 +174,59 @@ test('math blanks use editable equations, retain LaTeX responses, and lock after
 });
 
 
-const statementPrompt = 'Which equations?\n\nI. - $y\'\'=x$\nII. - $y\'=x$\nIII. - $y\'=y$';
-const combinationValues = ['None of those listed', 'I only', 'II only', 'I and II only', 'III only', 'I and III only', 'II and III only', 'I, II, and III'];
-const statementField = { id: 10, key: 'selection', type: 'radio', presentation: 'checkbox',
-  choices: combinationValues.map((value, index) => ({ id: 100 + index, type: 'text', value })) };
+const checkboxFields = ['I', 'II', 'III', 'None'].map((key, index) => ({
+  id: 'field-' + key, entityId: 10 + index, key, type: 'checkbox',
+  choices: [{ entityId: 100 + 2 * index, type: 'text', value: 'false' },
+    { entityId: 101 + 2 * index, type: 'text', value: 'true' }],
+}));
 
-test('independent Roman checkboxes submit exactly the original authored choice for every combination', () => {
+test('each checkbox submits its own true or false answer, including untouched unchecked fields', () => {
+  const f = fixture();
+  const question = { id: 'check-question', entityId: 500, kind: 'question', gradable: true,
+    status: 'started', itemId: 600, problem: 'Which equations?', fields: checkboxFields };
+  const view = f.h.render(question);
+  assert.deepEqual(JSON.parse(JSON.stringify(f.h.responses(view))), [
+    { fieldId: 10, choiceId: 100 }, { fieldId: 11, choiceId: 102 },
+    { fieldId: 12, choiceId: 104 }, { fieldId: 13, choiceId: 106 },
+  ]);
+  assert.equal(f.h.responsesComplete(question.fields, f.h.responses(view)), true);
+  const inputs = view.form.querySelectorAll('input').filter(input => input.type === 'checkbox');
+  assert.equal(inputs.length, 4);
+  inputs[1].checked = true; inputs[1].dispatchEvent(new Event('input'));
+  inputs[2].checked = true; inputs[2].dispatchEvent(new Event('change'));
+  assert.deepEqual(JSON.parse(JSON.stringify(f.h.responses(view))), [
+    { fieldId: 10, choiceId: 100 }, { fieldId: 11, choiceId: 103 },
+    { fieldId: 12, choiceId: 105 }, { fieldId: 13, choiceId: 106 },
+  ]);
+  // None has no generated exclusivity behavior: it exists only as authored.
+  inputs[3].checked = true; inputs[3].dispatchEvent(new Event('input'));
+  assert.equal(f.h.responses(view)[3].choiceId, 107);
+});
+
+test('checkbox responses restore as read-only, and malformed banks are rejected', () => {
   const f = fixture();
   const render = label => { const node = f.node('span'); node.textContent = label; return node; };
-  const control = f.h.statementCheckboxControl(statementField, statementPrompt, render);
-  assert.ok(control);
-  const inputs = control.querySelectorAll('input').filter(input => input.type === 'checkbox');
-  assert.deepEqual(Array.from(inputs, input => input.value), ['I', 'II', 'III']);
-  const encoded = control.querySelector('.answer-choice-value');
-  for (let mask = 0; mask < 8; mask++) {
-    inputs.forEach((input, i) => { input.checked = Boolean(mask & (1 << i)); input.dispatchEvent(new Event('input')); });
-    assert.equal(encoded.value, String(100 + mask));
-  }
+  const control = f.h.checkboxControl({ ...checkboxFields[1], response: { choiceId: 103 } }, render, true);
+  const input = control.querySelectorAll('input').find(input => input.type === 'checkbox');
+  assert.equal(input.checked, true); assert.equal(input.disabled, true);
+  assert.equal(control.querySelector('.answer-choice-value').value, '103');
+  assert.throws(() => f.h.checkboxControl({ ...checkboxFields[1], choices: [] }, render), /true and false/);
 });
 
-test('saved combination answers reopen as the matching read-only checkbox selection', () => {
-  const f = fixture();
-  const control = f.h.statementCheckboxControl({ ...statementField, response: { choiceId: 106 } }, statementPrompt,
-    label => { const node = f.node('span'); node.textContent = label; return node; }, true);
-  const inputs = control.querySelectorAll('input').filter(input => input.type === 'checkbox');
-  assert.deepEqual(Array.from(inputs, input => input.checked), [false, true, true]);
-  assert.equal(inputs.every(input => input.disabled), true);
-  assert.equal(control.querySelector('.answer-choice-value').value, '106');
+test('free fields collect verbatim Markdown and LaTeX without displaying the bank or grading feedback', () => {
+  const f = fixture(), value = '  **Reason:**\n\n$y=2x$  ';
+  const question = { id: 'written', entityId: 510, kind: 'question', collectable: true, gradable: false,
+    status: 'started', itemId: 610, problem: 'Explain your reasoning.', fields: [{ id: 'free', entityId: 20,
+      key: 'explanation', type: 'free', choices: [{ entityId: 90, value: 'private bank value' }] }] };
+  const view = f.h.render(question), input = view.form.querySelector('textarea');
+  input.value = value; input.dispatchEvent(new Event('input'));
+  assert.deepEqual(JSON.parse(JSON.stringify(f.h.responses(view))), [{ fieldId: 20, value }]);
+  assert.equal(f.h.responsesComplete(question.fields, f.h.responses(view)), true);
+  assert.equal(view.form.querySelectorAll('.choice').length, 0);
+  assert.equal(view.check.textContent, 'Save response');
+  assert.match(view.form.querySelector('.answer-preview').textContent, /Reason/);
+  assert.equal(f.h.feedbackHeading('completed').textContent, 'Response saved');
 });
-
-test('ordinary radio fields and incomplete or ambiguous combination maps retain their existing presentation', () => {
-  const f = fixture();
-  for (const field of [{ ...statementField, presentation: '' }, { ...statementField, choices: statementField.choices.slice(0, 7) },
-    { ...statementField, choices: statementField.choices.map((choice, index) => index === 7 ? { ...choice, value: 'Something else' } : choice) }]) {
-    assert.equal(f.h.statementCheckboxControl(field, statementPrompt, () => f.node('span')), null);
-  }
-});
-
-test('assignments collect the encoded combination rather than the individual checkbox label', () => {
-  const f = fixture();
-  const question = { id: 'check-question', entityId: 500, kind: 'question', status: 'started', itemId: 600, problem: statementPrompt,
-    fields: [{ ...statementField, entityId: 10, choices: statementField.choices.map(choice => ({ ...choice, entityId: choice.id })) }] };
-  const view = f.h.render(question);
-  const inputs = view.form.querySelectorAll('input').filter(input => input.type === 'checkbox');
-  inputs[1].checked = true; inputs[1].dispatchEvent(new Event('input', { bubbles: true }));
-  inputs[2].checked = true; inputs[2].dispatchEvent(new Event('input', { bubbles: true }));
-  assert.deepEqual(JSON.parse(JSON.stringify(f.h.responses(view))), [{ fieldId: 10, choiceId: 106 }]);
-});
-
 
 test('grading feedback has a visible badge, a large separate symbol, and plain status text', () => {
   const { h } = fixture();

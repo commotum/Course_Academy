@@ -8,49 +8,42 @@ const answerKind = field => String(field.answerType || field.correctAnswer?.type
 export function responsesComplete(fields, responses) {
   return fields.every((field, index) => {
     const response = responses[index];
-    if (fieldType(field) !== 'blank') return Boolean(response?.choiceId);
+    if (!['blank', 'free'].includes(fieldType(field))) return Boolean(response?.choiceId);
     return typeof response?.value === 'string' && Boolean(response.value.trim())
-      && (answerKind(field) !== 'math' || !/\\placeholder\b/.test(response.value));
+      && (fieldType(field) === 'free' || answerKind(field) !== 'math' || !/\\placeholder\b/.test(response.value));
   });
 }
-// Some authored radio banks enumerate every combination of Roman statements.
-// Present those as independent checkboxes while preserving the original choice
-// IDs for grading, saved responses, and historical feedback.
-export function statementCheckboxControl(field, prompt, renderLabel, readOnly = false, name = field.id) {
-  if (field.presentation !== 'checkbox' || fieldType(field) !== 'radio') return null;
-  const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
-  const labels = [...String(prompt || '').matchAll(/^ {0,3}([IVX]+)\.[ \t]+.+$/gm)].map(match => match[1]);
-  if (labels.length < 2 || labels.length > roman.length || labels.some((label, i) => label !== roman[i])) return null;
-  const identity = choice => choice.entityId ?? choice.id;
-  const combinations = new Map(), choiceLabels = new Map();
-  for (const choice of field.choices || []) {
-    const value = String(choice.value || '').trim();
-    let selected = [];
-    if (!/^None(?: of (?:those listed|the above))?$/i.test(value)) {
-      const remaining = value.replace(/\bonly\b|\band\b|[,\s]/gi, '');
-      selected = value.match(/\b[IVX]+\b/g) || [];
-      if (!selected.length || selected.some(label => !labels.includes(label)) || remaining !== selected.join('')) return null;
-    }
-    const key = labels.filter(label => selected.includes(label)).join('|');
-    if (new Set(selected).size !== selected.length || combinations.has(key)) return null;
-    combinations.set(key, identity(choice)); choiceLabels.set(String(identity(choice)), selected);
-  }
-  if (combinations.size !== 2 ** labels.length) return null;
+// Each authored checkbox option is an independent Boolean field. The bank's
+// false entity is submitted explicitly, including before the first interaction.
+export function checkboxControl(field, renderLabel, readOnly = false, name = field.id) {
+  if (fieldType(field) !== 'checkbox') return null;
+  const bank = field.choices || [];
+  const identity = answer => answer.entityId ?? answer.id;
+  const yes = bank.find(answer => answer.value === 'true' && String(answer.type).split('/').at(-1) === 'text');
+  const no = bank.find(answer => answer.value === 'false' && String(answer.type).split('/').at(-1) === 'text');
+  if (bank.length !== 2 || !yes || !no) throw new Error('Checkbox field needs text true and false answers');
+  const row = document.createElement('label'); row.className = 'choice';
+  const input = document.createElement('input'); input.type = 'checkbox'; input.name = String(name);
   const response = field.response, responseId = response?.choiceId ?? response?.entityId ?? response?.id;
-  const selected = choiceLabels.get(String(responseId)) || [];
-  const control = document.createElement('div'); control.className = 'choices statement-checkboxes';
+  input.checked = String(responseId) === String(identity(yes)); input.disabled = readOnly;
   const encoded = document.createElement('input'); encoded.type = 'hidden'; encoded.className = 'answer-choice-value';
   encoded.name = String(name); encoded.disabled = readOnly;
-  const inputs = labels.map(label => {
-    const row = document.createElement('label'); row.className = 'choice';
-    const input = document.createElement('input'); input.type = 'checkbox'; input.name = `${name}-${label}`;
-    input.value = label; input.checked = selected.includes(label); input.disabled = readOnly;
-    row.append(input, renderLabel(label)); control.append(row); return input;
-  });
-  const update = () => { encoded.value = String(combinations.get(inputs.filter(input => input.checked).map(input => input.value).join('|'))); };
-  for (const input of inputs) { input.addEventListener('input', update); input.addEventListener('change', update); }
-  update(); control.append(encoded);
-  return control;
+  const update = () => { encoded.value = String(identity(input.checked ? yes : no)); };
+  input.addEventListener('input', update); input.addEventListener('change', update); update();
+  row.append(input, renderLabel(field.key), encoded); return row;
+}
+
+export function freeInput(field, label, name, renderMarkdown, typeset = () => {}, readOnly = false) {
+  const editor = document.createElement('div'); editor.className = 'answer-free-editor';
+  const input = document.createElement('textarea'); input.className = 'answer-free';
+  input.name = String(name); input.setAttribute('aria-label', label); input.rows = 7;
+  input.value = field.response?.value ?? ''; input.disabled = readOnly;
+  const preview = document.createElement('details'); preview.className = 'answer-preview';
+  const heading = document.createElement('summary'); heading.textContent = 'Preview response';
+  const body = document.createElement('div');
+  const update = () => { body.replaceChildren(renderMarkdown(input.value)); if (preview.open) void typeset(body); };
+  input.addEventListener('input', update); preview.addEventListener('toggle', () => { if (preview.open) update(); });
+  preview.append(heading, body); editor.append(input, preview); update(); return editor;
 }
 
 export function blankInput(field, label, name, readOnly = false) {
@@ -234,7 +227,7 @@ export function feedbackHeading(status, preview = false) {
     icon.setAttribute('aria-hidden', 'true'); icon.textContent = value === 'correct' ? '✓ ' : '✕ ';
     badge.append(icon);
   }
-  const label = document.createElement('span'); label.textContent = value === 'correct' ? 'Correct!' : value === 'incorrect' ? 'Incorrect!' : 'Skipped';
+  const label = document.createElement('span'); label.textContent = value === 'correct' ? 'Correct!' : value === 'incorrect' ? 'Incorrect!' : value === 'completed' ? 'Response saved' : 'Skipped';
   badge.append(label); heading.append(badge);
   if (preview) {
     const note = document.createElement('span'); note.className = 'feedback-preview'; note.textContent = 'Preview only'; heading.append(note);
