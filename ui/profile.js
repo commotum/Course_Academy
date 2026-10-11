@@ -116,11 +116,13 @@ if (trigger) {
     name.textContent = profile.learner.name || 'Learner';
     trigger.textContent = profile.learner.name || 'Profile';
     courseSelect.update(profile.course, profile.courses);
+    help.textContent = profile.course ? 'Choose the course shown in Study.' : 'Choose a course to begin studying.';
+    directed.disabled = !profile.course;
     const checked = String(profile.learner.selfDirected);
     if (directed.getAttribute('aria-checked') !== checked) directed.setAttribute('aria-checked', checked);
   }
   function applyProfile(result, notify = false) {
-    const changedCourse = profile?.course.id !== result.course.id;
+    const changedCourse = profile?.course?.id !== result.course?.id;
     profile = result; frozen = false; render();
     if (notify) window.dispatchEvent(new CustomEvent('course-academy:profile-changed', {
       detail: { ...result, changedCourse },
@@ -164,7 +166,7 @@ if (trigger) {
     }
   }
   function change(selfDirected) {
-    if (!profile || busy || frozen || operation) return;
+    if (!profile || !courses.value || busy || frozen || operation) return;
     operation = { courseId: courses.value, selfDirected, requestId: crypto.randomUUID() };
     void save();
   }

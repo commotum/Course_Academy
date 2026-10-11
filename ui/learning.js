@@ -83,6 +83,10 @@ function updateHeader(data) {
       const header = JSON.stringify({ courseId: data.course.id, learnerName: $('learnerName').textContent });
       if (sessionStorage.getItem('course-academy.study-header') !== header) sessionStorage.setItem('course-academy.study-header', header);
     } catch { /* The app works normally when browser storage is unavailable. */ }
+  } else if (data.course === null) {
+    currentCourseId = null;
+    $('courseLink').setAttribute('href', '/progress');
+    try { sessionStorage.removeItem('course-academy.study-header'); } catch { /* Optional cache. */ }
   }
 }
 async function api(path, body, options = {}) {
@@ -422,6 +426,15 @@ async function loadHome(signal, preserve) {
     if (signal.aborted || modeChanging) return;
     updateHeader(data); resetMain();
     document.title = 'Study · Course Academy';
+    if (data.needsCourseSelection) {
+      const welcome = el('section', 'empty-state');
+      welcome.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Choose your first course'),
+        el('p', '', 'Select a course in your profile to see lessons and begin studying.'),
+        actionButton('Choose a course →', 'primary', () => $('learnerName').click()));
+      $('main').append(welcome);
+      homeRendered = revision === targetRevision;
+      return;
+    }
     const head = el('div', 'page-heading');
     const selfDirected = data.learner?.selfDirected === true;
     const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', selfDirected ? 'Your queue' : 'Next up'), el('p', 'subheading', isDeveloperMode() ? 'Preview activities without starting an attempt or recording progress.' : selfDirected ? 'Lessons from the topics you selected.' : 'Eligible lessons interleaved across your course modules.'));

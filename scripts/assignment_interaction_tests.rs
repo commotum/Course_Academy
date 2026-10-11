@@ -1,6 +1,6 @@
 //! Offline native transactions: these tests never connect to the durable database.
 use super::*;
-use edb_core::Database;
+use edb_core::{DB_SOURCE_SYSTEM, Database};
 
 const ASSIGNMENT: &str = "00000000-0000-4000-8000-000000000010";
 
@@ -40,7 +40,9 @@ impl Fixture {
         .into_iter()
         .enumerate()
         {
-            db = db.with_edn(schema, index as i64 + 1)?.db_after;
+            db = db
+                .with_edn(schema, index as i64 + 1, EntityRef::Id(DB_SOURCE_SYSTEM))?
+                .db_after;
         }
         let report = db.with_edn(r#"[
           {:db/id "course" :course/id #uuid "00000000-0000-4000-8000-000000000001" :course/title "Test course"}
@@ -62,7 +64,7 @@ impl Fixture {
           {:db/id "tutorial" :tutorial/id #uuid "00000000-0000-4000-8000-000000000022" :tutorial/title "Read" :tutorial/content "Keep this lesson."}
           {:db/id "lesson-task" :learner-task/id #uuid "00000000-0000-4000-8000-000000000023" :learner-task/activity "lesson" :learner-task/status :learner-task.status/started :learner-task/priority 5.0 :learner-task/xp-base 12 :learner-task/items ["lesson-item"]}
           {:db/id "lesson-item" :task-item/id #uuid "00000000-0000-4000-8000-000000000024" :task-item/content "tutorial" :task-item/status :task-item.status/started :task-item/elapsed-seconds 0.0}
-        ]"#, 1000)?;
+        ]"#, 1000, EntityRef::Id(DB_SOURCE_SYSTEM))?;
         let id = |name: &str| *report.tempids.get(name).unwrap();
         Ok(Self {
             learner: id("learner"),
@@ -96,7 +98,11 @@ impl Fixture {
         if !forms.is_empty() {
             self.db = self
                 .db
-                .with_edn(&schema::edn(&json!(forms))?, millis)?
+                .with_edn(
+                    &schema::edn(&json!(forms))?,
+                    millis,
+                    EntityRef::Id(self.learner),
+                )?
                 .db_after;
         }
         self.snapshot()
@@ -118,6 +124,7 @@ fn profile_settings_validate_and_pause_a_lesson_atomically() -> Result<()> {
                 r#"[{{:db/id "other" :course/id #uuid "{other}" :course/title "Other course"}}]"#
             ),
             1500,
+            EntityRef::Id(f.learner),
         )?
         .db_after;
     let s = f.snapshot()?;
@@ -131,7 +138,9 @@ fn profile_settings_validate_and_pause_a_lesson_atomically() -> Result<()> {
             .is_empty()
     );
     let (forms, _) = plan(json!({"courseId":other,"selfDirected":true}))?;
-    f.db = f.db.with_edn(&schema::edn(&json!(forms))?, 3000)?.db_after;
+    f.db =
+        f.db.with_edn(&schema::edn(&json!(forms))?, 3000, EntityRef::Id(f.learner))?
+            .db_after;
     let saved = f.snapshot()?;
     let profile = super::super::profile_json(&saved, f.learner)?;
     assert_eq!(profile["course"]["id"], other);
@@ -154,14 +163,18 @@ fn profile_settings_validate_and_pause_a_lesson_atomically() -> Result<()> {
 fn study_course_projects_reverse_group_membership_without_level_schema() -> Result<()> {
     let mut f = Fixture::new()?;
     f.db =
-        f.db.with_edn(include_str!("../schema/data/1-1-course-group.edn"), 1500)?
-            .db_after;
+        f.db.with_edn(
+            include_str!("../schema/data/1-1-course-group.edn"),
+            1500,
+            EntityRef::Id(DB_SOURCE_SYSTEM),
+        )?
+        .db_after;
     f.db = f.db.with_edn(r#"[
       {:course-group/id #uuid "00000000-0000-4000-8000-000000000050" :course-group/title "University"
        :course-group/courses [[:course/id #uuid "00000000-0000-4000-8000-000000000001"]]}
       {:course-group/id #uuid "00000000-0000-4000-8000-000000000051" :course-group/title "Advanced Placement"
        :course-group/courses [[:course/id #uuid "00000000-0000-4000-8000-000000000001"]]}
-    ]"#, 2000)?.db_after;
+    ]"#, 2000, EntityRef::Id(f.learner))?.db_after;
     let view = super::super::course_json(&f.snapshot()?, f.learner)?;
     assert!(view.get("level").is_none());
     let groups = view["groups"].as_array().unwrap();
@@ -184,7 +197,9 @@ fn profile_settings_pause_assignment_timing_and_preserve_work() -> Result<()> {
         &json!({"courseId":"00000000-0000-4000-8000-000000000001","selfDirected":true}),
         DateTime::from_timestamp_millis(4000).unwrap(),
     )?;
-    f.db = f.db.with_edn(&schema::edn(&json!(forms))?, 4000)?.db_after;
+    f.db =
+        f.db.with_edn(&schema::edn(&json!(forms))?, 4000, EntityRef::Id(f.learner))?
+            .db_after;
     let saved = f.snapshot()?;
     assert_eq!(items(&saved, task)?, before_items);
     assert_eq!(status(&saved, task, "learner-task/status")?, "paused");
@@ -225,7 +240,9 @@ fn assignment_switches_clocks_without_reordering_or_crediting_lessons() -> Resul
         DateTime::from_timestamp_millis(5000).unwrap(),
     )?;
     assert_eq!(result["assignmentId"], ASSIGNMENT);
-    f.db = f.db.with_edn(&schema::edn(&json!(forms))?, 5000)?.db_after;
+    f.db =
+        f.db.with_edn(&schema::edn(&json!(forms))?, 5000, EntityRef::Id(f.learner))?
+            .db_after;
     let s = f.snapshot()?;
     assert_eq!(timing::active_item(&s, f.learner)?, None);
     assert_eq!(
@@ -285,7 +302,13 @@ fn assignment_switches_clocks_without_reordering_or_crediting_lessons() -> Resul
         DateTime::from_timestamp_millis(10001).unwrap(),
     )?;
     if !queue.is_empty() {
-        f.db = f.db.with_edn(&schema::edn(&json!(queue))?, 10001)?.db_after;
+        f.db =
+            f.db.with_edn(
+                &schema::edn(&json!(queue))?,
+                10001,
+                EntityRef::Id(f.learner),
+            )?
+            .db_after;
     }
     let s = f.snapshot()?;
     assert_eq!(s.refs(f.learner, "learner/activity")?, members);
@@ -375,6 +398,7 @@ fn assignment_rejects_incomplete_foreign_and_paused_submissions_without_writes()
                 f.first_field
             ),
             4000,
+            EntityRef::Id(f.learner),
         )?
         .db_after;
     let before = f.db.basis_t();
@@ -398,6 +422,7 @@ fn assignment_repeated_question_steps_have_distinct_owned_presentations() -> Res
         f.db.with_edn(
             &format!("[[:db/add {} :step/content {question}]]", f.second),
             1500,
+            EntityRef::Id(f.learner),
         )?
         .db_after;
     let s = f.focus(f.first, 2000)?;

@@ -61,7 +61,7 @@ function fixture(storage = new Map()) {
     Date: class extends Date { static now() { return f.now; } },
     isDeveloperMode: () => f.dev,
     attachStepMenu(node, id, mathAcademyId) { node.dataset.stepDbId = id; node.dataset.mathAcademyId = mathAcademyId; },
-    sessionStorage: { getItem: key => storage.get(key) ?? null, setItem(key, value) { storage.set(key, value); } },
+    sessionStorage: { getItem: key => storage.get(key) ?? null, setItem(key, value) { storage.set(key, value); }, removeItem(key) { storage.delete(key); } },
     history: { replaceState() {} }, location: { replace() {}, assign() {} },
     fetch: async (path, options) => {
       const body = options.body ? JSON.parse(options.body) : null;
@@ -344,6 +344,29 @@ test('Study identifies the selected queue mode and distinguishes empty from unav
   await f.h.home();
   assert.equal(main.querySelector('h1').textContent, 'Your queue');
   assert.equal(f.calls.at(-1).path, '/api/preview-home');
+});
+
+test('Study and developer preview prompt an unconfigured learner to choose a course through the profile', async () => {
+  const f = fixture();
+  await f.h.render(activity(1));
+  assert.ok(f.storage.has('course-academy.study-header'));
+  f.server = { learner: { name: 'New learner', selfDirected: false }, course: null, activities: [], needsCourseSelection: true };
+  let profileOpened = 0;
+  f.document.getElementById('learnerName').addEventListener('click', () => profileOpened++);
+  for (const dev of [false, true]) {
+    f.dev = dev;
+    await f.h.home();
+    const main = f.document.getElementById('main');
+    assert.equal(main.querySelector('h1').textContent, 'Choose your first course');
+    assert.equal(main.querySelector('.queue-foot'), null);
+    assert.equal(f.document.getElementById('errorBanner').hidden, true);
+    assert.equal(f.document.getElementById('courseLink').getAttribute('href'), '/progress');
+    assert.equal(f.storage.has('course-academy.study-header'), false);
+    main.querySelector('button').click();
+    assert.equal(f.calls.at(-1).path, dev ? '/api/preview-home' : '/api/queue');
+  }
+  assert.equal(profileOpened, 2);
+  assert.equal(f.calls.length, 2);
 });
 
 test('self-directed Study offers Begin for prepared locked lessons and selections without a task', async () => {

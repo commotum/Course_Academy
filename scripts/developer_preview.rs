@@ -3,7 +3,12 @@
 use super::*;
 
 pub(super) fn home(s: &EntitySnapshot, learner: u64) -> Result<Json> {
-    let activities = learning::study_candidates(s, learner, course(s, learner)?, Utc::now())?
+    let Some(course) = s.optional_ref(learner, "learner/course")? else {
+        let mut home = super::home(s, learner)?;
+        home["preview"] = json!(true);
+        return Ok(home);
+    };
+    let activities = learning::study_candidates(s, learner, course, Utc::now())?
         .into_iter()
         .take(5)
         .map(|candidate| {
@@ -405,6 +410,23 @@ mod tests {
             );
         }
         EntitySnapshot::new(entries, 42).unwrap()
+    }
+
+    #[test]
+    fn learner_without_course_can_open_preview_home_and_browse_content() {
+        let mut entries = fixture().entities;
+        entries.get_mut(&1).unwrap().remove("learner/course");
+        let s = EntitySnapshot::new(entries, 42).unwrap();
+        let before = s.entities.clone();
+        let view = home(&s, 1).unwrap();
+        assert_eq!(view["needsCourseSelection"], true);
+        assert_eq!(view["preview"], true);
+        assert!(view["course"].is_null());
+        assert_eq!(view["activities"], json!([]));
+        let lesson = preview(&s, 1, &json!({"topicId": 3})).unwrap();
+        assert!(lesson["course"].is_null());
+        assert_eq!(lesson["steps"].as_array().unwrap().len(), 4);
+        assert_eq!(s.entities, before);
     }
 
     #[test]

@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 // Exercise the actual controllers with a local server stand-in. No learner
 // preferences or study attempts are changed by these tests.
-async function fixture(theme = 'dark') {
+async function fixture(theme = 'dark', courseId = 'one') {
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.children = []; this.attrs = {}; this.dataset = {}; }
     append(...children) {
@@ -35,7 +35,7 @@ async function fixture(theme = 'dark') {
   document.getElementById = id => find(node => node.id === id);
   const trigger = new Element('button'); trigger.id = 'learnerName'; document.body.append(trigger);
   const window = new EventTarget();
-  const profile = { learner: { name: 'Test learner', selfDirected: true }, course: { id: 'one' }, courses: [{ id: 'one', title: 'One' }, { id: 'two', title: 'Two' }] };
+  const profile = { learner: { name: 'Test learner', selfDirected: true }, course: courseId ? { id: courseId } : null, courses: [{ id: 'one', title: 'One' }, { id: 'two', title: 'Two' }] };
   const state = { enabled: false, fail: null, calls: [], events: [], stored: new Map() };
   for (const name of ['developer-mode-changing', 'developer-mode-settled', 'profile-changing', 'profile-changed']) {
     window.addEventListener(`course-academy:${name}`, event => state.events.push({ name, detail: event.detail }));
@@ -52,7 +52,7 @@ async function fixture(theme = 'dark') {
       if (body) {
         if (state.hold?.path === path) await state.hold.promise;
         if (path === '/api/developer-mode') state.enabled = body.enabled;
-        else { profile.learner.selfDirected = body.selfDirected; profile.course.id = body.courseId; }
+        else { profile.learner.selfDirected = body.selfDirected; profile.course = { id: body.courseId }; }
         if (state.fail === path) { state.fail = null; throw new Error('Reply lost after commit'); }
       }
       return { ok: true, json: async () => structuredClone(path === '/api/developer-mode' ? { enabled: state.enabled } : path === '/api/course' ? {
@@ -236,5 +236,25 @@ test('grouped course picker preserves server order and only saves an explicit ch
   assert.equal(f.profile.course.id, 'two');
   assert.equal(f.profile.learner.selfDirected, true);
   assert.equal(f.state.calls.filter(call => call.path === '/api/course').length, 1);
+  assert.equal(f.state.events.at(-1).detail.changedCourse, true);
+});
+
+test('a learner without a course can choose a first course without an implicit selection or save', async () => {
+  const f = await fixture('dark', null);
+  const control = f.get('profileCourse'), directed = f.get('selfDirectedToggle');
+  assert.equal(control.textContent, 'Choose a course');
+  assert.equal(control.value, '');
+  assert.equal(directed.disabled, true);
+  assert.match(f.get('profileCourseHelp').textContent, /begin studying/);
+  directed.click();
+  control.click(); await f.settle();
+  const choices = f.get('profileCourseOptions').children[0].children.slice(1);
+  assert.equal(choices.every(choice => choice.getAttribute('aria-selected') === 'false'), true);
+  assert.equal(f.state.calls.filter(call => call.body).length, 0);
+  choices[0].click(); await f.settle();
+  assert.equal(f.profile.course.id, 'two');
+  assert.equal(control.textContent, 'Two');
+  assert.equal(directed.disabled, false);
+  assert.equal(f.state.calls.filter(call => call.path === '/api/profile-settings').length, 1);
   assert.equal(f.state.events.at(-1).detail.changedCourse, true);
 });

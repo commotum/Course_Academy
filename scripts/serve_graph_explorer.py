@@ -2,7 +2,8 @@
 """Serve the graph explorer and durable learner app on http://127.0.0.1:8765.
 
 Run: python3 scripts/serve_graph_explorer.py
-Uses the local edb_peer PostgreSQL role unless EDB_POSTGRES_URL is supplied.
+Uses the math database at /media/jake/SSD/EDB/math and its edb_peer role
+unless EDB_POSTGRES_URL is supplied.
 The native reader is built against EDB_ROOT (defaults to the adjacent EDB repo)
 and existing serde_json build artifacts from this repository or EDB_ROOT.
 The learner helper uses the release engine and the existing local EDB writer.
@@ -36,11 +37,45 @@ ROOT = Path(__file__).resolve().parent.parent
 HTML = ROOT / "ui" / "Math-Academy-Graph-Explorer.html"
 SOURCE = ROOT / "scripts" / "graph_explorer_reader.rs"
 DEFAULT_LEARNER = "59d5cf13-351c-4114-be19-4c3bb64ee051"
+DEFAULT_DATABASE = "math"
+DEFAULT_MATH_ROOT = Path("/media/jake/SSD/EDB/math")
+DEFAULT_POSTGRES_URL = "host=/tmp/edb-math port=55432 dbname=math user=edb_peer sslmode=disable options='-c search_path=public'"
+DEFAULT_ENDPOINT = "/tmp/edb-math/writer.sock"
 ASSET_ROOTS = (ROOT.parent / "MA/DATA/Lessons", ROOT.parent / "study/vault",
                ROOT / "reference/mathacademy/history-question-import-2026-10-04/import-ready/assets")
 IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml"}
 MUTATING_ACTIONS = {"start", "study-topic", "answer", "continue", "pause", "resume", "target", "queue", "queue-topic",
                     "assignment-focus", "assignment-answer", "assignment-pause"}
+
+
+def database_environment(database: str) -> dict[str, str]:
+    environment = os.environ.copy()
+    environment.setdefault("EDB_POSTGRES_URL", DEFAULT_POSTGRES_URL)
+    environment.setdefault("EDB_CONNECT_TIMEOUT_MS", "5000")
+    environment.setdefault("EDB_STATEMENT_TIMEOUT_MS", "15000")
+    environment.setdefault("EDB_ENDPOINT", DEFAULT_ENDPOINT)
+    environment.setdefault("EDB_MATH_ROOT", str(DEFAULT_MATH_ROOT))
+    environment.setdefault("LEARNING_REQUEST_DIR", str(ROOT / ".local/learning/requests" / database))
+    return environment
+
+
+def image_path(value: str, math_root: Path) -> Path | None:
+    """Resolve database-relative images without exposing other database files."""
+    if not value:
+        return None
+    asset = Path(value)
+    if not asset.is_absolute():
+        if not asset.parts or asset.parts[0] != "images":
+            return None
+        asset = math_root / asset
+    try:
+        asset = asset.resolve()
+        roots = (*ASSET_ROOTS, math_root / "images")
+        if asset.suffix.lower() in IMAGE_TYPES and any(asset.is_relative_to(root.resolve()) for root in roots) and asset.is_file():
+            return asset
+    except (OSError, RuntimeError, ValueError):
+        pass
+    return None
 
 
 def developer_mode(path: Path) -> bool:
@@ -240,6 +275,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     learning_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "learning-worker") if learning else None
     request_directory = Path(environment["LEARNING_REQUEST_DIR"])
     mode_path = request_directory / "developer-mode.json"
+    math_root = Path(environment.get("EDB_MATH_ROOT", DEFAULT_MATH_ROOT)).resolve()
 
     class Handler(BaseHTTPRequestHandler):
         def send_bytes(self, status: int, body: bytes, content_type: str, *, cache: bool = False) -> None:
@@ -409,8 +445,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     return
                 self.learning_request({"action": "task", "taskId": task})
             elif path == "/api/asset":
-                asset = Path(query.get("path", [""])[0]).resolve()
-                if asset.suffix.lower() not in IMAGE_TYPES or not any(asset.is_relative_to(root.resolve()) for root in ASSET_ROOTS) or not asset.is_file():
+                asset = image_path(query.get("path", [""])[0], math_root)
+                if asset is None:
                     self.send_bytes(404, b"Image not found", "text/plain")
                 else:
                     self.send_bytes(200, asset.read_bytes(), IMAGE_TYPES[asset.suffix.lower()], cache=True)
@@ -485,19 +521,14 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8765)
-    parser.add_argument("--database", default=os.environ.get("EDB_DATABASE", "course-academy-v2"))
+    parser.add_argument("--database", default=os.environ.get("EDB_DATABASE", DEFAULT_DATABASE))
     parser.add_argument("--learner", default=DEFAULT_LEARNER)
     parser.add_argument("--edb-root", type=Path, default=Path(os.environ.get("EDB_ROOT", ROOT.parent / "EDB")))
     args = parser.parse_args()
     try:
         reader = build_reader(args.edb_root.resolve())
         learning = build_learning(args.edb_root.resolve())
-        environment = os.environ.copy()
-        environment.setdefault("EDB_POSTGRES_URL", f"host={ROOT / '.local/edb/run'} dbname=course_academy user=edb_peer sslmode=disable")
-        environment.setdefault("EDB_CONNECT_TIMEOUT_MS", "5000")
-        environment.setdefault("EDB_STATEMENT_TIMEOUT_MS", "15000")
-        environment.setdefault("EDB_ENDPOINT", "/tmp/course-academy-edb-v2/writer.sock")
-        environment.setdefault("LEARNING_REQUEST_DIR", str(ROOT / ".local/learning/requests" / args.database))
+        environment = database_environment(args.database)
         server = ThreadingHTTPServer(("127.0.0.1", args.port), handler(reader, args.database, args.learner, environment, learning))
     except (OSError, RuntimeError, subprocess.SubprocessError) as error:
         parser.exit(1, f"Cannot start graph explorer: {error}\n")

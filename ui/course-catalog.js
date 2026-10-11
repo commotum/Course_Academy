@@ -100,10 +100,11 @@ export function createCourseSelect({ loadGroups }) {
   }
   function update(course, courses) {
     available = courses;
-    const selected = courses.find(item => item.id === course.id) || course;
-    if (control.value !== course.id) control.value = course.id;
-    if (control.textContent !== selected.title) control.textContent = selected.title;
-    control.setAttribute('aria-label', `Selected course: ${selected.title}`);
+    const selected = courses.find(item => item.id === course?.id) || course;
+    const value = selected?.id || '', title = selected?.title || 'Choose a course';
+    if (control.value !== value) control.value = value;
+    if (control.textContent !== title) control.textContent = title;
+    control.setAttribute('aria-label', selected ? `Selected course: ${title}` : title);
     if (!options.hidden && groups) render();
   }
   control.addEventListener('click', () => { if (options.hidden) void open(); else close(); });

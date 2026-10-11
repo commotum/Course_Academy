@@ -1,7 +1,7 @@
 [Unit]
-Description=Course Academy EDB writer
-Wants=course-academy-postgres.service
-After=course-academy-postgres.service
+Description=Course Academy math EDB writer
+Wants=course-academy-math-postgres.service
+After=course-academy-math-postgres.service
 StartLimitIntervalSec=0
 
 [Service]
@@ -9,9 +9,9 @@ Type=notify
 NotifyAccess=main
 WorkingDirectory=%h/Developer/Course_Academy
 Environment="PATH=%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin"
-Environment=EDB_DATABASE=course-academy-v2
-Environment=EDB_ENDPOINT=/tmp/course-academy-edb-v2/writer.sock
-ExecStart=/usr/bin/python3 %h/Developer/Course_Academy/scripts/run_local_edb_service.py
+Environment=EDB_DATABASE=math
+Environment=EDB_ENDPOINT=/tmp/edb-math/writer.sock
+ExecStart=/bin/bash %h/Developer/Course_Academy/scripts/start_local_edb.sh --writer
 Restart=always
 RestartSec=5
 TimeoutStartSec=180

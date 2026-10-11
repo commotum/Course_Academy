@@ -431,7 +431,15 @@ fn course(db: &DatabaseValue, learner_id: &str, selector: Option<&str>) -> Resul
                 })
             })
         }
-        None => learner_course.filter(|eid| uuid(&facts, *eid, "course/id").is_some()),
+        // Browsing an outline does not select the learner's study course. A
+        // newly seeded learner can still browse the catalog before choosing one.
+        None => learner_course
+            .filter(|eid| uuid(&facts, *eid, "course/id").is_some())
+            .or_else(|| {
+                facts.keys().copied()
+                    .filter(|eid| uuid(&facts, *eid, "course/id").is_some())
+                    .min_by_key(|eid| (title(&facts, *eid, "course"), *eid))
+            }),
     };
     let Some(course_eid) = course_eid else {
         return Ok(None);
