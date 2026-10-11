@@ -2598,52 +2598,6 @@ mod integration {
         snapshot(&conn.sync_to(first.basis_t, Duration::from_secs(10))?)
     }
 
-    fn isolated_lesson(s: &EntitySnapshot, at: DateTime<Utc>) -> Result<(u64, u64)> {
-        let learner = s.entities.keys().next_back().copied().unwrap_or(0) + 1;
-        let mut entities = s.entities.clone();
-        let topics: Vec<_> = s
-            .entities
-            .iter()
-            .filter_map(|(&eid, record)| record.contains_key("topic/id").then_some(eid))
-            .collect();
-        entities.insert(
-            learner,
-            json!({"learner/id":"integration-selection","learner/self-directed":true,"learner/queue":topics})
-                .as_object()
-                .unwrap()
-                .clone(),
-        );
-        let candidate_snapshot = EntitySnapshot::new(entities, s.basis_t)?;
-        let mut courses: Vec<_> = s
-            .entities
-            .iter()
-            .filter_map(|(&eid, record)| {
-                let identity = record.get("course/id")?.get("$uuid")?.as_str()?;
-                Some((identity, eid))
-            })
-            .collect();
-        courses.sort_unstable();
-        let first_course = courses
-            .first()
-            .ok_or("no course available for integration test")?
-            .1;
-        // Explicit study keeps prerequisite eligibility intact while allowing a
-        // fresh temporary learner to exercise the real content and writer.
-        for candidate in learning::queue_candidates(&candidate_snapshot, learner, first_course, at)?
-        {
-            for &(_, course) in &courses {
-                for unit in s.refs(course, "course/units")? {
-                    for module in s.refs(unit, "unit/modules")? {
-                        if s.refs(module, "module/topics")?.contains(&candidate.topic) {
-                            return Ok((course, candidate.activity));
-                        }
-                    }
-                }
-            }
-        }
-        Err("no servable lesson with graded practice for an isolated self-directed learner".into())
-    }
-
     #[test]
     #[ignore = "requires the local durable writer; creates then removes a temporary integration learner"]
     fn durable_lesson_lifecycle() -> Result<()> {
@@ -2661,29 +2615,40 @@ mod integration {
             })
             .ok_or("original learner unavailable")?;
         let id = format!("integration-{}", uid()?);
-        let (c, activity) = isolated_lesson(&source, Utc::now())?;
+        let c = course(&source, original)?;
+        let mut forms = vec![];
+        let mut progress = vec![];
+        for (index, p) in source
+            .refs(original, "learner/knowledge-profile")?
+            .iter()
+            .enumerate()
+        {
+            let name = format!("test-progress-{index}");
+            progress.push(json!(name));
+            forms.push(json!({"db/id":name,"progress/id":uid()?,"progress/topic":source.reference(*p,"progress/topic")?,"progress/repetitions":number(&source,*p,"progress/repetitions")}));
+        }
+        forms.push(json!({"db/id":"test-learner","learner/id":id,"learner/name":"Temporary learner API integration test","learner/course":c,"learner/self-directed":false,"learner/knowledge-profile":progress,"db/ensure":kw("learner/validate")}));
+        let mut s = commit(
+            &conn,
+            &endpoint,
+            original,
+            &source,
+            forms,
+            &format!("{id}-setup"),
+            Utc::now(),
+        )?;
+        let l = s
+            .entities
+            .iter()
+            .find_map(|(e, r)| (r.get("learner/id") == Some(&json!(id))).then_some(*e))
+            .unwrap();
         eprintln!("Temporary integration learner: {id}");
-        eprintln!(
-            "Integration course: {}; lesson: {}",
-            text(&source, c, "course/title"),
-            text(&source, activity, "activity/title")
-        );
         let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| -> Result<()> {
-            let topic = source.reference(activity, "activity/scope")?;
-            let forms = vec![json!({"db/id":"test-learner","learner/id":id,"learner/name":"Temporary learner API integration test","learner/course":c,"learner/self-directed":true,"learner/queue":[topic],"db/ensure":kw("learner/validate")})];
-            let mut s = commit(
-                &conn,
-                &endpoint,
-                original,
-                &source,
-                forms,
-                &format!("{id}-setup"),
-                Utc::now(),
-            )?;
-            let l = s.entities.iter().find_map(|(e, r)| {
-                (r.get("learner/id") == Some(&json!(id))).then_some(*e)
-            }).ok_or("temporary integration learner was not created")?;
             let at = Utc::now();
+            let activity = learning::study_candidates(&s, l, c, at)?
+                .first()
+                .ok_or("no eligible test lesson")?
+                .activity;
             let forms = queue_forms(&s, l, at)?;
             assert!(
                 !forms.is_empty(),
@@ -2691,7 +2656,7 @@ mod integration {
             );
             s = commit(&conn, &endpoint, l, &s, forms, &format!("{id}-queue"), at)?;
             let t = task_for(&s, l, activity)?.ok_or("queue did not create task")?;
-            assert!(matches!(status(&s, t, "learner-task/status")?.as_str(), "locked" | "unlocked"));
+            assert_eq!(status(&s, t, "learner-task/status")?, "unlocked");
             assert!(
                 items(&s, t)?.is_empty(),
                 "unlocking must not expose a question"
@@ -2863,13 +2828,6 @@ mod integration {
             return result;
         }
         let fresh = snapshot(&conn.sync()?)?;
-        let Some(l) = fresh
-            .entities
-            .iter()
-            .find_map(|(e, r)| (r.get("learner/id") == Some(&json!(id))).then_some(*e))
-        else {
-            return result;
-        };
         let mut cleanup = vec![];
         for t in fresh.refs(l, "learner/activity")? {
             cleanup.push(json!([kw("db/retractEntity"), t]));
