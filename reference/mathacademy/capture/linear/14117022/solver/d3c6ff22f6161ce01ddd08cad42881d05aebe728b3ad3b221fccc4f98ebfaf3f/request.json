@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-135412",
+      "sequence_position": 3,
+      "problem": "A study determines how customers' yearly preferences change between the LB and SB telephone companies. The table below describes the results of this study.\n\n|  |  | From: |  |\n| --- | --- | --- | --- |\n|  |  | **LB** | **SB** |\n| To: | **LB** | $0$ | $0.25$ |\n| **SB** | $1$ | $0.75$ |  |\n\nIt's found that $100%$ of the customers who currently use the LB company will choose the SB company next year, while $25%$ of the customers who currently use the SB company will use the LB company next year.\n\nAssuming that there are $100\\,000$ customers in total and that the given probabilities remain constant over many years, determine the number of customers who will eventually use the SB company.",
+      "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0 & 0.25 \\\\ 1 & 0.75\\end{aligned}].\n$$\n\nNow, note that\n\n$$\n{P}^{2}=[\\begin{aligned}0.25 & 0.187\\,5 \\\\ 0.75 & 0.812\\,5\\end{aligned}].\n$$\n\nThe matrix ${P}^{2}$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many years, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0 & 0.25 \\\\ 1 & 0.75\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-1 & 0.25 \\\\ 1 & -0.25\\end{aligned}].\n$$\n\nSo, the matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-1 & 0.25 & 0 \\\\ 1 & -0.25 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}-1 & 0.25 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain \n\n$$\n\\begin{aligned}{x}_{1}=\\frac{1}{4}{x}_{2}.\\end{aligned}\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{1}{4}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}\\frac{1}{4}{x}_{2}+{x}_{2} & =1 \\\\ \\frac{5}{4}{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{4}{5}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{1}{5} \\\\ \\frac{4}{5}\\end{aligned}].\n$$\n\nSo, $\\frac{4}{5}$ of the customers will eventually use the SB company. Therefore, the number of customers who will eventually use this company is\n\n$$\n\\frac{4}{5}\\cdot 100\\,000=80\\,000.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117022/observations/history-q-135412-975d69d28349855f903e.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14117022",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117022/observations/history-solution-q-135412-0738858212f25b5e0b90.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "84\\,000"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "80\\,000"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "82\\,000"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "90\\,000"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "65\\,000"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q135412",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "80\\,000",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0 & 0.25 \\\\ 1 & 0.75\\end{aligned}].\n$$\n\nNow, note that\n\n$$\n{P}^{2}=[\\begin{aligned}0.25 & 0.187\\,5 \\\\ 0.75 & 0.812\\,5\\end{aligned}].\n$$\n\nThe matrix ${P}^{2}$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many years, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0 & 0.25 \\\\ 1 & 0.75\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-1 & 0.25 \\\\ 1 & -0.25\\end{aligned}].\n$$\n\nSo, the matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-1 & 0.25 & 0 \\\\ 1 & -0.25 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}-1 & 0.25 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain \n\n$$\n\\begin{aligned}{x}_{1}=\\frac{1}{4}{x}_{2}.\\end{aligned}\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{1}{4}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}\\frac{1}{4}{x}_{2}+{x}_{2} & =1 \\\\ \\frac{5}{4}{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{4}{5}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{1}{5} \\\\ \\frac{4}{5}\\end{aligned}].\n$$\n\nSo, $\\frac{4}{5}$ of the customers will eventually use the SB company. Therefore, the number of customers who will eventually use this company is\n\n$$\n\\frac{4}{5}\\cdot 100\\,000=80\\,000.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117022/observations/step-q135412-f2d4a8273de0523f5cfb.html"
+        }
+      }
+    ]
+  }
+}
