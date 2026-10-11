@@ -2,6 +2,8 @@
 
 Complete the selected activity, then review its history page to finish the capture. The shared process handles content; each activity type sets the answer policy, submission timing, and completion rules.
 
+**Python controls the process:** page navigation, extraction, images, answer policies, timing, response entry, and completeness checks. It calls the math-solving sub-agent for answers and source interpretation. When checks find missing or conflicting evidence, Python requests a focused agent review, performs any additional page reads, and checks the returned result. The agent returns answers and evidence; Python records and acts on them.
+
 ## 3.1. Shared Process
 
 Our schema separates the activity's structure from the content it presents:
@@ -23,11 +25,14 @@ Our schema separates the activity's structure from the content it presents:
 3. Capture the content identified in the table above. Expand knowledge points into their example and practice, and multisteps into their shared context and parts. Use the question process below whenever a response is required.
 4. Save responses and feedback before advancing. Continue until Math Academy ends the activity, recording success, failure, or timeout as the actual outcome.
 5. Open its history page and expand every question. Match source IDs and positions to the live capture. Add difficulty, topic/knowledge-point/example references, final grades, revealed correct answers, and worked solutions, preserving the history HTML, screenshots, and images.
-6. Check live questions against history, retaining repeated presentations and discrepancies. Continue to Post-Activity Processing. Database Preparation handles content recovery, image-library references, and matching existing entities; learner responses, timing, and solver reasoning remain evidence for later.
+6. Before leaving Activity Capture, Python checks the live questions against history, including repeated presentations, and checks answer fields, correct-answer evidence, source identities, images, and activity structure. It fetches missing source material immediately. If the evidence needs interpretation, it gives the same sub-agent the specific gap or conflict and relevant captures, then checks the proposed resolution. Include the full lesson-page review described below when applicable.
+7. Finish the source review and save a checked capture before handing it to Post-Activity Processing. A missing optional value is recorded as absent; required content stays in this capture-resolution step until recovered or its source limitation is established. Keep any unresolved limitation explicit for Preparation's validation. Learner responses, timing, and solver reasoning remain evidence for later.
 
 Keep task, content, and placement IDs separate. Questions use `q-N`; canonical examples use `e-N`. Screen labels such as `step-qN` are not verified placement IDs. Keep observed attempt order distinct from reusable activity structure; preserve evidence of the route actually taken.
 
 Never defer or abandon an unfinished activity. Recover and continue. After an external interruption or manual stop, resume saved progress and check what Math Academy already accepted before repeating an action.
+
+Math Academy completing an activity and us finishing its capture are separate events. Resolve source ambiguities during the final history/lesson-page review. Preserve Math Academy's stated answer when our mathematics disagrees, and save the disagreement for later; do not invent evidence or repeat the completed activity.
 
 ### Questions
 
@@ -37,7 +42,7 @@ Never defer or abandon an unfinished activity. Recover and continue. After an ex
 4. Enter and verify the field values or selected choices. Submit when the activity calls for it. Record actual responses, skips, retries, and timing. Check current choices again after a reload or shuffle.
 5. Save each revealed grade, correct answer, worked solution, HTML, and image. Capture and answer any additional fields revealed within the same question before advancing.
 6. Give feedback to the same sub-agent to check its answer. Preserve Math Academy's answer and flag disagreements. A submission alone does not establish the correct answer.
-7. Finish the record during history review. Record difficulty after the activity ends.
+7. During history review, Python records difficulty and checks the complete question record. It sends ambiguous answer evidence to the same sub-agent for resolution before ending capture.
 
 **C** means intended correct; **W** means intentionally incorrect. The sub-agent solves for the correct answer in both cases. Record intended responses separately from actual grades. When uncertain, use the best available response, or Don't Know when the activity's policy calls for it, and record the uncertainty.
 
@@ -54,7 +59,7 @@ A lesson teaches one topic through tutorials and knowledge points. Each knowledg
 
 Lesson steps point to tutorials and knowledge points. Served practice questions join the knowledge point's pool, rather than becoming permanent lesson steps. Failed lessons and retakes share the definition but retain separate attempt evidence.
 
-**Topic difficulty:** Database Preparation uses those question samples, all tutorials, and all canonical examples with the [existing workload formula](../../reference/xp-docs/expected-distribution-base-xp.md). It applies the expected 1.6 difficulty weight to the per-KP solution measurements, then calculates `topic/difficulty = observed base XP / unrounded workload score`, retaining the formula's seven-XP minimum handling. Save the inputs and formula version with this derived value. Missing inputs go to content recovery before calibration.
+**Topic difficulty:** Python checks these inputs during the final lesson review and recovers missing source content here. Database Preparation then applies the [existing workload formula](../../reference/xp-docs/expected-distribution-base-xp.md): expected 1.6 difficulty weighting on per-KP solution measurements, followed by `topic/difficulty = observed base XP / unrounded workload score`, including the seven-XP minimum handling. Save the inputs and formula version with this derived value. An incomplete lesson does not produce a calibrated multiplier.
 
 ## 3.3. Review
 

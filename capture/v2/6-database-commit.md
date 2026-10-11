@@ -1,6 +1,6 @@
 # 6. Database Commit
 
-Commit the validated transactions from Database Preparation.
+Python commits the validated transactions from Database Preparation. This stage uses no agent judgment about content or entity identities.
 
 1. Connect to the existing writer for `/media/jake/SSD/EDB/math`. If a prior submission exists, recover its outcome and finish verification before starting a new one.
 2. Preview the prepared EDN against the database version (basis) used during preparation. Check the proposed additions, retractions, and source attribution. A changed basis or validation failure returns to Database Preparation for reconciliation and a fresh preview.
@@ -10,4 +10,4 @@ Commit the validated transactions from Database Preparation.
 6. Read back the affected entities at the receipt's committed database version. Verify content, relationships, and sources; check the receipt for unexpected changes, including learner or engine facts. Confirm that preparing the same capture against that version produces no further content changes.
 7. Save the transaction, preview, receipt, and verification with the capture under `reference/`. Mark the import complete only after verification, then return to Queue Processing.
 
-Content recovery belongs to Database Preparation. An interrupted commit or verification resumes from its saved state; it never causes the Math Academy activity to be repeated.
+Python classifies commit outcomes and routes rejected plans back to Database Preparation. Source-content gaps return to Activity Capture through Preparation. An interrupted commit or verification resumes from its saved state; it never causes the Math Academy activity to be repeated.
