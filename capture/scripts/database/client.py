@@ -134,6 +134,17 @@ class EDBClient:
         return {'basis': basis, 'entities': list(entities.values()), 'attributes': attributes,
                 'idents': sources, 'facts': facts}
 
+    def targets(self, directory):
+        basis = self.basis()
+        learner_id = self.config.learner_id
+        rows = self.query('''[:find ?target :in $ ?id :where
+            [?l :learner/id ?id] [?l :learner/targets ?t]
+            [?t :topic/math-academy-id ?target]]''',
+            [learner_id], directory, 'learner-targets', basis) if learner_id else []
+        targets = sorted({str(row[0]) for row in rows})
+        return {'target_basis': basis, 'learner_id': learner_id, 'targets': targets,
+                'target_origins': {'learner_targets': targets}}
+
     def context(self, activity, directory):
         basis = self.basis()
         topic_rows = self.query('[:find ?e ?id ?title :where [?e :topic/math-academy-id ?id] [?e :topic/title ?title]]',
@@ -171,43 +182,6 @@ class EDBClient:
                     for question in point.get(':knowledge-point/questions', []):
                         if question.get(':question/math-academy-id'):
                             bindings[question[':question/math-academy-id']] = str(topic[':topic/math-academy-id'])
-        targets = list(self.config.targets)
-        origins = {'configured': list(map(str, targets)), 'learner_targets': [], 'assignment_targets': [], 'active_assignments': 0}
-        if getattr(self.config, 'learner_id', None):
-            def content_pattern(depth):
-                base = '[:db/id {:assigned-problem/topic-coverage [:topic/math-academy-id]}'
-                if depth:
-                    inner = content_pattern(depth - 1)
-                    base += ' {:assigned-problem/content ' + inner + '} {:multistep/steps [{:step/content ' + inner + '}]}'
-                return base + ']'
-            query = '''[:find (pull ?l [{:learner/targets [:topic/math-academy-id]}
-                {:learner/activity [{:learner-task/status [:db/ident]} {:learner-task/activity [:db/id]}]}
-                {:learner/assignments [:db/id :activity/title {:activity/steps [{:step/content ''' + content_pattern(3) + '''}]}]}])
-                :in $ ?id :where [?l :learner/id ?id]]'''
-            rows = self.query(query, [self.config.learner_id], directory, 'target-configuration', basis)
-            for [learner] in rows:
-                origins['learner_targets'].extend(str(t[':topic/math-academy-id']) for t in learner.get(':learner/targets', []))
-                completed = {task[':learner-task/activity'][':db/id'] for task in learner.get(':learner/activity', [])
-                    if task.get(':learner-task/status', {}).get(':db/ident') == ':learner-task.status/completed'}
-                def coverage(value):
-                    found = set()
-                    if isinstance(value, dict):
-                        for t in value.get(':assigned-problem/topic-coverage', []):
-                            if t.get(':topic/math-academy-id') is not None:
-                                found.add(str(t[':topic/math-academy-id']))
-                        for child in value.values():
-                            found.update(coverage(child))
-                    elif isinstance(value, list):
-                        for child in value:
-                            found.update(coverage(child))
-                    return found
-                for assignment in learner.get(':learner/assignments', []):
-                    if assignment[':db/id'] not in completed:
-                        origins['active_assignments'] += 1
-                        origins['assignment_targets'].extend(sorted(coverage(assignment)))
-            if not targets:
-                targets = origins['learner_targets'] + origins['assignment_targets']
-        targets = list(dict.fromkeys(map(str, targets)))
         return {'basis': basis, 'topics': [{'id': str(t), 'title': title} for t, title in topics],
                 'course_topics': [str(r[0]) for r in course_topics], 'graph': graph,
-                'targets': targets, 'target_origins': origins, 'question_topics': bindings}
+                'question_topics': bindings}

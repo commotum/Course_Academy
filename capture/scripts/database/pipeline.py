@@ -29,6 +29,12 @@ class DatabasePipeline:
         with tempfile.TemporaryDirectory(prefix='read-', dir=root) as directory:
             return self.client.context(activity, directory)
 
+    def targets(self):
+        root = Path(self.config.state_root) / 'database-context'
+        root.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix='targets-', dir=root) as directory:
+            return self.client.targets(directory)
+
     def _resolver(self, directory):
         def resolve(task, payload):
             path = directory / 'decisions' / (digest([task,payload]) + '.json')

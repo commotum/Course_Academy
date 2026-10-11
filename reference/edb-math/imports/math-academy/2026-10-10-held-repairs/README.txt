@@ -1,41 +1,31 @@
-TWO PREPARED TRANSACTIONS — NOTHING COMMITTED
+TWO TRANSACTIONS COMMITTED AND VERIFIED
 
-All 26 remaining held questions are prepared and validated against math basis 187.
+All 26 final held questions are resolved. The held index is empty.
 
 1. 001-math-academy-original.edn
-   Required transaction source: :org/Math-Academy
-   23 new questions, 3 existing question updates. Original prompts, solutions,
-   answer choices and MA-intended keys are preserved, including known errors.
-   Normalization restores original Roman list labels and canonical image paths.
+   Source :org/Math-Academy; durable basis 194 -> 195.
+   23 new questions and 3 existing updates; original captured content retained.
 
 2. 002-astra-surgical-repairs.edn
-   Required transaction source: :agent/gpt-6-astra-ultra
-   All repairs authored and independently checked by GPT-6-astra / ultra.
-   Changes: 25 prompts, 11 worked solutions, 2 choice values.
-   Text repairs use compare-and-swap: EDB retracts the exact original value and
-   asserts its replacement. Two superseded fields and their ten answer
-   components are retracted from current state and replaced. Both historical
-   MA assertions and agent-attributed retractions remain in history. No source
-   entity, schema, question identity, or knowledge-point membership is changed.
+   Source :agent/gpt-6-astra-ultra; durable basis 195 -> 196.
+   25 prompt edits, 11 solution edits, and 2 choice edits across the same 26 questions.
+   Two superseded fields and ten answers retracted and replaced; originals
+   recovered from final durable history as of basis 195.
 
-These are sequential stages concerning the same 26 questions. Sources are
-passed separately to EDB; they are not attributes embedded in the EDN file.
-The held index still contains all 26 because no commit has occurred.
+Both receipts, every answer field, source attribution, exact retractions,
+question UUIDs, knowledge-point membership, and historical recovery passed.
+174 original component entities remain recoverable from history; 162 remain
+unchanged in current state and 12 were retired. No external incoming refs were
+removed. The held index was updated only after all durable verification passed.
 
-Both stages were applied only to an in-memory database branch (187 -> 188 ->
-189). Full content and history readbacks passed, exact retractions and sources
-were verified, and an independent live read remained at basis 187. The old
-Math Academy question and answer graphs were recovered from the repaired
-speculative database using as-of 188. No external incoming references exist
-to the twelve retired component entities.
+The EDNs are already committed. Do not submit them again as new requests.
+commits/ retains exact request keys, intents, receipts and per-stage readbacks.
+committed-history-verification/ holds the independent durable history audit.
+committed-content-verification.json and manifest.json summarize completion.
+repair-diff.txt and process-report.txt explain the changes and workflow.
 
-Review repair-diff.txt for the precise text/option changes. repair-plan.json
-contains author reasoning and checks; review/ contains the independently
-authored proposals, peer reviews and EDB conventions. validation/ contains
-both speculative receipts, readbacks and history. manifest.json records exact
-paths, hashes, counts and required sources. The SSD directory contains only
-the two transaction EDNs; evidence and metadata remain here.
-
-Do not submit without new authorization. Before any later commit, check the
-current basis and revalidate the sequence if it has changed. Use stage 1
-before stage 2. Remove questions from the held index only after verified commit.
+Original preparation was against basis 187; unrelated later transactions
+advanced the live basis to 194. The scope and exact prepared EDNs remained
+unchanged, and a fresh sequential preview passed before the authorized commits.
+Historical preparation records remain intact in validation/ and the
+*-before-commit files. The SSD directory contains transaction EDNs only.

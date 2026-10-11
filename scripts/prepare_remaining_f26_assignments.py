@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Prepare an additive import of F26 assignments absent from an EDB snapshot.
 
-Existing assignment content and explicit learner targets are preserved. Writes
-EDN and a source audit only; preview and transact separately using EDB's CLI.
+Existing assignment content and explicit learner targets are preserved. Newly
+linked assignments add their coverage topics to targets in the same transaction.
+Writes EDN and a source audit only; preview and transact separately using EDB's CLI.
 """
 from __future__ import annotations
 
@@ -50,7 +51,7 @@ def prepare(snapshot, vault=VAULT, learner=DEFAULT_LEARNER, sources=None):
                                          for row in builder.entities)),
                   'forms': len(forms),
                   'target_union': sorted({t for a in audit['activities'] for p in a['problems'] for t in p['topics']}),
-                  'import_policy': 'Add missing definitions and learner/assignments links only; preserve existing content, targets, tasks, responses, progress, and engine configuration.'})
+                  'import_policy': 'Add missing definitions and assignment links, adding coverage targets only for newly linked assignments; preserve existing targets and do not restore explicitly removed targets on refresh. Preserve existing content, tasks, responses, progress, and engine configuration.'})
     return builder.entities, forms, audit
 
 

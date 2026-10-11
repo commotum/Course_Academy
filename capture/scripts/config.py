@@ -32,7 +32,6 @@ class Config:
     solver_attempts: int = 2
     retry_delay: float = 2.0
     recovery_max_delay: float = 60.0
-    targets: list[str] = field(default_factory=list)
     seed: int | None = None
     capture_only: bool = False
     browser_cdp_url: str | None = None
@@ -51,7 +50,6 @@ class Config:
         auth = read_json(old_state / "profile-auth.json", {})
         defaults = {"foundations": "154", "linear": "55", "multivariable": "54", "differential": "61"}
         self.course_id = str(self.course_id or auth.get("course_id") or defaults.get(self.account) or "") or None
-        self.targets = list(dict.fromkeys(map(str, self.targets)))
         if self.source != ":org/Math-Academy":
             raise ValueError("Original captured content must use :org/Math-Academy")
         if self.timeout_ms <= 0 or self.solver_timeout <= 0 or self.retry_delay <= 0:
@@ -68,6 +66,10 @@ class Config:
     @classmethod
     def from_file(cls, path, **overrides):
         data = read_json(path, {}) if path else {}
+        if data.pop("targets", None):
+            raise ValueError("Configure priority topics in :learner/targets, not capture targets")
+        if overrides.pop("targets", None):
+            raise ValueError("Configure priority topics in :learner/targets, not capture targets")
         known = {f.name for f in fields(cls)}
         unexpected = set(data) - known
         if unexpected:

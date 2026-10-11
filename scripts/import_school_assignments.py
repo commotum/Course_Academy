@@ -82,6 +82,37 @@ def tidy(value: str) -> str:
     return re.sub(r'\n{3,}', '\n\n', value).strip()
 
 
+def assignment_coverage_refs(entities, activities):
+    """Read selected assignments' coverage from the prepared content graph.
+
+    New steps and problems need not exist in the database yet. Traverse only
+    containment, never curriculum links or coverage belonging to other work.
+    """
+    records = {json.dumps(row[':db/id'], sort_keys=True): row for row in entities}
+    for row in entities:
+        for attr, value in row.items():
+            if attr.endswith('/id') and attr != ':db/id':
+                records[json.dumps({'$ref': [attr, value]}, sort_keys=True)] = row
+    pending, visited, topics = list(activities), set(), {}
+    while pending:
+        reference = pending.pop()
+        key = json.dumps(reference, sort_keys=True)
+        if key in visited:
+            continue
+        visited.add(key)
+        if key not in records:
+            raise ValueError(f'Missing prepared assignment content: {reference}')
+        row = records[key]
+        for topic in row.get(':assigned-problem/topic-coverage', []):
+            topics[json.dumps(topic, sort_keys=True)] = topic
+        for attr in (':activity/steps', ':multistep/steps'):
+            pending.extend(row.get(attr, []))
+        for attr in (':step/content', ':assigned-problem/content'):
+            if attr in row:
+                pending.append(row[attr])
+    return [topics[key] for key in sorted(topics)]
+
+
 def edn(value) -> str:
     if isinstance(value, dict):
         if "$uuid" in value:
@@ -320,10 +351,20 @@ class Import:
         if learner_eid is None:
             raise ValueError(f'Unknown learner: {learner}')
         assigned = rows[str(learner_eid)].get('learner/assignments', [])
+        newly_assigned = []
         for activity in activities:
             if present[activity] not in assigned:
-                ref = {"$ref": [":activity/id", {"$uuid": activity}]} if present[activity] else activity
+                ref = generated_identity[activity] if present[activity] else activity
                 forms.append([":db/add", {"$ref": [":learner/id", learner]}, ":learner/assignments", ref])
+                newly_assigned.append(activity)
+        targets = set(rows[str(learner_eid)].get('learner/targets', []))
+        for topic in assignment_coverage_refs(self.entities, newly_assigned):
+            target = resolved(topic)
+            if target is None and isinstance(topic, str) and topic in present:
+                target = topic
+            if target not in targets:
+                forms.append([":db/add", {"$ref": [":learner/id", learner]}, ":learner/targets", target])
+                targets.add(target)
 
         def existing_refs(value):
             if isinstance(value, dict):

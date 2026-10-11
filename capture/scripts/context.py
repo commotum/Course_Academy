@@ -1,9 +1,10 @@
-"""Nonblocking refresh of read-only target and course graph snapshots."""
+"""Fresh learner targets with a cached course graph for resilient selection."""
+import hashlib
 import logging
-from pathlib import Path
 import threading
 import time
 
+from .runtime import StopRequested
 from .storage import atomic_json, read_json
 
 
@@ -35,9 +36,30 @@ class ContextProvider:
             # A genuinely unavailable database still has the explicit unknown-topic fallback.
             current.join(timeout=30 if activity.get("kind") == "diagnostic" else 2)
         context = read_json(path, {"graph": {}, "targets": [], "course_topics": [], "snapshot_unavailable": True})
-        if self.config.targets:
-            context["targets"] = list(self.config.targets)
+        # Graph refresh can lag, but every selection rereads the persisted target
+        # set. Never reuse the old cache's assignment union or CLI overrides.
+        context.pop("targets", None)
+        context.pop("target_origins", None)
+        context.update(self._targets())
         return context
+
+    def _targets(self):
+        identity = f"{self.config.database}:{self.config.learner_id}"
+        key = hashlib.sha256(identity.encode()).hexdigest()[:16]
+        path = self.config.state_root / "context" / ("targets-" + key + ".json")
+        try:
+            targets = dict(self.pipeline_factory().targets())
+            targets["target_cached_at"] = time.time()
+            atomic_json(path, targets)
+            return targets
+        except StopRequested:
+            raise
+        except Exception as error:
+            logging.warning("Keeping saved learner targets after %s", type(error).__name__)
+            targets = read_json(path, {"targets": [], "target_origins": {"learner_targets": []},
+                                      "learner_id": self.config.learner_id, "target_basis": None})
+            targets["targets_unavailable"] = True
+            return targets
 
     def _refresh(self, activity, path):
         try:
@@ -45,4 +67,4 @@ class ContextProvider:
             context["cached_at"] = time.time()
             atomic_json(path, context)
         except Exception as error:
-            logging.warning("Keeping saved course/target context after %s", type(error).__name__)
+            logging.warning("Keeping saved course graph after %s", type(error).__name__)

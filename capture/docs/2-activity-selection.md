@@ -9,7 +9,7 @@
 7. Unstarted Multistep
 8. Unstarted Assessment
 
-Python calculates Lesson and Review priority scores from the downstream targets their topics support through the prerequisite graph. Use the same scoring policy for both types, and record the supporting targets with the selection reason.
+Python reads `:learner/targets` before each selection and calculates Lesson and Review priority scores from the downstream targets their topics support through the prerequisite graph. When preparing an assignment transaction, explicitly include both its `:learner/assignments` link and its mapped topics in `:learner/targets`. Completing an assignment changes neither targets nor scores. Direct target additions or removals change the scores at the next selection. Use the same scoring policy for both types, and record the supporting targets with the selection reason.
 
 Use queue order for equal scores, or when no scores are available. Finish the current activity before selecting another.
 

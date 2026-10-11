@@ -50,6 +50,7 @@ def choose(queue, context=None, completed=()):
         return None
     _, selected, score = min(candidates, key=lambda candidate: candidate[0])
     selected["selection"] = {"priority_level": level(selected) + 1, **score,
-        "context_basis": context.get("basis"), "target_origins": context.get("target_origins", {}),
+        "context_basis": context.get("basis"), "target_basis": context.get("target_basis"),
+        "target_origins": context.get("target_origins", {}),
         "score_reason": "downstream_target_support" if context.get("targets") else "no_target_configuration_queue_order"}
     return selected

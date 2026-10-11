@@ -1,12 +1,14 @@
 """Checks for the explicit-field vault format and additive assignment imports."""
 import sys
+import copy
 import tempfile
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from f26_assignment_content import Builder
-from import_school_assignments import Import
+from import_school_assignments import Import, stable_id
+from sync_f26_assignments import prepare as refresh_assignments
 
 
 class CanonicalFields(unittest.TestCase):
@@ -62,6 +64,132 @@ class CanonicalFields(unittest.TestCase):
         self.assertEqual(forms, [])
         self.assertEqual(snapshot['entities']['1']['learner/assignments'], [7])
         self.assertEqual(snapshot['entities']['1']['learner/targets'], [8])
+
+
+class AssignmentTargets(unittest.TestCase):
+    def setUp(self):
+        self.snapshot = {'basis_t': 1, 'entities': {
+            '1': {'learner/id': 'learner', 'learner/targets': [8], 'learner/assignments': []},
+            '8': {'topic/id': {'$uuid': stable_id('test', 'manual')}, 'topic/math-academy-id': 808},
+            '9': {'topic/id': {'$uuid': stable_id('test', 'mapped')}, 'topic/math-academy-id': 909},
+            '10': {'topic/id': {'$uuid': stable_id('test', 'other')}, 'topic/math-academy-id': 910},
+            '20': {'db/ident': {'$keyword': 'activity.type/assignment'}},
+        }}
+
+    def assignment(self, name, topic):
+        def identity(kind):
+            return stable_id(name, kind)
+
+        def row(kind, **attrs):
+            record = {':db/id': identity(kind), f':{kind}/id': {'$uuid': identity(kind)},
+                      ':db/ensure': f':{kind}/validate'}
+            record.update({':' + key.replace('__', '/').replace('_', '-'): value
+                           for key, value in attrs.items()})
+            return record
+
+        # Coverage is beneath new steps and multistep content, all in this batch.
+        entities = [
+            row('activity', activity__type=':activity.type/assignment',
+                activity__steps=[identity('step')], activity__first_step=identity('step')),
+            row('step', step__content=identity('multistep')),
+            row('multistep', multistep__steps=[identity('inner-step')],
+                multistep__first_step=identity('inner-step')),
+            {':db/id': identity('inner-step'), ':step/id': {'$uuid': identity('inner-step')},
+             ':step/content': identity('assigned-problem'), ':db/ensure': ':step/validate'},
+            row('assigned-problem', assigned_problem__content=identity('question'),
+                assigned_problem__topic_coverage=[{'$ref': [':topic/math-academy-id', topic]}]),
+            row('question', question__problem='Original question.'),
+        ]
+        return entities, identity('activity')
+
+    def store(self, entities, start=700, linked=True):
+        identities = {row[':db/id']: start + index for index, row in enumerate(entities)}
+
+        def resolve(value):
+            if isinstance(value, dict) and '$ref' in value:
+                self.assertEqual(value['$ref'][0], ':topic/math-academy-id')
+                return {909: 9, 910: 10}[value['$ref'][1]]
+            if isinstance(value, list):
+                return [resolve(child) for child in value]
+            if isinstance(value, str):
+                return identities.get(value, 20 if value == ':activity.type/assignment' else value)
+            return value
+
+        for row in entities:
+            self.snapshot['entities'][str(identities[row[':db/id']])] = {
+                attr[1:]: resolve(value) for attr, value in row.items()
+                if attr not in (':db/id', ':db/ensure')}
+        if linked:
+            self.snapshot['entities']['1']['learner/assignments'].append(start)
+
+    def prepare(self, method, entities, activities):
+        if method == 'refresh':
+            return refresh_assignments(self.snapshot, entities, activities, [909, 910], 'learner')[0]
+        model = Import(Path(tempfile.gettempdir()), {})
+        model.entities = entities
+        return model.transaction(self.snapshot, 'learner', activities)
+
+    @staticmethod
+    def target_writes(forms):
+        return [form for form in forms if isinstance(form, list) and form[2] == ':learner/targets']
+
+    def test_new_assignment_adds_nested_coverage_and_preserves_manual_targets(self):
+        entities, activity = self.assignment('new', 909)
+        untouched = copy.deepcopy(self.snapshot)
+        for method in ['import', 'refresh']:
+            with self.subTest(method=method):
+                forms = self.prepare(method, entities, [activity])
+                writes = self.target_writes(forms)
+                self.assertEqual([(form[0], form[3]) for form in writes], [(':db/add', 9)])
+                self.assertTrue(any(isinstance(form, list) and form[2] == ':learner/assignments'
+                                    for form in forms))
+                self.assertEqual(self.snapshot, untouched)
+
+    def test_refresh_does_not_restore_explicitly_removed_target(self):
+        entities, activity = self.assignment('existing', 909)
+        self.store(entities)
+        for method in ['import', 'refresh']:
+            with self.subTest(method=method):
+                self.assertEqual(self.prepare(method, entities, [activity]), [])
+
+    def test_existing_content_newly_linked_adds_target_once(self):
+        entities, activity = self.assignment('existing-unlinked', 909)
+        self.store(entities, linked=False)
+        for method in ['import', 'refresh']:
+            with self.subTest(method=method):
+                self.assertEqual([form[3] for form in self.target_writes(
+                    self.prepare(method, entities, [activity]))], [9])
+        self.snapshot['entities']['1']['learner/targets'].append(9)
+        for method in ['import', 'refresh']:
+            self.assertEqual(self.target_writes(self.prepare(method, entities, [activity])), [])
+
+    def test_mixed_batch_targets_only_new_links(self):
+        existing, old_activity = self.assignment('existing', 909)
+        new, new_activity = self.assignment('new', 910)
+        self.store(existing)
+        for method in ['import', 'refresh']:
+            with self.subTest(method=method):
+                forms = self.prepare(method, existing + new, [old_activity, new_activity])
+                self.assertEqual([form[3] for form in self.target_writes(forms)], [10])
+
+    def test_unlinked_generated_content_is_not_a_target(self):
+        selected, activity = self.assignment('selected', 909)
+        unrelated, _ = self.assignment('unrelated', 910)
+        for method in ['import', 'refresh']:
+            with self.subTest(method=method):
+                forms = self.prepare(method, selected + unrelated, [activity])
+                self.assertEqual([form[3] for form in self.target_writes(forms)], [9])
+
+    def test_refreshing_mapping_on_existing_link_does_not_add_targets(self):
+        entities, activity = self.assignment('existing', 909)
+        self.store(entities)
+        updated = copy.deepcopy(entities)
+        problem = next(row for row in updated if ':assigned-problem/id' in row)
+        problem[':assigned-problem/topic-coverage'] = [{'$ref': [':topic/math-academy-id', 910]}]
+        forms = self.prepare('refresh', updated, [activity])
+        self.assertTrue(any(isinstance(form, list) and form[2] == ':assigned-problem/topic-coverage'
+                            for form in forms))
+        self.assertEqual(self.target_writes(forms), [])
 
 
 if __name__ == '__main__':

@@ -16,6 +16,11 @@ from .runtime import StopRequested, shutdown_signals
 from .storage import file_lock, read_json
 
 
+class PersistedTargetsOnly(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        parser.error("--target is no longer supported; transact topics into :learner/targets")
+
+
 def parser():
     cli = argparse.ArgumentParser(description="Resumable Math Academy content capture")
     cli.add_argument("command", choices=["run", "fleet", "inspect", "status", "prepare", "drain", "check"])
@@ -27,8 +32,8 @@ def parser():
     cli.add_argument("--output-root", type=Path)
     cli.add_argument("--profile", type=Path)
     cli.add_argument("--course-id")
-    cli.add_argument("--target", action="append", dest="targets", help="Downstream target topic ID; repeat for multiple targets")
-    cli.add_argument("--learner-id", help="Learner identity whose study and assignment targets determine priority")
+    cli.add_argument("--target", action=PersistedTargetsOnly, dest=argparse.SUPPRESS, help=argparse.SUPPRESS)
+    cli.add_argument("--learner-id", help="Learner identity whose persisted :learner/targets determine priority")
     cli.add_argument("--math-root", type=Path)
     cli.add_argument("--edb-bin", type=Path)
     cli.add_argument("--endpoint")
@@ -61,10 +66,10 @@ def configuration(args):
 def main(argv=None):
     args = parser().parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    config = configuration(args)
     if args.command == "fleet":
         from .fleet import run_fleet
         return run_fleet(list(argv if argv is not None else sys.argv[1:]))
-    config = configuration(args)
     stop = threading.Event()
     if args.command == "status":
         value = {"account": config.account, "capture": read_json(config.state_root / "status.json", {}),

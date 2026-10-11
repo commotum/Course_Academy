@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare current F26 assignments and replace explicit learner targets in EDB.
+"""Prepare current F26 assignments and add targets for newly linked assignments.
 
 Reads a native EntitySnapshot and writes one reviewable transaction. Does not
 write to the database or vault. Source aliases preserve the original imports.
@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 
 from f26_assignment_content import build
-from import_school_assignments import DEFAULT_LEARNER, ROOT, VAULT
+from import_school_assignments import DEFAULT_LEARNER, ROOT, VAULT, assignment_coverage_refs
 
 
 def edn(value):
@@ -211,14 +211,16 @@ def prepare(snapshot, entities, activities, target_ids, learner):
         for key in new.keys() - old.keys():
             forms.append([':db/add', learner_eid, ':' + attr, new[key]])
 
-    target_eids = []
-    for target in sorted(set(target_ids)):
-        eid = lookup('topic/math-academy-id', target)
-        if eid is None:
-            raise ValueError(f'Missing target topic {target}')
-        target_eids.append(eid)
+    newly_assigned = [activity for activity in activities if reference(activity) not in old_activities]
+    target_eids = set(rows[learner_eid].get('learner/targets', []))
+    added_targets = []
+    for topic in assignment_coverage_refs(entities, newly_assigned):
+        target = reference(topic)
+        if target not in target_eids:
+            forms.append([':db/add', learner_eid, ':learner/targets', target])
+            target_eids.add(target)
+            added_targets.append(target)
     replace_set('learner/assignments', [reference(a) for a in activities])
-    replace_set('learner/targets', target_eids)
     # The learner's identity and knowledge-profile are unchanged. Its native
     # profile predicate is unrelated to these validated target/assignment refs.
     # Explicit fact retractions avoid component cascade accidentally reaching
@@ -233,7 +235,9 @@ def prepare(snapshot, entities, activities, target_ids, learner):
         'basis': snapshot['basis_t'], 'learner_eid': learner_eid,
         'old_assignment_eids': old_activities, 'activity_ids': activities,
         'old_target_count': len(rows[learner_eid].get('learner/targets', [])),
-        'target_ids': sorted(set(target_ids)), 'target_eids': sorted(target_eids),
+        'coverage_target_ids': sorted(set(target_ids)),
+        'target_eids': sorted(target_eids, key=str),
+        'newly_assigned_ids': newly_assigned, 'added_target_eids': sorted(added_targets, key=str),
         'created': sum(eid is None for eid in present.values()),
         'reused': len(retained), 'removed_obsolete_entities': sorted(removable),
         'preserved_historical_entities': sorted(protected),
