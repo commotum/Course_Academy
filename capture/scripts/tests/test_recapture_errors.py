@@ -140,6 +140,47 @@ class RecaptureErrorTests(unittest.TestCase):
                 self.assertEqual(merge_question(before, captured(errors=[], **variant))['errors'], [error])
         self.assertEqual(merge_question(before, captured(errors=[]))['errors'], [])
 
+    def test_null_error_update_and_legacy_field_incompleteness_do_not_claim_recovery(self):
+        self.assertEqual(merge_question(captured(), captured(errors=None))['errors'], [MATH_ERROR])
+        before = captured(answer_fields_complete=False)
+        after = {'math_academy_id': 'q-11', 'problem': before['problem'], 'worked_solution': before['worked_solution'],
+                 'errors': [], 'fields': [], 'extraction_parts': ['problem', 'solution'], 'html_path': '/history.html'}
+        merged = merge_question(before, after)
+        self.assertFalse(merged['answer_fields_complete'])
+        with self.assertRaisesRegex(UnsupportedContent, 'explicitly incomplete'):
+            authoritative_question(merged)
+
+    def test_clean_empty_prompt_assets_retire_failure_and_keep_original_evidence(self):
+        error = 'Image unavailable: https://example.invalid/prompt.svg'
+        failed = {'source_url': 'https://example.invalid/prompt.svg', 'extraction_part': 'problem',
+                  'unavailable': 'initial download failed'}
+        before = captured(errors=[error], extraction_error_parts={error: ['problem']}, assets=[failed])
+        after = {'math_academy_id': 'q-11', 'problem': before['problem'], 'errors': [], 'assets': [],
+                 'extraction_parts': ['problem'], 'html_path': '/history.html'}
+        merged = merge_question(before, after)
+        self.assertEqual(merged['errors'], [])
+        self.assertEqual(merged['assets'], [])
+        self.assertFalse(capture_gaps({'questions': [merged]}))
+        self.assertEqual(merged['extraction_error_history'][0]['assets'], [failed])
+        self.assertEqual(before['assets'], [failed])
+
+    def test_solution_asset_reread_retains_prompt_and_choice_assets(self):
+        prompt = {'path': '/prompt.svg', 'sha256': 'prompt', 'extraction_part': 'problem'}
+        choice = {'path': '/choice.svg', 'sha256': 'choice', 'extraction_part': 'fields'}
+        old_solution = {'path': '/old-solution.svg', 'sha256': 'old', 'extraction_part': 'solution'}
+        fresh = {'path': '/solution.svg', 'sha256': 'new', 'extraction_part': 'solution'}
+        legacy = {'path': '/unknown.svg', 'sha256': 'unknown'}
+        before = captured(errors=[], assets=[prompt, choice, old_solution, legacy])
+        after = {'math_academy_id': 'q-11', 'worked_solution': 'Updated solution', 'errors': [],
+                 'assets': [fresh], 'extraction_parts': ['solution'], 'html_path': '/solution.html'}
+        merged = merge_question(before, after)
+        self.assertEqual(merged['assets'], [prompt, choice, legacy, fresh])
+        self.assertEqual(merged['answer_fields'], before['answer_fields'])
+        after['assets'].append(legacy)
+        replayed = merge_question(merged, after)
+        self.assertEqual(replayed['assets'], merged['assets'])
+        self.assertEqual(merge_question(replayed, after)['assets'], replayed['assets'])
+
     def test_scoped_image_repair_does_not_require_absent_history_fields(self):
         error = 'Image unavailable: https://example.invalid/prompt.svg'
         before = captured(errors=[error], extraction_error_parts={error: ['problem']})

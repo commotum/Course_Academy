@@ -914,7 +914,9 @@ class MathAcademyBrowser:
                 self._goto(LEARN, page)
                 page.locator("#completedTasks").wait_for(state="attached")
                 dashboard = parse_dashboard(page.content(), activity["task_id"])
-                result.update(completed=dashboard["completed"], dashboard=self._evidence(page, directory, "dashboard"))
+                result.update(completed=dashboard["completed"],
+                              dashboard={**self._evidence(page, directory, "dashboard"),
+                                         "course_progress": dashboard["course_progress"]})
                 if dashboard["activity"]:
                     result["completion"].update(dashboard["activity"])
                 urls = dashboard["course_urls"]

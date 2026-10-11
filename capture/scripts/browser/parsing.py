@@ -147,6 +147,10 @@ def parse_xp(value):
 
 def parse_dashboard(html, task_id):
     page = soup(html)
+    enrolled = page.select_one("a#courseNameLink, a.courseNameLink")
+    href = enrolled.get("href", "") if enrolled else None
+    course = re.search(r"/courses/(\d+)", href or "")
+    percent = page.select_one("#coursePercentComplete")
     rows = []
     for node in page.select("#completedTasks .taskCompleted"):
         tid = str(number(node.get("id")) or "")
@@ -162,7 +166,10 @@ def parse_dashboard(html, task_id):
             url = f"{BASE}/courses/{match[1]}/progress"
             if url not in urls:
                 urls.append(url)
-    return {"completed": rows, "activity": selected, "course_urls": urls}
+    return {"completed": rows, "activity": selected, "course_urls": urls,
+            "course_progress": {"course_id": course[1] if course else None, "course_href": href,
+                                "displayed_progress": text(percent) if percent else None,
+                                "source_selector": "#coursePercentComplete"}}
 
 
 def parse_progress(html, course_id):

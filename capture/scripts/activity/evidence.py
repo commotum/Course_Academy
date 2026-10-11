@@ -53,7 +53,7 @@ def _error_parts(error, record):
 
 def _recaptured_error(error, before, after):
     """Clear a capture failure only when a clean read replaced its source scope."""
-    if 'errors' not in after or not (after.get('html_path') or after.get('source_file')):
+    if not isinstance(after.get('errors'), list) or not (after.get('html_path') or after.get('source_file')):
         return False
     identity = before.get('math_academy_id')
     if not identity or str(identity) != str(after.get('math_academy_id')):
@@ -101,7 +101,8 @@ def _error_history(record):
     history = deepcopy(record.get('extraction_error_history', []))
     if not history and record.get('errors') and _source_evidence(record):
         history.append({'errors': deepcopy(record['errors']), 'source': _source_evidence(record),
-                        'error_parts': deepcopy(record.get('extraction_error_parts', {}))})
+                        'error_parts': deepcopy(record.get('extraction_error_parts', {})),
+                        'assets': deepcopy(record.get('assets', []))})
     return history
 
 
@@ -109,7 +110,7 @@ def merge_question(before, after):
     result = deepcopy(before)
     for key, value in after.items():
         if value is not None and value != '' and value != [] and key not in (
-                'fields', 'answer_fields', 'errors', 'extraction_error_history', 'extraction_parts', 'extraction_error_parts'):
+                'fields', 'answer_fields', 'assets', 'errors', 'extraction_error_history', 'extraction_parts', 'extraction_error_parts'):
             result[key] = deepcopy(value)
     old = {str(f.get('key', i)): deepcopy(f) for i, f in enumerate(answer_fields(before))}
     for i, field in enumerate(answer_fields(after)):
@@ -121,13 +122,25 @@ def merge_question(before, after):
     if old:
         result['fields'] = list(old.values())
         result['answer_fields'] = deepcopy(result['fields'])
+    if isinstance(after.get('assets'), list):
+        if 'extraction_parts' in after and (after.get('html_path') or after.get('source_file')):
+            covered = _extraction_parts(after)
+            # Section metadata makes an observed empty asset list meaningful.
+            # Legacy unscoped graphics remain until their scope can be verified.
+            kept = [asset for asset in before.get('assets', []) if asset.get('extraction_part') not in covered]
+            result['assets'] = []
+            for asset in kept + after['assets']:
+                if asset not in result['assets']:
+                    result['assets'].append(deepcopy(asset))
+        elif after['assets']:
+            result['assets'] = deepcopy(after['assets'])
     # Empty errors means a successful observed read, not an absent update.
-    resolved = [error for error in before.get('errors', []) if _recaptured_error(error, before, after)]
-    retained = [error for error in before.get('errors', []) if error not in resolved]
+    resolved = [error for error in (before.get('errors') or []) if _recaptured_error(error, before, after)]
+    retained = [error for error in (before.get('errors') or []) if error not in resolved]
     if 'errors' in before or 'errors' in after:
-        result['errors'] = list(dict.fromkeys(retained + after.get('errors', [])))
+        result['errors'] = list(dict.fromkeys(retained + (after.get('errors') or [])))
     error_parts = {}
-    for source, errors in ((before, retained), (after, after.get('errors', []))):
+    for source, errors in ((before, retained), (after, after.get('errors') or [])):
         for error in errors:
             parts = _error_parts(error, source)
             if parts:

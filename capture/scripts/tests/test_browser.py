@@ -17,13 +17,24 @@ from types import SimpleNamespace
 from scripts.browser.adapter import EXTRACT, MathAcademyBrowser
 from scripts.browser.assets import AssetCapture, image_extension, replace_markers, standalone_svg
 from scripts.browser.entry import enter, normalized_math, pick_choice, validated_keys, write_math
-from scripts.browser.parsing import (activity_from_url, parse_history_metadata, parse_lesson_structure,
+from scripts.browser.parsing import (activity_from_url, parse_dashboard, parse_history_metadata, parse_lesson_structure,
                                     parse_queue, parse_xp, question_identity)
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
 
 class SourceParsingTests(unittest.TestCase):
+    def test_learn_course_percentage_uses_authored_label_and_source_course(self):
+        html = (FIXTURES / 'learn-course-progress.html').read_text()
+        result = parse_dashboard(html + '<div id="dailyGoalPoints">999/50 XP</div>', '1')
+        self.assertEqual(result['course_progress'], {'course_id': '76', 'course_href': '/courses/76/progress',
+            'displayed_progress': '37%', 'source_selector': '#coursePercentComplete'})
+        unknown = parse_dashboard(html.replace('37%', 'Progress unavailable'), '1')
+        self.assertEqual(unknown['course_progress']['displayed_progress'], 'Progress unavailable')
+        absent = parse_dashboard('<div id="courseProgress">88%</div>', '1')
+        self.assertIsNone(absent['course_progress']['displayed_progress'])
+        self.assertIsNone(absent['course_progress']['course_id'])
+
     def test_queue_retains_source_details_and_start_link(self):
         rows = parse_queue((FIXTURES / "quiz-6-required-card.html").read_text())
         self.assertEqual(len(rows), 1)
@@ -316,6 +327,22 @@ class OfflineBrowserTests(unittest.TestCase):
         self.assertNotEqual(first, second["dashboard"]["html_path"])
         self.assertTrue(Path(first).exists())
         self.assertEqual(len(list((self.directory / "post-activity").glob("*/observations.json"))), 2)
+
+    def test_postprocess_saves_learn_percentage_with_its_source_evidence(self):
+        html = (FIXTURES / 'learn-course-progress.html').read_text()
+        def show_page(url, page=None):
+            page.set_content(html + '<div id="completedTasks"></div>' if url.endswith('/learn') else
+                '<table class="moduleTopics"><tr><td><a class="topicLink" href="/topics/1?courseId=76">Topic</a>'
+                '<span class="topicCircle" style="background:white"></span></td></tr></table>')
+        self.adapter._goto = show_page
+        result = self.adapter.postprocess(self.adapter.activity, self.directory)
+        dashboard = result['dashboard']
+        self.assertEqual(dashboard['course_progress']['displayed_progress'], '37%')
+        self.assertEqual(dashboard['course_progress']['course_id'], '76')
+        self.assertGreater(dashboard['captured_at'], 0)
+        self.assertIn('coursePercentComplete', Path(dashboard['html_path']).read_text())
+        saved = json.loads(next((self.directory / 'post-activity').glob('*/observations.json')).read_text())
+        self.assertEqual(saved['dashboard'], dashboard)
 
     def test_review_completed_dashboard_card_finishes_only_the_pinned_activity(self):
         self.page.set_content((FIXTURES / 'review-autocompleted-dashboard.html').read_text())
