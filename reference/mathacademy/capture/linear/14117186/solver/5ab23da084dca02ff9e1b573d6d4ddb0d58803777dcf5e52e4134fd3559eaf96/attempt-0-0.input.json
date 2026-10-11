@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-109391",
+      "sequence_position": 1,
+      "problem": "$$\nA=[\\begin{aligned}1 & -3 & 3 \\\\ 1 & 3 & 1 \\\\ 4 & 2 & 2\\end{aligned}]\n$$\n\nThe matrix above has eigenvalues ${\\lambda }_{1}={\\lambda }_{2}=4$ and ${\\lambda }_{3}=-2.$ Find a Jordan canonical form of the matrix.",
+      "worked_solution": "Notice that we are given a $3\\times 3$ matrix with the following eigenvalues:\n\n- $\\lambda =4$ of algebraic multiplicity $2$\n\n- $\\lambda =-2$ of algebraic multiplicity $1$\n\nAs a result, we have one $1\\times 1$ Jordan block ${J}_{1}(-2)$ corresponding to $\\lambda =-2.$\nHowever, there are two possibilities for the Jordan blocks corresponding to $\\lambda =4:$\n\n- *Case I.* We may get the single $2\\times 2$ Jordan block ${J}_{2}(4).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =4$ form the following chain:\n\n$$\n{v}_{2}\\overset{A-4I\\,}{\\to }{v}_{1}\\overset{A-4I\\,}{\\to }0\n$$\n\n- *Case II.* We may get a composition of two $1\\times 1$ Jordan blocks, namely ${J}_{1}(4)\\,⊕\\,{J}_{1}(4).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =4$ form the following chains:\n\n$$\n\\begin{aligned}{v}_{1}\\overset{A-4I\\,}{\\to }0 &  \\\\ {v}_{2}\\overset{A-4I\\,}{\\to }0 & \\end{aligned}\n$$\n\nTo figure out which of the cases we obtain in this situation, let's find the number of linearly independent eigenvectors corresponding to $\\lambda =4.$\n\nComputing $A-4I,$ we get\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}1 & -3 & 3 \\\\ 1 & 3 & 1 \\\\ 4 & 2 & 2\\end{aligned}]-4[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-3 & -3 & 3 \\\\ 1 & -1 & 1 \\\\ 4 & 2 & -2\\end{aligned}].\\end{aligned}\n$$\n\nNow, we reduce this matrix to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}-3 & -3 & 3 \\\\ 1 & -1 & 1 \\\\ 4 & 2 & -2\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+\\frac{1}{3}{R}_{1} \\\\ {R}_{3}:={R}_{3}+\\frac{4}{3}{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-3 & -3 & 3 \\\\ 0 & -2 & 2 \\\\ 0 & -2 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+(-1){R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & -1 & 1 \\\\ 0 & -2 & 2 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nSince $\\text{nullity}(A-4I)=1,$ there will be only one eigenvector that corresponds to the eigenvalue $\\lambda =4,$ say, ${v}_{1}.$ So, the generalized eigenvectors corresponding to the eigenvalue $\\lambda =4$ form the following chain: \n\n$$\n{v}_{2}\\overset{A-4I\\,}{\\to }{v}_{1}\\overset{A-4I\\,}{\\to }0\n$$\n\nTherefore, we have *case I*, and $A$ has the following Jordan canonical form:\n\n$$\n{J}_{2}(4)\\,⊕\\,{J}_{1}(-2)=[\\begin{aligned}4 & 1 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & -2\\end{aligned}]\n$$\n\n**Note:** The Jordan canonical form is unique up to the order of the Jordan blocks.",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117186/observations/history-q-109391-36ad839a34d73fbf5cba.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14117186",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117186/observations/history-solution-q-109391-95ac3b7b8311e02b8ea3.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "[\\begin{aligned}4 & 1 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & -2\\end{aligned}]"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "[\\begin{aligned}4 & 1 & 0 \\\\ 0 & 4 & 1 \\\\ 0 & 0 & 4\\end{aligned}]"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "[\\begin{aligned}4 & 0 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & -2\\end{aligned}]"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "[\\begin{aligned}4 & 1 & 0 \\\\ 0 & 4 & 1 \\\\ 0 & 0 & -2\\end{aligned}]"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "[\\begin{aligned}-2 & 1 & 0 \\\\ 0 & -2 & 0 \\\\ 0 & 0 & 4\\end{aligned}]"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q109391",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "[\\begin{aligned}4 & 1 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & -2\\end{aligned}]",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Notice that we are given a $3\\times 3$ matrix with the following eigenvalues:\n\n- $\\lambda =4$ of algebraic multiplicity $2$\n\n- $\\lambda =-2$ of algebraic multiplicity $1$\n\nAs a result, we have one $1\\times 1$ Jordan block ${J}_{1}(-2)$ corresponding to $\\lambda =-2.$\nHowever, there are two possibilities for the Jordan blocks corresponding to $\\lambda =4:$\n\n- *Case I.* We may get the single $2\\times 2$ Jordan block ${J}_{2}(4).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =4$ form the following chain:\n\n$$\n{v}_{2}\\overset{A-4I\\,}{\\to }{v}_{1}\\overset{A-4I\\,}{\\to }0\n$$\n\n- *Case II.* We may get a composition of two $1\\times 1$ Jordan blocks, namely ${J}_{1}(4)\\,⊕\\,{J}_{1}(4).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =4$ form the following chains:\n\n$$\n\\begin{aligned}{v}_{1}\\overset{A-4I\\,}{\\to }0 &  \\\\ {v}_{2}\\overset{A-4I\\,}{\\to }0 & \\end{aligned}\n$$\n\nTo figure out which of the cases we obtain in this situation, let's find the number of linearly independent eigenvectors corresponding to $\\lambda =4.$\n\nComputing $A-4I,$ we get\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}1 & -3 & 3 \\\\ 1 & 3 & 1 \\\\ 4 & 2 & 2\\end{aligned}]-4[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-3 & -3 & 3 \\\\ 1 & -1 & 1 \\\\ 4 & 2 & -2\\end{aligned}].\\end{aligned}\n$$\n\nNow, we reduce this matrix to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}-3 & -3 & 3 \\\\ 1 & -1 & 1 \\\\ 4 & 2 & -2\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+\\frac{1}{3}{R}_{1} \\\\ {R}_{3}:={R}_{3}+\\frac{4}{3}{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-3 & -3 & 3 \\\\ 0 & -2 & 2 \\\\ 0 & -2 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+(-1){R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & -1 & 1 \\\\ 0 & -2 & 2 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nSince $\\text{nullity}(A-4I)=1,$ there will be only one eigenvector that corresponds to the eigenvalue $\\lambda =4,$ say, ${v}_{1}.$ So, the generalized eigenvectors corresponding to the eigenvalue $\\lambda =4$ form the following chain: \n\n$$\n{v}_{2}\\overset{A-4I\\,}{\\to }{v}_{1}\\overset{A-4I\\,}{\\to }0\n$$\n\nTherefore, we have *case I*, and $A$ has the following Jordan canonical form:\n\n$$\n{J}_{2}(4)\\,⊕\\,{J}_{1}(-2)=[\\begin{aligned}4 & 1 & 0 \\\\ 0 & 4 & 0 \\\\ 0 & 0 & -2\\end{aligned}]\n$$\n\n**Note:** The Jordan canonical form is unique up to the order of the Jordan blocks.",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117186/observations/step-q109391-bbe0a74ebe57de9b46e1.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12ae0-ec73-7cc1-9749-41e5cc59f877",
+  "previous_failures": []
+}

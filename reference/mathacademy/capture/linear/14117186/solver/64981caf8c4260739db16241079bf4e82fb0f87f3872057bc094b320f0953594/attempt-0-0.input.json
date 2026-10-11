@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-110460",
+      "sequence_position": 3,
+      "problem": "$$\nA=[\\begin{aligned}9 & 2 & -2 \\\\ -6 & 1 & 6 \\\\ -2 & -2 & 9\\end{aligned}]\n$$\n\nThe matrix above has eigenvalues ${\\lambda }_{1}={\\lambda }_{2}=7,$ and ${\\lambda }_{3}=5.$ Find a Jordan canonical form of the matrix.",
+      "worked_solution": "Notice that we are given a $3\\times 3$ matrix with the following eigenvalues:\n\n- $\\lambda =7$ of algebraic multiplicity $2$\n\n- $\\lambda =5$ of algebraic multiplicity $1$\n\nAs a result, we have one $1\\times 1$ Jordan block ${J}_{1}(5)$ corresponding to $\\lambda =5.$\nHowever, there are two possibilities for the Jordan blocks corresponding to $\\lambda =7:$\n\n- *Case I.* We may get the single $2\\times 2$ Jordan block ${J}_{2}(7).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =7$ form the following chain:\n\n$$\n{v}_{2}\\overset{A-7I\\,}{\\to }{v}_{1}\\overset{A-7I\\,}{\\to }0\n$$\n\n- *Case II.* We may get a composition of two $1\\times 1$ Jordan blocks, namely ${J}_{1}(7)\\,⊕\\,{J}_{1}(7).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =7$ form the following chains:\n\n$$\n\\begin{aligned}{v}_{1}\\overset{A-7I\\,}{\\to }0 &  \\\\ {v}_{2}\\overset{A-7I\\,}{\\to }0 & \\end{aligned}\n$$\n\nTo figure out which of the cases we obtain in this situation, let's find the number of linearly independent eigenvectors corresponding to $\\lambda =7.$\n\nComputing $A-7I,$ we get\n\n$$\n\\begin{aligned}A-7I & =[\\begin{aligned}9 & 2 & -2 \\\\ -6 & 1 & 6 \\\\ -2 & -2 & 9\\end{aligned}]-7[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}2 & 2 & -2 \\\\ -6 & -6 & 6 \\\\ -2 & -2 & 2\\end{aligned}].\\end{aligned}\n$$\n\nNow, we reduce this matrix to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}A-7I & =[\\begin{aligned}2 & 2 & -2 \\\\ -6 & -6 & 6 \\\\ -2 & -2 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+3{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}2 & 2 & -2 \\\\ 0 & 0 & 0 \\\\ -2 & -2 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}2 & 2 & -2 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nSince $\\text{nullity}(A-7I)=2,$ there will be two eigenvectors that correspond to the eigenvalue $\\lambda =7,$ say, ${v}_{1}$ and ${v}_{2}.$ So, the generalized eigenvectors corresponding to the eigenvalue $\\lambda =7$ form the following chains: \n\n$$\n\\begin{aligned}{v}_{1}\\overset{A-7I\\,}{\\to }0 \\\\ {v}_{2}\\overset{A-7I\\,}{\\to }0\\end{aligned}\n$$\n\nTherefore, we have *case II*, and $A$ has the following Jordan canonical form:\n\n$$\n{J}_{1}(7)\\,⊕\\,{J}_{1}(7)\\,⊕\\,{J}_{1}(5)=[\\begin{aligned}7 & 0 & 0 \\\\ 0 & 7 & 0 \\\\ 0 & 0 & 5\\end{aligned}]\n$$\n\n**Note:** The Jordan canonical form is unique up to the order of the Jordan blocks.",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117186/observations/history-q-110460-c69451f9253a2896cf81.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14117186",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117186/observations/history-solution-q-110460-2bea1044a79e62c4fbca.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "[\\begin{aligned}7 & 1 & 0 \\\\ 0 & 7 & 1 \\\\ 0 & 0 & 5\\end{aligned}]"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "[\\begin{aligned}7 & 0 & 0 \\\\ 0 & 5 & 1 \\\\ 0 & 0 & 5\\end{aligned}]"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "[\\begin{aligned}7 & 0 & 0 \\\\ 0 & 7 & 0 \\\\ 0 & 0 & 5\\end{aligned}]"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "[\\begin{aligned}7 & 1 & 0 \\\\ 0 & 7 & 0 \\\\ 0 & 0 & 5\\end{aligned}]"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "[\\begin{aligned}7 & 0 & 0 \\\\ 0 & 5 & 0 \\\\ 0 & 0 & 5\\end{aligned}]"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q110460",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "[\\begin{aligned}7 & 0 & 0 \\\\ 0 & 7 & 0 \\\\ 0 & 0 & 5\\end{aligned}]",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Notice that we are given a $3\\times 3$ matrix with the following eigenvalues:\n\n- $\\lambda =7$ of algebraic multiplicity $2$\n\n- $\\lambda =5$ of algebraic multiplicity $1$\n\nAs a result, we have one $1\\times 1$ Jordan block ${J}_{1}(5)$ corresponding to $\\lambda =5.$\nHowever, there are two possibilities for the Jordan blocks corresponding to $\\lambda =7:$\n\n- *Case I.* We may get the single $2\\times 2$ Jordan block ${J}_{2}(7).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =7$ form the following chain:\n\n$$\n{v}_{2}\\overset{A-7I\\,}{\\to }{v}_{1}\\overset{A-7I\\,}{\\to }0\n$$\n\n- *Case II.* We may get a composition of two $1\\times 1$ Jordan blocks, namely ${J}_{1}(7)\\,⊕\\,{J}_{1}(7).$ This happens when the generalized eigenvectors ${v}_{1}$ and ${v}_{2}$ corresponding to the eigenvalue $\\lambda =7$ form the following chains:\n\n$$\n\\begin{aligned}{v}_{1}\\overset{A-7I\\,}{\\to }0 &  \\\\ {v}_{2}\\overset{A-7I\\,}{\\to }0 & \\end{aligned}\n$$\n\nTo figure out which of the cases we obtain in this situation, let's find the number of linearly independent eigenvectors corresponding to $\\lambda =7.$\n\nComputing $A-7I,$ we get\n\n$$\n\\begin{aligned}A-7I & =[\\begin{aligned}9 & 2 & -2 \\\\ -6 & 1 & 6 \\\\ -2 & -2 & 9\\end{aligned}]-7[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}2 & 2 & -2 \\\\ -6 & -6 & 6 \\\\ -2 & -2 & 2\\end{aligned}].\\end{aligned}\n$$\n\nNow, we reduce this matrix to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}A-7I & =[\\begin{aligned}2 & 2 & -2 \\\\ -6 & -6 & 6 \\\\ -2 & -2 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+3{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}2 & 2 & -2 \\\\ 0 & 0 & 0 \\\\ -2 & -2 & 2\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}2 & 2 & -2 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nSince $\\text{nullity}(A-7I)=2,$ there will be two eigenvectors that correspond to the eigenvalue $\\lambda =7,$ say, ${v}_{1}$ and ${v}_{2}.$ So, the generalized eigenvectors corresponding to the eigenvalue $\\lambda =7$ form the following chains: \n\n$$\n\\begin{aligned}{v}_{1}\\overset{A-7I\\,}{\\to }0 \\\\ {v}_{2}\\overset{A-7I\\,}{\\to }0\\end{aligned}\n$$\n\nTherefore, we have *case II*, and $A$ has the following Jordan canonical form:\n\n$$\n{J}_{1}(7)\\,⊕\\,{J}_{1}(7)\\,⊕\\,{J}_{1}(5)=[\\begin{aligned}7 & 0 & 0 \\\\ 0 & 7 & 0 \\\\ 0 & 0 & 5\\end{aligned}]\n$$\n\n**Note:** The Jordan canonical form is unique up to the order of the Jordan blocks.",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14117186/observations/step-q110460-db793e392a45a0944bc7.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12ae0-ec73-7cc1-9749-41e5cc59f877",
+  "previous_failures": []
+}
