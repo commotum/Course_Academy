@@ -136,7 +136,7 @@ def parse_lesson_structure(html, topic_id):
 
 
 def parse_xp(value):
-    match = re.search(r"(-?\d+)\s*(?:/|of)\s*(\d+)(?:\s*XP)?", value, re.I)
+    match = re.search(r"(-?\d+)\s*(?:/|of(?:\s+the\s+task['’]s)?)\s*(\d+)(?:\s*XP)?", value, re.I)
     if match:
         return {"earned_xp": int(match[1]), "base_xp": int(match[2]), "source_text": value}
     match = re.search(r"(-?\d+)\s*XP", value, re.I)

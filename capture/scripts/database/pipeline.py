@@ -81,6 +81,24 @@ class DatabasePipeline:
         committer.retire(request, 'verified', result)
         return result
 
+    def _with_post_activity_base(self, content, capture_directory):
+        """Supplement missing source XP from this task's saved completion only."""
+        if content.get('base_xp') is not None or content.get('task_id') is None:
+            return content
+        path = Path(capture_directory) / 'post-activity.json'
+        post = read_json(path, {})
+        completion = post.get('completion', {}) if isinstance(post, dict) else {}
+        if not isinstance(completion, dict) or str(completion.get('task_id')) != str(content['task_id']):
+            return content
+        base = completion.get('base_xp')
+        if isinstance(base, bool) or not isinstance(base, (int, float)) or not base > 0 or int(base) != base:
+            return content
+        supplemented = copy.deepcopy(content)
+        supplemented['base_xp'] = base
+        supplemented['base_xp_evidence'] = {'source_file': str(path.resolve()),
+            'task_id': str(content['task_id']), 'source_text': completion.get('source_text')}
+        return supplemented
+
     def process(self, capture_directory, apply=True):
         directory = Path(capture_directory) / 'database'
         directory.mkdir(parents=True, exist_ok=True)
@@ -91,6 +109,7 @@ class DatabasePipeline:
             content = read_json(Path(capture_directory) / 'content.json')
             if not isinstance(content, dict):
                 raise ValueError('Completed capture has no content record')
+            content = self._with_post_activity_base(content, capture_directory)
             if str(self.config.source) != MA_SOURCE:
                 raise ValueError('Math Academy originals require :org/Math-Academy')
             raw_hash = digest(content)

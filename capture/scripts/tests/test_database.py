@@ -375,6 +375,44 @@ class PipelineTests(unittest.TestCase):
                 q=next(e for e in snapshot['entities'] if e.get(':question/math-academy-id')=='q-11')
                 self.assertEqual(q[':question/answer-fields'][0][':answer-field/correct'][':answer/type'][':db/ident'],':answer.type/math')
 
+    def test_post_activity_base_xp_restores_calibration_without_changing_sample(self):
+        with tempfile.TemporaryDirectory() as d:
+            capture,cfg=self.setup(d)
+            questions=[];examples=[]
+            selected={}
+            for kp in ('first','second'):
+                ids=['q-'+str(10+len(questions)+i) for i in range(3)]
+                selected[kp]=ids[:2]
+                for mid in ids:
+                    q=question(mid);q['knowledge_point_id']=kp;questions.append(q)
+                examples.append({'math_academy_id':'e-'+str(len(examples)+1),'knowledge_point_id':kp,
+                                 'problem':'Example $1+1$','worked_solution':'$1+1=2$'})
+            content={'task_id':'lesson-1','task_type':'lesson','questions':questions,'canonical_examples':examples,
+                     'base_xp':None,'lesson_definition':{'complete':True},
+                     'lesson_workload_sample':{'questions_by_knowledge_point':selected,'base_xp':None}}
+            atomic_json(capture/'content.json',content)
+            original=(capture/'content.json').read_bytes()
+            atomic_json(capture/'post-activity.json',{'completion':{'task_id':'lesson-1','earned_xp':7,'base_xp':10,'source_text':'7 / 10 XP'}})
+            received=[]
+            class CalibrationPipeline(DatabasePipeline):
+                def _prepare(_,prepared_content,directory,basis):
+                    received.append(prepared_content)
+                    return {'batches':[],'omissions':[],'calibration':calibrate(prepared_content)},{}
+            pipeline=CalibrationPipeline(cfg,threading.Event(),client=FakeClient())
+            result=pipeline.process(capture)
+            self.assertEqual(result['status'],'no_changes',result)
+            self.assertEqual(result['calibration']['base_xp'],10)
+            self.assertEqual(result['calibration']['expected_seconds'],600)
+            self.assertEqual(result['calibration']['selected_questions'],selected)
+            self.assertEqual(received[0]['lesson_workload_sample'],content['lesson_workload_sample'])
+            self.assertEqual(received[0]['base_xp_evidence']['source_file'],str((capture/'post-activity.json').resolve()))
+            self.assertEqual((capture/'content.json').read_bytes(),original)
+            self.assertIsNone(content['base_xp'])
+            existing={**content,'base_xp':13}
+            self.assertEqual(pipeline._with_post_activity_base(existing,capture)['base_xp'],13)
+            atomic_json(capture/'post-activity.json',{'completion':{'task_id':'another-task','base_xp':20}})
+            self.assertIsNone(pipeline._with_post_activity_base(content,capture)['base_xp'])
+
     def test_unknown_outcome_replays_exact_key(self):
         with tempfile.TemporaryDirectory() as d:
             capture,cfg=self.setup(d);client=FakeClient();client.timeout_once=True

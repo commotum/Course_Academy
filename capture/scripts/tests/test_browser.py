@@ -109,6 +109,14 @@ class SourceParsingTests(unittest.TestCase):
         self.assertEqual(parse_xp("8 of 13 XP")["base_xp"], 13)
         self.assertEqual(parse_xp("-5 / 13")["earned_xp"], -5)
 
+    def test_awarded_xp_phrase_keeps_earned_and_task_base_distinct(self):
+        for apostrophe in ("'", "’"):
+            source="Congratulations! You've completed the lesson.\nYou've been awarded 7 of the task"+apostrophe+"s 10 XP.\nContinue"
+            parsed=parse_xp(source)
+            self.assertEqual(parsed['earned_xp'],7)
+            self.assertEqual(parsed['base_xp'],10)
+            self.assertEqual(parsed['source_text'],source)
+
     def test_math_editor_notation_changes_do_not_change_scope(self):
         self.assertEqual(normalized_math("x/2"), normalized_math(r"\frac{x}{2}"))
         self.assertEqual(normalized_math("x^2"), normalized_math("x^{2}"))
