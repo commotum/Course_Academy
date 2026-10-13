@@ -1,0 +1,7 @@
+[:find (pull ?kp [:db/id :knowledge-point/title
+ {[:topic/_knowledge-points :limit nil] [:db/id :topic/title :topic/math-academy-id]}
+ {[:knowledge-point/questions :limit nil] [:db/id :question/math-academy-id :question/problem
+ {[:question/answer-fields :limit nil] [:db/id :answer-field/key
+  {:answer-field/type [:db/ident]}
+  {:answer-field/correct [:db/id :answer/value {:answer/type [:db/ident]}]}
+  {[:answer-field/choices :limit nil] [:db/id :answer/value {:answer/type [:db/ident]}]}]}]}]) :in $ [?kp ...] :where [?kp :knowledge-point/id _]]
