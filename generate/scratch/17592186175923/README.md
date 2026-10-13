@@ -1,0 +1,3 @@
+# KP 17592186175923 generator
+
+Run `python3 generate/scratch/17592186175923.py --difficulty easy --count 5 --seed 1966 --format json` (moderate also supported). The script uses the repository Python environment when invoked by the system worker. Run `.venv/bin/python generate/scratch/17592186175923/validate.py` for source replay, independently parsed solution rows, boundaries and real learner grading. `replenish.py` prepares, previews and commits only scoped additive content under api.lock; exact requests and readback are retained under reference/replenishment. Hard, numerical radio banks and the missing diagram family remain explicit exceptions in capabilities.json.

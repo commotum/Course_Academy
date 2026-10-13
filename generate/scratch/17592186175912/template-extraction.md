@@ -1,0 +1,17 @@
+# Template extraction
+
+q-214093: target (-2,1); reference 8x+2y=1, slope -4. Signed integer point; positive integer reference coefficients, rational reference intercept 1/2. Original field-1 entity 17592186174743 and field-2 entity 17592186174742 are blanks with no observed answers. Exact prompt and field notation are retained in source replay. Derived normalized answer is 4x+y=-7. No source solution exists.
+
+q-216399: target (-2,-1); reference points (3,-1),(6,5); differences (3,6), slope 2. Signed integer point and integer reference slope. Original field-1 entity 17592186174750 and field-2 entity 17592186174749 are blanks with no observed answers. Exact prompt and field notation are retained in source replay. Derived normalized answer is 2x-y=-3. No source solution exists.
+
+General pattern: find a parallel line through the target point, derive the reference slope, substitute the target point into point-slope form, expand to slope-intercept form and convert to integer standard form. Preserve two independent blank fields around the visible equals sign; blanks contain delimiter-free expressions or integers, not complete equations.
+
+Fixed components: source reference equation or pair of reference points, target x=-2, original instructional wording, two field keys/types, and solution move sequence drawn from canonical e-14729. Variable: target y=v+t, integer t in [-8,8]. Original signed/zero features are retained; the bounds are an explicitly narrower policy than all possible lines. Real x,y; reference slopes nonzero and finite. No vertical/horizontal branches are added.
+
+Calculations: m=-A_ref/B_ref or (y2-y1)/(x2-x1); b=v+t-m*u. Primitive integer direction coefficients are (-numerator(m),denominator(m)), reversing both signs if needed to make A positive. C=A*u+B*(v+t). For q-214093 the left fragment is 4x+y and the right fragment is -7+t. For q-216399 the left fragment is 2x-y and the right fragment is -3-t. Coprime A,B and positive A establish a unique response pair. The production prompt adds this convention and identifies which side belongs in each blank.
+
+No source choices, canonical answers, feedback, or distractor profiles exist: observed choice coverage is 0/0, and complete-bank replay is not applicable. Both derived answers and all worked solutions are authored additions with mathematical proof and native grader tests. Do not claim fidelity for missing content. Exact source prompts and all four original field contracts replay at t=0; original source content remains unchanged. Production notation has normalized LaTeX spacing and explicit response instructions.
+
+The canonical example supplies parallel-slope explanation, two-point difference calculation, point-slope substitution, expansion and standard-form conversion. Production solutions retain that move order and instructional sentences, with parentheses around signed substitutions and an abbreviated final rearrangement for these integer slopes. They are authored solutions, not exact source solution replays.
+
+Every t is tested, including both boundaries, zero target coordinates and zero right sides. Printed reference data and answers are parsed independently. Every numerical solution equation is checked as a complete line under nonzero rescaling. Mathematical fingerprints use the whole resulting line (exact slope and intercept), excluding existing source/canonical tasks and prior generated lines. Seed, UUID, ordering or repeated normalization cannot create novelty.
