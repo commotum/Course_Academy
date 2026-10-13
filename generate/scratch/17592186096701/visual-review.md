@@ -1,0 +1,9 @@
+# Rendered geometry review
+
+All fourteen original prompt/solution pairs were independently inspected in `source-contact.png`. Full-size reads resolved q-275120's two-square a and two-square diagonal b, and the moderate diagonals q-20435, q-327049 and q-77230. `source-geometry.json` records these manual grid displacement readings; their positive coefficient combinations agree with every original displayed answer and worked path.
+
+`generated-contact.png` shows two normal peers per level. Full-size hard solution PNGs were also inspected (hard seeds 40 and 41). Unit grid squares remain legible, a and b have independent directions, C matches the supplied combination, and the known and residual dashed paths join at P. Endpoint labels and scalar labels remain outside arrowheads; source color roles persist. Hard seed 40 genuinely constructs (-10/3,-5/3) then subtracts -10/3 from 1/6 and divides 7/2 by 2. Hard seed 41 constructs (-7/3,7/3), subtracts -7/3 from 35/3 and divides 14 by 6. These are positive component paths despite the left/down signs of a basis vector.
+
+`raster-audit.json` reports actual bitmap checks for all 30 generated prompt records, including duplicate concurrency fixtures. It checks blue/gold/black arrowhead pixels near the expected display endpoints. This is a limited raster check supplemented by manual inspection and exact displayed mathematical/sidecar readback; it is not a claim of OCR coverage. Original asset pixel geometry is manually assessed rather than regenerated.
+
+Concurrent renderer tests exercised four fresh identical/different profile requests with unique temporary inputs, atomic writes and matching identities; no private temporary input or atomic file remained. Earlier exploration images remain preserved through parent review and are not included in current review records. Cache hits require complete PNG and sidecar pairs.

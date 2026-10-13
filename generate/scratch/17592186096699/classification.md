@@ -1,0 +1,11 @@
+# Classification — basis 1356
+
+Database math; lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Fourteen practice originals: ten easy, two moderate, two unrated legacy radios. Unrated questions get an authored easy assignment only in repaired completion; raw replay omits difficulty. Twelve complete designations were captured; two are absent. Twelve worked solutions were captured; two are absent.
+
+Every question asks for an explicit particular first-order solution obtained by rearranging to y′=g(x), integrating once, then determining the single additive constant from a given function value. No plots occur in any practice source or this KP's canonical example. Fourteen prompt/stage/layout templates are retained separately; ten have radio banks of five equations and four use one blank fragment. The four blank layouts include a supplied cubic term (q-347842), so its response is the remaining fragment, not the whole function.
+
+Easy includes polynomial, rational reciprocal, square-root, logarithmic, trigonometric and exponential primitives; moderate has one polynomial and one exponential component. Hard has no observed source. Its authored peers combine three familiar nonzero primitive components (polynomial, exponential, trigonometric), still requiring exactly one integration and one constant equation. This is a scope design claim, not a recovered source difficulty label.
+
+Lesson route follows first-step 17592186097555 and step/next through 17592186097560: Introduction → general solution by integration → second order (a different sibling KP) → sketching (a different sibling KP) → Particular Solutions tutorial → this KP. Canonical e-531 integrates 3/(1+x²), then evaluates f(0)=2. Prerequisite topics provide exponential/trig substitution and verification. Integrating factors and separation are successor topics and excluded. Second order, solution curves, contextual models and multiple conditions are excluded.
+
+Normal profiles select a full authored operation bank before any parameter sampling; invalid or equivalent members reject the entire instance. Observed banks are available by explicit replay profile only, with opaque error interpretation flagged. Every normal level includes both radio and blank layouts as labeled authored layout peers.

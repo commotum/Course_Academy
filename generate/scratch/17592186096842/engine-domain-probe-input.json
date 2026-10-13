@@ -1,0 +1,78 @@
+[
+  {
+    "label": "Known domain-equivalent fractional-power limitation",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186096842,
+        "id": "2f0cdac9-57b2-5634-8d98-d6adf8a85204",
+        "title": "Differentiating a Radical Function Using the Chain Rule"
+      },
+      "question": {
+        ":question/id": "758d541c-055b-5c9b-87ff-efa974c45da4",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find $\\frac{\\text{d}y}{\\text{d}x}$ for $y=\\frac{1}{\\sqrt{5x+1}}.$\n\n$\\frac{\\text{d}y}{\\text{d}x}=$\n{{field-1}}",
+        ":question/worked-solution": "We use the chain rule in the form\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x}.\n$$\n\nLet $u=5x+1.$ Then $y=\\frac{1}{\\sqrt{u}}={u}^{-1/2}.$ Differentiating, we have\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}=-\\frac{1}{2}{u}^{-3/2}=-\\frac{1}{2\\sqrt{{u}^{3}}},\n$$\n\nand\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=5.\n$$\n\nMultiplying the two together gives\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =-\\frac{1}{2\\sqrt{{u}^{3}}}\\cdot 5 \\\\  & =-\\frac{5}{2\\sqrt{{u}^{3}}} \\\\  & =-\\frac{5}{2\\sqrt{(5x+1)^{3}}}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "58e254d6-0f14-58d9-badc-302be1f65d4e",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "daa8d3eb-f9f5-522b-955f-492b0ea2182d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-\\frac{5}{2\\sqrt{(5x+1)^{3}}}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "daa8d3eb-f9f5-522b-955f-492b0ea2182d"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "generator_version": "radical-chain-1",
+        "template": "reciprocal_blank",
+        "seed": 0,
+        "parameters": {
+          "a": 5,
+          "b": 1
+        },
+        "bank_profile": "blank",
+        "bank_origin": "observed single expression fragment",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-342764"
+        ],
+        "source_repair": false,
+        "domain": "5x+1>0",
+        "plot_rating": "none",
+        "parameter_fingerprint": "cd5beb79d37cc67ec2069e06f00a018d616928c0ed44f56604f0f30cf037d903",
+        "content_fingerprint": "2409110edfd4eaa1ab5915aeefc7c7bd2d6ae6dd0af1d600aebd4f597166af6e",
+        "sympy_version": "1.14.0",
+        "exact": {
+          "inner": "5*x + 1",
+          "inner_derivative": "5",
+          "outer_exponent": "-1/2",
+          "derivative": "-5/(2*(5*x + 1)**(3/2))",
+          "answer": "-5/(2*(5*x + 1)**(3/2))"
+        },
+        "recipes": {
+          "-\\frac{5}{2\\sqrt{(5x+1)^{3}}}": "correct"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted": "-\\frac{5}{2(5x+1)^{\\frac{3}{2}}}",
+        "expected": "unresolved",
+        "purpose": "Mathematically correct on positive-radicand domain; native grader lacks question domain context. This is a failed accepted-equivalence capability, not a wrong-answer rejection."
+      }
+    ]
+  }
+]
