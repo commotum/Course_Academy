@@ -1,0 +1,13 @@
+[:find (pull ?kp [:db/id :knowledge-point/id :knowledge-point/title
+ {:knowledge-point/question-generator [:db/id]}
+ {:knowledge-point/canonical-example [:db/id :question/math-academy-id :question/problem :question/worked-solution]}
+ {:topic/_knowledge-points [:db/id :topic/id :topic/title :topic/math-academy-id
+   {:topic/knowledge-points [:db/id :knowledge-point/title
+     {:knowledge-point/canonical-example [:question/math-academy-id :question/problem :question/worked-solution]}]}]}
+ {[:knowledge-point/questions :limit nil] [:db/id :question/id :question/math-academy-id :question/problem :question/worked-solution
+   {:question/difficulty [:db/ident]}
+   {[:question/answer-fields :limit nil] [:db/id :answer-field/id :answer-field/key :answer-field/placeholder
+     {:answer-field/type [:db/ident]}
+     {[:answer-field/choices :limit nil] [:db/id :answer/id :answer/value {:answer/type [:db/ident]}]}
+     {:answer-field/correct [:db/id :answer/id :answer/value {:answer/type [:db/ident]}]}]}]}])
+ :in $ [?kp ...] :where [?kp :knowledge-point/id _]]
