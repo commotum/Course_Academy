@@ -1,0 +1,11 @@
+# Rational Pythagorean-identity generator
+
+Run `.venv/bin/python generate/scratch/17592186059642/validate.py` from the repository root. Preview with `.venv/bin/python generate/scratch/17592186059642.py --difficulty all --seed 7 --count 2 --format markdown` (or `json`).
+
+All three public entrypoints and explicit parameter/profile replay use the normal `generate` API. Parameters are exactly `k` (positive integer 1–12), `mirror` (boolean), and `angle` (`x`, `t`, `θ`, `\theta`, `\phi`). Invalid explicit parameters fail. Template IDs are the ten captured `q-*` identifiers plus `easy_identity`. Raw source replay uses `profile="raw:q-..."`; completed original bank replay uses `profile="observed:q-..."`. Both observed-bank presentations are evidence-only. Default/`authored` output is eligible normal practice with a complete method-based authored bank.
+
+Read `classification.md`, `template-extraction.md`, `source-cases.json`, and `review.md` for scope, every original bank, source omissions, and labeled generated examples. `validation.json` reports exact source-bank fidelity separately from worked-solution fidelity, inferred completion and native grading. `engine-input.json`/`engine-results.json` are memory-only fixtures for the real application grader. No blanks, plots, DB transactions or registration. Stop after steps 3–7.
+
+Raw replay retains missing difficulty, missing worked solution and missing correct-ref attributes rather than inventing source labels. In completed presentation q-65165 and q-65166 receive an explicitly authored moderate assignment, mathematically inferred correct choice, and authored solution. The original MA207 widget capture also lacks their keys and solutions. No source mathematics or TeX repair was needed. Source distractor intentions remain unresolved; replay profiles record a scalar/mirror homomorphism of each whole original expression, not a recovered historical mistake recipe.
+
+Markdown author previews visibly label E/M/H (or unrated raw sources), distinguish original raw evidence, completed observed evidence, and normal/authored practice, and mark the keyed correct option. Raw missing keys are explicitly stated. Run `.venv/bin/python generate/scratch/17592186059642/validate.py --presentation-only` to verify all frozen JSON records remain unchanged and CLI output is deterministic.

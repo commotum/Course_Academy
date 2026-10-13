@@ -1,0 +1,13 @@
+# Template and bank extraction
+
+The full per-question, per-field and per-choice evidence is extraction-data.json; contract.json retains both complete source prompts and one fixed worked solution per template. q-102054 asks for the graph y=-2x, through the origin, with a signed integer slope. Its second point is (1,-2). q-109055 asks for y=2-(1/2)x, written intercept first; its second point is (8,-2). Both solutions choose x=0, substitute, compute the first point, select the second x, substitute, compute the second point and draw the line through them. Their differing term order, bullet whitespace, arithmetic lines and point choice remain separate templates.
+
+General pattern: identify a line from its exact equation by evaluating two distinct x coordinates and recognizing the graph through those points. The field selection stays radio and the five answers stay images; no answer feedback or extra learner instructions are added.
+
+For q-102054, m=-2 and b=0, the complete observed bank in source order is (slope, intercept): (2,-2), (-2,2), (-1,0), (-2,0), (2,0). Recipes are (-m,m), (m,-m), (m/2,0), (m,0), (-m,0); the fourth graph is correct. The two offset recipes are observed affine patterns, with no unsupported interpretation of the learner's error. Each recipe reproduces the whole line, not just one point. All m=-4..-1 yield five distinct lines with exactly one correct answer. Negative-only sampling is a declared narrower policy.
+
+For q-109055, m=-1/2 and b=2, the bank is (1/2,-2), (-1/2,4), (-1/2,2), (1/2,0), (-1/2,0). Recipes are (-m,-b), (m,2b), (m,b), (-m,0), (m,0); the third graph is correct. d=2..4, m=-1/d, b=2..4, x2=4d yield five distinct lines, two integer solution points and the same sequence. Constraints m<0 and b>0 prevent bank collapse. All 9 tuples are checked.
+
+Incomplete q-54286 uses (2,-4), (-2,4), (2,4), (1/2,-2), (-1/2,2); incomplete q-59678 uses (-1/2,4), (1/2,-2), (-1,2), (1,0), (2,-4). Their original equations suggest a matching graph, but the source provides neither keys nor solutions nor difficulty. These observed objects are retained and explicitly excluded rather than promoted into complete graded source banks.
+
+The generator computes exact SymPy rationals, then all choices and solution arithmetic. UUIDs include the task and complete bank profile; availability deduplication uses only the exact target slope and intercept. Changing a seed or bank order produces no new mathematical task. There are 13 distinct bounded easy targets including the two complete source targets. The canonical and every existing practice target are excluded from new inventory. All fields own their answer UUIDs; generated records omit Math Academy content IDs.
