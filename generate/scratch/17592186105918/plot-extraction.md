@@ -1,0 +1,3 @@
+# Plot extraction and specification
+
+Plot rating **none**. No practice source has a diagram. The canonical image references e477b14c…png and b17d86e3…png were opened at actual resolution and show the typeset columns a=(0,0,1) and b=(2,-4,0), respectively. They contain no coordinate axes, arrows, endpoints, or diagram labels requiring geometric extraction. Their column notation is implemented as ordinary LaTeX/Markdown aligned-vector text. The lesson tutorial's perpendicular sketch provides conceptual context but is not an assessment asset. No parameter-dependent plots, answer plots, renderer, image model, direct SVG, or new plot assets are used.

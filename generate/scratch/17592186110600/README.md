@@ -1,0 +1,7 @@
+# Standard-form perpendicular-line selection
+
+Generate locally with `.venv/bin/python generate/scratch/17592186110600.py --difficulty all --seed 23 --count 2`. The CLI supports markdown/json, seed, count, template and profile. API supports explicit parameters for original replay. All generated records are review data; no database writes.
+
+Verify with `.venv/bin/python generate/scratch/17592186110600/validate.py`. This checks all eight originals' complete banks, correct refs, prompts and complete solutions, independently parses displayed equations and arithmetic stages, samples all three levels, checks scope/identity/collision rejection, and invokes the actual native learning::grade_field through the shared captured harness. Native grading evidence lives in engine-input.json and engine-report.json; source/engine hashes and counts live in validation.json.
+
+All three levels use the same conversion and perpendicular slope selection. Hard is an authored bounded rational-arithmetic extension with no observed hard source label. Eight observed bank profiles preserve explicit incidental slopes and independent candidate intercepts; inferred distractor intent remains unspecified. Normal output uses one authored complete method-derived bank. classification.md and template-extraction.md document bounds, source route, all operations and plot rating none. source.json is immutable capture evidence. review.md and review.json contain all originals and at least one variant per observed bank, plus two authored examples per level. Work ends after step 7.
