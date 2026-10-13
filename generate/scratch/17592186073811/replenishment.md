@@ -1,0 +1,9 @@
+# Verified replenishment
+
+The application api.lock was held through the fresh inventory and basis capture at 1923, native-spec preview, guarded durable submission and exact-basis readback at 1924. The coherent additive commit added one moderate and two hard questions, closing both supported rolling shortages, and registered generator UUID 3c694cc5-eb03-50d9-a8cb-abb3d249d370 at generate/scratch/17592186073811.py through the installed generator attributes and KP reference. Content is attributed to :application/ca-engine.
+
+All ten source questions and the canonical example were read back unchanged. Receipt datoms contain only this KP's new membership/reference, new question/field/answer/generator facts and the transaction instant; learner history was untouched. Three content-addressed plot assets were published through ImageLibrary and their bytes verified. Repeated preparation has zero content changes, and a second runner execution recovered the retained receipt and verified it without a new transaction. Exact request, preview, receipt and verification are in reference/replenishment/basis-1923/.
+
+All seven complete source banks replayed (28/28 distractors); all 63 bounded instances passed independent geometry and bank checks. The real application grader accepted 63 correct choices and rejected 252 distractors without unresolved outcomes. New variant numeric alignments are normalized and the source sign correction is documented separately from full bank fidelity.
+
+Easy is unsupported in this bounded version: no complete rated easy source or validated easy policy exists. Its nominal shortage remains five and is not called filled. The finite validated supply is 32 moderate and 24 hard new geometries before existing-content exclusion. New source evidence reopens classification. The JSON job result records outcome generated, verified basis 1924, generator identity/path, retained evidence and the easy exception.

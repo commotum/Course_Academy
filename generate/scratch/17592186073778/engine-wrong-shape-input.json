@@ -1,0 +1,78 @@
+[
+  {
+    "label": "Known wrong-shape tuple parser limitation",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186073778,
+        "id": "50351666-c691-510f-863c-168c61f9980b",
+        "title": "Finding the General Solution to a System With Infinitely Many Intersection Points"
+      },
+      "question": {
+        ":question/id": "8e5f2b53-292e-532e-ad53-f5d08472931b",
+        ":question/problem": "Describe the points that lie on the intersection of the lines $x - 4y =-3$ and $2x - 8y =-6$. Express your answer in terms of $x$ only.\n\nThe intersection points are $(x$,\n{{field-1}}\n$)$, where $x$ is any number.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "9bb362fc-3f3b-5405-842e-6c7b1abd6517",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "db3c5789-6a91-53ea-8ae0-870d647787b6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{4}x + \\frac{3}{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "db3c5789-6a91-53ea-8ae0-870d647787b6"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\{x - 4y = -3; 2x - 8y = -6\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $-2x$ term that can cancel with the $2x$ term in the second equation:\n\n$$\n\\{x - 4y = -3 \\mid \\mid \\cdot (-2); 2x - 8y = -6\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-2x + 8y &= 6 \\\\\n2x - 8y &= -6 \\\\\n0 &= (6 - 6) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\nx - 4y &= -3 \\\\\n-4y &= -3 - x \\\\\ny &= \\frac{-3 - x}{-4} \\\\\ny &= \\frac{3}{4} + \\frac{1}{4}x\n\\end{aligned}\n$$\n\nTherefore, the points of intersection are\n\n$$\n\\left(x,\\frac{3}{4} + \\frac{1}{4}x \\right)\n$$\n\nwhere $x$ is any number."
+      },
+      "generation": {
+        "version": "dependent-general-family-1",
+        "seed": 0,
+        "template": "blank_coordinate",
+        "bank_profile": "method",
+        "parameters": {
+          "a": "1",
+          "b": "-4",
+          "c": "-3",
+          "r": "2",
+          "variable": "x"
+        },
+        "parameter_fingerprint": "e825304322291550f26dd3a165c669bbb1e57c8e06cb1f8458d7d1b0e305d493",
+        "content_fingerprint": "9308560523c225673958b1f46576a1014e610d3aa8db0739fd6e25422ae43fb7",
+        "python_version": "3.13.5",
+        "sympy_version": "1.14.0",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-208832"
+        ],
+        "method_reference": "e-14014; tutorial17592186075062",
+        "raw_evidence": false,
+        "eligible_for_learning": true,
+        "authored_extension": true,
+        "authored_level": "hard",
+        "inferred_correct_value": "\\frac{1}{4}x + \\frac{3}{4}",
+        "recipes": [],
+        "domain": "All real free-coordinate values; two nonzero dependent linear equations only",
+        "plot_rating": "none",
+        "plot_assets": {}
+      }
+    },
+    "checks": [
+      {
+        "submitted": "(x, \\frac{1}{4}x + \\frac{3}{4})",
+        "expected": "unresolved",
+        "purpose": "Complete tuple is outside required scalar-fragment response; native parser returns unclosed group"
+      }
+    ]
+  }
+]

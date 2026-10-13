@@ -1,0 +1,16 @@
+# Classification
+
+Frozen source: math basis 1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. The wrapper is copied intact in source.json. Two practice questions, both unrated, one select field each, three text choices each. Neither has a correct reference or worked solution. These omissions are reproduced through the public generator's observed profiles. No original difficulty labels or correct designations can be claimed matched.
+
+| Original | Equation mask | Field | Complete bank | Plots | Authored routing |
+|---|---|---|---|---|---|
+| q-211986 | standard / standard, first dependent coefficient -1 | select field-1 | infinite / one / none | none | moderate |
+| q-237095 | isolated / standard | select field-1 | one / none / infinite | none | easy |
+
+The banks differ only in captured order/IDs, and represent the same full categorical response set. Both bank profiles remain individually replayable. The owning MA capture `/home/jake/Developer/MA/DATA/Lessons/493/Source/493.json`, question entries 237095 and 211986, corroborates select-list widgets with three options and no hydrated solution/key. It contains no question graphs. Contextual tutorial graphs are illustrative context rather than assets in these question masks; no question plot generator is needed.
+
+All three difficulty assignments are authored design claims. Easy preserves q-237095's already isolated first equation and the second nonunit standard equation: substitute, distribute, collect, interpret. Moderate preserves q-211986's two standard equations, with unit first dependent coefficient: move the independent term, isolate, then the same substitution stages. Hard preserves the canonical substitution method but makes first isolation require division by a nonunit coefficient; primitive coefficients 2..5 force a noninteger slope. Neither the easy nor moderate inputs satisfy the hard guard. Hard second primitive coefficients have the same bounded number forms, and displayed magnitudes remain <=25. Within each level, outcomes and signed coefficients are unordered variations with the same assessed number-of-intersections skill.
+
+Scope grounding: the linked lesson route is read by first-step/next, not collection order. Introduction 74706 leads through infinite-solutions 74707 and sibling number-of-solutions KP 74708; intersection interpretation 74709 immediately precedes this KP at 74710. General solution parametrization begins afterward at 74711 and belongs to sibling KP73778. Prerequisites are Calculating the Intersection of Two Lines and Parallel Lines in the Coordinate Plane. Substitution/elimination and bounded integer/fraction arithmetic are available; ranks, determinants, full coordinate solving, parameter solving and graph reconstruction are not introduced to learners here. Validation uses ranks privately as independent proof.
+
+Source anomalies: two missing keys are inferred only in completed records (parallel and coincident respectively); two missing solutions are authored from canonical prose/stages. The canonical example uses a malformed raw system brace `{` in display math. It remains in raw source.json, while completed solutions use a balanced aligned system. No source mathematical error is inferred: raw prompts and complete banks are sound. Source omissions are evidence, not grading failures silently counted as passes.

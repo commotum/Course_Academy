@@ -1,0 +1,7 @@
+# Plot extraction and generator
+
+All nine source diagrams were inspected together in reference/source-plots.png: seven complete radio sources, incomplete hard q-74437 and canonical e-12549. Each shows a blue straight line without axes, a red given point with coordinate label, a blue perpendicular foot, a dashed black segment with a question mark, a yellow square for the right angle, and a rotated line-equation label. Diagrams are instructional solution assets, not answer choices. They represent geometry to scale; incidental image spacing is not mathematical content.
+
+The diagram recurs in every worked solution, so the plot rating is moderate. Changing parameters requires a new point label, equation label and geometric construction. Only the k=1 replay reuses original unchanged bytes. At k>=2 render_plots uses Matplotlib, supplied exact instance data and equal aspect ratio. It builds a unit tangent and normal, foot, point, perpendicular marker and padded bounds. No independent parameter sampling occurs. Source slopes, line color, point colors, dashed connector and meaningful annotations remain. Numeric conversion occurs only when rendering coordinates. PNG names and paths are SHA-256 content addresses; publish selected bytes through the existing ImageLibrary and verify byte identity.
+
+Generated plots are reviewed in reference/variant-plots.png. Exact parameter, asset role, local path and SHA-256 accompany every record. Matplotlib 3.11.2; 5 by 4 inches at 120 dpi, white background. Plot geometry and all answer data use the same exact SymPy instance.

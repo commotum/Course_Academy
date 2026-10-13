@@ -1,0 +1,7 @@
+# Number of intersections generator
+
+Run `.venv/bin/python generate/scratch/17592186073777/validate.py` for independent rendered-line rank checks, algebra-stage checks, source prompt/full-bank/attribute-presence fidelity, scope guards, identity regressions, finite variety counts and real native select grading. Run `.venv/bin/python generate/scratch/17592186073777.py --difficulty all --seed 42 --count 2 --format json` for previews.
+
+API: `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)` and easy/moderate/hard entrypoints. Template names: isolated_standard / unit_standard / divided_standard respectively. Default profile categorical completes inferred keys/solutions. observed-211986 and observed-237095 publicly replay parameterized raw source omissions. Explicit six integer coefficients a,b,c,d,e,f and optional variable pairs x/y, u/v or s/t use the documented guards. CLI accepts JSON `--parameters` too.
+
+Two unrated originals; 2/2 exact prompts, 2/2 full banks, 6/6 option values. Zero original correct designations or worked solutions exist to match; completed keys are independently inferred, and every level is explicitly authored. Scope is 0/1/infinitely-many intersection counts through substitution. No plots, full coordinate solving, engine edits, database transactions or registration. Evidence includes source.json, source-cases.json, classification.md, template-extraction.md, review.md/review.json, validation.json and native input/report.
