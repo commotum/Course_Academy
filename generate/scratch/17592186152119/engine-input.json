@@ -1,0 +1,4392 @@
+[
+  {
+    "label": "0 single_legacy_blank completion-q-218518",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "c095c802-0cda-5642-b7a1-b318bda22f0a",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $3(x + 1)^{3}$, $4(x + 1)^{2}$, and $6(x + 1)^{5}$ is {{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(3,4,6):$\n\n- Multiples of $3:$ $\\,3,\\,6,\\,9,\\,12,\\,15,\u2026$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\u2026$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\u2026$\n\nSo, $\\text{LCM}(3,4,6)=12.$\n\nTo find the $\\text{LCM}$ of $(x+1)^{3},(x+1)^{2},(x+1)^{5},$ we find the largest powers for $(x+1)$ that appear in all these expressions:\n\n- For $(x+1)^{3},$ $(x+1)^{2},$ and $(x+1)^{5},$ the largest power is $5.$\n\nNow, we raise $(x+1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x+1)^{3},\\,(x+1)^{2},\\,(x+1)^{5})=(x+1)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(3(x+1)^{3},\\,4(x+1)^{2},\\,6(x+1)^{5}) & = \\\\ 12\\cdot (x+1)^{5} & = \\\\ 12(x+1)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f46a6e22-730b-54c2-8960-f1280caa169a",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b2a4d33c-e1ed-5698-9ace-60807bc415f2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "12(x+1)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b2a4d33c-e1ed-5698-9ace-60807bc415f2"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 0,
+        "template": "single_legacy_blank",
+        "parameters": {
+          "coefficients": [
+            3,
+            4,
+            6
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            1
+          ],
+          "powers": [
+            [
+              3
+            ],
+            [
+              2
+            ],
+            [
+              5
+            ]
+          ]
+        },
+        "bank_profile": "completion-q-218518",
+        "bank_origin": "authored-completion",
+        "parameter_fingerprint": "5ca9e965594cabd3d1fe8b9d94d0bf27be0d71adb050440593ee13ca345f36a5",
+        "content_fingerprint": "8d4864187ecff8abf87243bfdac986cadbe858eb522cbc98375f65af8dac818f",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-218518"
+        ],
+        "source_completion": true,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "12(x+1)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "12*x^5 + 60*x^4 + 120*x^3 + 120*x^2 + 60*x + 12",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(12(x+1)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "1 double_legacy_blank completion-q-218519",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "03a5a8b5-dccf-5cb4-862b-a0f60391dc93",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The least common multiple of the polynomials $2u^{2}(v - 2)^{3}, 4u^{3}(v - 2)^{2}$, and $5u(v - 2)^{4}$ is {{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(2,4,5):$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,\u2026,\\,18,\\,20,\\,22,\u2026$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\u2026$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,\\,25,\u2026$\n\nSo, $\\text{LCM}(2,4,5)=20.$\n\nTo find the $\\text{LCM}$ of ${u}^{2}(v-2)^{3},{u}^{3}(v-2)^{2},u(v-2)^{4},$ we find the largest powers for $u$, $(v-2)$ that appear in all these expressions:\n\n- For ${u}^{2},$ ${u}^{3},$ and $u,$ the largest power is $3.$\n\n- For $(v-2)^{3},$ $(v-2)^{2},$ and $(v-2)^{4},$ the largest power is $4.$\n\nNow, we raise $u$, $(v-2)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({u}^{2}(v-2)^{3},\\,{u}^{3}(v-2)^{2},\\,u(v-2)^{4})={u}^{3}\\cdot (v-2)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(2{u}^{2}(v-2)^{3},\\,4{u}^{3}(v-2)^{2},\\,5u(v-2)^{4}) & = \\\\ 20\\cdot {u}^{3}\\cdot (v-2)^{4} & = \\\\ 20{u}^{3}(v-2)^{4} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "bd3a1a7f-bcd3-5a03-9118-3b8f615084b0",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bc99124c-f584-5afe-9c60-73b1361b3605",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20{u}^{3}(v-2)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bc99124c-f584-5afe-9c60-73b1361b3605"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 0,
+        "template": "double_legacy_blank",
+        "parameters": {
+          "coefficients": [
+            2,
+            4,
+            5
+          ],
+          "variables": [
+            "u",
+            "v"
+          ],
+          "shifts": [
+            0,
+            -2
+          ],
+          "powers": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              1,
+              4
+            ]
+          ]
+        },
+        "bank_profile": "completion-q-218519",
+        "bank_origin": "authored-completion",
+        "parameter_fingerprint": "4c2eb2baed1310dd4da1df8d03d460bc408a19c28bb2f0692d8c71fd35dd71f5",
+        "content_fingerprint": "cef4e5afca87fde34f66ef5063c7f8b23947ada3cd90113cf27ea514a74d32e3",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-218519"
+        ],
+        "source_completion": true,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "20{u}^{3}(v-2)^{4}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "20*u^3*v^4 - 160*u^3*v^3 + 480*u^3*v^2 - 640*u^3*v + 320*u^3",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(20{u}^{3}(v-2)^{4})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "2 double_radio observed-q-112230",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "54d5edd8-11b3-575f-ad29-2de8bb2cfd35",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the least common multiple of the polynomials $5(x-5)^{5}(y-2)^{3},$ $\\,6(x-5)^{3}(y-2)^{3},$ and $12(x-5)^{3}(y-2)^{2}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(5,6,12):$\n\n- Multiples of $5:$ $\\,5,\\,10,\u2026,\\,55,\\,60,\\,65,\\,\u2026$\n\n- Multiples of $6:$ $\\,6,\\,12,\u2026,\\,54,\\,60,\\,66,\u2026$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\\,72,\u2026$\n\nSo, $\\text{LCM}(5,6,12)=60.$\n\nTo find the $\\text{LCM}$ of $(x-5)^{5}(y-2)^{3},(x-5)^{3}(y-2)^{3},$ and $(x-5)^{3}(y-2)^{2},$ we find the largest powers for $(x-5)$ and $(y-2)$ that appear in all these expressions:\n\n- For $(x-5)^{5},(x-5)^{3},$ and $(x-5)^{3},$ the largest power is $5.$\n\n- For $(y-2)^{3},(y-2)^{3},$ and $(y-2)^{2},$ the largest power is $3.$\n\nNow, we raise $(x-5)$ and $(y-2)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-5)^{5}(y-2)^{3},\\,(x-5)^{3}(y-2)^{3},\\,(x-5)^{3}(y-2)^{2})=(x-5)^{5}\\cdot (y-2)^{3}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(5(x-5)^{5}(y-2)^{3},\\,6(x-5)^{3}(y-2)^{3},\\,12(x-5)^{3}(y-2)^{2}) & = \\\\ 60\\cdot (x-5)^{5}\\cdot (y-2)^{3} & = \\\\ 60(x-5)^{5}(y-2)^{3} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "44f4dda7-67d4-5d7c-a1aa-c6d7f07ae157",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a8d46905-4a69-580a-9217-6ab11772cac1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30(x-5)^{5}(y-2)^{3}"
+              },
+              {
+                ":answer/id": "d8c629cf-41b5-5687-b73a-0b1c7b85170b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x-5)^{11}(y-2)^{7}"
+              },
+              {
+                ":answer/id": "909b8e86-d05b-54a3-b8f7-5b68b5587917",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x-5)^{5}(y-2)^{3}"
+              },
+              {
+                ":answer/id": "74e5e99d-0f61-5490-b7a4-5f5809f88f13",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90(x-5)^{11}(y-2)^{7}"
+              },
+              {
+                ":answer/id": "7a9bde9f-1282-5f6d-b2e4-c9a16ade55d9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90(x-5)^{5}(y-2)^{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "909b8e86-d05b-54a3-b8f7-5b68b5587917"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 77,
+        "template": "double_radio",
+        "parameters": {
+          "coefficients": [
+            5,
+            6,
+            12
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            -5,
+            -2
+          ],
+          "powers": [
+            [
+              5,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-112230",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "63d585f1ce30c606802cf9e5a34c9efe27bf9444f48649f9293ba4386874a337",
+        "content_fingerprint": "60d0e0c5def293c397e090de81af5e136b6c5b88d804b47c86ad0a4fff37d5f0",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-112230"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "a8d46905-4a69-580a-9217-6ab11772cac1",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "d8c629cf-41b5-5687-b73a-0b1c7b85170b",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "909b8e86-d05b-54a3-b8f7-5b68b5587917",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "74e5e99d-0f61-5490-b7a4-5f5809f88f13",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "7a9bde9f-1282-5f6d-b2e4-c9a16ade55d9",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "3 single_blank observed-q-222127",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "fe7168da-7849-51de-be84-0750f692260d",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $3(x+5)^{4},$ $\\,9(x+5),$ and $2(x+5)^{2}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(3,9,2):$\n\n- Multiples of $3:$ $\\,3,\\,6,\\,9,12,\\,15,\\,18,\\,21,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\u2026$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,\\,8,\\,10,\\,12,\\,14,\\,16,\\,18,\\,20,\u2026$\n\nSo, $\\text{LCM}(3,9,2)=18.$\n\nTo find the $\\text{LCM}$ of $(x+5)^{4},$ $(x+5),$ and $(x+5)^{2},$ we raise $(x+5)$ to the largest power that appears in all these expressions, which is $4.$ Therefore,\n\n$$\n\\text{LCM}((x+5)^{4},\\,(x+5),\\,(x+5)^{2})=(x+5)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(3(x+5)^{4},\\,9(x+5),\\,2(x+5)^{2})=18\\cdot (x+5)^{4}=18(x+5)^{4}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f7f109e3-e373-5d9c-8201-29e9cb61fccd",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "862ac785-3039-5275-a949-abe6c9326125",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18(x+5)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "862ac785-3039-5275-a949-abe6c9326125"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 77,
+        "template": "single_blank",
+        "parameters": {
+          "coefficients": [
+            3,
+            9,
+            2
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            5
+          ],
+          "powers": [
+            [
+              4
+            ],
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222127",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "3603a8d079369a40b7f3475c085186bfd7f656084abcaa1443c4006db1a56e2a",
+        "content_fingerprint": "7954a5c5f371a481069fb78d6b99bb81133be36b8d91c4042c6a3d770cb6fc4f",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222127"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "18(x+5)^{4}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "18*x^4 + 360*x^3 + 2700*x^2 + 9000*x + 11250",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(18(x+5)^{4})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "4 single_blank observed-q-222129",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "2252c244-a821-59d4-b84f-01bfa9cfe0fa",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $8(y-7)^{3},$ $\\,2(y-7)^{5},$ and $10(y-7)^{2}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(8,2,10):$\n\n- Multiples of $8:$ $\\,8,\\,16,\\,24,\\,32,\\,40,\\,48,\u2026$\n\n- Multiples of $2:$ $\\,2,\\,4,\u2026,38,\\,40,\\,42,\u2026$\n\n- Multiples of $10:$ $\\,10,\\,20,\\,30,\\,40,\\,50,\u2026$\n\nSo, $\\text{LCM}(8,2,10)=40.$\n\nTo find the $\\text{LCM}$ of $(y-7)^{3},$ $(y-7)^{5},$ and $(y-7)^{2},$ we raise $(y-7)$ to the largest power that appears in all these expressions, which is $5.$ Therefore,\n\n$$\n\\text{LCM}((y-7)^{3},\\,(y-7)^{5},\\,(y-7)^{2})=(y-7)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(8(y-7)^{3},\\,2(y-7)^{5},\\,10(y-7)^{2})=40\\cdot (y-7)^{5}=40(y-7)^{5}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "37afdcb7-83fb-5fa7-b792-96e96d73fdcb",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c0697532-a0eb-533a-a9b4-41cf51b2d246",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "40(y-7)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c0697532-a0eb-533a-a9b4-41cf51b2d246"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 77,
+        "template": "single_blank",
+        "parameters": {
+          "coefficients": [
+            8,
+            2,
+            10
+          ],
+          "variables": [
+            "y"
+          ],
+          "shifts": [
+            -7
+          ],
+          "powers": [
+            [
+              3
+            ],
+            [
+              5
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222129",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "73c92aff1ca6fd99652528efa4cc53d93bc965afa72f06063cc21e316ba75f65",
+        "content_fingerprint": "79f58b6d3bf44a56e6466f2dabe9c88d8be0881949fd840ddbf93d6ad63d1692",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222129"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "40(y-7)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "40*y^5 - 1400*y^4 + 19600*y^3 - 137200*y^2 + 480200*y - 672280",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(40(y-7)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "5 double_blank observed-q-222132-raw-error",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "097ad102-db58-57d3-9813-5c8329cb94b0",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The least common multiple of the polynomials $3(x-7)(y+2)^{3},\\,8(x-7)^{3}(y+2),$ and $2(x-7)^{5}(y+2)^{2}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(3,8,2):$\n\n- Multiples of $3:$ $\\,3,\\,6,\\,9,\\,12,\\,15,\\,18,\\,21,\\,24,\\,27,\u2026$\n\n- Multiples of $8:$ $\\,8,\\,16,\\,24,\\,32,\u2026$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,\u22ef,\\,22,\\,24,\\,26,\u2026$\n\nSo, $\\text{LCM}(3,8,2)=24.$\n\nTo find the $\\text{LCM}$ of $(x-7)(y+2)^{3},(x-7)^{3}(y+2),$ and $(x-7)^{5}(y+2)^{2},$ we find the largest powers for $(x-y)$ and $(y+2)$ that appear in all these expressions:\n\n- For $(x-7),(x-7)^{3},$ and $(x-7)^{5},$ the largest power is $5.$\n\n- For $(y+2)^{3},(y+2),$ and $(y+2)^{2},$ the largest power is $3.$\n\nNow, we raise $(x-7)$ and $(y+2)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-7)(y+2)^{3},(x-7)^{3}(y+2),(x-7)^{5}(y+2)^{2})=(x-7)^{5}\\cdot (y+2)^{3}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(3(x-7)(y+2)^{3},\\,8(x-7)^{3}(y+2),\\,2(x-7)^{5}(y+2)^{2}) & = \\\\ 24\\cdot (x-7)^{5}\\cdot (y+2)^{3} & = \\\\ 24(x-7)^{5}(y+2)^{3} & \\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "bb9a2aaa-c4de-5cc9-b9b0-ff307baef581",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e3078118-fe54-51f8-a97e-920d027ab5b6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24(x-7)^{5}(y+2)^{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e3078118-fe54-51f8-a97e-920d027ab5b6"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 77,
+        "template": "double_blank",
+        "parameters": {
+          "coefficients": [
+            3,
+            8,
+            2
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            -7,
+            2
+          ],
+          "powers": [
+            [
+              1,
+              3
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              5,
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222132-raw-error",
+        "bank_origin": "raw-error",
+        "parameter_fingerprint": "1760504ca22273311bfa570b41ac54682b8331664985c502fb5f30878c320981",
+        "content_fingerprint": "c0ec0324148fda6df8e4c29bc32694fce9c0adbbcd604d572c85bb9d665fa51b",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222132"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": true,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "24(x-7)^{5}(y+2)^{3}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "24*x^5*y^3 + 144*x^5*y^2 + 288*x^5*y + 192*x^5 - 840*x^4*y^3 - 5040*x^4*y^2 - 10080*x^4*y - 6720*x^4 + 11760*x^3*y^3 + 70560*x^3*y^2 + 141120*x^3*y + 94080*x^3 - 82320*x^2*y^3 - 493920*x^2*y^2 - 987840*x^2*y - 658560*x^2 + 288120*x*y^3 + 1728720*x*y^2 + 3457440*x*y + 2304960*x - 403368*y^3 - 2420208*y^2 - 4840416*y - 3226944",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(24(x-7)^{5}(y+2)^{3})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "6 single_radio observed-q-76247",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "dc3e5252-000f-5d52-aa53-c21ea9695272",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the least common multiple of $6(x-5),$ $\\,4(x-5)^{3},$ and $8(x-5)^{4}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,4,8):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\u2026$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\u2026$\n\n- Multiples of $8:$ $\\,8,\\,16,\\,24,\\,32,\u2026$\n\nSo, $\\text{LCM}(6,4,8)=24.$\n\nTo find the $\\text{LCM}$ of $(x-5),$ $(x-5)^{3},$ and $(x-5)^{4},$ we raise $(x-5)$ to the largest power that appears in all these expressions, which is $4.$ Therefore,\n\n$$\n\\text{LCM}((x-5),\\,(x-5)^{3},\\,(x-5)^{4})=(x-5)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(6(x-5),\\,4(x-5)^{3},\\,8(x-5)^{4})=24\\cdot (x-5)^{4}=24(x-5)^{4}.\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ac2d337f-9bb3-5dd1-bc3f-af8f4ab8e09f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bb1c1198-8278-5fa2-8bd9-9843951f6ef8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48(x-5)^{4}"
+              },
+              {
+                ":answer/id": "cd1dc3ae-c90e-5a7e-9648-91216b224907",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48(x-5)^{6}"
+              },
+              {
+                ":answer/id": "ebc1ef0c-9f78-58ab-afe1-890e9c2ff65a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24(x-5)^{4}"
+              },
+              {
+                ":answer/id": "b0bc4ffc-5590-5f71-8dad-a9bc0c2741c9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "64(x-5)^{8}"
+              },
+              {
+                ":answer/id": "009fcfc6-584a-5667-ac2f-8a16ffaf144c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24(x-5)^{6}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ebc1ef0c-9f78-58ab-afe1-890e9c2ff65a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 77,
+        "template": "single_radio",
+        "parameters": {
+          "coefficients": [
+            6,
+            4,
+            8
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            -5
+          ],
+          "powers": [
+            [
+              1
+            ],
+            [
+              3
+            ],
+            [
+              4
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-76247",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "57d92af0dbe82b5a4adf9bb54837027ce6e1293360ff56f314c7c0b4e3b08e87",
+        "content_fingerprint": "4482f873e840ccd83d23a001634d225d32e54cb6384067f3697c880a2bdadb5c",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76247"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "bb1c1198-8278-5fa2-8bd9-9843951f6ef8",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "cd1dc3ae-c90e-5a7e-9648-91216b224907",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "ebc1ef0c-9f78-58ab-afe1-890e9c2ff65a",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "b0bc4ffc-5590-5f71-8dad-a9bc0c2741c9",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "009fcfc6-584a-5667-ac2f-8a16ffaf144c",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "7 double_radio observed-q-76475",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "9c8bfb50-c309-562b-83e0-db9a2b06cd2e",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the least common multiple of the polynomials $20{x}^{7}(y+2),$ $\\,10{x}^{6}(y+2)^{3},$ and $12{x}^{4}(y+2)^{2}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(20,10,12):$\n\n- Multiples of $20:$ $\\,20,\\,40,\\,60,\\,80,\\,100,\\,\u2026$\n\n- Multiples of $10:$ $\\,10,\\,20,\\,30,\\,40,\\,50,\\,60,\\,70,\\,\u2026$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\\,72,\u2026$\n\nSo, $\\text{LCM}(20,10,12)=60.$\n\nTo find the $\\text{LCM}$ of ${x}^{7}(y+2),{x}^{6}(y+2)^{3},$ and ${x}^{4}(y+2)^{2},$ we find the largest powers for $x$ and $(y+2)$ that appear in all these expressions:\n\n- For ${x}^{7},\\,{x}^{6},$ and ${x}^{4},$ the largest power is $7.$\n\n- For $(y+2),(y+2)^{3},$ and $(y+2)^{2},$ the largest power is $3.$\n\nNow, we raise $x$ and $(y+2)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({x}^{7}(y+2),\\,{x}^{6}(y+2)^{3},\\,{x}^{4}(y+2)^{2})={x}^{7}\\cdot (y+2)^{3}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(20{x}^{7}(y+2),\\,10{x}^{6}(y+2)^{3},\\,12{x}^{4}(y+2)^{2}) & = \\\\ 60\\cdot {x}^{7}\\cdot (y+2)^{3} & = \\\\ 60{x}^{7}(y+2)^{3} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "055abe7d-2096-5a12-8f58-6ba23dce8206",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "155955c6-a656-5235-927a-2d27d561c829",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "120{x}^{4}(y+2)"
+              },
+              {
+                ":answer/id": "827dd97f-a0e6-5d74-94e8-4e1c6121145f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{x}^{17}(y+2)^{6}"
+              },
+              {
+                ":answer/id": "b16744c3-5220-5301-bce8-72279a07f1fa",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{x}^{7}(y+2)^{3}"
+              },
+              {
+                ":answer/id": "0181488c-ca74-5d9a-b810-be7fa409caf3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{x}^{4}(y+2)"
+              },
+              {
+                ":answer/id": "0c58e5d8-c247-548a-8e75-ae65e6801372",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "120{x}^{7}(y+2)^{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b16744c3-5220-5301-bce8-72279a07f1fa"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 77,
+        "template": "double_radio",
+        "parameters": {
+          "coefficients": [
+            20,
+            10,
+            12
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            0,
+            2
+          ],
+          "powers": [
+            [
+              7,
+              1
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              4,
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-76475",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "fd94321cd8800be39f7842444145d24760c91329ee3a26f077420b956a604824",
+        "content_fingerprint": "dce79fb9ce7818b27a41c016339a5ba03ab0e39883cabb70568612314a9bd1a9",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76475"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "155955c6-a656-5235-927a-2d27d561c829",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "827dd97f-a0e6-5d74-94e8-4e1c6121145f",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "b16744c3-5220-5301-bce8-72279a07f1fa",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "0181488c-ca74-5d9a-b810-be7fa409caf3",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "0c58e5d8-c247-548a-8e75-ae65e6801372",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "8 single_legacy_blank completion-q-218518",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "4bc9a64a-f8ed-5e4d-aef2-6d0dac2ac302",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $4(x + 4)^{3}$, $9(x + 4)^{4}$, and $9(x + 4)^{5}$ is {{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,9,9):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,\\,36,\\,40,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\u2026$\n\nSo, $\\text{LCM}(4,9,9)=36.$\n\nTo find the $\\text{LCM}$ of $(x+4)^{3},(x+4)^{4},(x+4)^{5},$ we find the largest powers for $(x+4)$ that appear in all these expressions:\n\n- For $(x+4)^{3},$ $(x+4)^{4},$ and $(x+4)^{5},$ the largest power is $5.$\n\nNow, we raise $(x+4)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x+4)^{3},\\,(x+4)^{4},\\,(x+4)^{5})=(x+4)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(4(x+4)^{3},\\,9(x+4)^{4},\\,9(x+4)^{5}) & = \\\\ 36\\cdot (x+4)^{5} & = \\\\ 36(x+4)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "684d64d9-856c-5afe-b789-d7e39aaef73d",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9c18aaff-638d-5605-8164-fb90257e936c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "36(x+4)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "9c18aaff-638d-5605-8164-fb90257e936c"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 100,
+        "template": "single_legacy_blank",
+        "parameters": {
+          "coefficients": [
+            4,
+            9,
+            9
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            4
+          ],
+          "powers": [
+            [
+              3
+            ],
+            [
+              4
+            ],
+            [
+              5
+            ]
+          ]
+        },
+        "bank_profile": "completion-q-218518",
+        "bank_origin": "authored-completion",
+        "parameter_fingerprint": "59ab1c319db5fef2cfaaec22664b80cf14dfed787ef79899808181a58b7766b6",
+        "content_fingerprint": "201fbf43cfdeed60f5ecde2c158ff4e89c994fdfa881f3f660bd42c84c580935",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-218518"
+        ],
+        "source_completion": true,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "36(x+4)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "36*x^5 + 720*x^4 + 5760*x^3 + 23040*x^2 + 46080*x + 36864",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(36(x+4)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "9 single_legacy_blank completion-q-218518",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "61d6a3af-8fb2-59dd-9a49-be2cc5179656",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $6(x + 6)^{5}$, $5(x + 6)^{3}$, and $4(x + 6)^{2}$ is {{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,5,4):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,\u2026,\\,54,\\,60,\\,66,\u2026$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,\u2026,\\,55,\\,60,\\,65,\u2026$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,\u2026,\\,56,\\,60,\\,64,\u2026$\n\nSo, $\\text{LCM}(6,5,4)=60.$\n\nTo find the $\\text{LCM}$ of $(x+6)^{5},(x+6)^{3},(x+6)^{2},$ we find the largest powers for $(x+6)$ that appear in all these expressions:\n\n- For $(x+6)^{5},$ $(x+6)^{3},$ and $(x+6)^{2},$ the largest power is $5.$\n\nNow, we raise $(x+6)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x+6)^{5},\\,(x+6)^{3},\\,(x+6)^{2})=(x+6)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(6(x+6)^{5},\\,5(x+6)^{3},\\,4(x+6)^{2}) & = \\\\ 60\\cdot (x+6)^{5} & = \\\\ 60(x+6)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "96316173-f306-5e6c-b68d-37573b6dbaf9",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "496d8d6a-60a7-59d7-a4f3-3eb603d001e4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x+6)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "496d8d6a-60a7-59d7-a4f3-3eb603d001e4"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 101,
+        "template": "single_legacy_blank",
+        "parameters": {
+          "coefficients": [
+            6,
+            5,
+            4
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            6
+          ],
+          "powers": [
+            [
+              5
+            ],
+            [
+              3
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        "bank_profile": "completion-q-218518",
+        "bank_origin": "authored-completion",
+        "parameter_fingerprint": "73f3376be74024a2992654a76f1edf1f6b375b63a61227375a4c4a4920eb7d21",
+        "content_fingerprint": "b95793f2ec9170d1c6ff87d8ef09533ec97bdbb7bb482946386b7de329fe21d6",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-218518"
+        ],
+        "source_completion": true,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "60(x+6)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "60*x^5 + 1800*x^4 + 21600*x^3 + 129600*x^2 + 388800*x + 466560",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(60(x+6)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "10 double_legacy_blank completion-q-218519",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "78670443-ca47-5e99-9355-bd3347b83fd6",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The least common multiple of the polynomials $6x^{4}(y + 4)^{5}, 16x^{7}(y + 4)$, and $16x^{5}(y + 4)$ is {{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,16,16):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,\\,42,\\,48,\\,54,\u2026$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\u2026$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\u2026$\n\nSo, $\\text{LCM}(6,16,16)=48.$\n\nTo find the $\\text{LCM}$ of ${x}^{4}(y+4)^{5},{x}^{7}(y+4),{x}^{5}(y+4),$ we find the largest powers for $x$, $(y+4)$ that appear in all these expressions:\n\n- For ${x}^{4},$ ${x}^{7},$ and ${x}^{5},$ the largest power is $7.$\n\n- For $(y+4)^{5},$ $(y+4),$ and $(y+4),$ the largest power is $5.$\n\nNow, we raise $x$, $(y+4)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({x}^{4}(y+4)^{5},\\,{x}^{7}(y+4),\\,{x}^{5}(y+4))={x}^{7}\\cdot (y+4)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(6{x}^{4}(y+4)^{5},\\,16{x}^{7}(y+4),\\,16{x}^{5}(y+4)) & = \\\\ 48\\cdot {x}^{7}\\cdot (y+4)^{5} & = \\\\ 48{x}^{7}(y+4)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "db6bb61b-dae4-59fc-9e74-1abcc8676bc2",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "5c3beefc-4047-51bb-93f3-ac56f5230186",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48{x}^{7}(y+4)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5c3beefc-4047-51bb-93f3-ac56f5230186"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 100,
+        "template": "double_legacy_blank",
+        "parameters": {
+          "coefficients": [
+            6,
+            16,
+            16
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            0,
+            4
+          ],
+          "powers": [
+            [
+              4,
+              5
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              5,
+              1
+            ]
+          ]
+        },
+        "bank_profile": "completion-q-218519",
+        "bank_origin": "authored-completion",
+        "parameter_fingerprint": "257d1d72e26b0727082cdbbd8cc6bec23edd073c5017072c999dc88f8f1edb0e",
+        "content_fingerprint": "e0589ae68f04e9f256f2619e2b0a187349e6271ddeaf193e4dacc21dc0247339",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-218519"
+        ],
+        "source_completion": true,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "48{x}^{7}(y+4)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "48*x^7*y^5 + 960*x^7*y^4 + 7680*x^7*y^3 + 30720*x^7*y^2 + 61440*x^7*y + 49152*x^7",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(48{x}^{7}(y+4)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "11 double_legacy_blank completion-q-218519",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "1728b992-a738-5f0d-84dc-3529b09e7f65",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The least common multiple of the polynomials $8x(y - 1)^{4}, 12x^{7}(y - 1)^{5}$, and $16x^{3}(y - 1)^{2}$ is {{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(8,12,16):$\n\n- Multiples of $8:$ $\\,8,\\,16,\\,24,\\,32,\\,40,\\,48,\\,56,\u2026$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\u2026$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\u2026$\n\nSo, $\\text{LCM}(8,12,16)=48.$\n\nTo find the $\\text{LCM}$ of $x(y-1)^{4},{x}^{7}(y-1)^{5},{x}^{3}(y-1)^{2},$ we find the largest powers for $x$, $(y-1)$ that appear in all these expressions:\n\n- For $x,$ ${x}^{7},$ and ${x}^{3},$ the largest power is $7.$\n\n- For $(y-1)^{4},$ $(y-1)^{5},$ and $(y-1)^{2},$ the largest power is $5.$\n\nNow, we raise $x$, $(y-1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}(x(y-1)^{4},\\,{x}^{7}(y-1)^{5},\\,{x}^{3}(y-1)^{2})={x}^{7}\\cdot (y-1)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(8x(y-1)^{4},\\,12{x}^{7}(y-1)^{5},\\,16{x}^{3}(y-1)^{2}) & = \\\\ 48\\cdot {x}^{7}\\cdot (y-1)^{5} & = \\\\ 48{x}^{7}(y-1)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f0edef17-f750-5af2-9cbd-6745a5886f68",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4396b8d5-6d49-5315-be27-9ab9795f99fa",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48{x}^{7}(y-1)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4396b8d5-6d49-5315-be27-9ab9795f99fa"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 101,
+        "template": "double_legacy_blank",
+        "parameters": {
+          "coefficients": [
+            8,
+            12,
+            16
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            0,
+            -1
+          ],
+          "powers": [
+            [
+              1,
+              4
+            ],
+            [
+              7,
+              5
+            ],
+            [
+              3,
+              2
+            ]
+          ]
+        },
+        "bank_profile": "completion-q-218519",
+        "bank_origin": "authored-completion",
+        "parameter_fingerprint": "f97896bb78f36da095f3417148ffe82ed499a00e69cb17629219987fde67ae31",
+        "content_fingerprint": "e944ffd71bc3866587e741ae2222f54177e522f2776a6394fefcd50b7bb9a64c",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-218519"
+        ],
+        "source_completion": true,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "48{x}^{7}(y-1)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "48*x^7*y^5 - 240*x^7*y^4 + 480*x^7*y^3 - 480*x^7*y^2 + 240*x^7*y - 48*x^7",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(48{x}^{7}(y-1)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "12 double_radio observed-q-112230",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "00b786fb-3c0a-5eb9-a6a9-d36f62dd9073",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the least common multiple of the polynomials $5(x+1)^{6}(y+8)^{7},$ $\\,3(x+1)^{6}(y+8)^{6},$ and $9(x+1)^{5}(y+8)^{3}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(5,3,9):$\n\n- Multiples of $5:$ $\\,5,\\,10,\u2026,\\,40,\\,45,\\,50,\\,\u2026$\n\n- Multiples of $3:$ $\\,3,\\,6,\u2026,\\,42,\\,45,\\,48,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\\,54,\u2026$\n\nSo, $\\text{LCM}(5,3,9)=45.$\n\nTo find the $\\text{LCM}$ of $(x+1)^{6}(y+8)^{7},(x+1)^{6}(y+8)^{6},$ and $(x+1)^{5}(y+8)^{3},$ we find the largest powers for $(x+1)$ and $(y+8)$ that appear in all these expressions:\n\n- For $(x+1)^{6},(x+1)^{6},$ and $(x+1)^{5},$ the largest power is $6.$\n\n- For $(y+8)^{7},(y+8)^{6},$ and $(y+8)^{3},$ the largest power is $7.$\n\nNow, we raise $(x+1)$ and $(y+8)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x+1)^{6}(y+8)^{7},\\,(x+1)^{6}(y+8)^{6},\\,(x+1)^{5}(y+8)^{3})=(x+1)^{6}\\cdot (y+8)^{7}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(5(x+1)^{6}(y+8)^{7},\\,3(x+1)^{6}(y+8)^{6},\\,9(x+1)^{5}(y+8)^{3}) & = \\\\ 45\\cdot (x+1)^{6}\\cdot (y+8)^{7} & = \\\\ 45(x+1)^{6}(y+8)^{7} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e6ef84b7-3657-58b4-be4a-33a7e4c3d587",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4eae0426-07d6-52d5-9e8f-3de6776ba062",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x+1)^{6}(y+8)^{7}"
+              },
+              {
+                ":answer/id": "3ea1f6fa-0396-5e0a-90a2-440ccc49a3ca",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(x+1)^{6}(y+8)^{7}"
+              },
+              {
+                ":answer/id": "14d7d617-103f-5308-8333-75db60056460",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x+1)^{17}(y+8)^{15}"
+              },
+              {
+                ":answer/id": "8ba0d061-0e8c-5b72-a3c6-8dc91c517ab8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(x+1)^{17}(y+8)^{15}"
+              },
+              {
+                ":answer/id": "387ebe9f-1d9c-586c-8fa9-28d75d82e8c3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "15(x+1)^{6}(y+8)^{7}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3ea1f6fa-0396-5e0a-90a2-440ccc49a3ca"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 100,
+        "template": "double_radio",
+        "parameters": {
+          "coefficients": [
+            5,
+            3,
+            9
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            1,
+            8
+          ],
+          "powers": [
+            [
+              6,
+              7
+            ],
+            [
+              6,
+              6
+            ],
+            [
+              5,
+              3
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-112230",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "68704b3b8cdd9e95c67cade3a0a4df1a0707b3cf62c002a1a4c9ba6cbb02ffc4",
+        "content_fingerprint": "6c4d3a1c796fc67dc3c43bafa8274eb0330ea702374fedbdc9384473693407bd",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-112230"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "4eae0426-07d6-52d5-9e8f-3de6776ba062",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "3ea1f6fa-0396-5e0a-90a2-440ccc49a3ca",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "14d7d617-103f-5308-8333-75db60056460",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "8ba0d061-0e8c-5b72-a3c6-8dc91c517ab8",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "387ebe9f-1d9c-586c-8fa9-28d75d82e8c3",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "13 double_radio observed-q-112230",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "66485493-d348-5254-9b67-67877bd64f59",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the least common multiple of the polynomials $3(x-6)^{7}(y-7)^{4},$ $\\,3(x-6)^{3}(y-7)^{5},$ and $10(x-6)^{6}(y-7).$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(3,3,10):$\n\n- Multiples of $3:$ $\\,3,\\,6,\u2026,\\,27,\\,30,\\,33,\\,\u2026$\n\n- Multiples of $3:$ $\\,3,\\,6,\u2026,\\,27,\\,30,\\,33,\u2026$\n\n- Multiples of $10:$ $\\,10,\\,20,\\,30,\\,40,\u2026$\n\nSo, $\\text{LCM}(3,3,10)=30.$\n\nTo find the $\\text{LCM}$ of $(x-6)^{7}(y-7)^{4},(x-6)^{3}(y-7)^{5},$ and $(x-6)^{6}(y-7),$ we find the largest powers for $(x-6)$ and $(y-7)$ that appear in all these expressions:\n\n- For $(x-6)^{7},(x-6)^{3},$ and $(x-6)^{6},$ the largest power is $7.$\n\n- For $(y-7)^{4},(y-7)^{5},$ and $(y-7),$ the largest power is $5.$\n\nNow, we raise $(x-6)$ and $(y-7)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-6)^{7}(y-7)^{4},\\,(x-6)^{3}(y-7)^{5},\\,(x-6)^{6}(y-7))=(x-6)^{7}\\cdot (y-7)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(3(x-6)^{7}(y-7)^{4},\\,3(x-6)^{3}(y-7)^{5},\\,10(x-6)^{6}(y-7)) & = \\\\ 30\\cdot (x-6)^{7}\\cdot (y-7)^{5} & = \\\\ 30(x-6)^{7}(y-7)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "729e11d9-3ac3-5537-a370-fcde1c46ee5b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "cce0956e-3a61-51a2-8f35-5d8d55b073cf",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30(x-6)^{7}(y-7)^{5}"
+              },
+              {
+                ":answer/id": "00a0bfa8-6523-586a-8532-8b40bbaab218",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30(x-6)^{16}(y-7)^{9}"
+              },
+              {
+                ":answer/id": "f448cfda-4bab-50b4-9187-772abfe0b3bd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "33(x-6)^{7}(y-7)^{5}"
+              },
+              {
+                ":answer/id": "73e9781c-bdb1-53df-a73a-8b9b1412335e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3(x-6)^{7}(y-7)^{5}"
+              },
+              {
+                ":answer/id": "bda86d47-3edb-5e4a-80ab-6c27a02cc6db",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "33(x-6)^{16}(y-7)^{9}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "cce0956e-3a61-51a2-8f35-5d8d55b073cf"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 101,
+        "template": "double_radio",
+        "parameters": {
+          "coefficients": [
+            3,
+            3,
+            10
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            -6,
+            -7
+          ],
+          "powers": [
+            [
+              7,
+              4
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              6,
+              1
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-112230",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "22924ea9dc142d1a9b2a601a367f851a124845ff6ba55a03285602a618a73fb7",
+        "content_fingerprint": "b6271e86231c664ed75d850676cb6f9ff3cc7bd107240ad29f64b28c9fe5318a",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-112230"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "cce0956e-3a61-51a2-8f35-5d8d55b073cf",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "00a0bfa8-6523-586a-8532-8b40bbaab218",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "f448cfda-4bab-50b4-9187-772abfe0b3bd",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "73e9781c-bdb1-53df-a73a-8b9b1412335e",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "bda86d47-3edb-5e4a-80ab-6c27a02cc6db",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "14 single_blank observed-q-222127",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "6c661444-2620-50e3-8f28-20ba24a5bf54",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $4(x+4)^{3},$ $\\,9(x+4)^{4},$ and $9(x+4)^{5}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,9,9):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,16,\\,20,\\,24,\\,28,\\,32,\\,36,\\,40,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\u2026$\n\nSo, $\\text{LCM}(4,9,9)=36.$\n\nTo find the $\\text{LCM}$ of $(x+4)^{3},$ $(x+4)^{4},$ and $(x+4)^{5},$ we raise $(x+4)$ to the largest power that appears in all these expressions, which is $5.$ Therefore,\n\n$$\n\\text{LCM}((x+4)^{3},\\,(x+4)^{4},\\,(x+4)^{5})=(x+4)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(4(x+4)^{3},\\,9(x+4)^{4},\\,9(x+4)^{5})=36\\cdot (x+4)^{5}=36(x+4)^{5}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "cd11b0bf-6e3a-50a0-9d34-5a0dc8ef46bc",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ec693025-bbab-5a4a-9ef7-2d689d70632e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "36(x+4)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ec693025-bbab-5a4a-9ef7-2d689d70632e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 100,
+        "template": "single_blank",
+        "parameters": {
+          "coefficients": [
+            4,
+            9,
+            9
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            4
+          ],
+          "powers": [
+            [
+              3
+            ],
+            [
+              4
+            ],
+            [
+              5
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222127",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "59ab1c319db5fef2cfaaec22664b80cf14dfed787ef79899808181a58b7766b6",
+        "content_fingerprint": "447003f3a6017196fc518f0a216b77c15f6ce97a31a80c287abfb60c0b50a469",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222127"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "36(x+4)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "36*x^5 + 720*x^4 + 5760*x^3 + 23040*x^2 + 46080*x + 36864",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(36(x+4)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "15 single_blank observed-q-222127",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "d6963af2-dc4e-51e2-8f05-03413605a4f5",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $6(x+6)^{5},$ $\\,5(x+6)^{3},$ and $4(x+6)^{2}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,5,4):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,24,\\,30,\\,36,\\,42,\\,48,\\,54,\\,60,\\,66,\u2026$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,\\,25,\\,30,\\,35,\\,40,\\,45,\\,50,\\,55,\\,60,\\,65,\u2026$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,\\,36,\\,40,\\,44,\\,48,\\,52,\\,56,\\,60,\\,64,\u2026$\n\nSo, $\\text{LCM}(6,5,4)=60.$\n\nTo find the $\\text{LCM}$ of $(x+6)^{5},$ $(x+6)^{3},$ and $(x+6)^{2},$ we raise $(x+6)$ to the largest power that appears in all these expressions, which is $5.$ Therefore,\n\n$$\n\\text{LCM}((x+6)^{5},\\,(x+6)^{3},\\,(x+6)^{2})=(x+6)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(6(x+6)^{5},\\,5(x+6)^{3},\\,4(x+6)^{2})=60\\cdot (x+6)^{5}=60(x+6)^{5}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1b544536-40ed-5417-b53e-1058523cd520",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bebdf72f-4c53-568f-b198-3084ad4e814b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x+6)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bebdf72f-4c53-568f-b198-3084ad4e814b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 101,
+        "template": "single_blank",
+        "parameters": {
+          "coefficients": [
+            6,
+            5,
+            4
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            6
+          ],
+          "powers": [
+            [
+              5
+            ],
+            [
+              3
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222127",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "73f3376be74024a2992654a76f1edf1f6b375b63a61227375a4c4a4920eb7d21",
+        "content_fingerprint": "7d9240899a9dfde863028b6b83991ce49377a9ec6e4727949657002fbb5dd060",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222127"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "60(x+6)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "60*x^5 + 1800*x^4 + 21600*x^3 + 129600*x^2 + 388800*x + 466560",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(60(x+6)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "16 single_blank observed-q-222129",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "3c9e1c84-11e9-58dd-bc5b-e0ee5f1467ec",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $4(x+4)^{3},$ $\\,9(x+4)^{4},$ and $9(x+4)^{5}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,9,9):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,\\,36,\\,40,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\u2026$\n\nSo, $\\text{LCM}(4,9,9)=36.$\n\nTo find the $\\text{LCM}$ of $(x+4)^{3},$ $(x+4)^{4},$ and $(x+4)^{5},$ we raise $(x+4)$ to the largest power that appears in all these expressions, which is $5.$ Therefore,\n\n$$\n\\text{LCM}((x+4)^{3},\\,(x+4)^{4},\\,(x+4)^{5})=(x+4)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(4(x+4)^{3},\\,9(x+4)^{4},\\,9(x+4)^{5})=36\\cdot (x+4)^{5}=36(x+4)^{5}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a60ed329-c24c-5899-82b6-3f76c2114a98",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a3771643-2e5d-5fec-96dd-3da135a2edd3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "36(x+4)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a3771643-2e5d-5fec-96dd-3da135a2edd3"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 100,
+        "template": "single_blank",
+        "parameters": {
+          "coefficients": [
+            4,
+            9,
+            9
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            4
+          ],
+          "powers": [
+            [
+              3
+            ],
+            [
+              4
+            ],
+            [
+              5
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222129",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "59ab1c319db5fef2cfaaec22664b80cf14dfed787ef79899808181a58b7766b6",
+        "content_fingerprint": "89cdf3ea05e3122a101dc98093d8a3216725f4e5199e552bcd11c23734cf7836",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222129"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "36(x+4)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "36*x^5 + 720*x^4 + 5760*x^3 + 23040*x^2 + 46080*x + 36864",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(36(x+4)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "17 single_blank observed-q-222129",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "ac5ac9ec-ab15-5138-a26c-d0f60191d13f",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $6(x+6)^{5},$ $\\,5(x+6)^{3},$ and $4(x+6)^{2}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,5,4):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,\\,42,\\,48,\\,54,\\,60,\\,66,\u2026$\n\n- Multiples of $5:$ $\\,5,\\,10,\u2026,55,\\,60,\\,65,\u2026$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,\\,36,\\,40,\\,44,\\,48,\\,52,\\,56,\\,60,\\,64,\u2026$\n\nSo, $\\text{LCM}(6,5,4)=60.$\n\nTo find the $\\text{LCM}$ of $(x+6)^{5},$ $(x+6)^{3},$ and $(x+6)^{2},$ we raise $(x+6)$ to the largest power that appears in all these expressions, which is $5.$ Therefore,\n\n$$\n\\text{LCM}((x+6)^{5},\\,(x+6)^{3},\\,(x+6)^{2})=(x+6)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(6(x+6)^{5},\\,5(x+6)^{3},\\,4(x+6)^{2})=60\\cdot (x+6)^{5}=60(x+6)^{5}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "039bd831-9b9d-5764-8017-2789f7355f16",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3dfea0e8-bc31-5c65-9ebd-a172006febe6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x+6)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3dfea0e8-bc31-5c65-9ebd-a172006febe6"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 101,
+        "template": "single_blank",
+        "parameters": {
+          "coefficients": [
+            6,
+            5,
+            4
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            6
+          ],
+          "powers": [
+            [
+              5
+            ],
+            [
+              3
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222129",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "73f3376be74024a2992654a76f1edf1f6b375b63a61227375a4c4a4920eb7d21",
+        "content_fingerprint": "739bb115c09d352d44d2c49e2716f249256d6a0f7f923f60ec703e7485bbd446",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222129"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "60(x+6)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "60*x^5 + 1800*x^4 + 21600*x^3 + 129600*x^2 + 388800*x + 466560",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(60(x+6)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "18 double_blank observed-q-222132",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "9c2846b2-7d9a-57ef-b80c-82b6065a4cab",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The least common multiple of the polynomials $6(x-4)^{4}(y+4)^{5},\\,16(x-4)^{7}(y+4),$ and $16(x-4)^{5}(y+4)$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,16,16):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,\\,42,\\,48,\\,54,\u2026$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\u2026$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\u2026$\n\nSo, $\\text{LCM}(6,16,16)=48.$\n\nTo find the $\\text{LCM}$ of $(x-4)^{4}(y+4)^{5},(x-4)^{7}(y+4),$ and $(x-4)^{5}(y+4),$ we find the largest powers for $(x-4)$ and $(y+4)$ that appear in all these expressions:\n\n- For $(x-4)^{4},(x-4)^{7},$ and $(x-4)^{5},$ the largest power is $7.$\n\n- For $(y+4)^{5},(y+4),$ and $(y+4),$ the largest power is $5.$\n\nNow, we raise $(x-4)$ and $(y+4)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-4)^{4}(y+4)^{5},(x-4)^{7}(y+4),(x-4)^{5}(y+4))=(x-4)^{7}\\cdot (y+4)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(6(x-4)^{4}(y+4)^{5},\\,16(x-4)^{7}(y+4),\\,16(x-4)^{5}(y+4)) & = \\\\ 48\\cdot (x-4)^{7}\\cdot (y+4)^{5} & = \\\\ 48(x-4)^{7}(y+4)^{5} & \\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7048fb32-29e7-5fc5-a5ee-dbcfbfd7a6ac",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9cb4bb37-4c08-53fb-8b3a-17c7bfed6f5a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48(x-4)^{7}(y+4)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "9cb4bb37-4c08-53fb-8b3a-17c7bfed6f5a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 100,
+        "template": "double_blank",
+        "parameters": {
+          "coefficients": [
+            6,
+            16,
+            16
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            -4,
+            4
+          ],
+          "powers": [
+            [
+              4,
+              5
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              5,
+              1
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222132",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "62d2eb0e050919343eebef9dfcdbcf974ebd0a3d7c61d973e58fdde4200980d3",
+        "content_fingerprint": "c1543d4ac3bdfa80a629a35b42df642a824cd023bf67fa062ff3d121006c1432",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222132"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": true,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "48(x-4)^{7}(y+4)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "48*x^7*y^5 + 960*x^7*y^4 + 7680*x^7*y^3 + 30720*x^7*y^2 + 61440*x^7*y + 49152*x^7 - 1344*x^6*y^5 - 26880*x^6*y^4 - 215040*x^6*y^3 - 860160*x^6*y^2 - 1720320*x^6*y - 1376256*x^6 + 16128*x^5*y^5 + 322560*x^5*y^4 + 2580480*x^5*y^3 + 10321920*x^5*y^2 + 20643840*x^5*y + 16515072*x^5 - 107520*x^4*y^5 - 2150400*x^4*y^4 - 17203200*x^4*y^3 - 68812800*x^4*y^2 - 137625600*x^4*y - 110100480*x^4 + 430080*x^3*y^5 + 8601600*x^3*y^4 + 68812800*x^3*y^3 + 275251200*x^3*y^2 + 550502400*x^3*y + 440401920*x^3 - 1032192*x^2*y^5 - 20643840*x^2*y^4 - 165150720*x^2*y^3 - 660602880*x^2*y^2 - 1321205760*x^2*y - 1056964608*x^2 + 1376256*x*y^5 + 27525120*x*y^4 + 220200960*x*y^3 + 880803840*x*y^2 + 1761607680*x*y + 1409286144*x - 786432*y^5 - 15728640*y^4 - 125829120*y^3 - 503316480*y^2 - 1006632960*y - 805306368",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(48(x-4)^{7}(y+4)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "19 double_blank observed-q-222132",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "f7fce356-4ad0-5272-ba3b-877b8bde2c13",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The least common multiple of the polynomials $2(x-8)^{6}(y+3)^{4},\\,4(x-8)^{7}(y+3)^{7},$ and $4(x-8)(y+3)^{6}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(2,4,4):$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,\u2026$\n\n- Multiples of $4:$ $\\,4,\\,8,\u2026$\n\n- Multiples of $4:$ $\\,4,\\,8,\u2026$\n\nSo, $\\text{LCM}(2,4,4)=4.$\n\nTo find the $\\text{LCM}$ of $(x-8)^{6}(y+3)^{4},(x-8)^{7}(y+3)^{7},$ and $(x-8)(y+3)^{6},$ we find the largest powers for $(x-8)$ and $(y+3)$ that appear in all these expressions:\n\n- For $(x-8)^{6},(x-8)^{7},$ and $(x-8),$ the largest power is $7.$\n\n- For $(y+3)^{4},(y+3)^{7},$ and $(y+3)^{6},$ the largest power is $7.$\n\nNow, we raise $(x-8)$ and $(y+3)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-8)^{6}(y+3)^{4},(x-8)^{7}(y+3)^{7},(x-8)(y+3)^{6})=(x-8)^{7}\\cdot (y+3)^{7}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(2(x-8)^{6}(y+3)^{4},\\,4(x-8)^{7}(y+3)^{7},\\,4(x-8)(y+3)^{6}) & = \\\\ 4\\cdot (x-8)^{7}\\cdot (y+3)^{7} & = \\\\ 4(x-8)^{7}(y+3)^{7} & \\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6ec4b8f3-0de7-585f-bf39-2a6a5b050c86",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "22582f85-44cf-5bb2-a8e3-3cbb0f321b9f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4(x-8)^{7}(y+3)^{7}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "22582f85-44cf-5bb2-a8e3-3cbb0f321b9f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 101,
+        "template": "double_blank",
+        "parameters": {
+          "coefficients": [
+            2,
+            4,
+            4
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            -8,
+            3
+          ],
+          "powers": [
+            [
+              6,
+              4
+            ],
+            [
+              7,
+              7
+            ],
+            [
+              1,
+              6
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222132",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "aa241f7fcce55b4ebfe24421b781d65020469f09328504749fe10b4d2bbb9f0a",
+        "content_fingerprint": "199673824c02f5e2a8d2d5689f0181a7c298cf25dacdf721c48ddaf108355367",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222132"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": true,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "4(x-8)^{7}(y+3)^{7}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "4*(x^7 - 56*x^6 + 1344*x^5 - 17920*x^4 + 143360*x^3 - 688128*x^2 + 1835008*x - 2097152)*(y+3)^{7}",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(4(x-8)^{7}(y+3)^{7})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      },
+      {
+        "submitted": "4*x^7*y^7 + 84*x^7*y^6 + 756*x^7*y^5 + 3780*x^7*y^4 + 11340*x^7*y^3 + 20412*x^7*y^2 + 20412*x^7*y + 8748*x^7 - 224*x^6*y^7 - 4704*x^6*y^6 - 42336*x^6*y^5 - 211680*x^6*y^4 - 635040*x^6*y^3 - 1143072*x^6*y^2 - 1143072*x^6*y - 489888*x^6 + 5376*x^5*y^7 + 112896*x^5*y^6 + 1016064*x^5*y^5 + 5080320*x^5*y^4 + 15240960*x^5*y^3 + 27433728*x^5*y^2 + 27433728*x^5*y + 11757312*x^5 - 71680*x^4*y^7 - 1505280*x^4*y^6 - 13547520*x^4*y^5 - 67737600*x^4*y^4 - 203212800*x^4*y^3 - 365783040*x^4*y^2 - 365783040*x^4*y - 156764160*x^4 + 573440*x^3*y^7 + 12042240*x^3*y^6 + 108380160*x^3*y^5 + 541900800*x^3*y^4 + 1625702400*x^3*y^3 + 2926264320*x^3*y^2 + 2926264320*x^3*y + 1254113280*x^3 - 2752512*x^2*y^7 - 57802752*x^2*y^6 - 520224768*x^2*y^5 - 2601123840*x^2*y^4 - 7803371520*x^2*y^3 - 14046068736*x^2*y^2 - 14046068736*x^2*y - 6019743744*x^2 + 7340032*x*y^7 + 154140672*x*y^6 + 1387266048*x*y^5 + 6936330240*x*y^4 + 20808990720*x*y^3 + 37456183296*x*y^2 + 37456183296*x*y + 16052649984*x - 8388608*y^7 - 176160768*y^6 - 1585446912*y^5 - 7927234560*y^4 - 23781703680*y^3 - 42807066624*y^2 - 42807066624*y - 18345885696",
+        "expected": "unresolved",
+        "purpose": "Documented native512token limit for full expansion; canonical and partially expanded equivalents must still pass"
+      }
+    ]
+  },
+  {
+    "label": "20 single_radio observed-q-76247",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "64e9b7b6-99c1-5ebd-91d9-561ca1b991c5",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the least common multiple of $4(x+4)^{3},$ $\\,9(x+4)^{4},$ and $9(x+4)^{5}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,9,9):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,\\,36,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\u2026$\n\nSo, $\\text{LCM}(4,9,9)=36.$\n\nTo find the $\\text{LCM}$ of $(x+4)^{3},$ $(x+4)^{4},$ and $(x+4)^{5},$ we raise $(x+4)$ to the largest power that appears in all these expressions, which is $5.$ Therefore,\n\n$$\n\\text{LCM}((x+4)^{3},\\,(x+4)^{4},\\,(x+4)^{5})=(x+4)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(4(x+4)^{3},\\,9(x+4)^{4},\\,9(x+4)^{5})=36\\cdot (x+4)^{5}=36(x+4)^{5}.\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "557269a4-e77d-585c-92f1-556ff7ebb44c",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "906fe08e-a2c2-5bd3-b143-c0db65fe6fcb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "36(x+4)^{8}"
+              },
+              {
+                ":answer/id": "cc3c6682-eda3-52bb-a5db-990ee5a5f622",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "36(x+4)^{5}"
+              },
+              {
+                ":answer/id": "731fb777-f120-5766-a4b9-e341bd14b7c0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "81(x+4)^{12}"
+              },
+              {
+                ":answer/id": "c7c83a28-15db-5754-82ab-af4e17728bdb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "72(x+4)^{8}"
+              },
+              {
+                ":answer/id": "67301610-2d82-52ba-89a6-1966cdfe8c93",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "72(x+4)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "cc3c6682-eda3-52bb-a5db-990ee5a5f622"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 100,
+        "template": "single_radio",
+        "parameters": {
+          "coefficients": [
+            4,
+            9,
+            9
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            4
+          ],
+          "powers": [
+            [
+              3
+            ],
+            [
+              4
+            ],
+            [
+              5
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-76247",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "59ab1c319db5fef2cfaaec22664b80cf14dfed787ef79899808181a58b7766b6",
+        "content_fingerprint": "9cc0b33770f2274516e015c45cbf8b815d2955f1d8e14dc90f1c3b4f9dd6fc96",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76247"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "906fe08e-a2c2-5bd3-b143-c0db65fe6fcb",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "cc3c6682-eda3-52bb-a5db-990ee5a5f622",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "731fb777-f120-5766-a4b9-e341bd14b7c0",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "c7c83a28-15db-5754-82ab-af4e17728bdb",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "67301610-2d82-52ba-89a6-1966cdfe8c93",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "21 single_radio observed-q-76247",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "9a29a536-c1dd-5fe2-8d50-0c5e898c124f",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the least common multiple of $6(x+6)^{5},$ $\\,5(x+6)^{3},$ and $4(x+6)^{2}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,5,4):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,\\,42,\\,48,\\,54,\\,60,\u2026$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,\\,25,\\,30,\\,35,\\,40,\\,45,\\,50,\\,55,\\,60,\u2026$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,\\,36,\\,40,\\,44,\\,48,\\,52,\\,56,\\,60,\\,64,\u2026$\n\nSo, $\\text{LCM}(6,5,4)=60.$\n\nTo find the $\\text{LCM}$ of $(x+6)^{5},$ $(x+6)^{3},$ and $(x+6)^{2},$ we raise $(x+6)$ to the largest power that appears in all these expressions, which is $5.$ Therefore,\n\n$$\n\\text{LCM}((x+6)^{5},\\,(x+6)^{3},\\,(x+6)^{2})=(x+6)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(6(x+6)^{5},\\,5(x+6)^{3},\\,4(x+6)^{2})=60\\cdot (x+6)^{5}=60(x+6)^{5}.\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4263694f-165a-58c7-ac28-3d26acc65563",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d4389f6e-1ba7-5da3-aea4-e2bac5dbf2dc",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x+6)^{5}"
+              },
+              {
+                ":answer/id": "3b06a583-48fb-5698-9372-c7a493c3477c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "120(x+6)^{6}"
+              },
+              {
+                ":answer/id": "1f0fb51e-756d-5729-931e-e9216931ec7c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x+6)^{6}"
+              },
+              {
+                ":answer/id": "9e84ca4b-5870-55a8-bbc8-b7efe620f235",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "120(x+6)^{5}"
+              },
+              {
+                ":answer/id": "adf87f25-2a5a-5548-a76b-1b307d67bc51",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "36(x+6)^{10}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d4389f6e-1ba7-5da3-aea4-e2bac5dbf2dc"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 101,
+        "template": "single_radio",
+        "parameters": {
+          "coefficients": [
+            6,
+            5,
+            4
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            6
+          ],
+          "powers": [
+            [
+              5
+            ],
+            [
+              3
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-76247",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "73f3376be74024a2992654a76f1edf1f6b375b63a61227375a4c4a4920eb7d21",
+        "content_fingerprint": "d15b631cb24e5d256fdf4f7d2816c4ac4b927063cd522cbf8dfc01573c351978",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76247"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "d4389f6e-1ba7-5da3-aea4-e2bac5dbf2dc",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "3b06a583-48fb-5698-9372-c7a493c3477c",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "1f0fb51e-756d-5729-931e-e9216931ec7c",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "9e84ca4b-5870-55a8-bbc8-b7efe620f235",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "adf87f25-2a5a-5548-a76b-1b307d67bc51",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "22 double_radio observed-q-76475",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "8f704503-fecc-5a0c-880a-4eac7acde967",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the least common multiple of the polynomials $6{x}^{4}(y+4)^{5},$ $\\,16{x}^{7}(y+4),$ and $16{x}^{5}(y+4).$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,16,16):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,\\,42,\\,48,\\,54,\\,60,\\,\u2026$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\\,\u2026$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\u2026$\n\nSo, $\\text{LCM}(6,16,16)=48.$\n\nTo find the $\\text{LCM}$ of ${x}^{4}(y+4)^{5},{x}^{7}(y+4),$ and ${x}^{5}(y+4),$ we find the largest powers for $x$ and $(y+4)$ that appear in all these expressions:\n\n- For ${x}^{4},\\,{x}^{7},$ and ${x}^{5},$ the largest power is $7.$\n\n- For $(y+4)^{5},(y+4),$ and $(y+4),$ the largest power is $5.$\n\nNow, we raise $x$ and $(y+4)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({x}^{4}(y+4)^{5},\\,{x}^{7}(y+4),\\,{x}^{5}(y+4))={x}^{7}\\cdot (y+4)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(6{x}^{4}(y+4)^{5},\\,16{x}^{7}(y+4),\\,16{x}^{5}(y+4)) & = \\\\ 48\\cdot {x}^{7}\\cdot (y+4)^{5} & = \\\\ 48{x}^{7}(y+4)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "368e7a71-6501-504a-87a6-224827b65743",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7d8c3673-1c6f-50fd-a2f0-631be61030c2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "96{x}^{7}(y+4)^{5}"
+              },
+              {
+                ":answer/id": "2c088bc1-ba46-557e-9e08-1ea9d1ffa1eb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48{x}^{7}(y+4)^{5}"
+              },
+              {
+                ":answer/id": "c527e2d4-f709-5bf0-ada9-5632680a1fd7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48{x}^{4}(y+4)"
+              },
+              {
+                ":answer/id": "e9149a5c-dece-5d64-8651-9de523cd8f75",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48{x}^{16}(y+4)^{7}"
+              },
+              {
+                ":answer/id": "e1624dbc-3b08-50b1-9726-d4cbdf4200a0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "96{x}^{4}(y+4)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2c088bc1-ba46-557e-9e08-1ea9d1ffa1eb"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 100,
+        "template": "double_radio",
+        "parameters": {
+          "coefficients": [
+            6,
+            16,
+            16
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            0,
+            4
+          ],
+          "powers": [
+            [
+              4,
+              5
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              5,
+              1
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-76475",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "257d1d72e26b0727082cdbbd8cc6bec23edd073c5017072c999dc88f8f1edb0e",
+        "content_fingerprint": "cfa08d2e16e743de2df04f90a8167b86755d245b731ec96933d7003582541d46",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76475"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "7d8c3673-1c6f-50fd-a2f0-631be61030c2",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "2c088bc1-ba46-557e-9e08-1ea9d1ffa1eb",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "c527e2d4-f709-5bf0-ada9-5632680a1fd7",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "e9149a5c-dece-5d64-8651-9de523cd8f75",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "e1624dbc-3b08-50b1-9726-d4cbdf4200a0",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "23 double_radio observed-q-76475",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "bb68cfd2-d22e-5af3-8715-780b8a96304a",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the least common multiple of the polynomials $8x(y-1)^{4},$ $\\,12{x}^{7}(y-1)^{5},$ and $16{x}^{3}(y-1)^{2}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(8,12,16):$\n\n- Multiples of $8:$ $\\,8,\\,16,\\,24,\\,32,\\,40,\\,48,\\,56,\\,64,\\,\u2026$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\\,\u2026$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\u2026$\n\nSo, $\\text{LCM}(8,12,16)=48.$\n\nTo find the $\\text{LCM}$ of $x(y-1)^{4},{x}^{7}(y-1)^{5},$ and ${x}^{3}(y-1)^{2},$ we find the largest powers for $x$ and $(y-1)$ that appear in all these expressions:\n\n- For $x,\\,{x}^{7},$ and ${x}^{3},$ the largest power is $7.$\n\n- For $(y-1)^{4},(y-1)^{5},$ and $(y-1)^{2},$ the largest power is $5.$\n\nNow, we raise $x$ and $(y-1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}(x(y-1)^{4},\\,{x}^{7}(y-1)^{5},\\,{x}^{3}(y-1)^{2})={x}^{7}\\cdot (y-1)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(8x(y-1)^{4},\\,12{x}^{7}(y-1)^{5},\\,16{x}^{3}(y-1)^{2}) & = \\\\ 48\\cdot {x}^{7}\\cdot (y-1)^{5} & = \\\\ 48{x}^{7}(y-1)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "553ba9da-7b29-565f-b317-d5c640514719",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "08b755e8-7746-553b-ae12-5ee732e12e6b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48{x}^{7}(y-1)^{5}"
+              },
+              {
+                ":answer/id": "1eda9d64-0173-5df7-9ebd-2563c8d5079a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48{x}^{11}(y-1)^{11}"
+              },
+              {
+                ":answer/id": "58c2e0e1-2676-547e-a0e9-d964682d9f7e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "96{x}^{7}(y-1)^{5}"
+              },
+              {
+                ":answer/id": "b8d4db90-230e-5ffe-bbb0-f5157eccbc17",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "96x(y-1)^{2}"
+              },
+              {
+                ":answer/id": "f461ac4d-6820-5efb-ac0f-6f528f72f551",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48x(y-1)^{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "08b755e8-7746-553b-ae12-5ee732e12e6b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 101,
+        "template": "double_radio",
+        "parameters": {
+          "coefficients": [
+            8,
+            12,
+            16
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            0,
+            -1
+          ],
+          "powers": [
+            [
+              1,
+              4
+            ],
+            [
+              7,
+              5
+            ],
+            [
+              3,
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-76475",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "f97896bb78f36da095f3417148ffe82ed499a00e69cb17629219987fde67ae31",
+        "content_fingerprint": "09b686dbb8658b8063466f71ae4fbe0f7fe6c19dc299ae6fa60d8fa3e72086f9",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76475"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "08b755e8-7746-553b-ae12-5ee732e12e6b",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "1eda9d64-0173-5df7-9ebd-2563c8d5079a",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "58c2e0e1-2676-547e-a0e9-d964682d9f7e",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "b8d4db90-230e-5ffe-bbb0-f5157eccbc17",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "f461ac4d-6820-5efb-ac0f-6f528f72f551",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "24 single_blank observed-q-222127",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "db9e022d-79ba-558b-8cf7-55a8d766f981",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $2(x-1),$ $\\,5(x-1)^{4},$ and $2(x-1)^{2}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(2,5,2):$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,8,\\,10,\\,12,\u2026$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\u2026$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,\\,8,\\,10,\\,12,\u2026$\n\nSo, $\\text{LCM}(2,5,2)=10.$\n\nTo find the $\\text{LCM}$ of $(x-1),$ $(x-1)^{4},$ and $(x-1)^{2},$ we raise $(x-1)$ to the largest power that appears in all these expressions, which is $4.$ Therefore,\n\n$$\n\\text{LCM}((x-1),\\,(x-1)^{4},\\,(x-1)^{2})=(x-1)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(2(x-1),\\,5(x-1)^{4},\\,2(x-1)^{2})=10\\cdot (x-1)^{4}=10(x-1)^{4}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "95b1b92c-a5b6-56fe-ae64-4525875ee0e1",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "80708699-b37f-52e0-b208-1771f21c7ff1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "10(x-1)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "80708699-b37f-52e0-b208-1771f21c7ff1"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 200,
+        "template": "single_blank",
+        "parameters": {
+          "coefficients": [
+            2,
+            5,
+            2
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            -1
+          ],
+          "powers": [
+            [
+              1
+            ],
+            [
+              4
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222127",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "1f48cab8fe627478f8a5e4bf0c87f892399636b55ceb403485997514a806546d",
+        "content_fingerprint": "2e6857790eff646f9b9612b7d70cc69e24871f5a7bdcc315c96dfdba1ec25272",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222127"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "10(x-1)^{4}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "10*x^4 - 40*x^3 + 60*x^2 - 40*x + 10",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(10(x-1)^{4})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "25 single_blank observed-q-222127",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "2ceb3778-09b5-5de6-9479-f12a328fe3ec",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The least common multiple of $6(y-5)^{5},$ $\\,9(y-5)^{4},$ and $9(y-5)$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,9,9):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,24,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\u2026$\n\nSo, $\\text{LCM}(6,9,9)=18.$\n\nTo find the $\\text{LCM}$ of $(y-5)^{5},$ $(y-5)^{4},$ and $(y-5),$ we raise $(y-5)$ to the largest power that appears in all these expressions, which is $5.$ Therefore,\n\n$$\n\\text{LCM}((y-5)^{5},\\,(y-5)^{4},\\,(y-5))=(y-5)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(6(y-5)^{5},\\,9(y-5)^{4},\\,9(y-5))=18\\cdot (y-5)^{5}=18(y-5)^{5}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6ca6f96a-b3f6-525b-be79-42a249cab4cb",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b507a882-d752-5e29-8695-a13c930540bd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18(y-5)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b507a882-d752-5e29-8695-a13c930540bd"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 201,
+        "template": "single_blank",
+        "parameters": {
+          "coefficients": [
+            6,
+            9,
+            9
+          ],
+          "variables": [
+            "y"
+          ],
+          "shifts": [
+            -5
+          ],
+          "powers": [
+            [
+              5
+            ],
+            [
+              4
+            ],
+            [
+              1
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222127",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "6059cc7f079158939dde04482e882afa979eecc42305afb3428b4ef7be129e23",
+        "content_fingerprint": "1ab5e95c29f111cefea1c1649bbf87293e8ef1ec98e1071315e859bfd829dc54",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222127"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "18(y-5)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "18*y^5 - 450*y^4 + 4500*y^3 - 22500*y^2 + 56250*y - 56250",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(18(y-5)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "26 single_radio authored-single-bank",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "bcd88001-c90a-5311-b56e-dc43f88799b5",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the least common multiple of $2(x-1),$ $\\,5(x-1)^{4},$ and $2(x-1)^{2}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(2,5,2):$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,\\,8,\\,10,\u2026$\n\n- Multiples of $5:$ $\\,5,\\,10,\u2026$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,\\,8,\\,10,\\,12,\u2026$\n\nSo, $\\text{LCM}(2,5,2)=10.$\n\nTo find the $\\text{LCM}$ of $(x-1),$ $(x-1)^{4},$ and $(x-1)^{2},$ we raise $(x-1)$ to the largest power that appears in all these expressions, which is $4.$ Therefore,\n\n$$\n\\text{LCM}((x-1),\\,(x-1)^{4},\\,(x-1)^{2})=(x-1)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(2(x-1),\\,5(x-1)^{4},\\,2(x-1)^{2})=10\\cdot (x-1)^{4}=10(x-1)^{4}.\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4c8411ab-f502-5764-81ed-02363e7b9ff6",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "10bd6262-edd0-5e91-a9d5-8aa4dced9d9d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "10(x-1)"
+              },
+              {
+                ":answer/id": "079dd17c-fdd6-5f8e-8162-a5c34c572f9a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "10(x-1)^{7}"
+              },
+              {
+                ":answer/id": "f8430c63-e4cf-52f1-bf0f-97f4f5346fc7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20(x-1)^{4}"
+              },
+              {
+                ":answer/id": "16a6d95c-1dc7-58c3-9d42-f755f1da134e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1(x-1)^{4}"
+              },
+              {
+                ":answer/id": "68715ef6-dcd0-5f4e-9f4e-b7aee331c592",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "10(x-1)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "68715ef6-dcd0-5f4e-9f4e-b7aee331c592"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 200,
+        "template": "single_radio",
+        "parameters": {
+          "coefficients": [
+            2,
+            5,
+            2
+          ],
+          "variables": [
+            "x"
+          ],
+          "shifts": [
+            -1
+          ],
+          "powers": [
+            [
+              1
+            ],
+            [
+              4
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        "bank_profile": "authored-single-bank",
+        "bank_origin": "authored",
+        "parameter_fingerprint": "1f48cab8fe627478f8a5e4bf0c87f892399636b55ceb403485997514a806546d",
+        "content_fingerprint": "d2ca55de2efcb922dfd3981aa626a53943dc97f055624321a9f19a711372457a",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76247"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "10bd6262-edd0-5e91-a9d5-8aa4dced9d9d",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "079dd17c-fdd6-5f8e-8162-a5c34c572f9a",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "f8430c63-e4cf-52f1-bf0f-97f4f5346fc7",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "16a6d95c-1dc7-58c3-9d42-f755f1da134e",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "68715ef6-dcd0-5f4e-9f4e-b7aee331c592",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "27 single_radio authored-single-bank",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "0fef9551-6486-51e2-b7c2-1dbe47970ea0",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the least common multiple of $6(y-5)^{5},$ $\\,9(y-5)^{4},$ and $9(y-5).$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of the variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,9,9):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\u2026$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\u2026$\n\nSo, $\\text{LCM}(6,9,9)=18.$\n\nTo find the $\\text{LCM}$ of $(y-5)^{5},$ $(y-5)^{4},$ and $(y-5),$ we raise $(y-5)$ to the largest power that appears in all these expressions, which is $5.$ Therefore,\n\n$$\n\\text{LCM}((y-5)^{5},\\,(y-5)^{4},\\,(y-5))=(y-5)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(6(y-5)^{5},\\,9(y-5)^{4},\\,9(y-5))=18\\cdot (y-5)^{5}=18(y-5)^{5}.\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6fd20a94-1ddf-5bc0-b694-a8a67745d1eb",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9ff7a5ed-1fd6-5555-a6ae-ba67644065be",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18(y-5)"
+              },
+              {
+                ":answer/id": "2490e827-ffe5-5424-bae5-49c8edc4d2f8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18(y-5)^{10}"
+              },
+              {
+                ":answer/id": "febb3e95-f66f-58e0-a427-bb0975f1e7e8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3(y-5)^{5}"
+              },
+              {
+                ":answer/id": "04ba1a6b-fdf6-5ab7-948f-ad2166de7cc0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "486(y-5)^{5}"
+              },
+              {
+                ":answer/id": "c561070c-8f43-5b42-9097-f85629c08037",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18(y-5)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c561070c-8f43-5b42-9097-f85629c08037"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 201,
+        "template": "single_radio",
+        "parameters": {
+          "coefficients": [
+            6,
+            9,
+            9
+          ],
+          "variables": [
+            "y"
+          ],
+          "shifts": [
+            -5
+          ],
+          "powers": [
+            [
+              5
+            ],
+            [
+              4
+            ],
+            [
+              1
+            ]
+          ]
+        },
+        "bank_profile": "authored-single-bank",
+        "bank_origin": "authored",
+        "parameter_fingerprint": "6059cc7f079158939dde04482e882afa979eecc42305afb3428b4ef7be129e23",
+        "content_fingerprint": "62acebeaa7b0856975d40d6ae10c457de7e8d335c5bddfde7e23104100ca473d",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76247"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "9ff7a5ed-1fd6-5555-a6ae-ba67644065be",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "2490e827-ffe5-5424-bae5-49c8edc4d2f8",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "febb3e95-f66f-58e0-a427-bb0975f1e7e8",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "04ba1a6b-fdf6-5ab7-948f-ad2166de7cc0",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "c561070c-8f43-5b42-9097-f85629c08037",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "28 double_blank observed-q-222132",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "54274c4e-4bf7-5653-9708-17108b6e2b00",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The least common multiple of the polynomials $6(x+7)^{4}(y-4)^{4},\\,6(x+7)^{7}(y-4),$ and $17(x+7)^{5}(y-4)^{2}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,6,17):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,\\,42,\\,48,\\,54,\\,60,\\,66,\\,72,\\,78,\\,84,\\,90,\\,96,\\,102,\\,108,\u2026$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,\\,42,\\,48,\\,54,\\,60,\\,66,\\,72,\\,78,\\,84,\\,90,\\,96,\\,102,\\,108,\u2026$\n\n- Multiples of $17:$ $\\,17,\\,34,\\,\u22ef,\\,85,\\,102,\\,119,\u2026$\n\nSo, $\\text{LCM}(6,6,17)=102.$\n\nTo find the $\\text{LCM}$ of $(x+7)^{4}(y-4)^{4},(x+7)^{7}(y-4),$ and $(x+7)^{5}(y-4)^{2},$ we find the largest powers for $(x+7)$ and $(y-4)$ that appear in all these expressions:\n\n- For $(x+7)^{4},(x+7)^{7},$ and $(x+7)^{5},$ the largest power is $7.$\n\n- For $(y-4)^{4},(y-4),$ and $(y-4)^{2},$ the largest power is $4.$\n\nNow, we raise $(x+7)$ and $(y-4)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x+7)^{4}(y-4)^{4},(x+7)^{7}(y-4),(x+7)^{5}(y-4)^{2})=(x+7)^{7}\\cdot (y-4)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(6(x+7)^{4}(y-4)^{4},\\,6(x+7)^{7}(y-4),\\,17(x+7)^{5}(y-4)^{2}) & = \\\\ 102\\cdot (x+7)^{7}\\cdot (y-4)^{4} & = \\\\ 102(x+7)^{7}(y-4)^{4} & \\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1ff2be4f-17dd-5551-bc17-026416cd6e0c",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c7bbb727-396f-5aca-8949-1059667662ee",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "102(x+7)^{7}(y-4)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c7bbb727-396f-5aca-8949-1059667662ee"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 200,
+        "template": "double_blank",
+        "parameters": {
+          "coefficients": [
+            6,
+            6,
+            17
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            7,
+            -4
+          ],
+          "powers": [
+            [
+              4,
+              4
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              5,
+              2
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222132",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "6a46d730d591a4d5c9427cb5cc3e0b637d503a0dedfaad5d0987d36d642d967c",
+        "content_fingerprint": "7aad6b2e081a3ae76d480ea82164d6cf6368690d39d66ca5db3ef84f5cee2611",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222132"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": true,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "102(x+7)^{7}(y-4)^{4}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "102*x^7*y^4 - 1632*x^7*y^3 + 9792*x^7*y^2 - 26112*x^7*y + 26112*x^7 + 4998*x^6*y^4 - 79968*x^6*y^3 + 479808*x^6*y^2 - 1279488*x^6*y + 1279488*x^6 + 104958*x^5*y^4 - 1679328*x^5*y^3 + 10075968*x^5*y^2 - 26869248*x^5*y + 26869248*x^5 + 1224510*x^4*y^4 - 19592160*x^4*y^3 + 117552960*x^4*y^2 - 313474560*x^4*y + 313474560*x^4 + 8571570*x^3*y^4 - 137145120*x^3*y^3 + 822870720*x^3*y^2 - 2194321920*x^3*y + 2194321920*x^3 + 36000594*x^2*y^4 - 576009504*x^2*y^3 + 3456057024*x^2*y^2 - 9216152064*x^2*y + 9216152064*x^2 + 84001386*x*y^4 - 1344022176*x*y^3 + 8064133056*x*y^2 - 21504354816*x*y + 21504354816*x + 84001386*y^4 - 1344022176*y^3 + 8064133056*y^2 - 21504354816*y + 21504354816",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(102(x+7)^{7}(y-4)^{4})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "29 double_blank observed-q-222132",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "fbf681fd-e58e-538f-912d-25a3ba588d19",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The least common multiple of the polynomials $8(x-6)^{2}(y-2)^{6},\\,2(x-6)^{7}(y-2)^{4},$ and $11(x-6)^{6}(y-2)^{6}$ is{{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(8,2,11):$\n\n- Multiples of $8:$ $\\,8,\\,16,\\,24,\\,32,\\,40,\\,48,\\,56,\\,64,\\,72,\\,80,\\,88,\\,96,\u2026$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,\\,8,\\,10,\\,12,\\,14,\\,16,\\,18,\\,20,\\,22,\\,24,\\,26,\\,28,\\,30,\\,32,\\,34,\\,36,\\,38,\\,40,\\,42,\\,44,\\,46,\\,48,\\,50,\\,52,\\,54,\\,56,\\,58,\\,60,\\,62,\\,64,\\,66,\\,68,\\,70,\\,72,\\,74,\\,76,\\,78,\\,80,\\,82,\\,84,\\,86,\\,88,\\,90,\u2026$\n\n- Multiples of $11:$ $\\,11,\\,22,\\,\u22ef,\\,77,\\,88,\\,99,\u2026$\n\nSo, $\\text{LCM}(8,2,11)=88.$\n\nTo find the $\\text{LCM}$ of $(x-6)^{2}(y-2)^{6},(x-6)^{7}(y-2)^{4},$ and $(x-6)^{6}(y-2)^{6},$ we find the largest powers for $(x-6)$ and $(y-2)$ that appear in all these expressions:\n\n- For $(x-6)^{2},(x-6)^{7},$ and $(x-6)^{6},$ the largest power is $7.$\n\n- For $(y-2)^{6},(y-2)^{4},$ and $(y-2)^{6},$ the largest power is $6.$\n\nNow, we raise $(x-6)$ and $(y-2)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-6)^{2}(y-2)^{6},(x-6)^{7}(y-2)^{4},(x-6)^{6}(y-2)^{6})=(x-6)^{7}\\cdot (y-2)^{6}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(8(x-6)^{2}(y-2)^{6},\\,2(x-6)^{7}(y-2)^{4},\\,11(x-6)^{6}(y-2)^{6}) & = \\\\ 88\\cdot (x-6)^{7}\\cdot (y-2)^{6} & = \\\\ 88(x-6)^{7}(y-2)^{6} & \\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8384f400-d29d-5ac4-b725-9872d80fb2b2",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "32c133e6-0b18-5003-b86a-a2e7a8ba67dc",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "88(x-6)^{7}(y-2)^{6}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "32c133e6-0b18-5003-b86a-a2e7a8ba67dc"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 201,
+        "template": "double_blank",
+        "parameters": {
+          "coefficients": [
+            8,
+            2,
+            11
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            -6,
+            -2
+          ],
+          "powers": [
+            [
+              2,
+              6
+            ],
+            [
+              7,
+              4
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        },
+        "bank_profile": "observed-q-222132",
+        "bank_origin": "observed",
+        "parameter_fingerprint": "6a4dd4c2934c8eb149e9bc3c5f30ac8ffe4d41ed4a334149281b1fc68175775f",
+        "content_fingerprint": "fc016620086dc4a512a9d1b9b6cc1d530a80fea0c3692a423b34aef1a1cabb76",
+        "authored_extension": false,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222132"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": true,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "88(x-6)^{7}(y-2)^{6}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "88*x^7*y^6 - 1056*x^7*y^5 + 5280*x^7*y^4 - 14080*x^7*y^3 + 21120*x^7*y^2 - 16896*x^7*y + 5632*x^7 - 3696*x^6*y^6 + 44352*x^6*y^5 - 221760*x^6*y^4 + 591360*x^6*y^3 - 887040*x^6*y^2 + 709632*x^6*y - 236544*x^6 + 66528*x^5*y^6 - 798336*x^5*y^5 + 3991680*x^5*y^4 - 10644480*x^5*y^3 + 15966720*x^5*y^2 - 12773376*x^5*y + 4257792*x^5 - 665280*x^4*y^6 + 7983360*x^4*y^5 - 39916800*x^4*y^4 + 106444800*x^4*y^3 - 159667200*x^4*y^2 + 127733760*x^4*y - 42577920*x^4 + 3991680*x^3*y^6 - 47900160*x^3*y^5 + 239500800*x^3*y^4 - 638668800*x^3*y^3 + 958003200*x^3*y^2 - 766402560*x^3*y + 255467520*x^3 - 14370048*x^2*y^6 + 172440576*x^2*y^5 - 862202880*x^2*y^4 + 2299207680*x^2*y^3 - 3448811520*x^2*y^2 + 2759049216*x^2*y - 919683072*x^2 + 28740096*x*y^6 - 344881152*x*y^5 + 1724405760*x*y^4 - 4598415360*x*y^3 + 6897623040*x*y^2 - 5518098432*x*y + 1839366144*x - 24634368*y^6 + 295612416*y^5 - 1478062080*y^4 + 3941498880*y^3 - 5912248320*y^2 + 4729798656*y - 1576599552",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(88(x-6)^{7}(y-2)^{6})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      }
+    ]
+  },
+  {
+    "label": "30 double_radio authored-double-bank",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "d93520d9-c78a-5365-97dd-926f87051075",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the least common multiple of the polynomials $16{x}^{7}(y-2),$ $\\,10{x}^{3}(y-2)^{6},$ and $16{x}^{6}(y-2)^{4}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(16,10,16):$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\\,80,\\,96,\\,112,\\,\u2026$\n\n- Multiples of $10:$ $\\,10,\\,20,\\,30,\\,40,\\,50,\\,60,\\,70,\\,80,\\,90,\\,\u2026$\n\n- Multiples of $16:$ $\\,16,\\,32,\\,48,\\,64,\\,80,\\,96,\u2026$\n\nSo, $\\text{LCM}(16,10,16)=80.$\n\nTo find the $\\text{LCM}$ of ${x}^{7}(y-2),{x}^{3}(y-2)^{6},$ and ${x}^{6}(y-2)^{4},$ we find the largest powers for $x$ and $(y-2)$ that appear in all these expressions:\n\n- For ${x}^{7},\\,{x}^{3},$ and ${x}^{6},$ the largest power is $7.$\n\n- For $(y-2),(y-2)^{6},$ and $(y-2)^{4},$ the largest power is $6.$\n\nNow, we raise $x$ and $(y-2)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({x}^{7}(y-2),\\,{x}^{3}(y-2)^{6},\\,{x}^{6}(y-2)^{4})={x}^{7}\\cdot (y-2)^{6}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(16{x}^{7}(y-2),\\,10{x}^{3}(y-2)^{6},\\,16{x}^{6}(y-2)^{4}) & = \\\\ 80\\cdot {x}^{7}\\cdot (y-2)^{6} & = \\\\ 80{x}^{7}(y-2)^{6} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c3a3471a-44fc-502a-a543-d78cc1ffa0c8",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "fdf71106-b7fd-5a21-8187-6623bf0f63a6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "80{x}^{3}(y-2)"
+              },
+              {
+                ":answer/id": "ccd52ce9-cebc-5bca-9ea5-065cddc4855f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "80{x}^{16}(y-2)^{11}"
+              },
+              {
+                ":answer/id": "33007d42-4fd6-5456-aef8-8bfb9170c469",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2560{x}^{7}(y-2)^{6}"
+              },
+              {
+                ":answer/id": "531a92e9-9069-5160-a6eb-74739217577d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2{x}^{7}(y-2)^{6}"
+              },
+              {
+                ":answer/id": "5e53c24b-86f7-5adc-91b5-323d9587405a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "80{x}^{7}(y-2)^{6}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5e53c24b-86f7-5adc-91b5-323d9587405a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 200,
+        "template": "double_radio",
+        "parameters": {
+          "coefficients": [
+            16,
+            10,
+            16
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            0,
+            -2
+          ],
+          "powers": [
+            [
+              7,
+              1
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              6,
+              4
+            ]
+          ]
+        },
+        "bank_profile": "authored-double-bank",
+        "bank_origin": "authored",
+        "parameter_fingerprint": "286e37e4148f9aa11316053f081c6c693f55018d7246325b1ac9d42ee3dcf9f2",
+        "content_fingerprint": "cfb6a240e06171eeaa261e692a5c84b01abb0ce25cc17e817d87c000f7f8e3ad",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76475"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "fdf71106-b7fd-5a21-8187-6623bf0f63a6",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "ccd52ce9-cebc-5bca-9ea5-065cddc4855f",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "33007d42-4fd6-5456-aef8-8bfb9170c469",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "531a92e9-9069-5160-a6eb-74739217577d",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "5e53c24b-86f7-5adc-91b5-323d9587405a",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "31 double_radio authored-double-bank",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "1bb9fe36-aa72-5191-b031-e6d09beb16d0",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the least common multiple of the polynomials $4{x}^{6}(y+1)^{6},$ $\\,12{x}^{6}(y+1)^{4},$ and $15{x}^{5}(y+1)^{7}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,12,15):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,\\,36,\\,40,\\,44,\\,48,\\,52,\\,56,\\,60,\\,64,\\,68,\\,\u2026$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\\,72,\\,\u2026$\n\n- Multiples of $15:$ $\\,15,\\,30,\\,45,\\,60,\\,75,\u2026$\n\nSo, $\\text{LCM}(4,12,15)=60.$\n\nTo find the $\\text{LCM}$ of ${x}^{6}(y+1)^{6},{x}^{6}(y+1)^{4},$ and ${x}^{5}(y+1)^{7},$ we find the largest powers for $x$ and $(y+1)$ that appear in all these expressions:\n\n- For ${x}^{6},\\,{x}^{6},$ and ${x}^{5},$ the largest power is $6.$\n\n- For $(y+1)^{6},(y+1)^{4},$ and $(y+1)^{7},$ the largest power is $7.$\n\nNow, we raise $x$ and $(y+1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({x}^{6}(y+1)^{6},\\,{x}^{6}(y+1)^{4},\\,{x}^{5}(y+1)^{7})={x}^{6}\\cdot (y+1)^{7}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(4{x}^{6}(y+1)^{6},\\,12{x}^{6}(y+1)^{4},\\,15{x}^{5}(y+1)^{7}) & = \\\\ 60\\cdot {x}^{6}\\cdot (y+1)^{7} & = \\\\ 60{x}^{6}(y+1)^{7} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8b645474-d131-5baf-948c-d77dc1d754c5",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "17a22de0-5f12-5997-ac14-4b42b8ae4cd0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{x}^{5}(y+1)^{4}"
+              },
+              {
+                ":answer/id": "8c60e1e4-bb63-5d41-9f83-c67d2ca7c22d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{x}^{17}(y+1)^{17}"
+              },
+              {
+                ":answer/id": "b12497fa-4d2b-5520-b807-fef12ac352c7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1{x}^{6}(y+1)^{7}"
+              },
+              {
+                ":answer/id": "d56b2876-ced3-5786-a673-b29be55696e6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "720{x}^{6}(y+1)^{7}"
+              },
+              {
+                ":answer/id": "8906ab18-51b5-55a2-80b1-8eed7ce55040",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{x}^{6}(y+1)^{7}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8906ab18-51b5-55a2-80b1-8eed7ce55040"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 201,
+        "template": "double_radio",
+        "parameters": {
+          "coefficients": [
+            4,
+            12,
+            15
+          ],
+          "variables": [
+            "x",
+            "y"
+          ],
+          "shifts": [
+            0,
+            1
+          ],
+          "powers": [
+            [
+              6,
+              6
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              5,
+              7
+            ]
+          ]
+        },
+        "bank_profile": "authored-double-bank",
+        "bank_origin": "authored",
+        "parameter_fingerprint": "86357f40d09bf841a0c7b0b2d7ae053882a484a3155e1a0d4cc0820422c5d2a0",
+        "content_fingerprint": "8fe50d0fcc374341c6850419cd2dac4f4de85b0f4925070340870b6cf1e3a196",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76475"
+        ],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "17a22de0-5f12-5997-ac14-4b42b8ae4cd0",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "8c60e1e4-bb63-5d41-9f83-c67d2ca7c22d",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "b12497fa-4d2b-5520-b807-fef12ac352c7",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "d56b2876-ced3-5786-a673-b29be55696e6",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "8906ab18-51b5-55a2-80b1-8eed7ce55040",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "32 triple_blank None",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "b7896321-7110-5e9e-8434-2f0c91094965",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "The least common multiple of the polynomials $3(x-5)^{5}(y-1)^{4}(x-9),\\,8(x-5)(y-1)^{5}(x-9)^{4},$ and $2(x-5)^{3}(y-1)^{3}(x-9)^{5}$ is {{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(3,8,2):$\n\n- Multiples of $3:$ $\\,3,\\,6,\\,9,\\,12,\\,15,\\,18,\\,21,\\,24,\\,27,\u2026$\n\n- Multiples of $8:$ $\\,8,\\,16,\\,24,\\,32,\u2026$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,\u2026,\\,22,\\,24,\\,26,\u2026$\n\nSo, $\\text{LCM}(3,8,2)=24.$\n\nTo find the $\\text{LCM}$ of $(x-5)^{5}(y-1)^{4}(x-9),(x-5)(y-1)^{5}(x-9)^{4},(x-5)^{3}(y-1)^{3}(x-9)^{5},$ we find the largest powers for $(x-5)$, $(y-1)$, $(x-9)$ that appear in all these expressions:\n\n- For $(x-5)^{5},$ $(x-5),$ and $(x-5)^{3},$ the largest power is $5.$\n\n- For $(y-1)^{4},$ $(y-1)^{5},$ and $(y-1)^{3},$ the largest power is $5.$\n\n- For $(x-9),$ $(x-9)^{4},$ and $(x-9)^{5},$ the largest power is $5.$\n\nNow, we raise $(x-5)$, $(y-1)$, $(x-9)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-5)^{5}(y-1)^{4}(x-9),\\,(x-5)(y-1)^{5}(x-9)^{4},\\,(x-5)^{3}(y-1)^{3}(x-9)^{5})=(x-5)^{5}\\cdot (y-1)^{5}\\cdot (x-9)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(3(x-5)^{5}(y-1)^{4}(x-9),\\,8(x-5)(y-1)^{5}(x-9)^{4},\\,2(x-5)^{3}(y-1)^{3}(x-9)^{5}) & = \\\\ 24\\cdot (x-5)^{5}\\cdot (y-1)^{5}\\cdot (x-9)^{5} & = \\\\ 24(x-5)^{5}(y-1)^{5}(x-9)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3f75a8fd-c438-5b2f-9429-87d34d559366",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4217610c-1e73-5d48-8f18-272ca5b68864",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24(x-5)^{5}(y-1)^{5}(x-9)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4217610c-1e73-5d48-8f18-272ca5b68864"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 200,
+        "template": "triple_blank",
+        "parameters": {
+          "coefficients": [
+            3,
+            8,
+            2
+          ],
+          "variables": [
+            "x",
+            "y",
+            "x"
+          ],
+          "shifts": [
+            -5,
+            -1,
+            -9
+          ],
+          "powers": [
+            [
+              5,
+              4,
+              1
+            ],
+            [
+              1,
+              5,
+              4
+            ],
+            [
+              3,
+              3,
+              5
+            ]
+          ]
+        },
+        "bank_profile": null,
+        "bank_origin": "authored",
+        "parameter_fingerprint": "80503c405f2e82474feb4c3360e5c7fb7c9f706ab174cfd8d4c3ec40c670a2bc",
+        "content_fingerprint": "feb30e38865362cfcee0d0981ce9c964210e4dc196ab807e18f9fef38d4e3438",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "24(x-5)^{5}(y-1)^{5}(x-9)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "24*(x^5 - 25*x^4 + 250*x^3 - 1250*x^2 + 3125*x - 3125)*(y-1)^{5}*(x-9)^{5}",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(24(x-5)^{5}(y-1)^{5}(x-9)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      },
+      {
+        "submitted": "24*x^10*y^5 - 120*x^10*y^4 + 240*x^10*y^3 - 240*x^10*y^2 + 120*x^10*y - 24*x^10 - 1680*x^9*y^5 + 8400*x^9*y^4 - 16800*x^9*y^3 + 16800*x^9*y^2 - 8400*x^9*y + 1680*x^9 + 52440*x^8*y^5 - 262200*x^8*y^4 + 524400*x^8*y^3 - 524400*x^8*y^2 + 262200*x^8*y - 52440*x^8 - 960960*x^7*y^5 + 4804800*x^7*y^4 - 9609600*x^7*y^3 + 9609600*x^7*y^2 - 4804800*x^7*y + 960960*x^7 + 11446320*x^6*y^5 - 57231600*x^6*y^4 + 114463200*x^6*y^3 - 114463200*x^6*y^2 + 57231600*x^6*y - 11446320*x^6 - 92590176*x^5*y^5 + 462950880*x^5*y^4 - 925901760*x^5*y^3 + 925901760*x^5*y^2 - 462950880*x^5*y + 92590176*x^5 + 515084400*x^4*y^5 - 2575422000*x^4*y^4 + 5150844000*x^4*y^3 - 5150844000*x^4*y^2 + 2575422000*x^4*y - 515084400*x^4 - 1945944000*x^3*y^5 + 9729720000*x^3*y^4 - 19459440000*x^3*y^3 + 19459440000*x^3*y^2 - 9729720000*x^3*y + 1945944000*x^3 + 4778595000*x^2*y^5 - 23892975000*x^2*y^4 + 47785950000*x^2*y^3 - 47785950000*x^2*y^2 + 23892975000*x^2*y - 4778595000*x^2 - 6889050000*x*y^5 + 34445250000*x*y^4 - 68890500000*x*y^3 + 68890500000*x*y^2 - 34445250000*x*y + 6889050000*x + 4428675000*y^5 - 22143375000*y^4 + 44286750000*y^3 - 44286750000*y^2 + 22143375000*y - 4428675000",
+        "expected": "unresolved",
+        "purpose": "Documented native512token limit for full expansion; canonical and partially expanded equivalents must still pass"
+      }
+    ]
+  },
+  {
+    "label": "33 triple_blank None",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "4d61835d-27e2-594f-9aa8-fb1a8a4380be",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "The least common multiple of the polynomials $4(x-9)^{5}(y+1)^{2}(x+2)^{2},\\,12(x-9)^{4}(y+1)^{5}(x+2),$ and $15(x-9)(y+1)^{2}(x+2)^{5}$ is {{field-1}}.",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,12,15):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,\u2026,\\,56,\\,60,\\,64,\u2026$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\\,72,\u2026$\n\n- Multiples of $15:$ $\\,15,\\,30,\\,45,\\,60,\\,75,\u2026$\n\nSo, $\\text{LCM}(4,12,15)=60.$\n\nTo find the $\\text{LCM}$ of $(x-9)^{5}(y+1)^{2}(x+2)^{2},(x-9)^{4}(y+1)^{5}(x+2),(x-9)(y+1)^{2}(x+2)^{5},$ we find the largest powers for $(x-9)$, $(y+1)$, $(x+2)$ that appear in all these expressions:\n\n- For $(x-9)^{5},$ $(x-9)^{4},$ and $(x-9),$ the largest power is $5.$\n\n- For $(y+1)^{2},$ $(y+1)^{5},$ and $(y+1)^{2},$ the largest power is $5.$\n\n- For $(x+2)^{2},$ $(x+2),$ and $(x+2)^{5},$ the largest power is $5.$\n\nNow, we raise $(x-9)$, $(y+1)$, $(x+2)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-9)^{5}(y+1)^{2}(x+2)^{2},\\,(x-9)^{4}(y+1)^{5}(x+2),\\,(x-9)(y+1)^{2}(x+2)^{5})=(x-9)^{5}\\cdot (y+1)^{5}\\cdot (x+2)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(4(x-9)^{5}(y+1)^{2}(x+2)^{2},\\,12(x-9)^{4}(y+1)^{5}(x+2),\\,15(x-9)(y+1)^{2}(x+2)^{5}) & = \\\\ 60\\cdot (x-9)^{5}\\cdot (y+1)^{5}\\cdot (x+2)^{5} & = \\\\ 60(x-9)^{5}(y+1)^{5}(x+2)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "55d283d1-6d24-527d-9807-14be177a0d50",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "72884ecd-cba8-57f8-b598-7303a9471a28",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x-9)^{5}(y+1)^{5}(x+2)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "72884ecd-cba8-57f8-b598-7303a9471a28"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 201,
+        "template": "triple_blank",
+        "parameters": {
+          "coefficients": [
+            4,
+            12,
+            15
+          ],
+          "variables": [
+            "x",
+            "y",
+            "x"
+          ],
+          "shifts": [
+            -9,
+            1,
+            2
+          ],
+          "powers": [
+            [
+              5,
+              2,
+              2
+            ],
+            [
+              4,
+              5,
+              1
+            ],
+            [
+              1,
+              2,
+              5
+            ]
+          ]
+        },
+        "bank_profile": null,
+        "bank_origin": "authored",
+        "parameter_fingerprint": "b70b66848536b5ab4690d43780727572faa59d896da3a24cf7c54a899a255bad",
+        "content_fingerprint": "a64824262f92a05e02bfd1e9435c7f9a5c754deacfd24083aa219579dc60a769",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "60(x-9)^{5}(y+1)^{5}(x+2)^{5}",
+        "expected": "accepted",
+        "purpose": "Canonical factored integer-content LCM"
+      },
+      {
+        "submitted": "60*(x^5 - 45*x^4 + 810*x^3 - 7290*x^2 + 32805*x - 59049)*(y+1)^{5}*(x+2)^{5}",
+        "expected": "accepted",
+        "purpose": "Independently expanded equivalent polynomial or factor, within native token limit"
+      },
+      {
+        "submitted": "2*(60(x-9)^{5}(y+1)^{5}(x+2)^{5})",
+        "expected": "rejected",
+        "purpose": "Nonzero scalar multiple is not least integer-content multiple"
+      },
+      {
+        "submitted": "1",
+        "expected": "rejected",
+        "purpose": "Incorrect constant"
+      },
+      {
+        "submitted": "60*x^10*y^5 + 300*x^10*y^4 + 600*x^10*y^3 + 600*x^10*y^2 + 300*x^10*y + 60*x^10 - 2100*x^9*y^5 - 10500*x^9*y^4 - 21000*x^9*y^3 - 21000*x^9*y^2 - 10500*x^9*y - 2100*x^9 + 24000*x^8*y^5 + 120000*x^8*y^4 + 240000*x^8*y^3 + 240000*x^8*y^2 + 120000*x^8*y + 24000*x^8 - 54600*x^7*y^5 - 273000*x^7*y^4 - 546000*x^7*y^3 - 546000*x^7*y^2 - 273000*x^7*y - 54600*x^7 - 672900*x^6*y^5 - 3364500*x^6*y^4 - 6729000*x^6*y^3 - 6729000*x^6*y^2 - 3364500*x^6*y - 672900*x^6 + 2317980*x^5*y^5 + 11589900*x^5*y^4 + 23179800*x^5*y^3 + 23179800*x^5*y^2 + 11589900*x^5*y + 2317980*x^5 + 12112200*x^4*y^5 + 60561000*x^4*y^4 + 121122000*x^4*y^3 + 121122000*x^4*y^2 + 60561000*x^4*y + 12112200*x^4 - 17690400*x^3*y^5 - 88452000*x^3*y^4 - 176904000*x^3*y^3 - 176904000*x^3*y^2 - 88452000*x^3*y - 17690400*x^3 - 139968000*x^2*y^5 - 699840000*x^2*y^4 - 1399680000*x^2*y^3 - 1399680000*x^2*y^2 - 699840000*x^2*y - 139968000*x^2 - 220449600*x*y^5 - 1102248000*x*y^4 - 2204496000*x*y^3 - 2204496000*x*y^2 - 1102248000*x*y - 220449600*x - 113374080*y^5 - 566870400*y^4 - 1133740800*y^3 - 1133740800*y^2 - 566870400*y - 113374080",
+        "expected": "unresolved",
+        "purpose": "Documented native512token limit for full expansion; canonical and partially expanded equivalents must still pass"
+      }
+    ]
+  },
+  {
+    "label": "34 triple_radio authored-triple-bank",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "3e15dc07-0884-5994-ae98-b1083bb79c75",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Find the least common multiple of the polynomials $3(x-5)^{5}(y-1)^{4}(x-9),$ $\\,8(x-5)(y-1)^{5}(x-9)^{4},$ and $2(x-5)^{3}(y-1)^{3}(x-9)^{5}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(3,8,2):$\n\n- Multiples of $3:$ $\\,3,\\,6,\\,9,\\,12,\\,15,\\,18,\\,21,\\,24,\\,27,\u2026$\n\n- Multiples of $8:$ $\\,8,\\,16,\\,24,\\,32,\u2026$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,\u2026,\\,22,\\,24,\\,26,\u2026$\n\nSo, $\\text{LCM}(3,8,2)=24.$\n\nTo find the $\\text{LCM}$ of $(x-5)^{5}(y-1)^{4}(x-9),(x-5)(y-1)^{5}(x-9)^{4},(x-5)^{3}(y-1)^{3}(x-9)^{5},$ we find the largest powers for $(x-5)$, $(y-1)$, $(x-9)$ that appear in all these expressions:\n\n- For $(x-5)^{5},$ $(x-5),$ and $(x-5)^{3},$ the largest power is $5.$\n\n- For $(y-1)^{4},$ $(y-1)^{5},$ and $(y-1)^{3},$ the largest power is $5.$\n\n- For $(x-9),$ $(x-9)^{4},$ and $(x-9)^{5},$ the largest power is $5.$\n\nNow, we raise $(x-5)$, $(y-1)$, $(x-9)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-5)^{5}(y-1)^{4}(x-9),\\,(x-5)(y-1)^{5}(x-9)^{4},\\,(x-5)^{3}(y-1)^{3}(x-9)^{5})=(x-5)^{5}\\cdot (y-1)^{5}\\cdot (x-9)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(3(x-5)^{5}(y-1)^{4}(x-9),\\,8(x-5)(y-1)^{5}(x-9)^{4},\\,2(x-5)^{3}(y-1)^{3}(x-9)^{5}) & = \\\\ 24\\cdot (x-5)^{5}\\cdot (y-1)^{5}\\cdot (x-9)^{5} & = \\\\ 24(x-5)^{5}(y-1)^{5}(x-9)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "642b37f1-825d-5596-9aa4-24e063b4f037",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ea31e374-27fe-5620-af2e-2529496efeeb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24(x-5)(y-1)^{3}(x-9)"
+              },
+              {
+                ":answer/id": "fe5c80ff-282f-5f8f-a653-f7919be1c1df",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24(x-5)^{9}(y-1)^{12}(x-9)^{10}"
+              },
+              {
+                ":answer/id": "671d1aac-715d-5fda-8c4e-74d1307b804a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48(x-5)^{5}(y-1)^{5}(x-9)^{5}"
+              },
+              {
+                ":answer/id": "47711bec-d718-501d-aba4-21befeea522b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1(x-5)^{5}(y-1)^{5}(x-9)^{5}"
+              },
+              {
+                ":answer/id": "b972e472-a0df-595f-b1f7-4f8ea0643842",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24(x-5)^{5}(y-1)^{5}(x-9)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b972e472-a0df-595f-b1f7-4f8ea0643842"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 200,
+        "template": "triple_radio",
+        "parameters": {
+          "coefficients": [
+            3,
+            8,
+            2
+          ],
+          "variables": [
+            "x",
+            "y",
+            "x"
+          ],
+          "shifts": [
+            -5,
+            -1,
+            -9
+          ],
+          "powers": [
+            [
+              5,
+              4,
+              1
+            ],
+            [
+              1,
+              5,
+              4
+            ],
+            [
+              3,
+              3,
+              5
+            ]
+          ]
+        },
+        "bank_profile": "authored-triple-bank",
+        "bank_origin": "authored",
+        "parameter_fingerprint": "80503c405f2e82474feb4c3360e5c7fb7c9f706ab174cfd8d4c3ec40c670a2bc",
+        "content_fingerprint": "bd00de532d2f193068fd26e93e6f870065686ef7fe03747c3a2d204668118095",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "ea31e374-27fe-5620-af2e-2529496efeeb",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "fe5c80ff-282f-5f8f-a653-f7919be1c1df",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "671d1aac-715d-5fda-8c4e-74d1307b804a",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "47711bec-d718-501d-aba4-21befeea522b",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "b972e472-a0df-595f-b1f7-4f8ea0643842",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      }
+    ]
+  },
+  {
+    "label": "35 triple_radio authored-triple-bank",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152119,
+        "id": "57496436-8bd0-567e-8c37-ed584849ce1a",
+        "title": "Finding the LCM of Three Polynomials"
+      },
+      "question": {
+        ":question/id": "8d741d90-0306-5677-942b-23b6b1a61a36",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Find the least common multiple of the polynomials $4(x-9)^{5}(y+1)^{2}(x+2)^{2},$ $\\,12(x-9)^{4}(y+1)^{5}(x+2),$ and $15(x-9)(y+1)^{2}(x+2)^{5}.$",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of three polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,12,15):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,\u2026,\\,56,\\,60,\\,64,\u2026$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\\,72,\u2026$\n\n- Multiples of $15:$ $\\,15,\\,30,\\,45,\\,60,\\,75,\u2026$\n\nSo, $\\text{LCM}(4,12,15)=60.$\n\nTo find the $\\text{LCM}$ of $(x-9)^{5}(y+1)^{2}(x+2)^{2},(x-9)^{4}(y+1)^{5}(x+2),(x-9)(y+1)^{2}(x+2)^{5},$ we find the largest powers for $(x-9)$, $(y+1)$, $(x+2)$ that appear in all these expressions:\n\n- For $(x-9)^{5},$ $(x-9)^{4},$ and $(x-9),$ the largest power is $5.$\n\n- For $(y+1)^{2},$ $(y+1)^{5},$ and $(y+1)^{2},$ the largest power is $5.$\n\n- For $(x+2)^{2},$ $(x+2),$ and $(x+2)^{5},$ the largest power is $5.$\n\nNow, we raise $(x-9)$, $(y+1)$, $(x+2)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-9)^{5}(y+1)^{2}(x+2)^{2},\\,(x-9)^{4}(y+1)^{5}(x+2),\\,(x-9)(y+1)^{2}(x+2)^{5})=(x-9)^{5}\\cdot (y+1)^{5}\\cdot (x+2)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\begin{aligned}\\text{LCM}(4(x-9)^{5}(y+1)^{2}(x+2)^{2},\\,12(x-9)^{4}(y+1)^{5}(x+2),\\,15(x-9)(y+1)^{2}(x+2)^{5}) & = \\\\ 60\\cdot (x-9)^{5}\\cdot (y+1)^{5}\\cdot (x+2)^{5} & = \\\\ 60(x-9)^{5}(y+1)^{5}(x+2)^{5} & .\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0b81f694-d621-5668-a58b-3c936ee290f7",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "8e68b336-c866-5046-abd4-09b8f0049f0d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x-9)(y+1)^{2}(x+2)"
+              },
+              {
+                ":answer/id": "f8e535b4-dd9f-5904-be2f-1e614e38bada",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x-9)^{10}(y+1)^{9}(x+2)^{8}"
+              },
+              {
+                ":answer/id": "93b575cf-2262-5101-a12e-e5c0b99c9056",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1(x-9)^{5}(y+1)^{5}(x+2)^{5}"
+              },
+              {
+                ":answer/id": "fb833c2a-4aab-5083-b375-f7ceaab66759",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "720(x-9)^{5}(y+1)^{5}(x+2)^{5}"
+              },
+              {
+                ":answer/id": "104de2a7-6815-5503-a931-68e02260a358",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60(x-9)^{5}(y+1)^{5}(x+2)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "104de2a7-6815-5503-a931-68e02260a358"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "three-polynomial-lcm-v1",
+        "sympy_version": "1.14.0",
+        "seed": 201,
+        "template": "triple_radio",
+        "parameters": {
+          "coefficients": [
+            4,
+            12,
+            15
+          ],
+          "variables": [
+            "x",
+            "y",
+            "x"
+          ],
+          "shifts": [
+            -9,
+            1,
+            2
+          ],
+          "powers": [
+            [
+              5,
+              2,
+              2
+            ],
+            [
+              4,
+              5,
+              1
+            ],
+            [
+              1,
+              2,
+              5
+            ]
+          ]
+        },
+        "bank_profile": "authored-triple-bank",
+        "bank_origin": "authored",
+        "parameter_fingerprint": "b70b66848536b5ab4690d43780727572faa59d896da3a24cf7c54a899a255bad",
+        "content_fingerprint": "fd1db88a2cb7042a30b705fe8d745958166cb176bece242373460a8fb2c2fa77",
+        "authored_extension": true,
+        "source_analysis": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "source_completion": false,
+        "preserves_source_omissions": false,
+        "raw_source_error": false,
+        "source_prose_repair": false,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "domain": "positive integer coefficients, primitive distinct displayed linear factors over ZZ; positive integer-content LCM"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "8e68b336-c866-5046-abd4-09b8f0049f0d",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "f8e535b4-dd9f-5904-be2f-1e614e38bada",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "93b575cf-2262-5101-a12e-e5c0b99c9056",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "fb833c2a-4aab-5083-b375-f7ceaab66759",
+        "expected": "rejected",
+        "purpose": "All owned choices"
+      },
+      {
+        "submitted_answer_id": "104de2a7-6815-5503-a931-68e02260a358",
+        "expected": "accepted",
+        "purpose": "All owned choices"
+      }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+# Classification refresh at math basis 2021
+
+Lineage remains `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Complete current Pull is retained in reference/current-kp.edn and current-query.edn. This refresh supplements the unchanged basis-1356 evidence; it does not overwrite it. All four current practice questions and the canonical example were read together at this basis.
+
+| Source | Difficulty | Displayed equations | Exact intersection | Fields | Layout | Plot requirements |
+|---|---|---|---|---|---|---|
+| q-171700 | unrated | x+y=1; 2x+y=4 | (3,-2), independently derived | two blanks; correct facts missing | legacy semicolon system | heavy |
+| q-238014 | unrated | 4x-y=12; y=-3x+9 | (3,0), independently derived | two blanks; correct facts missing | legacy semicolon system | heavy |
+| q-238005 | easy | y=2x+1; x+y=-5 | (-2,-3), supplied and independently verified | x then y; both field-owned math answers present | aligned system, slope/standard | heavy when varying, none for exact replay |
+| q-238028 | moderate | 5x+y=-20; x-y=-4 | (-4,0), supplied and independently verified | x then y; both field-owned math answers present | aligned system, standard/standard | heavy when varying, none for exact replay |
+
+There are no choice banks or distractors. All four belong to the graphical unique-intersection family. Captured aligned-system Markdown is a separate exact source presentation, preserved in current-kp.edn and source-validation.json; normal generated output keeps the validated balanced array layout. New source answers and complete solutions are replayed without alteration by the source refresh validator and checked with the actual native grader. The first two sources still lack correct references and solutions and remain unavailable; source preservation takes precedence over repairing served identities.
+
+q-238005's signed coordinates demonstrate that easy is not exclusively first quadrant in the source curriculum. The generator's easy first-quadrant opposing-slope policy is a deliberately narrower authored peer domain, not a recovered source boundary. q-238028 includes slope -5 outside the generator's moderate -4..4 policy: that source is fully valid but its exact geometry is evidence-only, not a promised resampled template. Its graph labels multiples of 2 with unit grid lines and its intersection is directly numbered at (-4,0). The generator's hard peers require reading two odd coordinates between labeled ticks; this is an authored same-skill extension, supported by the canonical graph's unit grid with every second tick numbered. No observed hard source label is claimed.
+
+The original classification, extraction and plot specifications remain applicable to normal sampling. Exact source-only aligned-layout replays preserve equations, fragments, field identities, full solution sequence and immutable asset bytes. No random generalization of those two new literal source presentations is asserted. Fidelity of normalized original prompts is 2/2, source correct fragments now available and checked are 4/4, complete supplied practice solutions now available and checked are 2/2. There are no missing or extra bank options. Raw malformed first-source Markdown remains evidence, not a generated learner default.
+
+Source image inspection confirmed the orange y=2x+1 and blue x+y=-5 intersect at (-2,-3) on unit ticks; orange 5x+y=-20 and blue x-y=-4 intersect at (-4,0) with numbered two-unit ticks. Existing original/replay and twelve E/M/H raster contact sheets were reviewed. Fresh selected variants additionally receive individual raster QA before submission; exact equation/PNG sidecar checks and native two-blank canonical/equivalent/wrong grading are required.
+
+Bounded normal capacity remains 96 easy, 1820 moderate and 216 hard unordered line-and-scale tasks. Equivalent layouts, line colors, seeds, UUIDs and choice order cannot create extra tasks. Different coordinate answers are preferred during replenishment. All levels currently have enough finite capacity for the rolling quota; no unsupported level is called filled. Capacity exhaustion will return finite-limit and explicit missing counts.

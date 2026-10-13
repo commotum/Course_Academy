@@ -1,0 +1,3623 @@
+[
+  {
+    "label": "completed/q-218516",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "d2d03404-85d1-53dd-bf6f-41143b7d2cad",
+        ":question/problem": "The least common multiple of the polynomials $4{u}^{3}(v-2)^{2}$ and $5u(v-2)^{5}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "37f48730-9e02-5852-8b20-25d66eb56c3b",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bf0a936f-310a-51d9-886a-f89b9eced54e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20{u}^{3}(v-2)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bf0a936f-310a-51d9-886a-f89b9eced54e"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,5):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,…$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,\\,25,…$\n\nSo, $\\text{LCM}(4,5)=20.$\n\nTo find the $\\text{LCM}$ of ${u}^{3}(v-2)^{2}$ and $u(v-2)^{5},$ we find the largest powers for $u$ and $(v-2)$ that appear in the expressions:\n\n- For ${u}^{3}$ and $u,$ the largest power is $3.$\n\n- For $(v-2)^{2}$ and $(v-2)^{5},$ the largest power is $5.$\n\nNow, we raise $u$ and $(v-2)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({u}^{3}(v-2)^{2},\\,u(v-2)^{5})={u}^{3}\\cdot (v-2)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(4{u}^{3}(v-2)^{2},\\,5u(v-2)^{5})=20{u}^{3}(v-2)^{5}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "easy",
+        "template": "factored_blank",
+        "profile": "completed_q-218516",
+        "bank": null,
+        "parameters": {
+          "a": 4,
+          "b": 5,
+          "v": "u",
+          "w": "v",
+          "h": 0,
+          "k": -2,
+          "p": 3,
+          "q": 2,
+          "r": 1,
+          "s": 5
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-218516"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "b842af54e35d6586ce850f25e4da2277180ac0dd3f83bf4b1efb3cdb80761121",
+        "mathematical_fingerprint": "cc2f5fc27c2ea1ca4bb476746224f203f202e843fdab141620b321c868136ce8",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "20{u}^{3}(v-2)^{5}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "20*u^3*v^5 - 200*u^3*v^4 + 800*u^3*v^3 - 1600*u^3*v^2 + 1600*u^3*v - 640*u^3",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "20*(u^3)*(v - 2)^5",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(20{u}^{3}(v-2)^{5})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(20{u}^{3}(v-2)^{5})/20",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(20{u}^{3}(v-2)^{5})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(20{u}^{3}(v-2)^{5})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(20{u}^{3}(v-2)^{5})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "changed/q-218516",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "cdee7b44-f87b-52d2-9836-df3a281171f5",
+        ":question/problem": "The least common multiple of the polynomials $5(u-4)^{2}(w+3)$ and $6(u-4)^{3}(w+3)^{4}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4e952752-8a63-528a-99f0-7c6315993b29",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1eae513b-a031-5ec4-97a3-7a8317c9c4d4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30(u-4)^{3}(w+3)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1eae513b-a031-5ec4-97a3-7a8317c9c4d4"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(5,6):$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,\\,25,\\,30,\\,35,…$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,…$\n\nSo, $\\text{LCM}(5,6)=30.$\n\nTo find the $\\text{LCM}$ of $(u-4)^{2}(w+3)$ and $(u-4)^{3}(w+3)^{4},$ we find the largest powers for $(u-4)$ and $(w+3)$ that appear in the expressions:\n\n- For $(u-4)^{2}$ and $(u-4)^{3},$ the largest power is $3.$\n\n- For $(w+3)$ and $(w+3)^{4},$ the largest power is $4.$\n\nNow, we raise $(u-4)$ and $(w+3)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((u-4)^{2}(w+3),\\,(u-4)^{3}(w+3)^{4})=(u-4)^{3}\\cdot (w+3)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(5(u-4)^{2}(w+3),\\,6(u-4)^{3}(w+3)^{4})=30(u-4)^{3}(w+3)^{4}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 33,
+        "level": "easy",
+        "template": "factored_blank",
+        "profile": "completed_q-218516",
+        "bank": null,
+        "parameters": {
+          "a": 5,
+          "b": 6,
+          "v": "u",
+          "w": "w",
+          "h": -4,
+          "k": 3,
+          "p": 2,
+          "q": 1,
+          "r": 3,
+          "s": 4
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-218516"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "386809673f71a1a94e96fa9c2e4393d8e6368f95b6aec88e0a6a5f517b803c8d",
+        "mathematical_fingerprint": "09951f10250b6cb6ffc65c12e291c3c2a5d9039a0b33ab454ff421df8d1c85c6",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "30(u-4)^{3}(w+3)^{4}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "30*u^3*w^4 + 360*u^3*w^3 + 1620*u^3*w^2 + 3240*u^3*w + 2430*u^3 - 360*u^2*w^4 - 4320*u^2*w^3 - 19440*u^2*w^2 - 38880*u^2*w - 29160*u^2 + 1440*u*w^4 + 17280*u*w^3 + 77760*u*w^2 + 155520*u*w + 116640*u - 1920*w^4 - 23040*w^3 - 103680*w^2 - 207360*w - 155520",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "30*(u^3 - 12*u^2 + 48*u - 64)*(w + 3)^4",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(30(u-4)^{3}(w+3)^{4})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(30(u-4)^{3}(w+3)^{4})/30",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(30(u-4)^{3}(w+3)^{4})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(30(u-4)^{3}(w+3)^{4})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(30(u-4)^{3}(w+3)^{4})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "completed/q-76246",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "bdadaee6-abd8-5e61-9664-d8c169bad9a5",
+        ":question/problem": "Find the least common multiple of the polynomials $4(x + 3)^{2}(y - 1)^{3}$ and $10(x + 3)^{2}(y - 1)$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "91a74958-c62c-567f-ad80-8b759bd41727",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "18f84749-7936-51c6-b6b0-77339095a047",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "40(x + 3)^{2}(y - 1)^{3}"
+              },
+              {
+                ":answer/id": "96d41141-bb9d-579e-b2fd-524c1cb948ba",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20(x + 3)^{2}(y - 1)^{3}"
+              },
+              {
+                ":answer/id": "c91b312d-5741-5bf8-afb2-dd46457c794d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20(x + 3)^{4}(y - 1)^{4}"
+              },
+              {
+                ":answer/id": "98ef03e0-2466-5063-81a2-38c02bfa7ab4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20(x + 3)^{3}(y - 1)^{2}"
+              },
+              {
+                ":answer/id": "a5a620b5-a327-5014-b9dc-346d55c9e6f4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "40(x + 3)^{4}(y - 1)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "96d41141-bb9d-579e-b2fd-524c1cb948ba"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,10):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,…$\n\n- Multiples of $10:$ $\\,10,\\,20,\\,30,…$\n\nSo, $\\text{LCM}(4,10)=20.$\n\nTo find the $\\text{LCM}$ of $(x+3)^{2}(y-1)^{3}$ and $(x+3)^{2}(y-1),$ we find the largest powers for $(x+3)$ and $(y-1)$ that appear in the expressions:\n\n- For $(x+3)^{2}$ and $(x+3)^{2},$ the largest power is $2.$\n\n- For $(y-1)^{3}$ and $(y-1),$ the largest power is $3.$\n\nNow, we raise $(x+3)$ and $(y-1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x+3)^{2}(y-1)^{3},\\,(x+3)^{2}(y-1))=(x+3)^{2}\\cdot (y-1)^{3}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(4(x+3)^{2}(y-1)^{3},\\,10(x+3)^{2}(y-1))=20(x+3)^{2}(y-1)^{3}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "moderate",
+        "template": "factored_radio",
+        "profile": "completed_q-76246",
+        "bank": "product_sum_swap",
+        "parameters": {
+          "a": 4,
+          "b": 10,
+          "v": "x",
+          "w": "y",
+          "h": 3,
+          "k": -1,
+          "p": 2,
+          "q": 3,
+          "r": 2,
+          "s": 1
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76246"
+        ],
+        "authored_level": true,
+        "authored_field_layout": true,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": true,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "sum_powers",
+          "correct",
+          "product_content",
+          "product_and_sum",
+          "swap_maxima"
+        ],
+        "content_identity": "2c091e6fd93c733d3d450fe6489a86b98b44bb3d6ed3744ea46cbdcbb6c4cd63",
+        "mathematical_fingerprint": "79e7d86c242c25a751c4ed257e98feecd688ff59b2f98497d62afcaf6a2a1405",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "18f84749-7936-51c6-b6b0-77339095a047",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "96d41141-bb9d-579e-b2fd-524c1cb948ba",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "c91b312d-5741-5bf8-afb2-dd46457c794d",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "98ef03e0-2466-5063-81a2-38c02bfa7ab4",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "a5a620b5-a327-5014-b9dc-346d55c9e6f4",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "changed/q-76246",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "ba2257aa-4586-5b11-836d-339b0a96bc03",
+        ":question/problem": "Find the least common multiple of the polynomials $10(u - 4)^{5}(w + 3)^{2}$ and $18(u - 4)^{3}(w + 3)^{6}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f8f17acb-22c3-5b92-8336-f50b06371e8f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f908f37e-7f4a-5dd5-828a-04497bdf43b4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(u - 4)^{8}(w + 3)^{8}"
+              },
+              {
+                ":answer/id": "91d30fd3-da74-54a5-827d-4dbf0e3ab68b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90(u - 4)^{8}(w + 3)^{8}"
+              },
+              {
+                ":answer/id": "8edbdc47-6e53-5e09-a6f2-be6badc86bed",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(u - 4)^{5}(w + 3)^{6}"
+              },
+              {
+                ":answer/id": "bc36dc2a-9a6d-5970-b4aa-fadf37abe0e9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90(u - 4)^{5}(w + 3)^{6}"
+              },
+              {
+                ":answer/id": "6afef352-dd47-57b2-9750-21dd28a5743b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90(u - 4)^{6}(w + 3)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bc36dc2a-9a6d-5970-b4aa-fadf37abe0e9"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(10,18):$\n\n- Multiples of $10:$ $\\,10,\\,20,\\,30,\\,40,\\,50,\\,60,\\,70,\\,80,\\,90,\\,100,…$\n\n- Multiples of $18:$ $\\,18,\\,36,\\,54,\\,72,\\,90,\\,108,…$\n\nSo, $\\text{LCM}(10,18)=90.$\n\nTo find the $\\text{LCM}$ of $(u-4)^{5}(w+3)^{2}$ and $(u-4)^{3}(w+3)^{6},$ we find the largest powers for $(u-4)$ and $(w+3)$ that appear in the expressions:\n\n- For $(u-4)^{5}$ and $(u-4)^{3},$ the largest power is $5.$\n\n- For $(w+3)^{2}$ and $(w+3)^{6},$ the largest power is $6.$\n\nNow, we raise $(u-4)$ and $(w+3)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((u-4)^{5}(w+3)^{2},\\,(u-4)^{3}(w+3)^{6})=(u-4)^{5}\\cdot (w+3)^{6}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(10(u-4)^{5}(w+3)^{2},\\,18(u-4)^{3}(w+3)^{6})=90(u-4)^{5}(w+3)^{6}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 33,
+        "level": "moderate",
+        "template": "factored_radio",
+        "profile": "completed_q-76246",
+        "bank": "product_sum_swap",
+        "parameters": {
+          "a": 10,
+          "b": 18,
+          "v": "u",
+          "w": "w",
+          "h": -4,
+          "k": 3,
+          "p": 5,
+          "q": 2,
+          "r": 3,
+          "s": 6
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-76246"
+        ],
+        "authored_level": true,
+        "authored_field_layout": true,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": true,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "sum_powers",
+          "correct",
+          "product_content",
+          "product_and_sum",
+          "swap_maxima"
+        ],
+        "content_identity": "0374e1da1a1702b0fddde3cf58d359a5e10521b10c6e11c262e634254aff8279",
+        "mathematical_fingerprint": "b511364ad868e4349e5d65ccd2c83cf9a28096463fc144f9d80b18f659341600",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "f908f37e-7f4a-5dd5-828a-04497bdf43b4",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "91d30fd3-da74-54a5-827d-4dbf0e3ab68b",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "8edbdc47-6e53-5e09-a6f2-be6badc86bed",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "bc36dc2a-9a6d-5970-b4aa-fadf37abe0e9",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "6afef352-dd47-57b2-9750-21dd28a5743b",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "completed/q-111597",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "a4754b58-3dc5-5a61-b0bc-e2423a4509d3",
+        ":question/problem": "Find the least common multiple of the polynomials $4(z+2)^{2}(w-5)^{2}$ and $7(z+2)^{3}(w-5)^{4}.$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "73e7c7d8-1469-537b-b299-fd110f053fd3",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0a73bbe1-5100-5ab0-9ce0-f3f3c491ce79",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "28(z+2)^{3}(w-5)^{4}"
+              },
+              {
+                ":answer/id": "abe693f4-3f19-54f9-be87-62057195580d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "28(z+2)^{4}(w-5)^{6}"
+              },
+              {
+                ":answer/id": "310e7d56-538b-5f8a-b37c-5bf4ef260f00",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "42(z+2)^{2}(w-5)^{4}"
+              },
+              {
+                ":answer/id": "b619958f-ca34-5fdf-af48-0076eb19c6c1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "42(z+2)^{2}(w-5)^{5}"
+              },
+              {
+                ":answer/id": "483f2fc9-be54-544b-8c1a-45aa39b2856d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "28(z+2)^{2}(w-5)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0a73bbe1-5100-5ab0-9ce0-f3f3c491ce79"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,7):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,…$\n\n- Multiples of $7:$ $\\,7,\\,14,\\,21,\\,28,\\,35,…$\n\nSo, $\\text{LCM}(4,7)=28.$\n\nTo find the $\\text{LCM}$ of $(z+2)^{2}(w-5)^{2}$ and $(z+2)^{3}(w-5)^{4},$ we find the largest powers for $(z+2)$ and $(w-5)$ that appear in the expressions:\n\n- For $(z+2)^{2}$ and $(z+2)^{3},$ the largest power is $3.$\n\n- For $(w-5)^{2}$ and $(w-5)^{4},$ the largest power is $4.$\n\nNow, we raise $(z+2)$ and $(w-5)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((z+2)^{2}(w-5)^{2},\\,(z+2)^{3}(w-5)^{4})=(z+2)^{3}\\cdot (w-5)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(4(z+2)^{2}(w-5)^{2},\\,7(z+2)^{3}(w-5)^{4})=28(z+2)^{3}(w-5)^{4}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "easy",
+        "template": "factored_radio",
+        "profile": "completed_q-111597",
+        "bank": "opaque_patterns",
+        "parameters": {
+          "a": 4,
+          "b": 7,
+          "v": "z",
+          "w": "w",
+          "h": 2,
+          "k": -5,
+          "p": 2,
+          "q": 2,
+          "r": 3,
+          "s": 4
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-111597"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": true,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "observed_3half_min_max",
+          "observed_double_first_sum_second",
+          "correct",
+          "min_first_max_second",
+          "observed_3half_min_maxplus1"
+        ],
+        "content_identity": "2393842651f12f9b184b1194522705c417ad36bacc92ab94074167da582bc232",
+        "mathematical_fingerprint": "30bbf7e645dbfffa4ca127fbc8704536210199be1a69429370960e78dda9eac9",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "0a73bbe1-5100-5ab0-9ce0-f3f3c491ce79",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "abe693f4-3f19-54f9-be87-62057195580d",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "310e7d56-538b-5f8a-b37c-5bf4ef260f00",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "b619958f-ca34-5fdf-af48-0076eb19c6c1",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "483f2fc9-be54-544b-8c1a-45aa39b2856d",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "changed/q-111597",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "e7343793-f720-5e06-a00c-91870c296322",
+        ":question/problem": "Find the least common multiple of the polynomials $5(u-4)^{2}(w+3)$ and $6(u-4)^{3}(w+3)^{4}.$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "568945fd-7058-5d2f-8c31-32d16c1c700c",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "59599cc1-6daf-5fca-8123-30ebeb85bf81",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30(u-4)^{2}(w+3)^{4}"
+              },
+              {
+                ":answer/id": "339b0dbd-a159-5bc8-9c99-20e0ee04b4a1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(u-4)^{2}(w+3)^{4}"
+              },
+              {
+                ":answer/id": "729f709e-4db5-5953-af12-c8ca98772f18",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30(u-4)^{3}(w+3)^{4}"
+              },
+              {
+                ":answer/id": "51a03c4b-d0b6-550c-9c01-d6fae6e8836d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30(u-4)^{4}(w+3)^{5}"
+              },
+              {
+                ":answer/id": "1eadabe7-1c83-5711-873b-4996f8c1977e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(u-4)^{2}(w+3)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "729f709e-4db5-5953-af12-c8ca98772f18"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(5,6):$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,\\,25,\\,30,\\,35,…$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,…$\n\nSo, $\\text{LCM}(5,6)=30.$\n\nTo find the $\\text{LCM}$ of $(u-4)^{2}(w+3)$ and $(u-4)^{3}(w+3)^{4},$ we find the largest powers for $(u-4)$ and $(w+3)$ that appear in the expressions:\n\n- For $(u-4)^{2}$ and $(u-4)^{3},$ the largest power is $3.$\n\n- For $(w+3)$ and $(w+3)^{4},$ the largest power is $4.$\n\nNow, we raise $(u-4)$ and $(w+3)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((u-4)^{2}(w+3),\\,(u-4)^{3}(w+3)^{4})=(u-4)^{3}\\cdot (w+3)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(5(u-4)^{2}(w+3),\\,6(u-4)^{3}(w+3)^{4})=30(u-4)^{3}(w+3)^{4}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 33,
+        "level": "easy",
+        "template": "factored_radio",
+        "profile": "completed_q-111597",
+        "bank": "opaque_patterns",
+        "parameters": {
+          "a": 5,
+          "b": 6,
+          "v": "u",
+          "w": "w",
+          "h": -4,
+          "k": 3,
+          "p": 2,
+          "q": 1,
+          "r": 3,
+          "s": 4
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-111597"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": true,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "observed_3half_min_max",
+          "observed_double_first_sum_second",
+          "correct",
+          "min_first_max_second",
+          "observed_3half_min_maxplus1"
+        ],
+        "content_identity": "9381770284113968b7645b0ece7a00691d58eb6833d07d5eb7af12db2b2c4983",
+        "mathematical_fingerprint": "09951f10250b6cb6ffc65c12e291c3c2a5d9039a0b33ab454ff421df8d1c85c6",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "59599cc1-6daf-5fca-8123-30ebeb85bf81",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "339b0dbd-a159-5bc8-9c99-20e0ee04b4a1",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "729f709e-4db5-5953-af12-c8ca98772f18",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "51a03c4b-d0b6-550c-9c01-d6fae6e8836d",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "1eadabe7-1c83-5711-873b-4996f8c1977e",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "completed/q-222107",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "7f3a51e2-714c-5126-91bb-46cb57666fa2",
+        ":question/problem": "The least common multiple of the polynomials $3(x-3)^{3}(y+1)$ and $5(x-3)(y+1)^{2}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "36d84360-ecab-542a-b588-0bb4e2dee546",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "369e266b-5180-5bd5-8bc8-181c5c309e96",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "15(x-3)^{3}(y+1)^{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "369e266b-5180-5bd5-8bc8-181c5c309e96"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(3,5):$\n\n- Multiples of $3:$ $\\,3,\\,6,\\,9,\\,12,\\,15,\\,18,…$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,…$\n\nSo, $\\text{LCM}(3,5)=15.$\n\nTo find the $\\text{LCM}$ of $(x-3)^{3}(y+1)$ and $(x-3)(y+1)^{2},$ we find the largest powers for $(x-3)$ and $(y+1)$ that appear in the expressions:\n\n- For $(x-3)^{3}$ and $(x-3),$ the largest power is $3.$\n\n- For $(y+1)$ and $(y+1)^{2},$ the largest power is $2.$\n\nNow, we raise $(x-3)$ and $(y+1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-3)^{3}(y+1),\\,(x-3)(y+1)^{2})=(x-3)^{3}\\cdot (y+1)^{2}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(3(x-3)^{3}(y+1),\\,5(x-3)(y+1)^{2})=15(x-3)^{3}(y+1)^{2}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "easy",
+        "template": "factored_blank",
+        "profile": "completed_q-222107",
+        "bank": null,
+        "parameters": {
+          "a": 3,
+          "b": 5,
+          "v": "x",
+          "w": "y",
+          "h": -3,
+          "k": 1,
+          "p": 3,
+          "q": 1,
+          "r": 1,
+          "s": 2
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222107"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "95128bd2a6cfe043bf4855da974f2273c372ac6e1c3275322b8f9cedb23bbd41",
+        "mathematical_fingerprint": "93fd120f923a7bc9f5582b7aeb5d56bd31ed0bb28d15bed6fe9f63d3552660e7",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "15(x-3)^{3}(y+1)^{2}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "15*x^3*y^2 + 30*x^3*y + 15*x^3 - 135*x^2*y^2 - 270*x^2*y - 135*x^2 + 405*x*y^2 + 810*x*y + 405*x - 405*y^2 - 810*y - 405",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "15*(x^3 - 9*x^2 + 27*x - 27)*(y + 1)^2",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(15(x-3)^{3}(y+1)^{2})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(15(x-3)^{3}(y+1)^{2})/15",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(15(x-3)^{3}(y+1)^{2})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(15(x-3)^{3}(y+1)^{2})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(15(x-3)^{3}(y+1)^{2})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "changed/q-222107",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "cdee7b44-f87b-52d2-9836-df3a281171f5",
+        ":question/problem": "The least common multiple of the polynomials $5(u-4)^{2}(w+3)$ and $6(u-4)^{3}(w+3)^{4}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4e952752-8a63-528a-99f0-7c6315993b29",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1eae513b-a031-5ec4-97a3-7a8317c9c4d4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30(u-4)^{3}(w+3)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1eae513b-a031-5ec4-97a3-7a8317c9c4d4"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(5,6):$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,\\,25,\\,30,\\,35,…$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,…$\n\nSo, $\\text{LCM}(5,6)=30.$\n\nTo find the $\\text{LCM}$ of $(u-4)^{2}(w+3)$ and $(u-4)^{3}(w+3)^{4},$ we find the largest powers for $(u-4)$ and $(w+3)$ that appear in the expressions:\n\n- For $(u-4)^{2}$ and $(u-4)^{3},$ the largest power is $3.$\n\n- For $(w+3)$ and $(w+3)^{4},$ the largest power is $4.$\n\nNow, we raise $(u-4)$ and $(w+3)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((u-4)^{2}(w+3),\\,(u-4)^{3}(w+3)^{4})=(u-4)^{3}\\cdot (w+3)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(5(u-4)^{2}(w+3),\\,6(u-4)^{3}(w+3)^{4})=30(u-4)^{3}(w+3)^{4}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 33,
+        "level": "easy",
+        "template": "factored_blank",
+        "profile": "completed_q-222107",
+        "bank": null,
+        "parameters": {
+          "a": 5,
+          "b": 6,
+          "v": "u",
+          "w": "w",
+          "h": -4,
+          "k": 3,
+          "p": 2,
+          "q": 1,
+          "r": 3,
+          "s": 4
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222107"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "386809673f71a1a94e96fa9c2e4393d8e6368f95b6aec88e0a6a5f517b803c8d",
+        "mathematical_fingerprint": "09951f10250b6cb6ffc65c12e291c3c2a5d9039a0b33ab454ff421df8d1c85c6",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "30(u-4)^{3}(w+3)^{4}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "30*u^3*w^4 + 360*u^3*w^3 + 1620*u^3*w^2 + 3240*u^3*w + 2430*u^3 - 360*u^2*w^4 - 4320*u^2*w^3 - 19440*u^2*w^2 - 38880*u^2*w - 29160*u^2 + 1440*u*w^4 + 17280*u*w^3 + 77760*u*w^2 + 155520*u*w + 116640*u - 1920*w^4 - 23040*w^3 - 103680*w^2 - 207360*w - 155520",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "30*(u^3 - 12*u^2 + 48*u - 64)*(w + 3)^4",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(30(u-4)^{3}(w+3)^{4})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(30(u-4)^{3}(w+3)^{4})/30",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(30(u-4)^{3}(w+3)^{4})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(30(u-4)^{3}(w+3)^{4})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(30(u-4)^{3}(w+3)^{4})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "completed/q-222113",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "3d3da44a-27e6-597b-a72e-7c99c4684321",
+        ":question/problem": "The least common multiple of the polynomials $9(y-2)^{5}(z+1)^{3}$ and $15(y-2)^{2}(z+1)^{6}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "94992110-295e-5620-98a9-9fa52ba31ea0",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a8f19a12-0770-57d3-ad19-068cc6b8d590",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(y-2)^{5}(z+1)^{6}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a8f19a12-0770-57d3-ad19-068cc6b8d590"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(9,15):$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\\,54,…$\n\n- Multiples of $15:$ $\\,15,\\,30,\\,45,\\,60,…$\n\nSo, $\\text{LCM}(9,15)=45.$\n\nTo find the $\\text{LCM}$ of $(y-2)^{5}(z+1)^{3}$ and $(y-2)^{2}(z+1)^{6},$ we find the largest powers for $(y-2)$ and $(z+1)$ that appear in the expressions:\n\n- For $(y-2)^{5}$ and $(y-2)^{2},$ the largest power is $5.$\n\n- For $(z+1)^{3}$ and $(z+1)^{6},$ the largest power is $6.$\n\nNow, we raise $(y-2)$ and $(z+1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((y-2)^{5}(z+1)^{3},\\,(y-2)^{2}(z+1)^{6})=(y-2)^{5}\\cdot (z+1)^{6}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(9(y-2)^{5}(z+1)^{3},\\,15(y-2)^{2}(z+1)^{6})=45(y-2)^{5}(z+1)^{6}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "moderate",
+        "template": "factored_blank",
+        "profile": "completed_q-222113",
+        "bank": null,
+        "parameters": {
+          "a": 9,
+          "b": 15,
+          "v": "y",
+          "w": "z",
+          "h": -2,
+          "k": 1,
+          "p": 5,
+          "q": 3,
+          "r": 2,
+          "s": 6
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222113"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "f68114e926ff4420288f0ee035e7d2e3c5b7e47170592d1fa5f575459f1fec58",
+        "mathematical_fingerprint": "8ffd13141a194b4c1ec38c3a13def69de1af7cf0de7d34899cb9982f52a4db48",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "45(y-2)^{5}(z+1)^{6}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "45*y^5*z^6 + 270*y^5*z^5 + 675*y^5*z^4 + 900*y^5*z^3 + 675*y^5*z^2 + 270*y^5*z + 45*y^5 - 450*y^4*z^6 - 2700*y^4*z^5 - 6750*y^4*z^4 - 9000*y^4*z^3 - 6750*y^4*z^2 - 2700*y^4*z - 450*y^4 + 1800*y^3*z^6 + 10800*y^3*z^5 + 27000*y^3*z^4 + 36000*y^3*z^3 + 27000*y^3*z^2 + 10800*y^3*z + 1800*y^3 - 3600*y^2*z^6 - 21600*y^2*z^5 - 54000*y^2*z^4 - 72000*y^2*z^3 - 54000*y^2*z^2 - 21600*y^2*z - 3600*y^2 + 3600*y*z^6 + 21600*y*z^5 + 54000*y*z^4 + 72000*y*z^3 + 54000*y*z^2 + 21600*y*z + 3600*y - 1440*z^6 - 8640*z^5 - 21600*z^4 - 28800*z^3 - 21600*z^2 - 8640*z - 1440",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "45*(y^5 - 10*y^4 + 40*y^3 - 80*y^2 + 80*y - 32)*(z + 1)^6",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(45(y-2)^{5}(z+1)^{6})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(45(y-2)^{5}(z+1)^{6})/45",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(45(y-2)^{5}(z+1)^{6})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(45(y-2)^{5}(z+1)^{6})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(45(y-2)^{5}(z+1)^{6})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "changed/q-222113",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "17429652-a7fd-573f-a4ad-aac18eda0621",
+        ":question/problem": "The least common multiple of the polynomials $10(u-4)^{5}(w+3)^{2}$ and $18(u-4)^{3}(w+3)^{6}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "aacde702-c976-56be-a429-945640511996",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1ba182cc-4688-5dec-be7f-5557ff58c345",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90(u-4)^{5}(w+3)^{6}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1ba182cc-4688-5dec-be7f-5557ff58c345"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(10,18):$\n\n- Multiples of $10:$ $\\,10,\\,20,\\,30,\\,40,\\,50,\\,60,\\,70,\\,80,\\,90,\\,100,…$\n\n- Multiples of $18:$ $\\,18,\\,36,\\,54,\\,72,\\,90,\\,108,…$\n\nSo, $\\text{LCM}(10,18)=90.$\n\nTo find the $\\text{LCM}$ of $(u-4)^{5}(w+3)^{2}$ and $(u-4)^{3}(w+3)^{6},$ we find the largest powers for $(u-4)$ and $(w+3)$ that appear in the expressions:\n\n- For $(u-4)^{5}$ and $(u-4)^{3},$ the largest power is $5.$\n\n- For $(w+3)^{2}$ and $(w+3)^{6},$ the largest power is $6.$\n\nNow, we raise $(u-4)$ and $(w+3)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((u-4)^{5}(w+3)^{2},\\,(u-4)^{3}(w+3)^{6})=(u-4)^{5}\\cdot (w+3)^{6}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(10(u-4)^{5}(w+3)^{2},\\,18(u-4)^{3}(w+3)^{6})=90(u-4)^{5}(w+3)^{6}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 33,
+        "level": "moderate",
+        "template": "factored_blank",
+        "profile": "completed_q-222113",
+        "bank": null,
+        "parameters": {
+          "a": 10,
+          "b": 18,
+          "v": "u",
+          "w": "w",
+          "h": -4,
+          "k": 3,
+          "p": 5,
+          "q": 2,
+          "r": 3,
+          "s": 6
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222113"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "f00be52464394463e38f1b50f9d60ec8e70d3fd0b95cbd6aea804aad62b53f68",
+        "mathematical_fingerprint": "b511364ad868e4349e5d65ccd2c83cf9a28096463fc144f9d80b18f659341600",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "90(u-4)^{5}(w+3)^{6}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "90*u^5*w^6 + 1620*u^5*w^5 + 12150*u^5*w^4 + 48600*u^5*w^3 + 109350*u^5*w^2 + 131220*u^5*w + 65610*u^5 - 1800*u^4*w^6 - 32400*u^4*w^5 - 243000*u^4*w^4 - 972000*u^4*w^3 - 2187000*u^4*w^2 - 2624400*u^4*w - 1312200*u^4 + 14400*u^3*w^6 + 259200*u^3*w^5 + 1944000*u^3*w^4 + 7776000*u^3*w^3 + 17496000*u^3*w^2 + 20995200*u^3*w + 10497600*u^3 - 57600*u^2*w^6 - 1036800*u^2*w^5 - 7776000*u^2*w^4 - 31104000*u^2*w^3 - 69984000*u^2*w^2 - 83980800*u^2*w - 41990400*u^2 + 115200*u*w^6 + 2073600*u*w^5 + 15552000*u*w^4 + 62208000*u*w^3 + 139968000*u*w^2 + 167961600*u*w + 83980800*u - 92160*w^6 - 1658880*w^5 - 12441600*w^4 - 49766400*w^3 - 111974400*w^2 - 134369280*w - 67184640",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "90*(u^5 - 20*u^4 + 160*u^3 - 640*u^2 + 1280*u - 1024)*(w + 3)^6",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(90(u-4)^{5}(w+3)^{6})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(90(u-4)^{5}(w+3)^{6})/90",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(90(u-4)^{5}(w+3)^{6})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(90(u-4)^{5}(w+3)^{6})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(90(u-4)^{5}(w+3)^{6})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "completed/q-222116",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "f73157ff-4841-5bfa-8e70-1236882f7682",
+        ":question/problem": "The least common multiple of the polynomials $12{z}^{6}(w-7)^{3}$ and $20{z}^{5}(w-7)^{4}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "54c7637e-b1f0-50f6-9db1-a77c5def371a",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "201231a1-3431-5132-878f-a7e0b5a0161e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{z}^{6}(w-7)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "201231a1-3431-5132-878f-a7e0b5a0161e"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(12,20):$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\\,72,…$\n\n- Multiples of $20:$ $\\,20,\\,40,\\,60,\\,80,…$\n\nSo, $\\text{LCM}(12,20)=60.$\n\nTo find the $\\text{LCM}$ of ${z}^{6}(w-7)^{3}$ and ${z}^{5}(w-7)^{4},$ we find the largest powers for $z$ and $(w-7)$ that appear in the expressions:\n\n- For ${z}^{6}$ and ${z}^{5},$ the largest power is $6.$\n\n- For $(w-7)^{3}$ and $(w-7)^{4},$ the largest power is $4.$\n\nNow, we raise $z$ and $(w-7)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({z}^{6}(w-7)^{3},\\,{z}^{5}(w-7)^{4})={z}^{6}\\cdot (w-7)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(12{z}^{6}(w-7)^{3},\\,20{z}^{5}(w-7)^{4})=60{z}^{6}(w-7)^{4}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "moderate",
+        "template": "factored_blank",
+        "profile": "completed_q-222116",
+        "bank": null,
+        "parameters": {
+          "a": 12,
+          "b": 20,
+          "v": "z",
+          "w": "w",
+          "h": 0,
+          "k": -7,
+          "p": 6,
+          "q": 3,
+          "r": 5,
+          "s": 4
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222116"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "0716e4ac65d157b67acf070be4b11422d66146e7381bdf3bcb82db5ab9083d97",
+        "mathematical_fingerprint": "802d675125663f2a1000e401b964f9abd4a7c7d7252cb728ad53f25802fe8c9f",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "60{z}^{6}(w-7)^{4}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "60*w^4*z^6 - 1680*w^3*z^6 + 17640*w^2*z^6 - 82320*w*z^6 + 144060*z^6",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "60*(z^6)*(w - 7)^4",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(60{z}^{6}(w-7)^{4})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(60{z}^{6}(w-7)^{4})/60",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(60{z}^{6}(w-7)^{4})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(60{z}^{6}(w-7)^{4})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(60{z}^{6}(w-7)^{4})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "changed/q-222116",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "17429652-a7fd-573f-a4ad-aac18eda0621",
+        ":question/problem": "The least common multiple of the polynomials $10(u-4)^{5}(w+3)^{2}$ and $18(u-4)^{3}(w+3)^{6}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "aacde702-c976-56be-a429-945640511996",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1ba182cc-4688-5dec-be7f-5557ff58c345",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90(u-4)^{5}(w+3)^{6}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1ba182cc-4688-5dec-be7f-5557ff58c345"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(10,18):$\n\n- Multiples of $10:$ $\\,10,\\,20,\\,30,\\,40,\\,50,\\,60,\\,70,\\,80,\\,90,\\,100,…$\n\n- Multiples of $18:$ $\\,18,\\,36,\\,54,\\,72,\\,90,\\,108,…$\n\nSo, $\\text{LCM}(10,18)=90.$\n\nTo find the $\\text{LCM}$ of $(u-4)^{5}(w+3)^{2}$ and $(u-4)^{3}(w+3)^{6},$ we find the largest powers for $(u-4)$ and $(w+3)$ that appear in the expressions:\n\n- For $(u-4)^{5}$ and $(u-4)^{3},$ the largest power is $5.$\n\n- For $(w+3)^{2}$ and $(w+3)^{6},$ the largest power is $6.$\n\nNow, we raise $(u-4)$ and $(w+3)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((u-4)^{5}(w+3)^{2},\\,(u-4)^{3}(w+3)^{6})=(u-4)^{5}\\cdot (w+3)^{6}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(10(u-4)^{5}(w+3)^{2},\\,18(u-4)^{3}(w+3)^{6})=90(u-4)^{5}(w+3)^{6}\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 33,
+        "level": "moderate",
+        "template": "factored_blank",
+        "profile": "completed_q-222116",
+        "bank": null,
+        "parameters": {
+          "a": 10,
+          "b": 18,
+          "v": "u",
+          "w": "w",
+          "h": -4,
+          "k": 3,
+          "p": 5,
+          "q": 2,
+          "r": 3,
+          "s": 6
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-222116"
+        ],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "f00be52464394463e38f1b50f9d60ec8e70d3fd0b95cbd6aea804aad62b53f68",
+        "mathematical_fingerprint": "b511364ad868e4349e5d65ccd2c83cf9a28096463fc144f9d80b18f659341600",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "90(u-4)^{5}(w+3)^{6}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "90*u^5*w^6 + 1620*u^5*w^5 + 12150*u^5*w^4 + 48600*u^5*w^3 + 109350*u^5*w^2 + 131220*u^5*w + 65610*u^5 - 1800*u^4*w^6 - 32400*u^4*w^5 - 243000*u^4*w^4 - 972000*u^4*w^3 - 2187000*u^4*w^2 - 2624400*u^4*w - 1312200*u^4 + 14400*u^3*w^6 + 259200*u^3*w^5 + 1944000*u^3*w^4 + 7776000*u^3*w^3 + 17496000*u^3*w^2 + 20995200*u^3*w + 10497600*u^3 - 57600*u^2*w^6 - 1036800*u^2*w^5 - 7776000*u^2*w^4 - 31104000*u^2*w^3 - 69984000*u^2*w^2 - 83980800*u^2*w - 41990400*u^2 + 115200*u*w^6 + 2073600*u*w^5 + 15552000*u*w^4 + 62208000*u*w^3 + 139968000*u*w^2 + 167961600*u*w + 83980800*u - 92160*w^6 - 1658880*w^5 - 12441600*w^4 - 49766400*w^3 - 111974400*w^2 - 134369280*w - 67184640",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "90*(u^5 - 20*u^4 + 160*u^3 - 640*u^2 + 1280*u - 1024)*(w + 3)^6",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(90(u-4)^{5}(w+3)^{6})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(90(u-4)^{5}(w+3)^{6})/90",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(90(u-4)^{5}(w+3)^{6})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(90(u-4)^{5}(w+3)^{6})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(90(u-4)^{5}(w+3)^{6})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "easy/factored_blank/0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "28bb23a5-dde6-5c04-b6ca-58a0e0bbbdb6",
+        ":question/problem": "The least common multiple of the polynomials $9(u-8)^{3}(w-1)^{4}$ and $5(u-8)^{3}(w-1)^{5}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "950ff848-b2ad-5bba-8871-36b15a43d7fd",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "55ad0f7c-fd6f-521d-ad79-5cd318cc7e9d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(u-8)^{3}(w-1)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "55ad0f7c-fd6f-521d-ad79-5cd318cc7e9d"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(9,5):$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\\,54,…$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,\\,25,\\,30,\\,35,\\,40,\\,45,\\,50,…$\n\nSo, $\\text{LCM}(9,5)=45.$\n\nTo find the $\\text{LCM}$ of $(u-8)^{3}(w-1)^{4}$ and $(u-8)^{3}(w-1)^{5},$ we find the largest powers for $(u-8)$ and $(w-1)$ that appear in the expressions:\n\n- For $(u-8)^{3}$ and $(u-8)^{3},$ the largest power is $3.$\n\n- For $(w-1)^{4}$ and $(w-1)^{5},$ the largest power is $5.$\n\nNow, we raise $(u-8)$ and $(w-1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((u-8)^{3}(w-1)^{4},\\,(u-8)^{3}(w-1)^{5})=(u-8)^{3}\\cdot (w-1)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(9(u-8)^{3}(w-1)^{4},\\,5(u-8)^{3}(w-1)^{5})=45(u-8)^{3}(w-1)^{5}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "easy",
+        "template": "factored_blank",
+        "profile": "method_bank",
+        "bank": null,
+        "parameters": {
+          "a": 9,
+          "b": 5,
+          "v": "u",
+          "w": "w",
+          "h": -8,
+          "k": -1,
+          "p": 3,
+          "q": 4,
+          "r": 3,
+          "s": 5
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "222d99b4b42715aae3f178fb9920108894c095a534b910ed397a02b34a518b7c",
+        "mathematical_fingerprint": "e10d7764cc56f3b3e55cdfb59756c3c46d721acae22d04fb723b2c24896b3cb1",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "45(u-8)^{3}(w-1)^{5}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "45*u^3*w^5 - 225*u^3*w^4 + 450*u^3*w^3 - 450*u^3*w^2 + 225*u^3*w - 45*u^3 - 1080*u^2*w^5 + 5400*u^2*w^4 - 10800*u^2*w^3 + 10800*u^2*w^2 - 5400*u^2*w + 1080*u^2 + 8640*u*w^5 - 43200*u*w^4 + 86400*u*w^3 - 86400*u*w^2 + 43200*u*w - 8640*u - 23040*w^5 + 115200*w^4 - 230400*w^3 + 230400*w^2 - 115200*w + 23040",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "45*(u^3 - 24*u^2 + 192*u - 512)*(w - 1)^5",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(45(u-8)^{3}(w-1)^{5})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(45(u-8)^{3}(w-1)^{5})/45",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(45(u-8)^{3}(w-1)^{5})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(45(u-8)^{3}(w-1)^{5})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(45(u-8)^{3}(w-1)^{5})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "easy/factored_blank/1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "d20cce1f-71bb-5c81-b9c2-cb7918efac05",
+        ":question/problem": "The least common multiple of the polynomials $3(y-7)^{4}(v-1)^{4}$ and $5(y-7)^{4}(v-1)^{2}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b241670e-0cfb-58e9-9160-9c1ded24e96b",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "8839f795-00c0-53a1-8309-9fcaaab0027f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "15(y-7)^{4}(v-1)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8839f795-00c0-53a1-8309-9fcaaab0027f"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(3,5):$\n\n- Multiples of $3:$ $\\,3,\\,6,\\,9,\\,12,\\,15,\\,18,…$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,…$\n\nSo, $\\text{LCM}(3,5)=15.$\n\nTo find the $\\text{LCM}$ of $(y-7)^{4}(v-1)^{4}$ and $(y-7)^{4}(v-1)^{2},$ we find the largest powers for $(y-7)$ and $(v-1)$ that appear in the expressions:\n\n- For $(y-7)^{4}$ and $(y-7)^{4},$ the largest power is $4.$\n\n- For $(v-1)^{4}$ and $(v-1)^{2},$ the largest power is $4.$\n\nNow, we raise $(y-7)$ and $(v-1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((y-7)^{4}(v-1)^{4},\\,(y-7)^{4}(v-1)^{2})=(y-7)^{4}\\cdot (v-1)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(3(y-7)^{4}(v-1)^{4},\\,5(y-7)^{4}(v-1)^{2})=15(y-7)^{4}(v-1)^{4}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 1,
+        "level": "easy",
+        "template": "factored_blank",
+        "profile": "method_bank",
+        "bank": null,
+        "parameters": {
+          "a": 3,
+          "b": 5,
+          "v": "y",
+          "w": "v",
+          "h": -7,
+          "k": -1,
+          "p": 4,
+          "q": 4,
+          "r": 4,
+          "s": 2
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "a5a08c6410cbc79e366ef2b5900c7131fabf883c74afd64d4c8d8ada4ff53c15",
+        "mathematical_fingerprint": "0b76461d2272746f7a160405fa5785973e794c923f5a464ba47d41578bd1be83",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "15(y-7)^{4}(v-1)^{4}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "15*v^4*y^4 - 420*v^4*y^3 + 4410*v^4*y^2 - 20580*v^4*y + 36015*v^4 - 60*v^3*y^4 + 1680*v^3*y^3 - 17640*v^3*y^2 + 82320*v^3*y - 144060*v^3 + 90*v^2*y^4 - 2520*v^2*y^3 + 26460*v^2*y^2 - 123480*v^2*y + 216090*v^2 - 60*v*y^4 + 1680*v*y^3 - 17640*v*y^2 + 82320*v*y - 144060*v + 15*y^4 - 420*y^3 + 4410*y^2 - 20580*y + 36015",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "15*(y^4 - 28*y^3 + 294*y^2 - 1372*y + 2401)*(v - 1)^4",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(15(y-7)^{4}(v-1)^{4})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(15(y-7)^{4}(v-1)^{4})/15",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(15(y-7)^{4}(v-1)^{4})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(15(y-7)^{4}(v-1)^{4})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(15(y-7)^{4}(v-1)^{4})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "easy/factored_radio/0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "b07a51d6-668a-52a5-96f0-514892bd961b",
+        ":question/problem": "Find the least common multiple of the polynomials $9(u-8)^{3}(w-1)^{4}$ and $5(u-8)^{3}(w-1)^{5}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4814e8c7-53ce-5296-a508-f4a185ac2f26",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "618d86ac-9806-5230-8281-2f2e427b8be4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(u-8)^{3}(w-1)^{5}"
+              },
+              {
+                ":answer/id": "356b0ec6-79f4-5e1c-8bf8-d66c9297aa6d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(u-8)^{3}(w-1)^{4}"
+              },
+              {
+                ":answer/id": "716ef27c-7d6b-5e5d-be68-09315ba165e2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(u-8)^{3}(w-1)^{5}"
+              },
+              {
+                ":answer/id": "fdff7485-4439-5fae-bfa0-4da24d88e19e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(u-8)^{5}(w-1)^{3}"
+              },
+              {
+                ":answer/id": "c7dd41c1-5c86-53c0-b8e7-70f78ba5e876",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45(u-8)^{6}(w-1)^{9}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "716ef27c-7d6b-5e5d-be68-09315ba165e2"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(9,5):$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,\\,36,\\,45,\\,54,…$\n\n- Multiples of $5:$ $\\,5,\\,10,\\,15,\\,20,\\,25,\\,30,\\,35,\\,40,\\,45,\\,50,…$\n\nSo, $\\text{LCM}(9,5)=45.$\n\nTo find the $\\text{LCM}$ of $(u-8)^{3}(w-1)^{4}$ and $(u-8)^{3}(w-1)^{5},$ we find the largest powers for $(u-8)$ and $(w-1)$ that appear in the expressions:\n\n- For $(u-8)^{3}$ and $(u-8)^{3},$ the largest power is $3.$\n\n- For $(w-1)^{4}$ and $(w-1)^{5},$ the largest power is $5.$\n\nNow, we raise $(u-8)$ and $(w-1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((u-8)^{3}(w-1)^{4},\\,(u-8)^{3}(w-1)^{5})=(u-8)^{3}\\cdot (w-1)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(9(u-8)^{3}(w-1)^{4},\\,5(u-8)^{3}(w-1)^{5})=45(u-8)^{3}(w-1)^{5}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "easy",
+        "template": "factored_radio",
+        "profile": "method_bank",
+        "bank": "method_bank",
+        "parameters": {
+          "a": 9,
+          "b": 5,
+          "v": "u",
+          "w": "w",
+          "h": -8,
+          "k": -1,
+          "p": 3,
+          "q": 4,
+          "r": 3,
+          "s": 5
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": true,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct",
+          "minima",
+          "gcd_content",
+          "sum_powers",
+          "swap_maxima"
+        ],
+        "content_identity": "f089f4548be6e629bf303320d37d2f6bd5a19a9e43523945b5a1b47fa73d791e",
+        "mathematical_fingerprint": "e10d7764cc56f3b3e55cdfb59756c3c46d721acae22d04fb723b2c24896b3cb1",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "618d86ac-9806-5230-8281-2f2e427b8be4",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "356b0ec6-79f4-5e1c-8bf8-d66c9297aa6d",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "716ef27c-7d6b-5e5d-be68-09315ba165e2",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "fdff7485-4439-5fae-bfa0-4da24d88e19e",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "c7dd41c1-5c86-53c0-b8e7-70f78ba5e876",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "easy/factored_radio/1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "a2b928ce-538e-5c9b-990f-68e241a04718",
+        ":question/problem": "Find the least common multiple of the polynomials $2(v+1)^{5}(x-9)$ and $9(v+1)^{4}(x-9)^{2}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f1034ea4-6ea0-5e7c-8324-95127a3fed96",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3099d1b6-25a3-56d4-826c-ad69a7134dac",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(v+1)^{5}(x-9)^{2}"
+              },
+              {
+                ":answer/id": "4ac97e49-e32f-50fc-9cfa-8ea577f3704c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18(v+1)^{9}(x-9)^{3}"
+              },
+              {
+                ":answer/id": "f82282d7-4e2f-5010-8b06-78e84893be3c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18(v+1)^{2}(x-9)^{5}"
+              },
+              {
+                ":answer/id": "890e58fd-7b36-521e-927d-0ec17d21c546",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18(v+1)^{5}(x-9)^{2}"
+              },
+              {
+                ":answer/id": "0eac59c7-ed57-5bc5-96e5-231738e967e5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18(v+1)^{4}(x-9)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "890e58fd-7b36-521e-927d-0ec17d21c546"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(2,9):$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,\\,8,\\,10,\\,12,\\,14,\\,16,\\,18,\\,20,…$\n\n- Multiples of $9:$ $\\,9,\\,18,\\,27,…$\n\nSo, $\\text{LCM}(2,9)=18.$\n\nTo find the $\\text{LCM}$ of $(v+1)^{5}(x-9)$ and $(v+1)^{4}(x-9)^{2},$ we find the largest powers for $(v+1)$ and $(x-9)$ that appear in the expressions:\n\n- For $(v+1)^{5}$ and $(v+1)^{4},$ the largest power is $5.$\n\n- For $(x-9)$ and $(x-9)^{2},$ the largest power is $2.$\n\nNow, we raise $(v+1)$ and $(x-9)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((v+1)^{5}(x-9),\\,(v+1)^{4}(x-9)^{2})=(v+1)^{5}\\cdot (x-9)^{2}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(2(v+1)^{5}(x-9),\\,9(v+1)^{4}(x-9)^{2})=18(v+1)^{5}(x-9)^{2}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 1,
+        "level": "easy",
+        "template": "factored_radio",
+        "profile": "method_bank",
+        "bank": "method_bank",
+        "parameters": {
+          "a": 2,
+          "b": 9,
+          "v": "v",
+          "w": "x",
+          "h": 1,
+          "k": -9,
+          "p": 5,
+          "q": 1,
+          "r": 4,
+          "s": 2
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": true,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct",
+          "minima",
+          "gcd_content",
+          "sum_powers",
+          "swap_maxima"
+        ],
+        "content_identity": "c6bd62456e36c315d03e1989581bc40f71bfb7030366b7ec67207877a21bbd69",
+        "mathematical_fingerprint": "4d9a6a3633dd347a3ac0f06ee30744c9e2612bc7742f31678bbe91e3ae23fd87",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "3099d1b6-25a3-56d4-826c-ad69a7134dac",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "4ac97e49-e32f-50fc-9cfa-8ea577f3704c",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "f82282d7-4e2f-5010-8b06-78e84893be3c",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "890e58fd-7b36-521e-927d-0ec17d21c546",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "0eac59c7-ed57-5bc5-96e5-231738e967e5",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "moderate/factored_blank/0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "9f274173-5f89-535d-b43f-95505098d8b8",
+        ":question/problem": "The least common multiple of the polynomials $6(z+6)^{5}(u+3)$ and $14(z+6)^{4}(u+3)^{5}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3303885e-2ba7-5fd2-b464-a62c46abbf32",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e0a8824e-22f8-5236-ab61-2349ec358f94",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "42(z+6)^{5}(u+3)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e0a8824e-22f8-5236-ab61-2349ec358f94"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(6,14):$\n\n- Multiples of $6:$ $\\,6,\\,12,\\,18,\\,24,\\,30,\\,36,\\,42,\\,48,…$\n\n- Multiples of $14:$ $\\,14,\\,28,\\,42,\\,56,…$\n\nSo, $\\text{LCM}(6,14)=42.$\n\nTo find the $\\text{LCM}$ of $(z+6)^{5}(u+3)$ and $(z+6)^{4}(u+3)^{5},$ we find the largest powers for $(z+6)$ and $(u+3)$ that appear in the expressions:\n\n- For $(z+6)^{5}$ and $(z+6)^{4},$ the largest power is $5.$\n\n- For $(u+3)$ and $(u+3)^{5},$ the largest power is $5.$\n\nNow, we raise $(z+6)$ and $(u+3)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((z+6)^{5}(u+3),\\,(z+6)^{4}(u+3)^{5})=(z+6)^{5}\\cdot (u+3)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(6(z+6)^{5}(u+3),\\,14(z+6)^{4}(u+3)^{5})=42(z+6)^{5}(u+3)^{5}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "moderate",
+        "template": "factored_blank",
+        "profile": "method_bank",
+        "bank": null,
+        "parameters": {
+          "a": 6,
+          "b": 14,
+          "v": "z",
+          "w": "u",
+          "h": 6,
+          "k": 3,
+          "p": 5,
+          "q": 1,
+          "r": 4,
+          "s": 5
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "9643765efee1f22b0a7cd2ef881c694d5b4a1dfbcc5fabe5ad951ab5009fe2c6",
+        "mathematical_fingerprint": "399366061ce1054edfa81929238cc2be4d54247a876db587fe2dc69b37593842",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "42(z+6)^{5}(u+3)^{5}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "42*u^5*z^5 + 1260*u^5*z^4 + 15120*u^5*z^3 + 90720*u^5*z^2 + 272160*u^5*z + 326592*u^5 + 630*u^4*z^5 + 18900*u^4*z^4 + 226800*u^4*z^3 + 1360800*u^4*z^2 + 4082400*u^4*z + 4898880*u^4 + 3780*u^3*z^5 + 113400*u^3*z^4 + 1360800*u^3*z^3 + 8164800*u^3*z^2 + 24494400*u^3*z + 29393280*u^3 + 11340*u^2*z^5 + 340200*u^2*z^4 + 4082400*u^2*z^3 + 24494400*u^2*z^2 + 73483200*u^2*z + 88179840*u^2 + 17010*u*z^5 + 510300*u*z^4 + 6123600*u*z^3 + 36741600*u*z^2 + 110224800*u*z + 132269760*u + 10206*z^5 + 306180*z^4 + 3674160*z^3 + 22044960*z^2 + 66134880*z + 79361856",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "42*(z^5 + 30*z^4 + 360*z^3 + 2160*z^2 + 6480*z + 7776)*(u + 3)^5",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(42(z+6)^{5}(u+3)^{5})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(42(z+6)^{5}(u+3)^{5})/42",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(42(z+6)^{5}(u+3)^{5})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(42(z+6)^{5}(u+3)^{5})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(42(z+6)^{5}(u+3)^{5})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "moderate/factored_blank/1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "93227971-f20e-5513-9fba-c4ff14407c3a",
+        ":question/problem": "The least common multiple of the polynomials $14(z+9)(y-6)$ and $4(z+9)^{6}(y-6)^{5}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "28344f08-c257-5d4e-adfb-08ba654a5cb8",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "19b503f9-1119-5c9d-b07e-96e47f1d263a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "28(z+9)^{6}(y-6)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "19b503f9-1119-5c9d-b07e-96e47f1d263a"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(14,4):$\n\n- Multiples of $14:$ $\\,14,\\,28,\\,42,…$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,…$\n\nSo, $\\text{LCM}(14,4)=28.$\n\nTo find the $\\text{LCM}$ of $(z+9)(y-6)$ and $(z+9)^{6}(y-6)^{5},$ we find the largest powers for $(z+9)$ and $(y-6)$ that appear in the expressions:\n\n- For $(z+9)$ and $(z+9)^{6},$ the largest power is $6.$\n\n- For $(y-6)$ and $(y-6)^{5},$ the largest power is $5.$\n\nNow, we raise $(z+9)$ and $(y-6)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((z+9)(y-6),\\,(z+9)^{6}(y-6)^{5})=(z+9)^{6}\\cdot (y-6)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(14(z+9)(y-6),\\,4(z+9)^{6}(y-6)^{5})=28(z+9)^{6}(y-6)^{5}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 1,
+        "level": "moderate",
+        "template": "factored_blank",
+        "profile": "method_bank",
+        "bank": null,
+        "parameters": {
+          "a": 14,
+          "b": 4,
+          "v": "z",
+          "w": "y",
+          "h": 9,
+          "k": -6,
+          "p": 1,
+          "q": 1,
+          "r": 6,
+          "s": 5
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "50c7789f1c352e009bd9eeb97158c01b7bb9dadd7f3da2f64224c43e40a620cb",
+        "mathematical_fingerprint": "9d0c7944795d58be135aab49f7d260f922fb085aabd030276c9f26c34de098b1",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "28(z+9)^{6}(y-6)^{5}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "28*y^5*z^6 + 1512*y^5*z^5 + 34020*y^5*z^4 + 408240*y^5*z^3 + 2755620*y^5*z^2 + 9920232*y^5*z + 14880348*y^5 - 840*y^4*z^6 - 45360*y^4*z^5 - 1020600*y^4*z^4 - 12247200*y^4*z^3 - 82668600*y^4*z^2 - 297606960*y^4*z - 446410440*y^4 + 10080*y^3*z^6 + 544320*y^3*z^5 + 12247200*y^3*z^4 + 146966400*y^3*z^3 + 992023200*y^3*z^2 + 3571283520*y^3*z + 5356925280*y^3 - 60480*y^2*z^6 - 3265920*y^2*z^5 - 73483200*y^2*z^4 - 881798400*y^2*z^3 - 5952139200*y^2*z^2 - 21427701120*y^2*z - 32141551680*y^2 + 181440*y*z^6 + 9797760*y*z^5 + 220449600*y*z^4 + 2645395200*y*z^3 + 17856417600*y*z^2 + 64283103360*y*z + 96424655040*y - 217728*z^6 - 11757312*z^5 - 264539520*z^4 - 3174474240*z^3 - 21427701120*z^2 - 77139724032*z - 115709586048",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "28*(z^6 + 54*z^5 + 1215*z^4 + 14580*z^3 + 98415*z^2 + 354294*z + 531441)*(y - 6)^5",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(28(z+9)^{6}(y-6)^{5})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(28(z+9)^{6}(y-6)^{5})/28",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(28(z+9)^{6}(y-6)^{5})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(28(z+9)^{6}(y-6)^{5})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(28(z+9)^{6}(y-6)^{5})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "moderate/factored_radio/0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "7a2d73d7-7c3e-5c1f-b8e8-01d9875f370e",
+        ":question/problem": "Find the least common multiple of the polynomials $4(x-6)^{2}(z-8)^{6}$ and $10(x-6)(z-8)^{4}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5ea416ef-a16a-5591-a61a-55b499bdebd6",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "fe3e6a1b-8bd3-56db-bd68-7a1690bbb5fd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2(x-6)^{2}(z-8)^{6}"
+              },
+              {
+                ":answer/id": "fc727855-e2a9-5f8c-bde6-8964b2b83bd7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20(x-6)(z-8)^{4}"
+              },
+              {
+                ":answer/id": "7fb73cbd-5582-548b-80c0-ef2281044fea",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20(x-6)^{2}(z-8)^{6}"
+              },
+              {
+                ":answer/id": "dd470298-5447-5aa7-8584-8cde747f86e0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20(x-6)^{6}(z-8)^{2}"
+              },
+              {
+                ":answer/id": "2d814fa2-8e6a-56a4-a549-6f960e689121",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20(x-6)^{3}(z-8)^{10}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7fb73cbd-5582-548b-80c0-ef2281044fea"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(4,10):$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,…$\n\n- Multiples of $10:$ $\\,10,\\,20,\\,30,…$\n\nSo, $\\text{LCM}(4,10)=20.$\n\nTo find the $\\text{LCM}$ of $(x-6)^{2}(z-8)^{6}$ and $(x-6)(z-8)^{4},$ we find the largest powers for $(x-6)$ and $(z-8)$ that appear in the expressions:\n\n- For $(x-6)^{2}$ and $(x-6),$ the largest power is $2.$\n\n- For $(z-8)^{6}$ and $(z-8)^{4},$ the largest power is $6.$\n\nNow, we raise $(x-6)$ and $(z-8)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-6)^{2}(z-8)^{6},\\,(x-6)(z-8)^{4})=(x-6)^{2}\\cdot (z-8)^{6}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(4(x-6)^{2}(z-8)^{6},\\,10(x-6)(z-8)^{4})=20(x-6)^{2}(z-8)^{6}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "moderate",
+        "template": "factored_radio",
+        "profile": "method_bank",
+        "bank": "method_bank",
+        "parameters": {
+          "a": 4,
+          "b": 10,
+          "v": "x",
+          "w": "z",
+          "h": -6,
+          "k": -8,
+          "p": 2,
+          "q": 6,
+          "r": 1,
+          "s": 4
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": true,
+        "authored_bank": true,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct",
+          "minima",
+          "gcd_content",
+          "sum_powers",
+          "swap_maxima"
+        ],
+        "content_identity": "b028a25c322c8e36c58122b75982779c7ce6bf03cbe14ff6bbc27138ff308ac4",
+        "mathematical_fingerprint": "49ba8a4f194343338043c19c8e4c658ebef31f6f5b7c2d88653cf72409cb252d",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "fe3e6a1b-8bd3-56db-bd68-7a1690bbb5fd",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "fc727855-e2a9-5f8c-bde6-8964b2b83bd7",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "7fb73cbd-5582-548b-80c0-ef2281044fea",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "dd470298-5447-5aa7-8584-8cde747f86e0",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "2d814fa2-8e6a-56a4-a549-6f960e689121",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "moderate/factored_radio/1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "ce541788-f8fa-51ea-8890-b0d7c89d29dc",
+        ":question/problem": "Find the least common multiple of the polynomials $14(z+9)(y-6)$ and $4(z+9)^{6}(y-6)^{5}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c212776a-c5a8-5e50-aa8d-c73b9d72e096",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "78861b6d-14ab-5734-a4ad-97d3ce60fb4d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2(z+9)^{6}(y-6)^{5}"
+              },
+              {
+                ":answer/id": "18ea14b8-38c8-580a-bdba-8f5dd30b8a75",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "28(z+9)^{7}(y-6)^{6}"
+              },
+              {
+                ":answer/id": "ca0b67a4-bbc1-56f4-93ef-43b54b66e69f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "28(z+9)^{5}(y-6)^{6}"
+              },
+              {
+                ":answer/id": "5bf88f28-ab67-5e5b-afe0-11eb766e945a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "28(z+9)^{6}(y-6)^{5}"
+              },
+              {
+                ":answer/id": "55dbe61b-1847-50ed-9bb7-c86e108cb5cb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "28(z+9)(y-6)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5bf88f28-ab67-5e5b-afe0-11eb766e945a"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(14,4):$\n\n- Multiples of $14:$ $\\,14,\\,28,\\,42,…$\n\n- Multiples of $4:$ $\\,4,\\,8,\\,12,\\,16,\\,20,\\,24,\\,28,\\,32,…$\n\nSo, $\\text{LCM}(14,4)=28.$\n\nTo find the $\\text{LCM}$ of $(z+9)(y-6)$ and $(z+9)^{6}(y-6)^{5},$ we find the largest powers for $(z+9)$ and $(y-6)$ that appear in the expressions:\n\n- For $(z+9)$ and $(z+9)^{6},$ the largest power is $6.$\n\n- For $(y-6)$ and $(y-6)^{5},$ the largest power is $5.$\n\nNow, we raise $(z+9)$ and $(y-6)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((z+9)(y-6),\\,(z+9)^{6}(y-6)^{5})=(z+9)^{6}\\cdot (y-6)^{5}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(14(z+9)(y-6),\\,4(z+9)^{6}(y-6)^{5})=28(z+9)^{6}(y-6)^{5}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 1,
+        "level": "moderate",
+        "template": "factored_radio",
+        "profile": "method_bank",
+        "bank": "method_bank",
+        "parameters": {
+          "a": 14,
+          "b": 4,
+          "v": "z",
+          "w": "y",
+          "h": 9,
+          "k": -6,
+          "p": 1,
+          "q": 1,
+          "r": 6,
+          "s": 5
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": true,
+        "authored_bank": true,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct",
+          "minima",
+          "gcd_content",
+          "sum_powers",
+          "swap_maxima"
+        ],
+        "content_identity": "7bf0fd995b7220626c14ea05a85450c5dfa369bfb4dc8001c787f9589cd99dba",
+        "mathematical_fingerprint": "9d0c7944795d58be135aab49f7d260f922fb085aabd030276c9f26c34de098b1",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "78861b6d-14ab-5734-a4ad-97d3ce60fb4d",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "18ea14b8-38c8-580a-bdba-8f5dd30b8a75",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "ca0b67a4-bbc1-56f4-93ef-43b54b66e69f",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "5bf88f28-ab67-5e5b-afe0-11eb766e945a",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "55dbe61b-1847-50ed-9bb7-c86e108cb5cb",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "hard/factored_blank/0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "737b411f-1ca9-5e24-a2ac-b8ca8409b78c",
+        ":question/problem": "The least common multiple of the polynomials $24(x+9)^{7}(y-6)^{3}$ and $14(x+9)^{2}(y-6)^{2}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "212fdb80-b53f-51db-9712-30a3f15e5c73",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bb717f54-f37c-55bc-a560-58277bc647b4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "168(x+9)^{7}(y-6)^{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bb717f54-f37c-55bc-a560-58277bc647b4"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(24,14):$\n\n- Multiples of $24:$ $\\,24,\\,48,\\,72,\\,96,\\,120,\\,144,\\,168,\\,192,…$\n\n- Multiples of $14:$ $\\,14,\\,28,\\,42,\\,56,\\,70,\\,84,\\,98,\\,112,\\,126,\\,140,\\,154,\\,168,\\,182,…$\n\nSo, $\\text{LCM}(24,14)=168.$\n\nTo find the $\\text{LCM}$ of $(x+9)^{7}(y-6)^{3}$ and $(x+9)^{2}(y-6)^{2},$ we find the largest powers for $(x+9)$ and $(y-6)$ that appear in the expressions:\n\n- For $(x+9)^{7}$ and $(x+9)^{2},$ the largest power is $7.$\n\n- For $(y-6)^{3}$ and $(y-6)^{2},$ the largest power is $3.$\n\nNow, we raise $(x+9)$ and $(y-6)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x+9)^{7}(y-6)^{3},\\,(x+9)^{2}(y-6)^{2})=(x+9)^{7}\\cdot (y-6)^{3}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(24(x+9)^{7}(y-6)^{3},\\,14(x+9)^{2}(y-6)^{2})=168(x+9)^{7}(y-6)^{3}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "hard",
+        "template": "factored_blank",
+        "profile": "method_bank",
+        "bank": null,
+        "parameters": {
+          "a": 24,
+          "b": 14,
+          "v": "x",
+          "w": "y",
+          "h": 9,
+          "k": -6,
+          "p": 7,
+          "q": 3,
+          "r": 2,
+          "s": 2
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": true,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "bb6c2486d2b019a276f59b579a78edbba48612be188984db80de757241b5c8be",
+        "mathematical_fingerprint": "f92eb45100ac2da39c97edadcc4f9743a9d8b1bb10b6c3cc4ff2cb8336c9bbf9",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "168(x+9)^{7}(y-6)^{3}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "168*x^7*y^3 - 3024*x^7*y^2 + 18144*x^7*y - 36288*x^7 + 10584*x^6*y^3 - 190512*x^6*y^2 + 1143072*x^6*y - 2286144*x^6 + 285768*x^5*y^3 - 5143824*x^5*y^2 + 30862944*x^5*y - 61725888*x^5 + 4286520*x^4*y^3 - 77157360*x^4*y^2 + 462944160*x^4*y - 925888320*x^4 + 38578680*x^3*y^3 - 694416240*x^3*y^2 + 4166497440*x^3*y - 8332994880*x^3 + 208324872*x^2*y^3 - 3749847696*x^2*y^2 + 22499086176*x^2*y - 44998172352*x^2 + 624974616*x*y^3 - 11249543088*x*y^2 + 67497258528*x*y - 134994517056*x + 803538792*y^3 - 14463698256*y^2 + 86782189536*y - 173564379072",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "168*(x^7 + 63*x^6 + 1701*x^5 + 25515*x^4 + 229635*x^3 + 1240029*x^2 + 3720087*x + 4782969)*(y - 6)^3",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(168(x+9)^{7}(y-6)^{3})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(168(x+9)^{7}(y-6)^{3})/168",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(168(x+9)^{7}(y-6)^{3})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(168(x+9)^{7}(y-6)^{3})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(168(x+9)^{7}(y-6)^{3})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "hard/factored_blank/1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "24a0338c-28d4-548a-933f-98afda9d8aff",
+        ":question/problem": "The least common multiple of the polynomials $15(y-7)^{9}(v-1)^{9}$ and $27(y-7)^{8}(v-1)^{5}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3d0d756e-58da-58cc-8e37-9fa6e8a4bc3d",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ff6bbd7f-6098-5344-a2a0-0f57e8e2a35d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "135(y-7)^{9}(v-1)^{9}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ff6bbd7f-6098-5344-a2a0-0f57e8e2a35d"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(15,27):$\n\n- Multiples of $15:$ $\\,15,\\,30,\\,45,\\,60,\\,75,\\,90,\\,105,\\,120,\\,135,\\,150,…$\n\n- Multiples of $27:$ $\\,27,\\,54,\\,81,\\,108,\\,135,\\,162,…$\n\nSo, $\\text{LCM}(15,27)=135.$\n\nTo find the $\\text{LCM}$ of $(y-7)^{9}(v-1)^{9}$ and $(y-7)^{8}(v-1)^{5},$ we find the largest powers for $(y-7)$ and $(v-1)$ that appear in the expressions:\n\n- For $(y-7)^{9}$ and $(y-7)^{8},$ the largest power is $9.$\n\n- For $(v-1)^{9}$ and $(v-1)^{5},$ the largest power is $9.$\n\nNow, we raise $(y-7)$ and $(v-1)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((y-7)^{9}(v-1)^{9},\\,(y-7)^{8}(v-1)^{5})=(y-7)^{9}\\cdot (v-1)^{9}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(15(y-7)^{9}(v-1)^{9},\\,27(y-7)^{8}(v-1)^{5})=135(y-7)^{9}(v-1)^{9}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 1,
+        "level": "hard",
+        "template": "factored_blank",
+        "profile": "method_bank",
+        "bank": null,
+        "parameters": {
+          "a": 15,
+          "b": 27,
+          "v": "y",
+          "w": "v",
+          "h": -7,
+          "k": -1,
+          "p": 9,
+          "q": 9,
+          "r": 8,
+          "s": 5
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": true,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "b192b85969b4c232417c3fb5c81605a9209dc5f1965eeecf0c0a23ee4b783105",
+        "mathematical_fingerprint": "4a0540fd6863611e188577cdbee7cbd52ab248c614c927d198a4599849a20c0d",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "135(y-7)^{9}(v-1)^{9}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "135*v^9*y^9 - 8505*v^9*y^8 + 238140*v^9*y^7 - 3889620*v^9*y^6 + 40841010*v^9*y^5 - 285887070*v^9*y^4 + 1334139660*v^9*y^3 - 4002418980*v^9*y^2 + 7004233215*v^9*y - 5447736945*v^9 - 1215*v^8*y^9 + 76545*v^8*y^8 - 2143260*v^8*y^7 + 35006580*v^8*y^6 - 367569090*v^8*y^5 + 2572983630*v^8*y^4 - 12007256940*v^8*y^3 + 36021770820*v^8*y^2 - 63038098935*v^8*y + 49029632505*v^8 + 4860*v^7*y^9 - 306180*v^7*y^8 + 8573040*v^7*y^7 - 140026320*v^7*y^6 + 1470276360*v^7*y^5 - 10291934520*v^7*y^4 + 48029027760*v^7*y^3 - 144087083280*v^7*y^2 + 252152395740*v^7*y - 196118530020*v^7 - 11340*v^6*y^9 + 714420*v^6*y^8 - 20003760*v^6*y^7 + 326728080*v^6*y^6 - 3430644840*v^6*y^5 + 24014513880*v^6*y^4 - 112067731440*v^6*y^3 + 336203194320*v^6*y^2 - 588355590060*v^6*y + 457609903380*v^6 + 17010*v^5*y^9 - 1071630*v^5*y^8 + 30005640*v^5*y^7 - 490092120*v^5*y^6 + 5145967260*v^5*y^5 - 36021770820*v^5*y^4 + 168101597160*v^5*y^3 - 504304791480*v^5*y^2 + 882533385090*v^5*y - 686414855070*v^5 - 17010*v^4*y^9 + 1071630*v^4*y^8 - 30005640*v^4*y^7 + 490092120*v^4*y^6 - 5145967260*v^4*y^5 + 36021770820*v^4*y^4 - 168101597160*v^4*y^3 + 504304791480*v^4*y^2 - 882533385090*v^4*y + 686414855070*v^4 + 11340*v^3*y^9 - 714420*v^3*y^8 + 20003760*v^3*y^7 - 326728080*v^3*y^6 + 3430644840*v^3*y^5 - 24014513880*v^3*y^4 + 112067731440*v^3*y^3 - 336203194320*v^3*y^2 + 588355590060*v^3*y - 457609903380*v^3 - 4860*v^2*y^9 + 306180*v^2*y^8 - 8573040*v^2*y^7 + 140026320*v^2*y^6 - 1470276360*v^2*y^5 + 10291934520*v^2*y^4 - 48029027760*v^2*y^3 + 144087083280*v^2*y^2 - 252152395740*v^2*y + 196118530020*v^2 + 1215*v*y^9 - 76545*v*y^8 + 2143260*v*y^7 - 35006580*v*y^6 + 367569090*v*y^5 - 2572983630*v*y^4 + 12007256940*v*y^3 - 36021770820*v*y^2 + 63038098935*v*y - 49029632505*v - 135*y^9 + 8505*y^8 - 238140*y^7 + 3889620*y^6 - 40841010*y^5 + 285887070*y^4 - 1334139660*y^3 + 4002418980*y^2 - 7004233215*y + 5447736945",
+        "expected": "unresolved",
+        "purpose": "fully expanded equivalent; documented native limit4096 bytes /512 tokens; entry tokens=879"
+      },
+      {
+        "submitted": "135*(y^9 - 63*y^8 + 1764*y^7 - 28812*y^6 + 302526*y^5 - 2117682*y^4 + 9882516*y^3 - 29647548*y^2 + 51883209*y - 40353607)*(v - 1)^9",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(135(y-7)^{9}(v-1)^{9})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(135(y-7)^{9}(v-1)^{9})/135",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(135(y-7)^{9}(v-1)^{9})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(135(y-7)^{9}(v-1)^{9})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(135(y-7)^{9}(v-1)^{9})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "hard/factored_radio/0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "37042bdd-b583-5e4b-a9c5-bb17a7f3091d",
+        ":question/problem": "Find the least common multiple of the polynomials $24(x+9)^{7}(y-6)^{3}$ and $14(x+9)^{2}(y-6)^{2}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "257c1cbe-46a0-5191-8226-49ae394211bb",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "88058a53-fa13-5265-8a3d-6ab88ae01944",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2(x+9)^{7}(y-6)^{3}"
+              },
+              {
+                ":answer/id": "40dadb49-845c-5600-afa7-2c9d1500830b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "168(x+9)^{2}(y-6)^{2}"
+              },
+              {
+                ":answer/id": "1cd34497-6e81-5835-8082-42d3745890a5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "168(x+9)^{7}(y-6)^{3}"
+              },
+              {
+                ":answer/id": "0184ec5a-c784-5710-b7d0-7bbe53fc4c51",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "168(x+9)^{3}(y-6)^{7}"
+              },
+              {
+                ":answer/id": "12fc57ca-16f6-52c8-b135-084fcb7d4701",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "168(x+9)^{9}(y-6)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1cd34497-6e81-5835-8082-42d3745890a5"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(24,14):$\n\n- Multiples of $24:$ $\\,24,\\,48,\\,72,\\,96,\\,120,\\,144,\\,168,\\,192,…$\n\n- Multiples of $14:$ $\\,14,\\,28,\\,42,\\,56,\\,70,\\,84,\\,98,\\,112,\\,126,\\,140,\\,154,\\,168,\\,182,…$\n\nSo, $\\text{LCM}(24,14)=168.$\n\nTo find the $\\text{LCM}$ of $(x+9)^{7}(y-6)^{3}$ and $(x+9)^{2}(y-6)^{2},$ we find the largest powers for $(x+9)$ and $(y-6)$ that appear in the expressions:\n\n- For $(x+9)^{7}$ and $(x+9)^{2},$ the largest power is $7.$\n\n- For $(y-6)^{3}$ and $(y-6)^{2},$ the largest power is $3.$\n\nNow, we raise $(x+9)$ and $(y-6)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x+9)^{7}(y-6)^{3},\\,(x+9)^{2}(y-6)^{2})=(x+9)^{7}\\cdot (y-6)^{3}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(24(x+9)^{7}(y-6)^{3},\\,14(x+9)^{2}(y-6)^{2})=168(x+9)^{7}(y-6)^{3}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "hard",
+        "template": "factored_radio",
+        "profile": "method_bank",
+        "bank": "method_bank",
+        "parameters": {
+          "a": 24,
+          "b": 14,
+          "v": "x",
+          "w": "y",
+          "h": 9,
+          "k": -6,
+          "p": 7,
+          "q": 3,
+          "r": 2,
+          "s": 2
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": true,
+        "authored_field_layout": true,
+        "authored_bank": true,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct",
+          "minima",
+          "gcd_content",
+          "sum_powers",
+          "swap_maxima"
+        ],
+        "content_identity": "7a0c2039ef00fff4ca6c46a0ac721e80c317b3aa0f4cee0257169e0a4e7a6bdd",
+        "mathematical_fingerprint": "f92eb45100ac2da39c97edadcc4f9743a9d8b1bb10b6c3cc4ff2cb8336c9bbf9",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "88058a53-fa13-5265-8a3d-6ab88ae01944",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "40dadb49-845c-5600-afa7-2c9d1500830b",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "1cd34497-6e81-5835-8082-42d3745890a5",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "0184ec5a-c784-5710-b7d0-7bbe53fc4c51",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "12fc57ca-16f6-52c8-b135-084fcb7d4701",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "hard/factored_radio/1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "c9ccc3aa-b2fb-5035-8f28-cbccde2ff58a",
+        ":question/problem": "Find the least common multiple of the polynomials $18(z+1)^{3}(u+5)^{6}$ and $20(z+1)^{5}(u+5)^{8}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "12a4cd4b-068c-520a-a2b8-bfdd6cbf41f0",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "80cb0d9f-42eb-5d17-a3ac-dfa364fc9fed",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2(z+1)^{5}(u+5)^{8}"
+              },
+              {
+                ":answer/id": "8e88b40c-dc53-5fd2-ae51-8deebc926626",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(z+1)^{8}(u+5)^{14}"
+              },
+              {
+                ":answer/id": "6b454fda-cacc-5a26-87dc-10d58086d647",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(z+1)^{8}(u+5)^{5}"
+              },
+              {
+                ":answer/id": "bc86780c-5222-58e9-bf09-3a281d47e656",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(z+1)^{5}(u+5)^{8}"
+              },
+              {
+                ":answer/id": "4158bdaa-ce58-5721-8a23-cadadd3cca7e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(z+1)^{3}(u+5)^{6}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bc86780c-5222-58e9-bf09-3a281d47e656"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(18,20):$\n\n- Multiples of $18:$ $\\,18,\\,36,\\,54,\\,72,\\,90,\\,108,\\,126,\\,144,\\,162,\\,180,\\,198,…$\n\n- Multiples of $20:$ $\\,20,\\,40,\\,60,\\,80,\\,100,\\,120,\\,140,\\,160,\\,180,\\,200,…$\n\nSo, $\\text{LCM}(18,20)=180.$\n\nTo find the $\\text{LCM}$ of $(z+1)^{3}(u+5)^{6}$ and $(z+1)^{5}(u+5)^{8},$ we find the largest powers for $(z+1)$ and $(u+5)$ that appear in the expressions:\n\n- For $(z+1)^{3}$ and $(z+1)^{5},$ the largest power is $5.$\n\n- For $(u+5)^{6}$ and $(u+5)^{8},$ the largest power is $8.$\n\nNow, we raise $(z+1)$ and $(u+5)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((z+1)^{3}(u+5)^{6},\\,(z+1)^{5}(u+5)^{8})=(z+1)^{5}\\cdot (u+5)^{8}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(18(z+1)^{3}(u+5)^{6},\\,20(z+1)^{5}(u+5)^{8})=180(z+1)^{5}(u+5)^{8}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 1,
+        "level": "hard",
+        "template": "factored_radio",
+        "profile": "method_bank",
+        "bank": "method_bank",
+        "parameters": {
+          "a": 18,
+          "b": 20,
+          "v": "z",
+          "w": "u",
+          "h": 1,
+          "k": 5,
+          "p": 3,
+          "q": 6,
+          "r": 5,
+          "s": 8
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": true,
+        "authored_field_layout": true,
+        "authored_bank": true,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct",
+          "minima",
+          "gcd_content",
+          "sum_powers",
+          "swap_maxima"
+        ],
+        "content_identity": "ef8bd348b03c8b6cf257d7d4ab24add83bfdf97b6d4b39d01a357c3169d55b34",
+        "mathematical_fingerprint": "217c993ca6853dc8569363ba6b6101945127251f13b1b3d6bb5d515b18fcf618",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "80cb0d9f-42eb-5d17-a3ac-dfa364fc9fed",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "8e88b40c-dc53-5fd2-ae51-8deebc926626",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "6b454fda-cacc-5a26-87dc-10d58086d647",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "bc86780c-5222-58e9-bf09-3a281d47e656",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "4158bdaa-ce58-5721-8a23-cadadd3cca7e",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "boundary/easy/factored_blank",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "b24baed7-6cd6-5438-b68a-256c1e73e026",
+        ":question/problem": "The least common multiple of the polynomials $2(x-9)(y+9)^{2}$ and $3(x-9)^{5}(y+9)^{3}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6bd40727-5c41-58bf-aca1-deed70111342",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f23b78bd-3c79-57a5-af2f-e86646bd5246",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6(x-9)^{5}(y+9)^{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f23b78bd-3c79-57a5-af2f-e86646bd5246"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(2,3):$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,\\,8,…$\n\n- Multiples of $3:$ $\\,3,\\,6,\\,9,…$\n\nSo, $\\text{LCM}(2,3)=6.$\n\nTo find the $\\text{LCM}$ of $(x-9)(y+9)^{2}$ and $(x-9)^{5}(y+9)^{3},$ we find the largest powers for $(x-9)$ and $(y+9)$ that appear in the expressions:\n\n- For $(x-9)$ and $(x-9)^{5},$ the largest power is $5.$\n\n- For $(y+9)^{2}$ and $(y+9)^{3},$ the largest power is $3.$\n\nNow, we raise $(x-9)$ and $(y+9)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-9)(y+9)^{2},\\,(x-9)^{5}(y+9)^{3})=(x-9)^{5}\\cdot (y+9)^{3}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(2(x-9)(y+9)^{2},\\,3(x-9)^{5}(y+9)^{3})=6(x-9)^{5}(y+9)^{3}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "easy",
+        "template": "factored_blank",
+        "profile": "method_bank",
+        "bank": null,
+        "parameters": {
+          "a": 2,
+          "b": 3,
+          "v": "x",
+          "w": "y",
+          "h": -9,
+          "k": 9,
+          "p": 1,
+          "q": 2,
+          "r": 5,
+          "s": 3
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "7a157eae7a59c25298a6fc54e31be85916f3d8d31fc3cb8343b40d4e48495359",
+        "mathematical_fingerprint": "0dccdb3683671d5929f6b717862d768cd9946751e065dc7b8083fb4d456a8016",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "6(x-9)^{5}(y+9)^{3}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "6*x^5*y^3 + 162*x^5*y^2 + 1458*x^5*y + 4374*x^5 - 270*x^4*y^3 - 7290*x^4*y^2 - 65610*x^4*y - 196830*x^4 + 4860*x^3*y^3 + 131220*x^3*y^2 + 1180980*x^3*y + 3542940*x^3 - 43740*x^2*y^3 - 1180980*x^2*y^2 - 10628820*x^2*y - 31886460*x^2 + 196830*x*y^3 + 5314410*x*y^2 + 47829690*x*y + 143489070*x - 354294*y^3 - 9565938*y^2 - 86093442*y - 258280326",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "6*(x^5 - 45*x^4 + 810*x^3 - 7290*x^2 + 32805*x - 59049)*(y + 9)^3",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(6(x-9)^{5}(y+9)^{3})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(6(x-9)^{5}(y+9)^{3})/6",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(6(x-9)^{5}(y+9)^{3})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(6(x-9)^{5}(y+9)^{3})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(6(x-9)^{5}(y+9)^{3})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "boundary/easy/factored_radio",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "e554ebd3-a3c5-54c4-a3b6-d86b6cb54702",
+        ":question/problem": "Find the least common multiple of the polynomials $2(x-9)(y+9)^{2}$ and $3(x-9)^{5}(y+9)^{3}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e4a328f3-75a4-5cb0-a570-e36eb4cc811c",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "46d8b06a-a7ff-5570-9ca3-49f11c9253fa",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(x-9)^{5}(y+9)^{3}"
+              },
+              {
+                ":answer/id": "59935c9a-fdd0-5c1d-84eb-eabefce7b873",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6(x-9)(y+9)^{2}"
+              },
+              {
+                ":answer/id": "633a9063-f5e0-5baa-8535-45ccf274f3cd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6(x-9)^{5}(y+9)^{3}"
+              },
+              {
+                ":answer/id": "0e1d3fd7-9d0b-5da1-bdbf-5279455fead5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6(x-9)^{3}(y+9)^{5}"
+              },
+              {
+                ":answer/id": "3627ae78-314b-5a1b-a3ec-a79898259219",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6(x-9)^{6}(y+9)^{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "633a9063-f5e0-5baa-8535-45ccf274f3cd"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(2,3):$\n\n- Multiples of $2:$ $\\,2,\\,4,\\,6,\\,8,…$\n\n- Multiples of $3:$ $\\,3,\\,6,\\,9,…$\n\nSo, $\\text{LCM}(2,3)=6.$\n\nTo find the $\\text{LCM}$ of $(x-9)(y+9)^{2}$ and $(x-9)^{5}(y+9)^{3},$ we find the largest powers for $(x-9)$ and $(y+9)$ that appear in the expressions:\n\n- For $(x-9)$ and $(x-9)^{5},$ the largest power is $5.$\n\n- For $(y+9)^{2}$ and $(y+9)^{3},$ the largest power is $3.$\n\nNow, we raise $(x-9)$ and $(y+9)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-9)(y+9)^{2},\\,(x-9)^{5}(y+9)^{3})=(x-9)^{5}\\cdot (y+9)^{3}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(2(x-9)(y+9)^{2},\\,3(x-9)^{5}(y+9)^{3})=6(x-9)^{5}(y+9)^{3}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "easy",
+        "template": "factored_radio",
+        "profile": "method_bank",
+        "bank": "method_bank",
+        "parameters": {
+          "a": 2,
+          "b": 3,
+          "v": "x",
+          "w": "y",
+          "h": -9,
+          "k": 9,
+          "p": 1,
+          "q": 2,
+          "r": 5,
+          "s": 3
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": true,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct",
+          "minima",
+          "gcd_content",
+          "sum_powers",
+          "swap_maxima"
+        ],
+        "content_identity": "d176e5f2805a0a5930029a4699f99c35aa39c48084b7ea9b0140c415aabc6fc3",
+        "mathematical_fingerprint": "0dccdb3683671d5929f6b717862d768cd9946751e065dc7b8083fb4d456a8016",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "46d8b06a-a7ff-5570-9ca3-49f11c9253fa",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "59935c9a-fdd0-5c1d-84eb-eabefce7b873",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "633a9063-f5e0-5baa-8535-45ccf274f3cd",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "0e1d3fd7-9d0b-5da1-bdbf-5279455fead5",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "3627ae78-314b-5a1b-a3ec-a79898259219",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "boundary/moderate/factored_blank",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "7c60e709-80ae-584a-9875-de36981977ee",
+        ":question/problem": "The least common multiple of the polynomials $12{u}^{6}(w-9)^{3}$ and $20{u}^{5}(w-9)^{4}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "23bd3800-d115-5554-87df-278f188d3774",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "abe82999-75d2-5c14-b52b-8abc63748a1f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{u}^{6}(w-9)^{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "abe82999-75d2-5c14-b52b-8abc63748a1f"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(12,20):$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\\,72,…$\n\n- Multiples of $20:$ $\\,20,\\,40,\\,60,\\,80,…$\n\nSo, $\\text{LCM}(12,20)=60.$\n\nTo find the $\\text{LCM}$ of ${u}^{6}(w-9)^{3}$ and ${u}^{5}(w-9)^{4},$ we find the largest powers for $u$ and $(w-9)$ that appear in the expressions:\n\n- For ${u}^{6}$ and ${u}^{5},$ the largest power is $6.$\n\n- For $(w-9)^{3}$ and $(w-9)^{4},$ the largest power is $4.$\n\nNow, we raise $u$ and $(w-9)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({u}^{6}(w-9)^{3},\\,{u}^{5}(w-9)^{4})={u}^{6}\\cdot (w-9)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(12{u}^{6}(w-9)^{3},\\,20{u}^{5}(w-9)^{4})=60{u}^{6}(w-9)^{4}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "moderate",
+        "template": "factored_blank",
+        "profile": "method_bank",
+        "bank": null,
+        "parameters": {
+          "a": 12,
+          "b": 20,
+          "v": "u",
+          "w": "w",
+          "h": 0,
+          "k": -9,
+          "p": 6,
+          "q": 3,
+          "r": 5,
+          "s": 4
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "50232b6b7e2e5d3e7d5e1a16ea2a18005d9141972e698c36bb76267b2a55635d",
+        "mathematical_fingerprint": "43caec6dd047530bd40395f95085e8e76837d705c69b2f1bd06eebb415b77f99",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "60{u}^{6}(w-9)^{4}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "60*u^6*w^4 - 2160*u^6*w^3 + 29160*u^6*w^2 - 174960*u^6*w + 393660*u^6",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "60*(u^6)*(w - 9)^4",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(60{u}^{6}(w-9)^{4})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(60{u}^{6}(w-9)^{4})/60",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(60{u}^{6}(w-9)^{4})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(60{u}^{6}(w-9)^{4})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(60{u}^{6}(w-9)^{4})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "boundary/moderate/factored_radio",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "0dddde6a-b82c-515c-9a63-3d164d2b9876",
+        ":question/problem": "Find the least common multiple of the polynomials $12{u}^{6}(w-9)^{3}$ and $20{u}^{5}(w-9)^{4}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1c82e509-154b-564c-a0a3-c9255221990b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "91b722a0-d46c-56ae-8050-2ffaf68b940c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4{u}^{6}(w-9)^{4}"
+              },
+              {
+                ":answer/id": "9a6e7fb4-a1f9-5f67-a41f-43e7de06f28e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{u}^{5}(w-9)^{3}"
+              },
+              {
+                ":answer/id": "ccf1bebc-6310-5ea9-9303-b8cf10e60743",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{u}^{6}(w-9)^{4}"
+              },
+              {
+                ":answer/id": "7bb80d76-03c3-5e03-a507-056799abfb1e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{u}^{4}(w-9)^{6}"
+              },
+              {
+                ":answer/id": "6efe6d4a-2c7b-5038-88d9-69c166434ddb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60{u}^{11}(w-9)^{7}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ccf1bebc-6310-5ea9-9303-b8cf10e60743"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(12,20):$\n\n- Multiples of $12:$ $\\,12,\\,24,\\,36,\\,48,\\,60,\\,72,…$\n\n- Multiples of $20:$ $\\,20,\\,40,\\,60,\\,80,…$\n\nSo, $\\text{LCM}(12,20)=60.$\n\nTo find the $\\text{LCM}$ of ${u}^{6}(w-9)^{3}$ and ${u}^{5}(w-9)^{4},$ we find the largest powers for $u$ and $(w-9)$ that appear in the expressions:\n\n- For ${u}^{6}$ and ${u}^{5},$ the largest power is $6.$\n\n- For $(w-9)^{3}$ and $(w-9)^{4},$ the largest power is $4.$\n\nNow, we raise $u$ and $(w-9)$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}({u}^{6}(w-9)^{3},\\,{u}^{5}(w-9)^{4})={u}^{6}\\cdot (w-9)^{4}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(12{u}^{6}(w-9)^{3},\\,20{u}^{5}(w-9)^{4})=60{u}^{6}(w-9)^{4}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "moderate",
+        "template": "factored_radio",
+        "profile": "method_bank",
+        "bank": "method_bank",
+        "parameters": {
+          "a": 12,
+          "b": 20,
+          "v": "u",
+          "w": "w",
+          "h": 0,
+          "k": -9,
+          "p": 6,
+          "q": 3,
+          "r": 5,
+          "s": 4
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": false,
+        "authored_field_layout": true,
+        "authored_bank": true,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct",
+          "minima",
+          "gcd_content",
+          "sum_powers",
+          "swap_maxima"
+        ],
+        "content_identity": "dd42db0f102f3df9ee2c11960cbed01038e329bebcc3db378a4b5f92fb36e0c0",
+        "mathematical_fingerprint": "43caec6dd047530bd40395f95085e8e76837d705c69b2f1bd06eebb415b77f99",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "91b722a0-d46c-56ae-8050-2ffaf68b940c",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "9a6e7fb4-a1f9-5f67-a41f-43e7de06f28e",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "ccf1bebc-6310-5ea9-9303-b8cf10e60743",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "7bb80d76-03c3-5e03-a507-056799abfb1e",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "6efe6d4a-2c7b-5038-88d9-69c166434ddb",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  },
+  {
+    "label": "boundary/hard/factored_blank",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "4963fa4b-0df5-58b7-b88b-ac79d1c4c48e",
+        ":question/problem": "The least common multiple of the polynomials $18(x-9)^{9}{y}^{2}$ and $20(x-9)^{3}{y}^{8}$ is{{field-1}}.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "13f8ae06-b56a-52c4-800f-364c16a0589d",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a49cc1b8-e5fd-55ab-b10b-86e26d830ad9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(x-9)^{9}{y}^{8}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a49cc1b8-e5fd-55ab-b10b-86e26d830ad9"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(18,20):$\n\n- Multiples of $18:$ $\\,18,\\,36,\\,54,\\,72,\\,90,\\,108,\\,126,\\,144,\\,162,\\,180,\\,198,…$\n\n- Multiples of $20:$ $\\,20,\\,40,\\,60,\\,80,\\,100,\\,120,\\,140,\\,160,\\,180,\\,200,…$\n\nSo, $\\text{LCM}(18,20)=180.$\n\nTo find the $\\text{LCM}$ of $(x-9)^{9}{y}^{2}$ and $(x-9)^{3}{y}^{8},$ we find the largest powers for $(x-9)$ and $y$ that appear in the expressions:\n\n- For $(x-9)^{9}$ and $(x-9)^{3},$ the largest power is $9.$\n\n- For ${y}^{2}$ and ${y}^{8},$ the largest power is $8.$\n\nNow, we raise $(x-9)$ and $y$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-9)^{9}{y}^{2},\\,(x-9)^{3}{y}^{8})=(x-9)^{9}\\cdot {y}^{8}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(18(x-9)^{9}{y}^{2},\\,20(x-9)^{3}{y}^{8})=180(x-9)^{9}{y}^{8}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "hard",
+        "template": "factored_blank",
+        "profile": "method_bank",
+        "bank": null,
+        "parameters": {
+          "a": 18,
+          "b": 20,
+          "v": "x",
+          "w": "y",
+          "h": -9,
+          "k": 0,
+          "p": 9,
+          "q": 2,
+          "r": 3,
+          "s": 8
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": true,
+        "authored_field_layout": false,
+        "authored_bank": false,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct"
+        ],
+        "content_identity": "d38bca0b7ce6adb8df4c4495eac1f3ec56d5c50d340709c38b84f37afb993e9c",
+        "mathematical_fingerprint": "a1dd74406be89bad84014f39527a0f676227b51c38252e91e189c3ef728c1439",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "180(x-9)^{9}{y}^{8}",
+        "expected": "accepted",
+        "purpose": "canonical"
+      },
+      {
+        "submitted": "180*x^9*y^8 - 14580*x^8*y^8 + 524880*x^7*y^8 - 11022480*x^6*y^8 + 148803480*x^5*y^8 - 1339231320*x^4*y^8 + 8035387920*x^3*y^8 - 30993639120*x^2*y^8 + 69735688020*x*y^8 - 69735688020*y^8",
+        "expected": "accepted",
+        "purpose": "fully expanded equivalent"
+      },
+      {
+        "submitted": "180*(x^9 - 81*x^8 + 2916*x^7 - 61236*x^6 + 826686*x^5 - 7440174*x^4 + 44641044*x^3 - 172186884*x^2 + 387420489*x - 387420489)*(y)^8",
+        "expected": "accepted",
+        "purpose": "partially expanded equivalent within native input limits"
+      },
+      {
+        "submitted": "(180(x-9)^{9}{y}^{8})/1",
+        "expected": "accepted",
+        "purpose": "unreduced equivalent"
+      },
+      {
+        "submitted": "(180(x-9)^{9}{y}^{8})/180",
+        "expected": "rejected",
+        "purpose": "missing integer content"
+      },
+      {
+        "submitted": "-(180(x-9)^{9}{y}^{8})",
+        "expected": "rejected",
+        "purpose": "negative associate"
+      },
+      {
+        "submitted": "2*(180(x-9)^{9}{y}^{8})",
+        "expected": "rejected",
+        "purpose": "larger scalar multiple"
+      },
+      {
+        "submitted": "(180(x-9)^{9}{y}^{8})+1",
+        "expected": "rejected",
+        "purpose": "wrong polynomial"
+      }
+    ]
+  },
+  {
+    "label": "boundary/hard/factored_radio",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186152118,
+        "id": "fb9ff361-c15b-55e3-bd03-865ee6373d77",
+        "title": "Finding the LCM of Two Multivariable Polynomials"
+      },
+      "question": {
+        ":question/id": "8aa79077-765f-5a5a-8284-db5d7b73c389",
+        ":question/problem": "Find the least common multiple of the polynomials $18(x-9)^{9}{y}^{2}$ and $20(x-9)^{3}{y}^{8}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6e96b591-a290-5038-a724-91eb223e6fa8",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d1a55fc5-3810-508f-8759-0a1e2875de7f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2(x-9)^{9}{y}^{8}"
+              },
+              {
+                ":answer/id": "4e3489a4-6660-5a25-b911-dc43eef165fe",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(x-9)^{3}{y}^{2}"
+              },
+              {
+                ":answer/id": "a7dafcd7-091e-58ce-ac82-11c0ff75e47e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(x-9)^{9}{y}^{8}"
+              },
+              {
+                ":answer/id": "3efb608a-ba08-5de1-8564-f1039ea501d7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(x-9)^{8}{y}^{9}"
+              },
+              {
+                ":answer/id": "4fd84b5a-4f9f-5414-bdfe-f8bfe025c1a4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180(x-9)^{12}{y}^{10}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a7dafcd7-091e-58ce-ac82-11c0ff75e47e"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "To find the least common multiple ($\\text{LCM}$) of two polynomials that are made up of products of binomials, we find the least common multiple of the constants and the least common multiple of each variable part. Then, we multiply all of the results together.\n\nSo first, we find $\\text{LCM}(18,20):$\n\n- Multiples of $18:$ $\\,18,\\,36,\\,54,\\,72,\\,90,\\,108,\\,126,\\,144,\\,162,\\,180,\\,198,…$\n\n- Multiples of $20:$ $\\,20,\\,40,\\,60,\\,80,\\,100,\\,120,\\,140,\\,160,\\,180,\\,200,…$\n\nSo, $\\text{LCM}(18,20)=180.$\n\nTo find the $\\text{LCM}$ of $(x-9)^{9}{y}^{2}$ and $(x-9)^{3}{y}^{8},$ we find the largest powers for $(x-9)$ and $y$ that appear in the expressions:\n\n- For $(x-9)^{9}$ and $(x-9)^{3},$ the largest power is $9.$\n\n- For ${y}^{2}$ and ${y}^{8},$ the largest power is $8.$\n\nNow, we raise $(x-9)$ and $y$ to the corresponding largest powers. Therefore,\n\n$$\n\\text{LCM}((x-9)^{9}{y}^{2},\\,(x-9)^{3}{y}^{8})=(x-9)^{9}\\cdot {y}^{8}.\n$$\n\nFinally, we multiply all of our results together:\n\n$$\n\\text{LCM}(18(x-9)^{9}{y}^{2},\\,20(x-9)^{3}{y}^{8})=180(x-9)^{9}{y}^{8}.\n$$"
+      },
+      "generation": {
+        "version": "two-multivariable-lcm-1.0.0",
+        "seed": 0,
+        "level": "hard",
+        "template": "factored_radio",
+        "profile": "method_bank",
+        "bank": "method_bank",
+        "parameters": {
+          "a": 18,
+          "b": 20,
+          "v": "x",
+          "w": "y",
+          "h": -9,
+          "k": 0,
+          "p": 9,
+          "q": 2,
+          "r": 3,
+          "s": 8
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [],
+        "authored_level": true,
+        "authored_field_layout": true,
+        "authored_bank": true,
+        "bank_interpretation_limit": false,
+        "authored_completion": false,
+        "raw_missing_attributes": false,
+        "recipes": [
+          "correct",
+          "minima",
+          "gcd_content",
+          "sum_powers",
+          "swap_maxima"
+        ],
+        "content_identity": "cd324b4aba4114fafd2bf8b1f6253f6d2b081cc913d0ada00ff3a67a8a7f6260",
+        "mathematical_fingerprint": "a1dd74406be89bad84014f39527a0f676227b51c38252e91e189c3ef728c1439",
+        "domain": "Two independent monic linear factors in Z[v,w], positive integer contents; normalized positive LCM.",
+        "plot_rating": "none",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "d1a55fc5-3810-508f-8759-0a1e2875de7f",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "4e3489a4-6660-5a25-b911-dc43eef165fe",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "a7dafcd7-091e-58ce-ac82-11c0ff75e47e",
+        "expected": "accepted",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "3efb608a-ba08-5de1-8564-f1039ea501d7",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      },
+      {
+        "submitted_answer_id": "4fd84b5a-4f9f-5414-bdfe-f8bfe025c1a4",
+        "expected": "rejected",
+        "purpose": "complete bank option"
+      }
+    ]
+  }
+]
