@@ -1,0 +1,162 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-32246\", \"problem\": \"Determine the value of $k$ for which the following system of linear equations is consistent dependent:\\n\\n$$\\n\\\\{\\\\begin{aligned} & 3x+4y=12 \\\\\\\\  & x+ky=4\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-32245\", \"problem\": \"Determine the value of $k$ for which the following system of linear equations is inconsistent:\\n\\n$$\\n\\\\{\\\\begin{aligned} & 2x-y=3 \\\\\\\\  & 4x+ky=4\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-32026\", \"problem\": \"Which of the following represents the solution to the system of linear equations given below?\\n\\n$$\\n\\\\{\\\\begin{aligned}5x-2y=1 \\\\\\\\ 8x+3y=0\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-102705\", \"problem\": \"Which of the following represents the solution to the system of linear equations given below?\\n\\n$$\\n\\\\{\\\\begin{aligned}-2x+2y=1 \\\\\\\\ 2x-3y=-2\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-32246:\nThe augmented matrix for this system is\n\n$$\nM=[\\begin{aligned}3 & 4 & 12 \\\\ 1 & k & 4\\end{aligned}].\n$$\n\nUsing the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}3 & 4 & 12 \\\\ 1 & k & 4\\end{aligned}] & {R}_{1} & ↔{R}_{2} \\\\  & ∼[\\begin{aligned}1 & k & 4 \\\\ 3 & 4 & 12\\end{aligned}] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\\\  & ∼[\\begin{aligned}1 & k & 4 \\\\ 0 & 4-3k & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe corresponding system is now \n\n$$\n\\{\\begin{aligned} & x+ky=4 \\\\  & (4-3k)y=0.\\end{aligned}\n$$\n\nThe system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.\n\nIf $k=\\frac{4}{3},$ then the second equation is $0=0,$ which is true for any value of $y$, and we can remove this equation from the system. As a result, the system will contain only one equation, $x+ky=4.$ \n\nThen, the basic variable will be $x,$ and we will have a free variable $y.$ That means the system will have infinitely many solutions.\n\nTherefore, our system is consistent dependent when $k=\\frac{4}{3}.$\n\nq-32245:\nThe augmented matrix for this system is\n\n$$\nM=[\\begin{aligned}2 & -1 & 3 \\\\ 4 & k & 4\\end{aligned}].\n$$\n\nUsing the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}2 & -1 & 3 \\\\ 4 & k & 4\\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\\\  & ∼[\\begin{aligned}2 & -1 & 3 \\\\ 0 & k+2 & -2\\end{aligned}]\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\{\\begin{aligned} & 2x-y=3 \\\\  & (k+2)y=-2.\\end{aligned}\n$$\n\nThe system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.\n\nNow if $k=-2$, then the second equation is $0=-2,$ which is false, and the system will have no solution.\n\nTherefore, our system is inconsistent when  $k=-2.$\n\nq-32026:\nThis system can be written as\n\n$$\n[\\begin{aligned}5 & -2 \\\\ 8 & 3\\end{aligned}][\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}1 \\\\ 0\\end{aligned}].\n$$\n\nTo find the solution, we need to calculate the inverse of the coefficient matrix \n$A=[\\begin{aligned}5 & -2 \\\\ 8 & 3\\end{aligned}].$\nThis gives\n\n$$\n\\begin{aligned}{A}^{-1} & =\\frac{1}{5\\cdot 3-(-2)\\cdot 8}[\\begin{aligned}3 & 2 \\\\ -8 & 5\\end{aligned}] \\\\  & =\\frac{1}{31}[\\begin{aligned}3 & 2 \\\\ -8 & 5\\end{aligned}].\\end{aligned}\n$$\n\nWe can now represent the solution to this system, as follows:\n\n$$\n\\begin{aligned}x & ={A}^{-1}b \\\\  & =\\frac{1}{31}[\\begin{aligned}3 & 2 \\\\ -8 & 5\\end{aligned}][\\begin{aligned}1 \\\\ 0\\end{aligned}]\\end{aligned}\n$$\n\nq-102705:\nThis system can be written as\n\n$$\n[\\begin{aligned}-2 & 2 \\\\ 2 & -3\\end{aligned}][\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}1 \\\\ -2\\end{aligned}].\n$$\n\nTo find the solution, we need to calculate the inverse of the coefficient matrix \n$A=[\\begin{aligned}-2 & 2 \\\\ 2 & -3\\end{aligned}].$\nThis gives\n\n$$\n\\begin{aligned}{A}^{-1} & =\\frac{1}{(-2)\\cdot (-3)-2\\cdot 2}[\\begin{aligned}-3 & -2 \\\\ -2 & -2\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}-3 & -2 \\\\ -2 & -2\\end{aligned}].\\end{aligned}\n$$\n\nWe can now represent the solution to this system, as follows:\n\n$$\n\\begin{aligned}x & ={A}^{-1}b \\\\  & =\\frac{1}{2}[\\begin{aligned}-3 & -2 \\\\ -2 & -2\\end{aligned}][\\begin{aligned}1 \\\\ -2\\end{aligned}]\\end{aligned}\n$$",
+      "answer_fields": [
+        {
+          "key": "q-32246/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "k=0",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "k=\\frac{3}{4}",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "k=-4",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "k=-\\frac{4}{3}",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "k=\\frac{4}{3}",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-32245/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "k=2",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "k=-4",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "k=4",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "k=0",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "k=-2",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-32026/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "x=-\\frac{1}{31}[\\begin{aligned}5 & 2 \\\\ -8 & 3\\end{aligned}][\\begin{aligned}1 \\\\ 0\\end{aligned}]",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}5 & 2 \\\\ -8 & 3\\end{aligned}][\\begin{aligned}1 \\\\ 0\\end{aligned}]",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}-3 & -2 \\\\ 8 & -5\\end{aligned}][\\begin{aligned}1 \\\\ 0\\end{aligned}]",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{31}[\\begin{aligned}3 & 2 \\\\ -8 & 5\\end{aligned}][\\begin{aligned}1 \\\\ 0\\end{aligned}]",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{31}[\\begin{aligned}3 & -2 \\\\ 8 & 5\\end{aligned}][\\begin{aligned}1 \\\\ 0\\end{aligned}]",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-102705/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}-2 & -2 \\\\ -2 & -3\\end{aligned}][\\begin{aligned}1 \\\\ -2\\end{aligned}]",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{2}[\\begin{aligned}-3 & 2 \\\\ 3 & -2\\end{aligned}][\\begin{aligned}1 \\\\ -2\\end{aligned}]",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{2}[\\begin{aligned}-3 & -2 \\\\ -2 & -2\\end{aligned}][\\begin{aligned}1 \\\\ -2\\end{aligned}]",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "x=2[\\begin{aligned}-2 & 2 \\\\ 2 & -3\\end{aligned}][\\begin{aligned}1 \\\\ -2\\end{aligned}]",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{2}[\\begin{aligned}2 & -3 \\\\ -2 & 2\\end{aligned}][\\begin{aligned}1 \\\\ -2\\end{aligned}]",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": []
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

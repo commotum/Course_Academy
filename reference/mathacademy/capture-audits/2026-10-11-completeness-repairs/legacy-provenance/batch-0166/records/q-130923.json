@@ -1,0 +1,113 @@
+{
+  "directory": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14072159",
+  "id": "q-130923",
+  "status": "supported",
+  "reason": null,
+  "question": {
+    "math_academy_id": "q-130923",
+    "knowledge_point_id": "07f2ae4c-ff07-5b99-a7b0-90f460081eef",
+    "knowledge_point": "Solving a Singular 2x2 System of Equations Using Gaussian Elimination",
+    "problem": "Consider the system of linear equations\n\n$$\n\\{\\begin{aligned}x-2y=-1 \\\\ -4x+8y=7.\\end{aligned}\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then find the general solution of the linear system.",
+    "worked_solution": "First, we set up the augmented matrix for the system:\n\n$$\nM=[\\begin{aligned}1 & -2 & -1 \\\\ -4 & 8 & 7\\end{aligned}]\n$$\n\nReducing $M$ to row echelon form, we have\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & -2 & -1 \\\\ -4 & 8 & 7\\end{aligned}] & {R}_{2} & :={R}_{2}+4{R}_{1} \\\\  & ∼[\\begin{aligned}1 & -2 & -1 \\\\ 0 & 0 & 3\\end{aligned}].\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\{\\begin{aligned}x-2y=-1 \\\\ 0x+0y=3.\\end{aligned}\n$$\n\nHowever, the final equation $0x+0y=3$ has no solution. It simplifies to $0=3,$ which is a false statement.\n\nSo, there is no pair $x,y$ that satisfies both equations in the system. Consequently, the overall system has no solution.",
+    "answer_fields": [
+      {
+        "key": "selection",
+        "type": "radio",
+        "choices_complete": true,
+        "choices": [
+          {
+            "type": "math",
+            "value": "[\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}2-y \\\\ y\\end{aligned}],\\,y\\in (-\\infty ,\\infty )",
+            "option": "0",
+            "source_option": "a"
+          },
+          {
+            "type": "math",
+            "value": "[\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}-2y-1 \\\\ y\\end{aligned}],\\,y\\in (-\\infty ,\\infty )",
+            "option": "1",
+            "source_option": "b"
+          },
+          {
+            "type": "text",
+            "value": "No solution",
+            "option": "2",
+            "source_option": "c"
+          },
+          {
+            "type": "math",
+            "value": "[\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}2y-1 \\\\ y\\end{aligned}],\\,y\\in (-\\infty ,\\infty )",
+            "option": "3",
+            "source_option": "d"
+          },
+          {
+            "type": "math",
+            "value": "[\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}1-2y \\\\ y\\end{aligned}],\\,y\\in (-\\infty ,\\infty )",
+            "option": "4",
+            "source_option": "e"
+          }
+        ],
+        "correct_value": "No solution",
+        "value_type": "text",
+        "correct_type": "text",
+        "evidence": {
+          "kind": "worked_solution",
+          "value": "No solution",
+          "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14072159/state.json",
+          "solution_quote": "Consequently, the overall system has no solution.",
+          "matches_worked_solution": true,
+          "choice_present": true
+        }
+      }
+    ],
+    "difficulty": "easy",
+    "provenance": {
+      "activity_question": "question-130923",
+      "kp_title": "Solving a Singular 2x2 System of Equations Using Gaussian Elimination",
+      "kp_href": null
+    },
+    "source_reconstruction": {
+      "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14072159/repairs/source-provenance-v2/structured-source/q-130923.json",
+      "bindings": [
+        {
+          "part": "problem",
+          "original_record": "before",
+          "original_html_sha256": "1bedaa5d13ea2fdeff8982252b9620544aab7c8ead5b0df851230caa0f1cabde",
+          "extractor_sha256": "1591183da328a4140792793d2cc113fd535ab5f25bc7f284ceb1b6f251efad18"
+        },
+        {
+          "part": "worked_solution",
+          "original_record": "history",
+          "original_html_sha256": "470bbdc7a2098605a2dc936495c43627c9dd87af4ad39462fa413d7fdfa88288",
+          "extractor_sha256": "1591183da328a4140792793d2cc113fd535ab5f25bc7f284ceb1b6f251efad18"
+        }
+      ]
+    },
+    "topic_id": 1373,
+    "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14072159/state.json",
+    "source_answer_status": "under_review",
+    "assets": []
+  },
+  "judgment": {
+    "status": "confirmed",
+    "reasoning": "All six final answers are mathematically correct and supported by their own captured worked solutions. q-73396: R2←R2+2R1 and R3←R3−R1 give rows (1,-1,2,8), (0,0,1,5), and (0,1,-1,1). Swapping the last two rows gives echelon form; back substitution yields z=5, y=6, x=4. The source contains an authored intermediate-matrix typo: immediately before the swap it prints (0,2,-1,1) instead of (0,1,-1,1). Its post-swap matrix and final answer are correct. q-73584: R2←R2+2R1 and R3←R3−3R1, followed by swapping rows 2 and 3, give rows (1,1,-2,3), (0,1,5,-8), and (0,0,1,4). Thus z=4, y=-28, x=39. q-20963: R2←R2−8R1 gives rows (1,2,-1) and (0,0,0), hence x=-1-2y with y arbitrary. q-73740: R2←R2+5R1 gives the same echelon form and general solution. Its source vector notation omits a comma present in the choice; these expressions are equivalent. q-73750: R2←R2+3R1 gives rows (1,-2,4) and (0,0,0), hence x=4+2y with y arbitrary. q-130923: R2←R2+4R1 gives rows (1,-2,-1) and (0,0,3), so the contradiction 0=3 proves there is no solution. The four previously reviewed answers remain unchanged. No submitted grades are supplied; MA evidence comes from captured worked solutions.",
+    "confidence": 1,
+    "answers": [
+      {
+        "key": "selection",
+        "correct_value": "No solution",
+        "correct_option": "2",
+        "value_type": "text",
+        "wrong_value": null,
+        "correct_keys": [],
+        "wrong_keys": [],
+        "ma_value": "No solution",
+        "ma_basis": "worked_solution",
+        "ma_evidence": "Consequently, the overall system has no solution.",
+        "disagrees": false
+      }
+    ]
+  },
+  "judgment_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture-audits/2026-10-11-completeness-repairs/legacy-provenance/batch-0166/judgments/q-130923.json",
+  "source_hash": "6d6a625450aec07b78585e356d2d6ccf5f3ac221b3c730baf1d05b01c4e091ae",
+  "validator_version": 5
+}

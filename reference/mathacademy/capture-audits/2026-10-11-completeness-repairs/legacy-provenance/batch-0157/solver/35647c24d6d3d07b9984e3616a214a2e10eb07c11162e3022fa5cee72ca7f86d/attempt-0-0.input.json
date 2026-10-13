@@ -1,0 +1,220 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-38540\", \"problem\": \"$$\\nB=\\\\{[\\\\begin{aligned}-1 \\\\\\\\ 3\\\\end{aligned}],[\\\\begin{aligned}1 \\\\\\\\ -2\\\\end{aligned}]\\\\},\\\\,[T]_{B|C}=[\\\\begin{aligned}1 & 0 \\\\\\\\ -5 & 2 \\\\\\\\ 0 & 2\\\\end{aligned}],\\\\,x=[\\\\begin{aligned}-5 \\\\\\\\ 10\\\\end{aligned}]\\n$$\\n\\nConsider the basis $B$ of ${R}^{2}$ (shown above) and a basis $C$ of ${R}^{3}.$\\nThe matrix $[T]_{B|C}$ of the linear map $T:{R}^{2}\\\\to {R}^{3}$ relative to these bases, and the vector $x\\\\in {R}^{2},$ are also given. Find $[T(x)]_{C}.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-126031\", \"problem\": \"Compute $P(X>2)$ given that the random variable $X$ has the probability density function\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}\\\\frac{1}{(1+x)^{2}},\\\\, & x\\\\ge 0, \\\\\\\\ 0,\\\\, & \\\\text{otherwise.}\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-343302\", \"problem\": \"$$\\n{y}^{″}+\\\\frac{1}{{x}^{2}+1}{y}^{′}+Q(x)y=0\\n$$\\n\\nLet ${y}_{1}$ and ${y}_{2}$ be solutions to the second-order homogeneous differential equation above, where $Q(x)$ is continuous on $(-\\\\infty ,\\\\infty ).$ The Wronskian satisfies $W(0)=2.$ Select the correct options in the reasoning below.\\n\\nThe Wronskian $W(x)$ satisfies the following first-order differential equation:\\n\\n$$\\n{W}^{′}(x)={{field-1}}W(x)\\n$$\\n\\nSolving this equation, we get\\n\\n$$\\nW={{field-2}}\\n$$\\n\\nwhere $C$ is an arbitrary constant.\\n\\nNow, using the fact that $W(0)=2,$ we obtain \\n{{field-3}}.\", \"field_keys\": [\"field-1\", \"field-2\", \"field-3\"]}, {\"question_id\": \"q-86676\", \"problem\": \"Find a $2\\\\times 2$ matrix $G$ that has eigenvalues ${\\\\lambda }_{1}=-1$ and ${\\\\lambda }_{2}=2,$ and corresponding eigenvectors\\n\\n$$\\n{v}_{1}=[\\\\begin{aligned}3 \\\\\\\\ 5\\\\end{aligned}],\\\\,{v}_{2}=[\\\\begin{aligned}1 \\\\\\\\ 2\\\\end{aligned}].\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-81190\", \"problem\": \"Let ${v}_{1}=[\\\\begin{aligned}{a}_{1} \\\\\\\\ {b}_{1}\\\\end{aligned}]$ and ${v}_{2}=[\\\\begin{aligned}{a}_{2} \\\\\\\\ {b}_{2}\\\\end{aligned}]$ be linearly independent eigenvectors of the matrix\\n$A=[\\\\begin{aligned}-1 & 5 \\\\\\\\ -2 & 1\\\\end{aligned}].$\\nGiven that ${\\\\lambda }_{1}=3\\\\text{i}$ is an eigenvalue of $A,$ find the value of $\\\\frac{{a}_{1}{a}_{2}}{{b}_{1}{b}_{2}}.$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-38540:\nWe can find the coordinates of the image of $x$ under $T$ relative to the basis $C$ as follows:\n\n$$\n\\begin{aligned}[T(x)]_{C} & =[T]_{B|C}\\cdot [x]_{B}\\end{aligned}\n$$\n\nFirst, we need to find $[x]_{B},$ the coordinates of $x$ relative to $B.$ So, let\n\n$$\nx=[\\begin{aligned}-5 \\\\ 10\\end{aligned}]={x}_{1}[\\begin{aligned}-1 \\\\ 3\\end{aligned}]+{x}_{2}[\\begin{aligned}1 \\\\ -2\\end{aligned}].\n$$\n\nThis gives us the system\n\n$$\n\\{\\begin{aligned}-{x}_{1}+{x}_{2}=-5 \\\\ 3{x}_{1}-2{x}_{2}=10.\\end{aligned}\n$$\n\nWe now row-reduce the corresponding augmented matrix using Gaussian elimination, as follows: \n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-1 & 1 & -5 \\\\ 3 & -2 & 10\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=(-1){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -1 & 5 \\\\ 3 & -2 & 10\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-3){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -1 & 5 \\\\ 0 & 1 & -5\\end{aligned}] &  & \\begin{aligned}{R}_{1}:={R}_{1}+{R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & -5\\end{aligned}]\\end{aligned}\n$$\n\nTherefore, $[x]_{B}=[\\begin{aligned}0 \\\\ -5\\end{aligned}].$\n\nFinally, we obtain \n\n$$\n\\begin{aligned}[T(x)]_{C} & =[T]_{B|C}\\cdot [x]_{B} \\\\  & =[\\begin{aligned}1 & 0 \\\\ -5 & 2 \\\\ 0 & 2\\end{aligned}][\\begin{aligned}0 \\\\ -5\\end{aligned}] \\\\  & =[\\begin{aligned}0 \\\\ -10 \\\\ -10\\end{aligned}].\\end{aligned}\n$$\n\nq-126031:\nIf a continuous random variable $X$ has the probability density function $f(x),$ then \n\n$$\nP(a<X<b)={\\int }_{a}^{b}f(x)\\,\\text{d}x.\n$$\n\nSo, in our case, we have\n\n$$\n\\begin{aligned}P(X>2) & =P(2<X<\\infty ) \\\\  & ={\\int }_{2}^{\\infty }f(x)\\,\\text{d}x \\\\  & ={\\int }_{2}^{\\infty }\\frac{1}{(1+x)^{2}}\\,\\text{d}x \\\\  & ={[-\\frac{1}{x+1}]}_{2}^{\\infty } \\\\  & =\\frac{1}{3}.\\end{aligned}\n$$\n\nq-343302:\nAbel's identity says that if ${y}_{1}$ and ${y}_{2}$ are solutions of\n\n$$\n{y}^{″}+P(x){y}^{′}+Q(x)y=0,\n$$\n\nthen their Wronskian $W(x)$ satisfies\n\n$$\n{W}^{′}(x)=-P(x)W(x).\n$$\n\nIn our equation, the coefficient of ${y}^{′}$ is \n\n$$\nP(x)=\\frac{1}{{x}^{2}+1}.\n$$\n\nSubstituting into Abel's identity gives\n\n$$\n{W}^{′}(x)=-\\frac{1}{{x}^{2}+1}W(x).\n$$\n\nNow, we solve the first-order differential equation for $W:$\n\n$$\n\\begin{aligned}{W}^{′} & =-\\frac{1}{{x}^{2}+1}W \\\\ \\frac{\\text{d}W}{W} & =-\\frac{1}{{x}^{2}+1}\\text{d}x \\\\ \\int \\frac{\\text{d}W}{W} & =\\int -\\frac{1}{{x}^{2}+1}\\,\\text{d}x \\\\ \\operatorname{ln}⁡|W| & =-\\operatorname{arctan}⁡(x)+K \\\\ |W| & ={e}^{K}{e}^{-\\operatorname{arctan}⁡(x)} \\\\ W & =C{e}^{-\\operatorname{arctan}⁡(x)}\\end{aligned}\n$$\n\nwhere $C$ is a constant.\n\nNext, we use the given value $W(0)=2$ to find $C:$\n\n$$\n\\begin{aligned}W(0) & =C{e}^{-\\operatorname{arctan}⁡(0)} \\\\ 2 & =C\\end{aligned}\n$$\n\nTherefore, we have $W(x)\\ne 0\\text{ for all }x\\in R.$\n\nq-86676:\nSince $B=\\{{v}_{1},{v}_{2}\\}$ is a basis of ${R}^{2}$ consisting of the eigenvectors of $G,$ then $G$ must be diagonalizable.\n\nSo, we can write $G=PD{P}^{-1},$ where $P$ is a matrix whose columns are the eigenvectors of $G,$ and $D$ is a diagonal matrix whose entries are the eigenvalues in the corresponding order:\n\n$$\nG={{[\\begin{aligned}| & | \\\\ {v}_{1} & {v}_{2} \\\\ | & |\\end{aligned}]}_{⏟}}_{P}{{[\\begin{aligned}{\\lambda }_{1} & 0 \\\\ 0 & {\\lambda }_{2}\\end{aligned}]}_{⏟}}_{D}{{{[\\begin{aligned}| & | \\\\ {v}_{1} & {v}_{2} \\\\ | & |\\end{aligned}]}^{-1}}_{⏟}}_{{P}^{-1}}\n$$\n\nLet $P=[\\begin{aligned}3 & 1 \\\\ 5 & 2\\end{aligned}].$ Then, \n\n$$\n\\begin{aligned}{P}^{-1} & ={[\\begin{aligned}3 & 1 \\\\ 5 & 2\\end{aligned}]}^{-1}=\\frac{1}{1}[\\begin{aligned}2 & -1 \\\\ -5 & 3\\end{aligned}]=[\\begin{aligned}2 & -1 \\\\ -5 & 3\\end{aligned}].\\end{aligned}\n$$\n\n \n\nTherefore, carrying out the necessary matrix multiplication, we obtain\n\n$$\n\\begin{aligned}G & =[\\begin{aligned}3 & 1 \\\\ 5 & 2\\end{aligned}][\\begin{aligned}-1 & 0 \\\\ 0 & 2\\end{aligned}][\\begin{aligned}2 & -1 \\\\ -5 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}-3 & 2 \\\\ -5 & 4\\end{aligned}][\\begin{aligned}2 & -1 \\\\ -5 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}-16 & 9 \\\\ -30 & 17\\end{aligned}].\\end{aligned}\n$$\n\nq-81190:\nTo compute the eigenvectors of a matrix, we need to find non-zero solutions of the matrix equation \n\n$$\n(A-\\lambda I)\\text{x}=0.\n$$\n\n \n\nIn our case, we have $\\,{\\lambda }_{1}=3\\text{i}$ and\n\n$$\n\\begin{aligned}A-{\\lambda }_{1}I & =[\\begin{aligned}-1 & 5 \\\\ -2 & 1\\end{aligned}]-[\\begin{aligned}3\\text{i} & 0 \\\\ 0 & 3\\text{i}\\end{aligned}] \\\\  & =[\\begin{aligned}-1-3\\text{i} & 5 \\\\ -2 & 1-3\\text{i}\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have the homogeneous system of linear equations\n\n$$\n\\{\\begin{aligned}(-1-3\\text{i}){x}_{1}+5{x}_{2}=0 \\\\ -2{x}_{1}+(1-3\\text{i}){x}_{2}=0.\\end{aligned}\n$$\n\nNow, since the matrix $A-3\\text{i}I$ is singular, the system above must have a non-zero solution. This means that one equation of the system is a multiple of another. As a result, we can drop one of the rows and take one of the variables as the free variable. For example, from the first equation, we get\n\n$$\n{x}_{2}=\\frac{1}{5}(1+3\\text{i}){x}_{1}\n$$\n\nHence, the general solution is given by\n\n$$\n[\\begin{aligned}{x}_{1} \\\\ \\frac{1}{5}(1+3\\text{i}){x}_{1}\\end{aligned}],\\,{x}_{1}\\in C.\n$$\n\nSetting ${x}_{1}=5,$ we get the eigenvector\n\n$$\n{v}_{1}=[\\begin{aligned}5 \\\\ 1+3\\text{i}\\end{aligned}].\n$$\n\n \n\nOn the other hand, since ${\\lambda }_{1}=3\\text{i}$ is a complex eigenvalue of $A,$ the second eigenvalue of $A$ must be the  complex conjugate of ${\\lambda }_{1}.$ Therefore, \n\n$$\n{\\lambda }_{2}=\\overset{―}{{\\lambda }_{1}}=-3\\text{i}.\n$$\n\nMoreover, the corresponding eigenvector to ${\\lambda }_{2}$ is\n\n$$\n{v}_{2}={\\overset{―}{v}}_{1}=[\\begin{aligned}5 \\\\ 1-3\\text{i}\\end{aligned}].\n$$\n\nTherefore, we obtain\n\n$$\n\\frac{{a}_{1}{a}_{2}}{{b}_{1}{b}_{2}}=\\frac{(5)(5)}{(1+3\\text{i})(1-3\\text{i})}=\\frac{5}{2}.\n$$",
+      "fields": [
+        {
+          "key": "q-38540/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "[\\begin{aligned}0 \\\\ -10 \\\\ -10\\end{aligned}]"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "[\\begin{aligned}0 \\\\ -10 \\\\ 2\\end{aligned}]"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "[\\begin{aligned}0 \\\\ -10\\end{aligned}]"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "[\\begin{aligned}2 \\\\ -5 \\\\ -1\\end{aligned}]"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "[\\begin{aligned}-10 \\\\ -2\\end{aligned}]"
+            }
+          ]
+        },
+        {
+          "key": "q-126031/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\frac{2}{3}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\frac{1}{3}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\frac{1}{6}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\frac{1}{9}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\frac{1}{2}"
+            }
+          ]
+        },
+        {
+          "key": "q-343302/field-1",
+          "type": "select",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\frac{1}{{x}^{2}+1}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\frac{{x}^{2}+1}{Q(x)}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "-\\frac{Q(x)}{{x}^{2}+1}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "-\\frac{1}{{x}^{2}+1}"
+            }
+          ]
+        },
+        {
+          "key": "q-343302/field-2",
+          "type": "select",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "C{e}^{-\\operatorname{arctan}⁡(x)}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "C{e}^{\\operatorname{arctan}⁡(x)}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\frac{C}{{x}^{2}+1}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\frac{C}{{e}^{x}}"
+            }
+          ]
+        },
+        {
+          "key": "q-343302/field-3",
+          "type": "select",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$W(x)=0$ for all $x\\in R$"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$W(x)=0$ for some but not all $x\\in R$"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$W(x)\\ne 0$ for all $x\\in R$"
+            }
+          ]
+        },
+        {
+          "key": "q-86676/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "[\\begin{aligned}-17 & 30 \\\\ -9 & 16\\end{aligned}]"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "[\\begin{aligned}-16 & 9 \\\\ -30 & 17\\end{aligned}]"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "[\\begin{aligned}-6 & 9 \\\\ -3 & 17\\end{aligned}]"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "[\\begin{aligned}-1 & 9 \\\\ -30 & 1\\end{aligned}]"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "[\\begin{aligned}-16 & 19 \\\\ -3 & 7\\end{aligned}]"
+            }
+          ]
+        },
+        {
+          "key": "q-81190/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "10"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\frac{5}{2}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "2\\text{i}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "5"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "3\\text{i}"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12c99-717d-7290-8913-db27189b8420",
+  "previous_failures": []
+}

@@ -1,0 +1,110 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-142718\", \"problem\": \"| $f$ | $Y=-1$ | $Y=0$ | $Y=1$ |\\n| --- | --- | --- | --- |\\n| $X=0$ | $0.15$ | $0.1$ | $0.3$ |\\n| $X=1$ | $0.05$ | $0.25$ | $0.15$ |\\n\\nGiven the joint probability mass function $f(x,y)$ above for the discrete random variables $X$ and $Y,$ calculate $P(|Y|>0).$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-142575\", \"problem\": \"| $f$ | $Y=1$ | $Y=2$ |\\n| --- | --- | --- |\\n| $X=0$ | $\\\\frac{3}{7}$ | $\\\\frac{1}{7}$ |\\n| $X=1$ | $\\\\frac{2}{7}$ | $\\\\frac{1}{7}$ |\\n\\nGiven the joint probability mass function $f(x,y)$ above for the discrete random variables $X$ and $Y,$ calculate $P(Y<2).$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-126740\", \"problem\": \"Find a tangent vector to the curve $r(t)=2\\\\sqrt{3-t}\\\\,i+(1-2t)\\\\,j+(t+3)\\\\,k$ at the point $P(2,-3,5).$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-142718:\nIf the random variables $X$ and $Y$ have joint distribution with joint probability mass function $f(x,y),$ then we have\n\n$$\n\\begin{aligned}P(X=x) & ={f}_{X}(x)={\\sum }_{y}f(x,y) \\\\ P(Y=y) & ={f}_{Y}(y)={\\sum }_{x}f(x,y)\\end{aligned}\n$$\n\nwhere ${f}_{X}(x)$ and ${f}_{Y}(y)$ are the marginal mass functions for $X$ and $Y,$ respectively.\n\nIn this case, the marginal distribution for $X$ corresponds to the row totals, and the marginal distribution for $Y$ corresponds to the column totals. Let's add these row and column totals to our table:\n\n| $f$ | $Y=-1$ | $Y=0$ | $Y=1$ | ${f}_{X}$ |\n| --- | --- | --- | --- | --- |\n| $X=0$ | $0.15$ | $0.1$ | $0.3$ | $0.55$ |\n| $X=1$ | $0.05$ | $0.25$ | $0.15$ | $0.45$ |\n| ${f}_{Y}$ | $0.2$ | $0.35$ | $0.45$ | $1$ |\n\nThe marginal mass function for $Y$ is given in the following table:\n\n| $y$ | $-1$ | $0$ | $1$ |\n| --- | --- | --- | --- |\n| ${f}_{Y}(y)$ | $0.2$ | $0.35$ | $0.45$ |\n\nFinally, using the table of values of the marginal mass function for $Y,$ we have\n\n$$\n\\begin{aligned}P(|Y|>0) & =P(Y\\in \\{-1,1\\}) \\\\  & =P(Y=-1)+P(Y=1) \\\\  & =0.2+0.45 \\\\  & =0.65.\\end{aligned}\n$$\n\nq-142575:\nIf the random variables $X$ and $Y$ have joint distribution with joint probability mass function $f(x,y),$ then we have\n\n$$\n\\begin{aligned}P(X=x) & ={f}_{X}(x)={\\sum }_{y}f(x,y) \\\\ P(Y=y) & ={f}_{Y}(y)={\\sum }_{x}f(x,y)\\end{aligned}\n$$\n\nwhere ${f}_{X}(x)$ and ${f}_{Y}(y)$ are the marginal mass functions for $X$ and $Y,$ respectively.\n\nIn this case, the marginal distribution for $X$ corresponds to the row totals, and the marginal distribution for $Y$ corresponds to the column totals. Let's add these row and column totals to our table:\n\n| $f$ | $Y=1$ | $Y=2$ | ${f}_{X}$ |\n| --- | --- | --- | --- |\n| $X=0$ | $\\frac{3}{7}$ | $\\frac{1}{7}$ | $\\frac{4}{7}$ |\n| $X=1$ | $\\frac{2}{7}$ | $\\frac{1}{7}$ | $\\frac{3}{7}$ |\n| ${f}_{Y}$ | $\\frac{5}{7}$ | $\\frac{2}{7}$ | $1$ |\n\nThe marginal mass function for $Y$ is given in the following table:\n\n| $y$ | $1$ | $2$ |\n| --- | --- | --- |\n| ${f}_{Y}(y)$ | $\\frac{5}{7}$ | $\\frac{2}{7}$ |\n\nFinally, using the table of values of the marginal mass function for $Y,$ we have\n\n$$\n\\begin{aligned}P(Y<2) & =P(Y\\in \\{1\\}) \\\\  & =P(Y=1) \\\\  & =\\frac{5}{7}.\\end{aligned}\n$$\n\nq-126740:\nThe point $P(2,-3,5)$ is at the tip of $r(t)$ for some specific value ${t}_{0}$ of the parameter $t.$ At this point, the vector ${r}^{′}({t}_{0})$ is tangent to the curve.\n\nFirst, we find the value of $t$ that corresponds to $P.$ We know that\n\n$$\n\\begin{aligned}r(t) & =2\\,i-3\\,j+5\\,k \\\\ 2\\sqrt{3-t}\\,i+(1-2t)\\,j+(t+3)\\,k & =2\\,i-3\\,j+5\\,k,\\end{aligned}\n$$\n\nand equating the coefficients of $i,j,$ and $k$ yields the following system:\n\n$$\n\\begin{aligned}\\{\\begin{aligned}2\\sqrt{3-t}=2 \\\\ 1-2t=-3 \\\\ t+3=5\\end{aligned}\\end{aligned}\n$$\n\nFrom the third equation, we get $t=2.$ This value also satisfies the other two equations. Therefore, $P(2,-3,5)$ is at the tip of the vector $r(2).$\n\nNow, we calculate ${r}^{′}(t)$ and evaluate it at $t=2:$\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}}{\\text{d}t}(2\\sqrt{3-t})\\,i+\\frac{\\text{d}}{\\text{d}t}(1-2t)\\,j+\\frac{\\text{d}}{\\text{d}t}(t+3)\\,k \\\\  & =-\\frac{1}{\\sqrt{3-t}}\\,i-2\\,j+k \\\\ {r}^{′}(2) & =-\\frac{1}{\\sqrt{3-2}}\\,i-2\\,j+k \\\\  & =-\\,i-2\\,j+k\\end{aligned}\n$$\n\nTherefore, a tangent vector to the given curve at the point $P(2,-3,5)$ is $-\\,i-2\\,j+k.$",
+      "fields": [
+        {
+          "key": "q-142718/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "0.6"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "0.4"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "0.65"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "0.45"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "0.5"
+            }
+          ]
+        },
+        {
+          "key": "q-142575/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\frac{4}{7}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\frac{6}{7}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\frac{2}{7}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\frac{5}{7}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "key": "q-126740/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\,i+j-2\\,k"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "2\\,i-2\\,j+k"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "-\\,i-2\\,j+k"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "-2\\,i-3\\,j+k"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "-\\,i+j+3\\,k"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

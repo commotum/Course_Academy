@@ -1,0 +1,240 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-71734\", \"problem\": \"What is the augmented matrix for the following system of linear equations?\\n\\n$$\\n\\\\begin{aligned}\\\\{\\\\begin{aligned}u-v=-1 \\\\\\\\ -u-v=1\\\\end{aligned}\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-127375\", \"problem\": \"A deck contains $10$ cards labeled with the numbers $21$, $22$, $23,…,30.$ If one card is randomly drawn from the deck, what is its expected value?\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-126790\", \"problem\": \"A fair spinner has six sides labeled with the numbers $0,$ $1,$ $2,$ $3,$ $4,$ and $5.$ If the spinner is spun, what is the expected value of the outcome?\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-106744\", \"problem\": \"Determine if $v=[\\\\begin{aligned}1 \\\\\\\\ -1\\\\end{aligned}]$ is an eigenvector of the matrix \\n$A=[\\\\begin{aligned}-1 & -2 \\\\\\\\ 2 & 4\\\\end{aligned}].$\\nIf so, then what is the corresponding eigenvalue?\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-106775\", \"problem\": \"Determine if $v=[\\\\begin{aligned}2 \\\\\\\\ -4\\\\end{aligned}]$ is an eigenvector of the matrix \\n$A=[\\\\begin{aligned}6 & -1 \\\\\\\\ 2 & 3\\\\end{aligned}].$\\nIf so, then what is the corresponding eigenvalue?\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-107837\", \"problem\": \"An eigenvector of $A=[\\\\begin{aligned}11 & -6 \\\\\\\\ -12 & 25\\\\end{aligned}]$ corresponding to the eigenvalue $\\\\lambda =7$ is  $v=[\\\\begin{aligned}c+1 \\\\\\\\ c\\\\end{aligned}].$ Determine the value of $c.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-75611\", \"problem\": \"The eigenvector of $A=[\\\\begin{aligned}3 & 2 \\\\\\\\ 20-4k & 3\\\\end{aligned}]$ corresponding to the eigenvalue $\\\\lambda =2k+1$ is  $[\\\\begin{aligned}1 \\\\\\\\ 2\\\\end{aligned}].$ Determine the value of $k.$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-71734:\nNotice that the system is already organized so that the variables are in the order $u,v$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient.   \n\nThe coefficient matrix consists of the coefficients of the variables: \n\n$$\n[\\begin{aligned}1 & -1 \\\\ -1 & -1\\end{aligned}]\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n[\\begin{aligned}1 & -1 & -1 \\\\ -1 & -1 & 1\\end{aligned}]\n$$\n\nq-127375:\nThe expected value of a discrete random variable $X$ with probability mass function $f(x)$ defined over a set $S$ is given by\n\n$$\n\\text{E}[X]={\\sum }_{x\\in S}x\\cdot f(x).\n$$\n\nLet $X$ be the number on a randomly drawn card. Then the support is $S=\\{21,22,23,…,30\\},$ and the corresponding probabilities are all $\\frac{1}{10}:$\n\n$$\nf(21)=f(22)=f(23)=…=f(30)=\\frac{1}{10}\n$$\n\nSumming up the products of each value of $X$ and its associated probability, we get\n\n$$\n\\begin{aligned}\\text{E}[X] & =21\\cdot f(21)+22\\cdot f(22)+23\\cdot f(23)+…+30\\cdot f(30) \\\\  & =\\frac{21+22+23+24+25+26+27+28+29+30}{10} \\\\  & =\\frac{255}{10} \\\\  & =25.5\\,.\\end{aligned}\n$$\n\nq-126790:\nThe expected value of a discrete random variable $X$ with probability mass function $f(x)$ defined over a set $S$ is given by\n\n$$\n\\text{E}[X]={\\sum }_{x\\in S}x\\cdot f(x).\n$$\n\nLet $X$ be the outcome of the spinner. Then the support is $S=\\{0,1,2,3,4,5\\},$ and the corresponding probabilities are all $\\frac{1}{6}:$\n\n$$\nf(0)=f(1)=f(2)=f(3)=f(4)=f(5)=\\frac{1}{6}\n$$\n\nSumming up the products of each value of $X$ and its associated probability, we get\n\n$$\n\\begin{aligned}\\text{E}[X] & =0\\cdot f(0)+1\\cdot f(1)+2\\cdot f(2)+3\\cdot f(3)+4\\cdot f(5)+5\\cdot f(5) \\\\  & =0(\\frac{1}{6})+1(\\frac{1}{6})+2(\\frac{1}{6})+3(\\frac{1}{6})+4(\\frac{1}{6})+5(\\frac{1}{6}) \\\\  & =0+\\frac{1}{6}+\\frac{2}{6}+\\frac{3}{6}+\\frac{4}{6}+\\frac{5}{6} \\\\  & =\\frac{0+1+2+3+4+5}{6} \\\\  & =\\frac{15}{6} \\\\  & =\\frac{5}{2}.\\end{aligned}\n$$\n\nq-106744:\nThe eigenvectors of $A$ are the non-zero vectors $v$ such that $Av=\\lambda v.$ We have\n\n$$\n\\begin{aligned}Av & =[\\begin{aligned}-1 & -2 \\\\ 2 & 4\\end{aligned}][\\begin{aligned}1 \\\\ -1\\end{aligned}] \\\\  & =[\\begin{aligned}1 \\\\ -2\\end{aligned}].\\end{aligned}\n$$\n\nIf $v$ is an eigenvector, then there must exist a real number $\\lambda $ such that $Av=\\lambda v.$ Hence, we have\n\n$$\n[\\begin{aligned}1 \\\\ -2\\end{aligned}]=\\lambda [\\begin{aligned}1 \\\\ -1\\end{aligned}].\n$$\n\nThis leads to the following system of equations for $\\lambda :$\n\n$$\n\\{\\begin{aligned}1=\\lambda  \\\\ -2=-\\lambda \\end{aligned}\n$$\n\nThis system has no solution. Therefore, $v$ is not an eigenvector of $A.$\n\nq-106775:\nThe eigenvectors of $A$ are the non-zero vectors $v$ such that $Av=\\lambda v.$ We have\n\n$$\n\\begin{aligned}Av & =[\\begin{aligned}6 & -1 \\\\ 2 & 3\\end{aligned}][\\begin{aligned}2 \\\\ -4\\end{aligned}] \\\\  & =[\\begin{aligned}16 \\\\ -8\\end{aligned}].\\end{aligned}\n$$\n\nIf $v$ is an eigenvector, then there must exist a real number $\\lambda $ such that $Av=\\lambda v.$ Hence, we have\n\n$$\n[\\begin{aligned}16 \\\\ -8\\end{aligned}]=\\lambda [\\begin{aligned}2 \\\\ -4\\end{aligned}].\n$$\n\nThis leads to the following system of equations for $\\lambda :$\n\n$$\n\\{\\begin{aligned}16=2\\lambda  \\\\ -8=-4\\lambda \\end{aligned}\n$$\n\nThis system has no solution. Therefore, $v$ is not an eigenvector of $A.$\n\nq-107837:\nRemember that the eigenvectors of $A$ are the non-zero vectors $v$ such that $Av=\\lambda v.$ So, we have\n\n$$\n\\begin{aligned}Av & =\\lambda v \\\\ [\\begin{aligned}11 & -6 \\\\ -12 & 25\\end{aligned}][\\begin{aligned}c+1 \\\\ c\\end{aligned}] & =7[\\begin{aligned}c+1 \\\\ c\\end{aligned}] \\\\ [\\begin{aligned}5c+11 \\\\ 13c-12\\end{aligned}] & =[\\begin{aligned}7c+7 \\\\ 7c\\end{aligned}].\\end{aligned}\n$$\n\nThis gives us the following system of linear equations:\n\n$$\n\\{\\begin{aligned}5c+11=7c+7 \\\\ 13c-12=7c\\end{aligned}\n$$\n\n- Solving for $c$ in the first equation, we get\n\n$$\n5c+11=7c+7\\,⟹\\,c=2.\n$$\n\n- Solving for $c$ in the second equation, we get\n\n$$\n13c-12=7c\\,⟹\\,c=2.\n$$\n\nTherefore, the solution of the system is $c=2.$\n\nq-75611:\nRemember that the eigenvectors of $A$ are the non-zero vectors $v$ such that $Av=\\lambda v.$ So, we have\n\n$$\n\\begin{aligned}Av & =\\lambda v \\\\ [\\begin{aligned}3 & 2 \\\\ 20-4k & 3\\end{aligned}][\\begin{aligned}1 \\\\ 2\\end{aligned}] & =(2k+1)[\\begin{aligned}1 \\\\ 2\\end{aligned}] \\\\ [\\begin{aligned}7 \\\\ 26-4k\\end{aligned}] & =[\\begin{aligned}2k+1 \\\\ 4k+2\\end{aligned}].\\end{aligned}\n$$\n\nThis gives us the following system of linear equations:\n\n$$\n\\{\\begin{aligned}7=2k+1, \\\\ 26-4k=4k+2\\end{aligned}\n$$\n\nSolving for $k$ in the first equation, we get\n\n$$\n7=2k+1\\,⟹\\,k=3.\n$$\n\nNow, substituting $k=3$ into the second equation, we get\n\n$$\n\\begin{aligned}26-4k & =4k+2 \\\\ 26-4\\cdot 3 & =4\\cdot 3+2 \\\\ 14 & =14,\\end{aligned}\n$$\n\nwhich is a true statement.\n\nTherefore, the solution of the system is $k=3.$",
+      "fields": [
+        {
+          "key": "q-71734/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "[\\begin{aligned}1 & -1 & -1 \\\\ -1 & -1 & 1\\end{aligned}]"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "[\\begin{aligned}-1 & 1 & 1 \\\\ -1 & -1 & -1\\end{aligned}]"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "[\\begin{aligned}-1 & 1 & -1 \\\\ 1 & 1 & 1\\end{aligned}]"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "[\\begin{aligned}-1 & 1 \\\\ -1 & -1 \\\\ -1 & 1\\end{aligned}]"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "[\\begin{aligned}-1 & 1 & -1 \\\\ -1 & -1 & 1\\end{aligned}]"
+            }
+          ]
+        },
+        {
+          "key": "q-127375/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "25"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "27"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "25.5"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "26"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "26.5"
+            }
+          ]
+        },
+        {
+          "key": "q-126790/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "5"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\frac{5}{2}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\frac{9}{2}"
+            }
+          ]
+        },
+        {
+          "key": "q-106744/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "-2"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$v$ is not an eigenvector of $A$"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "-1"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "4"
+            }
+          ]
+        },
+        {
+          "key": "q-106775/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "-8"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "8"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$v$ is not an eigenvector of $A$"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "-4"
+            }
+          ]
+        },
+        {
+          "key": "q-107837/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "-1"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\frac{1}{2}"
+            }
+          ]
+        },
+        {
+          "key": "q-75611/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "7"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "3"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "-2"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "-3"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12c9a-1fc8-7530-a4aa-a54fb8dcc6eb",
+  "previous_failures": []
+}
