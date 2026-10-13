@@ -1,0 +1,11 @@
+# Template extraction
+
+Every source's specific prompt, equation objects, field layout, complete choices and solution are retained in source.json/source.edn and classification.json. The shared move is to collect all y-terms on the left, then check whether Q(x) is identically zero. A forcing monomial that vanishes at a single x is still inhomogeneous.
+
+Each source question is its own reusable Markdown/value template. Fixed: all original instructional sentences, equation/solution ordering, y-prime coefficient 1, boolean field keys I/II/III and all observed constants and signs. Variable: each explicit x monomial's degree d becomes d*k, k in integers 1..6. P(x)/Q(x) remain arbitrary-function notation. At k=1, the complete Markdown and worked solution replay exactly. Higher k is an explicit sampling extension, not an observed range. There is no coefficient sampling that might invalidate a sign or produce zero forcing. Every coefficient and every rearranged intermediate in the solution receives the same substitution. Since powers are nonnegative integers this preserves real polynomial domains and first-order linear form; the zero/nonzero-forcing distinction is unchanged.
+
+Choice recipes are literal text false/true, separately owned by each checkbox field. Correct selection is computed after symbolic collection of y-terms. There are no imported distractor explanations. Full bank replay compares both values, their types and correct designation for every field of every original; no pooling of choices or mixed-profile banks occurs.
+
+All original numeric coefficients, signs, degrees and constant/polynomial forcing forms are covered at k=1. Samples with k=2..6 extend degrees only. Different source solution sequences remain separate. Identity hashes the unordered set of normalized complete ODEs; neither equation ordering, seed nor response-choice ordering creates a new task. Source examples and all current KP members are excluded from generated commits by that same mathematical key.
+
+Validation exhausts every template and k, checks every rendered numeric ODE in the worked solutions for equivalence with a prompt equation, verifies all selection values and summary text, and invokes the application learner grader for every checkbox field's correct and incorrect authored choice. Original/variant pairs are in review.md.
