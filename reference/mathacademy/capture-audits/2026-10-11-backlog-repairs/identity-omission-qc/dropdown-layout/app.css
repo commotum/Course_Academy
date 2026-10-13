@@ -1,0 +1,1236 @@
+@import 'normalizer.css';
+
+html {
+    --transparent-black-color: #000000bd;
+    --white-color: #ffffff;
+    --dark-blue-color: rgb(30, 25, 78);
+    --light-blue-color: rgb(9, 107, 183);
+    --dark-text-gray-color: rgb(64, 64, 64);
+    --blue-color: rgb(48, 140, 234);
+    --text-gray-color: rgb(128, 128, 128);
+    --light-text-gray-color: rgb(192, 192, 192);
+    --border-gray-color: rgb(148, 148, 148);
+    --hover-gray-color: rgb(245, 245, 248);
+    --blue-gray-color: rgb(232, 240, 254);
+    --green-gray-color: rgb(232, 254, 232);
+    --red-color: rgb(224, 0, 0);
+    --green-color: rgb(0, 128, 0);
+    --dark-green-color: rgb(0, 100, 0);
+    --discord-color: rgb(88, 101, 242);
+}
+
+html {
+    --iron-color: #9DA5AC;
+    --bronze-color: #C8AE88;
+    --silver-color: #E4E6ED;
+    --gold-color: #F9CC36;
+    --platinum-color: #C3CBE5;
+    --sapphire-color: #5090FB;
+    --ruby-color: #F30B20;
+    --emerald-color: #268012;
+    --diamond-color: #B9F2FF;
+}
+
+html {
+    --code-string-color: rgb(206, 145, 120);
+    --code-keyword-color: rgb(86, 156, 214);
+    --code-comment-color: rgb(84, 127, 60);
+    --code-number-color: rgb(128, 128, 128);
+    --code-boolean-color: rgb(212, 154, 204);
+    --code-null-color: rgb(86, 156, 214);
+    --code-array-color: rgb(128, 128, 128);
+    --code-object-color: rgb(78, 201, 176);
+}
+
+html {
+    --content-width: 1040px;
+    --content-width-padding: 20px;
+    --sidebar-width: 230px;
+    --sidebar-width-padding: 25px;
+}
+
+html {
+    --content-width-padding-total: calc(var(--content-width-padding) * 2);
+    --sidebar-width-padding-total: calc(var(--sidebar-width-padding) * 2);
+    --full-content-width: calc(var(--content-width) + var(--content-width-padding-total));
+    --full-sidebar-width: calc(var(--sidebar-width) + var(--sidebar-width-padding-total));
+    --available-for-content: calc(100vw - var(--full-sidebar-width));
+    --content-width-displayed: min(var(--full-content-width), var(--available-for-content));
+    --spacer-width: calc(var(--available-for-content) - var(--content-width-displayed));
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+body, p, td, th, input, select, option {
+    font-family: "Futura Light", "Trebuchet MS", Arial, sans-serif;
+    font-size: 15px;
+    color: rgb(64, 64, 64);
+}
+
+th {
+    font-size: 13px;
+    text-align: left;
+}
+
+input {
+    padding-left: 6px;
+}
+
+a {
+    color: #0577c7;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0577c7;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #0577c7;
+}
+
+div#topRibbon {
+    position: fixed; 
+    top: 0px;
+    height: 50px;
+    width: 100%;    
+    opacity: 100%;
+    z-index: 10;
+    background:white;
+    border-bottom: 1px solid rgb(224, 224, 224);
+}
+
+img.logo {
+    display: block;
+    margin-top: 6px;
+    max-width: 275px;
+    width: auto;
+    height: auto;
+}
+
+div#wrap {
+    position: relative;
+    width: 1080px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+div#topBarContainer {
+    position: fixed; 
+    top: 0px;
+    z-index: 10;
+}
+
+div#topBar {
+    position: absolute;
+    margin-top: 9px;
+    text-align: left;
+    width: 1000px;
+}
+
+a#appTitle {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+div#headerLinks {
+    position: relative;
+    font-size: 14px;
+    left: 45px;
+    top: 2px;
+}
+
+div#headerLinksLeft {
+    position: absolute;
+    left: 0px;
+    top: 10px;
+    font-size: 14px;
+}
+
+div#headerLinksRight {
+    position: absolute;
+    right: 0px;
+    top: 10px;
+    font-size: 14px;
+}
+
+a.headerLink {
+    color: rgb(164, 164, 164);
+    font-size: 14px;
+    margin-right: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 15px; 
+    padding-bottom: 14px;
+}
+
+a.headerLink:hover {
+    color: #0577c7;
+    text-decoration: none;
+}
+
+a#coursesHeaderLink {
+    cursor: default;
+    user-select: none;
+}
+
+
+div#userHeader {
+    margin-top: -8px;
+    margin-right: 15px;
+    text-transform: uppercase;
+    background-color: rgb(245, 245, 245);
+    font-size: 15px;
+    height: 38px;
+    width: 38px;
+    text-align: center;
+    line-height: 38px;
+    border-radius: 19px;
+    cursor: default;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+div#contentMenu {
+    position: absolute;
+    left: 310px;
+    top: 30px;
+    visibility: hidden;
+    z-index: 1000;
+    border: 1px solid rgb(224, 224, 224);
+}
+
+/* userMenu ******************************************************************************************************/
+
+div#userMenu {
+    position: absolute;
+    right: 5px;
+    top: 30px;    
+    padding-top: 10px;
+    padding-bottom: 10px;
+    visibility: hidden;
+    z-index: 1000;
+    background: white;
+    border: 1px solid rgb(224, 224, 224);
+    box-shadow:
+    0 1px 1px hsl(0deg 0% 0% / 0.075),
+    0 2px 2px hsl(0deg 0% 0% / 0.075),
+    0 4px 4px hsl(0deg 0% 0% / 0.075),
+    0 8px 8px hsl(0deg 0% 0% / 0.075),
+    0 16px 16px hsl(0deg 0% 0% / 0.075);
+}
+
+div#userMenu-info {
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 80px;
+
+    white-space: nowrap;
+    border-bottom: 1px solid rgb(232, 232, 232);
+    padding-bottom: 15px;
+}
+
+div#userMenu-name {
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(64, 64, 64);
+    text-transform: capitalize;
+}
+
+div#userMenu-username {
+    margin-top: 3px;
+    font-size: 15px;
+    color: rgb(148, 148, 148);
+}
+
+/* adminMenu ******************************************************************************************************/
+
+div#adminMenu {
+    position: absolute;
+    right: 5px;
+    top: 30px;    
+    width: fit-content;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    visibility: hidden;
+    z-index: 1000;
+    background: white;
+    border: 1px solid rgb(224, 224, 224);
+    box-shadow:
+    0 1px 1px hsl(0deg 0% 0% / 0.075),
+    0 2px 2px hsl(0deg 0% 0% / 0.075),
+    0 4px 4px hsl(0deg 0% 0% / 0.075),
+    0 8px 8px hsl(0deg 0% 0% / 0.075),
+    0 16px 16px hsl(0deg 0% 0% / 0.075);
+}
+
+div#adminMenu div.headerMenuItem {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* coursesMenu ******************************************************************************************************/
+
+div#coursesMenu {
+    position: absolute;
+    visibility: hidden;
+    left: 0px;
+    top: 45px;
+    border: 1px solid rgb(224, 224, 224);
+    padding: 20px;
+    width: fit-content;
+    height: fit-content;
+    background: white;
+    z-index: 1000;
+    box-shadow:
+    0 1px 1px hsl(0deg 0% 0% / 0.075),
+    0 2px 2px hsl(0deg 0% 0% / 0.075),
+    0 4px 4px hsl(0deg 0% 0% / 0.075),
+    0 8px 8px hsl(0deg 0% 0% / 0.075),
+    0 16px 16px hsl(0deg 0% 0% / 0.075);
+}
+
+div.coursesMenu-categoryHeader {
+    width: 240px;
+    font-size: 17px;
+    font-weight: bold;
+    color: rgb(30, 25, 78);
+    margin-bottom: 10px;
+}
+
+td.coursesMenu-categoryList {
+    padding-top: 10px;
+    vertical-align: top;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+div.coursesMenu-categorySubheader {
+    margin-bottom: 8px;
+    margin-top: 25px;
+    color: rgb(64, 64, 64);
+}
+
+div.coursesMenu-courseSequence {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-style: italic;
+    color: rgb(148, 148, 148);
+}   
+
+div.coursesMenu-course {
+    margin-bottom: 8px;
+}    
+
+span.courseMenu-comingSoon {
+    margin-left: 5px;
+    font-size: 12px;
+    background-color: rgb(242, 242, 242);
+    color: rgb(64, 64, 64);
+    padding: 5px;
+    border-radius: 5px;    
+}
+
+span#coursesMenu-underDevelopment {
+    font-size: 15px;
+    color: rgb(148, 148, 148);
+}
+
+/********************************************************************************************************************/
+
+
+div.headerMenuItem {
+    padding: 10px;
+    padding-left: 35px;
+    padding-right: 120px;
+    font-size: 15px;
+    background: white;
+    color: rgb(64, 64, 64);
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+}
+
+div.headerMenuItem:hover {
+    background: rgb(242, 242, 242);
+}
+
+div.headerMenuSeparator {
+    margin-top: 5px;
+    border-bottom: 1px solid rgb(232, 232, 232);
+    margin-bottom: 5px;    
+}
+
+div#topMenu {
+    position: absolute;
+    right: 0px;
+    top: 15px;
+    color: rgb(64, 64, 64);
+}
+
+#topMenu a {
+    color: rgb(64, 64, 64);
+    font-size: 14px;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+#topMenu a:hover {
+    color: #0577c7;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+div#content {
+    position: relative;
+    top: 70px;
+}
+
+div#footer {
+    margin-top: 30px;
+    border-top: 1px solid rgb(224, 224, 224);
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+h1#pageTitle {
+    color: rgb(64, 64, 64);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+h2#learningObjective {
+    font-size: 15px;
+    color: rgb(128, 128, 128);
+    margin-bottom: 30px;
+}
+
+.button {
+    padding: 6px 15px 6px 15px;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: normal;
+    background: #0577c7;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+a.createTest {
+    float: right;
+    margin-right: 100px;
+}
+
+.button:hover, a.button:hover {
+    opacity: 0.9;
+    color: white;
+    text-decoration: none;
+}
+
+.button:visited, a.button:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.buttonDisabled {
+    padding: 6px 15px 6px 15px;
+    border-radius: 3px;
+    text-align: center;
+    color: rgb(196, 196, 196);
+    background: rgb(236, 236, 236);
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.buttonDisabled:hover {
+    color: rgb(196, 196, 196);
+}
+
+div.codeBlock {
+    padding-left: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: rgb(242, 242, 242);
+    width: 710px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    font-family: Courier;
+}
+
+span.codeInline {
+    font-size: 13px;
+    font-family: Courier;
+}
+
+/******************************************************************************/
+
+div.menuButton {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    height: 18px;
+    width: 15px;
+    border: 1px solid rgb(242, 242, 242);
+    background-image: url('/img/expand-arrow.png');
+    background-repeat: no-repeat;
+    background-position: 3px 6px;
+}
+
+div.menuButton:hover {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    height: 18px;
+    width: 15px;
+    border: 1px solid rgb(224, 224, 224);
+    background-image: url('/img/expand-arrow.png');
+    background-repeat: no-repeat;
+    background-position: 3px 6px;
+}
+
+div.listMenuButton {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    height: 18px;
+    width: 15px;
+    background-image: url('/img/vertical-ellipse-light.png');
+    background-repeat: no-repeat;
+    background-position: 3px 1px;
+    cursor: pointer;
+}
+
+div.listMenuButton:hover {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    height: 18px;
+    width: 15px;
+    background-image: url('/img/vertical-ellipse-dark.png');
+    background-repeat: no-repeat;
+    background-position: 3px 1px;
+    cursor: pointer;
+}
+
+div.menu {
+    border: 1px solid rgb(224, 224, 224);
+    background: white;
+    cursor: pointer;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    box-shadow:
+        0 1px 1px hsl(0deg 0% 0% / 0.075),
+        0 2px 2px hsl(0deg 0% 0% / 0.075),
+        0 4px 4px hsl(0deg 0% 0% / 0.075),
+        0 8px 8px hsl(0deg 0% 0% / 0.075),
+        0 16px 16px hsl(0deg 0% 0% / 0.075);
+}
+
+div.menuItem {
+    padding-left: 25px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+div.menuItemHover {
+    padding-left: 25px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: rgb(242, 242, 242);
+}
+
+div.menuItemDisabled {
+    padding-left: 25px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: rgb(164, 164, 164);
+}
+
+div.menuItemSeparator {
+    height: 1px;
+    background-color: rgb(224, 224, 224);
+    margin-top: 7px;
+    margin-bottom: 7px;    
+}
+
+
+div.menuItemWithSubMenu {
+    padding-left: 25px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-image: url('/img/sub-menu-arrow.png');
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+}
+
+div.menuItemWithSubMenuHover {
+    padding-left: 25px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: rgb(242, 242, 242);
+    background-image: url('/img/sub-menu-arrow.png');
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+}
+
+div.menuItemWithSubMenuDisabled {
+    padding-left: 25px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: rgb(164, 164, 164);
+    background-image: url('/img/sub-menu-arrow.png');
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+}
+
+div.menuItemWithCheck {
+    padding-left: 25px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-image: url('/img/menu-check-mark.png');
+    background-repeat: no-repeat;
+    background-position: left 5px center;
+}
+
+div.menuItemWithCheckHover {
+    padding-left: 25px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: rgb(242, 242, 242);
+    background-image: url('/img/menu-check-mark.png');
+    background-repeat: no-repeat;
+    background-position: left 5px center;
+}
+
+div.menuItemWithCheckDisabled {
+    padding-left: 25px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: rgb(164, 164, 164);
+    background-image: url('/img/menu-check-mark.png');
+    background-repeat: no-repeat;
+    background-position: left 5px center;
+}
+
+/******************************************************************************/
+
+div.breadcrumbs {
+    font-size: 13px;
+    padding-top: 8px;
+    margin-bottom: 8px;
+}
+
+div.breadcrumb {
+    padding-top: 4px;
+}
+
+span.breadcrumbDelimeter {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+/******************************************************************************/
+
+div#tabList {
+    position: relative;
+    margin-bottom: 15px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid rgb(224, 224, 224);
+    width: 1095px;
+}
+
+div.tab {
+    display: inline;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 7px;
+    padding-bottom: 6px;
+    z-index: 20px;
+    user-select: none;
+    border-bottom: 1px solid rgb(224, 224, 224);
+}
+
+div.tabSelected {
+    display: inline;
+    font-size: 14px;
+    cursor: default;
+    border-left: 1px solid rgb(224, 224, 224);
+    border-top: 2px solid #0577c7;
+    border-right: 1px solid rgb(224, 224, 224);
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 7px;
+    padding-bottom: 8px;
+    background: white;
+    user-select: none;
+}
+
+/******************************************************************************/
+
+td#sidebar {
+    font-size: 14px;
+}
+
+div.sidebarLabel {
+    margin-top: 5px;
+}
+
+div.sidebarLink {
+    margin-top: 7px;
+    font-size: 12px;
+}
+
+div.sidebarHeader {
+    margin-top: 50px;
+    color: rgb(64, 64, 64);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.alert {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    width: 20%;
+    font-size: 16px;
+}
+
+.alert:hover {
+    cursor: pointer;
+}
+
+span.lessonStepCount, span.commentCount, span.countAcceptedQuestions {
+    background: rgb(228, 228, 228);
+    margin-left: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 2px;
+    font-size: 14px;
+}
+
+span.flagCount {
+    background: rgb(228, 228, 228);
+    margin-left: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 2px;
+}
+
+.breadcrumbs {
+    padding-bottom: 5px;
+}
+
+ol.questionStatements {
+    list-style-type: upper-roman;
+    margin-left: -15px;
+}
+
+ol.questionStatements > li {
+    padding-left: 10px;
+    padding-bottom: 5px;
+    font-size: 14px;
+}
+
+.my-form {
+    margin-bottom: 10px;
+}
+
+#gallery {
+    margin-top: 10px;
+}
+
+#gallery img {
+    width: 150px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+#fileElem {
+    display: none;
+}
+
+.menuButtonVisibility {
+    visibility: hidden;
+}
+
+div.questionDifficulty {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    width: 21px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+div.difficultyEasy {
+    background: #4AA4FF;
+    color: white;
+}
+
+div.freeResponseFormat {
+    background: white;
+    color: rgb(64 64 64);
+    border: 1px solid rgb(64 64 64);
+    width: 14px;
+    height: 14px;
+}
+
+.freeAssignedSymbol {
+    transform: translate(0, -1px);
+}
+
+div.difficultyModerate {
+    background: #0577c7;
+    color: white;
+}
+
+div.difficultyHard {
+    background: #004185;
+    color: white;
+}
+
+.iconsContainer {
+    display: inline-flex;
+}
+
+.assignedQuestionDifficulty {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    width: 16px;
+    height: 16px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+div.assignedQuestionHeaderPractice {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    width: 16px;
+    height: 16px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+grammarly-extension {
+    z-index: 1000;
+}
+
+.revisionCellDimensions {
+    vertical-align: top;
+    padding: 0 15px;
+    position: relative;
+    font-size: 14px;
+}
+
+.revisionCell1 {
+    text-align: center;
+    vertical-align: top;
+    fontStyle: italic;
+    paddingTop: 15px;
+    fontFamily: Arial;
+    color: rgb(128, 128, 128);
+    white-space: normal;
+    line-height: normal;
+}
+
+.tutorialsStatusAccepted {
+    display: inline-block;
+    background-image: url(/img/accepted-tutorial.png);
+    background-repeat: no-repeat;
+    background-position: 1px 2px;
+    height: 23px;
+    width: 19px;
+    transform: translate(3px, 4px);
+}
+
+.tutorialsStatusSubmitted {
+    display: inline-block;
+    background-image: url(/img/submitted-tutorial.png);
+    background-repeat: no-repeat;
+    background-position: 1px 2px;
+    height: 23px;
+    width: 19px;
+    transform: translate(3px, 4px);
+}
+
+.tutorialsStatusDraft {
+    display: inline-block;
+    background-image: url(/img/draft-tutorial.png);
+    background-repeat: no-repeat;
+    background-position: 1px 2px;
+    height: 23px;
+    width: 19px;
+    transform: translate(3px, 4px);
+}
+
+.tutorialIcon {
+    padding-top: 12px !important;
+}
+
+.ratedValue {
+    font-weight: bold;
+}
+
+.result-link {
+    color: black;
+}
+
+.result-link:hover {
+    color: black;
+    /*text-decoration: none;*/
+}
+
+div.graphic {
+    margin-top: 10px; 
+    margin-bottom: 50px; 
+    text-align: center;
+}
+
+img.uploadedImage {
+    max-width: 500px;       /* Prevents the element from exceeding its container's width */
+    max-height: 500px;     /* Set your desired maximum height */
+    width: 100%;           /* Fills available horizontal space up to max-width */
+    height: auto;          /* Ensures the height adapts to maintain proportions */
+    object-fit: contain;   /* Keeps the content within the bounding box */    
+}
+
+.statusDraft {
+    color: rgb(128, 128, 128);
+}
+
+.statusSubmitted {
+    font-weight: bold;
+    color: rgb(64, 64, 64);
+}
+
+.statusAccepted {
+    font-weight: bold;
+    color: green;
+}
+
+.statusDeleted {
+    font-weight: bold;
+    color: rgb(105, 105, 105);
+}
+
+.statusFlagged {
+    font-weight: bold;
+    color: red;
+}
+
+/* Free response ****************************************************************************/
+
+
+/*
+div.freeResponseLine:first-of-type {
+    margin-top: 30px;
+    margin-left: 80px;
+    height: fit-content;
+    display: flex;
+    align-items: center; 
+}
+
+div.freeResponseLine {
+    margin-top: 20px;
+    margin-left: 80px;
+    height: fit-content;
+    display: flex;
+    align-items: center; 
+}
+*/
+
+div.freeResponseLine:first-of-type {
+    margin-top: 30px;
+    margin-left: 80px;
+}
+
+div.freeResponseLine {
+    margin-top: 20px;
+    margin-left: 80px;
+}
+
+div.freeResponseTextbox {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid rgb(224, 224, 224);
+}
+
+.matheditor-wrapper-answer {
+    display: inline-block;
+    font-size: 15px; 
+    padding: 3px;
+    border: 1px solid rgb(224, 224, 224);
+}
+
+/* Select list ****************************************************************************/
+
+div.selectListLine:first-of-type {
+    margin-top: 30px;
+    margin-left: 0px;
+}
+
+div.selectListLine {
+    margin-top: 20px;
+    margin-left: 0px;
+}
+
+/* Tooltips ****************************************************************************/
+
+span.tooltip {
+    position: absolute;
+    z-index: 1000;
+    background-color: rgb(30, 25, 78);
+    font-size: 13px;
+    color: #fff;
+    text-align: left;
+    padding: 7px;
+    border-radius: 6px;
+    max-width: 300px;
+    line-height: 1.4;
+}
+
+
+/* MessageBox ****************************************************************************************/
+
+div#messageBox {
+    position: absolute;
+    width: 480px;
+    height: auto;
+    background: white;
+    visibility: hidden;
+    border: 1px solid rgb(224, 224, 224);
+    border-radius: 3px;    
+    box-shadow:
+    0 1px 1px hsl(0deg 0% 0% / 0.075),
+    0 2px 2px hsl(0deg 0% 0% / 0.075),
+    0 4px 4px hsl(0deg 0% 0% / 0.075),
+    0 8px 8px hsl(0deg 0% 0% / 0.075),
+    0 16px 16px hsl(0deg 0% 0% / 0.075);        
+}
+
+div#messageBox-title {
+    margin-top: 15px;    
+    font-size: 20px;  
+    margin-left: 20px;
+    width: 440px;
+    color: rgb(30, 25, 78);
+}
+
+div#messageBox-message {
+    margin-top: 25px;    
+    font-size: 15px;  
+    margin-left: 20px;
+    width: 440px;
+}
+
+div#messageBox-buttons {
+    margin-top: 35px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+div#messageBox-okButton {
+    display: inline-block; 
+    width: 85px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 17px;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    background: rgb(9, 107, 183);
+    cursor: pointer;
+}
+
+/* ProcessingDialog ****************************************************************************************/
+
+div#processingDialog {
+    position: absolute;
+    width: 480px;
+    height: auto;
+    border: 1px rgb(224, 224, 224) solid;
+    border-radius: 3px;
+    background: white;
+    visibility: hidden;
+    padding: 20px;
+    padding-bottom: 0px;
+}
+
+div#processingDialog-title {
+    font-size: 20px;  
+    color: rgb(30, 25, 78);
+    margin-bottom: 25px;    
+}
+
+div#processingDialog-message {
+    font-size: 15px;  
+}
+
+div#processingDialog-spinnerFrame {
+    margin-top: 0px;
+    text-align: center;
+}
+
+img#processingDialog-spinner {
+    margin: auto 0;
+    width: 30%;
+}
+
+/* ConfirmationDialog ****************************************************************************************/
+
+div#confirmationDialog {
+    position: absolute;
+    width: 450px;
+    height: fit-content;
+    padding: 25px;
+    background: white;
+    visibility: hidden;
+    z-index: 1000;
+    background: white; 
+    border: 1px solid rgb(224, 224, 224);
+    border-radius: 3px;    
+    box-shadow:
+    0 1px 1px hsl(0deg 0% 0% / 0.075),
+    0 2px 2px hsl(0deg 0% 0% / 0.075),
+    0 4px 4px hsl(0deg 0% 0% / 0.075),
+    0 8px 8px hsl(0deg 0% 0% / 0.075),
+    0 16px 16px hsl(0deg 0% 0% / 0.075);    
+}
+
+div#confirmationDialog-title {
+    font-size: 20px;  
+    color: rgb(30, 25, 78);
+    width: 440px;
+}
+
+div#confirmationDialog-message {
+    margin-top: 25px;    
+    font-size: 14px;  
+    line-height: 20px;
+}
+
+div#confirmationDialog-buttonBar {
+    margin-top: 35px;
+    text-align: center;
+}
+
+div#confirmationDialog-yesButton {
+    display: inline-block;
+    min-width: 67px;
+    padding: 9px;
+    border-radius: 17px;
+    text-align: center;
+    background:red;
+    color: white;
+    cursor: pointer;
+}
+
+div#confirmationDialog-noButton {
+    display: inline-block;
+    min-width: 69px;
+    margin-left: 3px;
+    padding: 8px;
+    text-align: center;
+    border: 1px rgb(224, 224, 224) solid;
+    border-radius: 17px;
+    background: white;
+    cursor: pointer;
+}
+
+/* MathJax 3 server-side SVG alignment.
+ *
+ * No font-size adjustment — MathJax 3 SVG (server-rendered) and MathJax 3 CHTML (browser CDN)
+ * use the same internal TeX layout engine, so at 100% they render at the same physical size,
+ * keeping stored content (tutorials/examples) visually consistent with dynamically-rendered
+ * content (questions/preview). MathJax 2 was called with `ex: 8` which made its output
+ * slightly larger (width=12.682ex height=2.759ex vs MathJax 3's width=12.201ex height=2.351ex);
+ * neither svg.scale nor svg.exFactor in MathJax 3 can correct this (both are silently ignored
+ * for ex-unit output), so CSS font-size is the only lever if you ever want to restore the
+ * MathJax 2 size. 104% matches MathJax 2 width to within 0.1% (at the cost of being slightly
+ * larger than CHTML-rendered math).
+ *
+ * display/text-align/margin — the browser's MathJax CDN is configured for CHTML output, so it
+ * only injects centering CSS for mjx-container[jax="CHTML"]. Without this rule, display-mode
+ * math (e.g. \[ ... \] or \begin{align*}) rendered server-side would show left-aligned instead
+ * of centered. MathJax 2 used inline style="text-align:center" automatically; MathJax 3 SVG
+ * relies on external CSS.*/
+
+mjx-container[jax="SVG"][display="true"] {
+    display: block;
+    text-align: center;
+    margin: 1em 0;
+}
+
+/* overflow:visible — SVG's default is hidden, which clips glyphs that extend slightly outside
+ * the computed bounding box (e.g. the overhanging arm of a + sign in array environments).
+ * Setting visible prevents that clipping with no layout side-effects (visual overflow in SVG
+ * does not cause reflow of surrounding HTML).
+ * The `>` (direct child) combinator is intentional: MathJax 3 builds stretchy characters
+ * (braces, brackets, etc.) from nested <svg> elements, each with a tightly-fitted viewBox
+ * that clips its piece. Using a descendant selector would set overflow:visible on those inner
+ * SVGs too, causing extension pieces to bleed past their intended boundaries and making
+ * overbrace/underbrace connectors look too thick. Only the outermost SVG needs this. */
+mjx-container[jax="SVG"] > svg {
+    overflow: visible;
+}
+
+/* stroke-width fix for \hline and other SVG <line> elements — MathJax 3's outer <g> sets
+ * stroke-width="0" so that path-based glyphs render via fill (not stroke). <line> elements
+ * such as \hline inherit that zero stroke-width and become invisible. CSS overrides SVG
+ * presentation attributes, so this rule makes them visible again.
+ *
+ * stroke-width: 40px — CSS `px` for SVG stroke-width maps to SVG user units (not device
+ * pixels). MathJax 3 SVG uses 1000 user units per em. TeX's \arrayrulewidth is 0.04em =
+ * 40 user units, which renders as 0.04 × font-size px — matching what MathJax 3 CHTML
+ * outputs for \hline via its border-top rule. (Empirical: 10px → ~0.16px rendered, barely
+ * visible; 40px → ~0.64px at 16px body font, matching CHTML.) */
+mjx-container[jax="SVG"] line.mjx-solid,
+mjx-container[jax="SVG"] line.mjx-dashed {
+    stroke: currentColor;
+    stroke-width: 40px;
+}
+
+mjx-stretchy-v.mjx-c7C mjx-ext mjx-c::after   {
+    content: "|" !important;
+    
+}
+
+@media (resolution: 96dpi) {
+    mjx-stretchy-v.mjx-c7C mjx-ext mjx-c::before   {
+        content: "|" !important;
+    }
+}

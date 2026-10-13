@@ -1,0 +1,93 @@
+{
+  "created_at": "2026-10-11T20:26:29.063551+00:00",
+  "question_id": "q-184176",
+  "task_id": "14124194",
+  "mode": "saved-source/offline-only",
+  "source": {
+    "html_path": "reference/mathacademy/capture/linear/14124194/observations/step-q184176-1723ac6324d2df951943.html",
+    "original_sha256": "1b62ca43d3646b94c045844b5748b03590a59a53ec9f74e04c363fb3a0f4f17f",
+    "fixture_sha256": "67d6488cc83f13472597da65b1e4abf37a8bb60b75677fb9ed68cef2bdca6955",
+    "public_widget_source": "reference/mathacademy/question-capture-workers/differential/14040950/manual-recovery/select-list.js",
+    "public_widget_sha256": "5038dafcb534b3884ee968143da829790eda58ecfceeb8f8c51965a4a09a6f6e",
+    "public_copy_identical": true,
+    "layout_css": [
+      {
+        "url": "https://mathacademy.com/css/student-lesson.css",
+        "status": 200,
+        "content_type": "text/css; charset=utf-8",
+        "sha256": "a9573d9bad250f9871528cb855de9f7504e869d58b9595d34f2bf8ef8b2100ed"
+      },
+      {
+        "url": "https://mathacademy.com/css/select-list.css",
+        "status": 200,
+        "content_type": "text/css; charset=utf-8",
+        "sha256": "61acbbc66cafe5a4bcd3f0a0df17e5b917f68788fb3758020ffb2c002781e4bd"
+      },
+      {
+        "url": "https://mathacademy.com/css/app.css?v=2",
+        "status": 200,
+        "content_type": "text/css; charset=utf-8",
+        "sha256": "996e13f7afa5322901f14493ff60bc2545f5722031c3e36b80fea1e2e22abc48"
+      }
+    ],
+    "archived_full_lesson_page": {
+      "path": "reference/mathacademy/question-capture-workers/linear/14109358/diagnostics/1791665931563605720/page.html",
+      "sha256": "230fb7dfb07740bf9408a9191ef9528706f763fcdc74746582360c89a13a3aa5",
+      "header_fixture": "capture/scripts/tests/fixtures/public-lesson-header.html"
+    }
+  },
+  "observed_failure": "Dropdown has no exposed option click target",
+  "source_facts": [
+    "Six original select controls remain complete.",
+    "field-1 source Correct; solver consistently requests field-3 current option8, 2{a}^{2}+2a-1.",
+    "Public widget reparents menus to body when open and hides them on window/ancestor scroll.",
+    "The old entry path scrolled the selected option after opening the menu."
+  ],
+  "fix": {
+    "file": "capture/scripts/browser/entry.py",
+    "sha256": "6cb95d336640698bf12badeef336c43a305d297b8e8f3d476e33b3039698e7c1",
+    "functions": [
+      "click_dropdown",
+      "settle_dropdown_scroll",
+      "enter_dropdown",
+      "enter"
+    ],
+    "semantics": [
+      "Position original frame at block:start and settle two animation frames before opening.",
+      "Before opening, inset below observed visible fixed/sticky #header bottom plus2px; adjust nearest scrollable ancestor and window only for an unmet inset; settle after all scrolling.",
+      "Require entire option rectangle inside viewport before ElementHandle.click.",
+      "Never scroll an open menu; visible offscreen options and overlays fail.",
+      "One bounded reopen only for an already-hidden menu, preserving original frame/option handles.",
+      "Original choice matching and exact content readback unchanged; source Correct skipped.",
+      "No forced clicks, option value writes, or live browser replay."
+    ]
+  },
+  "validation": {
+    "command": "PYTHONPATH=capture /home/jake/Developer/MA/.venv/bin/python -m unittest scripts.tests.test_browser scripts.tests.test_browser_safeguards",
+    "tests": 73,
+    "status": "PASS",
+    "duration_seconds": 21.467,
+    "regressions": [
+      "actual ninth option",
+      "partially visible ninth option preposition",
+      "partly clipped visible option refusal",
+      "zero open-menu scroll",
+      "bounded hidden-menu reopen",
+      "replacement frame refusal",
+      "overlay refusal",
+      "changed readback refusal",
+      "source Correct skip",
+      "existing menu reparent behavior",
+      "minimum 500ms adapter latency",
+      "actual public fixed lesson header with window scrolling",
+      "nested container already below header avoids window scroll",
+      "nested container inset",
+      "nested scroll limit falls back to window for remaining inset"
+    ]
+  },
+  "limitations": [
+    "Offline source reproduction demonstrates scroll/menu interaction; no live verification while user pause is active.",
+    "An oversized or otherwise visibly offscreen menu refuses entry rather than scrolling the open menu."
+  ],
+  "parent_qc": "Header-aware final entry SHA reviewed and approved; entry frozen, no runner restart"
+}

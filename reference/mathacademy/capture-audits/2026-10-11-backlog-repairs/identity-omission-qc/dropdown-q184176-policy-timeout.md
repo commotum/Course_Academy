@@ -1,0 +1,9 @@
+# q184176: unchanged selection and disabled Submit
+
+Read-only saved-source diagnosis found the 45s timeout at `MathAcademyBrowser._respond`'s Submit-enabled wait. Browser state held `pending_action: entered`; no Submit intent had been recorded. Fields1/2 were already source Correct and skipped. Fields3–6 read back successfully, but field3 repeatedly selected original option0, `2(2a²−a)`, while the solver's exact `correct_value` was option8, `2{a}^{2}+2a-1`.
+
+`responses_for(source_preferred=True)` preferred the solver's worked-solution paraphrase `2a^2 + 2a - 1`. It did not match an exact source option, so the old policy fell back to option0. The archived public select-list.js handler returns immediately when the clicked option is already selected; therefore the unchanged selections fired no onSelect callback and Submit stayed disabled.
+
+The parent-approved narrow policy correction uses the solver's unique exact current typed choice only when the preferred MA value is absent from the options, the basis is worked_solution, disagreement is explicitly False, and any supplied option token agrees with that choice. It changes no source evidence, solution, database attribution, grade or browser widget value directly. Direct MA keys, correct grades, disagreements, missing agreement, ambiguous typed values and mismatched options keep existing semantics.
+
+The actual saved q184176 regression now produces field3 option8 while skipping accepted fields1/2. Five focused regression tests were added. All54 related activity/policy/recovery/finish/timing checks passed; the one offline browser integration test initially failed to launch under sandbox permissions and passed when rerun in a fresh temporary context with escalation. Policy+offline integration rerun:15 PASS0.898s. No live browser actions or runner operations were performed by this agent. The parent owns the scoped linear restart and live outcome verification.
