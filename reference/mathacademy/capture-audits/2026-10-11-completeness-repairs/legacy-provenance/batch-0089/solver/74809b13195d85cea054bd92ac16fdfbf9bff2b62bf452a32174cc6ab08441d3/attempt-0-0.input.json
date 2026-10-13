@@ -1,0 +1,80 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-42264\", \"problem\": \"Given that $A,B,$ and $C$ are $2\\\\times 2$ matrices, which of the following statements are always true?\\n\\nI. $AB=BA$\\n\\nII. $(AB)C=A(BC)$\\n\\nIII. $A(B-C)=(B-C)A$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-130455\", \"problem\": \"Given that $A,B,$ and $C$ are $6\\\\times 6$ matrices which of the following statements are always true? \\n\\nI. $A(BC)=(AB)C$\\n\\nII. $A(B-C)=AB-CA$\\n\\nIII. $CA=AC$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-42264:\nLet's consider the statements one by one.\n\n- Statement I is false. Matrix multiplication is not commutative, so $AB\\ne BA$ in general.\n\n- Statement II is true. Matrix multiplication is associative, so $(AB)C=A(BC)$ in general.\n\n- Statement III is false. Matrix multiplication is not commutative, so $A(B-C)\\ne (B-C)A$ in general.\n\nTherefore, only statement II is true.\n\nq-130455:\nLet's consider the statements one by one.\n\n- Statement I is true. Matrix multiplication is associative and  $A(BC)=(AB)C$ is always true.\n\n- Statement II is false. Matrix multiplication is distributive, so $A(B-C)=AB-AC,$ but $AC\\ne CA$ because matrix multiplication is not commutative in general.\n\n- Statement III  is false. Matrix multiplication is not commutative, so $CA\\ne AC$ in general.\n\nTherefore, only statement  I is true.",
+      "fields": [
+        {
+          "key": "q-42264/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "II only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "III only"
+            }
+          ]
+        },
+        {
+          "key": "q-130455/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "II only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "III only"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12c74-a672-7210-9800-7433bdab0709",
+  "previous_failures": []
+}

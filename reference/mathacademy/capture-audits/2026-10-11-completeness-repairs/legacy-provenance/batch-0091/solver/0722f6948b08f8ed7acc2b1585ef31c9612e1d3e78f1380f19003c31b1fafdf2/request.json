@@ -1,0 +1,78 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-78559\", \"problem\": \"Consider a system of $n$ linear equations in $n$ variables, written in matrix form as $D\\\\,z=c.$ Here, $D$ is the non-singular coefficient matrix of the system, $z$ is the column vector containing the variables, and $c$ is the column vector containing the constants. The unique solution of the system can be found using the method shown below:\\n\\n$$\\n\\\\begin{aligned}D\\\\,z & =c \\\\\\\\ {D}^{-1}D\\\\,z & =\\\\bbox[2pt,lightgray]{\\\\color{blue}{\\\\phantom{{D}^{-1}}}}c \\\\\\\\ \\\\bbox[2pt,lightgray]{\\\\color{blue}{\\\\phantom{{I}_{n}}}}z & ={D}^{-1}\\\\,c \\\\\\\\ z & ={D}^{-1}\\\\,c\\\\end{aligned}\\n$$\\n\\nFrom top to bottom and right to left, what are the missing parts of the derivation?\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-78561\", \"problem\": \"Consider a system of $n$ linear equations in $n$ variables, written in matrix form as $D\\\\,t=q.$ Here, $D$ is the non-singular coefficient matrix of the system, $t$ is the column vector containing the variables, and $q$ is the column vector containing the constants. The unique solution of the system can be found using the method shown below:\\n\\n$$\\n\\\\begin{aligned}D\\\\,t & =q \\\\\\\\ \\\\bbox[2pt,lightgray]{\\\\color{blue}{\\\\phantom{{D}^{-1}}}}D\\\\,t & ={D}^{-1}\\\\,q \\\\\\\\ {I}_{n}\\\\,t & ={D}^{-1}\\\\,\\\\bbox[2pt,lightgray]{\\\\color{blue}{\\\\phantom{\\\\mathbf{q}}}} \\\\\\\\ t & ={D}^{-1}\\\\,q\\\\end{aligned}\\n$$\\n\\nFrom top to bottom and left to right, what are the missing parts of the derivation?\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-78559:\nSince $D$ is not singular, it must have an inverse ${D}^{-1}.$ Now, pre-multiplying both sides of the equation $D\\,z=c$ by ${D}^{-1},$ we obtain the following:\n\n$$\n\\begin{aligned}D\\,z & =c \\\\ {D}^{-1}D\\,z & ={D}^{-1}c \\\\ {I}_{n}\\,z & ={D}^{-1}\\,c \\\\ z & ={D}^{-1}\\,c\\end{aligned}\n$$\n\nTherefore, the missing parts are ${D}^{-1}$ and ${I}_{n}.$\n\nq-78561:\nSince $D$ is not singular, it must have an inverse ${D}^{-1}.$ Now, pre-multiplying both sides of the equation $D\\,t=q$ by ${D}^{-1},$ we obtain the following:\n\n$$\n\\begin{aligned}D\\,t & =q \\\\ {D}^{-1}D\\,t & ={D}^{-1}\\,q \\\\ {I}_{n}\\,t & ={D}^{-1}\\,q \\\\ t & ={D}^{-1}\\,q\\end{aligned}\n$$\n\nTherefore, the missing parts are ${D}^{-1}$ and $q.$",
+      "fields": [
+        {
+          "key": "q-78559/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "${D}^{-1}$ and ${I}_{n}$"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$D$ and $z$"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$D$ and ${I}_{n}$"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "${D}^{-1}$ and $D$"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "${D}^{-1}$ and ${D}^{-1}$"
+            }
+          ]
+        },
+        {
+          "key": "q-78561/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$D$ and ${I}_{n}$"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "${D}^{-1}$ and $t$"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "${D}^{-1}$ and $q$"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "${D}^{-1}$ and $D$"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "$D$ and $q$"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

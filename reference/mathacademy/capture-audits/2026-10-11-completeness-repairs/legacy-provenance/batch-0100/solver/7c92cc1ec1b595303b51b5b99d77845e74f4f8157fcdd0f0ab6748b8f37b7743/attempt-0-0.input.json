@@ -1,0 +1,112 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-20700\", \"problem\": \"Evaluate the integral ${\\\\int }_{2}^{\\\\infty }\\\\frac{1}{x\\\\operatorname{ln}⁡x}\\\\,\\\\text{d}x.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-100643\", \"problem\": \"Evaluate ${\\\\int }_{-\\\\infty }^{-1}\\\\frac{\\\\text{d}t}{\\\\sqrt{2-3t}}.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-49447\", \"problem\": \"${\\\\int }_{0}^{\\\\pi }(10{cos}^{2}⁡x-4{x}^{3}+10{sin}^{2}⁡x)\\\\text{d}x=$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-20700:\nFirst, we substitute $u=\\operatorname{ln}⁡x.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x}\\,⟹\\,\\text{d}u=\\frac{1}{x}\\text{d}x.\n$$\n\nSince $u\\to \\infty $ when $x\\to \\infty ,$ the table for the limits of integration using the rule $u=\\operatorname{ln}⁡x$ is as follows:\n\n$$\n\\begin{aligned}x & 2 & \\infty  \\\\ u & \\operatorname{ln}⁡2 & \\infty \\end{aligned}\n$$\n\nSo, the integral in terms of the new variable $u$ is\n\n$$\n\\begin{aligned}{\\int }_{2}^{\\infty }\\frac{1}{x\\operatorname{ln}⁡(x)}\\,\\text{d}x & ={\\int }_{\\operatorname{ln}⁡2}^{\\infty }\\frac{1}{u}\\,\\text{d}u.\\end{aligned}\n$$\n\nFinally, we proceed by setting the upper bound equal to some parameter $a,$ integrating as usual, and then taking the limit as $a\\to \\infty .$\n\n$$\n\\begin{aligned}{\\int }_{2}^{\\infty }\\frac{1}{x\\operatorname{ln}⁡x}\\,\\text{d}x & ={lim}_{a\\to \\infty }{\\int }_{\\operatorname{ln}⁡2}^{a}\\frac{1}{u}\\,\\text{d}u \\\\  & ={lim}_{a\\to \\infty }{[\\operatorname{ln}⁡u]}_{\\operatorname{ln}⁡2}^{a} \\\\  & ={lim}_{a\\to \\infty }[\\operatorname{ln}⁡a-\\operatorname{ln}⁡(\\operatorname{ln}⁡2)] \\\\  & =\\infty -\\operatorname{ln}⁡(\\operatorname{ln}⁡2) \\\\  & =\\infty .\\end{aligned}\n$$\n\nTherefore, the integral is divergent.\n\nq-100643:\nWe proceed by setting the lower bound equal to some parameter $a,$ integrating as usual, and then taking the limit as $a\\to -\\infty .$\n\n$$\n\\begin{aligned}{\\int }_{-\\infty }^{-1}\\frac{\\text{d}t}{\\sqrt{2-3t}} & ={lim}_{a\\to -\\infty }{\\int }_{a}^{-1}\\frac{\\text{d}t}{\\sqrt{2-3t}} \\\\  & ={lim}_{a\\to -\\infty }{[-\\frac{2}{3}\\sqrt{2-3t}]}_{a}^{-1} \\\\  & =-\\frac{2}{3}\\cdot {lim}_{a\\to -\\infty }(\\sqrt{2+3}-\\sqrt{2-3a}) \\\\  & =-\\frac{2\\sqrt{5}}{3}+\\frac{2}{3}{lim}_{a\\to -\\infty }\\sqrt{2-3a} \\\\  & =-\\frac{2\\sqrt{5}}{3}+\\infty  \\\\  & =\\infty .\\end{aligned}\n$$\n\nTherefore, the integral is divergent.\n\nq-49447:\nWe use the Pythagorean identity:\n\n$$\n{cos}^{2}⁡x+{sin}^{2}⁡x=1\n$$\n\nUsing the above, we compute the given integral as follows:\n\n$$\n\\begin{aligned}{\\int }_{0}^{\\pi }(10{cos}^{2}⁡x-4{x}^{3}+10{sin}^{2}⁡x)\\text{d}x & ={\\int }_{0}^{\\pi }(10({sin}^{2}⁡x+{cos}^{2}⁡x)-4{x}^{3})\\text{d}x \\\\  & ={\\int }_{0}^{\\pi }(10\\cdot 1-4{x}^{3})\\text{d}x \\\\  & ={\\int }_{0}^{\\pi }(10-4{x}^{3})\\text{d}x \\\\  & =(10x-{x}^{4}){|}_{0}^{\\pi } \\\\  & =[10\\pi -{\\pi }^{4}]-[10\\cdot 0-{0}^{4}] \\\\  & =10\\pi -{\\pi }^{4}\\end{aligned}\n$$",
+      "fields": [
+        {
+          "key": "q-20700/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "The integral is divergent"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "2\\operatorname{ln}⁡(2)"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\frac{1}{\\operatorname{ln}⁡(2)}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "{e}^{2}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\operatorname{ln}⁡(2)"
+            }
+          ]
+        },
+        {
+          "key": "q-100643/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\frac{3}{2}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "-2\\sqrt{5}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "-\\frac{2}{3}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\frac{2\\sqrt{5}}{3}"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "The integral is divergent"
+            }
+          ]
+        },
+        {
+          "key": "q-49447/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "-\\pi +25{\\pi }^{4}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "10\\pi -{\\pi }^{3}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\pi -{\\pi }^{4}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\pi -5{\\pi }^{4}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "10\\pi -{\\pi }^{4}"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12c84-2d27-7180-a16b-3419900bd4ee",
+  "previous_failures": []
+}

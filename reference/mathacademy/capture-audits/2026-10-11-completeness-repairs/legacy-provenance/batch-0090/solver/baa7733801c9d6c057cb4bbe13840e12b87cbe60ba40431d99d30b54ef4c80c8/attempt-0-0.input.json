@@ -1,0 +1,176 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-130523\", \"problem\": \"What is the system of equations represented by\\n\\n$$\\n[\\\\begin{aligned}10 & 25 \\\\\\\\ 12 & 3\\\\end{aligned}][\\\\begin{aligned}x \\\\\\\\ y\\\\end{aligned}]=[\\\\begin{aligned}15 \\\\\\\\ -6\\\\end{aligned}]?\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-130528\", \"problem\": \"What is the system of equations represented by\\n\\n$$\\n[\\\\begin{aligned}0 & 5 \\\\\\\\ 1 & 0\\\\end{aligned}][\\\\begin{aligned}x \\\\\\\\ y\\\\end{aligned}]=[\\\\begin{aligned}9 \\\\\\\\ -1\\\\end{aligned}]?\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-73531\", \"problem\": \"Suppose that $f(x)$ is defined as\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}\\\\frac{1}{{2}^{x-1}-1}, & x\\\\ne 1 \\\\\\\\ \\\\,\\\\,1, & x=1.\\\\end{aligned}\\n$$\\n\\nOn which of the following intervals can the extreme value theorem be applied to the function?\\n\\nI. $[-2,2]$\\n\\nII. $[-3,1)$\\n\\nIII. $[1.5,2]$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-12284\", \"problem\": \"Which of the following represents the solution to the system of linear equations given below?\\n\\n$$\\n\\\\{\\\\begin{aligned}5x-2y=3 \\\\\\\\ 2x-y=5\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-32136\", \"problem\": \"Which of the following represents the solution to the system of linear equations given below?\\n\\n$$\\n\\\\{\\\\begin{aligned}x-y=-1 \\\\\\\\ 2x+3y=0\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-130523:\nThe  $2\\times 2$ matrix represents the coefficients of $x$ and $y,$ while the $2\\times 1$ column vector on the right-hand side represents the constants of the equations. So, we get the following system of equations:\n\n$$\n\\begin{aligned}\\{\\begin{aligned}10x+25y=15 \\\\ 12x+3y=-6\\end{aligned}\\end{aligned}\n$$\n\nSimplifying both equations in the system, we get\n\n$$\n\\begin{aligned}\\{\\begin{aligned}2x+5y=3 \\\\ 4x+y=-2.\\end{aligned}\\end{aligned}\n$$\n\nq-130528:\nThe  $2\\times 2$ matrix represents the coefficients of $x$ and $y,$ while the $2\\times 1$ column vector on the right-hand side represents the constants of the equations. So, we get the following system of equations:\n\n$$\n\\begin{aligned}\\{\\begin{aligned}0x+5y=9 \\\\ x+0y=-1\\end{aligned}\\end{aligned}\n$$\n\nSimplifying both equations in the system, we get\n\n$$\n\\begin{aligned}\\{\\begin{aligned}5y=9 \\\\ x=-1.\\end{aligned}\\end{aligned}\n$$\n\nq-73531:\nRemember that the extreme value theorem is only applicable to closed intervals on which the function is continuous.\n\nSo, let's check whether the function is continuous on each of the intervals. \n\n- Let first consider the interval  $[-2,2].$ This is a  closed interval, but we have\n\n$$\n\\begin{aligned}{lim}_{x\\to {1}^{+}}f(x) & ={lim}_{x\\to {1}^{+}}\\frac{1}{{2}^{x-1}-1}=\\infty \\end{aligned}\n$$\n\nand so $f(x)$ has an essential discontinuity at $x=1.$ Therefore, $f(x)$ is not continuous on the interval $[-1,1]$, and the extreme value theorem is not applicable.\n\n- The interval $[-3,1)$ is not closed, so the extreme value theorem is not applicable in this case.\n\n- Finally consider  $[1.5,2].$ The only discontinuity of the function $f(x)$ is at $x=1,$ which is not in the interval  $[1.5,2].$ Therefore, $f(x)$ is continuous on the interval  $[1.5,2]$, and the extreme value theorem is applicable on this interval.\n\nIn conclusion, the correct answer is \"III only\".\n\nq-12284:\nThis system can be written as\n\n$$\n[\\begin{aligned}5 & -2 \\\\ 2 & -1\\end{aligned}][\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}3 \\\\ 5\\end{aligned}].\n$$\n\nTo find the solution, we need to calculate the inverse of the coefficient matrix \n$A=[\\begin{aligned}5 & -2 \\\\ 2 & -1\\end{aligned}].$\nThis gives\n\n$$\n\\begin{aligned}{A}^{-1} & =\\frac{1}{5\\cdot (-1)-(-2)\\cdot 2}[\\begin{aligned}-1 & 2 \\\\ -2 & 5\\end{aligned}] \\\\  & =\\frac{1}{-1}[\\begin{aligned}-1 & 2 \\\\ -2 & 5\\end{aligned}] \\\\  & =[\\begin{aligned}1 & -2 \\\\ 2 & -5\\end{aligned}].\\end{aligned}\n$$\n\nWe can now represent the solution to this system, as follows:\n\n$$\n\\begin{aligned}x & ={A}^{-1}b \\\\  & =[\\begin{aligned}1 & -2 \\\\ 2 & -5\\end{aligned}][\\begin{aligned}3 \\\\ 5\\end{aligned}]\\end{aligned}\n$$\n\nq-32136:\nThis system can be written as\n\n$$\n[\\begin{aligned}1 & -1 \\\\ 2 & 3\\end{aligned}][\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}-1 \\\\ 0\\end{aligned}].\n$$\n\nTo find the solution, we need to calculate the inverse of the coefficient matrix \n$A=[\\begin{aligned}1 & -1 \\\\ 2 & 3\\end{aligned}].$\nThis gives\n\n$$\n\\begin{aligned}{A}^{-1} & =\\frac{1}{1\\cdot 3-(-1)\\cdot 2}[\\begin{aligned}3 & 1 \\\\ -2 & 1\\end{aligned}] \\\\  & =\\frac{1}{5}[\\begin{aligned}3 & 1 \\\\ -2 & 1\\end{aligned}].\\end{aligned}\n$$\n\nWe can now represent the solution to this system, as follows:\n\n$$\n\\begin{aligned}x & ={A}^{-1}b \\\\  & =\\frac{1}{5}[\\begin{aligned}3 & 1 \\\\ -2 & 1\\end{aligned}][\\begin{aligned}-1 \\\\ 0\\end{aligned}]\\end{aligned}\n$$",
+      "fields": [
+        {
+          "key": "q-130523/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}10x+5y=-15 \\\\ 12x+3y=6\\end{aligned}\\end{aligned}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}10x+25y=-15 \\\\ 12x+3y=6\\end{aligned}\\end{aligned}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}2x+5y=3 \\\\ 4x+y=-2\\end{aligned}\\end{aligned}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}2x+5y=15 \\\\ 4x+y=-6\\end{aligned}\\end{aligned}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}10x+25y=-15 \\\\ 12x+6y=3\\end{aligned}\\end{aligned}"
+            }
+          ]
+        },
+        {
+          "key": "q-130528/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}5y=9 \\\\ x=1\\end{aligned}\\end{aligned}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}x+5y=9 \\\\ y=-1\\end{aligned}\\end{aligned}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}5y=9 \\\\ x=-1\\end{aligned}\\end{aligned}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}5y=-9 \\\\ x=-1\\end{aligned}\\end{aligned}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\begin{aligned}\\{\\begin{aligned}x+5y=9 \\\\ x=-1\\end{aligned}\\end{aligned}"
+            }
+          ]
+        },
+        {
+          "key": "q-73531/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "II only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "III only"
+            }
+          ]
+        },
+        {
+          "key": "q-12284/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "x=[\\begin{aligned}-1 & 2 \\\\ -2 & 5\\end{aligned}][\\begin{aligned}3 \\\\ 5\\end{aligned}]"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "x=[\\begin{aligned}5 & 2 \\\\ -2 & -1\\end{aligned}][\\begin{aligned}3 \\\\ 5\\end{aligned}]"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "x=[\\begin{aligned}1 & 2 \\\\ 2 & 5\\end{aligned}][\\begin{aligned}3 \\\\ 5\\end{aligned}]"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "x=[\\begin{aligned}-5 & 2 \\\\ -2 & 1\\end{aligned}][\\begin{aligned}3 \\\\ 5\\end{aligned}]"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "x=[\\begin{aligned}1 & -2 \\\\ 2 & -5\\end{aligned}][\\begin{aligned}3 \\\\ 5\\end{aligned}]"
+            }
+          ]
+        },
+        {
+          "key": "q-32136/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "x=[\\begin{aligned}-3 & -1 \\\\ 2 & -1\\end{aligned}][\\begin{aligned}-1 \\\\ 0\\end{aligned}]"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "x=-\\frac{1}{5}[\\begin{aligned}3 & -1 \\\\ 2 & 1\\end{aligned}][\\begin{aligned}-1 \\\\ 0\\end{aligned}]"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "x=\\frac{1}{5}[\\begin{aligned}3 & -1 \\\\ 2 & 1\\end{aligned}][\\begin{aligned}-1 \\\\ 0\\end{aligned}]"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "x=\\frac{1}{5}[\\begin{aligned}3 & 1 \\\\ -2 & 1\\end{aligned}][\\begin{aligned}-1 \\\\ 0\\end{aligned}]"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "x=[\\begin{aligned}1 & 1 \\\\ -2 & 3\\end{aligned}][\\begin{aligned}-1 \\\\ 0\\end{aligned}]"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12c75-6971-7f81-a4ce-f73bd9a2baf7",
+  "previous_failures": []
+}

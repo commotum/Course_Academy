@@ -1,0 +1,110 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-73495\", \"problem\": \"Suppose that $f(x)$ is defined as\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}{2}^{-x}, & x\\\\ge 0 \\\\\\\\ -1, & x<0.\\\\end{aligned}\\n$$\\n\\nOn which of the following intervals can the extreme value theorem be applied to the function?\\n\\nI. $[-1,1]$\\n\\nII. $[\\\\frac{1}{2},1]$\\n\\nIII. $[-1,0)$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-131066\", \"problem\": \"Suppose that $f(x)$ is defined as\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}2, & x<0 \\\\\\\\ \\\\operatorname{tan}⁡x, & x\\\\ge 0.\\\\end{aligned}\\n$$\\n\\nOn which of the following intervals can the extreme value theorem be applied to the function?\\n\\nI. $[-\\\\frac{\\\\pi }{3},\\\\frac{\\\\pi }{3}]$\\n\\nII. $[\\\\frac{\\\\pi }{6},\\\\frac{\\\\pi }{3}]$\\n\\nIII. $[\\\\frac{\\\\pi }{3},\\\\frac{2\\\\pi }{3}]$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-104148\", \"problem\": \"For what reason does the function $f(x)$ below have a discontinuity at $x=-\\\\sqrt{3}?$ \\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}\\\\frac{{x}^{2}+3}{3}, & x<-\\\\sqrt{3} \\\\\\\\ 3, & x=-\\\\sqrt{3} \\\\\\\\ \\\\frac{12}{{x}^{2}+3}, & x>-\\\\sqrt{3}\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-73495:\nRemember that the extreme value theorem is only applicable to closed intervals on which the function is continuous.\n\nSo, let's check whether the function is continuous on each of the intervals.\n\n- First, consider $[-1,1].$ In this case, we have\n\n$$\n\\begin{aligned}{lim}_{x\\to {0}^{+}}f(x) & ={lim}_{x\\to 0}({2}^{-x})={2}^{0}=1, \\\\ {lim}_{x\\to {0}^{-}}f(x) & ={lim}_{x\\to 0}(-1)=-1.\\end{aligned}\n$$\n\nSo, the limits from the left and from the right of $x=0$ are not the same. Hence, $f(x)$ has a discontinuity at $x=0.$ Therefore, $f(x)$ is not continuous on the interval $[-1,1],$ and the extreme value theorem is not applicable on this interval.\n\n- Now, consider the interval $[\\frac{1}{2},1].$ In this interval, $f(x)={2}^{-x}$ and so $f(x)$ is continuous on $[\\frac{1}{2},1].$  Therefore, the extreme value theorem is applicable on this interval.\n\n- Finally, the interval $[-1,0)$, is not closed, so the extreme value theorem is not applicable in this case.\n\nIn conclusion, the correct answer is \"II only\".\n\nq-131066:\nRemember that the extreme value theorem is only applicable to closed intervals on which the function is continuous.\n\nSo, let's check whether the function is continuous on each of the intervals.\n\n- Consider $[-\\frac{\\pi }{3},\\frac{\\pi }{3}].$ We have\n\n$$\n\\begin{aligned}{lim}_{x\\to {0}^{-}}f(x) & ={lim}_{x\\to 0}2=2, \\\\ {lim}_{x\\to {0}^{+}}f(x) & ={lim}_{x\\to 0}\\operatorname{tan}⁡x=0.\\end{aligned}\n$$\n\nSo, the limits from the left and from the right of $x=0$ are not the same. Hence, $f(x)$ has a discontinuity at $x=0.$ Therefore, $f(x)$ is not continuous on the interval $[-\\frac{\\pi }{3},\\frac{\\pi }{3}],$ and the extreme value theorem is not applicable on this interval.\n\n- Consider $[\\frac{\\pi }{6},\\frac{\\pi }{3}].$ In this interval, $f(x)=\\operatorname{tan}⁡x,$ so the function $f(x)$ is continuous on the interval $[\\frac{\\pi }{6},\\frac{\\pi }{3}],$ and the extreme value theorem is applicable on this interval.\n\n- Consider $[\\frac{\\pi }{3},\\frac{2\\pi }{3}].$ In this interval, $f(x)=\\operatorname{tan}⁡x,$ so the function is not defined at $x=\\frac{\\pi }{2}.$ Therefore, $f(x)$ is not continuous on the interval $[\\frac{\\pi }{3},\\frac{2\\pi }{3}],$ and the extreme value theorem is not applicable on this interval.\n\nIn conclusion, the correct answer is \"II only\".\n\nq-104148:\nLet's check the conditions necessary for $f(x)$ to be continuous at $x=-\\sqrt{3}.$\n\n- $f(-\\sqrt{3})=3,$ so $f(-\\sqrt{3})$ exists. $✓$\n\n- We calculate the one-sided limits and find that they coincide:\n\n$$\n\\begin{aligned}{lim}_{x\\to (-\\sqrt{3})^{-}}f(x) & ={lim}_{x\\to (-\\sqrt{3})^{-}}(\\frac{{x}^{2}+3}{3}) \\\\  & =\\frac{(-\\sqrt{3})^{2}+3}{3} \\\\  & =2, \\\\ {lim}_{x\\to (-\\sqrt{3})^{+}}f(x) & ={lim}_{x\\to (-\\sqrt{3})^{+}}(\\frac{12}{{x}^{2}+3}) \\\\  & =\\frac{12}{(-\\sqrt{3})^{2}+3} \\\\  & =2.\\end{aligned}\n$$\n\nTherefore, the overall limit exists and ${lim}_{x\\to (-\\sqrt{3})}f(x)=2.\\,\\,✓$ $\\,\\,\\,$\n\n- The limit of the function is not equal to the function value: ${lim}_{x\\to (-\\sqrt{3})}f(x)=2,$ while $f(-\\sqrt{3})=3.$ $\\times $\n\nTherefore, the function $f(x)$ has a discontinuity at $x=-\\sqrt{3}$ because ${lim}_{x\\to (-\\sqrt{3})}f(x)\\ne f(-\\sqrt{3}).$",
+      "fields": [
+        {
+          "key": "q-73495/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "II only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "III only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "I and II only"
+            }
+          ]
+        },
+        {
+          "key": "q-131066/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "III only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "I, II, and III"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "II only"
+            }
+          ]
+        },
+        {
+          "key": "q-104148/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "${lim}_{x\\to (-\\sqrt{3})}f(x)$ does not exist"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "{lim}_{x\\to (-\\sqrt{3})}f(x)\\ne f(-\\sqrt{3})"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "{lim}_{x\\to (-\\sqrt{3})^{-}}f(x)\\ne {lim}_{x\\to (-\\sqrt{3})^{+}}f(x)"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "$f(x)$ is a piecewise function"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "$f(-\\sqrt{3})$ does not exist"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

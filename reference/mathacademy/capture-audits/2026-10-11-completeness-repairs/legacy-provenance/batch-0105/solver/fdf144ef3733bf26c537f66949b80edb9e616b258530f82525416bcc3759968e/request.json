@@ -1,0 +1,110 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-49136\", \"problem\": \"If ${f}^{′}(x)=\\\\frac{2}{|x|\\\\sqrt{{x}^{2}-1}}-3\\\\operatorname{cos}⁡x,$ then $f(x)=$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-71768\", \"problem\": \"If ${f}^{′}(x)=5{x}^{4}+\\\\frac{7}{1+{x}^{2}},$ then $f(x)=$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-50136\", \"problem\": \"Solve the differential equation $\\\\frac{\\\\text{d}y}{\\\\text{d}x}+4{e}^{2x}=-2x.$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-49136:\nRecall that\n\n$$\n\\int \\frac{1}{|x|\\sqrt{{x}^{2}-1}}\\,\\text{d}x=\\text{arcsec}\\,x.\n$$\n\nThen we have\n\n$$\n\\begin{aligned}\\begin{aligned}f(x)=\\int {f}^{′}(x)\\,\\text{d}x & =\\int (\\frac{2}{|x|\\sqrt{{x}^{2}-1}}-3\\operatorname{cos}⁡x)\\text{d}x \\\\  & =\\int \\frac{2}{|x|\\sqrt{{x}^{2}-1}}\\,\\text{d}x-\\int 3\\operatorname{cos}⁡x\\,\\text{d}x \\\\  & =2\\int \\frac{1}{|x|\\sqrt{{x}^{2}-1}}\\,\\text{d}x-3\\int \\operatorname{cos}⁡x\\,\\text{d}x \\\\  & =2\\text{ arcsec }x-3\\operatorname{sin}⁡x+C.\\end{aligned}\\end{aligned}\n$$\n\nq-71768:\nRecall that \n\n$$\n\\int \\frac{1}{1+{x}^{2}}\\text{d}x=\\operatorname{arctan}⁡x+C.\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}f(x)=\\int {f}^{′}(x)\\,\\text{d}x & =\\int (5{x}^{4}+\\frac{7}{1+{x}^{2}})\\text{d}x \\\\  & =\\int 5{x}^{4}\\,\\text{d}x+\\int \\frac{7}{1+{x}^{2}}\\,\\text{d}x \\\\  & =5\\int {x}^{4}\\,\\text{d}x+7\\int \\frac{1}{1+{x}^{2}}\\,\\text{d}x \\\\  & =5\\cdot \\frac{{x}^{5}}{5}+7\\operatorname{arctan}⁡x+C \\\\  & ={x}^{5}+7\\operatorname{arctan}⁡x+C.\\end{aligned}\n$$\n\nq-50136:\nFirst, we rearrange the equation to isolate the derivative term:\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=-4{e}^{2x}-2x.\n$$\n\nThen, we integrate both sides of the equation with respect to $x,$ and we get\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int (-4{e}^{2x}-2x)\\,\\text{d}x \\\\ y & =\\int (-4{e}^{2x}-2x)\\,\\text{d}x\\end{aligned}\n$$\n\nFinally, we get\n\n$$\n\\begin{aligned}\\begin{aligned}y & =\\int (-4{e}^{2x}-2x)\\,\\text{d}x \\\\  & =-4\\int {e}^{2x}\\,\\text{d}x-2\\int x\\,\\text{d}x \\\\  & =-2{e}^{2x}-{x}^{2}+C.\\end{aligned}\\end{aligned}\n$$",
+      "fields": [
+        {
+          "key": "q-49136/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "6\\text{ arcsec }x-\\operatorname{tan}⁡x+C"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "3\\operatorname{sec}⁡x-3\\operatorname{sin}⁡x+C"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "2\\text{ arcsec }x-3\\operatorname{cot}⁡x+C"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "2\\text{ arcsec }x-3\\operatorname{sin}⁡x+C"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "2\\operatorname{arcsin}⁡x+3\\operatorname{cos}⁡x+C"
+            }
+          ]
+        },
+        {
+          "key": "q-71768/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "5{x}^{5}+7\\operatorname{arctan}⁡x+C"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "{x}^{5}+7\\operatorname{arctan}⁡x+C"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "{x}^{5}+7\\text{ arccot }x+C"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "5{x}^{5}+7\\operatorname{arcsin}⁡x+C"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "{x}^{5}+7\\text{ arcsec }x+C"
+            }
+          ]
+        },
+        {
+          "key": "q-50136/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "y=-4{e}^{2x}-2{x}^{2}+C"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "y=-2{e}^{2x}-2{x}^{2}+C"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "y=-{e}^{2x}-2{x}^{2}+C"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "y=-{e}^{2x}-{x}^{2}+C"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "y=-2{e}^{2x}-{x}^{2}+C"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}
