@@ -1,0 +1,5 @@
+;; Resolve explicit topic scopes from bound pending activity IDs.
+[:find ?topic ?kind ?task ?activity ?state
+ :in $ [[?task ?activity ?kind ?state]]
+ :where [?activity :activity/scope ?topic]
+        [?topic :topic/id _]]

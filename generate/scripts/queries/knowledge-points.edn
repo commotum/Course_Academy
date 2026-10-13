@@ -1,0 +1,5 @@
+;; No question-pool join: empty banks and KPs without generators remain visible.
+[:find ?topic (pull ?kp [:db/id :knowledge-point/id :knowledge-point/title
+                       {:knowledge-point/question-generator [:db/id]}])
+ :in $ [?topic ...]
+ :where [?topic :topic/knowledge-points ?kp]]

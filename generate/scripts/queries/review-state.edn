@@ -1,0 +1,12 @@
+;; Read the receiving topic's current memory anchor, including implicit updates.
+;; Exponential decay is evaluated by Rust at the caller's supplied time.
+[:find ?topic ?memory ?anchor ?interval ?threshold
+ :in $ ?learner
+ :where [?learner :learner/knowledge-profile ?progress]
+        [?progress :progress/learned true]
+        [?progress :progress/topic ?topic]
+        [?progress :progress/memory ?memory]
+        [?progress :progress/memory-at ?anchor]
+        [?progress :progress/interval-days ?interval]
+        [?progress :progress/policy ?policy]
+        [?policy :policy/review-threshold ?threshold]]

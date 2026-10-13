@@ -1,0 +1,17 @@
+;; Unlocked lessons and assigned, unstarted reviews/assessments.
+;; Select tasks first so content joins receive bound activity IDs.
+[:find ?task ?activity ?kind ?state
+ :in $ ?learner
+ :where [?learner :learner/activity ?task]
+        [?task :learner-task/status ?status]
+        [?status :db/ident ?state]
+        (or [(= ?state :learner-task.status/locked)]
+            [(= ?state :learner-task.status/unlocked)])
+        [?task :learner-task/activity ?activity]
+        [?activity :activity/type ?type]
+        [?type :db/ident ?kind]
+        (or-join [?kind ?state]
+          (and [(= ?kind :activity.type/lesson)]
+               [(= ?state :learner-task.status/unlocked)])
+          [(= ?kind :activity.type/review)]
+          [(= ?kind :activity.type/assessment)])]

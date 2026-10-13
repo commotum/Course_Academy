@@ -1,0 +1,234 @@
+engine/rust/retrieval.rs:16: pub const ASSESSMENT_XP: f64 = 150.0;
+engine/rust/retrieval.rs:17: pub const ASSESSMENT_SECONDS: f64 = 900.0;
+engine/rust/retrieval.rs:18: // Captured questions do not yet contain measured duration estimates.
+engine/rust/retrieval.rs:19: const QUESTION_SECONDS: f64 = 90.0;
+engine/rust/retrieval.rs:20: 
+engine/rust/retrieval.rs:208: fn bank(s: &EntitySnapshot, topic: u64, seen: &BTreeSet<u64>) -> Result<Vec<u64>> {
+engine/rust/retrieval.rs:209:     let mut questions = BTreeSet::new();
+engine/rust/retrieval.rs:210:     for kp in s.refs(topic, "topic/knowledge-points")? {
+engine/rust/retrieval.rs:211:         questions.extend(s.refs(kp, "knowledge-point/questions")?);
+engine/rust/retrieval.rs:212:     }
+engine/rust/retrieval.rs:213:     Ok(questions
+engine/rust/retrieval.rs:214:         .into_iter()
+engine/rust/retrieval.rs:215:         .filter(|q| !seen.contains(q) && learning::validate_question(s, *q).is_ok())
+engine/rust/retrieval.rs:216:         .collect())
+engine/rust/retrieval.rs:217: }
+engine/rust/retrieval.rs:218: 
+engine/rust/retrieval.rs:219: /// Only locally timestamped history can establish cadence or remediation.
+engine/rust/retrieval.rs:220: /// Partial imported records do not manufacture events or mastered dates.
+engine/rust/retrieval.rs:221: #[derive(Default)]
+engine/rust/retrieval.rs:222: struct History {
+engine/rust/retrieval.rs:223:     xp: f64,
+engine/rust/retrieval.rs:224:     mastered: BTreeMap<u64, DateTime<Utc>>,
+engine/rust/retrieval.rs:225:     retrieved: BTreeSet<u64>,
+engine/rust/retrieval.rs:226:     missed: BTreeSet<u64>,
+engine/rust/retrieval.rs:227:     relearn: BTreeSet<u64>,
+engine/rust/retrieval.rs:228:     assessed: BTreeSet<u64>,
+engine/rust/retrieval.rs:229: }
+engine/rust/retrieval.rs:230: fn history(s: &EntitySnapshot, learner: u64) -> Result<History> {
+engine/rust/retrieval.rs:231:     let tasks: BTreeSet<_> = s.refs(learner, "learner/activity")?.into_iter().collect();
+engine/rust/retrieval.rs:232:     // One pass over the captured assertions, instead of rescanning all history
+engine/rust/retrieval.rs:233:     // for each completed task. Missing/imported start times stay unknown.
+engine/rust/retrieval.rs:234:     let mut timestamps = BTreeMap::new();
+engine/rust/retrieval.rs:235:     let mut started = BTreeSet::new();
+engine/rust/retrieval.rs:236:     for event in &s.status_history {
+engine/rust/retrieval.rs:237:         if event.attribute != "learner-task/status" || !tasks.contains(&event.entity) {
+engine/rust/retrieval.rs:238:             continue;
+engine/rust/retrieval.rs:239:         }
+engine/rust/retrieval.rs:240:         let value = s.ident(&event.value)?;
+engine/rust/retrieval.rs:241:         if value == "learner-task.status/started" {
+engine/rust/retrieval.rs:242:             started.insert(event.entity);
+engine/rust/retrieval.rs:243:         }
+engine/rust/retrieval.rs:244:         timestamps.insert(
+engine/rust/retrieval.rs:245:             event.entity,
+engine/rust/retrieval.rs:246:             (crate::schema::parse_instant(&event.at)?, value),
+engine/rust/retrieval.rs:247:         );
+engine/rust/retrieval.rs:248:     }
+engine/rust/retrieval.rs:249:     let mut terminal = vec![];
+engine/rust/retrieval.rs:250:     for task in tasks {
+engine/rust/retrieval.rs:251:         if !started.contains(&task) {
+engine/rust/retrieval.rs:252:             continue;
+engine/rust/retrieval.rs:253:         }
+engine/rust/retrieval.rs:254:         let status = state(s, task, "learner-task/status")?;
+engine/rust/retrieval.rs:255:         if !matches!(status.as_str(), "completed" | "failed") {
+engine/rust/retrieval.rs:256:             continue;
+engine/rust/retrieval.rs:257:         }
+engine/rust/retrieval.rs:258:         let Some((at, recorded)) = timestamps.get(&task) else {
+engine/rust/retrieval.rs:259:             continue;
+engine/rust/retrieval.rs:260:         };
+engine/rust/retrieval.rs:261:         if recorded != &format!("learner-task.status/{status}") {
+engine/rust/retrieval.rs:262:             return Err("Current task status disagrees with history".into());
+engine/rust/retrieval.rs:263:         }
+engine/rust/retrieval.rs:264:         terminal.push((*at, task, status));
+engine/rust/retrieval.rs:265:     }
+engine/rust/retrieval.rs:266:     terminal.sort();
+engine/rust/retrieval.rs:267:     let mut result = History::default();
+engine/rust/retrieval.rs:268:     for (at, task, status) in terminal {
+engine/rust/retrieval.rs:269:         let activity = s.reference(task, "learner-task/activity")?;
+engine/rust/retrieval.rs:270:         let kind = kind(s, activity)?;
+engine/rust/retrieval.rs:271:         if kind == "assessment" {
+engine/rust/retrieval.rs:272:             result.xp = 0.0;
+engine/rust/retrieval.rs:273:             for item in learning::ordered_presentations(s, task)? {
+engine/rust/retrieval.rs:274:                 if let Some(outcome) = learning::question_outcome(s, item)? {
+engine/rust/retrieval.rs:275:                     let topic = s.topic_for_question(s.reference(item, "task-item/content")?)?;
+engine/rust/retrieval.rs:276:                     result.assessed.insert(topic);
+engine/rust/retrieval.rs:277:                     result.retrieved.insert(topic);
+engine/rust/retrieval.rs:278:                     if outcome != Some(true) {
+engine/rust/retrieval.rs:279:                         result.missed.insert(topic);
+engine/rust/retrieval.rs:280:                     }
+engine/rust/retrieval.rs:281:                 }
+engine/rust/retrieval.rs:282:             }
+engine/rust/retrieval.rs:283:         } else if matches!(kind.as_str(), "lesson" | "review" | "assignment") {
+engine/rust/retrieval.rs:284:             result.xp += s
+engine/rust/retrieval.rs:285:                 .entity(task)?
+engine/rust/retrieval.rs:286:                 .get("learner-task/xp-earned")
+engine/rust/retrieval.rs:287:                 .and_then(Value::as_f64)
+engine/rust/retrieval.rs:288:                 .unwrap_or(0.0)
+engine/rust/retrieval.rs:289:                 .max(0.0);
+engine/rust/retrieval.rs:290:             if matches!(kind.as_str(), "lesson" | "review") {
+engine/rust/retrieval.rs:291:                 let topic = s.reference(activity, "activity/scope")?;
+engine/rust/retrieval.rs:292:                 if status == "completed" {
+engine/rust/retrieval.rs:293:                     if kind == "lesson" {
+engine/rust/retrieval.rs:294:                         result.mastered.entry(topic).or_insert(at);
+engine/rust/retrieval.rs:295:                     } else {
+engine/rust/retrieval.rs:296:                         result.retrieved.insert(topic);
+engine/rust/retrieval.rs:297:                     }
+engine/rust/retrieval.rs:298:                     result.missed.remove(&topic);
+engine/rust/retrieval.rs:299:                     result.relearn.remove(&topic);
+engine/rust/retrieval.rs:300:                 } else if kind == "review" {
+engine/rust/retrieval.rs:301:                     result.relearn.insert(topic);
+engine/rust/retrieval.rs:302:                     result.missed.remove(&topic);
+engine/rust/retrieval.rs:303:                 }
+engine/rust/retrieval.rs:304:             }
+engine/rust/retrieval.rs:305:         }
+engine/rust/retrieval.rs:306:     }
+engine/rust/retrieval.rs:307:     Ok(result)
+engine/rust/retrieval.rs:308: }
+engine/rust/retrieval.rs:540:     if h.xp >= ASSESSMENT_XP && !pending_assessment {
+engine/rust/retrieval.rs:541:         let mut eligible = vec![];
+engine/rust/retrieval.rs:542:         for progress in s.refs(learner, "learner/knowledge-profile")? {
+engine/rust/retrieval.rs:543:             let topic = s.reference(progress, "progress/topic")?;
+engine/rust/retrieval.rs:544:             if !scope.contains(&topic)
+engine/rust/retrieval.rs:545:                 || s.entity(progress)?.get("progress/learned") != Some(&json!(true))
+engine/rust/retrieval.rs:546:                 || h.relearn.contains(&topic)
+engine/rust/retrieval.rs:547:                 || !h.retrieved.contains(&topic)
+engine/rust/retrieval.rs:548:                 || h.mastered
+engine/rust/retrieval.rs:549:                     .get(&topic)
+engine/rust/retrieval.rs:550:                     .is_none_or(|first| (at - *first).num_hours() < 24)
+engine/rust/retrieval.rs:551:             {
+engine/rust/retrieval.rs:552:                 continue;
+engine/rust/retrieval.rs:553:             }
+engine/rust/retrieval.rs:554:             let pool = bank(s, topic, &seen)?;
+engine/rust/retrieval.rs:555:             if let Some(q) = crate::question_selection::select(
+engine/rust/retrieval.rs:556:                 s,
+engine/rust/retrieval.rs:557:                 &pool,
+engine/rust/retrieval.rs:558:                 Some([0.5, 0.4, 0.1]),
+engine/rust/retrieval.rs:559:                 &format!("assessment-{learner}-{topic}-{}", seen.len()),
+engine/rust/retrieval.rs:560:             )? {
+engine/rust/retrieval.rs:561:                 eligible.push((h.assessed.contains(&topic), topic, q));
+engine/rust/retrieval.rs:562:             }
+engine/rust/retrieval.rs:563:         }
+engine/rust/retrieval.rs:564:         eligible.sort();
+engine/rust/retrieval.rs:565:         if eligible.len() >= 5 {
+engine/rust/retrieval.rs:566:             let questions = eligible
+engine/rust/retrieval.rs:567:                 .into_iter()
+engine/rust/retrieval.rs:568:                 .take((ASSESSMENT_SECONDS / QUESTION_SECONDS) as usize)
+engine/rust/retrieval.rs:569:                 .map(|(_, _, q)| q)
+engine/rust/retrieval.rs:570:                 .collect::<Vec<_>>();
+engine/rust/retrieval.rs:571:             definitions.push(Definition {
+engine/rust/retrieval.rs:572:                 kind: "assessment".into(),
+engine/rust/retrieval.rs:573:                 topic: None,
+engine/rust/retrieval.rs:574:                 title: "Course assessment".into(),
+engine/rust/retrieval.rs:575:                 expected_seconds: questions.len() as f64 * QUESTION_SECONDS,
+engine/rust/retrieval.rs:576:                 questions,
+engine/rust/retrieval.rs:577:                 priority: 7000.0,
+engine/rust/retrieval.rs:578:             });
+engine/rust/question_selection.rs:9: pub fn weights(
+engine/rust/question_selection.rs:10:     s: &EntitySnapshot,
+engine/rust/question_selection.rs:11:     policy: u64,
+engine/rust/question_selection.rs:12:     activity_type: &str,
+engine/rust/question_selection.rs:13:     answered: usize,
+engine/rust/question_selection.rs:14: ) -> Result<Option<[f64; 3]>> {
+engine/rust/question_selection.rs:15:     let initial_count = match activity_type {
+engine/rust/question_selection.rs:16:         "lesson" => 2,
+engine/rust/question_selection.rs:17:         "review" => 3,
+engine/rust/question_selection.rs:18:         _ => return Err("weighted selection supports lessons and reviews".into()),
+engine/rust/question_selection.rs:19:     };
+engine/rust/question_selection.rs:20:     let mut types = BTreeSet::new();
+engine/rust/question_selection.rs:21:     let mut selected = None;
+engine/rust/question_selection.rs:22:     for child in s.refs(policy, "policy/question-selection-weights")? {
+engine/rust/question_selection.rs:23:         if s.owners(child, "policy/question-selection-weights")? != [policy] {
+engine/rust/question_selection.rs:24:             return Err("question weights must have exactly one policy owner".into());
+engine/rust/question_selection.rs:25:         }
+engine/rust/question_selection.rs:26:         let kind = s.ident(&serde_json::json!(
+engine/rust/question_selection.rs:27:             s.reference(child, "question-weights/activity-type")?
+engine/rust/question_selection.rs:28:         ))?;
+engine/rust/question_selection.rs:29:         if !matches!(
+engine/rust/question_selection.rs:30:             kind.as_str(),
+engine/rust/question_selection.rs:31:             "activity.type/lesson" | "activity.type/review"
+engine/rust/question_selection.rs:32:         ) || !types.insert(kind.clone())
+engine/rust/question_selection.rs:33:         {
+engine/rust/question_selection.rs:34:             return Err(
+engine/rust/question_selection.rs:35:                 "policy needs at most one question-weight record per supported activity type"
+engine/rust/question_selection.rs:36:                     .into(),
+engine/rust/question_selection.rs:37:             );
+engine/rust/question_selection.rs:38:         }
+engine/rust/question_selection.rs:39:         for phase in ["initial", "remedial"] {
+engine/rust/question_selection.rs:40:             let mut distribution = [0.0; 3];
+engine/rust/question_selection.rs:41:             for (index, band) in BANDS.iter().enumerate() {
+engine/rust/question_selection.rs:42:                 let key = format!("question-weights/{phase}-{band}");
+engine/rust/question_selection.rs:43:                 distribution[index] = s
+engine/rust/question_selection.rs:122:     let mut unrated = vec![];
+engine/rust/question_selection.rs:123:     for q in candidates {
+engine/rust/question_selection.rs:124:         let Some(value) = s
+engine/rust/question_selection.rs:125:             .entity(q)?
+engine/rust/question_selection.rs:126:             .get("question/difficulty")
+engine/rust/question_selection.rs:127:             .filter(|v| !v.is_null())
+engine/rust/question_selection.rs:128:         else {
+engine/rust/question_selection.rs:129:             unrated.push(q);
+engine/rust/question_selection.rs:130:             continue;
+engine/rust/question_selection.rs:131:         };
+engine/rust/question_selection.rs:132:         let difficulty = s.ident(value)?;
+engine/rust/question_selection.rs:133:         let band = BANDS
+engine/rust/question_selection.rs:134:             .iter()
+engine/rust/question_selection.rs:135:             .position(|b| difficulty == format!("question.difficulty/{b}"))
+engine/rust/question_selection.rs:136:             .ok_or("question has an unsupported difficulty enum")?;
+engine/rust/question_selection.rs:137:         bands[band].push(q);
+engine/rust/question_selection.rs:138:     }
+engine/rust/question_selection.rs:139:     let digest = Sha256::digest(format!("course-academy/question-selection/v1/{seed}"));
+engine/rust/question_selection.rs:140:     let uniform = |offset| {
+engine/rust/question_selection.rs:141:         let bits = u64::from_be_bytes(digest[offset..offset + 8].try_into().unwrap()) >> 11;
+engine/rust/question_selection.rs:142:         bits as f64 / (1u64 << 53) as f64
+engine/rust/question_selection.rs:143:     };
+engine/rust/question_selection.rs:144:     let total: f64 = distribution
+engine/rust/question_selection.rs:145:         .iter()
+engine/rust/question_selection.rs:146:         .enumerate()
+engine/rust/question_selection.rs:147:         .filter(|(i, _)| !bands[*i].is_empty())
+engine/rust/question_selection.rs:148:         .map(|(_, w)| *w)
+engine/rust/question_selection.rs:149:         .sum();
+engine/rust/question_selection.rs:150:     let pool = if total > 0.0 {
+engine/rust/question_selection.rs:151:         let mut draw = uniform(0) * total;
+engine/rust/question_selection.rs:152:         let mut chosen = None;
+engine/rust/question_selection.rs:153:         for (i, w) in distribution.iter().enumerate() {
+engine/rust/question_selection.rs:154:             if bands[i].is_empty() || *w == 0.0 {
+engine/rust/question_selection.rs:155:                 continue;
+engine/rust/question_selection.rs:156:             }
+engine/rust/question_selection.rs:157:             chosen = Some(i);
+engine/rust/question_selection.rs:158:             if draw < *w {
+engine/rust/question_selection.rs:159:                 break;
+engine/rust/question_selection.rs:160:             }
+engine/rust/question_selection.rs:161:             draw -= *w;
+engine/rust/question_selection.rs:162:         }
+engine/rust/question_selection.rs:163:         &bands[chosen.unwrap()]
+engine/rust/question_selection.rs:164:     } else {
+engine/rust/question_selection.rs:165:         &unrated
+engine/rust/question_selection.rs:166:     };
+engine/rust/question_selection.rs:167:     Ok(if pool.is_empty() {
+engine/rust/question_selection.rs:168:         None
+engine/rust/question_selection.rs:169:     } else {
+engine/rust/question_selection.rs:170:         Some(pool[(uniform(8) * pool.len() as f64) as usize])
+engine/rust/question_selection.rs:171:     })
+engine/rust/question_selection.rs:172: }
+engine/rust/question_selection.rs:173: 
+engine/rust/question_selection.rs:174: #[cfg(test)]
+engine/rust/question_selection.rs:175: mod tests {
