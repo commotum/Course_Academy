@@ -1,0 +1,7 @@
+# Fractional substitution inventory package
+
+Run `.venv/bin/python generate/scratch/17592186068786.py --difficulty moderate --count 5 --seed 1936 --format json`. Hard is also supported. Easy fails explicitly. This package varies the positive additive constant only, preserving each source bank and worked solution. Capacity is 48 moderate and 60 hard integrands; seed and option order do not add capacity. Canonical and all practice expressions participate in duplicate exclusion.
+
+`validate.py` independently parses the displayed integrands, answers and final solution, differentiates every choice, checks unique derivatives modulo integration constants, validates substitutions and Jacobians, and runs all choices through the application grader. Exact source replay covers all nine complete banks and 36 distractors. `review.md` shows originals, replay and variants side by side. `source-questions.md` and `template-extraction.json` retain every original and choice recipe.
+
+`replenish.py` reuses the existing EDB integration, application contributor and native validation specs. It holds api.lock across fresh inventory, basis recheck, preview, guarded submission, receipt readback and inventory recheck. It retains exact EDN and durable intent before submission; restart recovers the same receipt. Only this KP registration and needed content are additive; datom inspection verifies no learner or unrelated changes. Evidence lives in reference/replenishment.

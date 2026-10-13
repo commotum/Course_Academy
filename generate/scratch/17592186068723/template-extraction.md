@@ -1,0 +1,339 @@
+# Template extraction
+
+Shared pattern: integrate k*x^(m-1)*(a*x^m+b)^n by u=a*x^m+b; the multiplier is k/(a*m), so F=k*u^(n+1)/(a*m*(n+1))+C. Negative a changes the differential sign. Root cases require u>0 on each integration interval. n=-1 is excluded.
+
+Observed parameters are recorded individually below. Sampling fixes k, a and m at their profile values, preserves the sign of b, samples |b|=1..20 and integer n=3..10 (replay permits 2..10); root profiles fix n=1/2. This is an explicit narrower sampling policy, not a claim about the entire KP. Whole-bank collisions are rejected.
+
+Banks are never pooled. Every exact source option maps to its position in the profile formula list in bank(). Interpretation of the unusual m*b denominator in q-12496 and other compound profiles is unresolved; their observed algebraic patterns are retained rather than assigned invented pedagogical intent. Default generated banks vary b and n only within their complete source profile.
+
+Prompt notation and aligned solution layout are standardized. Shared instructional sentences and the substitution/derivative/integral/back-substitution sequence are preserved. q-12494 has no source solution: the generated solution uses the sibling scaffold. Radical notation may become a rational exponent, equivalent on the explicitly positive-inner domain. Literal fidelity is separate from algebraic full-bank replay.
+
+## q-12494
+
+{
+  "source": "q-12494",
+  "parameters": {
+    "k": 1,
+    "a": 1,
+    "m": 2,
+    "b": 5,
+    "n": 10
+  },
+  "source_choices": [
+    "\\frac{1}{11}(x^{2} + 5)^{11} + C",
+    "\\frac{1}{10}(x^{2} + 5)^{10} + C",
+    "\\frac{1}{10}(x^{2} + 5)^{11} + C",
+    "\\frac{1}{20}(x^{2} + 5)^{10} + C",
+    "\\frac{1}{22}(x^{2} + 5)^{11} + C"
+  ],
+  "recipe_values": [
+    "\\frac{\\left(x^{2} + 5\\right)^{11}}{11}+C",
+    "\\frac{\\left(x^{2} + 5\\right)^{10}}{10}+C",
+    "\\frac{\\left(x^{2} + 5\\right)^{11}}{10}+C",
+    "\\frac{\\left(x^{2} + 5\\right)^{10}}{20}+C",
+    "\\frac{\\left(x^{2} + 5\\right)^{11}}{22}+C"
+  ],
+  "profile": "q-12494",
+  "correct": "\\frac{\\left(x^{2} + 5\\right)^{11}}{22}+C",
+  "source_correct": null,
+  "formula_definition": "bank(q-12494, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.
+
+## q-12496
+
+{
+  "source": "q-12496",
+  "parameters": {
+    "k": 1,
+    "a": 1,
+    "m": 4,
+    "b": 11,
+    "n": 9
+  },
+  "source_choices": [
+    "\\frac{1}{44}{({x}^{4}+11)}^{10}+C",
+    "\\frac{1}{40}{({x}^{4}+11)}^{10}+C",
+    "\\frac{1}{9}{({x}^{4}+11)}^{9}+C",
+    "\\frac{1}{36}{({x}^{4}+11)}^{9}+C",
+    "\\frac{1}{10}{({x}^{4}+11)}^{10}+C"
+  ],
+  "recipe_values": [
+    "\\frac{\\left(x^{4} + 11\\right)^{10}}{44}+C",
+    "\\frac{\\left(x^{4} + 11\\right)^{10}}{40}+C",
+    "\\frac{\\left(x^{4} + 11\\right)^{9}}{9}+C",
+    "\\frac{\\left(x^{4} + 11\\right)^{9}}{36}+C",
+    "\\frac{\\left(x^{4} + 11\\right)^{10}}{10}+C"
+  ],
+  "profile": "q-12496",
+  "correct": "\\frac{\\left(x^{4} + 11\\right)^{10}}{40}+C",
+  "source_correct": "\\frac{1}{40}{({x}^{4}+11)}^{10}+C",
+  "formula_definition": "bank(q-12496, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.
+
+## q-113710
+
+{
+  "source": "q-113710",
+  "parameters": {
+    "k": 2,
+    "a": 1,
+    "m": 6,
+    "b": 4,
+    "n": 5
+  },
+  "source_choices": [
+    "\\frac{(4+{x}^{6})^{6}}{6}+C",
+    "\\frac{(4+{x}^{6})^{6}}{18}+C",
+    "\\frac{(4+{x}^{6})^{6}}{3}+C",
+    "\\frac{(4+{x}^{6})^{6}}{2}+C",
+    "2(4+{x}^{6})^{6}+C"
+  ],
+  "recipe_values": [
+    "\\frac{\\left(x^{6} + 4\\right)^{6}}{6}+C",
+    "\\frac{\\left(x^{6} + 4\\right)^{6}}{18}+C",
+    "\\frac{\\left(x^{6} + 4\\right)^{6}}{3}+C",
+    "\\frac{\\left(x^{6} + 4\\right)^{6}}{2}+C",
+    "2 \\left(x^{6} + 4\\right)^{6}+C"
+  ],
+  "profile": "q-113710",
+  "correct": "\\frac{\\left(x^{6} + 4\\right)^{6}}{18}+C",
+  "source_correct": "\\frac{(4+{x}^{6})^{6}}{18}+C",
+  "formula_definition": "bank(q-113710, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.
+
+## q-113711
+
+{
+  "source": "q-113711",
+  "parameters": {
+    "k": 1,
+    "a": 1,
+    "m": 7,
+    "b": 2,
+    "n": 2
+  },
+  "source_choices": [
+    "\\frac{(2+{x}^{7})^{3}}{21}+C",
+    "\\frac{7(2+{x}^{7})^{3}}{3}+C",
+    "\\frac{(2+{x}^{7})^{3}}{3}+C",
+    "\\frac{(2+{x}^{7})^{3}}{7}+C",
+    "21(2+{x}^{7})^{3}+C"
+  ],
+  "recipe_values": [
+    "\\frac{\\left(x^{7} + 2\\right)^{3}}{21}+C",
+    "\\frac{7 \\left(x^{7} + 2\\right)^{3}}{3}+C",
+    "\\frac{\\left(x^{7} + 2\\right)^{3}}{3}+C",
+    "\\frac{\\left(x^{7} + 2\\right)^{3}}{7}+C",
+    "21 \\left(x^{7} + 2\\right)^{3}+C"
+  ],
+  "profile": "q-113711",
+  "correct": "\\frac{\\left(x^{7} + 2\\right)^{3}}{21}+C",
+  "source_correct": "\\frac{(2+{x}^{7})^{3}}{21}+C",
+  "formula_definition": "bank(q-113711, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.
+
+## q-113715
+
+{
+  "source": "q-113715",
+  "parameters": {
+    "k": 2,
+    "a": 1,
+    "m": 3,
+    "b": 10,
+    "n": "1/2"
+  },
+  "source_choices": [
+    "\\frac{3\\sqrt{({x}^{3}+10)^{3}}}{2}+C",
+    "\\frac{2\\sqrt{({x}^{3}+10)^{3}}}{3}+C",
+    "\\frac{4\\sqrt{({x}^{3}+10)^{3}}}{9}+C",
+    "\\frac{9\\sqrt{({x}^{3}+10)^{3}}}{4}+C",
+    "\\sqrt{({x}^{3}+10)^{3}}+C"
+  ],
+  "recipe_values": [
+    "\\frac{3 \\left(x^{3} + 10\\right)^{\\frac{3}{2}}}{2}+C",
+    "\\frac{2 \\left(x^{3} + 10\\right)^{\\frac{3}{2}}}{3}+C",
+    "\\frac{4 \\left(x^{3} + 10\\right)^{\\frac{3}{2}}}{9}+C",
+    "\\frac{9 \\left(x^{3} + 10\\right)^{\\frac{3}{2}}}{4}+C",
+    "\\left(x^{3} + 10\\right)^{\\frac{3}{2}}+C"
+  ],
+  "profile": "q-113715",
+  "correct": "\\frac{4 \\left(x^{3} + 10\\right)^{\\frac{3}{2}}}{9}+C",
+  "source_correct": "\\frac{4\\sqrt{({x}^{3}+10)^{3}}}{9}+C",
+  "formula_definition": "bank(q-113715, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.
+
+## q-2379
+
+{
+  "source": "q-2379",
+  "parameters": {
+    "k": 1,
+    "a": -1,
+    "m": 2,
+    "b": 3,
+    "n": 5
+  },
+  "source_choices": [
+    "-\\frac{{(3-{x}^{2})}^{6}}{12}+C",
+    "\\frac{{(3-{x}^{2})}^{6}}{6}+C",
+    "-\\frac{{(3-{x}^{2})}^{5}}{5}+C",
+    "\\frac{{(3-{x}^{2})}^{6}}{4}+C",
+    "-\\frac{{(3-{x}^{2})}^{6}}{6}+C"
+  ],
+  "recipe_values": [
+    "- \\frac{\\left(- x^{2} + 3\\right)^{6}}{12}+C",
+    "\\frac{\\left(- x^{2} + 3\\right)^{6}}{6}+C",
+    "- \\frac{\\left(- x^{2} + 3\\right)^{5}}{5}+C",
+    "\\frac{\\left(- x^{2} + 3\\right)^{6}}{4}+C",
+    "- \\frac{\\left(- x^{2} + 3\\right)^{6}}{6}+C"
+  ],
+  "profile": "q-2379",
+  "correct": "- \\frac{\\left(- x^{2} + 3\\right)^{6}}{12}+C",
+  "source_correct": "-\\frac{{(3-{x}^{2})}^{6}}{12}+C",
+  "formula_definition": "bank(q-2379, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.
+
+## q-2388
+
+{
+  "source": "q-2388",
+  "parameters": {
+    "k": 1,
+    "a": 1,
+    "m": 2,
+    "b": -1,
+    "n": 3
+  },
+  "source_choices": [
+    "\\frac{({x}^{2}-1)^{4}}{8}+C",
+    "8({x}^{2}-1)^{4}+C",
+    "\\frac{({x}^{2}-1)^{5}}{10}+C",
+    "\\frac{({x}^{2}-1)^{3}}{6}+C",
+    "3({x}^{2}-1)^{3}+C"
+  ],
+  "recipe_values": [
+    "\\frac{\\left(x^{2} - 1\\right)^{4}}{8}+C",
+    "8 \\left(x^{2} - 1\\right)^{4}+C",
+    "\\frac{\\left(x^{2} - 1\\right)^{5}}{10}+C",
+    "\\frac{\\left(x^{2} - 1\\right)^{3}}{6}+C",
+    "3 \\left(x^{2} - 1\\right)^{3}+C"
+  ],
+  "profile": "q-2388",
+  "correct": "\\frac{\\left(x^{2} - 1\\right)^{4}}{8}+C",
+  "source_correct": "\\frac{({x}^{2}-1)^{4}}{8}+C",
+  "formula_definition": "bank(q-2388, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.
+
+## q-72385
+
+{
+  "source": "q-72385",
+  "parameters": {
+    "k": 1,
+    "a": 2,
+    "m": 3,
+    "b": 1,
+    "n": 5
+  },
+  "source_choices": [
+    "\\frac{1}{10}(2{x}^{3}+1)^{5}+C",
+    "\\frac{1}{5}(2{x}^{3}+1)^{5}+C",
+    "\\frac{1}{36}(2{x}^{3}+1)^{6}+C",
+    "\\frac{1}{6}(2{x}^{3}+1)^{6}+C",
+    "10(2{x}^{3}+1)^{5}+C"
+  ],
+  "recipe_values": [
+    "\\frac{\\left(2 x^{3} + 1\\right)^{5}}{10}+C",
+    "\\frac{\\left(2 x^{3} + 1\\right)^{5}}{5}+C",
+    "\\frac{\\left(2 x^{3} + 1\\right)^{6}}{36}+C",
+    "\\frac{\\left(2 x^{3} + 1\\right)^{6}}{6}+C",
+    "10 \\left(2 x^{3} + 1\\right)^{5}+C"
+  ],
+  "profile": "q-72385",
+  "correct": "\\frac{\\left(2 x^{3} + 1\\right)^{6}}{36}+C",
+  "source_correct": "\\frac{1}{36}(2{x}^{3}+1)^{6}+C",
+  "formula_definition": "bank(q-72385, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.
+
+## q-72386
+
+{
+  "source": "q-72386",
+  "parameters": {
+    "k": 2,
+    "a": 1,
+    "m": 8,
+    "b": 1,
+    "n": 7
+  },
+  "source_choices": [
+    "\\frac{1}{32}{(1+{x}^{8})}^{8}+C",
+    "8{(1+{x}^{8})}^{8}+C",
+    "7{(1+{x}^{8})}^{7}+C",
+    "\\frac{1}{8}{(1+{x}^{8})}^{8}+C",
+    "\\frac{1}{56}{(1+{x}^{8})}^{7}+C"
+  ],
+  "recipe_values": [
+    "\\frac{\\left(x^{8} + 1\\right)^{8}}{32}+C",
+    "8 \\left(x^{8} + 1\\right)^{8}+C",
+    "7 \\left(x^{8} + 1\\right)^{7}+C",
+    "\\frac{\\left(x^{8} + 1\\right)^{8}}{8}+C",
+    "\\frac{\\left(x^{8} + 1\\right)^{7}}{56}+C"
+  ],
+  "profile": "q-72386",
+  "correct": "\\frac{\\left(x^{8} + 1\\right)^{8}}{32}+C",
+  "source_correct": "\\frac{1}{32}{(1+{x}^{8})}^{8}+C",
+  "formula_definition": "bank(q-72386, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.
+
+## q-72467
+
+{
+  "source": "q-72467",
+  "parameters": {
+    "k": 1,
+    "a": 1,
+    "m": 2,
+    "b": -5,
+    "n": "1/2"
+  },
+  "source_choices": [
+    "2\\sqrt{({x}^{2}-5)^{3}}+C",
+    "3\\sqrt{({x}^{2}-5)^{3}}+C",
+    "\\sqrt{({x}^{2}-5)^{3}}+C",
+    "\\frac{1}{3}\\sqrt{({x}^{2}-5)^{3}}+C",
+    "\\frac{1}{2}\\sqrt{({x}^{2}-5)^{3}}+C"
+  ],
+  "recipe_values": [
+    "2 \\left(x^{2} - 5\\right)^{\\frac{3}{2}}+C",
+    "3 \\left(x^{2} - 5\\right)^{\\frac{3}{2}}+C",
+    "\\left(x^{2} - 5\\right)^{\\frac{3}{2}}+C",
+    "\\frac{\\left(x^{2} - 5\\right)^{\\frac{3}{2}}}{3}+C",
+    "\\frac{\\left(x^{2} - 5\\right)^{\\frac{3}{2}}}{2}+C"
+  ],
+  "profile": "q-72467",
+  "correct": "\\frac{\\left(x^{2} - 5\\right)^{\\frac{3}{2}}}{3}+C",
+  "source_correct": "\\frac{1}{3}\\sqrt{({x}^{2}-5)^{3}}+C",
+  "formula_definition": "bank(q-72467, p); formulas retained in script"
+}
+
+Source solution retained verbatim in source.json. Fixed/variable components and domain follow the profile constraints above.

@@ -1,0 +1,727 @@
+{
+  "basis": 1936,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "templates": [
+    {
+      "source": "q-2389",
+      "entity": 17592186069174,
+      "difficulty": "hard",
+      "field": "selection radio; five mathematical values; includes +C",
+      "template": "q-2389",
+      "profile": "q-2389",
+      "source_parameters": [
+        7
+      ],
+      "fixed": {
+        "n": 3,
+        "sign": 1,
+        "k": 3,
+        "power": "1/2",
+        "variable": "x"
+      },
+      "variable": "positive additive shift b",
+      "sampling_bounds": [
+        1,
+        12
+      ],
+      "prompt_template": "Calculate the integral $\\int \\frac{3{x}^{2}}{\\sqrt{{x}^{3}+@@B@@}}\\,\\text{d}x.$",
+      "solution_template": "Let $u={x}^{3}+@@B@@.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=3{x}^{2}\\,\u27f9\\,\\frac{1}{3}\\text{d}u={x}^{2}\\,\\text{d}x,\n$$\n\nand we can solve the resulting integral as follows:\n\n$$\n\\begin{aligned}\\int \\frac{3{x}^{2}}{\\sqrt{{x}^{3}+@@B@@}}\\,\\text{d}x & =3\\int \\frac{1}{\\sqrt{{x}^{3}+@@B@@}}\\cdot {x}^{2}\\,\\text{d}x \\\\  & =3\\int \\frac{1}{\\sqrt{u}}\\cdot \\frac{1}{3}\\,\\text{d}u \\\\  & =\\frac{3}{3}\\int \\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\  & =2\\sqrt{u}+C \\\\  & =2\\sqrt{{x}^{3}+@@B@@}+C\\end{aligned}\n$$",
+      "choices": [
+        {
+          "source_answer_uuid": "11177df5-0483-5972-bcaf-9017710da256",
+          "source_field_uuid": "27abd601-d10e-5e6b-9bac-388db9d51c71",
+          "source_value": "\\frac{\\sqrt{x}}{\\sqrt{{x}^{3}+7}}+C",
+          "recipe_latex": "\\frac{\\sqrt{x}}{\\sqrt{{x}^{3}+@@B@@}}+C",
+          "symbolic_recipe": "sqrt(x)/sqrt(b + x**3)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "9705b997-814b-59ba-9086-20d3695fb1fa",
+          "source_field_uuid": "27abd601-d10e-5e6b-9bac-388db9d51c71",
+          "source_value": "-\\sqrt{{x}^{3}+7}+C",
+          "recipe_latex": "-\\sqrt{{x}^{3}+@@B@@}+C",
+          "symbolic_recipe": "-sqrt(b + x**3)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "ddddbc9c-8e13-5c76-8aa8-0be8e56b19f7",
+          "source_field_uuid": "27abd601-d10e-5e6b-9bac-388db9d51c71",
+          "source_value": "\\sqrt{{x}^{3}+7}+C",
+          "recipe_latex": "\\sqrt{{x}^{3}+@@B@@}+C",
+          "symbolic_recipe": "sqrt(b + x**3)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "e95a230c-2af6-58ef-bf2b-d28f8c9c3d65",
+          "source_field_uuid": "27abd601-d10e-5e6b-9bac-388db9d51c71",
+          "source_value": "2\\sqrt{{x}^{3}+7}+C",
+          "recipe_latex": "2\\sqrt{{x}^{3}+@@B@@}+C",
+          "symbolic_recipe": "2*sqrt(b + x**3)",
+          "correct": true,
+          "complete_value_replayed": true,
+          "interpretation": "Substitution and power rule"
+        },
+        {
+          "source_answer_uuid": "ec2bc56b-6a94-5d2d-a542-0a0c2d7488ad",
+          "source_field_uuid": "27abd601-d10e-5e6b-9bac-388db9d51c71",
+          "source_value": "\\frac{2}{\\sqrt{{x}^{3}+7}}+C",
+          "recipe_latex": "\\frac{2}{\\sqrt{{x}^{3}+@@B@@}}+C",
+          "symbolic_recipe": "2/sqrt(b + x**3)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        }
+      ],
+      "correct_formula": "k/(sign*n*(1-p)) * (b+sign*x^n)^(1-p)",
+      "domain": ">0 for square-root denominator; !=0 for integer-power denominator, connected real intervals",
+      "plot_rating": "none"
+    },
+    {
+      "source": "q-113726",
+      "entity": 17592186247402,
+      "difficulty": "moderate",
+      "field": "selection radio; five mathematical values; includes +C",
+      "template": "q-113726",
+      "profile": "q-113726",
+      "source_parameters": [
+        3
+      ],
+      "fixed": {
+        "n": 5,
+        "sign": -1,
+        "k": 7,
+        "power": "6",
+        "variable": "x"
+      },
+      "variable": "positive additive shift b",
+      "sampling_bounds": [
+        1,
+        12
+      ],
+      "prompt_template": "Calculate $\\int \\frac{7{x}^{4}}{{(@@B@@-{x}^{5})}^{6}}\\,\\text{d}x.$",
+      "solution_template": "Let $u=@@B@@-{x}^{5}.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=-5{x}^{4}\\,\u27f9\\,-\\frac{7}{5}\\text{d}u=7{x}^{4}\\,\\text{d}x,\n$$\n\nand we can solve the resulting integral as follows:\n\n$$\n\\begin{aligned}\\int \\frac{7{x}^{4}}{{(@@B@@-{x}^{5})}^{6}}\\,\\text{d}x & =\\int \\frac{1}{{(@@B@@-{x}^{5})}^{6}}\\cdot 7{x}^{4}\\,\\text{d}x \\\\  & =\\int \\frac{1}{{u}^{6}}\\cdot (-\\frac{7}{5})\\,\\text{d}u \\\\  & =-\\frac{7}{5}\\int \\frac{1}{{u}^{6}}\\,\\text{d}u \\\\  & =-\\frac{7}{5}(-\\frac{1}{5{u}^{5}})+C \\\\  & =\\frac{7}{25{u}^{5}}+C \\\\  & =\\frac{7}{25(@@B@@-{x}^{5})^{5}}+C\\end{aligned}\n$$",
+      "choices": [
+        {
+          "source_answer_uuid": "387b1fd3-d0b6-5a4f-9f87-df4622619640",
+          "source_field_uuid": "a5979b9c-8e33-51cf-9331-a30916482816",
+          "source_value": "\\frac{7}{5(3-{x}^{5})^{5}}+C",
+          "recipe_latex": "\\frac{7}{5(@@B@@-{x}^{5})^{5}}+C",
+          "symbolic_recipe": "7/(5*(b - x**5)**5)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "5a108ad3-8f59-57fb-86b0-8078293f3c34",
+          "source_field_uuid": "a5979b9c-8e33-51cf-9331-a30916482816",
+          "source_value": "\\frac{25}{7(3-{x}^{5})^{5}}+C",
+          "recipe_latex": "\\frac{25}{7(@@B@@-{x}^{5})^{5}}+C",
+          "symbolic_recipe": "25/(7*(b - x**5)**5)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "64849b83-6c8e-5754-857d-65fbc670429e",
+          "source_field_uuid": "a5979b9c-8e33-51cf-9331-a30916482816",
+          "source_value": "-\\frac{7}{25(3-{x}^{5})^{5}}+C",
+          "recipe_latex": "-\\frac{7}{25(@@B@@-{x}^{5})^{5}}+C",
+          "symbolic_recipe": "-7/(25*(b - x**5)**5)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "92481de8-22aa-54dd-8e3e-03c362cb4b5f",
+          "source_field_uuid": "a5979b9c-8e33-51cf-9331-a30916482816",
+          "source_value": "\\frac{7}{25(3-{x}^{5})^{5}}+C",
+          "recipe_latex": "\\frac{7}{25(@@B@@-{x}^{5})^{5}}+C",
+          "symbolic_recipe": "7/(25*(b - x**5)**5)",
+          "correct": true,
+          "complete_value_replayed": true,
+          "interpretation": "Substitution and power rule"
+        },
+        {
+          "source_answer_uuid": "d7b59bc3-4c29-5982-981f-e767a487ae12",
+          "source_field_uuid": "a5979b9c-8e33-51cf-9331-a30916482816",
+          "source_value": "\\frac{5}{7(3-{x}^{5})^{5}}+C",
+          "recipe_latex": "\\frac{5}{7(@@B@@-{x}^{5})^{5}}+C",
+          "symbolic_recipe": "5/(7*(b - x**5)**5)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        }
+      ],
+      "correct_formula": "k/(sign*n*(1-p)) * (b+sign*x^n)^(1-p)",
+      "domain": ">0 for square-root denominator; !=0 for integer-power denominator, connected real intervals",
+      "plot_rating": "none"
+    },
+    {
+      "source": "q-113728",
+      "entity": 17592186247403,
+      "difficulty": "hard",
+      "field": "selection radio; five mathematical values; includes +C",
+      "template": "q-113728",
+      "profile": "q-113728",
+      "source_parameters": [
+        1
+      ],
+      "fixed": {
+        "n": 3,
+        "sign": -1,
+        "k": 2,
+        "power": "1/2",
+        "variable": "x"
+      },
+      "variable": "positive additive shift b",
+      "sampling_bounds": [
+        1,
+        12
+      ],
+      "prompt_template": "$\\int \\frac{2{x}^{2}}{\\sqrt{@@B@@-{x}^{3}}}\\,\\text{d}x=$",
+      "solution_template": "Let $u=@@B@@-{x}^{3}.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=-3{x}^{2}\\,\u27f9\\,(-\\frac{2}{3})\\text{d}u=2{x}^{2}\\,\\text{d}x,\n$$\n\nand we can solve the resulting integral as follows:\n\n$$\n\\begin{aligned}\\int \\frac{2{x}^{2}}{\\sqrt{@@B@@-{x}^{3}}}\\,\\text{d}x & =\\int \\frac{1}{\\sqrt{@@B@@-{x}^{3}}}\\cdot 2{x}^{2}\\,\\text{d}x \\\\  & =\\int \\frac{1}{\\sqrt{u}}\\cdot (-\\frac{2}{3})\\text{d}u \\\\  & =-\\frac{2}{3}\\int \\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\  & =-\\frac{2}{3}(2\\sqrt{u})+C \\\\  & =-\\frac{4}{3}\\sqrt{u}+C \\\\  & =-\\frac{4}{3}\\sqrt{@@B@@-{x}^{3}}+C\\end{aligned}\n$$",
+      "choices": [
+        {
+          "source_answer_uuid": "0ea424b4-ccd0-51fd-8ec1-e3764c70780a",
+          "source_field_uuid": "90d27c22-3b3c-5f6d-8503-ca7d14efde69",
+          "source_value": "-\\frac{3}{2}\\sqrt{1-{x}^{3}}+C",
+          "recipe_latex": "-\\frac{3}{2}\\sqrt{@@B@@-{x}^{3}}+C",
+          "symbolic_recipe": "-3*sqrt(b - x**3)/2",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "5e879178-7f38-55b6-aad8-bff7a55417b2",
+          "source_field_uuid": "90d27c22-3b3c-5f6d-8503-ca7d14efde69",
+          "source_value": "-\\frac{4}{3}\\sqrt{1-{x}^{3}}+C",
+          "recipe_latex": "-\\frac{4}{3}\\sqrt{@@B@@-{x}^{3}}+C",
+          "symbolic_recipe": "-4*sqrt(b - x**3)/3",
+          "correct": true,
+          "complete_value_replayed": true,
+          "interpretation": "Substitution and power rule"
+        },
+        {
+          "source_answer_uuid": "61f62b26-c52f-5367-8085-4051cd9de4ae",
+          "source_field_uuid": "90d27c22-3b3c-5f6d-8503-ca7d14efde69",
+          "source_value": "\\frac{3}{4\\sqrt{1-{x}^{3}}}+C",
+          "recipe_latex": "\\frac{3}{4\\sqrt{@@B@@-{x}^{3}}}+C",
+          "symbolic_recipe": "3/(4*sqrt(b - x**3))",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "8f89d43d-4540-53ea-8e0f-ac2bb206aaab",
+          "source_field_uuid": "90d27c22-3b3c-5f6d-8503-ca7d14efde69",
+          "source_value": "\\frac{4}{3}\\sqrt{1-{x}^{3}}+C",
+          "recipe_latex": "\\frac{4}{3}\\sqrt{@@B@@-{x}^{3}}+C",
+          "symbolic_recipe": "4*sqrt(b - x**3)/3",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "e3d74297-cdb4-5644-bd76-8754aa62281e",
+          "source_field_uuid": "90d27c22-3b3c-5f6d-8503-ca7d14efde69",
+          "source_value": "-\\frac{2}{3\\sqrt{1-{x}^{3}}}+C",
+          "recipe_latex": "-\\frac{2}{3\\sqrt{@@B@@-{x}^{3}}}+C",
+          "symbolic_recipe": "-2/(3*sqrt(b - x**3))",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        }
+      ],
+      "correct_formula": "k/(sign*n*(1-p)) * (b+sign*x^n)^(1-p)",
+      "domain": ">0 for square-root denominator; !=0 for integer-power denominator, connected real intervals",
+      "plot_rating": "none"
+    },
+    {
+      "source": "q-12502",
+      "entity": 17592186259766,
+      "difficulty": "moderate",
+      "field": "selection radio; five mathematical values; includes +C",
+      "template": "q-12502",
+      "profile": "q-12502",
+      "source_parameters": [
+        5
+      ],
+      "fixed": {
+        "n": 2,
+        "sign": 1,
+        "k": 1,
+        "power": "10",
+        "variable": "x"
+      },
+      "variable": "positive additive shift b",
+      "sampling_bounds": [
+        1,
+        12
+      ],
+      "prompt_template": "Calculate $\\int \\frac{x}{{({x}^{2}+@@B@@)}^{10}}\\,\\text{d}x.$",
+      "solution_template": "Let $u={x}^{2}+@@B@@.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=2x\\,\u27f9\\,\\frac{1}{2}\\text{d}u=x\\,\\text{d}x,\n$$\n\nand we can solve the resulting integral as follows:\n\n$$\n\\begin{aligned}\\int \\frac{x}{{({x}^{2}+@@B@@)}^{10}}\\,\\text{d}x & =\\int \\frac{1}{{({x}^{2}+@@B@@)}^{10}}\\cdot x\\,\\text{d}x \\\\  & =\\int \\frac{1}{{u}^{10}}\\cdot \\frac{1}{2}\\,\\text{d}u \\\\  & =\\frac{1}{2}\\int \\frac{1}{{u}^{10}}\\,\\text{d}u \\\\  & =\\frac{1}{2}(-\\frac{1}{9{u}^{9}})+C \\\\  & =-\\frac{1}{18{u}^{9}}+C \\\\  & =-\\frac{1}{18({x}^{2}+@@B@@)^{9}}+C\\end{aligned}\n$$",
+      "choices": [
+        {
+          "source_answer_uuid": "453def53-174d-5896-8e4f-7faa7466d05c",
+          "source_field_uuid": "0d7f8515-44cd-5765-b9d4-3675220879f1",
+          "source_value": "-\\frac{1}{2{({x}^{2}+5)}^{8}}+C",
+          "recipe_latex": "-\\frac{1}{2{({x}^{2}+@@B@@)}^{8}}+C",
+          "symbolic_recipe": "-1/(2*(b + x**2)**8)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "98eb7e12-8b7e-5878-badc-a9f99309abb9",
+          "source_field_uuid": "0d7f8515-44cd-5765-b9d4-3675220879f1",
+          "source_value": "\\frac{1}{9{({x}^{2}+5)}^{9}}+C",
+          "recipe_latex": "\\frac{1}{9{({x}^{2}+@@B@@)}^{9}}+C",
+          "symbolic_recipe": "1/(9*(b + x**2)**9)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "a1b2fef7-0445-5ee0-9c9b-2663d3fb7feb",
+          "source_field_uuid": "0d7f8515-44cd-5765-b9d4-3675220879f1",
+          "source_value": "-\\frac{1}{9{({x}^{2}+5)}^{9}}+C",
+          "recipe_latex": "-\\frac{1}{9{({x}^{2}+@@B@@)}^{9}}+C",
+          "symbolic_recipe": "-1/(9*(b + x**2)**9)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "bdcefc88-d3ad-5c21-9ac6-75e0800e4041",
+          "source_field_uuid": "0d7f8515-44cd-5765-b9d4-3675220879f1",
+          "source_value": "\\frac{1}{18{({x}^{2}+5)}^{8}}+C",
+          "recipe_latex": "\\frac{1}{18{({x}^{2}+@@B@@)}^{8}}+C",
+          "symbolic_recipe": "1/(18*(b + x**2)**8)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "dfeda5a9-a962-51e6-b8b1-1e93608cc2ca",
+          "source_field_uuid": "0d7f8515-44cd-5765-b9d4-3675220879f1",
+          "source_value": "-\\frac{1}{18{({x}^{2}+5)}^{9}}+C",
+          "recipe_latex": "-\\frac{1}{18{({x}^{2}+@@B@@)}^{9}}+C",
+          "symbolic_recipe": "-1/(18*(b + x**2)**9)",
+          "correct": true,
+          "complete_value_replayed": true,
+          "interpretation": "Substitution and power rule"
+        }
+      ],
+      "correct_formula": "k/(sign*n*(1-p)) * (b+sign*x^n)^(1-p)",
+      "domain": ">0 for square-root denominator; !=0 for integer-power denominator, connected real intervals",
+      "plot_rating": "none"
+    },
+    {
+      "source": "q-49560",
+      "entity": 17592186332742,
+      "difficulty": "hard",
+      "field": "selection radio; five mathematical values; includes +C",
+      "template": "q-49560",
+      "profile": "q-49560",
+      "source_parameters": [
+        1
+      ],
+      "fixed": {
+        "n": 5,
+        "sign": 1,
+        "k": 10,
+        "power": "1/2",
+        "variable": "s"
+      },
+      "variable": "positive additive shift b",
+      "sampling_bounds": [
+        1,
+        12
+      ],
+      "prompt_template": "Calculate $\\int \\frac{10{s}^{4}}{\\sqrt{{s}^{5}+@@B@@}}\\,\\text{d}s.$",
+      "solution_template": "Let $u={s}^{5}+@@B@@.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}s}=5{s}^{4}\\,\u27f9\\,\\frac{1}{5}\\text{d}u={s}^{4}\\,\\text{d}s,\n$$\n\nand we can solve the resulting integral as follows:\n\n$$\n\\begin{aligned}\\int \\frac{10{s}^{4}}{\\sqrt{{s}^{5}+@@B@@}}\\,\\text{d}s & =10\\int \\frac{1}{\\sqrt{{s}^{5}+@@B@@}}\\cdot {s}^{4}\\,\\text{d}s \\\\  & =10\\int \\frac{1}{\\sqrt{u}}\\cdot \\frac{1}{5}\\,\\text{d}u \\\\  & =\\frac{10}{5}\\int \\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\  & =2\\cdot (2\\sqrt{u})+C \\\\  & =4\\sqrt{u}+C \\\\  & =4\\sqrt{{s}^{5}+@@B@@}+C\\end{aligned}\n$$",
+      "choices": [
+        {
+          "source_answer_uuid": "1a74f7a5-d13b-5625-8685-33bf17f81ed3",
+          "source_field_uuid": "545dd268-f619-59e2-a48a-b0dec0dece4a",
+          "source_value": "\\frac{1}{2}\\sqrt{{s}^{5}+1}+C",
+          "recipe_latex": "\\frac{1}{2}\\sqrt{{s}^{5}+@@B@@}+C",
+          "symbolic_recipe": "sqrt(b + x**5)/2",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "20943720-048e-50c7-805b-b14bda47d8c2",
+          "source_field_uuid": "545dd268-f619-59e2-a48a-b0dec0dece4a",
+          "source_value": "5\\sqrt{{s}^{5}+1}+C",
+          "recipe_latex": "5\\sqrt{{s}^{5}+@@B@@}+C",
+          "symbolic_recipe": "5*sqrt(b + x**5)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "6988d942-8c13-5520-b8de-e15f8996b5c2",
+          "source_field_uuid": "545dd268-f619-59e2-a48a-b0dec0dece4a",
+          "source_value": "4\\sqrt{{s}^{5}+1}+C",
+          "recipe_latex": "4\\sqrt{{s}^{5}+@@B@@}+C",
+          "symbolic_recipe": "4*sqrt(b + x**5)",
+          "correct": true,
+          "complete_value_replayed": true,
+          "interpretation": "Substitution and power rule"
+        },
+        {
+          "source_answer_uuid": "99cbcdb1-7b43-5aa9-9f23-79ca0088debf",
+          "source_field_uuid": "545dd268-f619-59e2-a48a-b0dec0dece4a",
+          "source_value": "\\sqrt{{s}^{4}+1}+C",
+          "recipe_latex": "\\sqrt{{s}^{4}+@@B@@}+C",
+          "symbolic_recipe": "sqrt(b + x**4)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "9adc4166-7d1a-5d72-a022-77854432da9a",
+          "source_field_uuid": "545dd268-f619-59e2-a48a-b0dec0dece4a",
+          "source_value": "2\\sqrt{{s}^{4}+1}+C",
+          "recipe_latex": "2\\sqrt{{s}^{4}+@@B@@}+C",
+          "symbolic_recipe": "2*sqrt(b + x**4)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        }
+      ],
+      "correct_formula": "k/(sign*n*(1-p)) * (b+sign*x^n)^(1-p)",
+      "domain": ">0 for square-root denominator; !=0 for integer-power denominator, connected real intervals",
+      "plot_rating": "none"
+    },
+    {
+      "source": "q-49561",
+      "entity": 17592186332743,
+      "difficulty": "moderate",
+      "field": "selection radio; five mathematical values; includes +C",
+      "template": "q-49561",
+      "profile": "q-49561",
+      "source_parameters": [
+        1
+      ],
+      "fixed": {
+        "n": 4,
+        "sign": -1,
+        "k": 4,
+        "power": "5",
+        "variable": "y"
+      },
+      "variable": "positive additive shift b",
+      "sampling_bounds": [
+        1,
+        12
+      ],
+      "prompt_template": "Calculate $\\int \\frac{4{y}^{3}}{{(@@B@@-{y}^{4})}^{5}}\\,\\text{d}y.$",
+      "solution_template": "Let $u=@@B@@-{y}^{4}.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}y}=-4{y}^{3}\\,\u27f9\\,(-\\frac{1}{4})\\text{d}u={y}^{3}\\,\\text{d}y,\n$$\n\nand we can solve the resulting integral as follows:\n\n$$\n\\begin{aligned}\\int \\frac{4{y}^{3}}{{(@@B@@-{y}^{4})}^{5}}\\,\\text{d}y & =4\\int \\frac{1}{{(@@B@@-{y}^{4})}^{5}}\\cdot {y}^{3}\\,\\text{d}y \\\\  & =4\\int \\frac{1}{{u}^{5}}\\cdot (-\\frac{1}{4})\\text{d}u \\\\  & =-\\frac{4}{4}\\int \\frac{1}{{u}^{5}}\\,\\text{d}u \\\\  & =-\\int \\frac{1}{{u}^{5}}\\,\\text{d}u \\\\  & =-(-\\frac{1}{4{u}^{4}})+C \\\\  & =\\frac{1}{4{u}^{4}}+C \\\\  & =\\frac{1}{4{(@@B@@-{y}^{4})}^{4}}+C\\end{aligned}\n$$",
+      "choices": [
+        {
+          "source_answer_uuid": "13a0b1ce-6161-5e73-b36b-31d37e3b0b40",
+          "source_field_uuid": "8d27f773-d358-573a-9ebd-6ee1d5a4748e",
+          "source_value": "\\frac{1}{4{(1-{y}^{4})}^{4}}+C",
+          "recipe_latex": "\\frac{1}{4{(@@B@@-{y}^{4})}^{4}}+C",
+          "symbolic_recipe": "1/(4*(b - x**4)**4)",
+          "correct": true,
+          "complete_value_replayed": true,
+          "interpretation": "Substitution and power rule"
+        },
+        {
+          "source_answer_uuid": "279bd955-25ed-5deb-9e91-1b260848ad7b",
+          "source_field_uuid": "8d27f773-d358-573a-9ebd-6ee1d5a4748e",
+          "source_value": "\\frac{1}{2{(1-{y}^{4})}^{4}}+C",
+          "recipe_latex": "\\frac{1}{2{(@@B@@-{y}^{4})}^{4}}+C",
+          "symbolic_recipe": "1/(2*(b - x**4)**4)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "4482d3ef-e1bd-52a2-968c-377e9def4806",
+          "source_field_uuid": "8d27f773-d358-573a-9ebd-6ee1d5a4748e",
+          "source_value": "\\frac{1}{{(1-{y}^{4})}^{4}}+C",
+          "recipe_latex": "\\frac{1}{{(@@B@@-{y}^{4})}^{4}}+C",
+          "symbolic_recipe": "(b - x**4)**(-4)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "95ddf6e6-b070-55fd-b7d5-d3c0133dcc47",
+          "source_field_uuid": "8d27f773-d358-573a-9ebd-6ee1d5a4748e",
+          "source_value": "\\frac{1}{{(1-{y}^{4})}^{5}}+C",
+          "recipe_latex": "\\frac{1}{{(@@B@@-{y}^{4})}^{5}}+C",
+          "symbolic_recipe": "(b - x**4)**(-5)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "b12013db-5592-5de5-ac15-a7f940470213",
+          "source_field_uuid": "8d27f773-d358-573a-9ebd-6ee1d5a4748e",
+          "source_value": "{(1-{y}^{4})}^{5}+C",
+          "recipe_latex": "{(@@B@@-{y}^{4})}^{5}+C",
+          "symbolic_recipe": "(b - x**4)**5",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        }
+      ],
+      "correct_formula": "k/(sign*n*(1-p)) * (b+sign*x^n)^(1-p)",
+      "domain": ">0 for square-root denominator; !=0 for integer-power denominator, connected real intervals",
+      "plot_rating": "none"
+    },
+    {
+      "source": "q-49575",
+      "entity": 17592186332747,
+      "difficulty": "moderate",
+      "field": "selection radio; five mathematical values; includes +C",
+      "template": "q-49575",
+      "profile": "q-49575",
+      "source_parameters": [
+        9
+      ],
+      "fixed": {
+        "n": 2,
+        "sign": -1,
+        "k": 1,
+        "power": "5",
+        "variable": "x"
+      },
+      "variable": "positive additive shift b",
+      "sampling_bounds": [
+        1,
+        12
+      ],
+      "prompt_template": "Calculate $\\int \\frac{x}{(@@B@@-{x}^{2})^{5}}\\,\\text{d}x.$",
+      "solution_template": "Let $u=@@B@@-{x}^{2}.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=-2x\\,\u27f9\\,(-\\frac{1}{2})\\text{d}u=x\\,\\text{d}x,\n$$\n\nand we can solve the resulting integral as follows:\n\n$$\n\\begin{aligned}\\int \\frac{x}{{(@@B@@-{x}^{2})}^{5}}\\,\\text{d}x & =\\int \\frac{1}{{(@@B@@-{x}^{2})}^{5}}\\cdot x\\,\\text{d}x \\\\  & =\\int \\frac{1}{{u}^{5}}\\cdot (-\\frac{1}{2})\\text{d}u \\\\  & =-\\frac{1}{2}\\int \\frac{1}{{u}^{5}}\\,\\text{d}u \\\\  & =-\\frac{1}{2}(-\\frac{1}{4{u}^{4}})+C \\\\  & =\\frac{1}{8{u}^{4}}+C \\\\  & =\\frac{1}{8(@@B@@-{x}^{2})^{4}}+C\\end{aligned}\n$$",
+      "choices": [
+        {
+          "source_answer_uuid": "088243d9-1f83-5d73-9676-61898c216f3a",
+          "source_field_uuid": "3a4767d5-1a9b-5c3a-b8d3-05782ae04071",
+          "source_value": "{(9-{x}^{2})}^{4}+C",
+          "recipe_latex": "{(@@B@@-{x}^{2})}^{4}+C",
+          "symbolic_recipe": "(b - x**2)**4",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "19751e43-a723-581f-94f1-b9c5b12f13c0",
+          "source_field_uuid": "3a4767d5-1a9b-5c3a-b8d3-05782ae04071",
+          "source_value": "\\frac{1}{2{(9-{x}^{2})}^{3}}+C",
+          "recipe_latex": "\\frac{1}{2{(@@B@@-{x}^{2})}^{3}}+C",
+          "symbolic_recipe": "1/(2*(b - x**2)**3)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "2ad52c65-7a01-580d-80a2-76c6aec15062",
+          "source_field_uuid": "3a4767d5-1a9b-5c3a-b8d3-05782ae04071",
+          "source_value": "\\frac{1}{8{(9-{x}^{2})}^{4}}+C",
+          "recipe_latex": "\\frac{1}{8{(@@B@@-{x}^{2})}^{4}}+C",
+          "symbolic_recipe": "1/(8*(b - x**2)**4)",
+          "correct": true,
+          "complete_value_replayed": true,
+          "interpretation": "Substitution and power rule"
+        },
+        {
+          "source_answer_uuid": "b3be71fe-ed7f-5ca0-9df0-61439e808dbe",
+          "source_field_uuid": "3a4767d5-1a9b-5c3a-b8d3-05782ae04071",
+          "source_value": "\\frac{1}{{(9-{x}^{2})}^{4}}+C",
+          "recipe_latex": "\\frac{1}{{(@@B@@-{x}^{2})}^{4}}+C",
+          "symbolic_recipe": "(b - x**2)**(-4)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "eb376da1-92a5-54a7-80f1-3352eec3f955",
+          "source_field_uuid": "3a4767d5-1a9b-5c3a-b8d3-05782ae04071",
+          "source_value": "\\frac{1}{4{(9-{x}^{2})}^{4}}+C",
+          "recipe_latex": "\\frac{1}{4{(@@B@@-{x}^{2})}^{4}}+C",
+          "symbolic_recipe": "1/(4*(b - x**2)**4)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        }
+      ],
+      "correct_formula": "k/(sign*n*(1-p)) * (b+sign*x^n)^(1-p)",
+      "domain": ">0 for square-root denominator; !=0 for integer-power denominator, connected real intervals",
+      "plot_rating": "none"
+    },
+    {
+      "source": "q-49634",
+      "entity": 17592186332756,
+      "difficulty": "hard",
+      "field": "selection radio; five mathematical values; includes +C",
+      "template": "q-49634",
+      "profile": "q-49634",
+      "source_parameters": [
+        1
+      ],
+      "fixed": {
+        "n": 2,
+        "sign": 1,
+        "k": 3,
+        "power": "1/2",
+        "variable": "x"
+      },
+      "variable": "positive additive shift b",
+      "sampling_bounds": [
+        1,
+        12
+      ],
+      "prompt_template": "Calculate $\\int \\frac{3x}{\\sqrt{{x}^{2}+@@B@@}}\\,\\text{d}x.$",
+      "solution_template": "Let $u={x}^{2}+@@B@@.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=2x\\,\u27f9\\,\\frac{1}{2}\\text{d}u=x\\,\\text{d}x,\n$$\n\nand we can solve the resulting integral as follows:\n\n$$\n\\begin{aligned}\\int \\frac{3x}{\\sqrt{{x}^{2}+@@B@@}}\\,\\text{d}x & =3\\int \\frac{1}{\\sqrt{{x}^{2}+@@B@@}}\\cdot x\\,\\text{d}x \\\\  & =3\\int \\frac{1}{\\sqrt{u}}\\cdot \\frac{1}{2}\\,\\text{d}u \\\\  & =\\frac{3}{2}\\int \\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\  & =\\frac{3}{2}(2\\sqrt{u})+C \\\\  & =3\\sqrt{u}+C \\\\  & =3\\sqrt{{x}^{2}+@@B@@}+C\\end{aligned}\n$$",
+      "choices": [
+        {
+          "source_answer_uuid": "16d32dfa-ce8b-5b70-9b6d-262d64bc0db6",
+          "source_field_uuid": "dc2934a2-8eb7-5567-8e5e-da2d00346f85",
+          "source_value": "\\frac{4}{3}\\sqrt{{x}^{2}+1}+C",
+          "recipe_latex": "\\frac{4}{3}\\sqrt{{x}^{2}+@@B@@}+C",
+          "symbolic_recipe": "4*sqrt(b + x**2)/3",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "6147032d-b8d7-5390-829a-418f646102ff",
+          "source_field_uuid": "dc2934a2-8eb7-5567-8e5e-da2d00346f85",
+          "source_value": "\\frac{3}{\\sqrt{{x}^{2}+1}}+C",
+          "recipe_latex": "\\frac{3}{\\sqrt{{x}^{2}+@@B@@}}+C",
+          "symbolic_recipe": "3/sqrt(b + x**2)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "61b6a8c9-a76e-5a52-a014-b7ba8c5cc386",
+          "source_field_uuid": "dc2934a2-8eb7-5567-8e5e-da2d00346f85",
+          "source_value": "\\sqrt{{x}^{2}+1}+C",
+          "recipe_latex": "\\sqrt{{x}^{2}+@@B@@}+C",
+          "symbolic_recipe": "sqrt(b + x**2)",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "8f23d841-25df-55e9-b092-19092e2a325c",
+          "source_field_uuid": "dc2934a2-8eb7-5567-8e5e-da2d00346f85",
+          "source_value": "3\\sqrt{{x}^{2}+1}+C",
+          "recipe_latex": "3\\sqrt{{x}^{2}+@@B@@}+C",
+          "symbolic_recipe": "3*sqrt(b + x**2)",
+          "correct": true,
+          "complete_value_replayed": true,
+          "interpretation": "Substitution and power rule"
+        },
+        {
+          "source_answer_uuid": "db61c987-2624-5d24-8ca8-a4cd964f55a2",
+          "source_field_uuid": "dc2934a2-8eb7-5567-8e5e-da2d00346f85",
+          "source_value": "\\frac{3}{2\\sqrt{{x}^{2}+1}}+C",
+          "recipe_latex": "\\frac{3}{2\\sqrt{{x}^{2}+@@B@@}}+C",
+          "symbolic_recipe": "3/(2*sqrt(b + x**2))",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        }
+      ],
+      "correct_formula": "k/(sign*n*(1-p)) * (b+sign*x^n)^(1-p)",
+      "domain": ">0 for square-root denominator; !=0 for integer-power denominator, connected real intervals",
+      "plot_rating": "none"
+    },
+    {
+      "source": "q-113727",
+      "entity": 17592186410416,
+      "difficulty": "hard",
+      "field": "selection radio; five mathematical values; includes +C",
+      "template": "q-113727",
+      "profile": "q-113727",
+      "source_parameters": [
+        2
+      ],
+      "fixed": {
+        "n": 6,
+        "sign": -1,
+        "k": 1,
+        "power": "1/2",
+        "variable": "x"
+      },
+      "variable": "positive additive shift b",
+      "sampling_bounds": [
+        1,
+        12
+      ],
+      "prompt_template": "$\\int \\frac{{x}^{5}}{\\sqrt{@@B@@-{x}^{6}}}\\,\\text{d}x=$",
+      "solution_template": "Let $u=@@B@@-{x}^{6}.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=-6{x}^{5}\\,\u27f9\\,(-\\frac{1}{6})\\text{d}u={x}^{5}\\,\\text{d}x,\n$$\n\nand we can solve the resulting integral as follows:\n\n$$\n\\begin{aligned}\\int \\frac{{x}^{5}}{\\sqrt{@@B@@-{x}^{6}}}\\,\\text{d}x & =\\int \\frac{1}{\\sqrt{@@B@@-{x}^{6}}}\\cdot {x}^{5}\\,\\text{d}x \\\\  & =\\int \\frac{1}{\\sqrt{u}}\\cdot (-\\frac{1}{6})\\text{d}u \\\\  & =-\\frac{1}{6}\\int \\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\  & =-\\frac{1}{6}(2\\sqrt{u})+C \\\\  & =-\\frac{1}{3}\\sqrt{u}+C \\\\  & =-\\frac{1}{3}\\sqrt{@@B@@-{x}^{6}}+C\\end{aligned}\n$$",
+      "choices": [
+        {
+          "source_answer_uuid": "0678af68-2cfb-5844-963f-561512f9006d",
+          "source_field_uuid": "ba44c6c6-d2e7-5fc3-91bc-e559cd6937b2",
+          "source_value": "-\\frac{1}{3\\sqrt{2-{x}^{6}}}+C",
+          "recipe_latex": "-\\frac{1}{3\\sqrt{@@B@@-{x}^{6}}}+C",
+          "symbolic_recipe": "-1/(3*sqrt(b - x**6))",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "327adc54-a9df-5f2d-b704-5f8e97ebeefa",
+          "source_field_uuid": "ba44c6c6-d2e7-5fc3-91bc-e559cd6937b2",
+          "source_value": "\\frac{1}{12}\\sqrt{2-{x}^{6}}+C",
+          "recipe_latex": "\\frac{1}{12}\\sqrt{@@B@@-{x}^{6}}+C",
+          "symbolic_recipe": "sqrt(b - x**6)/12",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "9fb4fe7b-3555-57fe-b8fa-15be7b061577",
+          "source_field_uuid": "ba44c6c6-d2e7-5fc3-91bc-e559cd6937b2",
+          "source_value": "\\frac{1}{3}\\sqrt{2-{x}^{6}}+C",
+          "recipe_latex": "\\frac{1}{3}\\sqrt{@@B@@-{x}^{6}}+C",
+          "symbolic_recipe": "sqrt(b - x**6)/3",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "e1c194db-8c56-5f8b-9caf-143ea6db9c78",
+          "source_field_uuid": "ba44c6c6-d2e7-5fc3-91bc-e559cd6937b2",
+          "source_value": "-\\frac{1}{6}\\sqrt{2-{x}^{6}}+C",
+          "recipe_latex": "-\\frac{1}{6}\\sqrt{@@B@@-{x}^{6}}+C",
+          "symbolic_recipe": "-sqrt(b - x**6)/6",
+          "correct": false,
+          "complete_value_replayed": true,
+          "interpretation": "Observed complete expression; error intention unresolved"
+        },
+        {
+          "source_answer_uuid": "e721585d-c9aa-5992-9200-4910767201bd",
+          "source_field_uuid": "ba44c6c6-d2e7-5fc3-91bc-e559cd6937b2",
+          "source_value": "-\\frac{1}{3}\\sqrt{2-{x}^{6}}+C",
+          "recipe_latex": "-\\frac{1}{3}\\sqrt{@@B@@-{x}^{6}}+C",
+          "symbolic_recipe": "-sqrt(b - x**6)/3",
+          "correct": true,
+          "complete_value_replayed": true,
+          "interpretation": "Substitution and power rule"
+        }
+      ],
+      "correct_formula": "k/(sign*n*(1-p)) * (b+sign*x^n)^(1-p)",
+      "domain": ">0 for square-root denominator; !=0 for integer-power denominator, connected real intervals",
+      "plot_rating": "none"
+    }
+  ],
+  "unresolved": "Distractor psychological intentions are not inferred; exact complete observed expressions preserved. No unmapped choices."
+}
