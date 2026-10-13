@@ -1,0 +1,11 @@
+# Trigonometric quotient substitution
+
+Source capture: math basis 1949, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. The source-query and reference/initial preserve one-basis selection and complete field/value/solution pulls. source.json and source.edn preserve all nine practice questions and canonical e-467. No registered generator or supplied job .generated artifact existed. Current inventory is rechecked under api.lock before selecting or committing content.
+
+Seven practice questions are rated hard (four radio, three blank); two radio questions are unrated. Every question has one field. Distinct observed prompt/solution/response families are retained separately as their source ID: q-10046, q-49557, q-10045, q-113998, q-350887, q-350901, q-350904, q-73674, q-113997. The source-cases.json file maps every choice to its original field, source identity and complete mathematical expression. Changed amplitude is a variant of its family, not another template. Each radio family retains its whole source bank as one profile; blanks have no distractor profile.
+
+Supported classification is easy: one radio template, q-49557; hard: three radio templates q-113998/q-73674/q-113997 and three blank templates q-350887/q-350901/q-350904. Easy is an authored workload assignment: a direct numerator/denominator logarithm, no changed limits, nested argument or sign reversal. Its missing key and solution are derived locally; original unrated record stays unchanged. Hard retains source labels, including sign reversal, composite trigonometric arguments, transformed endpoints, and a rational decomposition after substitution.
+
+Moderate is unsupported by this bounded implementation. The other unrated source q-10046 has ln(1-sqrt(2)) distractors that are not real. Its complete bank cannot be used unchanged for a valid real-valued question. q-10045 has duplicate equivalent distractors (first and third options are the same commuted sum), so its hard bank is excluded. These are bounded evidence exceptions, not claims of mathematical impossibility. New source evidence reopens classification. Both sources and all their choices are retained untouched.
+
+Plots: none for every family. All mathematical content is printed TeX; no prompt, choice or solution uses diagram assets. Canonical e-467 supports context and duplicate exclusion only; it never counts as practice.

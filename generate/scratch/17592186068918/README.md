@@ -1,0 +1,7 @@
+# Trigonometric quotient generator
+
+Run `.venv/bin/python generate/scratch/17592186068918/validate.py` for exact printed mathematics, full supported source-bank replay and real learner grading. Then run `replenish.py` for this scoped job. CLI: `python3 generate/scratch/17592186068918.py --difficulty hard --count 5 --seed 1949 --format json` (or markdown). API exposes generate(level, seed, template, parameters), candidates(level), and batch(level,count,seed).
+
+Easy and hard are supported within positive amplitude m=2..12. Moderate remains unsupported and unfilled. Finite capacity is 11 easy and 66 hard genuinely changed integrands beyond source replay. Two defective source banks are explicitly excluded. Source questions and learner state are preserved; records use field-owned identities and no Math Academy IDs. Read classification, extraction, source-cases, review, capabilities, source-replay, native-grading and validation for the mathematical and fidelity limits.
+
+Replenishment rechecks native inventory and source evidence under the application api.lock, saves exact basis-guarded requests, uses configured application/ca-engine attribution and installed validation specs, and holds the lock through submission and exact-basis readback. Generator registration uses the existing identity if present, UUID/script attributes and the KP reference. All additions are restricted to this KP.

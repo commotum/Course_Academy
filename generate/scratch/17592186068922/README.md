@@ -1,0 +1,5 @@
+# Partial-fraction generator
+
+Run `../../../.venv/bin/python ../17592186068922.py --difficulty easy --count 5 --seed 1 --format json` from this package (or invoke the script from repository root). Easy and moderate only. The script also falls back to the project Python environment when launched by the application. Numerator scaling k=2..9 retains complete observed banks. `validate.py` exhausts every bounded variant and replays supported sources, including grading through the actual application. Source exceptions, hard shortage and finite capabilities remain in capabilities.json.
+
+`replenish.py` holds the application's api.lock from inventory/basis recheck through native-spec preview, guarded commit, retained receipt and exact-basis readback. It resolves application/ca-engine, registers the stable generator UUID and repository-relative path, and adds only this KP's new content. Complete requests and verification remain in reference/replenishment. No source questions or learner history are rewritten.
