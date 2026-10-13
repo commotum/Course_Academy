@@ -1,0 +1,21 @@
+# Template extraction
+
+## Stage1 — specific observations
+
+Each source's exact fields, original bank and full worked prose are in source.json; per-source masks and symbolic coordinates are in templates.json. The table rows and number formats are separately enumerated there. Two stages are mandatory: x calculated while y remains empty, then identical x row with the calculated y row. The final plot marks those table points. The rational source uses t=0.5,1,2,3,4,5 and rounded decimal y; root sources use rounded two-place coordinates (including 2.60). Trig sources use seven familiar angles, exact radicals/fractions, and full closed 0..2π domains. The cusp uses terminating decimals. Source table decimals are display approximations of exact coordinates; plots use exact formulas.
+
+## Stage2 — shared mathematical pattern
+
+Determine a joint parametric curve by substituting a fixed table of parameter values into both coordinate formulas, plotting paired coordinates, and respecting the given parameter domain. Response is one of five complete graphs.
+
+## Stage3 — component and whole-bank mapping
+
+plot-spec.json maps every one of80 source answer assets and16 solution assets one-to-one to role, source, original correct designation, observed class/landmarks and resolution status. Correct plots have exact parametrizations and domains from the prompt. The64 wrong plots remain explicit residual unchanged-source-asset recipes: their raster geometry is preserved, but no arbitrary quartic, sine or hyperbola coefficients are invented. Even visually familiar wrong curves are not promoted into exact recovered formulas from raster evidence. Thus the source asset bank count can pass exactly; it cannot be reported as64 recovered mathematical wrong formulas. Original profiles accept only original parameters; this limitation is explicit, rather than pretending a residual graph has a parameterized mistake formula. Normal templates themselves are genuinely parameterized and share the generator's mathematics/rendering path with authored banks.
+
+## Stage4 — reusable template and constraints
+
+Complete x/y math spans, table spans and the final image reference are masked separately; no short-token replacement crosses function names or TeX commands. The extracted shared prose is preserved exactly for observed replay, including legacy empty display blocks and empty $$ cells. Normal authored output removes redundant empty display blocks while retaining both tables and all instructional sentences. Easy variations transform the base coordinates with m,n in{1,2} and h,k in{±1,±2}; their complete authored bank is correct, omitted complete x coordinate constant, omitted complete y coordinate constant, reversed pair of coordinate constants, and exchanged coordinates. The entire profile is selected first and rejected if complete geometric objects coincide. The actual additive constants are derived from the expanded displayed coordinate expressions; the entire bank rejects if either is zero or any complete graphs coincide. Default profiles never assemble a first-valid distractor pool. Mathematical task fingerprints deduplicate the complete correct locus/domain across bank, profile, layout and parameter spelling; full content identities retain the prompt, solution and complete bank.
+
+Moderate/hard bounds and fixed workloads are in classification.md and enforced for explicit calls too. Moderate has correct, reflected x, reflected y, omitted x shift, omitted y shift. Hard has correct and four predefined contiguous domain mistakes. Each distractor is derived from the same actual instance and no diagnosis is shown to learners. Geometric comparison normalizes implicit joint curves and included endpoint pairs (or full ellipse/positive reciprocal branch), not x/y ranges independently. Curve direction is unassessed in sources; no curve direction arrows are introduced. Axis arrows are retained.
+
+No mathematical source errors are silently repaired. Source-format artifacts (empty displays, formatting spaces) are distinguished from answer fidelity. Opaque distractor formulas remain intentionally unresolved; exact unchanged assets satisfy observed-bank replay without a false formula-recovery claim.
