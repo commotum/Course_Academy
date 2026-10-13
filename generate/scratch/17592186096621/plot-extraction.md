@@ -1,0 +1,1 @@
+No source plot references, images, or diagrams occur in any prompt, answer or solution. All 14 practice templates and canonical e-3638 require no new plots. No plot generator or asset writes are needed. LaTeX alone is not a plot.

@@ -1,0 +1,16 @@
+# Classification
+
+Database math at basis 1907, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `source.json` and `reference/initial/kp.edn` preserve all nine practice records and the canonical example e-3627 at one basis. This KP is **Differentiating the Product of a Constant and the Natural Logarithm Function**. Every displayed function is `y=c ln x`; the real domain is x>0. The prerequisite is Sum and Constant Multiple Rules for Differentiation. Difficulty is attached to practice records, not inferred from larger integers.
+
+| Observed level | Markdown/value template | Fields | Profiles and assigned sources | New plots |
+|---|---|---|---|---|
+| easy | radio-dot: direct derivative, four solution rows with explicit multiplication before derivative | selection radio, five math values | integer q-101604; Euler multiple q-101600 | none |
+| easy | blank: derivative RHS fragment, four solution rows with implicit multiplication before derivative | field-1 blank | canonical q-339941, q-308849; equivalent-entry q-339949, q-339950 | none |
+| unrated, authored easy for new variants | legacy-radio: spaced prompt, dy/dx notation, no supplied solution | selection radio, five math values | integer q-11909; fraction q-11910 | none |
+| easy, incomplete | same direct prompt and implicit-product solution, missing response layout | no fields at all | q-70881; no generator instances from this layout | none |
+
+Two supported observed easy Markdown/value templates; one additional legacy template assigned easy by exact mathematical equivalence to rated constant-multiple tasks. The orphan is retained as an incomplete layout, not merged into a valid field representation. Integer, signed integer and rational values are parameter variations, not separate templates. The radio-dot template has an optional coefficient dot observed with e; the arithmetic sequence remains identical. Original Unicode function application and TeX notation are preserved in replay. Blanks expect only c/x, not the entire equation. The extra plain-text blank values on q-339949 and q-339950 are equivalent historical entries, not distractors.
+
+Moderate and hard have no observed source questions, answer shapes or worked sequences. This bounded generator supports easy only. Increasing c's magnitude or shuffling choices is not evidence of a harder conceptual task. Composition, variable products, quotient differentiation and additional nonconstant summands would change the requested skill; no such extensions are supported here. This is a capability exception, not proof that every imaginable in-scope extension is impossible. Reopen with new verified source evidence.
+
+q-11909 and q-11910 lack ratings, correct references and worked solutions. Their complete banks are retained for replay, and the correct value is independently derived as c/x; fresh instances receive an explicitly authored easy rating and a solution following canonical e-3627. These legacy records remain excluded from current gradable inventory. q-70881 lacks fields and remains excluded. All other supplied correct references and worked solutions agree with symbolic differentiation. There are no source assets or figures, including in choices and solutions; steps 5 and 7 need no renderer.

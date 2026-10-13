@@ -1,0 +1,11 @@
+# Creating Parallel Vectors
+
+Local draft through generation/plot step7. No EDB transaction, registration or engine edits.
+
+Run `.venv/bin/python generate/scratch/17592186096649/validate.py` from the repository root. Preview `.venv/bin/python generate/scratch/17592186096649.py --difficulty all --seed 8 --count 2 --format json` (or markdown). API functions generate/generate_easy/generate_moderate/generate_hard accept seed,template,field_type,parameters,profile. Templates single/pair; supported field radio. Normal profile authored_operations. Evidence profiles observed_single/observed_pair preserve raw omissions; corresponding _completed profiles explicitly infer the missing key/solution/difficulty and remain ineligible for learning. Source-cases gives exact public replay parameters.
+
+Two unrated sources, two prompt masks, two original whole banks, ten original options. Existing correct refs and worked solutions:zero. First captured choices satisfy the printed scalar requests independently; inference never counts as matching absent designations. All E/M/H labels are authored scope choices. Easy18/moderate24/hard72 meaningful finite tasks; common base length is incidental. Each level maintains one workload.
+
+Review originals, both changed observed banks and at least two authored examples per level in review.md/review.json. classification,template-extraction,plot-extraction document evidence and domains. validation separates raw fidelity, independently checked diagram mathematics and actual native ID grading. All normal and source-completion radio options are checked by the shared real-engine harness. Image responses have no expression-entry equivalence route; other translated equivalent diagrams cannot be submitted, while bank comparison checks actual length/direction eligibility.
+
+Exact runtime versions and source/binary hashes are in freeze.json, validation.json, native-report.json and per-image sidecars. Generator uses the project .venv with SymPy; renderer uses cached Python3.10 and Matplotlib read-only. Normal orientation arrows exclude zero, consistently with the lesson's separate zero-parallel-to-any-vector convention. The draft is not registered and awaits parent independent QA.
