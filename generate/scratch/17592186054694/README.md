@@ -1,0 +1,7 @@
+# Plotting a Line Using a Table generator
+
+Run `.venv/bin/python generate/scratch/17592186054694.py --difficulty easy --count 3 --seed 2025 --format json`. The system Python entry point hands off to the repository virtualenv if SymPy is unavailable. `validate.py` exhaustively validates 18 tasks, all source banks and actual image-radio grading. `replenish.py` rechecks live inventory and uses the application lock, native preview, exact persisted request, basis guard and verified receipt/readback. It preserves source questions, canonical example and learner history.
+
+Difficulty capabilities and finite limits are in capabilities.json. Only easy is supported; moderate and hard are explicitly unfilled. Source evidence and profile recipes are in classification.md, template-extraction.md and plot-extraction.md. Validation separates source fidelity, mathematical correctness, engine grading and visual fidelity. Source basis 2025; this is not a promise that future inventory has the same basis.
+
+Verified replenishment: basis 2025 → 2026; three distinct easy questions added, five easy questions available. Generator UUID 9ae4d764-bdf7-5b4d-982a-b379ea720263 registered at `generate/scratch/17592186054694.py`. Exact request, receipt, native grading, asset hashes and readback are under `reference/replenishment/basis-2025/`. Current generated plot review is `variant-graphs-current.png`; the older gallery is retained as earlier evidence. Moderate/hard shortages remain five each; original unrated q-59676 stays unchanged.
