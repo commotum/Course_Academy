@@ -1,0 +1,88 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-51072\", \"problem\": \"Which of the following statements are true regarding the function given below?\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}-x+4, & x<1 \\\\\\\\ 0, & x=1 \\\\\\\\ x+2, & x>1\\\\end{aligned}\\\\,\\n$$\\n\\nI. It is continuous and differentiable at $x=1$\\n\\nII. It is differentiable on the interval $(-2,2)$\\n\\nIII. It is **not** differentiable at $x=1$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-72733\", \"problem\": \"Which of the following represents the solution to the system of linear equations given below?\\n\\n$$\\n\\\\begin{aligned}\\\\{\\\\begin{aligned}2x=y+1 \\\\\\\\ x-y=2\\\\end{aligned}\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-51072:\n- Statement I is false and statement III is true. Indeed,  let's investigate the continuity of $f(x).$ It is continuous everywhere except, possibly, $x=1.$ At this point, we have\n\n$$\n\\begin{aligned}{lim}_{x\\to {1}^{-}}f(x) & ={lim}_{x\\to {1}^{-}}(-x+4)=-1+4=3 \\\\ {lim}_{x\\to {1}^{+}}f(x) & ={lim}_{x\\to {1}^{+}}(x+2)=1+2=3.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n{lim}_{x\\to {1}^{+}}f(x)={lim}_{x\\to {1}^{-}}f(x)\\ne f(1)=0,\n$$\n\nand so $f(x)$ is not continuous at $x=1$ (it has a removable discontinuity there). Hence, it is also not differentiable at this point.\n\n- Statement II is false. Since $f(x)$ is not differentiable at $x=1,$ it is not differentiable on any interval containing this point. Consequently, it is not differentiable on $(-2,2).$\n\nq-72733:\nFirst, we reorganize the equations so that they are in the right order, to get\n\n$$\n\\begin{aligned}\\{\\begin{aligned}2x-y=1 \\\\ x-y=2\\end{aligned}\\end{aligned}\n$$\n\nNow, we can represent this system of equations in the form $Ax=b:$\n\n$$\n[\\begin{aligned}2 & -1 \\\\ 1 & -1\\end{aligned}][\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}1 \\\\ 2\\end{aligned}].\n$$\n\nTo find the solution, we need to calculate the inverse of the coefficient matrix $A=[\\begin{aligned}2 & -1 \\\\ 1 & -1\\end{aligned}].$ This gives\n\n$$\n\\begin{aligned}{A}^{-1} & =\\frac{1}{(-1)\\cdot 2-(-1)\\cdot 1}[\\begin{aligned}-1 & 1 \\\\ -1 & 2\\end{aligned}] \\\\  & =\\frac{1}{-1}[\\begin{aligned}-1 & 1 \\\\ -1 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}1 & -1 \\\\ 1 & -2\\end{aligned}].\\end{aligned}\n$$\n\nWe can now represent the solution to this system, as follows:\n\n$$\n\\begin{aligned}x & ={A}^{-1}b \\\\  & =[\\begin{aligned}1 & -1 \\\\ 1 & -2\\end{aligned}][\\begin{aligned}1 \\\\ 2\\end{aligned}]\\end{aligned}\n$$",
+      "answer_fields": [
+        {
+          "key": "q-51072/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "text",
+              "value": "III only",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "text",
+              "value": "I and II only",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "text",
+              "value": "I and III only",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "text",
+              "value": "II and III only",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "text",
+              "value": "I only",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-72733/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}-1 & -1 \\\\ 1 & 2\\end{aligned}][\\begin{aligned}2 \\\\ 1\\end{aligned}]",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}1 & 1 \\\\ -1 & -2\\end{aligned}][\\begin{aligned}0 \\\\ 2\\end{aligned}]",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}1 & -1 \\\\ -2 & 1\\end{aligned}][\\begin{aligned}2 \\\\ 0\\end{aligned}]",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}1 & -1 \\\\ 1 & -2\\end{aligned}][\\begin{aligned}1 \\\\ 2\\end{aligned}]",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}2 & 1 \\\\ -1 & -1\\end{aligned}][\\begin{aligned}1 \\\\ 2\\end{aligned}]",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": []
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

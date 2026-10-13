@@ -1,0 +1,112 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-118755\", \"problem\": \"Consider the function $f(x)=\\\\frac{x}{{x}^{2}+4}.$ Which of the following statements are true?\\n\\nI. ${\\\\int }_{0}^{\\\\infty }f(x)\\\\,\\\\text{d}x$ is convergent\\n\\nII. ${\\\\int }_{-\\\\infty }^{0}f(x)\\\\,\\\\text{d}x$ is divergent\\n\\nIII. ${\\\\int }_{-\\\\infty }^{\\\\infty }f(x)\\\\,\\\\text{d}x$ is divergent\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-51075\", \"problem\": \"Consider the function $f(x)=3{x}^{2}.$ Which of the following statements are true?\\n\\nI. ${\\\\int }_{0}^{\\\\infty }f(x)\\\\,\\\\text{d}x$ is convergent\\n\\nII. ${\\\\int }_{-\\\\infty }^{0}f(x)\\\\,\\\\text{d}x$ is divergent\\n\\nIII. ${\\\\int }_{-\\\\infty }^{\\\\infty }f(x)\\\\,\\\\text{d}x$ is divergent\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-118774\", \"problem\": \"Evaluate the integral ${\\\\int }_{-\\\\infty }^{\\\\infty }\\\\frac{2x}{{e}^{{x}^{2}}}\\\\,\\\\text{d}x.$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-118755:\nSuppose we have an improper integral in which both the left and right endpoints are unbounded:\n\n$$\n{\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x\n$$\n\nIf the integrand $f(x)$ is continuous on $(-\\infty ,\\infty ),$ then we can break the integral up into two improper integrals, each with a single unbounded endpoint:\n\n$$\n{\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x={\\int }_{-\\infty }^{0}f(x)\\,\\text{d}x+{\\int }_{0}^{\\infty }f(x)\\,\\text{d}x\n$$\n\nThen, we can compute each of the two integrals separately and combine their results. \n\n**Watch out!** If either of the two integrals on the right-hand side is divergent, then the integral on the left-hand side is also divergent.\n\nFirst, we calculate the antiderivative using a substitution.  Let $u={x}^{2}+4$,  then $\\text{d}u=2x\\,\\text{d}x.$ Hence, the antiderivative is\n\n$$\n\\begin{aligned}\\int \\frac{x}{{x}^{2}+4}\\,\\text{d}x & =\\frac{1}{2}\\int \\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{2}\\operatorname{ln}⁡|u|+C \\\\  & =\\frac{1}{2}\\operatorname{ln}⁡({x}^{2}+4)+C.\\end{aligned}\n$$\n\nNow, let's evaluate each integral in turn.\n\n- Statement I is false. Computing the required integral, we get\n\n$$\n\\begin{aligned}{\\int }_{0}^{\\infty }\\frac{x}{{x}^{2}+4}\\,\\text{d}x & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}\\frac{x}{{x}^{2}+4}\\,\\text{d}x \\\\  & ={lim}_{a\\to \\infty }{(\\frac{1}{2}\\operatorname{ln}⁡({x}^{2}+4))|}_{0}^{a} \\\\  & =\\frac{1}{2}{lim}_{a\\to \\infty }(\\operatorname{ln}⁡({a}^{2}+4)-\\operatorname{ln}⁡4) \\\\  & =\\frac{1}{2}{lim}_{a\\to \\infty }\\operatorname{ln}⁡({a}^{2}+4)-\\frac{\\operatorname{ln}⁡4}{2}.\\end{aligned}\n$$\n\nAs $a\\to \\infty $, we have that $\\operatorname{ln}⁡({a}^{2}+4)\\to \\infty .$ So the integral diverges.\n\n- Statement II is true. Computing the required integral, we get\n\n$$\n\\begin{aligned}{\\int }_{-\\infty }^{0}\\frac{x}{{x}^{2}+4}\\,\\text{d}x & ={lim}_{a\\to -\\infty }{\\int }_{a}^{0}\\frac{x}{{x}^{2}+4}\\,\\text{d}x \\\\  & ={lim}_{a\\to -\\infty }{(\\frac{1}{2}\\operatorname{ln}⁡({x}^{2}+4))|}_{a}^{0} \\\\  & =\\frac{1}{2}{lim}_{a\\to -\\infty }(\\operatorname{ln}⁡4-\\operatorname{ln}⁡({a}^{2}+4)) \\\\  & =\\frac{\\operatorname{ln}⁡4}{2}-{lim}_{a\\to -\\infty }\\operatorname{ln}⁡({a}^{2}+4).\\end{aligned}\n$$\n\nAs $a\\to -\\infty $, we have that $\\operatorname{ln}⁡({a}^{2}+4)\\to \\infty .$ So the integral diverges.\n\n- Statement III is true. The integral in statement III can be expressed as\n\n$$\n{\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x={\\int }_{-\\infty }^{0}f(x)\\,\\text{d}x+{\\int }_{0}^{\\infty }f(x)\\,\\text{d}x.\n$$\n\nHowever, both integrals on the right-hand side are divergent. Therefore, the integral on the left-hand side is also divergent.\n\nIn conclusion,  only statements II and III are true.\n\nq-51075:\nSuppose we have an improper integral in which both the left and right endpoints are unbounded:\n\n$$\n{\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x\n$$\n\nIf the integrand $f(x)$ is continuous on $(-\\infty ,\\infty ),$ then we can break the integral up into two improper integrals, each with a single unbounded endpoint:\n\n$$\n{\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x={\\int }_{-\\infty }^{0}f(x)\\,\\text{d}x+{\\int }_{0}^{\\infty }f(x)\\,\\text{d}x\n$$\n\nThen, we can compute each of the two integrals separately and combine their results. \n\n**Watch out!** If either of the two integrals on the right-hand side is divergent, then the integral on the left-hand side is also divergent.\n\nLet's evaluate each integral in turn.\n\n- Statement I is false. Computing the required integral, we get\n\n$$\n\\begin{aligned}{\\int }_{0}^{\\infty }3{x}^{2}\\,\\text{d}x & ={lim}_{a\\to \\infty }{\\int }_{0}^{a}3{x}^{2}\\,\\text{d}x \\\\  & ={lim}_{a\\to \\infty }({x}^{3}{|}_{0}^{a}) \\\\  & ={lim}_{a\\to \\infty }({a}^{3}-{0}^{3}) \\\\  & ={lim}_{a\\to \\infty }{a}^{3}.\\end{aligned}\n$$\n\nAs $a\\to \\infty $, we have that ${a}^{3}\\to \\infty .$ So the integral diverges.\n\n- Statement II is true. Computing the required integral, we get\n\n$$\n\\begin{aligned}{\\int }_{-\\infty }^{0}3{x}^{2}\\,\\text{d}x & ={lim}_{a\\to -\\infty }{\\int }_{a}^{0}3{x}^{2}\\,\\text{d}x \\\\  & ={lim}_{a\\to -\\infty }({x}^{3}{|}_{a}^{0}) \\\\  & ={lim}_{a\\to -\\infty }({0}^{3}-{a}^{3}) \\\\  & =-{lim}_{a\\to -\\infty }{a}^{3}.\\end{aligned}\n$$\n\nAs $a\\to -\\infty $, we have that ${a}^{3}\\to -\\infty .$ So the integral diverges.\n\n- Statement II is true. The integral in statement III can be expressed as\n\n$$\n{\\int }_{-\\infty }^{\\infty }f(x)\\,\\text{d}x={\\int }_{-\\infty }^{0}f(x)\\,\\text{d}x+{\\int }_{0}^{\\infty }f(x)\\,\\text{d}x.\n$$\n\nHowever, both integrals on the right-hand side are divergent. Therefore, the integral on the left-hand side is also divergent.\n\nIn conclusion,  only statements II and III are true.\n\nq-118774:\nWe break up the integral as follows:\n\n$$\n{\\int }_{-\\infty }^{\\infty }\\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x={\\int }_{-\\infty }^{0}\\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x+{\\int }_{0}^{\\infty }\\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x\n$$\n\nFirst, we calculate the antiderivative using a substitution. Let  $u={x}^{2}$,  then $\\text{d}u=2x\\text{d}x.$ Hence,\n\n$$\n\\begin{aligned}\\int \\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x & =\\int \\frac{1}{{e}^{u}}\\,\\text{d}u \\\\  & =\\int {e}^{-u}\\,\\text{d}u \\\\  & =-{e}^{-u}+C \\\\  & =-{e}^{-{x}^{2}}+C.\\end{aligned}\n$$\n\nWe now evaluate the first of the improper integrals, as follows:\n\n$$\n\\begin{aligned}{\\int }_{-\\infty }^{0}\\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x & ={lim}_{a\\to -\\infty }{\\int }_{a}^{0}\\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x \\\\  & ={lim}_{a\\to -\\infty }{(-{e}^{-{x}^{2}})|}_{a}^{0} \\\\  & ={lim}_{a\\to -\\infty }(-{e}^{0}-(-{e}^{-{a}^{2}})) \\\\  & =-1+0 \\\\  & =-1\\end{aligned}\n$$\n\nNow, notice that the integrand is an **odd** function. This means that we can immediately deduce that\n\n$$\n{\\int }_{0}^{\\infty }\\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x=1.\n$$\n\nTherefore, since both improper integrals exist, we conclude that \n\n$$\n\\begin{aligned}{\\int }_{-\\infty }^{\\infty }\\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x & ={\\int }_{-\\infty }^{0}\\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x+{\\int }_{0}^{\\infty }\\frac{2x}{{e}^{{x}^{2}}}\\,\\text{d}x \\\\  & =-1+1 \\\\  & =0.\\end{aligned}\n$$",
+      "fields": [
+        {
+          "key": "q-118755/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "I, II, and III"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "II only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "III only"
+            }
+          ]
+        },
+        {
+          "key": "q-51075/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "III only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "I, II, and III"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "I and III only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "I only"
+            }
+          ]
+        },
+        {
+          "key": "q-118774/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "The integral diverges"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "-2"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\frac{1}{2}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "0"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12c8e-fc64-71b1-a47b-51798dc510bb",
+  "previous_failures": []
+}
