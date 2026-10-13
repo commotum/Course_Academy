@@ -3,7 +3,7 @@
 
 use super::*;
 
-fn load_attrs(
+pub(super) fn load_attrs(
     db: &DatabaseValue,
     facts: &mut Facts,
     eid: u64,
@@ -35,7 +35,7 @@ fn load_attrs(
     Ok(())
 }
 
-fn referrers(db: &DatabaseValue, eid: u64, attr: &str) -> Result<Vec<u64>> {
+pub(super) fn referrers(db: &DatabaseValue, eid: u64, attr: &str) -> Result<Vec<u64>> {
     let (ns, name) = attr.split_once('/').ok_or("Invalid reference attribute")?;
     let Some(attribute) = db.schema().resolve_ident(&Keyword::new(ns, name)) else {
         return Ok(vec![]);
@@ -257,6 +257,12 @@ fn lesson_sections(db: &DatabaseValue, facts: &mut Facts, topic: u64) -> Result<
         {
             load_attrs(db, facts, example, CONTENT_ATTRS)?;
         }
+        let knowledge_point = scalar(facts, content, "knowledge-point/id").map(|_| {
+            json!({
+                "id": content,
+                "title": text(facts, content, "knowledge-point/title"),
+            })
+        });
         let Some((kind, content, heading)) = section_content(facts, content)? else {
             continue;
         };
@@ -281,7 +287,9 @@ fn lesson_sections(db: &DatabaseValue, facts: &mut Facts, topic: u64) -> Result<
         let mut section = json!({
             "id": display_id(facts, step, "step/id"),
             "stepId": step.to_string(),
-            "mathAcademyId": long(facts, content, if kind == "tutorial" { "tutorial/math-academy-id" } else { "question/math-academy-id" }).map(|id| id.to_string()),
+            "contentId": content,
+            "knowledgePoint": knowledge_point,
+            "mathAcademyId": text(facts, content, if kind == "tutorial" { "tutorial/math-academy-id" } else { "question/math-academy-id" }).or_else(|| long(facts, content, if kind == "tutorial" { "tutorial/math-academy-id" } else { "question/math-academy-id" }).map(|id| id.to_string())),
             "kind": kind, "title": heading, "markdown": markdown,
         });
         if kind == "example" {

@@ -12,15 +12,22 @@ from pathlib import Path
 from edb_transport import rejection_code, replay
 
 
-def response(code='postgres/stale-basis'):
+def response(code='postgres/stale-basis', version=7, blob_version=4):
     code = code.encode()
     message = b'Expected basis differs from the serialized database value'
-    body = b'\x06\x01\x04'+len(code).to_bytes(4, 'big')+code+len(message).to_bytes(4, 'big')+message+b'\0'*5
-    blob = b'EDBC\x0c\x00\x03\x00'+len(body).to_bytes(8, 'big')+body
+    body = bytes([version, 1, 4])+len(code).to_bytes(4, 'big')+code+len(message).to_bytes(4, 'big')+message+b'\0'*5
+    blob = b'EDBC\x0c'+blob_version.to_bytes(2, 'big')+b'\0'+len(body).to_bytes(8, 'big')+body
     return blob+hashlib.sha256(blob).digest()
 
 
 class TransportTests(unittest.TestCase):
+    def test_current_and_legacy_rejections_are_distinguished_from_unknown_versions(self):
+        for version, blob_version in ((6, 3), (7, 4)):
+            with self.subTest(version=version):
+                self.assertEqual(rejection_code(response(version=version, blob_version=blob_version)), 'postgres/stale-basis')
+        self.assertIsNone(rejection_code(response(version=8)))
+        self.assertIsNone(rejection_code(response(blob_version=5)))
+
     def test_remote_code_requires_valid_known_format_and_checksum(self):
         frame = response()
         self.assertEqual(rejection_code(frame), 'postgres/stale-basis')

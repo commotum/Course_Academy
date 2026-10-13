@@ -150,6 +150,7 @@ fn content_json(
             "kind": "question",
             "id": identity(s, eid, "question/id")?,
             "entityId": eid,
+            "mathAcademyId": content_math_academy_id(record),
             "problem": text(s, eid, "question/problem"),
             "isExample": s.is_example(eid),
             "requiresCalculator": record.get("question/requires-calculator"),
@@ -161,6 +162,7 @@ fn content_json(
             "kind": "tutorial",
             "id": identity(s, eid, "tutorial/id")?,
             "entityId": eid,
+            "mathAcademyId": content_math_academy_id(record),
             "title": text(s, eid, "tutorial/title"),
             "content": text(s, eid, "tutorial/content"),
         })

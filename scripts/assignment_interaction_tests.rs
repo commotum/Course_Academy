@@ -57,25 +57,14 @@ impl Fixture {
         .into_iter()
         .enumerate()
         {
-            db = db
-                .with_edn(schema, index as i64 + 1, EntityRef::Id(DB_SOURCE_SYSTEM))?
-                .db_after;
+            db = offline_tx(
+                &db,
+                schema,
+                index as i64 + 1,
+                EntityRef::Id(DB_SOURCE_SYSTEM),
+            )?
+            .db_after;
         }
-        // The SSD's approved type and field-validation migrations are reproduced
-        // here without changing the repository's legacy schema files.
-        db = offline_tx(
-            &db,
-            r#"[
-          {:db/ident :answer-field.type/checkbox}
-          {:db/ident :answer-field.type/free}
-          [:db/retract :answer-field/validate :db.entity/attrs :answer-field/choices]
-          [:db/retract :answer-field/validate :db.entity/attrs :answer-field/correct]
-          {:db/id :answer-field/validate :db.entity/preds course-academy.answer-field/valid?}
-        ]"#,
-            100,
-            EntityRef::Id(DB_SOURCE_SYSTEM),
-        )?
-        .db_after;
         let report = db.with_edn(r#"[
           {:db/id "engine" :db/ident :application/ca-engine}
           {:db/id "course" :course/id #uuid "00000000-0000-4000-8000-000000000001" :course/title "Test course"}
@@ -383,6 +372,7 @@ fn assignment_reveals_only_saved_or_preview_answers_and_keeps_blanks_private() -
     assert_eq!(first["status"], "incorrect");
     assert_eq!(first["fields"][0]["response"]["value"], "3");
     assert_eq!(first["fields"][0]["correctAnswer"]["value"], "2");
+    assert_eq!(first["fields"][0]["grade"], "incorrect");
     assert_eq!(first["solution"], "One plus one is two.");
     assert!(first["fields"][0]["choices"].as_array().unwrap().is_empty());
     assert!(

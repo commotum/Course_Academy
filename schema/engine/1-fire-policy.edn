@@ -50,7 +50,7 @@
  {:db/ident :policy/initial-accuracy
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
-  :db/doc "Starting accuracy when learner evidence is unavailable; also the default topic difficulty and normalization baseline in the current FIRe model. Strictly between zero and one."}
+  :db/doc "Fallback starting accuracy when learner and prerequisite evidence is unavailable, and normalization baseline for learner-topic repetition speed. Strictly between zero and one."}
 
  {:db/ident :policy/accuracy-update-rate
   :db/valueType :db.type/double
@@ -60,7 +60,7 @@
  {:db/ident :policy/speed-exponent
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
-  :db/doc "Nonnegative finite exponent controlling the effect of learner accuracy and topic difficulty on repetition credit."}
+  :db/doc "Nonnegative finite exponent controlling how learner-topic effective accuracy relative to initial-accuracy changes repetition speed. Topic workload difficulty does not enter this calculation."}
 
  {:db/ident :policy/minimum-speed
   :db/valueType :db.type/double

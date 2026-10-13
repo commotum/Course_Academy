@@ -2,7 +2,9 @@ import { marked } from './vendor/marked/marked.esm.js';
 import { romanLists } from './prose-lists.js';
 import { createCoursePicker } from './navigation.js';
 import { createTargetControls } from './targets.js';
+import { attachTopicMenu } from './topic-menu.js';
 import { attachStepMenu } from './step-menu.js';
+import { readRequest } from './requests.js';
 
 const $ = id => document.getElementById(id);
 let currentCourseId = null;
@@ -13,7 +15,6 @@ let mathLoader = null;
 let typesetting = Promise.resolve();
 let sectionObserver = null;
 const targetControls = createTargetControls({
-  readLearner: async () => (await api('/api/topic?topic=' + encodeURIComponent(new URL(location.href).searchParams.get('topic') || ''))).learner,
   onChange: learner => {
     if (curriculumSnapshot) void curriculumSnapshot.then(snapshot => { snapshot.learner = { ...snapshot.learner, ...learner }; }).catch(() => {});
   },
@@ -108,7 +109,7 @@ function typeset(host) {
   return typesetting;
 }
 async function api(path, signal) {
-  const response = await fetch(path, { cache: 'no-store', signal });
+  const response = await readRequest(path, { signal });
   let result;
   try { result = await response.json(); } catch { throw new Error('The topic server did not return a response. Check that it is running, then try again.'); }
   if (!response.ok || result.error) {
@@ -121,7 +122,9 @@ function sidebar(data, sections, course) {
   const aside = el('aside', 'topic-sidebar'); aside.setAttribute('aria-label', 'Topic navigation');
   const content = el('div', 'sidebar-content');
   const header = el('header', 'sidebar-heading');
-  header.append(el('h1', 'sidebar-title', data.topic.title));
+  const title = el('h1', 'sidebar-title', data.topic.title);
+  attachTopicMenu(title, data.topic);
+  header.append(title);
   const actions = el('nav', 'sidebar-actions'); actions.setAttribute('aria-label', 'Topic actions');
   if (course) actions.append(link(course.title, courseURL(course.id), 'sidebar-course-link'));
   const tools = el('div', 'sidebar-tools');
@@ -133,6 +136,7 @@ function sidebar(data, sections, course) {
     const list = el('ol', 'topic-toc');
     sections.forEach(section => {
       const item = el('li'); const anchor = link(section.title, '#' + section.anchor);
+      attachStepMenu(anchor, section.knowledgePoint ? section.knowledgePoint.id : section.contentId, section.knowledgePoint ? section.knowledgePoint.mathAcademyId : section.mathAcademyId, { kind: section.knowledgePoint ? 'knowledge point' : section.kind === 'tutorial' ? 'tutorial' : 'question' });
       item.append(anchor); list.append(item);
     });
     nav.append(list); content.append(nav);
@@ -142,7 +146,9 @@ function sidebar(data, sections, course) {
     nav.append(el('h2', 'sidebar-label', 'Prerequisites'));
     const list = el('ul', 'prerequisite-list');
     for (const prerequisite of data.prerequisites) {
-      const item = el('li'); item.append(link(prerequisite.title, topicURL(prerequisite, course?.id))); list.append(item);
+      const item = el('li');
+      attachTopicMenu(item, prerequisite);
+      item.append(link(prerequisite.title, topicURL(prerequisite, course?.id))); list.append(item);
     }
     nav.append(list); content.append(nav);
   }
@@ -170,13 +176,14 @@ function canonicalAnswers(fields) {
 }
 function instructionalSection(section) {
   const article = el('section', 'topic-section'); article.id = section.anchor;
-  attachStepMenu(article, section.stepId, section.mathAcademyId);
+  attachStepMenu(article, section.contentId, section.mathAcademyId, { kind: section.kind === 'tutorial' ? 'tutorial' : 'question' });
   article.setAttribute('aria-labelledby', section.anchor + '-title');
   const header = el('div', 'section-heading');
   const label = el('div');
   const heading = el('h2'); heading.id = section.anchor + '-title';
   if (section.kind === 'example') heading.append(el('strong', '', 'Example: '));
   heading.append(section.title);
+  if (section.knowledgePoint) attachStepMenu(heading, section.knowledgePoint.id, section.knowledgePoint.mathAcademyId, { kind: 'knowledge point' });
   label.append(heading); header.append(label);
   if (section.requiresCalculator) header.append(el('span', 'calculator-note', 'Calculator example'));
   article.append(header);

@@ -2,7 +2,8 @@ import { marked } from './vendor/marked/marked.esm.js';
 import { romanLists } from './prose-lists.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
 import { developerModeReady, isDeveloperMode } from './developer-mode.js';
-import { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, checkboxControl, freeInput } from './question-fields.js';
+import { loadMathInputs, inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, checkboxControl, freeInput, choiceIndicator, fieldFeedback } from './question-fields.js';
+import { attachStepMenu } from './step-menu.js';
 import { attachTopicMenu } from './topic-menu.js';
 
 await developerModeReady;
@@ -126,8 +127,9 @@ function answerValue(answer) {
 function fieldControl(field, question, index) {
   const set = el('fieldset', 'answer-field');
   set.dataset.fieldId = String(entityId(field));
+  set.dataset.type = short(field.type);
   const label = field.key === 'selection' ? 'Choose an answer' : fieldLabel(field.key, index);
-  set.append(el('legend', field.key === 'selection' ? 'sr-only' : '', label));
+  set.append(el('legend', field.key === 'selection' || short(field.type) === 'checkbox' ? 'sr-only' : '', label));
   const response = field.response;
   const responseId = response?.choiceId ?? response?.entityId ?? response?.id;
   const name = `assignment-${questionKey(question)}-${entityId(field)}`;
@@ -145,7 +147,7 @@ function fieldControl(field, question, index) {
       const row = el('label', 'choice');
       const input = el('input'); input.type = 'radio'; input.name = name;
       input.value = String(entityId(choice)); input.checked = String(responseId) === input.value;
-      row.append(input, answerValue(choice)); choices.append(row);
+      row.append(choiceIndicator(input), answerValue(choice)); choices.append(row);
     }
     set.append(choices);
   } else if (type === 'select') {
@@ -159,6 +161,7 @@ function fieldControl(field, question, index) {
     select.value = responseId == null ? '' : String(responseId);
     set.append(richSelect(select, field.choices || [], answerValue, entityId, typeset));
   }
+  fieldFeedback(set, field, question.status);
   return set;
 }
 function collectResponses(view) {
@@ -205,6 +208,10 @@ function refreshTimers() {
 }
 function renderQuestionFeedback(view) {
   const question = view.question;
+  for (const field of question.fields || []) {
+    const host = [...(view.form?.querySelectorAll('[data-field-id]') || [])].find(node => node.dataset.fieldId === String(entityId(field)));
+    if (host) fieldFeedback(host, field, question.status);
+  }
   view.result.replaceChildren();
   if (answered(question)) {
     const feedback = el('div', 'feedback'); questionFeedback(feedback, question.status); feedback.setAttribute('role', 'status');
@@ -231,6 +238,7 @@ function renderQuestionFeedback(view) {
 }
 function questionView(question) {
   const node = el('section', 'assignment-question');
+  attachStepMenu(node, question.entityId, question.mathAcademyId, { kind: 'question' });
   const key = questionKey(question);
   node.dataset.question = key;
   const meta = el('div', 'step-meta');
@@ -313,6 +321,7 @@ function coverage(topics) {
 function contentView(content) {
   const body = el('div', 'assignment-content');
   if (!content) { body.append(el('p', 'assignment-note', 'Problem content is not available.')); return body; }
+  attachStepMenu(body, content.entityId, content.mathAcademyId, { kind: ({ 'assigned-problem': 'assigned problem', multistep: 'multipart problem' })[short(content.kind)] || short(content.kind) });
   switch (short(content.kind)) {
     case 'assigned-problem':
       body.append(contentView(content.content));
@@ -327,6 +336,7 @@ function contentView(content) {
       const parts = el('div', 'assignment-parts');
       for (const [index, step] of (content.steps || []).entries()) {
         const part = el('section', 'assignment-part');
+        attachStepMenu(part, step.entityId);
         if (step.title) part.append(el('h3', 'step-title', step.title));
         else part.append(el('h3', 'step-title', `Part ${index + 1}`));
         part.append(contentView(step.content)); parts.append(part);
@@ -561,6 +571,7 @@ function assignmentGroups(assignments, sort) {
 }
 function assignmentRow(assignment, index, showCourse = false) {
   const row = el('article', 'queue-card');
+  attachStepMenu(row, assignment.entityId, null, { kind: 'activity' });
   const info = el('div');
   const meta = el('div', 'queue-meta'); meta.append(dueBadge(assignment.due), el('span', '', problemCount(assignment.problemCount)));
   if (showCourse && assignment.course?.title) meta.append(el('span', 'assignment-course-name', assignment.course.title));
@@ -629,6 +640,7 @@ function renderAssignment(data) {
   const topline = el('div', 'lesson-topline'); topline.append(link('← Assignments', '/assignments', 'text-button'));
   if (data.preview) topline.append(el('span', '', 'Developer mode · Nothing recorded'));
   const heading = el('header', 'assignment-heading');
+  attachStepMenu(heading, assignment.entityId, null, { kind: 'activity' });
   heading.append(el('p', 'eyebrow', 'Assignment'), el('h1', '', assignment.title));
   const facts = el('div', 'assignment-facts'); facts.append(dueBadge(assignment.due), el('span', '', problemCount(assignment.problemCount ?? assignment.steps?.filter(step => short(step.content?.kind) === 'assigned-problem').length)));
   heading.append(facts);
@@ -638,6 +650,7 @@ function renderAssignment(data) {
   for (const step of assignment.steps || []) {
     const isProblem = short(step.content?.kind) === 'assigned-problem';
     const section = el('section', isProblem ? 'assignment-problem' : 'assignment-description');
+    attachStepMenu(section, step.entityId);
     if (isProblem) {
       number++;
       section.id = 'problem-' + number;
@@ -668,6 +681,8 @@ async function load({ preserve = false } = {}) {
     const data = await api(id ? '/api/assignment?assignment=' + encodeURIComponent(id) : '/api/assignments', null, { signal: requestController.signal });
     if (request !== generation) return;
     if (id ? !data.assignment?.title || !Array.isArray(data.assignment.steps) : !Array.isArray(data.assignments)) throw new Error('The assignment data is unavailable. Try again.');
+    if (id) await loadMathInputs();
+    if (request !== generation) return;
     if (window.MathJax?.typesetClear) MathJax.typesetClear([$('main')]);
     updateHeader(data); $('main').replaceChildren();
     if (id) renderAssignment(data); else renderList(data);

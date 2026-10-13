@@ -22,12 +22,12 @@
  {:db/ident :task-item/status
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Started means actively working; paused suspends the working timer. Completed ends a tutorial or worked example question; correct, incorrect, and skipped end an ordinary question attempt. Retained status transaction history supplies start, pause, resume, and finish timestamps. Questions never presented do not create task items. Reference targets and valid transitions require application validation."}
+  :db/doc "Started means actively working; paused suspends the working timer. Completed ends a tutorial, worked example, or submitted question containing free fields whose responses are saved without automatic grading. Correct, incorrect, and skipped end automatically evaluated ordinary question attempts. Retained status history supplies timing. Free response completion does not assert correctness, performance, or mastery credit. Questions never presented do not create task items. Valid transitions and type-specific completion require application validation."}
 
  {:db/ident :task-item/responses
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Answer entities supplied for this question, for both entered blank values and selected radio/select options. Recover each answer's field through the reverse answer-field/choices ownership ref. The application checks field membership and at most one response per field, deduplicates entered values within their field, and preserves referenced answer values. These ordinary refs do not own answers."}
+  :db/doc "Answer entities submitted for this question: entered blank/free values, selected radio/select options, and explicit true or false answers for every checkbox field. Unchecked checkbox options submit false and are not unanswered. Recover each answer's field through reverse answer-field/choices ownership. At most one response per field; identical typed entered values are reused within that field and original strings are preserved. These ordinary refs do not own answers. A free response does not itself assert correct or incorrect."}
 
  {:db/ident :task-item/elapsed-seconds
   :db/valueType :db.type/double

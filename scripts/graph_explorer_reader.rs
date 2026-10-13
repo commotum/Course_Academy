@@ -2,9 +2,12 @@
 //! This peer never opens a transactor or writes database facts.
 
 use edb_core::{
-    DatabaseValue, IndexPrefix, Keyword, Peer, SemanticError, SnapshotKey, Value,
+    DatabaseValue, IndexPrefix, Keyword, Peer, SemanticError, SnapshotKey, TimePoint, Value,
+    QueryControl, QueryInput, QueryResult, QuerySourceValue, QueryValue,
     postgres_config_from_env,
 };
+use edb_core::edn::EdnValue;
+use edb_core::edn_query::{EdnQueryArgument, parse_query_edn};
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
@@ -75,9 +78,7 @@ fn learner_json(facts: &Facts, learner_eid: u64, learner_id: &str) -> Json {
     })
 }
 
-fn project(db: &DatabaseValue) -> Result<Facts> {
-    let mut facts = Facts::new();
-    for attr in [
+const GRAPH_ATTRIBUTES: &[&str] = &[
         "topic/id",
         "topic/title",
         "topic/math-academy-id",
@@ -101,7 +102,12 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
         "progress/topic",
         "progress/repetitions",
         "progress/learned",
-    ] {
+
+];
+
+fn project(db: &DatabaseValue) -> Result<Facts> {
+    let mut facts = Facts::new();
+    for &attr in GRAPH_ATTRIBUTES {
         let (ns, name) = attr.split_once('/').unwrap();
         let Some(attribute) = db.schema().resolve_ident(&Keyword::new(ns, name)) else {
             // Optional schema additions may not yet be installed.
@@ -131,6 +137,70 @@ fn project(db: &DatabaseValue) -> Result<Facts> {
         }
     }
     Ok(facts)
+}
+
+fn projection_replacements(db: &DatabaseValue, previous: &SnapshotKey) -> Result<Option<Facts>> {
+    let current=db.snapshot_key()?;
+    if previous.lineage_id()!=current.lineage_id() || previous.generation()!=current.generation()
+        || previous.eidx_frontier()>current.eidx_frontier() || previous.basis_t()>=current.basis_t()
+        || current.basis_t()-previous.basis_t()>256 {
+        return Ok(None);
+    }
+    let mut touched=BTreeSet::new();
+    let mut expected=previous.basis_t()+1;
+    for tx in db.log_value()?.tx_range(Some(TimePoint::T(expected)),Some(TimePoint::T(current.basis_t()+1)))? {
+        let tx=tx?;
+        if tx.t!=expected { return Ok(None); }
+        expected+=1;
+        for datom in tx.data {
+            let name=db.schema().attribute(datom.attribute)?.ident.qualified_name();
+            if name=="db/txInstant" { continue; }
+            if name.starts_with("db/") || name.starts_with("db.") { return Ok(None); }
+            if GRAPH_ATTRIBUTES.contains(&name.as_str()) { touched.insert(datom.entity); }
+        }
+    }
+    if expected!=current.basis_t()+1 { return Ok(None); }
+    Ok(Some(projection_entity_records(db,touched)?))
+}
+
+fn projection_entity_records(db:&DatabaseValue,touched:BTreeSet<u64>) -> Result<Facts> {
+    let attributes:BTreeMap<_,_>=GRAPH_ATTRIBUTES.iter().filter_map(|&name| {
+        let (ns,n)=name.split_once('/')?;
+        db.schema().resolve_ident(&Keyword::new(ns,n)).map(|id|(id,name))
+    }).collect();
+    let mut replacements=Facts::new();
+    for entity in touched {
+        let record=replacements.entry(entity).or_default();
+        for datom in db.collect_datoms_with_prefix(&IndexPrefix::Eavt {entity,attribute:None,value:None})? {
+            if let Some(&name)=attributes.get(&datom.attribute) {
+                record.entry(name).or_default().push(datom.value);
+            }
+        }
+    }
+    Ok(replacements)
+}
+
+#[derive(Default)]
+struct GraphProjection {
+    key:Option<SnapshotKey>,
+    facts:Facts,
+}
+impl GraphProjection {
+    fn capture(&mut self, db:&DatabaseValue) -> Result<&Facts> {
+        let key=db.snapshot_key()?;
+        if self.key.as_ref()==Some(&key) { return Ok(&self.facts); }
+        let replacements=self.key.as_ref().and_then(|previous|projection_replacements(db,previous).ok().flatten());
+        if let Some(replacements)=replacements {
+            self.replace_records(replacements);
+        }else {self.facts=project(db)?;}
+        self.key=Some(key);
+        Ok(&self.facts)
+    }
+    fn replace_records(&mut self,replacements:Facts) {
+        for (entity,record) in replacements {
+            if record.is_empty() {self.facts.remove(&entity);} else {self.facts.insert(entity,record);}
+        }
+    }
 }
 
 fn graph_progress(
@@ -170,8 +240,108 @@ fn graph_progress(
     Ok((repetitions, learned))
 }
 
+// Ownership is selected once at the captured basis. Read complete coverage
+// once for the calendar, or use VAET seeks for a selected set of targets.
+const ASSIGNMENT_OWNERSHIP_QUERY: &str = r#"[:find ?activity
+ :in $ ?learner
+ :where [?learner :learner/assignments ?activity]]"#;
+
+#[derive(Default)]
+struct AssignmentCoverage {
+    course_topics: BTreeMap<u64, BTreeSet<u64>>,
+    activity_topics: BTreeMap<u64, BTreeSet<u64>>,
+    metadata: Facts,
+}
+
+fn assignment_coverage(db: &DatabaseValue, learner: u64, targets: Option<&[u64]>) -> Result<AssignmentCoverage> {
+    let mut result = AssignmentCoverage::default();
+    if targets.is_some_and(|ids| ids.is_empty()) { return Ok(result); }
+    for attr in ["assigned-problem/topic-coverage", "assigned-problem/content", "step/content",
+                 "activity/steps", "multistep/steps", "learner/assignments"] {
+        let (ns, name) = attr.split_once('/').unwrap();
+        if db.schema().resolve_ident(&Keyword::new(ns, name)).is_none() { return Ok(result); }
+    }
+    static OWNERSHIP: std::sync::OnceLock<edb_core::edn_query::EdnQuery> = std::sync::OnceLock::new();
+    let ownership = OWNERSHIP.get_or_init(||
+        parse_query_edn(ASSIGNMENT_OWNERSHIP_QUERY).expect("Fixed assignment ownership query must parse")
+    );
+    let control = QueryControl {
+        timeout: Some(std::time::Duration::from_secs(10)),
+        max_work: 20_000_000,
+        max_intermediate_rows: 100_000,
+        max_result_rows: 100_000,
+        ..QueryControl::default()
+    };
+    let mut binding = ownership.bind(&[
+        EdnQueryArgument::Source(QuerySourceValue::Database(db.clone())),
+        EdnQueryArgument::Data(EdnValue::Long(i64::try_from(learner)?)),
+    ])?;
+    binding.inputs = vec![QueryInput::Scalar(Value::Ref(learner))];
+    let owned = binding.execute(&control, None)?;
+    let QueryResult::Relation(rows) = owned.result else { return Err("Invalid assignment ownership query result".into()); };
+    for row in rows {
+        let [QueryValue::Scalar(Value::Ref(activity))] = row.as_slice() else {
+            return Err("Invalid assignment ownership query row".into());
+        };
+        result.activity_topics.entry(*activity).or_default();
+        topic_reader::load_attrs(db, &mut result.metadata, *activity,
+            &["activity/id", "activity/title", "activity/course", "activity/due"])?;
+    }
+    if result.activity_topics.is_empty() { return Ok(result); }
+    let mut covered = Vec::new();
+    if let Some(targets) = targets {
+        for &topic in targets {
+            for problem in topic_reader::referrers(db, topic, "assigned-problem/topic-coverage")? {
+                covered.push((problem, topic));
+            }
+        }
+    } else {
+        let attribute = db.schema().resolve_ident(&Keyword::new("assigned-problem", "topic-coverage")).unwrap();
+        for datom in db.collect_datoms_with_prefix(&IndexPrefix::Aevt { attribute, entity: None, value: None })? {
+            if let Value::Ref(topic) = datom.value { covered.push((datom.entity, topic)); }
+        }
+    }
+    let mut ancestry = BTreeMap::<u64, (Vec<u64>, BTreeSet<u64>)>::new();
+    for (problem, topic) in covered {
+        let mut pending = vec![problem];
+        let mut visited = BTreeSet::new();
+        while let Some(content) = pending.pop() {
+            if !visited.insert(content) { continue; }
+            if !ancestry.contains_key(&content) {
+                let mut parents = topic_reader::referrers(db, content, "assigned-problem/content")?;
+                let mut owners = BTreeSet::new();
+                for step in topic_reader::referrers(db, content, "step/content")? {
+                    parents.extend(topic_reader::referrers(db, step, "multistep/steps")?);
+                    for activity in topic_reader::referrers(db, step, "activity/steps")? {
+                        if result.activity_topics.contains_key(&activity) { owners.insert(activity); }
+                    }
+                }
+                ancestry.insert(content, (parents, owners));
+            }
+            let (parents, owners) = &ancestry[&content];
+            pending.extend(parents);
+            for activity in owners {
+                result.activity_topics.get_mut(activity).unwrap().insert(topic);
+                if let Some(course) = refs(&result.metadata, *activity, "activity/course").first() {
+                    result.course_topics.entry(*course).or_default().insert(topic);
+                }
+            }
+        }
+    }
+    Ok(result)
+}
+
+#[cfg(test)]
+fn target_course_topics(db: &DatabaseValue, learner: u64, targets: &[u64]) -> Result<BTreeMap<u64, BTreeSet<u64>>> {
+    Ok(assignment_coverage(db, learner, Some(targets))?.course_topics)
+}
+
 fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
     let facts = project(db)?;
+    graph_from_facts(db,learner_id,&facts)
+}
+
+fn graph_from_facts(db: &DatabaseValue, learner_id: &str, facts:&Facts) -> Result<Json> {
     let learner_eid = facts
         .keys()
         .copied()
@@ -205,6 +375,24 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
             links.push(json!({"source": eid, "target": target}));
         }
     }
+    let target_ids: Vec<_> = refs(&facts, learner_eid, "learner/targets").into_iter()
+        .filter(|id| topic_ids.contains(id)).collect();
+    let coverage = assignment_coverage(db, learner_eid, None)?;
+    let target_ids: BTreeSet<_> = target_ids.into_iter().collect();
+    let target_courses: BTreeMap<_, BTreeSet<_>> = coverage.course_topics.iter()
+        .map(|(course, topics)| (*course, topics.intersection(&target_ids).copied().collect())).collect();
+    let target_schedule: Vec<_> = coverage.activity_topics.iter().map(|(activity, topics)| {
+        let course_id = refs(&coverage.metadata, *activity, "activity/course").first()
+            .and_then(|course| uuid(facts, *course, "course/id"));
+        let due = match scalar(&coverage.metadata, *activity, "activity/due") {
+            Some(Value::Instant(at)) => Some(*at),
+            _ => None,
+        };
+        json!({"assignmentId": uuid(&coverage.metadata, *activity, "activity/id"),
+            "title": text(&coverage.metadata, *activity, "activity/title"),
+            "courseId": course_id, "due": due,
+            "topicIds": topics.intersection(&topic_ids).copied().collect::<Vec<_>>()})
+    }).collect();
     let mut courses = Vec::new();
     for eid in facts.keys().copied() {
         let Some(id) = uuid(&facts, eid, "course/id") else {
@@ -229,6 +417,7 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
             "groups": course_groups(&facts, eid),
             "code": text(&facts, eid, "course/code"),
             "topicIds": membership,
+            "targetTopicIds": target_courses.get(&eid).cloned().unwrap_or_default(),
         }));
     }
     courses.sort_by(|a, b| {
@@ -240,14 +429,15 @@ fn graph(db: &DatabaseValue, learner_id: &str) -> Result<Json> {
     let (repetitions, learned) = graph_progress(&facts, learner_eid, &topic_ids)?;
     Ok(json!({
         "basis": db.basis_t(), "courses": courses, "nodes": nodes, "links": links,
+        "targetSchedule": target_schedule,
         "learner": learner_json(&facts, learner_eid, learner_id),
         "repetitions": repetitions, "learned": learned,
     }))
 }
 
-fn course_facts(db: &DatabaseValue) -> Result<Facts> {
+fn course_facts(db: &DatabaseValue, base:Option<&Facts>) -> Result<Facts> {
     // Add course-page metadata to the shared curriculum projection.
-    let mut facts = project(db)?;
+    let mut facts = match base {Some(facts)=>facts.clone(),None=>project(db)?};
     for attr in [
         "course/next",
         "course/math-academy-id",
@@ -411,8 +601,8 @@ fn course_completion(facts: &Facts, course_eid: u64, progress: &TopicProgress) -
     (completed, topics.len())
 }
 
-fn course(db: &DatabaseValue, learner_id: &str, selector: Option<&str>) -> Result<Option<Json>> {
-    let facts = course_facts(db)?;
+fn course_from_facts(db: &DatabaseValue, learner_id: &str, selector: Option<&str>, base:Option<&Facts>) -> Result<Option<Json>> {
+    let facts = course_facts(db,base)?;
     let learner_eid = facts
         .keys()
         .copied()
@@ -547,6 +737,7 @@ fn serve(peer: &Peer, learner_id: &str) -> Result<()> {
     let mut cached_graph: Option<Vec<u8>> = None;
     let mut cached_courses: BTreeMap<String, Vec<u8>> = BTreeMap::new();
     let mut cached_topics: BTreeMap<String, Vec<u8>> = BTreeMap::new();
+    let mut projection=GraphProjection::default();
     const MAX_CACHED_COURSES: usize = 16;
     const MAX_CACHED_TOPICS: usize = 24;
     let stdin = std::io::stdin();
@@ -607,7 +798,7 @@ fn serve(peer: &Peer, learner_id: &str) -> Result<()> {
                     };
                 let cache_id = selector.unwrap_or("");
                 if !cached_courses.contains_key(cache_id) {
-                    let envelope = match course(&db, learner_id, selector)? {
+                    let envelope = match course_from_facts(&db, learner_id, selector,Some(projection.capture(&db)?))? {
                         Some(data) => json!({"ok": true, "data": data}),
                         None => {
                             json!({"ok": false, "error": "Course not found.", "code": "not-found"})
@@ -621,7 +812,7 @@ fn serve(peer: &Peer, learner_id: &str) -> Result<()> {
                 stdout.write_all(&cached_courses[cache_id])?;
             } else {
                 if cached_graph.is_none() {
-                    let data = graph(&db, learner_id)?;
+                    let data = graph_from_facts(&db, learner_id,projection.capture(&db)?)?;
                     cached_graph = Some(serde_json::to_vec(&json!({"ok": true, "data": data}))?);
                 }
                 stdout.write_all(cached_graph.as_ref().unwrap())?;
@@ -685,6 +876,116 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn graph_projection_replaces_only_changed_records_and_matches_a_full_read() {
+        use edb_core::{Attribute,Cardinality,Database,EntityRef,Schema,TxOp,TxValue,ValueType};
+        let mut schema=Schema::new();
+        let mut ids=BTreeMap::new();
+        for (i,&name) in GRAPH_ATTRIBUTES.iter().enumerate() {
+            let (ns,n)=name.split_once('/').unwrap();
+            let kind=match name {
+                "topic/id"|"course/id"|"course-group/id"=>ValueType::Uuid,
+                "topic/title"|"course/title"|"course/code"|"course-group/title"|"learner/id"|"learner/name"=>ValueType::String,
+                "learner/self-directed"|"progress/learned"=>ValueType::Boolean,
+                "topic/math-academy-id"=>ValueType::Long,
+                "progress/repetitions"=>ValueType::Double,
+                _=>ValueType::Ref,
+            };
+            let id=100+i as u32;
+            schema.install(Attribute::new(id,Keyword::new(ns,n),kind,if kind==ValueType::Ref {Cardinality::Many}else{Cardinality::One})).unwrap();
+            ids.insert(name,id);
+        }
+        schema.install(Attribute::new(200,Keyword::new("question","text"),ValueType::String,Cardinality::One)).unwrap();
+        let add=|entity,name,value|TxOp::Add {entity:EntityRef::Id(entity),attribute:ids[name],value:TxValue::Scalar(value)};
+        let report=Database::new(schema).unwrap().with(&[
+            add(1,"topic/id",Value::Uuid(1)),add(1,"topic/title",Value::String("Before".into())),
+            add(2,"learner/id",Value::String("test".into())),add(2,"learner/queue",Value::Ref(1)),
+            add(2,"learner/knowledge-profile",Value::Ref(3)),add(3,"progress/topic",Value::Ref(1)),
+            add(3,"progress/repetitions",Value::Double(1.0)),
+        ],0,EntityRef::Id(99)).unwrap();
+        let base=report.db_after.database_value();
+        let mut projection=GraphProjection {key:None,facts:project(&base).unwrap()};
+        let original=projection.facts.clone();
+        let changed=report.db_after.with(&[
+            add(1,"topic/title",Value::String("After".into())),
+            add(3,"progress/repetitions",Value::Double(2.0)),
+            TxOp::Retract {entity:EntityRef::Id(2),attribute:ids["learner/queue"],value:Some(TxValue::Scalar(Value::Ref(1)))},
+        ],1,EntityRef::Id(99)).unwrap();
+        let db=changed.db_after.database_value();
+        projection.replace_records(projection_entity_records(&db,BTreeSet::from([1,2,3])).unwrap());
+        assert_eq!(projection.facts,project(&db).unwrap());
+        assert_eq!(project(&base).unwrap(),original);
+        let unrelated=changed.db_after.with(&[TxOp::Add {entity:EntityRef::Id(7),attribute:200,value:TxValue::Scalar(Value::String("Question".into()))}],2,EntityRef::Id(99)).unwrap();
+        let next=unrelated.db_after.database_value();
+        projection.replace_records(projection_entity_records(&next,BTreeSet::from([7])).unwrap());
+        assert_eq!(projection.facts,project(&next).unwrap());
+        assert!(!projection.facts.contains_key(&7));
+    }
+
+    #[test]
+    fn target_courses_reverse_join_owned_assignment_content_at_one_basis() {
+        use edb_core::{Attribute, Cardinality, Database, EntityRef, Schema, TxOp, TxValue, ValueType};
+        let mut schema = Schema::new();
+        let attrs = [
+            ("assigned-problem", "topic-coverage", Cardinality::Many),
+            ("assigned-problem", "content", Cardinality::One),
+            ("step", "content", Cardinality::One),
+            ("activity", "steps", Cardinality::Many),
+            ("multistep", "steps", Cardinality::Many),
+            ("learner", "assignments", Cardinality::Many),
+            ("activity", "course", Cardinality::One),
+        ];
+        for (index, (ns, name, cardinality)) in attrs.into_iter().enumerate() {
+            schema.install(Attribute::new(100 + index as u32, Keyword::new(ns, name), ValueType::Ref, cardinality)).unwrap();
+        }
+        schema.install(Attribute::new(107, Keyword::new("activity", "due"), ValueType::Instant, Cardinality::One)).unwrap();
+        schema.install(Attribute::new(108, Keyword::new("activity", "title"), ValueType::String, Cardinality::One)).unwrap();
+        let add = |entity, attribute, value| TxOp::Add {
+            entity: EntityRef::Id(entity), attribute, value: TxValue::Scalar(Value::Ref(value)),
+        };
+        let report = Database::new(schema).unwrap().with(&[
+            add(1, 105, 10), add(1, 105, 11), add(2, 105, 12),
+            add(10, 106, 20), add(11, 106, 21), add(12, 106, 22),
+            add(10, 103, 30), add(30, 102, 40),
+            add(40, 100, 50), add(40, 100, 51),
+            add(11, 103, 31), add(31, 102, 41), add(41, 100, 51),
+            // Multipart content inside an assigned problem owns another problem.
+            add(41, 101, 60), add(60, 104, 33), add(33, 102, 42), add(42, 100, 52),
+            // Another learner's assignment uses the same problem, but is excluded.
+            add(12, 103, 32), add(32, 102, 40),
+            // A dated assignment without a course still belongs on the calendar.
+            add(1, 105, 13), add(13, 103, 34), add(34, 102, 43), add(43, 100, 53),
+            TxOp::Add {entity: EntityRef::Id(10), attribute: 107, value: TxValue::Scalar(Value::Instant(1790722799000))},
+            TxOp::Add {entity: EntityRef::Id(13), attribute: 107, value: TxValue::Scalar(Value::Instant(1790722799000))},
+            TxOp::Add {entity: EntityRef::Id(10), attribute: 108, value: TxValue::Scalar(Value::String("First assignment".into()))},
+        ], 0, EntityRef::Id(99)).unwrap();
+        let db = report.db_after.database_value();
+        let expected = BTreeMap::from([
+            (20, BTreeSet::from([50, 51])),
+            (21, BTreeSet::from([51, 52])),
+        ]);
+        let full = assignment_coverage(&db, 1, None).unwrap();
+        assert_eq!(full.activity_topics, BTreeMap::from([
+            (10, BTreeSet::from([50, 51])), (11, BTreeSet::from([51, 52])), (13, BTreeSet::from([53])),
+        ]));
+        assert_eq!(full.course_topics, expected);
+        assert_eq!(scalar(&full.metadata, 10, "activity/due"), Some(&Value::Instant(1790722799000)));
+        assert_eq!(text(&full.metadata, 10, "activity/title").as_deref(), Some("First assignment"));
+        assert!(scalar(&full.metadata, 11, "activity/due").is_none());
+        assert!(!full.metadata.contains_key(&12));
+        assert_eq!(target_course_topics(&db, 1, &[50, 51, 52]).unwrap(), expected);
+        assert_eq!(target_course_topics(&db, 1, &[51, 51, 999]).unwrap(), BTreeMap::from([
+            (20, BTreeSet::from([51])), (21, BTreeSet::from([51])),
+        ]));
+        assert!(target_course_topics(&db, 1, &[]).unwrap().is_empty());
+        let changed = report.db_after.with(&[add(11, 106, 23)], 1, EntityRef::Id(99)).unwrap();
+        assert_eq!(target_course_topics(&db, 1, &[50, 51, 52]).unwrap(), expected);
+        assert!(target_course_topics(&changed.db_after.database_value(), 1, &[52]).unwrap().contains_key(&23));
+        // Incoming content cycles must terminate without losing reachable owners.
+        let cyclic = report.db_after.with(&[add(60, 101, 41)], 1, EntityRef::Id(99)).unwrap();
+        assert_eq!(target_course_topics(&cyclic.db_after.database_value(), 1, &[50, 51, 52]).unwrap(), expected);
+    }
 
     fn fact(facts: &mut Facts, eid: u64, attr: &'static str, value: Value) {
         facts

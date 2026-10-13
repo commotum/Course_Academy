@@ -28,7 +28,7 @@ function fixture(storage = new Map()) {
   const main = new Element('main'), announcement = new Element('div');
   const document = { createElement: tag => new Element(tag), getElementById: id => ({ main, announcement })[id] };
   const f = { main, document, loads: 0, storage, location: { href: 'http://127.0.0.1:8765/assignments' } };
-  const context = vm.createContext({ document, Event, URL, location: f.location, isDeveloperMode: () => false,
+  const context = vm.createContext({ document, Event, URL, attachStepMenu: () => {}, location: f.location, isDeveloperMode: () => false,
     localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) },
     load(options) { f.loads++; f.loadOptions = options; },
   });

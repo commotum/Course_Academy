@@ -6,12 +6,15 @@ import vm from 'node:vm';
 // Actual selection controller and graph menu, with a DOM/API stand-in.
 // These tests do not change a live learner or create study attempts.
 const controlsSource = (await readFile(new URL('../ui/targets.js', import.meta.url), 'utf8'))
-  .replace(/^import .*;\n/m, '').replaceAll('export ', '');
+  .replace(/^import .*;\n/gm, '').replaceAll('export ', '');
 const html = await readFile(new URL('../ui/Math-Academy-Graph-Explorer.html', import.meta.url), 'utf8');
-const menuSource = html.slice(html.indexOf('  const nodeContextMenu ='), html.indexOf('\n  function renderNodes()'));
+const menuSource = html.slice(html.indexOf('  const nodeContextMenu ='), html.indexOf("\n  for (const type of ['contextmenu', 'keydown'])"));
+const statusPaletteSource = html.slice(html.indexOf('  const STATUS_PALETTES ='), html.indexOf('  let snapshot ='));
 const appearanceSource = html.slice(html.indexOf('  function competencyFor('), html.indexOf('  function paintNode('));
+const queueStart = html.indexOf('    onChange: learner => {', html.indexOf('  const queueControls ='));
+const queueChanged = html.slice(queueStart + '    onChange: learner => {'.length, html.indexOf('\n    },\n  });', queueStart));
 
-function fixture({ selfDirected = false, queue = [] } = {}) {
+function fixture({ selfDirected = false, queue = [], targetsView = false } = {}) {
   const f = { calls: [], storage: new Map(), events: [], dev: false, fail: false, learner: { id: 'test', selfDirected, queue, targets: [30] } };
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.children = []; this.attrs = {}; this.dataset = {}; this.offsetWidth = 224; this.offsetHeight = 180; this.style = {}; }
@@ -35,9 +38,9 @@ function fixture({ selfDirected = false, queue = [] } = {}) {
   document.createElement = tag => new Element(tag);
   document.getElementById = id => { const walk = node => node.id === id ? node : node.children.map(walk).find(Boolean); return walk(document.body); };
   const menu = new Element('div'); menu.id = 'nodeContextMenu'; menu.hidden = true;
-  for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'goToTopicLink', 'copyNodeButton']) {
+  for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'goToTopicLink', 'copyNodeButton', 'copyNodeDbId', 'copyNodeMaId']) {
     const node = new Element(id.endsWith('Link') ? 'a' : 'div'); node.id = id;
-    if (id.endsWith('Link') || id === 'copyNodeButton') node.setAttribute('role', 'menuitem');
+    if (id.endsWith('Link') || id.startsWith('copyNode')) node.setAttribute('role', 'menuitem');
     if (id.endsWith('Link')) {
       const arrow = new Element('span'); arrow.className = 'menu-new-tab-indicator'; arrow.hidden = true; node.append(arrow);
     }
@@ -46,12 +49,15 @@ function fixture({ selfDirected = false, queue = [] } = {}) {
   document.body.append(menu);
   for (const id of ['copyNodeNotice', 'manualNodeCopy', 'manualNodeText', 'manualNodeDone']) { const node = new Element('div'); node.id = id; document.body.append(node); }
   const opener = new Element('g'), hit = new Element('rect'); hit.className = 'node-hit'; opener.append(hit); document.body.append(opener);
-  f.opened = [];
+  f.opened = []; f.copied = [];
   const window = new EventTarget(); window.open = () => { throw new Error('Navigation must use a normal link, not a new-window request'); }; window.innerWidth = 1000; window.innerHeight = 900;
   for (const name of ['queue', 'targets']) window.addEventListener(`course-academy:${name}-changed`, () => f.events.push(name));
   const context = vm.createContext({ document, window, Event, CustomEvent, crypto, setTimeout, clearTimeout, navigator: {},
+    copyEntityId: (id, label) => f.copied.push([id, label]),
+    academyEntityId: value => value == null ? null : String(value),
     snapshot: { learner: structuredClone(f.learner) }, courseId: 'course',
-    targetsView: false, targetsInRed: true, repetitions: { 20: 5 }, isLightTheme: () => false, themeColor: color => color,
+    targetsView, colorCodeEnabled: true, repetitions: { 20: 5 }, isLightTheme: () => false, themeColor: color => color,
+    loading: false, refreshTargetColors() {},
     PALETTE: ['#000000', '#303030', '#5A5A5A', '#858585', '#AEAEAE', '#D6D6D6', '#FFFFFF'],
     topicReferenceURL: (_snapshot, node) => '/topic?topic=' + node.uuid,
     $: document.getElementById, isDeveloperMode: () => f.dev, developerModeReady: Promise.resolve(),
@@ -70,11 +76,14 @@ function fixture({ selfDirected = false, queue = [] } = {}) {
   });
   f.h = vm.runInContext(`(() => {
     ${controlsSource}
-    const queueControls = createQueueControls({ readLearner });
+    const queueControls = createQueueControls({ readLearner, onChange: learner => {
+      ${queueChanged}
+    } });
     const targetControls = createTargetControls({ readLearner, onChange: learner => {
-      snapshot.learner = { ...snapshot.learner, ...learner };
+      snapshot.learner = { ...snapshot.learner, ...learner, queue:snapshot.learner.queue };
     } });
     queueControls.setLearner(snapshot.learner); targetControls.setLearner(snapshot.learner);
+    ${statusPaletteSource}
     ${appearanceSource}
     ${menuSource}
     return { queueControls, targetControls, menu: nodeContextMenu, nodeAppearance };
@@ -100,6 +109,7 @@ test('graph right-click queues the clicked topic in course mode and restores foc
   assert.equal(f.calls[0].body.selected, true);
   assert.deepEqual(f.learner.targets, [30]);
   assert.deepEqual(f.learner.queue, [20]);
+  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
   assert.equal(f.learner.selfDirected, false);
   assert.ok(f.storage.has('course-academy-queue-changed'));
   assert.deepEqual(f.events, ['queue']);
@@ -110,10 +120,12 @@ test('graph right-click queues the clicked topic in course mode and restores foc
 
 test('already queued topics can be removed without changing targets', async () => {
   const f = fixture({ queue: [20], selfDirected: true }); f.open();
+  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
   f.queueButton().click(); await settle();
   assert.equal(f.calls[0].body.selected, false);
   assert.deepEqual(f.learner.queue, []);
   assert.deepEqual(f.learner.targets, [30]);
+  assert.equal(f.h.nodeAppearance(20).fill, '#D6D6D6');
   f.open(); assert.equal(f.queueButton().textContent, 'Add to queue');
 });
 
@@ -161,7 +173,47 @@ test('queue changes in another tab refresh the menu from server membership', asy
   const event = new Event('storage'); event.key = 'course-academy-queue-changed';
   f.window.dispatchEvent(event); await settle();
   assert.equal(f.queueButton().textContent, 'Remove from queue');
+  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
   assert.equal(f.calls.length, 0);
+});
+
+test('target previews retain blue after queue membership was saved through the other controller', async () => {
+  const f = fixture({ selfDirected: true }); f.open();
+  f.queueButton().click(); await settle();
+  let release;
+  f.hold = new Promise(resolve => { release = resolve; });
+  f.open();
+  f.document.getElementById('nodeTargetAction').querySelector('[role="menuitem"]').click();
+  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  release(); await settle();
+  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+});
+
+test('queue changes paint immediately while saving and roll back failed requests with an exact retry', async () => {
+  const f = fixture(); let release;
+  f.hold = new Promise(resolve => { release = resolve; }); f.fail = true; f.open();
+  f.queueButton().click();
+  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.deepEqual(f.learner.queue, []);
+  release(); await settle();
+  assert.equal(f.h.nodeAppearance(20).fill, '#D6D6D6');
+  assert.equal(f.queueButton().textContent, 'Retry');
+  f.queueButton().click(); await settle();
+  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.deepEqual(f.calls[0].body, f.calls[1].body);
+  f.open(); f.hold = new Promise(resolve => { release = resolve; });
+  f.queueButton().click();
+  assert.equal(f.h.nodeAppearance(20).fill, '#D6D6D6');
+  assert.deepEqual(f.learner.queue, [20]);
+  release(); await settle(); assert.deepEqual(f.learner.queue, []);
+});
+
+test('a target response preserves a queue preview still waiting for its save response', async () => {
+  const f = fixture({ selfDirected: true }); let release;
+  f.hold = new Promise(resolve => { release = resolve; }); f.open(); f.queueButton().click();
+  f.h.targetControls.setLearner({ ...f.learner, targets: [20, 30], queue: [] });
+  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  release(); await settle(); assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
 });
 
 test('target actions preserve their endpoint, membership, and mode gating', async () => {
@@ -178,11 +230,11 @@ test('right-click target actions update node color before their background save 
   const f = fixture({ selfDirected: true }); f.open();
   let release; f.hold = new Promise(resolve => { release = resolve; });
   f.document.getElementById('nodeTargetAction').querySelector('[role="menuitem"]').click();
-  assert.equal(f.h.nodeAppearance(20).fill, '#b52b34');
+  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
   assert.deepEqual(f.learner.targets, [30]);
   release(); await settle();
   assert.deepEqual(f.learner.targets, [30, 20]);
-  assert.equal(f.h.nodeAppearance(20).fill, '#b52b34');
+  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
 });
 
 test('navigator target switch flips immediately with explicit add and remove labels', async () => {
@@ -200,7 +252,7 @@ test('navigator target switch flips immediately with explicit add and remove lab
   button.click();
   assert.equal(button.getAttribute('aria-checked'), 'true');
   assert.equal(label.textContent, 'Remove from Targets');
-  assert.equal(f.h.nodeAppearance(20).fill, '#b52b34');
+  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
   assert.deepEqual(f.learner.targets, [30]); // The server has not saved yet.
   assert.equal(button.disabled, true);
   assert.equal(otherButton.getAttribute('aria-checked'), 'true');
@@ -208,7 +260,7 @@ test('navigator target switch flips immediately with explicit add and remove lab
   release(); await settle(); f.hold = null;
   assert.equal(button.disabled, false);
   assert.deepEqual(f.learner.targets, [30, 20]);
-  assert.equal(f.h.nodeAppearance(20).fill, '#b52b34');
+  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
   assert.deepEqual(f.learner.queue, []);
   let removeRelease; f.hold = new Promise(resolve => { removeRelease = resolve; });
   button.click();
@@ -237,7 +289,7 @@ test('target switch failures restore confirmed membership and replay the same re
   assert.deepEqual(f.calls[0].body, f.calls[1].body);
   assert.equal(button.getAttribute('aria-checked'), 'true');
   assert.equal(label.textContent, 'Remove from Targets');
-  assert.equal(f.h.nodeAppearance(20).fill, '#b52b34');
+  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
   assert.equal(host.children[1].textContent, '');
   assert.deepEqual(f.learner.targets, [30, 20]);
 });
@@ -264,12 +316,14 @@ test('Shift pressed after opening the graph menu shows navigation arrows only wh
   assert.equal(f.document.getElementById('nodeContextMenu').hidden, false);
 });
 
-test('Shift-click opens either navigation action in a new tab without same-tab navigation or learner writes', () => {
+test('Shift-click activates either navigation action after its input event, without same-tab navigation or learner writes', async () => {
   for (const [id, href] of [['studyTopicLink', '/learn?topicId=20'], ['goToTopicLink', '/topic?topic=topic-uuid']]) {
     const f = fixture(); f.open();
     dispatch(f.document, 'keydown', { key: 'Shift', shiftKey: true });
     const event = dispatch(f.document.getElementById(id), 'click', { shiftKey: true, detail: 1, button: 0 });
     assert.equal(event.defaultPrevented, true);
+    assert.deepEqual(f.opened, []); // The original Shift input must finish first.
+    await new Promise(resolve => setTimeout(resolve, 5));
     assert.deepEqual(f.opened, [[href, '_blank', 'noopener noreferrer']]);
     assert.equal(f.document.getElementById('nodeContextMenu').hidden, true);
     assert.equal(f.calls.length, 0);
@@ -290,11 +344,12 @@ test('releasing Shift restores ordinary link navigation; menu reopening and blur
   f.open(); assert.equal(arrow.hidden, true);
 });
 
-test('keyboard activation retains the held Shift modifier and preserves native Control and Meta clicks', () => {
+test('keyboard activation retains the held Shift modifier and preserves native Control and Meta clicks', async () => {
   const f = fixture(); f.open();
   const link = f.document.getElementById('studyTopicLink');
   dispatch(f.document, 'keydown', { key: 'Shift', shiftKey: true });
   dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: ' ', shiftKey: true, target: link });
+  await new Promise(resolve => setTimeout(resolve, 5));
   assert.deepEqual(f.opened, [['/learn?topicId=20', '_blank', 'noopener noreferrer']]);
   for (const modifier of ['ctrlKey', 'metaKey']) {
     f.open();
@@ -302,4 +357,20 @@ test('keyboard activation retains the held Shift modifier and preserves native C
     assert.equal(event.defaultPrevented, false);
   }
   assert.equal(f.opened.length, 1);
+});
+
+test('both graph modes copy the clicked database ID independently of UUID and source ID', () => {
+  for (const targetsView of [false, true]) {
+    const f = fixture({targetsView});
+    const open = node => f.h.menu.open(node, {type:'contextmenu',clientX:50,clientY:70,preventDefault(){},stopPropagation(){}}, f.opener);
+    open({id:20,uuid:'stable-topic',mathAcademyId:42,name:'First topic'});
+    f.document.getElementById('copyNodeDbId').click();
+    assert.deepEqual(f.copied, [[20, ':db/id']]);
+    open({id:25,uuid:'other-topic',mathAcademyId:43,name:'Second topic'});
+    f.document.getElementById('copyNodeMaId').click();
+    assert.deepEqual(f.copied, [[20, ':db/id'], [43, ':ma/id']]);
+    assert.equal(f.calls.length, 0);
+    open({id:30,uuid:'local-topic',name:'Local topic'});
+    assert.equal(f.document.getElementById('copyNodeMaId').hidden, true);
+  }
 });

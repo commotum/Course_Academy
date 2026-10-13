@@ -25,6 +25,16 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Shared activity definition for this learner task. Resolve its title, type, and intended scope through this reference."}
 
+ {:db/ident :learner-task/retake-of
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional reference from an assessment retake task to the exact original assessment task. This is an attempt relationship, not activity ownership. The application checks assessment task kinds, prevents self/cyclic links and duplicate generated retakes, selects never-presented questions from the original knowledge points, and offers the retake only after required remediation succeeds. The retake remains optional; this relationship alone does not schedule or require it."}
+
+ {:db/ident :learner-task/remediation-for
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Optional references from a review or replacement relearning task to the assessment or failed lesson task(s) that triggered required practice through incorrect/unanswered assessment questions or repeated failure at a key knowledge point. One practice task may address obligations from several assessments. The application matches the task topic to each originating topic obligation and clears it only after qualifying successful practice; prior or unrelated practice does not count. These links preserve trigger provenance, are not component ownership, and do not themselves enforce scheduling or record invented wrong answers."}
+
  {:db/ident :learner-task/status
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
@@ -34,6 +44,16 @@
   :db/valueType :db.type/double
   :db/cardinality :db.cardinality/one
   :db/doc "Numerical scheduling priority; higher values are served first. Eligible unfinished tasks at or above the application's threshold are required. The application calculates finite values and defines the scale and threshold."}
+
+ {:db/ident :learner-task/active-item
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional current presentation for freely navigable assessments. References an item owned by this task. Visit order remains in task-item/next; navigation and editable draft responses do not grade a question. The application checks membership and stops edits at whole-assessment submission or expiry."}
+
+ {:db/ident :learner-task/offered-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Latest ordinary queue offer for this task. Records actual inclusion among the five displayed recommendations, rather than preparation alone. Used with finalized review history to derive periodic optional lesson availability; no separate review counter is stored."}
 
  {:db/ident :learner-task/elapsed-seconds
   :db/valueType :db.type/double

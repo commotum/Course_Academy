@@ -11,7 +11,8 @@ server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,d
 threading.Thread(target=server.serve_forever,daemon=True).start()
 origin=f'http://127.0.0.1:{server.server_port}'
 html='''<!doctype html><link rel="stylesheet" href="/ui/learning.css"><form id="form"><span id="host"></span><button id="check" type="submit" disabled>Check answer</button></form><script type="module">
-import { blankInput, responsesComplete } from '/ui/question-fields.js';
+import { loadMathInputs, blankInput, responsesComplete } from '/ui/question-fields.js';
+await loadMathInputs();
 window.events=[]; window.submissions=[]; window.busy=false;
 form.addEventListener('input', e => events.push([e.target.tagName,e.target.value]));
 window.makeBlank=blankInput;

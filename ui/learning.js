@@ -3,22 +3,27 @@ import { romanLists } from './prose-lists.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
 import { developerModeReady, isDeveloperMode } from './developer-mode.js';
 import { attachStepMenu } from './step-menu.js';
-import { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, checkboxControl, freeInput } from './question-fields.js';
+import { loadMathInputs, inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, blankInput, responsesComplete, checkboxControl, freeInput, choiceIndicator, fieldFeedback } from './question-fields.js';
 
 await developerModeReady;
 
 const $ = id => document.getElementById(id);
 const terminal = status => ['completed', 'failed'].includes(status);
-const answered = status => ['correct', 'incorrect', 'skipped', 'completed'].includes(status);
+const answered = status => ['correct', 'incorrect', 'skipped', 'completed', 'submitted'].includes(status);
 let task = null;
 let busy = false;
 let retryOperation = null;
 let renderGeneration = 0;
 let clock = { at: 0, elapsed: 0, running: false };
+let assessmentClock = null;
 let typesetting = Promise.resolve();
 let mathLoader = null;
 const drafts = new Map();
 let pendingPause = null;
+let assessmentSaveTimer = null;
+let assessmentSave = Promise.resolve();
+let assessmentDraftVersion = 0;
+let assessmentResponses = null;
 let refreshAfterVisibility = false;
 let currentCourseId = null;
 let curriculumSnapshot = null;
@@ -51,6 +56,7 @@ function appendStepHeading(content, step, kind) {
   const heading = el('h2', 'step-title');
   if (kind === 'example') heading.append(el('strong', '', 'Example:'));
   if (step.title) heading.append((kind === 'example' ? ' ' : '') + step.title);
+  if (step.knowledgePoint) attachStepMenu(heading, step.knowledgePoint.id, step.knowledgePoint.mathAcademyId, { kind: 'knowledge point' });
   content.append(heading);
 }
 function fieldLabel(key) {
@@ -133,6 +139,7 @@ async function mutation(path, values) {
   const body = { ...values, requestId: crypto.randomUUID() };
   const revision = settingsRevision;
   let resumeBody = null;
+  let expireBody = null;
   const run = async () => {
     clearError();
     setBusy(true);
@@ -143,28 +150,33 @@ async function mutation(path, values) {
       catch (error) {
         // The last visible Next/Check button can outlive a pause from another
         // tab or an unload request. Recover only a confirmed state rejection.
-        if (error.code !== 'lesson-paused' || !['/api/continue', '/api/answer'].includes(path)) throw error;
-        if (document.hidden || revision !== settingsRevision || modeChanging || isDeveloperMode()) {
-          refreshAfterVisibility = true; return;
-        }
-        resumeBody ||= { taskId: body.taskId, requestId: crypto.randomUUID() };
-        const resumed = await api('/api/resume', resumeBody);
-        if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
-        task = resumed.task || resumed;
-        rememberTaskStep(task);
-        // A different tab may already have advanced this task. Refresh rather
-        // than apply the old click or answers to a different presentation.
-        if (task.step?.itemId !== body.itemId || short(task.status) !== 'started' || document.hidden) result = task;
-        else {
-          body.requestId = crypto.randomUUID();
-          result = await api(path, body);
+        if (error.code === 'assessment-expired') {
+          expireBody ||= { taskId: body.taskId, requestId: crypto.randomUUID() };
+          result = await api('/api/expire', expireBody);
+        } else {
+          if (error.code !== 'lesson-paused' || !['/api/continue', '/api/answer', '/api/skip'].includes(path)) throw error;
+          if (document.hidden || revision !== settingsRevision || modeChanging || isDeveloperMode()) {
+            refreshAfterVisibility = true; return;
+          }
+          resumeBody ||= { taskId: body.taskId, requestId: crypto.randomUUID() };
+          const resumed = await api('/api/resume', resumeBody);
+          if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
+          task = resumed.task || resumed;
+          rememberTaskStep(task);
+          // A different tab may already have advanced this task. Refresh rather
+          // than apply the old click or answers to a different presentation.
+          if (task.step?.itemId !== body.itemId || short(task.status) !== 'started' || document.hidden) result = task;
+          else {
+            body.requestId = crypto.randomUUID();
+            result = await api(path, body);
+          }
         }
       }
       if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
       task = result.task || result;
       history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(task.taskId));
       await renderTask(task);
-      announce(answered(task.step?.status) ? (task.step.status === 'correct' ? 'Correct.' : task.step.status === 'incorrect' ? 'Incorrect.' : 'Skipped.') : task.step?.title || 'Progress saved.');
+      announce(answered(task.step?.status) ? (task.step.status === 'correct' ? 'Correct.' : task.step.status === 'incorrect' ? 'Incorrect.' : task.step.status === 'submitted' ? 'Answer saved.' : 'Skipped.') : task.step?.title || 'Progress saved.');
     } catch (error) {
       if (revision !== settingsRevision) return;
       // Only a confirmed rejection may get a fresh request identity. An uncertain
@@ -318,12 +330,13 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
   if (lessonView?.key !== key) {
     resetMain('lesson-main');
     const heading = el('h1', 'sr-only', data.title || 'Lesson');
+    attachStepMenu(heading, data.activityId, null, { kind: 'activity' });
     const toolbar = el('div', 'lesson-toolbar');
     const exit = actionButton('←', 'lesson-exit text-button', leaveTask);
-    exit.setAttribute('aria-label', 'Exit lesson and return to Study');
+    exit.setAttribute('aria-label', `Exit ${data.type || 'lesson'} and return to Study`);
     exit.title = 'Back to Study';
     const track = el('div', 'progress-track'), fill = el('div', 'progress-fill');
-    track.setAttribute('role', 'progressbar'); track.setAttribute('aria-label', 'Lesson progress');
+    track.setAttribute('role', 'progressbar'); track.setAttribute('aria-label', `${data.type === 'review' ? 'Review' : data.type === 'assessment' ? 'Assessment' : 'Lesson'} progress`);
     track.setAttribute('aria-valuemin', '0'); track.append(fill);
     const position = el('span', 'lesson-position');
     const timer = el('span', 'timer', preview ? 'Preview' : duration(clock.elapsed));
@@ -339,7 +352,7 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
   lessonView.track.hidden = !total;
   lessonView.track.setAttribute('aria-valuemax', String(maximum));
   lessonView.track.setAttribute('aria-valuenow', String(completed));
-  lessonView.track.setAttribute('aria-valuetext', complete ? 'Lesson complete' : `Step ${number || 1} of ${maximum}`);
+  lessonView.track.setAttribute('aria-valuetext', complete ? `${data.type === 'review' ? 'Review' : data.type === 'assessment' ? 'Assessment' : 'Lesson'} complete` : `Step ${number || 1} of ${maximum}`);
   lessonView.fill.style.width = `${completed / maximum * 100}%`;
   lessonView.position.textContent = total ? `${String(number || 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}` : '';
   lessonView.timer.textContent = preview ? 'Preview' : duration(clock.elapsed);
@@ -410,7 +423,7 @@ function home({ preserve = false } = {}) {
 }
 async function loadHome(signal, preserve) {
   const revision = targetRevision;
-  task = null; clock.running = false;
+  task = null; clock.running = false; assessmentClock = null;
   if (!preserve) {
     resetMain();
     $('main').append(el('div', 'loading', 'Loading your next activities…'));
@@ -437,13 +450,14 @@ async function loadHome(signal, preserve) {
     }
     const head = el('div', 'page-heading');
     const selfDirected = data.learner?.selfDirected === true;
-    const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', selfDirected ? 'Your queue' : 'Next up'), el('p', 'subheading', isDeveloperMode() ? 'Preview activities without starting an attempt or recording progress.' : selfDirected ? 'Lessons from the topics you selected.' : 'Eligible lessons interleaved across your course modules.'));
+    const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', selfDirected ? 'Your queue' : 'Next up'), el('p', 'subheading', isDeveloperMode() ? 'Preview activities without starting an attempt or recording progress.' : selfDirected ? 'Resume unfinished lessons or study topics you selected.' : 'Lessons interleaved across your course modules, with spaced reviews and assessments.'));
     head.append(intro);
     $('main').append(head);
     const queue = el('section', 'queue'); queue.setAttribute('aria-label', 'Next five activities');
     const activities = (data.activities || []).slice(0, 5);
     activities.forEach((activity, index) => {
       const row = el('article', 'queue-card');
+      attachStepMenu(row, activity.activityId, null, { kind: 'activity' });
       const info = el('div');
       const meta = el('div', 'queue-meta');
       const type = short(activity.type) || 'lesson';
@@ -483,6 +497,8 @@ async function loadHome(signal, preserve) {
       queue.append(empty);
     }
     $('main').append(queue);
+    if (!isDeveloperMode() && data.assessmentStatus?.unavailableReason) $('main').append(el('p', 'notice', data.assessmentStatus.unavailableReason + '. You can continue studying.'));
+    if (!isDeveloperMode() && data.supplyShortages?.length) $('main').append(el('p', 'notice', 'Fresh questions are being prepared for upcoming activities. Available activities remain below.'));
     const foot = el('div', 'queue-foot');
     foot.append(el('span', '', `${activities.length} ${activities.length === 1 ? 'activity' : 'activities'} ready`), el('span', '', isDeveloperMode() ? 'Developer mode · Nothing recorded' : 'Your progress is saved as you work.'));
     $('main').append(foot);
@@ -530,8 +546,15 @@ async function openTask(id) {
       location.replace('/assignments?assignment=' + encodeURIComponent(data.assignment.id));
       return;
     }
+    if ((data.task || data).expired) {
+      data = await api('/api/expire', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() });
+    }
     if (!document.hidden && short((data.task || data).status) === 'paused') {
-      data = await api('/api/resume', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() });
+      try { data = await api('/api/resume', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() }); }
+      catch (error) {
+        if (error.code !== 'assessment-expired') throw error;
+        data = await api('/api/expire', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() });
+      }
       if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
     }
     task = data.task || data;
@@ -552,7 +575,7 @@ async function leaveTask(event) {
     setBusy(true);
     try {
       if (pendingPause) await pendingPause;
-      if (short(task.status) === 'started') await api('/api/pause', { taskId: task.taskId, requestId: crypto.randomUUID() });
+      if (short(task.status) === 'started') await api('/api/pause', { taskId: task.taskId, responses: task.type === 'assessment' ? assessmentResponses?.() : undefined, requestId: crypto.randomUUID() });
     }
     catch (error) { showError(error, () => leaveTask()); setBusy(false); return; }
     setBusy(false);
@@ -569,7 +592,7 @@ async function explore(url) {
     if (pendingPause) await pendingPause;
     if (task && short(task.status) === 'started') {
       stopClock();
-      await api('/api/pause', { taskId: task.taskId, requestId: crypto.randomUUID() });
+      await api('/api/pause', { taskId: task.taskId, responses: task.type === 'assessment' ? assessmentResponses?.() : undefined, requestId: crypto.randomUUID() });
       task.status = 'paused';
     }
     location.assign(url);
@@ -580,12 +603,12 @@ function choiceOrder(choices, seed) {
   const hash = value => { let n = 2166136261; for (const c of value) n = Math.imul(n ^ c.charCodeAt(0), 16777619); return n >>> 0; };
   return [...choices].sort((a, b) => hash(`${seed}:${a.id}`) - hash(`${seed}:${b.id}`));
 }
-function fieldControl(field, readOnly, itemId, promptText = '') {
+function fieldControl(field, readOnly, itemId, promptText = '', status = '') {
   const set = el('fieldset', 'answer-field');
   set.dataset.fieldId = String(field.id);
   set.dataset.type = short(field.type);
   const label = field.key === 'selection' ? 'Choose an answer' : fieldLabel(field.key);
-  set.append(el('legend', field.key === 'selection' ? 'sr-only' : '', label));
+  set.append(el('legend', field.key === 'selection' || short(field.type) === 'checkbox' ? 'sr-only' : '', label));
   const type = short(field.type), response = field.response;
   const choices = choiceOrder(field.choices || [], `${itemId}:${field.id}`);
   const responseId = response?.choiceId ?? response?.id;
@@ -602,7 +625,7 @@ function fieldControl(field, readOnly, itemId, promptText = '') {
       const option = el('label', 'choice');
       const input = el('input'); input.type = 'radio'; input.name = String(field.id); input.value = String(choice.id);
       input.checked = String(responseId) === String(choice.id); input.disabled = readOnly;
-      option.append(input, answerValue(choice)); list.append(option);
+      option.append(choiceIndicator(input), answerValue(choice)); list.append(option);
     }
     set.append(list);
   } else if (type === 'select') {
@@ -619,6 +642,7 @@ function fieldControl(field, readOnly, itemId, promptText = '') {
   for (const input of set.querySelectorAll('input,select,math-field,textarea,.answer-select-trigger')) {
     input.dataset.answerInput = 'true'; input.dataset.readOnly = String(readOnly);
   }
+  fieldFeedback(set, field, status);
   return set;
 }
 function collectResponses(form, fields) {
@@ -655,7 +679,7 @@ async function openPreview(query) {
 function previewContent(data, step, index, archived = false) {
   const content = el('section', 'lesson-content');
   content.dataset.stepNumber = String(index + 1); content.dataset.totalSteps = String(data.steps.length);
-  attachStepMenu(content, step.stepId, step.mathAcademyId);
+  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question' });
   const kind = short(step.kind), fields = step.fields || [];
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
@@ -664,7 +688,7 @@ function previewContent(data, step, index, archived = false) {
   if (fields.length) {
     const form = el('form'), fieldList = el('div', 'answer-fields');
     const readOnly = archived || kind === 'example' || answered(short(step.status));
-    mountInlineFields(prompt, fieldList, fields, field => fieldControl(field, readOnly, step.contentId, step.markdown ?? step.problem));
+    mountInlineFields(prompt, fieldList, fields, field => fieldControl(field, readOnly, step.contentId, step.markdown ?? step.problem, step.status));
     form.append(prompt, fieldList);
     if (!readOnly) {
       const actions = el('div', 'answer-actions');
@@ -728,6 +752,8 @@ function previewContent(data, step, index, archived = false) {
 async function renderPreview() {
   if (!isDeveloperMode() || modeChanging || !task) return;
   const data = task, steps = data.steps || [], step = steps[previewStepIndex];
+  await loadMathInputs();
+  if (modeChanging || task !== data || !isDeveloperMode()) return;
   updateHeader(data);
   document.title = `Preview${data.title ? ' · ' + data.title : ''} · Course Academy`;
   const view = lessonShell(data, { preview: true, number: previewStepIndex + 1, total: steps.length });
@@ -741,14 +767,14 @@ function taskContent(data, step, number, total, archived = false) {
   const content = el('section', 'lesson-content');
   if (number) content.dataset.stepNumber = String(number);
   if (total) content.dataset.totalSteps = String(total);
-  attachStepMenu(content, step.stepId, step.mathAcademyId);
+  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question' });
   const kind = short(step.kind);
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
   const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []);
   card.append(prompt);
   const isAnswered = answered(short(step.status));
-  const readOnly = archived || isAnswered || short(data.status) === 'paused';
+  const readOnly = archived || (data.type !== 'assessment' && isAnswered) || short(data.status) === 'paused';
   const fields = step.fields || [];
   if (kind === 'question' && fields.length) {
     const form = el('form'); form.noValidate = false;
@@ -756,28 +782,65 @@ function taskContent(data, step, number, total, archived = false) {
     const draft = drafts.get(step.itemId) || [];
     mountInlineFields(prompt, fieldList, fields, field => {
       const saved = draft.find(response => response.fieldId === field.id);
-      return fieldControl(!readOnly && saved ? { ...field, response: saved } : field, readOnly, step.itemId, step.markdown ?? step.problem);
+      return fieldControl(!readOnly && saved ? { ...field, response: saved } : field, readOnly, step.itemId, step.markdown ?? step.problem, step.status);
     });
     form.append(prompt, fieldList);
     if (!readOnly) {
       const actions = el('div', 'answer-actions');
-      const submit = el('button', 'primary', 'Check answer'); submit.type = 'submit'; submit.dataset.action = 'true';
-      const refresh = () => {
-        const responses = collectResponses(form, fields);
-        drafts.set(step.itemId, responses);
-        const valid = responsesComplete(fields, responses);
-        submit.dataset.unavailable = String(!valid); submit.disabled = busy || !valid;
-      };
-      form.addEventListener('input', refresh); form.addEventListener('change', refresh);
-      form.addEventListener('submit', event => {
-        event.preventDefault(); refresh(); if (submit.disabled || lessonView?.current !== content) return;
-        mutation('/api/answer', { taskId: data.taskId, itemId: step.itemId, responses: collectResponses(form, fields) });
-      });
-      actions.append(submit); form.append(actions); refresh();
+      if (data.type === 'assessment') {
+        assessmentResponses = () => collectResponses(form, fields);
+        const save = () => {
+          const responses = assessmentResponses();
+          const version = ++assessmentDraftVersion;
+          drafts.set(step.itemId, responses);
+          clearTimeout(assessmentSaveTimer);
+          assessmentSaveTimer = setTimeout(() => {
+            const request = { taskId: data.taskId, itemId: step.itemId, responses, requestId: crypto.randomUUID() };
+            assessmentSave = assessmentSave.then(() => version === assessmentDraftVersion ? api('/api/draft', request) : undefined).catch(error => {
+              if (error.code !== 'assessment-expired') showError(error, () => api('/api/draft', request));
+            });
+          }, 100);
+        };
+        form.addEventListener('input', save); form.addEventListener('change', save);
+        form.addEventListener('submit', event => event.preventDefault());
+        const move = async questionId => {
+          clearTimeout(assessmentSaveTimer); ++assessmentDraftVersion; await assessmentSave;
+          return mutation('/api/navigate', { taskId: data.taskId, itemId: step.itemId, questionId, responses: collectResponses(form, fields) });
+        };
+        const questions = data.questions || [];
+        const index = questions.findIndex(q => q.questionId === step.contentId);
+        const nav = el('nav', 'assessment-navigation'); nav.setAttribute('aria-label', 'Assessment questions');
+        for (const question of questions) {
+          const control = actionButton(String(question.number) + (question.answered ? ' ✓' : ''), question.active ? 'primary' : 'secondary', () => move(question.questionId));
+          if (question.active) control.setAttribute('aria-current', 'step');
+          nav.append(control);
+        }
+        actions.append(nav);
+        if (index > 0) actions.append(actionButton('Previous question', 'secondary', () => move(questions[index - 1].questionId)));
+        if (index + 1 < questions.length) actions.append(actionButton('Next question', 'secondary', () => move(questions[index + 1].questionId)));
+        actions.append(actionButton('Submit assessment', 'primary', async () => {
+          clearTimeout(assessmentSaveTimer); ++assessmentDraftVersion; await assessmentSave;
+          return mutation('/api/submit', { taskId: data.taskId, itemId: step.itemId, responses: collectResponses(form, fields) });
+        }));
+      } else {
+        const submit = el('button', 'primary', 'Check answer'); submit.type = 'submit'; submit.dataset.action = 'true';
+        const refresh = () => {
+          const responses = collectResponses(form, fields); drafts.set(step.itemId, responses);
+          const valid = responsesComplete(fields, responses);
+          submit.dataset.unavailable = String(!valid); submit.disabled = busy || !valid;
+        };
+        form.addEventListener('input', refresh); form.addEventListener('change', refresh);
+        form.addEventListener('submit', event => {
+          event.preventDefault(); refresh(); if (submit.disabled || lessonView?.current !== content) return;
+          mutation('/api/answer', { taskId: data.taskId, itemId: step.itemId, responses: collectResponses(form, fields) });
+        });
+        actions.append(submit); refresh();
+      }
+      form.append(actions);
     }
     card.append(form);
   }
-  if (isAnswered) {
+  if (isAnswered && short(step.status) !== 'submitted') {
     const feedback = el('div', 'feedback'); questionFeedback(feedback, step.status); feedback.setAttribute('role', 'status');
     feedback.append(feedbackHeading(step.status));
     if (step.feedback) feedback.append(markdown(step.feedback));
@@ -789,7 +852,7 @@ function taskContent(data, step, number, total, archived = false) {
     }
     card.append(feedback);
   }
-  if (step.solution && (kind === 'example' || isAnswered)) {
+  if (step.solution && short(step.status) !== 'submitted' && (kind === 'example' || isAnswered)) {
     const solution = el('section', 'worked-solution');
     solution.append(el('h3', 'solution-heading', 'Solution:'), markdown(step.solution)); card.append(solution);
   }
@@ -800,7 +863,7 @@ function taskContent(data, step, number, total, archived = false) {
       controls.append(actionButton('Resume →', 'primary', () => mutation('/api/resume', { taskId: data.taskId })));
     } else if (step.canContinue) {
       if (step.practiceShortage) controls.append(el('p', 'continue-hint', 'No fresh questions remain for this skill. Continue now and return to its practice later.'));
-      controls.append(actionButton(step.practiceShortage ? 'Continue to next skill →' : 'Next step →', 'primary', () => mutation('/api/continue', { taskId: data.taskId, itemId: step.itemId })));
+      controls.append(actionButton(step.practiceShortage ? 'Continue to next skill →' : data.type === 'assessment' && number === total ? 'Finish assessment →' : 'Next step →', 'primary', () => mutation('/api/continue', { taskId: data.taskId, itemId: step.itemId })));
     }
     if (controls.childElementCount) content.append(controls);
   }
@@ -810,15 +873,32 @@ function taskContent(data, step, number, total, archived = false) {
 async function renderTask(data) {
   if (modeChanging) return;
   if (isDeveloperMode()) return openPreview({ taskId: data.taskId });
+  const revision = settingsRevision;
+  await loadMathInputs();
+  if (modeChanging || task !== data || revision !== settingsRevision || isDeveloperMode()) return;
   updateHeader(data);
   const status = short(data.status);
   clock = { at: Date.now(), elapsed: Number(data.elapsedSeconds) || 0, running: !document.hidden && status === 'started' && short(data.step?.status) === 'started' };
-  document.title = `Lesson${data.title ? ' · ' + data.title : ''} · Course Academy`;
+  assessmentClock = data.type === 'assessment' && !terminal(status) && Number.isFinite(data.remainingSeconds)
+    ? { at: Date.now(), remaining: data.remainingSeconds } : null;
+  document.title = `${data.type === 'assessment' ? 'Assessment' : data.type === 'review' ? 'Review' : 'Lesson'}${data.title ? ' · ' + data.title : ''} · Course Academy`;
   const seen = rememberTaskStep(data);
   const number = data.progress?.stepNumber ?? data.step?.stepNumber;
   const total = data.progress?.totalSteps ?? data.step?.totalSteps;
-  const view = lessonShell(data, { number, total, complete: status === 'completed' });
+  const view = lessonShell(data, { number, total, complete: terminal(status) });
+  view.timer.setAttribute('aria-label', assessmentClock ? 'Assessment time remaining' : 'Working time');
+  updateTaskTimer();
   const buildEarlier = entry => taskContent(data, entry.step, entry.number, entry.total, true);
+  if (data.type === 'assessment' && terminal(status) && !view.assessmentFinished) {
+    // Completion returns revealed server history. Rebuild the archived cards
+    // that previously contained submitted answers without correctness feedback.
+    for (const node of [...view.history.values(), ...(view.current ? [view.current] : [])]) {
+      if (window.MathJax?.typesetClear) MathJax.typesetClear([node]);
+      node.remove();
+    }
+    view.history.clear(); view.current = null; view.currentId = null;
+    view.assessmentFinished = true;
+  }
   if (terminal(status) || data.awaitingQuestions) {
     const done = el('section', 'lesson-content completion');
     done.append(el('div', 'completion-mark', status === 'completed' ? '✓' : '↗'), el('h2', '', data.awaitingQuestions ? 'Practice unfinished' : status === 'completed' ? 'Activity complete' : 'More practice needed'));
@@ -835,6 +915,7 @@ async function renderTask(data) {
     if (earned !== null && earned !== undefined) {
       const xp = el('div', 'completion-xp', `${earned >= 0 ? '+' : ''}${earned} `); xp.append(el('small', '', 'XP')); done.append(xp);
     }
+    if (data.assessmentScore) done.append(el('p', '', `${data.assessmentScore.correct} of ${data.assessmentScore.total} correct · ${data.assessmentScore.unanswered} unanswered`));
     done.append(el('p', '', `${duration(data.elapsedSeconds)} working time`), actionButton('Back to study →', 'primary', leaveTask));
     await showLessonStep(view, 'complete', seen.map(entry => ({ ...entry, id: String(entry.step.itemId) })), done, buildEarlier);
     return;
@@ -842,8 +923,20 @@ async function renderTask(data) {
   const step = data.step;
   if (!step) { view.feed.replaceChildren(el('p', 'notice', 'No current step is available. Return to study and try again.')); return; }
   const identity = String(step.itemId);
-  const earlier = seen.filter(entry => String(entry.step.itemId) !== identity).map(entry => ({ ...entry, id: String(entry.step.itemId) }));
+  const earlier = (data.type === "assessment" && !terminal(status) ? [] : seen).filter(entry => String(entry.step.itemId) !== identity).map(entry => ({ ...entry, id: String(entry.step.itemId) }));
   await showLessonStep(view, identity, earlier, taskContent(data, step, number, total), buildEarlier);
+}
+
+function updateTaskTimer() {
+  const remaining = assessmentClock ? Math.max(0, assessmentClock.remaining - (Date.now() - assessmentClock.at) / 1000) : null;
+  const timer = $('taskTimer');
+  if (timer) timer.textContent = remaining === null
+    ? duration(clock.elapsed + (clock.running ? (Date.now() - clock.at) / 1000 : 0))
+    : `${duration(remaining)} left`;
+  if (remaining === 0 && task && !terminal(short(task.status)) && !busy && !document.hidden) {
+    clearTimeout(assessmentSaveTimer);
+    void assessmentSave.then(() => mutation('/api/expire', { taskId: task.taskId }));
+  }
 }
 
 $('retryButton').addEventListener('click', () => retryOperation?.());
@@ -871,8 +964,7 @@ window.addEventListener('popstate', () => {
 });
 setInterval(() => {
   if (isDeveloperMode() || modeChanging) return;
-  const timer = $('taskTimer');
-  if (timer) timer.textContent = duration(clock.elapsed + (clock.running ? (Date.now() - clock.at) / 1000 : 0));
+  updateTaskTimer();
 }, 1000);
 async function syncAfterVisibility() {
   if (isDeveloperMode() || modeChanging) return;
@@ -893,7 +985,9 @@ function pauseWhenHidden({ unloading = false } = {}) {
   // A hidden page waits for an in-flight answer or continuation before pausing
   // the resulting current item, rather than racing the two writes.
   if (busy && !unloading) return;
-  pendingPause = api('/api/pause', { taskId, requestId: crypto.randomUUID() }, { keepalive: true })
+  clearTimeout(assessmentSaveTimer);
+  const responses = task.type === 'assessment' ? assessmentResponses?.() : undefined;
+  pendingPause = assessmentSave.then(() => api('/api/pause', { taskId, responses, requestId: crypto.randomUUID() }, { keepalive: true }))
     .then(() => { if (task?.taskId === taskId) task.status = 'paused'; })
     .catch(() => { /* Re-read authoritative state when the page becomes visible. */ })
     .finally(() => { pendingPause = null; if (!document.hidden) void syncAfterVisibility(); });

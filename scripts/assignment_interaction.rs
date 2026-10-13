@@ -213,6 +213,9 @@ fn enrich_content(
                         }
                     }
                 }
+                if matches!(state.as_deref(), Some("correct" | "incorrect")) {
+                    attach_field_grade(s, question, id, field);
+                }
             }
             if reveal {
                 if let Some(solution) = s.entity(question)?.get("question/worked-solution") {
@@ -392,6 +395,9 @@ pub(super) fn mutate(
             .ok_or("Question step is not part of this assignment")?;
         if !collectable(s, entry.question) {
             return Err("This question has no supported, complete answer fields".into());
+        }
+        if learning::reserved_retrieval_questions(s, learner)?.contains(&entry.question) {
+            return Err("Finish the review or assessment reserving this question before using it in an assignment".into());
         }
         let existing = presentations.get(&step).copied();
         if let Some(item) = existing {

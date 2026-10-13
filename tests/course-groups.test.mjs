@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const source = (await readFile(new URL('../ui/navigation.js', import.meta.url), 'utf8'))
-  .replace(/^import .*;\n/, '').replaceAll('export ', '');
+  .replace(/^import .*;\n/gm, '').replaceAll('export ', '');
 const { courseGroupLabel, indexCurriculum, searchCurriculum } = vm.runInNewContext(
   `(() => { ${source}; return { courseGroupLabel, indexCurriculum, searchCurriculum }; })()`,
   { document: { querySelector: () => null } },

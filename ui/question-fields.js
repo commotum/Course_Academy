@@ -1,7 +1,11 @@
-import { MathfieldElement } from './vendor/mathlive/mathlive.min.mjs';
-
-MathfieldElement.fontsDirectory = new URL('./vendor/mathlive/fonts', import.meta.url).href;
-MathfieldElement.soundsDirectory = null;
+let mathInputsLoader = null;
+export function loadMathInputs() {
+  if (!mathInputsLoader) mathInputsLoader = import('./vendor/mathlive/mathlive.min.mjs').then(({ MathfieldElement }) => {
+    MathfieldElement.fontsDirectory = new URL('./vendor/mathlive/fonts', import.meta.url).href;
+    MathfieldElement.soundsDirectory = null;
+  }).catch(error => { mathInputsLoader = null; throw error; });
+  return mathInputsLoader;
+}
 
 // Shared presentation only: response IDs and grading remain with the activity API.
 const answerKind = field => String(field.answerType || field.correctAnswer?.type || field.response?.type || '').split('/').at(-1);
@@ -30,7 +34,42 @@ export function checkboxControl(field, renderLabel, readOnly = false, name = fie
   encoded.name = String(name); encoded.disabled = readOnly;
   const update = () => { encoded.value = String(identity(input.checked ? yes : no)); };
   input.addEventListener('input', update); input.addEventListener('change', update); update();
-  row.append(input, renderLabel(field.key), encoded); return row;
+  row.append(choiceIndicator(input), renderLabel(field.key), encoded); return row;
+}
+
+// Keep the native input for selection, keyboard focus and submission; its
+// visible indicator can distinguish a wrong selection from a missed answer.
+export function choiceIndicator(input) {
+  const indicator = document.createElement('span'); indicator.className = 'answer-indicator';
+  indicator.dataset.control = input.type;
+  const symbol = document.createElement('span'); symbol.className = 'answer-symbol'; symbol.setAttribute('aria-hidden', 'true');
+  const description = document.createElement('span'); description.className = 'sr-only';
+  const update = () => { if (!indicator.dataset.result) symbol.textContent = input.type === 'checkbox' && input.checked ? '✓' : ''; };
+  input.addEventListener('input', update); input.addEventListener('change', update);
+  indicator.append(input, symbol, description); update(); return indicator;
+}
+
+const answerId = answer => answer?.choiceId ?? answer?.entityId ?? answer?.id;
+export function fieldFeedback(host, field, status) {
+  const state = String(status || '').split('/').at(-1);
+  const graded = ['correct', 'incorrect'].includes(state) && field.response && field.correctAnswer && fieldType(field) !== 'free';
+  const expected = answerId(field.correctAnswer), selected = answerId(field.response);
+  const grade = graded ? field.grade || (fieldType(field) === 'blank'
+    ? state === 'correct' ? 'correct' : ''
+    : String(selected) === String(expected) ? 'correct' : 'incorrect') : '';
+  for (const indicator of host.querySelectorAll('.answer-indicator')) {
+    const input = indicator.querySelector('input');
+    const correct = input.type === 'checkbox' ? field.correctAnswer?.value === 'true' : String(input.value) === String(expected);
+    const result = graded ? correct ? input.checked ? 'correct' : 'missed' : input.checked ? 'incorrect' : 'neutral' : '';
+    indicator.dataset.result = result;
+    indicator.querySelector('.answer-symbol').textContent = result === 'correct' ? '✓' : result === 'missed' ? '−' : result === 'incorrect' ? '×' : !graded && input.type === 'checkbox' && input.checked ? '✓' : '';
+    const description = ({ correct: 'Correct choice selected.', missed: 'Correct choice missed.', incorrect: 'Incorrect choice selected.', neutral: 'Incorrect choice left unselected.' })[result] || '';
+    indicator.querySelector('.sr-only').textContent = description;
+    indicator.title = description;
+  }
+  for (const control of host.querySelectorAll('.answer-input,.answer-math,.answer-select-trigger,.answer-saved-value')) {
+    control.dataset.grade = grade;
+  }
 }
 
 export function freeInput(field, label, name, renderMarkdown, typeset = () => {}, readOnly = false) {
@@ -217,17 +256,14 @@ export function questionFeedback(host, status) {
   host.dataset.feedback = ['correct', 'incorrect'].includes(value) ? value : '';
 }
 
-// A filled result marker keeps grading clear in both themes and review history.
+// One filled result badge per question; individual controls carry field results.
 export function feedbackHeading(status, preview = false) {
   const value = String(status || '').split('/').at(-1);
   const heading = document.createElement('div'); heading.className = 'feedback-heading';
   const badge = document.createElement('span'); badge.className = 'feedback-badge';
-  if (['correct', 'incorrect'].includes(value)) {
-    const icon = document.createElement('span'); icon.className = 'feedback-icon';
-    icon.setAttribute('aria-hidden', 'true'); icon.textContent = value === 'correct' ? '✓ ' : '✕ ';
-    badge.append(icon);
-  }
-  const label = document.createElement('span'); label.textContent = value === 'correct' ? 'Correct!' : value === 'incorrect' ? 'Incorrect!' : value === 'completed' ? 'Response saved' : 'Skipped';
+  badge.setAttribute('role', 'status');
+  badge.dataset.grade = ['correct', 'incorrect'].includes(value) ? value : '';
+  const label = document.createElement('span'); label.textContent = value === 'correct' ? 'Correct' : value === 'incorrect' ? 'Incorrect' : value === 'completed' ? 'Response saved' : 'Skipped';
   badge.append(label); heading.append(badge);
   if (preview) {
     const note = document.createElement('span'); note.className = 'feedback-preview'; note.textContent = 'Preview only'; heading.append(note);

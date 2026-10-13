@@ -1,3 +1,4 @@
+import { attachTopicMenu } from './topic-menu.js';
 import './profile.js';
 
 // Keep sticky sidebars and anchor targets below the header, including when
@@ -132,7 +133,8 @@ export function createCoursePicker({ getSnapshot, getCourseId, onSelectCourse, o
     if (topicMatches.length) {
       list.append(node('h3', 'picker-group-title', 'Topics · all courses'));
       topicMatches.slice(0, 80).forEach(({ value: topic, meta }) => {
-        option({ title: topic.name, meta, index: '↳', action: onSelectTopic, value: topic });
+        const row = option({ title: topic.name, meta, index: '↳', action: onSelectTopic, value: topic });
+        attachTopicMenu(row, topic);
       });
       if (topicMatches.length > 80) list.append(node('p', 'picker-message', `Showing the first 80 of ${topicMatches.length.toLocaleString()} topics. Keep typing to narrow your search.`));
     }

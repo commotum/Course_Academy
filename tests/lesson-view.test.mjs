@@ -8,7 +8,7 @@ import vm from 'node:vm';
 const source = await readFile(new URL('../ui/learning.js', import.meta.url), 'utf8');
 const controllers = source.slice(source.indexOf('const $'), source.indexOf("$('retryButton').addEventListener"));
 const visibility = source.slice(source.indexOf('async function syncAfterVisibility()'), source.indexOf("document.addEventListener('visibilitychange'"));
-const fieldUI = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^import .*;\n/m, '').replace(/^MathfieldElement\..*;\n/gm, '').replaceAll('export ', '');
+const fieldUI = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^[\s\S]*?(?=\/\/ Shared presentation)/, '').replaceAll('export ', '');
 
 function fixture(storage = new Map()) {
   const f = { storage, calls: [], scrolls: [], focused: [], cleared: [], dev: false, now: 10000 };
@@ -58,11 +58,13 @@ function fixture(storage = new Map()) {
   f.document = document;
   const window = { MathJax: { typesetClear(nodes) { f.cleared.push(...nodes); } } };
   const context = vm.createContext({ document, window, MathJax: window.MathJax, crypto, URLSearchParams, AbortController, Event,
+    setTimeout, clearTimeout,
     Date: class extends Date { static now() { return f.now; } },
     isDeveloperMode: () => f.dev,
-    attachStepMenu(node, id, mathAcademyId) { node.dataset.stepDbId = id; node.dataset.mathAcademyId = mathAcademyId; },
+    attachStepMenu(node, id, mathAcademyId, options = {}) { node.dataset.stepDbId = id; node.dataset.mathAcademyId = mathAcademyId; node.dataset.contentKind = options.kind; },
     sessionStorage: { getItem: key => storage.get(key) ?? null, setItem(key, value) { storage.set(key, value); }, removeItem(key) { storage.delete(key); } },
     history: { replaceState() {} }, location: { replace() {}, assign() {} },
+    loadMathInputs: async () => {},
     fetch: async (path, options) => {
       const body = options.body ? JSON.parse(options.body) : null;
       f.calls.push({ path, body, keepalive: options.keepalive });
@@ -89,7 +91,7 @@ function fixture(storage = new Map()) {
     loadMath = async () => {};
     return {
       get view() { return lessonView; }, get clock() { return clock; }, get pending() { return pendingPause; },
-      mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home,
+      updateTaskTimer, mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home,
       render: async data => { task = data; await renderTask(data); },
       preview: async (data, index) => { task = data; previewStepIndex = index; await renderPreview(); },
     };
@@ -101,11 +103,11 @@ const activity = (itemId, number = 1, overrides = {}) => ({
   taskId: 123, activityId: 456, learner: { id: 'test', name: 'Learner' }, course: { id: 'course' },
   title: 'The lesson title', status: 'started', elapsedSeconds: 10,
   progress: { stepNumber: number, totalSteps: 3, presented: number },
-  step: { itemId, stepId: 'step-' + itemId, mathAcademyId: '100' + itemId, kind: 'tutorial', title: 'Introduction', markdown: 'Read this.', status: 'started', canContinue: true, fields: [] },
+  step: { itemId, stepId: 'step-' + itemId, contentId: 9000 + itemId, mathAcademyId: '100' + itemId, kind: 'tutorial', title: 'Introduction', markdown: 'Read this.', status: 'started', canContinue: true, fields: [] },
   ...overrides,
 });
 const question = (itemId, status = 'started') => ({
-  itemId, stepId: 'step-' + itemId, mathAcademyId: '200' + itemId, kind: 'question', title: 'Power rule', markdown: 'Find the derivative.', status,
+  itemId, stepId: 'step-' + itemId, contentId: 9000 + itemId, mathAcademyId: '200' + itemId, kind: 'question', title: 'Power rule', markdown: 'Find the derivative.', status,
   canContinue: status === 'correct', solution: status === 'correct' ? 'Apply the power rule.' : undefined,
   fields: [{ id: 30, key: 'selection', type: 'radio', response: status === 'correct' ? { choiceId: 41 } : null,
     choices: [{ id: 41, type: 'text', value: 'Correct option' }, { id: 42, type: 'text', value: 'Other option' }] }],
@@ -157,6 +159,7 @@ test('advancing retains the earlier DOM, disables its answers, and focuses only 
   assert.equal(f.h.view.feed.children[0], previous);
   assert.equal(previous.dataset.history, 'true');
   assert.equal(previous.dataset.mathAcademyId, '2001');
+  assert.equal(previous.dataset.contentKind, 'question');
   assert.equal(previous.querySelector('.lesson-controls'), null);
   assert.equal(previous.querySelector('.answer-actions'), null);
   assert.equal(previous.querySelectorAll('input').every(node => node.disabled && node.dataset.readOnly === 'true'), true);
@@ -165,7 +168,8 @@ test('advancing retains the earlier DOM, disables its answers, and focuses only 
   assert.equal(previous.querySelector('.step-meta'), null);
   assert.doesNotMatch(previous.textContent, /Step 1 \/ 3/);
   assert.equal(f.h.view.history.size, 1);
-  assert.equal(f.h.view.current.dataset.stepDbId, 'step-2');
+  assert.equal(f.h.view.current.dataset.stepDbId, 9002);
+  assert.equal(f.h.view.current.dataset.contentKind, 'tutorial');
   assert.equal(f.h.view.current.dataset.mathAcademyId, '1002');
   assert.equal(f.scrolls.at(-1).node, f.h.view.current);
   assert.equal(f.h.view.track.getAttribute('aria-valuenow'), '1');
@@ -208,7 +212,7 @@ test('resuming in a fresh session restores the database presentation chain as re
   f.server = activity(13, 2, { status: 'paused', history: [first, second], progress: { stepNumber: 2, totalSteps: 3, presented: 3 } });
   await f.h.openTask('123');
   assert.equal(f.calls.some(call => call.path === '/api/resume'), true);
-  assert.deepEqual(f.h.view.feed.children.map(node => node.dataset.stepDbId), ['step-11', 'step-12', 'step-13']);
+  assert.deepEqual(f.h.view.feed.children.map(node => node.dataset.stepDbId), [9011, 9012, 9013]);
   assert.equal(f.h.view.history.size, 2);
   for (const node of f.h.view.feed.children.slice(0, 2)) {
     assert.equal(node.dataset.history, 'true');
@@ -250,7 +254,7 @@ test('database history replaces stale browser entries without revealing later st
     history: [{ order: 1, number: 1, total: 3, step: activity(1).step }],
     progress: { stepNumber: 2, totalSteps: 3, presented: 2 },
   }));
-  assert.deepEqual(f.h.view.feed.children.map(node => node.dataset.stepDbId), ['step-1', 'step-3']);
+  assert.deepEqual(f.h.view.feed.children.map(node => node.dataset.stepDbId), [9001, 9003]);
 });
 
 test('developer preview reveals only visited steps and keeps them available for review', async () => {
@@ -420,10 +424,10 @@ test('inline lesson fields stay inside the submitting form and preserve saved an
   assert.equal(form.querySelector('.answer-select-value').textContent, 'derivative');
   assert.equal(form.querySelector('.answer-select-trigger').disabled, true);
   assert.equal(current.querySelector('.feedback').dataset.feedback, 'correct');
-  assert.match(current.querySelector('.feedback-heading').textContent, /✓ Correct/);
+  assert.match(current.querySelector('.feedback-heading').textContent, /Correct/);
   await f.h.render(activity(43, 2, { step: { ...step, itemId: 43, status: 'incorrect' } }));
   assert.equal(f.h.view.current.querySelector('.feedback').dataset.feedback, 'incorrect');
-  assert.match(f.h.view.current.querySelector('.feedback-heading').textContent, /✕ Incorrect/);
+  assert.match(f.h.view.current.querySelector('.feedback-heading').textContent, /Incorrect/);
 });
 
 test('returning to Study refreshes its queue without a Refresh button or a loading flash', async () => {
@@ -491,7 +495,7 @@ test('an active Next click recovers a confirmed paused state and advances exactl
   await f.h.mutation('/api/continue',{taskId:123,itemId:1});
   assert.deepEqual(f.calls.map(call=>call.path),['/api/continue','/api/resume','/api/continue']);
   assert.notEqual(f.calls[0].body.requestId,f.calls[2].body.requestId);
-  assert.equal(f.h.view.current.dataset.stepDbId,'step-2');
+  assert.equal(f.h.view.current.dataset.stepDbId,9002);
   assert.equal(f.document.getElementById('errorBanner').hidden,true);
 });
 
@@ -501,7 +505,7 @@ test('stale Next never advances the new item after another tab has already advan
   f.respond=async(path)=>path==='/api/continue'?{ok:false,status:409,json:async()=>({error:'Resume the lesson before continuing',code:'lesson-paused'})}:null;
   await f.h.mutation('/api/continue',{taskId:123,itemId:1});
   assert.deepEqual(f.calls.map(call=>call.path),['/api/continue','/api/resume']);
-  assert.equal(f.h.view.current.dataset.stepDbId,'step-2');
+  assert.equal(f.h.view.current.dataset.stepDbId,9002);
 });
 
 test('unknown save outcomes keep the original request identity and do not resume or retry automatically', async () => {
@@ -530,4 +534,68 @@ test('paused answer recovery keeps the selected answer and does not recover unre
   await f.h.mutation('/api/answer',{taskId:123,itemId:1,responses});
   assert.equal(f.calls.length,1);
   assert.equal(f.document.getElementById('errorBanner').hidden,false);
+});
+
+
+test('assessment submits without correctness feedback and keeps its countdown running while paused', async () => {
+  const f = fixture();
+  const data = activity(1, 1, { type: 'assessment', remainingSeconds: 900,
+    step: { itemId: 1, kind: 'question', markdown: 'Enter two.', status: 'submitted', canContinue: true,
+      fields: [{ id: 1, key: 'value', type: 'blank', answerType: 'math', response: { type: 'math', value: '3' } }] } });
+  await f.h.render(data);
+  assert.equal(f.h.view.timer.textContent, '15:00 left');
+  assert.equal(f.h.view.current.querySelector('.feedback'), null);
+  assert.equal(f.h.view.current.querySelector('.worked-solution'), null);
+  assert.match(f.h.view.current.textContent, /Next step/);
+  f.now += 60000;
+  f.h.updateTaskTimer();
+  assert.equal(f.h.view.timer.textContent, '14:00 left');
+  await f.h.render({ ...data, status: 'paused', remainingSeconds: 840 });
+  f.now += 60000;
+  f.h.updateTaskTimer();
+  assert.equal(f.h.view.timer.textContent, '13:00 left');
+  assert.equal(f.h.clock.running, false);
+});
+
+test('assessment deadline rejection finalizes expiry without retrying late answers', async () => {
+  const f = fixture();
+  f.server = activity(1, 1, { type: 'assessment', remainingSeconds: 0, status: 'completed' });
+  await f.h.render(activity(1, 1, { type: 'assessment', remainingSeconds: 1 }));
+  f.respond = async path => path === '/api/answer'
+    ? { ok: false, json: async () => ({ ok: false, code: 'assessment-expired', error: 'Assessment deadline has elapsed' }) }
+    : null;
+  await f.h.mutation('/api/answer', { taskId: 123, itemId: 1, responses: [] });
+  assert.deepEqual(f.calls.map(c => c.path), ['/api/answer', '/api/expire']);
+  assert.ok(f.calls[1].body.requestId);
+  assert.match(f.h.view.current.textContent, /Activity complete/);
+});
+
+test('reopening an expired paused assessment expires it before any resume request', async () => {
+  const f = fixture();
+  f.server = activity(1, 1, { type: 'assessment', status: 'paused', expired: true });
+  f.respond = async path => {
+    if (path === '/api/expire') { f.server.status = 'completed'; return { ok: true, json: async () => structuredClone(f.server) }; }
+    return null;
+  };
+  await f.h.openTask(123);
+  assert.deepEqual(f.calls.map(c => c.path), ['/api/task?taskId=123', '/api/expire']);
+  assert.match(f.h.view.current.textContent, /Activity complete/);
+});
+
+
+test('assessment completion replaces submitted archived cards with revealed server history', async () => {
+  const f = fixture();
+  const first = { itemId: 1, kind: 'question', markdown: 'First question', status: 'submitted', canContinue: true, fields: [] };
+  const second = { ...first, itemId: 2, markdown: 'Second question' };
+  await f.h.render(activity(1, 1, { type: 'assessment', step: first, remainingSeconds: 800 }));
+  await f.h.render(activity(2, 2, { type: 'assessment', step: second, remainingSeconds: 700 }));
+  const old = f.h.view.history.get('1');
+  assert.equal(old, undefined); // Active tests render only the freely navigable current question.
+  await f.h.render(activity(2, 2, { type: 'assessment', status: 'completed',
+    step: { ...second, status: 'correct', solution: 'Second solution' },
+    history: [{ order: 1, number: 1, total: 3, step: { ...first, status: 'incorrect', solution: 'First solution' } }] }));
+  const revealed = f.h.view.history.get('1');
+  assert.notEqual(revealed, old);
+  assert.match(revealed.textContent, /Incorrect/);
+  assert.match(revealed.textContent, /First solution/);
 });

@@ -1,5 +1,7 @@
 // Run from the repository root; requires the local EDB edb_core build.
 use edb_core::{Database, Keyword, SemanticError, TxFunctions, TxReport, Value};
+#[path = "../engine/edb/answer_fields.rs"]
+mod answer_fields;
 #[path = "../engine/edb/configuration.rs"]
 mod configuration;
 mod edb_activity_checks;
@@ -8,12 +10,14 @@ mod edb_configuration_checks;
 mod progress;
 fn transact(db: &Database, text: &str, at: i64) -> Result<TxReport, SemanticError> {
     let mut functions = TxFunctions::new();
+    answer_fields::register_answer_field_predicates(&mut functions);
     progress::register_progress_predicates(&mut functions);
     configuration::register_configuration_predicates(&mut functions);
     db.with_forms(
         &edb_core::edn_transaction::read_edn_transaction(text)?,
         &functions,
         at,
+        edb_core::EntityRef::Id(edb_core::DB_SOURCE_SYSTEM),
     )
 }
 use std::{error::Error, fs};
@@ -267,7 +271,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     let topicidattr = db.entid(&Keyword::new("topic", "id")).unwrap() as u32;
     assert!(!removed.values(topic, topicidattr).is_empty());
     let schema_only = std::env::args().any(|arg| arg == "--schema-only");
-    if !schema_only { edb_activity_checks::check(&db)?; }
+    if !schema_only {
+        edb_activity_checks::check(&db)?;
+    }
     println!(
         "PASS all {schema_count} current schemas install; policy/difficulty/progress predicates, single-owner topic progress, identity-preserving writes, required fields, component deletion and history checks pass."
     );

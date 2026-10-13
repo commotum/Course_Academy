@@ -86,7 +86,15 @@ pub fn check(db: &Database, topic: u64, input_basis: u64) -> Result<(), Box<dyn 
                     spec: EntityRef::Ident(Keyword::new(ns, spec)),
                 }),
             ];
-            assert!(db.with_forms(&forms, &functions, 2200).is_err());
+            assert!(
+                db.with_forms(
+                    &forms,
+                    &functions,
+                    2200,
+                    edb_core::EntityRef::Id(edb_core::DB_SOURCE_SYSTEM)
+                )
+                .is_err()
+            );
         }
     }
 

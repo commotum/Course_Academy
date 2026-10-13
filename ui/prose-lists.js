@@ -3,8 +3,8 @@ import { marked } from './vendor/marked/marked.esm.js';
 const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX'];
 
 // Call after protecting TeX, then sanitize the final Markdown output as usual.
-// Legacy captures label statement lists with Roman numerals, which Markdown
-// otherwise treats as one paragraph with soft line breaks.
+// Imported bold Roman labels render as aligned statement markers rather than
+// a bullet followed by a bold label. Protected TeX stays untouched.
 export function romanLists(source) {
   const lines = source.split('\n'), result = [];
   let fence = null;
@@ -21,15 +21,13 @@ export function romanLists(source) {
     while (next < lines.length && items.length < roman.length) {
       let candidate = next;
       if (items.length) while (candidate < lines.length && !lines[candidate].trim()) candidate++;
-      const match = /^ {0,3}([IVX]+)\.[ \t]+(.+)$/.exec(lines[candidate] || '');
+      const match = /^ {0,3}[-+*][ \t]+\*\*([IVX]+)\.\*\*[ \t]+(.+)$/.exec(lines[candidate] || '');
       if (!match || match[1] !== roman[items.length]) break;
       items.push(match[2]); next = candidate + 1;
     }
     if (items.length < 2) { result.push(lines[i]); continue; }
-    // The leading bullet is a known nested-list artifact in Roman captures.
-    const nestedBullet = items.every(item => item.startsWith('- '));
     result.push('', '<ol type="I" class="statement-list">', ...items.map(item =>
-      `<li>${marked.parseInline(nestedBullet ? item.slice(2) : item, { async: false, gfm: true })}</li>`), '</ol>', '');
+      `<li>${marked.parseInline(item, { async: false, gfm: true })}</li>`), '</ol>', '');
     i = next - 1;
   }
   return result.join('\n');

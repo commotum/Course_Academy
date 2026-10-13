@@ -42,7 +42,7 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/isComponent true
-  :db/doc "Optional owned overall performance record, defined in 1-2-learner-performance.edn. Holds accuracy and evidence mass across topics. Find its learner through learner/_performance; no duplicate learner ref is needed. Ensure performance/validate separately on each performance write. Retracting the learner also retracts this record."}
+  :db/doc "Optional owned overall performance record, defined in 1-learner.edn. Holds accuracy and evidence mass across topics. Find its learner through learner/_performance; no duplicate learner ref is needed. Ensure performance/validate separately on each performance write. Retracting the learner also retracts this record."}
 
  {:db/ident :learner/knowledge-profile
   :db/valueType :db.type/ref
@@ -53,7 +53,7 @@
  {:db/ident :learner/activity
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Optional collection of learner-specific tasks, including attempts and their history. Each task references a shared activity definition and records its status, elapsed working time, and XP. Status includes completed and failed; there is no separate task outcome. Tasks are defined in 2-1-learner-task.edn and own the items defined in 2-2-learner-task-item.edn. Calendar timestamps and history order come from status transactions. Validate each task and its learner association separately. These ordinary refs do not establish component ownership."}
+  :db/doc "Optional collection of learner-specific tasks, including attempts and their history. Each task references a shared activity definition and records its status, elapsed working time, and XP. Status includes completed and failed; there is no separate task outcome. Tasks are defined in 3-learner-task.edn and own the items defined in 3-learner-task.edn. Calendar timestamps and history order come from status transactions. Validate each task and its learner association separately. These ordinary refs do not establish component ownership."}
 
  {:db/ident :learner/validate
   :db.entity/attrs [:learner/id]

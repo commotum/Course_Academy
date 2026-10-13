@@ -1,4 +1,5 @@
 import { isDeveloperMode, developerModeReady } from './developer-mode.js';
+import { readCurrentLearner } from './requests.js';
 
 export function createTargetControls(options) {
   return createTopicSelectionControls({ ...options, collection: 'targets' });
@@ -8,9 +9,9 @@ export function createQueueControls(options) {
   return createTopicSelectionControls({ ...options, collection: 'queue' });
 }
 
-// Confirmed membership comes from the server. A pending target intent updates
+// Confirmed membership comes from the server. A pending selection updates
 // the local presentation immediately; storage only invalidates other pages.
-function createTopicSelectionControls({ readLearner, onChange = () => {}, collection }) {
+function createTopicSelectionControls({ readLearner = readCurrentLearner, onChange = () => {}, collection }) {
   const queued = collection === 'queue';
   const changeKey = `course-academy-${collection}-changed`;
   const changeEvent = `course-academy:${collection}-changed`;
@@ -88,12 +89,12 @@ function createTopicSelectionControls({ readLearner, onChange = () => {}, collec
     operations.set(topicId, operation);
     pending = topicId; revision++; errors.delete(topicId); renderAll();
     try {
-      if (!queued) {
-        const visibleTargets = new Set(selections);
-        if (operation.selected) visibleTargets.add(topicId); else visibleTargets.delete(topicId);
+      {
+        const visibleSelections = new Set(selections);
+        if (operation.selected) visibleSelections.add(topicId); else visibleSelections.delete(topicId);
         // Keep the confirmed learner intact for rollback and exact retries.
         // Consumers repaint this local preview using their normal change path.
-        onChange({ ...learner, targets: [...visibleTargets] });
+        onChange({ ...learner, [collection]: [...visibleSelections] });
       }
       const response = await fetch(endpoint, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -118,7 +119,7 @@ function createTopicSelectionControls({ readLearner, onChange = () => {}, collec
       errors.set(topicId, error.message || `Unable to save this ${noun}. Try again.`);
     } finally {
       pending = null; renderAll();
-      if (!queued) onChange(learner);
+      onChange(learner);
       void refresh();
     }
   }

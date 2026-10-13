@@ -73,6 +73,21 @@ button,input,select { font:inherit; }
 .canvas { position:absolute; inset:0; width:100%; height:100%; }
 #svg { width:100%; height:100%; display:block; }
 #edges, #edges path { pointer-events:none; }
+.edge-stub{cursor:help;outline:none}
+.edge-stub-line{fill:none;stroke:var(--ink-alpha-78);stroke-width:1.2;pointer-events:none}
+.edge-stub-dot{fill:var(--ink-alpha-78);pointer-events:none}
+.edge-stub-hit{fill:none;stroke:transparent;stroke-width:12;vector-effect:non-scaling-stroke;pointer-events:stroke;stroke-linecap:round}
+.edge-stub:hover .edge-stub-line,.edge-stub:focus-visible .edge-stub-line,.edge-stub.is-open .edge-stub-line{stroke:var(--tone-ff);stroke-width:1.8}
+.edge-stub:hover .edge-stub-dot,.edge-stub:focus-visible .edge-stub-dot,.edge-stub.is-open .edge-stub-dot{fill:var(--tone-ff)}
+#nodes .node.edge-peer .title-shape{stroke:var(--tone-ff);stroke-width:2;vector-effect:non-scaling-stroke}
+#edgeConnectionPopover{position:fixed;z-index:90;width:320px;max-width:calc(100vw - 24px);padding:10px;background:var(--panel-2);color:var(--ink);border:1px solid var(--line-2);box-shadow:var(--shadow);font:11px var(--font)}
+#edgeConnectionPopover[hidden]{display:none}
+#edgeConnectionHeading{font-size:10px;color:var(--muted);line-height:1.5;margin-bottom:8px;overflow-wrap:anywhere}
+#edgeConnectionTopics{display:grid;gap:5px;max-height:min(240px,calc(100vh - 100px));overflow-y:auto;overscroll-behavior:contain}
+.edge-topic-badge{display:flex;align-items:flex-start;gap:8px;width:100%;padding:8px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);text-align:left;cursor:pointer;font:11px var(--font);border-radius:0}
+.edge-topic-badge:hover,.edge-topic-badge:focus-visible{border-color:var(--tone-ff);outline:none}
+.edge-topic-layer{flex-shrink:0;font-size:9px;line-height:1.5;color:var(--muted)}
+.edge-topic-name{line-height:1.5;overflow-wrap:anywhere;min-width:0}
 .edge-base { fill:none; stroke:var(--edge); stroke-width:1.2; stroke-linecap:round; pointer-events:none; }
 .edge-fade { fill:none; stroke:var(--ink-alpha-06); stroke-width:1.2; stroke-linecap:round; pointer-events:none; }
 .edge-active { fill:none; stroke:var(--edge-active); stroke-width:1.45; stroke-linecap:round; pointer-events:none; }
@@ -197,8 +212,38 @@ button,input,select { font:inherit; }
 .info-actions#viewActions .pill{height:28px;padding:0 8px;font-size:10px}
 .graph-target-color{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;font-size:11px;color:var(--tone-bb)}
 .graph-target-color .profile-switch:focus-visible{outline:2px solid var(--tone-ee);outline-offset:3px}
+.target-course-filters{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.target-course-filters[hidden]{display:none}
+.target-course-filters .info-kicker{margin-bottom:10px}
+.target-course-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;font-size:11px;color:var(--soft)}
+.target-course-row .profile-switch:focus-visible{outline:2px solid var(--tone-ee);outline-offset:3px}
+.target-split-row{margin-bottom:14px}
+.course-band-backdrop{fill:var(--ink-alpha-03);stroke:var(--line-2);stroke-width:1}
+.course-band-label{fill:var(--soft);font-family:var(--font);font-size:14px;font-weight:500;letter-spacing:.1em}
+#guides{pointer-events:none}
 @media(max-width:1000px){.mini-panel{display:block;width:170px}}
 @media(max-width:570px){.mini-panel{display:block;top:auto;bottom:55px;right:12px;width:142px;padding:8px}.minimap-stats{font-size:9px;letter-spacing:.07em}.info-actions#viewActions .pill{height:26px;font-size:9px}}
+
+.app.targets-page{grid-template-rows:auto minmax(0,1fr) auto}
+.app.targets-page .hud{max-height:calc(100% - 36px);overflow-y:auto;overscroll-behavior:contain}
+.target-week-strip{padding:10px 18px 12px;border-top:1px solid var(--line-2);background:var(--panel);z-index:6;min-width:0}
+.target-week-strip[hidden]{display:none}
+.target-week-heading{display:flex;align-items:center;justify-content:center;gap:20px;min-height:18px;font-size:11px;color:var(--soft)}
+.target-week-hint{font-size:10px;color:var(--muted)}
+.target-week-controls{display:flex;align-items:center;justify-content:center;gap:16px;min-width:0;margin-top:4px}
+.target-week-presets{display:flex;gap:6px;flex-shrink:0}
+.target-week-presets button{height:30px;padding:0 10px;border:1px solid var(--line-2);background:transparent;color:var(--muted);font-size:10px;border-radius:0;cursor:pointer}
+.target-week-presets button[aria-pressed="true"]{background:var(--tone-ff);color:var(--tone-00);border-color:var(--tone-ff)}
+.target-week-buttons{display:flex;align-items:center;gap:4px;min-width:0;max-width:800px;overflow-x:auto;scrollbar-width:thin;padding:3px}
+.target-week-button{position:relative;display:flex;align-items:center;justify-content:center;flex:0 0 36px;height:32px;padding:0;border:0;background:transparent;color:var(--soft);cursor:pointer;border-radius:0}
+.target-week-bar{display:block;width:24px;height:6px;border:1px solid var(--tone-55);background:transparent}
+.target-week-button.has-targets .target-week-bar{background:var(--tone-55)}
+.target-week-button[aria-pressed="true"] .target-week-bar{border-color:var(--tone-ff);background:var(--tone-ff)}
+.target-week-button[aria-current="date"]::after{content:"";position:absolute;bottom:3px;width:12px;height:2px;background:var(--tone-bb)}
+.target-week-button:hover .target-week-bar{border-color:var(--tone-ff)}
+.target-week-strip button:focus-visible{outline:2px solid var(--tone-ff);outline-offset:1px}
+.target-week-strip button:disabled{cursor:wait;opacity:.5}
+@media(max-width:570px){.target-week-strip{padding:8px 12px}.target-week-heading{justify-content:flex-start;flex-wrap:wrap;gap:4px 12px;font-size:10px}.target-week-hint{font-size:9px}.target-week-controls{gap:8px;justify-content:flex-start}.target-week-presets button{padding:0 7px}.target-week-button{flex-basis:32px}.target-week-bar{width:20px}}
 </style>
 <style id="node-context-style">/* Node-only context actions. Connections remain completely non-interactive. */
 #nodeContextMenu{position:fixed;z-index:100;min-width:224px;max-width:calc(100vw - 16px);padding:4px;background:var(--tone-0b);border:1px solid var(--tone-66);box-shadow:0 8px 25px #000b;color:var(--tone-ff);font-family:var(--font)}
@@ -227,6 +272,10 @@ button,input,select { font:inherit; }
 #selectionMarks,#selectionMarks *{pointer-events:none}
 .selection-underlay{fill:none;stroke:var(--tone-00);stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;vector-effect:non-scaling-stroke}
 .selection-brackets{fill:none;stroke:var(--tone-ff);stroke-width:1.4;stroke-linecap:square;stroke-linejoin:miter;vector-effect:non-scaling-stroke}
+#statusColorLegend[hidden]{display:none}
+.status-color-legend{margin-top:10px;display:grid;gap:7px}
+.status-color-row{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:8px;font-size:9px;color:var(--soft)}
+.status-color-row .competency-ramp{margin:0}
 #competencyLegend{margin-top:12px;padding-top:10px;border-top:1px solid var(--line-2);font-size:10px;color:var(--tone-cc);line-height:1.5}
 .competency-heading{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:7px}
 .competency-heading>span:first-child{letter-spacing:.05em;color:var(--tone-bb)}
@@ -258,7 +307,7 @@ button,input,select { font:inherit; }
 <div class="app">
 <header class="topbar site-header">
 <a class="brand" href="/home" aria-label="Study home"><img class="brand-logo" src="/ui/MA-Logo.svg" alt="" width="28" height="28"></a>
-<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/assignments" id="assignmentsLink">Assignments</a><a href="/progress" id="courseLink">Progress</a><a href="/?view=targets" id="targetsLink">Targets</a><button id="courseBrowse" class="explore-trigger" type="button" aria-haspopup="dialog">Explore</button></nav>
+<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/activity" id="activityLink">Activity</a><a href="/assignments" id="assignmentsLink">Assignments</a><a href="/progress" id="courseLink">Progress</a><a href="/?view=targets" id="targetsLink">Targets</a><button id="courseBrowse" class="explore-trigger" type="button" aria-haspopup="dialog">Explore</button></nav>
 <button id="learnerName" class="learner-name" type="button" aria-haspopup="dialog" aria-controls="userProfile" aria-expanded="false">Profile</button>
 </header>
 <div class="main">
@@ -268,6 +317,7 @@ button,input,select { font:inherit; }
 <g id="camera">
 <g id="guides"></g>
 <g id="edges"></g>
+<g id="edgeStubs"></g>
 <g id="nodes"></g>
 <g id="selectionMarks" aria-hidden="true"></g>
 </g>
@@ -283,13 +333,25 @@ button,input,select { font:inherit; }
 <button class="pill" id="forwardBtn">Forward</button>
 <button class="pill" id="overviewBtn">Course overview</button>
 </div><div class="info-actions hidden" id="targetActions"></div><div class="info-actions" id="viewActions"><button class="pill" id="fitBtn">Fit</button><button class="pill" id="resetBtn">Reset</button></div>
-<div class="graph-target-color"><label id="targetColorLabel" for="targetColorToggle">Targets in red</label><button id="targetColorToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetColorLabel" aria-checked="false"></button></div>
+<div class="graph-target-color"><label id="targetColorLabel" for="targetColorToggle">Color Code</label><button id="targetColorToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetColorLabel" aria-checked="false"></button></div>
+<section id="targetCourseFilters" class="target-course-filters" aria-label="Filter targets by course" hidden>
+<div class="info-kicker">Courses</div>
+<div class="target-course-row target-split-row"><label id="targetSplitLabel" for="targetSplitToggle">Split by course</label><button id="targetSplitToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetSplitLabel" aria-checked="false"></button></div>
+<div class="target-course-row"><label id="targetCourseLabel256" for="targetCourseToggle256">MTH 256</label><button id="targetCourseToggle256" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel256" aria-checked="true"></button></div>
+<div class="target-course-row"><label id="targetCourseLabel255" for="targetCourseToggle255">MTH 255</label><button id="targetCourseToggle255" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel255" aria-checked="true"></button></div>
+<div class="target-course-row"><label id="targetCourseLabel341" for="targetCourseToggle341">MTH 341</label><button id="targetCourseToggle341" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel341" aria-checked="true"></button></div>
+</section>
 
 <div class="meta-line" id="metaLine"></div><div id="badgeNote">Global layer badges · prerequisite order</div>
 <section id="competencyLegend" aria-label="Progress and selection legend">
 <div class="competency-heading"><span>Repetitions</span><span id="competencyReadout" aria-live="polite"></span></div>
 <div class="competency-ramp" aria-label="Repetition bands zero through six, from lower to higher"><span class="competency-cell" style="--swatch-fill:var(--mastery-0);--swatch-text:var(--mastery-text-0)" aria-label="Repetition band 0 of 6">0</span><span class="competency-cell" style="--swatch-fill:var(--mastery-1);--swatch-text:var(--mastery-text-1)" aria-label="Repetition band 1 of 6">1</span><span class="competency-cell" style="--swatch-fill:var(--mastery-2);--swatch-text:var(--mastery-text-2)" aria-label="Repetition band 2 of 6">2</span><span class="competency-cell" style="--swatch-fill:var(--mastery-3);--swatch-text:var(--mastery-text-3)" aria-label="Repetition band 3 of 6">3</span><span class="competency-cell" style="--swatch-fill:var(--mastery-4);--swatch-text:var(--mastery-text-4)" aria-label="Repetition band 4 of 6">4</span><span class="competency-cell" style="--swatch-fill:var(--mastery-5);--swatch-text:var(--mastery-text-5)" aria-label="Repetition band 5 of 6">5</span><span class="competency-cell" style="--swatch-fill:var(--mastery-6);--swatch-text:var(--mastery-text-6)" aria-label="Repetition band 6 of 6">6</span></div>
 <div class="competency-endpoints"><span>Lower</span><span>Higher</span></div>
+<div id="statusColorLegend" class="status-color-legend" aria-label="Status colors and repetition bands" hidden>
+<div class="status-color-row"><span>Targets</span><div id="targetMasteryRamp" class="competency-ramp" aria-label="Red target repetition bands zero through six"></div></div>
+<div class="status-color-row"><span>Completed targets</span><div id="completedTargetMasteryRamp" class="competency-ramp" aria-label="Green completed-target repetition bands zero through six"></div></div>
+<div class="status-color-row"><span>In queue</span><div id="queueMasteryRamp" class="competency-ramp" aria-label="Blue queue repetition bands zero through six"></div></div>
+</div>
 <div class="competency-keys"><span><svg class="competency-active-example" viewBox="0 0 28 18" aria-hidden="true"><rect x="5" y="5" width="18" height="8" fill="var(--mastery-3)"/><path d="M7 2H2V7 M21 2H26V7 M2 11V16H7 M21 16H26V11" fill="none" stroke="var(--tone-ff)" stroke-width="1"/></svg>Active selection</span><span><i class="competency-unknown-example" aria-hidden="true"></i>No data</span></div>
 <details id="competencyDetails"><summary id="profileSummary">Knowledge profile</summary>
 <p id="competencySelectionDetail"></p>
@@ -306,12 +368,21 @@ button,input,select { font:inherit; }
 <div class="minimap-stats"><span aria-atomic="true" aria-live="polite" id="depthReadout">Depth: 1</span><span id="zoomReadout">100%</span></div></div>
 <div class="footer-panel"><span id="scopeReadout">Loading topics…</span><a href="/home" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Study ↗</a><button id="refreshData" type="button" disabled>Refresh</button><span>Wheel / pinch to zoom · drag to pan</span></div>
 </div>
+<section id="targetWeekStrip" class="target-week-strip" aria-label="Filter targets by assignment week" hidden>
+<div class="target-week-heading"><span id="targetWeekReadout" role="status" aria-live="polite" aria-atomic="true">All weeks</span><span class="target-week-hint">Shift-click for a range</span></div>
+<div class="target-week-controls"><div class="target-week-presets"><button id="targetWeeksAll" type="button" aria-pressed="true">All</button><button id="targetWeeksUnscheduled" type="button" aria-pressed="false">Unscheduled</button></div><div id="targetWeekButtons" class="target-week-buttons" role="group" aria-label="Calendar weeks"></div></div>
+</section>
+</div>
+<div id="edgeConnectionPopover" role="dialog" aria-modal="false" aria-labelledby="edgeConnectionHeading" hidden>
+<div id="edgeConnectionHeading"></div><div id="edgeConnectionTopics"></div>
 </div>
 <div id="nodeContextMenu" role="menu" aria-label="Topic actions" hidden>
 <div id="nodeQueueAction" role="none"></div>
 <div id="nodeTargetAction" role="none"></div>
 <a id="studyTopicLink" role="menuitem" href="/learn">Study now<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
 <a id="goToTopicLink" role="menuitem" href="/topic">Go to topic<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
+<button id="copyNodeDbId" type="button" role="menuitem">Copy topic :db/id</button>
+<button id="copyNodeMaId" type="button" role="menuitem" hidden>Copy topic :ma/id</button>
 <button id="copyNodeButton" type="button" role="menuitem">Copy node to clipboard</button>
 </div>
 <div id="copyNodeNotice" role="status" aria-live="polite" hidden></div>
@@ -325,42 +396,53 @@ button,input,select { font:inherit; }
 import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
 import { createTargetControls, createQueueControls } from "/ui/targets.js";
 import { isLightTheme, themeColor } from "/ui/profile.js";
+import { copyEntityId, academyEntityId } from "/ui/step-menu.js";
+import { readRequest } from "/ui/requests.js";
+import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabel, normalizeTargetWeekSelection,
+  selectTargetWeek, filterScheduledTargets, targetWeekSelectionLabel } from "/ui/target-weeks.js";
 
 (() => {
   const NODES = [], LINKS = [];
   const META = {nodeCount:0,edgeCount:0,layerCount:1,maxLayerSize:0};
   const STARTER_TOPIC_IDS = [735,487,1422,433,1745,1491];
   const PALETTE = ['#000000','#303030','#5A5A5A','#858585','#AEAEAE','#D6D6D6','#FFFFFF'];
+  const STATUS_PALETTES = {
+    target:['#4b1118','#681821','#8c202b','#b52b34','#cf626b','#e5a0a6','#f8dadd'],
+    'completed-target':['#093c22','#0c5130','#10633b','#14783e','#56a978','#9edbb4','#def4e5'],
+    queue:['#102653','#173775','#1b459c','#1d4ed8','#628fec','#a6c5f5','#e1ecfc'],
+  };
   let snapshot = null, courseId = null, courseTopics = new Set(), repetitions = {};
   let targetsView = false;
-  const targetColorKey = 'course-academy.graph-targets-red';
-  let targetsInRed = false;
-  try { targetsInRed = localStorage.getItem(targetColorKey) === 'true'; } catch { /* Coloring also works without browser storage. */ }
+  const targetColorKey = 'course-academy.graph-color-code';
+  function readColorCodePreference() {
+    try { return (localStorage.getItem(targetColorKey) ?? localStorage.getItem('course-academy.graph-targets-red')) === 'true'; }
+    catch { return false; }
+  }
+  let colorCodeEnabled = false;
+  colorCodeEnabled = readColorCodePreference();
   let targetTopicId = null;
   const targetControls = createTargetControls({
-    readLearner: async () => {
-      const response = await fetch('/api/graph-explorer', { cache: 'no-store' });
-      if (!response.ok) throw new Error('Unable to refresh targets.');
-      return (await response.json()).learner;
-    },
     onChange: learner => {
       const previous = new Set(snapshot?.learner.targets || []);
       const next = new Set(learner?.targets || []);
       const changed = previous.size !== next.size || [...next].some(id => !previous.has(id));
-      if (snapshot) snapshot.learner = { ...snapshot.learner, ...learner };
+      // Each controller owns its collection. A target response or rollback
+      // must not overwrite a queue preview that is still being saved.
+      if (snapshot) snapshot.learner = { ...snapshot.learner, ...learner, queue:snapshot.learner.queue };
       if (targetsView && changed && !loading) refreshTargetScope();
       else if (changed && !loading) refreshTargetColors();
       document.getElementById('targetActions').classList.toggle('hidden', targetTopicId === null || learner?.selfDirected !== true);
     },
   });
   const queueControls = createQueueControls({
-    readLearner: async () => {
-      const response = await fetch('/api/graph-explorer', { cache: 'no-store' });
-      if (!response.ok) throw new Error('Unable to refresh queue.');
-      return (await response.json()).learner;
-    },
     onChange: learner => {
+      const previous = new Set((snapshot?.learner.queue || []).map(String));
+      const next = new Set((learner?.queue || []).map(String));
+      const changed = previous.size !== next.size || [...next].some(id => !previous.has(id));
       if (snapshot) snapshot.learner.queue = learner?.queue || [];
+      if (changed && !loading) {
+        refreshTargetColors();
+      }
     },
   });
   let dependencyOrder = [];
@@ -370,6 +452,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   const camera = $('camera');
   const guidesG = $('guides');
   const edgesG = $('edges');
+  const edgeStubsG = $('edgeStubs');
   const nodesG = $('nodes');
   const minimap = $('minimap');
   const mctx = minimap.getContext('2d');
@@ -406,6 +489,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     nodeById.clear(); inMap.clear(); outMap.clear();
     for (const n of nodes) {nodeById.set(n.id,n);inMap.set(n.id,incoming.get(n.id));outMap.set(n.id,outgoing.get(n.id));}
     dependencyOrder=order; snapshot=data; repetitions=data.repetitions;
+    installTargetCalendar(data.targetSchedule || []);
     targetControls.setLearner(data.learner);
     queueControls.setLearner(data.learner);
     META.nodeCount=nodes.length;META.edgeCount=data.links.length;
@@ -449,6 +533,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   };
 
   let nodeLetterSpacing = 0;
+  const nodeGeometryCache = new Map(), layoutCache = new Map();
   let marqueeEntries = [];
   let marqueeRAF = 0;
 
@@ -458,6 +543,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   }
 
   function sizeNodeTitles() {
+    nodeGeometryCache.clear();layoutCache.clear();
     const probeGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
     probeGroup.setAttribute('class','node');
     probeGroup.setAttribute('visibility','hidden');
@@ -500,11 +586,17 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     return {lines:[label], fullText:clean, fullWidth, width:Math.min(maximum, Math.max(constants.minNodeWidth, Math.ceil(fullWidth) + constants.textPadX * 2)), height:26, truncated:label !== clean};
   }
   function nodeGeometry(n, scoped) {
-    if (!scoped) return {...titleWrap(n.name), badgeWidth:0, titleX:0, badge:''};
+    const key=n.id+':'+scoped;
+    if(nodeGeometryCache.has(key))return nodeGeometryCache.get(key);
+    if (!scoped) {
+      const geometry={...titleWrap(n.name), badgeWidth:0, titleX:0, badge:''};
+      nodeGeometryCache.set(key,geometry);return geometry;
+    }
     const badge = layerLabel(n), badgeWidth = Math.ceil(measuredTitleWidth(badge)) + 16;
     const titleX = badgeWidth + 4;
     const title = titleWrap(n.name, constants.maxNodeWidth - titleX);
-    return {...title, titleWidth:title.width, width:titleX + title.width, badgeWidth, titleX, badge};
+    const geometry={...title, titleWidth:title.width, width:titleX + title.width, badgeWidth, titleX, badge};
+    nodeGeometryCache.set(key,geometry);return geometry;
   }
   // An active set can contain ancestors, descendants, or unrelated topics.
   // Compute distances in each direction separately: never expand into siblings
@@ -685,10 +777,61 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     apply(order);return {...stats,cached:false};
   }
 
+  function targetCourseBands(nodeIds) {
+    const direct=new Map(), inherited=new Map(), courses=[];
+    for(const code of targetCourseCodes){
+      if(!enabledTargetCourses.has(code))continue;
+      const label='MTH '+code, members=new Set();
+      for(const course of snapshot?.courses || []){
+        if(course.code!==label)continue;
+        for(const id of [...(course.topicIds || []),...(course.targetTopicIds || [])])members.add(id);
+      }
+      if(!members.size)continue;
+      courses.push({key:code,label,nodeIds:new Set()});
+      for(const id of members){
+        if(!direct.has(id))direct.set(id,new Set());
+        direct.get(id).add(code);
+      }
+      // Inherit course membership from target roots, even when a prerequisite
+      // is explored on its own. Depth still exclusively controls visibility.
+      const pending=[...new Set([...courseTopics,...state.activeIds])].filter(id=>members.has(id));
+      const visited=new Set(pending);
+      for(let i=0;i<pending.length;i++){
+        const id=pending[i];
+        if(nodeIds.has(id)){
+          if(!inherited.has(id))inherited.set(id,new Set());
+          inherited.get(id).add(code);
+        }
+        for(const previous of inMap.get(id) || []){
+          if(!visited.has(previous)){visited.add(previous);pending.push(previous);}
+        }
+      }
+    }
+    const shared={key:'shared',label:'Shared',nodeIds:new Set()};
+    const other={key:'other',label:'Other topics',nodeIds:new Set()};
+    const byCode=new Map(courses.map(course=>[course.key,course]));
+    for(const id of nodeIds){
+      // An explicitly assigned target retains its course; unmapped
+      // prerequisites inherit whichever courses depend on them.
+      const membership=direct.get(id) || inherited.get(id) || new Set();
+      const band=membership.size>1?shared:membership.size===1?byCode.get([...membership][0]):other;
+      band.nodeIds.add(id);
+    }
+    return [...courses,shared,other].filter(band=>band.nodeIds.size);
+  }
+
   function layoutCurrent() {
     const active=buildActiveSet(),scoped=isScoped();
     const activeNodes=NODES.filter(n=>active.nodeIds.has(n.id));
     const activeLinks=LINKS.map((e,i)=>({...e,index:i})).filter(e=>active.edgeSet.has(e.index));
+    const courseBands=targetsView && splitTargetsByCourse?targetCourseBands(active.nodeIds):[];
+    const layoutKey=targetsView+'|'+scoped+'|'+activeNodes.map(n=>n.id+':'+active.columns.get(n.id)).join(',')+'|'+courseBands.map(band=>band.key+':'+[...band.nodeIds].join(',')).join(';');
+    const cached=layoutCache.get(layoutKey);
+    if(cached){
+      layoutCache.delete(layoutKey);layoutCache.set(layoutKey,cached);
+      state.layout={...cached,upstream:active.upstream,downstream:active.downstream,rowOrdering:{...cached.rowOrdering,layoutCached:true}};
+      return state.layout;
+    }
     const grouped=new Map(),geom=new Map();
     for (const n of activeNodes) {
       const col=active.columns.get(n.id); if (!grouped.has(col)) grouped.set(col,[]);
@@ -696,7 +839,16 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     }
     for (const arr of grouped.values()) arr.sort((a,b)=>scoped?(a.layer-b.layer||a.order-b.order||a.id-b.id):(a.order-b.order||a.id-b.id));
     const rowGap=scoped?18:constants.rowGap;
-    const rowOrdering=orderColumnStacks(grouped,activeLinks,geom,rowGap);
+    let rowOrdering;
+    if(courseBands.length){
+      for(const band of courseBands){
+        band.grouped=new Map([...grouped].map(([col,nodes])=>[col,nodes.filter(n=>band.nodeIds.has(n.id))]).filter(([,nodes])=>nodes.length));
+        const links=activeLinks.filter(e=>band.nodeIds.has(e.source)&&band.nodeIds.has(e.target));
+        band.rowOrdering=orderColumnStacks(band.grouped,links,geom,rowGap);
+      }
+      for(const col of grouped.keys())grouped.set(col,courseBands.flatMap(band=>band.grouped.get(col) || []));
+      rowOrdering={method:'course-split',bands:courseBands.length};
+    }else rowOrdering=orderColumnStacks(grouped,activeLinks,geom,rowGap);
     const layerMetrics=[];let x=constants.leftPad;
     for (const col of [...grouped.keys()].sort((a,b)=>a-b)) {
       const arr=grouped.get(col),maxW=Math.max(...arr.map(n=>geom.get(n.id).width));
@@ -707,24 +859,43 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       col.height=col.nodes.reduce((total,n)=>total+geom.get(n.id).height,0)
         +Math.max(0,col.nodes.length-1)*rowGap;
     }
-    const center=constants.topPad+Math.max(0,...layerMetrics.map(col=>col.height))/2;
-    for (const col of layerMetrics) {
+    const placeStack=(col,nodes,y)=>{
       // Center the stack as a whole, not its middle node or a rounded row slot.
       // The two boxes in a two-topic column sit equally above/below this center.
-      let y=center-col.height/2;
-      for (const n of col.nodes) {
+      for (const n of nodes) {
         const g=geom.get(n.id);
         // Preserve existing horizontal alignment and 160px routing corridors.
         const nx=scoped&&col.layer<0?col.x+col.width-g.width:col.x;
         pos.set(n.id,{x:nx,y,w:g.width,h:g.height,layerX:col.x,layerWidth:col.width,col:col.layer,colIndex:col.index,geometry:g});
         y+=g.height+rowGap;
       }
+    };
+    if(courseBands.length){
+      let y=constants.topPad;
+      const width=x-constants.layerGap-constants.leftPad;
+      for(const band of courseBands){
+        const heights=new Map([...band.grouped].map(([col,nodes])=>[col,nodes.reduce((sum,n)=>sum+geom.get(n.id).height,0)+Math.max(0,nodes.length-1)*rowGap]));
+        const height=Math.max(...heights.values());
+        Object.assign(band,{x:constants.leftPad-16,y,width:Math.max(240,width)+32,height:height+56});
+        for(const col of layerMetrics){
+          const nodes=band.grouped.get(col.layer) || [];
+          placeStack(col,nodes,y+32+(height-(heights.get(col.layer) || 0))/2);
+        }
+        y+=band.height+56;
+      }
+    }else{
+      const center=constants.topPad+Math.max(0,...layerMetrics.map(col=>col.height))/2;
+      for(const col of layerMetrics)placeStack(col,col.nodes,center-col.height/2);
     }
     const routing=routeConnections(activeLinks,pos,layerMetrics,scoped);
+    const edgeStubs=bundleLongConnections(routing.edges);
     const allBoxes=[...pos.values()].map(p=>({x1:p.x,x2:p.x+p.w,y1:p.y,y2:p.y+p.h}));
-    if (scoped) allBoxes.push(...routing.edges.map(e=>e.bounds));
+    allBoxes.push(...courseBands.map(band=>({x1:band.x,x2:band.x+band.width,y1:band.y,y2:band.y+band.height})));
+    allBoxes.push(...routing.edges.map(e=>e.bounds));
     const bounds=allBoxes.length ? {x1:Math.min(...allBoxes.map(b=>b.x1))-28,x2:Math.max(...allBoxes.map(b=>b.x2))+28,y1:Math.min(...allBoxes.map(b=>b.y1))-42,y2:Math.max(...allBoxes.map(b=>b.y2))+28} : {x1:0,x2:640,y1:0,y2:360};
-    state.layout={activeNodes,activeLinks:routing.edges,pos,grouped,layers:layerMetrics,bounds,fullHeight:bounds.y2-bounds.y1,scoped,localColumns:active.columns,upstream:active.upstream,downstream:active.downstream,routeSummary:routing.summary,rowOrdering};
+    state.layout={activeNodes,activeLinks:routing.edges,edgeStubs,pos,grouped,layers:layerMetrics,bounds,fullHeight:bounds.y2-bounds.y1,scoped,localColumns:active.columns,upstream:active.upstream,downstream:active.downstream,routeSummary:routing.summary,rowOrdering,courseBands};
+    layoutCache.set(layoutKey,state.layout);
+    if(layoutCache.size>12)layoutCache.delete(layoutCache.keys().next().value);
     return state.layout;
   }
   function routeConnections(rawEdges,pos,cols,scoped) {
@@ -734,6 +905,20 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     const portInset=5, portGap=4.5, corridorPad=12;
     const centerY=p=>p.y+p.h/2;
     const colDistance=(a,b)=>Math.abs(pos.get(a).colIndex-pos.get(b).colIndex);
+    const continuationSides=new Set(),protectedLeft=new Set(),protectedRight=new Set();
+    for(const edge of edges)if(colDistance(edge.source,edge.target)>2){
+      continuationSides.add(edge.source+':right');continuationSides.add(edge.target+':left');
+      protectedRight.add(pos.get(edge.source).colIndex);protectedLeft.add(pos.get(edge.target).colIndex);
+    }
+    // Keep all bends outside the continuation marks, including links from
+    // neighboring nodes and tracks passing through an intermediate column.
+    const leftPads=cols.map(col=>protectedLeft.has(col.index)?62:corridorPad);
+    const rightPads=cols.map(col=>protectedRight.has(col.index)?62:corridorPad);
+    for(let i=0;i<cols.length-1;i++){
+      const gap=cols[i+1].x-cols[i].x-cols[i].width;
+      const available=Math.max(1,gap-36),wanted=rightPads[i]+leftPads[i+1];
+      if(wanted>available){const scale=available/wanted;rightPads[i]*=scale;leftPads[i+1]*=scale;}
+    }
     function addPort(id,side,e,end){
       const key=id+':'+side;
       if(!incident.has(key)) incident.set(key,[]);
@@ -746,7 +931,12 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     // secondary / skipping branches above or below it rather than kinking everything.
     for(const [key,list] of incident){
       const id=Number(key.split(':')[0]), p=pos.get(id), cy=centerY(p);
-      const ordered=[...list];
+      const hasContinuation=continuationSides.has(key);
+      const ordered=hasContinuation?list.filter(entry=>colDistance(id,entry.other)<=2):[...list];
+      if(hasContinuation)for(const entry of list)if(colDistance(id,entry.other)>2){
+        entry.e[entry.end+'Y']=ordered.length?p.y+3:cy;
+      }
+      if(!ordered.length)continue;
       const score=entry=>{
         const other=pos.get(entry.other), dy=Math.abs(centerY(other)-cy), span=colDistance(id, entry.other);
         const adjacentPenalty = span===1 ? 0 : 1000 + span*40;
@@ -767,19 +957,19 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       }
       above.sort((a,b)=>centerY(pos.get(b.other))-centerY(pos.get(a.other)) || colDistance(id,a.other)-colDistance(id,b.other) || a.other-b.other || a.e.index-b.e.index);
       below.sort((a,b)=>centerY(pos.get(a.other))-centerY(pos.get(b.other)) || colDistance(id,a.other)-colDistance(id,b.other) || a.other-b.other || a.e.index-b.e.index);
-      const clamp=v=>Math.max(p.y+portInset, Math.min(p.y+p.h-portInset, v));
+      const clamp=v=>Math.max(p.y+(hasContinuation?9:portInset), Math.min(p.y+p.h-portInset, v));
       anchor.e[anchor.end+'Y']=clamp(cy);
       above.forEach((entry,i)=>{ entry.e[entry.end+'Y']=clamp(cy-(i+1)*portGap); });
       below.forEach((entry,i)=>{ entry.e[entry.end+'Y']=clamp(cy+(i+1)*portGap); });
     }
 
-    const occupiedTracks=new Map();
-    const summary={adjacent:0,skipping:0,sameColumn:0,backward:0};
+    const trackSpaces=new Map();
+    const summary={adjacent:0,skipping:0,sameColumn:0,backward:0,shortened:0};
     function addCubic(e,p0,c1,c2,p1){ e.segments.push({p0,c1,c2,p1}); }
     function flat(e,x0,y,x1){ if(Math.abs(x1-x0)<1e-6) return; addCubic(e,[x0,y],[x0+(x1-x0)/3,y],[x0+2*(x1-x0)/3,y],[x1,y]); }
     function bridge(e,x0,y0,x1,y1){
       const dx=x1-x0;
-      const c=Math.max(18, Math.min(Math.abs(dx)*0.38, 64));
+      const c=Math.min(Math.abs(dx)/2,Math.max(18, Math.min(Math.abs(dx)*0.38, 64)));
       addCubic(e,[x0,y0],[x0+Math.sign(dx||1)*c,y0],[x1-Math.sign(dx||1)*c,y1],[x1,y1]);
     }
     function direct(e,x0,y0,x1,y1){
@@ -787,21 +977,41 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       else bridge(e,x0,y0,x1,y1);
     }
     function freeTrack(col,preferred){
-      const ns=col.nodes.map(n=>pos.get(n.id)).sort((a,b)=>a.y-b.y);
-      const candidates=[];
-      for(let i=0;i<ns.length-1;i++){
-        const lo=ns[i].y+ns[i].h+5, hi=ns[i+1].y-5;
-        if(hi>=lo){
-          candidates.push((lo+hi)/2);
-          if(hi-lo>=8) candidates.push(lo+1, hi-1);
+      let space=trackSpaces.get(col.index);
+      if(!space){
+        const ns=col.nodes.map(n=>pos.get(n.id)).sort((a,b)=>a.y-b.y),candidates=[];
+        for(let i=0;i<ns.length-1;i++){
+          const lo=ns[i].y+ns[i].h+5, hi=ns[i+1].y-5;
+          if(hi>=lo){
+            candidates.push((lo+hi)/2);
+            if(hi-lo>=8)candidates.push(lo+1,hi-1);
+          }
         }
+        space={candidates,lo:ns[0].y,hi:ns.at(-1).y+ns.at(-1).h,taken:[]};
+        trackSpaces.set(col.index,space);
       }
-      const lo=ns[0].y, hi=ns[ns.length-1].y+ns[ns.length-1].h;
-      const taken=occupiedTracks.get(col.index)||[];
-      for(let i=1;i<=Math.max(24,taken.length+1);i++) candidates.push(lo-6-i*5, hi+6+i*5);
-      candidates.sort((a,b)=>Math.abs(a-preferred)-Math.abs(b-preferred));
-      const y=candidates.find(v=>taken.every(t=>Math.abs(t-v)>=3.7)) ?? candidates[0];
-      taken.push(y); occupiedTracks.set(col.index,taken); return y;
+      const taken=space.taken;
+      const insertion=v=>{
+        let lo=0,hi=taken.length;
+        while(lo<hi){const mid=(lo+hi)>>>1;if(taken[mid]<v)lo=mid+1;else hi=mid;}
+        return lo;
+      };
+      let best,nearest,bestDistance=Infinity,nearestDistance=Infinity;
+      const consider=v=>{
+        const distance=Math.abs(v-preferred);
+        if(distance<nearestDistance){nearest=v;nearestDistance=distance;}
+        if(distance>=bestDistance)return;
+        const index=insertion(v);
+        if((index===0||Math.abs(taken[index-1]-v)>=3.7)&&(index===taken.length||Math.abs(taken[index]-v)>=3.7)){
+          best=v;bestDistance=distance;
+        }
+      };
+      // Keep the same nearest-track and stable tie choices without sorting
+      // candidates or comparing each one with every occupied track.
+      for(const v of space.candidates)consider(v);
+      for(let i=1;i<=Math.max(24,taken.length+1);i++){consider(space.lo-6-i*5);consider(space.hi+6+i*5);}
+      const y=best??nearest;
+      taken.splice(insertion(y),0,y);return y;
     }
 
     // Main inter-column links first; skipping links get separate clear tracks.
@@ -811,36 +1021,63 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       if (t.colIndex <= s.colIndex) throw new Error('A prerequisite must be in an earlier column: ' + e.source + ' -> ' + e.target);
       const sx=s.x+s.w, tx=t.x, sy=e.sY, ty=e.tY;
       e.segments=[];
-      e.kind=t.colIndex-s.colIndex===1 ? 'adjacent' : 'skipping';
-      if(!scoped){
+      e.span=t.colIndex-s.colIndex;
+      e.kind=e.span===1 ? 'adjacent' : 'skipping';
+      e.shortened=e.span>2;
+      e.stubs=[];
+      if(e.shortened){
+        const sourceLength=Math.max(1,Math.min(54,rightPads[s.colIndex]-8));
+        const targetLength=Math.max(1,Math.min(54,leftPads[t.colIndex]-8));
+        e.stubs=[
+          {nodeId:e.source,peerId:e.target,side:'right',direction:1,x:sx,y:sy,span:e.span,length:sourceLength},
+          {nodeId:e.target,peerId:e.source,side:'left',direction:-1,x:tx,y:ty,span:e.span,length:targetLength},
+        ];
+        flat(e,sx,sy,sx+sourceLength);flat(e,tx-targetLength,ty,tx);
+        summary.shortened++;
+      }else if(!scoped&&!cols.slice(s.colIndex,t.colIndex+1).some(col=>protectedLeft.has(col.index)||protectedRight.has(col.index))){
         direct(e,sx,sy,tx,ty);
       } else if(e.kind==='adjacent') {
         if(Math.abs(ty-sy)<0.2) direct(e,sx,sy,tx,ty);
         else {
           // A shorter title can finish before its column does. Leave that
           // column horizontally before bending, so no sibling gets crossed.
-          const exit=sc.x+sc.width,entry=tc.x;
+          const exit=sc.x+sc.width+(protectedRight.has(sc.index)?rightPads[sc.index]:0),entry=tc.x-(protectedLeft.has(tc.index)?leftPads[tc.index]:0);
           flat(e,sx,sy,exit);direct(e,exit,sy,entry,ty);flat(e,entry,ty,tx);
         }
       } else {
-        let px=sc.x+sc.width+corridorPad, py=sy;
+        let px=sc.x+sc.width+rightPads[sc.index], py=sy;
         flat(e,sx,sy,px);
         for(let j=s.colIndex+1;j<t.colIndex;j++){
           const mid=cols[j], fraction=(j-s.colIndex)/(t.colIndex-s.colIndex), y=freeTrack(mid, sy+(ty-sy)*fraction);
-          bridge(e,px,py,mid.x-corridorPad,y);
-          flat(e,mid.x-corridorPad,y,mid.x+mid.width+corridorPad);
-          px=mid.x+mid.width+corridorPad; py=y;
+          bridge(e,px,py,mid.x-leftPads[mid.index],y);
+          flat(e,mid.x-leftPads[mid.index],y,mid.x+mid.width+rightPads[mid.index]);
+          px=mid.x+mid.width+rightPads[mid.index]; py=y;
         }
-        bridge(e,px,py,tc.x-corridorPad,ty);
-        flat(e,tc.x-corridorPad,ty,tx);
+        bridge(e,px,py,tc.x-leftPads[tc.index],ty);
+        flat(e,tc.x-leftPads[tc.index],ty,tx);
       }
       summary[e.kind]++;
-      const first=e.segments[0];
-      e.d=`M${fmt(first.p0[0])},${fmt(first.p0[1])} `+e.segments.map(q=>`C${fmt(q.c1[0])},${fmt(q.c1[1])} ${fmt(q.c2[0])},${fmt(q.c2[1])} ${fmt(q.p1[0])},${fmt(q.p1[1])}`).join(' ');
+      e.d=e.segments.map((q,i)=>{
+        const previous=e.segments[i-1];
+        const disconnected=!previous||previous.p1[0]!==q.p0[0]||previous.p1[1]!==q.p0[1];
+        return (disconnected?`M${fmt(q.p0[0])},${fmt(q.p0[1])} `:'')+`C${fmt(q.c1[0])},${fmt(q.c1[1])} ${fmt(q.c2[0])},${fmt(q.c2[1])} ${fmt(q.p1[0])},${fmt(q.p1[1])}`;
+      }).join(' ');
       const ps=e.segments.flatMap(q=>[q.p0,q.c1,q.c2,q.p1]);
       e.bounds={x1:Math.min(...ps.map(p=>p[0])),x2:Math.max(...ps.map(p=>p[0])),y1:Math.min(...ps.map(p=>p[1])),y2:Math.max(...ps.map(p=>p[1]))};
     }
     return {edges:edges.sort((a,b)=>a.index-b.index),summary};
+  }
+
+  function bundleLongConnections(edges) {
+    const groups=new Map();
+    for(const edge of edges)if(edge.shortened)for(const stub of edge.stubs){
+      const key=stub.nodeId+':'+stub.side;
+      // Routing already reserves one isolated port for every continuation on
+      // this side. Bundle its peers without moving the mark back into a wire.
+      if(!groups.has(key))groups.set(key,{...stub,peerIds:new Set()});
+      groups.get(key).peerIds.add(stub.peerId);
+    }
+    return [...groups.values()].map(group=>({...group,peerIds:[...group.peerIds].sort((a,b)=>a-b)}));
   }
 
   function relatedNodeIds() {
@@ -998,7 +1235,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
 
   function selectedTitle() {
     const n = state.selected && nodeById.get(state.selected);
-    return n ? n.name : (targetsView ? (courseTopics.size ? 'Your targets' : 'No targets yet') : (courseTopics.size ? 'Select a topic' : 'No topics yet'));
+    return n ? n.name : (targetsView ? (courseTopics.size ? 'Your targets' : snapshot?.learner.targets?.length ? 'No matching targets' : 'No targets yet') : (courseTopics.size ? 'Select a topic' : 'No topics yet'));
   }
 
   function competencyFor(nodeOrId) {
@@ -1009,15 +1246,27 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     const light=isLightTheme();
     return {known:true,level,repetitions:value,fill:PALETTE[light?6-level:level],text:(light?level<=3:level>=3)?'#000000':'#FFFFFF',border:themeColor('#FFFFFF'),dash:'none',label:value.toLocaleString(undefined,{maximumFractionDigits:3})+(value===1?' repetition':' repetitions')};
   }
+  function statusMasteryAppearance(status,competence) {
+    const level=competence.known?competence.level:0;
+    const fill=STATUS_PALETTES[status][isLightTheme()?6-level:level];
+    // Choose text from actual fill luminance rather than a band-number cutoff.
+    const channels=[1,3,5].map(start=>parseInt(fill.slice(start,start+2),16)/255)
+      .map(value=>value<=.04045?value/12.92:((value+.055)/1.055)**2.4);
+    const luminance=channels[0]*.2126+channels[1]*.7152+channels[2]*.0722;
+    const text=(luminance+.05)/.05 >= 1.05/(luminance+.05)?'#000000':'#FFFFFF';
+    return {fill,text};
+  }
   function nodeAppearance(nodeOrId) {
     const id=typeof nodeOrId==='object'?nodeOrId.id:nodeOrId;
     const target=(snapshot?.learner.targets || []).some(value=>String(value)===String(id));
-    const appearance={...competencyFor(nodeOrId),target};
-    appearance.studied=snapshot?.learned?.[id]===true || (appearance.known && appearance.repetitions>=1);
-    // Local mastery is explicit; historical imports may only have repetitions.
-    // On Targets this status takes precedence over optional red target coloring.
-    if(targetsView && appearance.studied)Object.assign(appearance,{fill:'#14783e',text:'#FFFFFF',border:isLightTheme()?'#0e5a2e':'#66d99a'});
-    else if(targetsInRed && target)Object.assign(appearance,{fill:'#b52b34',text:'#FFFFFF',border:isLightTheme()?'#8b1721':'#ff8585'});
+    const queued=(snapshot?.learner.queue || []).some(value=>String(value)===String(id));
+    const appearance={...competencyFor(nodeOrId),target,queued};
+    const learned=snapshot?.learned?.[id];
+    // Honor an explicit completion flag. Historical imports without one still
+    // use their existing repetition evidence; missing progress stays unknown.
+    appearance.studied=learned===true || (typeof learned!=='boolean' && appearance.known && appearance.repetitions>=1);
+    appearance.status=queued?'queue':target?(appearance.studied?'completed-target':'target'):null;
+    if(colorCodeEnabled && appearance.status)Object.assign(appearance,statusMasteryAppearance(appearance.status,appearance));
     return appearance;
   }
   function paintNode(element,node) {
@@ -1025,10 +1274,30 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     element.dataset.competency=appearance.known?String(appearance.level):'unknown';
     element.style.setProperty('--node',appearance.fill);element.style.setProperty('--node-hover',appearance.fill);
     element.style.setProperty('--node-text',appearance.text);element.style.setProperty('--node-border',appearance.border);element.style.setProperty('--competency-dash',appearance.dash);
-    element.setAttribute('aria-label',`${layerLabel(node)} · ${node.name} · ${appearance.label}${targetsView&&appearance.studied?' · Already studied':''}${appearance.target?' · Study target':''}${state.activeIds.has(node.id)?' · Active selection':''}`);
+    element.setAttribute('aria-label',`${layerLabel(node)} · ${node.name} · ${appearance.label}${appearance.target&&appearance.studied?' · Completed target':appearance.studied?' · Already studied':''}${appearance.target?' · Study target':''}${appearance.queued?' · In queue':''}${state.activeIds.has(node.id)?' · Active selection':''}`);
+  }
+  function renderStatusColorLegend() {
+    $('statusColorLegend').hidden=!colorCodeEnabled;
+    for(const [status,id,label] of [['target','targetMasteryRamp','Targets'],['completed-target','completedTargetMasteryRamp','Completed targets'],['queue','queueMasteryRamp','In queue']]){
+      const host=$(id);
+      if(!colorCodeEnabled)continue;
+      if(!host.children.length)for(let level=0;level<=6;level++){
+        const cell=document.createElement('span');cell.className='competency-cell';cell.textContent=level;
+        cell.setAttribute('aria-label',label+' · repetition band '+level);host.appendChild(cell);
+      }
+      for(let level=0;level<=6;level++){
+        const appearance=statusMasteryAppearance(status,{known:true,level}),cell=host.children[level];
+        cell.style.setProperty('--swatch-fill',appearance.fill);cell.style.setProperty('--swatch-text',appearance.text);
+      }
+    }
+    $('competencyFillDescription').textContent=(colorCodeEnabled?
+      'Red marks incomplete targets, green marks completed targets, and blue marks topics in your queue. Queue color takes precedence. Other topics use grayscale. ':
+      'Color coding is off. Every topic uses grayscale repetition bands. ')+
+      'Bands use the whole-number part of repetitions, capped at 6. Higher bands become lighter in dark mode and darker in light mode. A dashed outline means no progress record; a solid outline means progress is recorded.';
   }
   function refreshTargetColors() {
-    $('targetColorToggle').setAttribute('aria-checked',String(targetsInRed));
+    $('targetColorToggle').setAttribute('aria-checked',String(colorCodeEnabled));
+    renderStatusColorLegend();
     if(!state.layout)return;
     for(const node of state.layout.activeNodes){
       const element=$('topic-'+node.id);
@@ -1036,14 +1305,13 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     }
     minimapLayout=null;drawMinimap();
   }
-  function setTargetColors(enabled,persist=true) {
-    targetsInRed=enabled;
+  function setColorCode(enabled,persist=true) {
+    colorCodeEnabled=enabled;
     if(persist){try{localStorage.setItem(targetColorKey,String(enabled));}catch{ /* Keep the local view usable. */ }}
     refreshTargetColors();
   }
   function updateCompetencyReadout() {
-    $('competencyFillDescription').textContent=(targetsView?'Green topics have been learned or have at least one recorded repetition. Other fills show accumulated repetitions. ':'Fill shows accumulated repetitions. ')+
-      'Bands use the whole-number part of the value, capped at 6. A dashed outline means no progress record.';
+    renderStatusColorLegend();
     const current=state.selected!==null?competencyFor(state.selected):null;
     $('competencyReadout').textContent=current?(current.known?current.label:'No data'):(snapshot?.learner.name||'Knowledge profile');
     $('competencySelectionDetail').textContent=current
@@ -1094,7 +1362,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
           : targetsView
             ? 'Hold Shift and scroll to change prerequisite depth. Expansion follows prerequisites only.'
             : 'Explore prerequisites and dependents across the knowledge graph, including topics outside this course. Shift + scroll changes depth.')
-      : (courseTopics.size ? 'Select a topic to explore its prerequisites and dependents. Shift + click adds another topic to the selection.' : targetsView ? 'Add topics to your targets from a lesson or the graph to see them here.' : 'This course does not have topics assigned yet. Browse another course or open all topics.');
+      : (courseTopics.size ? 'Select a topic to explore its prerequisites and dependents. Shift + click adds another topic to the selection.' : targetsView ? (snapshot?.learner.targets?.length ? (targetWeekSelection.kind==='range'?'No targets are due in the selected weeks for the enabled courses. Choose another week or All.':targetWeekSelection.kind==='unscheduled'?'No unscheduled targets match the enabled courses. Choose All to see dated targets.':'No targets match the enabled courses. Turn on another course to show its targets.') : 'Add topics to your targets from a lesson or the graph to see them here.') : 'This course does not have topics assigned yet. Browse another course or open all topics.');
     $('infoCopy').textContent = copy;
     const crumbs = $('breadcrumbs');
     titleReaderboards.clear(crumbs);
@@ -1253,6 +1521,18 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
 
   function renderGuides() {
     guidesG.replaceChildren();
+    const ns='http://www.w3.org/2000/svg';
+    for(const band of state.layout.courseBands || []){
+      const group=document.createElementNS(ns,'g');
+      const label=band.label+' · '+band.nodeIds.size+' topics';
+      group.setAttribute('role','group');group.setAttribute('aria-label',label);
+      const background=document.createElementNS(ns,'rect');
+      background.setAttribute('class','course-band-backdrop');
+      for(const attr of ['x','y','width','height'])background.setAttribute(attr,band[attr]);
+      const title=document.createElementNS(ns,'text');title.setAttribute('class','course-band-label');
+      title.setAttribute('x',band.x+16);title.setAttribute('y',band.y+20);title.textContent=label;
+      group.appendChild(background);group.appendChild(title);guidesG.appendChild(group);
+    }
   }
 
 
@@ -1292,13 +1572,92 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     stopMarqueeLoop();
   }
 
+  const edgeConnectionPopover = (()=>{
+    const popup=$('edgeConnectionPopover'),heading=$('edgeConnectionHeading'),topics=$('edgeConnectionTopics');
+    let opener=null,current=null,closeTimer=0;
+    function cancelClose(){clearTimeout(closeTimer);}
+    function close(restoreFocus=false){
+      cancelClose();
+      if(restoreFocus&&opener?.isConnected)opener.focus({preventScroll:true});
+      opener?.setAttribute('aria-expanded','false');opener?.classList.remove('is-open');
+      for(const id of current?.peerIds||[])$('topic-'+id)?.classList.remove('edge-peer');
+      popup.hidden=true;opener=null;current=null;
+    }
+    function scheduleClose(){
+      cancelClose();closeTimer=setTimeout(()=>{
+        if(popup.contains(document.activeElement)||opener?.contains(document.activeElement)||popup.matches(':hover')||opener?.matches(':hover'))return;
+        close();
+      },160);
+    }
+    function open(stub,element){
+      cancelClose();if(opener===element&&!popup.hidden)return;
+      close();opener=element;current=stub;
+      const owner=nodeById.get(stub.nodeId),dependents=stub.side==='right';
+      heading.textContent=(dependents?'Long connections to dependents of ':'Long connections from prerequisites of ')+(owner?.name||'this topic');
+      topics.replaceChildren();
+      const peers=stub.peerIds.map(id=>nodeById.get(id)).filter(Boolean).sort((a,b)=>a.name.localeCompare(b.name)||a.id-b.id);
+      for(const peer of peers){
+        const badge=document.createElement('button');badge.type='button';badge.className='edge-topic-badge';badge.dataset.topicId=peer.id;
+        badge.setAttribute('aria-label','Show '+peer.name+' in the graph');
+        const layer=document.createElement('span');layer.className='edge-topic-layer';layer.textContent=layerLabel(peer);
+        const name=document.createElement('span');name.className='edge-topic-name';name.textContent=peer.name;
+        badge.append(layer,name);badge.addEventListener('click',()=>{close();setSelected(peer.id,true);});topics.appendChild(badge);
+        $('topic-'+peer.id)?.classList.add('edge-peer');
+      }
+      element.setAttribute('aria-expanded','true');element.classList.add('is-open');popup.hidden=false;
+      const anchor=element.getBoundingClientRect(),box=popup.getBoundingClientRect();
+      let x=dependents?anchor.right+8:anchor.left-box.width-8;
+      if(x+box.width>window.innerWidth-12)x=anchor.left-box.width-8;
+      popup.style.left=Math.max(12,Math.min(window.innerWidth-box.width-12,x))+'px';
+      popup.style.top=Math.max(12,Math.min(window.innerHeight-box.height-12,anchor.top-8))+'px';
+    }
+    function focusFirst(){topics.querySelector('button')?.focus();}
+    popup.addEventListener('pointerenter',cancelClose);popup.addEventListener('pointerleave',scheduleClose);
+    popup.addEventListener('focusin',cancelClose);popup.addEventListener('focusout',scheduleClose);
+    popup.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close(true);}
+      else if(event.key==='Tab'&&event.shiftKey&&document.activeElement===topics.querySelector('button')){
+        event.preventDefault();opener?.focus();
+      }
+    });
+    document.addEventListener('pointerdown',event=>{if(!popup.hidden&&!popup.contains(event.target)&&!opener?.contains(event.target))close();},true);
+    document.addEventListener('wheel',event=>{if(!popup.contains(event.target))close();},{capture:true,passive:true});
+    window.addEventListener('blur',()=>close());
+    return {open,close,scheduleClose,cancelClose,focusFirst};
+  })();
+
   function renderEdges() {
-    // Connections are visual only. They do not intercept hover, clicks, or panning.
-    edgesG.replaceChildren();const ns='http://www.w3.org/2000/svg';
-    for (const e of state.layout.activeLinks) {
+    edgeConnectionPopover.close();
+    // Ordinary edges remain visual only; continuation marks have local hit areas.
+    edgesG.replaceChildren();edgeStubsG.replaceChildren();const ns='http://www.w3.org/2000/svg';
+    for(const e of state.layout.activeLinks){
+      if(e.shortened)continue;
       const direct=state.activeIds.has(e.source)||state.activeIds.has(e.target);
       const path=document.createElementNS(ns,'path');path.setAttribute('class',direct?'edge-base edge-direct':'edge-base');
       path.setAttribute('id','edge-'+e.source+'-'+e.target);path.dataset.source=e.source;path.dataset.target=e.target;path.dataset.kind=e.kind;path.setAttribute('d',e.d);edgesG.appendChild(path);
+    }
+    for(const stub of state.layout.edgeStubs || []){
+      const group=document.createElementNS(ns,'g');group.setAttribute('class','edge-stub');group.id='edge-stub-'+stub.nodeId+'-'+stub.side;
+      group.dataset.nodeId=stub.nodeId;group.dataset.side=stub.side;group.dataset.peerIds=stub.peerIds.join(',');
+      group.setAttribute('role','button');group.setAttribute('tabindex','0');group.setAttribute('aria-controls','edgeConnectionPopover');group.setAttribute('aria-haspopup','dialog');group.setAttribute('aria-expanded','false');
+      group.setAttribute('aria-label',stub.peerIds.length+' long '+(stub.side==='right'?'dependent':'prerequisite')+' connection'+(stub.peerIds.length===1?'':'s')+' for '+nodeById.get(stub.nodeId).name);
+      const line=document.createElementNS(ns,'path');line.setAttribute('class','edge-stub-line');line.setAttribute('d',`M${stub.x},${stub.y} h${stub.direction*stub.length*24/54}`);group.appendChild(line);
+      for(const [i,offset] of [32,41,50].entries()){
+        const dot=document.createElementNS(ns,'circle');dot.setAttribute('class','edge-stub-dot');dot.setAttribute('cx',stub.x+stub.direction*offset*stub.length/54);dot.setAttribute('cy',stub.y);dot.setAttribute('r',Math.min(1.6,stub.length*.06));dot.setAttribute('opacity',[.85,.55,.3][i]);group.appendChild(dot);
+      }
+      const hit=document.createElementNS(ns,'path');hit.setAttribute('class','edge-stub-hit');hit.setAttribute('d',`M${stub.x},${stub.y} h${stub.direction*stub.length}`);group.appendChild(hit);
+      const show=()=>edgeConnectionPopover.open(stub,group);
+      group.addEventListener('pointerenter',show);group.addEventListener('pointerleave',edgeConnectionPopover.scheduleClose);
+      group.addEventListener('focus',show);group.addEventListener('blur',edgeConnectionPopover.scheduleClose);
+      group.addEventListener('pointerdown',event=>event.stopPropagation());
+      group.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();show();});
+      group.addEventListener('keydown',event=>{
+        if(event.key==='Escape'){event.preventDefault();event.stopPropagation();edgeConnectionPopover.close(true);}
+        else if(event.key==='Enter'||event.key===' '||(event.key==='Tab'&&!event.shiftKey)){
+          event.preventDefault();event.stopPropagation();show();edgeConnectionPopover.focusFirst();
+        }
+      });
+      edgeStubsG.appendChild(group);
     }
   }
 
@@ -1334,6 +1693,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     function open(node,event,element) {
       event.preventDefault();event.stopPropagation();close();
       topic=node;opener=element;button.disabled=false;
+      $('copyNodeMaId').hidden=!academyEntityId(node.mathAcademyId);
       const queue=queueControls.createToggle(node,{menuItem:true});
       if(queue)queueAction.append(queue);
       const target=targetControls.createToggle(node,{menuItem:true});
@@ -1343,7 +1703,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       menu.setAttribute('aria-label','Actions for '+node.name);
       element.setAttribute('aria-expanded','true');
       menu.hidden=false;shiftMode(event.shiftKey);
-      const box=element.querySelector('.node-hit').getBoundingClientRect();
+      const box=(element.querySelector('.node-hit') || element).getBoundingClientRect();
       const keyboard=event.type==='keydown'||(!event.clientX&&!event.clientY);
       const x=keyboard?box.left+Math.min(box.width/2,100):event.clientX;
       const y=keyboard?box.bottom+5:event.clientY;
@@ -1380,6 +1740,15 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       else fallback.setAttribute('open','');
       fallbackText.focus({preventScroll:true});fallbackText.select();
     }
+    for (const [id, key, label] of [['copyNodeDbId', 'id', ':db/id'], ['copyNodeMaId', 'mathAcademyId', ':ma/id']]) {
+      $(id).addEventListener('click', event => {
+        event.preventDefault(); event.stopPropagation();
+        if (!topic) return;
+        const value = topic[key];
+        close(true);
+        void copyEntityId(value, label, 'topic');
+      });
+    }
     button.addEventListener('click',async event=>{
       event.preventDefault();event.stopPropagation();if(!topic||button.disabled)return;
       const node=topic;
@@ -1397,11 +1766,14 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       const newTab=event.shiftKey || (event.detail===0 && shiftHeld);
       if(newTab) {
         event.preventDefault();event.stopPropagation();
-        const tabLink=document.createElement('a');
-        tabLink.href=link.href;tabLink.target='_blank';tabLink.rel='noopener noreferrer';
-        // Activate a normal link with no Shift modifier; native Shift-click
-        // and window.open while Shift is held can request a separate window.
-        document.body.append(tabLink);tabLink.click();tabLink.remove();
+        const href=link.href;
+        // A synchronous synthetic click still inherits the original input's
+        // Shift navigation policy. Leave that event before activating _blank.
+        setTimeout(()=>{
+          const tabLink=document.createElement('a');
+          tabLink.href=href;tabLink.target='_blank';tabLink.rel='noopener noreferrer';
+          document.body.append(tabLink);tabLink.click();tabLink.remove();
+        },0);
       }
       close(newTab);
     });
@@ -1436,7 +1808,14 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     return {open,close};
   })();
 
+  for (const type of ['contextmenu', 'keydown']) $('infoTitle').addEventListener(type, event => {
+    if (type === 'keydown' && !(event.key === 'ContextMenu' || event.shiftKey && event.key === 'F10')) return;
+    const node = state.selected && nodeById.get(state.selected);
+    if (node) nodeContextMenu.open(node, event, $('infoTitle'));
+  });
+
   function renderNodes() {
+    edgeConnectionPopover.close();
     const ns='http://www.w3.org/2000/svg';nodesG.replaceChildren();
     marqueeEntries = [];
     stopMarqueeLoop();
@@ -1515,6 +1894,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   }
 
   function applyView() {
+    edgeConnectionPopover.close();
     nodeContextMenu.close(false);
     camera.setAttribute('transform', `translate(${state.view.x} ${state.view.y}) scale(${state.view.k})`);
     renderSelectionMarks();
@@ -1569,7 +1949,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   viewport.addEventListener('click', (e) => { if (e.target === svg || e.target === viewport || e.target.closest('#camera') === null) return; });
   document.addEventListener('wheel', event => {
     if(!event.shiftKey||event.ctrlKey||event.metaKey)return;
-    if(event.target.closest('input,textarea,select,[contenteditable="true"],#coursePicker'))return;
+    if(event.target.closest('input,textarea,select,[contenteditable="true"],#coursePicker,#edgeConnectionPopover'))return;
     event.preventDefault();event.stopPropagation();handleDepthWheel(event);
   },{capture:true,passive:false});
   document.addEventListener('keyup',event=>{if(event.key==='Shift')resetDepthWheel();});
@@ -1603,7 +1983,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     const ctx = minimapBase.getContext('2d');
     ctx.fillStyle = themeColor('#050505'); ctx.fillRect(0,0,W,H);
     ctx.save();ctx.translate(ox,oy);ctx.scale(k,k);ctx.strokeStyle=themeColor('rgba(255,255,255,.18)');ctx.lineWidth=.7/k;
-    for(const e of state.layout.activeLinks){ctx.beginPath();for(const [i,q] of e.segments.entries()){if(i===0)ctx.moveTo(...q.p0);ctx.bezierCurveTo(...q.c1,...q.c2,...q.p1);}ctx.stroke();}ctx.restore();
+    for(const e of state.layout.activeLinks){ctx.beginPath();for(const [i,q] of e.segments.entries()){const previous=e.segments[i-1];if(!previous||previous.p1[0]!==q.p0[0]||previous.p1[1]!==q.p0[1])ctx.moveTo(...q.p0);ctx.bezierCurveTo(...q.c1,...q.c2,...q.p1);}ctx.stroke();}ctx.restore();
     for (const n of state.layout.activeNodes) {
       const p = state.layout.pos.get(n.id);
       const x=p.x*k+ox,y=p.y*k+oy,w=Math.max(2,p.w*k),h=Math.max(2,p.h*k);
@@ -1654,11 +2034,149 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
   $('forwardBtn').addEventListener('click', () => jumpHistory(state.historyIndex + 1));
 
   function selectedCourse() {return snapshot?.courses.find(c=>c.id===courseId)||null;}
+  const targetCourseCodes=['256','255','341'];
+  const targetCourseFilterKey='course-academy.graph-target-courses';
+  const targetSplitKey='course-academy.graph-targets-split';
+  let splitTargetsByCourse=false;
+  try{splitTargetsByCourse=localStorage.getItem(targetSplitKey)==='true';}catch{ /* Split also works without browser storage. */ }
+  let enabledTargetCourses=new Set(targetCourseCodes);
+  try{
+    const saved=JSON.parse(localStorage.getItem(targetCourseFilterKey));
+    if(Array.isArray(saved))enabledTargetCourses=new Set(saved.filter(code=>targetCourseCodes.includes(code)));
+  }catch{ /* Filters also work without browser storage. */ }
+  const targetWeekFilterKey='course-academy.graph-target-weeks';
+  let targetCalendar=buildTargetCalendar(snapshot?.targetSchedule || []), targetWeekSelection={kind:'all'};
+  let targetWeekButtonsCalendar=null, targetWeekFocusDay=null;
+  const targetWeekButtons=new Map();
+  try{targetWeekSelection=JSON.parse(localStorage.getItem(targetWeekFilterKey)) || targetWeekSelection;}catch{ /* Keep All if storage is unavailable. */ }
+  function installTargetCalendar(schedule) {
+    targetCalendar=buildTargetCalendar(schedule);
+    targetWeekSelection=normalizeTargetWeekSelection(targetCalendar,targetWeekSelection);
+    targetWeekButtonsCalendar=null;
+  }
+  function courseFilteredTargetIds() {
+    const targets=(snapshot?.learner.targets || []).filter(id=>nodeById.has(id));
+    // All switches on retains manual targets without curriculum membership.
+    if(enabledTargetCourses.size===targetCourseCodes.length)return targets;
+    const members=new Set();
+    for(const course of snapshot?.courses || []){
+      if(!targetCourseCodes.some(code=>course.code==='MTH '+code && enabledTargetCourses.has(code)))continue;
+      for(const id of course.topicIds || [])members.add(id);
+      for(const id of course.targetTopicIds || [])members.add(id);
+    }
+    return targets.filter(id=>members.has(id));
+  }
+  function targetWeekCourseIds() {
+    if(enabledTargetCourses.size===targetCourseCodes.length)return null;
+    return new Set((snapshot?.courses || []).filter(course=>
+      targetCourseCodes.some(code=>course.code==='MTH '+code && enabledTargetCourses.has(code))).map(course=>course.id));
+  }
+  function filteredTargetIds() {
+    return filterScheduledTargets(courseFilteredTargetIds(),targetCalendar,targetWeekSelection,targetWeekCourseIds());
+  }
+  function setTargetWeekSelection(selection) {
+    if(!targetsView || !snapshot || loading)return;
+    targetWeekSelection=normalizeTargetWeekSelection(targetCalendar,selection);
+    try{localStorage.setItem(targetWeekFilterKey,JSON.stringify(targetWeekSelection));}catch{ /* Keep the in-page filter. */ }
+    // Changing weeks starts from the newly filtered roots; old focus/history
+    // must not leave an excluded target visible. Keep depth and Split settings.
+    changeCourse(null,true,'targets',state.depth);
+  }
+  function chooseTargetWeek(startDay,extend=false) {
+    setTargetWeekSelection(selectTargetWeek(targetCalendar,targetWeekSelection,startDay,extend));
+  }
+  function renderTargetWeekStrip() {
+    $('targetWeekStrip').hidden=!targetsView;
+    document.querySelector('.app').classList.toggle('targets-page',targetsView);
+    if(!targetsView)return;
+    const targets=courseFilteredTargetIds(), courses=targetWeekCourseIds();
+    const count=filteredTargetIds().length;
+    $('targetWeekReadout').textContent=targetWeekSelectionLabel(targetCalendar,targetWeekSelection)+' · '+count+' target'+(count===1?'':'s');
+    for(const [id,kind] of [['targetWeeksAll','all'],['targetWeeksUnscheduled','unscheduled']]){
+      $(id).setAttribute('aria-pressed',String(targetWeekSelection.kind===kind));
+      $(id).disabled=loading || !snapshot;
+    }
+    if(targetWeekButtonsCalendar!==targetCalendar){
+      const host=$('targetWeekButtons');host.replaceChildren();targetWeekButtons.clear();
+      for(const week of targetCalendar.weeks){
+        const button=document.createElement('button');button.type='button';button.className='target-week-button';
+        const bar=document.createElement('span');bar.className='target-week-bar';bar.setAttribute('aria-hidden','true');button.appendChild(bar);
+        button.addEventListener('click',event=>{targetWeekFocusDay=week.startDay;chooseTargetWeek(week.startDay,event.shiftKey);});
+        button.addEventListener('keydown',event=>{
+          // Do not pass week arrows to the graph's history shortcuts.
+          if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
+            event.preventDefault();event.stopPropagation();
+            const index=targetCalendar.weeks.findIndex(w=>w.startDay===week.startDay);
+            const next=event.key==='Home'?0:event.key==='End'?targetCalendar.weeks.length-1:
+              Math.max(0,Math.min(targetCalendar.weeks.length-1,index+(event.key==='ArrowRight'?1:-1)));
+            targetWeekFocusDay=targetCalendar.weeks[next].startDay;
+            renderTargetWeekStrip();const focused=targetWeekButtons.get(targetWeekFocusDay);
+            focused.focus();focused.scrollIntoView({block:'nearest',inline:'nearest'});
+          }else if(event.shiftKey && ['Enter',' '].includes(event.key)){
+            event.preventDefault();event.stopPropagation();chooseTargetWeek(week.startDay,true);
+          }
+        });
+        targetWeekButtons.set(week.startDay,button);host.appendChild(button);
+      }
+      targetWeekButtonsCalendar=targetCalendar;
+    }
+    if(!targetWeekButtons.has(targetWeekFocusDay))targetWeekFocusDay=targetWeekSelection.kind==='range'?targetWeekSelection.anchor:
+      (targetCalendar.weeks.find(week=>week.current) || targetCalendar.weeks[0])?.startDay ?? null;
+    for(const week of targetCalendar.weeks){
+      const button=targetWeekButtons.get(week.startDay);
+      const weekCount=filterScheduledTargets(targets,targetCalendar,{kind:'range',start:week.startDay,end:week.startDay},courses).length;
+      const label=targetWeekLabel(week)+' · '+weekCount+' target'+(weekCount===1?'':'s')+(week.current?' · This week':'');
+      button.title=label;button.setAttribute('aria-label',label);
+      button.setAttribute('aria-pressed',String(targetWeekSelection.kind==='range' && week.startDay>=targetWeekSelection.start && week.startDay<=targetWeekSelection.end));
+      if(week.current)button.setAttribute('aria-current','date');else button.removeAttribute('aria-current');
+      button.classList.toggle('has-targets',weekCount>0);button.disabled=loading || !snapshot;
+      button.tabIndex=week.startDay===targetWeekFocusDay?0:-1;
+    }
+  }
+  $('targetWeeksAll').addEventListener('click',()=>setTargetWeekSelection({kind:'all'}));
+  $('targetWeeksUnscheduled').addEventListener('click',()=>setTargetWeekSelection({kind:'unscheduled'}));
+  function renderTargetCourseFilters() {
+    $('targetCourseFilters').hidden=!targetsView;
+    $('targetSplitToggle').setAttribute('aria-checked',String(splitTargetsByCourse));
+    $('targetSplitToggle').disabled=loading || !snapshot;
+    for(const code of targetCourseCodes){
+      const button=$('targetCourseToggle'+code);
+      button.setAttribute('aria-checked',String(enabledTargetCourses.has(code)));
+      button.disabled=loading || !snapshot?.courses.some(course=>course.code==='MTH '+code);
+    }
+  }
+  function setTargetSplit(enabled) {
+    if(!targetsView || !snapshot || loading || splitTargetsByCourse===enabled)return;
+    splitTargetsByCourse=enabled;
+    try{localStorage.setItem(targetSplitKey,String(enabled));}catch{ /* Keep the in-page layout. */ }
+    if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;
+    renderTargetCourseFilters();
+    redraw(true);
+  }
+  $('targetSplitToggle').addEventListener('click',()=>{
+    $('targetSplitToggle').dataset.animate='true';setTargetSplit(!splitTargetsByCourse);
+  });
+  function setTargetCourseEnabled(code, enabled) {
+    if(!targetsView || !snapshot || loading || !targetCourseCodes.includes(code))return;
+    if(enabledTargetCourses.has(code)===enabled)return;
+    if(enabled)enabledTargetCourses.add(code);else enabledTargetCourses.delete(code);
+    try{localStorage.setItem(targetCourseFilterKey,JSON.stringify([...enabledTargetCourses]));}catch{ /* Keep the in-page filter. */ }
+    // Start from the filtered group so a focused topic or old history entry
+    // cannot keep an excluded course visible. Retain prerequisite depth.
+    changeCourse(null,true,'targets',state.depth);
+  }
+  for(const code of targetCourseCodes){
+    $('targetCourseToggle'+code).addEventListener('click',()=>{
+      $('targetCourseToggle'+code).dataset.animate='true';
+      setTargetCourseEnabled(code,!enabledTargetCourses.has(code));
+    });
+  }
   function refreshTargetScope() {
     // An overview follows the saved target group. A focused exploration keeps
     // its own roots, even if the topic being inspected is added or removed.
     const followingTargets=state.followTargets;
-    courseTopics=new Set((snapshot.learner.targets || []).filter(id=>nodeById.has(id)));
+    courseTopics=new Set(filteredTargetIds());
+    renderTargetWeekStrip();
     if(followingTargets){
       state.activeIds=new Set(courseTopics);
       if(!state.activeIds.has(state.selected))state.selected=[...state.activeIds][0]??null;
@@ -1669,28 +2187,33 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       refreshTargetColors();updateUI();
     }
   }
-  function changeCourse(id, updateURL=true, view='course') {
+  function changeCourse(id, updateURL=true, view='course', depth=null) {
     if(!snapshot)return;
     targetsView=view==='targets';
     courseId=!targetsView&&snapshot.courses.some(c=>c.id===id)?id:null;
     const course=selectedCourse();
     courseTopics=new Set(targetsView
-      ? (snapshot.learner.targets || []).filter(id=>nodeById.has(id))
+      ? filteredTargetIds()
       : course?course.topicIds:NODES.map(n=>n.id));
     if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;
-    resetDepthWheel();state.depth=targetsView?'0':'1';resetSelection();state.history=[];state.historyIndex=-1;
+    resetDepthWheel();state.depth=targetsView?(depth??'0'):'1';resetSelection();state.history=[];state.historyIndex=-1;
+    renderTargetCourseFilters();renderTargetWeekStrip();
     stackOrderCache.clear();
     $('courseLink').href=course?'/progress?course='+encodeURIComponent(course.id):'/progress';
     document.title=targetsView?'Targets · Course Academy':'Explore · '+(course?.title||'All topics')+' · Course Academy';
     if(targetsView)$('targetsLink').setAttribute('aria-current','page');
     else $('targetsLink').removeAttribute('aria-current');
-    $('overviewBtn').textContent=targetsView?'All targets':course?'Course overview':'Full graph';
+    $('overviewBtn').textContent=targetsView?(targetWeekSelection.kind==='all'?(enabledTargetCourses.size===targetCourseCodes.length?'All targets':'Filtered targets'):targetWeekSelectionLabel(targetCalendar,targetWeekSelection).split(' - ')[0]+' targets'):course?'Course overview':'Full graph';
     const startersHost=$('starterButtons');titleReaderboards.clear(startersHost);startersHost.replaceChildren();
     const members=NODES.filter(n=>courseTopics.has(n.id));
     const preferred=STARTER_TOPIC_IDS.map(id=>members.find(n=>n.mathAcademyId===id)).filter(Boolean);
     const starters=preferred.length?preferred:members.sort((a,b)=>a.layer-b.layer||a.order-b.order).slice(0,6);
     starters.forEach(n=>{
       const btn=document.createElement('button');btn.className='pill';titleReaderboards.set(btn,n.name);
+      btn.addEventListener('contextmenu', event => nodeContextMenu.open(n, event, btn));
+      btn.addEventListener('keydown', event => {
+        if (event.key === 'ContextMenu' || event.shiftKey && event.key === 'F10') nodeContextMenu.open(n, event, btn);
+      });
       btn.setAttribute('aria-label',n.name);btn.onclick=event=>setSelected(n.id,true,event.shiftKey);startersHost.appendChild(btn);
     });
     remember();
@@ -1729,7 +2252,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     $('loadMessage').textContent='Loading your knowledge graph…';
     try {
       if(location.protocol==='file:')throw new Error('Open the explorer through its local server to load your database.');
-      const response=await fetch('/api/graph-explorer',{cache:'no-cache'});
+      const response=await readRequest('/api/graph-explorer');
       if(!response.ok)throw new Error('The database could not be loaded. Check the local explorer server and retry.');
       const data=await response.json();installSnapshot(data);
       const params=new URL(location.href).searchParams;
@@ -1746,18 +2269,17 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
       $('retryLoad').hidden=location.protocol==='file:';
       $('localServerLink').hidden=location.protocol!=='file:';
       if(snapshot)$('courseBrowse').disabled=false;
-    } finally {loading=false;$('refreshData').disabled=false;}
+    } finally {loading=false;$('refreshData').disabled=false;renderTargetCourseFilters();renderTargetWeekStrip();}
   }
   $('retryLoad').onclick=loadData;$('refreshData').onclick=loadData;
-  $('targetColorToggle').setAttribute('aria-checked',String(targetsInRed));
+  $('targetColorToggle').setAttribute('aria-checked',String(colorCodeEnabled));
   $('targetColorToggle').addEventListener('click',()=>{
-    $('targetColorToggle').dataset.animate='true';setTargetColors(!targetsInRed);
+    $('targetColorToggle').dataset.animate='true';setColorCode(!colorCodeEnabled);
   });
   window.addEventListener('storage',event=>{
-    if(event.key===targetColorKey || event.key===null){
-      let enabled=false;
-      try{enabled=localStorage.getItem(targetColorKey)==='true';}catch{ /* A missing preference uses the default. */ }
-      setTargetColors(enabled,false);
+    if(event.key===targetColorKey || event.key==='course-academy.graph-targets-red' || event.key===null){
+      const enabled=readColorCodePreference();
+      setColorCode(enabled,false);
     }
   });
 
@@ -1785,16 +2307,26 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
     document.fonts.addEventListener('loadingdone', () => { sizeNodeTitles(); redraw(false); });
   }
 
+  setInterval(()=>{
+    const currentWeek=targetWeekStart(targetCalendarDay(Date.now()));
+    for(const week of targetCalendar.weeks)week.current=week.startDay===currentWeek;
+    if(targetsView)renderTargetWeekStrip();
+  },60000);
+
   // Test/export hooks contain source identifiers and never synthesize edges.
   window.FlowAtlas = {
     getCompetency:id=>({...competencyFor(Number(id))}),
     competencySummary:()=>({basis:snapshot?.basis,learner:snapshot?.learner,recordedTopics:Object.keys(repetitions).length}),
     getCourses:()=>snapshot?.courses.map(c=>({...c}))||[],
     changeCourse,
+    setTargetCourseEnabled,
+    setTargetSplit, setColorCode,
+    chooseTargetWeek, setTargetWeekSelection,
+    getTargetWeeks:()=>targetCalendar.weeks.map(week=>({...week,label:targetWeekLabel(week)})),
     refresh:loadData,
-    getState:()=>({courseId,targetsView,basis:snapshot?.basis,mode:state.mode,selected:state.selected,activeIds:[...state.activeIds],history:state.history.map(s=>({selected:s.selected,activeIds:[...s.activeIds]})),historyIndex:state.historyIndex,maxDepth:MAX_DEPTH,depth:state.depth,view:{...state.view},visibleNodes:state.layout.activeNodes.length,visibleLinks:state.layout.activeLinks.length,bounds:{...state.layout.bounds},scoped:state.layout.scoped,columnRule:'dependency-order',rowOrdering:{...state.layout.rowOrdering},columns:state.layout.layers.map(l=>({localColumn:l.layer,x:l.x,width:l.width,ids:l.nodes.map(n=>n.id)})),routes:{...state.layout.routeSummary},globalLayerRange:[1,META.layerCount]}),
+    getState:()=>({courseId,targetsView,colorCodeEnabled,targetWeekSelection:{...targetWeekSelection},splitTargetsByCourse,courseBands:(state.layout.courseBands || []).map(band=>({course:band.label,ids:[...band.nodeIds],y:band.y,height:band.height})),basis:snapshot?.basis,mode:state.mode,selected:state.selected,activeIds:[...state.activeIds],history:state.history.map(s=>({selected:s.selected,activeIds:[...s.activeIds]})),historyIndex:state.historyIndex,maxDepth:MAX_DEPTH,depth:state.depth,view:{...state.view},visibleNodes:state.layout.activeNodes.length,visibleLinks:state.layout.activeLinks.length,bounds:{...state.layout.bounds},scoped:state.layout.scoped,columnRule:'dependency-order',rowOrdering:{...state.layout.rowOrdering},columns:state.layout.layers.map(l=>({localColumn:l.layer,x:l.x,width:l.width,ids:l.nodes.map(n=>n.id)})),routes:{...state.layout.routeSummary},globalLayerRange:[1,META.layerCount]}),
     getNodes:()=>state.layout.activeNodes.map(n=>{const p=state.layout.pos.get(n.id);return {id:n.id,name:n.name,active:state.activeIds.has(n.id),globalLayer:n.layer+1,badge:p.geometry.badge,x:p.x,y:p.y,w:p.w,h:p.h,badgeWidth:p.geometry.badgeWidth,titleX:p.geometry.titleX,label:p.geometry.lines[0],localColumn:p.col};}),
-    getEdges:()=>state.layout.activeLinks.map(e=>({source:e.source,target:e.target,d:e.d,kind:e.kind,segments:e.segments,sourceSide:e.sourceSide,targetSide:e.targetSide})),
+    getEdges:()=>state.layout.activeLinks.map(e=>({source:e.source,target:e.target,d:e.d,kind:e.kind,segments:e.segments,sourceSide:e.sourceSide,targetSide:e.targetSide,span:e.span,shortened:e.shortened,stubs:e.stubs})),
     select:(id,additive=false)=>setSelected(Number(id),true,additive),
     reset:resetView,
     mode:m=>{if(['overview','neighbors','upstream','downstream','both'].includes(m)){state.mode=m;if(m==='neighbors')state.depth='1';redraw(true);}},

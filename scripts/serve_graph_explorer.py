@@ -32,6 +32,7 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
+from inventory_jobs import InventoryJobs
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = ROOT / "ui" / "Math-Academy-Graph-Explorer.html"
@@ -44,7 +45,7 @@ DEFAULT_ENDPOINT = "/tmp/edb-math/writer.sock"
 ASSET_ROOTS = (ROOT.parent / "MA/DATA/Lessons", ROOT.parent / "study/vault",
                ROOT / "reference/mathacademy/history-question-import-2026-10-04/import-ready/assets")
 IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml"}
-MUTATING_ACTIONS = {"start", "study-topic", "answer", "continue", "pause", "resume", "target", "queue", "queue-topic",
+MUTATING_ACTIONS = {"draft", "navigate", "submit", "start", "study-topic", "answer", "skip", "expire", "continue", "pause", "resume", "target", "queue", "queue-topic",
                     "assignment-focus", "assignment-answer", "assignment-pause"}
 
 
@@ -211,10 +212,10 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     libraries = {}
     for name, directory in (("edb_core", edb_deps), ("serde_json", deps), ("chrono", deps), ("course_academy_engine", deps)):
         libraries[name] = max(directory.glob(f"lib{name}-*.rlib"), key=lambda p: p.stat().st_mtime_ns)
-    sources = (source, ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
+    sources = (source, ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
                ROOT / "scripts/developer_preview.rs")
     if test:
-        sources += (ROOT / "scripts/assignment_interaction_tests.rs",
+        sources += (ROOT / "scripts/assignment_interaction_tests.rs", ROOT / "scripts/retrieval_tests.rs",
                     ROOT / "engine/edb/progress.rs", ROOT / "engine/edb/configuration.rs",
                     ROOT / "engine/edb/answer_fields.rs")
     fingerprint = hashlib.sha256(b"".join(p.read_bytes() for p in sources) + repr((test, [(str(p), p.stat().st_mtime_ns) for p in libraries.values()])).encode()).hexdigest()[:16]
@@ -273,11 +274,57 @@ def build_reader(edb_root: Path, *, test: bool = False) -> Path:
 
 
 def handler(reader: Path, database: str, learner: str, environment: dict[str, str], learning: Path | None = None):
+    public_origin = environment.get("COURSE_ACADEMY_PUBLIC_ORIGIN", "").strip()
+    public_host = None
+    if public_origin:
+        parsed = urlsplit(public_origin)
+        if (parsed.scheme != "https" or not parsed.hostname or parsed.username is not None
+                or parsed.password is not None or parsed.path not in ("", "/")
+                or parsed.query or parsed.fragment or parsed.port == 0):
+            raise ValueError("COURSE_ACADEMY_PUBLIC_ORIGIN must be an HTTPS origin without a path")
+        public_host = parsed.netloc.lower()
+        public_origin = f"https://{public_host}"
     graph_worker = NativeWorker([str(reader), database, learner, "--serve"], environment, "graph-worker")
     learning_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "learning-worker") if learning else None
     request_directory = Path(environment["LEARNING_REQUEST_DIR"])
     mode_path = request_directory / "developer-mode.json"
     math_root = Path(environment.get("EDB_MATH_ROOT", DEFAULT_MATH_ROOT)).resolve()
+
+    inventory_jobs = InventoryJobs(ROOT, ROOT / '.local/learning/inventory' / database / learner, learner, environment)
+    scheduler_stop = threading.Event()
+
+    def inventory_hook():
+        response = learning_worker.request({'action': 'inventory'})
+        if response.get('ok'):
+            inventory_jobs.accept(response['data'])
+        else:
+            raise ValueError(response.get('error', 'Inventory unavailable'))
+
+    def scheduler_loop():
+        # NativeWorker incrementally consumes the EDB log into one held projection;
+        # scans also cover age/retention transitions without a new transaction.
+        while not scheduler_stop.is_set():
+            try:
+                request_directory.mkdir(parents=True, exist_ok=True)
+                with (request_directory / 'api.lock').open('a') as lock:
+                    fcntl.flock(lock, fcntl.LOCK_EX)
+                    if not developer_mode(mode_path):
+                        response = learning_worker.request({'action': 'queue', 'background': True, 'requestId': 'scheduler-' + os.urandom(12).hex()})
+                        if not response.get('ok'):
+                            raise ValueError(response.get('error', 'Queue preparation unavailable'))
+                        inventory_hook()
+            except (OSError, ValueError) as error:
+                print(f'Scheduler refresh deferred: {error}', file=sys.stderr)
+            scheduler_stop.wait(30)
+
+    def generator_loop():
+        while not scheduler_stop.is_set():
+            try:
+                if not developer_mode(mode_path):
+                    inventory_jobs.run_one()
+            except (OSError, ValueError) as error:
+                print(f'Inventory worker deferred: {error}', file=sys.stderr)
+            scheduler_stop.wait(5)
 
     class Handler(BaseHTTPRequestHandler):
         def send_bytes(self, status: int, body: bytes, content_type: str, *, cache: bool = False) -> None:
@@ -311,9 +358,12 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
 
         def trusted(self) -> bool:
             host = self.headers.get("Host", "").lower()
-            allowed_hosts = {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
+            allowed_origins = {f"{name}:{self.server.server_port}": f"http://{name}:{self.server.server_port}"
+                               for name in ("127.0.0.1", "localhost")}
+            if public_host:
+                allowed_origins[public_host] = public_origin
             origin = self.headers.get("Origin")
-            if host not in allowed_hosts or (origin and origin != f"http://{host}"):
+            if host not in allowed_origins or (origin and origin != allowed_origins[host]):
                 self.send_bytes(403, b"Forbidden", "text/plain; charset=utf-8")
                 return False
             if self.headers.get("Sec-Fetch-Site") == "cross-site":
@@ -341,6 +391,11 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         body = {**body, "preview": developer_mode(mode_path)}
                     body = assignment_request(body, directory, learner)
                     response = learning_worker.request(body)
+                    if response.get('ok') and (body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path):
+                        try:
+                            inventory_hook()
+                        except (OSError, ValueError) as error:
+                            self.log_error("Saved activity; inventory handoff deferred: %s", error)
                 if response.get("ok"):
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
                 else:
@@ -415,6 +470,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.mode_request()
             elif path == "/api/profile":
                 self.learning_request({"action": "profile"})
+            elif path == "/api/learner":
+                self.learning_request({"action": "learner"})
             elif path == "/api/preview-home":
                 self.learning_request({"action": "preview-home"})
             elif path == "/api/preview":
@@ -429,6 +486,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     self.send_bytes(400, b'{"error":"One activityId, taskId, or topicId is required."}', "application/json")
                     return
                 self.learning_request({"action": "preview", **selectors})
+            elif path == "/api/inventory":
+                self.learning_request({"action": "inventory"})
             elif path == "/api/home":
                 self.learning_request({"action": "home"})
             elif path == "/api/assignments":
@@ -439,6 +498,25 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     self.send_bytes(400, b'{"error":"Provide one assignment identifier."}', "application/json")
                     return
                 self.learning_request({"action": "assignment", "assignmentId": identifiers[0]})
+            elif path == "/api/activity":
+                body = {"action": "activity-history"}
+                activity_query = parse_qs(urlsplit(self.path).query, keep_blank_values=True)
+                for key in ("taskId", "beforeTaskId"):
+                    if key in activity_query:
+                        try:
+                            values = activity_query[key]
+                            if len(values) != 1 or not values[0].isdigit() or not 0 < int(values[0]) <= 2**64 - 1:
+                                raise ValueError()
+                            body[key] = int(values[0])
+                        except ValueError:
+                            self.send_bytes(400, b'{"error":"Provide one positive activity identifier."}', "application/json")
+                            return
+                if "taskId" in body:
+                    if "beforeTaskId" in body:
+                        self.send_bytes(400, b'{"error":"Provide an activity or a history cursor."}', "application/json")
+                        return
+                    body["action"] = "activity-history-detail"
+                self.learning_request(body)
             elif path == "/api/task":
                 try:
                     task = int(query.get("taskId", [""])[0])
@@ -464,11 +542,13 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.send_bytes(200, (ROOT / "ui/Course.html").read_bytes(), "text/html; charset=utf-8")
             elif path == "/topic":
                 self.send_bytes(200, (ROOT / "ui/Topic.html").read_bytes(), "text/html; charset=utf-8")
+            elif path == "/activity":
+                self.send_bytes(200, (ROOT / "ui/Activity.html").read_bytes(), "text/html; charset=utf-8")
             elif path == "/assignments":
                 self.send_bytes(200, (ROOT / "ui/Assignments.html").read_bytes(), "text/html; charset=utf-8")
             elif path.startswith("/ui/") and path != "/ui/Math-Academy-Graph-Explorer.html":
                 asset = (ROOT / path.lstrip("/")).resolve()
-                allowed = {"learning.js", "learning.css", "question-fields.js", "prose-lists.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "topic-menu.js", "profile.js", "course-catalog.js", "course-catalog.css"}
+                allowed = {"Activity.html", "activity.js", "activity.css", "learning.js", "learning.css", "question-fields.js", "prose-lists.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "target-weeks.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "topic-menu.js", "profile.js", "course-catalog.js", "course-catalog.css", "requests.js"}
                 if not asset.is_relative_to((ROOT / "ui").resolve()) or not asset.is_file() or not (asset.name in allowed or asset.is_relative_to((ROOT / "ui/vendor").resolve())):
                     self.send_bytes(404, b"Not found", "text/plain")
                 else:
@@ -517,6 +597,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
             self.do_GET()
 
     Handler.workers = (graph_worker, learning_worker)
+    Handler.scheduler_stop = scheduler_stop
+    Handler.background = (scheduler_loop, generator_loop) if learning_worker else ()
     return Handler
 
 
@@ -532,7 +614,7 @@ def main() -> None:
         learning = build_learning(args.edb_root.resolve())
         environment = database_environment(args.database)
         server = ThreadingHTTPServer(("127.0.0.1", args.port), handler(reader, args.database, args.learner, environment, learning))
-    except (OSError, RuntimeError, subprocess.SubprocessError) as error:
+    except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
         parser.exit(1, f"Cannot start graph explorer: {error}\n")
     print(f"Graph explorer: http://127.0.0.1:{server.server_port}/", flush=True)
     def warm(worker, body):
@@ -543,6 +625,10 @@ def main() -> None:
     for worker, body in zip(server.RequestHandlerClass.workers, ({}, {"action": "home"})):
         if worker:
             threading.Thread(target=warm, args=(worker, body), daemon=True).start()
+    for background in server.RequestHandlerClass.background:
+        if background.__name__ == 'generator_loop' and os.environ.get('COURSE_ACADEMY_DISABLE_GENERATION') == '1':
+            continue
+        threading.Thread(target=background, daemon=True).start()
     def stop(_signum, _frame):
         raise KeyboardInterrupt
     signal.signal(signal.SIGTERM, stop)
@@ -551,6 +637,7 @@ def main() -> None:
     except KeyboardInterrupt:
         pass
     finally:
+        server.RequestHandlerClass.scheduler_stop.set()
         server.server_close()
         for worker in server.RequestHandlerClass.workers:
             if worker:

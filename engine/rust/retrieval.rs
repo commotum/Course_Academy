@@ -1,0 +1,1312 @@
+//! Reviews and timed assessments over the shared activity/step model.
+//! Plans are immutable; the application commits definitions, reservations and
+//! evidence using its existing exact-basis, replayable transaction boundary.
+use crate::{
+    Result, activities,
+    core::Event,
+    learning,
+    schema::{EntitySnapshot, timestamp_days, writeback},
+    timing,
+};
+use chrono::{DateTime, Utc};
+use num_traits::ToPrimitive;
+use serde_json::{Value, json};
+use std::collections::{BTreeMap, BTreeSet};
+
+pub const ASSESSMENT_XP: f64 = 120.0;
+pub const ASSESSMENT_REQUIRED_XP: f64 = 150.0;
+pub const ASSESSMENT_SECONDS: f64 = 900.0;
+// Provisional learning-age floor for ordinary assessments only. Reviews do
+// not reset acquisition age, and remediation must not inherit this delay.
+pub const ASSESSMENT_TOPIC_AGE_HOURS: i64 = 48;
+// Captured questions do not yet contain measured duration estimates.
+const QUESTION_SECONDS: f64 = 90.0;
+
+pub fn kind(s: &EntitySnapshot, activity: u64) -> Result<String> {
+    Ok(s.ident(&json!(s.reference(activity, "activity/type")?))?
+        .rsplit('/')
+        .next()
+        .unwrap()
+        .into())
+}
+pub fn supported(s: &EntitySnapshot, activity: u64) -> Result<bool> {
+    Ok(matches!(
+        kind(s, activity)?.as_str(),
+        "review" | "assessment"
+    ))
+}
+fn state(s: &EntitySnapshot, eid: u64, attr: &str) -> Result<String> {
+    Ok(timing::status(s, eid, attr)?
+        .rsplit('/')
+        .next()
+        .unwrap()
+        .into())
+}
+pub fn outcomes(s: &EntitySnapshot, items: &[u64]) -> Result<Vec<activities::Outcome>> {
+    items
+        .iter()
+        .filter_map(|i| match learning::question_outcome(s, *i) {
+            Ok(Some(v)) => Some(Ok(v)),
+            Ok(None) => None,
+            Err(e) => Some(Err(e)),
+        })
+        .collect()
+}
+pub fn position(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<learning::Position> {
+    let steps = learning::lesson_steps(s, activity)?;
+    if kind(s, activity)? == "review" && steps.len() != 5 {
+        return Err("A review must reserve five fresh questions".into());
+    }
+    if kind(s, activity)? == "assessment" {
+        let reserved: BTreeSet<_> = steps.iter().map(|st| st.content).collect();
+        let mut visited = BTreeSet::new();
+        for &item in items {
+            let q = s.reference(item, "task-item/content")?;
+            if !reserved.contains(&q) || !visited.insert(q) {
+                return Err("Assessment presentation is outside its route or duplicated".into());
+            }
+        }
+        return Ok(learning::Position {
+            next: steps
+                .iter()
+                .find(|st| !visited.contains(&st.content))
+                .map(|st| st.content),
+            passed: visited.len() == steps.len(),
+            failed: false,
+            shortage: None,
+            deferred: vec![],
+        });
+    }
+    let mut answered = vec![];
+    for (index, item) in items.iter().enumerate() {
+        if index >= steps.len() || s.reference(*item, "task-item/content")? != steps[index].content
+        {
+            return Err("Retrieval presentations must follow their reserved route".into());
+        }
+        let Some(outcome) = learning::question_outcome(s, *item)? else {
+            if index + 1 != items.len() {
+                return Err("Unanswered question precedes later content".into());
+            }
+            return Ok(learning::Position {
+                next: Some(steps[index].content),
+                passed: false,
+                shortage: None,
+                failed: false,
+                deferred: vec![],
+            });
+        };
+        answered.push(outcome);
+        if kind(s, activity)? == "review" {
+            let decision = activities::evaluate_review_prefix(&answered)?;
+            if decision.complete() {
+                if index + 1 != items.len() {
+                    return Err("Review continues beyond its stopping prefix".into());
+                }
+                return Ok(learning::Position {
+                    next: None,
+                    passed: decision.passed() == Some(true),
+                    failed: decision.passed() == Some(false),
+                    shortage: None,
+                    deferred: vec![],
+                });
+            }
+        }
+    }
+    let next = steps.get(items.len()).map(|step| step.content);
+    Ok(learning::Position {
+        next,
+        passed: next.is_none(),
+        failed: false,
+        shortage: None,
+        deferred: vec![],
+    })
+}
+pub fn xp(s: &EntitySnapshot, activity: u64, items: &[u64], base: i64) -> Result<i64> {
+    let answers = outcomes(s, items)?;
+    let total = if kind(s, activity)? == "assessment" {
+        learning::lesson_steps(s, activity)?.len()
+    } else {
+        answers.len()
+    };
+    activities::earned_xp(
+        &kind(s, activity)?,
+        base,
+        answers.iter().filter(|a| **a == Some(true)).count(),
+        total,
+        answers.last().copied().flatten(),
+    )?
+    .to_i64()
+    .ok_or_else(|| "XP outside supported range".into())
+}
+pub fn fresh(s: &EntitySnapshot, learner: u64, activity: u64) -> Result<bool> {
+    let seen = learning::unavailable_questions(s, learner)?;
+    Ok(learning::lesson_steps(s, activity)?
+        .iter()
+        .all(|step| !seen.contains(&step.content)))
+}
+pub fn remaining(s: &EntitySnapshot, task: u64, at: DateTime<Utc>) -> Result<Option<f64>> {
+    let activity = s.reference(task, "learner-task/activity")?;
+    if kind(s, activity)? != "assessment"
+        || !matches!(
+            state(s, task, "learner-task/status")?.as_str(),
+            "started" | "paused"
+        )
+    {
+        return Ok(None);
+    }
+    let seconds = s
+        .entity(activity)?
+        .get("activity/time-limit-seconds")
+        .and_then(Value::as_f64)
+        .filter(|v| v.is_finite() && *v > 0.0)
+        .ok_or("Assessment requires a positive wall-clock time limit")?;
+    Ok(Some(
+        (seconds - (at - timing::task_started(s, task)?).num_milliseconds() as f64 / 1000.0)
+            .max(0.0),
+    ))
+}
+pub fn credit(
+    s: &EntitySnapshot,
+    learner: u64,
+    activity: u64,
+    question: Option<u64>,
+    correct: bool,
+    completed: bool,
+    event_id: &str,
+    at: DateTime<Utc>,
+) -> Result<Vec<Value>> {
+    let kind = kind(s, activity)?;
+    if question.is_none() && (!completed || kind == "assessment") {
+        return Ok(vec![]);
+    }
+    let loaded = learning::learning_runtime(s, learner, at)?;
+    let mut engine = loaded.engine.clone();
+    let target = if let Some(q) = question {
+        s.topic_for_question(q)?
+    } else {
+        s.reference(activity, "activity/scope")?
+    };
+    let topic = loaded
+        .topic_eid_to_id
+        .get(&target)
+        .ok_or("Unknown retrieval topic")?;
+    let event = |suffix: &str| Event {
+        id: format!("{suffix}:{event_id}"),
+        learner: loaded.learner.clone(),
+        topic: topic.clone(),
+        at: timestamp_days(at),
+        passed: correct,
+        kind: kind.clone(),
+        assessment: kind == "assessment",
+        ..Event::default()
+    };
+    if question.is_some() {
+        engine.apply_accuracy(event("answer"))?;
+    }
+    if kind == "assessment" || completed {
+        engine.apply_retention(event("retention"))?;
+    }
+    let mut forms = writeback(&loaded, &engine, vec![], "learning", event_id, at)?.forms;
+    forms.retain(|v| v.get("db/id") != Some(&json!("edb.tx")));
+    Ok(forms)
+}
+
+pub fn assessment_credit(
+    s: &EntitySnapshot,
+    learner: u64,
+    results: &[(u64, bool)],
+    event_id: &str,
+    at: DateTime<Utc>,
+) -> Result<Vec<Value>> {
+    if results.is_empty() {
+        return Ok(vec![]);
+    }
+    let loaded = learning::learning_runtime(s, learner, at)?;
+    let mut engine = loaded.engine.clone();
+    for &(q, correct) in results {
+        let target = s.topic_for_question(q)?;
+        let topic = loaded
+            .topic_eid_to_id
+            .get(&target)
+            .ok_or("Unknown assessment topic")?;
+        let event = |suffix: &str| Event {
+            id: format!("{suffix}:{event_id}:{q}"),
+            learner: loaded.learner.clone(),
+            topic: topic.clone(),
+            at: timestamp_days(at),
+            passed: correct,
+            kind: "assessment".into(),
+            assessment: true,
+            ..Event::default()
+        };
+        engine.apply_accuracy(event("answer"))?;
+        engine.apply_retention(event("retention"))?;
+    }
+    let mut forms = writeback(&loaded, &engine, vec![], "learning", event_id, at)?.forms;
+    forms.retain(|v| v.get("db/id") != Some(&json!("edb.tx")));
+    Ok(forms)
+}
+
+#[derive(Clone, Debug)]
+pub struct Definition {
+    pub kind: String,
+    pub topic: Option<u64>,
+    pub questions: Vec<u64>,
+    pub title: String,
+    pub priority: f64,
+    pub expected_seconds: f64,
+    pub remediation_for: Vec<u64>,
+    pub retake_of: Option<u64>,
+    pub existing_activity: Option<u64>,
+}
+fn bank(s: &EntitySnapshot, topic: u64, seen: &BTreeSet<u64>) -> Result<Vec<u64>> {
+    let mut questions = BTreeSet::new();
+    for kp in s.refs(topic, "topic/knowledge-points")? {
+        questions.extend(s.refs(kp, "knowledge-point/questions")?);
+    }
+    Ok(questions
+        .into_iter()
+        .filter(|q| !seen.contains(q) && learning::validate_question(s, *q).is_ok())
+        .collect())
+}
+
+fn history(s: &EntitySnapshot, learner: u64) -> Result<crate::scheduling::Lifecycle> {
+    crate::scheduling::lifecycle(s, learner)
+}
+pub fn relearn_topics(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
+    Ok(history(s, learner)?
+        .repairs
+        .into_iter()
+        .filter_map(|((_, topic), kind)| (kind == "lesson").then_some(topic))
+        .collect())
+}
+pub(crate) fn due_topics(
+    s: &EntitySnapshot,
+    learner: u64,
+    at: DateTime<Utc>,
+) -> Result<BTreeSet<u64>> {
+    let mut result = BTreeSet::new();
+    let policies = s.entities.with_attribute("policy/id");
+    let Some(threshold) = policies
+        .first()
+        .and_then(|p| s.entities[p].get("policy/review-threshold"))
+        .and_then(Value::as_f64)
+    else {
+        return Ok(result);
+    };
+    for progress in s.refs(learner, "learner/knowledge-profile")? {
+        let r = s.entity(progress)?;
+        if r.get("progress/learned") != Some(&json!(true)) {
+            continue;
+        }
+        if let (Some(memory), Some(interval), Some(anchor)) = (
+            r.get("progress/memory").and_then(Value::as_f64),
+            r.get("progress/interval-days").and_then(Value::as_f64),
+            r.get("progress/memory-at"),
+        ) {
+            let elapsed = timestamp_days(at) - crate::schema::instant_days(anchor)?;
+            if memory.is_finite()
+                && interval.is_finite()
+                && interval > 0.0
+                && elapsed >= 0.0
+                && memory * 2.0_f64.powf(-elapsed / interval) <= threshold + 1e-12
+            {
+                result.insert(s.reference(progress, "progress/topic")?);
+            }
+        }
+    }
+    Ok(result)
+}
+
+/// Existing tasks only: reads never create definitions or reserve questions.
+pub fn candidates(
+    s: &EntitySnapshot,
+    learner: u64,
+    _course: u64,
+    at: DateTime<Utc>,
+    _automatic: bool,
+) -> Result<Vec<learning::PlannedActivity>> {
+    let h = history(s, learner)?;
+    let due = due_topics(s, learner, at)?;
+    let mut result = vec![];
+    for task in s.refs(learner, "learner/activity")? {
+        let activity = s.reference(task, "learner-task/activity")?;
+        let kind = kind(s, activity)?;
+        let mut origins = s.refs(task, "learner-task/remediation-for")?;
+        if !supported(s, activity)? && origins.is_empty() {
+            continue;
+        }
+        let status = state(s, task, "learner-task/status")?;
+        let ongoing = matches!(status.as_str(), "started" | "paused");
+        if !ongoing
+            && (!matches!(status.as_str(), "locked" | "unlocked")
+                || kind != "lesson" && !fresh(s, learner, activity)?)
+        {
+            continue;
+        }
+        let topic = s
+            .optional_ref(activity, "activity/scope")?
+            .unwrap_or_else(|| {
+                learning::lesson_steps(s, activity)
+                    .ok()
+                    .and_then(|v| {
+                        v.first()
+                            .and_then(|st| s.topic_for_question(st.content).ok())
+                    })
+                    .unwrap_or(0)
+            });
+        if origins.is_empty() && !ongoing {
+            origins = h
+                .repairs
+                .iter()
+                .filter_map(|((o, t), k)| (*t == topic && k == &kind).then_some(*o))
+                .collect();
+        }
+        let required = origins
+            .iter()
+            .any(|o| h.repairs.get(&(*o, topic)).is_some_and(|k| k == &kind));
+        if !origins.is_empty() && !required {
+            continue;
+        }
+        if kind == "lesson" && (!h.retry_ready(topic) || h.lesson_blocked(s, topic)?) {
+            continue;
+        }
+        let retake = s.optional_ref(task, "learner-task/retake-of")?;
+        if let Some(original) = retake {
+            if !h.retake_ready(s, original)? {
+                continue;
+            }
+        }
+        if !ongoing
+            && !required
+            && retake.is_none()
+            && (kind == "review" && !due.contains(&topic)
+                || kind == "assessment" && h.xp < ASSESSMENT_XP)
+        {
+            continue;
+        }
+        let globally_required = required
+            && origins
+                .iter()
+                .any(|o| h.assessment_origin(s, *o).unwrap_or(false));
+        let assessment_required =
+            kind == "assessment" && retake.is_none() && h.xp >= ASSESSMENT_REQUIRED_XP;
+        result.push(learning::PlannedActivity {
+            activity,
+            topic,
+            priority: if globally_required {
+                12000.0
+            } else if assessment_required {
+                11000.0
+            } else if ongoing {
+                10001.0
+            } else if required {
+                8000.0
+            } else if kind == "review" {
+                let stored = s
+                    .entity(task)?
+                    .get("learner-task/priority")
+                    .and_then(Value::as_f64)
+                    .unwrap_or(5000.0);
+                if stored >= 5500.0 {
+                    stored
+                } else {
+                    stored + 1000.0
+                }
+            } else {
+                s.entity(task)?
+                    .get("learner-task/priority")
+                    .and_then(Value::as_f64)
+                    .unwrap_or(5000.0)
+            },
+            target_count: 0,
+            target_topics: vec![],
+            remaining_topics: 0,
+            nearest_target_steps: None,
+            due: None,
+            reason: if globally_required {
+                "Required practice after assessment"
+            } else if required {
+                "Required prerequisite repair"
+            } else if retake.is_some() {
+                "Optional assessment retake"
+            } else if assessment_required {
+                "Required assessment after 150 practice XP"
+            } else if ongoing {
+                "Resume your activity"
+            } else if kind == "assessment" {
+                "Optional assessment after 120 practice XP"
+            } else {
+                "Spaced review is due"
+            }
+            .into(),
+        });
+    }
+    Ok(result)
+}
+pub fn schedule(
+    s: &EntitySnapshot,
+    learner: u64,
+    course: u64,
+    at: DateTime<Utc>,
+) -> Result<Vec<Definition>> {
+    let h = history(s, learner)?;
+    let pending = candidates(s, learner, course, at, true)?;
+    let seen = learning::unavailable_questions(s, learner)?;
+    if due_topics(s, learner, at)?.is_empty()
+        && h.repairs.is_empty()
+        && h.retakes.is_empty()
+        && h.xp < ASSESSMENT_XP
+    {
+        return Ok(vec![]);
+    }
+    let policy = crate::question_selection::active_policy(s)?;
+    let mut definitions = vec![];
+    let mut due = due_topics(s, learner, at)?;
+    due.extend(h.repairs.keys().map(|(_, topic)| topic));
+    for topic in due {
+        let origins: Vec<_> = h
+            .repairs
+            .keys()
+            .filter_map(|(origin, t)| (*t == topic).then_some(*origin))
+            .collect();
+        let needs_lesson = origins.iter().any(|o| h.repairs[&(*o, topic)] == "lesson");
+        let next = if needs_lesson { "lesson" } else { "review" };
+        if pending
+            .iter()
+            .any(|p| p.topic == topic && kind(s, p.activity).ok().as_deref() == Some(next))
+        {
+            continue;
+        }
+        if needs_lesson {
+            if !h.retry_ready(topic) || h.lesson_blocked(s, topic)? {
+                continue;
+            }
+            let activity = s
+                .entities
+                .with_attribute("activity/id")
+                .into_iter()
+                .find(|a| {
+                    kind(s, *a).ok().as_deref() == Some("lesson")
+                        && s.optional_ref(*a, "activity/scope").ok().flatten() == Some(topic)
+                });
+            if let Some(activity) = activity {
+                if crate::inventory::ready(
+                    s,
+                    &s.refs(topic, "topic/knowledge-points")?,
+                    &seen,
+                    true,
+                )? && learning::first_content(s, activity, learner)?.is_some()
+                {
+                    definitions.push(Definition {
+                        kind: "lesson".into(),
+                        topic: Some(topic),
+                        questions: vec![],
+                        title: "Required relearning".into(),
+                        priority: 12000.0,
+                        expected_seconds: 0.0,
+                        remediation_for: origins,
+                        retake_of: None,
+                        existing_activity: Some(activity),
+                    });
+                }
+            }
+            continue;
+        }
+        if pending
+            .iter()
+            .any(|p| p.topic == topic && kind(s, p.activity).ok().as_deref() == Some("review"))
+        {
+            continue;
+        }
+        if !crate::inventory::ready(s, &s.refs(topic, "topic/knowledge-points")?, &seen, false)? {
+            continue;
+        }
+        let mut pool = bank(s, topic, &seen)?;
+        // Preserve one fresh same-KP/same-band alternative for an eventual retake.
+        for &original in &h.retakes {
+            for st in learning::lesson_steps(s, s.reference(original, "learner-task/activity")?)? {
+                if s.topic_for_question(st.content)? != topic {
+                    continue;
+                }
+                let kp = crate::scheduling::original_kp(s, st.content)?;
+                for band in 0..3 {
+                    let protected = pool.iter().copied().find(|q| {
+                        s.owners(*q, "knowledge-point/questions").ok() == Some(vec![kp])
+                            && crate::assessment_sampling::band(s, *q).ok().flatten() == Some(band)
+                    });
+                    if let Some(q) = protected {
+                        pool.retain(|v| *v != q);
+                    }
+                }
+            }
+        }
+        if pool.len() < 5 {
+            continue;
+        }
+        let mut questions = vec![];
+        for slot in 0..5 {
+            let weights = crate::question_selection::weights(s, policy, "review", slot)?;
+            let Some(q) = crate::question_selection::select(
+                s,
+                &pool,
+                weights,
+                &format!("review-{learner}-{topic}-{}-{slot}", s.basis_t),
+            )?
+            else {
+                break;
+            };
+            questions.push(q);
+            pool.retain(|v| *v != q);
+        }
+        if questions.len() != 5 {
+            continue;
+        }
+        definitions.push(Definition {
+            kind: "review".into(),
+            topic: Some(topic),
+            questions,
+            title: format!(
+                "Review: {}",
+                s.entity(topic)?
+                    .get("topic/title")
+                    .and_then(Value::as_str)
+                    .unwrap_or("Topic")
+            ),
+            priority: if origins.is_empty() { 6000.0 } else { 8000.0 },
+            expected_seconds: 3.0 * QUESTION_SECONDS,
+            remediation_for: origins,
+            retake_of: None,
+            existing_activity: None,
+        });
+    }
+    if definitions.iter().any(|d| d.kind == "review") {
+        let loaded = learning::learning_runtime(s, learner, at)?;
+        let ranked=loaded.engine.rank(&loaded.learner,timestamp_days(at),definitions.iter().filter(|d|d.kind=="review").map(|d|json!({"topic":loaded.topic_eid_to_id[&d.topic.unwrap()],"expected_minutes":d.expected_seconds/60.0,"kind":"review","entityId":d.topic})).collect())?;
+        let order: BTreeMap<_, _> = ranked
+            .iter()
+            .enumerate()
+            .map(|(i, r)| (r["entityId"].as_u64().unwrap(), i))
+            .collect();
+        definitions.sort_by(|a, b| {
+            b.priority.total_cmp(&a.priority).then_with(|| {
+                order
+                    .get(&a.topic.unwrap())
+                    .unwrap_or(&usize::MAX)
+                    .cmp(order.get(&b.topic.unwrap()).unwrap_or(&usize::MAX))
+            })
+        });
+        for (index, d) in definitions.iter_mut().enumerate() {
+            if d.kind == "review" {
+                d.priority -= index as f64;
+            }
+        }
+    }
+    // Retain all required repairs; bound only ordinary background offers.
+    let mut ordinary = 0;
+    definitions.retain(|d| {
+        if !d.remediation_for.is_empty() {
+            true
+        } else {
+            ordinary += 1;
+            ordinary <= 5
+        }
+    });
+    let has_ordinary = pending.iter().any(|p| {
+        kind(s, p.activity).ok().as_deref() == Some("assessment")
+            && s.owners(p.activity, "learner-task/activity")
+                .unwrap_or_default()
+                .iter()
+                .any(|t| {
+                    s.optional_ref(*t, "learner-task/retake-of")
+                        .ok()
+                        .flatten()
+                        .is_none()
+                })
+    });
+    let seed = format!("assessment-{learner}-{}", s.basis_t);
+    if h.xp >= ASSESSMENT_XP && !has_ordinary {
+        let weights = crate::question_selection::weights_for_phase(
+            s,
+            policy,
+            "assessment",
+            crate::question_selection::Phase::Initial,
+        )?
+        .ok_or("assessment question weights are not configured")?;
+        let mut pools = BTreeMap::new();
+        for progress in s.refs(learner, "learner/knowledge-profile")? {
+            let topic = s.reference(progress, "progress/topic")?;
+            if s.entity(progress)?.get("progress/learned") != Some(&json!(true))
+                || h.mastered
+                    .get(&topic)
+                    .is_none_or(|t| at - *t < chrono::Duration::hours(ASSESSMENT_TOPIC_AGE_HOURS))
+            {
+                continue;
+            }
+            let kps = s.refs(topic, "topic/knowledge-points")?;
+            if crate::inventory::ready(s, &kps, &seen, false)? {
+                pools.insert(topic, crate::assessment_sampling::pool(s, &kps, &seen)?);
+            }
+        }
+        let loaded = learning::learning_runtime(s, learner, at)?;
+        let mut tw = BTreeMap::new();
+        for &topic in pools.keys() {
+            let mut c: f64 = 0.0;
+            for &other in pools
+                .keys()
+                .filter(|other| **other != topic && !pools[other].is_empty())
+            {
+                c = c.max(
+                    loaded
+                        .engine
+                        .graph
+                        .coverage(&loaded.topic_eid_to_id[&other])
+                        .get(&loaded.topic_eid_to_id[&topic])
+                        .copied()
+                        .unwrap_or(0.0),
+                );
+            }
+            tw.insert(
+                topic,
+                (if h.assessed.contains(&topic) {
+                    1.0
+                } else {
+                    4.0
+                }) * (0.05 + 0.95 * (1.0 - c).powi(2)),
+            );
+        }
+        let questions =
+            crate::assessment_sampling::assemble(s, learner, pools, weights, tw, false, &seed)?;
+        if !questions.is_empty() {
+            definitions.push(Definition {
+                kind: "assessment".into(),
+                topic: None,
+                title: "Practice assessment".into(),
+                priority: 7000.0,
+                expected_seconds: questions
+                    .iter()
+                    .map(|q| crate::assessment_sampling::seconds(s, *q).unwrap())
+                    .sum(),
+                questions,
+                remediation_for: vec![],
+                retake_of: None,
+                existing_activity: None,
+            });
+        }
+    }
+    let weights = crate::question_selection::weights_for_phase(
+        s,
+        policy,
+        "assessment",
+        crate::question_selection::Phase::Remedial,
+    )?;
+    for &original in &h.retakes {
+        if !h.retake_ready(s, original)? {
+            continue;
+        }
+        let questions = crate::assessment_sampling::retake(
+            s,
+            learner,
+            original,
+            &seen,
+            weights.ok_or("assessment remedial weights are not configured")?,
+            &format!("retake-{original}-{}", s.basis_t),
+        )?;
+        if !questions.is_empty() {
+            definitions.push(Definition {
+                kind: "assessment".into(),
+                topic: None,
+                title: "Optional assessment retake".into(),
+                priority: 6500.0,
+                expected_seconds: questions
+                    .iter()
+                    .map(|q| crate::assessment_sampling::seconds(s, *q).unwrap())
+                    .sum(),
+                questions,
+                remediation_for: vec![],
+                retake_of: Some(original),
+                existing_activity: None,
+            });
+        }
+    }
+    Ok(definitions)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::schema::StatusAssertion;
+    fn put(s: &mut EntitySnapshot, id: u64, value: Value) {
+        s.entities.insert(id, value.as_object().unwrap().clone());
+    }
+    fn fixture() -> EntitySnapshot {
+        let mut s = learning::tests::fixture();
+        for (id, ident) in [
+            (1100, "activity.type/review"),
+            (1101, "activity.type/assessment"),
+            (1102, "learner-task.status/unlocked"),
+        ] {
+            put(&mut s, id, json!({"db/ident":ident}));
+        }
+        let mut steps = vec![];
+        for slot in 0..5 {
+            let id = 600 + slot;
+            steps.push(id);
+            let mut v = json!({"step/id":format!("step-{id}"),"step/content":100+slot});
+            if slot < 4 {
+                v["step/next"] = json!(id + 1);
+            }
+            put(&mut s, id, v);
+        }
+        put(
+            &mut s,
+            60,
+            json!({"activity/id":"review","activity/type":"activity.type/review","activity/scope":3,"activity/steps":steps,"activity/first-step":600}),
+        );
+        s.entities
+            .get_mut(&9)
+            .unwrap()
+            .insert("learner-task/activity".into(), json!(60));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([9]));
+        EntitySnapshot::new(s.entities.into(), s.basis_t).unwrap()
+    }
+    fn present(s: &mut EntitySnapshot, question: u64, status: &str) -> u64 {
+        let mut items = s.refs(9, "learner-task/items").unwrap();
+        let id = 700 + items.len() as u64;
+        put(
+            s,
+            id,
+            json!({"task-item/id":format!("item-{id}"),"task-item/content":question,"task-item/status":format!("task-item.status/{status}")}),
+        );
+        if let Some(previous) = items.last() {
+            s.entities
+                .get_mut(previous)
+                .unwrap()
+                .insert("task-item/next".into(), json!(id));
+        }
+        items.push(id);
+        s.entities
+            .get_mut(&9)
+            .unwrap()
+            .insert("learner-task/items".into(), json!(items));
+        id
+    }
+    fn progress(s: &mut EntitySnapshot, eid: u64, topic: u64, at: DateTime<Utc>, memory: f64) {
+        put(
+            s,
+            eid,
+            json!({"progress/id":format!("progress-{eid}"),"progress/topic":topic,"progress/policy":2,"progress/repetitions":2.0,"progress/learned":true,"progress/memory":memory,"progress/memory-at":at,"progress/interval-days":1.0,"progress/assessment-accuracy":0.5,"progress/practice-accuracy":0.5,"progress/assessment-mass":0.0,"progress/practice-mass":0.0}),
+        );
+    }
+    fn stamp(s: &mut EntitySnapshot, task: u64, at: DateTime<Utc>, status: &str) {
+        s.entities
+            .get_mut(&task)
+            .unwrap()
+            .insert("learner-task/id".into(), json!(format!("task-{task}")));
+        s.basis_t = s.basis_t.max(task * 2 + 1);
+        s.status_history.push(StatusAssertion {
+            entity: task,
+            attribute: "learner-task/status".into(),
+            value: json!("learner-task.status/started"),
+            t: task * 2,
+            at: json!({"$instant":(at-chrono::Duration::seconds(1)).timestamp_millis()}),
+        });
+        s.status_history.push(StatusAssertion {
+            entity: task,
+            attribute: "learner-task/status".into(),
+            value: json!(format!("learner-task.status/{status}")),
+            t: task * 2 + 1,
+            at: json!({"$instant":at.timestamp_millis()}),
+        });
+    }
+    #[test]
+    fn review_route_stops_at_three_correct_and_scores_only_presented_questions() {
+        let mut s = fixture();
+        for slot in 0..3 {
+            assert_eq!(
+                learning::next_content(&s, 60, &s.refs(9, "learner-task/items").unwrap()).unwrap(),
+                Some(100 + slot)
+            );
+            present(&mut s, 100 + slot, "correct");
+        }
+        let items = s.refs(9, "learner-task/items").unwrap();
+        assert_eq!(
+            learning::continuation(&s, 60, &items, false, 5).unwrap(),
+            (None, true, 7)
+        );
+        assert_eq!(items.len(), 3);
+        assert!(learning::continuation_state(&s, 60, &items, false, true).is_err());
+        present(&mut s, 103, "correct");
+        assert!(position(&s, 60, &s.refs(9, "learner-task/items").unwrap()).is_err());
+    }
+    #[test]
+    fn review_failure_skip_and_current_presentation_are_replayed_without_extra_draws() {
+        let mut s = fixture();
+        let item = present(&mut s, 100, "started");
+        assert_eq!(position(&s, 60, &[item]).unwrap().next, Some(100));
+        s.entities
+            .get_mut(&item)
+            .unwrap()
+            .insert("task-item/status".into(), json!("task-item.status/skipped"));
+        for slot in 1..5 {
+            present(
+                &mut s,
+                100 + slot,
+                if slot == 4 { "correct" } else { "incorrect" },
+            );
+        }
+        let items = s.refs(9, "learner-task/items").unwrap();
+        assert!(position(&s, 60, &items).unwrap().failed);
+        assert_eq!(xp(&s, 60, &items, 5).unwrap(), -1);
+    }
+    #[test]
+    fn reservations_protect_active_pools_without_becoming_history() {
+        let mut s = fixture();
+        assert!(learning::seen_questions(&s, 1).unwrap().is_empty());
+        assert_eq!(
+            learning::reserved_retrieval_questions(&s, 1).unwrap().len(),
+            5
+        );
+        assert!(!fresh(&s, 1, 60).unwrap());
+        s.entities.get_mut(&9).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/unlocked"),
+        );
+        assert!(fresh(&s, 1, 60).unwrap());
+        present(&mut s, 100, "paused");
+        assert!(!fresh(&s, 1, 60).unwrap());
+    }
+    #[test]
+    fn due_reviews_need_learned_state_and_five_fresh_questions_across_modes() {
+        let mut s = fixture();
+        let at = Utc::now();
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([]));
+        assert!(schedule(&s, 1, 5, at).unwrap().is_empty()); // Partial imports.
+        progress(&mut s, 21, 3, at, 0.1);
+        let plan = schedule(&s, 1, 5, at).unwrap();
+        assert_eq!(plan.len(), 1);
+        assert_eq!(plan[0].kind, "review");
+        assert_eq!(plan[0].questions.len(), 5);
+        assert_eq!(plan[0].questions.iter().collect::<BTreeSet<_>>().len(), 5);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(true));
+        assert_eq!(schedule(&s, 1, 5, at).unwrap().len(), 1);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(false));
+        s.entities.get_mut(&41).unwrap().insert(
+            "knowledge-point/questions".into(),
+            json!([100, 101, 102, 103]),
+        );
+        assert!(schedule(&s, 1, 5, at).unwrap().is_empty());
+    }
+    fn assessment_fixture() -> (EntitySnapshot, DateTime<Utc>) {
+        let mut s = fixture();
+        put(
+            &mut s,
+            2900,
+            json!({
+                "question-weights/activity-type":"activity.type/assessment",
+                "question-weights/initial-easy":50.0,"question-weights/initial-moderate":40.0,"question-weights/initial-hard":10.0,
+                "question-weights/remedial-easy":45.0,"question-weights/remedial-moderate":40.0,"question-weights/remedial-hard":15.0
+            }),
+        );
+        s.entities
+            .get_mut(&2)
+            .unwrap()
+            .insert("policy/question-selection-weights".into(), json!([2900]));
+        for (id, band) in [(2910, "easy"), (2911, "moderate"), (2912, "hard")] {
+            put(
+                &mut s,
+                id,
+                json!({"db/ident":format!("question.difficulty/{band}")}),
+            );
+        }
+        let at = Utc::now();
+        let mut tasks = vec![];
+        let mut topics = vec![];
+        let mut profiles = vec![];
+        let question = s.entities[&100].clone();
+        for slot in 0..5u64 {
+            let topic = 2000 + slot;
+            let kp = 2100 + slot;
+            let lesson = 2200 + slot;
+            let review = 2300 + slot;
+            let learned = 2400 + slot;
+            let reviewed = 2500 + slot;
+            let item = 2600 + slot;
+            let q = 2700 + slot * 10;
+            topics.push(topic);
+            profiles.push(2800 + slot);
+            tasks.extend([learned, reviewed]);
+            put(
+                &mut s,
+                topic,
+                json!({"topic/id":format!("00000000-0000-4000-8000-{topic:012}"),"topic/knowledge-points":[kp]}),
+            );
+            put(
+                &mut s,
+                kp,
+                json!({"knowledge-point/id":format!("00000000-0000-4000-8000-{kp:012}"),"knowledge-point/questions":[q,q+1,q+2,q+3,q+4,q+5,q+6]}),
+            );
+            for offset in 0..7 {
+                let mut r = question.clone();
+                r.insert("question/id".into(), json!(format!("q-{}", q + offset)));
+                r.insert("question/difficulty".into(), json!(2910 + offset % 3));
+                s.entities.insert(q + offset, r);
+            }
+            let mut bank = s.refs(kp, "knowledge-point/questions").unwrap();
+            for offset in 0..24u64 {
+                let id = 9000 + slot * 100 + offset;
+                let mut r = question.clone();
+                r.insert("question/id".into(), json!(format!("fresh-{id}")));
+                r.insert("question/difficulty".into(), json!(2910 + offset % 3));
+                s.entities.insert(id, r);
+                bank.push(id);
+            }
+            s.entities
+                .get_mut(&kp)
+                .unwrap()
+                .insert("knowledge-point/questions".into(), json!(bank));
+            put(
+                &mut s,
+                lesson,
+                json!({"activity/id":format!("lesson-{lesson}"),"activity/type":"activity.type/lesson","activity/scope":topic}),
+            );
+            put(
+                &mut s,
+                review,
+                json!({"activity/id":format!("review-{review}"),"activity/type":"activity.type/review","activity/scope":topic}),
+            );
+            put(
+                &mut s,
+                learned,
+                json!({"learner-task/activity":lesson,"learner-task/status":"learner-task.status/completed","learner-task/xp-earned":25.0}),
+            );
+            put(
+                &mut s,
+                reviewed,
+                json!({"learner-task/activity":review,"learner-task/status":"learner-task.status/completed","learner-task/xp-earned":5.0,"learner-task/items":[item]}),
+            );
+            put(
+                &mut s,
+                item,
+                json!({"task-item/content":q,"task-item/status":"task-item.status/correct"}),
+            );
+            stamp(&mut s, learned, at - chrono::Duration::days(3), "completed");
+            stamp(
+                &mut s,
+                reviewed,
+                at - chrono::Duration::days(1),
+                "completed",
+            );
+            progress(&mut s, 2800 + slot, topic, at, 1.0);
+        }
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!(tasks));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/knowledge-profile".into(), json!(profiles));
+        s.entities
+            .get_mut(&7)
+            .unwrap()
+            .insert("module/topics".into(), json!(topics));
+        (s, at)
+    }
+    #[test]
+    fn assessments_use_updated_initial_weights_and_require_configuration() {
+        let (mut s, at) = assessment_fixture();
+        for (id, band) in [(2910, "easy"), (2911, "moderate"), (2912, "hard")] {
+            put(
+                &mut s,
+                id,
+                json!({"db/ident":format!("question.difficulty/{band}")}),
+            );
+        }
+        for slot in 0..5u64 {
+            for offset in 1..7u64 {
+                s.entities
+                    .get_mut(&(2700 + slot * 10 + offset))
+                    .unwrap()
+                    .insert("question/difficulty".into(), json!(2910 + (offset - 1) % 3));
+            }
+        }
+        for (band, value) in [("easy", 100.0), ("moderate", 0.0), ("hard", 0.0)] {
+            s.entities
+                .get_mut(&2900)
+                .unwrap()
+                .insert(format!("question-weights/initial-{band}"), json!(value));
+        }
+        // An opposite remedial distribution must not affect ordinary quizzes.
+        for (band, value) in [("easy", 0.0), ("moderate", 0.0), ("hard", 100.0)] {
+            s.entities
+                .get_mut(&2900)
+                .unwrap()
+                .insert(format!("question-weights/remedial-{band}"), json!(value));
+        }
+        let first = schedule(&s, 1, 5, at).unwrap();
+        assert_eq!(first[0].questions.len(), 5);
+        assert!([2910, 2911, 2912].iter().all(|b| {
+            first[0]
+                .questions
+                .iter()
+                .any(|q| s.reference(*q, "question/difficulty").unwrap() == *b)
+        }));
+        assert_eq!(
+            first[0]
+                .questions
+                .iter()
+                .filter(|q| s.reference(**q, "question/difficulty").unwrap() == 2910)
+                .count(),
+            3
+        );
+        s.entities
+            .get_mut(&2900)
+            .unwrap()
+            .insert("question-weights/initial-easy".into(), json!(0.0));
+        s.entities
+            .get_mut(&2900)
+            .unwrap()
+            .insert("question-weights/initial-hard".into(), json!(100.0));
+        let updated = schedule(&s, 1, 5, at).unwrap();
+        assert!([2910, 2911, 2912].iter().all(|b| {
+            updated[0]
+                .questions
+                .iter()
+                .any(|q| s.reference(*q, "question/difficulty").unwrap() == *b)
+        }));
+        assert_eq!(
+            updated[0]
+                .questions
+                .iter()
+                .filter(|q| s.reference(**q, "question/difficulty").unwrap() == 2912)
+                .count(),
+            3
+        );
+        assert_ne!(first[0].questions, updated[0].questions);
+        s.entities
+            .get_mut(&2)
+            .unwrap()
+            .remove("policy/question-selection-weights");
+        assert!(
+            schedule(&s, 1, 5, at)
+                .unwrap_err()
+                .to_string()
+                .contains("assessment question weights are not configured")
+        );
+    }
+
+    #[test]
+    fn assessment_cadence_offers_at_120_signed_xp_with_mature_topics_and_fresh_questions() {
+        let (mut s, at) = assessment_fixture();
+        let plans = schedule(&s, 1, 5, at).unwrap();
+        assert_eq!(plans.len(), 1);
+        assert_eq!(plans[0].kind, "assessment");
+        assert_eq!(plans[0].questions.len(), 5);
+        assert_eq!(
+            plans[0]
+                .questions
+                .iter()
+                .map(|q| s.topic_for_question(*q).unwrap())
+                .collect::<BTreeSet<_>>()
+                .len(),
+            5
+        );
+        assert!(
+            plans[0]
+                .questions
+                .iter()
+                .all(|q| !learning::seen_questions(&s, 1).unwrap().contains(q))
+        );
+        s.entities
+            .get_mut(&2400)
+            .unwrap()
+            .insert("learner-task/xp-earned".into(), json!(24.0));
+        assert_eq!(schedule(&s, 1, 5, at).unwrap()[0].kind, "assessment");
+        s.entities
+            .get_mut(&2400)
+            .unwrap()
+            .insert("learner-task/xp-earned".into(), json!(25.0));
+        s.status_history.retain(|event| event.entity != 2500);
+        // Losing five finalized review XP affects cadence, not topic admission.
+        assert_eq!(schedule(&s, 1, 5, at).unwrap()[0].kind, "assessment");
+        s.entities
+            .get_mut(&2400)
+            .unwrap()
+            .insert("learner-task/xp-earned".into(), json!(30.0));
+        assert_eq!(schedule(&s, 1, 5, at).unwrap()[0].questions.len(), 5);
+    }
+
+    #[test]
+    fn assessments_admit_unreviewed_topics_at_exactly_48_hours_from_any_course_or_study_mode() {
+        let (mut s, at) = assessment_fixture();
+        // The entire 150 XP comes from lessons, with no review tasks at all.
+        let tasks: Vec<_> = (2400..2405).collect();
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!(tasks));
+        for task in &tasks {
+            s.entities
+                .get_mut(task)
+                .unwrap()
+                .insert("learner-task/xp-earned".into(), json!(30.0));
+        }
+        put(&mut s, 5000, json!({"course/units":[]}));
+        for event in &mut s.status_history {
+            if event.entity == 2400 && event.value == json!("learner-task.status/completed") {
+                event.at = json!({"$instant":(at - chrono::Duration::hours(48) + chrono::Duration::milliseconds(1)).timestamp_millis()});
+            }
+        }
+        assert!(
+            schedule(&s, 1, 5000, at).unwrap()[0]
+                .questions
+                .iter()
+                .all(|q| s.topic_for_question(*q).unwrap() != 2000)
+        );
+        for event in &mut s.status_history {
+            if event.entity == 2400 && event.value == json!("learner-task.status/completed") {
+                event.at =
+                    json!({"$instant":(at - chrono::Duration::hours(48)).timestamp_millis()});
+            }
+        }
+        for directed in [false, true] {
+            s.entities
+                .get_mut(&1)
+                .unwrap()
+                .insert("learner/self-directed".into(), json!(directed));
+            let plans = schedule(&s, 1, 5000, at).unwrap();
+            assert_eq!(plans.len(), 1);
+            assert_eq!(plans[0].kind, "assessment");
+            assert_eq!(plans[0].questions.len(), 5);
+            assert_eq!(
+                plans[0].questions,
+                schedule(&s, 1, 5, at).unwrap()[0].questions
+            );
+        }
+    }
+
+    #[test]
+    fn recent_reviews_do_not_restart_assessment_age_and_reviews_do_not_wait_48_hours() {
+        let (mut s, at) = assessment_fixture();
+        for event in &mut s.status_history {
+            if event.entity == 2500 {
+                event.at =
+                    json!({"$instant":(at - chrono::Duration::minutes(1)).timestamp_millis()});
+            }
+        }
+        assert_eq!(schedule(&s, 1, 5, at).unwrap()[0].kind, "assessment");
+        for event in &mut s.status_history {
+            if (2400..2405).contains(&event.entity) {
+                event.at = json!({"$instant":(at - chrono::Duration::hours(1)).timestamp_millis()});
+            }
+        }
+        s.entities
+            .get_mut(&2800)
+            .unwrap()
+            .insert("progress/memory".into(), json!(0.1));
+        let plans = schedule(&s, 1, 5, at).unwrap();
+        assert_eq!(plans.len(), 1);
+        assert_eq!(plans[0].kind, "review");
+        assert_eq!(plans[0].topic, Some(2000));
+    }
+    #[test]
+    fn assessment_completion_resets_cadence_and_all_wrong_or_unanswered_slots_create_remediation() {
+        let (mut s, at) = assessment_fixture();
+        put(
+            &mut s,
+            3000,
+            json!({"activity/id":"assessment","activity/type":"activity.type/assessment","activity/steps":[3100,3101,3102],"activity/first-step":3100}),
+        );
+        put(
+            &mut s,
+            3001,
+            json!({"learner-task/activity":3000,"learner-task/status":"learner-task.status/completed","learner-task/items":[3002,3003]}),
+        );
+        put(
+            &mut s,
+            3002,
+            json!({"task-item/content":2701,"task-item/status":"task-item.status/paused","task-item/next":3003}),
+        );
+        put(
+            &mut s,
+            3003,
+            json!({"task-item/content":2711,"task-item/status":"task-item.status/paused"}),
+        );
+        let mut tasks = s.refs(1, "learner/activity").unwrap();
+        tasks.push(3001);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!(tasks));
+        for (id, q) in [(3100, 2701), (3101, 2711), (3102, 2721)] {
+            let mut v = json!({"step/id":format!("step-{id}"),"step/content":q});
+            if id < 3102 {
+                v["step/next"] = json!(id + 1);
+            }
+            put(&mut s, id, v);
+        }
+        stamp(&mut s, 3001, at, "completed");
+        let h = history(&s, 1).unwrap();
+        assert_eq!(h.xp, 0.0);
+        assert!(h.repairs.keys().any(|(_, topic)| *topic == 2000));
+        let plans = schedule(&s, 1, 5, at).unwrap();
+        assert_eq!(plans.len(), 3);
+        assert_eq!(plans[0].kind, "review");
+        assert_eq!(
+            plans
+                .iter()
+                .filter_map(|p| p.topic)
+                .collect::<BTreeSet<_>>(),
+            BTreeSet::from([2000, 2001, 2002])
+        );
+        assert_eq!(plans[0].priority, 8000.0);
+        // A quiz miss is still repaired immediately after a course/mode switch.
+        put(&mut s, 5000, json!({"course/units":[]}));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/self-directed".into(), json!(true));
+        let plans = schedule(&s, 1, 5000, at).unwrap();
+        assert_eq!(plans.len(), 3);
+        assert_eq!(plans[0].kind, "review");
+        assert_eq!(
+            plans
+                .iter()
+                .filter_map(|p| p.topic)
+                .collect::<BTreeSet<_>>(),
+            BTreeSet::from([2000, 2001, 2002])
+        );
+    }
+    #[test]
+    fn ordinary_failed_review_only_updates_state_and_can_become_due_again() {
+        let mut s = fixture();
+        let at = Utc::now();
+        progress(&mut s, 21, 3, at, 0.1);
+        s.entities.get_mut(&9).unwrap().insert(
+            "learner-task/status".into(),
+            json!("learner-task.status/failed"),
+        );
+        stamp(&mut s, 9, at, "failed");
+        assert!(relearn_topics(&s, 1).unwrap().is_empty());
+        assert_eq!(schedule(&s, 1, 5, at).unwrap()[0].kind, "review");
+        assert!(
+            !learning::engine_candidates(&s, 1, 5, at)
+                .unwrap()
+                .iter()
+                .any(|p| p.activity == 20)
+        );
+    }
+}

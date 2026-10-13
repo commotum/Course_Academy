@@ -1,7 +1,9 @@
+import { attachTopicMenu } from './topic-menu.js';
 import { marked } from './vendor/marked/marked.esm.js';
 import { createCoursePicker } from './navigation.js';
 import { createCourseCatalog } from './course-catalog.js';
 import { createTargetControls } from './targets.js';
+import { readRequest } from './requests.js';
 
 const $ = id => document.getElementById(id);
 let currentCourseId = null;
@@ -14,7 +16,6 @@ let typesetting = Promise.resolve();
 let lastLoadedAt = 0;
 let refreshNeeded = false;
 const targetControls = createTargetControls({
-  readLearner: async () => (await api('/api/course' + (currentCourseId ? '?course=' + encodeURIComponent(currentCourseId) : ''))).learner,
   onChange: learner => {
     if (curriculumSnapshot) void curriculumSnapshot.then(snapshot => { snapshot.learner = { ...snapshot.learner, ...learner }; }).catch(() => {});
   },
@@ -146,7 +147,7 @@ function typeset(host) {
   });
 }
 async function api(path, signal) {
-  const response = await fetch(path, { cache: 'no-store', signal });
+  const response = await readRequest(path, { signal });
   let result;
   try { result = await response.json(); } catch { throw new Error('The course server did not return a response. Check that it is running, then try again.'); }
   if (!response.ok || result.error) {
@@ -301,7 +302,9 @@ function progressSection(course, stats) {
   return section;
 }
 function topicRow(topic, courseId) {
-  const item = el('li', 'topic-row'); item.dataset.topicKey = topicKey(topic);
+  const item = el('li', 'topic-row');
+  attachTopicMenu(item, topic);
+  item.dataset.topicKey = topicKey(topic);
   item.dataset.search = [topic.title, topic.mathAcademyId, topic.id, topic.uuid].filter(value => value != null).join(' ').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
   const anchor = link('', topicURL(topic, courseId), 'topic-link');
   const title = el('span', 'topic-title', topic.title);
@@ -495,7 +498,10 @@ window.addEventListener('popstate', () => {
   else revealHash();
 });
 function refreshOnReturn() {
-  if (!document.hidden && refreshNeeded && currentCourseId && Date.now() - lastLoadedAt > 5000) void loadCourse();
+  if (!document.hidden && refreshNeeded && currentCourseId && Date.now() - lastLoadedAt > 5000) {
+    refreshNeeded = false;
+    void loadCourse();
+  }
 }
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) refreshNeeded = true;

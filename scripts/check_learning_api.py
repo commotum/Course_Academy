@@ -22,7 +22,7 @@ def main():
     environment = database_environment(args.database)
     environment['EDB_DATABASE'] = args.database
     environment.pop('LEARNING_TEST_KEEP', None)
-    subprocess.run([str(executable), '--ignored', '--nocapture'], env=environment, check=True)
+    subprocess.run([str(executable), '--ignored', 'durable_', '--test-threads=1', '--nocapture'], env=environment, check=True)
 
 
 if __name__ == '__main__':

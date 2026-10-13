@@ -3,7 +3,7 @@ import test from 'node:test';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 
-const shared = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^import .*;\n/m, '').replace(/^MathfieldElement\..*;\n/gm, '').replaceAll('export ', '');
+const shared = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^[\s\S]*?(?=\/\/ Shared presentation)/, '').replaceAll('export ', '');
 const assignmentSource = await readFile(new URL('../ui/assignments.js', import.meta.url), 'utf8');
 const assignments = assignmentSource.slice(assignmentSource.indexOf('const $'), assignmentSource.indexOf('createCoursePicker({'));
 
@@ -40,7 +40,7 @@ function fixture() {
   document.createElement = tag => new Element(tag);
   document.createTextNode = text => { const node = new Element('#text'); node.textContent = text; return node; };
   document.getElementById = () => null;
-  const context = vm.createContext({ document, Event, crypto, URL, location: { href: 'http://127.0.0.1:8765/assignments' }, isDeveloperMode: () => false });
+  const context = vm.createContext({ document, Event, crypto, URL, attachStepMenu: (node, id) => { node.dataset.stepDbId = id; }, location: { href: 'http://127.0.0.1:8765/assignments' }, isDeveloperMode: () => false });
   const h = vm.runInContext(`(() => {
     ${shared}
     ${assignments}
@@ -52,7 +52,7 @@ function fixture() {
       return prompt;
     };
     typeset = async () => {};
-    return { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, checkboxControl, freeInput, responsesComplete,
+    return { inlinePrompt, mountInlineFields, richSelect, questionFeedback, feedbackHeading, checkboxControl, freeInput, responsesComplete, choiceIndicator, fieldFeedback,
       render: question => { assignmentData = { basis: 1, preview: false }; const view = questionView(question); refreshControls(); return questionViews.get(questionKey(question)); },
       update: question => applyAssignment({ basis: 2, preview: false, assignment: { steps: [{ content: question }] } }, generation),
       responses: view => collectResponses(view),
@@ -228,13 +228,13 @@ test('free fields collect verbatim Markdown and LaTeX without displaying the ban
   assert.equal(f.h.feedbackHeading('completed').textContent, 'Response saved');
 });
 
-test('grading feedback has a visible badge, a large separate symbol, and plain status text', () => {
+test('questions have one overall badge with plain status text', () => {
   const { h } = fixture();
-  for (const [status, label, icon] of [['correct', 'Correct!', '✓ '], ['incorrect', 'Incorrect!', '✕ ']]) {
+  for (const [status, label] of [['correct', 'Correct'], ['incorrect', 'Incorrect']]) {
     const heading = h.feedbackHeading(status, true);
-    assert.equal(heading.querySelector('.feedback-icon').textContent, icon);
-    assert.equal(heading.querySelector('.feedback-icon').getAttribute('aria-hidden'), 'true');
-    assert.equal(heading.querySelector('.feedback-badge').textContent, icon + label);
+    assert.equal(heading.querySelectorAll('.feedback-badge').length, 1);
+    assert.equal(heading.querySelector('.feedback-badge').textContent, label);
+    assert.equal(heading.querySelector('.feedback-badge').dataset.grade, status);
     assert.equal(heading.querySelector('.feedback-preview').textContent, 'Preview only');
   }
   const skipped = h.feedbackHeading('skipped');
@@ -250,4 +250,44 @@ test('filled feedback badges keep at least 4.5:1 contrast with their white text'
     const luminance = .2126 * rgb[0] + .7152 * rgb[1] + .0722 * rgb[2];
     assert.ok(1.05 / (luminance + .05) >= 4.5);
   }
+});
+
+
+test('choice feedback separates wrong selections, missed correct choices, and neutral choices', () => {
+  const f = fixture();
+  const fields = [
+    {entityId:11,key:'selection',type:'radio',choices:[{entityId:101,value:'wrong'},{entityId:102,value:'right'},{entityId:103,value:'other'}],response:{choiceId:101},correctAnswer:{entityId:102}},
+    ...checkboxFields.slice(0,3).map((field,index) => ({...field, entityId:12+index,
+      response:{choiceId:field.choices[index===1 ? 0 : 1].entityId},
+      correctAnswer:field.choices[index===2 ? 0 : 1]})),
+  ];
+  const view = f.h.render({id:'graded',entityId:90,kind:'question',status:'incorrect',fields});
+  const indicators = view.form.querySelectorAll('.answer-indicator');
+  assert.deepEqual(indicators.map(n => n.dataset.result), ['incorrect','missed','neutral','correct','missed','incorrect']);
+  assert.deepEqual(indicators.map(n => n.querySelector('.answer-symbol').textContent), ['×','−','','✓','−','×']);
+  assert.equal(indicators[1].querySelector('.sr-only').textContent, 'Correct choice missed.');
+  assert.equal(view.result.querySelectorAll('.feedback-badge').length,1);
+  assert.deepEqual(JSON.parse(JSON.stringify(f.h.responses(view))).map(r => r.choiceId), [101,101,102,105]);
+  for (const status of ['started','paused','submitted','skipped']) {
+    for (const field of fields) f.h.fieldFeedback(view.form, field, status);
+    assert.ok(indicators.every(n => !n.dataset.result));
+  }
+});
+
+test('blank colors use engine grades for equivalent math and selects color their chosen value', () => {
+  const f = fixture();
+  const fields = [
+    {entityId:11,key:'value',type:'blank',answerType:'math',response:{value:'0.5'},correctAnswer:{type:'math',value:'1/2'},grade:'correct'},
+    {entityId:12,key:'term',type:'select',choices:[{entityId:31,value:'wrong'},{entityId:32,value:'right'}],response:{choiceId:31},correctAnswer:{entityId:32},grade:'incorrect'},
+    {entityId:13,key:'other',type:'blank',response:{value:'different'},correctAnswer:{value:'answer'},grade:'incorrect'},
+  ];
+  const view = f.h.render({id:'mixed',entityId:90,kind:'question',status:'incorrect',fields});
+  assert.equal(view.form.querySelector('.answer-math').dataset.grade, 'correct');
+  assert.equal(view.form.querySelector('.answer-select-trigger').dataset.grade, 'incorrect');
+  assert.equal(view.form.querySelector('.answer-input').dataset.grade, 'incorrect');
+  const unknown = f.node('div'), input=f.node('input'); input.className='answer-input'; unknown.append(input);
+  f.h.fieldFeedback(unknown,{...fields[2],grade:undefined},'incorrect');
+  assert.equal(input.dataset.grade,'');
+  f.h.fieldFeedback(unknown,{...fields[2],type:'free'},'incorrect');
+  assert.equal(input.dataset.grade,'');
 });

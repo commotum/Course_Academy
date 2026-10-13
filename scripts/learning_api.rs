@@ -1,4 +1,5 @@
 //! Local learner application boundary: immutable EDB reads and guarded durable writes.
+mod activity_history;
 mod assignment_interaction;
 mod assignment_reader;
 mod developer_preview;
@@ -13,10 +14,12 @@ mod preview_configuration;
 #[allow(dead_code)]
 #[path = "../engine/edb/progress.rs"]
 mod preview_progress;
+#[cfg(test)]
+mod retrieval_tests;
 
 use chrono::{DateTime, Utc};
 use course_academy_engine::{
-    base_xp, learning,
+    base_xp, learning, retrieval,
     schema::{self, EntitySnapshot, Record, StatusAssertion},
     timing,
 };
@@ -208,7 +211,8 @@ struct Application {
     endpoint: String,
     snapshot: EntitySnapshot,
     reference: SnapshotReference,
-    home_cache: Option<(Instant, Duration, Json)>,
+    home_cache: Option<(Instant, Duration, Json, bool)>,
+    inventory_cache: Option<(Instant, Duration, Json)>,
 }
 impl Application {
     fn connect(database: String, learner: String, endpoint: String) -> Result<Self> {
@@ -223,9 +227,13 @@ impl Application {
         let snapshot = snapshot(&db)?;
         let learner_eid = snapshot
             .entities
-            .iter()
-            .find_map(|(eid, record)| {
-                (record.get("learner/id").and_then(Json::as_str) == Some(&learner)).then_some(*eid)
+            .with_attribute("learner/id")
+            .into_iter()
+            .find(|eid| {
+                snapshot.entities[eid]
+                    .get("learner/id")
+                    .and_then(Json::as_str)
+                    == Some(&learner)
             })
             .ok_or("Learner not found")?;
         let reference = db.snapshot_reference()?;
@@ -238,6 +246,7 @@ impl Application {
             snapshot,
             reference,
             home_cache: None,
+            inventory_cache: None,
         })
     }
 
@@ -263,6 +272,7 @@ impl Application {
             // cardinality changes and multiple updates within one suffix.
             let result = (|| -> Result<()> {
                 let mut touched = BTreeSet::new();
+                let mut status_changed=false;
                 let mut expected = old.basis_t() + 1;
                 for tx in db.log_value()?.tx_range(
                     Some(TimePoint::T(expected)),
@@ -287,6 +297,7 @@ impl Application {
                                 "schema or maintenance change requires full snapshot".into()
                             );
                         }
+                        if matches!(name.as_str(),"task-item/status"|"learner-task/status") {status_changed=true;}
                         touched.insert(datom.entity);
                     }
                 }
@@ -323,7 +334,16 @@ impl Application {
                     replacements.insert(entity, record);
                 }
                 self.snapshot.replace_records(replacements, db.basis_t())?;
-                refresh_history(&db, &mut self.snapshot)?;
+                // Ordinary queue, target, and content edits do not alter clock
+                // history. noHistory attributes still require a fresh read,
+                // since maintenance can remove assertions between commits.
+                let retained_history=["task-item/status","learner-task/status"].iter().all(|name|{
+                    let (ns,n)=name.split_once('/').unwrap();
+                    db.schema().resolve_ident(&Keyword::new(ns,n))
+                        .and_then(|id|db.schema().attribute(id).ok())
+                        .is_some_and(|attribute|!attribute.no_history)
+                });
+                if status_changed || !retained_history {refresh_history(&db, &mut self.snapshot)?;}
                 Ok(())
             })();
             updated = result.is_ok();
@@ -336,6 +356,7 @@ impl Application {
         }
         self.reference = reference;
         self.home_cache = None;
+        self.inventory_cache = None;
         trace(
             if updated {
                 "incremental-refresh"
@@ -352,28 +373,48 @@ impl Application {
         self.adopt(self.conn.sync()?)?;
         trace("sync", started);
         let action = body["action"].as_str().ok_or("Action required")?;
+        if action=="inventory" {
+            if let Some((at,lifetime,result))=&self.inventory_cache {
+                if at.elapsed()<*lifetime {return Ok(result.clone());}
+            }
+            let started=Instant::now();
+            let now=Utc::now();
+            let lifetime=course_academy_engine::scheduling::lifecycle(&self.snapshot,self.learner_eid)
+                .map(|history|inventory_cache_duration(self.home_lifetime(),history.mastered.values().copied(),now))
+                .unwrap_or(Duration::ZERO);
+            let result=self.process(&body)?;
+            self.inventory_cache=Some((started,lifetime,result.clone()));
+            trace(action,started);
+            return Ok(result);
+        }
         // Readiness decays without commits. Cache only until the next known
         // retention boundary, with a one-minute upper bound. Mutations always
         // compute eligibility against the new captured value and current time.
         if action == "home" {
-            if let Some((at, lifetime, result)) = &self.home_cache {
-                if at.elapsed() < *lifetime {
-                    return Ok(result.clone());
-                }
+            if let Some(result) = self.cached_home(false) {
+                return Ok(result);
             }
         }
         let started = Instant::now();
-        let home_lifetime = if action == "home" {
+        let home_lifetime = if matches!(action, "home" | "queue") {
             self.home_lifetime()
         } else {
             Duration::ZERO
         };
         let result = self.process(&body)?;
-        if action == "home" {
-            self.home_cache = Some((started, home_lifetime, result.clone()));
+        if matches!(action, "home" | "queue") {
+            self.home_cache = Some((started, home_lifetime, result.clone(), action == "queue"));
         }
         trace(action, started);
         Ok(result)
+    }
+
+    fn cached_home(&self, prepared: bool) -> Option<Json> {
+        self.home_cache
+            .as_ref()
+            .and_then(|(at, lifetime, result, queue_prepared)| {
+                (at.elapsed() < *lifetime && (!prepared || *queue_prepared)).then(|| result.clone())
+            })
     }
 
     fn home_lifetime(&self) -> Duration {
@@ -381,7 +422,16 @@ impl Application {
         let mut seconds: f64 = 60.0;
         // A failed/malformed estimate disables caching; home() supplies its
         // ordinary validation error instead of hiding it behind stale output.
-        for record in self.snapshot.entities.values() {
+        let Ok(progress) = self
+            .snapshot
+            .refs(self.learner_eid, "learner/knowledge-profile")
+        else {
+            return Duration::ZERO;
+        };
+        for progress in progress {
+            let Ok(record) = self.snapshot.entity(progress) else {
+                return Duration::ZERO;
+            };
             if record.get("progress/learned") != Some(&json!(true)) {
                 continue;
             }
@@ -416,8 +466,27 @@ impl Application {
                 }
             }
         }
+        if let Ok(tasks) = self.snapshot.refs(self.learner_eid, "learner/activity") {
+            for task in tasks {
+                if let Ok(Some(remaining)) = retrieval::remaining(&self.snapshot, task, Utc::now())
+                {
+                    seconds = seconds.min((remaining - 0.002).max(0.0));
+                }
+            }
+        }
         Duration::from_secs_f64(seconds)
     }
+}
+
+fn inventory_cache_duration(review_lifetime:Duration, mastered:impl Iterator<Item=DateTime<Utc>>, now:DateTime<Utc>) -> Duration {
+    let mut seconds=review_lifetime.as_secs_f64().min(10.0);
+    for learned in mastered {
+        let boundary=learned+chrono::Duration::hours(48);
+        if boundary>=now {
+            seconds=seconds.min(((boundary-now).num_milliseconds() as f64/1000.0-0.002).max(0.0));
+        }
+    }
+    Duration::from_secs_f64(seconds)
 }
 
 fn trace(stage: &str, started: Instant) {
@@ -451,9 +520,8 @@ fn topic_lesson(s: &EntitySnapshot, topic: u64) -> Result<u64> {
         return Err("Study now requires a topic entity ID".into());
     }
     let mut lessons = vec![];
-    for (&activity, record) in &s.entities {
-        if record.contains_key("activity/id")
-            && status(s, activity, "activity/type")? == "lesson"
+    for activity in s.owners(topic, "activity/scope")? {
+        if status(s, activity, "activity/type")? == "lesson"
             && s.optional_ref(activity, "activity/scope")? == Some(topic)
         {
             lessons.push(activity);
@@ -543,8 +611,10 @@ fn course_groups_json(s: &EntitySnapshot, course: u64) -> Result<Vec<Json>> {
 fn profile_json(s: &EntitySnapshot, l: u64) -> Result<Json> {
     let mut courses: Vec<_> = s
         .entities
-        .iter()
-        .filter_map(|(_, record)| {
+        .with_attribute("course/id")
+        .into_iter()
+        .filter_map(|course| {
+            let record = &s.entities[&course];
             let id = record.get("course/id")?.get("$uuid")?.as_str()?;
             let title = record.get("course/title")?.as_str()?;
             Some(json!({"id":id,"title":title}))
@@ -569,7 +639,10 @@ fn pause_other_lessons(
             handled_items.extend(s.refs(task, "learner-task/items")?);
         } else if status(s, task, "learner-task/status")? == "started" {
             let activity = s.reference(task, "learner-task/activity")?;
-            if status(s, activity, "activity/type")? != "lesson" {
+            if !matches!(
+                status(s, activity, "activity/type")?.as_str(),
+                "lesson" | "review" | "assessment"
+            ) {
                 return Err("Pause the current activity before starting a lesson".into());
             }
             handled_items.extend(s.refs(task, "learner-task/items")?);
@@ -582,6 +655,14 @@ fn pause_other_lessons(
     Ok(())
 }
 fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
+    home_with_candidates(s, l, None)
+}
+
+fn home_with_candidates(
+    s: &EntitySnapshot,
+    l: u64,
+    candidates: Option<Vec<learning::PlannedActivity>>,
+) -> Result<Json> {
     let Some(c) = s.optional_ref(l, "learner/course")? else {
         return Ok(json!({
             "basis": s.basis_t, "learner": learner_json(s, l), "course": null,
@@ -591,7 +672,10 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
         }));
     };
     let self_directed = learner_json(s, l)["selfDirected"] == true;
-    let candidates = learning::study_candidates(s, l, c, Utc::now())?;
+    let candidates = match candidates {
+        Some(candidates) => candidates,
+        None => learning::study_candidates(s, l, c, Utc::now())?,
+    };
     let mut activities = vec![];
     for candidate in candidates {
         let a = candidate.activity;
@@ -619,7 +703,7 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
             } else {
                 Json::Null
             };
-        activities.push(json!({"activityId":a,"title":text(s,a,"activity/title"),"type":"lesson","taskId":task,"status":state,
+        activities.push(json!({"activityId":a,"title":text(s,a,"activity/title"),"type":status(s,a,"activity/type")?,"taskId":task,"status":state,
             "priority":candidate.priority,"reason":candidate.reason,"targetCount":candidate.target_count,
             "targetTopics":candidate.target_topics,"progress":progress,"expectedSeconds":if expected>0.0{Some(expected)}else{None}}));
         if activities.len() == 5 {
@@ -653,7 +737,7 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
         }
     }
     Ok(
-        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"queueDescription":"Engine recommendations interleave eligible lessons across course modules; self-directed study uses your selected topic queue.","practiceNotice":"Each skill needs two correct answers in a row, with up to five questions. If fresh questions run out, you can continue to the next skill and return to unfinished practice later."}),
+        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"supplyShortages":course_academy_engine::inventory::requests(s,l,Utc::now())?,"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"queueDescription":"Assessments become available at 120 practice XP and required at 150. Ordinary reviews are optional; required remediation takes precedence.","practiceNotice":"Each skill needs two correct answers in a row, with up to five questions. If fresh questions run out, you can continue to the next skill and return to unfinished practice later."}),
     )
 }
 
@@ -661,14 +745,24 @@ fn home(s: &EntitySnapshot, l: u64) -> Result<Json> {
 /// Self-directed selections get a prepared locked task, preserving engine eligibility.
 /// The caller journals this transaction and submits it with an exact basis guard.
 fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json>> {
+    Ok(queue_preparation(s, l, at)?.0)
+}
+
+fn queue_preparation(
+    s: &EntitySnapshot,
+    l: u64,
+    at: DateTime<Utc>,
+) -> Result<(Vec<Json>, Vec<learning::PlannedActivity>)> {
     let Some(c) = s.optional_ref(l, "learner/course")? else {
-        return Ok(vec![]);
+        return Ok((vec![], vec![]));
     };
+    let queued = learning::queue_candidates(s, l, c, at)?;
+    let engine = learning::engine_candidates(s, l, c, at)?;
     let mut plan = BTreeMap::new();
-    for candidate in learning::queue_candidates(s, l, c, at)? {
+    for candidate in queued.iter().cloned() {
         plan.insert(candidate.activity, (candidate, false));
     }
-    for candidate in learning::engine_candidates(s, l, c, at)? {
+    for candidate in engine.iter().cloned() {
         plan.insert(candidate.activity, (candidate, true));
     }
     let mut pending = BTreeMap::new();
@@ -688,10 +782,143 @@ fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json
         }
     }
     let mut forms = vec![];
+    let mut prepared_lessons = BTreeSet::new();
+    let lifecycle = course_academy_engine::scheduling::lifecycle(s, l)?;
+    for (&activity, &task) in &pending {
+        if !matches!(
+            status(s, task, "learner-task/status")?.as_str(),
+            "locked" | "unlocked"
+        ) {
+            continue;
+        }
+        if let Some(topic) = s.optional_ref(activity, "activity/scope")? {
+            let kind = retrieval::kind(s, activity)?;
+            for (&(origin, t), required_kind) in &lifecycle.repairs {
+                if t == topic
+                    && required_kind == &kind
+                    && !s
+                        .refs(task, "learner-task/remediation-for")?
+                        .contains(&origin)
+                    && (kind == "lesson" || retrieval::fresh(s, l, activity)?)
+                {
+                    forms.push(add(
+                        json!(task),
+                        "learner-task/remediation-for",
+                        json!(origin),
+                    ));
+                }
+            }
+        }
+    }
+
+    for task in s.refs(l, "learner/activity")? {
+        if retrieval::remaining(s, task, at)? == Some(0.0) {
+            forms.extend(mutate(s, l, "expire", &json!({"taskId":task}), at)?.0);
+        }
+    }
+    for (index, definition) in retrieval::schedule(s, l, c, at)?.into_iter().enumerate() {
+        let task = format!("retrieval-task-{index}");
+        if let Some(activity) = definition.existing_activity {
+            prepared_lessons.insert(activity);
+            if !pending.contains_key(&activity) {
+                forms.push(json!({"db/id":task,"learner-task/id":{"$uuid":uid()?},"learner-task/activity":activity,"learner-task/status":kw("learner-task.status/unlocked"),"learner-task/priority":definition.priority,"learner-task/remediation-for":definition.remediation_for,"db/ensure":kw("learner-task/validate")}));
+                forms.push(add(json!(l), "learner/activity", json!(task)));
+            }
+            continue;
+        }
+        let activity = format!("retrieval-activity-{index}");
+        let step_ids: Vec<_> = (0..definition.questions.len())
+            .map(|slot| format!("retrieval-step-{index}-{slot}"))
+            .collect();
+        let mut record = json!({"db/id":activity,"activity/id":{"$uuid":uid()?},"activity/title":definition.title,
+            "activity/type":kw(&format!("activity.type/{}",definition.kind)),
+            "activity/steps":step_ids,"activity/first-step":step_ids[0],"activity/expected-seconds":definition.expected_seconds,
+            "db/ensure":kw("activity/validate")});
+        if let Some(topic) = definition.topic {
+            record["activity/scope"] = json!(topic);
+        }
+        if definition.kind == "assessment" {
+            record["activity/time-limit-seconds"] = json!(retrieval::ASSESSMENT_SECONDS);
+        } else {
+            record["activity/course"] = json!(c);
+        }
+        forms.push(record);
+        for (slot, question) in definition.questions.iter().enumerate() {
+            let mut record = json!({"db/id":step_ids[slot],"step/id":{"$uuid":uid()?},"step/content":question,"step/expected-seconds":if definition.kind=="assessment" {course_academy_engine::assessment_sampling::seconds(s,*question)?}else{90.0},"db/ensure":kw("step/validate")});
+            if let Some(next) = step_ids.get(slot + 1) {
+                record["step/next"] = json!(next);
+            }
+            forms.push(record);
+        }
+        if let Some(original) = definition.retake_of {
+            if let Some(existing) = s.refs(l, "learner/activity")?.into_iter().find(|t| {
+                s.optional_ref(*t, "learner-task/retake-of").ok().flatten() == Some(original)
+                    && matches!(
+                        status(s, *t, "learner-task/status").ok().as_deref(),
+                        Some("locked" | "unlocked")
+                    )
+            }) {
+                forms.push(add(
+                    json!(existing),
+                    "learner-task/activity",
+                    json!(activity),
+                ));
+                forms.push(add(
+                    json!(existing),
+                    "learner-task/priority",
+                    json!(definition.priority),
+                ));
+                if status(s, existing, "learner-task/status")? == "locked" {
+                    forms.push(cas(
+                        s,
+                        existing,
+                        "learner-task/status",
+                        "learner-task.status/unlocked",
+                    )?);
+                }
+                continue;
+            }
+        }
+        let task = format!("retrieval-task-{index}");
+        forms.push(json!({"db/id":task,"learner-task/id":{"$uuid":uid()?},"learner-task/activity":activity,
+            "learner-task/status":kw("learner-task.status/unlocked"),"learner-task/priority":definition.priority,"db/ensure":kw("learner-task/validate")}));
+        if !definition.remediation_for.is_empty() {
+            for origin in definition.remediation_for {
+                forms.push(add(
+                    json!(task),
+                    "learner-task/remediation-for",
+                    json!(origin),
+                ));
+            }
+        }
+        if let Some(original) = definition.retake_of {
+            forms.push(add(json!(task), "learner-task/retake-of", json!(original)));
+        }
+        forms.push(add(json!(l), "learner/activity", json!(task)));
+    }
     let mut eligible = BTreeSet::new();
     for (_, (candidate, engine_eligible)) in plan {
         let activity = candidate.activity;
+        if retrieval::kind(s, activity)? == "lesson"
+            && !pending.get(&activity).is_some_and(|t| {
+                matches!(
+                    status(s, *t, "learner-task/status").ok().as_deref(),
+                    Some("started" | "paused")
+                )
+            })
+            && !course_academy_engine::inventory::ready(
+                s,
+                &s.refs(candidate.topic, "topic/knowledge-points")?,
+                &learning::unavailable_questions(s, l)?,
+                true,
+            )?
+        {
+            continue;
+        }
         eligible.insert(activity);
+        if prepared_lessons.contains(&activity) {
+            continue;
+        }
         let priority = candidate.priority;
         if !priority.is_finite() {
             return Err("Task priority must be finite".into());
@@ -763,7 +990,12 @@ fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json
             "learner-task/status":kw("learner-task.status/locked"),"learner-task/priority":0.0,"db/ensure":kw("learner-task/validate")}));
         forms.push(add(json!(l), "learner/activity", json!(temp)));
     }
-    Ok(forms)
+    let candidates = if s.entity(l)?.get("learner/self-directed") == Some(&json!(true)) {
+        queued
+    } else {
+        engine
+    };
+    Ok((forms, candidates))
 }
 fn authored_step(
     steps: &[learning::LessonStep],
@@ -796,6 +1028,25 @@ fn lesson_progress(
     )
 }
 
+// Presentation-only field result. Reuse the engine's symbolic comparison rather
+// than guessing correctness from the displayed strings in JavaScript.
+fn attach_field_grade(s: &EntitySnapshot, question: u64, id: u64, field: &mut Json) {
+    let submitted = if field["type"] == "blank" {
+        field["response"]["value"].as_str().map(str::to_owned)
+    } else if field["type"] == "free" {
+        None
+    } else {
+        field["response"]["choiceId"]
+            .as_u64()
+            .map(|id| id.to_string())
+    };
+    if let Some(correct) =
+        submitted.and_then(|value| learning::grade_field(s, question, id, &value).ok())
+    {
+        field["grade"] = json!(if correct { "correct" } else { "incorrect" });
+    }
+}
+
 // Use the displayed content's source ID, never an authored placement or topic ID.
 fn content_math_academy_id(record: &Record) -> Option<String> {
     record
@@ -804,8 +1055,22 @@ fn content_math_academy_id(record: &Record) -> Option<String> {
         } else {
             "question/math-academy-id"
         })
-        .and_then(Json::as_i64)
-        .map(|id| id.to_string())
+        .and_then(|value| {
+            value
+                .as_str()
+                .map(str::to_owned)
+                .or_else(|| value.as_u64().map(|id| id.to_string()))
+        })
+}
+
+fn knowledge_point_identity(s: &EntitySnapshot, content: u64) -> Result<Option<Json>> {
+    let record = s.entity(content)?;
+    Ok(record.contains_key("knowledge-point/id").then(|| {
+        json!({
+            "id": content,
+            "title": text(s, content, "knowledge-point/title"),
+        })
+    }))
 }
 
 fn task_step_json(
@@ -813,6 +1078,15 @@ fn task_step_json(
     steps: &[learning::LessonStep],
     i: u64,
     at: DateTime<Utc>,
+) -> Result<Json> {
+    task_step_json_with_elapsed(s, steps, i, Some(timing::elapsed(s, i, at)?))
+}
+
+fn task_step_json_with_elapsed(
+    s: &EntitySnapshot,
+    steps: &[learning::LessonStep],
+    i: u64,
+    elapsed: Option<f64>,
 ) -> Result<Json> {
     let content = s.reference(i, "task-item/content")?;
     let e = s.entity(content)?;
@@ -849,7 +1123,7 @@ fn task_step_json(
                     .transpose()?
             );
         }
-        if terminal {
+        if terminal || !s.refs(i, "task-item/responses")?.is_empty() {
             let selected = s.refs(i, "task-item/responses")?.into_iter().find(|ch| {
                 s.refs(f, "answer-field/choices")
                     .unwrap_or_default()
@@ -858,19 +1132,49 @@ fn task_step_json(
             if let Some(ch) = selected {
                 field["response"] = json!({"id":ch,"choiceId":ch,"type":status(s,ch,"answer/type")?,"value":text(s,ch,"answer/value"),"feedback":text(s,ch,"answer/feedback")});
             }
-            if let Some(correct) = s.optional_ref(f, "answer-field/correct")? {
-                field["correctAnswer"] = json!({"id":correct,"type":status(s,correct,"answer/type")?,"value":text(s,correct,"answer/value")});
+            if terminal {
+                if let Some(correct) = s.optional_ref(f, "answer-field/correct")? {
+                    field["correctAnswer"] = json!({"id":correct,"type":status(s,correct,"answer/type")?,"value":text(s,correct,"answer/value")});
+                }
             }
+        }
+        if matches!(state.as_str(), "correct" | "incorrect") {
+            attach_field_grade(s, content, f, &mut field);
         }
         fields.push(field);
     }
-    let mut step = json!({"itemId":i,"contentId":content,"kind":if tutorial{"tutorial"}else if example{"example"}else{"question"},"title":title,"markdown":text(s,content,if tutorial{"tutorial/content"}else{"question/problem"}),"fields":fields,"status":state,"canContinue":tutorial||example||terminal,"requiresCalculator":e.get("question/requires-calculator"),"elapsedSeconds":timing::elapsed(s,i,at)?});
+    let mut step = json!({"itemId":i,"contentId":content,"kind":if tutorial{"tutorial"}else if example{"example"}else{"question"},"title":title,"markdown":text(s,content,if tutorial{"tutorial/content"}else{"question/problem"}),"fields":fields,"status":state,"canContinue":tutorial||example||terminal,"requiresCalculator":e.get("question/requires-calculator"),"elapsedSeconds":elapsed});
     step["stepId"] = json!(authored.map(|(_, entry)| entry.step.to_string()));
     step["mathAcademyId"] = json!(content_math_academy_id(e));
+    if let Some((_, entry)) = authored {
+        step["knowledgePoint"] = json!(knowledge_point_identity(s, entry.content)?);
+    }
     if reveal {
         step["solution"] = json!(text(s, content, "question/worked-solution"));
     }
     Ok(step)
+}
+
+fn hide_assessment_feedback(step: &mut Json) {
+    if matches!(
+        step["status"].as_str(),
+        Some("correct" | "incorrect" | "skipped")
+    ) {
+        step["status"] = json!("submitted");
+    }
+    if let Some(record) = step.as_object_mut() {
+        record.remove("solution");
+        record.remove("feedback");
+    }
+    if let Some(fields) = step["fields"].as_array_mut() {
+        for field in fields {
+            field.as_object_mut().unwrap().remove("correctAnswer");
+            field.as_object_mut().unwrap().remove("grade");
+            if let Some(response) = field["response"].as_object_mut() {
+                response.remove("feedback");
+            }
+        }
+    }
 }
 
 fn practice_state(s: &EntitySnapshot, a: u64, chain: &[u64]) -> Result<learning::Position> {
@@ -902,18 +1206,29 @@ fn task_json_view(s: &EntitySnapshot, l: u64, t: u64, include_history: bool) -> 
     let at = Utc::now();
     let steps = learning::lesson_steps(s, a)?;
     let progress = lesson_progress(s, &steps, &chain)?;
-    let step = chain
-        .last()
+    let active = s
+        .optional_ref(t, "learner-task/active-item")?
+        .or_else(|| chain.last().copied());
+    let mut step = active
+        .as_ref()
         .map(|&i| task_step_json(s, &steps, i, at))
         .transpose()?
         .unwrap_or(Json::Null);
+    let assessment = retrieval::kind(s, a)? == "assessment";
+    let hide_feedback = assessment && !matches!(task_state.as_str(), "completed" | "failed");
+    if hide_feedback && !step.is_null() {
+        hide_assessment_feedback(&mut step);
+    }
     let history = if include_history {
         chain
             .iter()
-            .take(chain.len().saturating_sub(1))
+            .filter(|i| Some(**i) != active)
             .enumerate()
             .map(|(index, &i)| {
-                let step = task_step_json(s, &steps, i, at)?;
+                let mut step = task_step_json(s, &steps, i, at)?;
+                if hide_feedback {
+                    hide_assessment_feedback(&mut step);
+                }
                 let number = authored_step(&steps, s.reference(i, "task-item/content")?)
                     .map(|(index, _)| index + 1)
                     .unwrap_or(1);
@@ -923,7 +1238,40 @@ fn task_json_view(s: &EntitySnapshot, l: u64, t: u64, include_history: bool) -> 
     } else {
         vec![]
     };
-    let mut view = json!({"basis":s.basis_t,"taskId":t,"activityId":a,"learner":learner_json(s,l),"course":course_json(s,l)?,"title":text(s,a,"activity/title"),"status":task_state,"xp":number(s,t,"learner-task/xp-earned"),"xpBase":number(s,t,"learner-task/xp-base"),"elapsedSeconds":if matches!(task_state.as_str(),"unlocked"|"locked"){number(s,t,"learner-task/elapsed-seconds")}else{timing::task_elapsed(s,t,at)?},"step":step,"progress":progress});
+    let mut view = json!({"basis":s.basis_t,"taskId":t,"activityId":a,"type":retrieval::kind(s,a)?,"learner":learner_json(s,l),"course":course_json(s,l)?,"title":text(s,a,"activity/title"),"status":task_state,"xp":number(s,t,"learner-task/xp-earned"),"xpBase":number(s,t,"learner-task/xp-base"),"elapsedSeconds":if matches!(task_state.as_str(),"unlocked"|"locked"){number(s,t,"learner-task/elapsed-seconds")}else{timing::task_elapsed(s,t,at)?},"step":step,"progress":progress});
+    if assessment {
+        let remaining = retrieval::remaining(s, t, at)?;
+        view["remainingSeconds"] = json!(remaining);
+        view["questions"]=json!(steps.iter().enumerate().map(|(index,st)|{
+            let item=chain.iter().find(|i|s.optional_ref(**i,"task-item/content").ok().flatten()==Some(st.content)).copied();
+            json!({"number":index+1,"questionId":st.content,"itemId":item,"answered":item.is_some_and(|i|!s.refs(i,"task-item/responses").unwrap_or_default().is_empty()),"active":item==active})
+        }).collect::<Vec<_>>());
+        view["progress"]["stepNumber"] = json!(
+            step.get("contentId")
+                .and_then(Json::as_u64)
+                .and_then(|q| steps.iter().position(|st| st.content == q))
+                .map(|n| n + 1)
+        );
+        view["expired"] = json!(remaining == Some(0.0));
+        if !hide_feedback {
+            let correct = chain
+                .iter()
+                .filter(|i| status(s, **i, "task-item/status").ok().as_deref() == Some("correct"))
+                .count();
+            let answered = chain
+                .iter()
+                .filter(|i| {
+                    matches!(
+                        status(s, **i, "task-item/status").ok().as_deref(),
+                        Some("correct" | "incorrect")
+                    )
+                })
+                .count();
+            view["assessmentScore"] =
+                json!({"correct":correct,"total":steps.len(),"unanswered":steps.len()-answered});
+        }
+        view["timeLimitSeconds"] = json!(number(s, a, "activity/time-limit-seconds"));
+    }
     let practice = practice_state(s, a, &chain);
     if practice.is_err()
         && chain
@@ -963,7 +1311,8 @@ fn task_json_view(s: &EntitySnapshot, l: u64, t: u64, include_history: bool) -> 
 fn needs_queue_refresh(action: &str, task_state: &str) -> bool {
     // Accuracy updates and intermediate presentations do not change learned
     // prerequisites. Replan when finishing an attempt can unlock new work.
-    action == "continue" && matches!(task_state, "completed" | "failed")
+    matches!(action, "continue" | "submit" | "expire")
+        && matches!(task_state, "completed" | "failed")
 }
 fn add(e: Json, a: &str, v: Json) -> Json {
     json!([kw("db/add"), e, kw(a), v])
@@ -1014,6 +1363,318 @@ fn required(body: &Json, k: &str) -> Result<u64> {
         .as_u64()
         .ok_or_else(|| format!("{k} is required").into())
 }
+fn assessment_drafts(s: &EntitySnapshot, item: u64) -> Result<BTreeMap<u64, String>> {
+    let q = s.reference(item, "task-item/content")?;
+    let responses = s.refs(item, "task-item/responses")?;
+    let mut out = BTreeMap::new();
+    for field in s.refs(q, "question/answer-fields")? {
+        let choices = s.refs(field, "answer-field/choices")?;
+        if let Some(&answer) = responses.iter().find(|answer| choices.contains(answer)) {
+            out.insert(
+                field,
+                if matches!(
+                    status(s, field, "answer-field/type")?.as_str(),
+                    "blank" | "free"
+                ) {
+                    text(s, answer, "answer/value")
+                } else {
+                    answer.to_string()
+                },
+            );
+        }
+    }
+    Ok(out)
+}
+fn save_assessment_draft(
+    s: &EntitySnapshot,
+    item: u64,
+    responses: &Json,
+    forms: &mut Vec<Json>,
+) -> Result<()> {
+    let q = s.reference(item, "task-item/content")?;
+    let fields = s.refs(q, "question/answer-fields")?;
+    let mut submitted = BTreeSet::new();
+    let old: BTreeSet<_> = s.refs(item, "task-item/responses")?.into_iter().collect();
+    let mut retained = BTreeSet::new();
+    for r in responses.as_array().ok_or("responses must be a list")? {
+        let f = required(r, "fieldId")?;
+        if !fields.contains(&f) || !submitted.insert(f) {
+            return Err("Draft fields must be distinct and belong to this question".into());
+        }
+        let kind = status(s, f, "answer-field/type")?;
+        let choices = s.refs(f, "answer-field/choices")?;
+        let response = if matches!(kind.as_str(), "blank" | "free") {
+            let v = r["value"]
+                .as_str()
+                .ok_or("Entered response requires a string")?;
+            if v.len() > 16000 {
+                return Err("Response is too long".into());
+            }
+            if v.trim().is_empty() {
+                continue;
+            }
+            let type_id = s.reference(s.reference(f, "answer-field/correct")?, "answer/type")?;
+            if let Some(ch) = choices.into_iter().find(|ch| {
+                text(s, *ch, "answer/value") == v
+                    && s.reference(*ch, "answer/type").ok() == Some(type_id)
+            }) {
+                json!(ch)
+            } else {
+                let key = format!("draft-{item}-{f}");
+                forms.push(json!({"db/id":key,"answer/id":{"$uuid":uid()?},"answer/type":type_id,"answer/value":v,"db/ensure":kw("answer/validate")}));
+                forms.push(add(json!(f), "answer-field/choices", json!(key)));
+                json!(key)
+            }
+        } else {
+            let Some(ch) = r["choiceId"].as_u64() else {
+                continue;
+            };
+            if !choices.contains(&ch) {
+                return Err("Choice does not belong to this field".into());
+            }
+            json!(ch)
+        };
+        if response.as_u64().is_some_and(|r| old.contains(&r)) {
+            retained.insert(response.as_u64().unwrap());
+        } else {
+            forms.push(add(json!(item), "task-item/responses", response));
+        }
+    }
+    for removed in old.difference(&retained) {
+        forms.push(json!([
+            kw("db/retract"),
+            item,
+            kw("task-item/responses"),
+            removed
+        ]));
+    }
+    Ok(())
+}
+fn assessment_mutate(
+    s: &EntitySnapshot,
+    l: u64,
+    t: u64,
+    action: &str,
+    body: &Json,
+    at: DateTime<Utc>,
+) -> Result<(Vec<Json>, Json)> {
+    let a = s.reference(t, "learner-task/activity")?;
+    let st = status(s, t, "learner-task/status")?;
+    let chain = items(s, t)?;
+    retrieval::position(s, a, &chain)?;
+    let active = s
+        .optional_ref(t, "learner-task/active-item")?
+        .or_else(|| chain.last().copied())
+        .ok_or("Assessment has no active presentation")?;
+    if !chain.contains(&active) {
+        return Err("Active assessment item does not belong to its task".into());
+    }
+    let expired = retrieval::remaining(s, t, at)? == Some(0.0);
+    let mut forms = vec![];
+    if matches!(st.as_str(), "completed" | "failed") {
+        return Ok((forms, json!({"taskId":t})));
+    }
+    if matches!(action, "submit" | "expire") {
+        if action == "expire" && !expired {
+            return Err("Assessment has not reached its deadline".into());
+        }
+        if action == "submit" && expired {
+            return Err("Assessment deadline has elapsed".into());
+        }
+        if !matches!(st.as_str(), "started" | "paused") {
+            return Err("Start the assessment before submitting".into());
+        }
+        // Submission can include the current draft; grade it in a prospective
+        // snapshot while publishing its saved answers in the same transaction.
+        let mut prospective = s.clone();
+        if let Some(responses) = body.get("responses") {
+            if action == "submit" {
+                save_assessment_draft(s, active, responses, &mut forms)?;
+                let q = s.reference(active, "task-item/content")?;
+                let mut submitted = BTreeMap::new();
+                for r in responses.as_array().ok_or("responses must be a list")? {
+                    if let Some(f) = r["fieldId"].as_u64() {
+                        if let Some(v) = r["value"].as_str().filter(|v| !v.trim().is_empty()) {
+                            submitted.insert(f, v.to_owned());
+                        } else if let Some(v) = r["choiceId"].as_u64() {
+                            submitted.insert(f, v.to_string());
+                        }
+                    }
+                }
+                let _ = q;
+                // Explicit submitted values avoid resolving transaction tempids.
+                prospective
+                    .entities
+                    .get_mut(&active)
+                    .unwrap()
+                    .insert("draft-final-values".into(), json!(submitted));
+            }
+        }
+        let mut results = vec![];
+        let mut correct = 0;
+        let mut elapsed = 0.0;
+        for &item in &chain {
+            let q = s.reference(item, "task-item/content")?;
+            let draft = if let Some(v) = prospective.entities[&item].get("draft-final-values") {
+                serde_json::from_value::<BTreeMap<u64, String>>(v.clone())?
+            } else {
+                assessment_drafts(s, item)?
+            };
+            let fields = s.refs(q, "question/answer-fields")?;
+            let complete = fields.iter().all(|f| draft.contains_key(f)) && !fields.is_empty();
+            let item_state = status(s, item, "task-item/status")?;
+            let measured_at = if expired {
+                timing::task_started(s, t)?
+                    + chrono::Duration::milliseconds(
+                        (number(s, a, "activity/time-limit-seconds") * 1000.0) as i64,
+                    )
+            } else {
+                at
+            };
+            let seconds = timing::elapsed(s, item, measured_at)?;
+            elapsed += seconds;
+            if matches!(item_state.as_str(), "correct" | "incorrect") {
+                // Legacy partially submitted attempts retain their recorded results.
+                correct += usize::from(item_state == "correct");
+                continue;
+            }
+            if complete {
+                let passed = learning::grade(s, q, &draft)?;
+                correct += usize::from(passed);
+                results.push((q, passed));
+                forms.push(cas(
+                    s,
+                    item,
+                    "task-item/status",
+                    if passed {
+                        "task-item.status/correct"
+                    } else {
+                        "task-item.status/incorrect"
+                    },
+                )?);
+            } else if item_state == "started" {
+                forms.push(cas(s, item, "task-item/status", "task-item.status/paused")?);
+            }
+            forms.push(add(
+                json!(item),
+                "task-item/elapsed-seconds",
+                json!(seconds),
+            ));
+        }
+        let total = learning::lesson_steps(s, a)?.len();
+        let xp = course_academy_engine::activities::earned_xp(
+            "assessment",
+            number(s, t, "learner-task/xp-base") as i64,
+            correct,
+            total,
+            None,
+        )?;
+        forms.push(add(
+            json!(t),
+            "learner-task/elapsed-seconds",
+            json!(elapsed),
+        ));
+        forms.push(add(
+            json!(t),
+            "learner-task/xp-earned",
+            json!(xp.to_string().parse::<i64>()?),
+        ));
+        forms.push(cas(
+            s,
+            t,
+            "learner-task/status",
+            "learner-task.status/completed",
+        )?);
+        forms.extend(retrieval::assessment_credit(
+            s,
+            l,
+            &results,
+            &format!("assessment-{t}"),
+            at,
+        )?);
+        return Ok((forms, json!({"taskId":t})));
+    }
+    if expired && action != "pause" {
+        return Err("Assessment deadline has elapsed".into());
+    }
+    if matches!(action, "pause" | "resume") {
+        if action == "pause" && !expired && st == "started" {
+            if let Some(responses) = body.get("responses").filter(|v| !v.is_null()) {
+                save_assessment_draft(s, active, responses, &mut forms)?;
+            }
+        }
+        let target = if action == "pause" {
+            "paused"
+        } else {
+            "started"
+        };
+        if st == target {
+            return Ok((forms, json!({"taskId":t})));
+        }
+        if action == "resume" {
+            pause_other_lessons(s, l, Some(t), at, &mut forms)?;
+        }
+        transition(s, t, active, target, at, &mut forms)?;
+        forms.push(cas(
+            s,
+            t,
+            "learner-task/status",
+            &format!("learner-task.status/{target}"),
+        )?);
+        return Ok((forms, json!({"taskId":t})));
+    }
+    if st != "started" {
+        return Err("Resume the lesson before continuing".into());
+    }
+    if action == "draft" || action == "navigate" {
+        if body
+            .get("itemId")
+            .and_then(Json::as_u64)
+            .is_some_and(|i| i != active)
+        {
+            return Err(
+                "Draft belongs to a different active question; refresh before editing".into(),
+            );
+        }
+        if let Some(responses) = body.get("responses") {
+            save_assessment_draft(s, active, responses, &mut forms)?;
+        }
+        if action == "navigate" {
+            let q = required(body, "questionId")?;
+            if !learning::lesson_steps(s, a)?
+                .iter()
+                .any(|st| st.content == q)
+            {
+                return Err("Question is outside the reserved assessment".into());
+            }
+            if s.reference(active, "task-item/content")? != q {
+                if status(s, active, "task-item/status")? == "started" {
+                    transition(s, t, active, "paused", at, &mut forms)?;
+                }
+                if let Some(&item) = chain
+                    .iter()
+                    .find(|i| s.optional_ref(**i, "task-item/content").ok().flatten() == Some(q))
+                {
+                    if status(s, item, "task-item/status")? == "paused" {
+                        forms.push(cas(
+                            s,
+                            item,
+                            "task-item/status",
+                            "task-item.status/started",
+                        )?);
+                    }
+                    forms.push(add(json!(t), "learner-task/active-item", json!(item)));
+                } else {
+                    append_item(json!(t), chain.last().copied(), q, &mut forms)?;
+                    forms.push(add(json!(t), "learner-task/active-item", json!("new-item")));
+                }
+            }
+        }
+        return Ok((forms, json!({"taskId":t})));
+    }
+    Err("Assessment answers are drafts until whole-assessment Submit or expiry".into())
+}
+
 fn mutate(
     s: &EntitySnapshot,
     l: u64,
@@ -1021,6 +1682,48 @@ fn mutate(
     body: &Json,
     at: DateTime<Utc>,
 ) -> Result<(Vec<Json>, Json)> {
+    if matches!(
+        action,
+        "start" | "resume" | "study-topic" | "assignment-focus" | "assignment-answer"
+    ) {
+        let course = course(s, l)?;
+        let plan = learning::study_candidates(s, l, course, at)?;
+        let gated = plan.iter().any(|p| p.priority >= 11000.0);
+        let requested = body["activityId"]
+            .as_u64()
+            .or_else(|| {
+                body["taskId"]
+                    .as_u64()
+                    .and_then(|t| s.reference(t, "learner-task/activity").ok())
+            })
+            .or_else(|| {
+                body["topicId"]
+                    .as_u64()
+                    .and_then(|t| topic_lesson(s, t).ok())
+            });
+        if gated && requested.is_none_or(|a| !plan.iter().any(|p| p.activity == a)) {
+            return Err("Complete the required activity before starting unrelated study".into());
+        }
+        if let Some(a) = requested {
+            if retrieval::kind(s, a)? == "lesson" {
+                let h = course_academy_engine::scheduling::lifecycle(s, l)?;
+                if let Some(topic) = s.optional_ref(a, "activity/scope")? {
+                    if h.lesson_blocked(s, topic)? {
+                        return Err(
+                            "Complete the prerequisite repairs before retrying this lesson".into(),
+                        );
+                    }
+                    if let Some(task) = task_for(s, l, a)? {
+                        if !s.refs(task, "learner-task/remediation-for")?.is_empty()
+                            && !h.retry_ready(topic)
+                        {
+                            return Err("Complete five other successful practice activities before this required lesson retry".into());
+                        }
+                    }
+                }
+            }
+        }
+    }
     if action.starts_with("assignment-")
         || (action == "pause"
             && body["taskId"].as_u64().is_some_and(|task| {
@@ -1042,14 +1745,14 @@ fn mutate(
         let requested = body["courseId"].as_str().ok_or("courseId is required")?;
         let selected = s
             .entities
-            .iter()
-            .find_map(|(id, record)| {
-                (record
+            .with_attribute("course/id")
+            .into_iter()
+            .find(|id| {
+                s.entities[id]
                     .get("course/id")
                     .and_then(|v| v.get("$uuid"))
                     .and_then(Json::as_str)
-                    == Some(requested))
-                .then_some(*id)
+                    == Some(requested)
             })
             .ok_or("Selected course does not exist")?;
         let directed = body["selfDirected"]
@@ -1153,7 +1856,8 @@ fn mutate(
         let activity = topic_lesson(s, topic)?;
         // A finished lesson is available for review through its saved attempt.
         // Keep unfinished attempts resumable and never regrade completed work.
-        if task_for(s, l, activity)?.is_none() {
+        if task_for(s, l, activity)?.is_none() && !retrieval::relearn_topics(s, l)?.contains(&topic)
+        {
             if let Some(task) = completed_task_for(s, l, activity)? {
                 return Ok((forms, json!({"taskId":task})));
             }
@@ -1169,8 +1873,17 @@ fn mutate(
     }
     if action == "start" {
         let a = required(body, "activityId")?;
+        if retrieval::kind(s, a)? == "assessment"
+            && !(number(s, a, "activity/time-limit-seconds").is_finite()
+                && number(s, a, "activity/time-limit-seconds") > 0.0)
+        {
+            return Err("Assessment requires a positive wall-clock time limit".into());
+        }
         let existing = task_for(s, l, a)?;
         if let Some(task) = existing {
+            if retrieval::remaining(s, task, at)? == Some(0.0) {
+                return mutate(s, l, "expire", &json!({"taskId":task}), at);
+            }
             match status(s, task, "learner-task/status")?.as_str() {
                 "paused" => return mutate(s, l, "resume", &json!({"taskId":task}), at),
                 "started" => {
@@ -1209,6 +1922,9 @@ fn mutate(
                 let content =
                     learning::first_content(s, a, l)?.ok_or("Lesson has no available content")?;
                 append_item(json!(t), None, content, &mut forms)?;
+                if retrieval::kind(s, a)? == "assessment" {
+                    forms.push(add(json!(t), "learner-task/active-item", json!("new-item")));
+                }
             }
             return Ok((forms, json!({"taskId":t})));
         }
@@ -1219,6 +1935,13 @@ fn mutate(
         forms.push(add(json!(l), "learner/activity", json!("new-task")));
         let content = learning::first_content(s, a, l)?.ok_or("Lesson has no available content")?;
         append_item(json!("new-task"), None, content, &mut forms)?;
+        if retrieval::kind(s, a)? == "assessment" {
+            forms.push(add(
+                json!("new-task"),
+                "learner-task/active-item",
+                json!("new-item"),
+            ));
+        }
         return Ok((forms, json!({"taskUuid":id})));
     }
     let t = required(body, "taskId")?;
@@ -1228,11 +1951,51 @@ fn mutate(
         return Err("Use the assignment question controls for this task".into());
     }
     let state = status(s, t, "learner-task/status")?;
+    if retrieval::kind(s, a)? == "assessment" {
+        return assessment_mutate(s, l, t, action, body, at);
+    }
     let chain = items(s, t)?;
+    if retrieval::supported(s, a)? {
+        retrieval::position(s, a, &chain)?;
+    }
     let i = *chain.last().ok_or("Task has no presentation")?;
     let item_state = status(s, i, "task-item/status")?;
     let content = s.reference(i, "task-item/content")?;
     let terminal = timing::terminal(&format!("task-item.status/{item_state}"));
+    let assessment_remaining = retrieval::remaining(s, t, at)?;
+    if action == "expire" {
+        if matches!(state.as_str(), "completed" | "failed") {
+            return Ok((forms, json!({"taskId":t})));
+        }
+        if assessment_remaining != Some(0.0) {
+            return Err("Assessment has not reached its deadline".into());
+        }
+        // Unanswered/unpresented questions affect the score denominator only.
+        // They are never converted into fabricated wrong-answer observations.
+        if item_state == "started" {
+            transition(s, t, i, "paused", at, &mut forms)?;
+        }
+        forms.push(cas(
+            s,
+            t,
+            "learner-task/status",
+            "learner-task.status/completed",
+        )?);
+        forms.push(add(
+            json!(t),
+            "learner-task/xp-earned",
+            json!(retrieval::xp(
+                s,
+                a,
+                &chain,
+                number(s, t, "learner-task/xp-base") as i64
+            )?),
+        ));
+        return Ok((forms, json!({"taskId":t})));
+    }
+    if assessment_remaining == Some(0.0) && action != "pause" {
+        return Err("Assessment deadline has elapsed".into());
+    }
     if action == "resume" && state == "paused" {
         let p = learning::continuation_state(s, a, &chain, false, false)?;
         if p.next.is_none() && p.shortage.is_none() && !p.deferred.is_empty() {
@@ -1301,7 +2064,14 @@ fn mutate(
         }
         let e = s.entity(content)?;
         let instruction = e.contains_key("tutorial/id") || s.is_example(content);
-        if action == "answer" {
+        if action == "skip" {
+            if !retrieval::supported(s, a)? || instruction {
+                return Err("Skip is available only for retrieval questions".into());
+            }
+            if !terminal {
+                transition(s, t, i, "skipped", at, &mut forms)?;
+            }
+        } else if action == "answer" {
             if instruction {
                 return Err("This step does not accept an answer".into());
             }
@@ -1444,6 +2214,81 @@ fn mutate(
     Ok((forms, json!({"taskId":t})))
 }
 impl Application {
+    fn record_queue_offer(&mut self, mut view: Json, request: &str) -> Result<Json> {
+        let l = self.learner_eid;
+        let journal = PathBuf::from(std::env::var("LEARNING_REQUEST_DIR")?)
+            .join(format!("{}-{request}-offers.json", self.learner));
+        let saved = if journal.exists() {
+            serde_json::from_slice::<Json>(&std::fs::read(&journal)?)?
+        } else {
+            let s = &self.snapshot;
+            let h = course_academy_engine::scheduling::lifecycle(s, l)?;
+            let at = Utc::now();
+            let mut forms = vec![];
+            for activity in view["activities"]
+                .as_array()
+                .ok_or("Queue activities must be a list")?
+            {
+                if activity["type"] != "lesson" {
+                    continue;
+                }
+                let Some(task) = activity["taskId"].as_u64() else {
+                    continue;
+                };
+                if !s.refs(task, "learner-task/remediation-for")?.is_empty() {
+                    continue;
+                }
+                let previous = s
+                    .entity(task)?
+                    .get("learner-task/offered-at")
+                    .and_then(|v| schema::parse_instant(v).ok());
+                if previous.is_none()
+                    || h.finished.iter().any(|f| {
+                        f.kind == "review"
+                            && f.at > previous.unwrap()
+                            && s.refs(f.task, "learner-task/remediation-for")
+                                .unwrap_or_default()
+                                .is_empty()
+                    })
+                {
+                    forms.push(add(
+                        json!(task),
+                        "learner-task/offered-at",
+                        json!({"$instant":at.to_rfc3339()}),
+                    ));
+                }
+            }
+            if forms.is_empty() {
+                return Ok(view);
+            }
+            let saved = json!({"edn":schema::edn(&json!(forms))?,"basis":s.basis_t,"at":at.timestamp_millis(),"source":ENGINE_SOURCE,"view":view});
+            let staging = journal.with_extension("tmp");
+            let mut file = std::fs::File::create(&staging)?;
+            file.write_all(&serde_json::to_vec(&saved)?)?;
+            file.sync_all()?;
+            std::fs::rename(staging, &journal)?;
+            std::fs::File::open(journal.parent().unwrap())?.sync_all()?;
+            saved
+        };
+        let tx = TransactionRequest::from_edn(
+            format!("learning-{}-{request}-offers", self.learner),
+            saved["edn"].as_str().unwrap(),
+            saved_request_source(&saved, l)?,
+        )?
+        .comparing_basis(saved["basis"].as_u64().unwrap())
+        .with_tx_instant(saved["at"].as_i64().unwrap());
+        let committed = self
+            .conn
+            .transact_socket(&self.endpoint, tx, Duration::from_secs(30))?;
+        let db = self
+            .conn
+            .sync_to(committed.basis_t, Duration::from_secs(10))?;
+        self.adopt(db)?;
+        view = saved["view"].clone();
+        view["basis"] = json!(self.snapshot.basis_t);
+        Ok(view)
+    }
+
     fn process(&mut self, body: &Json) -> Result<Json> {
         let action = body["action"].as_str().ok_or("Action required")?;
         let s = &self.snapshot;
@@ -1456,10 +2301,10 @@ impl Application {
         {
             self.learner_eid = s
                 .entities
-                .iter()
-                .find_map(|(eid, record)| {
-                    (record.get("learner/id").and_then(Json::as_str) == Some(learner))
-                        .then_some(*eid)
+                .with_attribute("learner/id")
+                .into_iter()
+                .find(|eid| {
+                    s.entities[eid].get("learner/id").and_then(Json::as_str) == Some(learner)
                 })
                 .ok_or("Learner not found")?;
         }
@@ -1483,11 +2328,25 @@ impl Application {
             )?;
             return Ok(json!({"exported":true}));
         }
+        if action == "inventory" {
+            return Ok(
+                json!({"basis":s.basis_t,"lineage":self.reference.key().lineage_id().to_string(),"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"qualifyingTopics":course_academy_engine::inventory::triggers(s,l,Utc::now())?.keys().copied().collect::<Vec<_>>(),"jobs":course_academy_engine::inventory::requests(s,l,Utc::now())?}),
+            );
+        }
         if action == "home" {
             return home(&s, l);
         }
         if action == "profile" {
             return profile_json(s, l);
+        }
+        if action == "learner" {
+            return Ok(json!({"basis":s.basis_t,"learner":learner_json(s,l)}));
+        }
+        if action == "activity-history" {
+            return activity_history::list(s, l, body);
+        }
+        if action == "activity-history-detail" {
+            return activity_history::detail(s, l, required(body, "taskId")?);
         }
         if action == "assignments" {
             return assignment_reader::list(&s, l);
@@ -1519,12 +2378,18 @@ impl Application {
             .as_str()
             .filter(|s| {
                 s.len() >= 8
-                    && s.len() <= 100
+                    && s.len() <= 128
                     && s.chars().all(|c| c.is_ascii_alphanumeric() || c == '-')
             })
             .ok_or("A stable requestId is required")?;
         let journal = PathBuf::from(std::env::var("LEARNING_REQUEST_DIR")?)
             .join(format!("{learner}-{request}.json"));
+        let cached_queue = if action == "queue" && body["background"] != true {
+            self.cached_home(true)
+        } else {
+            None
+        };
+        let mut _planned_candidates = None;
         let saved: Json = if journal.exists() {
             let saved: Json = serde_json::from_slice(&std::fs::read(&journal)?)?;
             if saved["input"] != *body {
@@ -1534,7 +2399,27 @@ impl Application {
         } else {
             let at = Utc::now();
             let planning = Instant::now();
-            let (forms, result) = mutate(&s, l, action, &body, at)?;
+            let (forms, result) = if action == "queue" {
+                let forms = if cached_queue.is_some() {
+                    vec![]
+                } else {
+                    let (mut forms, candidates) = queue_preparation(s, l, at)?;
+                    if body["background"] == true {
+                        forms.retain(|f| f.get(2) != Some(&kw("learner-task/offered-at")));
+                    }
+                    if forms.is_empty() {
+                        _planned_candidates = Some(candidates);
+                    }
+                    forms
+                };
+                let expired = s
+                    .refs(l, "learner/activity")?
+                    .into_iter()
+                    .any(|t| retrieval::remaining(s, t, at).ok().flatten() == Some(0.0));
+                (forms, json!({"queue":true,"expired":expired}))
+            } else {
+                mutate(&s, l, action, &body, at)?
+            };
             trace("plan", planning);
             let saved = json!({"input":body,"edn":schema::edn(&json!(forms))?,"basis":s.basis_t,"at":at.timestamp_millis(),"result":result,"empty":forms.is_empty(),"source":ENGINE_SOURCE});
             std::fs::create_dir_all(journal.parent().unwrap())?;
@@ -1578,17 +2463,31 @@ impl Application {
             return Ok(json!({"basis":s.basis_t,"learner":learner_json(s,l)}));
         }
         if action == "queue" {
-            return home(s, l);
+            if result["expired"] == true {
+                let mut next = body.clone();
+                next["requestId"] = json!(format!("{request}-expiry"));
+                return self.process(&next);
+            }
+            if saved["empty"] == true {
+                if let Some(view) = cached_queue {
+                    return self.record_queue_offer(view, request);
+                }
+            }
+            let view = home_with_candidates(s, l, None)?;
+            return if body["background"] == true {
+                Ok(view)
+            } else {
+                self.record_queue_offer(view, request)
+            };
         }
         let t = if let Some(t) = result["taskId"].as_u64() {
             t
         } else {
             let id = result["taskUuid"].as_str().ok_or("Missing task result")?;
             s.entities
-                .iter()
-                .find_map(|(e, r)| {
-                    (r.get("learner-task/id") == Some(&json!({"$uuid":id}))).then_some(*e)
-                })
+                .with_attribute("learner-task/id")
+                .into_iter()
+                .find(|e| s.entities[e].get("learner-task/id") == Some(&json!({"$uuid":id})))
                 .ok_or("Committed task unavailable")?
         };
         // Task evidence commits first. Intermediate steps return immediately;
@@ -1596,7 +2495,7 @@ impl Application {
         let queue_error =
             if needs_queue_refresh(action, &status(&self.snapshot, t, "learner-task/status")?) {
                 let request = format!("queue-after-{l}-{}", self.snapshot.basis_t);
-                self.process(&json!({"action":"queue","requestId":request}))
+                self.process(&json!({"action":"queue","background":true,"requestId":request}))
                     .err()
             } else {
                 None
@@ -1605,7 +2504,15 @@ impl Application {
             &self.snapshot,
             l,
             t,
-            matches!(action, "start" | "study-topic" | "resume"),
+            matches!(action, "start" | "study-topic" | "resume")
+                || retrieval::kind(
+                    &self.snapshot,
+                    self.snapshot.reference(t, "learner-task/activity")?,
+                )? == "assessment"
+                    && matches!(
+                        status(&self.snapshot, t, "learner-task/status")?.as_str(),
+                        "completed" | "failed"
+                    ),
         )?;
         if let Some(error) = queue_error {
             eprintln!("Queue refresh postponed after saved task: {error}");
@@ -1621,7 +2528,9 @@ fn envelope(result: Result<Json>) -> Json {
         Ok(data) => json!({"ok":true,"data":data}),
         Err(error) => {
             eprintln!("Learning API: {error}");
-            let mut code = if error.to_string() == "Resume the lesson before continuing" {
+            let mut code = if error.to_string() == "Assessment deadline has elapsed" {
+                "assessment-expired"
+            } else if error.to_string() == "Resume the lesson before continuing" {
                 "lesson-paused"
             } else {
                 "validation"
@@ -1695,6 +2604,19 @@ mod lesson_progress_tests {
     use super::*;
 
     #[test]
+    fn inventory_cache_expires_before_review_and_assessment_eligibility_boundaries() {
+        let now=Utc::now();
+        let before=now-chrono::Duration::hours(48)+chrono::Duration::seconds(3);
+        let past=now-chrono::Duration::hours(49);
+        assert_eq!(inventory_cache_duration(Duration::from_secs(60),[past].into_iter(),now),Duration::from_secs(10));
+        let boundary=inventory_cache_duration(Duration::from_secs(60),[before].into_iter(),now);
+        assert!(boundary.as_secs_f64()>2.99 && boundary.as_secs_f64()<3.0);
+        assert_eq!(inventory_cache_duration(Duration::from_secs(1),[before].into_iter(),now),Duration::from_secs(1));
+        assert_eq!(inventory_cache_duration(Duration::ZERO,[past].into_iter(),now),Duration::ZERO);
+        assert_eq!(inventory_cache_duration(Duration::from_secs(60),[now-chrono::Duration::hours(48)].into_iter(),now),Duration::ZERO);
+    }
+
+    #[test]
     fn request_journals_preserve_their_source_across_exact_retries() {
         assert!(matches!(
             saved_request_source(&json!({"source":ENGINE_SOURCE}), 42).unwrap(),
@@ -1743,6 +2665,11 @@ mod lesson_progress_tests {
         assert_eq!(
             content_math_academy_id(question.as_object().unwrap()).as_deref(),
             Some("456")
+        );
+        let prefixed = json!({"question/id":"q", "question/math-academy-id":"q-456"});
+        assert_eq!(
+            content_math_academy_id(prefixed.as_object().unwrap()).as_deref(),
+            Some("q-456")
         );
         let missing =
             json!({"question/id":"q","step/math-academy-id":789,"topic/math-academy-id":1116});
@@ -1958,7 +2885,7 @@ mod study_queue_tests {
                 .unwrap()
                 .clone(),
         );
-        s = EntitySnapshot::new(s.entities, 42).unwrap();
+        s = EntitySnapshot::new(s.entities.into(), 42).unwrap();
         for (t, entity, attribute, value) in [
             (1, 81, "learner-task/status", "learner-task.status/started"),
             (2, 95, "task-item/status", "task-item.status/started"),
@@ -2047,7 +2974,7 @@ mod study_queue_tests {
             .unwrap()
             .insert("activity/steps".into(), json!([61, 62]));
         s.entities.get_mut(&81).unwrap().extend(json!({"learner-task/status":"learner-task.status/started","learner-task/items":[95,96],"learner-task/xp-base":10,"learner-task/elapsed-seconds":2.0}).as_object().unwrap().clone());
-        s = EntitySnapshot::new(s.entities.clone(), s.basis_t).unwrap();
+        s = EntitySnapshot::new(s.entities.clone().into(), s.basis_t).unwrap();
         let at = DateTime::from_timestamp(10, 0).unwrap();
         let (forms, _) = mutate(&s, 1, "continue", &json!({"taskId":81,"itemId":96}), at).unwrap();
         assert!(forms.contains(&add(json!(96), "task-item/deferred-step", json!(61))));
@@ -2112,9 +3039,15 @@ mod study_queue_tests {
             .unwrap()
             .insert("learner/queue".into(), json!([]));
         let dashboard = home(&s, 1).unwrap();
-        assert!(dashboard["activities"].as_array().unwrap().is_empty());
-        assert_eq!(dashboard["waitingActivities"][0]["taskId"], 81);
-        assert_eq!(dashboard["waitingActivities"][0]["canResumePractice"], true);
+        assert_eq!(dashboard["activities"].as_array().unwrap().len(), 1);
+        assert_eq!(dashboard["activities"][0]["taskId"], 81);
+        assert_eq!(dashboard["activities"][0]["status"], "paused");
+        assert!(
+            dashboard["waitingActivities"]
+                .as_array()
+                .unwrap()
+                .is_empty()
+        );
         let (forms, _) = mutate(&s, 1, "resume", &json!({"taskId":81}), at).unwrap();
         assert!(forms.contains(&add(json!("new-item"), "task-item/resumed-step", json!(61))));
         assert!(
@@ -2263,7 +3196,7 @@ mod study_queue_tests {
                 .unwrap()
                 .clone(),
         );
-        s = EntitySnapshot::new(s.entities, 42).unwrap();
+        s = EntitySnapshot::new(s.entities.into(), 42).unwrap();
         let at = Utc::now();
         s.status_history.push(StatusAssertion {
             entity: 96,
@@ -2332,7 +3265,8 @@ mod study_queue_tests {
             .get_mut(&81)
             .unwrap()
             .insert("learner-task/xp-earned".into(), json!(7));
-        s.entities.insert(83, s.entity(81).unwrap().clone());
+        let cloned_task = s.entity(81).unwrap().clone();
+        s.entities.insert(83, cloned_task);
         s.entities
             .get_mut(&1)
             .unwrap()
@@ -2344,7 +3278,7 @@ mod study_queue_tests {
                 .unwrap()
                 .clone(),
         );
-        s = EntitySnapshot::new(s.entities, 42).unwrap();
+        s = EntitySnapshot::new(s.entities.into(), 42).unwrap();
         for (task, t) in [(83, 1), (81, 2)] {
             s.status_history.push(StatusAssertion {
                 entity: task,
@@ -2396,13 +3330,64 @@ mod study_queue_tests {
             .unwrap()
             .remove("answer-field/correct");
         assert!(mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).is_err());
-        s.entities.insert(52, s.entity(51).unwrap().clone());
+        let cloned_activity = s.entity(51).unwrap().clone();
+        s.entities.insert(52, cloned_activity);
         assert!(
             topic_lesson(&s, 6)
                 .unwrap_err()
                 .to_string()
                 .contains("ambiguous")
         );
+    }
+
+    #[test]
+    fn self_directed_home_and_preparation_preserve_unselected_started_and_paused_lessons() {
+        for state in ["started", "paused"] {
+            let mut s = fixture();
+            s.entities.get_mut(&80).unwrap().insert(
+                "learner-task/status".into(),
+                kw(&format!("learner-task.status/{state}")),
+            );
+            let before = s.entities.clone();
+            let view = home(&s, 1).unwrap();
+            assert_eq!(view["activities"][0]["activityId"], 50);
+            assert_eq!(view["activities"][0]["taskId"], 80);
+            assert_eq!(view["activities"][0]["status"], state);
+            assert_eq!(view["activities"][0]["reason"], "Continue your lesson");
+            assert_eq!(view["activities"][1]["activityId"], 51);
+            let (forms, candidates) = queue_preparation(&s, 1, Utc::now()).unwrap();
+            assert!(forms.iter().all(|form| {
+                form.as_array()
+                    .is_some_and(|parts| parts.get(2) == Some(&kw("learner-task/priority")))
+            }));
+            assert_eq!(home_with_candidates(&s, 1, Some(candidates)).unwrap(), view);
+            assert_eq!(s.entities, before);
+            s.entities
+                .get_mut(&1)
+                .unwrap()
+                .insert("learner/queue".into(), json!([]));
+            assert_eq!(
+                home(&s, 1).unwrap()["activities"].as_array().unwrap().len(),
+                1
+            );
+        }
+    }
+
+    #[test]
+    fn prepared_queue_candidates_render_the_same_home_in_both_study_modes() {
+        for directed in [false, true] {
+            let mut s = fixture();
+            s.entities
+                .get_mut(&1)
+                .unwrap()
+                .insert("learner/self-directed".into(), json!(directed));
+            let (forms, candidates) = queue_preparation(&s, 1, Utc::now()).unwrap();
+            assert!(forms.is_empty());
+            assert_eq!(
+                home_with_candidates(&s, 1, Some(candidates)).unwrap(),
+                home(&s, 1).unwrap()
+            );
+        }
     }
 
     #[test]
@@ -3035,7 +4020,7 @@ mod integration {
         Ok(())
     }
 
-    fn commit(
+    pub(super) fn commit(
         conn: &Connection,
         endpoint: &str,
         s: &EntitySnapshot,
@@ -3079,43 +4064,9 @@ mod integration {
         let database = std::env::var("EDB_DATABASE").unwrap_or("math".into());
         let endpoint = std::env::var("EDB_ENDPOINT").unwrap_or("/tmp/edb-math/writer.sock".into());
         let conn = Connection::connect_configured(postgres_config_from_env()?, database, 256)?;
-        let source = snapshot(&conn.db())?;
-        let original = source
-            .entities
-            .iter()
-            .find_map(|(e, r)| {
-                (r.get("learner/id").and_then(Json::as_str)
-                    == Some("59d5cf13-351c-4114-be19-4c3bb64ee051"))
-                .then_some(*e)
-            })
-            .ok_or("original learner unavailable")?;
-        let id = format!("integration-{}", uid()?);
-        let c = course(&source, original)?;
-        let mut forms = vec![];
-        let mut progress = vec![];
-        for (index, p) in source
-            .refs(original, "learner/knowledge-profile")?
-            .iter()
-            .enumerate()
-        {
-            let name = format!("test-progress-{index}");
-            progress.push(json!(name));
-            forms.push(json!({"db/id":name,"progress/id":uid()?,"progress/topic":source.reference(*p,"progress/topic")?,"progress/repetitions":number(&source,*p,"progress/repetitions")}));
-        }
-        forms.push(json!({"db/id":"test-learner","learner/id":id,"learner/name":"Temporary learner API integration test","learner/course":c,"learner/self-directed":false,"learner/knowledge-profile":progress,"db/ensure":kw("learner/validate")}));
-        let mut s = commit(
-            &conn,
-            &endpoint,
-            &source,
-            forms,
-            &format!("{id}-setup"),
-            Utc::now(),
-        )?;
-        let l = s
-            .entities
-            .iter()
-            .find_map(|(e, r)| (r.get("learner/id") == Some(&json!(id))).then_some(*e))
-            .unwrap();
+        let (mut s, l, nonce) = super::retrieval_tests::durable_fixture(&conn, &endpoint, false)?;
+        let id = s.entities[&l]["learner/id"].as_str().unwrap().to_string();
+        let c = course(&s, l)?;
         eprintln!("Temporary integration learner: {id}");
         let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| -> Result<()> {
             let at = Utc::now();
@@ -3292,20 +4243,7 @@ mod integration {
             eprintln!("KEEP_TEST_LEARNER={id}");
             return result;
         }
-        let fresh = snapshot(&conn.sync()?)?;
-        let mut cleanup = vec![];
-        for t in fresh.refs(l, "learner/activity")? {
-            cleanup.push(json!([kw("db/retractEntity"), t]));
-        }
-        cleanup.push(json!([kw("db/retractEntity"), l]));
-        commit(
-            &conn,
-            &endpoint,
-            &fresh,
-            cleanup,
-            &format!("{id}-cleanup"),
-            Utc::now(),
-        )?;
+        super::retrieval_tests::durable_cleanup(&conn, &endpoint, l, &nonce)?;
         result
     }
 }

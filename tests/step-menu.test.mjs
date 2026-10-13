@@ -1,8 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { attachStepMenu, stepEntityId } from '../ui/step-menu.js';
+import { attachStepMenu, stepEntityId, academyEntityId } from '../ui/step-menu.js';
 
 test('database IDs preserve exact digits and reject UUIDs or rounded numbers', () => {
+  assert.equal(academyEntityId('q-123'), 'q-123');
+  assert.equal(academyEntityId('e-456'), 'e-456');
+  assert.equal(academyEntityId('arbitrary-text'), null);
   assert.equal(stepEntityId(17592186157459), '17592186157459');
   assert.equal(stepEntityId('18446744073709551615'), '18446744073709551615');
   for (const value of [null, undefined, '', 0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1, 'abc', 'step-1', '1e3']) {
@@ -19,7 +22,7 @@ test('step menus copy the selected container ID and support keyboard, dismissal,
     setAttribute(key, value) { this.attrs[key] = value; }
     contains(node) { for (; node; node = node.parentElement) if (node === this) return true; return false; }
     get isConnected() { return document.body.contains(this); }
-    closest() { return ['input', 'textarea', 'select'].includes(this.tagName) ? this : null; }
+    closest() { return null; }
     getBoundingClientRect() { return { left: 20, top: 40, width: 180, height: 42 }; }
     focus() { document.activeElement = this; }
   }
@@ -48,8 +51,8 @@ test('step menus copy the selected container ID and support keyboard, dismissal,
     const menu = doc.body.children.find(node => node.className === 'step-context-menu');
     const action = menu.children[0];
     const academyAction = menu.children[1];
-    assert.equal(action.textContent, 'Copy :db/id');
-    assert.equal(academyAction.textContent, 'Copy :ma/id');
+    assert.equal(action.textContent, 'Copy step :db/id');
+    assert.equal(academyAction.textContent, 'Copy step :ma/id');
     nestedMath.dataset.stepDbId = '999'; // Content cannot spoof a registered step.
     nestedMath.dataset.mathAcademyId = '999';
     const rightClick = fire(doc, 'contextmenu', { target: nestedMath, clientX: 795, clientY: 595 });
@@ -59,7 +62,7 @@ test('step menus copy the selected container ID and support keyboard, dismissal,
     assert.equal(doc.activeElement, action);
     assert.equal(academyAction.hidden, false);
     fire(action, 'click'); await settle();
-    assert.deepEqual(copied, ['17592186000101']);
+    assert.deepEqual(copied, [':db/id=17592186000101']);
     assert.equal(menu.hidden, true); assert.equal(doc.activeElement, first);
 
     fire(doc, 'keydown', { target: first, key: 'ContextMenu' });
@@ -72,7 +75,7 @@ test('step menus copy the selected container ID and support keyboard, dismissal,
     fire(doc, 'keydown', { target: academyAction, key: 'Home' });
     assert.equal(doc.activeElement, action);
     fire(academyAction, 'click'); await settle();
-    assert.deepEqual(copied, ['17592186000101', '18446744073709551615']);
+    assert.deepEqual(copied, [':db/id=17592186000101', '18446744073709551615']);
 
     fire(doc, 'keydown', { target: second, key: 'F10', shiftKey: true });
     assert.equal(menu.hidden, false);
@@ -80,7 +83,7 @@ test('step menus copy the selected container ID and support keyboard, dismissal,
     fire(doc, 'keydown', { target: action, key: 'End' });
     assert.equal(doc.activeElement, action);
     fire(action, 'click'); await settle();
-    assert.deepEqual(copied, ['17592186000101', '18446744073709551615', '17592186000102']);
+    assert.deepEqual(copied, [':db/id=17592186000101', '18446744073709551615', ':db/id=17592186000102']);
 
     fire(doc, 'contextmenu', { target: first, clientX: 40, clientY: 60 });
     fire(doc, 'keydown', { target: action, key: 'Escape' });
@@ -90,17 +93,42 @@ test('step menus copy the selected container ID and support keyboard, dismissal,
     fire(doc, 'contextmenu', { target: second, clientX: 40, clientY: 60 });
     fire(doc, 'pointerdown', { target: doc.body }); assert.equal(menu.hidden, true);
 
-    for (const values of [{ target: input }, { target: first, shiftKey: true }, { target: doc.body }]) {
+    for (const values of [ { target: first, shiftKey: true }, { target: doc.body }]) {
       assert.equal(fire(doc, 'contextmenu', values).defaultPrevented, false);
       assert.equal(menu.hidden, true);
     }
+    const large = new Node('section'); doc.body.append(large);
+    attachStepMenu(large, '18446744073709551615');
+    fire(doc, 'contextmenu', {target: large});
+    fire(action, 'click'); await settle();
+    assert.equal(copied.at(-1), ':db/id=18446744073709551615');
+    const question = new Node('article'), questionMath = new Node('svg');
+    question.append(questionMath); first.append(question);
+    attachStepMenu(question, '17592186000999', 'q-321', {kind:'question'});
+    fire(doc, 'contextmenu', { target: questionMath, clientX: 40, clientY: 60 });
+    fire(action, 'click'); await settle();
+    assert.equal(copied.at(-1), ':db/id=17592186000999');
+    assert.equal(action.textContent, 'Copy question :db/id');
+    assert.equal(academyAction.textContent, 'Copy question :ma/id');
+    fire(doc, 'contextmenu', { target: questionMath, clientX: 40, clientY: 60 });
+    fire(academyAction, 'click'); await settle();
+    assert.equal(copied.at(-1), 'q-321');
+    // Answer inputs still identify the surrounding question. Shift-right-click
+    // remains available for native editing/browser actions.
+    question.append(input);
+    assert.equal(fire(doc, 'contextmenu', { target: input }).defaultPrevented, true);
+    fire(action, 'click'); await settle();
+    assert.equal(copied.at(-1), ':db/id=17592186000999');
+    assert.equal(action.textContent, 'Copy question :db/id');
+    assert.equal(academyAction.textContent, 'Copy question :ma/id');
+    assert.equal(fire(doc, 'contextmenu', { target: input, shiftKey: true }).defaultPrevented, false);
     clipboard.writeText = async () => { throw new Error('Permission denied'); };
     fire(doc, 'contextmenu', { target: second, clientX: 40, clientY: 60 });
     fire(action, 'click'); await settle();
-    assert.deepEqual(prompted, ['17592186000102']);
+    assert.deepEqual(prompted, [':db/id=17592186000102']);
     fire(doc, 'contextmenu', { target: first, clientX: 40, clientY: 60 });
     fire(academyAction, 'click'); await settle();
-    assert.deepEqual(prompted, ['17592186000102', '18446744073709551615']);
+    assert.deepEqual(prompted, [':db/id=17592186000102', '18446744073709551615']);
     assert.equal(doc.body.children.find(node => node.className === 'step-copy-notice').textContent, '');
   } finally {
     for (const [name, descriptor] of originals) {

@@ -14,13 +14,15 @@ from pathlib import Path
 
 
 def rejection_code(frame):
-    # EDB canonical blob v3, submission outcome v6. Unknown formats stay unknown.
-    if (len(frame) < 51 or frame[:8] != b'EDBC\x0c\x00\x03\x00' or
+    # Canonical blob v3/v4; outcome v6/v7 share this rejection prefix. The v7
+    # change adds receipt endpoint metadata, not rejection grammar. Unknown
+    # formats stay unknown (EDB src/encoding/submission.rs).
+    if (len(frame) < 51 or frame[:8] not in (b'EDBC\x0c\x00\x03\x00', b'EDBC\x0c\x00\x04\x00') or
             int.from_bytes(frame[8:16], 'big') != len(frame)-48 or
             hashlib.sha256(frame[:-32]).digest() != frame[-32:]):
         return None
     body = frame[16:-32]
-    if body[:2] != b'\x06\x01':
+    if len(body) < 2 or body[0] not in (6, 7) or body[1] != 1:
         return None
     length = int.from_bytes(body[3:7], 'big')
     if length > 128 or len(body) < 7+length:

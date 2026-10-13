@@ -16,7 +16,7 @@ pub(super) fn home(s: &EntitySnapshot, learner: u64) -> Result<Json> {
                 "activityId": candidate.activity,
                 "taskId": null,
                 "title": text(s, candidate.activity, "activity/title"),
-                "type": "lesson",
+                "type": status(s,candidate.activity,"activity/type").unwrap_or_default(),
                 "status": "preview",
                 "priority": candidate.priority,
                 "reason": candidate.reason,
@@ -233,6 +233,7 @@ fn append_content(
         output.push(json!({
             "preview": true, "itemId": null, "stepId": step, "contentId": content,
             "mathAcademyId": content_math_academy_id(record),
+            "knowledgePoint": knowledge_point_identity(s, s.reference(step, "step/content")?)?,
             "kind": kind, "title": title, "markdown": markdown.join("\n\n"),
             "fields": if tutorial { vec![] } else { fields(s, content)? },
             "solution": text(s, content, "question/worked-solution"),
@@ -329,7 +330,11 @@ pub(super) fn check_answer(s: &EntitySnapshot, learner: u64, body: &Json) -> Res
         "incorrect"
     };
     for field in presentation["fields"].as_array_mut().unwrap() {
-        field["response"] = selected.remove(&field["id"].as_u64().unwrap()).unwrap();
+        let id = field["id"].as_u64().unwrap();
+        field["response"] = selected.remove(&id).unwrap();
+        if matches!(outcome, "correct" | "incorrect") {
+            attach_field_grade(s, question, id, field);
+        }
     }
     presentation["status"] = json!(outcome);
     presentation["basis"] = json!(s.basis_t);
@@ -429,7 +434,7 @@ mod tests {
     fn learner_without_course_can_open_preview_home_and_browse_content() {
         let mut entries = fixture().entities;
         entries.get_mut(&1).unwrap().remove("learner/course");
-        let s = EntitySnapshot::new(entries, 42).unwrap();
+        let s = EntitySnapshot::new(entries.into(), 42).unwrap();
         let before = s.entities.clone();
         let view = home(&s, 1).unwrap();
         assert_eq!(view["needsCourseSelection"], true);
@@ -468,6 +473,10 @@ mod tests {
         assert_eq!(view["steps"][2]["mathAcademyId"], "789");
         assert!(view["steps"][3]["mathAcademyId"].is_null());
         assert_eq!(view["steps"][3]["contentId"], 302);
+        assert_eq!(view["steps"][0]["contentId"], 201);
+        assert_eq!(view["steps"][1]["contentId"], 300);
+        assert_eq!(view["steps"][2]["knowledgePoint"]["id"], 200);
+        assert_ne!(view["steps"][2]["stepId"], view["steps"][2]["contentId"]);
         assert_eq!(
             view["steps"][2]["fields"][0]["correctAnswer"]["value"],
             "1/2"
@@ -503,6 +512,7 @@ mod tests {
         .unwrap();
         assert_eq!(result["status"], "correct");
         assert_eq!(result["fields"][0]["response"]["value"], "0.5");
+        assert_eq!(result["fields"][0]["grade"], "correct");
         assert_eq!(result["solution"], "Divide one by two.");
         let wrong = check_answer(
             &s,
@@ -511,6 +521,7 @@ mod tests {
         )
         .unwrap();
         assert_eq!(wrong["status"], "incorrect");
+        assert_eq!(wrong["fields"][0]["grade"], "incorrect");
         assert!(
             check_answer(
                 &s,

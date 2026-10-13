@@ -113,6 +113,16 @@ fn capture(db: &Database) -> String {
 }
 
 pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
+    // This compatibility harness exercises the retained legacy replay runtime.
+    // Current activity/step delivery is exercised by retrieval_tests.rs instead.
+    let legacy=transact(base,r#"[
+        {:db/ident :assessment/id :db/valueType :db.type/uuid :db/cardinality :db.cardinality/one :db/unique :db.unique/identity}
+        {:db/ident :assessment/title :db/valueType :db.type/string :db/cardinality :db.cardinality/one}
+        {:db/ident :assessment/questions :db/valueType :db.type/ref :db/cardinality :db.cardinality/many}
+        {:db/ident :assessment/time-limit-seconds :db/valueType :db.type/double :db/cardinality :db.cardinality/one}
+        {:db/ident :assessment/validate :db.entity/attrs [:assessment/id :assessment/title :assessment/questions]}
+    ]"#,parse_instant(&"2026-09-27T23:59:59Z".into())?.timestamp_millis())?.db_after;
+    let base = &legacy;
     let fixture = r#"[
      {:db/id "q" :question/id #uuid "00000000-0000-4000-8000-000000000020"
       :question/problem "Select 2."
@@ -244,7 +254,12 @@ pub fn check(base: &Database) -> Result<(), Box<dyn Error>> {
     let key = &plan.request_key;
     let basis = plan.compare_basis_t;
     let edn = &plan.edn;
-    let request = TransactionRequest::from_edn(key, edn)?.comparing_basis(basis);
+    let request = TransactionRequest::from_edn(
+        key,
+        edn,
+        edb_core::EntityRef::Id(edb_core::DB_SOURCE_SYSTEM),
+    )?
+    .comparing_basis(basis);
     assert_eq!(request.compare_basis_t, Some(db.basis_t()));
     assert!(request.request_key.starts_with("complete-item-"));
     // with_forms checks transaction/CAS semantics; it is not the durable writer.
