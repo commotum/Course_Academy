@@ -1,0 +1,98 @@
+{
+  "database": "math",
+  "basis": 1356,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "record": [
+    {
+      ":activity/first-step": {
+        ":db/id": 17592186134750
+      },
+      ":activity/id": "c1d7ccaa-f5c6-5920-a397-e8a258f25c51",
+      ":activity/steps": [
+        {
+          ":db/id": 17592186134740,
+          ":step/content": {
+            ":db/id": 17592186133827,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133642,
+              ":question/id": "132af6fa-454c-596c-a057-dfe531792102",
+              ":question/math-academy-id": "e-6283",
+              ":question/problem": "Evaluate the line integral of $f(x,y,z) = \\dfrac{x}{yz}$ along the curve parametrized by $\\mathbf{r}(t) = t^2\\, \\mathbf{i} + t \\,\\mathbf{j} + 1 \\,\\mathbf{k}$ for $t \\in [0,\\sqrt 2].$",
+              ":question/worked-solution": "To calculate the line integral, we will use the formula\n\n$$\n\\int\\limits_C f(x, y) \\, \\textrm{d}s  = \\int\\limits_a^b  f(\\mathbf r(t)) \\, \\| \\mathbf r'(t) \\| \\, \\textrm{d}t.\n$$\n\n \n\nSince $\\mathbf{r}(t) =t^2\\, \\mathbf{i} + t \\,\\mathbf{j} + 1 \\,\\mathbf{k},$ then along the curve we have $x = t^2,$ $y = t,$ and $z=1.$  \n\nComputing $\\mathbf{r}'(t)$ and $\\| \\mathbf{r}'(t) \\|,$ we get the following:\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j+\\frac{\\text{d}z}{\\text{d}t}\\,k \\\\  & =\\frac{\\text{d}}{\\text{d}t}({t}^{2})\\,i+\\frac{\\text{d}}{\\text{d}t}(t)\\,j+\\frac{\\text{d}}{\\text{d}t}(1)\\,k \\\\  & =2t\\,i+1\\,j+0\\,k \\\\  & =2t\\,i+j \\\\ ‖{r}^{′}(t)‖ & =\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}+{(\\frac{\\text{d}z}{\\text{d}t})}^{2}} \\\\  & =\\sqrt{(2t)^{2}+{1}^{2}+{0}^{2}} \\\\  & =\\sqrt{4{t}^{2}+1}\\end{aligned}\n$$\n\nNow, since $f(x,y,z) = \\dfrac{x}{yz},$ we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =\\frac{{t}^{2}}{t\\cdot 1}=t.\\end{aligned}\n$$\n\nTherefore, we can write the integral as \n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}s & ={\\int }_{0}^{\\sqrt{2}}f(r(t))\\,‖{r}^{′}(t)‖\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\sqrt{2}}t\\sqrt{4{t}^{2}+1}\\,\\text{d}t.\\end{aligned}\n$$\n\nWe can solve this using the substitution $u= 4t^2+1,$ $\\textrm d u=8t\\,\\textrm d t$ as follows: \n\n$$\n\\begin{aligned}{\\int }_{0}^{\\sqrt{2}}t\\sqrt{4{t}^{2}+1}\\,\\text{d}t & ={\\int }_{1}^{9}\\frac{1}{8}{u}^{1/2}\\text{d}u \\\\  & =\\frac{1}{8}\\cdot \\frac{2}{3}{u}^{3/2}{|}_{1}^{9} \\\\  & =\\frac{1}{12}[{9}^{3/2}-{1}^{3/2}] \\\\  & =\\frac{1}{12}[27-1] \\\\  & =\\frac{1}{12}\\cdot 26 \\\\  & =\\frac{13}{6}\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Evaluating the Line Integral of a Scalar Function Using a Substitution"
+          },
+          ":step/next": {
+            ":db/id": 17592186134741
+          }
+        },
+        {
+          ":db/id": 17592186134741,
+          ":step/content": {
+            ":db/id": 17592186135075,
+            ":tutorial/content": "We wish to derive the formula\n\n$$\n\\int\\limits_C f(x,y) \\, \\textrm{d}s =\\int_{a}^{b} f(\\mathbf r(t)) \\| \\mathbf r'(t) \\| \\, \\textrm{d}t.\n$$\n\nTo do this, we proceed in four steps, as follows:\n\n**Step 1**: We break the integration path $C$ into a series of line segments.\n\nWe choose a finite number of points $P_0,$ $P_1,$ $\\ldots,$ $P_n$ along $C$ and form the polygonal path\n\n$$\n\\overline{P_0P_1} \\cup \\overline{P_1P_2} \\cup \\cdots \\cup \\overline{P_{n-1}P_n}.\n$$\n\nOur polygonal path is shown in the diagram below.\n\n![](images/2d/2d320e6a0f63a823e049203203cbc13c210e80bc98aab5a53bcb4e5299240920.png)\n\n**Step 2**: For each line segment, we approximate the area enclosed by $f(x,y)$ and $C$ between the two endpoints of the segment. To do this, we calculate the area of a rectangle formed by the segment and the surface $z=f(x,y).$\n\nThe width of each line segment is given by\n\n$$\n||\\overline{P_{k-1}P_k}|| .\n$$\n\nIf $P_k$ is at the tip of $\\mathbf r(t_k),$ then by the mean value theorem,\n\n$$\n\\begin{aligned}‖\\overset{―}{{P}_{k-1}{P}_{k}}‖ & =‖{r}^{'}({c}_{k})‖({t}_{k}-{t}_{k-1}) \\\\  & =‖{r}^{'}({c}_{k})‖Δ{t}_{k}\\end{aligned}\n$$\n\nfor some intermediate point $c_k \\in [t_{k-1}, t_k],$ where $\\Delta t_k = t_k - t_{k-1}.$\n\nTherefore, the area formed by the rectangle with a width of $\\big\\| \\overline{P_{k-1}P_k} \\big\\|$ and a height of $f(c_k)$ is given by\n\n$$\nf(c_k) \\| \\mathbf r'(c_k)\\|\\Delta t_k.\n$$\n\n**Step 3**: We sum the areas of all of our small rectangles, which gives us an *approximation* of our line integral. We get\n\n$$\n\\int\\limits_C f(x,y) \\, \\textrm{d}s \\approx \\sum_{k=1}^{n} f(\\mathbf r(c_k)) \\| \\mathbf{r}'(c_k) \\| \\Delta t_k.\n$$\n\n**Step 4**: We take the limit as the width of each rectangle tends to zero (or equivalently, as the number of rectangles tends to infinity). This gives us the exact representation of our line integral:\n\n$$\n\\int\\limits_C f(x,y) \\, \\textrm{d}s =\\lim_{n\\to\\infty }\\sum_{k=1}^{n} f(\\mathbf r(c_k)) \\| \\mathbf{r}'(c_k) \\| \\Delta t_k = \\int_{a}^{b} f(\\mathbf r(t)) \\| \\mathbf r'(t) \\| \\, \\textrm{d}t\n$$",
+            ":tutorial/title": "Derivation of the  Line Integral Formula"
+          }
+        },
+        {
+          ":db/id": 17592186134744,
+          ":step/content": {
+            ":db/id": 17592186133829,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133644,
+              ":question/id": "f07dd3d3-606f-520f-a95e-04303aa32f24",
+              ":question/math-academy-id": "e-6307",
+              ":question/problem": "Find an integral that is equivalent to $\\displaystyle\\int\\limits_C xy^3 \\, \\textrm{d}s,$ where $C$ is the curve parametrized by $\\mathbf r(t)= \\left \\langle \\cos t, \\sin t \\right\\rangle$ for $t \\in \\left(0, \\dfrac{\\pi}{2}\\right).$",
+              ":question/worked-solution": "![](images/f5/f53d78debfec5f8c50e0f3a5947d2a36126e18c073d7b0cc4c59d506753059b3.png)\n\nThe path of integration is shown above. We will use the formula\n\n$$\n\\int\\limits_C f(x, y) \\, \\textrm{d}s  = \\int\\limits_a^b  f(\\mathbf r(t)) \\, \\| \\mathbf r'(t) \\| \\, \\textrm{d}t.\n$$\n\n \n\nHere, we have $f(x,y) =  xy^3$. Along the path, we have $x=\\cos t$ and $y=\\sin t,$ and so we get\n\n$$\n\\begin{aligned}f(r(t)) & =f(\\operatorname{cos}⁡t,\\operatorname{sin}⁡t) \\\\  & =\\operatorname{cos}⁡t\\cdot (\\operatorname{sin}⁡t)^{3} \\\\  & ={sin}^{3}⁡t\\operatorname{cos}⁡t.\\end{aligned}\n$$\n\nComputing $\\mathbf{r}'(t)$ and $\\| \\mathbf{r}'(t) \\|,$ we get\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j \\\\  & =\\frac{\\text{d}}{\\text{d}t}(\\operatorname{cos}⁡t)i+\\frac{\\text{d}}{\\text{d}t}(\\operatorname{sin}⁡t)j \\\\  & =-\\operatorname{sin}⁡t\\,i+\\operatorname{cos}⁡t\\,j \\\\ ‖{r}^{′}(t)‖ & =\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}} \\\\  & =\\sqrt{{(-\\operatorname{sin}⁡t)}^{2}+{(\\operatorname{cos}⁡t)}^{2}} \\\\  & =\\sqrt{{sin}^{2}⁡t+{cos}^{2}⁡t} \\\\  & =1.\\end{aligned}\n$$\n\nTherefore, we can write the integral as\n\n$$\n\\begin{aligned}{\\int }_{C}x{y}^{3}\\,\\text{d}s & ={\\int }_{a}^{b}f(r(t))\\,‖{r}^{′}(t)‖\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\pi /2}{sin}^{3}⁡t\\operatorname{cos}⁡t\\cdot 1\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\pi /2}{sin}^{3}⁡t\\operatorname{cos}⁡t\\,\\text{d}t.\\end{aligned}\n$$\n\nSo, we conclude that\n\n$$\n\\int\\limits_C xy^3 \\, \\textrm{d}s = \\int^{\\pi/2}_{0} \\sin^3 t \\cos t \\, \\textrm{d}t .\n$$"
+            },
+            ":knowledge-point/title": "Writing the Line Integral of a Scalar Function as a Definite Integral"
+          },
+          ":step/next": {
+            ":db/id": 17592186134745
+          }
+        },
+        {
+          ":db/id": 17592186134745,
+          ":step/content": {
+            ":db/id": 17592186133830,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133645,
+              ":question/id": "8bf6a863-9b9f-5877-84bc-3e11d71261c9",
+              ":question/math-academy-id": "e-6308",
+              ":question/problem": "Evaluate the integral $\\displaystyle\\int\\limits_{C}xy\\,\\textrm{d}s,$ where $C$ is the curve parametrized by $\\mathbf{r}(t) = 3t\\,\\mathbf{i}+4t\\,\\mathbf{j}\\,$ for $0\\leq t\\leq 1.$",
+              ":question/worked-solution": "To calculate the line integral, we will use the formula\n\n$$\n\\int\\limits_C f(x, y) \\, \\textrm{d}s  = \\int\\limits_a^b  f(\\mathbf r(t)) \\, \\| \\mathbf r'(t) \\| \\, \\textrm{d}t.\n$$\n\n \n\nSince $\\mathbf{r}(t) = 3t\\,\\mathbf{i}+4t\\,\\mathbf{j},$ then along the curve we have $x=3t$ and $y=4t.$\n\nComputing $\\mathbf{r}'(t)$ and $\\| \\mathbf{r}'(t) \\|,$ we get the following:\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j \\\\  & =\\frac{\\text{d}}{\\text{d}t}(3t)i+\\frac{\\text{d}}{\\text{d}t}(4t)j \\\\  & =3\\,i+4\\,j \\\\ ‖{r}^{′}(t)‖ & =\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}} \\\\  & =\\sqrt{{3}^{2}+{4}^{2}} \\\\  & =\\sqrt{{5}^{2}} \\\\  & =5\\end{aligned}\n$$\n\nNow, if $f(x,y) =xy,$ then we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =3t\\cdot 4t \\\\  & =12{t}^{2}.\\end{aligned}\n$$\n\n \n\nTherefore, we can write the integral as \n\n$$\n\\begin{aligned}{\\int }_{C}xy\\,\\text{d}s & ={\\int }_{0}^{1}f(r(t))\\,‖{r}^{′}(t)‖\\,\\text{d}t \\\\  & ={\\int }_{0}^{1}12{t}^{2}\\cdot 5\\,\\text{d}t \\\\  & =60{\\int }_{0}^{1}{t}^{2}\\,\\text{d}t \\\\  & =60{[\\frac{{t}^{3}}{3}]}_{0}^{1} \\\\  & =20{[{t}^{3}]}_{0}^{1} \\\\  & =20.\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Evaluating the Line Integral of a Scalar Function"
+          },
+          ":step/next": {
+            ":db/id": 17592186134740
+          }
+        },
+        {
+          ":db/id": 17592186134750,
+          ":step/content": {
+            ":db/id": 17592186135080,
+            ":tutorial/content": "A **line integral** $\\displaystyle\\int\\limits_C f(x, y) \\, \\textrm{d}s$ is similar to a definite integral, but for a function of multiple variables along a general path $C.$\n\nTo understand the intuition behind line integrals, remember that the definite integral $\\displaystyle\\int_a^b f(x)\\,\\textrm{d}x$ can be interpreted as the (signed) area bounded between the function $y=f(x)$ and the $x$-axis between $x=a$ and $x=b,$ as shown below. \n\n![](images/93/93ce31caadb9d753a13acc2f25b898738aa67b70f1374816fccfc0cf3be21b7a.png)\n\nIntuitively, we can think of the integral as the result of summing the areas of many small rectangles that we accumulate as we move along the $x$-axis on the **path** from $x=a$ to $x=b.$\n\nWe can also draw paths as general curves in the plane. For example, consider the path $C,$ given by\n\n$$\n\\mathbf r(t) = \\langle 2\\cos t, 2\\sin t \\rangle, \\qquad t\\in \\left[ 0, \\dfrac{\\pi}{2}\\right].\n$$\n\nThis path represents a quarter circle of radius $2$ traversed counterclockwise from $(2,0)$ to $(0,2)$ in the first quadrant:\n\n![](images/6d/6d933c280ebb530aefaadc1b5ef927e39603635960348255045c138ee9bab366.png)\n\nLet $f(x,y)= 3 - \\sin (2xy) .$ If we sum the areas of the thin rectangles that are formed by the curve $C$ and the surface $z=f(x,y)$ as we move along the curve $C$ from $(2,0)$ to $(0,2),$ we get a *signed area,* as shown in the diagram below.\n\n![](images/4c/4c3b973883d1943eebc47d168f6c2fcf00cf50702ce9afdfec7d5031735bbbff.png)\n\nThis signed area is equal to the line integral $\\displaystyle\\int\\limits_C f(x, y) \\, \\textrm{d}s.$\n\nFinally, we sometimes call $\\displaystyle\\int\\limits_C f(x, y) \\, \\textrm{d}s$ the line integral of $f$ **with respect to arc length.** Other types of line integral are possible, as we'll see soon.",
+            ":tutorial/title": "Introduction"
+          },
+          ":step/next": {
+            ":db/id": 17592186134751
+          }
+        },
+        {
+          ":db/id": 17592186134751,
+          ":step/content": {
+            ":db/id": 17592186135081,
+            ":tutorial/content": "Let $C$ be a \"smooth\" curve, defined parametrically as\n\n$$\n\\mathbf{r} = \\mathbf{r}(t), \\qquad t \\in (a,b).\n$$\n\nNow let $f(x,y)$ be a continuous function that is defined everywhere on $C.$ The **line integral** of $f$ over $C,$ denoted \n\n$$\n\\displaystyle\\int\\limits_C f(x, y) \\, \\textrm{d}s,\n$$\n\ncan be calculated using the formula\n\n$$\n\\int\\limits_C f(x, y) \\, \\textrm{d}s  = \\int\\limits_a^b  f(\\mathbf r(t)) \\, \\| \\mathbf r'(t) \\| \\, \\textrm{d}t.\n$$\n\n \n\nThe line integral formula extends to functions of $n$ variables. For example, for functions of three variables, we can use the formula\n\n$$\n\\int\\limits_C f(x, y,z) \\, \\textrm{d}s  = \\int\\limits_a^b  f(\\mathbf r(t)) \\, \\| \\mathbf r'(t) \\| \\, \\textrm{d}t.\n$$\n\n \n\nWe'll go through the details of where this formula comes from at the end of the lesson. But for now, let's get some practice at computing line integrals.",
+            ":tutorial/title": "The General Formula"
+          },
+          ":step/next": {
+            ":db/id": 17592186134744
+          }
+        }
+      ],
+      ":activity/title": "Line Integrals of Scalar Functions",
+      ":db/id": 17592186133993
+    }
+  ]
+}

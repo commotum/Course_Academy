@@ -1,0 +1,98 @@
+{
+  "database": "math",
+  "basis": 1356,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "record": [
+    {
+      ":activity/first-step": {
+        ":db/id": 17592186134760
+      },
+      ":activity/id": "e1b56295-70ee-55b2-8a65-97f8ae733716",
+      ":activity/steps": [
+        {
+          ":db/id": 17592186134760,
+          ":step/content": {
+            ":db/id": 17592186135084,
+            ":tutorial/content": "Suppose that $f(x)$ is continuous on $[a,b].$ The fundamental theorem of calculus states that\n\n$$\n\\int_a^b f'(x)\\,\\textrm d x = f(b) - f(a).\n$$\n\nA similar result, known as **the fundamental theorem for line integrals,** exists for line integrals of conservative vector fields. This theorem can be stated as follows:\n\n*Let $C$ be a piecewise-smooth curve given by the vector-valued function $\\mathbf r(t)$ for $t\\in [a,b].$ Let $f$ be a differentiable function of two or three variables such that $\\nabla f$ is continuous on $C.$ Then,*\n\n$$\n\\int_{C} \\nabla f \\cdot \\textrm{d}\\mathbf r = f(\\mathbf r(b)) - f(\\mathbf r(a)).\n$$\n\n \n\nWe'll discuss how this theorem is proved in simple cases at the end of the lesson. But for now, let's take a look at a concrete example of how to apply this theorem.",
+            ":tutorial/title": "Introduction"
+          },
+          ":step/next": {
+            ":db/id": 17592186134860
+          }
+        },
+        {
+          ":db/id": 17592186134824,
+          ":step/content": {
+            ":db/id": 17592186133878,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133694,
+              ":question/id": "234800a9-ae9c-56c4-8284-84041f129a59",
+              ":question/math-academy-id": "e-8759",
+              ":question/problem": "Let $f(x,y,z)=xy^2+ 2xz.$ Given that $C$ is the path along the curve $\\mathbf r(t)= \\langle e^{t}, t, e^{-t}\\rangle$ for $t\\in \\left[0,1\\right],$ evaluate $\\displaystyle\\int_{C} \\nabla f\\cdot \\textrm{d}\\mathbf r.$",
+              ":question/worked-solution": "Let $C$ be a piecewise-smooth curve given by the vector function $\\mathbf r(t)$ for $t\\in [a,b].$ Let $f$ be a differentiable function of two or three variables such that $\\nabla f$ is continuous on $C.$ The fundamental theorem for line integrals states that \n\n$$\n\\int_{C} \\nabla f \\cdot \\textrm{d}\\mathbf r = f(\\mathbf r(b)) - f(\\mathbf r(a)).\n$$\n\n \n\nIn our case, the position vectors of the endpoints of the curve are given by\n\n$$\n\\begin{aligned}r(0) & =⟨1,0,1⟩ \\\\ r(1) & =⟨e,1,\\frac{1}{e}⟩.\\end{aligned}\n$$\n\nTherefore, the coordinates of the endpoints of the path defined by $C$ are $(1,0,1)$ and $\\left(e, 1, \\dfrac{1}{e}\\right).$\n\nApplying the fundamental theorem for line integrals, we have\n\n$$\n\\begin{aligned}{\\int }_{C}∇f\\cdot \\text{d}r & =f(r(1))-f(r(0)) \\\\  & =f(e,1,\\frac{1}{e})-f(1,0,1) \\\\  & =(e(1)^{2}+2\\cdot e\\cdot \\frac{1}{e})-(1(0)^{2}+2(1)(1)) \\\\  & =(e+2)-2 \\\\  & =e.\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Applying the Fundamental Theorem of Line Integrals Over Parametric Curves"
+          },
+          ":step/next": {
+            ":db/id": 17592186134850
+          }
+        },
+        {
+          ":db/id": 17592186134825,
+          ":step/content": {
+            ":db/id": 17592186133879,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133695,
+              ":question/id": "667923e0-14bc-5bbd-8129-333703cd6616",
+              ":question/math-academy-id": "e-8760",
+              ":question/problem": "Consider the curve $C,$ defined parametrically as\n\n$$\n\\mathbf r(t) = \\left\\langle t,  1-t \\right\\rangle, \\quad 0 \\leq t \\leq 1.\n$$\n\nEvaluate $\\displaystyle{\\int _C \\mathbf F \\cdot \\textrm d\\mathbf r}$ for $\\mathbf F = ye^{xy}\\,\\mathbf i + xe^{xy}\\,\\mathbf j.$ \n\n*Hint: You may wish to use the fact that $\\mathbf F$ is conservative.*",
+              ":question/worked-solution": "Let $C$ be a piecewise-smooth curve given by the vector function $\\mathbf r(t)$ for $t\\in [a,b].$ Let $f$ be a differentiable function of two or three variables such that $\\nabla f$ is continuous on $C.$ The fundamental theorem for line integrals states that \n\n$$\n\\int_{C} \\nabla f \\cdot \\textrm{d}\\mathbf r = f(\\mathbf r(b)) - f(\\mathbf r(a)).\n$$\n\n \n\nTo apply the fundamental theorem for line integrals, we must first find a potential function $f$ such that $\\mathbf F = \\nabla f.$ Since we're given that $\\mathbf F$ is conservative, we know that such a function exists. Therefore, we must have\n\n$$\n\\begin{aligned}{f}_{x}(x,y) & =y{e}^{xy}, \\\\ {f}_{y}(x,y) & =x{e}^{xy}.\\end{aligned}\n$$\n\nReconstructing the function $f$ from its gradient in the usual way, we get\n\n$$\nf(x,y)= e^{xy}.\n$$\n\nNote that we set $C=0$ for the arbitrary constant since we can use any function $f$ that satisfies $\\nabla f = \\mathbf F.$\n\nWe're now ready to apply the fundamental theorem for line integrals. The position vectors of the endpoints of the curve are given by\n\n$$\n\\begin{aligned}r(0) & =⟨0,1⟩, \\\\ r(1) & =⟨1,0⟩.\\end{aligned}\n$$\n\nTherefore, the coordinates of the endpoints of the path defined by $C$ are $(0,1)$ and $(1,0).$\n\nFinally, applying the fundamental theorem for line integrals, we have\n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{C}∇f\\cdot \\text{d}r \\\\  & =f(1,0)-f(0,1) \\\\  & ={e}^{1\\cdot 0}-{e}^{0\\cdot 1} \\\\  & =1-1 \\\\  & =0.\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Applying the Fundamental Theorem of Line Integrals When the Potential Function Is Not Given"
+          },
+          ":step/next": {
+            ":db/id": 17592186134861
+          }
+        },
+        {
+          ":db/id": 17592186134850,
+          ":step/content": {
+            ":db/id": 17592186133890,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133706,
+              ":question/id": "3f724b05-571d-529d-ab2b-db9dd6d2b531",
+              ":question/math-academy-id": "e-9502",
+              ":question/problem": "Let $f(x,y)= xe^{y}.$ Given that $C$ is the path along the curve $x + 2y=3$ for $x\\in [-1,1],$ evaluate $\\displaystyle\\int_{C} \\nabla f\\cdot \\textrm{d}\\mathbf r.$",
+              ":question/worked-solution": "Let $C$ be a piecewise-smooth curve given by the vector function $\\mathbf r(t)$ for $t\\in [a,b].$ Let $f$ be a differentiable function of two or three variables such that $\\nabla f$ is continuous on $C.$ The fundamental theorem for line integrals states that \n\n$$\n\\int_{C} \\nabla f \\cdot \\textrm{d}\\mathbf r = f(\\mathbf r(b)) - f(\\mathbf r(a)).\n$$\n\n \n\nWe start by parametrizing the curve $C.$ A suitable parametrization is\n\n$$\n\\mathbf r(t) = \\left\\langle t, \\dfrac{1}{2}(3-t)\\right\\rangle, \\quad t\\in[-1,1].\n$$\n\nThen, the position vectors of the endpoints of the curve are given by\n\n$$\n\\begin{aligned}r(-1) & =⟨-1,2⟩, \\\\ r(1) & =⟨1,1⟩.\\end{aligned}\n$$\n\nTherefore, the coordinates of the endpoints of the path defined by $C$ are $(-1,2)$ and $(1,1).$\n\nApplying the fundamental theorem for line integrals, we have\n\n$$\n\\begin{aligned}{\\int }_{C}∇f\\cdot \\text{d}r & =f(r(1))-f(r(-1)) \\\\  & =f(1,1)-f(-1,2) \\\\  & =1\\cdot {e}^{1}-(-1)\\cdot {e}^{2} \\\\  & =e+{e}^{2} \\\\  & =e(1+e).\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Applying the Fundamental Theorem of Line Integrals Over Cartesian Curves"
+          },
+          ":step/next": {
+            ":db/id": 17592186134825
+          }
+        },
+        {
+          ":db/id": 17592186134860,
+          ":step/content": {
+            ":db/id": 17592186135127,
+            ":tutorial/content": "Let's apply the fundamental theorem for line integrals to evaluate\n\n$$\n\\int_C \\nabla f \\cdot \\textrm{d}\\mathbf{r},\n$$\n\nwhere $f(x,y) = x^2y^3$ and $C$ is the path along the curve $y=x^2$ for $x \\in [0,2].$ \n\nFirst, we must parameterize the curve $C.$ A suitable parametrization is \n\n$$\n\\mathbf{r}(t) = \\left\\langle t, \\: t^2\\right\\rangle, \\qquad t \\in [0,2].\n$$\n\nThe position vectors of the endpoints of $C$ are given by\n\n$$\n\\mathbf{r}(0)\t= \\left\\langle 0, 0\\right\\rangle, \\qquad\n\\mathbf{r}(2)\t= \\left\\langle 2, 4\\right\\rangle.\n$$\n\nTherefore, the coordinates of the path's endpoints defined by $C$ are $(0,0)$ and $(2,4).$\n\nFinally, applying the fundamental theorem for line integrals, we have\n\n$$\n\\begin{aligned}{\\int }_{C}∇f\\cdot \\text{d}r & =f(r(2))-f(r(0)) \\\\  & =f(2,4)-f(0,0) \\\\  & ={2}^{2}\\cdot {4}^{3}-{0}^{2}\\cdot {0}^{3} \\\\  & =4\\cdot 64 \\\\  & =256.\\end{aligned}\n$$\n\nNotice how much faster it is to evaluate a line integral when we can use the fundamental theorem.",
+            ":tutorial/title": "A Concrete Example"
+          },
+          ":step/next": {
+            ":db/id": 17592186134824
+          }
+        },
+        {
+          ":db/id": 17592186134861,
+          ":step/content": {
+            ":db/id": 17592186135128,
+            ":tutorial/content": "Here, we prove the fundamental theorem of line integrals in the two-dimensional case. The three-dimensional case is similar.\n\nLet $C$ be a smooth curve $\\mathbf r(t)$ for $t\\in [a,b],$ and suppose that $f(x,y)$ is a differentiable function of two variables such that $\\nabla f$ is continuous on $C.$ We wish to show that\n\n$$\n\\int_C \\nabla f \\cdot \\textrm d \\mathbf r = f(\\mathbf r(b)) - f(\\mathbf r(a)).\n$$\n\nUsing our usual formula for calculating line integrals, we can write the left-hand side as\n\n$$\n\\begin{aligned}{\\int }_{C}∇f\\cdot \\text{d}r & ={\\int }_{a}^{b}∇f\\cdot {r}^{′}(t)\\,\\text{d}t \\\\  & ={\\int }_{a}^{b}(\\frac{∂f}{∂x}\\,i+\\frac{∂f}{∂y}\\,j)\\cdot (\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j)\\,\\text{d}t \\\\  & ={\\int }_{a}^{b}\\frac{∂f}{∂x}\\frac{\\text{d}x}{\\text{d}t}+\\frac{∂f}{∂y}\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t.\\end{aligned}\n$$\n\nAccording to the chain rule, the integrand above is simply the derivative of $f(\\mathbf r(t))$ with respect to $t.$ Thus, we can write this integral as\n\n$$\n\\int_a^b \\dfrac{\\textrm d}{\\textrm d t}(f(\\mathbf r(t)))\\,\\textrm d t.\n$$\n\nFinally, by the fundamental theorem of calculus, this is equal to \n\n$$\nf(\\mathbf r(b)) - f(\\mathbf r(a)).\n$$\n\nThis concludes the proof in the case where $C$ is smooth. It's easy to show that the theorem also holds for piecewise smooth curves.",
+            ":tutorial/title": "Proof of the Fundamental Theorem for Smooth Curves"
+          }
+        }
+      ],
+      ":activity/title": "The Fundamental Theorem for Line Integrals",
+      ":db/id": 17592186133996
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "database": "math",
+  "basis": 1356,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "record": [
+    {
+      ":activity/first-step": {
+        ":db/id": 17592186125483
+      },
+      ":activity/id": "3a675a3e-a62b-5b11-9c31-522dea85c72d",
+      ":activity/steps": [
+        {
+          ":db/id": 17592186125483,
+          ":step/content": {
+            ":db/id": 17592186125815,
+            ":tutorial/content": "Suppose we know that the gradient of a function $f(x,y)$ is \n\n$$\n\\nabla f(x,y) = (2xy-3x^2) \\ \\mathbf i + (x^2-2y) \\ \\mathbf j.\n$$\n\n \n\nHow can we reconstruct the function $f(x,y)$ knowing only its gradient?\n\nSince the components of $\\nabla f$ must be the first-order partial derivatives of $f$ with respect to $x$ and $y$ respectively, we know that \n\n$$\n\\eqalign{\n\\dfrac {\\partial f}{\\partial x} =  2xy-3x^2,   \\qquad \\dfrac {\\partial f}{\\partial y}=x^2-2y.}\n$$\n\nIntegrating  $\\dfrac {\\partial f}{\\partial x}$ with respect to $x,$ treating $y$ as a constant, we get\n\n$$\nf(x,y) = \\int \\left(2xy-3x^2\\right) \\textrm d  x = x^2y -x^3 +g(y),\n$$\n\nwhere $g(y)$ is an arbitrary function of $y.$ Intuitively, $g(y)$ contains all the terms that would vanish when differentiated with respect to $x.$\n\nNow, differentiating the above with respect to $y$ gives \n\n$$\n\\dfrac {\\partial f}{\\partial y} = x^2 + g'(y).\n$$\n\nSo, equating the two expressions for $\\dfrac {\\partial f}{\\partial y}$ yields\n\n$$\n\\eqalign{ \nx^2 + g'(y) &= x^2-2y\\ \n        g'(y)  & = -2y.\n}\n$$\n\nTherefore, $\\displaystyle g(y)=\\int(-2y) \\ \\textrm d y =  -y^2 +C.$\n\nThis means that \n\n$$\nf(x,y)=x^2y -x^3-y^2 +C .\n$$\n\nNote that the above procedure is symmetric with respect to $x$ and $y.$ We could have started by integrating $\\dfrac {\\partial f}{\\partial y}$ with respect to $y$ and then differentiating with respect to $x.$ The final result would have been the same.",
+            ":tutorial/title": "Introduction"
+          },
+          ":step/next": {
+            ":db/id": 17592186125484
+          }
+        },
+        {
+          ":db/id": 17592186125484,
+          ":step/content": {
+            ":db/id": 17592186124569,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186124378,
+              ":question/id": "ff1853b3-627e-5c73-be98-b1d9a586f198",
+              ":question/math-academy-id": "e-7020",
+              ":question/problem": "Find $f(x,y)$ such that $\\nabla f = \\mathbf{F},$ where $\\mathbf F(x,y) = 2xy\\ \\mathbf i + (x^2 - 3)\\ \\mathbf j .$",
+              ":question/worked-solution": "The gradient of the function $f(x,y)$ is defined as\n\n$$\n\\nabla f(x,y) = \\dfrac{\\partial{f}}{\\partial{x}}\\,\\textbf{i} + \\dfrac{\\partial{f}}{\\partial{y}}\\,\\textbf{j}.\n$$\n\nSince $\\nabla f(x,y) = \\mathbf F(x,y),$ the function $f(x,y)$ must satisfy the following system:\n\n$$\n\\dfrac{\\partial{f}}{\\partial{x}} = 2xy, \\qquad \\dfrac{\\partial{f}}{\\partial{y}} = x^2-3.\n$$\n\nFirst, we integrate $\\dfrac{\\partial{f}}{\\partial{x}}$ with respect to $x.$ Note that the solution should contain an arbitrary function of $y\\mathbin{:}$\n\n$$\n\\begin{aligned}f(x,y) & =\\int \\frac{∂f}{∂x}\\,\\text{d}x \\\\  & =\\int 2xy\\,\\text{d}x \\\\  & ={x}^{2}y+g(y)\\end{aligned}\n$$\n\nNow, differentiating the above expression with respect to $y,$ we obtain\n\n$$\n\\dfrac{\\partial{f}}{\\partial{y}} = x^2 + g'(y).\n$$\n\nTaking $\\dfrac{\\partial{f}}{\\partial{y}} = x^2 -3$ into account, we obtain\n\n$$\n\\begin{aligned}{x}^{2}+{g}^{′}(y) & ={x}^{2}-3 \\\\ {g}^{′}(y) & =-3 \\\\ g(y) & =-3y+C,\\end{aligned}\n$$\n\nwhere $C$ is a constant.\n\nFinally, substituting $g(y)=-3y +C$ into our expression for $f(x,y),$ we get\n\n$$\nf(x,y) = x^2y -3y + C.\n$$"
+            },
+            ":knowledge-point/title": "Reconstructing a Two-Variable Function From Its Gradient"
+          },
+          ":step/next": {
+            ":db/id": 17592186125494
+          }
+        },
+        {
+          ":db/id": 17592186125494,
+          ":step/content": {
+            ":db/id": 17592186124574,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186124382,
+              ":question/id": "09d12c46-4ac8-53d9-80a6-ca68f98e0c5a",
+              ":question/math-academy-id": "e-7184",
+              ":question/problem": "Find $f(x,y,z)$ such that $\\nabla f(x,y,z)  = \\mathbf{F}(x,y,z),$ where $\\mathbf{F}(x,y,z) = yz\\,\\mathbf{i} + (xz + 4z^2)\\,\\mathbf{j} + (xy+8yz)\\,\\mathbf{k}.$",
+              ":question/worked-solution": "The gradient of the function $f(x,y,z)$ is defined as\n\n$$\n\\nabla f(x,y,z) = \\dfrac{\\partial{f}}{\\partial{x}} \\, \\mathbf{i} + \\dfrac{\\partial{f}}{\\partial{y}} \\, \\mathbf{j} + \\dfrac{\\partial{f}}{\\partial{z}} \\, \\mathbf{k}.\n$$\n\nSince $\\nabla f(x,y,z)  = \\mathbf{F}(x,y,z),$ the function $f(x,y,z)$ must satisfy the following system:\n\n$$\n\\dfrac{\\partial{f}}{\\partial{x}} = yz, \\qquad \\dfrac{\\partial{f}}{\\partial{y}} = xz + 4z^2, \\qquad \\dfrac{\\partial{f}}{\\partial{z}} = xy+8yz.\n$$\n\nFirst, we integrate $\\dfrac{\\partial{f}}{\\partial{x}}$ with respect to $x.$ Note that the solution should contain an arbitrary function of $y$ and $z \\mathbin{:}$\n\n$$\n\\begin{aligned}f(x,y,z) & =\\int \\frac{∂f}{∂x}\\,\\text{d}x \\\\  & =\\int yz\\,\\text{d}x \\\\  & =xyz+g(y,z)\\end{aligned}\n$$\n\nNow, differentiating the above expression with respect to $y,$ we obtain\n\n$$\n\\dfrac{\\partial{f}}{\\partial{y}} = xz + \\dfrac{\\partial{g}}{\\partial{y}}.\n$$\n\nTaking $\\dfrac{\\partial{f}}{\\partial{y}} = xz + 4z^2$ into account, we obtain\n\n$$\n\\begin{aligned}xz+\\frac{∂g}{∂y} & =xz+4{z}^{2} \\\\ \\frac{∂g}{∂y} & =4{z}^{2}.\\end{aligned}\n$$\n\nNow, we integrate $\\dfrac{\\partial{g}}{\\partial{y}}$ with respect to $y.$ Note that the solution should contain an arbitrary function of $z \\mathbin{:}$\n\n$$\n\\begin{aligned}g(y,z) & =\\int \\frac{∂g}{∂y}\\,\\text{d}y \\\\  & =\\int 4{z}^{2}\\,\\text{d}y \\\\  & =4y{z}^{2}+h(z)\\end{aligned}\n$$\n\nSubstituting $g(y,z) = 4yz^2 + h(z)$ in the expression for $f(x, y,z),$ we get\n\n$$\nf(x,y,z) = xyz + 4yz^2 + h(z).\n$$\n\nTo determine the function $h(z),$ we differentiate $f(x,y,z)$ with respect to $z.$ This gives\n\n$$\n\\dfrac{\\partial{f}}{\\partial{z}} = xy + 8yz + h'(z).\n$$\n\nTaking $\\dfrac{\\partial{f}}{\\partial{z}} = xy+8yz$ into account, we obtain\n\n$$\n\\begin{aligned}xy+8yz & =xy+8yz+{h}^{′}(z) \\\\ {h}^{′}(z) & =0 \\\\ h(z) & =C,\\end{aligned}\n$$\n\nwhere $C$ is a constant.\n\nConsequently,\n\n$$\nf(x,y,z) = xyz + 4yz^2 + C.\n$$"
+            },
+            ":knowledge-point/title": "Reconstructing a Three-Variable Function From Its Gradient"
+          }
+        }
+      ],
+      ":activity/title": "Calculating Potential Functions",
+      ":db/id": 17592186124740
+    }
+  ]
+}
