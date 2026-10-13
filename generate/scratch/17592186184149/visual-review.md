@@ -1,0 +1,7 @@
+# Render review
+
+All 46 source references were opened individually at original resolution, including every canonical formula glyph and every prompt/solution graph pair. Seventeen transparent graphs were additionally opened on white, individually, preserving original dimensions. The raster measurement record is source-plot-inspection.json; it independently reads axes, fitted pole calibration, blue zero vicinity and blue branch order. The graphs have unlabelled y scales; no y-unit precision is asserted.
+
+Twelve normal generated PNGs were also opened individually at original resolution: prompt and solution for tan and cot at each of easy, moderate and hard. Exact selected records are in selected-visual-review.json. They show correct fraction typesetting, asymptote positions, increasing/decreasing direction, shifted/baseline zero positions, excluded pole domains, intact solid/dashed branches, axes arrowheads, and unobscured labels. The exterior calibration strip may stagger a close baseline-zero label; it keeps exact x positions and never masks the graph. Pixel sampling and measured expanded label bounding boxes exercise every rendered validation instance, beyond these manually viewed representative images.
+
+Source replay keeps original PNGs and preserves every sentence/math stage. Changed source parameters and normal variants use the renderer; the independent source measurements verify the extracted tan/cot recipes before reuse.

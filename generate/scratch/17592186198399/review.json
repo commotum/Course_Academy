@@ -1,0 +1,2024 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "acc55da7-bbb1-53e4-9687-73875453d211",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 0\\le 2 x\\le 5,\\quad 0\\le 2 x + y\\le 6,\\quad 0\\le 2 z\\le 2\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n0\\le 2 x\\le 5,\\quad 0\\le 2 x + y\\le 6,\\quad 0\\le 2 z\\le 2,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=2 x,\\quad v=2 x + y,\\quad w=2 z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):0\\le u\\le 5,\\quad 0\\le v\\le 6,\\quad 0\\le w\\le 2\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}2 & 0 & 0 \\\\ 2 & 1 & 0 \\\\ 0 & 0 & 2\\end{vmatrix} \\\\  & =\\left(2\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 0 & 2\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}2 & 0 \\\\ 0 & 2\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}2 & 1 \\\\ 0 & 0\\end{vmatrix} \\\\  & =4\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{4}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(\\frac{u}{2},- u + v,\\frac{w}{2}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |\\frac{1}{4}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{0}^{5}\\int_{0}^{6}\\int_{0}^{2}\\frac{1}{4}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\frac{1}{4}\\cdot \\int_{0}^{5}1\\,\\mathrm{d}u\\cdot \\int_{0}^{6}1\\,\\mathrm{d}v\\cdot \\int_{0}^{2}1\\,\\mathrm{d}w \\\\  & =\\frac{1}{4}\\cdot [u]_{0}^{5}\\cdot [v]_{0}^{6}\\cdot [w]_{0}^{2} \\\\  & =\\frac{1}{4}\\cdot \\left(\\left(\\left(5\\right)\\right)-\\left(\\left(0\\right)\\right)\\right)\\cdot \\left(\\left(\\left(6\\right)\\right)-\\left(\\left(0\\right)\\right)\\right)\\cdot \\left(\\left(\\left(2\\right)\\right)-\\left(\\left(0\\right)\\right)\\right) \\\\  & =\\frac{1}{4}\\cdot \\left(\\left(5\\right)-\\left(0\\right)\\right)\\cdot \\left(\\left(6\\right)-\\left(0\\right)\\right)\\cdot \\left(\\left(2\\right)-\\left(0\\right)\\right) \\\\  & =15\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4c306d7e-0bb8-5ac0-b803-be013578b100",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2bfc922d-810d-5c17-ab7a-49e5fcdd7dd5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "240"
+            },
+            {
+              ":answer/id": "6fb7fa15-e151-5514-bd91-76d6a1fe9708",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "60"
+            },
+            {
+              ":answer/id": "c2411f59-d97a-5008-a223-e74afeb20573",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "15"
+            },
+            {
+              ":answer/id": "9a3d2c25-60b2-5622-ab27-df0e5553325b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5}{2}"
+            },
+            {
+              ":answer/id": "03c6fa6b-7042-50f9-833b-70a21fa40620",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c2411f59-d97a-5008-a223-e74afeb20573"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "affine",
+      "profile": "method_affine",
+      "parameters": {
+        "a": "2",
+        "b": "2",
+        "c": "2",
+        "d": "1",
+        "lu": "0",
+        "hu": "5",
+        "lv": "0",
+        "hv": "6",
+        "lw": "0",
+        "hw": "2"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "d67330e8e146c601ce5f1477dae1bd19c557103b6a2fe9ef99624929764a7b44",
+      "content_fingerprint": "6000a59e2ffcaccdc7bae44a311ac749f645a26fff6182de63c040717e64c40a",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "use_forward_J",
+        "omit_u_width",
+        "omit_v_width"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "a0955e6b-31b2-5025-a378-5f89af5e037a",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 0\\le 3 x\\le 3,\\quad 0\\le x + y\\le 2,\\quad 0\\le 2 z\\le 6\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n0\\le 3 x\\le 3,\\quad 0\\le x + y\\le 2,\\quad 0\\le 2 z\\le 6,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=3 x,\\quad v=x + y,\\quad w=2 z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):0\\le u\\le 3,\\quad 0\\le v\\le 2,\\quad 0\\le w\\le 6\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}3 & 0 & 0 \\\\ 1 & 1 & 0 \\\\ 0 & 0 & 2\\end{vmatrix} \\\\  & =\\left(3\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 0 & 2\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}1 & 0 \\\\ 0 & 2\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}1 & 1 \\\\ 0 & 0\\end{vmatrix} \\\\  & =6\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{6}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(\\frac{u}{3},- \\frac{u}{3} + v,\\frac{w}{2}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |\\frac{1}{6}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{0}^{3}\\int_{0}^{2}\\int_{0}^{6}\\frac{1}{6}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\frac{1}{6}\\cdot \\int_{0}^{3}1\\,\\mathrm{d}u\\cdot \\int_{0}^{2}1\\,\\mathrm{d}v\\cdot \\int_{0}^{6}1\\,\\mathrm{d}w \\\\  & =\\frac{1}{6}\\cdot [u]_{0}^{3}\\cdot [v]_{0}^{2}\\cdot [w]_{0}^{6} \\\\  & =\\frac{1}{6}\\cdot \\left(\\left(\\left(3\\right)\\right)-\\left(\\left(0\\right)\\right)\\right)\\cdot \\left(\\left(\\left(2\\right)\\right)-\\left(\\left(0\\right)\\right)\\right)\\cdot \\left(\\left(\\left(6\\right)\\right)-\\left(\\left(0\\right)\\right)\\right) \\\\  & =\\frac{1}{6}\\cdot \\left(\\left(3\\right)-\\left(0\\right)\\right)\\cdot \\left(\\left(2\\right)-\\left(0\\right)\\right)\\cdot \\left(\\left(6\\right)-\\left(0\\right)\\right) \\\\  & =6\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "89c06b82-2a61-5e90-a332-bf624bcad584",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "aab8e250-7dcd-539c-b883-5ad798e187ce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "216"
+            },
+            {
+              ":answer/id": "7413551d-f7f7-5bf3-bd4a-6de628bd84c1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "9c0bda32-539c-5ad5-b2db-2304aa2ac540",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "0457c116-77ca-5af2-9429-44340e2468a2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6"
+            },
+            {
+              ":answer/id": "f92aaa45-45f7-536b-8a08-efbb93dc2dfb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0457c116-77ca-5af2-9429-44340e2468a2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 1,
+      "template": "affine",
+      "profile": "method_affine",
+      "parameters": {
+        "a": "3",
+        "b": "1",
+        "c": "2",
+        "d": "1",
+        "lu": "0",
+        "hu": "3",
+        "lv": "0",
+        "hv": "2",
+        "lw": "0",
+        "hw": "6"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "32b4b677cd1feed6303f7b2060cd120066ee891b8d074b63453f743794c1aebb",
+      "content_fingerprint": "a3f9610e75c98192af273aaca98c634dce6a197e47768dd18a51f753a7ad3d45",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "use_forward_J",
+        "omit_u_width",
+        "omit_v_width"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "bc7f718d-0e61-5660-826c-0b0a880c51f6",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 1\\le x\\le 6,\\quad 2\\le - y + 2 z\\le 8,\\quad 1\\le y + z\\le 3\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le x\\le 6,\\quad 2\\le - y + 2 z\\le 8,\\quad 1\\le y + z\\le 3,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\quad v=- y + 2 z,\\quad w=y + z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):1\\le u\\le 6,\\quad 2\\le v\\le 8,\\quad 1\\le w\\le 3\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ 0 & -1 & 2 \\\\ 0 & 1 & 1\\end{vmatrix} \\\\  & =\\left(1\\right)(-1)^{1+1}\\begin{vmatrix}-1 & 2 \\\\ 1 & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}0 & 2 \\\\ 0 & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}0 & -1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =-3\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=- \\frac{1}{3}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(u,- \\frac{v}{3} + \\frac{2 w}{3},\\frac{v}{3} + \\frac{w}{3}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |- \\frac{1}{3}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{1}^{6}\\int_{2}^{8}\\int_{1}^{3}\\frac{1}{3}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\frac{1}{3}\\cdot \\int_{1}^{6}1\\,\\mathrm{d}u\\cdot \\int_{2}^{8}1\\,\\mathrm{d}v\\cdot \\int_{1}^{3}1\\,\\mathrm{d}w \\\\  & =\\frac{1}{3}\\cdot [u]_{1}^{6}\\cdot [v]_{2}^{8}\\cdot [w]_{1}^{3} \\\\  & =\\frac{1}{3}\\cdot \\left(\\left(\\left(6\\right)\\right)-\\left(\\left(1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(8\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(3\\right)\\right)-\\left(\\left(1\\right)\\right)\\right) \\\\  & =\\frac{1}{3}\\cdot \\left(\\left(6\\right)-\\left(1\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(3\\right)-\\left(1\\right)\\right) \\\\  & =20\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f48add60-a392-57fe-8983-20d012102492",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b69abeb7-2579-5f2e-906d-f4d0beb7a472",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{10}{3}"
+            },
+            {
+              ":answer/id": "7595c02a-3a3a-584b-993b-4895f5e9b7e1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "ed7574f4-d597-50cf-a530-945f9f8a58ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20"
+            },
+            {
+              ":answer/id": "63009897-010c-5a77-ad89-271403f33f44",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24"
+            },
+            {
+              ":answer/id": "df187a19-1708-52c4-a33e-877075ee1597",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ed7574f4-d597-50cf-a530-945f9f8a58ba"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "linear_yz",
+      "profile": "method_linear_yz",
+      "parameters": {
+        "a": "-1",
+        "b": "2",
+        "c": "1",
+        "d": "1",
+        "lu": "1",
+        "hu": "6",
+        "lv": "2",
+        "hv": "8",
+        "lw": "1",
+        "hw": "3"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "c20afba452365aa9d8d864be685c06e64798b63d7d9d852117ec00ddbf0fa537",
+      "content_fingerprint": "b252d58810b7ee5665e0f3e33ba49098d7cac92435b2561904a7b2d9008c3141",
+      "recipes": [
+        "correct",
+        "omit_u_width",
+        "omit_v_width",
+        "omit_w_width",
+        "use_upper_u_instead_of_difference"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "81efac5a-2a7d-544f-b672-a7d4a5804a9a",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 2\\le x\\le 5,\\quad -1\\le - 3 y + z\\le 1,\\quad -2\\le y + z\\le 4\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n2\\le x\\le 5,\\quad -1\\le - 3 y + z\\le 1,\\quad -2\\le y + z\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\quad v=- 3 y + z,\\quad w=y + z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):2\\le u\\le 5,\\quad -1\\le v\\le 1,\\quad -2\\le w\\le 4\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ 0 & -3 & 1 \\\\ 0 & 1 & 1\\end{vmatrix} \\\\  & =\\left(1\\right)(-1)^{1+1}\\begin{vmatrix}-3 & 1 \\\\ 1 & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}0 & 1 \\\\ 0 & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}0 & -3 \\\\ 0 & 1\\end{vmatrix} \\\\  & =-4\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=- \\frac{1}{4}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(u,- \\frac{v}{4} + \\frac{w}{4},\\frac{v}{4} + \\frac{3 w}{4}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |- \\frac{1}{4}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{2}^{5}\\int_{-1}^{1}\\int_{-2}^{4}\\frac{1}{4}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\frac{1}{4}\\cdot \\int_{2}^{5}1\\,\\mathrm{d}u\\cdot \\int_{-1}^{1}1\\,\\mathrm{d}v\\cdot \\int_{-2}^{4}1\\,\\mathrm{d}w \\\\  & =\\frac{1}{4}\\cdot [u]_{2}^{5}\\cdot [v]_{-1}^{1}\\cdot [w]_{-2}^{4} \\\\  & =\\frac{1}{4}\\cdot \\left(\\left(\\left(5\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(1\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(4\\right)\\right)-\\left(\\left(-2\\right)\\right)\\right) \\\\  & =\\frac{1}{4}\\cdot \\left(\\left(5\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(1\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(4\\right)-\\left(-2\\right)\\right) \\\\  & =9\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0432e74d-783d-5d36-9305-397de98ef6dc",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a0bafcc8-1a4a-5ed0-aa6d-a00e917703fb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{2}"
+            },
+            {
+              ":answer/id": "2ab0a45d-aec6-568b-a11a-cf3bb6b03289",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{2}"
+            },
+            {
+              ":answer/id": "d881ffa8-ec69-52b8-862d-c7c3df9520cd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "15"
+            },
+            {
+              ":answer/id": "c6499ddc-4985-5571-be4c-165ea4837558",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9"
+            },
+            {
+              ":answer/id": "b61082ac-29b1-5b17-9686-4aaeddb8a25a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c6499ddc-4985-5571-be4c-165ea4837558"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 1,
+      "template": "linear_yz",
+      "profile": "method_linear_yz",
+      "parameters": {
+        "a": "-3",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "2",
+        "hu": "5",
+        "lv": "-1",
+        "hv": "1",
+        "lw": "-2",
+        "hw": "4"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "d982c1a420fab3394f95c624cc225f3fc5e1ad73123ac1502cd18b41accc994d",
+      "content_fingerprint": "e3d5029de155e8eb880be2c51e0d6daa46eff22eaf35367ce52a0d21616bb90a",
+      "recipes": [
+        "correct",
+        "omit_u_width",
+        "omit_v_width",
+        "omit_w_width",
+        "use_upper_u_instead_of_difference"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "b40b8978-8c7f-5e24-9b04-e200ea70d42e",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 1\\le x\\le 6,\\quad 2\\le - x + y\\le 8,\\quad 1\\le 2 x^{2} + y^{2} + z\\le 3\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le x\\le 6,\\quad 2\\le - x + y\\le 8,\\quad 1\\le 2 x^{2} + y^{2} + z\\le 3,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\quad v=- x + y,\\quad w=2 x^{2} + y^{2} + z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):1\\le u\\le 6,\\quad 2\\le v\\le 8,\\quad 1\\le w\\le 3\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ 4 x & 2 y & 1\\end{vmatrix} \\\\  & =\\left(1\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 2 y & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}-1 & 0 \\\\ 4 x & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}-1 & 1 \\\\ 4 x & 2 y\\end{vmatrix} \\\\  & =1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=1.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(u,u + v,- 2 u^{2} + w - \\left(u + v\\right)^{2}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |1|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{1}^{6}\\int_{2}^{8}\\int_{1}^{3}1\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{1}^{6}1\\,\\mathrm{d}u\\cdot \\int_{2}^{8}1\\,\\mathrm{d}v\\cdot \\int_{1}^{3}1\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{1}^{6}\\cdot [v]_{2}^{8}\\cdot [w]_{1}^{3} \\\\  & =1\\cdot \\left(\\left(\\left(6\\right)\\right)-\\left(\\left(1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(8\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(3\\right)\\right)-\\left(\\left(1\\right)\\right)\\right) \\\\  & =1\\cdot \\left(\\left(6\\right)-\\left(1\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(3\\right)-\\left(1\\right)\\right) \\\\  & =60\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "67fb18c7-5b96-5d1a-aba8-221879375bd8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a532b2c7-5fe5-5f17-8a9f-c5f9753566e8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10"
+            },
+            {
+              ":answer/id": "3080478b-9ee8-53a9-9954-2504baf40fec",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12"
+            },
+            {
+              ":answer/id": "e93a74ae-d8b7-588c-84fe-0840e924adcc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "60"
+            },
+            {
+              ":answer/id": "9074998a-67e2-5e6a-ad65-48b3e627497e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72"
+            },
+            {
+              ":answer/id": "475fe3d1-8316-5f4e-bcd6-da509f1ba9cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e93a74ae-d8b7-588c-84fe-0840e924adcc"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "shear",
+      "profile": "method_shear",
+      "parameters": {
+        "a": "-1",
+        "b": "2",
+        "c": "1",
+        "d": "1",
+        "lu": "1",
+        "hu": "6",
+        "lv": "2",
+        "hv": "8",
+        "lw": "1",
+        "hw": "3"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "4c6ceb68cae7c3fe74cf5820b5b901cd572dfbd1fa1431aa35703b67f5be9909",
+      "content_fingerprint": "da223112f7d6ab11123836081cfc0b78b398972cece4152ef577ecee1c35a612",
+      "recipes": [
+        "correct",
+        "omit_u_width",
+        "omit_v_width",
+        "omit_w_width",
+        "use_upper_u_instead_of_difference"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "2e0e3cc7-56fe-5717-8efe-58216798bc75",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 2\\le x\\le 5,\\quad -1\\le - 3 x + y\\le 1,\\quad -2\\le x^{2} + y^{2} + z\\le 4\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n2\\le x\\le 5,\\quad -1\\le - 3 x + y\\le 1,\\quad -2\\le x^{2} + y^{2} + z\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\quad v=- 3 x + y,\\quad w=x^{2} + y^{2} + z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):2\\le u\\le 5,\\quad -1\\le v\\le 1,\\quad -2\\le w\\le 4\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ -3 & 1 & 0 \\\\ 2 x & 2 y & 1\\end{vmatrix} \\\\  & =\\left(1\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 2 y & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}-3 & 0 \\\\ 2 x & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}-3 & 1 \\\\ 2 x & 2 y\\end{vmatrix} \\\\  & =1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=1.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(u,3 u + v,- u^{2} + w - \\left(3 u + v\\right)^{2}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |1|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{2}^{5}\\int_{-1}^{1}\\int_{-2}^{4}1\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{2}^{5}1\\,\\mathrm{d}u\\cdot \\int_{-1}^{1}1\\,\\mathrm{d}v\\cdot \\int_{-2}^{4}1\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{2}^{5}\\cdot [v]_{-1}^{1}\\cdot [w]_{-2}^{4} \\\\  & =1\\cdot \\left(\\left(\\left(5\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(1\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(4\\right)\\right)-\\left(\\left(-2\\right)\\right)\\right) \\\\  & =1\\cdot \\left(\\left(5\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(1\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(4\\right)-\\left(-2\\right)\\right) \\\\  & =36\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7dfd1267-3891-5d94-8754-4125a3916f22",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fafdc3fa-e52a-5aa0-b13b-7f8e44534ca9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18"
+            },
+            {
+              ":answer/id": "990d882c-6018-547f-8255-6718d17eb443",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6"
+            },
+            {
+              ":answer/id": "81d650ec-d0c1-5786-9740-f7f1e9da6d20",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "60"
+            },
+            {
+              ":answer/id": "5f2f018c-d76d-5898-ba86-abb226b9e590",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36"
+            },
+            {
+              ":answer/id": "7ab3d979-cd52-5b16-940b-61fb65d4c7a5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5f2f018c-d76d-5898-ba86-abb226b9e590"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 1,
+      "template": "shear",
+      "profile": "method_shear",
+      "parameters": {
+        "a": "-3",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "2",
+        "hu": "5",
+        "lv": "-1",
+        "hv": "1",
+        "lw": "-2",
+        "hw": "4"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "bd0a6a2087d4ccd51e16adcdf3fa0e2a30d42e0c3d3fc6306d725931f4bbbf82",
+      "content_fingerprint": "a704198437a3b4fd9922a2e2f88153962f46e6d1109f23994722177527f763cb",
+      "recipes": [
+        "correct",
+        "omit_u_width",
+        "omit_v_width",
+        "omit_w_width",
+        "use_upper_u_instead_of_difference"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "29b48c30-9d4a-5c55-ac22-623c0cbfe27e",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 1\\le - x + 2 z\\le 6,\\quad 2\\le y\\le 8,\\quad 1\\le y + z\\le 3\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le - x + 2 z\\le 6,\\quad 2\\le y\\le 8,\\quad 1\\le y + z\\le 3,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=- x + 2 z,\\quad v=y,\\quad w=y + z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):1\\le u\\le 6,\\quad 2\\le v\\le 8,\\quad 1\\le w\\le 3\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-1 & 0 & 2 \\\\ 0 & 1 & 0 \\\\ 0 & 1 & 1\\end{vmatrix} \\\\  & =\\left(-1\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 1 & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}0 & 0 \\\\ 0 & 1\\end{vmatrix}+\\left(2\\right)(-1)^{1+3}\\begin{vmatrix}0 & 1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =-1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=-1.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(- u - 2 v + 2 w,v,- v + w\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |-1|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{1}^{6}\\int_{2}^{8}\\int_{1}^{3}1\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{1}^{6}1\\,\\mathrm{d}u\\cdot \\int_{2}^{8}1\\,\\mathrm{d}v\\cdot \\int_{1}^{3}1\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{1}^{6}\\cdot [v]_{2}^{8}\\cdot [w]_{1}^{3} \\\\  & =1\\cdot \\left(\\left(\\left(6\\right)\\right)-\\left(\\left(1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(8\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(3\\right)\\right)-\\left(\\left(1\\right)\\right)\\right) \\\\  & =1\\cdot \\left(\\left(6\\right)-\\left(1\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(3\\right)-\\left(1\\right)\\right) \\\\  & =60\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d53d5bdb-eab1-552d-973a-f220e880c286",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "dbf02829-c6dc-5cac-9ccf-9560274ff058",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10"
+            },
+            {
+              ":answer/id": "4cc611f7-4a8e-5feb-b65b-02ac85703ec4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12"
+            },
+            {
+              ":answer/id": "cf4c6843-1257-5364-a265-0d6f1a78fb12",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "60"
+            },
+            {
+              ":answer/id": "eb0be2ef-7ff7-5d5e-8f55-a338ffa0a029",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72"
+            },
+            {
+              ":answer/id": "ee39cbac-7650-5e9a-9b14-6628181010ef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cf4c6843-1257-5364-a265-0d6f1a78fb12"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "linear_xz",
+      "profile": "method_linear_xz",
+      "parameters": {
+        "a": "-1",
+        "b": "2",
+        "c": "1",
+        "d": "1",
+        "lu": "1",
+        "hu": "6",
+        "lv": "2",
+        "hv": "8",
+        "lw": "1",
+        "hw": "3"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "a8a9a99be128016f8871f28af7db080c6dcceba87eec55ba3e3894d858442efa",
+      "content_fingerprint": "2cf91730493a5e0c26c56145a9f9ca2e0458fa46134e3d33642a5f70029afc13",
+      "recipes": [
+        "correct",
+        "omit_u_width",
+        "omit_v_width",
+        "omit_w_width",
+        "use_upper_u_instead_of_difference"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "0859c2ab-2b40-59c3-9710-6061744d42f9",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 2\\le - 3 x + z\\le 5,\\quad -1\\le y\\le 1,\\quad -2\\le y + z\\le 4\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n2\\le - 3 x + z\\le 5,\\quad -1\\le y\\le 1,\\quad -2\\le y + z\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=- 3 x + z,\\quad v=y,\\quad w=y + z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):2\\le u\\le 5,\\quad -1\\le v\\le 1,\\quad -2\\le w\\le 4\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-3 & 0 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 1 & 1\\end{vmatrix} \\\\  & =\\left(-3\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 1 & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}0 & 0 \\\\ 0 & 1\\end{vmatrix}+\\left(1\\right)(-1)^{1+3}\\begin{vmatrix}0 & 1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =-3\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=- \\frac{1}{3}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(- \\frac{u}{3} - \\frac{v}{3} + \\frac{w}{3},v,- v + w\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |- \\frac{1}{3}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{2}^{5}\\int_{-1}^{1}\\int_{-2}^{4}\\frac{1}{3}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\frac{1}{3}\\cdot \\int_{2}^{5}1\\,\\mathrm{d}u\\cdot \\int_{-1}^{1}1\\,\\mathrm{d}v\\cdot \\int_{-2}^{4}1\\,\\mathrm{d}w \\\\  & =\\frac{1}{3}\\cdot [u]_{2}^{5}\\cdot [v]_{-1}^{1}\\cdot [w]_{-2}^{4} \\\\  & =\\frac{1}{3}\\cdot \\left(\\left(\\left(5\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(1\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(4\\right)\\right)-\\left(\\left(-2\\right)\\right)\\right) \\\\  & =\\frac{1}{3}\\cdot \\left(\\left(5\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(1\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(4\\right)-\\left(-2\\right)\\right) \\\\  & =12\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fcd4045f-1474-5444-ba60-2fcd6e180f36",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5f8a8ea4-dc1a-5b8f-8287-5709e0375785",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6"
+            },
+            {
+              ":answer/id": "c2f621e6-c3e8-5ec1-8058-5e3b716013a6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "cc558600-f74b-5ebc-b679-a2909e902e63",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20"
+            },
+            {
+              ":answer/id": "fc3444ab-ee03-5682-8a3f-94e88269c473",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12"
+            },
+            {
+              ":answer/id": "34a5683a-549d-5a45-83df-e373a44436fd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fc3444ab-ee03-5682-8a3f-94e88269c473"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 1,
+      "template": "linear_xz",
+      "profile": "method_linear_xz",
+      "parameters": {
+        "a": "-3",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "2",
+        "hu": "5",
+        "lv": "-1",
+        "hv": "1",
+        "lw": "-2",
+        "hw": "4"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "d5d76e4fd5faa5861a4e1ac764339a98355f11e7fa83c554cc1f2911ae6b6c78",
+      "content_fingerprint": "c450f0c33fc59f1a018c97ad3da5fb52d62b451ef910897f3f87fdf6d3480601",
+      "recipes": [
+        "correct",
+        "omit_u_width",
+        "omit_v_width",
+        "omit_w_width",
+        "use_upper_u_instead_of_difference"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "565f5f26-f7e7-51bc-9659-799f6e1532de",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, \\frac{1}{2}\\le x\\le 4,\\quad 2\\le - x^{2} + y\\le 8,\\quad 1\\le 2 x z\\le 3\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n\\frac{1}{2}\\le x\\le 4,\\quad 2\\le - x^{2} + y\\le 8,\\quad 1\\le 2 x z\\le 3,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\quad v=- x^{2} + y,\\quad w=2 x z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):\\frac{1}{2}\\le u\\le 4,\\quad 2\\le v\\le 8,\\quad 1\\le w\\le 3\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ - 2 x & 1 & 0 \\\\ 2 z & 0 & 2 x\\end{vmatrix} \\\\  & =\\left(1\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 0 & 2 x\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}- 2 x & 0 \\\\ 2 z & 2 x\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}- 2 x & 1 \\\\ 2 z & 0\\end{vmatrix} \\\\  & =2 x \\\\  & =2 u\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{2 u}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(u,u^{2} + v,\\frac{w}{2 u}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |\\frac{1}{2 u}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{\\frac{1}{2}}^{4}\\int_{2}^{8}\\int_{1}^{3}\\frac{1}{2 u}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{\\frac{1}{2}}^{4}\\frac{1}{2 u}\\,\\mathrm{d}u\\cdot \\int_{2}^{8}1\\,\\mathrm{d}v\\cdot \\int_{1}^{3}1\\,\\mathrm{d}w \\\\  & =1\\cdot [\\frac{\\ln{\\left(u \\right)}}{2}]_{\\frac{1}{2}}^{4}\\cdot [v]_{2}^{8}\\cdot [w]_{1}^{3} \\\\  & =1\\cdot \\left(\\left(\\frac{\\ln{\\left(\\left(4\\right) \\right)}}{2}\\right)-\\left(\\frac{\\ln{\\left(\\left(\\frac{1}{2}\\right) \\right)}}{2}\\right)\\right)\\cdot \\left(\\left(\\left(8\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(3\\right)\\right)-\\left(\\left(1\\right)\\right)\\right) \\\\  & =1\\cdot \\left(\\left(\\ln{\\left(2 \\right)}\\right)-\\left(- \\frac{\\ln{\\left(2 \\right)}}{2}\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(3\\right)-\\left(1\\right)\\right) \\\\  & =18 \\ln{\\left(2 \\right)}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c4ea09a7-2aba-5767-9ba3-94187435e7b7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b661c3e6-b419-5f1e-aee2-213ec6f0095d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "189"
+            },
+            {
+              ":answer/id": "dba07ad6-d4b8-5dbe-9b26-5fe64ba8df2b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "42"
+            },
+            {
+              ":answer/id": "77c3e3e9-8701-552c-9006-a25bdfdc68e3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "f665b719-b104-5d29-b9b4-a05784b87821",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "34f7a479-42cf-5051-bad1-822510f4c445",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\ln{\\left(2 \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "77c3e3e9-8701-552c-9006-a25bdfdc68e3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "log",
+      "profile": "method_log",
+      "parameters": {
+        "a": "-1",
+        "b": "2",
+        "c": "1",
+        "d": "1",
+        "lu": "1/2",
+        "hu": "4",
+        "lv": "2",
+        "hv": "8",
+        "lw": "1",
+        "hw": "3"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "8b7069f551a64c893834dc009092133918dbbf97df3ed8e2cc69616495822cfb",
+      "content_fingerprint": "575466c61ef4c4b83bd658f1c7c56aa83d786e4d674de6a2e4092e32841d11bb",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "use_forward_J",
+        "omit_v_width",
+        "omit_lower_log_endpoint"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "2dd9654b-0461-5e64-bfd2-2bcb99a9e03b",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, \\frac{1}{2}\\le x\\le 3,\\quad -1\\le - 3 x^{2} + y\\le 1,\\quad 1\\le x z\\le 7\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n\\frac{1}{2}\\le x\\le 3,\\quad -1\\le - 3 x^{2} + y\\le 1,\\quad 1\\le x z\\le 7,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\quad v=- 3 x^{2} + y,\\quad w=x z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):\\frac{1}{2}\\le u\\le 3,\\quad -1\\le v\\le 1,\\quad 1\\le w\\le 7\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ - 6 x & 1 & 0 \\\\ z & 0 & x\\end{vmatrix} \\\\  & =\\left(1\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 0 & x\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}- 6 x & 0 \\\\ z & x\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}- 6 x & 1 \\\\ z & 0\\end{vmatrix} \\\\  & =x \\\\  & =u\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{u}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(u,3 u^{2} + v,\\frac{w}{u}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |\\frac{1}{u}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{\\frac{1}{2}}^{3}\\int_{-1}^{1}\\int_{1}^{7}\\frac{1}{u}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{\\frac{1}{2}}^{3}\\frac{1}{u}\\,\\mathrm{d}u\\cdot \\int_{-1}^{1}1\\,\\mathrm{d}v\\cdot \\int_{1}^{7}1\\,\\mathrm{d}w \\\\  & =1\\cdot [\\ln{\\left(u \\right)}]_{\\frac{1}{2}}^{3}\\cdot [v]_{-1}^{1}\\cdot [w]_{1}^{7} \\\\  & =1\\cdot \\left(\\left(\\ln{\\left(\\left(3\\right) \\right)}\\right)-\\left(\\ln{\\left(\\left(\\frac{1}{2}\\right) \\right)}\\right)\\right)\\cdot \\left(\\left(\\left(1\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(7\\right)\\right)-\\left(\\left(1\\right)\\right)\\right) \\\\  & =1\\cdot \\left(\\left(\\ln{\\left(3 \\right)}\\right)-\\left(- \\ln{\\left(2 \\right)}\\right)\\right)\\cdot \\left(\\left(1\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(7\\right)-\\left(1\\right)\\right) \\\\  & =12 \\ln{\\left(6 \\right)}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e2d00237-67f6-5224-b96f-a637132b8d81",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "80814486-47ff-5636-9fe7-5586d6fbff43",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{105}{2}"
+            },
+            {
+              ":answer/id": "84bd416b-33f0-5b9b-9745-1f08945c4336",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 \\ln{\\left(6 \\right)}"
+            },
+            {
+              ":answer/id": "ca6f197f-1cea-54c7-8d54-c9b2f438b44f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 \\ln{\\left(3 \\right)}"
+            },
+            {
+              ":answer/id": "7c8c9763-4381-5b93-82f8-0ba8760e21e8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 \\ln{\\left(6 \\right)}"
+            },
+            {
+              ":answer/id": "cc2055be-9228-5fd1-ab75-230ec8aab6d2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7c8c9763-4381-5b93-82f8-0ba8760e21e8"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 1,
+      "template": "log",
+      "profile": "method_log",
+      "parameters": {
+        "a": "-3",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "1/2",
+        "hu": "3",
+        "lv": "-1",
+        "hv": "1",
+        "lw": "1",
+        "hw": "7"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "d87c91f0b2a113d8cd8acdd9039b44c1beaa22ab45d967b5106e70ed94a5ac72",
+      "content_fingerprint": "91f722d10cd18d9a17c6ad0de6c7c9b66348c872dbd58ace5b6aeee91047fddc",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "use_forward_J",
+        "omit_v_width",
+        "omit_lower_log_endpoint"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "061e33f5-5205-58e9-8655-0ca186d6093d",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 1\\le x\\le 6,\\quad 2\\le - x^{2} - y - 2 z\\le 8,\\quad 1\\le \\sqrt{z}\\le 5\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le x\\le 6,\\quad 2\\le - x^{2} - y - 2 z\\le 8,\\quad 1\\le \\sqrt{z}\\le 5,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\quad v=- x^{2} - y - 2 z,\\quad w=\\sqrt{z}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):1\\le u\\le 6,\\quad 2\\le v\\le 8,\\quad 1\\le w\\le 5\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ - 2 x & -1 & -2 \\\\ 0 & 0 & \\frac{1}{2 \\sqrt{z}}\\end{vmatrix} \\\\  & =\\left(1\\right)(-1)^{1+1}\\begin{vmatrix}-1 & -2 \\\\ 0 & \\frac{1}{2 \\sqrt{z}}\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}- 2 x & -2 \\\\ 0 & \\frac{1}{2 \\sqrt{z}}\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}- 2 x & -1 \\\\ 0 & 0\\end{vmatrix} \\\\  & =- \\frac{1}{2 \\sqrt{z}} \\\\  & =- \\frac{1}{2 w}\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=- 2 w.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(u,- u^{2} - v - 2 w^{2},w^{2}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |- 2 w|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{1}^{6}\\int_{2}^{8}\\int_{1}^{5}2 w\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{1}^{6}1\\,\\mathrm{d}u\\cdot \\int_{2}^{8}1\\,\\mathrm{d}v\\cdot \\int_{1}^{5}2 w\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{1}^{6}\\cdot [v]_{2}^{8}\\cdot [w^{2}]_{1}^{5} \\\\  & =1\\cdot \\left(\\left(\\left(6\\right)\\right)-\\left(\\left(1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(8\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(5\\right)^{2}\\right)-\\left(\\left(1\\right)^{2}\\right)\\right) \\\\  & =1\\cdot \\left(\\left(6\\right)-\\left(1\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(25\\right)-\\left(1\\right)\\right) \\\\  & =720\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "638a6275-9546-5d7d-9137-a279f0b36046",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "47cf635e-0bb8-583d-8a2f-dc685ce453db",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "360"
+            },
+            {
+              ":answer/id": "310f45a4-d4ee-5f68-b982-702b2eeb5b29",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "120"
+            },
+            {
+              ":answer/id": "8fdb519b-2ef2-5f74-81ba-6cb869647787",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "720"
+            },
+            {
+              ":answer/id": "d7e819c1-1f28-5cd1-9ad2-e0c86a76946c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "750"
+            },
+            {
+              ":answer/id": "b86e9739-cf5b-53c1-9cb3-3be781476745",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1240"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8fdb519b-2ef2-5f74-81ba-6cb869647787"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "sqrt",
+      "profile": "method_sqrt",
+      "parameters": {
+        "a": "-1",
+        "b": "2",
+        "c": "1",
+        "d": "1",
+        "lu": "1",
+        "hu": "6",
+        "lv": "2",
+        "hv": "8",
+        "lw": "1",
+        "hw": "5"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "c075796595731b8e54fc9293cc116373b0e7115ddabe4c4c8b2b5a4b4e2c97ff",
+      "content_fingerprint": "12eed3eff2f6bfe2ec9070e6a824418f8e83a15d2a9f95779e19fc3794f264ce",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "omit_chain_factor_two",
+        "use_z_instead_of_dz_dw",
+        "omit_lower_squared_endpoint"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "ae331249-ee93-57af-9ad4-617dae6575be",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 2\\le x\\le 5,\\quad -1\\le - 3 x^{2} - y - z\\le 1,\\quad 1\\le \\sqrt{z}\\le 4\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n2\\le x\\le 5,\\quad -1\\le - 3 x^{2} - y - z\\le 1,\\quad 1\\le \\sqrt{z}\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\quad v=- 3 x^{2} - y - z,\\quad w=\\sqrt{z}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):2\\le u\\le 5,\\quad -1\\le v\\le 1,\\quad 1\\le w\\le 4\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ - 6 x & -1 & -1 \\\\ 0 & 0 & \\frac{1}{2 \\sqrt{z}}\\end{vmatrix} \\\\  & =\\left(1\\right)(-1)^{1+1}\\begin{vmatrix}-1 & -1 \\\\ 0 & \\frac{1}{2 \\sqrt{z}}\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}- 6 x & -1 \\\\ 0 & \\frac{1}{2 \\sqrt{z}}\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}- 6 x & -1 \\\\ 0 & 0\\end{vmatrix} \\\\  & =- \\frac{1}{2 \\sqrt{z}} \\\\  & =- \\frac{1}{2 w}\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=- 2 w.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(u,- 3 u^{2} - v - w^{2},w^{2}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |- 2 w|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{2}^{5}\\int_{-1}^{1}\\int_{1}^{4}2 w\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{2}^{5}1\\,\\mathrm{d}u\\cdot \\int_{-1}^{1}1\\,\\mathrm{d}v\\cdot \\int_{1}^{4}2 w\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{2}^{5}\\cdot [v]_{-1}^{1}\\cdot [w^{2}]_{1}^{4} \\\\  & =1\\cdot \\left(\\left(\\left(5\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(1\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(4\\right)^{2}\\right)-\\left(\\left(1\\right)^{2}\\right)\\right) \\\\  & =1\\cdot \\left(\\left(5\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(1\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(16\\right)-\\left(1\\right)\\right) \\\\  & =90\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "34f86091-b4b3-5a94-a434-75757942de9d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "432d72b5-5d90-5989-a0e7-43fb1fd2a708",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "45"
+            },
+            {
+              ":answer/id": "b2b0cfe0-5ef9-5785-9e19-778a8d22c431",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "126"
+            },
+            {
+              ":answer/id": "89d07d06-7f4d-59e3-8cf6-1c897e3ea817",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "96"
+            },
+            {
+              ":answer/id": "901a1e41-3def-51cf-93ce-a2892719f775",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "90"
+            },
+            {
+              ":answer/id": "fa64d3a7-0da8-5fc6-bb3b-594496159835",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "901a1e41-3def-51cf-93ce-a2892719f775"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 1,
+      "template": "sqrt",
+      "profile": "method_sqrt",
+      "parameters": {
+        "a": "-3",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "2",
+        "hu": "5",
+        "lv": "-1",
+        "hv": "1",
+        "lw": "1",
+        "hw": "4"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "8575dea1762301f3800ed3e815753e0e6d08b9c98c6223ee116084c21dba36b4",
+      "content_fingerprint": "458d62cb7e921f10aeec75de599b1ca722cd66b7c9e3028ae68a56cc6e9da25a",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "omit_chain_factor_two",
+        "use_z_instead_of_dz_dw",
+        "omit_lower_squared_endpoint"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "36fb6a54-8de5-5292-b6b5-e5ee98af3fc3",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 1\\le y\\le 6,\\quad 2\\le x + \\sqrt{y}\\le 8,\\quad 1\\le \\frac{1}{z - 1}\\le 5\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le y\\le 6,\\quad 2\\le x + \\sqrt{y}\\le 8,\\quad 1\\le \\frac{1}{z - 1}\\le 5,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=y,\\quad v=x + \\sqrt{y},\\quad w=\\frac{1}{z - 1}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):1\\le u\\le 6,\\quad 2\\le v\\le 8,\\quad 1\\le w\\le 5\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}0 & 1 & 0 \\\\ 1 & \\frac{1}{2 \\sqrt{y}} & 0 \\\\ 0 & 0 & - \\frac{1}{\\left(z - 1\\right)^{2}}\\end{vmatrix} \\\\  & =\\left(0\\right)(-1)^{1+1}\\begin{vmatrix}\\frac{1}{2 \\sqrt{y}} & 0 \\\\ 0 & - \\frac{1}{\\left(z - 1\\right)^{2}}\\end{vmatrix}+\\left(1\\right)(-1)^{1+2}\\begin{vmatrix}1 & 0 \\\\ 0 & - \\frac{1}{\\left(z - 1\\right)^{2}}\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}1 & \\frac{1}{2 \\sqrt{y}} \\\\ 0 & 0\\end{vmatrix} \\\\  & =\\frac{1}{\\left(z - 1\\right)^{2}} \\\\  & =w^{2}\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{w^{2}}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(- \\sqrt{u} + v,u,1 + \\frac{1}{w}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |\\frac{1}{w^{2}}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{1}^{6}\\int_{2}^{8}\\int_{1}^{5}\\frac{1}{w^{2}}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{1}^{6}1\\,\\mathrm{d}u\\cdot \\int_{2}^{8}1\\,\\mathrm{d}v\\cdot \\int_{1}^{5}\\frac{1}{w^{2}}\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{1}^{6}\\cdot [v]_{2}^{8}\\cdot [- \\frac{1}{w}]_{1}^{5} \\\\  & =1\\cdot \\left(\\left(\\left(6\\right)\\right)-\\left(\\left(1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(8\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(- \\frac{1}{\\left(5\\right)}\\right)-\\left(- \\frac{1}{\\left(1\\right)}\\right)\\right) \\\\  & =1\\cdot \\left(\\left(6\\right)-\\left(1\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(- \\frac{1}{5}\\right)-\\left(-1\\right)\\right) \\\\  & =24\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3a239399-d845-5e4f-8c40-b89cd4d84d16",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e94408c3-bb4e-533c-b06f-1b4aa3741522",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1240"
+            },
+            {
+              ":answer/id": "0764a172-352a-5526-b5ce-3e2c4b8987c2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "120"
+            },
+            {
+              ":answer/id": "609a8f93-7baa-5a6b-a609-beb1dff1cfbe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24"
+            },
+            {
+              ":answer/id": "d9f52945-a915-5474-bc01-3508fdd6e382",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{144}{5}"
+            },
+            {
+              ":answer/id": "47d3e7c8-1af0-5c5f-b98f-df08cb37b539",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "609a8f93-7baa-5a6b-a609-beb1dff1cfbe"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "reciprocal",
+      "profile": "method_reciprocal",
+      "parameters": {
+        "a": "-1",
+        "b": "2",
+        "c": "1",
+        "d": "1",
+        "lu": "1",
+        "hu": "6",
+        "lv": "2",
+        "hv": "8",
+        "lw": "1",
+        "hw": "5"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "a54a6c5d63d8b1ff7dcebd13cec2449730d959ea12076461d720810e98d93281",
+      "content_fingerprint": "6d65b9d37894b1dcde9a237089dca6de7047c3c6b045ce11002988b623e82ff1",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "use_forward_J",
+        "keep_only_upper_reciprocal_magnitude",
+        "use_absolute_derivative_of_density"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "06ae8c30-6ef6-5ae7-a3a6-6df37672842e",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 1\\le y\\le 4,\\quad -1\\le x + \\sqrt{y}\\le 1,\\quad 1\\le \\frac{1}{z - 3}\\le 4\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le y\\le 4,\\quad -1\\le x + \\sqrt{y}\\le 1,\\quad 1\\le \\frac{1}{z - 3}\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=y,\\quad v=x + \\sqrt{y},\\quad w=\\frac{1}{z - 3}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):1\\le u\\le 4,\\quad -1\\le v\\le 1,\\quad 1\\le w\\le 4\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}0 & 1 & 0 \\\\ 1 & \\frac{1}{2 \\sqrt{y}} & 0 \\\\ 0 & 0 & - \\frac{1}{\\left(z - 3\\right)^{2}}\\end{vmatrix} \\\\  & =\\left(0\\right)(-1)^{1+1}\\begin{vmatrix}\\frac{1}{2 \\sqrt{y}} & 0 \\\\ 0 & - \\frac{1}{\\left(z - 3\\right)^{2}}\\end{vmatrix}+\\left(1\\right)(-1)^{1+2}\\begin{vmatrix}1 & 0 \\\\ 0 & - \\frac{1}{\\left(z - 3\\right)^{2}}\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}1 & \\frac{1}{2 \\sqrt{y}} \\\\ 0 & 0\\end{vmatrix} \\\\  & =\\frac{1}{\\left(z - 3\\right)^{2}} \\\\  & =w^{2}\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{w^{2}}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(- \\sqrt{u} + v,u,3 + \\frac{1}{w}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |\\frac{1}{w^{2}}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{1}^{4}\\int_{-1}^{1}\\int_{1}^{4}\\frac{1}{w^{2}}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{1}^{4}1\\,\\mathrm{d}u\\cdot \\int_{-1}^{1}1\\,\\mathrm{d}v\\cdot \\int_{1}^{4}\\frac{1}{w^{2}}\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{1}^{4}\\cdot [v]_{-1}^{1}\\cdot [- \\frac{1}{w}]_{1}^{4} \\\\  & =1\\cdot \\left(\\left(\\left(4\\right)\\right)-\\left(\\left(1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(1\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(- \\frac{1}{\\left(4\\right)}\\right)-\\left(- \\frac{1}{\\left(1\\right)}\\right)\\right) \\\\  & =1\\cdot \\left(\\left(4\\right)-\\left(1\\right)\\right)\\cdot \\left(\\left(1\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(- \\frac{1}{4}\\right)-\\left(-1\\right)\\right) \\\\  & =\\frac{9}{2}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2e91aa8b-1dda-506e-90cd-ad2a1e42e93e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "48795339-504a-5cdd-9b89-62b9291ab7be",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "126"
+            },
+            {
+              ":answer/id": "f7803b15-fd71-5318-884b-7933053f5310",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{2}"
+            },
+            {
+              ":answer/id": "a245133f-a094-5337-a8d2-1372ba0c4973",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{45}{8}"
+            },
+            {
+              ":answer/id": "d315cb95-eb95-5bac-8fe6-37a007cb5796",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{2}"
+            },
+            {
+              ":answer/id": "5a11ad7a-dc53-551a-9f55-a561252fd291",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d315cb95-eb95-5bac-8fe6-37a007cb5796"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 1,
+      "template": "reciprocal",
+      "profile": "method_reciprocal",
+      "parameters": {
+        "a": "-3",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "1",
+        "hu": "4",
+        "lv": "-1",
+        "hv": "1",
+        "lw": "1",
+        "hw": "4"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "2135f8c50b2dcca85140bd87cdac70b03e590bb2129f5586403d8fec2f77c0ee",
+      "content_fingerprint": "b7e4e139d4921938ae6808993d96490c09f7c0922b6d6d279864e890718a4340",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "use_forward_J",
+        "keep_only_upper_reciprocal_magnitude",
+        "use_absolute_derivative_of_density"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "0d283cde-1699-50ae-bec4-676b9ef9a518",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 1\\le - 2 x - y\\le 7,\\quad -1\\le - 2 x - 3 y\\le 2,\\quad 1\\le z^{3}\\le 8\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le - 2 x - y\\le 7,\\quad -1\\le - 2 x - 3 y\\le 2,\\quad 1\\le z^{3}\\le 8,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=- 2 x - y,\\quad v=- 2 x - 3 y,\\quad w=z^{3}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):1\\le u\\le 7,\\quad -1\\le v\\le 2,\\quad 1\\le w\\le 8\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-2 & -1 & 0 \\\\ -2 & -3 & 0 \\\\ 0 & 0 & 3 z^{2}\\end{vmatrix} \\\\  & =\\left(-2\\right)(-1)^{1+1}\\begin{vmatrix}-3 & 0 \\\\ 0 & 3 z^{2}\\end{vmatrix}+\\left(-1\\right)(-1)^{1+2}\\begin{vmatrix}-2 & 0 \\\\ 0 & 3 z^{2}\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}-2 & -3 \\\\ 0 & 0\\end{vmatrix} \\\\  & =12 z^{2} \\\\  & =12 w^{\\frac{2}{3}}\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{12 w^{\\frac{2}{3}}}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(- \\frac{3 u}{4} + \\frac{v}{4},\\frac{u}{2} - \\frac{v}{2},\\sqrt[3]{w}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |\\frac{1}{12 w^{\\frac{2}{3}}}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{1}^{7}\\int_{-1}^{2}\\int_{1}^{8}\\frac{1}{12 w^{\\frac{2}{3}}}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{1}^{7}1\\,\\mathrm{d}u\\cdot \\int_{-1}^{2}1\\,\\mathrm{d}v\\cdot \\int_{1}^{8}\\frac{1}{12 w^{\\frac{2}{3}}}\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{1}^{7}\\cdot [v]_{-1}^{2}\\cdot [\\frac{\\sqrt[3]{w}}{4}]_{1}^{8} \\\\  & =1\\cdot \\left(\\left(\\left(7\\right)\\right)-\\left(\\left(1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(2\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(\\frac{\\sqrt[3]{\\left(8\\right)}}{4}\\right)-\\left(\\frac{\\sqrt[3]{\\left(1\\right)}}{4}\\right)\\right) \\\\  & =1\\cdot \\left(\\left(7\\right)-\\left(1\\right)\\right)\\cdot \\left(\\left(2\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(\\frac{1}{2}\\right)-\\left(\\frac{1}{4}\\right)\\right) \\\\  & =\\frac{9}{2}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "11a2871d-9590-5525-ad8f-4010931c2f47",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4742304b-fad8-5b4d-a15b-87d0f8ff708a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{27}{2}"
+            },
+            {
+              ":answer/id": "bbf0f2b5-912f-5d60-97e9-d3a52f849920",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "126"
+            },
+            {
+              ":answer/id": "96f94543-6fed-552c-abea-2fc967499c03",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{2}"
+            },
+            {
+              ":answer/id": "ee4aba40-b49c-567b-ace6-e9d23e9a0b08",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{4}"
+            },
+            {
+              ":answer/id": "06d0da94-eed8-58d8-9ac0-58410a0f3357",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "96f94543-6fed-552c-abea-2fc967499c03"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "cube",
+      "profile": "method_cube",
+      "parameters": {
+        "a": "-2",
+        "b": "-1",
+        "c": "-2",
+        "d": "-3",
+        "lu": "1",
+        "hu": "7",
+        "lv": "-1",
+        "hv": "2",
+        "lw": "1",
+        "hw": "8"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "cb8c799b24e133f50ea44da13f2b204030c62a7a1e039f7dba073f6007276ec9",
+      "content_fingerprint": "680dcbf25006dc548a68365da5a89dbc87824e2099fc83d9e63d7236d92b8e18",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "omit_chain_factor_three",
+        "omit_inverse_linear_determinant",
+        "omit_u_width"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "93d4e242-b55f-5835-85b7-791c99fc4c5e",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 2\\le - 3 x + y\\le 5,\\quad -1\\le x + y\\le 1,\\quad 1\\le z^{3}\\le 8\\big\\}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n2\\le - 3 x + y\\le 5,\\quad -1\\le x + y\\le 1,\\quad 1\\le z^{3}\\le 8,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=- 3 x + y,\\quad v=x + y,\\quad w=z^{3}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):2\\le u\\le 5,\\quad -1\\le v\\le 1,\\quad 1\\le w\\le 8\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-3 & 1 & 0 \\\\ 1 & 1 & 0 \\\\ 0 & 0 & 3 z^{2}\\end{vmatrix} \\\\  & =\\left(-3\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 0 & 3 z^{2}\\end{vmatrix}+\\left(1\\right)(-1)^{1+2}\\begin{vmatrix}1 & 0 \\\\ 0 & 3 z^{2}\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}1 & 1 \\\\ 0 & 0\\end{vmatrix} \\\\  & =- 12 z^{2} \\\\  & =- 12 w^{\\frac{2}{3}}\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=- \\frac{1}{12 w^{\\frac{2}{3}}}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(- \\frac{u}{4} + \\frac{v}{4},\\frac{u}{4} + \\frac{3 v}{4},\\sqrt[3]{w}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |- \\frac{1}{12 w^{\\frac{2}{3}}}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{2}^{5}\\int_{-1}^{1}\\int_{1}^{8}\\frac{1}{12 w^{\\frac{2}{3}}}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{2}^{5}1\\,\\mathrm{d}u\\cdot \\int_{-1}^{1}1\\,\\mathrm{d}v\\cdot \\int_{1}^{8}\\frac{1}{12 w^{\\frac{2}{3}}}\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{2}^{5}\\cdot [v]_{-1}^{1}\\cdot [\\frac{\\sqrt[3]{w}}{4}]_{1}^{8} \\\\  & =1\\cdot \\left(\\left(\\left(5\\right)\\right)-\\left(\\left(2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(1\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(\\frac{\\sqrt[3]{\\left(8\\right)}}{4}\\right)-\\left(\\frac{\\sqrt[3]{\\left(1\\right)}}{4}\\right)\\right) \\\\  & =1\\cdot \\left(\\left(5\\right)-\\left(2\\right)\\right)\\cdot \\left(\\left(1\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(\\frac{1}{2}\\right)-\\left(\\frac{1}{4}\\right)\\right) \\\\  & =\\frac{3}{2}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f429a40c-c1be-5b7f-a10f-b0d27f579d1f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3bc0545d-ac1e-578d-8355-4ec8663cd56a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{2}"
+            },
+            {
+              ":answer/id": "0bc2aa31-8c2c-5290-bef8-a3efd8dc1389",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6"
+            },
+            {
+              ":answer/id": "509f69f4-a694-5597-b87f-3f1653b0b983",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{2}"
+            },
+            {
+              ":answer/id": "87b5c2d6-c320-5ce8-bc4e-13dae3bf33e1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{2}"
+            },
+            {
+              ":answer/id": "16c98f96-2588-58d8-acb3-28e777bda927",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "42"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "87b5c2d6-c320-5ce8-bc4e-13dae3bf33e1"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 1,
+      "template": "cube",
+      "profile": "method_cube",
+      "parameters": {
+        "a": "-3",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "2",
+        "hu": "5",
+        "lv": "-1",
+        "hv": "1",
+        "lw": "1",
+        "hw": "8"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "math_fingerprint": "3b8710f717176a654d647ac498bcdb4903eb568c2a0b3df95aa4d056393bae7c",
+      "content_fingerprint": "69808cb357102641f22414f0dcab36c61136cb33e64ce8d464bf4d648c0bdf4d",
+      "recipes": [
+        "correct",
+        "omit_J",
+        "omit_chain_factor_three",
+        "omit_inverse_linear_determinant",
+        "omit_u_width"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "d6ab2c32-afb3-526a-a840-00f3bb957211",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,0\\le x\\le 1,\\,-2\\le 2y+z\\le 2,\\,1\\le y-2z\\le 4}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n0\\le x\\le 1,\\,-2\\le 2y+z\\le 2,\\,1\\le y-2z\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\,v=2y+z,\\,w=y-2z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,0\\le u\\le 1,\\,-2\\le v\\le 2,\\,1\\le w\\le 4}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ 0 & 2 & 1 \\\\ 0 & 1 & -2\\end{aligned}| \\\\  & =1(-1)^{1+1}|\\begin{aligned}2 & 1 \\\\ 1 & -2\\end{aligned}| \\\\  & =-5.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=-\\frac{1}{5}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |-\\frac{1}{5}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{0}^{1}{\\int }_{-2}^{2}{\\int }_{1}^{4}\\frac{1}{5}\\,dw\\,dv\\,du \\\\  & =\\frac{1}{5}{\\int }_{0}^{1}du\\cdot {\\int }_{-2}^{2}dv\\cdot {\\int }_{1}^{4}dw \\\\  & =\\frac{1}{5}[u]_{0}^{1}\\cdot [v]_{-2}^{2}\\cdot [w]_{1}^{4} \\\\  & =\\frac{1}{5}\\cdot (1-0)\\cdot (2-(-2))\\cdot (4-1) \\\\  & =\\frac{12}{5}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1de2f748-34cc-5da6-98f4-5782d7344dac",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "aaf9065e-4f91-5257-ada8-710463feea70",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30"
+            },
+            {
+              ":answer/id": "b090ff99-ab09-5930-afcc-64703e6d0ce4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{16}{5}"
+            },
+            {
+              ":answer/id": "5345e37a-15dd-537d-a207-eed42f45d3e9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{12}{5}"
+            },
+            {
+              ":answer/id": "3f4410af-28a8-56c0-9d49-11a016bb72e8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4}{5}"
+            },
+            {
+              ":answer/id": "af94b22c-ca74-56e8-b7a7-2a2d38dd6671",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            }
+          ]
+        },
+        {
+          ":answer-field/id": "022bdf94-7890-5927-af74-e61cb4bbdb61",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "59b60523-2b25-5aeb-b58f-d66c4b644e8f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4}{5}"
+            },
+            {
+              ":answer/id": "07375f25-a8c2-597b-9da2-35119b0e0305",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "4d520bf9-45d3-52ea-99ce-299d3af1239e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{16}{5}"
+            },
+            {
+              ":answer/id": "a8a411f3-32b4-52a3-8e06-76c38d09ec04",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30"
+            },
+            {
+              ":answer/id": "402b8638-303c-5759-8200-e23e906cc8d3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{12}{5}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "402b8638-303c-5759-8200-e23e906cc8d3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "linear_yz",
+      "profile": "raw_17592186198624",
+      "parameters": {
+        "h": "2"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186198624,
+      "authored": false,
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "math_fingerprint": "c252880dfcd1750566b76b34fd1d627419e536ac1498a48fc07a2b7e9f434e1a",
+      "content_fingerprint": "e0d79e33ad0be37f00126801aca309fb8f2059410936ec70bee395b397e8058b",
+      "recipes": [
+        "opaque_homogeneous_region_stretch"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": [],
+      "resolved_model_parameters": {
+        "a": "2",
+        "b": "1",
+        "c": "1",
+        "d": "-2",
+        "lu": "0",
+        "hu": "1",
+        "lv": "-2",
+        "hv": "2",
+        "lw": "1",
+        "hw": "4"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "60a88a96-3fb8-5509-90d2-e6e4841d1aa4",
+      ":question/problem": "Find the volume bounded by the region $R$, given by\n$R = {(x, y, z): 1 \\le y \\le 2, 2 \\le \\sqrt{y} + x \\le 4, 1 \\le \\frac{1}{z + 1} \\le 5}$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2ff1b6b3-af0e-5e55-acc0-0c79b9db4074",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f83ac6c7-405d-57fb-b180-d7b2400388b9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{8}{5}"
+            },
+            {
+              ":answer/id": "76b0400b-4545-57df-b8af-ab63b18e33f6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "55b1cdf8-0898-5a70-a9a1-2d6570564297",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8"
+            },
+            {
+              ":answer/id": "5434b4c8-4048-5658-b542-832378550319",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{4}{5}"
+            },
+            {
+              ":answer/id": "35975cb1-42ad-5eb3-b59a-e01043e1fd9e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "reciprocal",
+      "profile": "raw_17592186198965",
+      "parameters": {
+        "h": "2"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186198965,
+      "authored": false,
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "math_fingerprint": "8b13000a699d532ed3bc404097777655f712371dda315951233138296c3f0892",
+      "content_fingerprint": "93f56e6b9a47642941dce4be73c272856105c230d4167a2ed11cf9549516ebab",
+      "recipes": [
+        "opaque_homogeneous_region_stretch"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": [],
+      "resolved_model_parameters": {
+        "a": "1",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "1",
+        "hu": "2",
+        "lv": "2",
+        "hv": "4",
+        "lw": "1",
+        "hw": "5"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "31479a40-83b2-5032-b8c6-f0d27a4d7318",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,\\frac{1}{2}\\le x\\le 1,\\,6\\le y+{x}^{2}\\le 20,\\,1\\le xz\\le 2}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n\\frac{1}{2}\\le x\\le 1,\\,6\\le y+{x}^{2}\\le 20,\\,1\\le xz\\le 2,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\,v=y+{x}^{2},\\,w=xz.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,\\frac{1}{2}\\le u\\le 1,\\,6\\le v\\le 20,\\,1\\le w\\le 2}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ 2x & 1 & 0 \\\\ z & 0 & x\\end{aligned}| \\\\  & =1(-1)^{1+1}|\\begin{aligned}1 & 0 \\\\ 0 & x\\end{aligned}| \\\\  & =x \\\\  & =u.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{u}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |\\frac{1}{u}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1/2}^{1}{\\int }_{6}^{20}{\\int }_{1}^{2}\\frac{1}{u}\\,dw\\,dv\\,du \\\\  & ={\\int }_{1/2}^{1}\\frac{1}{u}du\\cdot {\\int }_{6}^{20}dv\\cdot {\\int }_{1}^{2}dw \\\\  & =[\\operatorname{ln}⁡u]_{u=1/2}^{u=1}\\cdot [v]_{v=6}^{v=20}\\cdot [w]_{w=1}^{w=2} \\\\  & =-\\operatorname{ln}⁡(\\frac{1}{2})\\cdot (20-6)\\cdot (2-1) \\\\  & =14\\operatorname{ln}⁡2.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "def74384-e112-594e-954d-20af750f74e9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "838e7304-7c0d-5fca-abee-ecef2203815d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14\\operatorname{ln}⁡2"
+            },
+            {
+              ":answer/id": "37a1273f-bad8-5180-ac37-819262efb5bb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4\\operatorname{ln}⁡2"
+            },
+            {
+              ":answer/id": "f3961eeb-9529-504d-9150-6cfe87eb026c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "56"
+            },
+            {
+              ":answer/id": "6e73793f-7aba-5a29-b922-e878642b02dc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "60"
+            },
+            {
+              ":answer/id": "632d3f54-c517-5687-ba8e-5516b14da6d8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "28"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "838e7304-7c0d-5fca-abee-ecef2203815d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "log",
+      "profile": "raw_17592186374152",
+      "parameters": {
+        "h": "2"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186374152,
+      "authored": false,
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "math_fingerprint": "10ec7e92ecf8125da112ff36c8eed7b6e4c49564d6e83a9a5c79df9d4c066cca",
+      "content_fingerprint": "8cf989dfe4dfd25731a259e9b2b626bbfb7fdd8b201b8d74312d9e2a69a33c33",
+      "recipes": [
+        "opaque_homogeneous_region_stretch"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": [],
+      "resolved_model_parameters": {
+        "a": "1",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "1/2",
+        "hu": "1",
+        "lv": "6",
+        "hv": "20",
+        "lw": "1",
+        "hw": "2"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "9a850d05-8987-5f65-b0d8-5fa73a233edb",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,0\\le x\\le 1,\\,0\\le x+y\\le 2,\\,-1\\le z+{x}^{2}+{y}^{2}\\le 1}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n0\\le x\\le 1,\\,0\\le x+y\\le 2,\\,-1\\le z+{x}^{2}+{y}^{2}\\le 1,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\,v=x+y,\\,w=z+{x}^{2}+{y}^{2}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,0\\le u\\le 1,\\,0\\le v\\le 2,\\,-1\\le w\\le 1}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ 1 & 1 & 0 \\\\ 2x & 2y & 1\\end{aligned}| \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=1.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |1|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{0}^{2}{\\int }_{0}^{2}{\\int }_{-1}^{1}dw\\,dv\\,du \\\\  & ={\\int }_{0}^{2}du\\cdot {\\int }_{0}^{2}dv\\cdot {\\int }_{-1}^{1}dw \\\\  & =[u]_{u=0}^{u=1}\\cdot [v]_{v=0}^{v=2}\\cdot [w]_{w=-1}^{w=1} \\\\  & =(2-0)\\cdot (2-0)\\cdot (1-(-1)) \\\\  & =4.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3ff99959-3d91-5c74-afaa-e0dbac3a7e06",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2b88dd33-7d26-5377-a4bd-1d3654e51158",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "fc440afe-7473-5684-88c7-b5638585b829",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "c7b3ddfd-1834-5591-817b-49e5bb9889cc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6"
+            },
+            {
+              ":answer/id": "d4d90801-b26a-53c3-b128-867dc7b0bc9d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8"
+            },
+            {
+              ":answer/id": "907ccefb-7de9-5309-91ea-024c3d9122fd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2b88dd33-7d26-5377-a4bd-1d3654e51158"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "shear",
+      "profile": "raw_17592186374159",
+      "parameters": {
+        "h": "2"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186374159,
+      "authored": false,
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "math_fingerprint": "c99cbaeb027e499d42f2b58d12e496f4fc1f82097cc2262ef34a5be16189495f",
+      "content_fingerprint": "1e70b368136d2fa81b4eedc88ec9169f8b6c47227c6e1105701ce38408be3f3d",
+      "recipes": [
+        "opaque_homogeneous_region_stretch"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": [],
+      "resolved_model_parameters": {
+        "a": "1",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "0",
+        "hu": "1",
+        "lv": "0",
+        "hv": "2",
+        "lw": "-1",
+        "hw": "1"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "afbd0659-a110-5b27-87c4-6b653ae365a7",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,-5\\le x+z\\le 5,\\,0\\le y\\le 20,\\,0\\le y-z\\le 6}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n-5\\le x+z\\le 5,,\\,0\\le y\\le 20,\\,0\\le y-z\\le 6,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x+z,\\,v=y,\\,w=y-z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,-5\\le u\\le 5,\\,0\\le v\\le 20,\\,0\\le w\\le 6}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 1 & -1\\end{aligned}| \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=-1.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |-1|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{-5}^{5}{\\int }_{0}^{20}{\\int }_{0}^{6}dw\\,dv\\,du \\\\  & ={\\int }_{-5}^{5}du\\cdot {\\int }_{0}^{20}dv\\cdot {\\int }_{0}^{6}dw \\\\  & =[u]_{u=-5}^{u=5}\\cdot [v]_{v=0}^{v=20}\\cdot [w]_{w=0}^{w=6} \\\\  & =(5-(-5))\\cdot (20-0)\\cdot (6-0) \\\\  & =1200.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f78bdbc4-4698-5ffd-86ed-c288fdd6c37f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "58edf888-5596-5ed5-b0f7-0d5467045999",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1200"
+            },
+            {
+              ":answer/id": "2ee16f05-7c6c-5a47-9974-2901d7a74060",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "240"
+            },
+            {
+              ":answer/id": "c097649c-3e4e-511a-ba8a-a435cf9df72d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "120"
+            },
+            {
+              ":answer/id": "0de9526a-ac53-5656-8ab3-4e0241a51c6b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "400"
+            },
+            {
+              ":answer/id": "205673f5-8080-5694-bd24-a3709d1b4c5c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "200"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "58edf888-5596-5ed5-b0f7-0d5467045999"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "linear_xz",
+      "profile": "raw_17592186374166",
+      "parameters": {
+        "h": "2"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186374166,
+      "authored": false,
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "math_fingerprint": "8205d4c5a8fb2f49237cf69a97707541edd50fedaa81f66fb89e4d7f6a0d9650",
+      "content_fingerprint": "b6b0ff7388876277ab57187da4507fa1b055cd86006d6cebba8ff6826cb16f88",
+      "recipes": [
+        "opaque_homogeneous_region_stretch"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": [],
+      "resolved_model_parameters": {
+        "a": "1",
+        "b": "1",
+        "c": "1",
+        "d": "-1",
+        "lu": "-5",
+        "hu": "5",
+        "lv": "0",
+        "hv": "20",
+        "lw": "0",
+        "hw": "6"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198399,
+      "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+      "title": "Computing the Volume of a Region Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "fc4ce918-482a-52d1-a6ba-5cd1adf004a0",
+      ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,-2\\le x\\le 2,\\,0\\le {x}^{2}-y-z\\le 2,\\,1\\le \\sqrt{z}\\le 4}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n-2\\le x\\le 2,\\,0\\le {x}^{2}-y-z\\le 2,\\,1\\le \\sqrt{z}\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\,v={x}^{2}-y-z,\\,w=\\sqrt{z}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,-2\\le u\\le 2,\\,0\\le v\\le 2,\\,1\\le w\\le 4}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ 2x & -1 & -1 \\\\ 0 & 0 & \\frac{1}{2\\sqrt{z}}\\end{aligned}| \\\\  & =1(-1)^{1+1}|\\begin{aligned}-1 & -1 \\\\ 0 & \\frac{1}{2\\sqrt{z}}\\end{aligned}| \\\\  & =-\\frac{1}{2\\sqrt{z}} \\\\  & =-\\frac{1}{2w}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=-2w.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |-2w|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{-2}^{2}{\\int }_{0}^{2}{\\int }_{1}^{4}2w\\,dw\\,dv\\,du \\\\  & ={\\int }_{-2}^{2}du\\cdot {\\int }_{0}^{2}dv\\cdot {\\int }_{1}^{4}2w\\,dw \\\\  & =[u]_{u=-2}^{u=2}\\cdot [v]_{v=0}^{v=2}\\cdot [{w}^{2}]_{w=1}^{w=4} \\\\  & =(2-(-2))\\cdot (2-0)\\cdot (16-1) \\\\  & =120.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "59935481-88b3-51a0-ac83-007344d36f3a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c2a26bd7-cea6-5e64-a21d-9eefeafd3eb2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72"
+            },
+            {
+              ":answer/id": "1f3a7292-76bc-5fba-aeeb-c1ab56090e30",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "120"
+            },
+            {
+              ":answer/id": "8e691f44-3a0a-55a1-8377-4dcf6771f442",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24"
+            },
+            {
+              ":answer/id": "32cda7c2-0573-516c-97ea-7abd02eba790",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "60"
+            },
+            {
+              ":answer/id": "30cb9996-2290-5677-8b5e-45bd67f794b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1f3a7292-76bc-5fba-aeeb-c1ab56090e30"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "volume-change-1",
+      "seed": 0,
+      "template": "sqrt",
+      "profile": "raw_17592186374173",
+      "parameters": {
+        "h": "2"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186374173,
+      "authored": false,
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "math_fingerprint": "dd2665ef5afec32cefeeb765c9cc776a4a29a7e3ac27e9e2d98287d5f4251fc5",
+      "content_fingerprint": "031606edf7517a34c9fdc36fe20324d47fabfbf618ad3ad147cd734a957aae55",
+      "recipes": [
+        "opaque_homogeneous_region_stretch"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+      "plots": [],
+      "resolved_model_parameters": {
+        "a": "1",
+        "b": "1",
+        "c": "1",
+        "d": "1",
+        "lu": "-2",
+        "hu": "2",
+        "lv": "0",
+        "hv": "2",
+        "lw": "1",
+        "hw": "4"
+      }
+    }
+  }
+]

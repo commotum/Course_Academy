@@ -1,0 +1,6 @@
+# Plot extraction and specification
+
+1. Inspected the original raster at full resolution (360 ×304 pixels): white background, horizontal x axis and vertical y axis with arrowheads, black ticks, x labels -2π,-π,π,2π, y labels 1,-1, blue cosine curve peaking at x=0 and ±2π, troughs at ±π, crossing at ±π/2 and ±3π/2. No sampled argument marker or displayed given-value guide is present. It appears in all available worked solutions immediately after graph recall.
+2. Shared pattern: the unchanged y=cos x reference graph illustrates y-axis reflection symmetry and period 2π.
+3. Components: invariant axes, ticks, labels, blue curve; source reference images/23/2373daf4b5fd26f098bf90e998e2685db6a8b793e94ac9d80b08ea423cb535c0.png. SHA256: 2373daf4b5fd26f098bf90e998e2685db6a8b793e94ac9d80b08ea423cb535c0.
+4. Reusable specification: retain the identical graph for every c,v,n,A,b. The picture represents the base cosine function, not the full requested affine expression, so no meaningful geometry changes under parameters. The exact original raster is copied inside this evidence directory, and unchanged Markdown references resolve from review.md. New plot rating none. Step 7 needs no renderer, dependency fallback, fresh cache, or parameter-sensitive plot generation.

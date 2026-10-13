@@ -1,0 +1,6 @@
+# Plot extraction and step7 disposition
+
+1. The six practice prompts, all35 choices and five solutions contain no image or geometry plots. The two raster canonical assets are symbolic column-vector transformation notation. They were opened at their actual paths and visually inspected: T maps (u,v,w) to (x(u,v,w),y(u,v,w),z(u,v,w)); T inverse maps (x,y,z) to (u(x,y,z),v(x,y,z),w(x,y,z)). They contain no region shape, axis scale, branch cues, endpoints or arrows other than the symbolic map arrow.
+2. The generalized visual pattern is mathematical notation, not assessed geometry. Practice fidelity uses the original textual transformations; normal output also uses ordinary TeX.
+3. Canonical source asset references: images/54/54035a0d0a2dd88eb0b4b89bb1162df2cf9b450a4ea4d5b5020163053880016f.png and images/4b/4bcd5430181c2cb411dfe984b04399f2f80ab9d1747d5cf82596d105419b2b4f.png. MA widget screenshots09/10 were also opened to inspect actual field layout; neither contains a geometry diagram.
+4. Plot specification: none. No parameter-dependent plot is required, so no renderer or fabricated volume geometry is inserted. All plots metadata is []. Steps5/7 complete with no generated assets. If a geometry extension were introduced later it would require Matplotlib/TikZ and independent geometry inspection; no direct SVG or image models are used here.

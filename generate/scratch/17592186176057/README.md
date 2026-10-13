@@ -1,0 +1,5 @@
+# Cosine evenness generator
+
+Run `.venv/bin/python generate/scratch/17592186176057/validate.py` to verify all six source banks, all complete solutions, exact displayed mathematics, deterministic identities, every profile, scope guards and native radio grading. Preview with `.venv/bin/python generate/scratch/17592186176057.py --difficulty all --seed 8 --count 2 --format markdown` (or json).
+
+Easy direct evenness; moderate full-period reduction and evenness; hard the same method plus small affine evaluation. Three observed easy banks, one moderate, one hard, one unrated. Defaults use separately labeled authored complete banks. Public q-136634_raw profile retains its missing key/solution; q-136634_repaired gives the derived key and common worked solution. No original missing designation is counted matched. source-cases.json supplies exact replay parameters. source.json is the unmodified basis-1356 wrapper. The cosine plot is invariant and reused. No EDB reads/writes or registration; stopped after step 7.

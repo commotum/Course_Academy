@@ -1,0 +1,13 @@
+# Extracted RHS blank families
+
+Source-specific descriptions, original coordinate roles, exact answers and worked solutions are in classification.json; original typed records are in source.json. The four supported banks are q-215768, q-237224, q-237225 and q-237036; each has exactly one canonical RHS math value and no distractors. No mixed fields occur.
+
+Shared move: from reference points A=(a,b), B=(c,d), compute r=(d-b)/(c-a), then m=-1/r. Through P=(h,k), use y-k=m(x-h), distribute and obtain y=mx+(k-mh). Field-1 expects only mx+(k-mh), with y= supplied by the prompt. The canonical example e-14363 supports the method but is not practice inventory.
+
+Fixed components: source wording outside displays, point-slope identities, field key, blank type and RHS notation. Variable components: three integer coordinate pairs, signed subtractions, exact reduced slopes and intercepts. Optional source-layout components: sign simplification and unreduced numerical fractions; q-237036 retains its extra simplified parenthesis before distribution. Every generated variant has one fixed worked solution.
+
+All original coordinate triples are extracted from prompts, not solutions. Sampler bounds [-8,8] include every supported observed value. Easy has h=0; moderate has h!=0 and includes both signs, with the same translated point-slope stages. Both signs and zero y-coordinate are tested. Reference dx!=0 and dy!=0 prevent undefined or axis-parallel slope response shapes. Exact SymPy rationals determine every component. Coordinate sampling is a labeled bounded extension; difficulty uses the observed target-position distinction. Fractional moderate slopes are a cross-field extension supported by the rated radio sources' prompt method.
+
+Replay compares all four supported source answer banks mathematically and correct designation, with exact prompt and prose checks, independently checking every numerical solution row. Display spacing and rational sign normalization are reported separately. Excluded radios retain all original values and source-owned identities in the choice ledger; none has an inferred recipe presented as observed. Unsupported diagram/incomplete families do not enter output.
+
+Question identity hashes rendered problem, solution, answer and difficulty. Mathematical deduplication is stricter: only the exact reduced resulting slope and intercept matter. Translating A and B, changing their separation, changing the target along an unchanged answer line, choosing another source layout, changing seed or IDs cannot add another available task. All source lines (including incomplete prompts) and the canonical line are excluded when preparing new questions.

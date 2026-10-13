@@ -1,0 +1,937 @@
+[
+  {
+    "source_id": "q-124597",
+    "level": ":question.difficulty/easy",
+    "problem": "Which of the following is equivalent to ${\\int }_{C}{y}^{2}\\,dx-{x}^{2}\\,dy,$ where $C$ is part of the circle ${x}^{2}+{y}^{2}=1$ traversed in the counterclockwise direction from the point $A(1,0)$ to the point $B(0,1).$",
+    "geometry": {
+      "a": "1",
+      "b": "1",
+      "quarter_angles": [
+        0,
+        1
+      ]
+    },
+    "oneform": {
+      "P": "y**2",
+      "Q": "-x**2"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "Since $C$ is a circle of radius $1$ centered at the origin, it can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=\\operatorname{cos}⁡t\\,i+\\operatorname{sin}⁡t\\,j,\\,t\\in [0,\\frac{\\pi }{2}]\\end{aligned}\n$$\n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-\\operatorname{sin}⁡t\\,i+\\operatorname{cos}⁡t\\,j.\\end{aligned}\n$$\n\nTherefore, we can write our line integral as follows:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}{y}^{2}\\,dx-{x}^{2}\\,dy",
+      "ordered_rows": [
+        "{\\int }_{0}^{\\pi /2}{y}^{2}\\,\\frac{dx}{\\text{d}t}\\,\\text{d}t-{x}^{2}\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}({y}^{2}\\,\\frac{dx}{\\text{d}t}-{x}^{2}\\,\\frac{dy}{\\text{d}t})\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}(\\operatorname{sin}⁡t)^{2}\\cdot (-\\operatorname{sin}⁡t)-(\\operatorname{cos}⁡t)^{2}\\cdot \\operatorname{cos}⁡t\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}-{sin}^{3}⁡t-{cos}^{3}⁡t\\,\\text{d}t ",
+        "-{\\int }_{0}^{\\pi /2}{sin}^{3}⁡t+{cos}^{3}⁡t\\,\\text{d}t"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-124597"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "02791ce3-0e59-59cb-a7c2-9c1f5f9b8efe",
+        "value": "{\\int }_{0}^{\\pi /2}{sin}^{2}⁡t\\operatorname{cos}⁡t+{cos}^{2}⁡t\\operatorname{sin}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (sin(t)**2*cos(t) + sin(t)*cos(t)**2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "190adee9-da90-5ae0-b72f-1d54cbec3732",
+        "value": "{\\int }_{0}^{\\pi /2}{sin}^{2}⁡t\\operatorname{cos}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (sin(t)**2*cos(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "560421a3-f826-5226-b6d1-b81db072eecf",
+        "value": "-{\\int }_{0}^{\\pi /2}{sin}^{3}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-sin(t)**3)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "7390b29f-af98-55d8-908c-23b7a22da5d7",
+        "value": "{\\int }_{0}^{\\pi /2}\\frac{1}{2}\\operatorname{sin}⁡2t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (sin(2*t)/2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "b236cd5d-f995-5fc3-910f-4a9dd21013f6",
+        "value": "-{\\int }_{0}^{\\pi /2}{sin}^{3}⁡t+{cos}^{3}⁡t\\,\\text{d}t",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-sin(t)**3 - cos(t)**3)",
+        "intent": "assessed tangent substitution"
+      }
+    ]
+  },
+  {
+    "source_id": "q-81192",
+    "level": ":question.difficulty/moderate",
+    "problem": "Evaluate ${\\int }_{C}\\frac{y\\,dy-x\\,dx}{{x}^{2}+{y}^{2}},$ where $C$ is part of the circle ${x}^{2}+{y}^{2}=1$ traversed in the counterclockwise direction from the point $(1,0)$ to the point $(0,1).$",
+    "geometry": {
+      "a": "1",
+      "b": "1",
+      "quarter_angles": [
+        0,
+        1
+      ]
+    },
+    "oneform": {
+      "P": "-x/(x**2 + y**2)",
+      "Q": "y/(x**2 + y**2)"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "Since $C$ is a circle of radius $1$ centered at the origin, it can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=\\operatorname{cos}⁡t\\,i+\\operatorname{sin}⁡t\\,j,\\,t\\in [0,\\frac{\\pi }{2}]\\end{aligned}\n$$\n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-\\operatorname{sin}⁡t\\,i+\\operatorname{cos}⁡t\\,j.\\end{aligned}\n$$\n\nWe can now evaluate the line integral:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}\\frac{y\\,dy-x\\,dx}{{x}^{2}+{y}^{2}}",
+      "ordered_rows": [
+        "{\\int }_{0}^{\\pi /2}\\frac{y\\cdot {y}^{′}\\,\\text{d}t-x\\cdot {x}^{′}\\,\\text{d}t}{{x}^{2}+{y}^{2}} ",
+        "{\\int }_{0}^{\\pi /2}\\frac{y\\cdot {y}^{′}-x\\cdot {x}^{′}}{{x}^{2}+{y}^{2}}\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}\\frac{\\operatorname{sin}⁡t\\cdot \\operatorname{cos}⁡t-\\operatorname{cos}⁡t\\cdot (-\\operatorname{sin}⁡t)}{{cos}^{2}⁡t+{sin}^{2}⁡t}\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}\\operatorname{sin}⁡t\\operatorname{cos}⁡t+\\operatorname{sin}⁡t\\operatorname{cos}⁡t\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}2\\operatorname{sin}⁡t\\operatorname{cos}⁡t\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}\\operatorname{sin}⁡2t\\,\\text{d}t ",
+        "{[-\\frac{1}{2}\\operatorname{cos}⁡2t]}_{0}^{\\pi /2} ",
+        "-\\frac{1}{2}[\\operatorname{cos}⁡(\\pi )-\\operatorname{cos}⁡(0)] ",
+        "-\\frac{1}{2}[-1-1] ",
+        "1"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-81192"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "50e89690-a473-5e96-8e1b-8772141217ba",
+        "value": "\\frac{2}{3}",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (2/3)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "530d4756-be46-5443-808a-7585bbe7565c",
+        "value": "\\frac{1}{4}",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (1/4)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "6697a40a-e34b-5bb9-950b-de39a8750a4b",
+        "value": "2",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "921c24c0-b579-5b2b-8d7f-6191bf8532b6",
+        "value": "1",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (1)",
+        "intent": "assessed tangent substitution"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "9aead026-b2ca-55fe-850d-efdababe6aa0",
+        "value": "\\frac{1}{2}1",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (1/2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      }
+    ]
+  },
+  {
+    "source_id": "q-124656",
+    "level": ":question.difficulty/easy",
+    "problem": "Which of the following is equivalent to ${\\int }_{C}{x}^{2}y\\,dx+x\\,dy,$ where $C$ is part of the circle ${x}^{2}+{y}^{2}=4$ traversed in the counterclockwise direction from the point $A(2,0)$ to the point $B(-2,0).$",
+    "geometry": {
+      "a": "2",
+      "b": "2",
+      "quarter_angles": [
+        0,
+        2
+      ]
+    },
+    "oneform": {
+      "P": "x**2*y",
+      "Q": "x"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "Since $C$ is a circle of radius $2$ centered at the origin, it can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=2\\operatorname{cos}⁡t\\,i+2\\operatorname{sin}⁡t\\,j,\\,t\\in [0,\\pi ]\\end{aligned}\n$$\n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-2\\operatorname{sin}⁡t\\,i+2\\operatorname{cos}⁡t\\,j.\\end{aligned}\n$$\n\nTherefore, we can write our line integral as follows:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}{x}^{2}y\\,dx+x\\,dy",
+      "ordered_rows": [
+        "{\\int }_{0}^{\\pi }{x}^{2}y\\,\\frac{dx}{\\text{d}t}\\,\\text{d}t+x\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi }({x}^{2}y\\,\\frac{dx}{\\text{d}t}+x\\,\\frac{dy}{\\text{d}t})\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi }(2\\operatorname{cos}⁡t)^{2}\\cdot (2\\operatorname{sin}⁡t)\\cdot (-2\\operatorname{sin}⁡t)+(2\\operatorname{cos}⁡t)\\cdot 2\\operatorname{cos}⁡t\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi }-16{sin}^{2}⁡t{cos}^{2}⁡t+4{cos}^{2}⁡t\\,\\text{d}t ",
+        "4{\\int }_{0}^{\\pi }{cos}^{2}⁡t(1-4{sin}^{2}⁡t)\\,\\text{d}t"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-124656"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "05f4f537-9c38-5a4a-92d9-1fc05c60f90d",
+        "value": "2{\\int }_{0}^{\\pi }{cos}^{2}⁡t(1-2{sin}^{2}⁡t)\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (2*(1 - 2*sin(t)**2)*cos(t)**2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "3789ffb2-b7e7-5c19-9e46-46878e9dd27c",
+        "value": "8{\\int }_{0}^{\\pi }{cos}^{2}⁡t{sin}^{2}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (8*sin(t)**2*cos(t)**2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "78bd4c3d-cccd-5c94-8184-aae6764245be",
+        "value": "8{\\int }_{0}^{\\pi }{cos}^{2}⁡t(1-2{cos}^{2}⁡t)\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (8*(1 - 2*cos(t)**2)*cos(t)**2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "df481504-80af-5bb2-8167-dfe689532510",
+        "value": "4{\\int }_{0}^{\\pi }{sin}^{2}⁡t(1-4{cos}^{2}⁡t)\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (4*(1 - 4*cos(t)**2)*sin(t)**2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "e25e2064-e1d7-50b0-b597-8c407a11946b",
+        "value": "4{\\int }_{0}^{\\pi }{cos}^{2}⁡t(1-4{sin}^{2}⁡t)\\,\\text{d}t",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (4*(1 - 4*sin(t)**2)*cos(t)**2)",
+        "intent": "assessed tangent substitution"
+      }
+    ]
+  },
+  {
+    "source_id": "q-124657",
+    "level": ":question.difficulty/easy",
+    "problem": "Which of the following is equivalent to ${\\int }_{C}\\frac{2}{y}\\,dx+y{e}^{x}\\,dy,$ where $C$ is part of the ellipse $4{x}^{2}+{y}^{2}=4$ traversed in the counterclockwise direction from the point $A(1,0)$ to the point $B(0,2).$",
+    "geometry": {
+      "a": "1",
+      "b": "2",
+      "quarter_angles": [
+        0,
+        1
+      ]
+    },
+    "oneform": {
+      "P": "2/y",
+      "Q": "y*exp(x)"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "Since $C$ is an ellipse centered at $O$ with horizontal and vertical semiaxes of $1$ and $2,$ respectively, it can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=\\operatorname{cos}⁡t\\,i+2\\operatorname{sin}⁡t\\,j,\\,t\\in [0,\\frac{\\pi }{2}]\\end{aligned}\n$$\n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-\\operatorname{sin}⁡t\\,i+2\\operatorname{cos}⁡t\\,j.\\end{aligned}\n$$\n\nTherefore, we can write our line integral as follows:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}\\frac{2}{y}\\,dx+y{e}^{x}\\,dy",
+      "ordered_rows": [
+        "{\\int }_{0}^{\\pi /2}\\frac{2}{y}\\,\\frac{dx}{\\text{d}t}\\,\\text{d}t+y{e}^{x}\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}(\\frac{2}{y}\\,\\frac{dx}{\\text{d}t}+y{e}^{x}\\,\\frac{dy}{\\text{d}t})\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}\\frac{2}{2\\operatorname{sin}⁡t}\\cdot (-\\operatorname{sin}⁡t)+(2\\operatorname{sin}⁡t\\,{e}^{\\operatorname{cos}⁡t})\\cdot 2\\operatorname{cos}⁡t\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}4\\operatorname{sin}⁡t\\operatorname{cos}⁡t\\,{e}^{\\operatorname{cos}⁡t}-1\\,\\text{d}t"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-124657"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "77262323-79ed-5ade-a88d-cfe620b7da6f",
+        "value": "{\\int }_{0}^{\\pi /2}\\operatorname{cos}⁡t\\,{e}^{\\operatorname{cos}⁡t}-\\operatorname{sin}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (exp(cos(t))*cos(t) - sin(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "a8f4a4ec-6fb3-5b3a-ace0-98c820d9456a",
+        "value": "{\\int }_{0}^{\\pi /2}4\\operatorname{sin}⁡t\\operatorname{cos}⁡t\\,{e}^{\\operatorname{cos}⁡t}-1\\,\\text{d}t",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (4*exp(cos(t))*sin(t)*cos(t) - 1)",
+        "intent": "assessed tangent substitution"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "ce873cc3-03d3-531f-9ee9-9641247e9f3d",
+        "value": "{\\int }_{0}^{\\pi /2}2\\operatorname{sin}⁡t\\operatorname{cos}⁡t\\,{e}^{\\operatorname{cos}⁡t}+1\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (2*exp(cos(t))*sin(t)*cos(t) + 1)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "da94ceb2-a1b8-5f7d-817e-d3c142cc2c60",
+        "value": "{\\int }_{0}^{3\\pi /2}\\operatorname{sin}⁡t\\,{e}^{\\operatorname{cos}⁡t}+2\\operatorname{cos}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (exp(cos(t))*sin(t) + 2*cos(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "dd7f1f33-0822-5dd8-b24e-299b64b487d0",
+        "value": "{\\int }_{\\pi /2}^{\\pi }\\operatorname{sin}⁡t\\operatorname{cos}⁡t\\,{e}^{\\operatorname{cos}⁡t}-2\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (exp(cos(t))*sin(t)*cos(t) - 2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      }
+    ]
+  },
+  {
+    "source_id": "q-124661",
+    "level": ":question.difficulty/moderate",
+    "problem": "Evaluate ${\\int }_{C}(x-y)\\,dx+(x+y)\\,dy,$ where $C$ is part of the ellipse $9{x}^{2}+4{y}^{2}=36$ traversed in the counterclockwise direction from the point $(0,3)$ to the point $(-2,0).$",
+    "geometry": {
+      "a": "2",
+      "b": "3",
+      "quarter_angles": [
+        1,
+        2
+      ]
+    },
+    "oneform": {
+      "P": "x - y",
+      "Q": "x + y"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "Since $C$ is an ellipse centered at $O$ with horizontal and vertical semiaxes of $2$ and $3,$ respectively, it can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=2\\operatorname{cos}⁡t\\,i+3\\operatorname{sin}⁡t\\,j,\\,t\\in [\\frac{\\pi }{2},\\pi ]\\end{aligned}\n$$\n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & ={x}^{′}(t)\\,i+{y}^{′}(t)\\,j=-2\\operatorname{sin}⁡t\\,i+3\\operatorname{cos}⁡t\\,j.\\end{aligned}\n$$\n\nWe can now evaluate the line integral:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}(x-y)\\,dx+(x+y)\\,dy",
+      "ordered_rows": [
+        "{\\int }_{\\pi /2}^{\\pi }(x-y)\\,\\frac{dx}{\\text{d}t}\\,\\text{d}t+(x+y)\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{\\pi }((x-y)\\,\\frac{dx}{\\text{d}t}+(x+y)\\,\\frac{dy}{\\text{d}t})\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{\\pi }(2\\operatorname{cos}⁡t-3\\operatorname{sin}⁡t)\\cdot (-2\\operatorname{sin}⁡t)+(2\\operatorname{cos}⁡t+3\\operatorname{sin}⁡t)\\cdot 3\\operatorname{cos}⁡t\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{\\pi }(-4\\operatorname{cos}⁡t\\operatorname{sin}⁡t+6{sin}^{2}⁡t+6{cos}^{2}⁡t+9\\operatorname{cos}⁡t\\operatorname{sin}⁡t)\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{\\pi }5\\operatorname{sin}⁡t\\operatorname{cos}⁡t+6\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{\\pi }\\frac{5}{2}\\operatorname{sin}⁡2t+6\\,\\text{d}t ",
+        "{[-\\frac{5}{4}\\operatorname{cos}⁡2t+6t]}_{\\pi /2}^{\\pi } ",
+        "[(-\\frac{5}{4}\\operatorname{cos}⁡(2\\pi )+6\\pi )-(-\\frac{5}{4}\\operatorname{cos}⁡(\\pi )+3\\pi )] ",
+        "(-\\frac{5}{4}+6\\pi )-(\\frac{5}{4}+3\\pi ) ",
+        "3\\pi -\\frac{5}{2} ",
+        "\\frac{6\\pi -5}{2}"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-124661"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "5f6d91d8-d6dd-52c9-b3ff-b1db44329a0c",
+        "value": "6\\pi ",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (6*pi)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "6266e64e-03c1-58e9-a2a7-faa1e9d1ab4e",
+        "value": "\\frac{6\\pi -5}{2}",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-5/2 + 3*pi)",
+        "intent": "assessed tangent substitution"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "e5e0d134-f8c3-5cad-825a-eca5a50c39ff",
+        "value": "\\frac{5\\pi +1}{4}",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (1/4 + 5*pi/4)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "eef0270e-6352-5435-b70f-a6965924b8db",
+        "value": "\\frac{12\\pi -5}{4}",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-5/4 + 3*pi)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "fddbbdf7-66ee-5acd-97fd-6d8474436d61",
+        "value": "3\\pi ",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (3*pi)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      }
+    ]
+  },
+  {
+    "source_id": "q-124665",
+    "level": ":question.difficulty/moderate",
+    "problem": "Evaluate ${\\int }_{C}dx+\\frac{2}{x}\\,dy,$ where $C$ is part of the ellipse $9{x}^{2}+{y}^{2}=9$ traversed in the counterclockwise direction from the point $(-1,0)$ to the point $(0,-3).$",
+    "geometry": {
+      "a": "1",
+      "b": "3",
+      "quarter_angles": [
+        2,
+        3
+      ]
+    },
+    "oneform": {
+      "P": "1",
+      "Q": "2/x"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "Since $C$ is an ellipse centered at $O$ with horizontal and vertical semiaxes of $1$ and $3,$ respectively, it can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=\\operatorname{cos}⁡t\\,i+3\\operatorname{sin}⁡t\\,j,\\,t\\in [\\pi ,\\frac{3\\pi }{2}]\\end{aligned}\n$$\n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-\\operatorname{sin}⁡t\\,i+3\\operatorname{cos}⁡t\\,j.\\end{aligned}\n$$\n\nWe can now evaluate the line integral:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}dx+\\frac{2}{x}\\,dy",
+      "ordered_rows": [
+        "{\\int }_{\\pi }^{3\\pi /2}\\frac{dx}{\\text{d}t}\\,\\text{d}t+\\frac{2}{x}\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{\\pi }^{3\\pi /2}(\\frac{dx}{\\text{d}t}+\\frac{2}{x}\\,\\frac{dy}{\\text{d}t})\\text{d}t ",
+        "{\\int }_{\\pi }^{3\\pi /2}(-\\operatorname{sin}⁡t)+\\frac{2}{\\operatorname{cos}⁡t}\\cdot 3\\operatorname{cos}⁡t\\,\\text{d}t ",
+        "{\\int }_{\\pi }^{3\\pi /2}-\\operatorname{sin}⁡t+6\\,\\text{d}t ",
+        "[\\operatorname{cos}⁡t+6t]_{\\pi }^{3\\pi /2} ",
+        "(\\operatorname{cos}⁡(\\frac{3\\pi }{2})+9\\pi )-(\\operatorname{cos}⁡\\pi +6\\pi ) ",
+        "(0+9\\pi )-(-1+6\\pi ) ",
+        "3\\pi +1"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-124665"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "11c3f67e-c143-52cf-8d04-0883a4d5a256",
+        "value": "2\\pi -1",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-1 + 2*pi)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "5dfb3475-8c2e-59e8-84f2-1ebef1519964",
+        "value": "3\\pi -4",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-4 + 3*pi)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "79b7785e-2e75-5831-91d7-a32ea05f26cd",
+        "value": "4\\pi ",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (4*pi)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "a627c339-0874-52fc-ab69-4b8d01f804f6",
+        "value": "3\\pi +1",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (1 + 3*pi)",
+        "intent": "assessed tangent substitution"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "f3c4c7b4-80c1-5190-8730-555b2288af36",
+        "value": "\\frac{3\\pi +1}{2}",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (1/2 + 3*pi/2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      }
+    ]
+  },
+  {
+    "source_id": "q-124651",
+    "level": ":question.difficulty/easy",
+    "problem": "Which of the following is equivalent to ${\\int }_{C}{x}^{2}\\,dx+xy\\,dy,$ where $C$ is part of the ellipse ${x}^{2}+4{y}^{2}=4$ traversed in the counterclockwise direction from the point $A(2,0)$ to the point $B(0,1).$",
+    "geometry": {
+      "a": "2",
+      "b": "1",
+      "quarter_angles": [
+        0,
+        1
+      ]
+    },
+    "oneform": {
+      "P": "x**2",
+      "Q": "x*y"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "Since $C$ is an ellipse centered at $O$ with horizontal and vertical semiaxes of $2$ and $1,$ respectively, it can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=2\\operatorname{cos}⁡t\\,i+\\operatorname{sin}⁡t\\,j,\\,t\\in [0,\\frac{\\pi }{2}]\\end{aligned}\n$$\n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-2\\operatorname{sin}⁡t\\,i+\\operatorname{cos}⁡t\\,j.\\end{aligned}\n$$\n\nTherefore, we can write our line integral as follows:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}{x}^{2}\\,dx+xy\\,dy",
+      "ordered_rows": [
+        "{\\int }_{0}^{\\pi /2}{x}^{2}\\,\\frac{dx}{\\text{d}t}\\,\\text{d}t+xy\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}({x}^{2}\\,\\frac{dx}{\\text{d}t}+xy\\,\\frac{dy}{\\text{d}t})\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}(2\\operatorname{cos}⁡t)^{2}\\cdot (-2\\operatorname{sin}⁡t)+(2\\operatorname{cos}⁡t)\\cdot \\operatorname{sin}⁡t\\cdot \\operatorname{cos}⁡t\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}-8{cos}^{2}⁡t\\operatorname{sin}⁡t+2{cos}^{2}⁡t\\operatorname{sin}⁡t\\,\\text{d}t ",
+        "-6{\\int }_{0}^{\\pi /2}{cos}^{2}⁡t\\operatorname{sin}⁡t\\,\\text{d}t"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-124651"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "c2f1d0a0-f937-5c5a-a906-b8d8c3476536",
+        "value": "6{\\int }_{0}^{\\pi /2}\\operatorname{cos}⁡t\\operatorname{sin}⁡t(\\operatorname{cos}⁡t-\\operatorname{sin}⁡t)\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (6*(-sin(t) + cos(t))*sin(t)*cos(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "b7352c23-717f-5780-b0d0-69655ec1cf5f",
+        "value": "-2{\\int }_{0}^{\\pi /2}{cos}^{2}⁡t{sin}^{2}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-2*sin(t)**2*cos(t)**2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "aa9c4e1a-9de0-5b54-9a84-bd61bf918f52",
+        "value": "-6{\\int }_{0}^{\\pi /2}{cos}^{2}⁡t\\operatorname{sin}⁡t\\,\\text{d}t",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-6*sin(t)*cos(t)**2)",
+        "intent": "assessed tangent substitution"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "8321670f-4321-5b31-a978-0d03d440b8cf",
+        "value": "{\\int }_{0}^{\\pi /2}\\operatorname{cos}⁡t\\operatorname{sin}⁡t(\\operatorname{cos}⁡t+\\operatorname{sin}⁡t)\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * ((sin(t) + cos(t))*sin(t)*cos(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "6b7e8a42-2b6d-59b6-8e6b-34f626db24de",
+        "value": "3{\\int }_{0}^{\\pi /2}\\operatorname{cos}⁡t{sin}^{2}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (3*sin(t)**2*cos(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      }
+    ]
+  },
+  {
+    "source_id": "q-124653",
+    "level": ":question.difficulty/easy",
+    "problem": "Which of the following is equivalent to ${\\int }_{C}({e}^{x}+y)\\,dx-x\\,dy,$ where $C$ is part of the circle ${x}^{2}+{y}^{2}=3$ traversed in the counterclockwise direction from the point $A(0,\\sqrt{3})$ to the point $B(-\\sqrt{3},0).$",
+    "geometry": {
+      "a": "sqrt(3)",
+      "b": "sqrt(3)",
+      "quarter_angles": [
+        1,
+        2
+      ]
+    },
+    "oneform": {
+      "P": "y + exp(x)",
+      "Q": "-x"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "Since $C$ is a circle of radius $\\sqrt{3}$ centered at the origin, it can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=\\sqrt{3}\\operatorname{cos}⁡t\\,i+\\sqrt{3}\\operatorname{sin}⁡t\\,j,\\,t\\in [\\frac{\\pi }{2},\\pi ]\\end{aligned}\n$$\n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-\\sqrt{3}\\operatorname{sin}⁡t\\,i+\\sqrt{3}\\operatorname{cos}⁡t\\,j.\\end{aligned}\n$$\n\nTherefore, we can write our line integral as follows:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}({e}^{x}+y)\\,dx-x\\,dy",
+      "ordered_rows": [
+        "{\\int }_{\\pi /2}^{\\pi }({e}^{x}+y)\\,\\frac{dx}{\\text{d}t}\\,\\text{d}t-x\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{\\pi }(({e}^{x}+y)\\,\\frac{dx}{\\text{d}t}-x\\,\\frac{dy}{\\text{d}t})\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{\\pi }({e}^{\\sqrt{3}\\operatorname{cos}⁡t}+\\sqrt{3}\\operatorname{sin}⁡t)\\cdot (-\\sqrt{3}\\operatorname{sin}⁡t)-(\\sqrt{3}\\operatorname{cos}⁡t)\\cdot (\\sqrt{3}\\operatorname{cos}⁡t)\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{\\pi }-\\sqrt{3}\\operatorname{sin}⁡t\\,{e}^{\\sqrt{3}\\operatorname{cos}⁡t}-3{sin}^{2}⁡t-3{cos}^{2}⁡t\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{\\pi }-\\sqrt{3}\\operatorname{sin}⁡t\\,{e}^{\\sqrt{3}\\operatorname{cos}⁡t}-3\\,\\text{d}t ",
+        "-{\\int }_{\\pi /2}^{\\pi }\\sqrt{3}\\operatorname{sin}⁡t\\,{e}^{\\sqrt{3}\\operatorname{cos}⁡t}+3\\,\\text{d}t"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-124653"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "2e75bdd4-9ffa-598b-ba2b-3e4718966455",
+        "value": "-{\\int }_{\\pi /2}^{\\pi }\\operatorname{sin}⁡t\\,{e}^{3\\operatorname{cos}⁡t}+3\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-exp(3*cos(t))*sin(t) - 3)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "d5b5e560-c25e-5180-91e9-4dd26cebdf25",
+        "value": "-{\\int }_{\\pi /2}^{\\pi }\\operatorname{sin}⁡t\\,{e}^{\\sqrt{3}\\operatorname{cos}⁡t}+\\sqrt{3}\\operatorname{cos}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-exp(sqrt(3)*cos(t))*sin(t) - sqrt(3)*cos(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "9e5e8954-0ec8-5e2c-87e8-00cd2ba07083",
+        "value": "-3{\\int }_{\\pi /2}^{\\pi }\\operatorname{sin}⁡t\\,{e}^{\\sqrt{3}\\operatorname{cos}⁡t}\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-3*exp(sqrt(3)*cos(t))*sin(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "e56c1b23-1bc1-5e37-920c-d6b5c4c83b9b",
+        "value": "{\\int }_{\\pi /2}^{\\pi }\\sqrt{3}\\operatorname{sin}⁡t\\,{e}^{3\\operatorname{cos}⁡t}+1\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (sqrt(3)*exp(3*cos(t))*sin(t) + 1)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "96172456-0f12-5f8e-95b8-f6b631ca3655",
+        "value": "-{\\int }_{\\pi /2}^{\\pi }\\sqrt{3}\\operatorname{sin}⁡t\\,{e}^{\\sqrt{3}\\operatorname{cos}⁡t}+3\\,\\text{d}t",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-sqrt(3)*exp(sqrt(3)*cos(t))*sin(t) - 3)",
+        "intent": "assessed tangent substitution"
+      }
+    ]
+  },
+  {
+    "source_id": "q-124655",
+    "level": ":question.difficulty/easy",
+    "problem": "Which of the following is equivalent to ${\\int }_{C}(x-2y)\\,dx+2x\\,dy,$ where $C$ is part of the ellipse $9{x}^{2}+{y}^{2}=9$ traversed in the counterclockwise direction from the point $A(0,3)$ to the point $B(0,-3).$",
+    "geometry": {
+      "a": "1",
+      "b": "3",
+      "quarter_angles": [
+        1,
+        3
+      ]
+    },
+    "oneform": {
+      "P": "x - 2*y",
+      "Q": "2*x"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "Since $C$ is an ellipse centered at $O$ with horizontal and vertical semiaxes of $1$ and $3,$ respectively, it can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=\\operatorname{cos}⁡t\\,i+3\\operatorname{sin}⁡t\\,j,\\,t\\in [\\frac{\\pi }{2},\\frac{3\\pi }{2}]\\end{aligned}\n$$\n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-\\operatorname{sin}⁡t\\,i+3\\operatorname{cos}⁡t\\,j.\\end{aligned}\n$$\n\nTherefore, we can write our line integral as follows:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}(x-2y)\\,dx+2x\\,dy",
+      "ordered_rows": [
+        "{\\int }_{\\pi /2}^{3\\pi /2}(x-2y)\\,\\frac{dx}{\\text{d}t}\\,\\text{d}t+2x\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{3\\pi /2}((x-2y)\\,\\frac{dx}{\\text{d}t}+2x\\,\\frac{dy}{\\text{d}t})\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{3\\pi /2}(\\operatorname{cos}⁡t-2(3\\operatorname{sin}⁡t))\\cdot (-\\operatorname{sin}⁡t)+2(\\operatorname{cos}⁡t)\\cdot 3\\operatorname{cos}⁡t\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{3\\pi /2}-\\operatorname{sin}⁡t\\operatorname{cos}⁡t+6{sin}^{2}⁡t+6{cos}^{2}⁡t\\,\\text{d}t ",
+        "{\\int }_{\\pi /2}^{3\\pi /2}6-\\operatorname{sin}⁡t\\operatorname{cos}⁡t\\,\\text{d}t"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-124655"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "57571e56-49bb-5855-a1ea-93ab592af29a",
+        "value": "{\\int }_{\\pi /2}^{3\\pi /2}6{sin}^{2}⁡t-\\operatorname{cos}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (6*sin(t)**2 - cos(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "dee85688-f7f4-5420-abcb-2c8946c6128c",
+        "value": "2{\\int }_{\\pi /2}^{3\\pi /2}\\operatorname{sin}⁡t{cos}^{2}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (2*sin(t)*cos(t)**2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "581fc888-b8c4-5b98-a662-97d6df2c1c29",
+        "value": "{\\int }_{\\pi /2}^{3\\pi /2}6-\\operatorname{sin}⁡t\\operatorname{cos}⁡t\\,\\text{d}t",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-sin(t)*cos(t) + 6)",
+        "intent": "assessed tangent substitution"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "0fa25052-4bcd-5645-84a9-cb44c291ba75",
+        "value": "{\\int }_{\\pi /2}^{3\\pi /2}3\\operatorname{sin}⁡t+\\operatorname{cos}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (3*sin(t) + cos(t))",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "179cd5d2-4e71-5c6d-adbe-d8d33387b74f",
+        "value": "{\\int }_{\\pi /2}^{3\\pi /2}3-{sin}^{2}⁡t\\operatorname{cos}⁡t\\,\\text{d}t",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-sin(t)**2*cos(t) + 3)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      }
+    ]
+  },
+  {
+    "source_id": "q-81186",
+    "level": ":question.difficulty/moderate",
+    "problem": "Evaluate ${\\int }_{C}y\\,dx+x\\,dy,$ where $C$ is part of the circle ${x}^{2}+{y}^{2}=4$ traversed in the counterclockwise direction from the point $A(-2,0)$ to the point $B(0,-2).$",
+    "geometry": {
+      "a": "2",
+      "b": "2",
+      "quarter_angles": [
+        2,
+        3
+      ]
+    },
+    "oneform": {
+      "P": "y",
+      "Q": "x"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "First, we need to find the parametrization of the curve $C.$ Since it's a circle if radius $2$ centered at the origin, the curve $C$ can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=2\\operatorname{cos}⁡(t)\\,i+2\\operatorname{sin}⁡(t)\\,j,\\,t\\in [\\pi ,\\frac{3\\pi }{2}].\\end{aligned}\n$$\n\nSo, along the curve we have that $x(t)=2\\operatorname{cos}⁡t$ and $y(t)=2\\operatorname{sin}⁡t.$ \n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-2\\operatorname{sin}⁡(t)\\,i+2\\operatorname{cos}⁡(t)\\,j.\\end{aligned}\n$$\n\nTherefore, we can calculate the line integral as follows:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}y\\,dx+x\\,dy",
+      "ordered_rows": [
+        "{\\int }_{\\pi }^{3\\pi /2}y\\,\\frac{dx}{\\text{d}t}\\,\\text{d}t+x\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{\\pi }^{3\\pi /2}(y\\,\\frac{dx}{\\text{d}t}+x\\,\\frac{dy}{\\text{d}t})\\text{d}t ",
+        "{\\int }_{\\pi }^{3\\pi /2}(2\\operatorname{sin}⁡t\\cdot (-2\\operatorname{sin}⁡t)+2\\operatorname{cos}⁡t\\cdot 2\\operatorname{cos}⁡t)\\text{d}t ",
+        "{\\int }_{\\pi }^{3\\pi /2}(-4{sin}^{2}⁡t+4{cos}^{2}⁡t)\\text{d}t ",
+        "4{\\int }_{\\pi }^{3\\pi /2}({cos}^{2}⁡t-{sin}^{2}⁡t)\\text{d}t ",
+        "4{\\int }_{\\pi }^{3\\pi /2}\\operatorname{cos}⁡(2t)\\,\\text{d}t ",
+        "2\\operatorname{sin}⁡2t{|}_{\\pi }^{3\\pi /2} ",
+        "2[\\operatorname{sin}⁡(3\\pi )-\\operatorname{sin}⁡(2\\pi )] ",
+        "2(0-0) ",
+        "0"
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-81186"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "2f548fd7-8b35-5ec3-9cec-fbc79515f307",
+        "value": "0",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (0)",
+        "intent": "assessed tangent substitution"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "68411306-3576-579b-8a21-34c1ab7c2b84",
+        "value": "4",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (4)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "910075a4-9923-557c-b9e3-c1e2ff793ed6",
+        "value": "-1",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-1)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "d7d88b10-d2ad-5c06-9db7-9b7365276f6d",
+        "value": "2",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "f7735ce7-7b0f-5b5a-82f6-7e753a067e1c",
+        "value": "-2",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-2)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      }
+    ]
+  },
+  {
+    "source_id": "q-90895",
+    "level": ":question.difficulty/moderate",
+    "problem": "Evaluate ${\\int }_{C}y\\,dx-x\\,dy,$ where $C$ is part of the circle ${x}^{2}+{y}^{2}=2$ traversed in the counterclockwise direction from the point $A(\\sqrt{2},0)$ to the point $B(0,\\sqrt{2}).$",
+    "geometry": {
+      "a": "sqrt(2)",
+      "b": "sqrt(2)",
+      "quarter_angles": [
+        0,
+        1
+      ]
+    },
+    "oneform": {
+      "P": "y",
+      "Q": "-x"
+    },
+    "template": {
+      "parameter": "nonzero integer c, |c|<=5",
+      "prefix": "First, we need to find the parametrization of the curve $C.$ Since it's a circle if radius $\\sqrt{2}$ centered at the origin, the curve $C$ can be parametrized as follows:\n\n$$\n\\begin{aligned}r(t) & =x(t)\\,i+y(t)\\,j=\\sqrt{2}\\operatorname{cos}⁡(t)\\,i+\\sqrt{2}\\operatorname{sin}⁡(t)\\,j,\\,t\\in [0,\\frac{\\pi }{2}].\\end{aligned}\n$$\n\nSo, along the curve we have that $x(t)=\\sqrt{2}\\operatorname{cos}⁡t$ and $y(t)=\\sqrt{2}\\operatorname{sin}⁡t.$ \n\nThe derivative of $r(t)$ is given by\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j=-\\sqrt{2}\\operatorname{sin}⁡(t)\\,i+\\sqrt{2}\\operatorname{cos}⁡(t)\\,j.\\end{aligned}\n$$\n\nTherefore, we can calculate the line integral as follows:\n\n$$\n",
+      "suffix": "\\end{aligned}\n$$",
+      "lhs": "{\\int }_{C}y\\,dx-x\\,dy",
+      "ordered_rows": [
+        "{\\int }_{0}^{\\pi /2}y\\,\\frac{dx}{\\text{d}t}\\,\\text{d}t-x\\,\\frac{dy}{\\text{d}t}\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}(y\\,\\frac{dx}{\\text{d}t}-x\\,\\frac{dy}{\\text{d}t})\\,\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}(\\sqrt{2}\\operatorname{sin}⁡t\\cdot (-\\sqrt{2}\\operatorname{sin}⁡t)-\\sqrt{2}\\operatorname{cos}⁡t\\cdot \\sqrt{2}\\operatorname{cos}⁡t)\\text{d}t ",
+        "{\\int }_{0}^{\\pi /2}(-2{sin}^{2}⁡t-2{cos}^{2}⁡t)\\text{d}t ",
+        "-2{\\int }_{0}^{\\pi /2}\\text{d}t ",
+        "-2t{|}_{0}^{\\pi /2} ",
+        "-2[\\frac{\\pi }{2}-0] ",
+        "-\\pi "
+      ],
+      "render_rule": "multiply each complete lhs/row/answer component by c; c=1 is the multiplicative identity; prefix and suffix unchanged"
+    },
+    "field": {
+      "key": "selection",
+      "type": ":answer-field.type/radio",
+      "profile": "observed_q-90895"
+    },
+    "choices": [
+      {
+        "source_index": 0,
+        "source_answer_id": "256764ed-4369-50dc-930e-662876f022a1",
+        "value": "0",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (0)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 1,
+        "source_answer_id": "4130f50c-9761-535e-832c-969370eba9c6",
+        "value": "\\frac{\\pi }{3}",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (pi/3)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 2,
+        "source_answer_id": "56de169b-e6cc-53f1-9778-d57c45a41155",
+        "value": "-\\frac{\\pi }{3}",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-pi/3)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      },
+      {
+        "source_index": 3,
+        "source_answer_id": "72db92dd-d3bb-5244-9ae0-06d36401d8d9",
+        "value": "-\\pi ",
+        "correct": true,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (-pi)",
+        "intent": "assessed tangent substitution"
+      },
+      {
+        "source_index": 4,
+        "source_answer_id": "fb33e709-cf30-5cd2-9a8f-17fc862403a2",
+        "value": "\\pi ",
+        "correct": false,
+        "parameterized_render": "scale_tex(component,c)",
+        "mathematical_recipe": "c * (pi)",
+        "intent": "unresolved source intent; replay-only entire-expression scaling"
+      }
+    ]
+  }
+]

@@ -1,0 +1,8 @@
+# Static source plot extraction (steps 5 and 7)
+
+Source `images/a8/a8e7894ea970c539ca59a73713fa15450f4361b3fc8bc22183e3fe84946411bd.png` was inspected at original 354×301 resolution through view_image. Actual file is `/media/jake/SSD/EDB/math/images/a8/a8e7894ea970c539ca59a73713fa15450f4361b3fc8bc22183e3fe84946411bd.png`.
+
+1. The white graph contains black x/y axes with arrowheads, blue cosecant branches, gray dashed asymptotes at -π and π, and labeled x ticks at -3π/2,-π,-π/2,π/2,π,3π/2. y ticks ±1 mark branch extrema. Curves approach vertical undefined lines without joined segments. The central y-axis is also the x=0 asymptote.
+2. This is a fixed explanatory graph of csc(x), supporting oddness via 180° origin rotation and period 2π. It is not a requested reconstruction or a parameter-dependent function graph.
+3. Origin is approximately (170,157), x=π near257 and x=-π near83. Horizontal scale is roughly27.7 px/radian; vertical unit is roughly27px. Positive vertices near(213,130),(-3π/2 position40,130) correspond under origin rotation to negative vertices near(128,184),(300,184). Tick labels are readable and not masked. Axis bounds clip high-magnitude parts of each branch, as expected for an unbounded function. Measured positions are inspection aids, not exact raster fits.
+4. Reuse the unchanged asset for every solution: the actual csc function, its signs, period, zero set and geometry never change. Inputs alter only evaluation expressions and supplied values; no variable plot assets are needed. Rating is none. No renderer, transforms, DPI sidecars or concurrency checks are applicable; the asset's exact hash and dimensions are saved in plot-provenance.json. No image model, direct SVG, transformed-graph generation, or substitute graphic was used.
