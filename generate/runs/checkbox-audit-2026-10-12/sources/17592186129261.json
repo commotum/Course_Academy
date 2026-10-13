@@ -1,0 +1,270 @@
+{
+  ":db/id": 17592186129261,
+  ":knowledge-point/canonical-example": {
+    ":db/id": 17592186128836,
+    ":question/id": "418bea54-7fb3-5013-b91c-355a45af08e6",
+    ":question/math-academy-id": "e-11151",
+    ":question/problem": "Using the change of variables\n\n$$\nu = \\dfrac{y^2}{x}, \\qquad v= xy,\n$$\n\ncalculate the area of the finite region $D$ in the first quadrant bounded by the curves\n\n$$\nx = {y^2}, \\qquad x=\\dfrac{y^2}3, \\qquad y=\\dfrac2x, \\qquad y=\\dfrac4x.\n$$",
+    ":question/worked-solution": "The area of the required region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y.\n$$\n\nLet's define a transformation $\\mathbf T$ as follows: \n\n![](images/e4/e4acf61532998ca5b0768b7edde16be779298c1be15ef11b14472678ba43043a.png)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$  \n\nNote that the changes of variables\n\n$$\nu = \\dfrac{y^2}{x}, \\qquad v= xy\n$$\n\n \n\ngives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/37/3706f0373bb39ebd41d78dd453896548ec03638a656e1fe36604f2a43108ba8e.png)\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nWe substitute $u= \\dfrac{y^2}{x}$ into the equations of the first and second curves:\n\n$$\n\\begin{aligned} & x={y}^{2} & ⟹\\, & \\frac{{y}^{2}}{x}=1 & ⟹\\, & u=1 \\\\  & x=\\frac{{y}^{2}}{3} & ⟹\\, & \\frac{{y}^{2}}{x}=3 & ⟹\\, & u=3\\end{aligned}\n$$\n\nAnd we substitute $v = xy$ into the equations of the third and fourth curves:\n\n$$\n\\begin{aligned} & y=\\frac{2}{x} & ⟹\\, & xy=2 & ⟹\\, & v=2 \\\\  & y=\\frac{4}{x} & ⟹\\, & xy=4 & ⟹\\, & v=4\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: 1 \\leq u \\leq 3, \\quad 2 \\leq v \\leq 4\\big\\}\n$$\n\n![](images/12/1207d8cdb8afd7c55d712caca043edfe9f0d0395343a6cbd329cf5861ec3bce7.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}.$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{{y}^{2}}{{x}^{2}} & \\frac{2y}{x} \\\\ y & \\text{ }\\text{ }x\\end{aligned}| \\\\  & =-\\frac{3{y}^{2}}{x}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T.$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} = -\\dfrac{x}{3y^2} = -\\dfrac{1}{3u}.\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$  In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{∬}_{D}\\text{d}x\\text{d}y & ={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}|-\\frac{1}{3u}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{3}{\\int }_{2}^{4}\\frac{1}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{3}\\frac{1}{u}\\,\\text{d}u{\\int }_{2}^{4}\\,\\text{d}v \\\\  & =\\frac{1}{3}\\cdot (\\operatorname{ln}⁡3-\\operatorname{ln}⁡1)\\cdot (4-2) \\\\  & =\\frac{2}{3}\\operatorname{ln}⁡3.\\end{aligned}\n$$"
+  },
+  ":knowledge-point/id": "87fa627d-b1ee-5f28-a910-da260acc566c",
+  ":knowledge-point/questions": [
+    {
+      ":db/id": 17592186129504,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9c2703af-9466-5bfe-b4be-6b83ac22c669",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2",
+              ":db/id": 17592186126525
+            },
+            {
+              ":answer/id": "cf58a05e-6426-5bb8-8231-daefdfe1b35a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{2}{3}",
+              ":db/id": 17592186126526
+            },
+            {
+              ":answer/id": "e030ad9f-a5b5-582f-939f-64d484910356",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{3}",
+              ":db/id": 17592186126527
+            },
+            {
+              ":answer/id": "3310ee92-258d-50a0-8117-218100854be9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "6",
+              ":db/id": 17592186126528
+            },
+            {
+              ":answer/id": "3a3f2756-8915-5175-ae43-ff1f5dcb79fa",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4",
+              ":db/id": 17592186126529
+            }
+          ],
+          ":answer-field/id": "ace18637-bd27-5171-b992-40bdb4d2ac91",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186126524
+        }
+      ],
+      ":question/id": "297a0864-bd1f-5e14-96f0-53d43c9309da",
+      ":question/math-academy-id": "q-160365",
+      ":question/problem": "Using the change of variables\n\n$u = y - 2x, v = y + x$,\ncalculate the area of the finite region $D$ in the first quadrant bounded by the lines\n$y = 2x - 1, y = 2x + 1, y = 1 - x, y = 2 - x$."
+    },
+    {
+      ":db/id": 17592186129506,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b2aafe7e-6c91-5d6d-8464-7dba52b30e74",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3\\ln 2",
+              ":db/id": 17592186126537
+            },
+            {
+              ":answer/id": "bcd35985-e84f-5813-8588-98b9055133fa",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4\\ln 2",
+              ":db/id": 17592186126538
+            },
+            {
+              ":answer/id": "d2697d0b-ab20-5ad0-9fbf-426d7b8ac704",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\ln 4",
+              ":db/id": 17592186126539
+            },
+            {
+              ":answer/id": "0d245dc4-6278-59dd-ac0e-565b7ead760b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\ln 2",
+              ":db/id": 17592186126540
+            },
+            {
+              ":answer/id": "45b03faf-db45-58e5-91f3-c3f8035ce775",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{2}\\ln 2",
+              ":db/id": 17592186126541
+            }
+          ],
+          ":answer-field/id": "6c5dc97d-8128-54b5-935f-d17d396d9b2c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186126536
+        }
+      ],
+      ":question/id": "af55d298-694f-59ec-ab70-d9760a4b8e8c",
+      ":question/math-academy-id": "q-160379",
+      ":question/problem": "Using the change of variables\n\n$u = \\frac{y}{x^{2}}, v = xy$,\n\ncalculate the area of the finite region $D$ in the first quadrant bounded by the curves\n$y = x^{2}, y = 2x^{2}, y = \\frac{1}{x}, y = \\frac{4}{x}$."
+    },
+    {
+      ":db/id": 17592186371899,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "184368e1-d4ec-53a7-b724-26ecbd05d7dd",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{5}{6}",
+              ":db/id": 17592186371901
+            },
+            {
+              ":answer/id": "5fd23822-1245-54b3-b063-1a3e5b75308f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{4}{5}",
+              ":db/id": 17592186371902
+            },
+            {
+              ":answer/id": "04872f3c-0156-57be-a135-c6b36ffb10ca",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{8}{3}",
+              ":db/id": 17592186371903
+            },
+            {
+              ":answer/id": "bbd73d74-b8b1-5322-8406-42b2b8fdfb02",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{4}{3}",
+              ":db/id": 17592186371904
+            },
+            {
+              ":answer/id": "8428d403-ae08-501f-9369-f40eb9366d9b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{8}{5}",
+              ":db/id": 17592186371905
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "8428d403-ae08-501f-9369-f40eb9366d9b",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\frac{8}{5}",
+            ":db/id": 17592186371905
+          },
+          ":answer-field/id": "ba19557e-03f5-528c-ad20-5f4ba059cdd9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186371900
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/id": "b5d19e11-2889-5a4f-a620-f1b6f728a9db",
+      ":question/math-academy-id": "q-160870",
+      ":question/problem": "Using the change of variables \n\n$$\nu=y-3x,\\,v=y+2x,\n$$\n\ncalculate the area of the finite region $D$ in the first quadrant bounded by the lines\n\n$$\ny=3x-2,\\,y=3x+2,\\,y=1-2x,\\,y=3-2x.\n$$",
+      ":question/worked-solution": "The area of the required region is given by\n\n$$\n{∬}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\to [\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{∬}_{D}dxdy={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=y-3x,\\,v=y+2x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nWe substitute $u=y-3x$ into the equations of the first and second lines:\n\n$$\n\\begin{aligned} & y=3x-2 & ⟹\\, & y-3x=-2 & ⟹\\, & u=-2 \\\\  & y=3x+2 & ⟹\\, & y-3x=2 & ⟹\\, & u=2\\end{aligned}\n$$\n\nAnd we substitute $v=y+2x$ into the equations of the third and fourth lines:\n\n$$\n\\begin{aligned} & y=1-2x & ⟹\\, & y+2x=1 & ⟹\\, & v=1 \\\\  & y=3-2x & ⟹\\, & y+2x=3 & ⟹\\, & v=3\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ={(u,v)\\,:\\,-2\\le u\\le 2,\\,1\\le v\\le 3}\n$$\n\n![](images/9c/9c17c81b4abc0d4ebd1eadfe951b0eb0c2674d9eb07b785e7fd972fd00e513ae.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}-3 & 1 \\\\ 2 & \\text{ }\\text{ }1\\end{aligned}| \\\\  & =-5.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=-\\frac{1}{5}.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{∬}_{D}\\text{d}x\\text{d}y & ={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}|-\\frac{1}{5}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{5}{∬}_{Δ}\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{5}\\cdot \\text{Area}(Δ) \\\\  & =\\frac{1}{5}\\cdot 4\\cdot 2 \\\\  & =\\frac{8}{5}\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186371913,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "14d59625-eac9-589e-ab14-341551eea08f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{3}\\operatorname{ln}⁡3",
+              ":db/id": 17592186371915
+            },
+            {
+              ":answer/id": "7b889d37-5d45-5818-9d27-40379a4533ff",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{6}\\operatorname{ln}⁡3",
+              ":db/id": 17592186371916
+            },
+            {
+              ":answer/id": "b06248ff-2151-5554-b5af-ab842ba5705a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{3}\\operatorname{ln}⁡2",
+              ":db/id": 17592186371917
+            },
+            {
+              ":answer/id": "a1e1a6f5-fc15-5138-88ce-fdee68bb88d0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{6}\\operatorname{ln}⁡2",
+              ":db/id": 17592186371918
+            },
+            {
+              ":answer/id": "5b52d6ac-ffd9-5f34-ba9e-30bc4a86d030",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{2}\\operatorname{ln}⁡3",
+              ":db/id": 17592186371919
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "7b889d37-5d45-5818-9d27-40379a4533ff",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\frac{1}{6}\\operatorname{ln}⁡3",
+            ":db/id": 17592186371916
+          },
+          ":answer-field/id": "49ac9b17-c604-511f-9b48-3b87989affec",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186371914
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/id": "75940fb8-f294-5aab-8f7b-cfe4e75211a4",
+      ":question/math-academy-id": "q-160891",
+      ":question/problem": "Using the change of variables\n\n$$\nu=\\frac{1}{xy},\\,v={x}^{2}y,\n$$\n\ncalculate the area of the finite region $D$ in the first quadrant bounded by the curves\n\n$$\ny=\\frac{1}{2x},\\,y=\\frac{1}{3x},\\,y=\\frac{1}{{x}^{2}},\\,y=\\frac{3}{{x}^{2}}.\n$$",
+      ":question/worked-solution": "The area of the required region is given by\n\n$$\n{∬}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\to [\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{∬}_{D}dxdy={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=\\frac{1}{xy},\\,v={x}^{2}y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nWe substitute $u=\\frac{1}{xy}$ into the equations of the first and second curves:\n\n$$\n\\begin{aligned} & y=\\frac{1}{2x} & ⟹\\, & \\frac{1}{xy}=2 & ⟹\\, & u=2 \\\\  & y=\\frac{1}{3x} & ⟹\\, & \\frac{1}{xy}=3 & ⟹\\, & u=3\\end{aligned}\n$$\n\nAnd we substitute $v={x}^{2}y$ into the equations of the third and fourth curves:\n\n$$\n\\begin{aligned} & y=\\frac{1}{{x}^{2}} & ⟹\\, & {x}^{2}y=1 & ⟹\\, & v=1 \\\\  & y=\\frac{3}{{x}^{2}} & ⟹\\, & {x}^{2}y=3 & ⟹\\, & v=3\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ={(u,v)\\,:\\,2\\le u\\le 3,\\,1\\le v\\le 3}\n$$\n\n![](images/05/05d2ca47db245b147cb52f95a474a60ece144931c8b6e1e40c6628a99b53d690.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{1}{{x}^{2}y} & -\\frac{1}{x{y}^{2}} \\\\ 2xy & \\text{ }\\text{ }{x}^{2}\\end{aligned}| \\\\  & =\\frac{1}{y}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=y=\\frac{{x}^{2}{y}^{2}}{{x}^{2}y}=\\frac{1}{{u}^{2}v}.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{∬}_{D}\\text{d}x\\text{d}y & ={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}|-\\frac{1}{{u}^{2}v}|\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{2}^{3}{\\int }_{1}^{3}\\frac{1}{{u}^{2}v}\\,\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{2}^{3}\\frac{1}{{u}^{2}}\\,\\text{d}u{\\int }_{1}^{3}\\frac{1}{v}\\,\\text{d}v \\\\  & =(-\\frac{1}{3}+\\frac{1}{2})\\cdot (\\operatorname{ln}⁡3-\\operatorname{ln}⁡1) \\\\  & =\\frac{1}{6}\\operatorname{ln}⁡3.\\end{aligned}\n$$"
+    }
+  ],
+  ":knowledge-point/title": "Mapping an Area to a Rectangular Region: Transformations Given"
+}
