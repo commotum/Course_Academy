@@ -1,0 +1,140 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-36696\", \"problem\": \"Find ${lim}_{x\\\\to \\\\,{0}^{+}}f(x)$ and ${lim}_{x\\\\to \\\\,{0}^{-}}f(x)$ for the function given by\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}\\\\operatorname{sec}⁡x & \\\\text{ for }\\\\,-\\\\frac{\\\\pi }{2}<x<0 \\\\\\\\ \\\\operatorname{csc}⁡x & \\\\text{ for }\\\\,\\\\frac{\\\\pi }{2}<x<\\\\pi \\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-99961\", \"problem\": \"For the piecewise function \\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}-x\\\\, & \\\\text{ for }\\\\,x\\\\le -1 \\\\\\\\ x+c\\\\, & \\\\text{ for }\\\\,x>-1\\\\end{aligned}\\n$$\\n\\nit is known that ${lim}_{x\\\\to -1}f(x)=1.$ What is the value of the constant $c?$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-104132\", \"problem\": \"For what reason does the function $f(x)$ below have a discontinuity at $x=-2?$ \\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}\\\\frac{{x}^{2}+2}{2}, & x<-2 \\\\\\\\ 5, & x=-2 \\\\\\\\ \\\\frac{18}{{x}^{2}+2}, & x>-2\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-71079\", \"problem\": \"For what reason does the function $f(x)$ given below have a discontinuity at $x=-1?$\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}\\\\frac{{x}^{2}+1}{2}, & x<-1 \\\\\\\\ 2, & x=-1 \\\\\\\\ \\\\frac{2}{{x}^{2}+1}, & x>-1\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-36696:\nThe right-sided limit ${lim}_{x\\to {0}^{+}}f(x)$ does not exist since $f(x)$ is not defined on the interval $x\\in (0,\\frac{\\pi }{2}).$ \n\nConsequently, \n\n$$\n{lim}_{x\\to {0}^{+}}f(x)=\\text{DNE}.\n$$\n\nApproaching $x=0$ from the left, we have $x<0,$ so we use the expression $f(x)=\\operatorname{sec}⁡x.$ We get\n\n$$\n\\begin{aligned}{lim}_{x\\to {0}^{-}}f(x) & ={lim}_{x\\to {0}^{-}}\\operatorname{sec}⁡x \\\\  & =\\operatorname{sec}⁡0 \\\\  & =1.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n{lim}_{x\\to {0}^{+}}f(x)=\\text{DNE},\\,{lim}_{x\\to {0}^{-}}f(x)=1.\n$$\n\nq-99961:\nIn order for ${lim}_{x\\to -1}f(x)$ to be equal to $1,$ the left and right-sided limits must both exist and be equal to $1.$\n\n- Approaching from the left, we have $x<-1,$ so we use the expression $f(x)=-x.$ We get \n\n$$\n\\begin{aligned}{lim}_{x\\to (-1)^{-}}f(x) & ={lim}_{x\\to (-1)^{-}}(-x) \\\\  & =-(-1) \\\\  & =1.\\end{aligned}\n$$\n\n- Approaching from the right, we have $x>-1,$ so we use the expression $f(x)=x+c.$ We get\n\n$$\n\\begin{aligned}{lim}_{x\\to (-1)^{+}}f(x) & ={lim}_{x\\to (-1)^{+}}(x+c) \\\\  & =-1+c.\\end{aligned}\n$$\n\nFinally, since the left and right-sided limits must be equal, we have\n\n$$\n\\begin{aligned}{lim}_{x\\to (-1)^{-}}f(x) & ={lim}_{x\\to (-1)^{+}}f(x) \\\\ 1 & =-1+c \\\\ c & =2.\\end{aligned}\n$$\n\nq-104132:\nLet's check the conditions necessary for $f(x)$ to be continuous at $x=-2.$\n\n- $f(-2)=5,$ so $f(-2)$ exists. $✓$\n\n- We calculate the one-sided limits and find that they coincide:\n\n$$\n\\begin{aligned}{lim}_{x\\to (-2)^{-}}f(x) & ={lim}_{x\\to (-2)^{-}}(\\frac{{x}^{2}+2}{2}) \\\\  & =\\frac{(-2)^{2}+2}{2} \\\\  & =3, \\\\ {lim}_{x\\to (-2)^{+}}f(x) & ={lim}_{x\\to (-2)^{+}}(\\frac{18}{{x}^{2}+2}) \\\\  & =\\frac{18}{(-2)^{2}+2} \\\\  & =3.\\end{aligned}\n$$\n\nTherefore, the overall limit exists and ${lim}_{x\\to (-2)}f(x)=3.\\,\\,✓$ $\\,\\,\\,$\n\n- The limit of the function is not equal to the function value: ${lim}_{x\\to (-2)}f(x)=3,$ while $f(-2)=5.$ $\\times $\n\nTherefore, the function $f(x)$ has a discontinuity at $x=-2$ because ${lim}_{x\\to (-2)}f(x)\\ne f(-2).$\n\nq-71079:\nLet's check the conditions necessary for $f(x)$ to be continuous at $x=-1.$\n\n- $f(-1)=2,$ so $f(-1)$ exists. $✓$\n\n- We calculate the one-sided limits and check if they coincide:\n\n$$\n\\begin{aligned}{lim}_{x\\to (-1)^{-}}f(x) & ={lim}_{x\\to (-1)^{-}}(\\frac{{x}^{2}+1}{2}) \\\\  & =\\frac{(-1)^{2}+1}{2} \\\\  & =\\frac{1+1}{2} \\\\  & =1, \\\\ {lim}_{x\\to (-1)^{+}}f(x) & ={lim}_{x\\to (-1)^{+}}(\\frac{2}{{x}^{2}+1}) \\\\  & =\\frac{2}{(-1)^{2}+1} \\\\  & =\\frac{2}{1+1} \\\\  & =1.\\end{aligned}\n$$\n\nTherefore, the overall limit exists and ${lim}_{x\\to (-1)}f(x)=1$ $✓$\n\n- The limit of the function is not equal to the function value: ${lim}_{x\\to (-1)}f(x)=1,$ while $f(-1)=2.$ $\\,\\,\\times $\n\nTherefore, the function $f(x)$ has a discontinuity at $x=-1$ because ${lim}_{x\\to (-1)}f(x)\\ne f(-1).$",
+      "fields": [
+        {
+          "key": "q-36696/selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=1,\\,{lim}_{x\\to \\,{0}^{+}}f(x)=\\text{DNE}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=0,\\,{lim}_{x\\to \\,{0}^{+}}f(x)=1"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=\\text{DNE},\\,{lim}_{x\\to \\,{0}^{+}}f(x)=\\text{DNE}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=0,\\,{lim}_{x\\to \\,{0}^{+}}f(x)=\\text{DNE}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=\\text{DNE},\\,{lim}_{x\\to \\,{0}^{+}}f(x)=1"
+            }
+          ]
+        },
+        {
+          "key": "q-99961/selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "3"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "-1"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "key": "q-104132/selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$f(x)$ is a piecewise function"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "{lim}_{x\\to (-2)}f(x)\\ne f(-2)"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "${lim}_{x\\to (-2)^{+}}f(x)$ does not exist"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "$f(-2)$ does not exist"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "${lim}_{x\\to (-2)}f(x)$ does not exist"
+            }
+          ]
+        },
+        {
+          "key": "q-71079/selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "${lim}_{x\\to (-1)}f(x)$ does not exist"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$f(-1)$ does not exist"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "${lim}_{x\\to (-1)^{+}}f(x)$ does not exist"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "${lim}_{x\\to (-1)^{-}}f(x)$ does not exist"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "{lim}_{x\\to (-1)}f(x)\\ne f(-1)"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12c53-ad2f-7581-af68-4a34babfb432",
+  "previous_failures": []
+}

@@ -1,0 +1,107 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-36720\", \"problem\": \"Find the limit at $x=\\\\frac{1}{2}$ of the piecewise function $f(x)$ defined by\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}6x+1\\\\, & \\\\text{ for }\\\\,x\\\\le \\\\frac{1}{2} \\\\\\\\ -4{log}_{2}⁡x\\\\, & \\\\text{ for }\\\\,x>\\\\frac{1}{2}.\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-36724\", \"problem\": \"Find the limit at $x=3$ for the function\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}\\\\sqrt[3]{3x-1}\\\\, & \\\\text{ for }\\\\,x<3 \\\\\\\\ \\\\operatorname{cos}⁡(x\\\\pi )\\\\, & \\\\text{ for }\\\\,x\\\\ge 3.\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-37488\", \"problem\": \"Find the left-sided limit at $x=0$ for the function\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}\\\\operatorname{tan}⁡x & \\\\text{ for }\\\\,-\\\\frac{\\\\pi }{2}<x\\\\le 0 \\\\\\\\ {log}_{2}⁡x & \\\\text{ for }\\\\,x>0.\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-36720:\nApproaching from the left, we have $x<\\frac{1}{2},$ so we use the expression $f(x)=6x+1.$ We get\n\n$$\n\\begin{aligned}{lim}_{x\\to {(1/2)}^{-}}f(x) & ={lim}_{x\\to {(1/2)}^{-}}(6x+1) \\\\  & =6\\cdot \\frac{1}{2}+1 \\\\  & =4.\\end{aligned}\n$$\n\nNow,  approaching from the right, we have $x>\\frac{1}{2},$ so we use the expression $f(x)=-4{log}_{2}⁡x.$ We get\n\n$$\n\\begin{aligned}{lim}_{x\\to {(1/2)}^{+}}f(x) & ={lim}_{x\\to {(1/2)}^{+}}-4{log}_{2}⁡x \\\\  & =-4{log}_{2}⁡\\frac{1}{2} \\\\  & =-4{log}_{2}⁡{2}^{-1} \\\\  & =-4(-1){log}_{2}⁡2 \\\\  & =-4(-1) \\\\  & =4.\\end{aligned}\n$$\n\nSince the left- and right-sided limits are equal to $4,$ we conclude that\n\n$$\n{lim}_{x\\to (1/2)}f(x)=4.\n$$\n\nq-36724:\nApproaching from the left, we have $x<3,$ so we use the expression $f(x)=\\sqrt[3]{3x-1}.$ We get\n\n$$\n\\begin{aligned}{lim}_{x\\to {3}^{-}}f(x) & ={lim}_{x\\to {3}^{-}}\\sqrt[3]{3x-1} \\\\  & =\\sqrt[3]{3\\cdot 3-1} \\\\  & =\\sqrt[3]{8} \\\\  & =2\\,.\\end{aligned}\n$$\n\nApproaching from the right, we have $x>3,$ so we use the expression $f(x)=\\operatorname{cos}⁡(x\\pi ).$ We get\n\n$$\n\\begin{aligned}{lim}_{x\\to {3}^{+}}f(x) & ={lim}_{x\\to {3}^{+}}\\operatorname{cos}⁡(x\\pi ) \\\\  & =\\operatorname{cos}⁡(3\\pi ) \\\\  & =-1\\,.\\end{aligned}\n$$\n\nSince the two limits are different, we can conclude that\n\n$$\n{lim}_{x\\to 3}f(x)=\\text{DNE}\n$$\n\nq-37488:\nApproaching from the left, we have $x<0,$ so we use the expression $f(x)=\\operatorname{tan}⁡x.$ We get\n\n$$\n\\begin{aligned}{lim}_{x\\to {0}^{-}}f(x) & ={lim}_{x\\to {0}^{-}}\\operatorname{tan}⁡x \\\\  & =\\operatorname{tan}⁡0 \\\\  & =0.\\end{aligned}\n$$",
+      "fields": [
+        {
+          "key": "q-36720/selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "{lim}_{x\\to (1/2)}f(x)=\\text{DNE}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "{lim}_{x\\to (1/2)}f(x)=1"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "{lim}_{x\\to (1/2)}f(x)=2"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "{lim}_{x\\to (1/2)}f(x)=4"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "{lim}_{x\\to (1/2)}f(x)=-4"
+            }
+          ]
+        },
+        {
+          "key": "q-36724/selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "{lim}_{x\\to 3}f(x)=-1"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "{lim}_{x\\to 3}f(x)=2"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "{lim}_{x\\to 3}f(x)=\\text{DNE}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "{lim}_{x\\to 3}f(x)=1"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "{lim}_{x\\to 3}f(x)=3"
+            }
+          ]
+        },
+        {
+          "key": "q-37488/selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=2"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=-1"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=\\text{DNE}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=1"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "{lim}_{x\\to \\,{0}^{-}}f(x)=0"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}
