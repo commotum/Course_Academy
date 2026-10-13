@@ -1,0 +1,1227 @@
+# Originals and generated variants
+
+Basis 1356; originals retain all raw fields in source.json. Replay profiles preserve complete images. q-96477 has authored hard assignment and independently inferred designation, not an original designation match.
+
+## Original replay — possible_product / q-96476
+
+{"scale": 1}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=xy?$
+
+![](images/01/01cdcfc68fa5bf42f788b8ef9a099364ac6428457c40240bec101f18cb26ba01.png)
+
+![](images/a3/a324b98fc4ec7a38ce6276a357a649751b316c0e61ddb193ce5f34caed608e98.png)
+
+![](images/b3/b3e3fd451b0ebb2b4eb614dd54f5193be179f8bdcf7d84191004ddb80e39b3f8.png)
+
+![](images/d3/d3fc1db67353f797a60edd29987d01f6798bac25d98664845d9541635828410d.png)
+
+![](images/37/37b6f122623a0f6952362446078958512ea57fb86aa04aa735b93487a7fdecb1.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](images/a3/a324b98fc4ec7a38ce6276a357a649751b316c0e61ddb193ce5f34caed608e98.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](images/9d/9d60c65cda12bb6ac800906e7889a8ecc395974dff0379130d647810c1623869.png)
+
+## Original replay — possible_mixed / q-119369
+
+{"scale": 1}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=y-{x}^{2}?$
+
+![](images/74/7470460ab6f2d7e0bfde9585c6447a75abbea498d9c0628c23d6b69bc9738c46.png)
+
+![](images/f5/f5ee96c6ad4540cde69b78af9a13e4513a24f6c537f69c4bee5ec0d440da56c2.png)
+
+![](images/b9/b9498bdcc8a1bfb59c3db6053873a9622a2d936cc9a885f1b2bf8a40b1ec0b93.png)
+
+![](images/1b/1bd04b981c412d771617ffaaa7cedf88b063ae49ab567cd27d665eb381a1b648.png)
+
+![](images/d8/d8a84684bd0ea9b96e9e3901b4dfec5e5568a80ad44202161a76414ce0a4edfa.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](images/1b/1bd04b981c412d771617ffaaa7cedf88b063ae49ab567cd27d665eb381a1b648.png)
+
+  
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](images/83/83f2ac528d0e4bdd7e486284a9f3d5692e0111c5cdc58dcc554e12dd0185f15f.png)
+
+## Original replay — possible_exp / q-119372
+
+{"scale": 1}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}={e}^{xy}?$
+
+![](images/7d/7d5df9fe81ebd1e656eefc97380ae646a1a4f64de51e4745bc31d822e022d65d.png)
+
+![](images/1f/1fbb7d5a4a957b130c0835b09a6dba5c527e3b61844769b78f5517f4e4914b39.png)
+
+![](images/c7/c74a4cf84ce908132b57674ef5624e0afcd42af7c40150ac0079e25894a60ba3.png)
+
+![](images/81/81bdcfd873677151067b3e2d542315d2f10f9b65f19a05ad3759dc5fe69a3704.png)
+
+![](images/12/128c02e4d847e918cce92b38f4a7f09ffab6a11bf6f25ee7fd3480d6a6c3cac6.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](images/7d/7d5df9fe81ebd1e656eefc97380ae646a1a4f64de51e4745bc31d822e022d65d.png)
+
+  
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](images/d0/d05d98b24783511dc6ff7518141e49d9cfefe96565f16b9d11b30d0e6fc0a5a4.png)
+
+## Original replay — impossible_y / q-96477
+
+{"scale": 1}
+
+Given that $f(x, y)$ varies with both $x$ and $y$, which of the following **cannot** be the slope field for the differential equation $\frac{dy}{dx} = f(x, y)$?
+
+![](images/78/78042a69ce4ac14b6d99455b32d40e35830efb1086a3c3fc05f705988b913b40.png)
+
+![](images/43/43d4b05227a0667420e6978f01671931fb2392fe39692400407708edc8c24987.png)
+
+![](images/98/989a9c0a5f720929dda562c4b8f64aa3cc84001d53ca2b3be8ad6cd53f458c5d.png)
+
+![](images/54/543bb98ff948d1186e05d84db7992f9d5033ba4eaf47a9787b6b5664b88510a2.png)
+
+![](images/3e/3e8b9711bda744d16af71f3c4ae6ddb4e2007f6dc2963c87f7d643831209b8c7.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](images/43/43d4b05227a0667420e6978f01671931fb2392fe39692400407708edc8c24987.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/aa9ee4d51b672ef2c8e277ced065e2162bcf520c8200682009ee77f77037d766.png)
+
+## Original replay — impossible_x / q-98229
+
+{"scale": 1}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](images/74/7428d46543d8dd2def3e48b980643572dd661f5f7edc6cba304d64eb99439403.png)
+
+![](images/4e/4ea9eceec3de9b414efa87954d869119caf0748f152186aff5ede9bbade3f1fc.png)
+
+![](images/2c/2c71db516bb0ab1514fe6e8979c980210c396fcafb88fd566ae9754ad0792bc8.png)
+
+![](images/d9/d94451671073d38af905b1190a15f97e6419a3a6052f83e53caa5a94b4a7000a.png)
+
+![](images/cb/cb58d805bed05b6846fd0ab7657f8e05c65eb69562a6cda494689e44745fb9d1.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $y$ given a fixed value of $x.$
+
+![](images/4e/4ea9eceec3de9b414efa87954d869119caf0748f152186aff5ede9bbade3f1fc.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line, the slopes do not vary.
+
+![](images/fe/fe2169790c1ee1d823937235bedd20ff10ecca662f030fd03dbfe23434517e47.png)
+
+## Original replay — impossible_y / q-98233
+
+{"scale": 1}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](images/b4/b433458640a60ab79880fe94549be1071420948c1c809d5c43576d4aeed45510.png)
+
+![](images/0b/0be25701c9d678977655081af50779401b207cbcd91a4c04cb32e8740180ae45.png)
+
+![](images/4e/4e286da41a3a0026ff7ee55649be2f0bdf5209e407a0f6fe96b3bbffa1295fb5.png)
+
+![](images/ae/ae2c8de966219eb473c42fa809bfde49b52c7c88efaf83fc7ab0d602d734e722.png)
+
+![](images/8b/8b5ff8f702e76cb7108ae458447b38eed4d18e38336f54279f25d1c59c02e3b4.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](images/ae/ae2c8de966219eb473c42fa809bfde49b52c7c88efaf83fc7ab0d602d734e722.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](images/e2/e243f3fb7515d9858599775ce0391f85f1de237f08380e1ec3b7403b1ecdbf53.png)
+
+## Original replay — impossible_y / q-119383
+
+{"scale": 1}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](images/ac/ac12c64fe5282c78ea926eec823cec6b66c8fad9f153c4191d39ba7751e90e25.png)
+
+![](images/c9/c959785ef067b41eba5e5ca5f0759acdd81c9f613c92854ba5937be6bced2c86.png)
+
+![](images/fe/fe57c0cc2d75729921eb46408e0e4a6932eba06c00034f2ec4c579c8c5627376.png)
+
+![](images/96/96817ea42e1d860db97d3ee6bca79e9a8b03a0fd413c87ebc5679f746da3166b.png)
+
+![](images/9c/9cb42cde56fcbea0c489742cab1448890728dab584395129b21794115b1e1298.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](images/9c/9cb42cde56fcbea0c489742cab1448890728dab584395129b21794115b1e1298.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](images/9d/9d256bd6c44a9abc8489c360722b5c5e8243f0d4a9aa6fee03cad52e5334b385.png)
+
+## Original replay — impossible_y / q-98231
+
+{"scale": 1}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](images/e4/e45b8a64f56d831392ddc1eca4ddec922949d58e1c3f1f69c4db6238fe9a3200.png)
+
+![](images/41/4191f22560c393dacad29a06e34b7c725800e27554e2c4ad7a9e40d9e56741e6.png)
+
+![](images/58/58a69833c7b4f627c0cfd436f5ff624ea15dfc0f68d548e94b987794f06a58a0.png)
+
+![](images/43/43d4b05227a0667420e6978f01671931fb2392fe39692400407708edc8c24987.png)
+
+![](images/ab/ab73df79e9518f68e27860a1655867d092255e604666c4153f3d950b30410fc5.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](images/43/43d4b05227a0667420e6978f01671931fb2392fe39692400407708edc8c24987.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](images/71/718f65dc7f4ccab0931d04855c647bd39beffc014f1f389896edf83352fcc988.png)
+
+## Generated empirical-bank variant — possible_product / q-96476
+
+{"scale": 0.5}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=\frac{x y}{2}?$
+
+![](plots/1feceeb606dcead3dcc82b47ffe418f62fb912524fecd509f0b2faa9e49b17ed.png)
+
+![](plots/52387cae1392d6e74aff6a25d48b17bc391aa8a230b98c77ba424eee89b4e3ea.png)
+
+![](plots/1e987f302652c692c3b7d97444f651f43bc97c07c2b1b6a61f69c12e7cde00aa.png)
+
+![](plots/a7ea88f4f200fc27068df83632d9439847cbfcea79ca21ac8a44d465a110c658.png)
+
+![](plots/de1fab91876898f9f68dfd9c1ef57d7e4c44139ea1725aef98287905e82f1f00.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/1e987f302652c692c3b7d97444f651f43bc97c07c2b1b6a61f69c12e7cde00aa.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/8b2ecd27e22d74c5785364a329965c12399ff917763b327028d8b8eecadc8808.png)
+
+## Generated empirical-bank variant — possible_product / q-96476
+
+{"scale": -1}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=- x y?$
+
+![](plots/e61a2b9aab0d20a0b28201526c435c838db0c13360b949df1df22658f8b28186.png)
+
+![](plots/1337b74f9bf0daae2883774bb181f071ea1df4f2d203c28c19ecad9553585a09.png)
+
+![](plots/1321a7c129c2846307c7ecea0a074dc266e1952fdd5883ccc65dfa0fb92bfb1b.png)
+
+![](plots/5ea91f2937cedb9925c7bd128868ceaff7adf98b95e0729cda5f8f572b68de90.png)
+
+![](plots/c63522d631e8fd90d031c1556ba55dcadf80bc306a1e6fb0eb798e40b2261086.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/1321a7c129c2846307c7ecea0a074dc266e1952fdd5883ccc65dfa0fb92bfb1b.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/b0beef6606bdec28d5c608e204925cf0b49fca485130f6b8980861cb957eee49.png)
+
+## Generated empirical-bank variant — possible_mixed / q-119369
+
+{"scale": 0.5}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=- \frac{x^{2}}{2} + \frac{y}{2}?$
+
+![](plots/386fccbf1842f3253fbada2eb582fa533ecf2fe15fade2cc2433f13cb401be8a.png)
+
+![](plots/a6bcc17679f56692f0874eb39d17b393d2a165f14f5e059dd1883fa7355730c7.png)
+
+![](plots/9119b35d4b6a2501f7befbae6b2e56058a651206e0afadbb9560848cd425a834.png)
+
+![](plots/fd3a6a68fc5e7da6d0f9da055e5fc55c3dd61227cbc39e9adaa9cc249e3ef469.png)
+
+![](plots/2b30d93fbc458069ab52d9b9eb18c68afb26fd7758e8fc041a0c8a520d124c7a.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/fd3a6a68fc5e7da6d0f9da055e5fc55c3dd61227cbc39e9adaa9cc249e3ef469.png)
+
+  
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/72012b257b623382909cc5dac1231c7baa57506c740b0c9991c91db00247c00d.png)
+
+## Generated empirical-bank variant — possible_mixed / q-119369
+
+{"scale": -1}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=x^{2} - y?$
+
+![](plots/8589d659e1e9775729cbfe985fd5d0d6258c597a007a72cc5dd69352c41adb61.png)
+
+![](plots/3f2846334af526be998fb9ac754a5b5fcf6e1a8e00b6812e0dbb99d75d2ab0db.png)
+
+![](plots/43a7dd7b7fac990b5d628a9dde68d2b140152c5aaddc7a353d9a1632f977def3.png)
+
+![](plots/1badbdb3de86920504c677aadd76e04bb06e494e92a133ee2d178a8e2da1cdc6.png)
+
+![](plots/79163dea29f4a28e970ddb8bf39b1fcbb78b1bec646c0ef6a65f1016b0f2015b.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/1badbdb3de86920504c677aadd76e04bb06e494e92a133ee2d178a8e2da1cdc6.png)
+
+  
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/540ae69108b6e10e4cce45478d54844bd2f07073debd0dca83d2c796435325a5.png)
+
+## Generated empirical-bank variant — possible_exp / q-119372
+
+{"scale": 0.5}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=\frac{e^{x y}}{2}?$
+
+![](plots/46dc8e21ef6a98520657d08c3219d9d4f1ea6669eff7c16f2b404f8adf847440.png)
+
+![](plots/72416f87d7e934273d433226ded411f4eb7ece987c2eb864c2b74b3b828d5d3a.png)
+
+![](plots/a2ade5a31140e0f64bc53159ac4d647a73714e9eabca9150a0a1906efb6bff5c.png)
+
+![](plots/6471e5ff92d15e39870e30fbb86532590d66141a848cac5ec36555af5b4fe88b.png)
+
+![](plots/9b9c2dcb39fd7813fc4fe0a20975c94a6b263c9e8f6fa5204afe5ee0d4137b5a.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/46dc8e21ef6a98520657d08c3219d9d4f1ea6669eff7c16f2b404f8adf847440.png)
+
+  
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/8a44cba98803ea9d79b65437f2bf933c5ccabc347241d2843786488b9c6280d6.png)
+
+## Generated empirical-bank variant — possible_exp / q-119372
+
+{"scale": -1}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=- e^{x y}?$
+
+![](plots/75619f3d983341357bf0d8fd2bce01e72e4ebdb01197d1776ec7b06f13486228.png)
+
+![](plots/298958aa99959c4e43a5addf353684b00feda32393126f5f596af01903a69272.png)
+
+![](plots/f429fe7b2e873e0045873c26584df7a18cdad21287ee3619df05560a1dd4742e.png)
+
+![](plots/5671552c8d26f7667fda6efcf95eb9dc886f3ff21acf115be9e7ba9c0c10fe4c.png)
+
+![](plots/971b6250db36fc213f7d401c7145575277c562720de40fb81f72ec3adc25c10d.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/75619f3d983341357bf0d8fd2bce01e72e4ebdb01197d1776ec7b06f13486228.png)
+
+  
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/569c835e89da2355d29e0cab357876f64d46ec20b0708b5cca15eddd988975c9.png)
+
+## Generated empirical-bank variant — impossible_y / q-96477
+
+{"scale": 0.5}
+
+Given that $f(x, y)$ varies with both $x$ and $y$, which of the following **cannot** be the slope field for the differential equation $\frac{dy}{dx} = f(x, y)$?
+
+![](plots/ab8da858a5133371d492a4c92ef7cdfaef1870c8908c1198b42b3a76af5df02a.png)
+
+![](plots/340f8d97cbf07fce71de45d4f70fd3546250846ecd7195852381f69fed507779.png)
+
+![](plots/8d39e360dc591711a71994b482a444faa3e7f33e62b65e33e76b0f680d125b63.png)
+
+![](plots/f83bb5df7cbf44bd08f65015565053278b8411a03ef934bdc13fc8a4c0cce52a.png)
+
+![](plots/f0b6dec8c96cd90c06ef07080dca0f54477cf9c026647b4c6434c41067f953d2.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/8d39e360dc591711a71994b482a444faa3e7f33e62b65e33e76b0f680d125b63.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/e1f25a511036cd89e65bf66a1de950b5a95f08a0fc8c3aa69debb0102ca4ca65.png)
+
+## Generated empirical-bank variant — impossible_y / q-96477
+
+{"scale": -1}
+
+Given that $f(x, y)$ varies with both $x$ and $y$, which of the following **cannot** be the slope field for the differential equation $\frac{dy}{dx} = f(x, y)$?
+
+![](plots/2018aa8fcf97ce85491f1d14c4906bf4f7ac9163195f1c3916e5b3d4cf15f567.png)
+
+![](plots/3b8c82cc991cd55bbbd27ca7fa56cc52221c5d10475f26e8d5c809a3e78f384d.png)
+
+![](plots/764077b52cdb16e3b93cb80bf89b3d5e17c2bcaf4ab4c3d93e6cec9a550354cf.png)
+
+![](plots/bc5ff44b9b8da0578515041592a5f8b7480bb2b50dec95cd1c82f7d50300ed51.png)
+
+![](plots/ab7abf63e6b935a44431f66c5985584cbfba9258d07e14f28244e56a27e30de0.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/764077b52cdb16e3b93cb80bf89b3d5e17c2bcaf4ab4c3d93e6cec9a550354cf.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/1d8a85ea625de9c974cf973c971e1dd8e298f7490b36e9c5e7256a18c0c71b42.png)
+
+## Generated empirical-bank variant — impossible_x / q-98229
+
+{"scale": 0.5}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/4f5af8e98647b48c84ed74a6bc1d9e97eacc6b56b73f9c214d4197c69456dc44.png)
+
+![](plots/075dbb01282b61f3ea022d6e345f493d741c25a496cea8a51dff9fe774fcae9f.png)
+
+![](plots/c84a0035f5a1b1a27a18b9cb2885e315de8775ef826fdbd33c41202b7b4f90f6.png)
+
+![](plots/f5c0e9b4cb4afc03509bb8ff02e5eb241bb823a7affe196a9b5b0dee023ab80b.png)
+
+![](plots/a11467f00413677d25d668f08b809d10eeb665093789bea3c00f60904f8a3d6b.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $y$ given a fixed value of $x.$
+
+![](plots/c84a0035f5a1b1a27a18b9cb2885e315de8775ef826fdbd33c41202b7b4f90f6.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line, the slopes do not vary.
+
+![](plots/f1b19d36b49240432f208a287f4d143b6cc2a34a68922a1c9c35b84e0ce6464a.png)
+
+## Generated empirical-bank variant — impossible_x / q-98229
+
+{"scale": -1}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/5443536f4f4bb0d64df1db3770e33595febee5bedbff8e98ec69fba96ff4bec8.png)
+
+![](plots/2c521193dbb5866a2af5a51d595f437de60e377cb9273ef87acfa9a3880cc005.png)
+
+![](plots/232b015a3c6bd1bf7d2eba3c085fba561810992b846b64ecde32519b8d9e1f15.png)
+
+![](plots/41266fd947876957821c577a5d1fbca83875aafdc3e0a646ecc2fc802accc68c.png)
+
+![](plots/679c8d4e8cd98d558009c7ef34083cb0cb56715882faf0320ee152a873d42bf4.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $y$ given a fixed value of $x.$
+
+![](plots/232b015a3c6bd1bf7d2eba3c085fba561810992b846b64ecde32519b8d9e1f15.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line, the slopes do not vary.
+
+![](plots/d60aa065fa9d8b6af5e77329e4975ec13103a4804061a45acdbf933aeadf9ec5.png)
+
+## Generated empirical-bank variant — impossible_y / q-98233
+
+{"scale": 0.5}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/c185947d6cc334847c937dda0a974cee84832162ba491517d31362221f434672.png)
+
+![](plots/a3e48c026d4880541b1713be4ce134f3821afacd58889d5a999c816cee61c07b.png)
+
+![](plots/9929d4a8be64eedf912656079ed72c570c7c0064e620891c85492a96baf0bedd.png)
+
+![](plots/99de9801fe8825c2050c57d0f68c08edf593f29b41f04e7ac6ef8e3910fcd50f.png)
+
+![](plots/2df4b0caa189ea2f566c84d136a16ac37dc40a6c590edcae9bd96c4bfd8dc0f7.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/99de9801fe8825c2050c57d0f68c08edf593f29b41f04e7ac6ef8e3910fcd50f.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/3bd64279cc44bdffb4b686779d0deffba2f11c188d1bd7f78ec5856590932587.png)
+
+## Generated empirical-bank variant — impossible_y / q-98233
+
+{"scale": -1}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/f2e9e7840b11e952ee4c22dbc1ac36c8fb7a3e2a14fb69911f04eeb86e3788c0.png)
+
+![](plots/c3164bae8a682e610f4ef2410d2f2fa63e7330096f8e6397b5aa2f46f54fc67a.png)
+
+![](plots/d6e3c9adeec0e6bd475b3b7da5dd64e639679e78e3733fa13863e251681d0d76.png)
+
+![](plots/4d99056f1d3afdd203950069e294935ab6ee63bfd1a2ffb3e2e9f689439660d4.png)
+
+![](plots/01f420b4cafb52c688dce2fd7a4f41e47587c185c34f62b8a39da94cd881ba47.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/4d99056f1d3afdd203950069e294935ab6ee63bfd1a2ffb3e2e9f689439660d4.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/b072fae655a703172937841e3d52a4f31fdef02f7bc93ad1bd7a12799da4fd36.png)
+
+## Generated empirical-bank variant — impossible_y / q-119383
+
+{"scale": 0.5}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/f37f1bfefeb7b80952025f851f7c1606b2cd6b913b898a01748ac27f126b5577.png)
+
+![](plots/0c4f66fe4daa1e04669d8832eeb144df9033fd4b62312b52dc27d030be3450e7.png)
+
+![](plots/f48ec46b2190c074eb2ca911fb677d7343cb8d24375638951342d3d375e73c7f.png)
+
+![](plots/c7aa3e3e3029cfe7751b49afc649ee9d46af516fbca524956be044492a2092cf.png)
+
+![](plots/10cd067d185b5256acb24e86ab703e6a069634242996149880a79595518ffcf3.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/10cd067d185b5256acb24e86ab703e6a069634242996149880a79595518ffcf3.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/57383b1ce2678df790e63a37514eba7c331a8f5d007ed41abda612f39875452a.png)
+
+## Generated empirical-bank variant — impossible_y / q-119383
+
+{"scale": -1}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/9da8280418e2b3842dc779b6b8a8272cc8a392ddda66799f0b2afb1983723754.png)
+
+![](plots/76690a77d205e6151dbd2ea5275430b3a50cd22fa6838116df22b5ca050b075a.png)
+
+![](plots/02ed99d6ed3d22c597fc3064b9b0e0fb1c9f23e6fd1e9c11c6106e9fca83416a.png)
+
+![](plots/efb3f9371f55d04742694c1323c656f3c3683a2c100a592023256007a012e738.png)
+
+![](plots/1da3f171152d584f0152a83ab29d8adf7aebd881785388ec05fae454e1ce2afe.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/1da3f171152d584f0152a83ab29d8adf7aebd881785388ec05fae454e1ce2afe.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/113afcc8235c738b44455f142da7ad6c855729b6f5915afd1d0278200956fba8.png)
+
+## Generated empirical-bank variant — impossible_y / q-98231
+
+{"scale": 0.5}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/bad45b93b4deb4c8d82f5b8e05b37d3c83e5c848df983a6765cfe6cb669ec601.png)
+
+![](plots/872d8830ceef985e275c0103fd383bd0dafde79e18282380b0a78f8083130e0a.png)
+
+![](plots/15796fa902c7b6f8009d1462976045ca791ab5e5243b7dcc45736514acacdf30.png)
+
+![](plots/8d39e360dc591711a71994b482a444faa3e7f33e62b65e33e76b0f680d125b63.png)
+
+![](plots/e3855da73d0d629af6473eff092c7b325325f29edeb1fe513f17f5b610067dcf.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/8d39e360dc591711a71994b482a444faa3e7f33e62b65e33e76b0f680d125b63.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/e1f25a511036cd89e65bf66a1de950b5a95f08a0fc8c3aa69debb0102ca4ca65.png)
+
+## Generated empirical-bank variant — impossible_y / q-98231
+
+{"scale": -1}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/800326b5d5085f250f38f4100f316158889eaeb0336b16920371ac67de634ffd.png)
+
+![](plots/6bae24a613d546fb120b665911b0bd5504a55f0a885016c927a4fd15a764c581.png)
+
+![](plots/309fcaa54f4a2e053cf92b0e75568e38f76166205b9811aa0257edb6919c3cf6.png)
+
+![](plots/764077b52cdb16e3b93cb80bf89b3d5e17c2bcaf4ab4c3d93e6cec9a550354cf.png)
+
+![](plots/10c051e24ad1e9df3b1de267769f96a85cbb0cb229ee169396132af2baf07775.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/764077b52cdb16e3b93cb80bf89b3d5e17c2bcaf4ab4c3d93e6cec9a550354cf.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/1d8a85ea625de9c974cf973c971e1dd8e298f7490b36e9c5e7256a18c0c71b42.png)
+
+## Generated authored method bank — possible_linear / authored_method
+
+{"a": -2, "b": -2, "c": 2, "px": 1, "py": 1, "orientation": "x", "single": "linear"}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=- 2 x - 2 y + 2?$
+
+![](plots/275cacf43d2b8460dca93bc1e89201126674d947f0f4356c40b65feffabda524.png)
+
+![](plots/69e1ff0aa0a36245f1c5d682b9fa73221f5cbb57fbe175333c03fee28206c8af.png)
+
+![](plots/dd9d08abbeba0ffa69652bb937930f577295e5930df2757386834f5ecf69204a.png)
+
+![](plots/15da1a050a122cf65870ac59b5a933092e4960a4e3f617f5bb2cf00700fed371.png)
+
+![](plots/d6be6fffec65fc1dcadc448237e86f39c94f12d46faf6e6200d02e50c8c9816e.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/275cacf43d2b8460dca93bc1e89201126674d947f0f4356c40b65feffabda524.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/9bfb7162a90d16df4ce1a6fed269e23005ec4a6bfa075853ee8e9847417ba700.png)
+
+## Generated authored method bank — possible_linear / authored_method
+
+{"a": 1, "b": -2, "c": -2, "px": 1, "py": 1, "orientation": "y", "single": "linear"}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=x - 2 y - 2?$
+
+![](plots/2642114a91cf3fd13efa0ea6b326b87456ac427f48ef5b2e66368ef79d197cf6.png)
+
+![](plots/9812604e14b851aaefabb809f40eb5243400269c5505d60273f7ea03107d6ff5.png)
+
+![](plots/988461a50beff3612b14d9938f2b6ae8f8d060f80e7db6b36461d16d9d9dfa69.png)
+
+![](plots/ebb7dd4c0cb1e0e98a89b27ba81b56ccd6161a708964aee8d5c14cb7fe30eff4.png)
+
+![](plots/75407a5db3ca33c0ce5946e05122b03f2327bc1c48933200ac504ab1e84626c7.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/2642114a91cf3fd13efa0ea6b326b87456ac427f48ef5b2e66368ef79d197cf6.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/38c551c715e5e1a8c3dfa8d44ce57c17d110f3505fab74d48909467bd58b0afa.png)
+
+## Generated authored method bank — possible_product / authored_method
+
+{"a": -2, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "exp"}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=- 2 x y^{2}?$
+
+![](plots/142975e2ce7123d3c6bce9659be50a1030e89da1a786ca1a8a8528b7443abc32.png)
+
+![](plots/785743ad4e8a73c92329ef0a2635204d8026ff5e1d31f850ad744742dc9efa01.png)
+
+![](plots/a5e332ba79089ae011038f59786c3dda8d6d7d97b339b1d9399024f7e38a5e2e.png)
+
+![](plots/c5734ebb91f23ffb11630d12109010408d2a1428a8a10ecbe9bc6c992e1762c7.png)
+
+![](plots/e67eb19febbb15a2f8ceeb028ce2a3676e12b25ba91c766439c03e2d0af3af2d.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/142975e2ce7123d3c6bce9659be50a1030e89da1a786ca1a8a8528b7443abc32.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/154afe6755d3776ff9db6cf4f6b19079455c6959b66777c5c1f3190805d0512b.png)
+
+## Generated authored method bank — possible_product / authored_method
+
+{"a": 1, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "quadratic"}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=x y^{2}?$
+
+![](plots/17e1c2e411595d1adceeafb11c23c86d048818f176111ac9487305ec5afec5c3.png)
+
+![](plots/94d3aebb9565ccb961af123295d7a6fe36fcc2fe2e1b56e7ae7fdf1b42322a5c.png)
+
+![](plots/bbe5acc9906275f9abaa98e28daa2d6337bd8c74bbd8e12e127ad7c41464cd18.png)
+
+![](plots/e67eb19febbb15a2f8ceeb028ce2a3676e12b25ba91c766439c03e2d0af3af2d.png)
+
+![](plots/a5e332ba79089ae011038f59786c3dda8d6d7d97b339b1d9399024f7e38a5e2e.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/bbe5acc9906275f9abaa98e28daa2d6337bd8c74bbd8e12e127ad7c41464cd18.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/a65251efeaf56b934ea2f4a89e747279adc5cea4af2f7b6389a7d736a0d70a8e.png)
+
+## Generated authored method bank — possible_mixed / authored_method
+
+{"a": -2, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "exp"}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=- 2 x^{2} - 2 y?$
+
+![](plots/e3275c3e749d59c465877c5eaa855e170c122ba901bca4d727cccfeacf438296.png)
+
+![](plots/785743ad4e8a73c92329ef0a2635204d8026ff5e1d31f850ad744742dc9efa01.png)
+
+![](plots/a5e332ba79089ae011038f59786c3dda8d6d7d97b339b1d9399024f7e38a5e2e.png)
+
+![](plots/c5734ebb91f23ffb11630d12109010408d2a1428a8a10ecbe9bc6c992e1762c7.png)
+
+![](plots/e67eb19febbb15a2f8ceeb028ce2a3676e12b25ba91c766439c03e2d0af3af2d.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/e3275c3e749d59c465877c5eaa855e170c122ba901bca4d727cccfeacf438296.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/90ee6eae57fee0322c82e815d9c12adce249d4b8c2b79d19831ed8c70f4c9e36.png)
+
+## Generated authored method bank — possible_mixed / authored_method
+
+{"a": 1, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "quadratic"}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=- 2 x^{2} + y?$
+
+![](plots/17e1c2e411595d1adceeafb11c23c86d048818f176111ac9487305ec5afec5c3.png)
+
+![](plots/94d3aebb9565ccb961af123295d7a6fe36fcc2fe2e1b56e7ae7fdf1b42322a5c.png)
+
+![](plots/2c6ced47a6b43ae7e139c0dc9c8b0d714a42248dcad895604652a8296511091b.png)
+
+![](plots/e67eb19febbb15a2f8ceeb028ce2a3676e12b25ba91c766439c03e2d0af3af2d.png)
+
+![](plots/a5e332ba79089ae011038f59786c3dda8d6d7d97b339b1d9399024f7e38a5e2e.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/2c6ced47a6b43ae7e139c0dc9c8b0d714a42248dcad895604652a8296511091b.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/1b9984b415f80adcc9722b92f9032db44585a9dfe7fb0f087a9226f0162a9994.png)
+
+## Generated authored method bank — possible_exp / authored_method
+
+{"a": -2, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "exp"}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=e^{- 2 x y}?$
+
+![](plots/9f0cd35c90ece38b492a3272536e1dde85e0f3b31965795ddcfe30a26a36d425.png)
+
+![](plots/785743ad4e8a73c92329ef0a2635204d8026ff5e1d31f850ad744742dc9efa01.png)
+
+![](plots/a5e332ba79089ae011038f59786c3dda8d6d7d97b339b1d9399024f7e38a5e2e.png)
+
+![](plots/c5734ebb91f23ffb11630d12109010408d2a1428a8a10ecbe9bc6c992e1762c7.png)
+
+![](plots/e67eb19febbb15a2f8ceeb028ce2a3676e12b25ba91c766439c03e2d0af3af2d.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/9f0cd35c90ece38b492a3272536e1dde85e0f3b31965795ddcfe30a26a36d425.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/1011dbd30ddbcb5eaa63c06ef88c8b29c5ed23397389336fe3eb6af2c4f88db1.png)
+
+## Generated authored method bank — possible_exp / authored_method
+
+{"a": 1, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "quadratic"}
+
+Which of the following could be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=e^{x y}?$
+
+![](plots/17e1c2e411595d1adceeafb11c23c86d048818f176111ac9487305ec5afec5c3.png)
+
+![](plots/94d3aebb9565ccb961af123295d7a6fe36fcc2fe2e1b56e7ae7fdf1b42322a5c.png)
+
+![](plots/8e7aa4decf00935da1cf2f39ab45629f25fcb55b56a901c792e80f03039c091a.png)
+
+![](plots/e67eb19febbb15a2f8ceeb028ce2a3676e12b25ba91c766439c03e2d0af3af2d.png)
+
+![](plots/a5e332ba79089ae011038f59786c3dda8d6d7d97b339b1d9399024f7e38a5e2e.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope varies with both $x$ and $y.$
+
+Of the given slope fields, the only one that varies with both $x$ and $y$ is the following:
+
+![](plots/8e7aa4decf00935da1cf2f39ab45629f25fcb55b56a901c792e80f03039c091a.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line and a horizontal line, the slopes vary if we move along either of the two lines.
+
+![](plots/5d12ee681dfaba7a64ead53a73fe9b42163de05a75d16018296e80f0687e29be.png)
+
+## Generated authored method bank — impossible_x / authored_method
+
+{"a": -2, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "exp"}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/a2f5987915e6c9d8478ee633b063f937d2cd3249eafa616973c699cee11ffab4.png)
+
+![](plots/9f0cd35c90ece38b492a3272536e1dde85e0f3b31965795ddcfe30a26a36d425.png)
+
+![](plots/a4a8fcdbca3ffe8cdf4d5bb1771ffb3fd326fe23464381371a3369ed0abaf861.png)
+
+![](plots/170252c0738189d3cbe131f9b9c23e0d4e19137a03415768691eedf6e119f1d0.png)
+
+![](plots/e3275c3e749d59c465877c5eaa855e170c122ba901bca4d727cccfeacf438296.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $y$ given a fixed value of $x.$
+
+![](plots/a4a8fcdbca3ffe8cdf4d5bb1771ffb3fd326fe23464381371a3369ed0abaf861.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line, the slopes do not vary.
+
+![](plots/97dbfb5e8d92110ac5ad5f8e9a433cceb117b344ea0de16d5a5d2407cdc2b43d.png)
+
+## Generated authored method bank — impossible_x / authored_method
+
+{"a": 1, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "quadratic"}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/29e523539e2c0c88cba8f60f0ff43280657591dd9e59f881fec3cf6c6913b313.png)
+
+![](plots/8e7aa4decf00935da1cf2f39ab45629f25fcb55b56a901c792e80f03039c091a.png)
+
+![](plots/841a78475d5db0bb2441fa7c57dc24b0c0c9d3d52da7518abf32e67caba3b6ea.png)
+
+![](plots/2c6ced47a6b43ae7e139c0dc9c8b0d714a42248dcad895604652a8296511091b.png)
+
+![](plots/94d3aebb9565ccb961af123295d7a6fe36fcc2fe2e1b56e7ae7fdf1b42322a5c.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $y$ given a fixed value of $x.$
+
+![](plots/94d3aebb9565ccb961af123295d7a6fe36fcc2fe2e1b56e7ae7fdf1b42322a5c.png)
+
+ 
+
+To see this more clearly, notice that if we draw a vertical line, the slopes do not vary.
+
+![](plots/728457a763b80f34a0ba3023562f26197f8bca1fcd535a68c082151203743acf.png)
+
+## Generated authored method bank — impossible_y / authored_method
+
+{"a": -2, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "exp"}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/a2f5987915e6c9d8478ee633b063f937d2cd3249eafa616973c699cee11ffab4.png)
+
+![](plots/9f0cd35c90ece38b492a3272536e1dde85e0f3b31965795ddcfe30a26a36d425.png)
+
+![](plots/12eea222f88dcf3ad5dc0973ef535e168e0133a71fe6f7e9db76ae8138a6e4d7.png)
+
+![](plots/170252c0738189d3cbe131f9b9c23e0d4e19137a03415768691eedf6e119f1d0.png)
+
+![](plots/e3275c3e749d59c465877c5eaa855e170c122ba901bca4d727cccfeacf438296.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/12eea222f88dcf3ad5dc0973ef535e168e0133a71fe6f7e9db76ae8138a6e4d7.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/98d0deb6f74dc9595aacc08aa2772db455f5e0722e0c2af137bb115a3b73b43d.png)
+
+## Generated authored method bank — impossible_y / authored_method
+
+{"a": 1, "b": -2, "c": 0, "px": 1, "py": 2, "orientation": "y", "single": "quadratic"}
+
+Given that $f(x,y)$ varies with both $x$ and $y,$ which of the following **cannot** be the slope field for the differential equation $\frac{\text{d}y}{\text{d}x}=f(x,y)?$
+
+![](plots/29e523539e2c0c88cba8f60f0ff43280657591dd9e59f881fec3cf6c6913b313.png)
+
+![](plots/8e7aa4decf00935da1cf2f39ab45629f25fcb55b56a901c792e80f03039c091a.png)
+
+![](plots/841a78475d5db0bb2441fa7c57dc24b0c0c9d3d52da7518abf32e67caba3b6ea.png)
+
+![](plots/2c6ced47a6b43ae7e139c0dc9c8b0d714a42248dcad895604652a8296511091b.png)
+
+![](plots/7d7da538f8a777f8fb0914eb2739ece8ff621e8110c6d4fc4fc898a34770e80e.png)
+
+Notice that we are given an equation of the form
+
+$$
+\frac{\text{d}y}{\text{d}x}=f(x,y).
+$$
+
+The right-hand side is a function of $x$ and $y.$ This means that the slope field varies with both $x$ and $y.$
+
+Of the given slope fields, we note the following slope field does not vary with $x$ given a fixed value of $y.$
+
+![](plots/7d7da538f8a777f8fb0914eb2739ece8ff621e8110c6d4fc4fc898a34770e80e.png)
+
+ 
+
+To see this more clearly, notice that if we draw a horizontal line, the slopes do not vary.
+
+![](plots/13cd69ff5cf7038e0a3a9e6ed732862b5a21c959df374a5332bc7676c0a44553.png)

@@ -1,0 +1,25 @@
+# Template extraction — four stages
+
+## 1. Specific descriptions
+
+source.json preserves every source prompt, full source field bank, correct designation (when present), and full worked solution. source-cases.json maps every practice question and the duplicate legacy field to the public generate API. source-bank-maps.json records the three tails, every source image path, all displayed arrow vectors, and the exact per-point operation used by the replay profile. Original raster montages are `q-*-original.png`; source-asset-copies contains the actual original files. Formula families preserve signed polynomial, trigonometric familiar-angle, exponential, rational denominator, absolute-value, affine, and shared linear component structures. The field variables are always x,y; the requested output is a three-arrow diagram with correctly anchored tails.
+
+q-122264: x² i−2y j at (−2,1),(0,−2),(2,3), no original designation/solution. q-122756: 2cos(πx)i+2sin(πy/2)j at (−3,1),(−2,−1),(4,−4), one authoritative five-choice widget and an unkeyed legacy EDB duplicate. Remaining source-specific parameters and each original wrong image are fully enumerated in source-bank-maps.json, including zero components and rational arrow lengths.
+
+## 2. General pattern
+
+Evaluate both scalar components at each of three points. Draw the resulting vectors to scale, placing the tail at its associated point. Select the complete three-vector diagram. Signed input substitution, familiar trig arguments, denominator exclusions and zero components retain their source workload. Distractor diagrams are complete objects; a single different arrow suffices to distinguish a wrong diagram, but all three arrows are checked.
+
+## 3. Components and bank mapping
+
+Observed profiles preserve all five images together. Each empirical arrow component is expressed as a rational linear transformation of a nonzero original component at that same point; corresponding components are preferred, the other component is used only when the original corresponding component is zero. The correct member is always recomputed directly from the field. These maps recover the complete geometry and provide explicit parameterized replay operations; the original author’s error intent is **unresolved**. No arbitrary polynomial interpolation is used and these empirical maps are not promoted to normal generation. Profiles and the q-122756 legacy alias are available through generate(...,profile=...).
+
+Normal authored profiles contain the complete operation bank: correct vectors; flip vertical components; flip horizontal components; interchange components; reverse both components. Choose the complete bank before construction and reject it if any complete vector diagrams coincide. There is one fixed solution independent of selected error; no new distractor diagnosis appears in learner text.
+
+q-122745's d443 image has a short unlabelled top horizontal arrow. Its endpoint is between nearby simple fractions at the source raster resolution: the 5/4 map is an explicitly authored approximate geometric interpretation, not a recovered exact source value. At original parameters the original asset is reused exactly; no exact symbolic endpoint-fidelity claim is made. Complete raw raster bank/value fidelity is still 5/5 for that question. Source-correct arrows and source terminal equations are independent and exact.
+
+## 4. Reusable template
+
+Fixed prompt: “Which of the following diagrams represents the vector field … at the indicated points?” Fixed solution: point-list introduction; “To sketch the vector field at the given points, we substitute their coordinates into the function …”; three ordered substitution → evaluated-vector rows; the complete shared tail-placement paragraph; correct diagram. Variable slots are whole formulas, whole coordinate tuples, scalar component masks, derived vectors and generated image paths. Parentheses group signed component operations before basis labels; no short-variable replacement crosses prose or labels. q-122742 evaluates its sine arguments in the substitution stage; q-122756 preserves the unevaluated π*(x) and π*(y)/2 arguments. The source’s trig colon punctuation is retained separately from other families’ thin-space colon. Mathematical notation is normalized to standard sin/cos and grouped coefficient masks; complete prose and mathematical stage sequence are compared separately from raw string equality. No claim of exact solution-string fidelity is made.
+
+Bounds and denominator exclusions are enforced on explicit and sampled inputs; sampled invalid instances are rejected as whole banks. Three distinct points, no undefined or oversized components, and no complete-diagram collisions. Source profiles accept original parameters without silently modifying them. Stable identity uses actual displayed prompt, fixed worked solution and complete displayed bank; option order and seed are excluded. The task fingerprint uses symbolic field, unordered tails and actual visible grid increment, excluding complete banks/profile aliases and incidental style.

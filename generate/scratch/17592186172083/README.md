@@ -1,0 +1,9 @@
+# Sketching a Two-Dimensional Vector Field
+
+Run `.venv/bin/python generate/scratch/17592186172083/validate.py` from the repository root. Preview: `.venv/bin/python generate/scratch/17592186172083.py --difficulty all --count 2 --seed 7 --format json`.
+
+Public API: generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None), plus generate_easy/moderate/hard. Observed source profiles use `observed_q-122264` etc.; `observed_q-122756_legacy` preserves the same authoritative single widget while raw duplicate fields remain in source.json. Explicit parameters are a,b and three coordinate pairs. Normal bank is `authored_sign_swap`. All plots use the cached read-only Python3.10/Matplotlib dependency fallback; nothing is installed. Data stay local. Stop at step 7, no database registration.
+
+Ten source questions, 11 raw field banks/55 option occurrences (50 unique source images), nine present correct designations, nine present worked solutions. Two missing raw designations are reported separately. Source prose/stage sequence is preserved with normalized notation; no raw solution-string equality claim. q-122745's small unlabelled distractor endpoint has a documented precision limit; exact raw raster replay is retained, while its changed-parameter geometric interpretation is authored. Missing moderate/hard are explicitly authored canonical product/square questions with mandatory half/quarter scale reading.
+
+Independent raster QA: `/home/jake/.local/share/uv/python/cpython-3.10.13-linux-x86_64-gnu/bin/python3.10 generate/scratch/17592186172083/source-pixel-check.py`. It fits each source image’s unit transform from its own three orange tail centers, checks 150 arrow-end proximities, and reports tolerance/occlusion limits; it does not recover exact unlabelled author intent. The full validator checks frozen maps against generated banks before running this independent raster check.
