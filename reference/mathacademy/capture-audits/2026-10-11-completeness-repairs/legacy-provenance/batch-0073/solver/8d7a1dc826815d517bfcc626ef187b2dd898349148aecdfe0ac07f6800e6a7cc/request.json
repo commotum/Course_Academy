@@ -1,0 +1,142 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-29477\", \"problem\": \"Which of the following equations has no solutions for $0\\\\le x<2\\\\pi ?$\\n\\nI. $\\\\operatorname{csc}⁡x=\\\\frac{1}{3}$\\n\\nII. $\\\\operatorname{csc}⁡x=3$\\n\\nIII. $\\\\operatorname{csc}⁡x=1$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-66005\", \"problem\": \"Which of the following equations has no solutions for $0\\\\le x<2\\\\pi ?$\\n\\nI. $4\\\\operatorname{csc}⁡x+1=\\\\operatorname{csc}⁡x$\\n\\nII. $\\\\operatorname{csc}⁡x+10=2\\\\operatorname{csc}⁡x$\\n\\nIII. $\\\\operatorname{csc}⁡x=2\\\\operatorname{csc}⁡x-6$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-42381\", \"problem\": \"$$\\nO=[\\\\begin{aligned}1 & 2 \\\\\\\\ -4 & 3 \\\\\\\\ 0 & 4\\\\end{aligned}],\\\\,P=[\\\\begin{aligned}5 & 0 & 0 \\\\\\\\ -4 & 5 & 1\\\\end{aligned}],\\\\,R=[\\\\begin{aligned}2 & 0 & 5\\\\end{aligned}]\\n$$\\n\\nWhich of the following statements are true regarding the matrices $O,P,$ and $R?$\\n\\nI. The product $OP$ is well defined\\n\\nII. The product $OR$ is well defined\\n\\nIII. The product $PR$ is well defined\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-22055\", \"problem\": \"$$\\nX=[\\\\begin{aligned}1 & 2 \\\\\\\\ 0 & 7\\\\end{aligned}],\\\\,Y=[\\\\begin{aligned}1 & 0 & -1 \\\\\\\\ -1 & 0 & 1\\\\end{aligned}],\\\\,Z=[\\\\begin{aligned}1 & 0 & -1 \\\\\\\\ -1 & 0 & 1 \\\\\\\\ 1 & 0 & 1\\\\end{aligned}]\\n$$\\n\\nWhich of the following statements are true regarding the matrices $X,Y,$ and $Z?$\\n\\nI. The product $XY$ is well defined\\n\\nII. The product $YX$ is well defined\\n\\nIII. The product $YZ$ is well defined\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-29477:\nRecall that the range of $\\operatorname{csc}⁡x$ for $0\\le x<2\\pi $ is given by\n\n$$\n\\operatorname{csc}⁡x\\in (-\\infty ,-1]\\cup [1,\\infty ).\n$$\n\nSo, the equation $\\operatorname{csc}⁡x=k$ has no solutions for $k\\in (-1,1).$ \n\nTherefore, of the given equations, only equation I has no solutions.\n\nq-66005:\nWe first simplify the given equations, and get\n\nI. $\\operatorname{csc}⁡x=-\\frac{1}{3}$\n\nII. $\\operatorname{csc}⁡x=10$\n\nIII. $\\operatorname{csc}⁡x=6$\n\nNow, recall that the range of $\\operatorname{csc}⁡x$ for $0\\le x<2\\pi $ is given by\n\n$$\n\\operatorname{csc}⁡x\\in (-\\infty ,-1]\\cup [1,\\infty ).\n$$\n\nSo, the equation $\\operatorname{csc}⁡x=k$ has no solutions for $k\\in (-1,1).$ \n\nTherefore, of the given equations, only equation I has no solutions.\n\nq-42381:\nNotice that $O$ is a $3\\times 2$ matrix, $P$ is a $2\\times 3$ matrix, and $R$ is a $1\\times 3$ row vector.\n\nThere are $2$ columns in $O$ and $2$ rows in $P.$ Since the number of columns in $O$ equals the number of rows in $P,$ the matrices $O$ and $P$ are conformable for multiplication:\n\n$$\n{O}_{3\\times \\boxed{\\text{2}}}{\\times }_{✓}{P}_{\\boxed{\\text{2}}\\times 3}=\\text{well defined}\n$$\n\nOn the other hand, there are $2$ columns in $O$ and $1$ rows in $R.$ Since the number of columns in $O$ does **not** equal the number of rows in $R,$ the matrices $O$ and $R$ are **not** conformable for multiplication:\n\n$$\n{O}_{3\\times 2}{\\times }_{\\ne }{R}_{1\\times 3}=\\text{undefined}\n$$\n\nFinally, there are $3$ columns in $P$ and $1$ rows in $R.$ Since the number of columns in $P$ does **not** equal the number of rows in $R,$ the matrices $P$ and $R$ are **not** conformable for multiplication:\n\n$$\n{P}_{2\\times 3}{\\times }_{\\ne }{R}_{1\\times 3}=\\text{undefined}\n$$\n\nTherefore, statement I is true, while statements II and III are false.\n\nq-22055:\nNotice that $X$ is a $2\\times 2$ matrix, $Y$ is a $2\\times 3$ matrix, and $Z$ is a $3\\times 3$ matrix.\n\nThere are $2$ columns in $X$ and $2$ rows in $Y.$ Since the number of columns in $X$ equals the number of rows in $Y,$ the matrices $X$ and $Y$ are conformable for multiplication:\n\n$$\n{X}_{2\\times \\boxed{\\text{2}}}{\\times }_{✓}{Y}_{\\boxed{\\text{2}}\\times 3}=\\text{well defined}\n$$\n\nOn the other hand, there are $3$ columns in $Y$ and $2$ rows in $X.$ Since the number of columns in $Y$ does **not** equal the number of rows in $X,$ the matrices $Y$ and $X$ are **not** conformable for multiplication:\n\n$$\n{Y}_{2\\times 3}{\\times }_{\\ne }{X}_{2\\times 2}=\\text{undefined}\n$$\n\nFinally, there are $3$ columns in $Y$ and $3$ rows in $Z.$ Since the number of columns in $Y$ equals the number of rows in $Z,$ the matrices $Y$ and $Z$ are conformable for multiplication:\n\n$$\n{Y}_{2\\times \\boxed{\\text{3}}}{\\times }_{✓}{Z}_{\\boxed{\\text{3}}\\times 3}=\\text{well defined}\n$$\n\nTherefore, statements I and III are true, while statement II is false.",
+      "fields": [
+        {
+          "key": "q-29477/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "III only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "II only"
+            }
+          ]
+        },
+        {
+          "key": "q-66005/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "I and III only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "III only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "II only"
+            }
+          ]
+        },
+        {
+          "key": "q-42381/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "III only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "II only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "I and III only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "I and II only"
+            }
+          ]
+        },
+        {
+          "key": "q-22055/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "I and III only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "III only"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "I only"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

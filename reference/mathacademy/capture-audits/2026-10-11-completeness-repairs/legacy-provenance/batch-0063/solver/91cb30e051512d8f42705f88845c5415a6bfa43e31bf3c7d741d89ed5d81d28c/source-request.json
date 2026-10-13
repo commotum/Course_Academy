@@ -1,0 +1,88 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-80135\", \"problem\": \"Given that the expression $5\\\\operatorname{sin}⁡x-5\\\\operatorname{cos}⁡x$ can be written as $R\\\\operatorname{sin}⁡(x-ϕ)$ with ${0}^{∘}<ϕ<{90}^{∘}$ and $R>0$, what is the value of $ϕ?$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-107574\", \"problem\": \"$\\\\sqrt{5}\\\\operatorname{sin}⁡x+2\\\\operatorname{cos}⁡x≈$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-80135:\nThe difference formula for sine gives\n\n$$\n\\begin{aligned}R\\operatorname{sin}⁡(x-ϕ) & =R(\\operatorname{sin}⁡x\\operatorname{cos}⁡ϕ-\\operatorname{cos}⁡x\\operatorname{sin}⁡ϕ) \\\\  & =R\\operatorname{cos}⁡ϕ\\operatorname{sin}⁡x-R\\operatorname{sin}⁡ϕ\\operatorname{cos}⁡x\\end{aligned}\n$$\n\nTherefore, by writing the given expression in the amplitude-phase form\n\n$$\n5\\operatorname{sin}⁡x-5\\operatorname{cos}⁡x=R\\operatorname{sin}⁡(x-ϕ),\n$$\n\nwe get the following identity:\n\n$$\n5\\operatorname{sin}⁡x-5\\operatorname{cos}⁡x=(R\\operatorname{cos}⁡ϕ)\\operatorname{sin}⁡x-(R\\operatorname{sin}⁡ϕ)\\operatorname{cos}⁡x\n$$\n\nEquating the coefficients of $\\operatorname{sin}⁡x$ and $\\operatorname{cos}⁡x,$ we get the following system of equations:\n\n$$\n\\{\\begin{aligned}R\\operatorname{cos}⁡ϕ=5 \\\\ R\\operatorname{sin}⁡ϕ=5\\end{aligned}\n$$\n\nDividing the second equation by the first, we get\n\n$$\n\\begin{aligned}\\frac{R\\operatorname{sin}⁡ϕ}{R\\operatorname{cos}⁡ϕ} & =\\frac{5}{5} \\\\ \\operatorname{tan}⁡ϕ & =1 \\\\ ϕ & ={45}^{∘}.\\end{aligned}\n$$\n\nq-107574:\nThe sum formula for sine gives\n\n$$\n\\begin{aligned}R\\operatorname{sin}⁡(x+ϕ) & =R(\\operatorname{sin}⁡x\\operatorname{cos}⁡ϕ+\\operatorname{cos}⁡x\\operatorname{sin}⁡ϕ) \\\\  & =R\\operatorname{cos}⁡ϕ\\operatorname{sin}⁡x+R\\operatorname{sin}⁡ϕ\\operatorname{cos}⁡x.\\end{aligned}\n$$\n\nTherefore, by writing the given expression in the amplitude-phase form\n\n$$\n\\sqrt{5}\\operatorname{sin}⁡x+2\\operatorname{cos}⁡x=R\\operatorname{sin}⁡(x+ϕ),\n$$\n\nwe get the following identity:\n\n$$\n\\sqrt{5}\\operatorname{sin}⁡x+2\\operatorname{cos}⁡x=(R\\operatorname{cos}⁡ϕ)\\operatorname{sin}⁡x+(R\\operatorname{sin}⁡ϕ)\\operatorname{cos}⁡x\n$$\n\nEquating the coefficients of $\\operatorname{sin}⁡x$ and $\\operatorname{cos}⁡x,$ we get the following system of equations:\n\n$$\n\\{\\begin{aligned}R\\operatorname{cos}⁡ϕ=\\sqrt{5} \\\\ R\\operatorname{sin}⁡ϕ=2\\end{aligned}\n$$\n\nDividing the second equation by the first, we get\n\n$$\n\\begin{aligned}\\frac{R\\operatorname{sin}⁡ϕ}{R\\operatorname{cos}⁡ϕ} & =\\frac{2}{\\sqrt{5}} \\\\ \\operatorname{tan}⁡ϕ & =\\frac{2\\sqrt{5}}{5} \\\\ ϕ & =\\operatorname{arctan}⁡(\\frac{2\\sqrt{5}}{5}) \\\\ ϕ & ≈0.730\\,\\text{rad}\\end{aligned}\n$$\n\nrounded to three decimal places.\n\nNow, we find the amplitude $R.$ Squaring the first and the second equations of the system and adding the results together, we get: \n\n$$\n\\begin{aligned}{R}^{2}{cos}^{2}⁡ϕ+{R}^{2}{sin}^{2}⁡ϕ & =(\\sqrt{5})^{2}+{2}^{2} \\\\ {R}^{2}({cos}^{2}⁡ϕ+{sin}^{2}⁡ϕ) & =5+4 \\\\ {R}^{2} & =9 \\\\ R & =3\\end{aligned}\n$$\n\nNote that we only consider the positive root since $R>0.$\n\nFinally, we can write the initial expression in amplitude-phase form as follows:\n\n$$\n\\sqrt{5}\\operatorname{sin}⁡x+2\\operatorname{cos}⁡x≈3\\operatorname{sin}⁡(x+0.730)\n$$",
+      "answer_fields": [
+        {
+          "key": "q-80135/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "{80}^{∘}",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "{20}^{∘}",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "{30}^{∘}",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "{60}^{∘}",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "{45}^{∘}",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-107574/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "3\\operatorname{sin}⁡(x+0.730)",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "\\sqrt{7}\\operatorname{sin}⁡(x+0.741)",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "2\\sqrt{5}\\operatorname{sin}⁡(x+0.841)",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "3\\operatorname{sin}⁡(x+0.841)",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "2\\sqrt{5}\\operatorname{sin}⁡(x+0.730)",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": []
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}
