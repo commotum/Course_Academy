@@ -1,20 +1,14 @@
 #!/usr/bin/env python3
-"""Open bounded intervals ↔ strict compound inequalities, basis 1356.
+"""Bounded open intervals ↔ strict inequalities, current four-source package.
 
-Two unrated practice sources supply two complete five-option radio recipes.
-Neither supplies a correct ref or solution. source_raw publicly reproduces those
-missing attributes; original_bank supplies independently derived keys and authored
-solutions, with the same prompt/bank. No TeX repair is needed: decoded strings
-have no doubled slashes. Canonical prose/stages anchor the authored solutions.
-
-All three difficulty policies are authored, not recovered labels. Easy: positive
-integer endpoints 1..12. Moderate: signed integer endpoints -12..12, lower < 0.
-Hard: two noninteger rational endpoints, reduced denominators 2..4, |value|≤6.
-Every question requires exactly two excluded endpoints and no solving, union,
-half-open or closed correct interval, number line, or unbounded correct interval.
-The finite catalogs are documented in classification.md; variable aliases and
-choice order do not increase mathematical task counts. Explicit parameters obey
-exactly the same guards as sampling. No EDB writes or shared-file edits.
+Only easy is supported: both rated sources are easy, including signed integers
+and symmetric surds. The earlier authored negative=moderate policy is superseded.
+Two unrated banks remain raw evidence; missing keys/solutions are independently
+derived for new content only. No source question is altered. Exact finite easy
+catalog: integer pairs -12..12 plus symmetric squarefree radicals 2..30.
+Two directions and complete source profiles are preserved; seeds, letter aliases,
+choice order and bank changes do not add distinct mathematical tasks. See
+classification.md, capabilities.json, template-extraction.md and current-validation.json.
 """
 from __future__ import annotations
 import argparse, hashlib, itertools, json, random, uuid
@@ -56,7 +50,7 @@ def endpoint(v):
 
 def tex(v):
     v=endpoint(str(v) if isinstance(v,sp.Expr) else v)
-    if isinstance(v,sp.Expr): return sp.latex(v)
+    if isinstance(v,sp.Expr): return sp.latex(v).replace('- ', '-')
     if v.denominator==1: return str(v.numerator)
     sign='-' if v<0 else ''
     return sign+rf'\frac{{{abs(v.numerator)}}}{{{v.denominator}}}'
@@ -85,7 +79,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     rng=random.Random(seed)
     if level not in LEVELS: raise ValueError('unsupported level: current rated sources only establish easy')
     if field_type not in (None,'radio',':answer-field.type/radio'): raise ValueError('only radio is observed/supported')
-    template=template or rng.choice(TEMPLATES)
+    template=template or ('inequality_to_interval' if profile in ('signed_source','surd_source') else rng.choice(TEMPLATES))
     if template not in TEMPLATES: raise ValueError('unknown template')
     profile=profile or 'original_bank'
     if profile not in PROFILES: raise ValueError('unknown profile')
@@ -132,9 +126,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 
 # All observed rated banks are easy, including negative and surd endpoints.
 def generate_easy(seed=0,**kwargs): return generate('easy',seed,**kwargs)
-# Moderate: signed integer endpoints, always with a negative lower endpoint.
+# Unsupported moderate wrapper fails explicitly.
 def generate_moderate(seed=0,**kwargs): return generate('moderate',seed,**kwargs)
-# Hard: noninteger reduced rational endpoints; still no arithmetic or solving.
+# Unsupported hard wrapper fails explicitly.
 def generate_hard(seed=0,**kwargs): return generate('hard',seed,**kwargs)
 
 def markdown(record):

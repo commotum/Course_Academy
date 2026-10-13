@@ -154,7 +154,8 @@ def check_record(record,allow_raw=False):
                         lambda m:'MATRIX_'+m[1],text,flags=re.S)
             text=re.sub(r'\{([a-e])\}_\{[1-4][1-4]\} & =-?\d+\\ne 0',
                         lambda m:'WITNESS_'+m[1],text)
-            return text.replace('upper triangular','CRITERION triangular').replace('lower triangular','CRITERION triangular').replace('above','SIDE').replace('below','SIDE')
+            text=text.replace('upper triangular','CRITERION triangular').replace('lower triangular','CRITERION triangular').replace('above','SIDE').replace('below','SIDE')
+            return re.sub(r'\b(?:a|an) CRITERION triangular', 'ARTICLE CRITERION triangular',text)
         assert skeleton(solution)==skeleton(source[':question/worked-solution']),'changed source teaching stages/prose'
         assert skeleton(q[':question/problem'])==skeleton(source[':question/problem']),'changed source prompt structure'
 
@@ -230,6 +231,11 @@ def main():
     orig=g.task_fingerprint(level,a['generation']['parameters'],[],wit)
     swapped_fp=g.task_fingerprint(level,swapped,[],{rename[k]:v for k,v in wit.items()})
     assert orig==swapped_fp
+    # Answer subsets and the selected explanatory witness are presentation.
+    assert orig==g.task_fingerprint(level,a['generation']['parameters'],[('A',)],{'A':(0,1)})
+    # Every hard displayed object must occur in the complete response bank.
+    for profile in ('hard_two','hard_three'):
+        assert set().union(*(set(choice) for choice in g.hard_bank(profile)))==set('ABCDE')
     # Inclusive diagonal/identity membership and strict explicit bounds.
     for m in (sp.zeros(3),sp.eye(3),sp.diag(0,-5,2)):
         assert good_labels({'A':m},'upper')==('A',) and good_labels({'A':m},'lower')==('A',)

@@ -17,6 +17,23 @@ Plot requirement: **none**, across all templates, banks and levels. No image ref
 
 Moderate and hard have zero observed examples. Ordered lesson route follows first-step 65001 → 65154 (power-rule tutorial) → 65002 (this KP) → 65003 (radical KP) → 65004 (reciprocal KP) → 65005 (recap); IDs are abbreviated by their shared prefix 175921860. This KP's prerequisite is Power Rule for Differentiation. Constant Multiple Rule for Indefinite Integrals follows this topic. Scope therefore remains coefficient-one x^n with integer n>=0: no coefficients, sums, radicals, reciprocals, logarithms, conditions, or different variables as supposed skill diversity.
 
-## Authored level policy and uncertainty
+## Supported capability policy (revised after current inventory check)
 
-Easy exponents are 0..20, including every observed exponent. Moderate uses peer exponents 21..40; hard uses 41..60. Every question still requires one successor n+1 and its reciprocal, including the exact derivative check. These modest finite bands are author-assigned practice labels, not evidence of recovered moderate/hard difficulty, and no empirical difficulty ordering is asserted. The canonical and tutorial permit x^n generally; integer successor arithmetic uses the existing prerequisite. No internal progression exists within a band. Larger numerals do not establish a new skill. Explicit calls enforce the same domains as seeded sampling. Functions/layouts/banks do not inflate mathematical diversity: actual unique task counts are easy 21, moderate 20, hard 20. The constant template has one meaningful task.
+Easy remains supported over the explicitly bounded integer exponents 0..20,
+which include every observed value. There are 21 mathematical tasks before source
+and canonical exclusions; layout, bank profile, field type and option order do not
+multiply that capacity. Production replenishment uses radio fields at n>=1.
+The n=0 constant preview is a blank and has only one meaningful task.
+
+Moderate and hard are unsupported under this package and rejected by the public
+API. The former n=21..40 / n=41..60 author-assigned bands lacked a defensible
+change in mathematical workload: every case merely increments one exponent and
+divides by its successor. No observed source supports those bands; this is a
+bounded capability decision, not a claim that their absence alone proves them
+impossible. Coefficients, sums, radicals and reciprocals belong to other KPs.
+New source evidence reopens classification. Their nominal shortages remain five
+each, explicitly unfilled. Easy finite depletion likewise remains explicit.
+
+The native blank grader rejects rescaled arbitrary C, even though the primitive
+families agree. Production radio selection avoids that response limitation;
+blank previews are diagnostic and are not submitted by this replenisher.

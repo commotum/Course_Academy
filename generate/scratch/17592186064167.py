@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-"""Power rule on unit-coefficient monomials, math basis 1356; local review only.
+"""Power rule on unit-coefficient monomials, source math basis 1356.
 
-Easy: observed n=0,1,4,10,17,20; authored range 0..20.
-Moderate: authored peer band n=21..40.
-Hard: authored peer band n=41..60.
-The latter are number-form workload claims, not recovered source difficulty.
-They require only n+1 and its reciprocal; no constant-multiple integration,
-radical, reciprocal, logarithm, sums, substitution or conditions are introduced.
-Each level is unordered and finite. Explicit calls enforce the same workload.
-Public raw profiles preserve missing keys; they are evidence_only/ineligible.
-Normal records use repaired presentation and independently inferred fields.
+Only easy is supported: observed n=0,1,4,10,17,20; bounded domain 0..20.
+Moderate/hard are unsupported: larger exponents alone do not substantiate them.
+Raw profiles preserve missing keys and remain evidence-only. Production inventory
+uses complete radio banks; blank previews retain the documented native C-family
+limitation. No adjacent calculus skills or source identities are changed.
 """
 from __future__ import annotations
 import argparse, hashlib, json, random, uuid
@@ -23,7 +19,9 @@ ROOT=Path(__file__).resolve().parent
 EVIDENCE=ROOT/str(KP_ID)
 SOURCE=json.loads((EVIDENCE/'source.json').read_text())
 X,C=sp.symbols('x C',real=True)
-DOMAINS={'easy':tuple(range(21)), 'moderate':tuple(range(21,41)), 'hard':tuple(range(41,61))}
+DOMAINS={'easy':tuple(range(21))}
+SUPPORTED_LEVELS=('easy',)
+GENERATOR_UUID= str(uuid.uuid5(uuid.NAMESPACE_URL, KP_UUID+'/question-generator'))
 TEMPLATES=('integral_spaced','integral_thin','function','constant','legacy_x','legacy_power')
 SOURCE_SPECS={'q-2005':('legacy_x',1),'q-2022':('legacy_power',4),'q-113665':('integral_spaced',20),'q-113670':('function',17),'q-66126':('constant',0),'q-71121':('integral_thin',10)}
 BANK_PROFILES=('authored_power','observed_2005','observed_2022')
@@ -134,9 +132,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):
     if template=='constant' and not(profile and profile.startswith('raw:')): field_type=field_type or 'blank'
     return generate('easy',seed,template,field_type,parameters,profile)
-# MODERATE — authored modest two-digit peer band; same power-rule stages.
+# MODERATE — explicitly unsupported; the public call raises ValueError.
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None): return generate('moderate',seed,template,field_type,parameters,profile)
-# HARD — authored modest two-digit peer band; no adjacent integration rule.
+# HARD — explicitly unsupported; the public call raises ValueError.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None): return generate('hard',seed,template,field_type,parameters,profile)
 def markdown(r,label='Generated'):
     q=r['question'];g=r['generation']; out=[f"## {label} — {q.get(':question/difficulty','unrated').split('/')[-1]}",f"Template: `{g['template']}`; profile: `{g['bank_profile']}`; evidence only: {g['evidence_only']}.",q[':question/problem']]
@@ -150,6 +148,18 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=1);p.add_argument('--format',choices=['markdown','json'],default='markdown');p.add_argument('--template');p.add_argument('--profile');p.add_argument('--field-type',choices=['radio','blank']);a=p.parse_args()
     if a.count<1:p.error('Positive count required')
     levels=DOMAINS if a.difficulty=='all' else [a.difficulty]
-    records=[{'easy':generate_easy,'moderate':generate_moderate,'hard':generate_hard}[l](a.seed+i,a.template,a.field_type,None,a.profile) for l in levels for i in range(a.count)]
+    records=[]
+    for level in levels:
+        if level not in DOMAINS: p.error('Unsupported difficulty: '+level)
+        seen=set(); accepted=[]
+        for offset in range(1000):
+            r=generate(level,a.seed+offset,a.template,a.field_type,None,a.profile)
+            fp=r['generation']['mathematical_fingerprint']
+            if fp in seen: continue
+            seen.add(fp); accepted.append(r)
+            if len(accepted)==a.count: break
+        if len(accepted)<a.count:
+            p.error('Finite variant limit: requested '+str(a.count)+', found '+str(len(accepted)))
+        records.extend(accepted)
     print(json.dumps(records,ensure_ascii=False,indent=2) if a.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
 if __name__=='__main__':main()

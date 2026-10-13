@@ -916,7 +916,10 @@ async function renderTask(data) {
       const xp = el('div', 'completion-xp', `${earned >= 0 ? '+' : ''}${earned} `); xp.append(el('small', '', 'XP')); done.append(xp);
     }
     if (data.assessmentScore) done.append(el('p', '', `${data.assessmentScore.correct} of ${data.assessmentScore.total} correct · ${data.assessmentScore.unanswered} unanswered`));
-    done.append(el('p', '', `${duration(data.elapsedSeconds)} working time`), actionButton('Back to study →', 'primary', leaveTask));
+    const completionActions = el('div', 'completion-actions');
+    const targetsLink = el('a', 'small-button', 'Back to targets →'); targetsLink.href = '/?view=targets';
+    completionActions.append(actionButton('Back to study →', 'primary', leaveTask), targetsLink);
+    done.append(el('p', '', `${duration(data.elapsedSeconds)} working time`), completionActions);
     await showLessonStep(view, 'complete', seen.map(entry => ({ ...entry, id: String(entry.step.itemId) })), done, buildEarlier);
     return;
   }

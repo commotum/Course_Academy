@@ -17,6 +17,7 @@ def failure(fn):
 def parse_number(s):
     s=s.strip().replace(' ','').replace('−','-')
     if s in ('-∞',r'-\infty'):return -sp.oo
+    if s in ('∞',r'\infty'):return sp.oo
     s=re.sub(r'\\frac\{(\d+)\}\{(\d+)\}',r'\1/\2',s)
     require(bool(re.fullmatch(r'-?\d+(?:/\d+)?',s)),'Displayed scalar malformed '+s)
     return sp.Rational(s)
@@ -98,7 +99,7 @@ def main():
     catalogs={};sweep=0;profile_counts={}
     for level in ('easy','moderate','hard'):
         rows=g.catalog(level);catalogs[level]=len(rows);require(len({(p['left'],p['right'],p['left_closed'],p['tick_step'],p['label_step']) for p in rows})==len(rows),'Meaningful finite catalog count')
-        for profile in ('authored_left_shift','observed_left_ray','observed_negate_left'):
+        for profile in ('authored_left_shift','observed_left_ray','observed_right_ray','observed_negate_left'):
             count=0
             for p in rows:
                 g.parse_parameters(level,p,profile)
@@ -109,7 +110,7 @@ def main():
     review=[]
     # At least two variants per level PER complete normal bank, plus both source repairs.
     for level in catalogs:
-        for profile in ('authored_left_shift','observed_left_ray','observed_negate_left'):
+        for profile in ('authored_left_shift','observed_left_ray','observed_right_ray','observed_negate_left'):
             eligible=[]
             for p in g.catalog(level):
                 try:g.bank(p,profile);eligible.append(p)

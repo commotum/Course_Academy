@@ -31,7 +31,7 @@ import sympy as sp
 KP_ID=17592186119772
 KP_UUID='b55b50a0-034f-57c0-8a61-883cfb0412dc'
 TITLE='Identifying a Triangular Matrix'
-VERSION='triangular-identification-1'
+VERSION='triangular-identification-2'
 ROOT=Path(__file__).with_suffix('')
 SNAPSHOT=json.loads((ROOT/'source.json').read_text())
 SOURCES={q[':question/math-academy-id']:q for q in SNAPSHOT['record'][':knowledge-point/questions']}
@@ -121,19 +121,14 @@ def witnesses(matrices,criterion,preferred=None):
 
 
 def task_fingerprint(level,p,bank,witness):
-    """Canonicalize the ENTIRE compared bank/subset incidence, not numeric entries.
+    """Canonical assessed objects, retaining repeated support-pattern objects.
 
-    Minimum over <=120 matrix-label permutations removes all label/choice-order
-    aliases while retaining matrix dimensions, offdiagonal supports, subset banks
-    and the coordinates of solution witness demands. Diagonal values are ignored.
+    Whole-matrix choices are the input objects at easy; given matrices are the
+    input objects for subsets. Text answer subsets and chosen proof witnesses
+    cannot create new mathematics. They remain in full content identity.
     """
-    labels=sorted(p['matrices']);canonical=[]
-    for ordering in itertools.permutations(labels):
-        indices={label:i for i,label in enumerate(ordering)}
-        objects=tuple((support(p['matrices'][label]),witness.get(label) if level!='easy' else None) for label in ordering)
-        subsets=tuple(sorted(tuple(sorted(indices[x] for x in choice)) for choice in bank)) if level!='easy' else ()
-        canonical.append(json.dumps([objects,subsets],separators=(',',':')))
-    return digest([level,p['criterion'],min(canonical)])
+    objects=sorted(support(matrix) for matrix in p['matrices'].values())
+    return digest([level,p['criterion'],objects])
 
 
 def validate_parameters(level,p,r=None,hard_profile=None):
@@ -181,7 +176,7 @@ def source_bank(r):
 def hard_bank(profile):
     # Whole fixed profile chosen before parameters. Errors omit a qualifying
     # matrix or include a foil by overlooking its forbidden-side nonzero.
-    if profile=='hard_two':return [('A','B'),('A',),('B',),('A','B','C'),('A','C')]
+    if profile=='hard_two':return [('A','B'),('A',),('A','C'),('A','B','D'),('A','B','E')]
     if profile=='hard_three':return [('A','B','C'),('A','B'),('B','C'),('A','B','C','D'),('A','C','E')]
     raise ValueError('unknown hard bank')
 
@@ -315,6 +310,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         bank=hard_bank(base_profile)
         values=[(subset_tex(s),':answer.type/text') for s in bank]
         fields=[{'values':values,'key':'selection','key_present':True,'correct':subset_tex(good),'correct_present':True}]
+    if not raw:
+        # The conditional upper/lower mask also changes the English article.
+        prompt=prompt.replace('a upper triangular','an upper triangular').replace('an lower triangular','a lower triangular')
+        solution=solution.replace('a upper triangular','an upper triangular').replace('an lower triangular','a lower triangular')
     for f in fields:
         if len(f['values'])!=5 or len({v for v,t in f['values']})!=5:raise ValueError('complete five-choice bank collision')
         if sum(v==f['correct'] for v,t in f['values'])!=1:raise ValueError('ambiguous bank')

@@ -119,8 +119,9 @@ element => {
       const open = ['math', 'mrow'].includes(t) ? fence(nodes[i]) : null;
       const close = fence(nodes[i + 2]);
       const matrixEnvironment = open && close && matrixEnvironments[open + close];
-      if (nodes[i].localName === 'mo' && matrixEnvironment && matrixTable(nodes[i + 1])) {
-        let matrix = m(nodes[i + 1], matrixEnvironment);
+      const cases = open === '{' && close === '' && nodes[i + 1]?.localName === 'mtable';
+      if (nodes[i].localName === 'mo' && (matrixEnvironment && matrixTable(nodes[i + 1]) || cases)) {
+        let matrix = m(nodes[i + 1], cases ? 'cases' : matrixEnvironment);
         const closing = nodes[i + 2];
         if (closing.localName !== 'mo') {
           matrix = '{' + matrix + '}';
@@ -144,7 +145,8 @@ element => {
       case 'msub': return scriptBase + '_{' + cs[1] + '}';
       case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';
       case 'munder': return '{' + cs[0] + '}_{' + cs[1] + '}';
-      case 'mover': return '\\overset{' + cs[1] + '}{' + cs[0] + '}';
+      case 'mover': return ['^', 'ˆ'].includes(n.children[1]?.textContent) ?
+        '\\hat{' + cs[0] + '}' : '\\overset{' + cs[1] + '}{' + cs[0] + '}';
       case 'munderover': return '{' + cs[0] + '}_{' + cs[1] + '}^{' + cs[2] + '}';
       case 'msqrt': return '\\sqrt{' + cs.join('') + '}';
       case 'mroot': return '\\sqrt[' + cs[1] + ']{' + cs[0] + '}';
@@ -160,12 +162,40 @@ element => {
         }
         return greek[n.textContent] || n.textContent;
       case 'mtable': {
-        for (const attribute of environment ? ['columnlines', 'rowlines', 'frame'] : []) {
-          if ((n.getAttribute(attribute) || 'none').trim().split(/\s+/).some(value => value !== 'none')) {
-            errors.push('Unsupported MathML table ' + attribute);
+        const centered = matrixTable(n) !== null;
+        let columnCount = Math.max(...nodes.map(row => row.children.length));
+        if (centered && (environment || n.getAttribute('columnalign'))) {
+          const shortest = Math.min(...nodes.map(row => row.children.length));
+          if (shortest !== columnCount) {
+            // A saved rotation matrix has an accidental empty cell at the end
+            // of its first row. Trim only empty extras; never drop an entry.
+            if (nodes.every(row => [...row.children].slice(shortest).every(cell => m(cell) === ''))) {
+              for (let i = 0; i < nodes.length; i++) cs[i] = [...nodes[i].children].slice(0, shortest).map(cell => m(cell)).join(' & ');
+              columnCount = shortest;
+            } else errors.push('Ragged MathML matrix');
           }
         }
-        const layout = environment || 'aligned';
+        const values = attribute => (n.getAttribute(attribute) || 'none').trim().split(/\s+/);
+        const columnlines = values('columnlines'), rowlines = values('rowlines'), frame = n.getAttribute('frame') || 'none';
+        if (centered && [...columnlines, ...rowlines, frame].some(value => value !== 'none')) {
+          for (const attribute of ['columnlines', 'rowlines', 'frame']) {
+            if (values(attribute).some(value => !['none', 'solid'].includes(value))) errors.push('Unsupported MathML table ' + attribute);
+          }
+          const width = columnCount;
+          const at = (items, index) => items[Math.min(index, items.length - 1)];
+          let columns = frame === 'solid' ? '|' : '';
+          for (let i = 0; i < width; i++) columns += 'c' + (i < width - 1 && at(columnlines, i) === 'solid' || i === width - 1 && frame === 'solid' ? '|' : '');
+          let body = frame === 'solid' ? '\\hline ' : '';
+          for (let i = 0; i < cs.length; i++) {
+            body += cs[i];
+            if (i < cs.length - 1) body += ' \\\\ ' + (at(rowlines, i) === 'solid' ? '\\hline ' : '');
+          }
+          if (frame === 'solid') body += ' \\\\ \\hline';
+          const array = '\\begin{array}{' + columns + '}' + body + '\\end{array}';
+          const fences = {bmatrix:['[',']'], pmatrix:['(',')'], Bmatrix:['\\{','\\}'], vmatrix:['|','|'], Vmatrix:['\\Vert','\\Vert']}[environment];
+          return fences ? '\\left' + fences[0] + array + '\\right' + fences[1] : array;
+        }
+        const layout = environment || (centered && n.getAttribute('columnalign') ? 'matrix' : 'aligned');
         return '\\begin{' + layout + '}' + cs.join(' \\\\ ') + '\\end{' + layout + '}';
       }
       case 'mtr': case 'mlabeledtr': return cs.join(' & ');

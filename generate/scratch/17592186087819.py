@@ -2,7 +2,7 @@
 """Matrices for Route Planning, math basis 1356; local generator through step 7.
 
 Easy: observed three entry blanks or sum, 3/4 stations; sparse new counts 0..2.
-Moderate: observed three-station HTML sum with directed edges and self loops.
+Moderate: source-derived three-station sum with variable directed/loop queries.
 Hard: authored four-station sum with independent nonidentity row/column orders;
 three counts, including a self loop and two directed entries, still no products,
 powers or multi-stage journeys. This difficulty label is a design claim.
@@ -11,7 +11,7 @@ Source profiles retain the entire observed finite scalar windows. Their numerica
 values cannot identify wrong-operation intent; source templates use those banks
 by default. Authored hard uses a five-count window; omission banks are optional.
 Exact source replay retains the original counts. Every explicit input receives level guards.
-Source templates are component masks, not source-return branches. Figure reuse
+Source templates vary queried cells and known route locations. Figure reuse
 requires the complete directed adjacency matrix and its original geometry.
 """
 from __future__ import annotations
@@ -24,7 +24,8 @@ KP_UUID='10ca3efc-7d23-5bc1-ab41-f785bed69986'
 TITLE='Matrices for Route Planning'
 sys.path.insert(0,str(HERE))
 from route_tables import RouteTable, TABLE_FORMAT, render_route_table, replace_route_tables, route_table_spans
-VERSION='route-matrix-5'
+VERSION='route-matrix-6'
+CELL_POLICY='variable-relations-v1'
 RENDERER_VERSION='directed-v2-serif'
 LABEL_FONT_FILE=Path('/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf')
 MIN_TOTAL_ROUTES=3
@@ -110,21 +111,36 @@ def guard(level,name,p,observed=False,source_replay=False):
         if sum(r==c for r,c in holes)!=1 or not any(m[r][c]>=2 for r,c in holes):raise ValueError('hard requires one loop and a parallel route count')
     elif level=='moderate' and n!=3:raise ValueError('moderate observed scope: three stations')
     elif rows!=list(range(n)) or cols!=list(range(n)):raise ValueError('only hard reorders headings')
-    if name in SPECS and holes!=SPECS[name]['holes']:raise ValueError('source mask fixes missing entry positions')
+    if name in SPECS and not source_replay:
+        expected_loops=sum(r==c for r,c in SPECS[name]['holes'])
+        if sum(r==c for r,c in holes)!=expected_loops:
+            raise ValueError('queried loop count must match the template response pattern')
 
 
 def sample(level,name,rng):
     if name in SPECS:
-        s=SPECS[name];m=[[rng.randint(1,1 if r==c else 2) if x else 0 for c,x in enumerate(row)] for r,row in enumerate(s['matrix'])]
-        holes=s['holes']
+        s=SPECS[name];n=len(s['matrix'])
+        # Preserve the source's mix of loop and directed-route queries, while
+        # varying their actual cells and their a/b/c or field-1/2/3 assignment.
+        loops=sum(r==c for r,c in s['holes'])
+        holes=rng.sample([[r,r] for r in range(n)],loops)
+        holes+=rng.sample([[r,c] for r in range(n) for c in range(n) if r!=c],3-loops)
+        rng.shuffle(holes)
+        # Known edges also vary in location. Keep the source's number of
+        # occupied known cells, rather than its literal zero/nonzero pattern.
+        known_count=sum(x>0 for r,row in enumerate(s['matrix']) for c,x in enumerate(row) if [r,c] not in s['holes'])
+        known=rng.sample([[r,c] for r in range(n) for c in range(n) if [r,c] not in holes],known_count)
+        m=[[0]*n for _ in range(n)]
+        for r,c in known:m[r][c]=rng.randint(1,1 if r==c else 2)
         for r,c in holes:m[r][c]=rng.randint(0,1 if r==c else 2)
-        n=len(m);return {'matrix':m,'holes':holes,'row_order':list(range(n)),'col_order':list(range(n))}
+        return {'matrix':m,'holes':holes,'row_order':list(range(n)),'col_order':list(range(n))}
     # Same route counting operation, three unknowns, altered heading order.
     m=[[0]*4 for _ in range(4)]
     for r,c in rng.sample([(r,c) for r in range(4) for c in range(4)],5):m[r][c]=rng.randint(1,1 if r==c else 2)
     d=rng.randrange(4);off=rng.sample([(r,c) for r in range(4) for c in range(4) if r!=c],2)
     holes=[[d,d],*map(list,off)];m[d][d]=rng.randint(0,1)
     for r,c in off:m[r][c]=rng.randint(1,2)
+    rng.shuffle(holes)
     rows=list(range(4));cols=list(range(4));rng.shuffle(rows);rng.shuffle(cols)
     return {'matrix':m,'holes':holes,'row_order':rows,'col_order':cols}
 
@@ -161,12 +177,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     allowed=('observed','raw_solution_319429') if kind=='blank' else ('authored_omissions','observed_'+SPECS[name]['source'][2:] if name in SPECS else 'authored_count_window')
     if profile not in allowed or raw and name!='blanks_319429':raise ValueError('incompatible profile')
     explicit=parameters is not None
-    if not explicit and name=='sum_139685' and profile=='authored_omissions':
-        raise ValueError('the omission bank has no variants within the sparse limits for this template; use observed_139685')
+    if raw and not explicit:raise ValueError('raw source prose requires exact source replay parameters')
     for attempt in range(10000):
         p=json.loads(json.dumps(parameters)) if explicit else sample(level,name,rng)
         try:
             source_replay=explicit and name in SPECS and p['matrix']==SPECS[name]['matrix'] and p['holes']==SPECS[name]['holes'] and p['row_order']==list(range(len(p['matrix']))) and p['col_order']==list(range(len(p['matrix'])))
+            if raw and not source_replay:raise ValueError('raw source prose requires exact source replay parameters')
             guard(level,name,p,profile.startswith('observed'),source_replay)
             m=p['matrix'];holes=p['holes'];rows=p['row_order'];cols=p['col_order'];v=[m[r][c] for r,c in holes];correct=int(sp.Add(*v))
             if kind=='blank':banks=[[str(x)] for x in v]
@@ -208,11 +224,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         cid=next(a[':answer/id'] for a in answers if a[':answer/value']==correct_value)
         if kind=='radio':random.Random(seed).shuffle(answers)
         fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':answers,':answer-field/correct':[':answer/id',cid]})
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':worked,':question/answer-fields':fields},'generation':{'version':VERSION,'table_format':TABLE_FORMAT,'template':name,'level':level,'seed':seed,'parameters':p,'bank_profile':profile,'origin':'observed template' if name in SPECS else 'authored missing-level template','bank_origin':('authored complete omission/direction bank' if profile=='authored_omissions' else 'authored bounded count catalog' if profile=='authored_count_window' else 'observed blank counts' if kind=='blank' else 'observed finite count catalog'),'bank_recipes':(['sum_three','omit_third','omit_second','reverse_three_directions','count_all_routes'] if profile=='authored_omissions' else ['enumerate_five_counts_from_max_zero_sum_minus_two'] if profile=='authored_count_window' else ['required_entry']*3 if kind=='blank' else ['enumerate_complete_observed_catalog']),'domain':{'station_count':len(m),'count_range':[0,3] if source_replay else [0,2],'min_total_routes':0 if source_replay else MIN_TOTAL_ROUTES,'max_total_routes':16 if source_replay else ROUTE_LIMITS[len(m)],'max_self_loops':3 if source_replay else 1,'sampling_policy':'exact-source-replay' if source_replay else 'sparse-routes-v3'},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'mathematical_fingerprint':math_fingerprint,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'source_ids':[SPECS[name]['source']] if name in SPECS else [],'assets':assets,'source_repairs':['B-to-B direction in second solution bullet'] if name=='blanks_319429' and not raw else []}}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':worked,':question/answer-fields':fields},'generation':{'version':VERSION,'table_format':TABLE_FORMAT,'queried_cell_policy':('exact-source-replay' if source_replay else CELL_POLICY),'template':name,'level':level,'seed':seed,'parameters':p,'bank_profile':profile,'origin':'observed template' if name in SPECS else 'authored missing-level template','bank_origin':('authored complete omission/direction bank' if profile=='authored_omissions' else 'authored bounded count catalog' if profile=='authored_count_window' else 'observed blank counts' if kind=='blank' else 'observed finite count catalog'),'bank_recipes':(['sum_three','omit_third','omit_second','reverse_three_directions','count_all_routes'] if profile=='authored_omissions' else ['enumerate_five_counts_from_max_zero_sum_minus_two'] if profile=='authored_count_window' else ['required_entry']*3 if kind=='blank' else ['enumerate_complete_observed_catalog']),'domain':{'station_count':len(m),'count_range':[0,3] if source_replay else [0,2],'min_total_routes':0 if source_replay else MIN_TOTAL_ROUTES,'max_total_routes':16 if source_replay else ROUTE_LIMITS[len(m)],'max_self_loops':3 if source_replay else 1,'sampling_policy':'exact-source-replay' if source_replay else 'sparse-routes-v3'},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'mathematical_fingerprint':math_fingerprint,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'source_ids':[SPECS[name]['source']] if name in SPECS else [],'assets':assets,'source_repairs':['B-to-B direction in second solution bullet'] if name=='blanks_319429' and not raw else []}}
 
 # EASY: observed route count blanks and sums, fixed ordinary headings.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)
-# MODERATE: observed HTML table with three directed/diagonal counts.
+# MODERATE: variable three-station cells with one loop and two directed queries.
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('moderate',seed,template,field_type,parameters,profile)
 # HARD: authored independent row and column order, still only direct-route counts.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)

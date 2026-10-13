@@ -49,7 +49,7 @@ selection:
 
 Worked solution:
 
-The matrix $A$ is an lower triangular matrix since all the entries above the main diagonal are zeros.
+The matrix $A$ is a lower triangular matrix since all the entries above the main diagonal are zeros.
 
 The matrices $B$ and $C$ are *not* lower triangular matrices since they each have a non-zero element above the main diagonal: 
 
@@ -111,7 +111,7 @@ So, they are not upper triangular matrices.
 
 ### Generated variants of q-68740
 
-Which of the following is an lower triangular matrix?
+Which of the following is a lower triangular matrix?
 
 selection:
 - $E=[\begin{aligned}1 & 0 & -4 \\ -6 & 5 & 8 \\ -11 & 0 & -7\end{aligned}]$
@@ -128,7 +128,7 @@ $$
 C=[\begin{aligned}1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & -11 & 6\end{aligned}]
 $$
 
-Hence, it is an lower triangular matrix. 
+Hence, it is a lower triangular matrix. 
 
 By contrast, matrices $A$, $B$, $D$, and $E$ each have at least one non-zero entry above the diagonal:
 
@@ -140,7 +140,7 @@ So, they are not lower triangular matrices.
 
 ---
 
-Which of the following is an lower triangular matrix?
+Which of the following is a lower triangular matrix?
 
 selection:
 - $E=[\begin{aligned}0 & -4 & 0 \\ -2 & 10 & -7 \\ 0 & 9 & -9\end{aligned}]$
@@ -157,7 +157,7 @@ $$
 C=[\begin{aligned}-6 & 0 & 0 \\ 0 & -7 & 0 \\ 0 & 4 & 10\end{aligned}]
 $$
 
-Hence, it is an lower triangular matrix. 
+Hence, it is a lower triangular matrix. 
 
 By contrast, matrices $A$, $B$, $D$, and $E$ each have at least one non-zero entry above the diagonal:
 
@@ -207,7 +207,7 @@ Worked solution:
 
 The matrices $A$ and $B$ are upper triangular matrices since all the entries below the main diagonal are zeros.
 
-The matrix $C$ is *not* a upper triangular matrix since it has a non-zero element below the main diagonal: 
+The matrix $C$ is *not* an upper triangular matrix since it has a non-zero element below the main diagonal: 
 
 $$
 \begin{aligned}{c}_{21} & =7\ne 0\end{aligned}
@@ -230,7 +230,7 @@ Worked solution:
 
 The matrices $A$ and $B$ are upper triangular matrices since all the entries below the main diagonal are zeros.
 
-The matrix $C$ is *not* a upper triangular matrix since it has a non-zero element below the main diagonal: 
+The matrix $C$ is *not* an upper triangular matrix since it has a non-zero element below the main diagonal: 
 
 $$
 \begin{aligned}{c}_{21} & =-6\ne 0\end{aligned}
@@ -296,7 +296,7 @@ So, they are not upper triangular matrices.
 
 ---
 
-Which of the following is an lower triangular matrix?
+Which of the following is a lower triangular matrix?
 
 selection:
 - $C=[\begin{aligned}-6 & -7 \\ 4 & 10\end{aligned}]$
@@ -313,7 +313,7 @@ $$
 D=[\begin{aligned}8 & 0 & 0 \\ -11 & -1 & 0 \\ -2 & 0 & 0\end{aligned}]
 $$
 
-Hence, it is an lower triangular matrix. 
+Hence, it is a lower triangular matrix. 
 
 By contrast, matrices $A$, $B$, $C$, and $E$ each have at least one non-zero entry above the diagonal:
 
@@ -470,7 +470,7 @@ So, they are not upper triangular matrices.
 
 ---
 
-Which of the following is an lower triangular matrix?
+Which of the following is a lower triangular matrix?
 
 selection:
 - $A=[\begin{aligned}3 & 0 & 0 \\ 0 & -1 & 0 \\ 7 & 7 & 1\end{aligned}]$
@@ -487,7 +487,7 @@ $$
 A=[\begin{aligned}3 & 0 & 0 \\ 0 & -1 & 0 \\ 7 & 7 & 1\end{aligned}]
 $$
 
-Hence, it is an lower triangular matrix. 
+Hence, it is a lower triangular matrix. 
 
 By contrast, matrices $B$, $C$, $D$, and $E$ each have at least one non-zero entry above the diagonal:
 
@@ -557,7 +557,7 @@ So, they are not upper triangular matrices.
 
 ---
 
-Which of the following is an lower triangular matrix?
+Which of the following is a lower triangular matrix?
 
 selection:
 - $D=[\begin{aligned}8 & -11 \\ -1 & -2\end{aligned}]$
@@ -574,7 +574,7 @@ $$
 A=[\begin{aligned}3 & 0 \\ -1 & 6\end{aligned}]
 $$
 
-Hence, it is an lower triangular matrix. 
+Hence, it is a lower triangular matrix. 
 
 By contrast, matrices $B$, $C$, $D$, and $E$ each have at least one non-zero entry above the diagonal:
 
@@ -644,7 +644,7 @@ So, they are not lower triangular matrices.
 
 ---
 
-Which of the following is a upper triangular matrix?
+Which of the following is an upper triangular matrix?
 
 selection:
 - $C=[\begin{aligned}10 & 0 \\ 9 & -11\end{aligned}]$
@@ -661,7 +661,7 @@ $$
 B=[\begin{aligned}1 & 5 & -11 \\ 0 & -6 & -7 \\ 0 & 0 & 3\end{aligned}]
 $$
 
-Hence, it is a upper triangular matrix. 
+Hence, it is an upper triangular matrix. 
 
 By contrast, matrices $A$, $C$, $D$, and $E$ each have at least one non-zero entry below the diagonal:
 
@@ -679,9 +679,9 @@ $A=[\begin{aligned}1 & 0 & 0 & 0 \\ 0 & 6 & 0 & 0 \\ 0 & 0 & 11 & 0 \\ 0 & 0 & 0
 
 selection:
 - $A$ only
-- $A$, $B$, and $C$ only
+- $A$, $B$, and $D$ only
+- $A$, $B$, and $E$ only
 - $A$ and $C$ only
-- $B$ only
 - $A$ and $B$ only
 
 Worked solution:
@@ -701,11 +701,11 @@ Which of the following matrices are upper triangular matrices?
 $A=[\begin{aligned}3 & 0 & 0 & 0 \\ 0 & -1 & 0 & 0 \\ 0 & 0 & 6 & 0 \\ 0 & 0 & 0 & 6\end{aligned}],\,B=[\begin{aligned}1 & 0 & 5 & 0 \\ 0 & -11 & -6 & -7 \\ 0 & 0 & 3 & 0 \\ 0 & 0 & 0 & 10\end{aligned}],\,C=[\begin{aligned}8 & 0 & -11 & -1 \\ 0 & -2 & 1 & 0 \\ 0 & 0 & -4 & 0 \\ -2 & 0 & 0 & 10\end{aligned}],\,D=[\begin{aligned}-7 & 9 & 0 & -9 \\ 0 & -5 & 0 & 6 \\ -2 & 0 & 7 & 0 \\ 0 & 0 & 0 & 6\end{aligned}],\,E=[\begin{aligned}-6 & 0 & 0 & -1 \\ 0 & -6 & 2 & -4 \\ 0 & 0 & 9 & 0 \\ 0 & 0 & 4 & -4\end{aligned}].$
 
 selection:
-- $A$ and $C$ only
+- $A$, $B$, and $E$ only
 - $A$ only
-- $B$ only
+- $A$ and $C$ only
 - $A$ and $B$ only
-- $A$, $B$, and $C$ only
+- $A$, $B$, and $D$ only
 
 Worked solution:
 

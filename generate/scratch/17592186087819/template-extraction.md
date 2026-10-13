@@ -2,7 +2,7 @@
 
 Provenance: `source.json`, math basis 1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `source-cases.json` supplies every practice replay. Source capture values and authored parameter ranges are separate.
 
-Version `route-matrix-5` keeps the source descriptions and replay profiles below,
+Version `route-matrix-6` keeps the source descriptions and replay profiles below,
 but narrows newly sampled counts to 0..2, with at most one loop per station and
 at least 3 total arrows and at most 8 for three stations or 10 for four. The exact original parameter
 sets remain replayable without this narrower density policy. Source-derived
@@ -10,12 +10,14 @@ radio templates now default to their observed finite catalogs. Authored hard
 uses a five-count window starting at `max(0, correct_sum - 2)`; its possible
 mistake interpretations are unspecified. The old omission profile remains
 optional where its five values stay distinct within the density limits.
-`sum_139685` has no such sampled omission-profile variants and reports that
-exception rather than exhausting the sampler. See `density-validation.json`
+Moving queried and known-edge locations now also permits sampled omission-bank
+variants for `sum_139685`; collisions still reject the complete instance. See `density-validation.json`
 for current variety and limits; the original sampling claims below describe
 version one and are retained as extraction evidence.
 
 Current presentation normalizes every route table through the shared `route_tables.render_route_table` function, with the HTML structure of question `17592186476121`. This includes source-derived prompts and all worked solutions, regardless of station count or heading order. The legacy table descriptions below document the immutable capture; current replay preserves their ordered cell contents and surrounding prose rather than their old HTML/Markdown bytes.
+
+Version six further generalizes queried cell positions and known edge locations. The captured `holes` in `specs.json` describe exact source replay, not a restriction on new cell positions. New source-derived variants keep the captured query mix: one diagonal and two off-diagonal entries, or three off-diagonal entries for `blanks_319346`. Eligible positions are sampled without replacement and their answer-slot order is shuffled. The number of occupied known cells is retained from the source while their positions vary. This authored extension retains source response types and the three-count worked solution; sum questions still ask `a+b+c`.
 
 ## 1. Describe each source before generalization
 
@@ -58,12 +60,14 @@ The authored normal radio bank is the complete five-operation tuple `(a+b+c, a+b
 
 ## 4. Reusable template and parameter constraints
 
-Fixed: source sentences, three requested relations, diagram-first layout, route interpretation, station-letter system, table heading structure and number of fields/options. Variable: complete adjacency counts, consistent diagrams, all numeric table values, three count explanations, all sum intermediate values. Conditional: singular/plural/zero count grammar; radio final sum stage; exact original figure reuse. Hard additionally varies independent row/column heading permutations.
+Fixed: source sentences, number of requested relations and their diagonal/off-diagonal mix, diagram-first layout, route interpretation, station-letter system, table heading structure and number of fields/options. Variable: queried relation positions and their answer-slot assignment, known route locations, complete adjacency counts, consistent diagrams, all numeric table values, three count explanations, all sum intermediate values. Conditional: singular/plural/zero count grammar; radio final sum stage; exact original figure reuse. Hard additionally varies independent row/column heading permutations.
 
 - Every matrix is square 3×3 or 4×4, counts are exact integers 0..3, at most 16 arrows for readable diagrams; no fractional or negative routes.
-- Easy source families retain ordinary A,B,C[,D] heading order and their three unknown coordinate slots. Samplers vary originally positive known routes within 1..3, preserve originally zero known routes, and vary unknowns within 0..3. Explicit inputs receive the same count, size, density and table-order guards.
-- Moderate retains the original three-node HTML sum, directed relation slots and ordinary headings, counts 0..3 and at most 16 arrows. It uses the observed scalar catalog on explicit replay and the authored whole bank by default.
+- Easy source families retain ordinary A,B,C[,D] heading order; current queried positions vary as described above. Samplers vary originally positive known routes within 1..3, preserve originally zero known routes, and vary unknowns within 0..3. Explicit inputs receive the same count, size, density and table-order guards.
+- Moderate retains the original three-node sum, loop/directed query mix and ordinary headings, counts 0..3 and at most 16 arrows. It uses the observed scalar catalog on explicit replay and the authored whole bank by default.
 - Hard is an authored four-node sum with exactly three unknowns, exactly one queried diagonal entry, at least one queried count >=2, two off-diagonal relations, two distinct nonidentity row/column heading permutations and the same 0..3/count-density limits. Samplers and explicit calls enforce all these requirements. This adds heading-direction mapping, not arithmetic branches.
+
+The former 49-variant limit for `blanks_319346` applied to fixed positions and fixed known-edge support. It is superseded by variable positions, not a current package limit.
 
 The finite matrix/slot/order domain has substantial meaningful variety: validation enumerates 500 deterministic candidate draws per template and reports valid unique matrices, slots and orders. Those draws are not a claim of exhaustive finite-domain cardinality. Station renaming and option shuffle do not increase counts. Mathematical fingerprints exclude seed/profile/bank but retain complete diagram, queried relations, response shape and heading orders because direction-reading and table arrangement are assessed. Content UUIDs include actual rendered prompt, fixed complete solution and unordered complete bank; changing option order leaves identity fixed.
 

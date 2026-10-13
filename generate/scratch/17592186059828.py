@@ -26,7 +26,7 @@ HERE=Path(__file__).resolve().with_suffix('')
 ROOT=HERE.parents[2]
 SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 TEMPLATE='numberline_interval_radio'
-PROFILES=('authored_left_shift','observed_left_ray','observed_negate_left','raw_q28850','raw_q31762','repair_q28850','repair_q31762')
+PROFILES=('authored_left_shift','observed_left_ray','observed_right_ray','observed_negate_left','raw_q28850','raw_q31762','repair_q28850','repair_q31762')
 ASSETS={'raw_q28850':'images/a2/a2cc171a455a193deab3555b823b715d887d372c8c9b57933f525edcfc99e150.png', 'raw_q31762':'images/a2/a2e3d6a49f516b3037e0be9cb74312a59d2a924a6ec768a72660485951bb0302.png'}
 PROMPT='Which of the following intervals corresponds to the segment shown above?'
 CANON=json.loads((HERE/'source.json').read_text())['record'][':knowledge-point/canonical-example'][':question/worked-solution']
@@ -79,14 +79,15 @@ def interval_text(a,b,lc,rc,profile):
 
 def bank(p,profile):
     a,b=frac(p['left']),frac(p['right'])
-    family='ray' if profile in ('raw_q28850','repair_q28850','observed_left_ray') else 'negate' if profile in ('raw_q31762','repair_q31762','observed_negate_left') else 'shift'
+    family='right_ray' if profile=='observed_right_ray' else 'ray' if profile in ('raw_q28850','repair_q28850','observed_left_ray') else 'negate' if profile in ('raw_q31762','repair_q31762','observed_negate_left') else 'shift'
     # Every observed bank contains all four closure combinations as a complete bank.
     parts=[('both_open',a,b,False,False),('both_closed',a,b,True,True),('open_closed',a,b,False,True),('closed_open',a,b,True,False)]
     if family=='ray':parts += [('left_ray',None,b,False,True)]
+    elif family=='right_ray':parts += [('right_ray',a,None,True,False)]
     elif family=='negate':parts += [('negate_left',-a,b,False,False)]
     else:parts += [('shift_left',a-frac(p['tick_step']),b,p['left_closed'],not p['left_closed'])]
-    if any(x[1] is not None and x[1]>=x[2] for x in parts):raise ValueError('Whole bank invalid: unordered endpoints')
-    values=[interval_text(x[1],x[2],x[3],x[4],profile) for x in parts]
+    if any(x[1] is not None and x[2] is not None and x[1]>=x[2] for x in parts):raise ValueError('Whole bank invalid: unordered endpoints')
+    values=[('x ∈ ['+num(x[1])+', ∞)') if x[2] is None else interval_text(x[1],x[2],x[3],x[4],profile) for x in parts]
     semantic=[tuple(x[1:]) for x in parts]
     if len(set(semantic))!=5:raise ValueError('Whole bank collision')
     return [(x[0],v) for x,v in zip(parts,values)]

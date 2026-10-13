@@ -4,6 +4,7 @@ The native review's plain-minus diagnosis is contradicted by these authentic
 captures. Unicode minus-plus is valid output; it need not serialize as TeX.
 """
 import json
+import copy
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -38,15 +39,24 @@ class MinusPlusExtractionTests(unittest.TestCase):
         return self.page.locator('#fixture > *').evaluate(self.source)
 
     def test_authentic_widgets_and_history_keep_every_minus_plus(self):
+        # Retain the original captures as evidence; the extractor now preserves
+        # matrix environments, grid lines, and scoped colors that those lost.
+        expected = json.loads((Path(__file__).with_name('fixtures') / 'matrices/paired-sign-extraction.json').read_text())
         for name in ('q-38665-before.json', 'q-38665-after.json', 'history-q-38665.json'):
             with self.subTest(name=name):
                 saved = json.loads((EVIDENCE / name).read_text())
                 fresh = self.extract(saved['html'])
                 self.assertEqual(fresh['errors'], [])
-                self.assertEqual(fresh['problem'], saved['problem'])
-                self.assertEqual(fresh['worked_solution'], saved['worked_solution'])
+                self.assertEqual(fresh['problem'], expected[name]['problem'])
+                self.assertEqual(fresh['worked_solution'], expected[name]['worked_solution'])
+                self.assertEqual(fresh['problem'].count('∓'), saved['problem'].count('∓'))
+                self.assertEqual(fresh['worked_solution'].count('∓'), saved['worked_solution'].count('∓'))
                 self.assertEqual(fresh['result'], saved['result'])
-                self.assertEqual(fresh['fields'], saved['fields'])
+                expected_fields = copy.deepcopy(saved['fields'])
+                for field in expected_fields:
+                    for choice in field['choices']:
+                        choice['value'] = choice['value'].replace(r'[\begin{aligned}', r'\begin{bmatrix}').replace(r'\end{aligned}]', r'\end{bmatrix}')
+                self.assertEqual(fresh['fields'], expected_fields)
                 if fresh['fields']:
                     choices = fresh['fields'][0]['choices']
                     self.assertEqual([c['value'].count('∓') for c in choices], [2, 2, 2, 1, 1])

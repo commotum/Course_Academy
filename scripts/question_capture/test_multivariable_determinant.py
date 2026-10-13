@@ -36,7 +36,7 @@ class IntersectionDeterminantTests(unittest.TestCase):
         item = self.render(self.markup)
         self.assertEqual(item['errors'], [])
         self.assertEqual(item['value'].replace(r'\,', ''),
-                         r'\left|\begin{aligned}i & j & k \\ 2 & 4 & 0 \\ 0 & 3 & -2\end{aligned}\right|')
+                         r'\left|\begin{matrix}i & j & k \\ 2 & 4 & 0 \\ 0 & 3 & -2\end{matrix}\right|')
         # The worked source independently identifies both normal vectors and
         # the result. Retain the source evidence rather than recomputing it.
         for value in (r'\langle 2,4,0 \rangle', r'\langle 0,3,-2 \rangle', '-8i+4j+6k'):

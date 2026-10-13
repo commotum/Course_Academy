@@ -48,7 +48,7 @@ def formatting(s):
 
 def verify(r,raw=False):
  assert set(r['knowledge_point'])=={'db_id','id','title'}
- q=r['question'];n=extract_n(q[':question/problem']);assert n in range(61)
+ q=r['question'];n=extract_n(q[':question/problem']);assert n in range(21)
  if not raw:formatting(q[':question/problem'])
  vals=[]
  for f in q.get(':question/answer-fields',[]):
@@ -88,85 +88,88 @@ def verify(r,raw=False):
   assert "Let's check by differentiating:" in sol
   if n>0:assert '$n='+str(n)+'$' in sol
 
-cases=[];fidelity=[]
-for q in g.SOURCE['record'][':knowledge-point/questions']:
- sid=q[':question/math-academy-id'];template,n=g.SOURCE_SPECS[sid];case={'source_id':sid,'template':template,'parameters':{'n':n},'bank_profile':'raw:'+sid,'level':'easy','level_origin':'observed' if ':question/difficulty' in q else 'authored assignment; original unrated'};cases.append(case)
- r=g.generate('easy',template=template,parameters={'n':n},profile='raw:'+sid);verify(r,True);rq=r['question']
- keys=[':question/problem',':question/worked-solution',':question/difficulty',':question/answer-fields']
- for key in keys:
-  assert (key in q)==(key in rq),(sid,key,'presence')
-  if key!=':question/answer-fields':
-   value=q.get(key);value=value.get(':db/ident') if isinstance(value,dict) else value
-   assert value==rq.get(key),(sid,key)
- if ':question/answer-fields' in q:
-  f=q[':question/answer-fields'][0];rf=rq[':question/answer-fields'][0]
-  assert f[':answer-field/key']==rf[':answer-field/key'];assert f[':answer-field/type'][':db/ident']==rf[':answer-field/type']
-  assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in rf[':answer-field/choices'])
-  assert (':answer-field/correct' in f)==(':answer-field/correct' in rf)
- fidelity.append({'source_id':sid,'prompt_exact':True,'solution_presence_and_exact':True,'field_presence_and_bank_exact':True,'original_correct_designation_present':False})
-(HERE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n')
-# Normal profile and field combinations over the complete finite exponent domains.
-records=[];native=[];counts={}
-for level,domain in g.DOMAINS.items():
- fingerprints=set()
- for n in domain:
-  templates=['constant'] if n==0 else ['integral_spaced','integral_thin','function','legacy_x','legacy_power'] if level=='easy' else ['integral_thin','function']
-  for template in templates:
-   kinds=['blank'] if n==0 else ['blank','radio']
-   profiles=['authored_power','observed_2005']+(['observed_2022'] if n>=2 else []) if n>0 else [None]
-   for kind in kinds:
-    for profile in profiles if kind=='radio' else [None]:
-     r=g.generate(level,seed=11,template=template,field_type=kind,parameters={'n':n},profile=profile);verify(r);records.append(r);fingerprints.add(r['generation']['mathematical_fingerprint'])
-     other=g.generate(level,seed=22,template=template,field_type=kind,parameters={'n':n},profile=profile)
-     assert other['question'][':question/id']==r['question'][':question/id']
-     assert other['generation']['mathematical_fingerprint']==r['generation']['mathematical_fingerprint']
- counts[level]={'distinct_mathematical_tasks':len(fingerprints),'eligible_exponents':list(domain)}
-# Replay profiles must genuinely change expressions and preserve omission patterns.
-for case in cases:
- if case['template']=='constant':continue
- changed=g.generate('easy',template=case['template'],parameters={'n':5},profile=case['bank_profile']);verify(changed,True)
- assert changed['question'][':question/problem']!=g.generate('easy',template=case['template'],parameters=case['parameters'],profile=case['bank_profile'])['question'][':question/problem']
-# Invalid explicit level, number forms, range and profile bank instances must fail.
-invalid=[('easy',{'n':21}),('moderate',{'n':20}),('moderate',{'n':41}),('hard',{'n':40}),('hard',{'n':61}),('easy',{'n':-1}),('easy',{'n':'4'}),('easy',{'n':1.5}),('easy',{'n':True})]
-for level,p in invalid:
- try:g.generate(level,parameters=p)
- except ValueError:pass
- else:raise AssertionError(('Guard failed',level,p))
-for _ in range(30):
- for level in g.DOMAINS:verify(g.generate(level,seed=_))
-# Native checks for representative records including all templates/profiles/kinds/levels.
-seen=set()
-for r in records:
- key=(r['generation']['template'],r['generation']['bank_profile'],r['question'][':question/difficulty'],r['question'][':question/answer-fields'][0][':answer-field/type'])
- if key in seen:continue
- seen.add(key);f=r['question'][':question/answer-fields'][0];correct=f[':answer-field/correct'][1];checks=[]
- if f[':answer-field/type'].endswith('/radio'):
-  checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==correct else 'rejected','purpose':'complete bank selection'} for a in f[':answer-field/choices']]
- else:
-  n=extract_n(r['question'][':question/problem']);a=f[':answer-field/choices'][0][':answer/value']
-  checks=[{'submitted':a,'expected':'accepted','purpose':'exact entry'},{'submitted':f'x^({n}+1)/({n}+1)+C','expected':'accepted','purpose':'unevaluated successor equivalent entry'},{'submitted':f'x^({n}+2)/({n}+2)+C','expected':'rejected','purpose':'wrong successor'}]
- native.append({'label':str(key),'record':r,'checks':checks})
-(HERE/'native-input.json').write_text(json.dumps(native,indent=2)+'\n')
-subprocess.run(['generate/runs/current/check-engine',str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
-# Original + two changed parameter variants for every observed template/bank, plus levels.
-review=[]
-for case in cases:
- review.append({'label':'Original source replay','record':g.generate('easy',template=case['template'],parameters=case['parameters'],profile=case['bank_profile'])})
- for n in ([0,0] if case['template']=='constant' else [5,7]):
-  profile={'legacy_x':'observed_2005','legacy_power':'observed_2022'}.get(case['template'])
-  review.append({'label':'Generated — normal repaired/authored field','record':g.generate('easy',template=case['template'],parameters={'n':n},profile=profile)})
-for level in ('moderate','hard'):
- for n in (g.DOMAINS[level][0],g.DOMAINS[level][-1]):review.append({'label':'Generated — authored difficulty extension','record':g.generate(level,template='function',parameters={'n':n})})
-(HERE/'review.json').write_text(json.dumps(review,ensure_ascii=False,indent=2)+'\n')
-(HERE/'review.md').write_text('# Monomial antiderivative review\n\nOriginal means captured structure replay. Normal fields/corrects and missing-level bands are authored. No plots. Constant template has only one substantive task, so repeated previews do not count as variety.\n\n'+'\n\n---\n\n'.join(g.markdown(i['record'],i['label']) for i in review)+'\n')
-report={'passed':True,'source_practice_total':6,'source_prompt_exact':6,'source_present_solutions_exact':{'matched':4,'total':4},'source_missing_solution_parity':{'matched':2,'total':2},'source_complete_banks':{'matched':2,'total':2},'source_answer_values':{'matched':10,'total':10},'source_original_correct_designations':{'matched':0,'total':0,'missing':2},'source_fieldless_presence_parity':{'matched':4,'total':4},'source_unrated_presence_parity':{'matched':2,'total':2},'native_records':len(native),'independently_checked_normal_records':len(records),'finite_domains':counts,'source_fidelity':fidelity,'invalid_explicit_checks':len(invalid),'generator_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'native':json.loads((HERE/'native-report.json').read_text())}
-# The native algebraic blank checker does not identify arbitrary-constant families.
-blank=next(r for r in records if r['question'][':question/answer-fields'][0][':answer-field/type'].endswith('/blank'))
-n=extract_n(blank['question'][':question/problem']);scaled=f'x^({n}+1)/({n}+1)+2C'
-assert sp.diff(expr(scaled)-expr(blank['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']),x)==0
-supplement=[{'label':'arbitrary C rescaling','record':blank,'checks':[{'submitted':scaled,'expected':'rejected','purpose':'documented native limitation: equivalent complete family under C rescaling'}]}]
-(HERE/'constant-family-native-input.json').write_text(json.dumps(supplement,indent=2)+'\n')
-subprocess.run(['generate/runs/current/check-engine',str(HERE/'constant-family-native-input.json'),str(HERE/'constant-family-native-report.json')],check=True)
-report['native_family_equivalence_limitation']={'entry':scaled,'mathematically_same_complete_family':True,'native_outcome':'rejected','report':'constant-family-native-report.json','engine_changed':False}
-(HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
-print(json.dumps({k:v for k,v in report.items() if k not in ('native','source_fidelity')},indent=2))
+def main():
+ cases=[];fidelity=[]
+ for q in g.SOURCE['record'][':knowledge-point/questions']:
+  sid=q[':question/math-academy-id'];template,n=g.SOURCE_SPECS[sid];case={'source_id':sid,'template':template,'parameters':{'n':n},'bank_profile':'raw:'+sid,'level':'easy','level_origin':'observed' if ':question/difficulty' in q else 'authored assignment; original unrated'};cases.append(case)
+  r=g.generate('easy',template=template,parameters={'n':n},profile='raw:'+sid);verify(r,True);rq=r['question']
+  keys=[':question/problem',':question/worked-solution',':question/difficulty',':question/answer-fields']
+  for key in keys:
+   assert (key in q)==(key in rq),(sid,key,'presence')
+   if key!=':question/answer-fields':
+    value=q.get(key);value=value.get(':db/ident') if isinstance(value,dict) else value
+    assert value==rq.get(key),(sid,key)
+  if ':question/answer-fields' in q:
+   f=q[':question/answer-fields'][0];rf=rq[':question/answer-fields'][0]
+   assert f[':answer-field/key']==rf[':answer-field/key'];assert f[':answer-field/type'][':db/ident']==rf[':answer-field/type']
+   assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in rf[':answer-field/choices'])
+   assert (':answer-field/correct' in f)==(':answer-field/correct' in rf)
+  fidelity.append({'source_id':sid,'prompt_exact':True,'solution_presence_and_exact':True,'field_presence_and_bank_exact':True,'original_correct_designation_present':False})
+ (HERE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n')
+ # Normal profile and field combinations over the complete finite exponent domains.
+ records=[];native=[];counts={}
+ for level,domain in g.DOMAINS.items():
+  fingerprints=set()
+  for n in domain:
+   templates=['constant'] if n==0 else ['integral_spaced','integral_thin','function','legacy_x','legacy_power'] if level=='easy' else ['integral_thin','function']
+   for template in templates:
+    kinds=['blank'] if n==0 else ['blank','radio']
+    profiles=['authored_power','observed_2005']+(['observed_2022'] if n>=2 else []) if n>0 else [None]
+    for kind in kinds:
+     for profile in profiles if kind=='radio' else [None]:
+      r=g.generate(level,seed=11,template=template,field_type=kind,parameters={'n':n},profile=profile);verify(r);records.append(r);fingerprints.add(r['generation']['mathematical_fingerprint'])
+      other=g.generate(level,seed=22,template=template,field_type=kind,parameters={'n':n},profile=profile)
+      assert other['question'][':question/id']==r['question'][':question/id']
+      assert other['generation']['mathematical_fingerprint']==r['generation']['mathematical_fingerprint']
+  counts[level]={'distinct_mathematical_tasks':len(fingerprints),'eligible_exponents':list(domain)}
+ # Replay profiles must genuinely change expressions and preserve omission patterns.
+ for case in cases:
+  if case['template']=='constant':continue
+  changed=g.generate('easy',template=case['template'],parameters={'n':5},profile=case['bank_profile']);verify(changed,True)
+  assert changed['question'][':question/problem']!=g.generate('easy',template=case['template'],parameters=case['parameters'],profile=case['bank_profile'])['question'][':question/problem']
+ # Invalid explicit level, number forms, range and profile bank instances must fail.
+ invalid=[('easy',{'n':21}),('moderate',{'n':21}),('moderate',{'n':20}),('moderate',{'n':41}),('hard',{'n':41}),('hard',{'n':40}),('hard',{'n':61}),('easy',{'n':-1}),('easy',{'n':'4'}),('easy',{'n':1.5}),('easy',{'n':True})]
+ for level,p in invalid:
+  try:g.generate(level,parameters=p)
+  except ValueError:pass
+  else:raise AssertionError(('Guard failed',level,p))
+ for _ in range(30):
+  for level in g.DOMAINS:verify(g.generate(level,seed=_))
+ # Native checks for representative records including all templates/profiles/kinds/levels.
+ seen=set()
+ for r in records:
+  key=(r['generation']['template'],r['generation']['bank_profile'],r['question'][':question/difficulty'],r['question'][':question/answer-fields'][0][':answer-field/type'])
+  if key in seen:continue
+  seen.add(key);f=r['question'][':question/answer-fields'][0];correct=f[':answer-field/correct'][1];checks=[]
+  if f[':answer-field/type'].endswith('/radio'):
+   checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==correct else 'rejected','purpose':'complete bank selection'} for a in f[':answer-field/choices']]
+  else:
+   n=extract_n(r['question'][':question/problem']);a=f[':answer-field/choices'][0][':answer/value']
+   checks=[{'submitted':a,'expected':'accepted','purpose':'exact entry'},{'submitted':f'x^({n}+1)/({n}+1)+C','expected':'accepted','purpose':'unevaluated successor equivalent entry'},{'submitted':f'x^({n}+2)/({n}+2)+C','expected':'rejected','purpose':'wrong successor'}]
+  native.append({'label':str(key),'record':r,'checks':checks})
+ (HERE/'native-input.json').write_text(json.dumps(native,indent=2)+'\n')
+ subprocess.run(['generate/runs/current/check-engine',str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
+ # Original + two changed parameter variants for every observed template/bank, plus levels.
+ review=[]
+ for case in cases:
+  review.append({'label':'Original source replay','record':g.generate('easy',template=case['template'],parameters=case['parameters'],profile=case['bank_profile'])})
+  for n in ([0,0] if case['template']=='constant' else [5,7]):
+   profile={'legacy_x':'observed_2005','legacy_power':'observed_2022'}.get(case['template'])
+   review.append({'label':'Generated — normal repaired/authored field','record':g.generate('easy',template=case['template'],parameters={'n':n},profile=profile)})
+ for level in ():
+  for n in (g.DOMAINS[level][0],g.DOMAINS[level][-1]):review.append({'label':'Generated — authored difficulty extension','record':g.generate(level,template='function',parameters={'n':n})})
+ (HERE/'review.json').write_text(json.dumps(review,ensure_ascii=False,indent=2)+'\n')
+ (HERE/'review.md').write_text('# Monomial antiderivative review\n\nOriginal means captured structure replay. Normal fields/corrects are authored completions; moderate/hard remain unsupported. No plots. Constant template has only one substantive task, so repeated previews do not count as variety.\n\n'+'\n\n---\n\n'.join(g.markdown(i['record'],i['label']) for i in review)+'\n')
+ report={'passed':True,'source_practice_total':6,'source_prompt_exact':6,'source_present_solutions_exact':{'matched':4,'total':4},'source_missing_solution_parity':{'matched':2,'total':2},'source_complete_banks':{'matched':2,'total':2},'source_answer_values':{'matched':10,'total':10},'source_original_correct_designations':{'matched':0,'total':0,'missing':2},'source_fieldless_presence_parity':{'matched':4,'total':4},'source_unrated_presence_parity':{'matched':2,'total':2},'native_records':len(native),'independently_checked_normal_records':len(records),'finite_domains':counts,'source_fidelity':fidelity,'invalid_explicit_checks':len(invalid),'generator_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'native':json.loads((HERE/'native-report.json').read_text())}
+ # The native algebraic blank checker does not identify arbitrary-constant families.
+ blank=next(r for r in records if r['question'][':question/answer-fields'][0][':answer-field/type'].endswith('/blank'))
+ n=extract_n(blank['question'][':question/problem']);scaled=f'x^({n}+1)/({n}+1)+2C'
+ assert sp.diff(expr(scaled)-expr(blank['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']),x)==0
+ supplement=[{'label':'arbitrary C rescaling','record':blank,'checks':[{'submitted':scaled,'expected':'rejected','purpose':'documented native limitation: equivalent complete family under C rescaling'}]}]
+ (HERE/'constant-family-native-input.json').write_text(json.dumps(supplement,indent=2)+'\n')
+ subprocess.run(['generate/runs/current/check-engine',str(HERE/'constant-family-native-input.json'),str(HERE/'constant-family-native-report.json')],check=True)
+ report['native_family_equivalence_limitation']={'entry':scaled,'mathematically_same_complete_family':True,'native_outcome':'rejected','report':'constant-family-native-report.json','engine_changed':False}
+ (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
+ print(json.dumps({k:v for k,v in report.items() if k not in ('native','source_fidelity')},indent=2))
+
+if __name__=='__main__':main()

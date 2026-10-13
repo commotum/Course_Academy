@@ -236,6 +236,64 @@ $$
 x\in {\color{blue}{[}}3,4{\color{red}{)}}
 $$
 
+## Authored :question.difficulty/easy / observed_right_ray
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186059828/plots/f0ae54b9604f3f15bbb46f5e.png)
+
+Which of the following intervals corresponds to the segment shown above?
+
+- $x ∈ [-2, -1)$
+- $x ∈ (-2, -1]$
+- $x ∈ [-2, -1]$
+- $x ∈ (-2, -1)$
+- $x ∈ [-2, ∞)$
+
+Every inequality can be expressed as an interval. We use the following notations:
+
+- Parentheses ${\color{red}{(}}\phantom{0} \phantom{0}{\color{red}{)}}$ if the endpoints are *not* included.
+- Brackets ${\color{blue}{[}}\phantom{0} \phantom{0}{\color{blue}{]}}$ if the endpoints *are* included.
+
+The given interval can be represented by the following inequality:
+
+$$
+-2\,\, {\color{red}{\lt}} \,\, x \,\, {\color{blue}{\leq}} \,\, -1
+$$
+
+We can express our inequality in interval notation as follows:
+
+$$
+x\in {\color{red}{(}}-2,-1{\color{blue}{]}}
+$$
+
+## Authored :question.difficulty/easy / observed_right_ray
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186059828/plots/c1f7f4fcf33080b2d62c8322.png)
+
+Which of the following intervals corresponds to the segment shown above?
+
+- $x ∈ [3, 4]$
+- $x ∈ (3, 4)$
+- $x ∈ [3, 4)$
+- $x ∈ (3, 4]$
+- $x ∈ [3, ∞)$
+
+Every inequality can be expressed as an interval. We use the following notations:
+
+- Parentheses ${\color{red}{(}}\phantom{0} \phantom{0}{\color{red}{)}}$ if the endpoints are *not* included.
+- Brackets ${\color{blue}{[}}\phantom{0} \phantom{0}{\color{blue}{]}}$ if the endpoints *are* included.
+
+The given interval can be represented by the following inequality:
+
+$$
+3\,\, {\color{blue}{\leq}} \,\, x \,\, {\color{red}{\lt}} \,\, 4
+$$
+
+We can express our inequality in interval notation as follows:
+
+$$
+x\in {\color{blue}{[}}3,4{\color{red}{)}}
+$$
+
 ## Authored :question.difficulty/easy / observed_negate_left
 
 ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186059828/plots/c029eb13dfdf3eb2aa46294e.png)
@@ -410,6 +468,64 @@ $$
 x\in {\color{blue}{[}}-1,5{\color{red}{)}}
 $$
 
+## Authored :question.difficulty/moderate / observed_right_ray
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186059828/plots/07a2759ab38f0e1786e36b13.png)
+
+Which of the following intervals corresponds to the segment shown above?
+
+- $x ∈ [-4, -1)$
+- $x ∈ (-4, -1]$
+- $x ∈ [-4, -1]$
+- $x ∈ (-4, -1)$
+- $x ∈ [-4, ∞)$
+
+Every inequality can be expressed as an interval. We use the following notations:
+
+- Parentheses ${\color{red}{(}}\phantom{0} \phantom{0}{\color{red}{)}}$ if the endpoints are *not* included.
+- Brackets ${\color{blue}{[}}\phantom{0} \phantom{0}{\color{blue}{]}}$ if the endpoints *are* included.
+
+The given interval can be represented by the following inequality:
+
+$$
+-4\,\, {\color{red}{\lt}} \,\, x \,\, {\color{blue}{\leq}} \,\, -1
+$$
+
+We can express our inequality in interval notation as follows:
+
+$$
+x\in {\color{red}{(}}-4,-1{\color{blue}{]}}
+$$
+
+## Authored :question.difficulty/moderate / observed_right_ray
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186059828/plots/c5855992e4024eb2edf2246c.png)
+
+Which of the following intervals corresponds to the segment shown above?
+
+- $x ∈ [-1, 5]$
+- $x ∈ (-1, 5)$
+- $x ∈ [-1, 5)$
+- $x ∈ (-1, 5]$
+- $x ∈ [-1, ∞)$
+
+Every inequality can be expressed as an interval. We use the following notations:
+
+- Parentheses ${\color{red}{(}}\phantom{0} \phantom{0}{\color{red}{)}}$ if the endpoints are *not* included.
+- Brackets ${\color{blue}{[}}\phantom{0} \phantom{0}{\color{blue}{]}}$ if the endpoints *are* included.
+
+The given interval can be represented by the following inequality:
+
+$$
+-1\,\, {\color{blue}{\leq}} \,\, x \,\, {\color{red}{\lt}} \,\, 5
+$$
+
+We can express our inequality in interval notation as follows:
+
+$$
+x\in {\color{blue}{[}}-1,5{\color{red}{)}}
+$$
+
 ## Authored :question.difficulty/moderate / observed_negate_left
 
 ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186059828/plots/3f14c300e7eaa4fe3898347d.png)
@@ -566,6 +682,64 @@ Which of the following intervals corresponds to the segment shown above?
 - $x ∈ [-1/2, 7/2)$
 - $x ∈ (-1/2, 7/2]$
 - $x ∈ (- ∞, 7/2]$
+
+Every inequality can be expressed as an interval. We use the following notations:
+
+- Parentheses ${\color{red}{(}}\phantom{0} \phantom{0}{\color{red}{)}}$ if the endpoints are *not* included.
+- Brackets ${\color{blue}{[}}\phantom{0} \phantom{0}{\color{blue}{]}}$ if the endpoints *are* included.
+
+The given interval can be represented by the following inequality:
+
+$$
+-\frac{1}{2}\,\, {\color{blue}{\leq}} \,\, x \,\, {\color{red}{\lt}} \,\, \frac{7}{2}
+$$
+
+We can express our inequality in interval notation as follows:
+
+$$
+x\in {\color{blue}{[}}-\frac{1}{2},\frac{7}{2}{\color{red}{)}}
+$$
+
+## Authored :question.difficulty/hard / observed_right_ray
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186059828/plots/f3d2ffdca7170e9e486629a7.png)
+
+Which of the following intervals corresponds to the segment shown above?
+
+- $x ∈ [-5/2, -3/2)$
+- $x ∈ (-5/2, -3/2]$
+- $x ∈ [-5/2, -3/2]$
+- $x ∈ (-5/2, -3/2)$
+- $x ∈ [-5/2, ∞)$
+
+Every inequality can be expressed as an interval. We use the following notations:
+
+- Parentheses ${\color{red}{(}}\phantom{0} \phantom{0}{\color{red}{)}}$ if the endpoints are *not* included.
+- Brackets ${\color{blue}{[}}\phantom{0} \phantom{0}{\color{blue}{]}}$ if the endpoints *are* included.
+
+The given interval can be represented by the following inequality:
+
+$$
+-\frac{5}{2}\,\, {\color{red}{\lt}} \,\, x \,\, {\color{blue}{\leq}} \,\, -\frac{3}{2}
+$$
+
+We can express our inequality in interval notation as follows:
+
+$$
+x\in {\color{red}{(}}-\frac{5}{2},-\frac{3}{2}{\color{blue}{]}}
+$$
+
+## Authored :question.difficulty/hard / observed_right_ray
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186059828/plots/7c3b0ebb762fb4439e3cf784.png)
+
+Which of the following intervals corresponds to the segment shown above?
+
+- $x ∈ [-1/2, 7/2]$
+- $x ∈ (-1/2, 7/2)$
+- $x ∈ [-1/2, 7/2)$
+- $x ∈ (-1/2, 7/2]$
+- $x ∈ [-1/2, ∞)$
 
 Every inequality can be expressed as an interval. We use the following notations:
 

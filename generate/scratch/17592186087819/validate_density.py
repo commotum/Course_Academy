@@ -2,11 +2,15 @@
 import importlib.util
 import json
 from pathlib import Path
+from collections import Counter
 
 HERE = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location('route_generator', HERE.with_suffix('.py'))
 g = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(g)
+validation_spec = importlib.util.spec_from_file_location('route_validation', HERE / 'validate.py')
+v = importlib.util.module_from_spec(validation_spec)
+validation_spec.loader.exec_module(v)
 
 
 def main():
@@ -16,6 +20,9 @@ def main():
     try:
         for template, level in g.TEMPLATES.items():
             totals, fingerprints, sums = [], set(), set()
+            queried = Counter()
+            queried_by_slot = [set() for _ in range(3)]
+            triples, known_supports, matrices = set(), set(), set()
             for seed in range(100):
                 record = g.generate(level, seed=seed, template=template)
                 generation = record['generation']
@@ -28,6 +35,26 @@ def main():
                 assert generation['domain']['sampling_policy'] == 'sparse-routes-v3'
                 assert generation['domain']['min_total_routes'] == 3
                 values = [matrix[r][c] for r, c in generation['parameters']['holes']]
+                holes = generation['parameters']['holes']
+                for slot, cell in enumerate(holes):
+                    queried[tuple(cell)] += 1
+                    queried_by_slot[slot].add(tuple(cell))
+                triples.add(tuple(sorted(map(tuple, holes))))
+                matrices.add(tuple(map(tuple, matrix)))
+                known_supports.add(tuple((r,c) for r,row in enumerate(matrix) for c,x in enumerate(row)
+                                        if x and [r,c] not in holes))
+                # Read the rendered HTML independently, including exact slot
+                # positions and each worked-solution cell. No image is needed.
+                entries, locations, rows, cols = v.read_table(record['question'][':question/problem'])
+                complete, unused, srows, scols = v.read_table(record['question'][':question/worked-solution'])
+                assert not unused and (rows, cols) == (srows, scols)
+                for (r,c), x in complete.items():
+                    assert x == matrix['ABCD'.index(r)]['ABCD'.index(c)]
+                for (r,c), x in entries.items():
+                    assert complete[r,c] == x
+                for index, (r,c) in enumerate(holes):
+                    key = '{{field-'+str(index+1)+'}}' if template.startswith('blanks') else 'abc'[index]
+                    assert locations[key] == ('ABCD'[r], 'ABCD'[c])
                 fields = record['question'][':question/answer-fields']
                 for index, field in enumerate(fields):
                     choices = field[':answer-field/choices']
@@ -44,7 +71,18 @@ def main():
                 sums.add(sum(values))
             assert len(fingerprints) >= 20, (template, len(fingerprints))
             assert len(sums) >= 3, (template, sums)
+            expected_cells = {(r,c) for r in range(size) for c in range(size)}
+            if template in g.SPECS and not any(r==c for r,c in g.SPECS[template]['holes']):
+                expected_cells = {(r,c) for r,c in expected_cells if r!=c}
+            assert set(queried) == expected_cells, (template, queried)
+            assert all(cells == expected_cells for cells in queried_by_slot), (template, queried_by_slot)
+            assert len(triples) >= 10 and len(known_supports) >= min(10,size*size), (template,len(triples),len(known_supports))
             coverage[template] = {'instances': 100, 'unique_graphs': len(fingerprints),
+                                  'distinct_adjacency_matrices': len(matrices),
+                                  'distinct_unordered_queried_triples': len(triples),
+                                  'distinct_known_edge_supports': len(known_supports),
+                                  'queried_cell_counts': {'ABCD'[r]+'→'+'ABCD'[c]: count for (r,c),count in sorted(queried.items())},
+                                  'every_eligible_cell_used_in_each_answer_slot': True,
                                   'minimum_arrows': min(totals), 'maximum_arrows': max(totals),
                                   'distinct_correct_sums': sorted(sums)}
 

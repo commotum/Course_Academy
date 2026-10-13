@@ -139,6 +139,19 @@ def main():
   review.append({'label':'Original replay '+case['source_id'],'record':rec});fixtures.append(grading_fixture(case['source_id'],rec))
  rawcase=next(c for c in cases if c['source_id']=='q-319429');raw=g.generate('easy',template=rawcase['template'],parameters=rawcase['parameters'],profile='raw_solution_319429');check(raw,raw=True);assert raw['question'][':question/worked-solution']==g.replace_route_tables(g.SOURCES['q-319429'][':question/worked-solution'])
  review.append({'label':'Raw observed prose q-319429 (direction error retained as evidence)','record':raw})
+ # Explicitly move the requested cells on the SAME graph, including C->C.
+ # This must change the table slots, direction explanations and grading key.
+ fixed={'matrix':[[1,2,0],[1,0,1],[0,1,0]],'row_order':[0,1,2],'col_order':[0,1,2]}
+ moved=[]
+ for label,holes in [('original cells',[[0,1],[1,1],[2,0]]),('moved cells including C->C',[[2,2],[0,1],[1,2]])]:
+  rec=g.generate('moderate',template='sum_139689',parameters={**fixed,'holes':holes});check(rec)
+  review.append({'label':'Same graph, '+label,'record':rec});fixtures.append(grading_fixture(label,rec));moved.append(rec)
+ assert moved[0]['generation']['assets']['prompt']==moved[1]['generation']['assets']['prompt']
+ assert moved[0]['question'][':question/id']!=moved[1]['question'][':question/id']
+ assert moved[0]['generation']['mathematical_fingerprint']!=moved[1]['generation']['mathematical_fingerprint']
+ for rec,answer in zip(moved,('2','3')):
+  field=rec['question'][':question/answer-fields'][0]
+  assert next(a[':answer/value'] for a in field[':answer-field/choices'] if a[':answer/id']==field[':answer-field/correct'][1])==answer
  # Two actual rendered variants of each template cover each observed bank layout.
  for name,level in g.TEMPLATES.items():
   for k in range(2):
@@ -150,7 +163,7 @@ def main():
    assert changed['question'][':question/id']==rec['question'][':question/id']
    assert changed['generation']['mathematical_fingerprint']==rec['generation']['mathematical_fingerprint']
  # Authored omission banks are not falsely declared source misconception recipes.
- for level,name in [('easy','sum_138940'),('moderate','sum_139689')]:
+ for level,name in [('easy','sum_138940'),('easy','sum_139685'),('moderate','sum_139689')]:
   for k in range(2):
    rec=g.generate(level,seed=200+k,template=name,profile='authored_omissions');check(rec);review.append({'label':'Optional authored omission bank '+level+' '+str(k+1),'record':rec});fixtures.append(grading_fixture('authored-'+level+str(k),rec))
  # Level guards and meaningful finite variation independent of renderer cost.
@@ -162,16 +175,7 @@ def main():
    try:g.guard(level,name,p)
    except ValueError:continue
    fingerprints.add(g.digest(p))
-  if name=='blanks_319346':
-   # This source mask has 54 graphs before the floor. Exactly five have
-   # fewer than three arrows, leaving 49; check the complete allowed domain.
-   domain=set()
-   for a,b,c,d in itertools.product(range(3),range(3),range(3),(1,2)):
-    p={'matrix':[[0,a,0],[b,0,c],[d,0,0]],'holes':g.SPECS[name]['holes'],
-       'row_order':[0,1,2],'col_order':[0,1,2]}
-    if a+b+c+d>=3:domain.add(g.digest(p))
-   assert len(domain)==49 and fingerprints==domain
-  else:assert len(fingerprints)>=50
+  assert len(fingerprints)>=50
   variety[name]=len(fingerprints)
  authored_sums={}
  for name,level in g.TEMPLATES.items():

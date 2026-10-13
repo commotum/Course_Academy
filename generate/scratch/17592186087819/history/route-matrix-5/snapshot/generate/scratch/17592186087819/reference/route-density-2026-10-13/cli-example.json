@@ -1,0 +1,136 @@
+{
+  "knowledge_point": {
+    "db_id": 17592186087819,
+    "id": "10ca3efc-7d23-5bc1-ab41-f785bed69986",
+    "title": "Matrices for Route Planning"
+  },
+  "question": {
+    ":question/id": "af38b020-96e9-5e6c-b734-53b5040265e8",
+    ":question/difficulty": ":question.difficulty/moderate",
+    ":question/problem": "![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/9135b78b5bc94433cf1d1b6d8f8a4b8ffc3ddadfb088bdff1609061f31013b6c.png)\n\nThe diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a+b+c.$\n\n<div class=\"route-matrix\">\n  <span class=\"matrix-to\">To</span>\n  <span class=\"matrix-from\">From</span>\n  <table aria-label=\"Route matrix: rows are From stations; columns are To stations\">\n    <thead>\n      <tr><td class=\"matrix-corner\"></td><th scope=\"col\">A</th><th scope=\"col\">B</th><th scope=\"col\">C</th></tr>\n    </thead>\n    <tbody>\n      <tr><th scope=\"row\">A</th><td>$1$</td><td>$a$</td><td>$0$</td></tr>\n      <tr><th scope=\"row\">B</th><td>$0$</td><td>$b$</td><td>$1$</td></tr>\n      <tr><th scope=\"row\">C</th><td>$c$</td><td>$2$</td><td>$0$</td></tr>\n    </tbody>\n  </table>\n</div>",
+    ":question/worked-solution": "Let's examine our diagram.\n\n- There are no arrows starting at Station A and ending at Station B. So, there are no routes from $A$ to $B,$ and so $a=0.$\n\n- There is $1$ arrow starting at Station B and ending at Station B. So, there is only one route from $B$ to $B,$ and so $b=1.$\n\n- There are no arrows starting at Station C and ending at Station A. So, there are no routes from $C$ to $A,$ and so $c=0.$\n\nAs a result, our route matrix is the following:\n\n<div class=\"route-matrix\">\n  <span class=\"matrix-to\">To</span>\n  <span class=\"matrix-from\">From</span>\n  <table aria-label=\"Route matrix: rows are From stations; columns are To stations\">\n    <thead>\n      <tr><td class=\"matrix-corner\"></td><th scope=\"col\">A</th><th scope=\"col\">B</th><th scope=\"col\">C</th></tr>\n    </thead>\n    <tbody>\n      <tr><th scope=\"row\">A</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>\n      <tr><th scope=\"row\">B</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>\n      <tr><th scope=\"row\">C</th><td>$0$</td><td>$2$</td><td>$0$</td></tr>\n    </tbody>\n  </table>\n</div>\n\nTherefore, \n\n$$\na+b+c=0+1+0=1.\n$$",
+    ":question/answer-fields": [
+      {
+        ":answer-field/id": "bcb75a52-0571-5c28-bd53-cbc388b21e61",
+        ":answer-field/key": "selection",
+        ":answer-field/type": ":answer-field.type/radio",
+        ":answer-field/choices": [
+          {
+            ":answer/id": "efdbbaad-d6ae-5382-b2d5-ac04babc5a08",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "4"
+          },
+          {
+            ":answer/id": "39dce623-6e70-5beb-9b92-0d0f490e0313",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "2"
+          },
+          {
+            ":answer/id": "86567120-d1cc-50d6-bda6-e49fc3588a75",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "1"
+          },
+          {
+            ":answer/id": "08182516-e2c3-542f-9243-4375ba961fc9",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "0"
+          },
+          {
+            ":answer/id": "fd2c3a3c-9396-5748-9913-7ae006da3d07",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "3"
+          }
+        ],
+        ":answer-field/correct": [
+          ":answer/id",
+          "86567120-d1cc-50d6-bda6-e49fc3588a75"
+        ]
+      }
+    ]
+  },
+  "generation": {
+    "version": "route-matrix-5",
+    "table_format": "route-matrix-html-v1",
+    "template": "sum_139689",
+    "level": "moderate",
+    "seed": 1000,
+    "parameters": {
+      "matrix": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          2,
+          0
+        ]
+      ],
+      "holes": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "row_order": [
+        0,
+        1,
+        2
+      ],
+      "col_order": [
+        0,
+        1,
+        2
+      ]
+    },
+    "bank_profile": "observed_139689",
+    "origin": "observed template",
+    "bank_origin": "observed finite count catalog",
+    "bank_recipes": [
+      "enumerate_complete_observed_catalog"
+    ],
+    "domain": {
+      "station_count": 3,
+      "count_range": [
+        0,
+        2
+      ],
+      "min_total_routes": 3,
+      "max_total_routes": 8,
+      "max_self_loops": 1,
+      "sampling_policy": "sparse-routes-v3"
+    },
+    "dependencies": {
+      "python": "3.13.5",
+      "sympy": "1.14.0"
+    },
+    "mathematical_fingerprint": "185ffa943b456327b68809ec02392f464c75ff91900ca7aa8c219834634187ab",
+    "source": {
+      "database": "math",
+      "basis": 1356,
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+    },
+    "source_ids": [
+      "q-139689"
+    ],
+    "assets": {
+      "prompt": "/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/9135b78b5bc94433cf1d1b6d8f8a4b8ffc3ddadfb088bdff1609061f31013b6c.png",
+      "source_reuse": false
+    },
+    "source_repairs": []
+  }
+}

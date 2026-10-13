@@ -1,22 +1,16 @@
-# Classification
+# Open intervals: current classification
 
-Provenance: database **math**, basis **1356**, lineage **01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1**. `source.json` is the unchanged capture wrapper. All two captured practice records are included; neither has a difficulty, correct designation, or worked solution. The authoritative offline MA topic 239 JSON confirms both five-option radio layouts and the exact banks; it contains no answer keys or practice solutions either. No unavailable field is counted as matched.
+Database math, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1, captured basis 2091. `current-source.json` and `reference/initial/kp.edn` retain all four practice questions, canonical example, and generator lookup (none). Two newer rated sources reopen the basis-1356 classification. The legacy generator and exhaustive validation are retained under `reference/legacy-basis-1356/`.
 
-| Source | Observed structure | Field | Bank | Plot rating |
-|---|---|---|---|---|
-| q-102204 | Strict inequality → bounded open interval | one radio, key selection | five interval options | none |
-| q-59294 | Bounded open interval → strict inequality | one radio, key selection | four math inequalities, one text disjunction | none |
+| Source | Observed difficulty | Field | Template | Complete bank profile | Plots |
+|---|---|---|---|---|---|
+| q-102204 | absent | radio selection, math options | inequality to interval | original_bank, raw replay source_raw | none |
+| q-59294 | absent | radio selection, mixed math/text | interval to inequality | original_bank, raw replay source_raw | none |
+| q-1256 | easy | radio selection, math options | inequality to interval | signed_source | none |
+| q-154704 | easy | radio selection, math options | inequality to interval | surd_source | none |
 
-These are two templates and two banks, not one template per difficulty. All difficulty assignments below are authored. Public `source_raw` replays missing original keys, solutions and difficulty; `original_bank` retains the same bank/prompt and supplies independently derived correct refs and canonical-based authored solutions. Neither is a literal source-payload branch.
+There are two prompt directions, with compact and spaced inequality prompt layouts and two distinct reverse solution layouts (plain punctuation versus colored generic notation). All four complete source banks are tracked separately. The two unrated originals lack keys and solutions and do not count as inventory. Derived keys and authored solutions are attached only to new UUIDs. Canonical examples never count as practice.
 
-The actual activity route follows `:activity/first-step` then `:step/next`: Introduction → Closed Intervals tutorial → **this open-interval KP** → Closed Intervals KP → Half-Open tutorial → sibling **17592186059827** → Half-Open Number Lines KP. Collection order is not route order. The key prerequisite is Compound Inequalities (2310); topic-level prerequisites also include Surds and Simplifying Expressions With Surds. The canonical example converts (1,5) to 1<x<5 and explicitly identifies both excluded endpoints. Sibling 59827 owns a mixed bracket/parenthesis answer; this generator never assesses that as correct. Closed and one-sided options are wrong choices already present in the original bank; they do not introduce a new assessed branch.
+Only easy is supported. Negative integers and surds are already observed easy inputs. There is no source-backed increase in required operations for moderate or hard: every task preserves two endpoints and excludes both. Adding equation solving, simplification, unions, or endpoint arithmetic would assess another skill. Earlier invented endpoint-only moderate/hard bands are superseded, not claimed filled.
 
-| Authored level | Endpoint catalog and reading demand | Endpoint pairs | Mathematical tasks (two directions) |
-|---|---|---:|---:|
-| easy | positive integers 1..12; familiar endpoint symbols | 66 | 132 |
-| moderate | integers -12..12 with lower endpoint negative; sign and order reading | 222 | 444 |
-| hard | two noninteger reduced rationals, denominators 2..4, absolute value ≤6; fractional endpoint reading | 1770 | 3540 |
-
-Each question performs the same two endpoint exclusion decisions and notation conversion. Levels vary endpoint reading only; there is no equation solving, endpoint simplification, union as correct response, graph-reading, or intra-level progression. The labels are supported design policies, not claims of recovered MA ratings. Hard remains the same bounded open-interval operation and does not add surd manipulation or any other skill. Explicit parameters enforce all catalog restrictions as sampling does. The two originals are assigned easy solely by this policy.
-
-There are exactly two structural conversion patterns, one per direction; the larger counts are finite exact-endpoint practice tasks, not additional mathematical skills. Counts enumerate the exact finite Fraction catalogs across both directions. Variable-letter aliases, equivalent rational spellings, seed, shuffling and bank/profile aliases contribute zero additional mathematical tasks. Exact endpoint values matter because the learner must preserve them in the requested response. A finite narrow notation skill cannot honestly claim unlimited structural diversity.
+The finite catalog has all ordered integer pairs from -12..12 and symmetric ±sqrt(n), squarefree n in 2..30. Both directions assess exact endpoint preservation. Extending positive source integers to this bounded signed catalog and surd 2 to the squarefree catalog is an authored sampling policy. No fractions or arbitrary algebraic expressions are included. Bank profiles and variable letters contribute zero additional tasks. Reclassification is required for newly captured source structures or ratings.
