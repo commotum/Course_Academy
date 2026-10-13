@@ -1,0 +1,7 @@
+# Visual review
+
+Inspected `original-contact.png` with all nine distinct captured assets (including canonical). Axis signs agree with all ten independent target component tuples. The two repeated assets have identical geometry: q-122559/q-123750 positive x, q-122668/q-123749 negative y. Source coefficient differences do not imply absolute vector-scale differences because the figures contain no vector scale.
+
+Inspected generated negative-y and negative-z diagrams, then revised renderer to include positive black axis arrowheads and place labels beyond incident blue arrows. The final negative-z variant (component tuple (0,0,-2), plot-v2) has legible x/y/z labels, clearly downward blue arrows, uniform lengths, unclipped arrowheads, and no zero arrows. Source and generated positive-x directions both project toward lower left; positive y toward right/down and z upward. The shared rotated signed-axis renderer preserves these relationships for all six targets. Source plots use a different lattice density/projected style; this is an explicit styling change, not geometric fidelity claimed as pixel equality.
+
+Every generated sidecar is independently checked against the exact target tuple. Fresh concurrent writes were exercised for both identical and distinct signed-axis tuples using unique temporary input paths and atomic outputs. Old assets are retained; current reviews reference only plot-v2 outputs. No asset cache was pruned during review.
