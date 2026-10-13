@@ -1,0 +1,19 @@
+[
+{:db/ident :learner-task/active-item
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional current presentation for freely navigable assessments. References an item owned by this task. Visit order remains in task-item/next; navigation and editable draft responses do not grade a question. The application checks membership and stops edits at whole-assessment submission or expiry."}
+{:db/ident :learner-task/offered-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Latest ordinary queue offer for this task. Records actual inclusion among the five displayed recommendations, rather than preparation alone. Used with finalized review history to derive periodic optional lesson availability; no separate review counter is stored."}
+{:db/ident :question-generator/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of a validated question generator registered through knowledge-point/question-generator."}
+ {:db/ident :question-generator/script
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Repository-relative path to the validated Python generator. Its package records supported templates, difficulty capabilities, finite limits, dependencies and reproducible CLI usage. Registration does not certify arbitrary generated output; generation must pass the content validation and durable commit workflow."}
+]

@@ -1,0 +1,9 @@
+{
+  "database": "math",
+  "source": ":application/ca-engine",
+  "basis": 1693,
+  "requestKey": "ca-scheduler-schema-20261012-v1",
+  "edn": "[\n{:db/ident :learner-task/active-item\n  :db/valueType :db.type/ref\n  :db/cardinality :db.cardinality/one\n  :db/doc \"Optional current presentation for freely navigable assessments. References an item owned by this task. Visit order remains in task-item/next; navigation and editable draft responses do not grade a question. The application checks membership and stops edits at whole-assessment submission or expiry.\"}\n{:db/ident :learner-task/offered-at\n  :db/valueType :db.type/instant\n  :db/cardinality :db.cardinality/one\n  :db/doc \"Latest ordinary queue offer for this task. Records actual inclusion among the five displayed recommendations, rather than preparation alone. Used with finalized review history to derive periodic optional lesson availability; no separate review counter is stored.\"}\n{:db/ident :question-generator/id\n  :db/valueType :db.type/uuid\n  :db/cardinality :db.cardinality/one\n  :db/unique :db.unique/identity\n  :db/doc \"Stable identity of a validated question generator registered through knowledge-point/question-generator.\"}\n {:db/ident :question-generator/script\n  :db/valueType :db.type/string\n  :db/cardinality :db.cardinality/one\n  :db/doc \"Repository-relative path to the validated Python generator. Its package records supported templates, difficulty capabilities, finite limits, dependencies and reproducible CLI usage. Registration does not certify arbitrary generated output; generation must pass the content validation and durable commit workflow.\"}\n]\n",
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "verifiedBasis": 1694
+}
