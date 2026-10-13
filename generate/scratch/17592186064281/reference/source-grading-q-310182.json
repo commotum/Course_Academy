@@ -1,0 +1,67 @@
+[
+  {
+    "label": "q-310182",
+    "record": {
+      "question": {
+        ":db/id": 17592186233773,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2998be6e-3d61-5b63-935a-7bdb143e1005",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$-4\\pi$",
+                ":db/id": 17592186232538
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2998be6e-3d61-5b63-935a-7bdb143e1005"
+            ],
+            ":answer-field/id": "fc5ffdb9-90bc-5cec-a6a0-95ec2b95ac7b",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":db/id": 17592186232537
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/id": "390498a7-88cc-5a78-b03f-2394c5362be8",
+        ":question/math-academy-id": "q-310182",
+        ":question/problem": "Find the slope $m$ of $y =\\sin \\left(\\pi \\left(x^{2} + 2x - 2\\right)\\right)$ at $x = 1.$\n\n$m=$\n{{field-1}}",
+        ":question/worked-solution": "The slope of $y = f(x)$ at $x=1$ is given by $f'(1).$\n\nWe will calculate $f'(x)$ using the chain rule. First, we express $f(x)$ as the composite function\n\n\\[\ny = \\sin{u}, \\qquad u = \\pi \\left(x^{2} +2x - 2\\right).\n\\]\n\nDifferentiating gives\n\\[\n\\dfrac{\\textrm d y}{\\textrm d u} = \\cos{u}, \\qquad \\dfrac{\\textrm d u}{\\textrm d x} = \\pi (2x + 2).\n\\]\n\nWe now apply the chain rule, and get\n\n\\begin{align*}\nf'(x) &= \\dfrac{\\textrm d y}{\\textrm d u} \\cdot \\dfrac{\\textrm d u}{\\textrm d x}\\\\[5pt]\n\n&=\\cos u \\cdot \\pi (2x+2)\\\\[5pt]\n\n&=\\pi (2x+2)\\cos u\\\\[5pt]\n\n&=\\pi (2x+2)\\cos \\left(  \\pi \\left(x^{2} +2x - 2\\right) \\right).\n\\end{align*}\n\nEvaluating at $x=1,$ we find\n\n\\begin{align}\nf'(1) & =\\pi (2\\cdot1+2)\\cos \\left(  \\pi \\left(1^{2} +2\\cdot1 - 2\\right) \\right) \\\\[3pt]\n\n& =4\\pi \\cos(\\pi) \\\\[3pt]\n&= 4\\pi \\cdot (-1) \\\\[3pt]\n&= -4\\pi\n\\end{align}\n\nTherefore, the slope $m$ of $y = f(x)$ at $x = 1$ is \n\\[\nm = f'(1) = \\bbox[4pt, border: 1px solid lightgray]{-4\\pi}.\n\\]"
+      },
+      "knowledge_point": {
+        "title": "Differentiating a Trigonometric Function Using the Chain Rule"
+      },
+      "generation": {
+        "template": "q-310182"
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted": "$-4\\pi$",
+        "expected": "accepted",
+        "purpose": "canonical math"
+      },
+      {
+        "field_index": 0,
+        "submitted": "-4*pi",
+        "expected": "accepted",
+        "purpose": "Equivalent SymPy notation"
+      },
+      {
+        "field_index": 0,
+        "submitted": "(-4*pi)+0",
+        "expected": "accepted",
+        "purpose": "Equivalent expanded entry"
+      },
+      {
+        "field_index": 0,
+        "submitted": "1 - 4*pi",
+        "expected": "rejected",
+        "purpose": "Incorrect answer offset by one"
+      }
+    ]
+  }
+]

@@ -1,0 +1,3 @@
+# Trig quotient integration generator
+
+Run `.venv/bin/python generate/scratch/17592186064226/validate.py`, then `.venv/bin/python generate/scratch/17592186064226/replenish.py`. The registered generator accepts `--difficulty easy|moderate --count N --seed S --format json|markdown`. Hard is unsupported and unfilled. The finite pool transports complete observed banks and checks exact mathematics and native grading for all profiles and boundaries. Source evidence and learner history stay intact. Replenishment uses existing EDB integration, configured application attribution, exact saved request keys, basis guards and api.lock through readback. Only this KP's additive content and generator registration are authorized.

@@ -1,0 +1,67 @@
+[
+  {
+    "label": "q-310179",
+    "record": {
+      "question": {
+        ":db/id": 17592186297322,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c11aa0cd-50a9-55f9-b43c-ec6085afea6d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "12{x}^{3}{sec}^{2}(3{x}^{4}-5)",
+                ":db/id": 17592186296287
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c11aa0cd-50a9-55f9-b43c-ec6085afea6d"
+            ],
+            ":answer-field/id": "41d54636-77f2-54cb-a399-2372401bb451",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":db/id": 17592186296758
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/id": "a87f80fe-d2d2-50e5-bf92-8b685bd67b58",
+        ":question/math-academy-id": "q-310179",
+        ":question/problem": "Given that $y=\\operatorname{tan}\u2061(3{x}^{4}-5)$, find $\\frac{\\text{d}y}{\\text{d}x}.$\n\n$\\frac{\\text{d}y}{\\text{d}x}=$\n{{field-1}}",
+        ":question/worked-solution": "First, we express $y$ as a composite function\n\n$$\ny=\\operatorname{tan}\u2061u,\\,u=3{x}^{4}-5.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}={sec}^{2}\u2061u,\\,\\frac{\\text{d}u}{\\text{d}x}=12{x}^{3}.\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & ={sec}^{2}\u2061u\\cdot 12{x}^{3} \\\\  & =12{x}^{3}{sec}^{2}\u2061u \\\\  & =12{x}^{3}{sec}^{2}\u2061(3{x}^{4}-5).\\end{aligned}\n$$"
+      },
+      "knowledge_point": {
+        "title": "Differentiating a Trigonometric Function Using the Chain Rule"
+      },
+      "generation": {
+        "template": "q-310179"
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted": "12{x}^{3}{sec}^{2}(3{x}^{4}-5)",
+        "expected": "accepted",
+        "purpose": "canonical math"
+      },
+      {
+        "field_index": 0,
+        "submitted": "12*x^3*sec(3*x^4 - 5)^2",
+        "expected": "accepted",
+        "purpose": "Equivalent SymPy notation"
+      },
+      {
+        "field_index": 0,
+        "submitted": "(12*x^3*sec(3*x^4 - 5)^2)+0",
+        "expected": "accepted",
+        "purpose": "Equivalent expanded entry"
+      },
+      {
+        "field_index": 0,
+        "submitted": "12*x^3*sec(3*x^4 - 5)^2 + 1",
+        "expected": "rejected",
+        "purpose": "Incorrect answer offset by one"
+      }
+    ]
+  }
+]

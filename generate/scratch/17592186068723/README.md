@@ -1,0 +1,3 @@
+# Substitution inventory generator
+
+Run `.venv/bin/python generate/scratch/17592186068723/validate.py`, then `.venv/bin/python generate/scratch/17592186068723/replenish.py`. The registered script also runs under system Python by selecting the existing project environment when SymPy is unavailable. Supports easy and moderate; hard remains unsupported. source.json retains all original evidence. Full choice-bank replay, displayed-answer differentiation, displayed solution checks, deterministic identities and application radio grading are required. Only the requested KP is changed, additively, under api.lock with a basis guard and exact receipt readback.
