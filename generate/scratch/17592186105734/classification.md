@@ -1,0 +1,21 @@
+# Classification at math basis 1356
+
+Provenance: database `math`, basis 1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `source.json` is the unchanged captured wrapper. The owning topic is 1299, Finding Areas Using the Cross Product. Following activity/first-step then step/next gives Introduction → triangle area from vectors → triangle area from vertices → altitude from vertices. The cross-product determinant prerequisite and Areas of Triangles (1397) support the method. No next-topic surface calculations are introduced.
+
+There are 18 practice questions: 17 observed hard and one unrated, q-20028. Hard fields comprise nine five-choice radios and eight scalar blanks. The unrated question is another five-choice radio, but has no correct ref or worked solution. It is retained, with independently derived correct value sqrt(30)/5 and explicitly authored hard placement/full solution. The captured original lesson widget confirms five choices and calculator instruction; it does not establish a missing difficulty label or answer key.
+
+One mathematical family assesses altitude to a specified base from three supplied vertices. Presentation masks retain source layout variants: different vertex order, cross-product edge order, altitude-foot names, full versus abbreviated final algebra, numeric-factor reduction, optional raw-radicand rows, explicit zero components, and radio/blank placement. The 18 source presentation masks do not claim 18 mathematical skills. q-20027 and q-71113 share the same bank pattern up to naming and geometry; all 10 individual observed complete radio banks are mapped explicitly instead of merging under an inferred error intent.
+
+Plot rating is **none** for every practice template and canonical example. Prompt, choices, and worked solution contain no plotted assets. The introduction's general parallelogram diagram is curriculum context and is not inserted into generated assessments; no renderer is required for steps 5/7.
+
+## Authored missing levels
+
+Easy and moderate have no observed labels. Their definitions are design claims supported by the same canonical edge → cross product → area → base → altitude route. Each still supplies vertices and asks for the altitude. Neither asks only for area or for a bare vector calculation. Both radio and blank layouts remain available.
+
+Easy peers use a translated planar triangle with a non-axis base and nonzero two-dimensional edge components: a two-product determinant, two-square base norm, and exact radical division. Edge magnitudes are at most 3, determinant magnitude at most 8, base squared at least 5, and base components are primitive. These conditions exclude axis-aligned direct height reading and large unreduced coefficients that collapse to trivial geometry. Planarity is visible in equal third coordinates; it reduces arithmetic without removing the full geometric relation.
+
+Moderate peers use genuine three-dimensional geometry, a two-component base and a three-component second edge. Exactly four determinant products are nonzero, all three cross components remain nonzero, edges have magnitude at most 3, and base squared is 5–13. This preserves the full canonical method with controlled extra nonzero products. Planar or canceled-component easy tasks cannot enter moderate via explicit parameters.
+
+Authored hard peers require five or six nonzero determinant products, three nonzero cross components, edge magnitude 3–5, base squared 5–50, and a primitive base. Bounds apply to reduced geometric workload and explicit parameters as well as samples. Observed masks retain their evidence-supported smaller/canceled arithmetic and admit bounded integer edges up to 8, a base with at least two nonzero components, and at least three nonzero determinant products: their original observed hard label is not overwritten by the stricter authored sampling claim.
+
+Within each level these are unordered peer variations with fixed reasoning demands, not a progression. Signed integer coordinates, translated origins, different determinant values, norms and altitude values vary substantive tasks. Mathematical fingerprints use Gram geometry modulo reversal of the base endpoints, so translation, rigid orientation and vertex aliases do not inflate counts. Complete banks and layouts are excluded from mathematical identity but included in content identity.

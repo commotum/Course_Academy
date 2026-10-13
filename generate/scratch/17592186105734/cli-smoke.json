@@ -1,0 +1,578 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186105734,
+      "id": "9331987e-8676-5bdb-b4ce-2129b1b09a8c",
+      "title": "Calculating the Altitude of a Triangle Given Its Vertices"
+    },
+    "question": {
+      ":question/id": "a6c87c22-f212-5c57-803d-0e59effc5745",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Calculate the length of the altitude $CH$ of the $△\\,ABC$, if $A(-1,-2,-2)$, $B(-3,-3,-2)$, $C(0,-4,-2).$",
+      ":question/worked-solution": "Note that the length of the altitude $CH$ can be related to the area of $△\\,ABC$ as follows:\n\n$$\n{A}_{△}=\\frac{1}{2}CH\\cdot AB\n$$\n\nSo, to find $CH,$ we first find ${A}_{△}.$ To start, we find the vectors $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}:$\n\n$$\n\\begin{aligned}\\overset{\\to }{AB} & =b-a \\\\  & =(-3i-3j-2k)-(-i-2j-2k) \\\\  & =-2i-j \\\\  & =⟨-2,-1,0⟩ \\\\ \\overset{\\to }{AC} & =c-a \\\\  & =(-4j-2k)-(-i-2j-2k) \\\\  & =i-2j \\\\  & =⟨1,-2,0⟩\\end{aligned}\n$$\n\nNow, we have\n\n$$\n\\begin{aligned}\\overset{\\to }{AB}\\times \\overset{\\to }{AC} & =|\\begin{aligned}i & j & k \\\\ -2 & -1 & 0 \\\\ 1 & -2 & 0\\end{aligned}| \\\\  & =|\\begin{aligned}-1 & 0 \\\\ -2 & 0\\end{aligned}|i-|\\begin{aligned}-2 & 0 \\\\ 1 & 0\\end{aligned}|j+|\\begin{aligned}-2 & -1 \\\\ 1 & -2\\end{aligned}|k \\\\  & =((-1)\\cdot 0-(-2)\\cdot 0)i-((-2)\\cdot 0-1\\cdot 0)j+((-2)\\cdot (-2)-1\\cdot (-1))k \\\\  & =5k \\\\  & =⟨0,0,5⟩.\\end{aligned}\n$$\n\nTherefore, the area of the parallelogram spanned by $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}$ is\n\n$$\n\\begin{aligned}A & =|\\overset{\\to }{AB}\\times \\overset{\\to }{AC}| \\\\  & =\\sqrt{{0}^{2}+{0}^{2}+{5}^{2}} \\\\  & =\\sqrt{25} \\\\  & =5.\\end{aligned}\n$$\n\nThe area of the triangle is half of the area of the respective parallelogram. So, the area of $△\\,ABC$ is\n\n$$\n{A}_{△}=\\frac{1}{2}A=\\frac{5}{2}=\\frac{5}{2}.\n$$\n\nLet's also compute $AB$ since it appears in the formula:\n\n$$\n\\begin{aligned}AB & =|\\overset{\\to }{AB}| \\\\  & =\\sqrt{(-2)^{2}+(-1)^{2}+{0}^{2}} \\\\  & =\\sqrt{5} \\\\  & =\\sqrt{5}.\\end{aligned}\n$$\n\n \n\nFinally, using the formula ${A}_{△}=\\frac{1}{2}CH\\cdot AB,$ we get\n\n$$\n\\begin{aligned}{A}_{△} & =\\frac{1}{2}CH\\cdot AB \\\\ \\frac{5}{2} & =\\frac{1}{2}CH\\cdot \\sqrt{5} \\\\ 5 & =CH\\cdot \\sqrt{5} \\\\ CH & =\\frac{5}{\\sqrt{5}} \\\\ CH & =\\sqrt{5}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "875150eb-994a-58de-8fe4-b378f450bbe5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "13023291-79c9-504b-ab06-6385388feece",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5"
+            },
+            {
+              ":answer/id": "9c102d33-55f5-51e7-aa96-2a5f1a15d982",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{5}"
+            },
+            {
+              ":answer/id": "2f3075f7-8816-5232-85f8-af42304e1ca3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\sqrt{5}"
+            },
+            {
+              ":answer/id": "f7ee74af-a001-5743-a0e4-8fe0c05751e1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "e3c8b4f9-df3d-5758-8758-a5cb5fe5113d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{5}}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9c102d33-55f5-51e7-aa96-2a5f1a15d982"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "altitude-v1.0",
+      "seed": 8,
+      "template": "authored_easy_radio",
+      "profile": "method_errors",
+      "parameters": {
+        "vertices": {
+          "A": [
+            -1,
+            -2,
+            -2
+          ],
+          "B": [
+            -3,
+            -3,
+            -2
+          ],
+          "C": [
+            0,
+            -4,
+            -2
+          ]
+        }
+      },
+      "domain": "noncollinear integer vertices; positive exact lengths",
+      "recipes": [
+        "correct",
+        "triangle_area_divided_by_base",
+        "parallelogram_used_as_triangle",
+        "base_division_omitted",
+        "squared_base_used"
+      ],
+      "source_ids": [
+        "e-4346"
+      ],
+      "authorship": "authored easy extension",
+      "plot_rating": "none",
+      "mathematical_fingerprint": "2fb2754e05ac48a02c48517da30d270cd9eb61d56a9ac0165f6e9390156daf58",
+      "content_fingerprint": "14f25a358067ae6df139e983a69a64a73ac10c005152e610195e21db6fc9e244",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186105734,
+      "id": "9331987e-8676-5bdb-b4ce-2129b1b09a8c",
+      "title": "Calculating the Altitude of a Triangle Given Its Vertices"
+    },
+    "question": {
+      ":question/id": "ecf581af-e126-572c-9d22-a9dc96181f47",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Calculate the length of the altitude $CH$ of the $△\\,ABC$, if $A(-1,-1,-2)$, $B(0,1,-2)$, $C(-2,-2,-2).$",
+      ":question/worked-solution": "Note that the length of the altitude $CH$ can be related to the area of $△\\,ABC$ as follows:\n\n$$\n{A}_{△}=\\frac{1}{2}CH\\cdot AB\n$$\n\nSo, to find $CH,$ we first find ${A}_{△}.$ To start, we find the vectors $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}:$\n\n$$\n\\begin{aligned}\\overset{\\to }{AB} & =b-a \\\\  & =(j-2k)-(-i-j-2k) \\\\  & =i+2j \\\\  & =⟨1,2,0⟩ \\\\ \\overset{\\to }{AC} & =c-a \\\\  & =(-2i-2j-2k)-(-i-j-2k) \\\\  & =-i-j \\\\  & =⟨-1,-1,0⟩\\end{aligned}\n$$\n\nNow, we have\n\n$$\n\\begin{aligned}\\overset{\\to }{AB}\\times \\overset{\\to }{AC} & =|\\begin{aligned}i & j & k \\\\ 1 & 2 & 0 \\\\ -1 & -1 & 0\\end{aligned}| \\\\  & =|\\begin{aligned}2 & 0 \\\\ -1 & 0\\end{aligned}|i-|\\begin{aligned}1 & 0 \\\\ -1 & 0\\end{aligned}|j+|\\begin{aligned}1 & 2 \\\\ -1 & -1\\end{aligned}|k \\\\  & =(2\\cdot 0-(-1)\\cdot 0)i-(1\\cdot 0-(-1)\\cdot 0)j+(1\\cdot (-1)-(-1)\\cdot 2)k \\\\  & =k \\\\  & =⟨0,0,1⟩.\\end{aligned}\n$$\n\nTherefore, the area of the parallelogram spanned by $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}$ is\n\n$$\n\\begin{aligned}A & =|\\overset{\\to }{AB}\\times \\overset{\\to }{AC}| \\\\  & =\\sqrt{{0}^{2}+{0}^{2}+{1}^{2}} \\\\  & =\\sqrt{1} \\\\  & =1.\\end{aligned}\n$$\n\nThe area of the triangle is half of the area of the respective parallelogram. So, the area of $△\\,ABC$ is\n\n$$\n{A}_{△}=\\frac{1}{2}A=\\frac{1}{2}=\\frac{1}{2}.\n$$\n\nLet's also compute $AB$ since it appears in the formula:\n\n$$\n\\begin{aligned}AB & =|\\overset{\\to }{AB}| \\\\  & =\\sqrt{{1}^{2}+{2}^{2}+{0}^{2}} \\\\  & =\\sqrt{5} \\\\  & =\\sqrt{5}.\\end{aligned}\n$$\n\n \n\nFinally, using the formula ${A}_{△}=\\frac{1}{2}CH\\cdot AB,$ we get\n\n$$\n\\begin{aligned}{A}_{△} & =\\frac{1}{2}CH\\cdot AB \\\\ \\frac{1}{2} & =\\frac{1}{2}CH\\cdot \\sqrt{5} \\\\ 1 & =CH\\cdot \\sqrt{5} \\\\ CH & =\\frac{1}{\\sqrt{5}} \\\\ CH & =\\frac{\\sqrt{5}}{5}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3163f22d-3123-58d2-a02f-0682a1583a19",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "acfe2f79-5e10-5bc3-87f8-93d15c497e44",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{5}}{10}"
+            },
+            {
+              ":answer/id": "2b160b53-e7a5-5e3a-ae84-615a23d93559",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{5}}{5}"
+            },
+            {
+              ":answer/id": "50a58a5f-9ec8-58cd-be2f-f3c8bf417b1d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{5}"
+            },
+            {
+              ":answer/id": "ff4dd130-9a10-5bbd-8693-5c40a6c42865",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "67f558a1-b49a-564d-8384-ea43b7e17499",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2\\sqrt{5}}{5}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2b160b53-e7a5-5e3a-ae84-615a23d93559"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "altitude-v1.0",
+      "seed": 9,
+      "template": "authored_easy_radio",
+      "profile": "method_errors",
+      "parameters": {
+        "vertices": {
+          "A": [
+            -1,
+            -1,
+            -2
+          ],
+          "B": [
+            0,
+            1,
+            -2
+          ],
+          "C": [
+            -2,
+            -2,
+            -2
+          ]
+        }
+      },
+      "domain": "noncollinear integer vertices; positive exact lengths",
+      "recipes": [
+        "correct",
+        "triangle_area_divided_by_base",
+        "parallelogram_used_as_triangle",
+        "base_division_omitted",
+        "squared_base_used"
+      ],
+      "source_ids": [
+        "e-4346"
+      ],
+      "authorship": "authored easy extension",
+      "plot_rating": "none",
+      "mathematical_fingerprint": "e5c70d4fc645d642fda53cbd40a47896904761525cf0d4a68b07991a2c3647ec",
+      "content_fingerprint": "6b204f43ae579c3b10973e22fec206524bab1851001a5566c9f3a6031119d4b4",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186105734,
+      "id": "9331987e-8676-5bdb-b4ce-2129b1b09a8c",
+      "title": "Calculating the Altitude of a Triangle Given Its Vertices"
+    },
+    "question": {
+      ":question/id": "e7692b32-8f6f-5770-8530-864bc3d08522",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Calculate the length of the altitude $CH$ of the $△\\,ABC$, if $A(-2,-2,-1)$, $B(-4,-3,-1)$, $C(-1,-4,-3).$",
+      ":question/worked-solution": "Note that the length of the altitude $CH$ can be related to the area of $△\\,ABC$ as follows:\n\n$$\n{A}_{△}=\\frac{1}{2}CH\\cdot AB\n$$\n\nSo, to find $CH,$ we first find ${A}_{△}.$ To start, we find the vectors $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}:$\n\n$$\n\\begin{aligned}\\overset{\\to }{AB} & =b-a \\\\  & =(-4i-3j-k)-(-2i-2j-k) \\\\  & =-2i-j \\\\  & =⟨-2,-1,0⟩ \\\\ \\overset{\\to }{AC} & =c-a \\\\  & =(-i-4j-3k)-(-2i-2j-k) \\\\  & =i-2j-2k \\\\  & =⟨1,-2,-2⟩\\end{aligned}\n$$\n\nNow, we have\n\n$$\n\\begin{aligned}\\overset{\\to }{AB}\\times \\overset{\\to }{AC} & =|\\begin{aligned}i & j & k \\\\ -2 & -1 & 0 \\\\ 1 & -2 & -2\\end{aligned}| \\\\  & =|\\begin{aligned}-1 & 0 \\\\ -2 & -2\\end{aligned}|i-|\\begin{aligned}-2 & 0 \\\\ 1 & -2\\end{aligned}|j+|\\begin{aligned}-2 & -1 \\\\ 1 & -2\\end{aligned}|k \\\\  & =((-1)\\cdot (-2)-(-2)\\cdot 0)i-((-2)\\cdot (-2)-1\\cdot 0)j+((-2)\\cdot (-2)-1\\cdot (-1))k \\\\  & =2i-4j+5k \\\\  & =⟨2,-4,5⟩.\\end{aligned}\n$$\n\nTherefore, the area of the parallelogram spanned by $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}$ is\n\n$$\n\\begin{aligned}A & =|\\overset{\\to }{AB}\\times \\overset{\\to }{AC}| \\\\  & =\\sqrt{{2}^{2}+(-4)^{2}+{5}^{2}} \\\\  & =\\sqrt{45} \\\\  & =3\\sqrt{5}.\\end{aligned}\n$$\n\nThe area of the triangle is half of the area of the respective parallelogram. So, the area of $△\\,ABC$ is\n\n$$\n{A}_{△}=\\frac{1}{2}A=\\frac{3\\sqrt{5}}{2}=\\frac{3\\sqrt{5}}{2}.\n$$\n\nLet's also compute $AB$ since it appears in the formula:\n\n$$\n\\begin{aligned}AB & =|\\overset{\\to }{AB}| \\\\  & =\\sqrt{(-2)^{2}+(-1)^{2}+{0}^{2}} \\\\  & =\\sqrt{5} \\\\  & =\\sqrt{5}.\\end{aligned}\n$$\n\n \n\nFinally, using the formula ${A}_{△}=\\frac{1}{2}CH\\cdot AB,$ we get\n\n$$\n\\begin{aligned}{A}_{△} & =\\frac{1}{2}CH\\cdot AB \\\\ \\frac{3\\sqrt{5}}{2} & =\\frac{1}{2}CH\\cdot \\sqrt{5} \\\\ 3\\sqrt{5} & =CH\\cdot \\sqrt{5} \\\\ CH & =\\frac{3\\sqrt{5}}{\\sqrt{5}} \\\\ CH & =3.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e724161c-def4-51aa-be3d-861826bb0b6b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "19a94d48-665c-5042-b2ff-fde3f0bb9133",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6"
+            },
+            {
+              ":answer/id": "08778626-f262-50d6-9fb4-af4edc3ebecc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "6fba8648-bbc7-5fd9-83b1-5910e67558f3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\sqrt{5}"
+            },
+            {
+              ":answer/id": "d0447ba2-40b6-5214-9702-508d8a266eb1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3\\sqrt{5}}{5}"
+            },
+            {
+              ":answer/id": "f7ca10c2-d1ab-55ec-9ddb-e7bdb3073819",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "08778626-f262-50d6-9fb4-af4edc3ebecc"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "altitude-v1.0",
+      "seed": 8,
+      "template": "authored_moderate_radio",
+      "profile": "method_errors",
+      "parameters": {
+        "vertices": {
+          "A": [
+            -2,
+            -2,
+            -1
+          ],
+          "B": [
+            -4,
+            -3,
+            -1
+          ],
+          "C": [
+            -1,
+            -4,
+            -3
+          ]
+        }
+      },
+      "domain": "noncollinear integer vertices; positive exact lengths",
+      "recipes": [
+        "correct",
+        "triangle_area_divided_by_base",
+        "parallelogram_used_as_triangle",
+        "base_division_omitted",
+        "squared_base_used"
+      ],
+      "source_ids": [
+        "e-4346"
+      ],
+      "authorship": "authored moderate extension",
+      "plot_rating": "none",
+      "mathematical_fingerprint": "5687ab6349473954d181f21f4d6904075930f054409538b059a7e422a5bbbd3f",
+      "content_fingerprint": "9a79739283bf214fa46090c1f320668be7ba136deeb88be2a219ffee5e7e2979",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186105734,
+      "id": "9331987e-8676-5bdb-b4ce-2129b1b09a8c",
+      "title": "Calculating the Altitude of a Triangle Given Its Vertices"
+    },
+    "question": {
+      ":question/id": "1d082659-c563-57aa-ae6b-f0528618d5a2",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Calculate the length of the altitude $CH$ of the $△\\,ABC$, if $A(-1,-2,0)$, $B(0,0,0)$, $C(-2,-3,-2).$",
+      ":question/worked-solution": "Note that the length of the altitude $CH$ can be related to the area of $△\\,ABC$ as follows:\n\n$$\n{A}_{△}=\\frac{1}{2}CH\\cdot AB\n$$\n\nSo, to find $CH,$ we first find ${A}_{△}.$ To start, we find the vectors $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}:$\n\n$$\n\\begin{aligned}\\overset{\\to }{AB} & =b-a \\\\  & =0-(-i-2j) \\\\  & =i+2j \\\\  & =⟨1,2,0⟩ \\\\ \\overset{\\to }{AC} & =c-a \\\\  & =(-2i-3j-2k)-(-i-2j) \\\\  & =-i-j-2k \\\\  & =⟨-1,-1,-2⟩\\end{aligned}\n$$\n\nNow, we have\n\n$$\n\\begin{aligned}\\overset{\\to }{AB}\\times \\overset{\\to }{AC} & =|\\begin{aligned}i & j & k \\\\ 1 & 2 & 0 \\\\ -1 & -1 & -2\\end{aligned}| \\\\  & =|\\begin{aligned}2 & 0 \\\\ -1 & -2\\end{aligned}|i-|\\begin{aligned}1 & 0 \\\\ -1 & -2\\end{aligned}|j+|\\begin{aligned}1 & 2 \\\\ -1 & -1\\end{aligned}|k \\\\  & =(2\\cdot (-2)-(-1)\\cdot 0)i-(1\\cdot (-2)-(-1)\\cdot 0)j+(1\\cdot (-1)-(-1)\\cdot 2)k \\\\  & =-4i+2j+k \\\\  & =⟨-4,2,1⟩.\\end{aligned}\n$$\n\nTherefore, the area of the parallelogram spanned by $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}$ is\n\n$$\n\\begin{aligned}A & =|\\overset{\\to }{AB}\\times \\overset{\\to }{AC}| \\\\  & =\\sqrt{(-4)^{2}+{2}^{2}+{1}^{2}} \\\\  & =\\sqrt{21} \\\\  & =\\sqrt{21}.\\end{aligned}\n$$\n\nThe area of the triangle is half of the area of the respective parallelogram. So, the area of $△\\,ABC$ is\n\n$$\n{A}_{△}=\\frac{1}{2}A=\\frac{\\sqrt{21}}{2}=\\frac{\\sqrt{21}}{2}.\n$$\n\nLet's also compute $AB$ since it appears in the formula:\n\n$$\n\\begin{aligned}AB & =|\\overset{\\to }{AB}| \\\\  & =\\sqrt{{1}^{2}+{2}^{2}+{0}^{2}} \\\\  & =\\sqrt{5} \\\\  & =\\sqrt{5}.\\end{aligned}\n$$\n\n \n\nFinally, using the formula ${A}_{△}=\\frac{1}{2}CH\\cdot AB,$ we get\n\n$$\n\\begin{aligned}{A}_{△} & =\\frac{1}{2}CH\\cdot AB \\\\ \\frac{\\sqrt{21}}{2} & =\\frac{1}{2}CH\\cdot \\sqrt{5} \\\\ \\sqrt{21} & =CH\\cdot \\sqrt{5} \\\\ CH & =\\frac{\\sqrt{21}}{\\sqrt{5}} \\\\ CH & =\\frac{\\sqrt{105}}{5}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "75ff6bfe-7e1b-5a69-baa7-d867bfb40095",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c9ea8bd5-09a9-5265-a42c-522a3cfc2edf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{105}}{10}"
+            },
+            {
+              ":answer/id": "fdc0da3f-8f69-503c-9e0b-033e50bf6526",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{105}}{5}"
+            },
+            {
+              ":answer/id": "df769b96-5f7d-54da-9035-1de0c38d9a11",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2\\sqrt{105}}{5}"
+            },
+            {
+              ":answer/id": "25d778d2-7065-5631-bf7d-14156b345ec5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{21}"
+            },
+            {
+              ":answer/id": "46110104-b667-5dd7-a477-59e2e50b5cc0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{21}}{5}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fdc0da3f-8f69-503c-9e0b-033e50bf6526"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "altitude-v1.0",
+      "seed": 9,
+      "template": "authored_moderate_radio",
+      "profile": "method_errors",
+      "parameters": {
+        "vertices": {
+          "A": [
+            -1,
+            -2,
+            0
+          ],
+          "B": [
+            0,
+            0,
+            0
+          ],
+          "C": [
+            -2,
+            -3,
+            -2
+          ]
+        }
+      },
+      "domain": "noncollinear integer vertices; positive exact lengths",
+      "recipes": [
+        "correct",
+        "triangle_area_divided_by_base",
+        "parallelogram_used_as_triangle",
+        "base_division_omitted",
+        "squared_base_used"
+      ],
+      "source_ids": [
+        "e-4346"
+      ],
+      "authorship": "authored moderate extension",
+      "plot_rating": "none",
+      "mathematical_fingerprint": "3a7886232f09c0679114f27feaf27a0487b6bcbe7c8c5f725796bc044971430f",
+      "content_fingerprint": "11084db6a522d6674acd9d5605cef6fefa7301f245a79e5c23fae5e14ee723c7",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186105734,
+      "id": "9331987e-8676-5bdb-b4ce-2129b1b09a8c",
+      "title": "Calculating the Altitude of a Triangle Given Its Vertices"
+    },
+    "question": {
+      ":question/id": "b2e793b2-c04a-5445-ac71-887f83edd6df",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Calculate the length of the altitude $CH$ of the $△\\,ABC$, if $A(-2,-1,-1)$, $B(-4,0,1)$, $C(-5,-3,-6).$",
+      ":question/worked-solution": "Note that the length of the altitude $CH$ can be related to the area of $△\\,ABC$ as follows:\n\n$$\n{A}_{△}=\\frac{1}{2}CH\\cdot AB\n$$\n\nSo, to find $CH,$ we first find ${A}_{△}.$ To start, we find the vectors $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}:$\n\n$$\n\\begin{aligned}\\overset{\\to }{AB} & =b-a \\\\  & =(-4i+k)-(-2i-j-k) \\\\  & =-2i+j+2k \\\\  & =⟨-2,1,2⟩ \\\\ \\overset{\\to }{AC} & =c-a \\\\  & =(-5i-3j-6k)-(-2i-j-k) \\\\  & =-3i-2j-5k \\\\  & =⟨-3,-2,-5⟩\\end{aligned}\n$$\n\nNow, we have\n\n$$\n\\begin{aligned}\\overset{\\to }{AB}\\times \\overset{\\to }{AC} & =|\\begin{aligned}i & j & k \\\\ -2 & 1 & 2 \\\\ -3 & -2 & -5\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 2 \\\\ -2 & -5\\end{aligned}|i-|\\begin{aligned}-2 & 2 \\\\ -3 & -5\\end{aligned}|j+|\\begin{aligned}-2 & 1 \\\\ -3 & -2\\end{aligned}|k \\\\  & =(1\\cdot (-5)-(-2)\\cdot 2)i-((-2)\\cdot (-5)-(-3)\\cdot 2)j+((-2)\\cdot (-2)-(-3)\\cdot 1)k \\\\  & =-i-16j+7k \\\\  & =⟨-1,-16,7⟩.\\end{aligned}\n$$\n\nTherefore, the area of the parallelogram spanned by $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}$ is\n\n$$\n\\begin{aligned}A & =|\\overset{\\to }{AB}\\times \\overset{\\to }{AC}| \\\\  & =\\sqrt{(-1)^{2}+(-16)^{2}+{7}^{2}} \\\\  & =\\sqrt{306} \\\\  & =3\\sqrt{34}.\\end{aligned}\n$$\n\nThe area of the triangle is half of the area of the respective parallelogram. So, the area of $△\\,ABC$ is\n\n$$\n{A}_{△}=\\frac{1}{2}A=\\frac{3\\sqrt{34}}{2}=\\frac{3\\sqrt{34}}{2}.\n$$\n\nLet's also compute $AB$ since it appears in the formula:\n\n$$\n\\begin{aligned}AB & =|\\overset{\\to }{AB}| \\\\  & =\\sqrt{(-2)^{2}+{1}^{2}+{2}^{2}} \\\\  & =\\sqrt{9} \\\\  & =3.\\end{aligned}\n$$\n\n \n\nFinally, using the formula ${A}_{△}=\\frac{1}{2}CH\\cdot AB,$ we get\n\n$$\n\\begin{aligned}{A}_{△} & =\\frac{1}{2}CH\\cdot AB \\\\ \\frac{3\\sqrt{34}}{2} & =\\frac{1}{2}CH\\cdot 3 \\\\ \\sqrt{34} & =CH\\cdot 1 \\\\ CH & =\\frac{\\sqrt{34}}{1} \\\\ CH & =\\sqrt{34}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "37c26fa1-7a2a-57ba-8df3-606c0d43dc43",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b2b60052-d6af-50e0-a3db-8e8e5914a0f0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\sqrt{34}"
+            },
+            {
+              ":answer/id": "4ce0293e-681f-5388-b93e-fab1f5f7c16f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{34}"
+            },
+            {
+              ":answer/id": "b059a88c-2e5c-501c-bc87-f1e5c878bec8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\sqrt{34}"
+            },
+            {
+              ":answer/id": "f611502f-12ee-5072-9985-75206cf1ae6a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{34}}{2}"
+            },
+            {
+              ":answer/id": "d2e49c68-ea10-5756-a916-e09b80c05855",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{34}}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4ce0293e-681f-5388-b93e-fab1f5f7c16f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "altitude-v1.0",
+      "seed": 8,
+      "template": "authored_hard_radio",
+      "profile": "method_errors",
+      "parameters": {
+        "vertices": {
+          "A": [
+            -2,
+            -1,
+            -1
+          ],
+          "B": [
+            -4,
+            0,
+            1
+          ],
+          "C": [
+            -5,
+            -3,
+            -6
+          ]
+        }
+      },
+      "domain": "noncollinear integer vertices; positive exact lengths",
+      "recipes": [
+        "correct",
+        "triangle_area_divided_by_base",
+        "parallelogram_used_as_triangle",
+        "base_division_omitted",
+        "squared_base_used"
+      ],
+      "source_ids": [
+        "e-4346"
+      ],
+      "authorship": "authored hard extension",
+      "plot_rating": "none",
+      "mathematical_fingerprint": "8d5409fe7aec1d2c2878dbc4afd8cd7c61f8e733c27cb5e56ffc7a661dba676f",
+      "content_fingerprint": "9848d1b2f907eba16cbc61fc0040d04ea6dc950d5c80c10ae12f70f8bd3a5aa3",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186105734,
+      "id": "9331987e-8676-5bdb-b4ce-2129b1b09a8c",
+      "title": "Calculating the Altitude of a Triangle Given Its Vertices"
+    },
+    "question": {
+      ":question/id": "04ab0516-13f1-5bbf-bd72-2531a9d355a6",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Calculate the length of the altitude $CH$ of the $△\\,ABC$, if $A(-2,0,2)$, $B(1,5,3)$, $C(-3,-3,-1).$",
+      ":question/worked-solution": "Note that the length of the altitude $CH$ can be related to the area of $△\\,ABC$ as follows:\n\n$$\n{A}_{△}=\\frac{1}{2}CH\\cdot AB\n$$\n\nSo, to find $CH,$ we first find ${A}_{△}.$ To start, we find the vectors $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}:$\n\n$$\n\\begin{aligned}\\overset{\\to }{AB} & =b-a \\\\  & =(i+5j+3k)-(-2i+2k) \\\\  & =3i+5j+k \\\\  & =⟨3,5,1⟩ \\\\ \\overset{\\to }{AC} & =c-a \\\\  & =(-3i-3j-k)-(-2i+2k) \\\\  & =-i-3j-3k \\\\  & =⟨-1,-3,-3⟩\\end{aligned}\n$$\n\nNow, we have\n\n$$\n\\begin{aligned}\\overset{\\to }{AB}\\times \\overset{\\to }{AC} & =|\\begin{aligned}i & j & k \\\\ 3 & 5 & 1 \\\\ -1 & -3 & -3\\end{aligned}| \\\\  & =|\\begin{aligned}5 & 1 \\\\ -3 & -3\\end{aligned}|i-|\\begin{aligned}3 & 1 \\\\ -1 & -3\\end{aligned}|j+|\\begin{aligned}3 & 5 \\\\ -1 & -3\\end{aligned}|k \\\\  & =(5\\cdot (-3)-(-3)\\cdot 1)i-(3\\cdot (-3)-(-1)\\cdot 1)j+(3\\cdot (-3)-(-1)\\cdot 5)k \\\\  & =-12i+8j-4k \\\\  & =⟨-12,8,-4⟩.\\end{aligned}\n$$\n\nTherefore, the area of the parallelogram spanned by $\\overset{\\to }{AB}$ and $\\overset{\\to }{AC}$ is\n\n$$\n\\begin{aligned}A & =|\\overset{\\to }{AB}\\times \\overset{\\to }{AC}| \\\\  & =\\sqrt{(-12)^{2}+{8}^{2}+(-4)^{2}} \\\\  & =\\sqrt{224} \\\\  & =4\\sqrt{14}.\\end{aligned}\n$$\n\nThe area of the triangle is half of the area of the respective parallelogram. So, the area of $△\\,ABC$ is\n\n$$\n{A}_{△}=\\frac{1}{2}A=\\frac{4\\sqrt{14}}{2}=2\\sqrt{14}.\n$$\n\nLet's also compute $AB$ since it appears in the formula:\n\n$$\n\\begin{aligned}AB & =|\\overset{\\to }{AB}| \\\\  & =\\sqrt{{3}^{2}+{5}^{2}+{1}^{2}} \\\\  & =\\sqrt{35} \\\\  & =\\sqrt{35}.\\end{aligned}\n$$\n\n \n\nFinally, using the formula ${A}_{△}=\\frac{1}{2}CH\\cdot AB,$ we get\n\n$$\n\\begin{aligned}{A}_{△} & =\\frac{1}{2}CH\\cdot AB \\\\ 2\\sqrt{14} & =\\frac{1}{2}CH\\cdot \\sqrt{35} \\\\ 4\\sqrt{14} & =CH\\cdot \\sqrt{35} \\\\ CH & =\\frac{4\\sqrt{14}}{\\sqrt{35}} \\\\ CH & =\\frac{4\\sqrt{10}}{5}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ce6d3435-516b-5ca0-809d-035c699d1b14",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4db37efb-7d05-54ad-ba89-e61e3f242c0b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{8\\sqrt{10}}{5}"
+            },
+            {
+              ":answer/id": "75d06ced-5bd0-59d6-bd21-7404434fa558",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4\\sqrt{14}}{35}"
+            },
+            {
+              ":answer/id": "1a2570c1-0758-5308-935f-aa711f569296",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2\\sqrt{10}}{5}"
+            },
+            {
+              ":answer/id": "9f1ed6fe-0908-5405-8f48-3823443a206f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4\\sqrt{10}}{5}"
+            },
+            {
+              ":answer/id": "e6f5dbfc-511e-511b-b749-a35c004bee02",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4\\sqrt{14}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9f1ed6fe-0908-5405-8f48-3823443a206f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "altitude-v1.0",
+      "seed": 9,
+      "template": "authored_hard_radio",
+      "profile": "method_errors",
+      "parameters": {
+        "vertices": {
+          "A": [
+            -2,
+            0,
+            2
+          ],
+          "B": [
+            1,
+            5,
+            3
+          ],
+          "C": [
+            -3,
+            -3,
+            -1
+          ]
+        }
+      },
+      "domain": "noncollinear integer vertices; positive exact lengths",
+      "recipes": [
+        "correct",
+        "triangle_area_divided_by_base",
+        "parallelogram_used_as_triangle",
+        "base_division_omitted",
+        "squared_base_used"
+      ],
+      "source_ids": [
+        "e-4346"
+      ],
+      "authorship": "authored hard extension",
+      "plot_rating": "none",
+      "mathematical_fingerprint": "c636c400da19669d9ea80602c455a568404a8fbd444396c5cf88821b724e2de3",
+      "content_fingerprint": "f8efca8c9b77a097bc89628f382429d6e78c64489de9127f195a2d6081ef7665",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      }
+    }
+  }
+]

@@ -1,0 +1,29 @@
+# Four extraction stages
+
+## 1. Specific observations
+
+`source-cases.json` records every practice question's exact vertices, source ID, public template and complete profile. `templates.json` retains each entire source prompt and worked-solution prose with complete coordinate/math-block slots. `choice-map.json` maps every observed radio option one-to-one to source answer UUID, original exact value, designation, and parameterized expression. `source.json` retains unchanged evidence, including all original fields and blanks. `source-widget-q-20028.json` preserves the authoritative lesson widget for the incomplete question.
+
+All inputs are integer triples. The apex is the first letter in the requested altitude; the other two vertices form its base. The cross-product edges share a common origin, but the base can be either of the two edges. Every supplied worked solution has seven display blocks: area-height relation; two edge subtractions in formal/basis/tuple forms; determinant/minors/distributed products/reduced basis/tuple; cross norm; half-area; base norm; altitude algebra. q-316553/556/558 abbreviate the last block to substituted formula, quotient, final value. q-316409 reduces a common factor 3 and reverses the order of the reduced product. q-316392/395 omit the repeated altitude label on the final row. These distinctions are structural source masks. For q-316558, source implicit numeric multiplication is preserved at its original negative factors; changed positive second factors are parenthesized so two integers cannot concatenate into a different number. Seeds 30–41 and all 64 sign combinations independently verify the actual printed product tokens.
+
+## 2. Generalization
+
+For base endpoints A,B and apex C, compute u=B−A and v=C−A, N=||u×v||, area=N/2 and L=||u||. From area=(height×L)/2 obtain height=N/L. The learner must recover the altitude from vertices, retaining the correct choice of base. Translation and vertex names are incidental. No adjacent area-only, angle, surface-area or vector-only assessment is added.
+
+## 3. Component and complete-bank mapping
+
+Every displayed determinant matrix, minor and product uses the same edge components. Source masks record operand order, explicit dot/implicit multiplication, explicit zero basis components, optional evaluated-radicand rows, punctuation, and exact full prose. Whole mathematical components are filled; short number strings are never globally substituted.
+
+The 10 radio banks each contain five values. Scalar distractors underdetermine the original mistakes. For fidelity, each observed profile records five exact symbolic ratios r_i=value_i/h_source and generates value_i=h_new*r_i. This is an explicit parameterized observational scale pattern, not a recovered error operation or an arbitrary polynomial fit. It preserves complete original banks and can replay changed geometry through the public API. All ratios are author metadata. q-20027 and q-71113 have the same multiset; their source presentation masks remain distinct. Blanks preserve a scalar altitude fragment and have no distractor profile.
+
+Default radios use one separately labeled authored complete operation bank: h, area/L=h/2 (omitted factor 2), 2N/L=2h (used parallelogram area as triangle), N (omitted division by base), N/L² (forgot the square root in base magnitude). Every value is a meaningful positive length-like scalar from the assessed method; there is no learner-facing diagnosis. Bank selection precedes sampling. Any invalid/equivalent/missing option rejects the whole instance, rather than replacing an individual option from a pool. The full worked solution is independent of the selected error.
+
+## 4. Reusable template and constraints
+
+`extract.py` constructs the immutable prose/coordinate masks and structural arithmetic descriptors from captured source records. The generator computes every mathematical block through shared exact helpers. At original parameters all 18 prompts and all 58 displayed values match. Sixteen of 17 supplied solutions match byte-for-byte; q-128008's incorrect basis row is minimally repaired. Every source stage is independently checked, not merely its final answer. Changed triangles retain each mask's row omissions/order, while the same source profiles scale their complete original banks. Easy/moderate/hard authored masks reuse the common full solution prose and maintain their independently enforced workload bounds in classification.md.
+
+q-128008 prints `-i+3j-3j` in its reduced PQ row, although the given vertices yield (-1,3,-3), and its tuple and all later stages correctly use k. Normal output changes that single j to k. Raw source is kept and the validator confirms it fails mathematics before applying exactly this repair. No other source prose or math changes are hidden.
+
+q-20028 has no level, correct ref, or solution at this basis. Its base PQ=(2,4,0), apex edge PR=(1,3,1), cross=(4,-2,2), N=2sqrt(6), area=sqrt(6), L=2sqrt(5), h=sqrt(30)/5. The original five-choice bank contains exactly this value. The key and full solution are independently reconstructed; they cannot count as matched missing source evidence. Hard assignment is authored because it requires signed vertex subtraction, four determinant products, full area/base reduction and exact radical division, comparable to several observed hard cases. Its original calculator wording is preserved.
+
+Question/field/answer identities are field-owned deterministic UUIDs. Content identity hashes version plus actual prompt, fixed solution and complete sorted displayed bank, not seed, option order or unused metadata. Mathematical identity uses base/apex Gram invariants modulo reversing base endpoints. Same parameters/bank retain identity across seeds; changed banks alter content identity. All records are local JSON review artifacts, with plain outer knowledge-point keys and schema-shaped colon keys inside. No database writes are performed.
