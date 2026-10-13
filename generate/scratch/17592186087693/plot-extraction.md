@@ -1,0 +1,3 @@
+# Plot extraction
+
+Rating: **none** for every source and authored template. Matrices are standalone typeset mathematics, not plots. No parameter-dependent graph, diagram, image answer, or worked-solution plot occurs. Preserve the actual rows, ampersand column separators, bracket environment and complete entries. Normal output uses display math with a bmatrix, at most six rows and six columns, and bounded cell lengths. Original inline/captured layouts remain available for fidelity replay. The inspected legacy widget screenshot confirms bracketed array and ordered × choices. No image generation, direct SVG or plot asset is needed.

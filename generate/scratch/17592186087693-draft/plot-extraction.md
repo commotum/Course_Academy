@@ -1,0 +1,5 @@
+# Plot extraction
+
+Rating: **none** for every source and authored template. Matrices are standalone typeset mathematics, not plots. No parameter-dependent graph, diagram, image answer, or worked-solution plot occurs. Preserve the actual rows, ampersand column separators, bracket environment and complete entries. Normal output uses display math with a bmatrix, at most six rows and six columns, and bounded cell lengths. Original inline/captured layouts remain available for fidelity replay. The inspected legacy widget screenshot confirms bracketed array and ordered × choices. No image generation, direct SVG or plot asset is needed.
+
+Private all-level draft: matrices remain learner-facing TeX arrays, not plot assets. `render_qa.py` is numerical typesetting inspection only, using the actual prompt cells at extrema 2×12, 12×2 and 12×12. The inspected layout is legible with single-digit entries and full brackets; it is not claimed to certify an external browser renderer. `render-provenance.json` records actual Python/Matplotlib versions and dependency paths.
