@@ -1,0 +1,15 @@
+# Classification
+
+Captured database `math`, basis **1356**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `source.json` is an unchanged copy of the wrapper and record. Twelve practice questions; canonical e-4161 is contextual evidence, not a practice source. No plots or assets occur; plot rating **none** at every level. Steps 5 and 7 require no renderer.
+
+| Level | Original rating evidence | Response layout | Mathematical families | Source IDs |
+|---|---|---|---|---|
+| easy | 3 observed | one five-choice radio | two nonunit powers, unit outer coefficients, one shifted exponent; left/right placement | q-110544, q-66889, q-66892 |
+| moderate | 4 observed + 2 unrated originals assigned moderate for normal completion | one five-choice radio | two shifted unit exponents; one scaled outer exponent plus one shift | q-100462, q-100468, q-66895, q-3090; unrated q-66788 and q-66893 |
+| hard | 3 observed | q-3304 five-choice radio; q-100459/q-3362 fieldless originals | reciprocal-base conversion with two affine exponents; product of two exponential factors | q-100459, q-3362, q-3304 |
+
+There are eleven distinct full Markdown/solution presentation templates: q-100462 and q-100468 share one, while source-specific punctuation, missing solutions, and different reciprocal rule wording are preserved as separate render styles. The public API uses twelve source-ID style names (the two shared-template instances retain separate opaque banks). Ten distinct complete observed banks contain fifty displayed values. Two fieldless originals have no captured bank; their raw replay omits `:question/answer-fields`. Two unrated originals omit `:question/difficulty`, `:question/worked-solution`, and field correct refs in raw replay. Normal versions complete those omissions explicitly, without counting them as observed fidelity.
+
+The lesson route reconstructed from `:activity/first-step` and `:step/next` is Introduction → rewriting one exponent (17592186115200) → this KP (17592186115219). Prerequisites are factoring linear expressions, solving linear equations with variables on both sides, and equations containing exponential functions. The next topic is logarithmic different-base solving; logarithms are therefore excluded here. The canonical example rewrites 9 and 27 to powers of 3, applies the power rule twice, and solves 2(3x)=3(x+2). Both bases must be rewritten in every normal item; neither displayed base is the common base itself. The observed hard product template is retained because it belongs to this KP at the captured basis, not introduced as a new algebraic branch.
+
+All three levels are observed. There are **no missing-level authored extensions**. Authored extensions consist of complete method-based radio banks and completion of missing original fields/correct refs/solutions. The original scalar distractor intent cannot be uniquely recovered from one bank, so all observed profiles are explicitly evidence-only; their exact values remain replayable and reviewed alongside the originals.

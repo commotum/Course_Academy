@@ -1,0 +1,7 @@
+# Planar arc length scratch generator
+
+Run `.venv/bin/python generate/scratch/17592186119744/validate.py` to replay10source questions, check actual printed mathematics and all complete banks, exercise authored hard alternatives, test stable identities/concurrent plots, and run the real native radio grader. Preview with `.venv/bin/python generate/scratch/17592186119744.py --difficulty all --seed 4 --count 2 --format markdown` (orjson). Explicit source example: `--difficulty easy --template q-77065 --profile observed:q-77065` through the PythonAPI withparameters`{"c":1}`; CLI samples c normally.
+
+`source.json` preserves database/basis/lineage. Observedscalar-bank homotheties are explicit replay profiles with unresolved original distractor intent; normal banks are authored complete mathematical operations. Hard is2authored planar families grounded in existing prerequisites/methods. q-77220 has an explicitly repaired norm row and an inconsistent source plot; raw evidence remains intact. No sources are omitted. Full numerical/bank fidelity, raw and repaired prose/stage fidelity, native grading and plot verification are reported separately in `validation.json`.
+
+The renderer uses already-cached read-onlyPython3.10/Matplotlib dependencies. Assets and every other write remain inside this evidence folder. No database writes, registration, engine modification or commits; work stops afterstep7.
