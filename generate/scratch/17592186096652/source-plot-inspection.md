@@ -1,0 +1,7 @@
+# Source diagram readback
+
+All 21 practice prompt/solution pairs were inspected in source-diagrams.png, composited onto white. The arrow signs and translated labeled length ratios match the signed scalar pair in every source-cases.json entry. Both target construction and reordered paths are visible; negative fractions q-275128, q-326014 and q-326016 remain geometrical scalar multiples, not a coordinate algebra task. Source grid scale is one square per grid unit; there are no numbered coordinate axes or supplied coordinate tuples. Practice source plot correspondence has no unresolved missing/unreadable asset.
+
+Canonical e-4287 additionally inspected: n points four squares left, k three squares up, m eight squares left and six squares up, so m=2n+2k. Its white-composited solution shows O->N=2n then N->M=2k. Raw canonical source PNGs and white derivatives are retained. These two assets do not increase the 21-practice-source coverage denominator.
+
+Fresh generated version-2 diagrams have been visually inspected for all-negative, opposite-signed, fractional and reversed-path cases in generated-diagrams-qa.png and authored-levels-diagrams-qa.png. Vertex labels are displaced away from the triangle centroid and arrowheads. Full-parameter normal diagram QA uses the PNG's linked rendering sidecar, solves actual plotted target against the actual two basis arrows, and verifies actual displayed segment equations and every solution stage independently.
