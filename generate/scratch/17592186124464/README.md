@@ -1,0 +1,9 @@
+# Normal lines to surfaces
+
+Run `.venv/bin/python generate/scratch/17592186124464/validate.py` from the repository root. The validator independently reads the displayed surface, point, level function, every formal/substituted partial, complete answer line and all line-construction/conclusion rows, then calls the real application's existing `generate/runs/current/check-engine` radio grader. It writes local review and validation artifacts only.
+
+Preview: `.venv/bin/python generate/scratch/17592186124464.py --difficulty all --seed 9 --count 2 --format markdown` (or `json`). API entrypoints are `generate_easy`, `generate_moderate`, `generate_hard` and `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)`. Parameters are `translation: [hx,hy,hz]` and `signs: [sx,sy,sz]`. Use source-case `raw:q-ID` profiles with original parameters to replay all captured evidence; `observed:q-ID` is the same profile alias. Raw profiles remain ineligible. `method:q-ID` aliases its eligible family bank. Fields support radio only because no typed-entry source fields exist.
+
+Frozen basis 1356: 14 sources, 15 exact complete banks, 75 exact values, 14 exact prompt/solution replays, 14 preserved existing correct refs and one explicitly missing legacy ref. Normal solutions repair q-131124's missing constant and use the authoritative single-field shape for q-37515. q-36754 is checked under its actual `t=0` requirement. No source images require rendering.
+
+Easy is an authored missing-level supplied quadratic-level task. All six moderate and eight hard source families participate in default sampling. Variations use coordinate reflections/translations within documented integer bounds, preserving source arithmetic and stages; coefficient and unshifted-point variation is not included in this version. See extraction and review for scope and limitations. No EDB writes or shared engine edits; stopped after step 7.

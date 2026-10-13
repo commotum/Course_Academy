@@ -1,0 +1,2535 @@
+[
+  {
+    "label": "instance-0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "0a1dc850-270d-57fc-a97d-a093d36824eb",
+        ":question/problem": "At which points on the curve $2xy + 3y^{2} = x^{2} + 4$ is the tangent vector to the curve perpendicular to the vector $j$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ad7a3245-2392-5ff7-beb2-60edce931265",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ca733d6c-e2ff-56b6-b0f1-2b33af537ca1",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0, 1)$ and $(-1, 0)$"
+              },
+              {
+                ":answer/id": "9a6dab52-431a-51c9-9eda-916b80af16c8",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1, 1)$ and $(-1,-1)$"
+              },
+              {
+                ":answer/id": "74ebddb1-6380-5265-a8d0-e59996252a40",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,-1)$ only"
+              },
+              {
+                ":answer/id": "0e38aefd-d639-5bc0-beec-10c04b3e58a1",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1, 0)$ only"
+              },
+              {
+                ":answer/id": "bdbb9657-cbf7-558c-9e6a-fdd13c65965b",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0, 1)$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "9a6dab52-431a-51c9-9eda-916b80af16c8"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$- x^{2} + 2 x y + 3 y^{2} - 4=0$$\n\nIf we set $f(x,y)=- x^{2} + 2 x y + 3 y^{2} - 4$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- x^{2} + 2 x y + 3 y^{2} - 4)\\,i-\\frac{\u2202}{\u2202x}(- x^{2} + 2 x y + 3 y^{2} - 4)\\,j\\\\&=(2 x + 6 y)\\,i-(- 2 x + 2 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\2 x - 2 y&=0\\\\y&=x\\end{aligned}$$\n\nSubstituting $y=x$ into the equation of our curve gives:\n\n$$\\begin{aligned}2x(x)+3(x)^{2}-x^{2}-4&=0\\\\4x^{2}&=4\\\\x^{2}&=1\\\\x&=\\pm 1\\end{aligned}$$\n\nFinally, the corresponding points are $(-1,-1)$ and $(1,1)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-36332",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-36332"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "db8741a294fdd28794321ae594d5ff6952ba783f9b7fa738fb93aa8f8beb3f55",
+        "mathematical_fingerprint": "128696925e558a0422862df68bfa6068e2e3e6a862f80a4f4bc2ff6660b29705",
+        "actual_points": [
+          [
+            "-1",
+            "-1"
+          ],
+          [
+            "1",
+            "1"
+          ]
+        ],
+        "operator_input": "-x**2 + 2*x*y + 3*y**2 - 4",
+        "Fx": "-2*x + 2*y",
+        "Fy": "2*x + 6*y",
+        "orthogonality": "2*x - 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "ca733d6c-e2ff-56b6-b0f1-2b33af537ca1",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "9a6dab52-431a-51c9-9eda-916b80af16c8",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "74ebddb1-6380-5265-a8d0-e59996252a40",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "0e38aefd-d639-5bc0-beec-10c04b3e58a1",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "bdbb9657-cbf7-558c-9e6a-fdd13c65965b",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "78bb068a-2de8-59fb-962e-9eb792de804a",
+        ":question/problem": "At which points on the curve $9x^{2}y = 3y^{3} - 6x$ is the tangent vector to the curve perpendicular to the vector $i$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b383146c-8644-5e47-bddf-f2f759677b73",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c98e3a06-3999-5f09-83bd-403420fd44f1",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0, 0)$ and $(1, 1)$ only"
+              },
+              {
+                ":answer/id": "1394c38c-5737-5b7a-993a-6c04db695226",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0, 0)$ and $(1,-1)$ only"
+              },
+              {
+                ":answer/id": "08326d96-8685-56e4-b6c2-8b07eb81eab8",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,-1)$ only"
+              },
+              {
+                ":answer/id": "18db5191-3b47-5811-ba97-ac3532b29fc6",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0, 0)$, $(-1,-1)$, and $(1, 1)$"
+              },
+              {
+                ":answer/id": "2165ef61-3d57-5c51-a1f8-45fce081a1e6",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0, 0)$, $(-1, 1)$, and $(1,-1)$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2165ef61-3d57-5c51-a1f8-45fce081a1e6"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$9 x^{2} y + 6 x - 3 y^{3}=0$$\n\nIf we set $f(x,y)=9 x^{2} y + 6 x - 3 y^{3}$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(9 x^{2} y + 6 x - 3 y^{3})\\,i-\\frac{\u2202}{\u2202x}(9 x^{2} y + 6 x - 3 y^{3})\\,j\\\\&=(9 x^{2} - 9 y^{2})\\,i-(18 x y + 6)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $i$, we must have $t\\cdot i=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot i&=0\\\\9 x^{2} - 9 y^{2}&=0\\\\y&=x\\text{ or }y=-x\\end{aligned}$$\n\nSubstituting $y=x\\text{ or }y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}9x^{2}(x)-3(x)^{3}+6x&=0\\\\6x(x^{2}+1)&=0\\\\x&=0\\end{aligned}$$\n\nFor the second relation $y=-x$, substitution gives:\n\n$$\\begin{aligned}9x^{2}(-x)-3(-x)^{3}+6x&=0\\\\-6x^{3}+6x&=0\\\\-6x(x-1)(x+1)&=0\\\\x&=0,1,-1\\end{aligned}$$\n\nFinally, the corresponding points are $(-1,1)$ and $(0,0)$ and $(1,-1)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-65208",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-65208"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "ee1b91a0ad754a602131c2fc9818d1c2c6727a0d23936a4f2759474e65017c6f",
+        "mathematical_fingerprint": "b653f3f41b8d7cc8c979293bcfd714082c4ac0ac0e20aa867be513e736d85c9e",
+        "actual_points": [
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "1",
+            "-1"
+          ]
+        ],
+        "operator_input": "9*x**2*y + 6*x - 3*y**3",
+        "Fx": "18*x*y + 6",
+        "Fy": "9*x**2 - 9*y**2",
+        "orthogonality": "9*x**2 - 9*y**2",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "c98e3a06-3999-5f09-83bd-403420fd44f1",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "1394c38c-5737-5b7a-993a-6c04db695226",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "08326d96-8685-56e4-b6c2-8b07eb81eab8",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "18db5191-3b47-5811-ba97-ac3532b29fc6",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "2165ef61-3d57-5c51-a1f8-45fce081a1e6",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "7f1d61e8-39f0-5ba3-a3c2-31572b982987",
+        ":question/problem": "At which point on the curve ${x}^{2}y=-8x-4$ is the tangent vector to the curve perpendicular to the vector $j?$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5783b898-b972-5bec-b8be-c579f07711fe",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f411c241-3784-508f-a171-1e8831769790",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(2,-5)"
+              },
+              {
+                ":answer/id": "f064c0f7-f9c1-5c67-b4dc-653904534021",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(-1,4)"
+              },
+              {
+                ":answer/id": "63602e17-a0a8-51b0-b643-fa73e48220a5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(-2,3)"
+              },
+              {
+                ":answer/id": "d50bfd50-a4c7-5f20-b280-0ae1aac5b886",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(1,-12)"
+              },
+              {
+                ":answer/id": "d1338a2f-5a4d-5f80-ba31-28fc82c51c1c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(-3,3)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f064c0f7-f9c1-5c67-b4dc-653904534021"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\n\\begin{aligned}{x}^{2}y & =-8x-4 \\\\ {x}^{2}y+8x & =-4\\end{aligned}\n$$\n\nIf we set $f(x,y)={x}^{2}y+8x,$ our curve can be viewed as the level curve $f(x,y)=-4.$ \n\nA tangent vector to the level curve can be computed as follows:\n\n$$\nt(x,y)={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j\n$$\n\nSo, we calculate $t(x,y):$\n\n$$\n\\begin{aligned}t(x,y) & ={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j \\\\  & =\\frac{\u2202}{\u2202y}({x}^{2}y+8x)\\,i-\\frac{\u2202}{\u2202x}({x}^{2}y+8x)\\,j \\\\  & ={x}^{2}\\,i-(2xy+8)\\,j\\end{aligned}\n$$\n\nSince our tangent vector needs to be perpendicular to $j,$ we must have $t\\cdot j=0.$\n\n$$\n\\begin{aligned}t(x,y)\\cdot j & =0 \\\\ ({x}^{2}\\,i-(2xy+8)\\,j)\\cdot j & =0 \\\\ -(2xy+8) & =0 \\\\ xy+4 & =0 \\\\ y & =-\\frac{4}{x}\\end{aligned}\n$$\n\nSubstituting $y=-\\frac{4}{x}$ into the equation of our curve gives\n\n$$\n\\begin{aligned}{x}^{2}y & =-8x-4 \\\\ {x}^{2}(-\\frac{4}{x}) & =-8x-4 \\\\ -4x & =-8x-4 \\\\ 4x & =-4 \\\\ x & =-1.\\end{aligned}\n$$\n\nFinally, for $x=-1,$ we get $y=4,$ and the corresponding point is $(-1,4).$"
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-130223",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-130223"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "c31c7e2175321478bf8b97768cfc72f38f2a342f3e70dcfef0dec7d9bde03a36",
+        "mathematical_fingerprint": "d682a0a7700813a34c3a8829cf6ab7d28ccaff667e9be76e76533204e06ab849",
+        "actual_points": [
+          [
+            "-1",
+            "4"
+          ]
+        ],
+        "operator_input": "x**2*y + 8*x + 4",
+        "Fx": "2*x*y + 8",
+        "Fy": "x**2",
+        "orthogonality": "-2*x*y - 8",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "x-h != 0; forced by the displayed curve"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "f411c241-3784-508f-a171-1e8831769790",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "f064c0f7-f9c1-5c67-b4dc-653904534021",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "63602e17-a0a8-51b0-b643-fa73e48220a5",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "d50bfd50-a4c7-5f20-b280-0ae1aac5b886",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "d1338a2f-5a4d-5f80-ba31-28fc82c51c1c",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "5c18914b-1e05-5003-a132-4b8f86a666f0",
+        ":question/problem": "At which points on the curve ${y}^{2}+2xy={x}^{2}+8$ is the tangent vector to the curve perpendicular to the vector $j?$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "2b37c6c4-afdb-5d0b-b746-a8666719022f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6f1275ba-590d-5656-8f6e-935e7ce4426c",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(2,2)$ and $(-2,-2)$"
+              },
+              {
+                ":answer/id": "2fb9b4ba-ddef-5947-a4e0-e7e0175aa200",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,2)$ only"
+              },
+              {
+                ":answer/id": "f6ef82aa-2155-5519-9622-f67d578f1d10",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,2)$ and $(1,2)$"
+              },
+              {
+                ":answer/id": "2c36c1ff-8f91-5451-ad2b-9445c2022175",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(2,0)$  and $(0,2)$"
+              },
+              {
+                ":answer/id": "01db6aaa-a50a-50a3-9e3b-84040b953147",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,2)$ and $(2,1)$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6f1275ba-590d-5656-8f6e-935e7ce4426c"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\n\\begin{aligned}{y}^{2}+2xy & ={x}^{2}+8 \\\\ {y}^{2}+2xy-{x}^{2} & =8\\end{aligned}\n$$\n\nIf we set $f(x,y)={y}^{2}+2xy-{x}^{2}$, our curve can be viewed as the level curve $f(x,y)=8.$ \n\nA tangent vector to the level curve can be computed as follows:\n\n$$\nt(x,y)={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j\n$$\n\nSo, we calculate $t(x,y):$\n\n$$\n\\begin{aligned}t(x,y) & ={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j \\\\  & =\\frac{\u2202}{\u2202y}({y}^{2}+2xy-{x}^{2})i-\\frac{\u2202}{\u2202x}({y}^{2}+2xy-{x}^{2})j \\\\  & =2(y+x)\\,i-2(y-x)\\,j\\end{aligned}\n$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\n\\begin{aligned}t(x,y)\\cdot j & =0 \\\\ (2(y+x)\\,i-2(y-x)\\,j)\\cdot j & =0 \\\\ -2(y-x) & =0 \\\\ y & =x\\end{aligned}\n$$\n\nSubstituting $y=x$ into the equation of our curve gives:  \n\n$$\n\\begin{aligned}{y}^{2}+2xy-{x}^{2} & =8 \\\\ (x)^{2}+2x(x)-{x}^{2} & =8 \\\\ {x}^{2}+2{x}^{2}-{x}^{2} & =8 \\\\ 2{x}^{2} & =8 \\\\ {x}^{2} & =4 \\\\ x & =\\pm 2\\end{aligned}\n$$\n\nFinally:\n\n- If $x=2$, we get $y=2$ and the corresponding point is $(2,2).$\n\n- If $x=-2$, we get $y=-2$ and the corresponding point is $(-2,-2).$"
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-72410",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72410"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "97830f03eaffc58c7a851e480a5a2cfa0eb0c66e7540c0ffc5968e42e5275412",
+        "mathematical_fingerprint": "17665d62beaf2b790b1f2099bdb9b87f7b2a7fd9a5eecb0107ccc3399ad5cb7d",
+        "actual_points": [
+          [
+            "-2",
+            "-2"
+          ],
+          [
+            "2",
+            "2"
+          ]
+        ],
+        "operator_input": "-x**2 + 2*x*y + y**2 - 8",
+        "Fx": "-2*x + 2*y",
+        "Fy": "2*x + 2*y",
+        "orthogonality": "2*x - 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "6f1275ba-590d-5656-8f6e-935e7ce4426c",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "2fb9b4ba-ddef-5947-a4e0-e7e0175aa200",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "f6ef82aa-2155-5519-9622-f67d578f1d10",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "2c36c1ff-8f91-5451-ad2b-9445c2022175",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "01db6aaa-a50a-50a3-9e3b-84040b953147",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-4",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "7e6cbb18-d075-5fc6-aa24-1a9e9bffe1ea",
+        ":question/problem": "At which points on the curve ${x}^{2}+2xy=-5y+4$ is the tangent vector to the curve perpendicular to the vector $j?$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d5be724f-2aac-5ad1-9290-a7925146133b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "572c3dac-7a3d-5f6f-980a-60878f3be37a",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,1)$ and  $(4,-4)$ only"
+              },
+              {
+                ":answer/id": "215ca37a-6c0b-5bd3-913a-22bd4c890864",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,4)$ and  $(-4,1)$ only"
+              },
+              {
+                ":answer/id": "ec982a0b-1ae8-507d-9379-32628b9caaa7",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,1)$ and  $(-2,4)$ only"
+              },
+              {
+                ":answer/id": "de5c2f1d-6545-570f-8c4f-755692ad5933",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,4)$ only"
+              },
+              {
+                ":answer/id": "3ac58184-b0f3-5aa1-9af6-0ff1ecaadf92",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,1)$ and  $(-4,4)$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3ac58184-b0f3-5aa1-9af6-0ff1ecaadf92"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\n\\begin{aligned}{x}^{2}+2xy & =-5y+4 \\\\ {x}^{2}+2xy+5y & =4\\end{aligned}\n$$\n\nIf we set $f(x,y)={x}^{2}+2xy+5y$, our curve can be viewed as the level curve $f(x,y)=4.$ \n\nA tangent vector to the level curve can be computed as follows:\n\n$$\nt(x,y)={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j\n$$\n\nSo, we calculate $t(x,y):$\n\n$$\n\\begin{aligned}t(x,y) & ={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j \\\\  & =\\frac{\u2202}{\u2202y}({x}^{2}+2xy+5y)i-\\frac{\u2202}{\u2202x}({x}^{2}+2xy+5y)j \\\\  & =(2x+5)\\,i-(2x+2y)\\,j\\end{aligned}\n$$\n\n  \n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\n\\begin{aligned}t(x,y)\\cdot j & =0 \\\\ ((2x+5)\\,i-(2x+2y)\\,j)\\cdot j & =0 \\\\ -(2x+2y) & =0 \\\\ x & =-y\\end{aligned}\n$$\n\nSubstituting $x=-y$ into the equation of our curve gives:    \n\n$$\n\\begin{aligned}{x}^{2}+2xy+5y & =4 \\\\ (-y)^{2}+2(-y)y+5y & =4 \\\\ {y}^{2}-2{y}^{2}+5y & =4 \\\\ -{y}^{2}+5y-4 & =0 \\\\ {y}^{2}-5y+4 & =0 \\\\ (y-1)(y-4) & =0 \\\\ y & =1\\,\\text{or}\\,y=4\\end{aligned}\n$$\n\nFinally:\n\n- If $y=1$, we get $x=-1$ and the corresponding point is $(-1,1).$\n\n- If $y=4$, we get $x=-4$ and the corresponding point is $(-4,4).$"
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-72440",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72440"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "1df56339044e5fc703fcaffc6958639e2e55c04639dc7dfcc2875f445a61716e",
+        "mathematical_fingerprint": "2010dcd23c4e812b0d236b290a8ce4670d34cfb46e157fcb65e347bf6ccb8c29",
+        "actual_points": [
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-4",
+            "4"
+          ]
+        ],
+        "operator_input": "x**2 + 2*x*y + 5*y - 4",
+        "Fx": "2*x + 2*y",
+        "Fy": "2*x + 5",
+        "orthogonality": "-2*x - 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "572c3dac-7a3d-5f6f-980a-60878f3be37a",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "215ca37a-6c0b-5bd3-913a-22bd4c890864",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "ec982a0b-1ae8-507d-9379-32628b9caaa7",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "de5c2f1d-6545-570f-8c4f-755692ad5933",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "3ac58184-b0f3-5aa1-9af6-0ff1ecaadf92",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-5",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "44b6f8ef-1c24-51e0-9727-5b812089ed06",
+        ":question/problem": "At which points on the curve $2xy-3{x}^{2}=-y$ is the tangent vector to the curve perpendicular to the vector $j?$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "32139be8-1149-507a-b015-32479026d647",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ecf638aa-977c-579e-930a-9e1a5b5c06f2",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,3)$ and $(0,-3)$"
+              },
+              {
+                ":answer/id": "35a8e359-32b5-5f39-96cd-edb51792fe95",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,0)$ and $(-1,-3)$"
+              },
+              {
+                ":answer/id": "5f430711-17ba-51e6-85bf-397b1aa89148",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,-1)$ and $(0,-3)$"
+              },
+              {
+                ":answer/id": "fd435122-a82e-5c19-b219-e6178dd3ee38",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,1)$ and $(1,-3)$"
+              },
+              {
+                ":answer/id": "2064b84e-a94a-5c36-8555-3a1fe2d1bb6a",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(3,0)$ and $(-1,0)$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "35a8e359-32b5-5f39-96cd-edb51792fe95"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\n\\begin{aligned}2xy-3{x}^{2}=-y \\\\ 2xy-3{x}^{2}+y & =0\\end{aligned}\n$$\n\nIf we set $f(x,y)=2xy-3{x}^{2}+y$, our curve can be viewed as the level curve $f(x,y)=0.$ \n\nA tangent vector to the level curve can be computed as follows:\n\n$$\nt(x,y)={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j\n$$\n\nSo, we calculate $t(x,y):$\n\n$$\n\\begin{aligned}t(x,y) & ={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j \\\\  & =\\frac{\u2202}{\u2202y}(2xy-3{x}^{2}+y)i-\\frac{\u2202}{\u2202x}(2xy-3{x}^{2}+y)j \\\\  & =(2x+1)\\,i-2(y-3x)\\,j\\end{aligned}\n$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\n\\begin{aligned}t(x,y)\\cdot j & =0 \\\\ ((2x+1)\\,i-2(y-3x)\\,j)\\cdot j & =0 \\\\ -2(y-3x) & =0 \\\\ y & =3x\\end{aligned}\n$$\n\nSubstituting $y=3x$ into the equation of our curve gives:  \n\n$$\n\\begin{aligned}2xy-3{x}^{2}+y & =0 \\\\ 2x(3x)-3{x}^{2}+3x & =0 \\\\ 6{x}^{2}-3{x}^{2}+3x & =0 \\\\ 3{x}^{2}+3x & =0 \\\\ 3x(x+1) & =0 \\\\ x & =0\\,\\text{or}\\,x=-1\\end{aligned}\n$$\n\nFinally:\n\n- If $x=0$, we get $y=0$ and the corresponding point is $(0,0).$\n\n- If $x=-1$, we get $y=-3$ and the corresponding point is $(-1,-3).$"
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-72416",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72416"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "c93c6be3d84087d9d4894df11070939a7fef29bbde16e5d27bd23855ebfdd1bf",
+        "mathematical_fingerprint": "c5201f92d9804ae45468fb2364999e3ed804cb5c422393c147282a4b7c6e0bc8",
+        "actual_points": [
+          [
+            "-1",
+            "-3"
+          ],
+          [
+            "0",
+            "0"
+          ]
+        ],
+        "operator_input": "-3*x**2 + 2*x*y + y",
+        "Fx": "-6*x + 2*y",
+        "Fy": "2*x + 1",
+        "orthogonality": "6*x - 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "ecf638aa-977c-579e-930a-9e1a5b5c06f2",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "35a8e359-32b5-5f39-96cd-edb51792fe95",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "5f430711-17ba-51e6-85bf-397b1aa89148",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "fd435122-a82e-5c19-b219-e6178dd3ee38",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "2064b84e-a94a-5c36-8555-3a1fe2d1bb6a",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-6",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "685cb78a-9f69-56bf-b69c-ce2e406fbda4",
+        ":question/problem": "At which points on the curve $2{x}^{2}-3{y}^{2}=-y$ is the tangent vector to the curve perpendicular to the vector $j?$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c1be7ec7-244a-5ab6-aff3-4d72f2577d80",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b3fb2d75-7060-5248-93e3-b2bf53383fea",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,\\frac{1}{3})$ only"
+              },
+              {
+                ":answer/id": "999c0983-0440-5e19-bcf2-dc0bd03a1460",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,1)$ and $(0,0)$"
+              },
+              {
+                ":answer/id": "37baf455-2745-5e62-8e91-db8a2ded98e2",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,1)$ and $(1,1)$"
+              },
+              {
+                ":answer/id": "85e7a0f4-f421-51f1-9622-63c3357dd9b0",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,1)$ only"
+              },
+              {
+                ":answer/id": "9ba846b6-8a9d-5412-b667-799f8eeed7b3",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,0)$ and $(0,\\frac{1}{3})$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "9ba846b6-8a9d-5412-b667-799f8eeed7b3"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\n\\begin{aligned}2{x}^{2}-3{y}^{2} & =-y \\\\ 2{x}^{2}-3{y}^{2}+y & =0\\end{aligned}\n$$\n\nIf we set $f(x,y)=2{x}^{2}-3{y}^{2}+y,$ our curve can be viewed as the level curve $f(x,y)=0.$ \n\nA tangent vector to the level curve can be computed as follows:\n\n$$\nt(x,y)={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j\n$$\n\nSo, we calculate $t(x,y):$\n\n$$\n\\begin{aligned}t(x,y) & ={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j \\\\  & =\\frac{\u2202}{\u2202y}(2{x}^{2}-3{y}^{2}+y)\\,i-\\frac{\u2202}{\u2202x}(2{x}^{2}-3{y}^{2}+y)\\,j \\\\  & =(-6y+1)\\,i-4x\\,j\\end{aligned}\n$$\n\nSince our tangent vector needs to be perpendicular to $j,$ we must have $t\\cdot j=0.$\n\n$$\n\\begin{aligned}t(x,y)\\cdot j & =0 \\\\ ((-6y+1)\\,i-4x\\,j)\\cdot j & =0 \\\\ -4x & =0 \\\\ x & =0\\end{aligned}\n$$\n\nSubstituting $x=0$ into the equation of our curve gives\n\n$$\n\\begin{aligned}2{x}^{2}-3{y}^{2} & =-y \\\\ 2({0}^{2})-3{y}^{2} & =-y \\\\ 3{y}^{2}-y & =0 \\\\ y(3y-1) & =0 \\\\ y & =0,\\frac{1}{3}.\\end{aligned}\n$$\n\nFinally, the corresponding points are $(0,0)$ and $(0,\\frac{1}{3}).$"
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-130225",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-130225"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "03598b84867ed30ef4ca9a22aede9733070d475efc20a925654896354ea11faf",
+        "mathematical_fingerprint": "2d14a5df92436c32ada4fa5a4ecd73158555cbd191652613d9a72d2b3ebaecaf",
+        "actual_points": [
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "1/3"
+          ]
+        ],
+        "operator_input": "2*x**2 - 3*y**2 + y",
+        "Fx": "4*x",
+        "Fy": "1 - 6*y",
+        "orthogonality": "-4*x",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "b3fb2d75-7060-5248-93e3-b2bf53383fea",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "999c0983-0440-5e19-bcf2-dc0bd03a1460",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "37baf455-2745-5e62-8e91-db8a2ded98e2",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "85e7a0f4-f421-51f1-9622-63c3357dd9b0",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "9ba846b6-8a9d-5412-b667-799f8eeed7b3",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "1c346729-c844-5f85-a172-6b55d61832a9",
+        ":question/problem": "At which points on the curve ${y}^{2}+2x=2xy+2y-2$ is the tangent vector to the curve perpendicular to the vector $i?$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ca606889-6f2c-5166-b250-d2578f3c6de3",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "40350350-5b68-5e12-8ffb-8071d12218eb",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,1)$ and $(2,0)$"
+              },
+              {
+                ":answer/id": "cda69a51-80f1-55b0-ac31-e923fdfb9ee6",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,2)$ and $(1,0)$"
+              },
+              {
+                ":answer/id": "1ffcf12e-db1c-56cd-89a5-607fe98e16d6",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,-2)$ and $(0,1)$"
+              },
+              {
+                ":answer/id": "f7d8f9ff-76dc-5863-b07d-f258ed711056",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,2)$ and $(-1,0)$"
+              },
+              {
+                ":answer/id": "0cfe4fd0-a173-50f4-be78-0c6b998abb4d",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,-2)$ and $(1,0)$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f7d8f9ff-76dc-5863-b07d-f258ed711056"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\n\\begin{aligned}{y}^{2}+2x & =2xy+2y-2 \\\\ {y}^{2}+2x-2xy-2y & =-2\\end{aligned}\n$$\n\nIf we set $f(x,y)={y}^{2}+2x-2xy-2y$, our curve can be viewed as the level curve $f(x,y)=-2.$  \n\nA tangent vector to the level curve can be computed as follows:\n\n$$\nt(x,y)={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j\n$$\n\nSo, we calculate $t(x,y):$\n\n$$\n\\begin{aligned}t(x,y) & ={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j \\\\  & =\\frac{\u2202}{\u2202y}({y}^{2}+2x-2xy-2y)i-\\frac{\u2202}{\u2202x}({y}^{2}+2x-2xy-2y)j \\\\  & =(2y-2x-2)\\,i-(2-2y)\\,j\\end{aligned}\n$$\n\nSince our tangent vector needs to be perpendicular to $i$, we must have $t\\cdot i=0.$\n\n$$\n\\begin{aligned}t(x,y)\\cdot i & =0 \\\\ ((2y-2x-2)\\,i-(2-2y)\\,j)\\cdot i & =0 \\\\ 2y-2x-2 & =0 \\\\ 2(y-x-1) & =0 \\\\ y & =x+1\\end{aligned}\n$$\n\nSubstituting $y=x+1$ into the equation of our curve gives:  \n\n$$\n\\begin{aligned}{y}^{2}+2x-2xy-2y & =-2 \\\\ (x+1)^{2}+2x-2x(x+1)-2(x+1)+2 & =0 \\\\ (x+1)^{2}-2x(x+1)-2(x+1)+2(x+1) & =0 \\\\ (x+1)^{2}-2x(x+1)-\\cancel{2(x+1)}+\\cancel{2(x+1)} & =0 \\\\ (x+1)^{2}-2x(x+1) & =0 \\\\ (x+1)(x+1-2x) & =0 \\\\ (x+1)(-x+1) & =0 \\\\ x & =\\pm 1\\end{aligned}\n$$\n\nFinally:\n\n- If $x=1$, we get $y=2$ and the corresponding point is $(1,2).$\n\n- If $x=-1$, we get $y=0$ and the corresponding point is $(-1,0).$"
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-72427",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72427"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "4ffbaeb2a5dfd5fdaa16517bdbbe2e6d2e3c83b123581be376f1746934745e08",
+        "mathematical_fingerprint": "85af9b0da534c6263399703a04fc32feafb16c605e326dd0584662836e2615e1",
+        "actual_points": [
+          [
+            "-1",
+            "0"
+          ],
+          [
+            "1",
+            "2"
+          ]
+        ],
+        "operator_input": "-2*x*y + 2*x + y**2 - 2*y + 2",
+        "Fx": "2 - 2*y",
+        "Fy": "-2*x + 2*y - 2",
+        "orthogonality": "-2*x + 2*y - 2",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "40350350-5b68-5e12-8ffb-8071d12218eb",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "cda69a51-80f1-55b0-ac31-e923fdfb9ee6",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "1ffcf12e-db1c-56cd-89a5-607fe98e16d6",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "f7d8f9ff-76dc-5863-b07d-f258ed711056",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "0cfe4fd0-a173-50f4-be78-0c6b998abb4d",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-8",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "3eadc864-deb9-55fd-bf64-51526d7d50a9",
+        ":question/problem": "At which point on the curve $2{x}^{2}=y+1$ is the tangent vector to the curve perpendicular to the vector $i+j?$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c8c04af1-12ac-5187-a38c-cb6a6dd395f0",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7ee771fa-20d4-5583-b1cf-ad48bab5300f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(0,-1)"
+              },
+              {
+                ":answer/id": "df81b9df-e5c3-52a4-b3a2-5b9ba0bdfd99",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(-\\frac{1}{4},-\\frac{7}{8})"
+              },
+              {
+                ":answer/id": "664e1326-3d4d-5cc8-bce9-8272a6806f62",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(1,1)"
+              },
+              {
+                ":answer/id": "7c5f7c56-ee18-5b58-8280-8cb012ce845a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(\\frac{1}{2},-\\frac{1}{2})"
+              },
+              {
+                ":answer/id": "b2ac483c-84dd-5dd7-98c4-ea8a79a4be74",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(-1,1)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "df81b9df-e5c3-52a4-b3a2-5b9ba0bdfd99"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\n\\begin{aligned}2{x}^{2} & =y+1 \\\\ 2{x}^{2}-y & =1\\end{aligned}\n$$\n\nIf we set $f(x,y)=2{x}^{2}-y,$ our curve can be viewed as the level curve $f(x,y)=1.$ \n\nA tangent vector to the level curve can be computed as follows:\n\n$$\nt(x,y)={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j\n$$\n\nSo, we calculate $t(x,y):$\n\n$$\n\\begin{aligned}t(x,y) & ={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j \\\\  & =\\frac{\u2202}{\u2202y}(2{x}^{2}-y)\\,i-\\frac{\u2202}{\u2202x}(2{x}^{2}-y)\\,j \\\\  & =-i-4x\\,j\\end{aligned}\n$$\n\nSince our tangent vector needs to be perpendicular to $i+j,$ we must have $t\\cdot (i+j)=0.$\n\n$$\n\\begin{aligned}t(x,y)\\cdot (i+j) & =0 \\\\ (-i-4x\\,j)\\cdot (i+j) & =0 \\\\ -1-4x & =0 \\\\ x & =-\\frac{1}{4}\\end{aligned}\n$$\n\nSubstituting $x=-\\frac{1}{4}$ into the equation of our curve gives\n\n$$\n\\begin{aligned}2{x}^{2} & =y+1 \\\\ 2{(-\\frac{1}{4})}^{2} & =y+1 \\\\ \\frac{1}{8} & =y+1 \\\\ y & =-\\frac{7}{8}.\\end{aligned}\n$$\n\nFinally, the corresponding point is $(-\\frac{1}{4},-\\frac{7}{8}).$"
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-130209",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-130209"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "5425c98e5c7efdbead6ceefecd86a3d7a3edb1b7282e9c77df742590eb3ab38c",
+        "mathematical_fingerprint": "24bfd079dcbedb34b3ef7cfc6a791536d532a03dbbef8cc3c1dddcca13304b7f",
+        "actual_points": [
+          [
+            "-1/4",
+            "-7/8"
+          ]
+        ],
+        "operator_input": "2*x**2 - y - 1",
+        "Fx": "4*x",
+        "Fy": "-1",
+        "orthogonality": "-4*x - 1",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "7ee771fa-20d4-5583-b1cf-ad48bab5300f",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "df81b9df-e5c3-52a4-b3a2-5b9ba0bdfd99",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "664e1326-3d4d-5cc8-bce9-8272a6806f62",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "7c5f7c56-ee18-5b58-8280-8cb012ce845a",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "b2ac483c-84dd-5dd7-98c4-ea8a79a4be74",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-9",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "4d325348-7117-5862-a87d-edb85dde76f0",
+        ":question/problem": "At which points on the curve ${x}^{2}+{y}^{2}=2y-2x$ is the tangent vector to the curve perpendicular to the vector $-i+j?$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "df707050-9b1c-56c4-a7fc-b58e0807f764",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bdeeee3e-de8a-5d98-bf56-5652ddcbeabb",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,2)$ only"
+              },
+              {
+                ":answer/id": "3bf03647-4a72-5eab-9ae3-24beba2bd64b",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-2,2)$ and $(0,0)$"
+              },
+              {
+                ":answer/id": "b4a5b7aa-7360-5546-afb7-dc947186d902",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(0,0)$ only"
+              },
+              {
+                ":answer/id": "f570513f-bb60-5ba4-ae04-ec4b6d9efb40",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-2,0)$ and $(0,2)$"
+              },
+              {
+                ":answer/id": "1885611c-1d77-5b72-9eae-39a73e8f7ad8",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-2,0)$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3bf03647-4a72-5eab-9ae3-24beba2bd64b"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\n\\begin{aligned}{x}^{2}+{y}^{2} & =2y-2x \\\\ {x}^{2}+{y}^{2}+2x-2y & =0\\end{aligned}\n$$\n\nIf we set $f(x,y)={x}^{2}+{y}^{2}+2x-2y,$ our curve can be viewed as the level curve $f(x,y)=0.$ \n\nA tangent vector to the level curve can be computed as follows:\n\n$$\nt(x,y)={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j\n$$\n\nSo, we calculate $t(x,y):$\n\n$$\n\\begin{aligned}t(x,y) & ={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j \\\\  & =\\frac{\u2202}{\u2202y}({x}^{2}+{y}^{2}+2x-2y)\\,i-\\frac{\u2202}{\u2202x}({x}^{2}+{y}^{2}+2x-2y)\\,j \\\\  & =(2y-2)\\,i-(2x+2)\\,j\\end{aligned}\n$$\n\nSince our tangent vector needs to be perpendicular to $-i+j,$ we must have $t\\cdot (-i+j)=0.$\n\n$$\n\\begin{aligned}t(x,y)\\cdot (-i+j) & =0 \\\\ ((2y-2)\\,i-(2x+2)\\,j)\\cdot (-i+j) & =0 \\\\ -(2y-2)-(2x+2) & =0 \\\\ -2y-2x & =0 \\\\ y & =-x\\end{aligned}\n$$\n\nSubstituting $y=-x$ into the equation of our curve gives\n\n$$\n\\begin{aligned}{x}^{2}+{y}^{2} & =2y-2x \\\\ {x}^{2}+(-x)^{2} & =2(-x)-2x \\\\ 2{x}^{2} & =-4x \\\\ 2{x}^{2}+4x & =0 \\\\ 2x(x+2) & =0 \\\\ x & =-2,0.\\end{aligned}\n$$\n\nFinally:\n\n- For $x=-2,$ we get $y=2,$ and the corresponding point is $(-2,2).$\n\n- For $x=0,$ we get $y=0,$ and the corresponding point is $(0,0).$"
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-130217",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-130217"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "ae65156f2a6d99c3abfeecebe8d178f5c137819da9afcb5c3d3684efa9383cf9",
+        "mathematical_fingerprint": "e149447db2e8a264c1af76e42800a65e4e89bbe7d573f002ddada0a8b4c8a2a2",
+        "actual_points": [
+          [
+            "-2",
+            "2"
+          ],
+          [
+            "0",
+            "0"
+          ]
+        ],
+        "operator_input": "x**2 + 2*x + y**2 - 2*y",
+        "Fx": "2*x + 2",
+        "Fy": "2*y - 2",
+        "orthogonality": "-2*x - 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "bdeeee3e-de8a-5d98-bf56-5652ddcbeabb",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "3bf03647-4a72-5eab-9ae3-24beba2bd64b",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "b4a5b7aa-7360-5546-afb7-dc947186d902",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "f570513f-bb60-5ba4-ae04-ec4b6d9efb40",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "1885611c-1d77-5b72-9eae-39a73e8f7ad8",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-10",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "f81c0739-1a99-5b6b-90bc-1d695e7d2dce",
+        ":question/problem": "At which points on the curve ${y}^{2}-4xy=-5{x}^{2}+1$ is the tangent vector to the curve perpendicular to the vector $i?$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "09784608-b0da-50e9-b1b8-1f70d7fde23a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "92fb042b-43d9-51da-9b29-d98557c1839d",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,2)$ and $(-1,-2)$"
+              },
+              {
+                ":answer/id": "bdb837fd-1c51-5bed-be14-791673a1cebc",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,1)$ and $(-1,-1)$"
+              },
+              {
+                ":answer/id": "3955c7ae-e9c9-5819-934b-7151449a69c3",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(3,2)$ and $(-1,3)$"
+              },
+              {
+                ":answer/id": "ba39289a-a5ed-5456-b34f-7eaa73bdc43c",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,3)$ and $(3,-2)$"
+              },
+              {
+                ":answer/id": "8ed7abee-ca7a-5bd1-9c11-bddf5d414bc7",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,2)$ and $(1,-2)$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "92fb042b-43d9-51da-9b29-d98557c1839d"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\n\\begin{aligned}{y}^{2}-4xy & =-5{x}^{2}+1 \\\\ {y}^{2}-4xy+5{x}^{2} & =1\\end{aligned}\n$$\n\nIf we set $f(x,y)={y}^{2}-4xy+5{x}^{2}$, our curve can be viewed as the level curve $f(x,y)=1.$ \n\nA tangent vector to the level curve can be computed as follows:\n\n$$\nt(x,y)={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j\n$$\n\nSo, we calculate $t(x,y):$\n\n$$\n\\begin{aligned}t(x,y) & ={f}_{y}(x,y)\\,i-{f}_{x}(x,y)\\,j \\\\  & =\\frac{\u2202}{\u2202y}({y}^{2}-4xy+5{x}^{2})i-\\frac{\u2202}{\u2202x}({y}^{2}-4xy+5{x}^{2})j \\\\  & =2(y-2x)\\,i-(10x-4y)\\,j\\end{aligned}\n$$\n\nSince our tangent vector needs to be perpendicular to $i$, we must have $t\\cdot i=0.$\n\n$$\n\\begin{aligned}t(x,y)\\cdot i & =0 \\\\ (2(y-2x)\\,i-(10x-4y)\\,j)\\cdot i & =0 \\\\ 2(y-2x) & =0 \\\\ y & =2x\\end{aligned}\n$$\n\nSubstituting $y=2x$ into the equation of our curve gives:  \n\n$$\n\\begin{aligned}{y}^{2}-4xy+5{x}^{2} & =1 \\\\ (2x)^{2}-4x(2x)+5{x}^{2} & =1 \\\\ 4{x}^{2}-8{x}^{2}+5{x}^{2} & =1 \\\\ {x}^{2} & =1 \\\\ x & =\\pm 1\\end{aligned}\n$$\n\nFinally:\n\n- If $x=1$, we get $y=2$ and the corresponding point is $(1,2).$\n\n- If $x=-1$, we get $y=-2$ and the corresponding point is $(-1,-2).$"
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 0,
+        "template": "q-72412",
+        "profile": "observed_completed",
+        "parameters": {
+          "h": 0,
+          "k": 0
+        },
+        "domain": {
+          "h": [
+            -3,
+            3
+          ],
+          "k": [
+            -3,
+            3
+          ],
+          "integers_only": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72412"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "observed_bank_with_inferred_completion",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "bank_recipes": [
+          "coordinate_translation_of_complete_observed_bank; intention_opaque"
+        ],
+        "content_hash": "40bb3a24e5e61c18db5dfc8c36f962bc8773fea8f2de2fe165342fb19017110c",
+        "mathematical_fingerprint": "31ec0b3c55a9f3c4bbb1b298698952dd2011811c66c6da4cfb007563da7da578",
+        "actual_points": [
+          [
+            "-1",
+            "-2"
+          ],
+          [
+            "1",
+            "2"
+          ]
+        ],
+        "operator_input": "5*x**2 - 4*x*y + y**2 - 1",
+        "Fx": "10*x - 4*y",
+        "Fy": "-4*x + 2*y",
+        "orthogonality": "-4*x + 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "92fb042b-43d9-51da-9b29-d98557c1839d",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "bdb837fd-1c51-5bed-be14-791673a1cebc",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "3955c7ae-e9c9-5819-934b-7151449a69c3",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "ba39289a-a5ed-5456-b34f-7eaa73bdc43c",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "8ed7abee-ca7a-5bd1-9c11-bddf5d414bc7",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-11",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "ab573765-01e6-5d74-a4e8-4a7b2d91cbfb",
+        ":question/problem": "At which point on the curve $6 x y + 3 y^{2}=- 3 x^{2} + 2 y - 12$ is the tangent vector to the curve perpendicular to the vector $j$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "2e0560bc-a856-5a20-ba71-87ed6fd12b89",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "162396d3-e505-5b57-ba7a-146394835373",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-6,0)$ only"
+              },
+              {
+                ":answer/id": "1cc97fdf-7a5a-5b61-8054-bc0cee6b51e7",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-6,-6)$ only"
+              },
+              {
+                ":answer/id": "9ad80bf7-52a6-5857-83ef-f43c73039eea",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-12,12)$ only"
+              },
+              {
+                ":answer/id": "2d0be6c6-6422-5084-9dc6-00430ce5629c",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-6,6)$ only"
+              },
+              {
+                ":answer/id": "8e672fd5-bcea-5285-9cab-0ce9e9ec9bd9",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(6,-6)$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2d0be6c6-6422-5084-9dc6-00430ce5629c"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}6 x y + 3 y^{2}&=- 3 x^{2} + 2 y - 12\\\\3 x^{2} + 6 x y + 3 y^{2} - 2 y + 12&=0\\end{aligned}$$\n\nIf we set $f(x,y)=3 x^{2} + 6 x y + 3 y^{2} - 2 y + 12$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(3 x^{2} + 6 x y + 3 y^{2} - 2 y + 12)\\,i-\\frac{\u2202}{\u2202x}(3 x^{2} + 6 x y + 3 y^{2} - 2 y + 12)\\,j\\\\&=(6 x + 6 y - 2)\\,i-(6 x + 6 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 6 x - 6 y&=0\\\\y&=-x\\end{aligned}$$\n\nSubstituting $y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}3(x+(-x))^{2}-2(-x)-(-12)&=0\\\\2x-(-12)&=0\\\\2x&=-12\\\\x&=-6\\end{aligned}$$\n\nFinally, the corresponding point is $(-6,6)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 23,
+        "template": "canonical_linear",
+        "profile": "authored_method_bank",
+        "parameters": {
+          "A": 3,
+          "b": 2,
+          "r": -6
+        },
+        "domain": {
+          "A": [
+            1,
+            4
+          ],
+          "b": [
+            2,
+            5
+          ],
+          "r": [
+            -6,
+            6
+          ],
+          "r_nonzero": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "e-3364"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_missing_level",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "solve",
+          "wrong_relation_sign",
+          "wrong_x_sign",
+          "omit_division_b",
+          "omit_y_substitution"
+        ],
+        "content_hash": "34bf70ebd05d17cee4dab6d4666c958b9dd41399dccdff16ad6d37ce26975b96",
+        "mathematical_fingerprint": "45f999d09ce15777d39375fe9eec3e1eb42cc0b2f60039a6b0e2bb795a152401",
+        "actual_points": [
+          [
+            "-6",
+            "6"
+          ]
+        ],
+        "operator_input": "3*x**2 + 6*x*y + 3*y**2 - 2*y + 12",
+        "Fx": "6*x + 6*y",
+        "Fy": "6*x + 6*y - 2",
+        "orthogonality": "-6*x - 6*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "162396d3-e505-5b57-ba7a-146394835373",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "1cc97fdf-7a5a-5b61-8054-bc0cee6b51e7",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "9ad80bf7-52a6-5857-83ef-f43c73039eea",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "2d0be6c6-6422-5084-9dc6-00430ce5629c",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "8e672fd5-bcea-5285-9cab-0ce9e9ec9bd9",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-12",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "daf54a41-ac52-5430-ae60-07b5d82f703d",
+        ":question/problem": "At which point on the curve $8 x y + 4 y^{2}=- 4 x^{2} + 2 y - 8$ is the tangent vector to the curve perpendicular to the vector $j$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "02030167-b9a1-514c-b278-b4a499fab043",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ad15bfe3-771e-5c95-894c-e6c7da0c8f12",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(4,-4)$ only"
+              },
+              {
+                ":answer/id": "bc3dfeb9-62b0-5c61-ba46-f13bba7762df",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-4,-4)$ only"
+              },
+              {
+                ":answer/id": "e6c7ad31-3149-5b96-bf07-80fa1683f0ed",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-4,0)$ only"
+              },
+              {
+                ":answer/id": "f7d7b5b0-179a-5567-8d22-0ac25c392393",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-4,4)$ only"
+              },
+              {
+                ":answer/id": "97156117-fcd1-5671-bbbb-06fc80a78c16",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-8,8)$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f7d7b5b0-179a-5567-8d22-0ac25c392393"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 4 y^{2}&=- 4 x^{2} + 2 y - 8\\\\4 x^{2} + 8 x y + 4 y^{2} - 2 y + 8&=0\\end{aligned}$$\n\nIf we set $f(x,y)=4 x^{2} + 8 x y + 4 y^{2} - 2 y + 8$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(4 x^{2} + 8 x y + 4 y^{2} - 2 y + 8)\\,i-\\frac{\u2202}{\u2202x}(4 x^{2} + 8 x y + 4 y^{2} - 2 y + 8)\\,j\\\\&=(8 x + 8 y - 2)\\,i-(8 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 8 x - 8 y&=0\\\\y&=-x\\end{aligned}$$\n\nSubstituting $y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}4(x+(-x))^{2}-2(-x)-(-8)&=0\\\\2x-(-8)&=0\\\\2x&=-8\\\\x&=-4\\end{aligned}$$\n\nFinally, the corresponding point is $(-4,4)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 44,
+        "template": "canonical_linear",
+        "profile": "authored_method_bank",
+        "parameters": {
+          "A": 4,
+          "b": 2,
+          "r": -4
+        },
+        "domain": {
+          "A": [
+            1,
+            4
+          ],
+          "b": [
+            2,
+            5
+          ],
+          "r": [
+            -6,
+            6
+          ],
+          "r_nonzero": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "e-3364"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_missing_level",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "solve",
+          "wrong_relation_sign",
+          "wrong_x_sign",
+          "omit_division_b",
+          "omit_y_substitution"
+        ],
+        "content_hash": "3f8f2f55427616c530b9c9221cc339df11b764a6afe229cd86e90a74f039b25e",
+        "mathematical_fingerprint": "028082197c0cbd9f3c497d0bfba21a96ab6c149ec265317dd9698841ef031769",
+        "actual_points": [
+          [
+            "-4",
+            "4"
+          ]
+        ],
+        "operator_input": "4*x**2 + 8*x*y + 4*y**2 - 2*y + 8",
+        "Fx": "8*x + 8*y",
+        "Fy": "8*x + 8*y - 2",
+        "orthogonality": "-8*x - 8*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "ad15bfe3-771e-5c95-894c-e6c7da0c8f12",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "bc3dfeb9-62b0-5c61-ba46-f13bba7762df",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "e6c7ad31-3149-5b96-bf07-80fa1683f0ed",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "f7d7b5b0-179a-5567-8d22-0ac25c392393",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "97156117-fcd1-5671-bbbb-06fc80a78c16",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-13",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "cd9feda4-e01c-5adb-a342-8ef6426a189a",
+        ":question/problem": "At which points on the curve $4 x y + 2 y^{2}=4 x^{2} + 12$ is the tangent vector to the curve perpendicular to the vector $j$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4a4a6484-dfbd-59d7-920d-9456dfec02b5",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3d055fc7-c216-55fd-a8a1-7abb45d498cf",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(2,1)$ and $(-2,-1)$"
+              },
+              {
+                ":answer/id": "f9d0729a-371c-5bb5-9ac4-e2358608a909",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,2)$ only"
+              },
+              {
+                ":answer/id": "afcc026d-112c-52f1-b49b-5463938d3370",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,-2)$ and $(-1,2)$"
+              },
+              {
+                ":answer/id": "b0b2d501-9bad-5a61-8a48-4717d3275ac0",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,2)$ and $(-1,-2)$"
+              },
+              {
+                ":answer/id": "4bed271e-be00-55be-972c-cafb6e5141c3",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,-2)$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b0b2d501-9bad-5a61-8a48-4717d3275ac0"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}4 x y + 2 y^{2}&=4 x^{2} + 12\\\\- 4 x^{2} + 4 x y + 2 y^{2} - 12&=0\\end{aligned}$$\n\nIf we set $f(x,y)=- 4 x^{2} + 4 x y + 2 y^{2} - 12$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- 4 x^{2} + 4 x y + 2 y^{2} - 12)\\,i-\\frac{\u2202}{\u2202x}(- 4 x^{2} + 4 x y + 2 y^{2} - 12)\\,j\\\\&=(4 x + 4 y)\\,i-(- 8 x + 4 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\8 x - 4 y&=0\\\\y&=2x\\end{aligned}$$\n\nSubstituting $y=2x$ into the equation of our curve gives:\n\n$$\\begin{aligned}2(2x)^{2}+4x(2x)-4x^{2}-12&=0\\\\12x^{2}-12&=0\\\\x^{2}&=1\\\\x&=\\pm 1\\end{aligned}$$\n\nFinally, the corresponding points are $(1,2)$ and $(-1,-2)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 23,
+        "template": "symmetric_quadratic",
+        "profile": "authored_method_bank",
+        "parameters": {
+          "D": 2,
+          "m": 2,
+          "r": 1
+        },
+        "domain": {
+          "D": [
+            1,
+            3
+          ],
+          "m": [
+            2,
+            4
+          ],
+          "r": [
+            1,
+            4
+          ]
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72410"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_missing_level",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "solve",
+          "omit_negative_root",
+          "omit_positive_root",
+          "wrong_relation_sign",
+          "swap_coordinates"
+        ],
+        "content_hash": "b94f2c273ffc601a03c6f80fe43cdf18f8e066beb9392c0062f2552baecbc0a2",
+        "mathematical_fingerprint": "4b4737fdba0a827be9fa7178ddc5b02fc4f0faeed4b9176204a2a750999aaf97",
+        "actual_points": [
+          [
+            "-1",
+            "-2"
+          ],
+          [
+            "1",
+            "2"
+          ]
+        ],
+        "operator_input": "-4*x**2 + 4*x*y + 2*y**2 - 12",
+        "Fx": "-8*x + 4*y",
+        "Fy": "4*x + 4*y",
+        "orthogonality": "8*x - 4*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "3d055fc7-c216-55fd-a8a1-7abb45d498cf",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "f9d0729a-371c-5bb5-9ac4-e2358608a909",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "afcc026d-112c-52f1-b49b-5463938d3370",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "b0b2d501-9bad-5a61-8a48-4717d3275ac0",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "4bed271e-be00-55be-972c-cafb6e5141c3",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-14",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "a231ceb2-5566-5705-a2e5-529a9088decd",
+        ":question/problem": "At which points on the curve $8 x y + 2 y^{2}=16 x^{2} + 48$ is the tangent vector to the curve perpendicular to the vector $j$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "55c99ac7-483e-5df9-ad79-900ba3c9fcae",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "922c27da-8487-58aa-98af-8cf208c91dc7",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,-4)$ only"
+              },
+              {
+                ":answer/id": "24f6609e-bfcc-5081-84ec-cfd695e3c673",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,4)$ only"
+              },
+              {
+                ":answer/id": "25e74f6b-f956-5600-b3ed-6167421273ff",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(4,1)$ and $(-4,-1)$"
+              },
+              {
+                ":answer/id": "49be6741-1d65-5caf-bfe3-75c2b8beb17b",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,4)$ and $(-1,-4)$"
+              },
+              {
+                ":answer/id": "cbb928a5-bb2c-5408-9ac2-9a72cdebe9bd",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,-4)$ and $(-1,4)$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "49be6741-1d65-5caf-bfe3-75c2b8beb17b"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 2 y^{2}&=16 x^{2} + 48\\\\- 16 x^{2} + 8 x y + 2 y^{2} - 48&=0\\end{aligned}$$\n\nIf we set $f(x,y)=- 16 x^{2} + 8 x y + 2 y^{2} - 48$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- 16 x^{2} + 8 x y + 2 y^{2} - 48)\\,i-\\frac{\u2202}{\u2202x}(- 16 x^{2} + 8 x y + 2 y^{2} - 48)\\,j\\\\&=(8 x + 4 y)\\,i-(- 32 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\32 x - 8 y&=0\\\\y&=4x\\end{aligned}$$\n\nSubstituting $y=4x$ into the equation of our curve gives:\n\n$$\\begin{aligned}2(4x)^{2}+8x(4x)-16x^{2}-48&=0\\\\48x^{2}-48&=0\\\\x^{2}&=1\\\\x&=\\pm 1\\end{aligned}$$\n\nFinally, the corresponding points are $(1,4)$ and $(-1,-4)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 44,
+        "template": "symmetric_quadratic",
+        "profile": "authored_method_bank",
+        "parameters": {
+          "D": 2,
+          "m": 4,
+          "r": 1
+        },
+        "domain": {
+          "D": [
+            1,
+            3
+          ],
+          "m": [
+            2,
+            4
+          ],
+          "r": [
+            1,
+            4
+          ]
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72410"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_missing_level",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "solve",
+          "omit_negative_root",
+          "omit_positive_root",
+          "wrong_relation_sign",
+          "swap_coordinates"
+        ],
+        "content_hash": "cf06c35abbcb1360a66979c9021441b1a31ffe3bf85faf9951cec6aba041954f",
+        "mathematical_fingerprint": "93513a988d3c484c4a817838d7c51874f66ae62546b2b9e27f243205b4284c0e",
+        "actual_points": [
+          [
+            "-1",
+            "-4"
+          ],
+          [
+            "1",
+            "4"
+          ]
+        ],
+        "operator_input": "-16*x**2 + 8*x*y + 2*y**2 - 48",
+        "Fx": "-32*x + 8*y",
+        "Fy": "8*x + 4*y",
+        "orthogonality": "32*x - 8*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "922c27da-8487-58aa-98af-8cf208c91dc7",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "24f6609e-bfcc-5081-84ec-cfd695e3c673",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "25e74f6b-f956-5600-b3ed-6167421273ff",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "49be6741-1d65-5caf-bfe3-75c2b8beb17b",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "cbb928a5-bb2c-5408-9ac2-9a72cdebe9bd",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-15",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "3280aeb6-6eb3-5495-9fb6-bfde5c4276ed",
+        ":question/problem": "At which points on the curve $x^{2} + 2 x y=7 y + 10$ is the tangent vector to the curve perpendicular to the vector $j$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6b1d506f-e37e-5ee9-a963-6f369c35f96f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "097f66e8-f1fe-57c5-9098-e8c74f1a6ddd",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-5,5)$ and $(-2,2)$"
+              },
+              {
+                ":answer/id": "04649062-10ee-5624-affc-e830598a1726",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(5,-5)$ only"
+              },
+              {
+                ":answer/id": "1d088e34-9aad-5816-a3df-2c531668b93e",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-5,-5)$ and $(-2,-2)$"
+              },
+              {
+                ":answer/id": "d50568ed-8b0d-5c9a-bb3e-7152f303d1c2",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(5,-5)$ and $(2,-2)$"
+              },
+              {
+                ":answer/id": "19ce407d-5ac9-5493-832a-5fe6ab95ab83",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(2,-2)$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d50568ed-8b0d-5c9a-bb3e-7152f303d1c2"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}x^{2} + 2 x y&=7 y + 10\\\\x^{2} + 2 x y - 7 y - 10&=0\\end{aligned}$$\n\nIf we set $f(x,y)=x^{2} + 2 x y - 7 y - 10$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(x^{2} + 2 x y - 7 y - 10)\\,i-\\frac{\u2202}{\u2202x}(x^{2} + 2 x y - 7 y - 10)\\,j\\\\&=(2 x - 7)\\,i-(2 x + 2 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 2 x - 2 y&=0\\\\x&=-y\\end{aligned}$$\n\nSubstituting $x=-y$ into the equation of our curve gives:\n\n$$\\begin{aligned}(-y)^{2}+2(-y)y+(-7)y-(10)&=0\\\\-y^{2}+(-7)y-(10)&=0\\\\y^{2}-(-7)y+(10)&=0\\\\(y-(-5))(y-(-2))&=0\\\\y&=-5\\text{ or }-2\\end{aligned}$$\n\nFinally, the corresponding points are $(5,-5)$ and $(2,-2)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 23,
+        "template": "factor_quadratic",
+        "profile": "authored_method_bank",
+        "parameters": {
+          "a": -5,
+          "b": -2
+        },
+        "domain": {
+          "a": [
+            -6,
+            6
+          ],
+          "b": [
+            -6,
+            6
+          ],
+          "nonzero": true,
+          "a_less_b": true,
+          "a_plus_b_nonzero": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72440"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_bank_same_observed_hard_method",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "solve",
+          "omit_second_root",
+          "omit_first_root",
+          "wrong_x_sign",
+          "swap_coordinates"
+        ],
+        "content_hash": "ee4c912c74bff6e31f1c1d8bf1d578fd2b2e5db8e07fd59146dd477434a0c7d8",
+        "mathematical_fingerprint": "941dcc568301483ffb7cb82b065eaebd1f6f34e58e6cf5a628301dcfa5c6db64",
+        "actual_points": [
+          [
+            "2",
+            "-2"
+          ],
+          [
+            "5",
+            "-5"
+          ]
+        ],
+        "operator_input": "x**2 + 2*x*y - 7*y - 10",
+        "Fx": "2*x + 2*y",
+        "Fy": "2*x - 7",
+        "orthogonality": "-2*x - 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "097f66e8-f1fe-57c5-9098-e8c74f1a6ddd",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "04649062-10ee-5624-affc-e830598a1726",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "1d088e34-9aad-5816-a3df-2c531668b93e",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "d50568ed-8b0d-5c9a-bb3e-7152f303d1c2",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "19ce407d-5ac9-5493-832a-5fe6ab95ab83",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  },
+  {
+    "label": "instance-16",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "3b2fabe1-97f6-59f2-be82-1300065aebe2",
+        ":question/problem": "At which points on the curve $x^{2} + 2 x y=3 - 4 y$ is the tangent vector to the curve perpendicular to the vector $j$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "77f1e22b-59d7-5c2d-b49e-9cbda632a5e3",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f2f0f46a-5b20-5c96-b2c5-052dfd568485",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-3,3)$ only"
+              },
+              {
+                ":answer/id": "523eda60-0ef6-51bf-8fad-2a17473818cd",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,1)$ only"
+              },
+              {
+                ":answer/id": "1302a843-bdd7-5e46-b9ef-fd4d9b1b2d51",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,-1)$ and $(3,-3)$"
+              },
+              {
+                ":answer/id": "5c1cc9aa-4af2-5c85-a88d-90d939e3d084",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-1,1)$ and $(-3,3)$"
+              },
+              {
+                ":answer/id": "e095515b-f7dc-593e-b131-20d07cab9d78",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(1,1)$ and $(3,3)$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5c1cc9aa-4af2-5c85-a88d-90d939e3d084"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}x^{2} + 2 x y&=3 - 4 y\\\\x^{2} + 2 x y + 4 y - 3&=0\\end{aligned}$$\n\nIf we set $f(x,y)=x^{2} + 2 x y + 4 y - 3$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(x^{2} + 2 x y + 4 y - 3)\\,i-\\frac{\u2202}{\u2202x}(x^{2} + 2 x y + 4 y - 3)\\,j\\\\&=(2 x + 4)\\,i-(2 x + 2 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 2 x - 2 y&=0\\\\x&=-y\\end{aligned}$$\n\nSubstituting $x=-y$ into the equation of our curve gives:\n\n$$\\begin{aligned}(-y)^{2}+2(-y)y+(4)y-(3)&=0\\\\-y^{2}+(4)y-(3)&=0\\\\y^{2}-(4)y+(3)&=0\\\\(y-(1))(y-(3))&=0\\\\y&=1\\text{ or }3\\end{aligned}$$\n\nFinally, the corresponding points are $(-1,1)$ and $(-3,3)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.0.0",
+        "seed": 44,
+        "template": "factor_quadratic",
+        "profile": "authored_method_bank",
+        "parameters": {
+          "a": 1,
+          "b": 3
+        },
+        "domain": {
+          "a": [
+            -6,
+            6
+          ],
+          "b": [
+            -6,
+            6
+          ],
+          "nonzero": true,
+          "a_less_b": true,
+          "a_plus_b_nonzero": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72440"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_bank_same_observed_hard_method",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "solve",
+          "omit_second_root",
+          "omit_first_root",
+          "wrong_x_sign",
+          "swap_coordinates"
+        ],
+        "content_hash": "24408b3153ecc465ff0e5ce992aa2574584f7fdd7ee2a589e97dc2b83182d634",
+        "mathematical_fingerprint": "1664c09c9aa7059d8a3d17d3c18194fb95c04e499c4522a71a5138eec93b2bc6",
+        "actual_points": [
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-3",
+            "3"
+          ]
+        ],
+        "operator_input": "x**2 + 2*x*y + 4*y - 3",
+        "Fx": "2*x + 2*y",
+        "Fy": "2*x + 4",
+        "orthogonality": "-2*x - 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "f2f0f46a-5b20-5c96-b2c5-052dfd568485",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "523eda60-0ef6-51bf-8fad-2a17473818cd",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "1302a843-bdd7-5e46-b9ef-fd4d9b1b2d51",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "5c1cc9aa-4af2-5c85-a88d-90d939e3d084",
+        "expected": "accepted",
+        "purpose": "complete point-set radio selection"
+      },
+      {
+        "submitted_answer_id": "e095515b-f7dc-593e-b131-20d07cab9d78",
+        "expected": "rejected",
+        "purpose": "complete point-set radio selection"
+      }
+    ]
+  }
+]

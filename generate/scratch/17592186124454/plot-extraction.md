@@ -1,0 +1,9 @@
+# Plot extraction (steps 5 and 7)
+
+No practice prompt, choice or worked solution among the seven sources references a graph. Practice plot rating is **none**, and no generator renderer is required.
+
+The canonical example references `images/10/102f55fe0add794d3ee0f9f044b5e35c4403d4f160fe36e97d737d33ef3abb68.png`, found in the immutable EDB image store and inspected at full resolution. `canonical-context.png` is a local evidence copy. It shows black x/y axes, dashed guides x=3 and y=3, P=(3,3), a red level-curve branch, a blue tangent through P, a black southeast gradient arrow, and a right-angle mark. The canonical f=6x²+2y²−2xy² has f(P)=18 and ∇f(P)=(18,−24). The blue line is consistent with 3x−4y+3=0, slope 3/4; the arrow is perpendicular and points southeast. The red branch agrees with y²=3(x²−3)/(x−1), beginning at x=√3 on the positive axis. Arrow length and unlabeled raster endpoints are illustration choices, not recovered exact vector magnitudes.
+
+Its general instructional purpose is the normal-gradient / tangent orthogonality relation. Components are axes, labels, level locus, marked point, tangent, perpendicular gradient ray and guides. A parameter-dependent recreation would need a new level contour and tangent derived from the same question, but no practice template asks for that plot. This unchanged contextual asset is retained only as evidence; no image model, direct SVG, Matplotlib environment change, or plot reuse under altered geometry occurs.
+
+The authoritative MA1940 sections `04-question-37517.png` and `05-question-36383.png` were visually inspected. Their widgets corroborate the five tangent-line choices and absence of any additional blank/legacy field. They do not expose missing correct keys or an original difficulty; those remain missing raw evidence.

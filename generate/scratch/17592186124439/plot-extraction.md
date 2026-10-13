@@ -1,0 +1,5 @@
+# Plot extraction
+
+No practice or canonical prompt, answer or solution contains plots. Classification rating none; no plot generator or renderer cache is required.
+
+The actual lesson introduction has two explanatory rasters, inspected at original resolution using view_image: `/media/jake/SSD/EDB/math/images/86/8619c41cd0caf04ae9ee9bcae61e31739d8da583793a67c1c87e00186c3ac417.png` and `/media/jake/SSD/EDB/math/images/e9/e982ef5d6d8d4fec9c64957d46f22cea2a85bd002595642f58700cf48cce4256.png`. The first shows a blue downward paraboloid, pale x=3 plane, black intersection curve, P and orange tangent, with x/y/z axes. The second shows its yz-plane parabola, a marked P, orange descending tangent and labelled y/z axes. Their role is explaining the derivative-to-slice slope correspondence, not supplying numeric answer choices. No raster is reused in generated records and no geometry changes with sampled parameters. Therefore no Matplotlib/TikZ outputs, cached/fresh-render records or narrow-label-placement claim is applicable.

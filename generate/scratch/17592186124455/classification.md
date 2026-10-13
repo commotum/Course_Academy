@@ -1,0 +1,19 @@
+# Classification
+
+Immutable source: math basis1356, lineage01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Eleven practice sources: ten moderate, one unrated(q36391). No observed easy/hard labels. Eleven distinct Markdown/value layouts, twelve complete EDB radio banks, sixty displayed options. q65204 has duplicate selection-key fields, each with five choices; the original MA1940 JSON widget has a single multiple-choice demand with five choices. Both raw fields are preserved, while the completed profile retains the authoritative later field. There are no blank fields or supplied answer fragments.
+
+All practice templates have plot rating **none**. The canonical example has an explanatory diagram after its worked answer; it is not an assessment input or a required element of any practice template. Neither a reusable graph nor a renderer is needed here.
+
+## Ordered curriculum and scope
+
+Following activity/first-step and step/next gives: Introduction17592186125292 → Tangent Line to a Level Curve17592186125464 → tangent-line KP17592186125293 → Tangent Vector tutorial17592186125294 → assigned tangent-vector KP17592186125295 → perpendicular-vector-point sibling17592186125296. The tutorial proves that(f_y,-f_x) is orthogonal to(f_x,f_y). This task uses that formula at the specified point. Tangent-line equations, finding points with prescribed vector orientation, normal-vector questions, normalization, and parametrization are outside this generator.
+
+Easy is an authored canonical-example extension with a quadratic, one mixed term and one linear y term. Moderate is anchored in q130192/q36391's mixed polynomial derivatives, with nonzero signed coordinates. Hard is an authored workload choice anchored in q37516: the same two partial derivatives and point substitution, with logarithmic and reciprocal terms evaluated at e or e² and nonzero signed x. Hard's extra arithmetic is collecting both nonzero evaluated derivative sums; it does not introduce a new method. Source log/trig examples remain observed moderate evidence, regardless of this separate authored design choice. Variants within a level have identical operations and do not constitute a progression.
+
+## Arithmetic and banks
+
+All authored coefficients are nonzero primitive integer triples of magnitude1..4; x0 is±1 or±2. Easy/moderate y0 is±1 or±2; hard y0 is e or e². Reduced rational numerator magnitude≤32, denominator≤4 and actual numeric magnitude≤32 apply to parameters, both evaluated partial derivatives and curve level. These guards also apply to explicit calls. Source replay uses finite familiar point sets: polynomial coordinates are integers of magnitude≤2; trig axis points have one zero coordinate and the other±π/2; exponential points have x=±1,±2 and y=-1,0,1; log points have x=±1,±2 and y=1,e,e², further restricted by actual evaluated arithmetic. Source replay allows its original constants/number forms; evaluated source quantities obey the same finite arithmetic ceiling. Samplers select the fixed complete five-operation profile before parameters, then reject the whole instance on zero vectors, tangent ambiguity or any proportional choice collision.
+
+The finite primitive coefficient domain has440 triples. After quotienting common sign, potential mathematical tasks before bank/arithmetic rejection are3520 per easy/moderate and1760 hard. These are upper bounds, not claims of fully eligible catalogs. validation.json reports actual distinct eligible sampled tasks. Variable notation, seed, option order and profiles do not inflate mathematical-task counts.
+
+Historical incorrect-option intent is unresolved. Their fixed full components and mathematically derived correct components are explicit evidence profiles. Raw and completed historical records always carry evidence_only=true and eligible_for_learning=false. The authored default bank is separately specified from actual displayed operations.
