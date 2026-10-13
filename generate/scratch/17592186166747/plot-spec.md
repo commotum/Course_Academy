@@ -1,0 +1,5 @@
+# Static dependency diagrams: none
+
+The t and s trees were inspected at their native 390×226 (t) and 391×226 (s) resolutions. White background; f(x,y) at left, blue branches toward x(v) and y(v), horizontal blue arrows to v, black derivative labels and a plus-sign-separated right-hand path-product sum. Every direction arrow points from the output to its intermediate and onward to the independent variable. The products are f_x dx/dv and f_y dy/dv. This is a dependency diagram, not a scaled numerical graph. Every supported normal family has exactly this dependency structure.
+
+Asset identities and dimensions are in asset-provenance.json. Source references remain byte-identical in raw replay. Normal solutions reuse the correct t/s asset, independent of sampled mathematical parameters. No new geometry, variable labels or renderer is needed; Matplotlib/TikZ transforms, DPI, concurrency and unmasked numerical-label measurement are inapplicable. No direct SVG or image model is used. All original snapshots and assets are preserved.

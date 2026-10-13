@@ -13,7 +13,7 @@ ROOT=Path(__file__).with_suffix('')
 CAP=json.loads((ROOT/'source.json').read_text())
 SRC={q[':question/math-academy-id']:q for q in CAP['record'][':knowledge-point/questions']}
 X,U,H=s.symbols('x u h', real=True)
-VERSION='nonlinear-chain-1'
+VERSION='nonlinear-chain-2'
 # Each source has its own prompt/solution mask; differences in product and
 # exponent-restoration rows and endpoint rows remain operative, not row counts.
 SPECS={
@@ -252,8 +252,13 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   if kind.startswith('trig'):
    # Captured prompt omitted f and h: add supported complete definitions.
    defs=rf'Here $f(h)={latex(p["scale"])}e^h$ and $h(x)={latex(p["a"])}\sin x$.'
-   opening,separator,layout=problem.partition('\n')
-   problem=opening+'\n\n'+defs+'\n'+layout
+   # Normal presentation repairs incidental indentation and the ambiguous
+   # legacy table only. The supplied coefficient/numerator and source chain
+   # remain unchanged; public observed replay never enters this block.
+   opening=problem.split('\n',1)[0].strip()
+   placeholder='{{'+key+'}}'
+   layout=(r'$\frac{dy}{dx}=$'+'\n'+placeholder+'\n'+r'$\cdot e^{'+latex(g)+'}$') if kind=='trig_product' else (r'$\frac{dy}{dx}=-($'+'\n'+placeholder+'\n'+'$)/e^{'+latex(-g)+'}$')
+   problem=opening+'\n\n'+defs+'\n\n'+layout
   if template=='q-48628':solution=authored_solution(p,kind)
  # ID based on full learner content and actual difficulty, order-independent.
  vals_tex=[latex(v) for v in vals]

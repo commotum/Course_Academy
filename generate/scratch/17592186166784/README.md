@@ -1,0 +1,3 @@
+# Hyperbolic linear-argument generator
+
+Run `.venv/bin/python generate/scratch/17592186166784.py --difficulty easy --count 5 --seed 1972` (or moderate; `--format markdown` for review). Run `validate.py` with the same interpreter for full source bank replay, all finite-domain mathematical checks and actual application grading. `replenish.py` counts validated unseen and unreserved distinct tasks at a fresh basis, journals exact requests and commits additively under api.lock. Hard is unsupported and remains explicit. See classification, extraction, capabilities, source-cases, review, validation and reference evidence.

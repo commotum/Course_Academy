@@ -19,13 +19,13 @@ Each prompt contains one directed multigraph encoding the complete row-departure
 - Parallel and reciprocal arcs: separate curvatures, shortened to node boundaries, consistent width/color.
 - Self routes: curved loops on the outward side of the node, separated by angle and loop length for counts 1..3.
 - Bounds: fixed derived safe padding beyond triangle/square node coordinates includes the maximum three-loop and three-parallel-arc domain. Diagrams are not to scale.
-- Labels: node letters remain above route paths in the draw stack and inside opaque circles, so incident arrows do not obscure labels.
+- Labels: upright regular serif letters match the source style. Use the installed `LiberationSerif-Regular.ttf` explicitly, without a sans-serif fallback. Node letters remain above route paths in the draw stack and inside opaque circles, so incident arrows do not obscure labels.
 
 ## 4. Renderer specification and QA
 
 `render_routes.py` uses Matplotlib `FancyArrowPatch`, `Circle` and cubic path loops. No direct SVG or image model. The primary venv lacks Matplotlib; read-only cached Python 3.10 wheels provide the already documented fallback without installation or shared-environment changes. Each sidecar records Matplotlib/Python versions and dependency paths, complete matrix, node coordinates and the independently countable list of individual directed edges.
 
-The generator supplies its exact adjacency matrix to `render_plots`; no resampling happens inside plotting. Cache identity includes full meaningful directed matrix and renderer version. Cache hits require both PNG and sidecar. Exact source matrices reuse the captured source PNG only when their full meaningful route structure matches; changed matrices are always rendered. Parameter-dependent plots use a clear larger diagram with every original mathematical cue, without claiming pixel-identical source layout.
+The generator supplies its exact adjacency matrix to `render_plots`; no resampling happens inside plotting. Cache identity includes the full meaningful directed matrix, renderer version, and label-font SHA-256. Sidecars record the actual font family, file, hash, style, weight, and size. Cache hits require both PNG and sidecar. Exact source matrices reuse the captured source PNG only when their full meaningful route structure matches; changed matrices are always rendered. Parameter-dependent plots use a clear larger diagram with every original mathematical cue, without claiming pixel-identical source layout.
 
 Each call has a unique input file and atomically publishes PNG and sidecar through unique temporary files. Validation exercises fresh concurrent identical and distinct matrices, parses all individual edge records to independently reconstruct the diagram matrix, compares that matrix with the actual displayed ordered prompt/solution tables, and confirms stable IDs. Images remain available during parent QA; no cache pruning occurs.
 

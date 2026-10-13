@@ -281,7 +281,7 @@ button,input,select { font:inherit; }
 .competency-heading>span:first-child{letter-spacing:.05em;color:var(--tone-bb)}
 #competencyReadout{font-size:10px;color:var(--tone-ff);font-variant-numeric:tabular-nums}
 .competency-ramp{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
-.competency-cell{display:block;background:var(--swatch-fill);color:var(--swatch-text);border:1px solid var(--tone-aa);height:20px;text-align:center;line-height:18px;font-size:9px;font-variant-numeric:tabular-nums}
+.competency-cell{display:block;background:var(--swatch-fill);color:var(--swatch-text);border:1px solid var(--swatch-border,var(--tone-aa));height:20px;text-align:center;line-height:18px;font-size:9px;font-variant-numeric:tabular-nums}
 .competency-endpoints{display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--tone-b5)}
 .competency-keys{display:flex;gap:18px;align-items:center;margin-top:9px;font-size:9px;color:var(--tone-dd)}
 .competency-keys>span{display:inline-flex;gap:7px;align-items:center;white-space:nowrap}
@@ -1248,13 +1248,22 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   }
   function statusMasteryAppearance(status,competence) {
     const level=competence.known?competence.level:0;
-    const fill=STATUS_PALETTES[status][isLightTheme()?6-level:level];
+    const palette=STATUS_PALETTES[status],light=isLightTheme();
+    // Spread seven bands over the former 0–4 range in each theme. Keep the
+    // former band 5 for outlines, beyond the strongest fill's shade.
+    const shade=light?6-level*4/6:level*4/6;
+    const lower=Math.floor(shade),upper=Math.ceil(shade),fraction=shade-lower;
+    const fill='#'+[1,3,5].map(start=>{
+      const a=parseInt(palette[lower].slice(start,start+2),16),b=parseInt(palette[upper].slice(start,start+2),16);
+      return Math.round(a+(b-a)*fraction).toString(16).padStart(2,'0');
+    }).join('');
+    const border=palette[light?1:5];
     // Choose text from actual fill luminance rather than a band-number cutoff.
     const channels=[1,3,5].map(start=>parseInt(fill.slice(start,start+2),16)/255)
       .map(value=>value<=.04045?value/12.92:((value+.055)/1.055)**2.4);
     const luminance=channels[0]*.2126+channels[1]*.7152+channels[2]*.0722;
     const text=(luminance+.05)/.05 >= 1.05/(luminance+.05)?'#000000':'#FFFFFF';
-    return {fill,text};
+    return {fill,text,border};
   }
   function nodeAppearance(nodeOrId) {
     const id=typeof nodeOrId==='object'?nodeOrId.id:nodeOrId;
@@ -1287,7 +1296,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       }
       for(let level=0;level<=6;level++){
         const appearance=statusMasteryAppearance(status,{known:true,level}),cell=host.children[level];
-        cell.style.setProperty('--swatch-fill',appearance.fill);cell.style.setProperty('--swatch-text',appearance.text);
+        cell.style.setProperty('--swatch-fill',appearance.fill);cell.style.setProperty('--swatch-text',appearance.text);cell.style.setProperty('--swatch-border',appearance.border);
       }
     }
     $('competencyFillDescription').textContent=(colorCodeEnabled?

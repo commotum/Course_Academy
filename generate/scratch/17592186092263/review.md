@@ -576,34 +576,9 @@ Given that $y=f(h(x)),$ calculate $\frac{\text{d}y}{\text{d}x}.$
 
 Here $f(h)=\frac{2}{3}e^h$ and $h(x)=-5\sin x$.
 
-                            
-                                    
-                                        
-                                            
-
-                                                
-
-                                        
-                                        
-                                        
-
-                                    
-                                
-                                    
-                                        
-                                        $\frac{\text{d}y}{\text{d}x}=$
-
-                                    
-                                
-                                    
-                            
-                                        {{field-1}}                
-                                    
-                                
-                                    
-                                        
-                                        
-${e}^{-5\operatorname{sin}⁡x}$
+$\frac{dy}{dx}=$
+{{field-1}}
+$\cdot e^{- 5 \sin{\left(x \right)}}$
 
 $- \frac{10 \cos{\left(x \right)}}{3}$
 
@@ -632,34 +607,9 @@ Given that $y=f(h(x)),$ calculate $\frac{\text{d}y}{\text{d}x}.$
 
 Here $f(h)=\frac{1}{2}e^h$ and $h(x)=-5\sin x$.
 
-                            
-                                    
-                                        
-                                            
-
-                                                
-
-                                        
-                                        
-                                        
-
-                                    
-                                
-                                    
-                                        
-                                        $\frac{\text{d}y}{\text{d}x}=$
-
-                                    
-                                
-                                    
-                            
-                                        {{field-1}}                
-                                    
-                                
-                                    
-                                        
-                                        
-${e}^{-5\operatorname{sin}⁡x}$
+$\frac{dy}{dx}=$
+{{field-1}}
+$\cdot e^{- 5 \sin{\left(x \right)}}$
 
 $- \frac{5 \cos{\left(x \right)}}{2}$
 
@@ -830,14 +780,9 @@ Given that $y=f(h(x)),$ calculate $\frac{\text{d}y}{\text{d}x}.$
 
 Here $f(h)=\frac{2}{3}e^h$ and $h(x)=-5\sin x$.
 
-                            
-                                    
-                                        
-                                        
-
-| $\frac{\text{d}y}{\text{d}x}=\,-$ | {{field-1}} |
-| --- | --- |
-| ${e}^{5\operatorname{sin}⁡(x)}$ |  |
+$\frac{dy}{dx}=-($
+{{field-1}}
+$)/e^{5 \sin{\left(x \right)}}$
 
 $\frac{10 \cos{\left(x \right)}}{3}$
 
@@ -866,14 +811,9 @@ Given that $y=f(h(x)),$ calculate $\frac{\text{d}y}{\text{d}x}.$
 
 Here $f(h)=\frac{1}{2}e^h$ and $h(x)=-5\sin x$.
 
-                            
-                                    
-                                        
-                                        
-
-| $\frac{\text{d}y}{\text{d}x}=\,-$ | {{field-1}} |
-| --- | --- |
-| ${e}^{5\operatorname{sin}⁡(x)}$ |  |
+$\frac{dy}{dx}=-($
+{{field-1}}
+$)/e^{5 \sin{\left(x \right)}}$
 
 $\frac{5 \cos{\left(x \right)}}{2}$
 
@@ -1314,7 +1254,7 @@ $$
 We now apply the chain rule and get
 
 $$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & ={e}^{u}\cdot -18{x}^{5} \\  & =-18{x}^{5}\cdot {e}^{u} \\  & =-18{x}^{5}{e}^{-3{x}^{6}-6}.\end{aligned}
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & ={e}^{u}\cdot (-18{x}^{5}) \\  & =-18{x}^{5}\cdot {e}^{u} \\  & =-18{x}^{5}{e}^{-3{x}^{6}-6}.\end{aligned}
 $$
 
 Finally, to find the slope of the tangent to the curve at $x=-1$, we have to evaluate $\frac{\text{d}y}{\text{d}x}$ at that point as follows:

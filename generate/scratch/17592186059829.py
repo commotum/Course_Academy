@@ -18,8 +18,10 @@ import sympy as sp
 KP_ID=17592186059829
 KP_UUID='2f519fa9-de89-5b00-aa02-312cf8e32cba'
 TITLE='Converting Between Intervals and Inequalities: Closed Intervals'
-VERSION='closed-intervals-v1'
+VERSION='closed-intervals-v2'
+GENERATOR_ID=str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy:question-generator:'+KP_UUID))
 HERE=Path(__file__).with_suffix('')
+CURRENT_SOURCE=json.loads((HERE/'current-kp.json').read_text())
 SOURCE=json.loads((HERE/'source.json').read_text())
 TEMPLATES=('inequality_to_interval','interval_to_inequality')
 PROFILES={
@@ -27,6 +29,8 @@ PROFILES={
  'raw_interval':('inequality_to_interval',True),
  'observed_inequality':('interval_to_inequality',False),
  'raw_inequality':('interval_to_inequality',True),
+ 'captured_interval':('inequality_to_interval',False),
+ 'captured_inequality':('interval_to_inequality',False),
 }
 SOURCE_IDS={'inequality_to_interval':'q-102200','interval_to_inequality':'q-59295'}
 
@@ -121,8 +125,9 @@ def displayed_set(s):
     s=s.replace('$','').strip()
     if 'or' in s:
         l,r=s.split(' or ')
-        a=number(l.split('<')[1]);b=number(r.split('>')[1])
-        return sp.Union(sp.Interval(-sp.oo,a,right_open=True),sp.Interval(b,sp.oo,left_open=True))
+        inclusive=r'\le' in l
+        a=number(l.split(r'\le' if inclusive else '<')[1]);b=number(r.split(r'\ge' if inclusive else '>')[1])
+        return sp.Union(sp.Interval(-sp.oo,a,right_open=not inclusive),sp.Interval(b,sp.oo,left_open=not inclusive))
     if s.startswith(('(','[')):
         l,r=s[1:-1].split(',')
         return sp.Interval(number(l),number(r),left_open=s[0]=='(',right_open=s[-1]==')')
@@ -149,17 +154,35 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         raw=False
     if template not in TEMPLATES:raise ValueError('unknown template')
     if raw and level!='easy':raise ValueError('raw evidence uses easy replay without assigning an observed rating')
-    p=dict(parameters) if parameters is not None else dict(rng.choice(parameter_catalog(level)))
-    guard(level,p,raw)
+    captured=profile.startswith('captured_')
+    if captured and level!=('easy' if profile=='captured_interval' else 'moderate'):
+        raise ValueError('captured source profile requires its observed rating')
+    sampling_level='easy' if captured else level
+    p=dict(parameters) if parameters is not None else dict(rng.choice(parameter_catalog(sampling_level)))
+    guard(sampling_level,p,raw)
     a,b=tex(p['a']),tex(p['b'])
     problem=prompt(template,a,b)
     bank=choices(template,a,b)
+    captured_solution=None
+    source_id=SOURCE_IDS[template]
+    if captured:
+        source_id='q-102200' if profile=='captured_interval' else 'q-154728'
+        original=next(q for q in CURRENT_SOURCE['record'][':knowledge-point/questions'] if q.get(':question/math-academy-id')==source_id)
+        oa,ob=('-10','3') if profile=='captured_interval' else ('-7','0')
+        def substitute(text):return text.replace(oa,'@@LEFT@@').replace(ob,'@@RIGHT@@').replace('@@LEFT@@',a).replace('@@RIGHT@@',b)
+        problem=substitute(original[':question/problem'])
+        # q-154728 includes its question mark inside math. Preserve source,
+        # but put punctuation outside the generated math delimiter.
+        if profile=='captured_inequality':problem=problem.replace(']?$',']$?')
+        field=original[':question/answer-fields'][0]
+        bank=[(z[':answer/type'][':db/ident'],substitute(z[':answer/value'])) for z in field[':answer-field/choices']]
+        captured_solution=substitute(original[':question/worked-solution'])
     sets=[displayed_set(v) for _,v in bank]
     correct=sp.Interval(sp.sympify(p['a']),sp.sympify(p['b']))
     correct_indices=[i for i,s in enumerate(sets) if s==correct]
     if len(correct_indices)!=1 or len(set(sets))!=5:raise ValueError('reject entire ambiguous bank')
     q={':question/problem':problem}
-    if not raw:q.update({':question/difficulty':':question.difficulty/'+level,':question/worked-solution':solution(template,a,b)})
+    if not raw:q.update({':question/difficulty':':question.difficulty/'+level,':question/worked-solution':captured_solution or solution(template,a,b)})
     fingerprint=digest({'direction':template,'a':sp.srepr(correct.start),'b':sp.srepr(correct.end),'endpoint_inclusion':'both'})
     content=digest({'version':VERSION,'prompt':problem,'solution':q.get(':question/worked-solution'),'difficulty':q.get(':question/difficulty'),'bank':sorted(bank)})
     qid=uid(content);fid=uid(qid+':selection')
@@ -170,8 +193,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     q.update({':question/id':qid,':question/answer-fields':[field]})
     return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,
       'generation':{'version':VERSION,'seed':seed,'template':template,'bank_profile':profile,'parameters':p,
-       'mathematical_fingerprint':fingerprint,'content_fingerprint':content,'level_origin':'authored; originals unrated',
-       'source_id':SOURCE_IDS[template],'raw_evidence':raw,'database':SOURCE['database'],'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],
+       'mathematical_fingerprint':fingerprint,'content_fingerprint':content,'level_origin':'observed current source rating' if captured else 'authored; historical originals unrated',
+       'source_id':source_id,'raw_evidence':raw,'database':SOURCE['database'],'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],
        'correct_set':str(correct),'domain':'a < b, finite real closed endpoints; both directions, no solving','plot_rating':'none'}}
 
 # EASY: integer endpoint reading; both directions are equal-level variants.

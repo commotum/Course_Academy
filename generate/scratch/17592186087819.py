@@ -22,7 +22,11 @@ HERE=Path(__file__).resolve().parent/'17592186087819'
 KP_ID=17592186087819
 KP_UUID='10ca3efc-7d23-5bc1-ab41-f785bed69986'
 TITLE='Matrices for Route Planning'
-VERSION='route-matrix-3'
+sys.path.insert(0,str(HERE))
+from route_tables import RouteTable, TABLE_FORMAT, render_route_table, replace_route_tables, route_table_spans
+VERSION='route-matrix-5'
+RENDERER_VERSION='directed-v2-serif'
+LABEL_FONT_FILE=Path('/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf')
 MIN_TOTAL_ROUTES=3
 ROUTE_LIMITS={3:8,4:10}
 CAPTURE=json.loads((HERE/'source.json').read_text())
@@ -34,54 +38,19 @@ LABELS='ABCD'
 def digest(x):return hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def uid(x):return str(uuid.uuid5(uuid.UUID(KP_UUID),x))
 
-def _table_mask(text,n):
-    """Replace WHOLE ordered table entry components, never numeric substrings."""
-    if '<table' in text:
-        # Last n rows each have n entry cells; row heading cells stay unchanged.
-        rows=list(re.finditer(r'<tr>.*?</tr>',text,re.S));replacements=[]
-        for r,row in enumerate(rows[-n:]):
-            vals=list(re.finditer(r'<td align="center">\$(.*?)\$</td>',row.group(),re.S))
-            if len(vals)!=n:raise ValueError('HTML source matrix layout')
-            for c,v in enumerate(vals):replacements.append((row.start()+v.start(1),row.start()+v.end(1),'{cell_'+str(r)+'_'+str(c)+'}'))
-        for a,b,value in reversed(replacements):text=text[:a]+value+text[b:]
-    else:
-        lines=text.splitlines();r=0
-        for index,line in enumerate(lines):
-            if line.startswith('| From:') or re.match(r'\| \*\*[A-D]\*\*',line):
-                cells=line.split('|');start=3 if r==0 else 2
-                for c in range(n):cells[start+c]=' {cell_'+str(r)+'_'+str(c)+'} '
-                lines[index]='|'.join(cells);r+=1
-        if r!=n:raise ValueError('Markdown source matrix layout')
-        text='\n'.join(lines)
-    return text
-
-PROMPT_MASKS={name:_table_mask(SOURCES[s['source']][':question/problem'],len(s['matrix'])) for name,s in SPECS.items()}
-SOLUTION_TABLE_MASKS={name:_table_mask(SOURCES[s['source']][':question/worked-solution'].split('following:\n\n',1)[1].split('\n\nTherefore,',1)[0],len(s['matrix'])) for name,s in SPECS.items() if ':question/worked-solution' in SOURCES[s['source']]}
-
-def _fill_mask(mask,m,holes,kind):
-    # Slots are entire cells, retaining source whitespace and HTML/Markdown layouts.
-    for r,row in enumerate(m):
-        for c,x in enumerate(row):
-            slot='{cell_'+str(r)+'_'+str(c)+'}'
-            if [r,c] in holes:
-                i=holes.index([r,c]);value=('{{field-'+str(i+1)+'}}' if kind=='blank' else '$'+ 'abc'[i]+'$')
-            else:value='$'+str(x)+'$'
-            if '<table' in mask:value=value.strip('$')
-            mask=mask.replace(slot,value)
-    return mask
-
 def table(m,holes=(),kind='complete',rows=None,cols=None):
     n=len(m);rows=list(range(n)) if rows is None else rows;cols=list(range(n)) if cols is None else cols
-    lines=['|  |  | To: |'+ '  |'*(n-1),'|'+ ' --- |'*(n+2),'|  |  | '+' | '.join('**'+LABELS[c]+'**' for c in cols)+' |']
-    for k,r in enumerate(rows):
+    cells=[]
+    for r in rows:
         values=[]
         for c in cols:
             if [r,c] in holes:
-                i=holes.index([r,c]);values.append('{{field-'+str(i+1)+'}}' if kind=='blank' else '$'+'abc'[i]+'$')
-            else:values.append('$'+str(m[r][c])+'$')
-        prefix='| From: | **'+LABELS[r]+'** | ' if k==0 else '| **'+LABELS[r]+'** | '
-        lines.append(prefix+' | '.join(values)+' |'+('  |' if k else ''))
-    return '\n'.join(lines)
+                i=holes.index([r,c]);value='{{field-'+str(i+1)+'}}' if kind=='blank' else '$'+'abc'[i]+'$'
+            else:value='$'+str(m[r][c])+'$'
+            values.append(value)
+        cells.append(tuple(values))
+    return render_route_table(RouteTable(tuple(LABELS[r] for r in rows),
+                                        tuple(LABELS[c] for c in cols),tuple(cells)))
 
 
 def _bullet(v,r,c,letter=None,base=None,raw=False):
@@ -112,7 +81,7 @@ def solution(name,m,holes,kind,rows,cols,raw=False):
     values=[m[r][c] for r,c in holes]
     blocks=[_bullet(v,r,c,'abc'[i] if kind=='radio' else None,orig_bullets[i] if len(orig_bullets)==3 else None,raw) for i,((r,c),v) in enumerate(zip(holes,values))]
     label='As a result, our route matrix is the following:' if kind=='radio' else 'Therefore, our route matrix is the following:'
-    complete=_fill_mask(SOLUTION_TABLE_MASKS[name],m,[], 'complete') if name in SOLUTION_TABLE_MASKS else table(m,rows=rows,cols=cols)
+    complete=table(m,rows=rows,cols=cols)
     result="Let's examine our diagram.\n\n"+'\n\n'.join(blocks)+'\n\n'+label+'\n\n'+complete
     if kind=='radio':
         compact=spec is None or spec['source']!='q-138940' and spec['source']!='q-139685'
@@ -160,14 +129,21 @@ def sample(level,name,rng):
     return {'matrix':m,'holes':holes,'row_order':rows,'col_order':cols}
 
 
+def plot_identity(m):
+    return digest({'matrix':m,'renderer':RENDERER_VERSION,
+                   'label_font_sha256':hashlib.sha256(LABEL_FONT_FILE.read_bytes()).hexdigest()})
+
+
 def render_plots(name,m):
     if name in SPECS and m==SPECS[name]['matrix']:
         return {'prompt':str(HERE/SPECS[name]['asset']),'source_reuse':True}
-    out=HERE/'plots'/ (digest({'matrix':m,'renderer':'directed-v1'})+'.png');side=out.with_suffix('.json')
+    out=HERE/'plots'/ (plot_identity(m)+'.png');side=out.with_suffix('.json')
     if not(out.exists() and side.exists()):
         out.parent.mkdir(exist_ok=True)
         with tempfile.NamedTemporaryFile(mode='w',suffix='.json',prefix='route-input-',dir=HERE/'plots',delete=False) as f:
-            json.dump({'matrix':m,'output':str(out)},f);tmp=Path(f.name)
+            json.dump({'matrix':m,'output':str(out),'label_font':str(LABEL_FONT_FILE),
+                       'label_font_sha256':hashlib.sha256(LABEL_FONT_FILE.read_bytes()).hexdigest(),
+                       'renderer_version':RENDERER_VERSION},f);tmp=Path(f.name)
         try:subprocess.run([sys.executable,str(HERE/'render_routes.py'),str(tmp)],check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         finally:tmp.unlink(missing_ok=True)
     return {'prompt':str(out),'source_reuse':False}
@@ -214,7 +190,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     else:raise ValueError('sampler exhausted')
     assets=render_plots(name,m)
     if name in SPECS:
-        prompt=_fill_mask(PROMPT_MASKS[name],m,holes,kind)
+        source_prompt=SOURCES[SPECS[name]['source']][':question/problem']
+        if len(list(route_table_spans(source_prompt)))!=1:raise ValueError('source prompt needs exactly one route table')
+        prompt=replace_route_tables(source_prompt,table(m,holes,kind,rows,cols))
         prompt=re.sub(r'!\[\]\(.*?\)','![]('+assets['prompt']+')',prompt,count=1)
     else:
         prompt='![]('+assets['prompt']+')\n\nThe diagram above shows train routes between four stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the four stations. Find the value of $a+b+c.$\n\n'+table(m,holes,'radio',rows,cols)
@@ -230,7 +208,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         cid=next(a[':answer/id'] for a in answers if a[':answer/value']==correct_value)
         if kind=='radio':random.Random(seed).shuffle(answers)
         fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':answers,':answer-field/correct':[':answer/id',cid]})
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':worked,':question/answer-fields':fields},'generation':{'version':VERSION,'template':name,'level':level,'seed':seed,'parameters':p,'bank_profile':profile,'origin':'observed template' if name in SPECS else 'authored missing-level template','bank_origin':('authored complete omission/direction bank' if profile=='authored_omissions' else 'authored bounded count catalog' if profile=='authored_count_window' else 'observed blank counts' if kind=='blank' else 'observed finite count catalog'),'bank_recipes':(['sum_three','omit_third','omit_second','reverse_three_directions','count_all_routes'] if profile=='authored_omissions' else ['enumerate_five_counts_from_max_zero_sum_minus_two'] if profile=='authored_count_window' else ['required_entry']*3 if kind=='blank' else ['enumerate_complete_observed_catalog']),'domain':{'station_count':len(m),'count_range':[0,3] if source_replay else [0,2],'min_total_routes':0 if source_replay else MIN_TOTAL_ROUTES,'max_total_routes':16 if source_replay else ROUTE_LIMITS[len(m)],'max_self_loops':3 if source_replay else 1,'sampling_policy':'exact-source-replay' if source_replay else 'sparse-routes-v3'},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'mathematical_fingerprint':math_fingerprint,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'source_ids':[SPECS[name]['source']] if name in SPECS else [],'assets':assets,'source_repairs':['B-to-B direction in second solution bullet'] if name=='blanks_319429' and not raw else []}}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':worked,':question/answer-fields':fields},'generation':{'version':VERSION,'table_format':TABLE_FORMAT,'template':name,'level':level,'seed':seed,'parameters':p,'bank_profile':profile,'origin':'observed template' if name in SPECS else 'authored missing-level template','bank_origin':('authored complete omission/direction bank' if profile=='authored_omissions' else 'authored bounded count catalog' if profile=='authored_count_window' else 'observed blank counts' if kind=='blank' else 'observed finite count catalog'),'bank_recipes':(['sum_three','omit_third','omit_second','reverse_three_directions','count_all_routes'] if profile=='authored_omissions' else ['enumerate_five_counts_from_max_zero_sum_minus_two'] if profile=='authored_count_window' else ['required_entry']*3 if kind=='blank' else ['enumerate_complete_observed_catalog']),'domain':{'station_count':len(m),'count_range':[0,3] if source_replay else [0,2],'min_total_routes':0 if source_replay else MIN_TOTAL_ROUTES,'max_total_routes':16 if source_replay else ROUTE_LIMITS[len(m)],'max_self_loops':3 if source_replay else 1,'sampling_policy':'exact-source-replay' if source_replay else 'sparse-routes-v3'},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'mathematical_fingerprint':math_fingerprint,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'source_ids':[SPECS[name]['source']] if name in SPECS else [],'assets':assets,'source_repairs':['B-to-B direction in second solution bullet'] if name=='blanks_319429' and not raw else []}}
 
 # EASY: observed route count blanks and sums, fixed ordinary headings.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)

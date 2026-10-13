@@ -156,6 +156,8 @@ def guard(qid,p):
         raise ValueError('This family has no separate linear term')
     if s['c']==1 and p['c']!=1:
         raise ValueError('This source family has no outside scale')
+    if s['c']>1 and p['c']<2:
+        raise ValueError('Retain the nonunit outside scale workload')
     if qid in ('q-48565','q-1952') and p['d']!=0:
         raise ValueError('This source family has no constant term')
     if qid=='q-71881' and (not p['l'] or p['d']!=0):
@@ -253,6 +255,8 @@ def normalized(text):
     text=re.sub(r'(?<![A-Za-z\\])ln',lambda _:r'\ln',text)
     # Critical source juxtaposition: 4x3^u means (4x)*3^u, never a base 43.
     text=re.sub(r'(?<=[0-9x)}])(?=\{?\d+\}?\^)',lambda _:r'\cdot ',text)
+    # Original positive ungrouped factors can become signed under explicit inputs.
+    text=re.sub(r'(\\cdot\s*)(-\d+(?:x)?)',lambda m:m[1]+'('+m[2]+')',text)
     return text
 
 
@@ -288,7 +292,7 @@ def authored_solution(p):
 
 def target(p):
     v=p['c']*p['b']**inner(p)*sp.log(p['b'])*sp.diff(inner(p),X)
-    if 'point' in p:return sp.expand(v.subs(X,sp.Rational(p['point'])))
+    if 'point' in p:return v.subs(X,sp.Rational(p['point']))
     if p.get('fragment'):return p['c']*sp.diff(inner(p),X)*sp.log(p['b'])
     return v
 
@@ -342,7 +346,7 @@ def method_bank(p):
     values=[c*du*b**u*L,c*du*b**u,c*b**u*L,-c*du*b**u*L,c*du*u*b**(u-1)]
     recipes=['correct','omit-natural-log','omit-inner-derivative','reverse-inner-sign','use-power-rule-on-base-power']
     if 'point' in p:
-        t=sp.Rational(p['point']);values=[sp.expand(v.subs(X,t)) for v in values]
+        t=sp.Rational(p['point']);values=[v.subs(X,t) for v in values]
     return [(tex(v),v,r) for v,r in zip(values,recipes,strict=True)]
 
 
@@ -384,7 +388,15 @@ def build(qid,p,seed,profile):
     # cancels at evaluation? It still affects the derivative, so fingerprint the
     # actual requested mathematical object, plus the point for a slope demand.
     demand=('slope' if 'point' in p else 'coefficient-fragment' if p.get('fragment') else 'derivative')
-    assessed=target(p) if demand=='coefficient-fragment' else p['c']*sp.diff(inner(p),X)*p['b']**inner(p)*sp.log(p['b'])
+    if demand=='coefficient-fragment':
+        assessed=sp.expand_log(target(p),force=True)
+    else:
+        # Normalize the only perfect-power general base in 2..6 (4=2^2), and
+        # factor constant exponent offsets. This merges genuinely equivalent
+        # derivative tasks across base/scale/offset parameter spellings.
+        base,exponent,log_factor=p['b'],inner(p),sp.log(p['b'])
+        if base==4:base,exponent,log_factor=2,2*exponent,2*sp.log(2)
+        assessed=sp.expand(sp.expand_power_exp(p['c']*sp.diff(inner(p),X)*base**exponent*log_factor),log=False)
     fingerprint=digest({'criterion':demand,'derivative':sp.srepr(assessed),'point':p.get('point')})
     content=[VERSION,level if not(raw and p.get('unrated')) else None,prompt,solution if not(raw and ':question/worked-solution' not in source) else None,semantic]
     identity=uid(content);rendered_fields=[];answer_math={};recipes={}

@@ -198,13 +198,13 @@ $$
 
 ## Generated / minimally completed — authored_endpoint_bank / easy
 
-The inequality $5 \le u < 7$ can be expressed in interval notation as
+The inequality $-5 < u \le 8$ can be expressed in interval notation as
 
-- $u ∈ [5, 7)$
-- $u ∈ (5, 7]$
-- $u ∈ (5, 7)$
-- $u ∈ [7, 5)$
-- $u ∈ [5, 7]$
+- $u ∈ [-5, 8)$
+- $u ∈ (-5, 8]$
+- $u ∈ (-5, 8)$
+- $u ∈ (8, -5]$
+- $u ∈ [-5, 8]$
 
 Every interval can be expressed as an inequality. We use the following notations:
 
@@ -214,31 +214,31 @@ Every interval can be expressed as an inequality. We use the following notations
 For the given inequality
 
 $$
-5 \le u < 7
+-5 < u \le 8
 $$
 
 we note the following:
 
-- The left endpoint $5$ *is* included in the interval. Therefore, we use $[$.
-- The right endpoint $7$ *is not* included in the interval. Therefore, we use $) $.
+- The left endpoint $-5$ *is not* included in the interval. Therefore, we use $( $.
+- The right endpoint $8$ *is* included in the interval. Therefore, we use $]$.
 
 Therefore, the interval that corresponds to the given inequality is
 
 $$
-u ∈ [5, 7)
+u ∈ (-5, 8]
 $$
 
 
 
 ## Generated / minimally completed — authored_endpoint_bank / easy
 
-The interval $u ∈ [5, 7)$ corresponds to the inequality
+The interval $u ∈ (-5, 8]$ corresponds to the inequality
 
-- $5 \le u \le 7$
-- $5 < u < 7$
-- $5 \le u < 7$
-- $5 < u \le 7$
-- $7 \le u < 5$
+- $-5 \le u \le 8$
+- $-5 < u < 8$
+- $-5 \le u < 8$
+- $-5 < u \le 8$
+- $8 < u \le -5$
 
 Every interval can be expressed as an inequality. We use the following notations:
 
@@ -248,18 +248,18 @@ Every interval can be expressed as an inequality. We use the following notations
 For the given interval
 
 $$
-u ∈ [5, 7)
+u ∈ (-5, 8]
 $$
 
 we note the following:
 
-- The left endpoint $5$ *is* included in the interval. Therefore, we use $\le$.
-- The right endpoint $7$ *is not* included in the interval. Therefore, we use $<$.
+- The left endpoint $-5$ *is not* included in the interval. Therefore, we use $<$.
+- The right endpoint $8$ *is* included in the interval. Therefore, we use $\le$.
 
 Therefore, the inequality that corresponds to the given interval is
 
 $$
-5 \le u < 7
+-5 < u \le 8
 $$
 
 

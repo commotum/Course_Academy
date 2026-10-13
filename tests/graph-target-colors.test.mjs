@@ -57,8 +57,11 @@ test('Color Code toggles red, green, and blue together in both graph views and t
   const membership = JSON.stringify(c.snapshot.learner), node = elements.get('topic-1');
   for (const targetsView of [false, true]) for (const light of [false, true]) {
     c.targetsView = targetsView; c.light = light; c.setColorCode(true);
-    const expected = light ? ['#0c5130', '#628fec', '#f8dadd'] : ['#9edbb4', '#1b459c', '#4b1118'];
-    for (const [i, id] of [1, 2, 3].entries()) assert.equal(elements.get('topic-' + id).styles['--node'], expected[i]);
+    const expected = light ? ['#13713d', '#8fb3f2', '#f8dadd'] : ['#2a8851', '#183c82', '#4b1118'];
+    for (const [i, id] of [1, 2, 3].entries()) {
+      assert.equal(elements.get('topic-' + id).styles['--node'], expected[i]);
+      assert.equal(elements.get('topic-' + id).styles['--node-border'], c.nodeAppearance(id).border);
+    }
     assert.deepEqual(fills.slice(-3), expected);
     assert.equal(elements.get('targetColorToggle').attrs['aria-checked'], 'true');
     c.setColorCode(false);
@@ -75,13 +78,13 @@ test('green requires completion AND target membership; completed prerequisites k
   for (const targetsView of [false, true]) {
     c.targetsView = targetsView; c.setColorCode(true);
     assert.equal(c.nodeAppearance(1).status, 'completed-target');
-    assert.equal(c.nodeAppearance(1).fill, '#9edbb4');
+    assert.equal(c.nodeAppearance(1).fill, '#2a8851');
     assert.equal(c.nodeAppearance(2).target, false);
     assert.equal(c.nodeAppearance(2).fill, c.competencyFor(2).fill);
     assert.doesNotMatch(elements.get('topic-2').attrs['aria-label'], /Completed target/);
   }
   c.snapshot.learner.targets.push(2); c.refreshTargetColors();
-  assert.equal(c.nodeAppearance(2).fill, '#10633b');
+  assert.equal(c.nodeAppearance(2).fill, '#0d5734');
   assert.match(elements.get('topic-2').attrs['aria-label'], /Completed target/);
   c.snapshot.learner.targets = [3]; c.refreshTargetColors();
   for (const id of [1, 2]) assert.equal(c.nodeAppearance(id).fill, c.competencyFor(id).fill);
@@ -96,7 +99,7 @@ test('explicit completion flags take precedence; historical repetition evidence 
   c.repetitions[2] = 1; assert.equal(c.nodeAppearance(2).status, 'completed-target');
   c.snapshot.learned = { 2: false }; c.repetitions[2] = 10;
   assert.equal(c.nodeAppearance(2).status, 'target');
-  assert.equal(c.nodeAppearance(2).fill, '#f8dadd');
+  assert.equal(c.nodeAppearance(2).fill, '#cf626b');
   c.snapshot.learned[2] = true; c.repetitions[2] = .9938596149152737;
   assert.equal(c.nodeAppearance(2).status, 'completed-target');
   assert.equal(c.nodeAppearance(2).fill, '#093c22');
@@ -111,6 +114,25 @@ function luminance(hex) {
   const linear = rgb.map(channel => channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4);
   return linear.reduce((sum, channel, i) => sum + channel * [.2126, .7152, .0722][i], 0);
 }
+
+test('band six uses the former band four fill, with the former band five outline in each theme', () => {
+  const { c } = fixture();
+  const endpoints = {
+    target: { dark: ['#4b1118', '#cf626b', '#e5a0a6'], light: ['#f8dadd', '#8c202b', '#681821'] },
+    'completed-target': { dark: ['#093c22', '#56a978', '#9edbb4'], light: ['#def4e5', '#10633b', '#0c5130'] },
+    queue: { dark: ['#102653', '#628fec', '#a6c5f5'], light: ['#e1ecfc', '#1b459c', '#173775'] },
+  };
+  for (const [status, themes] of Object.entries(endpoints)) for (const light of [false, true]) {
+    c.light = light;
+    const [zero, six, border] = themes[light ? 'light' : 'dark'];
+    assert.equal(c.statusMasteryAppearance(status, { known: true, level: 0 }).fill, zero);
+    assert.equal(c.statusMasteryAppearance(status, { known: true, level: 6 }).fill, six);
+    for (let level = 0; level <= 6; level++) {
+      assert.equal(c.statusMasteryAppearance(status, { known: true, level }).border, border);
+    }
+    assert.equal(c.statusMasteryAppearance(status, { known: false, level: null }).border, border);
+  }
+});
 
 test('each status has distinct mastery bands, reverses shade progression with theme, and keeps readable text and data outlines', () => {
   const { c } = fixture(); c.snapshot.learner.targets = [1]; c.snapshot.learned = { 1: false }; c.setColorCode(true);
@@ -150,6 +172,7 @@ test('color legend mirrors the node shades and hides when coloring is off', () =
         const expected = c.statusMasteryAppearance(status, { known: true, level });
         assert.equal(cells[level].styles['--swatch-fill'], expected.fill);
         assert.equal(cells[level].styles['--swatch-text'], expected.text);
+        assert.equal(cells[level].styles['--swatch-border'], expected.border);
       }
     }
     assert.match(elements.get('competencyFillDescription').textContent, /green marks completed targets/);
@@ -162,10 +185,10 @@ test('queue updates repaint immediately; removal restores target status or defau
   const { c, elements, fills } = fixture(); c.targetsView = true; c.setColorCode(true);
   const layout = c.state.layout, view = c.state.view;
   c.queueChanged({ queue: [1, 2, '3', 99] });
-  assert.deepEqual(fills.slice(-3), ['#a6c5f5', '#1b459c', '#102653']);
+  assert.deepEqual(fills.slice(-3), ['#3464df', '#183c82', '#102653']);
   for (const id of [1, 2, 3]) assert.match(elements.get('topic-' + id).attrs['aria-label'], /In queue/);
   c.queueChanged({ queue: [] });
-  assert.deepEqual(fills.slice(-3), ['#9edbb4', '#5A5A5A', '#4b1118']);
+  assert.deepEqual(fills.slice(-3), ['#2a8851', '#5A5A5A', '#4b1118']);
   assert.equal(c.state.layout, layout); assert.equal(c.state.view, view);
   c.queueChanged({ queue: [3] });
   c.learnerChanged({ ...c.snapshot.learner, queue: [] });
@@ -177,7 +200,7 @@ test('membership changes repaint a newly completed target and do not require bro
   const { c, elements, fills } = fixture(); c.setColorCode(true);
   c.learnerChanged({ targets: [2], selfDirected: false });
   assert.equal(elements.get('topic-1').styles['--node'], c.competencyFor(1).fill);
-  assert.deepEqual(fills.slice(-3), ['#D6D6D6', '#10633b', '#000000']);
+  assert.deepEqual(fills.slice(-3), ['#D6D6D6', '#0d5734', '#000000']);
   c.localStorage.setItem = () => { throw Error('Unavailable'); };
   c.setColorCode(false); assert.equal(elements.get('targetColorToggle').attrs['aria-checked'], 'false');
 });

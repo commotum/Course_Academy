@@ -1,9 +1,15 @@
-# Closed-interval generator
+# Closed interval generator
 
-`.venv/bin/python generate/scratch/17592186059829/validate.py`
+Registered script: `generate/scratch/17592186059829.py`; UUID: `d23f186a-ba43-514f-b344-5c8138b3c796`.
 
-`.venv/bin/python generate/scratch/17592186059829.py --difficulty all --count 2 --seed 5 --format markdown`
+Generate: `.venv/bin/python generate/scratch/17592186059829.py --difficulty all --count 5 --seed 71 --format json`.
 
-API: `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)`, plus easy/moderate/hard wrappers. Templates: inequality_to_interval, interval_to_inequality. Profiles: observed_interval / observed_inequality (normal independent keys and authored solutions/levels), raw_interval / raw_inequality (public parameterized evidence replay preserving missing rating/key/solution). Explicit endpoints use canonical strings, e.g. `{'a':'-sqrt(2)','b':'1/2'}` at hard. No solving or nonclosed correct-set branch.
+Current validation: `.venv/bin/python generate/scratch/17592186059829/validate-current.py`. Replenishment/recovery: `.venv/bin/python generate/scratch/17592186059829/replenish.py`. The latter uses the existing EDB integration, application lock, retained exact request, basis guard, and exact-basis readback.
 
-Two unrated originals, ten complete choice values; all three levels are authored and curriculum-grounded. Validation exhausts every finite eligible endpoint pair in both directions, reads actual displayed sets/solution stages, replays raw sources, and grades every owned choice ID through the real native engine on representative normal instances. Correct-designation fidelity has zero present-source denominator; independently derived keys are reported separately. No unresolved findings; no database writes. Parent QA is still required. `freeze.json` records artifact hashes.
+Historical profiles retain the original two five-choice banks and authored integer/rational/surd workload definitions. Current captured profiles replay the recovered easy forward source and moderate reverse source with its inclusive outside-union distractor. The current moderate integer profile has 300 directional tasks, which overlap easy tasks. Combined moderate capability is 5,580 rational tasks plus those 300 tasks, with global fingerprint deduplication. Seed, bank alias, identity, and choice order do not establish distinct questions.
+
+The three current source questions, canonical example, and all learner history were preserved. The unrated/unkeyed/solutionless source remains excluded from available counts. Generated punctuation corrects q-154728's question mark placement while preserving the source.
+
+Commit 2088 → 2089 added four easy, four moderate, and five hard questions. Readback verified five distinct available questions at each supported level, generator registration, source attribution, no retractions, and no changes on repeat preparation. Native grading accepted all 13 correct choices and rejected all 52 distractors. Inventory at basis 2090 showed no remaining jobs for this KP. Exact EDN, request, preview, receipt, and verification are in `reference/replenishment/basis-2088/`.
+
+The historical exhaustive evidence (7,104 tasks) is preserved under `history/closed-intervals-v1/`. Current validation adds 600 exhaustive captured-profile tasks and 18 historical-profile boundary cases, with complete source bank replay and native grading. No plots or assets are needed.

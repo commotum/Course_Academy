@@ -10,6 +10,7 @@ from pathlib import Path
 
 import sympy as sp
 from display_math import X,U,expression,equal,prompt_object
+from variety import enumerate_variety
 
 ROOT=Path(__file__).resolve().parent
 REPO=ROOT.parents[2]
@@ -47,13 +48,16 @@ def check_solution(record,parsed):
     assert definitions[0].startswith(name+'=') or re.match(name+r'\s*=',definitions[0])
     assert equal(expression(definitions[0].split('=',1)[1]),c*b**U)
     assert equal(expression(definitions[1].split('=',1)[1]),u)
+    def operator(style,dependent,independent):
+        return r'\frac{'+chr(92)+style+'{d}'+dependent+'}{'+chr(92)+style+'{d}'+independent+'}'
+    style='mathrm' if qid in ('q-48631','authored-three-term-slope') else 'text'
     components=re.split(r',\\(?:,|qquad|quad)\s*',blocks[1].strip().rstrip('.'))
     assert len(components)==2,(qid,components)
+    assert components[0].split('=',1)[0]==operator(style,name,'u')
+    assert components[1].split('=',1)[0]==operator(style,'u','x')
     assert equal(expression(components[0].split('=',1)[1]),c*b**U*sp.log(b))
     assert equal(expression(components[1].split('=',1)[1]),du)
     operators={}
-    def operator(style,dependent,independent):
-        return r'\frac{'+chr(92)+style+'{d}'+dependent+'}{'+chr(92)+style+'{d}'+independent+'}'
     for style in ('text','mathrm'):
         for dependent,independent,val in ((name,'u',c*b**U*sp.log(b)),('u','x',du),(name,'x',D)):
             op=operator(style,dependent,independent)
@@ -70,6 +74,8 @@ def check_solution(record,parsed):
     rows=rhs_rows(blocks[2]);expected_count=3 if qid in ('q-107459','q-340969') else 4
     assert len(rows)==expected_count,(qid,rows)
     style='mathrm' if qid in ('q-48631','authored-three-term-slope') else 'text'
+    first_left=blocks[2].replace(r'\begin{aligned}','').split('&',1)[0].strip()
+    assert first_left==operator(style,name,'x'),(qid,first_left)
     assert all(op in rows[0] for op in (operator(style,name,'u'),operator(style,'u','x')))
     # Operation-preserving masks: substituted stage must still use u, and the
     # product stage (when present) cannot be replaced by a restored final row.
@@ -190,9 +196,12 @@ def main():
         if ':question/worked-solution' in src:
             assert normal['question'][':question/worked-solution']==g.normalized(src[':question/worked-solution'])
         variants=[]
+        raw_variants=[]
         for seed in (119,241):
             v=g.generate(g.SPECS[qid]['level'],seed,template=qid);check_record(v);fixtures.append(engine_fixture(v,'variant/'+qid+'/'+str(seed)));variants.append(v)
-        review.append({'source_id':qid,'original':r,'normal_at_original':normal,'generated_variants':variants})
+            raw_v=g.generate(g.SPECS[qid]['level'],seed,template=qid,profile='observed:'+qid)
+            check_record(raw_v);raw_variants.append(raw_v)
+        review.append({'source_id':qid,'original':r,'normal_at_original':normal,'generated_variants':variants,'observed_bank_variants':raw_variants})
         if src.get(':question/answer-fields'):
             h=g.generate(g.SPECS[qid]['level'],template=qid,parameters=params,profile='historical:'+qid);check_record(h)
             # A repaired unknown designation is inferred and never called matched.
@@ -206,7 +215,7 @@ def main():
         fam=[]
         for seed in range(16):
             r=g.generate(s['level'],seed,template=qid);check_record(r);fam.append(r)
-            if seed<3:fixtures.append(engine_fixture(r,'sample/'+qid+'/'+str(seed)))
+            if seed<3 or s['level']=='hard' or qid=='q-340969':fixtures.append(engine_fixture(r,'sample/'+qid+'/'+str(seed)))
             p=r['generation']['parameters']
             identity=g.generate(s['level'],seed+37,template=qid,parameters=p)
             assert identity['question'][':question/id']==r['question'][':question/id']
@@ -225,6 +234,10 @@ def main():
                 except AssertionError:mutation_count+=1
                 else:raise AssertionError('Stage-loss mutation was not detected')
         family_counts[qid]=len(fam);fingerprints[qid]=len({r['generation']['mathematical_fingerprint'] for r in fam})
+        if s['kind']=='radio':
+            positions={next(i for i,a in enumerate(r['question'][':question/answer-fields'][0][':answer-field/choices'])
+                            if a[':answer/id']==r['question'][':question/answer-fields'][0][':answer-field/correct'][1]) for r in fam}
+            assert len(positions)>1,('Correct choice always at one index',qid)
         if s['level']=='hard':
             review.append({'source_id':None,'authored_template':qid,'generated_variants':fam[:2]})
     # Defaults choose whole family/profile before parameters, and reach every family.
@@ -234,6 +247,21 @@ def main():
             r=g.generate(level,seed);default_coverage[level].add(r['generation']['template'])
     for level,found in default_coverage.items():
         assert found=={q for q,s in g.SPECS.items() if s['level']==level},(level,found)
+    # Equivalent base-power spellings and fragment-unused constants must dedupe.
+    p=g.default_params('q-48565');p['b']=4;p['a']=2
+    r1=g.generate_easy(template='q-48565',parameters=p);p['b']=2;p['a']=4
+    r2=g.generate_easy(template='q-48565',parameters=p)
+    assert r1['generation']['mathematical_fingerprint']==r2['generation']['mathematical_fingerprint']
+    p=g.default_params('q-312462');r1=g.generate_easy(template='q-312462',parameters=p);p['d']=3
+    r2=g.generate_easy(template='q-312462',parameters=p)
+    assert r1['generation']['mathematical_fingerprint']==r2['generation']['mathematical_fingerprint']
+    assert r1['question'][':question/id']!=r2['question'][':question/id']
+    p=g.default_params('authored-three-term-slope');p.update(b=2,c=2,d=-1)
+    r1=g.generate_hard(template='authored-three-term-slope',parameters=p);p.update(c=4,d=-2)
+    r2=g.generate_hard(template='authored-three-term-slope',parameters=p)
+    assert r1['generation']['mathematical_fingerprint']==r2['generation']['mathematical_fingerprint']
+    variety=enumerate_variety();write('variety-enumeration.json',variety)
+    assert all(v['distinct_mathematical_tasks']>=35 for v in variety.values())
     # Exact/explicit workload guards, including degenerate hard terms and points.
     rejected=0
     for qid,key,value in [('authored-three-term-slope','k',0),('authored-three-term-slope','c',1),('authored-three-term-slope','a',-4),
@@ -242,6 +270,13 @@ def main():
         try:g.generate(g.SPECS[qid]['level'],template=qid,parameters=p)
         except ValueError:rejected+=1
         else:raise AssertionError(('Invalid explicit parameters accepted',qid,p))
+    signed_boundaries=0
+    for qid in ('q-48565','q-48631','q-71881','q-107459','q-1952'):
+        p=g.default_params(qid);p['a']=-9;p['b']=6
+        if g.SPECS[qid]['c']>1:p['c']=5
+        if qid=='q-71881':p['l']=-3
+        r=g.generate(g.SPECS[qid]['level'],template=qid,parameters=p);check_record(r)
+        fixtures.append(engine_fixture(r,'signed maximum boundary/'+qid));signed_boundaries+=1
     # Native app fixture rejects every distractor and tests noncanonical equivalents.
     write('engine-input.json',fixtures)
     subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(ROOT/'engine-input.json'),str(ROOT/'engine-validation.json')],check=True)
@@ -256,7 +291,9 @@ def main():
             'fieldless_sources_completed':2,'unrated_sources_authored_easy':1,
             'independent_displayed_solution_stage_checks':sum(STAGES.values()),'families_sampled':family_counts,
             'sampled_mathematical_task_counts':fingerprints,'default_family_coverage':{k:sorted(v) for k,v in default_coverage.items()},
+            'enumerated_same_method_variety':variety,
             'equality_preserving_stage_mutations_rejected':mutation_count,'explicit_scope_violations_rejected':rejected,
+            'signed_explicit_boundaries_verified':signed_boundaries,
             'native':{k:engine[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},
             'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},
             'limitations':['Historical distractor intent is opaque where explicitly documented; historical/observed profiles are evidence-only.',
@@ -268,6 +305,8 @@ def main():
         md+=['## '+(entry.get('source_id') or entry['authored_template'])]
         if 'original' in entry:
             md+=['### Raw original',g.markdown(entry['original']),'### Normal at original parameters',g.markdown(entry['normal_at_original'])]
+        for i,v in enumerate(entry.get('observed_bank_variants',[])):
+            md+=['### Generated observed-bank variant '+str(i+1)+' (evidence only)',g.markdown(v)]
         for i,v in enumerate(entry['generated_variants']):md+=['### Generated variant '+str(i+1)+' ('+g.SPECS[v['generation']['template']]['level']+')',g.markdown(v)]
     (ROOT/'review.md').write_text('\n\n'.join(md)+'\n')
     print(json.dumps(report,indent=2))

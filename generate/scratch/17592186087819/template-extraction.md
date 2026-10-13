@@ -2,7 +2,7 @@
 
 Provenance: `source.json`, math basis 1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `source-cases.json` supplies every practice replay. Source capture values and authored parameter ranges are separate.
 
-Version `route-matrix-3` keeps the source descriptions and replay profiles below,
+Version `route-matrix-5` keeps the source descriptions and replay profiles below,
 but narrows newly sampled counts to 0..2, with at most one loop per station and
 at least 3 total arrows and at most 8 for three stations or 10 for four. The exact original parameter
 sets remain replayable without this narrower density policy. Source-derived
@@ -14,6 +14,8 @@ optional where its five values stay distinct within the density limits.
 exception rather than exhausting the sampler. See `density-validation.json`
 for current variety and limits; the original sampling claims below describe
 version one and are retained as extraction evidence.
+
+Current presentation normalizes every route table through the shared `route_tables.render_route_table` function, with the HTML structure of question `17592186476121`. This includes source-derived prompts and all worked solutions, regardless of station count or heading order. The legacy table descriptions below document the immutable capture; current replay preserves their ordered cell contents and surrounding prose rather than their old HTML/Markdown bytes.
 
 ## 1. Describe each source before generalization
 
@@ -39,7 +41,7 @@ Translate a directed route diagram to an ordered adjacency table, reading depart
 
 ## 3. Map every source component and choice
 
-`specs.json` records the complete matrices, missing coordinates, source IDs and image references. The prompt mask slots are **whole ordered cells**, not substitutions of single digits throughout prose. Source solution table masks preserve every completed cell. Count explanation slots comprise full count/direction paragraphs; changed counts choose zero/singular/plural grammar, and original exact paragraphs are retained when their complete values and directions agree.
+`specs.json` records the complete matrices, missing coordinates, source IDs and image references. The shared table data adapter sets **whole ordered cells**, rather than substituting single digits throughout prose. Source table parsing identifies the complete table block, preserves its heading order, and replaces it with the shared HTML renderer. Worked solutions delegate to that same adapter and renderer. Count explanation slots comprise full count/direction paragraphs; changed counts choose zero/singular/plural grammar, and original exact paragraphs are retained when their complete values and directions agree.
 
 Every source choice is fully accounted for by these complete finite catalog profiles:
 

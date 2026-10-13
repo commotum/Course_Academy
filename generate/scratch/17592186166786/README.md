@@ -1,0 +1,7 @@
+# Hyperbolic product substitution generator
+
+Run `.venv/bin/python generate/scratch/17592186166786.py --difficulty easy --count 5 --seed 1984` from the repository root; moderate is also supported. Validate with `.venv/bin/python generate/scratch/17592186166786/validate.py`. `replenish.py` performs scoped additive preparation and commit through the existing EDB integration.
+
+The finite package validates 11 easy and 10 moderate tasks, including the two source tasks that are excluded from replenishment. Both original banks lack keys, solutions and difficulty labels. Their records and the canonical example remain untouched. Complete bank fidelity, independently derived keys, authored solutions, workload classification, boundary rejection and native grading are recorded separately. Hard remains explicitly unsupported; finite exhaustion leaves shortages visible.
+
+The replenisher acquires the application api.lock, rechecks current inventory/basis and source evidence, deduplicates exact integrands/intervals, validates supplied instances if present, uses configured application/ca-engine attribution and native ensure predicates, saves the exact basis-guarded request before submission, and verifies receipt datoms and readback at the returned basis. It registers the existing or stable generator UUID with the installed generator ID/script attributes and KP ref. Only this KP's additive generated content and generator registration may change. Requests, previews, receipts and readback are retained under reference/replenishment.

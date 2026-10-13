@@ -8,12 +8,20 @@ Basis 1356; raw capture in source.json. Source figure paths alone are localized.
 
 The diagram above shows bus routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a + b + c$.
 
-|  |  | To: |  |  |
-| --- | ---: | ---: | ---: | ---: |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $a$ | $1$ |
-| **B** | $0$ | $b$ | $c$ |  |
-| **C** | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$a$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$c$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 3, 2, 1, 5, 4 ✓
 
@@ -27,12 +35,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $1$ | $1$ |
-| **B** | $0$ | $1$ | $2$ |  |
-| **C** | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -46,12 +62,20 @@ $$
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a + b + c$.
 
-|  |  | To: |  |  |
-| --- | ---: | ---: | ---: | ---: |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $a$ | $1$ | $1$ |
-| **B** | $b$ | $0$ | $1$ |  |
-| **C** | $1$ | $c$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$a$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$b$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$c$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 2, 1 ✓, 0, 5, 3
 
@@ -65,12 +89,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $1$ | $1$ |
-| **B** | $0$ | $0$ | $1$ |  |
-| **C** | $1$ | $1$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -84,39 +116,20 @@ $$
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a+b+c.$
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$a$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$b$</td>
-<td align="center">$2$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$c$</td>
-<td align="center">$1$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$a$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$c$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 2 ✓, 1, 0, 4, 3
 
@@ -130,39 +143,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$1$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$1$</td>
-<td align="center">$2$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$0$</td>
-<td align="center">$1$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -176,13 +170,21 @@ $$
 
 The diagram above shows bus routes between four stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the four stations. Find the value of $a+b+c.$
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | $0$ | $a$ |
-| **B** | $0$ | $0$ | $b$ | $0$ |  |
-| **C** | $0$ | $0$ | $c$ | $1$ |  |
-| **D** | $0$ | $0$ | $1$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$0$</td><td>$a$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$b$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$0$</td><td>$c$</td><td>$1$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 2, 1, 0, 4, 3 ✓
 
@@ -196,13 +198,21 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | $0$ | $2$ |
-| **B** | $0$ | $0$ | $1$ | $0$ |  |
-| **C** | $0$ | $0$ | $0$ | $1$ |  |
-| **D** | $0$ | $0$ | $1$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$0$</td><td>$2$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$0$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -216,12 +226,20 @@ $$
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | {{field-1}} | $0$ |
-| **B** | {{field-2}} | $0$ | {{field-3}} |  |
-| **C** | $2$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>{{field-1}}</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>{{field-2}}</td><td>$0$</td><td>{{field-3}}</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 2 ✓
 
@@ -239,12 +257,20 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $2$ | $0$ |
-| **B** | $1$ | $0$ | $3$ |  |
-| **C** | $2$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$1$</td><td>$0$</td><td>$3$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Original replay q-319412
 
@@ -252,13 +278,21 @@ Therefore, our route matrix is the following:
 
 The diagram above shows train routes between four stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the four stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | {{field-1}} | $0$ |
-| **B** | {{field-2}} | $0$ | $1$ | $0$ |  |
-| **C** | $1$ | $0$ | {{field-3}} | $2$ |  |
-| **D** | $0$ | $1$ | $1$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>{{field-1}}</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>{{field-2}}</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>{{field-3}}</td><td>$2$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 2 ✓
 
@@ -276,13 +310,21 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | $2$ | $0$ |
-| **B** | $2$ | $0$ | $1$ | $0$ |  |
-| **C** | $1$ | $0$ | $0$ | $2$ |  |
-| **D** | $0$ | $1$ | $1$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$2$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$2$</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td><td>$2$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Original replay q-319429
 
@@ -290,12 +332,20 @@ Therefore, our route matrix is the following:
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $1$ | $1$ | {{field-1}} |
-| **B** | $1$ | {{field-2}} | $2$ |  |
-| **C** | $0$ | {{field-3}} | $1$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>{{field-1}}</td></tr>
+      <tr><th scope="row">B</th><td>$1$</td><td>{{field-2}}</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>{{field-3}}</td><td>$1$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 3 ✓
 
@@ -313,12 +363,20 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $1$ | $1$ | $3$ |
-| **B** | $1$ | $2$ | $2$ |  |
-| **C** | $0$ | $1$ | $1$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>$3$</td></tr>
+      <tr><th scope="row">B</th><td>$1$</td><td>$2$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Raw observed prose q-319429 (direction error retained as evidence)
 
@@ -326,12 +384,20 @@ Therefore, our route matrix is the following:
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $1$ | $1$ | {{field-1}} |
-| **B** | $1$ | {{field-2}} | $2$ |  |
-| **C** | $0$ | {{field-3}} | $1$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>{{field-1}}</td></tr>
+      <tr><th scope="row">B</th><td>$1$</td><td>{{field-2}}</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>{{field-3}}</td><td>$1$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 3 ✓
 
@@ -349,25 +415,41 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $1$ | $1$ | $3$ |
-| **B** | $1$ | $2$ | $2$ |  |
-| **C** | $0$ | $1$ | $1$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>$3$</td></tr>
+      <tr><th scope="row">B</th><td>$1$</td><td>$2$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Generated variant easy sum_138940 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/c21eb50e0ed5949d5255c5f128aaea0d45968625322478643faee023f656c675.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/0f7d2f1cd3c52b3a94cd81a649e9118e2853a7f782a685bf552d917bd93a23a6.png)
 
 The diagram above shows bus routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a + b + c$.
 
-|  |  | To: |  |  |
-| --- | ---: | ---: | ---: | ---: |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $a$ | $1$ |
-| **B** | $0$ | $b$ | $c$ |  |
-| **C** | $2$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$a$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$c$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 5, 1, 3, 2, 4 ✓
 
@@ -381,12 +463,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $1$ | $1$ |
-| **B** | $0$ | $1$ | $2$ |  |
-| **C** | $2$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -396,16 +486,24 @@ $$
 
 ## Generated variant easy sum_138940 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/5ebdcd17735c0fcf90e9d8e55de5d38120dfbba02c98d8343dcc66c8e021a395.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/b017ac82a9353caea52bb54b4f4d0bd549665ac2bec68f31af790f285b38a022.png)
 
 The diagram above shows bus routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a + b + c$.
 
-|  |  | To: |  |  |
-| --- | ---: | ---: | ---: | ---: |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $a$ | $1$ |
-| **B** | $0$ | $b$ | $c$ |  |
-| **C** | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$a$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$c$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 4 ✓, 5, 3, 2, 1
 
@@ -419,12 +517,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $2$ | $1$ |
-| **B** | $0$ | $1$ | $1$ |  |
-| **C** | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$2$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -434,16 +540,24 @@ $$
 
 ## Generated variant easy sum_139685 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/d8b9324e3595e97f12f0fefb32d74e1d6c5ae97cc917bb3e5e7bff193aed27ca.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/4e8c65fa473bb4e4f34c455fcb64007172da3f9e4df184aa94ed52e6195f5666.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a + b + c$.
 
-|  |  | To: |  |  |
-| --- | ---: | ---: | ---: | ---: |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $a$ | $1$ | $2$ |
-| **B** | $b$ | $0$ | $1$ |  |
-| **C** | $1$ | $c$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$a$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">B</th><td>$b$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$c$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 5, 0 ✓, 2, 1, 3
 
@@ -457,12 +571,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $1$ | $2$ |
-| **B** | $0$ | $0$ | $1$ |  |
-| **C** | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -472,16 +594,24 @@ $$
 
 ## Generated variant easy sum_139685 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/f8143111b0fe8a3532ea14a350a65ab94e1ba51e1dde484506c4c557f6b63590.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/a811180d736b3df4bcf8c8d368b9fb5494eb714007a401591a556483c06ffd7f.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a + b + c$.
 
-|  |  | To: |  |  |
-| --- | ---: | ---: | ---: | ---: |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $a$ | $1$ | $1$ |
-| **B** | $b$ | $0$ | $1$ |  |
-| **C** | $2$ | $c$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$a$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$b$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$c$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 3, 5, 2 ✓, 1, 0
 
@@ -495,12 +625,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $1$ | $1$ |
-| **B** | $2$ | $0$ | $1$ |  |
-| **C** | $2$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$2$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -510,43 +648,24 @@ $$
 
 ## Generated variant moderate sum_139689 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/cef1270bc46e537afa7fbf4ba456cea729349f0ad7196b3b891d950572e1e8ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/d847d0ab6983ad7195429ebef54bb05e72fe23422b959138832ca3ac9c145561.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a+b+c.$
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$a$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$b$</td>
-<td align="center">$1$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$c$</td>
-<td align="center">$2$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$a$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$c$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 4 ✓, 0, 2, 1, 3
 
@@ -560,39 +679,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$1$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$1$</td>
-<td align="center">$1$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$2$</td>
-<td align="center">$2$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -602,43 +702,24 @@ $$
 
 ## Generated variant moderate sum_139689 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/f9420cf5ddf4929ab4ee45235b0e922a7c4a008e272efe4659fb4a58bd87be8e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/f5592396df1f4e84d0fa08446edcdb22987f51b584965fa989bf65b803aeeca8.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a+b+c.$
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$a$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$b$</td>
-<td align="center">$2$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$c$</td>
-<td align="center">$2$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$a$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$c$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 3, 4, 2, 1, 0 ✓
 
@@ -652,39 +733,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$0$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$0$</td>
-<td align="center">$2$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$0$</td>
-<td align="center">$2$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -694,17 +756,25 @@ $$
 
 ## Generated variant easy sum_139719 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/9cf9cf3e3bedcaefc942214169e322d7d0336a24cc4274dadc22692b1d0a1552.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/fef7fa2fec8a10e56c98b234240ed64fc96fa96c91912db81737bfa14a1f21f1.png)
 
 The diagram above shows bus routes between four stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the four stations. Find the value of $a+b+c.$
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $2$ | $0$ | $a$ |
-| **B** | $0$ | $0$ | $b$ | $0$ |  |
-| **C** | $0$ | $0$ | $c$ | $1$ |  |
-| **D** | $0$ | $0$ | $2$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$2$</td><td>$0$</td><td>$a$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$b$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$0$</td><td>$c$</td><td>$1$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 4, 0, 2 ✓, 1, 3
 
@@ -718,13 +788,21 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $2$ | $0$ | $1$ |
-| **B** | $0$ | $0$ | $1$ | $0$ |  |
-| **C** | $0$ | $0$ | $0$ | $1$ |  |
-| **D** | $0$ | $0$ | $2$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$2$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$0$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -734,17 +812,25 @@ $$
 
 ## Generated variant easy sum_139719 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/08932a6ae802dd2fa1e015c0a936b9f6e6cd43890a28936ebcaded445570f941.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/ecd6423ea03b71f42598948e87402a00074b67dceb17f3ec238dae2d3fe23415.png)
 
 The diagram above shows bus routes between four stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the four stations. Find the value of $a+b+c.$
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | $0$ | $a$ |
-| **B** | $0$ | $0$ | $b$ | $0$ |  |
-| **C** | $0$ | $0$ | $c$ | $2$ |  |
-| **D** | $0$ | $0$ | $2$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$0$</td><td>$a$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$b$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$0$</td><td>$c$</td><td>$2$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 3, 4, 2 ✓, 1, 0
 
@@ -758,13 +844,21 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | $0$ | $0$ |
-| **B** | $0$ | $0$ | $2$ | $0$ |  |
-| **C** | $0$ | $0$ | $0$ | $2$ |  |
-| **D** | $0$ | $0$ | $2$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$0$</td><td>$0$</td><td>$2$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -774,16 +868,24 @@ $$
 
 ## Generated variant easy blanks_319346 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/dbaa8c8550566a5a636c79333613092b00506c510353a9524119be089b7d8e74.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/a92d0c37e52a7cfb7ea7563841e498b59b6599020b8216e11e5c01c623b04f16.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | {{field-1}} | $0$ |
-| **B** | {{field-2}} | $0$ | {{field-3}} |  |
-| **C** | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>{{field-1}}</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>{{field-2}}</td><td>$0$</td><td>{{field-3}}</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 2 ✓
 
@@ -801,25 +903,41 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $2$ | $0$ |
-| **B** | $1$ | $0$ | $1$ |  |
-| **C** | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$1$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Generated variant easy blanks_319346 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/0322af921cae754fe7b71ebe7e2b6ac9da76d27920c6a03988ed9ba584809329.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/d683fe5a2614ae8d20e96353af0d4145a3ff51fe7e67e9d8e6295887dd0c44af.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | {{field-1}} | $0$ |
-| **B** | {{field-2}} | $0$ | {{field-3}} |  |
-| **C** | $2$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>{{field-1}}</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>{{field-2}}</td><td>$0$</td><td>{{field-3}}</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 1 ✓
 
@@ -837,26 +955,42 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $1$ | $0$ |
-| **B** | $0$ | $0$ | $2$ |  |
-| **C** | $2$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Generated variant easy blanks_319412 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/341ece398edb42bdfddb298e01ec26293bca8f0199808454a6e80efc6785e22e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/e8a02bd2c112471fa20bdd80d38a7f58f52cab74085251693397cbcd2930cf11.png)
 
 The diagram above shows train routes between four stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the four stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | {{field-1}} | $0$ |
-| **B** | {{field-2}} | $0$ | $1$ | $0$ |  |
-| **C** | $1$ | $0$ | {{field-3}} | $2$ |  |
-| **D** | $0$ | $1$ | $2$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>{{field-1}}</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>{{field-2}}</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>{{field-3}}</td><td>$2$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$1$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 0 ✓
 
@@ -874,27 +1008,43 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | $0$ | $0$ |
-| **B** | $0$ | $0$ | $1$ | $0$ |  |
-| **C** | $1$ | $0$ | $1$ | $2$ |  |
-| **D** | $0$ | $1$ | $2$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$1$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Generated variant easy blanks_319412 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/9ecff1779e458c96aa99661bcbf154fd3348d547240fb9a715bdeb4dbb4180bd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/adb83039b37b5e5f3a278a21f5d7422722ee5e1d56a3eabbdcdc9c3c8873260d.png)
 
 The diagram above shows train routes between four stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the four stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | {{field-1}} | $0$ |
-| **B** | {{field-2}} | $0$ | $2$ | $0$ |  |
-| **C** | $2$ | $0$ | {{field-3}} | $1$ |  |
-| **D** | $0$ | $1$ | $1$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>{{field-1}}</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>{{field-2}}</td><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>{{field-3}}</td><td>$1$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 0 ✓
 
@@ -912,26 +1062,42 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** | **D** |
-| From: | **A** | $0$ | $1$ | $0$ | $0$ |
-| **B** | $0$ | $0$ | $2$ | $0$ |  |
-| **C** | $2$ | $0$ | $0$ | $1$ |  |
-| **D** | $0$ | $1$ | $1$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$2$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Generated variant easy blanks_319429 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/dccfe567c7f4d5c6bf2def399a78eccd49b165bd0315de418d04e8c5466ce175.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/9960cc380ab39e6f81a31863b2187e77b16635197eb4aacd1a6b0639a82e3bc8.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $1$ | $1$ | {{field-1}} |
-| **B** | $1$ | {{field-2}} | $2$ |  |
-| **C** | $0$ | {{field-3}} | $1$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>{{field-1}}</td></tr>
+      <tr><th scope="row">B</th><td>$1$</td><td>{{field-2}}</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>{{field-3}}</td><td>$1$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 1 ✓
 
@@ -949,25 +1115,41 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $1$ | $1$ | $1$ |
-| **B** | $1$ | $0$ | $2$ |  |
-| **C** | $0$ | $0$ | $1$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$1$</td><td>$0$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$0$</td><td>$1$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Generated variant easy blanks_319429 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/ce8542c6db73b8ed57c68e73f43ef34183393f8e57a35ace8495e12fe77ba3b9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/d53622756a2cc362df818ed6cde029ea74990d6c30fb0d1f80cddc08855d23dd.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed lines between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Fill in the missing elements of the table.
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $1$ | $1$ | {{field-1}} |
-| **B** | $2$ | {{field-2}} | $1$ |  |
-| **C** | $0$ | {{field-3}} | $1$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>{{field-1}}</td></tr>
+      <tr><th scope="row">B</th><td>$2$</td><td>{{field-2}}</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>{{field-3}}</td><td>$1$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **field-1 (blank):** 0 ✓
 
@@ -985,26 +1167,42 @@ Let's examine our diagram.
 
 Therefore, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $1$ | $1$ | $0$ |
-| **B** | $2$ | $0$ | $1$ |  |
-| **C** | $0$ | $0$ | $1$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$2$</td><td>$0$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$0$</td><td>$1$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Generated variant hard sum_permuted_four 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/351846a93f8b3c0515f366c8bb0be989c8f317295ed87caef2df5f2e2356a17e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/b07ccfd20a9ce506d81e9ccd50e4af331a1d310d2d947ae82ac4ad955acaeda0.png)
 
 The diagram above shows train routes between four stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the four stations. Find the value of $a+b+c.$
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **D** | **C** | **B** |
-| From: | **D** | $c$ | $1$ | $0$ | $0$ |
-| **B** | $b$ | $0$ | $0$ | $0$ |  |
-| **A** | $0$ | $0$ | $1$ | $0$ |  |
-| **C** | $1$ | $0$ | $a$ | $2$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">D</th><th scope="col">C</th><th scope="col">B</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">D</th><td>$c$</td><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$b$</td><td>$0$</td><td>$0$</td><td>$0$</td></tr>
+      <tr><th scope="row">A</th><td>$0$</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$a$</td><td>$2$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 6, 2, 4 ✓, 3, 5
 
@@ -1018,13 +1216,21 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **D** | **C** | **B** |
-| From: | **D** | $2$ | $1$ | $0$ | $0$ |
-| **B** | $2$ | $0$ | $0$ | $0$ |  |
-| **A** | $0$ | $0$ | $1$ | $0$ |  |
-| **C** | $1$ | $0$ | $0$ | $2$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">D</th><th scope="col">C</th><th scope="col">B</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">D</th><td>$2$</td><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$2$</td><td>$0$</td><td>$0$</td><td>$0$</td></tr>
+      <tr><th scope="row">A</th><td>$0$</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td><td>$2$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -1034,17 +1240,25 @@ $$
 
 ## Generated variant hard sum_permuted_four 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/ddc2e3ce4729057b1dd7c3bf7065e3d66b475722d63be5fd79ae54ecbda354ca.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/513dbfb6898f810f9a92cd11cc58a9da3eaf1bb085815b2a9d4fd4e85c4fc27a.png)
 
 The diagram above shows train routes between four stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the four stations. Find the value of $a+b+c.$
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **D** | **C** | **B** |
-| From: | **B** | $0$ | $0$ | $0$ | $a$ |
-| **A** | $1$ | $c$ | $b$ | $0$ |  |
-| **D** | $0$ | $0$ | $1$ | $2$ |  |
-| **C** | $0$ | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">D</th><th scope="col">C</th><th scope="col">B</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$0$</td><td>$a$</td></tr>
+      <tr><th scope="row">A</th><td>$1$</td><td>$c$</td><td>$b$</td><td>$0$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 4, 5, 3 ✓, 2, 1
 
@@ -1058,13 +1272,21 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-|  |  | **A** | **D** | **C** | **B** |
-| From: | **B** | $0$ | $0$ | $0$ | $0$ |
-| **A** | $1$ | $2$ | $1$ | $0$ |  |
-| **D** | $0$ | $0$ | $1$ | $2$ |  |
-| **C** | $0$ | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">D</th><th scope="col">C</th><th scope="col">B</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">B</th><td>$0$</td><td>$0$</td><td>$0$</td><td>$0$</td></tr>
+      <tr><th scope="row">A</th><td>$1$</td><td>$2$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">D</th><td>$0$</td><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$0$</td><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -1078,12 +1300,20 @@ $$
 
 The diagram above shows bus routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a + b + c$.
 
-|  |  | To: |  |  |
-| --- | ---: | ---: | ---: | ---: |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $a$ | $1$ |
-| **B** | $0$ | $b$ | $c$ |  |
-| **C** | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$a$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$c$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 1, 6, 3, 2, 4 ✓
 
@@ -1097,12 +1327,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $1$ | $1$ |
-| **B** | $0$ | $1$ | $2$ |  |
-| **C** | $1$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$1$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -1112,16 +1350,24 @@ $$
 
 ## Optional authored omission bank easy 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/474088c8d8d42100ae476b17e3f5a4a7bf9aa59f2a48dc1ae176fd9e0b1892f1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/5f412f96abefe3ddc07b5769723d86d2e3d29091812691c82d37b15f9aed9722.png)
 
 The diagram above shows bus routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a + b + c$.
 
-|  |  | To: |  |  |
-| --- | ---: | ---: | ---: | ---: |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $a$ | $2$ |
-| **B** | $0$ | $b$ | $c$ |  |
-| **C** | $2$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$a$</td><td>$2$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$c$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 1, 8, 2, 3, 4 ✓
 
@@ -1135,12 +1381,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-|  |  | To: |  |  |
-| --- | --- | --- | --- | --- |
-|  |  | **A** | **B** | **C** |
-| From: | **A** | $0$ | $1$ | $2$ |
-| **B** | $0$ | $1$ | $2$ |  |
-| **C** | $2$ | $0$ | $0$ |  |
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$0$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -1150,43 +1404,24 @@ $$
 
 ## Optional authored omission bank moderate 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/f51d55290d3834b57f1bb7e885fd0b87519dc500c17343457f95e348f8f4d7d9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/286678f8cf07cfb7a28e332f97a4e7e16367a4f5dc6ad9bab08c5a4242aba916.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a+b+c.$
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$a$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$b$</td>
-<td align="center">$2$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$c$</td>
-<td align="center">$1$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$a$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$c$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 1, 8, 3, 2, 4 ✓
 
@@ -1200,39 +1435,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$1$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$1$</td>
-<td align="center">$2$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$2$</td>
-<td align="center">$1$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$1$</td><td>$2$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$1$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 
@@ -1242,43 +1458,24 @@ $$
 
 ## Optional authored omission bank moderate 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/cef1270bc46e537afa7fbf4ba456cea729349f0ad7196b3b891d950572e1e8ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087819/plots/d847d0ab6983ad7195429ebef54bb05e72fe23422b959138832ca3ac9c145561.png)
 
 The diagram above shows train routes between three stations, where nodes represent the stations and arrows represent the directed routes between them. The (incomplete) route matrix below represents information about the number of routes between each of the three stations. Find the value of $a+b+c.$
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$a$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$b$</td>
-<td align="center">$1$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$c$</td>
-<td align="center">$2$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$a$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$b$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$c$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 **selection (radio):** 1, 8, 2, 3, 4 ✓
 
@@ -1292,39 +1489,20 @@ Let's examine our diagram.
 
 As a result, our route matrix is the following:
 
-<table align="center" cellpadding="10" rules="all">
-<tbody><tr>
-<td></td>
-<td></td>
-<td align="center" colspan="3">To:</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-</tr>
-<tr>
-<td align="center" rowspan="3">From:</td>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>A</b></td>
-<td align="center">$1$</td>
-<td align="center">$1$</td>
-<td align="center">$0$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>B</b></td>
-<td align="center">$0$</td>
-<td align="center">$1$</td>
-<td align="center">$1$</td>
-</tr>
-<tr>
-<td align="center" bgcolor="#D6EAF8" width="30"><b>C</b></td>
-<td align="center">$2$</td>
-<td align="center">$2$</td>
-<td align="center">$0$</td>
-</tr>
-</tbody></table>
+<div class="route-matrix">
+  <span class="matrix-to">To</span>
+  <span class="matrix-from">From</span>
+  <table aria-label="Route matrix: rows are From stations; columns are To stations">
+    <thead>
+      <tr><td class="matrix-corner"></td><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">A</th><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+      <tr><th scope="row">B</th><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><th scope="row">C</th><td>$2$</td><td>$2$</td><td>$0$</td></tr>
+    </tbody>
+  </table>
+</div>
 
 Therefore, 
 

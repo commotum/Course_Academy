@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Independent printed-math/fidelity/identity/scope/native-grading QA."""
-import importlib.util,json,re,sys,subprocess,random,collections
+import importlib.util,json,re,sys,subprocess,random,collections,hashlib
 from pathlib import Path
 import sympy as s
 from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
@@ -86,6 +86,19 @@ def validate_record(r):
   a=next(a for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);assert equal(read(a[':answer/value']),expected),(template,'answer',a[':answer/value'],expected)
  else:assert meta['evidence_only'] and template=='q-48628'
  if f[':answer-field/type'].endswith('/blank'):assert '{{'+f[':answer-field/key']+'}}' in prompt
+ if kind.startswith('trig') and not meta['evidence_only']:
+  assert not any(line.startswith('    ') for line in prompt.splitlines())
+  assert '| --- |' not in prompt
+  relation=prompt.split('\n\n')[-1]
+  if kind=='trig_product':
+   assert relation.startswith(r'$\frac{dy}{dx}=$') and '\n'+r'$\cdot e^{' in relation
+  else:
+   assert relation.startswith(r'$\frac{dy}{dx}=-($') and '\n$)/e^{' in relation
+  correct=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])
+  complete=relation.replace('{{'+f[':answer-field/key']+'}}','('+correct+')').replace('$','').replace('\n','')
+  actual_complete_derivative=read(complete.split('=',1)[1])
+  assert equal(actual_complete_derivative,D),'Actual supplied sign/factor/fragment relation is wrong'
+
  designation='missing' if ':answer-field/correct' not in f else next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])
  identity_valid=q[':question/id']==m.content_identity(prompt,sol,[a[':answer/value'] for a in f[':answer-field/choices']],q.get(':question/difficulty'),f[':answer-field/type'].split('/')[-1],f[':answer-field/key'],designation)
  if not sol:
@@ -156,6 +169,12 @@ for level,templates in m.NORMAL.items():
    r=m.generate(level,seed,template=template);validate_record(r)
    r2=m.generate(level,seed+1,template=template,parameters=r['generation']['parameters']);validate_record(r2)
    assert r['question'][':question/id']==r2['question'][':question/id'];records.append(r)
+# Fragment layout aliases retain separate presentation but one assessed derivative.
+trig_params=dict(a=-4,scale='1/2')
+trig_product=m.generate_moderate(template='q-167329',parameters=trig_params)
+trig_quotient=m.generate_moderate(template='q-167783',parameters=trig_params)
+assert trig_product['generation']['mathematical_fingerprint']==trig_quotient['generation']['mathematical_fingerprint']
+assert trig_product['question'][':question/id']!=trig_quotient['question'][':question/id']
 # Public observed changed parameters also run through identical family masks.
 observed_variants=[]
 for k,(level,anchor,kind) in m.SPECS.items():
@@ -169,6 +188,14 @@ for level,template,p in [('easy','q-107445',dict(a=1,n=2,b=0,c=0)),('hard','two_
  try:m.generate(level,template=template,parameters=p)
  except ValueError:pass
  else:raise AssertionError('Scope bypass')
+# Actual supplied sign/factor regressions are checked mathematically before ID.
+for template,old,new in [('q-167329',r'$\cdot e^{',r'$/e^{'),('q-167783',r'=-(',r'=(')]:
+ bad=m.generate_moderate(44,template=template)
+ assert old in bad['question'][':question/problem']
+ bad['question'][':question/problem']=bad['question'][':question/problem'].replace(old,new,1)
+ try:validate_record(bad)
+ except AssertionError:pass
+ else:raise AssertionError('Supplied relation mutation accepted')
 # Polynomial coefficients are integral; the captured rational point is separate.
 try:m.generate('easy',template='q-1953',parameters=dict(a='1/2',n=2,b=0,c=0))
 except ValueError:pass
@@ -257,5 +284,5 @@ for r in replay:
   if v['generation']['template']==r['generation']['template']:parts+=['\n### '+('Evidence-only observed-bank variant' if v['generation']['evidence_only'] else 'Generated normal variant'),m.markdown(v)]
 parts+=['\n## Authored hard variants']+[m.markdown(r) for r in review if r['generation']['template']=='two_power_slope']
 (ROOT/'review.md').write_text('\n\n'.join(parts)+'\n')
-report={'status':'pass','source_practices':14,'full_source_banks':14,'source_answer_values':totalvals,'matched_correct_designations':designations,'missing_source_designations':1,'raw_exact_prompts':14,'raw_exact_worked_solutions':13,'raw_omitted_solutions':1,'source_presence_parity':14,'changed_source_cases':28,'sampled_normal_records':360,'sampled_meaningful_task_counts':counts,'enumerated_meaningful_domain_counts':domain_counts,'enumerated_cross_level_task_union':len(all_tasks),'normal_family_coverage':dict(coverage),'native':json.loads((ROOT/'engine-report.json').read_text()),'runtime':{'python':sys.version.split()[0],'sympy':s.__version__},'limitations':['Unrated q-48628 has no captured key, solution or difficulty; completed normal key/solution/level are inferred/authored.','Raw q-167329/q-167783 omit f,h definitions; evidence-only, normal presentation completes them.','Opaque historical bank operations do not establish pedagogical intent; public observed replay is evidence-only.']}
+report={'generator_sha256':hashlib.sha256(ROOT.with_suffix('.py').read_bytes()).hexdigest(),'validator_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'normal_presentation_repairs':['q-167329: remove incidental deep indentation and show an explicit exponential product after the coefficient widget.','q-167783: replace the ambiguous two-column table with an explicit leading-minus numerator widget divided by the positive exponential.'],'status':'pass','source_practices':14,'full_source_banks':14,'source_answer_values':totalvals,'matched_correct_designations':designations,'missing_source_designations':1,'raw_exact_prompts':14,'raw_exact_worked_solutions':13,'raw_omitted_solutions':1,'source_presence_parity':14,'changed_source_cases':28,'sampled_normal_records':360,'sampled_meaningful_task_counts':counts,'enumerated_meaningful_domain_counts':domain_counts,'enumerated_cross_level_task_union':len(all_tasks),'normal_family_coverage':dict(coverage),'native':json.loads((ROOT/'engine-report.json').read_text()),'runtime':{'python':sys.version.split()[0],'sympy':s.__version__},'limitations':['Unrated q-48628 has no captured key, solution or difficulty; completed normal key/solution/level are inferred/authored.','Raw q-167329/q-167783 omit f,h definitions; evidence-only, normal presentation completes them.','Opaque historical bank operations do not establish pedagogical intent; public observed replay is evidence-only.']}
 (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k!='native'},indent=2))

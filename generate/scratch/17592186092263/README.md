@@ -7,3 +7,5 @@ Public raw replay: `generate(level, template='q-1953', parameters={...}, profile
 Validation independently parses displayed exponent, composite definitions, outer/inner derivative components, every chain and evaluation row, and complete answer values. It checks all source banks and key-presence parity, changed parameters, source solution row/prose structure, explicit workload guards, sample variety/family coverage, deterministic identity, mutation regressions and real native engine grading. No plots, database writes, registration, shared engine changes or dependency installs.
 
 Known evidence limits: q-48628 lacks its key, solution and level; q-167329/q-167783 omit definitions; q-340955 is a linear-exponent exception; four historical banks have underdetermined error intent. See extraction and validation.json for separate denominators.
+
+Normal trig blanks use explicit product/negative reciprocal fragments around the widget; deep source indentation and the ambiguous table are retained only in raw evidence. validation.json records current generator/validator SHA-256 hashes and separately describes these presentation repairs.

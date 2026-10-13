@@ -62,7 +62,45 @@ element => {
   const greek = {'α':'\\alpha ','β':'\\beta ','γ':'\\gamma ','δ':'\\delta ','θ':'\\theta ','λ':'\\lambda ','μ':'\\mu ','π':'\\pi ','ρ':'\\rho ','σ':'\\sigma ','φ':'\\phi ','ω':'\\omega ','∞':'\\infty '};
   const ops = {'∫':'\\int ','∑':'\\sum ','∏':'\\prod ','⋅':'\\cdot ','×':'\\times ','−':'-', '±':'\\pm ','≤':'\\le ','≥':'\\ge ','≠':'\\ne ','→':'\\to ','∈':'\\in ','∉':'\\notin ','∪':'\\cup ','∩':'\\cap '};
   let formulaFields = new Map();
-  function m(n) {
+  // A fenced, centered MathML table is a matrix. Equation layouts have explicit
+  // right/left column alignment and must keep their aligned environment.
+  function matrixTable(n) {
+    if (!n || n.nodeType !== 1) return null;
+    if (n.localName === 'mtable') {
+      const alignment = n.getAttribute('columnalign') || 'center';
+      return alignment.trim().split(/\s+/).every(value => value === 'center') ? n : null;
+    }
+    if (!['mrow', 'mstyle', 'mpadded', 'semantics'].includes(n.localName)) return null;
+    const children = [...n.children].filter(child => !['annotation', 'annotation-xml'].includes(child.localName));
+    return children.length === 1 ? matrixTable(children[0]) : null;
+  }
+  const matrixEnvironments = {'[]':'bmatrix', '()':'pmatrix', '{}':'Bmatrix', '||':'vmatrix', '‖‖':'Vmatrix'};
+  function fence(n) {
+    if (n?.localName === 'mo') return n.textContent;
+    if (['msup', 'msub', 'msubsup'].includes(n?.localName) && n.children[0]?.localName === 'mo') return n.children[0].textContent;
+    return null;
+  }
+  function m(n, environment=null) {
+    let value = mathNode(n, environment);
+    if (n.nodeType !== 1 || !value) return value;
+    // These attributes carry instructional cues, including highlighted entries.
+    // Scope colors to their own node so later cells do not inherit them.
+    for (const attribute of ['mathcolor', 'mathbackground']) {
+      const color = n.getAttribute(attribute);
+      if (!color || ['transparent', 'inherit', 'none'].includes(color)) continue;
+      if (!/^(?:[a-zA-Z]+|#[\da-fA-F]{3}(?:[\da-fA-F]{3})?)$/.test(color)) {
+        errors.push('Unsupported MathML ' + attribute + ': ' + color);
+        continue;
+      }
+      if (attribute === 'mathbackground') value = '\\bbox[' + color + ', 2pt]{' + value + '}';
+      else if (color.startsWith('#')) {
+        const hex = color.length === 4 ? [...color.slice(1)].map(c => c + c).join('') : color.slice(1);
+        value = '{\\color[HTML]{' + hex + '}' + value + '}';
+      } else value = '{\\color{' + color + '}' + value + '}';
+    }
+    return value;
+  }
+  function mathNode(n, environment=null) {
     if (n.nodeType === 3) return greek[n.textContent] || n.textContent;
     if (n.nodeType !== 1) return '';
     const t = n.localName.toLowerCase();
@@ -75,7 +113,24 @@ element => {
     if (marker && formulaFields.has(marker[1])) return '{{' + formulaFields.get(marker[1]) + '}}';
     // Phantom content only reserves space; none of its descendants are visible.
     if (t === 'mphantom') return '';
-    const cs = [...n.childNodes].map(m);
+    const nodes = [...n.childNodes].filter(child => child.nodeType !== 3 || child.textContent.trim());
+    const cs = [];
+    for (let i = 0; i < nodes.length; i++) {
+      const open = ['math', 'mrow'].includes(t) ? fence(nodes[i]) : null;
+      const close = fence(nodes[i + 2]);
+      const matrixEnvironment = open && close && matrixEnvironments[open + close];
+      if (nodes[i].localName === 'mo' && matrixEnvironment && matrixTable(nodes[i + 1])) {
+        let matrix = m(nodes[i + 1], matrixEnvironment);
+        const closing = nodes[i + 2];
+        if (closing.localName !== 'mo') {
+          matrix = '{' + matrix + '}';
+          if (closing.localName !== 'msup') matrix += '_{' + m(closing.children[1]) + '}';
+          if (closing.localName !== 'msub') matrix += '^{' + m(closing.children[closing.localName === 'msubsup' ? 2 : 1]) + '}';
+        }
+        cs.push(matrix);
+        i += 2;
+      } else cs.push(m(nodes[i], environment && matrixTable(n) ? environment : null));
+    }
     // MathJax may attach a script to just the closing fence glyph. Wrapping
     // that glyph in braces obscures the fence boundary in extracted LaTeX.
     const scriptBase = [')',']','}'].includes(cs[0]) ? cs[0] : '{' + cs[0] + '}';
@@ -104,7 +159,15 @@ element => {
           return '\\operatorname{' + n.textContent + '}';
         }
         return greek[n.textContent] || n.textContent;
-      case 'mtable': return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
+      case 'mtable': {
+        for (const attribute of environment ? ['columnlines', 'rowlines', 'frame'] : []) {
+          if ((n.getAttribute(attribute) || 'none').trim().split(/\s+/).some(value => value !== 'none')) {
+            errors.push('Unsupported MathML table ' + attribute);
+          }
+        }
+        const layout = environment || 'aligned';
+        return '\\begin{' + layout + '}' + cs.join(' \\\\ ') + '\\end{' + layout + '}';
+      }
       case 'mtr': case 'mlabeledtr': return cs.join(' & ');
       case 'menclose':
         // The two borders group the synthetic-division root; retain both.
@@ -115,7 +178,12 @@ element => {
         if (n.getAttribute('notation') === 'box') return '\\boxed{' + cs.join('') + '}';
         if (n.getAttribute('notation')?.includes('strike')) return '\\cancel{' + cs.join('') + '}';
         errors.push('Unsupported MathML enclosure'); return cs.join('');
-      case 'mfenced': return (n.getAttribute('open') || '(') + cs.join(n.getAttribute('separators') || ',') + (n.getAttribute('close') || ')');
+      case 'mfenced': {
+        const open = n.getAttribute('open') ?? '(', close = n.getAttribute('close') ?? ')';
+        const layout = matrixEnvironments[open + close];
+        if (layout && nodes.length === 1 && matrixTable(nodes[0])) return m(nodes[0], layout);
+        return open + cs.join(n.getAttribute('separators') ?? ',') + close;
+      }
       case 'semantics': return cs[0] || '';
       case 'annotation': case 'annotation-xml': return '';
       case 'math': case 'mrow': case 'mn': case 'mtd': case 'mstyle': case 'mpadded': return cs.join('');

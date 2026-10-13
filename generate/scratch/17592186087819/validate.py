@@ -15,11 +15,11 @@ class TableReader(HTMLParser):
  def __init__(self):super().__init__();self.rows=[];self.cell=None
  def handle_starttag(self,tag,attrs):
   if tag=='tr':self.rows.append([])
-  if tag=='td':self.cell=''
+  if tag in ('td','th'):self.cell=''
  def handle_data(self,data):
   if self.cell is not None:self.cell+=data
  def handle_endtag(self,tag):
-  if tag=='td':self.rows[-1].append(self.cell);self.cell=None
+  if tag in ('td','th'):self.rows[-1].append(self.cell);self.cell=None
 
 def read_table(text):
  if '<table' in text:
@@ -46,6 +46,10 @@ def check(record,raw=False):
  assert set(record['knowledge_point'])=={'db_id','id','title'}
  q=record['question'];gen=record['generation'];prompt=q[':question/problem'];sol=q[':question/worked-solution'];fields=q[':question/answer-fields']
  for text in (prompt,sol):
+  assert text.count('<div class="route-matrix">')==1
+  assert '<th scope="col">' in text and '<th scope="row">' in text
+  assert 'rowspan=' not in text and 'colspan=' not in text
+  assert not any(line.startswith('|') for line in text.splitlines())
   assert text.count('$')%2==0
   stack=0
   for char in text:
@@ -60,6 +64,9 @@ def check(record,raw=False):
   side=json.loads(Path(gen['assets']['prompt']).with_suffix('.json').read_text());n=len(side['coordinates']);m=[[0]*n for _ in range(n)]
   for edge in side['edges']:m[edge['from']][edge['to']]+=1
   assert m==side['matrix']
+  assert side['label_font']['family']=='Liberation Serif'
+  assert side['label_font']['sha256']==hashlib.sha256(g.LABEL_FONT_FILE.read_bytes()).hexdigest()
+  assert side['renderer_version']==g.RENDERER_VERSION
  assert len(m)==len(rows)
  for (r,c),value in complete.items():assert value==m['ABCD'.index(r)]['ABCD'.index(c)]
  for rc,value in e.items():assert value==complete[rc]
@@ -116,7 +123,8 @@ def main():
  for case in cases:
   rec=g.generate(case['level'],template=case['template'],parameters=case['parameters'],profile=case['bank_profile']);check(rec)
   source=g.SOURCES[case['source_id']];q=rec['question']
-  assert q[':question/problem'].split('\n',1)[1]==source[':question/problem'].split('\n',1)[1]
+  assert q[':question/problem'].split('\n',1)[1]==g.replace_route_tables(source[':question/problem']).split('\n',1)[1]
+  assert read_table(q[':question/problem'])==read_table(source[':question/problem'])
   bykey={f[':answer-field/key']:f for f in q[':question/answer-fields']}
   for f in source[':question/answer-fields']:
    new=bykey[f[':answer-field/key']];assert new[':answer-field/type']==f[':answer-field/type'][':db/ident']
@@ -124,12 +132,12 @@ def main():
    bank_values+=len(f[':answer-field/choices'])
    if ':answer-field/correct' in f:
     assert next(a[':answer/value'] for a in new[':answer-field/choices'] if a[':answer/id']==new[':answer-field/correct'][1])==f[':answer-field/correct'][':answer/value'];designation+=1
-  original=source.get(':question/worked-solution');exact=original is not None and q[':question/worked-solution']==original
+  original=source.get(':question/worked-solution');exact=original is not None and q[':question/worked-solution']==g.replace_route_tables(original)
   if original and not exact:assert case['source_id']=='q-319429'
   solution_exact+=int(exact)
-  fidelity.append({'source_id':case['source_id'],'prompt_exact_except_local_asset_path':True,'complete_bank':True,'correct_designation':'matched' if all(':answer-field/correct' in f for f in source[':question/answer-fields']) else 'absent in capture; independently inferred','solution':'exact' if exact else 'minimal direction repair' if original else 'absent in capture; authored three-count solution'})
+  fidelity.append({'source_id':case['source_id'],'prompt_prose_and_cells_matched':True,'table_format_normalized':'route-matrix-html-v1','complete_bank':True,'correct_designation':'matched' if all(':answer-field/correct' in f for f in source[':question/answer-fields']) else 'absent in capture; independently inferred','solution':'prose and cells matched; HTML table normalized' if exact else 'minimal direction repair' if original else 'absent in capture; authored three-count solution'})
   review.append({'label':'Original replay '+case['source_id'],'record':rec});fixtures.append(grading_fixture(case['source_id'],rec))
- rawcase=next(c for c in cases if c['source_id']=='q-319429');raw=g.generate('easy',template=rawcase['template'],parameters=rawcase['parameters'],profile='raw_solution_319429');check(raw,raw=True);assert raw['question'][':question/worked-solution']==g.SOURCES['q-319429'][':question/worked-solution']
+ rawcase=next(c for c in cases if c['source_id']=='q-319429');raw=g.generate('easy',template=rawcase['template'],parameters=rawcase['parameters'],profile='raw_solution_319429');check(raw,raw=True);assert raw['question'][':question/worked-solution']==g.replace_route_tables(g.SOURCES['q-319429'][':question/worked-solution'])
  review.append({'label':'Raw observed prose q-319429 (direction error retained as evidence)','record':raw})
  # Two actual rendered variants of each template cover each observed bank layout.
  for name,level in g.TEMPLATES.items():
@@ -197,7 +205,7 @@ def main():
   except ValueError:continue
   v=[p['matrix'][r][c] for r,c in p['holes']]
   if len(set([sum(v),v[0]+v[1],v[0]+v[2],sum(p['matrix'][c][r] for r,c in p['holes']),sum(map(sum,p['matrix']))]))!=5:continue
-  out=HERE/'plots'/(g.digest({'matrix':p['matrix'],'renderer':'directed-v1'})+'.png')
+  out=HERE/'plots'/(g.plot_identity(p['matrix'])+'.png')
   if not out.exists():inputs.append(p)
   if len(inputs)==2:break
  assert len(inputs)==2
@@ -217,6 +225,6 @@ def main():
    blocks.append('**'+f[':answer-field/key']+' ('+f[':answer-field/type'].split('/')[-1]+'):** '+', '.join(a[':answer/value']+(' ✓' if a[':answer/id']==f[':answer-field/correct'][1] else '') for a in f[':answer-field/choices']))
   blocks.append(q[':question/worked-solution'])
  (HERE/'review.md').write_text('\n\n'.join(blocks)+'\n')
- report={'version':g.VERSION,'status':'passed with documented source repairs/absences','source':{k:g.CAPTURE[k] for k in ('database','basis','lineage')},'source_questions':7,'complete_banks_matched':7,'displayed_values_matched':bank_values,'displayed_values_total':29,'observed_correct_designations_matched':designation,'observed_correct_designations_total':11,'missing_designations_independently_inferred':2,'worked_solutions_raw_exact':5,'worked_solutions_raw_total':5,'normal_worked_solutions_exact':solution_exact,'normal_worked_solutions_observed_total':5,'normal_solution_direction_repairs':1,'missing_solutions_authored':2,'source_fidelity':fidelity,'generated_review_records':len(review)-8,'generated_templates':8,'generated_levels':['easy','moderate','hard'],'authored_missing_level':'hard: independent reordered row/column headings, same three direct-route entries','sampler_valid_unique_parameters_of_500':variety,'default_radio_correct_sums_in_1000_candidate_draws':authored_sums,'native':{'accepted':native['accepted_checks'],'rejected':native['rejected_checks'],'unresolved':native['documented_unresolved_checks']},'concurrency':'3 fresh renders, identical and distinct matrices checked','database_writes':0,'remaining_unresolved_findings':['Original intent behind scalar wrong choices cannot be inferred from finite windows; source catalogs are retained as default and replay banks.','Original difficulty/correct refs/solutions absent for q-138940 and q-139685; assigned easy and derived from independently inspected images.'],'mathematics':'actual displayed ordered table entries, complete arrows and count bullet stages checked; matrices are not scalar products'}
+ report={'version':g.VERSION,'status':'passed with documented source repairs/absences','source':{k:g.CAPTURE[k] for k in ('database','basis','lineage')},'source_questions':7,'complete_banks_matched':7,'displayed_values_matched':bank_values,'displayed_values_total':29,'observed_correct_designations_matched':designation,'observed_correct_designations_total':11,'missing_designations_independently_inferred':2,'worked_solutions_raw_prose_and_cells_matched':5,'worked_solutions_raw_total':5,'normal_worked_solutions_prose_and_cells_matched':solution_exact,'normal_worked_solutions_observed_total':5,'normal_solution_direction_repairs':1,'missing_solutions_authored':2,'source_fidelity':fidelity,'generated_review_records':len(review)-8,'generated_templates':8,'generated_levels':['easy','moderate','hard'],'authored_missing_level':'hard: independent reordered row/column headings, same three direct-route entries','sampler_valid_unique_parameters_of_500':variety,'default_radio_correct_sums_in_1000_candidate_draws':authored_sums,'native':{'accepted':native['accepted_checks'],'rejected':native['rejected_checks'],'unresolved':native['documented_unresolved_checks']},'concurrency':'3 fresh renders, identical and distinct matrices checked','database_writes':0,'remaining_unresolved_findings':['Original intent behind scalar wrong choices cannot be inferred from finite windows; source catalogs are retained as default and replay banks.','Original difficulty/correct refs/solutions absent for q-138940 and q-139685; assigned easy and derived from independently inspected images.'],'mathematics':'actual displayed ordered table entries, complete arrows and count bullet stages checked; matrices are not scalar products'}
  (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

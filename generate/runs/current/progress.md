@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 268**, **queued: 113**, **working: 3**.
+**qa_passed: 271**, **queued: 108**, **working: 5**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -280,14 +280,14 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186087686](../../scratch/17592186087686.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Slope-Intercept Form | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186087686.json) |
 | [17592186087687](../../scratch/17592186087687.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Standard Form | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186087687.json) |
 | [17592186087688](../../scratch/17592186087688.py) | Parallel Lines in the Coordinate Plane | Finding Unknown Parameters | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087688.json) |
-| [17592186092260](../../scratch/17592186092260.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Linear Exponent | 2 / 5 / 0 / 2 | working | — |
-| 17592186092261 | The Chain Rule With Exponential Functions | Differentiating a General Exponential Function Using the Chain Rule | 7 / 2 / 0 / 1 | working | — |
-| 17592186092263 | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | working | — |
-| [17592186119771](../../scratch/17592186119771.py) | Triangular Matrices | Describing a Triangular Matrix | 6 / 3 / 0 / 1 | queued | — |
-| [17592186119772](../../scratch/17592186119772.py) | Triangular Matrices | Identifying a Triangular Matrix | 6 / 2 / 0 / 0 | queued | — |
-| [17592186119784](../../scratch/17592186119784.py) | Triangular Matrices | Identifying Correct Statements About a Matrix | 0 / 5 / 4 / 1 | queued | — |
-| 17592186133827 | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | queued | — |
-| 17592186133829 | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | queued | — |
+| [17592186092260](../../scratch/17592186092260.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Linear Exponent | 2 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186092260.json) |
+| [17592186092261](../../scratch/17592186092261.py) | The Chain Rule With Exponential Functions | Differentiating a General Exponential Function Using the Chain Rule | 7 / 2 / 0 / 1 | qa_passed | [Report](qa/17592186092261.json) |
+| [17592186092263](../../scratch/17592186092263.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | working | — |
+| [17592186119771](../../scratch/17592186119771.py) | Triangular Matrices | Describing a Triangular Matrix | 6 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186119771.json) |
+| [17592186119772](../../scratch/17592186119772.py) | Triangular Matrices | Identifying a Triangular Matrix | 6 / 2 / 0 / 0 | working | — |
+| [17592186119784](../../scratch/17592186119784.py) | Triangular Matrices | Identifying Correct Statements About a Matrix | 0 / 5 / 4 / 1 | working | — |
+| 17592186133827 | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | working | — |
+| 17592186133829 | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | working | — |
 | 17592186133830 | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | queued | — |
 | 17592186175987 | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Path as a Double Integral Using Green's Theorem | 0 / 11 / 0 / 0 | queued | — |
 | 17592186176023 | Green's Theorem in Polar Coordinates | Evaluating a Line Integral Using Green's Theorem | 0 / 6 / 3 / 1 | queued | — |

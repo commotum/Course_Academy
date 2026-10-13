@@ -109,7 +109,7 @@ test('graph right-click queues the clicked topic in course mode and restores foc
   assert.equal(f.calls[0].body.selected, true);
   assert.deepEqual(f.learner.targets, [30]);
   assert.deepEqual(f.learner.queue, [20]);
-  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
   assert.equal(f.learner.selfDirected, false);
   assert.ok(f.storage.has('course-academy-queue-changed'));
   assert.deepEqual(f.events, ['queue']);
@@ -120,7 +120,7 @@ test('graph right-click queues the clicked topic in course mode and restores foc
 
 test('already queued topics can be removed without changing targets', async () => {
   const f = fixture({ queue: [20], selfDirected: true }); f.open();
-  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
   f.queueButton().click(); await settle();
   assert.equal(f.calls[0].body.selected, false);
   assert.deepEqual(f.learner.queue, []);
@@ -173,7 +173,7 @@ test('queue changes in another tab refresh the menu from server membership', asy
   const event = new Event('storage'); event.key = 'course-academy-queue-changed';
   f.window.dispatchEvent(event); await settle();
   assert.equal(f.queueButton().textContent, 'Remove from queue');
-  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
   assert.equal(f.calls.length, 0);
 });
 
@@ -184,22 +184,22 @@ test('target previews retain blue after queue membership was saved through the o
   f.hold = new Promise(resolve => { release = resolve; });
   f.open();
   f.document.getElementById('nodeTargetAction').querySelector('[role="menuitem"]').click();
-  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
   release(); await settle();
-  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
 });
 
 test('queue changes paint immediately while saving and roll back failed requests with an exact retry', async () => {
   const f = fixture(); let release;
   f.hold = new Promise(resolve => { release = resolve; }); f.fail = true; f.open();
   f.queueButton().click();
-  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
   assert.deepEqual(f.learner.queue, []);
   release(); await settle();
   assert.equal(f.h.nodeAppearance(20).fill, '#D6D6D6');
   assert.equal(f.queueButton().textContent, 'Retry');
   f.queueButton().click(); await settle();
-  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
   assert.deepEqual(f.calls[0].body, f.calls[1].body);
   f.open(); f.hold = new Promise(resolve => { release = resolve; });
   f.queueButton().click();
@@ -212,8 +212,8 @@ test('a target response preserves a queue preview still waiting for its save res
   const f = fixture({ selfDirected: true }); let release;
   f.hold = new Promise(resolve => { release = resolve; }); f.open(); f.queueButton().click();
   f.h.targetControls.setLearner({ ...f.learner, targets: [20, 30], queue: [] });
-  assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
-  release(); await settle(); assert.equal(f.h.nodeAppearance(20).fill, '#a6c5f5');
+  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
+  release(); await settle(); assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
 });
 
 test('target actions preserve their endpoint, membership, and mode gating', async () => {
@@ -230,11 +230,11 @@ test('right-click target actions update node color before their background save 
   const f = fixture({ selfDirected: true }); f.open();
   let release; f.hold = new Promise(resolve => { release = resolve; });
   f.document.getElementById('nodeTargetAction').querySelector('[role="menuitem"]').click();
-  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
+  assert.equal(f.h.nodeAppearance(20).fill, '#2a8851');
   assert.deepEqual(f.learner.targets, [30]);
   release(); await settle();
   assert.deepEqual(f.learner.targets, [30, 20]);
-  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
+  assert.equal(f.h.nodeAppearance(20).fill, '#2a8851');
 });
 
 test('navigator target switch flips immediately with explicit add and remove labels', async () => {
@@ -252,7 +252,7 @@ test('navigator target switch flips immediately with explicit add and remove lab
   button.click();
   assert.equal(button.getAttribute('aria-checked'), 'true');
   assert.equal(label.textContent, 'Remove from Targets');
-  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
+  assert.equal(f.h.nodeAppearance(20).fill, '#2a8851');
   assert.deepEqual(f.learner.targets, [30]); // The server has not saved yet.
   assert.equal(button.disabled, true);
   assert.equal(otherButton.getAttribute('aria-checked'), 'true');
@@ -260,7 +260,7 @@ test('navigator target switch flips immediately with explicit add and remove lab
   release(); await settle(); f.hold = null;
   assert.equal(button.disabled, false);
   assert.deepEqual(f.learner.targets, [30, 20]);
-  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
+  assert.equal(f.h.nodeAppearance(20).fill, '#2a8851');
   assert.deepEqual(f.learner.queue, []);
   let removeRelease; f.hold = new Promise(resolve => { removeRelease = resolve; });
   button.click();
@@ -289,7 +289,7 @@ test('target switch failures restore confirmed membership and replay the same re
   assert.deepEqual(f.calls[0].body, f.calls[1].body);
   assert.equal(button.getAttribute('aria-checked'), 'true');
   assert.equal(label.textContent, 'Remove from Targets');
-  assert.equal(f.h.nodeAppearance(20).fill, '#9edbb4');
+  assert.equal(f.h.nodeAppearance(20).fill, '#2a8851');
   assert.equal(host.children[1].textContent, '');
   assert.deepEqual(f.learner.targets, [30, 20]);
 });

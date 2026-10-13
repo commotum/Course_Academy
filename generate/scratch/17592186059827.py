@@ -15,7 +15,8 @@ import sympy as sp
 KP_ID=17592186059827
 KP_UUID='bdf77469-6c2a-5339-b216-3bc5e2316e4d'
 TITLE='Translating Between Half-Open Intervals and Inequalities'
-VERSION='half-open-v3'
+VERSION='half-open-v4'
+GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
 ROOT=Path(__file__).with_suffix('')
 TEMPLATES=('inequality_to_interval','interval_to_inequality')
 LEVELS=('easy','moderate','hard')
@@ -53,7 +54,7 @@ def guard(level,p,observed=False):
     if observed:
         if abs(a)>20 or abs(b)>20:raise ValueError('Replay bounds |endpoint|<=20')
     elif level=='easy':
-        if not (a.is_Integer and b.is_Integer and 0<=a<b<=15):raise ValueError('Easy: nonnegative integers 0..15')
+        if not (a.is_Integer and b.is_Integer and -15<=a<b<=15):raise ValueError('Easy: signed integers -15..15')
     elif level=='moderate':
         if not (a.is_Rational and b.is_Rational and not(a.is_Integer and b.is_Integer) and a<0 and abs(a)<=10 and abs(b)<=10 and a.q<=5 and b.q<=5):raise ValueError('Moderate: signed rational endpoints; denominator<=5, magnitude<=10, noninteger present')
     else:
@@ -66,7 +67,7 @@ def guard(level,p,observed=False):
     return a,b
 
 def catalog(level):
-    if level=='easy':pairs=[(sp.Integer(a),sp.Integer(b)) for a in range(0,15) for b in range(a+1,16)]
+    if level=='easy':pairs=[(sp.Integer(a),sp.Integer(b)) for a in range(-15,15) for b in range(a+1,16)]
     elif level=='moderate':
         vals=sorted({sp.Rational(n,d) for d in range(1,6) for n in range(-15,16) if abs(sp.Rational(n,d))<=10})
         pairs=[(a,b) for a in vals for b in vals if a<0 and a<b and not(a.is_Integer and b.is_Integer)]
@@ -82,24 +83,54 @@ def solution(a,b,v,c,t):
     given=inequality(a,b,v,c) if t=='inequality_to_interval' else interval(a,b,v,c)
     return OPENING+'\n\nFor the given '+('inequality' if t=='inequality_to_interval' else 'interval')+'\n\n$$\n'+given+'\n$$\n\nwe note the following:\n\n'+f'- The left endpoint ${tex(a)}$ {left} included in the interval. Therefore, we use '+(('$[$.' if c else '$( $.') if t=='inequality_to_interval' else ('$\\le$.' if c else '$<$.'))+'\n'+f'- The right endpoint ${tex(b)}$ {right} included in the interval. Therefore, we use '+(('$) $.' if c else '$]$.') if t=='inequality_to_interval' else ('$<$.' if c else '$\\le$.'))+'\n\nTherefore, the '+('interval' if t=='inequality_to_interval' else 'inequality')+' that corresponds to the given '+('inequality' if t=='inequality_to_interval' else 'interval')+' is\n\n$$\n'+result+'\n$$'
 
+def current_render(a,b,v,profile):
+    """Exact newly captured source masks, parameterized by complete endpoint slots."""
+    aa,bb=tex(a),tex(b)
+    if profile=='observed_28834':
+        prompt=f'The inequality ${aa}\\le {v}<{bb}$ can be expressed in interval notation as'
+        opening="Every inequality can be expressed as an interval. We use the following notations:\n\n- Parentheses $()$ if the endpoints are *not* included.\n\n- Brackets $[]$ if the endpoints *are* included."
+        given=f'{aa}\\,\\,\\le \\,\\,{v}\\,\\,<\\,\\,{bb}'
+        left=r'[\,.';right=r')\,.'
+        end=f'Therefore, the corresponding interval is\n\n$$\n{v}\\in [{aa},{bb}).\n$$'
+        noun='inequality'
+    else:
+        prompt=f'The interval ${v}\\in [{aa},{bb})$ corresponds to the inequality'
+        opening="Every interval can be expressed as an inequality. We use the following notations:\n\n- Parentheses $()$ to indicate that the endpoints are *not* included.\n\n- Brackets $[]$ to indicate that the endpoints *are* included."
+        given=f'[{aa},{bb}\\,)'
+        left=r'\le \,.';right=r'<\,.'
+        end=f'Therefore, the inequality that corresponds to the given interval is \n\n$$\n{aa}\\,\\,\\le \\,\\,{v}\\,\\,<\\,\\,{bb}.\n$$'
+        noun='interval'
+    sol=opening+f'\n\nFor the given {noun} \n\n$$\n{given}\n$$\n\nwe note the following:\n\n'+f'- The left endpoint ${aa}$ *is* included in the interval. Therefore, we use ${left}$\n\n'+f'- The right endpoint ${bb}$ is *not* included in the interval. Therefore, we use ${right}$\n\n'+end
+    return prompt,sol
+
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in LEVELS:raise ValueError('Unknown level')
     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only observed radio fields supported')
     rng=random.Random(seed);template=template or rng.choice(TEMPLATES)
     if template not in TEMPLATES:raise ValueError('Unknown template')
     profile=profile or 'authored_endpoint_bank'
-    if profile not in ('authored_endpoint_bank','observed_1253','observed_1253_raw','observed_25754','observed_25754_raw'):raise ValueError('Unknown profile')
+    if profile not in ('authored_endpoint_bank','observed_1253','observed_1253_raw','observed_25754','observed_25754_raw','observed_28834','observed_73902'):raise ValueError('Unknown profile')
     observed=profile.startswith('observed');raw=profile.endswith('_raw')
-    if observed and template!=('inequality_to_interval' if '1253' in profile else 'interval_to_inequality'):raise ValueError('Profile/template mismatch')
+    if observed and template!=('inequality_to_interval' if ('1253' in profile or '28834' in profile) else 'interval_to_inequality'):raise ValueError('Profile/template mismatch')
     if observed and parameters is None:raise ValueError('Observed profiles require explicit parameters')
     p=dict(parameters) if parameters is not None else dict(rng.choice(_CATALOG[level]))
     if parameters is None:p['variable']=rng.choice(('x','y','t','u'))
-    a,b=guard(level,p,raw);v=p['variable'];c=p['left_closed']
+    a,b=guard(level,p,raw or profile=='observed_73902');v=p['variable'];c=p['left_closed']
+    if profile in ('observed_28834','observed_73902'):
+        if not c:raise ValueError('New observed banks require left-closed input')
+        if profile=='observed_28834' and level!='easy':raise ValueError('Observed28834 is easy')
+        if profile=='observed_73902' and (level!='moderate' or not(a.is_Integer and b.is_Integer and -15<=a<0<b<=15)):
+            raise ValueError('Observed73902: moderate signed integer straddling zero')
     if '25754' in profile and (not c or a==0):raise ValueError('Observed sign-omission bank requires left-closed and nonzero left endpoint')
     if '1253' in profile and c:raise ValueError('Observed1253 requires right-closed interval')
     values=bank(a,b,v,c,template,profile)
+    if profile=='observed_28834':
+        values=[f'{v}\\in ({tex(a)},{tex(b)})',f'{v}\\in [{tex(a)},\\infty )',f'{v}\\in [{tex(a)},{tex(b)}]',f'{v}\\in ({tex(a)},{tex(b)}]',f'{v}\\in [{tex(a)},{tex(b)})']
+    elif profile=='observed_73902':
+        values=[f'{tex(-b)}<{v}\\le {tex(-a)}',f'{tex(a)}<{v}\\le {tex(b)}',f'{tex(a)}\\le {v}\\le {tex(b)}',f'{tex(a)}<{v}<{tex(b)}',f'{tex(a)}\\le {v}<{tex(b)}']
     if len(set(values))!=5:raise ValueError('Whole bank rejected: duplicate choice')
     correct=interval(a,b,v,c) if template=='inequality_to_interval' else inequality(a,b,v,c)
+    if profile in ('observed_28834','observed_73902'):correct=values[-1]
     if values.count(correct)!=1:raise ValueError('Whole bank rejected: missing/nonunique correct')
     if template=='inequality_to_interval':prompt='The inequality $'+inequality(a,b,v,c)+'$ can be expressed in interval notation as'
     else:
@@ -108,6 +139,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         if observed and a.is_Integer and a<0:left='- '+str(abs(a))
         prompt='The interval $'+v+' ∈ '+('[' if c else '(')+left+', '+tex(b)+(')' if c else ']')+'$ corresponds to the inequality'
     sol=solution(a,b,v,c,template)
+    if profile in ('observed_28834','observed_73902'):
+        prompt,sol=current_render(a,b,v,profile)
     task=digest({'a':str(a),'b':str(b),'left_closed':c,'direction':template})
     content=digest({'version':VERSION,'prompt':prompt,'solution':None if raw else sol,'bank':sorted(values),'key':None if raw else correct,'level':None if raw else level})
     qid=uid(content);fid=uid(qid+':selection')
@@ -117,9 +150,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     rng.shuffle(choices)
     question={':question/id':qid,':question/problem':prompt,':question/answer-fields':[field]}
     if not raw:question.update({':question/difficulty':':question.difficulty/'+level,':question/worked-solution':sol})
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'source':SOURCE,'difficulty':level,'difficulty_origin':'authored; originals unrated','template':template,'profile':profile,'parameters':{'a':str(a),'b':str(b),'variable':v,'left_closed':c},'mathematical_fingerprint':task,'content_fingerprint':content,'seed':seed,'source_id':('q-1253' if '1253' in profile else 'q-25754' if '25754' in profile else None),'raw_missing_fields_preserved':raw,'solution_origin':'absent in practice capture; authored using canonical shared opening/endpoint sequence','semantic_catalog_count':len(_CATALOG[level])*2,'plot_rating':'none'}}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'source':(SOURCE|{'basis':2081} if profile in ('observed_28834','observed_73902') else SOURCE),'difficulty':level,'difficulty_origin':('observed' if profile in ('observed_28834','observed_73902') else 'authored; initial originals unrated'),'template':template,'profile':profile,'parameters':{'a':str(a),'b':str(b),'variable':v,'left_closed':c},'mathematical_fingerprint':task,'content_fingerprint':content,'seed':seed,'source_id':('q-'+profile.split('_')[1] if observed else None),'raw_missing_fields_preserved':raw,'solution_origin':('observed full solution' if profile in ('observed_28834','observed_73902') else 'absent in initial practice capture; authored using canonical shared opening/endpoint sequence'),'semantic_catalog_count':len(_CATALOG[level])*2,'plot_rating':'none'}}
 
-# Easy: integer endpoint reading; same two endpoint decisions in either direction.
+# Easy: signed integer endpoint reading; same two endpoint decisions in either direction.
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 # Moderate: signed rational endpoint reading; no arithmetic or solving added.
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)

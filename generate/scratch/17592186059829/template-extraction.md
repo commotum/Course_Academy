@@ -54,3 +54,9 @@ Easy catalog: 25 integers −12..12, 300 ordered pairs, 600 directional tasks. M
 
 No plot templates or renderer are needed. The lesson tutorial illustrations do not appear in either assessed practice template. Scope stops at generation and validation (steps 3–7); no database preparation or writes.
 
+
+## Current source addendum (basis 2088)
+
+The current database has three practice questions. q-102200 now has an easy rating, independently correct key, and complete worked solution; its five-choice bank is mathematically equivalent to the historical bank, with normalized notation. q-59295 remains unrated, unkeyed, and solutionless and is excluded from available inventory. New q-154728 is rated moderate, asks for the inequality for [-7,0], and has five choices: four combinations of endpoint inclusion plus the inclusive outside union x ≤ -7 or x ≥ 0. It is distinct from the historical strict outside profile, and both remain explicit complete profiles. No plots are needed.
+
+`captured_interval` preserves the current q-102200 prompt/bank/solution layout and easy rating. `captured_inequality` preserves the current q-154728 bank and fixed solution layout and moderate rating. Each uses ordered integer endpoints -12..12, matching the current observed workload; this authored extension has 300 endpoint pairs per direction, overlaps older integer tasks, and cannot inflate distinct task counts. Original q-154728 has `?` inside the math delimiter; generated variants move punctuation outside, with the source preserved. Every choice and solution endpoint is substituted from the same exact parameters; outside-union distractors retain their inclusive boundary relations. Fresh source-bank replay, correct designations, solution stages, and native grading are recorded in current-validation.json. Existing rational/surd catalogs and historical raw profiles retain their earlier evidence.

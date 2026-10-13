@@ -1,0 +1,3 @@
+# Reciprocal hyperbolic linear substitution generator
+
+Run `.venv/bin/python generate/scratch/17592186166785/validate.py` to reproduce complete source-bank replay, all bounded symbolic/numeric checks and native learner grading. Use `generate/scratch/17592186166785.py --difficulty easy --count 5 --seed 1969 --format json` for previews. `replenish.py` uses current native inventory, excludes all existing mathematical tasks, acquires the shared API lock, previews native specs and commits with a basis guard and exact receipts. Original source questions and learner history are immutable. Hard is unsupported and remains unfilled. The finite capacity includes source replays, so the writer must exclude those from new inventory.

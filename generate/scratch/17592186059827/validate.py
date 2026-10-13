@@ -98,7 +98,7 @@ def main():
     a=g.generate('moderate',parameters=p);p['a']='-2/4';b=g.generate('moderate',parameters=p);assert a['question'][':question/id']==b['question'][':question/id']
     # Variable aliases excluded from semantic catalog, retained in display identity.
     p['variable']='y';b=g.generate('moderate',template=a['generation']['template'],parameters=p);assert a['generation']['mathematical_fingerprint']==b['generation']['mathematical_fingerprint'];assert a['question'][':question/id']!=b['question'][':question/id']
-    invalid=[('easy',{'a':'-1','b':'3','variable':'x','left_closed':True}),('moderate',{'a':'-1','b':'3','variable':'x','left_closed':True}),('hard',{'a':'-1','b':'3','variable':'x','left_closed':True}),('hard',{'a':'-sqrt(2)/2','b':'3','variable':'x','left_closed':True}),('hard',{'a':'sqrt(2)','b':'3','variable':'x','left_closed':True})]
+    invalid=[('easy',{'a':'-16','b':'3','variable':'x','left_closed':True}),('moderate',{'a':'-1','b':'3','variable':'x','left_closed':True}),('hard',{'a':'-1','b':'3','variable':'x','left_closed':True}),('hard',{'a':'-sqrt(2)/2','b':'3','variable':'x','left_closed':True}),('hard',{'a':'sqrt(2)','b':'3','variable':'x','left_closed':True})]
     for l,p in invalid:
         try:g.generate(l,parameters=p)
         except ValueError:pass
