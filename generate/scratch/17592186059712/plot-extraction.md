@@ -1,0 +1,3 @@
+# Steps 5 and 7: no plots
+
+All four source practice prompts, the two source worked solutions and all ten source choices contain column-vector mathematics without image references or assessed diagrams. The two authoritative widget section screenshots were inspected at their original resolutions; they confirm mathematical matrix notation and five-option layouts. Matrices are notation, not plots. Plot rating is **none** for every family and difficulty. No parameter-dependent plot specification, renderer, output asset or renderer dependency is needed. The owning lesson’s introductory geometric diagrams belong to other instructional steps and are not carried into this arithmetic KP. No image model or SVG generation was used.

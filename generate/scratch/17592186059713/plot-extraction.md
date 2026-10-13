@@ -1,0 +1,7 @@
+# Plot extraction and step 7 decision
+
+Every practice source and answer option is text/math; practice plot rating is **none**. No generated question assesses graph reading and no renderer is needed.
+
+The canonical example asset, `/media/jake/SSD/EDB/math/images/56/56b10e759084da6fb21c8421bc9ff6d74aac2602df28f6c8e478bd874d7d6e9f.png`, was viewed at original resolution (360×304). It shows black x/y axes and an integer square grid; blue basis arrows i,j; red vectors from the origin with italic a,b labels. The left red tip is (-3,2); the right red tip is (4,5). The source component extraction is consistent with this full-resolution inspection. Arrowheads point away from the origin, with grid spacing about 36 px and origin about (170,235); the horizontal scale marks -4,-2,2,4. These are direct raster observations, not generated assets or an inferred reusable graph recipe.
+
+The original widget's equivalent asset is `/home/jake/Developer/MA/DATA/Lessons/244/Source/Images/a3bae408052f91316b508d8a9d5032b8.png`. The canonical graph anchors the a+6b arithmetic scope and serves no practice-source fidelity denominator. Normal questions provide coordinates directly, exactly as all four observed practice questions do. No source plots are copied into generated learner content. A parameterized assessed graph would require a separate Matplotlib/TikZ specification, but adding that graph-reading family is outside the present practice evidence and is not necessary for these templates.
