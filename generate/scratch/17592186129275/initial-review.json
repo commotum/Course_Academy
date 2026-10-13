@@ -1,0 +1,326 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129275,
+      "id": "de1091c5-d81a-565f-a281-b2fb0d00c973",
+      "title": "Rewriting a Double Integral Over a Circle or Part-Circle Not Centered at the Origin"
+    },
+    "question": {
+      ":question/id": "52f25af4-ea64-5bcb-9dd7-3ce4dacaaf78",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "If $D=\\{(x,y)\\,:\\,x^{2}+(y+1)^{2}\\le 1\\},$ then $\\iint_D 1\\,\\mathrm{d}A=$\n\nChoose the polar setup whose bounds describe $D$ with $r\\ge 0$ and whose integrand is the given Cartesian integrand multiplied by the Jacobian $r.$",
+      ":question/worked-solution": "We need to change the coordinate system from Cartesian coordinates to polar coordinates. To do this, we will use the change of variables formula in the form\n\n$$\n\\iint_D f(x,y)\\,dA=\\iint_\\Delta f(r\\cos\\theta,r\\sin\\theta)\\,r\\,dr\\,d\\theta.\n$$\n\nFirst, let's sketch our region $D:$\n\n![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129275/plots/d825f39339e802647cd0-region.png)\n\nNotice that the region $D$ represents the disk of radius $1$ centered at $(0,-1).$\n\nCartesian and polar coordinates are connected by the following equations:\n\n$$\n\\{\\begin{aligned}x=r\\cos\\theta \\\\ y=r\\sin\\theta\\end{aligned}\n$$\n\nWith that in mind, let's now write the $x^{2}+(y+1)^{2}=1$ in polar coordinates:\n\n$$\n\\begin{aligned}x^{2}+(y+1)^{2}&=1\\\\(r\\cos\\theta)^2+(r\\sin\\theta+1)^2&=1\\\\r^2\\cos^2\\theta+r^2\\sin^2\\theta+2r\\sin\\theta+1&=1\\\\r^2(\\cos^2\\theta+\\sin^2\\theta)+2r\\sin\\theta&=0\\\\r^2+2r\\sin\\theta&=0\\\\r(r+2\\sin\\theta)&=0\\end{aligned}\n$$\n\nSince $r$ cannot be identical to zero on the entire circle, we must have $r=- 2 \\sin{\\left(\\theta \\right)}.$\n\nNow, let's determine the limits for $r$ and $\\theta.$ First of all, $r$ can vary from $r=0$ (at the origin) to $r=- 2 \\sin{\\left(\\theta \\right)}$ (at the boundary of the region):\n\n![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129275/plots/d825f39339e802647cd0-radius.png)\n\nSecondly, $\\theta$ can vary between $\\theta=\\pi$ and $\\theta=2 \\pi.$\n\n![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129275/plots/d825f39339e802647cd0-angle.png)\n\nSo, in polar coordinates $(r,\\theta),$ the region can be expressed as\n\n$$\n\\Delta=\\{(r,\\theta)\\,:\\,0\\le r\\le - 2 \\sin{\\left(\\theta \\right)},\\,\\pi\\le\\theta\\le 2 \\pi\\}.\n$$\n\nTherefore, using the change of variables formula, we obtain\n\n$$\n\\begin{aligned}\\iint_D 1\\,dA&=\\iint_\\Delta (1)\\,r\\,dr\\,d\\theta\\\\&=\\int_{\\pi}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "abba5cbd-2f4f-503f-bb7a-39fa40c8b234",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cebe98f9-c378-5262-9a3f-65152b5c7ed9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\int_{\\pi}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "1b7c0105-bf7a-5bb6-a7ed-2470d0bc248a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\int_{\\pi}^{2 \\pi}\\int_{0}^{2 \\sin{\\left(\\theta \\right)}}r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "25380606-cc65-5aa1-8dde-13cc43334953",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\int_{\\pi}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}1\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "b6329a3b-66fe-5e4c-84ba-f050224ca5ab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\int_{0}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "f818392d-95db-59f3-b574-890c27ee70d0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\int_{\\pi}^{2 \\pi}\\int_{0}^{1}r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cebe98f9-c378-5262-9a3f-65152b5c7ed9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "polar-offset-disk-1",
+      "seed": 0,
+      "template": "constant_below",
+      "profile": "setup",
+      "bank_profile": "setup",
+      "parameters": {
+        "a": "1"
+      },
+      "mathematical_fingerprint": "8d681a9aabb7fa458fd59e120f0dcdb0a32e86f596ca9f84e02b46d97197161c",
+      "content_hash": "16d7781c8cfd3256bf7ef7983b16016969e21a2011da658b4f873ac99fe221ed",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "authored": true,
+      "source_id": null,
+      "domain": "r ≥ 0; disk tangent to origin; radius integer/half ≤5",
+      "answer_operations": {
+        "\\int_{\\pi}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta": [
+          "0",
+          "-2*sin(t)",
+          "r",
+          "pi",
+          "2*pi"
+        ],
+        "\\int_{\\pi}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}1\\,\\mathrm{d}r\\,\\mathrm{d}\\theta": [
+          "0",
+          "-2*sin(t)",
+          "1",
+          "pi",
+          "2*pi"
+        ],
+        "\\int_{\\pi}^{2 \\pi}\\int_{0}^{1}r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta": [
+          "0",
+          "1",
+          "r",
+          "pi",
+          "2*pi"
+        ],
+        "\\int_{0}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta": [
+          "0",
+          "-2*sin(t)",
+          "r",
+          "0",
+          "2*pi"
+        ],
+        "\\int_{\\pi}^{2 \\pi}\\int_{0}^{2 \\sin{\\left(\\theta \\right)}}r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta": [
+          "0",
+          "2*sin(t)",
+          "r",
+          "pi",
+          "2*pi"
+        ]
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129275,
+      "id": "de1091c5-d81a-565f-a281-b2fb0d00c973",
+      "title": "Rewriting a Double Integral Over a Circle or Part-Circle Not Centered at the Origin"
+    },
+    "question": {
+      ":question/id": "d1b8cea0-bb8b-5995-b721-9131e64c6c3b",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "If $D=\\{(x,y)\\,:\\,{x}^{2}+(y-\\frac{7}{2})^{2}\\le \\frac{49}{4}\\},$ then ${∬}_{D}x\\,\\text{d}A=$\n\nChoose the polar setup whose bounds describe $D$ with $r\\ge 0$ and whose integrand is the given Cartesian integrand multiplied by the Jacobian $r.$",
+      ":question/worked-solution": "We need to change the coordinate system from Cartesian coordinates to polar coordinates. To do this, we will use the change of variables formula in the form\n\n$$\n{∬}_{D}f(x,y)\\,dA={∬}_{Δ}\\,f(r\\operatorname{cos}⁡\\theta ,r\\operatorname{sin}⁡\\theta )\\,r\\,dr\\,d\\theta .\n$$\n\nFirst, let's sketch our region $D:$\n\n![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129275/plots/e26b9bf6b6adb94cc508-region.png)\n\nNotice that the region $D$ represents the disk of radius $\\frac{7}{2\\}$ centered at $(0,\\frac{7}{2}).$\n\nCartesian and polar coordinates are connected by the following equations:\n\n$$\n\\{\\begin{aligned}x=r\\operatorname{cos}⁡\\theta  \\\\ y=r\\operatorname{sin}⁡\\theta \\end{aligned}\n$$\n\nWith that in mind, let's now write the ${x}^{2}+(y-\\frac{7}{2})^{2}=\\frac{49}{4\\}$ in polar coordinates:\n\n$$\n\\begin{aligned}{x}^{2}+(y-\\frac{7}{2})^{2} & =\\frac{49}{4} \\\\ {(r\\operatorname{cos}⁡\\theta )}^{2}+{(r\\operatorname{sin}⁡\\theta -\\frac{7}{2})}^{2} & =\\frac{49}{4} \\\\ {r}^{2}{cos}^{2}⁡\\theta +{r}^{2}{sin}^{2}⁡\\theta -7r\\operatorname{sin}⁡\\theta +\\frac{7}{2} & =\\frac{49}{4} \\\\ {r}^{2}({cos}^{2}⁡\\theta +{sin}^{2}⁡\\theta )-7r\\operatorname{sin}⁡\\theta  & =0 \\\\ {r}^{2}-7r\\operatorname{sin}⁡\\theta  & =0 \\\\ r(r-7\\operatorname{sin}⁡\\theta ) & =0\\end{aligned}\n$$\n\n \n\nSince $r$ cannot be identical to zero on the entire circle, we must have $r=7\\operatorname{sin}⁡\\theta .$\n\nNow, let's determine the limits for $r$ and $\\theta .$ First of all, $r$ can vary from $r=0$ (at the origin) to $r=7\\operatorname{sin}⁡\\theta $ (at the boundary of the region): \n\n![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129275/plots/e26b9bf6b6adb94cc508-radius.png)\n\nSecondly, $\\theta $ can vary between $\\theta =0$ (the positive $x$-axis) and $\\theta =\\pi $ (the negative $x$-axis):\n\n![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129275/plots/e26b9bf6b6adb94cc508-angle.png)\n\nSo, in polar coordinates $(r,\\theta ),$ the region can be expressed as \n\n$$\nΔ=\\{(r,\\theta )\\,:\\,0\\le r\\le 7\\operatorname{sin}⁡\\theta ,\\,0\\le \\theta \\le \\pi \\}.\n$$\n\nTherefore, using the change of variables formula, we obtain \n\n$$\n\\begin{aligned}{∬}_{D}x\\,\\text{d}A & ={∬}_{Δ}r\\operatorname{cos}⁡\\theta \\cdot r\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & ={\\int }_{0}^{\\pi }{\\int }_{0}^{7\\operatorname{sin}⁡\\theta }{r}^{2}\\operatorname{cos}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4d6fc8b9-5b59-5473-bbe1-c0d25a0d0af0",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "26d8ced7-40f2-595d-a277-48c794c8c011",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{0}^{\\pi }{\\int }_{0}^{7\\operatorname{cos}⁡\\theta }{r}^{2}\\operatorname{cos}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            },
+            {
+              ":answer/id": "99e5e69f-36be-548c-b7b1-42d4edd5acca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{0}^{2\\pi }{\\int }_{0}^{7\\operatorname{sin}⁡\\theta }{r}^{2}\\operatorname{sin}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            },
+            {
+              ":answer/id": "8e57fd56-939c-52ad-a088-cd3e2a359a80",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{0}^{\\pi }{\\int }_{0}^{7\\operatorname{sin}⁡\\theta }{r}^{2}\\operatorname{cos}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            },
+            {
+              ":answer/id": "80e4dfc2-426c-5253-96c0-121ec770f9bd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{0}^{\\pi }{\\int }_{0}^{7\\operatorname{sin}⁡\\theta }r\\operatorname{cos}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            },
+            {
+              ":answer/id": "77c8daa9-363c-5378-81f2-59bd7dffe50c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{0}^{2\\pi }{\\int }_{0}^{7\\operatorname{cos}⁡\\theta }r\\operatorname{sin}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8e57fd56-939c-52ad-a088-cd3e2a359a80"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "polar-offset-disk-1",
+      "seed": 0,
+      "template": "linear",
+      "profile": "setup",
+      "bank_profile": "setup",
+      "parameters": {
+        "a": "7/2"
+      },
+      "mathematical_fingerprint": "d1906bf6cbb1d62b9c1b2ab3f585b6de780c64ae95492c9175b45e3954f4f24d",
+      "content_hash": "9f9c487f4d3c56e36c418fa5282fd3ef6001596614bd20ad464a56d0f80a735b",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "authored": false,
+      "source_id": 17592186278369,
+      "domain": "r ≥ 0; disk tangent to origin; radius integer/half ≤5",
+      "answer_operations": {
+        "{\\int }_{0}^{2\\pi }{\\int }_{0}^{7\\operatorname{cos}⁡\\theta }r\\operatorname{sin}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "0",
+          "7*cos(t)",
+          "r*sin(t)",
+          "0",
+          "2*pi"
+        ],
+        "{\\int }_{0}^{2\\pi }{\\int }_{0}^{7\\operatorname{sin}⁡\\theta }{r}^{2}\\operatorname{sin}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "0",
+          "7*sin(t)",
+          "r**2*sin(t)",
+          "0",
+          "2*pi"
+        ],
+        "{\\int }_{0}^{\\pi }{\\int }_{0}^{7\\operatorname{sin}⁡\\theta }r\\operatorname{cos}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "0",
+          "7*sin(t)",
+          "r*cos(t)",
+          "0",
+          "pi"
+        ],
+        "{\\int }_{0}^{\\pi }{\\int }_{0}^{7\\operatorname{sin}⁡\\theta }{r}^{2}\\operatorname{cos}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "0",
+          "7*sin(t)",
+          "r**2*cos(t)",
+          "0",
+          "pi"
+        ],
+        "{\\int }_{0}^{\\pi }{\\int }_{0}^{7\\operatorname{cos}⁡\\theta }{r}^{2}\\operatorname{cos}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "0",
+          "7*cos(t)",
+          "r**2*cos(t)",
+          "0",
+          "pi"
+        ]
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129275,
+      "id": "de1091c5-d81a-565f-a281-b2fb0d00c973",
+      "title": "Rewriting a Double Integral Over a Circle or Part-Circle Not Centered at the Origin"
+    },
+    "question": {
+      ":question/id": "0873b522-07c4-5dce-8bd8-8c8d581a7467",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "If $D=\\{(x,y)\\,:\\,(x+\\frac{7}{2})^{2}+{y}^{2}\\le \\frac{49}{4},\\,y\\le 0\\},$ then ${∬}_{D}x{y}^{2}\\,\\text{d}A=$\n\nChoose the polar setup whose bounds describe $D$ with $r\\ge 0$ and whose integrand is the given Cartesian integrand multiplied by the Jacobian $r.$",
+      ":question/worked-solution": "We need to change the coordinate system from Cartesian coordinates to polar coordinates. To do this, we will use the change of variables formula in the form\n\n$$\n{∬}_{D}f(x,y)\\text{ }dA={∬}_{Δ}\\text{ }f(r\\operatorname{cos}⁡\\theta ,r\\operatorname{sin}⁡\\theta )\\,r\\text{ }drd\\theta .\n$$\n\nFirst, let's sketch our region $D:$\n\n![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129275/plots/28074b2e309a10137577-region.png)\n\nNotice that the region $D$ represents a portion of the disk of radius $\\frac{7}{2\\}$ centered at $(-\\frac{7}{2},0).$ \n\nCartesian and polar coordinates are connected by the following equations:\n\n$$\n\\{\\begin{aligned}x=r\\operatorname{cos}⁡\\theta  \\\\ y=r\\operatorname{sin}⁡\\theta \\end{aligned}\n$$\n\nWith that in mind, let's now write the ${(x+\\frac{7}{2})}^{2}+{y}^{2}=\\frac{49}{4\\}$ in polar coordinates:\n\n$$\n\\begin{aligned}{(x+\\frac{7}{2})}^{2}+{y}^{2} & =\\frac{49}{4} \\\\ {(r\\operatorname{cos}⁡\\theta +\\frac{7}{2})}^{2}+(r\\operatorname{sin}⁡\\theta )^{2} & =\\frac{49}{4} \\\\ {r}^{2}{cos}^{2}⁡\\theta +7r\\operatorname{cos}⁡\\theta +\\frac{49}{4}+{r}^{2}{sin}^{2}⁡\\theta  & =\\frac{49}{4} \\\\ {r}^{2}({cos}^{2}⁡\\theta +{sin}^{2}⁡\\theta )+7r\\operatorname{cos}⁡\\theta  & =0 \\\\ {r}^{2}+7r\\operatorname{cos}⁡\\theta  & =0 \\\\ r(r+\\operatorname{cos}⁡\\theta ) & =0\\end{aligned}\n$$\n\n \n\nSince $r$ cannot be identical to zero on the entire semicircle, we must have $r=-7\\operatorname{cos}⁡\\theta .$ \n\nNow, let's determine the limits for $r$ and $\\theta .$ First of all, $r$ can vary from $r=0$ (at the origin) to $r=-7\\operatorname{cos}⁡\\theta $ (at the boundary of the region): \n\n![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129275/plots/28074b2e309a10137577-radius.png)\n\nSecondly, $\\theta $ can vary between $\\theta =\\pi $ (the negative $x$-axis) and $\\theta =\\frac{3\\pi }{2\\}$ (the negative $y$-axis):\n\n![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129275/plots/28074b2e309a10137577-angle.png)\n\nSo, in polar coordinates $(r,\\theta ),$ the region can be expressed as \n\n$$\nΔ=\\{(r,\\theta )\\,:\\,0\\le r\\le -7\\operatorname{cos}⁡\\theta ,\\,\\pi \\le \\theta \\le \\frac{3\\pi }{2}\\}.\n$$\n\nTherefore, using the change of variables formula, we obtain \n\n$$\n\\begin{aligned}{∬}_{D}x{y}^{2}\\,\\text{d}A & ={∬}_{Δ}(r\\operatorname{cos}⁡\\theta )(r\\operatorname{sin}⁡\\theta )^{2}\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{\\pi }^{3\\pi /2}{\\int }_{0}^{-7\\operatorname{cos}⁡\\theta }{r}^{4}\\operatorname{cos}⁡\\theta {sin}^{2}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "32579a90-aa18-59b0-995a-8430f5f3cfba",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f78b5a76-25a4-5e71-8810-037d3a2521a9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{\\pi }^{3\\pi /2}{\\int }_{0}^{-7\\operatorname{cos}⁡\\theta }{r}^{4}\\operatorname{cos}⁡\\theta {sin}^{2}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            },
+            {
+              ":answer/id": "a852fee6-5d3d-51e7-ace0-da809c9c4943",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{0}^{\\pi }{\\int }_{7\\operatorname{sec}⁡\\theta }^{14\\operatorname{sin}⁡\\theta }{r}^{3}\\operatorname{cos}⁡\\theta {sin}^{2}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            },
+            {
+              ":answer/id": "03f067cb-3e71-5c54-b960-d97e0b394b1c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{0}^{\\pi /2}{\\int }_{7}^{-7\\operatorname{cos}⁡\\theta }{r}^{2}\\operatorname{cos}⁡\\theta \\operatorname{sin}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            },
+            {
+              ":answer/id": "3fbfb8a3-c8fb-5663-9bcb-ceeaafc4eafb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{0}^{\\pi }{\\int }_{0}^{7\\operatorname{sin}⁡\\theta }{r}^{4}\\operatorname{cos}⁡\\theta \\operatorname{sin}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            },
+            {
+              ":answer/id": "74dc6288-c6d9-589c-9371-6a1e20f1b5cd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{\\int }_{0}^{\\pi /2}{\\int }_{7}^{14\\operatorname{sin}⁡\\theta }{r}^{4}\\operatorname{cos}⁡\\theta {sin}^{2}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta "
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f78b5a76-25a4-5e71-8810-037d3a2521a9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "polar-offset-disk-1",
+      "seed": 0,
+      "template": "xy2",
+      "profile": "setup",
+      "bank_profile": "setup",
+      "parameters": {
+        "a": "7/2"
+      },
+      "mathematical_fingerprint": "d18a98ca5a30b14f0429d1284df39dfec46ff0803628ef70763d9ebd21651d0b",
+      "content_hash": "0f78b5415950eea821f39bd7e1142382825a014fbc12a4e63a70ee3088cfb783",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "authored": false,
+      "source_id": 17592186394504,
+      "domain": "r ≥ 0; disk tangent to origin; radius integer/half ≤5",
+      "answer_operations": {
+        "{\\int }_{0}^{\\pi /2}{\\int }_{7}^{14\\operatorname{sin}⁡\\theta }{r}^{4}\\operatorname{cos}⁡\\theta {sin}^{2}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "7",
+          "14*sin(t)",
+          "r**4*sin(t)**2*cos(t)",
+          "0",
+          "pi/2"
+        ],
+        "{\\int }_{0}^{\\pi }{\\int }_{7\\operatorname{sec}⁡\\theta }^{14\\operatorname{sin}⁡\\theta }{r}^{3}\\operatorname{cos}⁡\\theta {sin}^{2}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "7/cos(t)",
+          "14*sin(t)",
+          "r**3*sin(t)**2*cos(t)",
+          "0",
+          "pi"
+        ],
+        "{\\int }_{0}^{\\pi }{\\int }_{0}^{7\\operatorname{sin}⁡\\theta }{r}^{4}\\operatorname{cos}⁡\\theta \\operatorname{sin}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "0",
+          "7*sin(t)",
+          "r**4*sin(t)*cos(t)",
+          "0",
+          "pi"
+        ],
+        "{\\int }_{0}^{\\pi /2}{\\int }_{7}^{-7\\operatorname{cos}⁡\\theta }{r}^{2}\\operatorname{cos}⁡\\theta \\operatorname{sin}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "7",
+          "-7*cos(t)",
+          "r**2*sin(t)*cos(t)",
+          "0",
+          "pi/2"
+        ],
+        "{\\int }_{\\pi }^{3\\pi /2}{\\int }_{0}^{-7\\operatorname{cos}⁡\\theta }{r}^{4}\\operatorname{cos}⁡\\theta {sin}^{2}⁡\\theta \\,\\text{d}r\\,\\text{d}\\theta ": [
+          "0",
+          "-7*cos(t)",
+          "r**4*sin(t)**2*cos(t)",
+          "pi",
+          "3*pi/2"
+        ]
+      }
+    }
+  }
+]

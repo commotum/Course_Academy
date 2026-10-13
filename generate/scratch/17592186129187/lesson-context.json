@@ -1,0 +1,126 @@
+{
+  "database": "math",
+  "basis": 1356,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "record": [
+    {
+      ":activity/first-step": {
+        ":db/id": 17592186130064
+      },
+      ":activity/id": "24e4f3d3-57f6-51a9-afd6-0c3e9a2f8f97",
+      ":activity/steps": [
+        {
+          ":db/id": 17592186130064,
+          ":step/content": {
+            ":db/id": 17592186130392,
+            ":tutorial/content": "We have explored linear and affine transformations in the plane. We'll now begin to explore nonlinear transformations of plane regions.\n\nLet $\\mathbf{T}: U \\to \\mathbb{R}^2$ be a **transformation** on an open set $U\\subseteq \\mathbb R^2.$ We write $$\\mathbf{T}: [\\begin{aligned}u \\\\ v\\end{aligned}] \\longrightarrow [\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}].$$\n\nRecall that, under this notation,\n\n- $\\mathbf u = [\\begin{aligned}u \\\\ v\\end{aligned}]$ represents vectors belonging to the input space (i.e., the $uv$-plane), and\n- $\\mathbf x = [\\begin{aligned}x \\\\ y\\end{aligned}]$ represents vectors belonging to the output space (i.e., the $xy$-plane).\n\nFor example, consider the following transformation:\n\n$$[\\begin{aligned}x \\\\ y\\end{aligned}] = \\mathbf{T}\\left( [\\begin{aligned}u \\\\ v\\end{aligned}] \\right) = [\\begin{aligned}u\\operatorname{cos}v \\\\ u\\operatorname{sin}v\\end{aligned}]$$\n\nGeometrically, this transformation maps the rectangular region in the $uv$-plane below to a circular sector in the $xy$-plane.\n\n![](images/dc/dcc80fe1271d560e9f958eba9454761d56f936567dc439853bc4181cccc3f76f.png)\n\nWe'll explore how to compute the image of a nonlinear transformation in future lessons. But for now, it is sufficient to know that\n\n- $\\mathbf T$ takes points (or vectors) from the $uv$-plane as input and maps them to points (vectors) in the $xy$-plane, and\n- rectangular regions in the $uv$-plane are mapped to regions in the $xy$-plane that are not necessarily parallelograms.",
+            ":tutorial/title": "Introduction"
+          },
+          ":step/next": {
+            ":db/id": 17592186130225
+          }
+        },
+        {
+          ":db/id": 17592186130065,
+          ":step/content": {
+            ":db/id": 17592186129187,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186129006,
+              ":question/id": "28562339-0fe0-5d56-8767-2ec0834525d9",
+              ":question/math-academy-id": "e-6810",
+              ":question/problem": "Find the Jacobian determinant of the transformation $\\mathbf{T},$ defined as\n\n![](images/ce/ce4692599c5c9fe69ed9247d65dee5d982e1b7a2cf33b9070b799c94c321bad4.png)",
+              ":question/worked-solution": "Given a transformation \n\n![](images/59/59265be9c026880542032006b0c4aec9f1c8eeb2cd448423d38c17f75e1393cd.png)\n\nthe Jacobian determinant of $\\mathbf T,$ denoted $\\dfrac{\\partial (x, y)}{\\partial (u, v)} ,$ is given by\n\n$$\n\\begin{aligned}\\frac{∂(x,y)}{∂(u,v)} & =|\\begin{aligned}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v}\\end{aligned}|.\\end{aligned}\n$$\n\nHere, we have $x=(u+v)^3$ and $y=(u-v)^2.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂x}{∂u} & =3(u+v)^{2} & \\,\\frac{∂x}{∂v} & =3(u+v)^{2} \\\\ \\frac{∂y}{∂u} & =2(u-v) & \\,\\frac{∂y}{∂v} & =-2(u-v)\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{∂(x,y)}{∂(u,v)} & =|\\begin{aligned}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v}\\end{aligned}| \\\\  & =|\\begin{aligned}3(u+v)^{2} & 3(u+v)^{2} \\\\ 2(u-v) & -2(u-v)\\end{aligned}| \\\\  & =3(u+v)^{2}\\cdot (-2(u-v))-3(u+v)^{2}\\cdot 2(u-v) \\\\  & =-12(u+v)^{2}(u-v).\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Finding the Jacobian Determinant of a Transformation"
+          },
+          ":step/next": {
+            ":db/id": 17592186130202
+          }
+        },
+        {
+          ":db/id": 17592186130202,
+          ":step/content": {
+            ":db/id": 17592186129263,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186128838,
+              ":question/id": "eec994b4-82ac-568c-b493-dc9a21102c2d",
+              ":question/math-academy-id": "e-11156",
+              ":question/problem": "For the transformation $\\mathbf{T},$ defined as\n\n![](images/40/40212b3cc1bb25e4d42b96ba9fd2c1958772a32fe69136dca347be295956b9ea.png)\n\ncompute the value of the Jacobian determinant at the point where ![](images/de/de70592e2668d2ef6030843fe9e20dd3da9fc1edec2501e7cd318a57682f3f0e.png)",
+              ":question/worked-solution": "Given a transformation \n\n![](images/9b/9b0ee6271962e3ede406351f05d805ae60f4b37ce5a45489b117ab3786ed3c23.png)\n\nthe Jacobian determinant of $\\mathbf T,$ denoted $\\dfrac{\\partial (x, y)}{\\partial (u, v)} ,$ is given by\n\n$$\n\\begin{aligned}\\frac{∂(x,y)}{∂(u,v)} & =|\\begin{aligned}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v}\\end{aligned}|.\\end{aligned}\n$$\n\nHere, we have $x(u,v) = 2v\\cos{u}$ and $y(u,v) = v\\sin{u}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂x}{∂u} & =-2v\\operatorname{sin}⁡u & \\,\\frac{∂x}{∂v} & =2\\operatorname{cos}⁡u \\\\ \\frac{∂y}{∂u} & =v\\operatorname{cos}⁡u & \\,\\frac{∂y}{∂v} & =\\operatorname{sin}⁡u\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{∂(x,y)}{∂(u,v)} & =|\\begin{aligned}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v}\\end{aligned}| \\\\  & =|\\begin{aligned}-2v\\operatorname{sin}⁡u & 2\\operatorname{cos}⁡u \\\\ v\\operatorname{cos}⁡u & \\operatorname{sin}⁡u\\end{aligned}| \\\\  & =-2v\\operatorname{sin}⁡u\\cdot \\operatorname{sin}⁡u-2\\operatorname{cos}⁡u\\cdot v\\operatorname{cos}⁡u \\\\  & =-2v({sin}^{2}⁡u+{cos}^{2}⁡u) \\\\  & =-2v.\\end{aligned}\n$$\n\nFinally, when ![](images/72/72902f1a278bc1316ff58c54940b4d5e65fa04aa8e1711c8e0a1726f57cd3641.png) the value of our Jacobian determinant is\n\n$$\n\\left.\\dfrac{\\partial (x, y)}{\\partial (u, v)}\\right|_{(0,-1)} = -2(-1) = 2.\n$$"
+            },
+            ":knowledge-point/title": "Evaluating a Jacobian Determinant"
+          },
+          ":step/next": {
+            ":db/id": 17592186130226
+          }
+        },
+        {
+          ":db/id": 17592186130225,
+          ":step/content": {
+            ":db/id": 17592186130460,
+            ":tutorial/content": "Suppose that $\\mathbf{T}: U \\to \\mathbb{R}^2$ is a transformation given by\n\n$$\\mathbf{T}: [\\begin{aligned}u \\\\ v\\end{aligned}] \\longrightarrow [\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}].$$\n\nWe'll assume that $\\mathbf T$ is a $\\boldsymbol{C}^1$ **transformation**, which means that $x$ and $y$ have continuous first-order partial derivatives on an open set $U$ contained in $\\Bbb R^2.$\n\nThe **Jacobian determinant** of $\\mathbf T,$ denoted $\\dfrac{\\partial (x, y)}{\\partial (u, v)} ,$ is defined as\n\n$$\\begin{aligned}\\frac{∂(x,y)}{∂(u,v)} & =|\\begin{aligned}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v}\\end{aligned}|=\\frac{∂x}{∂u}\\cdot \\frac{∂y}{∂v}-\\frac{∂x}{∂v}\\cdot \\frac{∂y}{∂u}\\end{aligned}$$\n\nWe sometimes refer to the Jacobian determinant simply as the **Jacobian.**\n\nLet's compute the Jacobian determinant of the following transformation:\n\n$$[\\begin{aligned}x \\\\ y\\end{aligned}] = \\mathbf{T}\\left( [\\begin{aligned}u \\\\ v\\end{aligned}] \\right) = [\\begin{aligned}u\\operatorname{cos}v \\\\ u\\operatorname{sin}v\\end{aligned}]$$\n\nTo compute the Jacobian determinant of this function, we first calculate the required partial derivatives:\n\n$$\\begin{aligned}\\frac{∂x}{∂u} & =\\operatorname{cos}v & \\,\\frac{∂x}{∂v} & =-u\\operatorname{sin}v \\\\ \\frac{∂y}{∂u} & =\\operatorname{sin}v & \\,\\frac{∂y}{∂v} & =u\\operatorname{cos}v\\end{aligned}$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\\begin{aligned}\\frac{∂(x,y)}{∂(u,v)} & =|\\begin{aligned}\\operatorname{cos}v & -u\\operatorname{sin}v \\\\ \\operatorname{sin}v & u\\operatorname{cos}v\\end{aligned}| \\\\ & =\\operatorname{cos}v\\cdot (u\\operatorname{cos}v)-(-u\\operatorname{sin}v)\\cdot \\operatorname{sin}v \\\\ & =u{cos}^{2}v+u{sin}^{2}v \\\\ & =u({cos}^{2}v+{sin}^{2}v) \\\\ & =u.\\end{aligned}$$\n\nWe'll spend some time discussing the meaning behind the Jacobian shortly. But for now, let's get some practice at computing it.",
+            ":tutorial/title": "The Jacobian Determinant"
+          },
+          ":step/next": {
+            ":db/id": 17592186130065
+          }
+        },
+        {
+          ":db/id": 17592186130226,
+          ":step/content": {
+            ":db/id": 17592186130461,
+            ":tutorial/content": "To understand what the Jacobian describes, we recall our knowledge of affine transformations.\n\nConsider the affine transformation $\\mathbf T:\\Bbb R^2 \\to \\Bbb R^2,$ defined by the matrix equation\n\n$$\\mathbf x = T\\mathbf u + \\mathbf b,$$\n\nwhere $\\mathbf u, \\mathbf b,$ and $\\mathbf x$ are vectors from $\\mathbb R^2,$ and $T$ is a $2\\times 2$ matrix.\n\nFor an affine transformation, the determinant of $T$ gives us the following information:\n\n- The *area scale factor* of the transformation:\n\nIf a rectangle in the $uv$-plane has area $A,$ its image in the $xy$-plane is a parallelogram of area $|\\det(T)|\\cdot A.$\n\n![](images/04/04f36d98bf7589d1faadeffee0812590337fd36d8bb44f5abe1920948dee5bb0.png)\n- Whether the transformation is *orientation-preserving* or *orientation-reversing:*\n\nIf $\\textrm{det}(T) > 0,$ the transformation is orientation-preserving.\n\n![](images/49/496a49ee541eab31f69f9c571e450547b0c6942b100bc8e24fbd927dd43e4d33.png)\n\nIf $\\textrm{det}(T) < 0,$ the transformation is orientation-reversing.\n\n![](images/21/211369d6f3fc70bcf7cf40f3270c24c245d306247efc429cb85589e42c19ee07.png)\n\n- Whether the transformation is *invertible* or *non-invertible:*\n\nIf $\\textrm{det}(T) \\neq 0,$ the transformation is invertible.\n\n![](images/e4/e4b840ad5a3efa082ac4056d1d9b7c03d2e3e11e016e053df055dbb2b39f0d1f.png)\n\nIf $\\textrm{det}(T) = 0,$ the transformation is non-invertible. In such cases, a rectangle in the $uv$-plane collapses to either a line segment or point in the $xy$-plane.\n\n![](images/9a/9a038c5de0e9f3205194fd7941a4b371c695c51c294f2ad5ac0b8fc1015811d1.png)\n\n![](images/98/9813ba294a0242abbfb885ebd3e82505d05a2f8a1cfa3975c7859f9530cac8b1.png)\n\nAffine transformations are special because these properties are *global*. In other words, they apply *everywhere* in the plane. So, for example, if $\\textrm{det}(T) = 2$, then the image of *every* rectangle in the $uv$-plane is a parallelogram with double the area of its preimage.",
+            ":tutorial/title": "A Review of Affine Transformations"
+          },
+          ":step/next": {
+            ":db/id": 17592186130227
+          }
+        },
+        {
+          ":db/id": 17592186130227,
+          ":step/content": {
+            ":db/id": 17592186130462,
+            ":tutorial/content": "The Jacobian determinant gives information about nonlinear transformations similar to that described by the determinant properties of affine transformations.\n\nThe critical difference is that, in general, the Jacobian describes *local* effects, not global ones.\n\nTo understand what this means, suppose that $\\mathbf{T}: U \\to \\mathbb{R}^2$ is a transformation, where $$\\mathbf{T}: [\\begin{aligned}u \\\\ v\\end{aligned}] \\longrightarrow [\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]$$\n\nand we assume that $x(u,v)$ and $y(u,v)$ have continuous first-order partial derivatives on $U.$\n\nFor ease of notation, let's introduce $J(u_0,v_0)$ to denote the Jacobian determinant of $\\mathbf T$ evaluated at $(u_0, v_0){:}$\n\n$$J(u_0,v_0) = \\left.\\dfrac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(u_0,v_0)}$$\n\nLet's describe $\\mathbf T$'s effect on a *tiny* rectangle in the $uv$-plane whose bottom-left corner is the point $(u_0,v_0).$\n\n![](images/dc/dc084ec02cd0c4fac71379590e8dc4973354cacc898e267a0eb15a6e8500f31f.png)\n\nIt's important to note that the image of our rectangle in the $xy$-plane is typically *not* a parallelogram! However, provided that our rectangle is very small, its image can be *approximated* by a parallelogram (we'll justify this in a future lesson).\n\nThe Jacobian determinant of $\\mathbf T$ evaluated at $(u_0,v_0)$ describes the following key features between our tiny rectangle and its (approximate) image:\n\n- The *local* area scale factor of $\\mathbf T$.\n\nSuppose the length and width of our rectangle are $\\delta u$ and $\\delta v,$ so its area is $\\delta A = \\delta u\\delta v.$ Then, it can be shown that the parallelogram in the $xy$-plane has an area equal to $\\left|J(u_0,v_0)\\right| \\cdot \\delta A.$\n\n![](images/be/be1771ebb041c418c58d7d5615510e2fcacfeaf3677fbace739498ef1998ef11.png)\n\nNote the similarity of this formula with that of affine transformations described earlier (we've simply replaced $\\det(T)$ with the Jacobian).\n- Whether the transformation is *locally* orientation-preserving or *locally* orientation-reversing.\n\nIf $J(u_0,v_0)> 0,$ the transformation is (locally) orientation-preserving.\n\n![](images/8c/8c649fdd526a831fb990393b292fb4582dad14c2391d129e9ed59792ebb8ac31.png)\n\nIf $J(u_0,v_0)< 0,$ the transformation is (locally) orientation-reversing.\n\n![](images/ae/ae5a3d0a42e1c4b9f692994b89815382a30cdf3e676bbd9844258ad2a6961608.png)\n- Whether the transformation is *locally* invertible or *locally* non-invertible.\n\nIf $J(u_0,v_0)\\neq 0,$ the transformation is (locally) invertible.\n\n![](images/33/33ca98206a347e13aa8ec179a52dd755008d9a7d74882391e0c3f2344f6f6641.png)\n\nIf $J(u_0,v_0)= 0,$ the transformation is (locally) non-invertible.\n\n![](images/3d/3d4534c263a9a5bb26ba35ce8f879cf01db741441d948c023acaa9407d58e6e0.png)\n\n![](images/65/659f26ac6aba808d66a760d5683f265fd7c54431d894b2eabdc255b46368fc24.png)\n\nPoints $(u_0,v_0)$ such that $J(u_0,v_0)=0$ are called **critical points.** Critical points are very important. We'll discuss these in more detail in future lessons.\n\nWe again stress that the Jacobian describes *local* properties, that is, local to the point $(u_0,v_0).$ The effect of a nonlinear transformation on an object varies as we move around the $uv$-plane, so its local properties also vary. So, for example, if a transformation is orientation-preserving at one point, it does *not* mean it's orientation-preserving everywhere!",
+            ":tutorial/title": "Intuition Behind the Jacobian"
+          },
+          ":step/next": {
+            ":db/id": 17592186130230
+          }
+        },
+        {
+          ":db/id": 17592186130230,
+          ":step/content": {
+            ":db/id": 17592186129282,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186128860,
+              ":question/id": "32f92fce-b4b9-5e7a-9fe0-255b15edf312",
+              ":question/math-academy-id": "e-12417",
+              ":question/problem": "Consider a small rectangle $\\Delta$ whose bottom-left corner is located at the point $(-1,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta{A}.$ Find an approximation for the area of the image of this rectangle under the action of the transformation $\\mathbf T,$ given by\n![](images/4c/4c41597b6c647ba16bff7b6675d1bbe9d3c66b8cbb8e9a13bbb6651da6cd284e.png)",
+              ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\textrm{Area}\\big(\\mathbf{T}(\\Delta)\\big) \\approx \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right| \\cdot \\underbrace{\\textrm{Area}(\\Delta)}_{\\large \\delta{A}}\n$$\n\n \n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{∂(x,y)}{∂(u,v)} & =|\\begin{aligned}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v}\\end{aligned}| \\\\  & =|\\begin{aligned}{v}^{3} & 3u{v}^{2} \\\\ 2u & 2v\\end{aligned}| \\\\  & ={v}^{3}\\cdot 2v-3u{v}^{2}\\cdot 2u \\\\  & =2{v}^{4}-6{u}^{2}{v}^{2} \\\\ {\\frac{∂(x,y)}{∂(u,v)}|}_{(-1,2)} & =(2{v}^{4}-6{u}^{2}{v}^{2})\\,{|}_{u=-1\\,v=2} \\\\  & =2(2)^{4}-6(-1)^{2}(2)^{2} \\\\  & =32-24 \\\\  & =8\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & ≈|8|\\cdot \\delta A \\\\  & =8\\,\\delta A.\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Identifying the Local Area Scale Factor of a Transformation"
+          },
+          ":step/next": {
+            ":db/id": 17592186130231
+          }
+        },
+        {
+          ":db/id": 17592186130231,
+          ":step/content": {
+            ":db/id": 17592186129283,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186128861,
+              ":question/id": "6102567f-7035-5fa2-b12e-80a0470de4a3",
+              ":question/math-academy-id": "e-12418",
+              ":question/problem": "Sketch the region in the $uv$-plane where the transformation $\\mathbf{T},$ given by \n![](images/4c/4cb994a50c42c48bad095fb056406cdcebd42143b3c0ce041ad06f52a2942a01.png)\nis (locally) orientation-reversing.",
+              ":question/worked-solution": "Recall that a transformation is (locally) orientation-reversing at the points where the Jacobian determinant is negative:\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)}  <    0\n$$\n\nWe have\n\n![](images/e9/e947cb962ec1c0405292be18c838205b7be95ab083e07925d797b87e9c5b8654.png)\n\nComputing the corresponding Jacobian determinant, we obtain \n\n$$\n\\begin{aligned}\\frac{∂(x,y)}{∂(u,v)} & =|\\begin{aligned}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v}\\end{aligned}| \\\\  & =|\\begin{aligned}{e}^{v} & u{e}^{v} \\\\ 2u & -2v\\end{aligned}| \\\\  & ={e}^{v}\\cdot (-2v)-u{e}^{v}\\cdot 2u \\\\  & =-2{e}^{v}({u}^{2}+v).\\end{aligned}\n$$\n\nTo find the required regions, we solve the following inequality:\n\n$$\n\\begin{aligned}-2{e}^{v}({u}^{2}+v) & <0 \\\\ {u}^{2}+v & >0 \\\\ v & >-{u}^{2}\\end{aligned}\n$$\n\n \n\nNotice that the equation \n\n$$\nv=-u^2\n$$\n\ndefines a downward-opening parabola, and the coordinates of, say, $(1,1)$ satisfy the inequality. \n\nTherefore, the region where the transformation is (locally) orientation-reversing must be the following:\n\n![](images/2b/2b6128c5a1737e3ad1fd82f91f5ccd320421ad3472ae8152440034ecea10d364.png)"
+            },
+            ":knowledge-point/title": "Finding Regions Where a Transformation is Orientation-Preserving or Reversing"
+          }
+        }
+      ],
+      ":activity/title": "The Jacobian",
+      ":db/id": 17592186129344
+    }
+  ]
+}

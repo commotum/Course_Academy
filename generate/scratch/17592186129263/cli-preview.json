@@ -1,0 +1,692 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "9df08a47-db07-5182-a897-f87c4367513b",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "For the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}2 \\cos{\\left(u + v \\right)}\\\\5 \\sin{\\left(u - v \\right)}\\end{bmatrix}.\n$$\n\ncompute the value of the Jacobian determinant at the point where $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}\\frac{\\pi}{3}\\\\0\\end{bmatrix}.$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|.\n$$\n\nHere, we have $x(u,v)=2 \\cos{\\left(u + v \\right)}$ and $y(u,v)=5 \\sin{\\left(u - v \\right)}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=- 2 \\sin{\\left(u + v \\right)}&\\quad \\frac{\\partial x}{\\partial v}&=- 2 \\sin{\\left(u + v \\right)}\\\\\\frac{\\partial y}{\\partial u}&=5 \\cos{\\left(u - v \\right)}&\\quad \\frac{\\partial y}{\\partial v}&=- 5 \\cos{\\left(u - v \\right)}\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\&=\\left|\\begin{matrix}- 2 \\sin{\\left(u + v \\right)}&- 2 \\sin{\\left(u + v \\right)}\\\\5 \\cos{\\left(u - v \\right)}&- 5 \\cos{\\left(u - v \\right)}\\end{matrix}\\right|\\\\&=\\left(- 2 \\sin{\\left(u + v \\right)}\\right)\\cdot\\left(- 5 \\cos{\\left(u - v \\right)}\\right)-\\left(- 2 \\sin{\\left(u + v \\right)}\\right)\\cdot\\left(5 \\cos{\\left(u - v \\right)}\\right)\\\\&=10 \\sin{\\left(u + v \\right)} \\cos{\\left(u - v \\right)}-\\left(- 10 \\sin{\\left(u + v \\right)} \\cos{\\left(u - v \\right)}\\right)\\\\&=20 \\sin{\\left(u + v \\right)} \\cos{\\left(u - v \\right)}.\\end{aligned}\n$$\n\nFinally, when $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}\\frac{\\pi}{3}\\\\0\\end{bmatrix},$ the value of our Jacobian determinant is\n\n$$\n\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(\\frac{\\pi}{3},0)}=20 \\sin{\\left(\\left(\\frac{\\pi}{3}\\right) + \\left(0\\right) \\right)} \\cos{\\left(\\left(\\frac{\\pi}{3}\\right) - \\left(0\\right) \\right)}=5 \\sqrt{3}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c31a8615-86b2-584e-b8c6-1361d190baec",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "216ff932-3ef2-5684-a20f-097fca654637",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5 \\sqrt{3}"
+            },
+            {
+              ":answer/id": "43377816-c34f-584b-b998-5e6d48cca306",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5 \\sqrt{3}}{2}"
+            },
+            {
+              ":answer/id": "fcc15ff7-3e06-572d-9a83-c11335c5b439",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 5 \\sqrt{3}"
+            },
+            {
+              ":answer/id": "32900895-937c-5b2d-8fe9-d3381b3a9803",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\sqrt{3}}{2}"
+            },
+            {
+              ":answer/id": "136c70ce-2d64-52f7-b756-61263e081ce6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{5}{2} + \\frac{5 \\sqrt{3}}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "216ff932-3ef2-5684-a20f-097fca654637"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-1",
+      "sympy_version": "1.14.0",
+      "seed": 17,
+      "template": "coupled_trig",
+      "parameters": {
+        "a": 2,
+        "b": 5,
+        "U": "pi/3",
+        "V": "0"
+      },
+      "parameter_fingerprint": "ebdf53ce2aab2e183e3bdf57312da84670c2cd96874490a0ca5230fec5eb82d6",
+      "content_fingerprint": "e25d4073182d4a60f1a576b3e9743ffd470776885220b3c10752a51d690eff9c",
+      "bank_profile": "authored_coupled_trig",
+      "bank_origin": "authored determinant and evaluation operations",
+      "difficulty_origin": "observed",
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "canonical_id": "e-11156",
+        "sibling_canonical_id": "e-6810"
+      },
+      "domain": "R^2",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "Mul(Integer(2), cos(Add(Symbol('u', real=True), Symbol('v', real=True))))",
+        "Mul(Integer(5), sin(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True)))))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(-1), Integer(2), sin(Add(Symbol('u', real=True), Symbol('v', real=True))))",
+        "Mul(Integer(-1), Integer(2), sin(Add(Symbol('u', real=True), Symbol('v', real=True))))",
+        "Mul(Integer(5), cos(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True)))))",
+        "Mul(Integer(-1), Integer(5), cos(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True)))))"
+      ],
+      "determinant": "Mul(Integer(20), sin(Add(Symbol('u', real=True), Symbol('v', real=True))), cos(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True)))))",
+      "evaluated_value": "Mul(Integer(5), Pow(Integer(3), Rational(1, 2)))",
+      "answer_math": {
+        "216ff932-3ef2-5684-a20f-097fca654637": {
+          "expression": "Mul(Integer(5), Pow(Integer(3), Rational(1, 2)))",
+          "recipe": "correct"
+        },
+        "fcc15ff7-3e06-572d-9a83-c11335c5b439": {
+          "expression": "Mul(Integer(-1), Integer(5), Pow(Integer(3), Rational(1, 2)))",
+          "recipe": "reverse_subtraction"
+        },
+        "43377816-c34f-584b-b998-5e6d48cca306": {
+          "expression": "Mul(Rational(5, 2), Pow(Integer(3), Rational(1, 2)))",
+          "recipe": "omit_cross_product"
+        },
+        "32900895-937c-5b2d-8fe9-d3381b3a9803": {
+          "expression": "Mul(Rational(3, 2), Pow(Integer(3), Rational(1, 2)))",
+          "recipe": "omit_second_diagonal_factor"
+        },
+        "136c70ce-2d64-52f7-b756-61263e081ce6": {
+          "expression": "Add(Rational(-5, 2), Mul(Rational(5, 2), Pow(Integer(3), Rational(1, 2))))",
+          "recipe": "omit_first_diagonal_factor"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "8d21092b-add9-58dc-9ea5-a4c116b7260e",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "For the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}u v\\\\\\frac{4 v}{u}\\end{bmatrix}.\n$$\n\ncompute the value of the Jacobian determinant at the point where $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}2\\\\-1\\end{bmatrix}.$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|.\n$$\n\nHere, we have $x(u,v)=u v$ and $y(u,v)=\\frac{4 v}{u}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=v&\\quad \\frac{\\partial x}{\\partial v}&=u\\\\\\frac{\\partial y}{\\partial u}&=- \\frac{4 v}{u^{2}}&\\quad \\frac{\\partial y}{\\partial v}&=\\frac{4}{u}\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\&=\\left|\\begin{matrix}v&u\\\\- \\frac{4 v}{u^{2}}&\\frac{4}{u}\\end{matrix}\\right|\\\\&=\\left(v\\right)\\cdot\\left(\\frac{4}{u}\\right)-\\left(u\\right)\\cdot\\left(- \\frac{4 v}{u^{2}}\\right)\\\\&=\\frac{8 v}{u}.\\end{aligned}\n$$\n\nFinally, when $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}2\\\\-1\\end{bmatrix},$ the value of our Jacobian determinant is\n\n$$\n\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,-1)}=\\frac{8 \\left(-1\\right)}{\\left(2\\right)}=-4.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2dd4f8fd-a548-58a0-b54d-2ac5bc7f15f1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "70118aa8-5792-58a6-80b0-421d9a8d9300",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-3"
+            },
+            {
+              ":answer/id": "94be00dc-6d6f-57f0-bfb0-b5b02cc78ba1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "056a79f3-5290-5f63-8fb2-34c712dc3335",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-2"
+            },
+            {
+              ":answer/id": "f62d666e-d018-5745-a5d0-f6a1f0d7f623",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-4"
+            },
+            {
+              ":answer/id": "b8717061-77a0-5585-963b-dedd5cb84656",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f62d666e-d018-5745-a5d0-f6a1f0d7f623"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-1",
+      "sympy_version": "1.14.0",
+      "seed": 18,
+      "template": "quotient",
+      "parameters": {
+        "a": 1,
+        "b": 4,
+        "U": "2",
+        "V": "-1"
+      },
+      "parameter_fingerprint": "00742aeb68a20e7fd1768b343ab331749e974fb96cb72278180be918227609fd",
+      "content_fingerprint": "cdb6adace5e032fd0291d45c6543d3c63d1723d07a330df86ea0b0e5648523e6",
+      "bank_profile": "authored_quotient",
+      "bank_origin": "authored determinant and evaluation operations",
+      "difficulty_origin": "observed",
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "canonical_id": "e-11156",
+        "sibling_canonical_id": "e-6810"
+      },
+      "domain": "u != 0",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "Mul(Symbol('u', real=True), Symbol('v', real=True))",
+        "Mul(Integer(4), Pow(Symbol('u', real=True), Integer(-1)), Symbol('v', real=True))"
+      ],
+      "partial_derivatives": [
+        "Symbol('v', real=True)",
+        "Symbol('u', real=True)",
+        "Mul(Integer(-1), Integer(4), Pow(Symbol('u', real=True), Integer(-2)), Symbol('v', real=True))",
+        "Mul(Integer(4), Pow(Symbol('u', real=True), Integer(-1)))"
+      ],
+      "determinant": "Mul(Integer(8), Pow(Symbol('u', real=True), Integer(-1)), Symbol('v', real=True))",
+      "evaluated_value": "Integer(-4)",
+      "answer_math": {
+        "f62d666e-d018-5745-a5d0-f6a1f0d7f623": {
+          "expression": "Integer(-4)",
+          "recipe": "correct"
+        },
+        "b8717061-77a0-5585-963b-dedd5cb84656": {
+          "expression": "Integer(4)",
+          "recipe": "reverse_subtraction"
+        },
+        "056a79f3-5290-5f63-8fb2-34c712dc3335": {
+          "expression": "Integer(-2)",
+          "recipe": "omit_cross_product"
+        },
+        "70118aa8-5792-58a6-80b0-421d9a8d9300": {
+          "expression": "Integer(-3)",
+          "recipe": "omit_second_diagonal_factor"
+        },
+        "94be00dc-6d6f-57f0-bfb0-b5b02cc78ba1": {
+          "expression": "Integer(0)",
+          "recipe": "omit_first_diagonal_factor"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "1096e173-14bf-5e33-9b95-db4118d89d9d",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "For the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}\\cos{\\left(2 u + 2 v \\right)}\\\\\\sin{\\left(2 u - 3 v \\right)}\\end{bmatrix}.\n$$\n\ncompute the value of the Jacobian determinant at the point where $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}\\frac{\\pi}{6}\\\\\\frac{\\pi}{6}\\end{bmatrix}.$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|.\n$$\n\nHere, we have $x(u,v)=\\cos{\\left(2 u + 2 v \\right)}$ and $y(u,v)=\\sin{\\left(2 u - 3 v \\right)}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=- 2 \\sin{\\left(2 u + 2 v \\right)}&\\quad \\frac{\\partial x}{\\partial v}&=- 2 \\sin{\\left(2 u + 2 v \\right)}\\\\\\frac{\\partial y}{\\partial u}&=2 \\cos{\\left(2 u - 3 v \\right)}&\\quad \\frac{\\partial y}{\\partial v}&=- 3 \\cos{\\left(2 u - 3 v \\right)}\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\&=\\left|\\begin{matrix}- 2 \\sin{\\left(2 u + 2 v \\right)}&- 2 \\sin{\\left(2 u + 2 v \\right)}\\\\2 \\cos{\\left(2 u - 3 v \\right)}&- 3 \\cos{\\left(2 u - 3 v \\right)}\\end{matrix}\\right|\\\\&=\\left(- 2 \\sin{\\left(2 u + 2 v \\right)}\\right)\\cdot\\left(- 3 \\cos{\\left(2 u - 3 v \\right)}\\right)-\\left(- 2 \\sin{\\left(2 u + 2 v \\right)}\\right)\\cdot\\left(2 \\cos{\\left(2 u - 3 v \\right)}\\right)\\\\&=5 \\left(\\sin{\\left(5 v \\right)} + \\sin{\\left(4 u - v \\right)}\\right).\\end{aligned}\n$$\n\nFinally, when $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}\\frac{\\pi}{6}\\\\\\frac{\\pi}{6}\\end{bmatrix},$ the value of our Jacobian determinant is\n\n$$\n\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(\\frac{\\pi}{6},\\frac{\\pi}{6})}=5 \\sin{\\left(5 \\left(\\frac{\\pi}{6}\\right) \\right)} + 5 \\sin{\\left(4 \\left(\\frac{\\pi}{6}\\right) - \\left(\\frac{\\pi}{6}\\right) \\right)}=\\frac{15}{2}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "00390a68-d455-5557-b0b1-e69bb2786211",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5d32df13-4175-5f87-890c-0d7b2fbb324a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{15}{2}"
+            },
+            {
+              ":answer/id": "f96d5a53-00ea-508d-a796-6695a7f58492",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{2}"
+            },
+            {
+              ":answer/id": "c9583ced-20f9-5e2f-ad8c-4c4e6180cedf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{15}{2}"
+            },
+            {
+              ":answer/id": "458c1343-118d-5ee1-8568-4c550605b7be",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 - \\sqrt{3}"
+            },
+            {
+              ":answer/id": "2f2e44a5-eacf-5c22-8cdd-c2214538e682",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 - \\frac{3 \\sqrt{3}}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5d32df13-4175-5f87-890c-0d7b2fbb324a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-1",
+      "sympy_version": "1.14.0",
+      "seed": 17,
+      "template": "scaled_coupled_trig",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "c": 2,
+        "d": 3,
+        "U": "pi/6",
+        "V": "pi/6"
+      },
+      "parameter_fingerprint": "6a9b9ecc0508d924b2cfa0e2ac9ad5d3293c8f9fb138b0b41bbf192f815a4175",
+      "content_fingerprint": "55650374876cf6bbaa2cf87c78987437de7640f44b7560be5fe420f990c09a05",
+      "bank_profile": "authored_scaled_coupled_trig",
+      "bank_origin": "authored determinant and evaluation operations",
+      "difficulty_origin": "authored missing level",
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "canonical_id": "e-11156",
+        "sibling_canonical_id": "e-6810"
+      },
+      "domain": "R^2",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "cos(Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(2), Symbol('v', real=True))))",
+        "sin(Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(-1), Integer(3), Symbol('v', real=True))))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(-1), Integer(2), sin(Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(2), Symbol('v', real=True)))))",
+        "Mul(Integer(-1), Integer(2), sin(Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(2), Symbol('v', real=True)))))",
+        "Mul(Integer(2), cos(Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(-1), Integer(3), Symbol('v', real=True)))))",
+        "Mul(Integer(-1), Integer(3), cos(Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(-1), Integer(3), Symbol('v', real=True)))))"
+      ],
+      "determinant": "Mul(Integer(5), Add(sin(Mul(Integer(5), Symbol('v', real=True))), sin(Add(Mul(Integer(4), Symbol('u', real=True)), Mul(Integer(-1), Symbol('v', real=True))))))",
+      "evaluated_value": "Rational(15, 2)",
+      "answer_math": {
+        "5d32df13-4175-5f87-890c-0d7b2fbb324a": {
+          "expression": "Rational(15, 2)",
+          "recipe": "correct"
+        },
+        "c9583ced-20f9-5e2f-ad8c-4c4e6180cedf": {
+          "expression": "Rational(-15, 2)",
+          "recipe": "reverse_subtraction"
+        },
+        "f96d5a53-00ea-508d-a796-6695a7f58492": {
+          "expression": "Rational(9, 2)",
+          "recipe": "omit_cross_product"
+        },
+        "458c1343-118d-5ee1-8568-4c550605b7be": {
+          "expression": "Add(Integer(3), Mul(Integer(-1), Pow(Integer(3), Rational(1, 2))))",
+          "recipe": "omit_second_diagonal_factor"
+        },
+        "2f2e44a5-eacf-5c22-8cdd-c2214538e682": {
+          "expression": "Add(Integer(3), Mul(Integer(-1), Rational(3, 2), Pow(Integer(3), Rational(1, 2))))",
+          "recipe": "omit_first_diagonal_factor"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "d6f4eb5e-320e-5e75-b1e7-c34152f267b9",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "For the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}e^{4 u - 3 v}\\\\\\log{\\left(u v \\right)}\\end{bmatrix}.\n$$\n\ncompute the value of the Jacobian determinant at the point where $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}3\\\\4\\end{bmatrix}.$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|.\n$$\n\nHere, we have $x(u,v)=e^{4 u - 3 v}$ and $y(u,v)=\\log{\\left(u v \\right)}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=4 e^{4 u - 3 v}&\\quad \\frac{\\partial x}{\\partial v}&=- 3 e^{4 u - 3 v}\\\\\\frac{\\partial y}{\\partial u}&=\\frac{1}{u}&\\quad \\frac{\\partial y}{\\partial v}&=\\frac{1}{v}\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\&=\\left|\\begin{matrix}4 e^{4 u - 3 v}&- 3 e^{4 u - 3 v}\\\\\\frac{1}{u}&\\frac{1}{v}\\end{matrix}\\right|\\\\&=\\left(4 e^{4 u - 3 v}\\right)\\cdot\\left(\\frac{1}{v}\\right)-\\left(- 3 e^{4 u - 3 v}\\right)\\cdot\\left(\\frac{1}{u}\\right)\\\\&=\\frac{\\left(4 u + 3 v\\right) e^{4 u} e^{- 3 v}}{u v}.\\end{aligned}\n$$\n\nFinally, when $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}3\\\\4\\end{bmatrix},$ the value of our Jacobian determinant is\n\n$$\n\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(3,4)}=\\frac{\\left(4 \\left(3\\right) + 3 \\left(4\\right)\\right) e^{4 \\left(3\\right)} e^{- 3 \\left(4\\right)}}{\\left(3\\right) \\left(4\\right)}=2.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d7dc0744-aa94-51b7-8849-e9e05b9303d5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9bce6bad-aabe-545e-950a-3e814ecc77fa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5"
+            },
+            {
+              ":answer/id": "4b7cf458-9e4b-553b-9988-e83ffa318452",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5}{4}"
+            },
+            {
+              ":answer/id": "36e688d6-66a8-583c-834b-6a1b03a2e699",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "0beaad88-e66a-5045-bd28-3dd6f7211609",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "a9f1848c-bbf2-50a0-a8ca-9622ae750c97",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0beaad88-e66a-5045-bd28-3dd6f7211609"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-1",
+      "sympy_version": "1.14.0",
+      "seed": 18,
+      "template": "scaled_exp_log",
+      "parameters": {
+        "a": 4,
+        "b": 3,
+        "U": "3",
+        "V": "4"
+      },
+      "parameter_fingerprint": "f0b1e2ea1fd9c7a61c07f13f1b6f2eaaf0036d019bdf33399be1e98d31e053be",
+      "content_fingerprint": "2a1caee6cc287f1e919a82df50c1ce3ec3f9f91c567a721cd3d1921fe018068e",
+      "bank_profile": "authored_scaled_exp_log",
+      "bank_origin": "authored determinant and evaluation operations",
+      "difficulty_origin": "authored missing level",
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "canonical_id": "e-11156",
+        "sibling_canonical_id": "e-6810"
+      },
+      "domain": "uv > 0",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "exp(Add(Mul(Integer(4), Symbol('u', real=True)), Mul(Integer(-1), Integer(3), Symbol('v', real=True))))",
+        "log(Mul(Symbol('u', real=True), Symbol('v', real=True)))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(4), exp(Add(Mul(Integer(4), Symbol('u', real=True)), Mul(Integer(-1), Integer(3), Symbol('v', real=True)))))",
+        "Mul(Integer(-1), Integer(3), exp(Add(Mul(Integer(4), Symbol('u', real=True)), Mul(Integer(-1), Integer(3), Symbol('v', real=True)))))",
+        "Pow(Symbol('u', real=True), Integer(-1))",
+        "Pow(Symbol('v', real=True), Integer(-1))"
+      ],
+      "determinant": "Mul(Pow(Symbol('u', real=True), Integer(-1)), Pow(Symbol('v', real=True), Integer(-1)), Add(Mul(Integer(4), Symbol('u', real=True)), Mul(Integer(3), Symbol('v', real=True))), exp(Mul(Integer(4), Symbol('u', real=True))), exp(Mul(Integer(-1), Integer(3), Symbol('v', real=True))))",
+      "evaluated_value": "Integer(2)",
+      "answer_math": {
+        "0beaad88-e66a-5045-bd28-3dd6f7211609": {
+          "expression": "Integer(2)",
+          "recipe": "correct"
+        },
+        "a9f1848c-bbf2-50a0-a8ca-9622ae750c97": {
+          "expression": "Integer(-2)",
+          "recipe": "reverse_subtraction"
+        },
+        "36e688d6-66a8-583c-834b-6a1b03a2e699": {
+          "expression": "Integer(1)",
+          "recipe": "omit_cross_product"
+        },
+        "9bce6bad-aabe-545e-950a-3e814ecc77fa": {
+          "expression": "Integer(5)",
+          "recipe": "omit_second_diagonal_factor"
+        },
+        "4b7cf458-9e4b-553b-9988-e83ffa318452": {
+          "expression": "Rational(5, 4)",
+          "recipe": "omit_first_diagonal_factor"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "8362a33d-a020-5fff-b6d2-f41ef429f3ac",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "For the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}3 \\left(u + v\\right)^{3}\\\\3 \\left(u - v\\right)^{3}\\end{bmatrix}.\n$$\n\ncompute the value of the Jacobian determinant at the point where $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}1\\\\-2\\end{bmatrix}.$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|.\n$$\n\nHere, we have $x(u,v)=3 \\left(u + v\\right)^{3}$ and $y(u,v)=3 \\left(u - v\\right)^{3}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=9 \\left(u + v\\right)^{2}&\\quad \\frac{\\partial x}{\\partial v}&=9 \\left(u + v\\right)^{2}\\\\\\frac{\\partial y}{\\partial u}&=9 \\left(u - v\\right)^{2}&\\quad \\frac{\\partial y}{\\partial v}&=- 9 \\left(u - v\\right)^{2}\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\&=\\left|\\begin{matrix}9 \\left(u + v\\right)^{2}&9 \\left(u + v\\right)^{2}\\\\9 \\left(u - v\\right)^{2}&- 9 \\left(u - v\\right)^{2}\\end{matrix}\\right|\\\\&=\\left(9 \\left(u + v\\right)^{2}\\right)\\cdot\\left(- 9 \\left(u - v\\right)^{2}\\right)-\\left(9 \\left(u + v\\right)^{2}\\right)\\cdot\\left(9 \\left(u - v\\right)^{2}\\right)\\\\&=- 162 \\left(u - v\\right)^{2} \\left(u + v\\right)^{2}.\\end{aligned}\n$$\n\nFinally, when $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}1\\\\-2\\end{bmatrix},$ the value of our Jacobian determinant is\n\n$$\n\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(1,-2)}=- 162 \\left(\\left(1\\right) - \\left(-2\\right)\\right)^{2} \\left(\\left(1\\right) + \\left(-2\\right)\\right)^{2}=-1458.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "aff0d72f-bf02-5666-96ad-d99981883066",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2a27b1c5-ab7b-5e66-b3f7-aea522235895",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-1458"
+            },
+            {
+              ":answer/id": "5f015c84-e6db-5cbe-82a5-be8e60c39ee0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-729"
+            },
+            {
+              ":answer/id": "966af9b6-b75c-5c7c-b5e8-01a46e977306",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1458"
+            },
+            {
+              ":answer/id": "224f9ca0-9f72-5b74-8035-711458641044",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-720"
+            },
+            {
+              ":answer/id": "19842cd0-7b23-5350-8d47-05001a4715a7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-810"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2a27b1c5-ab7b-5e66-b3f7-aea522235895"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-1",
+      "sympy_version": "1.14.0",
+      "seed": 17,
+      "template": "powers",
+      "parameters": {
+        "a": 3,
+        "b": 3,
+        "m": 3,
+        "n": 3,
+        "U": "1",
+        "V": "-2"
+      },
+      "parameter_fingerprint": "cb678f7b4f4d05bb769213890be05816828880dea82b85b80d58c2909aac768c",
+      "content_fingerprint": "2ab29c97dc0133d69a7c3fe08ee65f9694797aad5aa8ee7421a1843d9a2a7a89",
+      "bank_profile": "authored_powers",
+      "bank_origin": "authored determinant and evaluation operations",
+      "difficulty_origin": "authored missing level",
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "canonical_id": "e-11156",
+        "sibling_canonical_id": "e-6810"
+      },
+      "domain": "R^2",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "Mul(Integer(3), Pow(Add(Symbol('u', real=True), Symbol('v', real=True)), Integer(3)))",
+        "Mul(Integer(3), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(3)))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(9), Pow(Add(Symbol('u', real=True), Symbol('v', real=True)), Integer(2)))",
+        "Mul(Integer(9), Pow(Add(Symbol('u', real=True), Symbol('v', real=True)), Integer(2)))",
+        "Mul(Integer(9), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)))",
+        "Mul(Integer(-1), Integer(9), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)))"
+      ],
+      "determinant": "Mul(Integer(-1), Integer(162), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Symbol('u', real=True), Symbol('v', real=True)), Integer(2)))",
+      "evaluated_value": "Integer(-1458)",
+      "answer_math": {
+        "2a27b1c5-ab7b-5e66-b3f7-aea522235895": {
+          "expression": "Integer(-1458)",
+          "recipe": "correct"
+        },
+        "966af9b6-b75c-5c7c-b5e8-01a46e977306": {
+          "expression": "Integer(1458)",
+          "recipe": "reverse_subtraction"
+        },
+        "5f015c84-e6db-5cbe-82a5-be8e60c39ee0": {
+          "expression": "Integer(-729)",
+          "recipe": "omit_cross_product"
+        },
+        "224f9ca0-9f72-5b74-8035-711458641044": {
+          "expression": "Integer(-720)",
+          "recipe": "omit_second_diagonal_factor"
+        },
+        "19842cd0-7b23-5350-8d47-05001a4715a7": {
+          "expression": "Integer(-810)",
+          "recipe": "omit_first_diagonal_factor"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "5bd640cc-4aec-5e42-8bce-79fcc24282d5",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "For the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}2 \\left(u + v\\right)^{3}\\\\3 \\left(u - v\\right)^{2}\\end{bmatrix}.\n$$\n\ncompute the value of the Jacobian determinant at the point where $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}2\\\\-1\\end{bmatrix}.$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|.\n$$\n\nHere, we have $x(u,v)=2 \\left(u + v\\right)^{3}$ and $y(u,v)=3 \\left(u - v\\right)^{2}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=6 \\left(u + v\\right)^{2}&\\quad \\frac{\\partial x}{\\partial v}&=6 \\left(u + v\\right)^{2}\\\\\\frac{\\partial y}{\\partial u}&=6 u - 6 v&\\quad \\frac{\\partial y}{\\partial v}&=- 6 u + 6 v\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\&=\\left|\\begin{matrix}6 \\left(u + v\\right)^{2}&6 \\left(u + v\\right)^{2}\\\\6 u - 6 v&- 6 u + 6 v\\end{matrix}\\right|\\\\&=\\left(6 \\left(u + v\\right)^{2}\\right)\\cdot\\left(- 6 u + 6 v\\right)-\\left(6 \\left(u + v\\right)^{2}\\right)\\cdot\\left(6 u - 6 v\\right)\\\\&=- 72 \\left(u - v\\right) \\left(u + v\\right)^{2}.\\end{aligned}\n$$\n\nFinally, when $\\begin{bmatrix}u\\\\v\\end{bmatrix}=\\begin{bmatrix}2\\\\-1\\end{bmatrix},$ the value of our Jacobian determinant is\n\n$$\n\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,-1)}=- 72 \\left(\\left(2\\right) - \\left(-1\\right)\\right) \\left(\\left(2\\right) + \\left(-1\\right)\\right)^{2}=-216.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "842d4d1a-e5e9-5f78-9ec2-a30923a3e637",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "201d04a4-b4b7-557c-8478-61117524038a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-102"
+            },
+            {
+              ":answer/id": "7225c885-3c84-5cba-bb03-d9ef53bf9e36",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-126"
+            },
+            {
+              ":answer/id": "96b98099-77bf-53e2-923a-264961a31934",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-108"
+            },
+            {
+              ":answer/id": "1c7d0dc5-a2ca-5132-b6c6-4de23d54ebc6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-216"
+            },
+            {
+              ":answer/id": "fabe0302-728f-5f47-b543-0a4ca3f447ce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "216"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1c7d0dc5-a2ca-5132-b6c6-4de23d54ebc6"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-1",
+      "sympy_version": "1.14.0",
+      "seed": 18,
+      "template": "powers",
+      "parameters": {
+        "a": 2,
+        "b": 3,
+        "m": 3,
+        "n": 2,
+        "U": "2",
+        "V": "-1"
+      },
+      "parameter_fingerprint": "ff22bb674d1a497219a9a02947db221e6421703ba0a8ea1353994826eb75d47f",
+      "content_fingerprint": "fe1d8baf707782f6f4f0075fde7a9602de1a663347cab7d3f0c13e295fa2d9a0",
+      "bank_profile": "authored_powers",
+      "bank_origin": "authored determinant and evaluation operations",
+      "difficulty_origin": "authored missing level",
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "canonical_id": "e-11156",
+        "sibling_canonical_id": "e-6810"
+      },
+      "domain": "R^2",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "Mul(Integer(2), Pow(Add(Symbol('u', real=True), Symbol('v', real=True)), Integer(3)))",
+        "Mul(Integer(3), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(6), Pow(Add(Symbol('u', real=True), Symbol('v', real=True)), Integer(2)))",
+        "Mul(Integer(6), Pow(Add(Symbol('u', real=True), Symbol('v', real=True)), Integer(2)))",
+        "Add(Mul(Integer(6), Symbol('u', real=True)), Mul(Integer(-1), Integer(6), Symbol('v', real=True)))",
+        "Add(Mul(Integer(-1), Integer(6), Symbol('u', real=True)), Mul(Integer(6), Symbol('v', real=True)))"
+      ],
+      "determinant": "Mul(Integer(-1), Integer(72), Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Pow(Add(Symbol('u', real=True), Symbol('v', real=True)), Integer(2)))",
+      "evaluated_value": "Integer(-216)",
+      "answer_math": {
+        "1c7d0dc5-a2ca-5132-b6c6-4de23d54ebc6": {
+          "expression": "Integer(-216)",
+          "recipe": "correct"
+        },
+        "fabe0302-728f-5f47-b543-0a4ca3f447ce": {
+          "expression": "Integer(216)",
+          "recipe": "reverse_subtraction"
+        },
+        "96b98099-77bf-53e2-923a-264961a31934": {
+          "expression": "Integer(-108)",
+          "recipe": "omit_cross_product"
+        },
+        "201d04a4-b4b7-557c-8478-61117524038a": {
+          "expression": "Integer(-102)",
+          "recipe": "omit_second_diagonal_factor"
+        },
+        "7225c885-3c84-5cba-bb03-d9ef53bf9e36": {
+          "expression": "Integer(-126)",
+          "recipe": "omit_first_diagonal_factor"
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,201 @@
+{
+  "q-15370": {
+    "source_id": "q-15370",
+    "level": "moderate",
+    "shape": "moderate",
+    "parameters": {
+      "a": 1500,
+      "n0": 300,
+      "n1": 500,
+      "tau": 10,
+      "target": 800
+    },
+    "prompt": "A University Campus has a total of $@@g:a@@$ students.\nAt the beginning of the new semester at the University, flu affected $@@n:n0@@$ students. After $@@n:tau@@$ days, the number of students affected by the flu increases to $@@n:n1@@.$ To the nearest day, how long does it take for the flu-stricken campus population to reach $@@n:target@@$ students?\n\n*Hint: You may assume that the number of students affected by the flu, $P(t),$ increases at a rate that obeys an inhibited growth model, where $t\\ge 0$ is the time, in days.*",
+    "solution": "The rate at which the campus population affected by the flu, $P(t),$ changes is proportional to the difference between the total campus population and its current population affected. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the total population of the campus, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=@@g:a@@$ students, and we have\n\n$$\n\\frac{dP}{dt}=k(@@g:a@@-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{@@g:a@@-P} & =k\\,dt \\\\ \\int \\frac{dP}{@@g:a@@-P} & =\\int k\\,dt \\\\ -\\operatorname{ln}⁡|@@g:a@@-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $@@g:a@@-P>0$ for all $t\\ge 0.$\nNext, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}@@g:a@@-P & ={e}^{-kt-C} \\\\ @@g:a@@-P & ={e}^{-C}{e}^{-kt} \\\\ @@g:a@@-P & =K{e}^{-kt} \\\\ P & =@@g:a@@-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration. \n\nWe're told that the initial campus population affected by the flu was $@@n:n0@@$ students. So, we apply the initial condition $P(0)=@@n:n0@@,$ and solve for $K:$\n\n$$\n\\begin{aligned}P(0) & =@@n:n0@@ \\\\ @@g:a@@-K{e}^{0} & =@@n:n0@@ \\\\ @@g:a@@-K & =@@n:n0@@ \\\\ K & =@@g:K@@\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=@@g:a@@-@@g:K@@{e}^{-kt}\n$$\n\nWe're also told that, after $@@n:tau@@$ days, the campus population affected by flu was $@@n:n1@@$ students. So, applying the condition $P(@@n:tau@@)=@@n:n1@@,$ we can solve for $k:$\n\n$$\n\\begin{aligned}P(@@n:tau@@) & =@@n:n1@@ \\\\ @@g:a@@-@@g:K@@{e}^{-@@n:tau@@k} & =@@n:n1@@ \\\\ @@g:a-n1@@ & =@@g:K@@{e}^{-@@n:tau@@k} \\\\ {e}^{-@@n:tau@@k} & =@@f:(a-n1)/K@@ \\\\ -@@n:tau@@k & =\\operatorname{ln}⁡(@@f:(a-n1)/K@@) \\\\ k & =-\\frac{1}{@@n:tau@@}\\operatorname{ln}⁡(@@f:(a-n1)/K@@)\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when $@@n:target@@$ students are affected by the flu. Then, we have\n\n$$\n\\begin{aligned}P({t}_{1}) & =@@n:target@@ \\\\ @@g:a@@-@@g:K@@{e}^{-k{t}_{1}} & =@@n:target@@ \\\\ @@n:a-target@@ & =@@g:K@@{e}^{-k{t}_{1}} \\\\ {e}^{-k{t}_{1}} & =@@f:(a-target)/K@@ \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(@@f:(a-target)/K@@) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(@@f:(a-target)/K@@).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that $@@n:target@@$ students will be affected by the flu after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(@@f:(a-target)/K@@)}{-\\frac{1}{@@n:tau@@}\\operatorname{ln}⁡(@@f:(a-n1)/K@@)}=@@d3:result@@…≈@@i:result@@\\,\\text{days},\n$$\n\nrounded to the nearest day.",
+    "bank": [
+      12,
+      21,
+      17,
+      30,
+      45
+    ],
+    "choice_pattern": "$@@value@@$ days"
+  },
+  "q-37389": {
+    "source_id": "q-37389",
+    "level": "hard",
+    "shape": "hard_value",
+    "parameters": {
+      "a": 500,
+      "n1": 390,
+      "n2": 400,
+      "t1": 3,
+      "t2": 6,
+      "time": 42
+    },
+    "prompt": "A poultry farmer has egg-laying chickens. She knows that her farm can produce a maximum of $@@n:a@@$ eggs a day; however, it is far behind it.\nSince she started monitoring, the chickens laid $@@n:n1@@$ eggs and $@@n:n2@@$ eggs on days $@@n:t1@@$ and $@@n:t2@@$, respectively. How many eggs do the chickens lay on day $@@n:time@@$?\nRound your answer to the nearest integer.\n\n*Hint: You may assume that the egg production $E(t)$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+    "solution": "The rate at which the egg production $E(t)$ changes is proportional to the difference between the maximum possible egg production and its current egg production. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dE}{dt}=k(a-E),\n$$\n\nwhere $a$ is the maximum production of the farm, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=@@n:a@@$ eggs, and we have\n\n$$\n\\frac{dE}{dt}=k(@@n:a@@-E).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dE}{@@n:a@@-E} & =k\\,dt \\\\ \\int \\frac{dE}{@@n:a@@-E} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|@@n:a@@-E| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $@@n:a@@-E>0$ for all $t\\ge 0.$ Next, we solve for $E(t),$ as follows:\n\n$$\n\\begin{aligned}@@n:a@@-E & ={e}^{-kt-C} \\\\ @@n:a@@-E & ={e}^{-C}{e}^{-kt} \\\\ @@n:a@@-E & =K{e}^{-kt} \\\\ E & =@@n:a@@-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $@@n:t1@@,$ the egg production was $@@n:n1@@$ eggs. So, applying the condition $E(@@n:t1@@)=@@n:n1@@,$ we have\n\n$$\n\\begin{aligned}E(@@n:t1@@) & =@@n:n1@@ \\\\ @@n:a@@-K{e}^{-@@n:t1@@k} & =@@n:n1@@ \\\\ K{e}^{-@@n:t1@@k} & =@@n:D0@@.\\end{aligned}\n$$\n\nWe're also told that, on day $@@n:t2@@,$ the egg production was $@@n:n2@@$ eggs. So, applying the condition $E(@@n:t2@@)=@@n:n2@@,$ we get\n\n$$\n\\begin{aligned}E(@@n:t2@@) & =@@n:n2@@ \\\\ @@n:a@@-K{e}^{-@@n:t2@@k} & =@@n:n2@@ \\\\ K{e}^{-@@n:t2@@k} & =@@n:D2@@.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-@@n:t1@@k}}{K{e}^{-@@n:t2@@k}} & =\\frac{@@n:D0@@}{@@n:D2@@} \\\\ {e}^{@@n:t1@@k} & =@@f:D0/D2@@ \\\\ @@n:t1@@k & =\\operatorname{ln}⁡(@@f:D0/D2@@) \\\\ k & =\\frac{1}{@@n:t1@@}\\operatorname{ln}⁡(@@f:D0/D2@@)\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-@@n:t1@@\\cdot (1/@@n:t1@@)\\operatorname{ln}⁡(@@r:D0/D2@@)} & =@@n:D0@@ \\\\ K & =@@n:D0@@{e}^{\\operatorname{ln}⁡(@@r:D0/D2@@)} \\\\ K & =@@n:K@@\\end{aligned}\n$$\n\nTherefore, we have the following expression for $E(t):$\n\n$$\nE(t)=@@n:a@@-@@n:K@@{e}^{-(t/@@n:t1@@)\\operatorname{ln}⁡(@@r:D0/D2@@)}\n$$\n\nFinally, the number of eggs laid on day $t=@@n:time@@$ is\n\n$$\nE(@@n:time@@)=@@n:a@@-@@n:K@@{e}^{-(@@n:time@@/@@n:t1@@)\\operatorname{ln}⁡(@@r:D0/D2@@)}≈@@d3:result@@…≈@@i:result@@\\,\\text{eggs},\n$$\n\nrounded to the nearest integer.",
+    "bank": [
+      468,
+      489,
+      420,
+      486,
+      442
+    ],
+    "choice_pattern": "$@@value@@$ eggs"
+  },
+  "q-37400": {
+    "source_id": "q-37400",
+    "level": "easy",
+    "shape": "school",
+    "parameters": {
+      "a": 2500,
+      "n0": 800,
+      "k": "0.016",
+      "time": 4
+    },
+    "prompt": "The population of students $P(t)$ in a school can be modeled by the differential equation\n\n$$\n\\frac{dP}{dt}=@@n:k@@(@@g:a@@-P),\n$$\n\nwhere $t>0$ is the time, measured in years. If the initial population of the school is $@@n:n0@@$ students, calculate the population after $@@n:time@@$ years. Round your answer to the nearest integer.",
+    "solution": "We're told that the population in the school is modeled by the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=@@n:k@@(@@g:a@@-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{@@g:a@@-P} & =@@n:k@@\\,dt \\\\ \\int \\frac{dP}{@@g:a@@-P} & =\\int @@n:k@@\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|@@g:a@@-P| & =@@n:k@@t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $@@g:a@@-P>0$ for all $t\\ge 0.$\nNext, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}@@n:a@@-P & ={e}^{-@@n:k@@t-C} \\\\ @@n:a@@-P & ={e}^{-C}{e}^{-@@n:k@@t} \\\\ @@c:a@@-P & =K{e}^{-@@n:k@@t} \\\\ P & =@@g:a@@-K{e}^{-@@n:k@@t}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that the initial population of the school was $@@n:n0@@$ students. So, we apply the initial condition $P(0)=@@n:n0@@,$ and solve for $K:$\n\n$$\n\\begin{aligned}@@n:n0@@ & =@@g:a@@-K{e}^{0} \\\\ @@n:n0@@ & =@@g:a@@-K \\\\ K & =@@g:K@@\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nP(t)=@@g:a@@-@@g:K@@{e}^{-@@n:k@@t}.\n$$\n\nFinally, the population in the school after $t=@@n:time@@$ years is\n\n$$\nP(@@n:time@@)=@@g:a@@-@@g:K@@{e}^{-@@n:k@@\\cdot @@n:time@@}≈@@i:result@@\\,\\text{students},\n$$\n\nrounded to the nearest integer.",
+    "bank": [
+      986,
+      905,
+      1005,
+      942,
+      850
+    ],
+    "choice_pattern": "$@@value@@$ students"
+  },
+  "q-335280": {
+    "source_id": "q-335280",
+    "level": "easy",
+    "shape": "soda",
+    "parameters": {
+      "a": 20,
+      "n0": 8,
+      "n1": 12,
+      "tau": 5,
+      "target": 16
+    },
+    "prompt": "A can of soda is taken out of a refrigerator and left in a room that stays at a constant temperature of $@@n:a@@{\\,}^{∘}\\text{C}.$ The soda’s temperature $T(t)$ (in degrees Celsius) can be modeled by the differential equation:\n\n$$\n\\frac{dT}{dt}=k(@@n:a@@-T),\n$$\n\nwhere $t\\ge 0$ is the time, measured in minutes, and $k>0$ is a constant. The initial temperature of the soda is $@@n:n0@@{\\,}^{∘}\\text{C},$ and after $@@n:tau@@$ minutes, the soda has warmed to $@@n:n1@@{\\,}^{∘}\\text{C}.$ To the nearest minute, how long does it take for the soda to reach $@@n:target@@{\\,}^{∘}\\text{C}?$",
+    "solution": "We're told that the temperature of the can is modeled by the inhibited growth equation\n\n$$\n\\frac{dT}{dt}=k(@@n:a@@-T).\n$$\n\nWe separate variables and integrate:\n\n$$\n\\begin{aligned}\\frac{dT}{@@n:a@@-T} & =k\\,dt \\\\ \\int \\frac{dT}{@@n:a@@-T} & =\\int k\\,dt \\\\ -\\operatorname{ln}⁡|@@n:a@@-T| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $@@n:a@@-T>0$ for all $t\\ge 0.$ Next, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}@@n:a@@-T & ={e}^{-kt-C} \\\\ @@n:a@@-T & ={e}^{-C}{e}^{-kt} \\\\ @@n:a@@-T & =K{e}^{-kt} \\\\ T & =@@n:a@@-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that the initial temperature was $@@n:n0@@{\\,}^{∘}\\text{C}.$ So, we apply the initial condition $T(0)=@@n:n0@@,$ and solve for $K:$\n\n$$\n\\begin{aligned}@@n:n0@@ & =@@n:a@@-K{e}^{0} \\\\ @@n:n0@@ & =@@n:a@@-K \\\\ K & =@@n:K@@\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=@@n:a@@-@@n:K@@{e}^{-kt}.\n$$\n\nWe're also told that, after $@@n:tau@@$ minutes, the temperature of the soda was $@@n:n1@@{\\,}^{∘}\\text{C}.$ So, applying the condition $T(@@n:tau@@)=@@n:n1@@,$  we can solve for $k:$\n\n$$\n\\begin{aligned}@@n:n1@@ & =@@n:a@@-@@n:K@@{e}^{-@@n:tau@@k} \\\\ @@n:a-n1@@ & =@@n:K@@{e}^{-@@n:tau@@k} \\\\ {e}^{-@@n:tau@@k} & =@@f:(a-n1)/K@@ \\\\ -@@n:tau@@k & =\\operatorname{ln}⁡(@@f:(a-n1)/K@@) \\\\ k & =-\\frac{1}{@@n:tau@@}\\operatorname{ln}⁡(@@f:(a-n1)/K@@)\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$  be the time when the soda can reaches $@@n:target@@{\\,}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =@@n:target@@ \\\\ @@n:a@@-@@n:K@@{e}^{-k{t}_{1}} & =@@n:target@@ \\\\ @@n:a-target@@ & =@@n:K@@{e}^{-k{t}_{1}} \\\\ {e}^{-k{t}_{1}} & =@@f:(a-target)/K@@ \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(@@f:(a-target)/K@@) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(@@f:(a-target)/K@@)\\end{aligned}\n$$\n\nSubstituting the value of $k,$ we get:\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(@@f:(a-target)/K@@)}{-\\frac{1}{@@n:tau@@}\\operatorname{ln}⁡(@@f:(a-n1)/K@@)}=@@d3:result@@…≈@@i:result@@\\text{ }\\text{minutes},\n$$\n\nrounded to the nearest minute.",
+    "bank": [
+      19,
+      14,
+      12,
+      10,
+      8
+    ],
+    "choice_pattern": "$@@value@@$ minutes"
+  },
+  "q-335282": {
+    "source_id": "q-335282",
+    "level": "easy",
+    "shape": "volume",
+    "parameters": {
+      "a": 3,
+      "n0": "1.5",
+      "k": "0.4",
+      "target": 2
+    },
+    "prompt": "The volume $X(t)$ (in $\\text{L}$) of water in a container as it fills toward its maximum capacity can be modeled by the differential equation\n\n$$\n\\frac{dX}{dt}=@@n:k@@(@@n:a@@-X),\n$$\n\nwhere $t\\ge 0$ is the time, measured in minutes. If the initial volume is $@@n:n0@@\\,\\text{L},$ how long does it take for the container to reach a volume of $@@n:target@@\\,\\text{L}?$ Round your answer to the nearest integer.",
+    "solution": "We're told that the container's volume is modeled by the inhibited growth equation\n\n$$\n\\frac{dX}{dt}=@@n:k@@(@@n:a@@-X).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dX}{@@n:a@@-X} & =@@n:k@@\\,dt \\\\ \\int \\frac{dX}{@@n:a@@-X} & =\\int @@n:k@@\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|@@n:a@@-X| & =@@n:k@@t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $@@n:a@@-X>0$ for all $t\\ge 0.$\nNext, we solve for $X(t),$ as follows:\n\n$$\n\\begin{aligned}@@n:a@@-X & ={e}^{-@@n:k@@t-C} \\\\ @@n:a@@-X & ={e}^{-C}{e}^{-@@n:k@@t} \\\\ @@n:a@@-X & =K{e}^{-@@n:k@@t} \\\\ X & =@@n:a@@-K{e}^{-@@n:k@@t}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that the initial volume was $@@n:n0@@\\,\\text{L}.$ So, we apply the initial condition $X(0)=@@n:n0@@,$ and solve for $K:$\n\n$$\n\\begin{aligned}@@n:n0@@ & =@@n:a@@-K{e}^{0} \\\\ @@n:n0@@ & =@@n:a@@-K \\\\ K & =@@n:n0@@\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nX(t)=@@n:a@@-@@n:n0@@{e}^{-@@n:k@@t}.\n$$\n\nFinally, let ${t}_{1}$ be the time when the volume is $@@n:target@@\\,\\text{L}.$ Then, we have\n\n$$\n\\begin{aligned}X({t}_{1}) & =@@n:target@@ \\\\ @@n:a@@-@@n:n0@@{e}^{-@@n:k@@{t}_{1}} & =@@n:target@@ \\\\ @@n:a-target@@ & =@@n:n0@@{e}^{-@@n:k@@{t}_{1}} \\\\ {e}^{-@@n:k@@{t}_{1}} & =@@f:(a-target)/K@@ \\\\ -@@n:k@@{t}_{1} & =\\operatorname{ln}⁡(@@f:(a-target)/K@@) \\\\ {t}_{1} & =-\\frac{1}{@@n:k@@}\\operatorname{ln}⁡(@@f:(a-target)/K@@) \\\\  & =@@d3:result@@… \\\\  & ≈@@i:result@@\\,\\text{minute},\\end{aligned}\n$$\n\nrounded to the nearest integer.",
+    "bank": [
+      1,
+      3,
+      4,
+      2,
+      5
+    ],
+    "choice_pattern": "$@@value@@$ minute"
+  },
+  "q-335578": {
+    "source_id": "q-335578",
+    "level": "moderate",
+    "shape": "moderate",
+    "parameters": {
+      "a": 1200,
+      "n0": 200,
+      "n1": 500,
+      "tau": 4,
+      "target": 900
+    },
+    "prompt": "Throughout an experiment in a laboratory, a culture contains $@@g:a@@$ bacteria in total (limited by nutrients and space). At the beginning of the experiment, $@@n:n0@@$ of the $@@g:a@@$ bacteria are resistant to a new antibiotic. After $@@n:tau@@$ hours, the number of resistant bacteria increases to $@@n:n1@@.$ To the nearest hour, how long does it take for the number of resistant bacteria to reach $@@n:target@@?$\n\n*Hint: You may assume that the number of resistant bacteria, $P(t),$ increases at a rate that obeys an inhibited growth model, where $t\\ge 0$ is the time, in hours.*",
+    "solution": "The rate at which the resistant bacteria population, $P(t),$ changes is proportional to the difference between the total bacteria population in the culture and its current resistant population. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the total bacteria population the culture can support, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=@@g:a@@$ bacteria, and we have\n\n$$\n\\frac{dP}{dt}=k(@@g:a@@-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{@@g:a@@-P} & =k\\,dt \\\\ \\int \\frac{dP}{@@g:a@@-P} & =\\int k\\,dt \\\\ -\\operatorname{ln}⁡|@@g:a@@-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $@@g:a@@-P>0$ for all $t\\ge 0.$\nNext, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}@@g:a@@-P & ={e}^{-kt-C} \\\\ @@g:a@@-P & ={e}^{-C}{e}^{-kt} \\\\ @@g:a@@-P & =K{e}^{-kt} \\\\ P & =@@g:a@@-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration. \n\nWe're told that the initial population of resistant bacteria was $@@n:n0@@$ cells. So, we apply the initial condition $P(0)=@@n:n0@@,$ and solve for $K:$\n\n$$\n\\begin{aligned}P(0) & =@@n:n0@@ \\\\ @@g:a@@-K{e}^{0} & =@@n:n0@@ \\\\ @@g:a@@-K & =@@n:n0@@ \\\\ K & =@@g:K@@\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=@@g:a@@-@@g:K@@{e}^{-kt}\n$$\n\nWe're also told that, after $@@n:tau@@$ hours, the resistant bacteria population was $@@n:n1@@$ cells. So, applying the condition $P(@@n:tau@@)=@@n:n1@@,$ we can solve for $k:$\n\n$$\n\\begin{aligned}P(@@n:tau@@) & =@@n:n1@@ \\\\ @@g:a@@-@@g:K@@{e}^{-@@n:tau@@k} & =@@n:n1@@ \\\\ @@n:a-n1@@ & =@@g:K@@{e}^{-@@n:tau@@k} \\\\ {e}^{-@@n:tau@@k} & =\\frac{@@n:a-n1@@}{@@g:K@@}=@@f:(a-n1)/K@@ \\\\ -@@n:tau@@k & =\\operatorname{ln}⁡(@@f:(a-n1)/K@@) \\\\ k & =-\\frac{1}{@@n:tau@@}\\operatorname{ln}⁡(@@f:(a-n1)/K@@)\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when $@@n:target@@$ bacteria are resistant to the antibiotic. Then, we have\n\n$$\n\\begin{aligned}P({t}_{1}) & =@@n:target@@ \\\\ @@g:a@@-@@g:K@@{e}^{-k{t}_{1}} & =@@n:target@@ \\\\ @@n:a-target@@ & =@@g:K@@{e}^{-k{t}_{1}} \\\\ {e}^{-k{t}_{1}} & =\\frac{@@n:a-target@@}{@@g:K@@}=@@f:(a-target)/K@@ \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(@@f:(a-target)/K@@) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(@@f:(a-target)/K@@).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that $@@n:target@@$ bacteria will be resistant to the antibiotic after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(@@f:(a-target)/K@@)}{-\\frac{1}{@@n:tau@@}\\operatorname{ln}⁡(@@f:(a-n1)/K@@)}=@@d3:result@@…≈@@i:result@@\\,\\text{hours},\n$$\n\nrounded to the nearest hour.",
+    "bank": [
+      10,
+      20,
+      18,
+      8,
+      14
+    ],
+    "choice_pattern": "$@@value@@$ hours"
+  },
+  "q-335542": {
+    "source_id": "q-335542",
+    "level": "moderate",
+    "shape": "moderate",
+    "parameters": {
+      "a": 800,
+      "n0": 80,
+      "n1": 300,
+      "tau": 10,
+      "target": 600
+    },
+    "prompt": "A wildlife reserve can support a total of $@@n:a@@$ deer.\nAt the beginning of a disease study in the reserve, a parasitic infection has affected $@@n:n0@@$ deer. After $@@n:tau@@$ days, the number of deer affected by the parasite increases to $@@n:n1@@.$ To the nearest day, how long does it take for the infected deer population to reach $@@n:target@@$ animals?\n\n*Hint: You may assume that the number of deer affected by the parasite, $P(t),$ increases at a rate that obeys an inhibited growth model, where $t\\ge 0$ is the time, in days.*",
+    "solution": "The rate at which the deer population affected by the parasite, $P(t),$ changes is proportional to the difference between the total deer population and its current population affected. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the total deer population in the reserve, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=@@n:a@@$ deer, and we have\n\n$$\n\\frac{dP}{dt}=k(@@n:a@@-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{@@n:a@@-P} & =k\\,dt \\\\ \\int \\frac{dP}{@@n:a@@-P} & =\\int k\\,dt \\\\ -\\operatorname{ln}⁡|@@n:a@@-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $@@n:a@@-P>0$ for all $t\\ge 0.$\nNext, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}@@n:a@@-P & ={e}^{-kt-C} \\\\ @@n:a@@-P & ={e}^{-C}{e}^{-kt} \\\\ @@n:a@@-P & =K{e}^{-kt} \\\\ P & =@@n:a@@-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration. \n\nWe're told that the initial deer population affected by the parasite was $@@n:n0@@$ animals. So, we apply the initial condition $P(0)=@@n:n0@@,$ and solve for $K:$\n\n$$\n\\begin{aligned}P(0) & =@@n:n0@@ \\\\ @@n:a@@-K{e}^{0} & =@@n:n0@@ \\\\ @@n:a@@-K & =@@n:n0@@ \\\\ K & =@@n:K@@\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=@@n:a@@-@@n:K@@{e}^{-kt}\n$$\n\nWe're also told that, after $@@n:tau@@$ days, the deer population affected by the parasite was $@@n:n1@@$ animals. So, applying the condition $P(@@n:tau@@)=@@n:n1@@,$ we can solve for $k:$\n\n$$\n\\begin{aligned}P(@@n:tau@@) & =@@n:n1@@ \\\\ @@n:a@@-@@n:K@@{e}^{-@@n:tau@@k} & =@@n:n1@@ \\\\ @@n:a-n1@@ & =@@n:K@@{e}^{-@@n:tau@@k} \\\\ {e}^{-@@n:tau@@k} & =\\frac{@@n:a-n1@@}{@@n:K@@}=@@f:(a-n1)/K@@ \\\\ -@@n:tau@@k & =\\operatorname{ln}⁡(@@f:(a-n1)/K@@) \\\\ k & =-\\frac{1}{@@n:tau@@}\\operatorname{ln}⁡(@@f:(a-n1)/K@@)\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when $@@n:target@@$ deer are affected by the parasite. Then, we have\n\n$$\n\\begin{aligned}P({t}_{1}) & =@@n:target@@ \\\\ @@n:a@@-@@n:K@@{e}^{-k{t}_{1}} & =@@n:target@@ \\\\ @@n:a-target@@ & =@@n:K@@{e}^{-k{t}_{1}} \\\\ {e}^{-k{t}_{1}} & =\\frac{@@n:a-target@@}{@@n:K@@}=@@f:(a-target)/K@@ \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(@@f:(a-target)/K@@) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(@@f:(a-target)/K@@).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that $@@n:target@@$ deer will be affected by the parasite after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(@@f:(a-target)/K@@)}{-\\frac{1}{@@n:tau@@}\\operatorname{ln}⁡(@@f:(a-n1)/K@@)}=@@d3:result@@…≈@@i:result@@\\,\\text{days},\n$$\n\nrounded to the nearest day.",
+    "bank": [
+      35,
+      50,
+      40,
+      20,
+      28
+    ],
+    "choice_pattern": "$@@value@@$ days"
+  },
+  "q-335590": {
+    "source_id": "q-335590",
+    "level": "hard",
+    "shape": "hard_value",
+    "parameters": {
+      "a": 600,
+      "n1": 480,
+      "n2": 500,
+      "t1": 4,
+      "t2": 8,
+      "time": 40
+    },
+    "prompt": "A small bakery produces loaves of bread. The owner knows that the bakery can produce a maximum of $@@n:a@@$ loaves a day; however, current production is below this maximum. Since she started monitoring, the bakers produced $@@n:n1@@$ loaves and $@@n:n2@@$ loaves on days $@@n:t1@@$ and $@@n:t2@@,$ respectively. How many loaves do they produce on day $@@n:time@@?$ Round your answer to the nearest integer.\n\n*Hint: You may assume that the bread production $E(t)$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+    "solution": "The rate at which the bread production $E(t)$ changes is proportional to the difference between the maximum possible bread production and its current bread production. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dE}{dt}=k(a-E),\n$$\n\nwhere $a$ is the maximum production of the bakery, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=@@n:a@@$ loaves, and we have\n\n$$\n\\frac{dE}{dt}=k(@@n:a@@-E).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dE}{@@n:a@@-E} & =k\\,dt \\\\ \\int \\frac{dE}{@@n:a@@-E} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|@@n:a@@-E| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $@@n:a@@-E>0$ for all $t\\ge 0.$ Next, we solve for $E(t),$ as follows:\n\n$$\n\\begin{aligned}@@n:a@@-E & ={e}^{-kt-C} \\\\ @@n:a@@-E & ={e}^{-C}{e}^{-kt} \\\\ @@n:a@@-E & =K{e}^{-kt} \\\\ E & =@@n:a@@-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $@@n:t1@@,$ the bread production was $@@n:n1@@$ loaves. So, applying the condition $E(@@n:t1@@)=@@n:n1@@,$ we have\n\n$$\n\\begin{aligned}E(@@n:t1@@) & =@@n:n1@@ \\\\ @@n:a@@-K{e}^{-@@n:t1@@k} & =@@n:n1@@ \\\\ K{e}^{-@@n:t1@@k} & =@@n:D0@@.\\end{aligned}\n$$\n\nWe're also told that, on day $@@n:t2@@,$ the bread production was $@@n:n2@@$ loaves. So, applying the condition $E(@@n:t2@@)=@@n:n2@@,$ we get\n\n$$\n\\begin{aligned}E(@@n:t2@@) & =@@n:n2@@ \\\\ @@n:a@@-K{e}^{-@@n:t2@@k} & =@@n:n2@@ \\\\ K{e}^{-@@n:t2@@k} & =@@n:D2@@.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-@@n:t1@@k}}{K{e}^{-@@n:t2@@k}} & =\\frac{@@n:D0@@}{@@n:D2@@} \\\\ {e}^{@@n:t1@@k} & =@@f:D0/D2@@ \\\\ @@n:t1@@k & =\\operatorname{ln}⁡(@@f:D0/D2@@) \\\\ k & =\\frac{1}{@@n:t1@@}\\operatorname{ln}⁡(@@f:D0/D2@@)\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-@@n:t1@@\\cdot (1/@@n:t1@@)\\operatorname{ln}⁡(@@r:D0/D2@@)} & =@@n:D0@@ \\\\ K & =@@n:D0@@{e}^{\\operatorname{ln}⁡(@@r:D0/D2@@)} \\\\ K & =@@n:K@@\\end{aligned}\n$$\n\nTherefore, we have the following expression for $E(t):$\n\n$$\nE(t)=@@n:a@@-@@n:K@@{e}^{-(t/@@n:t1@@)\\operatorname{ln}⁡(@@r:D0/D2@@)}\n$$\n\nFinally, the number of loaves baked on day $t=@@n:time@@$ is\n\n$$\nE(@@n:time@@)=@@n:a@@-@@n:K@@{e}^{-(@@n:time@@/@@n:t1@@)\\operatorname{ln}⁡(@@r:D0/D2@@)}≈@@d3:result@@…≈@@i:result@@\\,\\text{loaves},\n$$\n\nrounded to the nearest integer.",
+    "bank": [
+      570,
+      560,
+      577,
+      550,
+      590
+    ],
+    "choice_pattern": "$@@value@@$ loaves"
+  },
+  "q-335619": {
+    "source_id": "q-335619",
+    "level": "hard",
+    "shape": "hard_time",
+    "parameters": {
+      "a": 800,
+      "n1": 620,
+      "n2": 720,
+      "t1": 3,
+      "t2": 9,
+      "target": 760
+    },
+    "prompt": "A national park is monitoring the number of people who have downloaded a new park app. The system can support a maximum of $@@n:a@@$ users, but the total is still below this limit. Since the park began tracking downloads, the number of users reached $@@n:n1@@$ on day $@@n:t1@@$ and $@@n:n2@@$ on day $@@n:t2@@.$ On what day will the number of users reach $@@n:target@@?$ Round your answer to the nearest integer.\n\n*Hint: You may assume that the number of users, $P(t),$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+    "solution": "The rate at which the number of app users $P(t)$ changes is proportional to the difference between the maximum population and its current population. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the maximum number of users the system can support, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=@@n:a@@$ users, and we have\n\n$$\n\\frac{dP}{dt}=k(@@n:a@@-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{@@n:a@@-P} & =k\\,dt \\\\ \\int \\frac{dP}{@@n:a@@-P} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|@@n:a@@-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $@@n:a@@-P>0$ for all $t\\ge 0.$ Next, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}@@n:a@@-P & ={e}^{-kt-C} \\\\ @@n:a@@-P & ={e}^{-C}{e}^{-kt} \\\\ @@n:a@@-P & =K{e}^{-kt} \\\\ P & =@@n:a@@-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $@@n:t1@@,$ the number of users was $@@n:n1@@.$ So, applying the condition $P(@@n:t1@@)=@@n:n1@@,$ we have\n\n$$\n\\begin{aligned}P(@@n:t1@@) & =@@n:n1@@ \\\\ @@n:a@@-K{e}^{-@@n:t1@@k} & =@@n:n1@@ \\\\ K{e}^{-@@n:t1@@k} & =@@n:D0@@.\\end{aligned}\n$$\n\nWe're also told that, on day $@@n:t2@@,$ the number of users was $@@n:n2@@.$ So, applying the condition $P(@@n:t2@@)=@@n:n2@@,$ we get\n\n$$\n\\begin{aligned}P(@@n:t2@@) & =@@n:n2@@ \\\\ @@n:a@@-K{e}^{-@@n:t2@@k} & =@@n:n2@@ \\\\ K{e}^{-@@n:t2@@k} & =@@n:D2@@.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-@@n:t1@@k}}{K{e}^{-@@n:t2@@k}} & =\\frac{@@n:D0@@}{@@n:D2@@} \\\\ {e}^{@@n:delta@@k} & =@@f:D0/D2@@ \\\\ @@n:delta@@k & =\\operatorname{ln}⁡(@@f:D0/D2@@) \\\\ k & =\\frac{1}{@@n:delta@@}\\operatorname{ln}⁡(@@f:D0/D2@@)\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-@@n:t1@@\\cdot (1/@@n:delta@@)\\operatorname{ln}⁡(@@r:D0/D2@@)} & =@@n:D0@@ \\\\ K & =@@n:D0@@{e}^{(1/2)\\operatorname{ln}⁡(@@r:D0/D2@@)} \\\\ K & =@@n:D0@@\\sqrt{@@f:D0/D2@@} \\\\ K & =@@n:D0@@\\cdot @@f:sqrt(D0/D2)@@ \\\\ K & =@@n:K@@\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=@@n:a@@-@@n:K@@{e}^{-(t/@@n:delta@@)\\operatorname{ln}⁡(@@r:D0/D2@@)}.\n$$\n\nFinally, let $d$  be the day when the app reaches $@@n:target@@$ users. Then, we have\n\n$$\n\\begin{aligned}P(d) & =@@n:target@@ \\\\ @@n:a@@-@@n:K@@{e}^{-kd} & =@@n:target@@ \\\\ @@n:a-target@@ & =@@n:K@@{e}^{-kd} \\\\ {e}^{-kd} & =\\frac{@@n:a-target@@}{@@n:K@@} \\\\ {e}^{-kd} & =@@f:(a-target)/K@@ \\\\ -kd & =\\operatorname{ln}⁡(@@f:(a-target)/K@@) \\\\ d & =-\\frac{1}{k}\\operatorname{ln}⁡(@@f:(a-target)/K@@).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the number of users will be $@@n:target@@$ on day\n\n$$\nd=\\frac{-\\operatorname{ln}⁡(@@f:(a-target)/K@@)}{\\frac{1}{@@n:delta@@}\\operatorname{ln}⁡(@@f:D0/D2@@)}=@@d4:result@@…≈@@i:result@@,\n$$\n\nrounded to the nearest day.",
+    "bank": [
+      25,
+      14,
+      12,
+      20,
+      10
+    ],
+    "choice_pattern": "$@@value@@\\text{th}$ day"
+  }
+}

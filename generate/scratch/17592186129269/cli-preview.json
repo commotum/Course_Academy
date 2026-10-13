@@ -1,0 +1,517 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129269,
+      "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+      "title": "Finding the Jacobian of an Inverse Transformation"
+    },
+    "question": {
+      ":question/id": "c6c6f4a1-1567-5096-82a1-28e75d12579e",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that\n\n$$u=- 4 x\\qquad v=y\\qquad w=z.$$",
+      ":question/worked-solution": "For a transformation\n\n$$T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w)),$$\n\nthe Jacobian determinant of $T$ is $\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}$.\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}$, the Jacobian determinant of ${T}^{-1}$.\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}.$$\n\nFirst, we find the partial derivatives:\n\n$$\\begin{aligned}\\frac{\\partial u}{\\partial x}=-4 & \\frac{\\partial u}{\\partial y}=0 & \\frac{\\partial u}{\\partial z}=0 \\\\ \\frac{\\partial v}{\\partial x}=0 & \\frac{\\partial v}{\\partial y}=1 & \\frac{\\partial v}{\\partial z}=0 \\\\ \\frac{\\partial w}{\\partial x}=0 & \\frac{\\partial w}{\\partial y}=0 & \\frac{\\partial w}{\\partial z}=1\\end{aligned}$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}&=|\\begin{aligned}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{aligned}| \\\\ &=|\\begin{aligned}-4 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}| \\\\ &=-4|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}| \\\\ &=-4\\left(1\\cdot 1-0\\right) \\\\ &=-4\\end{aligned}$$\n\nFinally, we take the reciprocal:\n\n$$\\begin{aligned}\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}&=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1} \\\\ &=- \\frac{1}{4}\\end{aligned}$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cd1f8b9a-c4e8-5bd6-96b9-d3a04dfbc5d5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "25b74ece-ae97-553d-b42b-7fd3e2ab719a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-4"
+            },
+            {
+              ":answer/id": "16dbdb32-57c0-5eee-b702-3588c420bb39",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{16}"
+            },
+            {
+              ":answer/id": "0b7d2f15-96b8-5f13-85e2-38da2ebdc931",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{4}"
+            },
+            {
+              ":answer/id": "2e6ed7a2-7cb1-5fb8-86fe-f0a36457837c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "92ec9df1-49f8-5663-8164-20106075c492",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "92ec9df1-49f8-5663-8164-20106075c492"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-jacobian-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 73,
+      "template": "easy_diagonal",
+      "profile": "method",
+      "parameters": {
+        "a": -4
+      },
+      "domain": "x,y,z real; nonzero constant inverse determinant",
+      "mathematical_fingerprint": "7129468c76bbfed97b5e37be4c9ea584aa77f2ba8de067b897468729296730bd",
+      "content_hash": "01a20ef98ca0480cff261b7a7d68a6f68849ed7d827a906a40cdc35b06863219",
+      "recipes": [
+        "correct",
+        "no_reciprocal",
+        "reverse_sign",
+        "omit_nonunit_derivative",
+        "apply_coefficient_twice"
+      ],
+      "source_id": null,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "solution_repairs": [],
+      "dependencies": {
+        "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129269,
+      "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+      "title": "Finding the Jacobian of an Inverse Transformation"
+    },
+    "question": {
+      ":question/id": "0b56faaf-91a8-5d6f-b4ae-ca0c5551f439",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that\n\n$$u=10 x\\qquad v=y\\qquad w=z.$$",
+      ":question/worked-solution": "For a transformation\n\n$$T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w)),$$\n\nthe Jacobian determinant of $T$ is $\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}$.\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}$, the Jacobian determinant of ${T}^{-1}$.\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}.$$\n\nFirst, we find the partial derivatives:\n\n$$\\begin{aligned}\\frac{\\partial u}{\\partial x}=10 & \\frac{\\partial u}{\\partial y}=0 & \\frac{\\partial u}{\\partial z}=0 \\\\ \\frac{\\partial v}{\\partial x}=0 & \\frac{\\partial v}{\\partial y}=1 & \\frac{\\partial v}{\\partial z}=0 \\\\ \\frac{\\partial w}{\\partial x}=0 & \\frac{\\partial w}{\\partial y}=0 & \\frac{\\partial w}{\\partial z}=1\\end{aligned}$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}&=|\\begin{aligned}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{aligned}| \\\\ &=|\\begin{aligned}10 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}| \\\\ &=10|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}| \\\\ &=10\\left(1\\cdot 1-0\\right) \\\\ &=10\\end{aligned}$$\n\nFinally, we take the reciprocal:\n\n$$\\begin{aligned}\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}&=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1} \\\\ &=\\frac{1}{10}\\end{aligned}$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "09747a64-15cf-5cc2-a587-4dbd3e422c28",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "60491888-98d7-505f-8d9c-0223a0a2926b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{10}"
+            },
+            {
+              ":answer/id": "84cde75c-c55f-5943-a4db-a1f6d711dfc6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "f8f1bc30-a45d-580f-9054-3c1d582493da",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10"
+            },
+            {
+              ":answer/id": "e57787b1-7489-5988-ba92-277d3ea52694",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{10}"
+            },
+            {
+              ":answer/id": "9fd15c0b-0e80-5635-ae02-f65183098f55",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{100}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e57787b1-7489-5988-ba92-277d3ea52694"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-jacobian-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 74,
+      "template": "easy_diagonal",
+      "profile": "method",
+      "parameters": {
+        "a": 10
+      },
+      "domain": "x,y,z real; nonzero constant inverse determinant",
+      "mathematical_fingerprint": "db6c43e1f3c5efa3658c936bd1ccab97300387dd4b4523e7094ac97e904290a1",
+      "content_hash": "9d8bec61924b05fc46ce2f0e3bde43933c8caf5dc598d126d3a3f1834c3a1189",
+      "recipes": [
+        "correct",
+        "no_reciprocal",
+        "reverse_sign",
+        "omit_nonunit_derivative",
+        "apply_coefficient_twice"
+      ],
+      "source_id": null,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "solution_repairs": [],
+      "dependencies": {
+        "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129269,
+      "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+      "title": "Finding the Jacobian of an Inverse Transformation"
+    },
+    "question": {
+      ":question/id": "9c039991-d8e1-52e3-8f54-9ab6cb4453f7",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to (x(u,v,w),y(u,v,w),z(u,v,w)),$ given that \n\n$$\nu=2\\left(z-y\\right),\\,v=2\\left(x+z\\right),\\,w=4\\left(-3x\\right).\n$$",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\\to [\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}],\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =|\\begin{aligned}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{aligned}|.\\end{aligned}\n$$\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)},$ the Jacobian determinant of ${T}^{-1}.$\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202u}{\u2202x} & =0 & \\,\\frac{\u2202u}{\u2202y} & =2\\left(-1\\right) & \\,\\frac{\u2202u}{\u2202z} & =2\\left(1\\right) \\\\ \\frac{\u2202v}{\u2202x} & =2\\left(1\\right) & \\,\\frac{\u2202v}{\u2202y} & =0 & \\,\\frac{\u2202v}{\u2202z} & =2\\left(1\\right) \\\\ \\frac{\u2202w}{\u2202x} & =4\\left(-3\\right) & \\,\\frac{\u2202w}{\u2202y} & =0 & \\,\\frac{\u2202w}{\u2202z} & =0\\end{aligned}\n$$\n\nScaling the three derivative rows by $2, 2, 4$ multiplies the determinant by $16$.\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{aligned}| \\\\  & =|\\begin{aligned}0 & 2\\left(-1\\right) & 2\\left(1\\right) \\\\ 2\\left(1\\right) & 0 & 2\\left(1\\right) \\\\ 4\\left(-3\\right) & 0 & 0\\end{aligned}| \\\\  & =16\\left(-(-1)|\\begin{aligned}1 & 1 \\\\ -3 & 0\\end{aligned}|+1|\\begin{aligned}1 & 0 \\\\ -3 & 0\\end{aligned}|\\right)\\\\  & =16\\left(1(0+3)+1(0-0)\\right)\\\\  & =48\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & ={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1} \\\\  & =\\frac{1}{48}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "23ade232-5bb5-59f7-b6d7-16cf048cb7e8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5d841981-eb80-581c-a00b-e20c94106505",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48"
+            },
+            {
+              ":answer/id": "fffa946f-1d5b-549e-8d6e-ad7d22afe423",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{48}"
+            },
+            {
+              ":answer/id": "39b7018d-ccc9-551c-afff-d657e6bba3a3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{48}"
+            },
+            {
+              ":answer/id": "6a324ff8-ea38-5be8-8ee4-b1c9e4d7bf27",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{24}"
+            },
+            {
+              ":answer/id": "d438e592-47be-51c2-bcd7-352eb65135e4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{96}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fffa946f-1d5b-549e-8d6e-ad7d22afe423"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-jacobian-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 73,
+      "template": "source_161800",
+      "profile": "method",
+      "parameters": {
+        "u": 2,
+        "v": 2,
+        "w": 4
+      },
+      "domain": "x,y,z real; nonzero constant inverse determinant",
+      "mathematical_fingerprint": "b4473fca243a6c86e2bad8394b7b860618b6010be109138f4137aab447eba8e7",
+      "content_hash": "57c24d577c7c436ccf090dde504ccbb1a7bff31ad7fc298b007f02a9502c86c7",
+      "recipes": [
+        "correct",
+        "no_reciprocal",
+        "reverse_cofactor_sign",
+        "omit_first_row_scale",
+        "apply_first_row_scale_twice"
+      ],
+      "source_id": "q-161800",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "solution_repairs": [],
+      "dependencies": {
+        "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129269,
+      "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+      "title": "Finding the Jacobian of an Inverse Transformation"
+    },
+    "question": {
+      ":question/id": "8b1bee66-adf7-5fa6-bca0-fe6469ab5fad",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to (x(u,v,w),y(u,v,w),z(u,v,w)),$ given that \n\n$$\nu=4\\left(3x+yz\\right),\\,v=z,\\,w=4\\left(-y\\right).\n$$",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\\to [\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}],\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =|\\begin{aligned}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{aligned}|.\\end{aligned}\n$$\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)},$ the Jacobian determinant of ${T}^{-1}.$\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202u}{\u2202x} & =4\\left(3\\right) & \\,\\frac{\u2202u}{\u2202y} & =4\\left(z\\right) & \\,\\frac{\u2202u}{\u2202z} & =4\\left(y\\right) \\\\ \\frac{\u2202v}{\u2202x} & =0 & \\,\\frac{\u2202v}{\u2202y} & =0 & \\,\\frac{\u2202v}{\u2202z} & =1 \\\\ \\frac{\u2202w}{\u2202x} & =0 & \\,\\frac{\u2202w}{\u2202y} & =4\\left(-1\\right) & \\,\\frac{\u2202w}{\u2202z} & =0\\end{aligned}\n$$\n\nScaling the three derivative rows by $4, 1, 4$ multiplies the determinant by $16$.\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{aligned}| \\\\  & =|\\begin{aligned}4\\left(3\\right) & 4\\left(z\\right) & 4\\left(y\\right) \\\\ 0 & 0 & 1 \\\\ 0 & 4\\left(-1\\right) & 0\\end{aligned}| \\\\  & =16\\left(3|\\begin{aligned}0 & 1 \\\\ -1 & 0\\end{aligned}|\\right)\\\\  & =16\\left(3(0+1)\\right)\\\\  & =48\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & ={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1} \\\\  & =\\frac{1}{48}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1a86e27f-a09c-5f49-968f-34a8c265405c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "915a625c-b702-5117-b866-9254051a8e9b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{12}"
+            },
+            {
+              ":answer/id": "78a15820-aa96-5e2c-a1e0-2931b9e2a40a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48"
+            },
+            {
+              ":answer/id": "23017502-fbe3-570d-ae73-97da85b3aeec",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{192}"
+            },
+            {
+              ":answer/id": "b5a67424-8d8f-53a0-8d76-193fcb11d23c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{48}"
+            },
+            {
+              ":answer/id": "be126474-b2a5-5678-917e-b03340ad14cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{48}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "be126474-b2a5-5678-917e-b03340ad14cb"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-jacobian-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 74,
+      "template": "source_161802",
+      "profile": "method",
+      "parameters": {
+        "u": 4,
+        "v": 1,
+        "w": 4
+      },
+      "domain": "x,y,z real; nonzero constant inverse determinant",
+      "mathematical_fingerprint": "71e0430b14e2feafb4b5ab1b44389d1c98bb5584dd2993b5c79fa197e1aec5c2",
+      "content_hash": "d9e82692be231c8410a19c6c81e24bc5b84f808947597c480b5c1f1fd514ab0c",
+      "recipes": [
+        "correct",
+        "no_reciprocal",
+        "reverse_cofactor_sign",
+        "omit_first_row_scale",
+        "apply_first_row_scale_twice"
+      ],
+      "source_id": "q-161802",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "solution_repairs": [],
+      "dependencies": {
+        "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129269,
+      "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+      "title": "Finding the Jacobian of an Inverse Transformation"
+    },
+    "question": {
+      ":question/id": "f6b48096-972a-536b-b3e7-dfdde86ee557",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider the transformation $T:(u,v,w)\\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\u27f6[\\begin{aligned}2\\left(x\\right) \\\\ 2\\left(z-y\\right) \\\\ 4\\left(xy\\right)\\end{aligned}].\n$$\n\nFind the Jacobian determinant of $T.$\n\n*Hint: You can assume that $x\\ne 0.$*",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\\to [\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}],\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =|\\begin{aligned}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{aligned}|.\\end{aligned}\n$$\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)},$ the Jacobian determinant of ${T}^{-1}.$\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}.\n$$\n\nHere, we have \n\n$$\nu(x,y,z)=2\\left(x\\right),\\,v(x,y,z)=2\\left(z-y\\right),\\,w(x,y,z)=4\\left(xy\\right).\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202u}{\u2202x} & =2\\left(1\\right) & \\,\\frac{\u2202u}{\u2202y} & =0 & \\,\\frac{\u2202u}{\u2202z} & =0 \\\\ \\frac{\u2202v}{\u2202x} & =0 & \\,\\frac{\u2202v}{\u2202y} & =2\\left(-1\\right) & \\,\\frac{\u2202v}{\u2202z} & =2\\left(1\\right) \\\\ \\frac{\u2202w}{\u2202x} & =4\\left(y\\right) & \\,\\frac{\u2202w}{\u2202y} & =4\\left(x\\right) & \\,\\frac{\u2202w}{\u2202z} & =0\\end{aligned}\n$$\n\nScaling the three derivative rows by $2, 2, 4$ multiplies the determinant by $16$.\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{aligned}| \\\\  & =|\\begin{aligned}2\\left(1\\right) & 0 & 0 \\\\ 0 & 2\\left(-1\\right) & 2\\left(1\\right) \\\\ 4\\left(y\\right) & 4\\left(x\\right) & 0\\end{aligned}| \\\\  & =16\\left(1|\\begin{aligned}-1 & 1 \\\\ x & 0\\end{aligned}|\\right)\\\\  & =16\\left(1(0-x)\\right)\\\\  & =- 16 x.\\end{aligned}\n$$\n\nWriting down $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain\n\n$$\n\\begin{aligned}16\\left(-x\\right) & =16\\left(-\\left(\\frac{u}{2}\\right)\\right)\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & ={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1} \\\\  & =\\frac{1}{16}\\left(\\frac{1}{(-\\left(\\frac{u}{2}\\right))}\\right) \\\\  & =- \\frac{1}{8 u}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c0ce43c8-86ae-5729-b56f-b63ad5650370",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e5c3c2f7-ec2c-5668-bccc-569bc11bfef1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 8 u"
+            },
+            {
+              ":answer/id": "f3c9ce4e-4964-5778-bc2b-9dc7dcf60b22",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{8 u}"
+            },
+            {
+              ":answer/id": "5e902ce1-13b9-5e22-81c8-569fd84ad72e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{8 u}"
+            },
+            {
+              ":answer/id": "5f82c245-4b7b-5c28-8fda-3af04bf9e41a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{4 u}"
+            },
+            {
+              ":answer/id": "131ab2f4-4ff5-5962-b42e-d85ee5a62016",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{16 u}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f3c9ce4e-4964-5778-bc2b-9dc7dcf60b22"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-jacobian-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 73,
+      "template": "source_161805",
+      "profile": "method",
+      "parameters": {
+        "u": 2,
+        "v": 2,
+        "w": 4
+      },
+      "domain": "x != 0; u != 0",
+      "mathematical_fingerprint": "52b827fc5aec4a6cac826a62adf5ec4128b358309c574fc14478f6ae6b3a4897",
+      "content_hash": "df9cfa7c45b7119a37fcfaaac593248974a67d313e0f09ffc046d4883fe1bd1d",
+      "recipes": [
+        "correct",
+        "no_reciprocal",
+        "reverse_cofactor_sign",
+        "omit_first_row_scale",
+        "apply_first_row_scale_twice"
+      ],
+      "source_id": "q-161805",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "solution_repairs": [],
+      "dependencies": {
+        "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129269,
+      "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+      "title": "Finding the Jacobian of an Inverse Transformation"
+    },
+    "question": {
+      ":question/id": "819188bf-927f-523e-b61a-66c5927de7f3",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider the transformation $T:(u,v,w)\\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\u27f6[\\begin{aligned}4\\left(y{z}^{2}\\right) \\\\ z{x}^{2} \\\\ 4\\left(x{y}^{2}\\right)\\end{aligned}].\n$$\n\nFind the Jacobian determinant of $T.$\n\n*Hint: You can assume that $x,y,z>0.$*",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\\to [\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}],\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =|\\begin{aligned}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{aligned}|.\\end{aligned}\n$$\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)},$ the Jacobian determinant of ${T}^{-1}.$\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}.\n$$\n\nHere, we have \n\n$$\nu(x,y,z)=4\\left(y{z}^{2}\\right),\\,v(x,y,z)=z{x}^{2},\\,w(x,y,z)=4\\left(x{y}^{2}\\right).\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202u}{\u2202x} & =0 & \\,\\frac{\u2202u}{\u2202y} & =4\\left({z}^{2}\\right) & \\,\\frac{\u2202u}{\u2202z} & =4\\left(2yz\\right) \\\\ \\frac{\u2202v}{\u2202x} & =2xz & \\,\\frac{\u2202v}{\u2202y} & =0 & \\,\\frac{\u2202v}{\u2202z} & ={x}^{2} \\\\ \\frac{\u2202w}{\u2202x} & =4\\left({y}^{2}\\right) & \\,\\frac{\u2202w}{\u2202y} & =4\\left(2xy\\right) & \\,\\frac{\u2202w}{\u2202z} & =0\\end{aligned}\n$$\n\nScaling the three derivative rows by $4, 1, 4$ multiplies the determinant by $16$.\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{aligned}| \\\\  & =|\\begin{aligned}0 & 4\\left({z}^{2}\\right) & 4\\left(2yz\\right) \\\\ 2xz & 0 & {x}^{2} \\\\ 4\\left({y}^{2}\\right) & 4\\left(2xy\\right) & 0\\end{aligned}| \\\\  & =16\\left(-{z}^{2}|\\begin{aligned}2xz & {x}^{2} \\\\ {y}^{2} & 0\\end{aligned}|+2yz|\\begin{aligned}2xz & 0 \\\\ {y}^{2} & 2xy\\end{aligned}|\\right)\\\\  & =16\\left(-{z}^{2}(0-{x}^{2}{y}^{2})+2yz(4{x}^{2}yz-0)\\right)\\\\  & =16\\left({x}^{2}{y}^{2}{z}^{2}+8{x}^{2}{y}^{2}{z}^{2}\\right)\\\\  & =144 x^{2} y^{2} z^{2}.\\end{aligned}\n$$\n\nWriting down $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain\n\n$$\n\\begin{aligned}16\\left(9{x}^{2}{y}^{2}{z}^{2}\\right) & =16\\left(9{({x}^{3}{y}^{3}{z}^{3})}^{2/3}\\right) \\\\  & =16\\left(9{(y{z}^{2}\\cdot z{x}^{2}\\cdot x{y}^{2})}^{2/3}\\right) \\\\  & =16\\left(9(\\left(\\frac{u}{4}\\right)v\\left(\\frac{w}{4}\\right))^{2/3}\\right).\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & ={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1} \\\\  & =\\frac{2^{\\frac{2}{3}}}{36 \\left(u v w\\right)^{\\frac{2}{3}}}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bcf22c2e-9cfe-5ffe-8b32-60035e0b0cc2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d45a7432-1c53-5d89-af9c-13a5b5fd7d6e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2^{\\frac{2}{3}}}{9 \\left(u v w\\right)^{\\frac{2}{3}}}"
+            },
+            {
+              ":answer/id": "f52f4b65-d8b7-5329-816d-facf44650c89",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18 \\sqrt[3]{2} \\left(u v w\\right)^{\\frac{2}{3}}"
+            },
+            {
+              ":answer/id": "b8f84e1b-2609-53b4-8a13-e70ac505684e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2^{\\frac{2}{3}}}{144 \\left(u v w\\right)^{\\frac{2}{3}}}"
+            },
+            {
+              ":answer/id": "2562a3b9-ccc5-562f-ac76-4f79a7bcff03",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{2^{\\frac{2}{3}}}{36 \\left(u v w\\right)^{\\frac{2}{3}}}"
+            },
+            {
+              ":answer/id": "105f6ac4-86bd-55b1-916d-23245369b860",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2^{\\frac{2}{3}}}{36 \\left(u v w\\right)^{\\frac{2}{3}}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "105f6ac4-86bd-55b1-916d-23245369b860"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-jacobian-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 74,
+      "template": "source_161807",
+      "profile": "method",
+      "parameters": {
+        "u": 4,
+        "v": 1,
+        "w": 4
+      },
+      "domain": "x,y,z > 0; u,v,w > 0",
+      "mathematical_fingerprint": "d9d719964e5899929c438da0cf8d32630018258cf70f73d6dd00e188a0041516",
+      "content_hash": "f7a80e5afdae4d2bca252bbf52a996c933515c5b39bf54a968c14ec83ebad347",
+      "recipes": [
+        "correct",
+        "no_reciprocal",
+        "reverse_cofactor_sign",
+        "omit_first_row_scale",
+        "apply_first_row_scale_twice"
+      ],
+      "source_id": "q-161807",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "solution_repairs": [
+        "incorrect_cofactor_minor",
+        "positive_branch_clarification"
+      ],
+      "dependencies": {
+        "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  }
+]
