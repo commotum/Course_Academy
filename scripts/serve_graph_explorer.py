@@ -16,6 +16,7 @@ Open /assignments for schoolwork and /assignments?assignment=... for its problem
 from __future__ import annotations
 
 import argparse
+from contextlib import nullcontext
 import fcntl
 import functools
 import gzip
@@ -212,7 +213,7 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     libraries = {}
     for name, directory in (("edb_core", edb_deps), ("serde_json", deps), ("chrono", deps), ("course_academy_engine", deps)):
         libraries[name] = max(directory.glob(f"lib{name}-*.rlib"), key=lambda p: p.stat().st_mtime_ns)
-    sources = (source, ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
+    sources = (source, ROOT / "scripts/page_reader.rs", ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
                ROOT / "scripts/developer_preview.rs")
     if test:
         sources += (ROOT / "scripts/assignment_interaction_tests.rs", ROOT / "scripts/retrieval_tests.rs",
@@ -286,6 +287,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
         public_origin = f"https://{public_host}"
     graph_worker = NativeWorker([str(reader), database, learner, "--serve"], environment, "graph-worker")
     learning_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "learning-worker") if learning else None
+    page_worker = NativeWorker([str(learning), database, learner, "--pages", "--serve"], environment, "page-worker") if learning else None
     request_directory = Path(environment["LEARNING_REQUEST_DIR"])
     mode_path = request_directory / "developer-mode.json"
     math_root = Path(environment.get("EDB_MATH_ROOT", DEFAULT_MATH_ROOT)).resolve()
@@ -380,8 +382,12 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 directory.mkdir(parents=True, exist_ok=True)
                 # Shared across request threads and server processes. Native writes also
                 # compare the EDB basis, covering writers outside this application.
-                with (directory / "api.lock").open("a") as lock:
-                    fcntl.flock(lock, fcntl.LOCK_EX)
+                page_read = body.get("action") in {"assignments", "activity-history"}
+                # Immutable list reads have their own peer and never record
+                # learner state. Scheduler/write admission must not block them.
+                with (nullcontext() if page_read else (directory / "api.lock").open("a")) as lock:
+                    if lock is not None:
+                        fcntl.flock(lock, fcntl.LOCK_EX)
                     if body.get("action") in MUTATING_ACTIONS and developer_mode(mode_path):
                         self.send_bytes(409, b'{"error":"Developer mode is on. No activity or learner changes are recorded.","code":"developer-mode"}', "application/json")
                         return
@@ -390,7 +396,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         # a request cannot promote itself into developer mode.
                         body = {**body, "preview": developer_mode(mode_path)}
                     body = assignment_request(body, directory, learner)
-                    response = learning_worker.request(body)
+                    response = (page_worker if page_read else learning_worker).request(body)
                     if response.get('ok') and (body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path):
                         try:
                             inventory_hook()
@@ -407,6 +413,11 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
 
         def mode_request(self, body: dict | None = None) -> None:
             try:
+                if body is None:
+                    # save_json atomically replaces this file. A read does not
+                    # need to wait for the scheduler's durable write lock.
+                    self.send_bytes(200, json.dumps({"enabled": developer_mode(mode_path), "pausedTasks": []}).encode(), "application/json")
+                    return
                 request_directory.mkdir(parents=True, exist_ok=True)
                 with (request_directory / "api.lock").open("a") as lock:
                     fcntl.flock(lock, fcntl.LOCK_EX)
@@ -548,7 +559,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.send_bytes(200, (ROOT / "ui/Assignments.html").read_bytes(), "text/html; charset=utf-8")
             elif path.startswith("/ui/") and path != "/ui/Math-Academy-Graph-Explorer.html":
                 asset = (ROOT / path.lstrip("/")).resolve()
-                allowed = {"Activity.html", "activity.js", "activity.css", "learning.js", "learning.css", "question-fields.js", "prose-lists.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "target-weeks.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "topic-menu.js", "profile.js", "course-catalog.js", "course-catalog.css", "requests.js"}
+                allowed = {"Activity.html", "activity.js", "activity.css", "learning.js", "learning.css", "route-matrix.css", "question-fields.js", "prose-lists.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "target-weeks.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "topic-menu.js", "profile.js", "course-catalog.js", "course-catalog.css", "requests.js"}
                 if not asset.is_relative_to((ROOT / "ui").resolve()) or not asset.is_file() or not (asset.name in allowed or asset.is_relative_to((ROOT / "ui/vendor").resolve())):
                     self.send_bytes(404, b"Not found", "text/plain")
                 else:
@@ -596,7 +607,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
         def do_HEAD(self) -> None:
             self.do_GET()
 
-    Handler.workers = (graph_worker, learning_worker)
+    Handler.workers = (graph_worker, learning_worker, page_worker)
     Handler.scheduler_stop = scheduler_stop
     Handler.background = (scheduler_loop, generator_loop) if learning_worker else ()
     return Handler
@@ -622,7 +633,7 @@ def main() -> None:
             worker.request(body)
         except (OSError, ValueError):
             pass  # A foreground request retries startup and reports any failure.
-    for worker, body in zip(server.RequestHandlerClass.workers, ({}, {"action": "home"})):
+    for worker, body in zip(server.RequestHandlerClass.workers, ({}, {"action": "home"}, {"action": "activity-history"})):
         if worker:
             threading.Thread(target=warm, args=(worker, body), daemon=True).start()
     for background in server.RequestHandlerClass.background:

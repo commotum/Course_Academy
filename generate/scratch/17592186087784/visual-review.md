@@ -1,0 +1,7 @@
+# Visual QA
+
+Inspected all 31 original plots in the four source contact sheets, including both canonical assets and the original MA q-79205 graphic. Inspected all 44 generated prompt/solution images in the six generated contact sheets. The solid segments, closed endpoints, numerical ticks, familiar-angle cues and counterclockwise arrows agree with their exact instances. Equal scaling preserves circles under signed translations; radius-based padding includes the plotted full-circle context and Cartesian axes.
+
+Found and corrected one rendering defect: when an interval ended at 2π, solution labels previously treated 0 and 2π as two points and printed θ=2π twice at the same position. The renderer now normalizes those coincident locations and displays one θ=2π label. Plot cache version is 4. Inspected corrected translated three-quarter-circle examples at full resolution (`plots/d8d05c9e96bc203cf4baa023/solution.png`, `plots/09dbfd76ee8321b329abd223/solution.png`); no overlap remains. Obsolete version-3 caches were removed, then all six contact sheets regenerated from the final review records.
+
+The automatic validator also checks each asset's exact normalized parameters, assessed solid interval, closed endpoints, orientation and bounds provenance against the question; displayed equations and all endpoint answers are checked independently with SymPy. Pixel inspection complements these mathematical checks. No unreadable source plots or unresolved plot findings remain.

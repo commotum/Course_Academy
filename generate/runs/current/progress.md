@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 265**, **queued: 116**, **working: 3**.
+**qa_passed: 268**, **queued: 113**, **working: 3**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -277,12 +277,12 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186073776](../../scratch/17592186073776.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Solutions to a System | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186073776.json) |
 | [17592186073777](../../scratch/17592186073777.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Intersection Points of Two Lines | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073777.json) |
 | [17592186073778](../../scratch/17592186073778.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073778.json) |
-| [17592186087686](../../scratch/17592186087686.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Slope-Intercept Form | 0 / 0 / 0 / 3 | working | — |
-| [17592186087687](../../scratch/17592186087687.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Standard Form | 0 / 0 / 0 / 3 | working | — |
-| [17592186087688](../../scratch/17592186087688.py) | Parallel Lines in the Coordinate Plane | Finding Unknown Parameters | 0 / 0 / 0 / 2 | working | — |
-| 17592186092260 | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Linear Exponent | 2 / 5 / 0 / 2 | queued | — |
-| 17592186092261 | The Chain Rule With Exponential Functions | Differentiating a General Exponential Function Using the Chain Rule | 7 / 2 / 0 / 1 | queued | — |
-| 17592186092263 | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | queued | — |
+| [17592186087686](../../scratch/17592186087686.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Slope-Intercept Form | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186087686.json) |
+| [17592186087687](../../scratch/17592186087687.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Standard Form | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186087687.json) |
+| [17592186087688](../../scratch/17592186087688.py) | Parallel Lines in the Coordinate Plane | Finding Unknown Parameters | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087688.json) |
+| [17592186092260](../../scratch/17592186092260.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Linear Exponent | 2 / 5 / 0 / 2 | working | — |
+| 17592186092261 | The Chain Rule With Exponential Functions | Differentiating a General Exponential Function Using the Chain Rule | 7 / 2 / 0 / 1 | working | — |
+| 17592186092263 | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | working | — |
 | [17592186119771](../../scratch/17592186119771.py) | Triangular Matrices | Describing a Triangular Matrix | 6 / 3 / 0 / 1 | queued | — |
 | [17592186119772](../../scratch/17592186119772.py) | Triangular Matrices | Identifying a Triangular Matrix | 6 / 2 / 0 / 0 | queued | — |
 | [17592186119784](../../scratch/17592186119784.py) | Triangular Matrices | Identifying Correct Statements About a Matrix | 0 / 5 / 4 / 1 | queued | — |
@@ -382,7 +382,7 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | 17592186166864 | Conservative Vector Fields in the Cartesian Plane | Finding a Parameter in a Given Conservative Vector Field | 10 / 0 / 0 / 0 | queued | — |
 | [17592186059714](../../scratch/17592186059714.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating the Magnitude of a Vector Given in Component Form | 2 / 0 / 0 / 2 | queued | — |
 | [17592186059715](../../scratch/17592186059715.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Vector From Position Vectors and then Computing its Magnitude | 0 / 3 / 0 / 2 | queued | — |
-| 17592186059716 | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Unit Vector Parallel to a Given Vector | 0 / 2 / 1 / 2 | queued | — |
+| [17592186059716](../../scratch/17592186059716.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Unit Vector Parallel to a Given Vector | 0 / 2 / 1 / 2 | queued | — |
 | 17592186133891 | Line Integrals With Respect to X and Y | Constructing Line Integrals With Respect to X | 6 / 0 / 0 / 1 | queued | — |
 | 17592186133892 | Line Integrals With Respect to X and Y | Constructing Line Integrals With Respect to Y | 9 / 0 / 0 / 0 | queued | — |
 | 17592186133893 | Line Integrals With Respect to X and Y | Evaluating Line Integrals With Respect to X and Y | 0 / 8 / 3 / 0 | queued | — |

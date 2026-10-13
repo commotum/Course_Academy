@@ -3,6 +3,7 @@ mod activity_history;
 mod assignment_interaction;
 mod assignment_reader;
 mod developer_preview;
+mod page_reader;
 #[cfg(test)]
 #[path = "../engine/edb/answer_fields.rs"]
 mod preview_answer_fields;
@@ -2562,6 +2563,9 @@ fn run() -> Result<bool> {
     let learner = args.next().ok_or("Learner required")?;
     let endpoint = args.next().ok_or("Writer endpoint required")?;
     let serve = args.next().as_deref() == Some("--serve");
+    if endpoint == "--pages" && serve {
+        return page_reader::serve(database, learner);
+    }
     let mut app = Application::connect(database, learner, endpoint)?;
     if serve {
         let stdin = std::io::stdin();

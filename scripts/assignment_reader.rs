@@ -85,6 +85,41 @@ struct Contents {
     topics: BTreeSet<u64>,
 }
 
+// The list needs counts and coverage, not authored prose or answer banks.
+fn summarize(
+    s: &EntitySnapshot,
+    eid: u64,
+    ancestors: &mut BTreeSet<u64>,
+    summary: &mut Contents,
+) -> Result<()> {
+    if ancestors.len() >= 32 || !ancestors.insert(eid) {
+        return Err("Assignment content nesting must be acyclic and at most 32 levels deep".into());
+    }
+    let record = s.entity(eid)?;
+    if record.contains_key("assigned-problem/id") {
+        summary.problem_count += 1;
+        summary
+            .topics
+            .extend(s.refs(eid, "assigned-problem/topic-coverage")?);
+        let inner = s.reference(eid, "assigned-problem/content")?;
+        let record = s.entity(inner)?;
+        if !record.contains_key("question/id") && !record.contains_key("multistep/id") {
+            return Err("Assigned problem must reference a question or multipart problem".into());
+        }
+        summarize(s, inner, ancestors, summary)?;
+    } else if record.contains_key("multistep/id") {
+        for step in ordered_steps(s, eid, "multistep")? {
+            summarize(s, s.reference(step, "step/content")?, ancestors, summary)?;
+        }
+    } else if record.contains_key("question/id") {
+        summary.question_count += 1;
+    } else if !record.contains_key("tutorial/id") {
+        return Err("Unsupported assignment content".into());
+    }
+    ancestors.remove(&eid);
+    Ok(())
+}
+
 fn steps(
     s: &EntitySnapshot,
     owner: u64,
@@ -185,7 +220,19 @@ pub(super) fn assigned(s: &EntitySnapshot, learner: u64) -> Result<Vec<u64>> {
 
 fn assignment(s: &EntitySnapshot, learner: u64, activity: u64, detail: bool) -> Result<Json> {
     let mut summary = Contents::default();
-    let route = steps(s, activity, "activity", &mut BTreeSet::new(), &mut summary)?;
+    let route = if detail {
+        steps(s, activity, "activity", &mut BTreeSet::new(), &mut summary)?
+    } else {
+        for step in ordered_steps(s, activity, "activity")? {
+            summarize(
+                s,
+                s.reference(step, "step/content")?,
+                &mut BTreeSet::new(),
+                &mut summary,
+            )?;
+        }
+        vec![]
+    };
     let due = s
         .entity(activity)?
         .get("activity/due")
