@@ -1,0 +1,87 @@
+[
+  {
+    "label": "documented split-exponential equivalence capability restriction",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100893,
+        "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+        "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+      },
+      "question": {
+        ":question/id": "76ba9dd0-3ac1-5557-a9ff-ecbb23b7e7e6",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\left(x + 2\\right)y$  that satisfies $y(-2)=1.$\n\n$y=$\n{{field-1}}",
+        ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\left(x + 2\\right)y \\\\ \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x} & =\\left(x + 2\\right) \\\\ \\int \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\left(x + 2\\right)\\,\\text{d}x \\\\ \\int \\frac{1}{y}\\,\\text{d}y & =\\int \\,\\left(x + 2\\right)\\,\\text{d}x \\\\ \\operatorname{ln}\u2061|y| & =\\frac{1}{2}{\\left(x + 2\\right)}^{2}+C\\,.\\end{aligned}\n$$\n\nApplying the exponential function to both sides, we find the general solution:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}\u2061|y|} & ={e}^{{\\left(x + 2\\right)}^{2}/2+C} \\\\ |y| & ={e}^{{\\left(x + 2\\right)}^{2}/2+C}\\, \\\\ y & =\\pm {e}^{{\\left(x + 2\\right)}^{2}/2+C} \\\\ y & =K{e}^{{\\left(x + 2\\right)}^{2}/2}\\,.\\end{aligned}\n$$\n\nwhere $K=\\pm {e}^{C}$ is an arbitrary constant. \n\nWe now apply the condition $y(-2)=1$ to find $K:$ \n\n$$\n\\begin{aligned}1 & =K{e}^{0} \\\\ K & =1\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=\\left(x + 2\\right)y$ that satisfies the condition $y(-2)=1$ is\n\n$$\ny={e}^{{\\left(x + 2\\right)}^{2}/2}\\,.\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "562a0486-16cc-5dfe-9a78-ff4ec0a1ddc9",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "191bcc7d-46ff-5651-83db-3b25c1be60f0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{e}^{{\\left(x + 2\\right)}^{2}/2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "191bcc7d-46ff-5651-83db-3b25c1be60f0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "separable-ivp-3",
+        "seed": 0,
+        "template": "source_355562",
+        "parameters": {
+          "h": "-2"
+        },
+        "bank_profile": "blank",
+        "answer_recipes": {
+          "191bcc7d-46ff-5651-83db-3b25c1be60f0": {
+            "recipe": "derived_rhs_fragment",
+            "displayed_expression": "{e}^{{\\left(x + 2\\right)}^{2}/2}",
+            "correct": true
+          }
+        },
+        "origin": "observed",
+        "source_ids": [
+          "q-355562"
+        ],
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "parameter_fingerprint": "7f1c3a7ba8575f54a01b147c76e4724df08d2dfd734cc8c1a970a442f336f635",
+        "mathematics": {
+          "variable": "x",
+          "initial_x": "-2",
+          "initial_y": "1",
+          "ode": "y*(x + 2)",
+          "lhs": "y",
+          "rhs": "exp((x + 2)**2/2)",
+          "primitive_y": "log(y)",
+          "primitive_x": "(x + 2)**2/2",
+          "integration_constant": "0",
+          "domain": "y>0; x real",
+          "h": "-2"
+        },
+        "plot_rating": "none",
+        "source_bank_interpretation": "blank RHS fragment",
+        "dependencies": {
+          "sympy": "1.14.0"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted": "e^{2} e^{2 x} e^{\\frac{x^{2}}{2}}",
+        "expected": "unresolved",
+        "purpose": "Mathematically exact exponential product form; native rules currently do not establish it."
+      }
+    ]
+  }
+]
