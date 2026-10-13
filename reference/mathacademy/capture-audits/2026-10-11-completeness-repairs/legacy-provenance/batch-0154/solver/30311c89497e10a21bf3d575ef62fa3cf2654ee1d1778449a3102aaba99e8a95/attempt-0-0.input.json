@@ -1,0 +1,48 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-89366\", \"problem\": \"A spinner with three regions is designed so that the probability it lands on red is $\\\\frac{3}{10},$ the probability it lands on blue is $\\\\frac{2}{5},$ and on green $\\\\frac{3}{10}.$ What is the probability that the spinner lands on red or green exactly $5$ times if it is spun $12$ times? Round your answer to $3$ decimal places.\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-89366:\nLet the random variable $X$ be equal to the number of times the spinner lands on red or green.\n\nHere, we have the following information:\n\n- there are $n=12$ spins\n\n- the probability of landing on red or green on any spin is\n\n$$\np=\\frac{3}{10}+\\frac{3}{10}=\\frac{3}{5}\n$$\n\nSo, $X$ follows a binomial distribution, where $X∼B(12,\\frac{3}{5}).$ We want to find the probability of $x=5$ successes.\n\nThe number of successes of a binomial random variable has the probability mass function\n\n$$\nP(X=x)=(\\genfrac{}{}{0pt}{}{n}{x}){p}^{x}(1-p)^{n-x},\n$$\n\nwhere $n$ is the number of experiments, and $p$ is the probability of success on each experiment.\n\nSubstituting the above information into the formula for probability mass function, we get\n\n$$\n\\begin{aligned}P(X=5) & =(\\genfrac{}{}{0pt}{}{12}{5}){(\\frac{3}{5})}^{5}{(1-\\frac{3}{5})}^{12-5} \\\\  & =\\frac{12!}{5!(12-5)!}{(\\frac{3}{5})}^{5}{(\\frac{2}{5})}^{7} \\\\  & =792{(\\frac{3}{5})}^{5}{(\\frac{2}{5})}^{7} \\\\  & =0.101\\end{aligned}\n$$\n\nrounded to $3$ decimal places.",
+      "fields": [
+        {
+          "key": "q-89366/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "0.089"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "0.158"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "0.101"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "0.115"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "0.136"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12c98-6676-7502-804e-57ff2fc2166a",
+  "previous_failures": []
+}

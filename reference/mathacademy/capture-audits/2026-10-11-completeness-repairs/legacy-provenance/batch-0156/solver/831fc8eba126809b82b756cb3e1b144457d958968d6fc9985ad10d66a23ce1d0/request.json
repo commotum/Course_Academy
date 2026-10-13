@@ -1,0 +1,46 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-111083\", \"problem\": \"|  | $Y=1$ | $Y=2$ |\\n| --- | --- | --- |\\n| $X=0$ | $0.1$ | $0.15$ |\\n| $X=1$ | $0.25$ | $0.1$ |\\n| $X=2$ | $0.25$ | $0.15$ |\\n\\nCompute $P(X=1\\\\,\\\\,\\\\text{or}\\\\,\\\\,Y<2)$ given that the random variables $X$ and $Y$ have the joint probability mass function $f(x,y)$ shown in the table above.\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-111083:\nUsing the values in the table, we have\n\n$$\n\\begin{aligned}P(X=1\\,\\,\\text{or}\\,\\,Y<2) & =P((X,Y)\\in \\{(0,1),(1,1),(1,2),(2,1)\\}) \\\\  & =P((X,Y)=(0,1))+P((X,Y)=(1,1)) \\\\  & +P((X,Y)=(1,2))+P((X,Y)=(2,1)) \\\\  & =f(0,1)+f(1,1)+f(1,2)+f(2,1) \\\\  & =0.1+0.25+0.1+0.25 \\\\  & =0.7.\\end{aligned}\n$$",
+      "fields": [
+        {
+          "key": "q-111083/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "0.35"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "0.25"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "0.6"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "0.7"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "0.65"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

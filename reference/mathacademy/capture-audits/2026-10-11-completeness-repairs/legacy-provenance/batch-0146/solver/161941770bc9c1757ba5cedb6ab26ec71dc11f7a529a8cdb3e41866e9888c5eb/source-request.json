@@ -1,0 +1,606 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-123435\", \"problem\": \"Find $\\\\int ⟨{e}^{t+1},\\\\,12\\\\operatorname{sin}⁡(3t)⟩\\\\,\\\\text{d}t.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-18279\", \"problem\": \"Determine the entry ${a}_{12}^{′}$ in the inverse of a matrix $A=[\\\\begin{aligned}1 & -2 & 4 \\\\\\\\ 0 & 3 & 1 \\\\\\\\ -1 & 0 & 2\\\\end{aligned}].$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-104439\", \"problem\": \"The entry ${a}_{22}^{′}$ in the inverse of the matrix\\n$A=[\\\\begin{aligned}1 & 2 & 1 \\\\\\\\ -1 & k & 2 \\\\\\\\ 0 & 2 & 1\\\\end{aligned}]$\\nequals $-\\\\frac{1}{4}$ and $det(A)=k-4.$ Find the value of $k.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-3594\", \"problem\": \"$\\\\int \\\\frac{1}{\\\\sqrt{-{x}^{2}-8x-15}}\\\\,\\\\text{d}x=$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-7196\", \"problem\": \"The acceleration $a$ at time $t$ of a particle $P$ moving in the $xy$-plane is given by\\n\\n$$\\na=⟨1,2⟩.\\n$$\\n\\nGiven that the particle has velocity $v=⟨4,3⟩$ when $t=1$, calculate the velocity vector of $P$ at time $t.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-51343\", \"problem\": \"The acceleration $a$ at time $t$ of a particle $P$ moving in the $xy$-plane is given by\\n\\n$$\\na(t)=⟨{e}^{2t},{e}^{3t}⟩.\\n$$\\n\\nGiven that the particle has velocity $v=⟨{e}^{2},{e}^{3}⟩$ when $t=1,$ calculate the velocity vector of $P$ at time $t.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-31628\", \"problem\": \"The acceleration $a$ at time $t$ of a particle $P$ moving in the $xy$-plane is given by\\n\\n$$\\na(t)=⟨8{t}^{3},-1⟩.\\n$$\\n\\nGiven that the particle has velocity $v=⟨-1,\\\\,3⟩$ when $t=1,$ calculate the velocity vector of $P$ at time $t=3.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-83497\", \"problem\": \"The acceleration $a$ at time $t$ of a particle $P$ moving in the $xy$-plane is given by\\n\\n$$\\na(t)=⟨12(1+2t)^{3},9(1-3t)^{2}⟩.\\n$$\\n\\nGiven that the particle has velocity $v=⟨1,6⟩$ when $t=0,$ calculate the velocity vector of $P$ at time $t=1.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-31634\", \"problem\": \"The acceleration $a$ at time $t$ of a particle $P$ moving in the $xy$-plane is given by\\n\\n$$\\na=⟨3{t}^{2}-10t,2t-4⟩,\\\\,-\\\\infty <t<\\\\infty .\\n$$\\n\\nGiven that the particle has velocity $v=⟨-18,-8⟩$ when $t=3,$ calculate the times at which the particle is stationary.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-83506\", \"problem\": \"The acceleration $a$ at time $t$ of a particle $P$ moving in the $xy$-plane is given by\\n\\n$$\\na(t)=⟨2\\\\operatorname{sin}⁡(2t),2\\\\operatorname{cos}⁡(2t)⟩,\\\\,0\\\\le t<\\\\pi .\\n$$\\n\\nGiven that the particle has velocity $v=⟨1,1⟩$ when $t=\\\\frac{\\\\pi }{4},$ calculate the times at which the particle is stationary.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-7988\", \"problem\": \"Find the Cartesian equation of the hyperbola $x=6\\\\operatorname{sec}⁡t,\\\\,y=\\\\sqrt{7}\\\\operatorname{tan}⁡t.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-39996\", \"problem\": \"What is the sum of the first $N$ terms of a geometric series $3+15+75+⋯\\\\,?$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-73425\", \"problem\": \"What is the sum of the first $N$ terms of a geometric series if the $4$th term is $384$ and the common ratio is $4?$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-9608\", \"problem\": \"Use the first three terms of the Taylor expansion for $f(x)=\\\\sqrt{x}$ about $x=9$ to approximate the value of $\\\\sqrt{10}.$ Give your answer to $5$ decimal places.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-126844\", \"problem\": \"Find the first three non-zero terms in the Taylor expansion of $\\\\operatorname{ln}⁡(3x)$ about the point $x=2.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-7217\", \"problem\": \"The velocity $v$ at time $t$ of a particle $P$ moving in the $xy$-plane is given by\\n\\n$$\\nv=⟨t(3t-2),\\\\,8{t}^{3}⟩.\\n$$\\n\\nGiven that the particle is at the position $(30,90)$ when $t=3,$ calculate the position vector of $P$ at time $t.$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-123435:\nTo integrate a vector-valued function, we integrate each component separately:\n\n$$\n\\begin{aligned}\\int ⟨{e}^{t+1},\\,12\\operatorname{sin}⁡(3t)⟩\\text{d}t=⟨\\int {e}^{t+1}\\,\\text{d}t,\\,\\int 12\\operatorname{sin}⁡(3t)\\,\\text{d}t⟩.\\end{aligned}\n$$\n\n- For $x(t)={e}^{t+1},$ we have\n\n$$\n\\begin{aligned}\\int x(t)\\,\\text{d}t=\\int {e}^{t+1}\\text{d}t={e}^{t+1}+{c}_{1}.\\end{aligned}\n$$\n\n- For $y(t)=12\\operatorname{sin}⁡(3t),$ we calculate its integral using substitution. So, we let $u=3t.$ Then\n\n$$\n\\frac{\\text{d}u}{\\text{d}t}=3\\,⟹\\,\\text{d}t=\\frac{1}{3}\\text{d}u.\n$$\n\nTherefore,  we have\n\n$$\n\\begin{aligned}\\int y(t)\\,\\text{d}t & =\\int 12\\operatorname{sin}⁡(3t)\\,\\text{d}t \\\\  & =\\int 12\\operatorname{sin}⁡u\\cdot \\frac{1}{3}\\text{d}u \\\\  & =\\frac{12}{3}\\int \\operatorname{sin}⁡u\\,\\text{d}u \\\\  & =4(-\\operatorname{cos}⁡u)+{c}_{2} \\\\  & =-4\\operatorname{cos}⁡(3t)+{c}_{2}.\\end{aligned}\n$$\n\nFinally, we get\n\n$$\n\\begin{aligned}\\int ⟨{e}^{t+1},\\,12\\operatorname{sin}⁡(3t)⟩\\text{d}t & =⟨{e}^{t+1}+{c}_{1},\\,-4\\operatorname{cos}⁡(3t)+{c}_{2}⟩ \\\\  & =⟨{e}^{t+1},\\,-4\\operatorname{cos}⁡(3t)⟩+⟨{c}_{1},\\,{c}_{2}⟩ \\\\  & =⟨{e}^{t+1},\\,-4\\operatorname{cos}⁡(3t)⟩+C.\\end{aligned}\n$$\n\nq-18279:\nFirst, we need to find the determinant of $A:$\n\n$$\n\\begin{aligned}\\text{det}(A)=|\\begin{aligned}1 & -2 & 4 \\\\ 0 & 3 & 1 \\\\ -1 & 0 & 2\\end{aligned}| & =1|\\begin{aligned}3 & 1 \\\\ 0 & 2\\end{aligned}|-(-2)|\\begin{aligned}0 & 1 \\\\ -1 & 2\\end{aligned}|+4|\\begin{aligned}0 & 3 \\\\ -1 & 0\\end{aligned}| \\\\  & =1(6-0)+2(0+1)+4(0+3) \\\\  & =6+2+12 \\\\  & =20.\\end{aligned}\n$$\n\n \n\nSince we want the entry ${a}_{12}^{′}$ in ${A}^{-1},$ we need to know the value of ${c}_{21}$ in the matrix of cofactors. For this, we use the formula to get\n\n$$\n\\begin{aligned}{c}_{21} & =(-1)^{2+1}|\\begin{aligned}-2 & 4 \\\\ 0 & 2\\end{aligned}| \\\\  & =-|\\begin{aligned}-2 & 4 \\\\ 0 & 2\\end{aligned}| \\\\  & =-(-4-0) \\\\  & =4.\\end{aligned}\n$$\n\nThen, since ${A}^{-1}=\\frac{1}{det(A)}{C}^{T},$ we have\n\n$$\n\\begin{aligned}{a}_{12}^{′}=\\frac{1}{\\text{det}(A)}{c}_{21}=\\frac{1}{20}\\cdot 4=\\frac{1}{5}.\\end{aligned}\n$$\n\nq-104439:\nFirst, note that we are given the determinant of $A:$\n\n$$\ndet(A)=k-4\n$$\n\nSince we want the entry ${a}_{22}^{′}$ in ${A}^{-1},$ we need to know the value of ${c}_{22}$ in the matrix of cofactors. For this, we use the formula to get\n\n$$\n\\begin{aligned}{c}_{22} & =(-1)^{2+2}|\\begin{aligned}1 & 1 \\\\ 0 & 1\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 1 \\\\ 0 & 1\\end{aligned}| \\\\  & =1-0 \\\\  & =1\\end{aligned}\n$$\n\nThen, since ${A}^{-1}=\\frac{1}{det(A)}{C}^{T},$ we have\n\n$$\n\\begin{aligned}{a}_{22}^{′} & =\\frac{1}{\\text{det}(A)}{c}_{22} \\\\  & =\\frac{1}{k-4}\\cdot 1 \\\\  & =\\frac{1}{k-4}.\\end{aligned}\n$$\n\nFinally, since we are told that ${a}_{22}^{′}=-\\frac{1}{4}$, we have\n\n$$\n\\begin{aligned}-\\frac{1}{4} & =\\frac{1}{k-4} \\\\ k-4 & =-4 \\\\ k & =0.\\end{aligned}\n$$\n\nq-3594:\nFirst, we complete the square for the argument of the square root in the denominator:\n\n$$\n\\begin{aligned}-{x}^{2}-8x-15 & =-({x}^{2}+8x+15) \\\\  & =-({x}^{2}+2\\cdot 4x+[{4}^{2}-{4}^{2}]+15) \\\\  & =-((x+4)^{2}-1) \\\\  & =1-(x+4)^{2}\\end{aligned}\n$$\n\nSubstituting the above in the given integral, we get\n\n$$\n\\int \\frac{1}{\\sqrt{-{x}^{2}-8x-15}}\\,\\text{d}x=\\int \\frac{1}{\\sqrt{1-(x+4)^{2}}}\\,\\text{d}x.\n$$\n\nThis resembles the basic integral for inverse sine:\n\n$$\n\\int \\frac{1}{\\sqrt{1-{u}^{2}}}\\,\\text{d}u=\\operatorname{arcsin}⁡u+C\n$$\n\nThe only difference is that instead of $u$ as the variable, we have $(x+4).$\n\nSo, let's perform the substitution\n\n$$\nu=x+4.\n$$\n\nDifferentiating, we get \n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=1\\,⟹\\,\\text{d}x=\\text{d}u.\n$$\n\nFinally, we write the integral in terms of $u,$ and evaluate:\n\n$$\n\\begin{aligned}\\begin{aligned}\\int \\frac{1}{\\sqrt{-{x}^{2}-8x-15}}\\,\\text{d}x & =\\int \\frac{1}{\\sqrt{1-(x+4)^{2}}}\\,\\text{d}x \\\\  & =\\int \\frac{1}{\\sqrt{1-{u}^{2}}}\\,\\text{d}u \\\\  & =\\operatorname{arcsin}⁡u+C \\\\  & =\\operatorname{arcsin}⁡(x+4)+C.\\end{aligned}\\end{aligned}\n$$\n\nq-7196:\nTo compute the velocity vector, we need to integrate the acceleration vector:\n\n$$\n\\begin{aligned}v(t) & =\\int a(t)\\,\\text{d}t \\\\  & =\\int ⟨1,2⟩\\,\\text{d}t \\\\  & =⟨\\int 1\\,\\text{d}t,\\int 2\\,\\text{d}t⟩ \\\\  & =⟨t+{C}_{1},2t+{C}_{2}⟩\\end{aligned}\n$$\n\nNow, we can solve for the constants of integration using the fact that $v(1)=⟨4,3⟩.$ Substituting $t=1,$ we get\n\n$$\n\\begin{aligned}v(1) & =⟨1+{C}_{1},2(1)+{C}_{2}⟩ \\\\ ⟨4,3⟩ & =⟨1+{C}_{1},2+{C}_{2}⟩.\\end{aligned}\n$$\n\nSo, we must have\n\n$$\n\\begin{aligned}4 & =1+{C}_{1} \\\\ {C}_{1} & =3,\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}3 & =2+{C}_{2} \\\\ {C}_{2} & =1.\\end{aligned}\n$$\n\nTherefore, the velocity vector is\n\n$$\nv=⟨t+3,2t+1⟩.\n$$\n\nq-51343:\nTo compute the velocity vector, we need to integrate the acceleration vector:\n\n$$\n\\begin{aligned}v(t) & =\\int a(t)\\,\\text{d}t \\\\  & =\\int ⟨{e}^{2t},{e}^{3t}⟩\\,\\text{d}t \\\\  & =⟨\\int {e}^{2t}\\,\\text{d}t,\\int {e}^{3t}\\,\\text{d}t⟩ \\\\  & =⟨\\frac{1}{2}{e}^{2t}+{C}_{1},\\frac{1}{3}{e}^{3t}+{C}_{2}⟩\\,.\\end{aligned}\n$$\n\nNow, we can solve for the constants of integration using the fact that $v(1)=⟨{e}^{2},{e}^{3}⟩.$ Substituting $t=1,$ we get\n\n$$\n\\begin{aligned}v(1) & =⟨\\frac{1}{2}{e}^{2(1)}+{C}_{1},\\frac{1}{3}{e}^{3(1)}+{C}_{2}⟩ \\\\ ⟨{e}^{2},{e}^{3}⟩ & =⟨\\frac{1}{2}{e}^{2}+{C}_{1},\\frac{1}{3}{e}^{3}+{C}_{2}⟩\\,.\\end{aligned}\n$$\n\nSo, we must have\n\n$$\n\\begin{aligned}{e}^{2} & =\\frac{1}{2}{e}^{2}+{C}_{1} \\\\ {C}_{1} & =\\frac{1}{2}{e}^{2},\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}{e}^{3} & =\\frac{1}{3}{e}^{3}+{C}_{2} \\\\ {C}_{2} & =\\frac{2}{3}{e}^{3}.\\end{aligned}\n$$\n\nTherefore, the velocity vector is\n\n$$\nv=⟨\\frac{1}{2}{e}^{2t}+\\frac{1}{2}{e}^{2},\\frac{1}{3}{e}^{3t}+\\frac{2}{3}{e}^{3}⟩\\,.\n$$\n\nq-31628:\nTo compute the velocity vector, we need to integrate the acceleration vector:\n\n$$\n\\begin{aligned}v(t) & =\\int a(t)\\,\\text{d}t \\\\  & =\\int ⟨8{t}^{3},-1⟩\\,\\text{d}t \\\\  & =⟨\\int 8{t}^{3}\\,\\text{d}t,\\,\\int -1\\,\\text{d}t⟩ \\\\  & =⟨2{t}^{4}+{C}_{1},\\,-t+{C}_{2}⟩.\\end{aligned}\n$$\n\nNow, we can solve for the constants of integration using the fact that $v(1)=⟨-1,3⟩.$ Substituting $t=1,$ we get\n\n$$\n\\begin{aligned}v(1) & =⟨2(1)^{4}+{C}_{1},\\,-(1)+{C}_{2}⟩ \\\\ ⟨-1,3⟩ & =⟨2+{C}_{1},\\,-1+{C}_{2}⟩,\\end{aligned}\n$$\n\nso we must have ${C}_{1}=-3$ and ${C}_{2}=4.$ Therefore, the velocity is given by\n\n$$\n\\begin{aligned}v(t) & =⟨2{t}^{4}-3,\\,-t+4⟩.\\end{aligned}\n$$\n\nFinally, the velocity at time $t=3$ is\n\n$$\n\\begin{aligned}v(3) & =⟨2(3)^{4}-3,\\,-(3)+4⟩ \\\\  & =⟨159,\\,1⟩.\\end{aligned}\n$$\n\nq-83497:\nTo compute the velocity vector, we need to integrate the acceleration vector:\n\n$$\n\\begin{aligned}v(t) & =\\int a(t)\\,\\text{d}t \\\\  & =\\int ⟨12(1+2t)^{3},9(1-3t)^{2}⟩\\,\\text{d}t \\\\  & =⟨\\int 12(1+2t)^{3}\\,\\text{d}t,\\int 9(1-3t)^{2}\\,\\text{d}t⟩ \\\\  & =⟨\\frac{3}{2}(1+2t)^{4}+{C}_{1},\\,-(1-3t)^{3}+{C}_{2}⟩\\end{aligned}\n$$\n\nNow, we can solve for the constants of integration using the fact that $v(0)=⟨1,6⟩.$ Substituting $t=0,$ we get\n\n$$\n\\begin{aligned}v(0) & =⟨\\frac{3}{2}(1+2(0))^{4}+{C}_{1},\\,-(1-3(0))^{3}+{C}_{2}⟩ \\\\ ⟨1,6⟩ & =⟨\\frac{3}{2}+{C}_{1},\\,-1+{C}_{2}⟩,\\end{aligned}\n$$\n\nso we must have ${C}_{1}=-\\frac{1}{2}$ and ${C}_{2}=7.$ Therefore, the velocity is given by\n\n$$\n\\begin{aligned}v(t) & =⟨\\frac{3}{2}(1+2t)^{4}-\\frac{1}{2},\\,-(1-3t)^{3}+7⟩.\\end{aligned}\n$$\n\nFinally, the velocity at time $t=1$ is\n\n$$\n\\begin{aligned}v(1) & =⟨\\frac{3}{2}(1+2(1))^{4}-\\frac{1}{2},\\,-(1-3(1))^{3}+7⟩ \\\\  & =⟨121,15⟩.\\end{aligned}\n$$\n\nq-31634:\nThe particle is stationary when its velocity is zero. So first, we need to compute the velocity of the particle.\n\nTo compute the velocity vector, we need to integrate the acceleration vector:\n\n$$\n\\begin{aligned}v(t) & =\\int a(t)\\,\\text{d}t \\\\  & =\\int ⟨3{t}^{2}-10t,2t-4⟩\\,\\text{d}t \\\\  & =⟨\\int (3{t}^{2}-10t)\\,\\text{d}t,\\int (2t-4)\\,\\text{d}t⟩ \\\\  & =⟨{t}^{3}-5{t}^{2}+{C}_{1},\\,{t}^{2}-4t+{C}_{2}⟩\\end{aligned}\n$$\n\nNow, we can solve for the constants of integration using the fact that $v(3)=⟨-18,-8⟩.$ Substituting $t=3,$ we get\n\n$$\n\\begin{aligned}v(3) & =⟨(3)^{3}-5(3)^{2}+{C}_{1},\\,(3)^{2}-4(3)+{C}_{2}⟩ \\\\ ⟨-18,-8⟩ & =⟨-18+{C}_{1},\\,-3+{C}_{2}⟩,\\end{aligned}\n$$\n\nso we must have ${C}_{1}=0$ and ${C}_{2}=-5.$ Therefore, the velocity is given by\n\n$$\n\\begin{aligned}v(t) & =⟨{t}^{3}-5{t}^{2},\\,{t}^{2}-4t-5⟩.\\end{aligned}\n$$\n\nTo find the times at which the particle is stationary, we solve for the times at which the velocity is zero:\n\n$$\n\\begin{aligned}v(t) & =0 \\\\ ⟨{t}^{3}-5{t}^{2},\\,{t}^{2}-4t-5⟩ & =⟨0,0⟩\\end{aligned}\n$$\n\nSo, we need\n\n$$\n\\begin{aligned}{t}^{3}-5{t}^{2}={t}^{2}(t-5) & =0\\,⇒\\,t=0,5, \\\\ {t}^{2}-4t-5=(t+1)(t-5) & =0\\,⇒\\,t=-1,5.\\end{aligned}\n$$\n\nThe only solution that satisfies both equations is $t=5,$ so this is the only value of $t$ when the particle is stationary.\n\nq-83506:\nThe particle is stationary when its velocity is zero. So first, we need to compute the velocity of the particle.\n\nTo compute the velocity vector, we need to integrate the acceleration vector:\n\n$$\n\\begin{aligned}v(t) & =\\int a(t)\\,\\text{d}t \\\\  & =\\int ⟨2\\operatorname{sin}⁡(2t),2\\operatorname{cos}⁡(2t)⟩\\,\\text{d}t \\\\  & =⟨\\int 2\\operatorname{sin}⁡(2t)\\,\\text{d}t,\\int 2\\operatorname{cos}⁡(2t)\\,\\text{d}t⟩ \\\\  & =⟨-\\operatorname{cos}⁡(2t)+{C}_{1},\\,\\operatorname{sin}⁡(2t)+{C}_{2}⟩\\end{aligned}\n$$\n\nNow, we can solve for the constants of integration using the fact that $v(\\frac{\\pi }{4})=⟨1,1⟩.$ Substituting $t=\\frac{\\pi }{4},$ we get\n\n$$\n\\begin{aligned}v(\\frac{\\pi }{4}) & =⟨-\\operatorname{cos}⁡(2\\cdot \\frac{\\pi }{4})+{C}_{1},\\,\\operatorname{sin}⁡(2\\cdot \\frac{\\pi }{4})+{C}_{2}⟩ \\\\ ⟨1,1⟩ & =⟨{C}_{1},\\,1+{C}_{2}⟩,\\end{aligned}\n$$\n\nso we must have ${C}_{1}=1$ and ${C}_{2}=0.$ Therefore, the velocity is given by\n\n$$\n\\begin{aligned}v(t) & =⟨-\\operatorname{cos}⁡(2t)+1,\\,\\operatorname{sin}⁡(2t)⟩.\\end{aligned}\n$$\n\nTo find the times at which the particle is stationary, we solve for the times at which the velocity is zero:\n\n$$\n\\begin{aligned}v(t) & =0 \\\\ ⟨-\\operatorname{cos}⁡(2t)+1,\\,\\operatorname{sin}⁡(2t)⟩ & =⟨0,0⟩\\end{aligned}\n$$\n\nSo, we need\n\n$$\n\\begin{aligned}-\\operatorname{cos}⁡(2t)+1 & =0\\,⇒\\,t=0, \\\\ \\operatorname{sin}⁡(2t) & =0\\,⇒\\,t=0,\\frac{\\pi }{2}.\\end{aligned}\n$$\n\nThe only solution that satisfies both equations is $t=0,$ so this is the only value of $t$ when the particle is stationary.\n\nq-7988:\nTo find the Cartesian equation of the hyperbola, we need to eliminate the parameter $t.$ We can do this using the secant-tangent identity.\n\n- Isolating the $\\operatorname{sec}⁡t$ term in the $x$-equation and squaring, we get\n\n$$\n\\begin{aligned}x & =6\\operatorname{sec}⁡t \\\\ \\frac{x}{6} & =\\operatorname{sec}⁡t \\\\ \\frac{{x}^{2}}{{6}^{2}} & ={sec}^{2}⁡t \\\\ \\frac{{x}^{2}}{36} & ={sec}^{2}⁡t.\\end{aligned}\n$$\n\n- Isolating the $\\operatorname{tan}⁡t$ term in the $y$-equation and squaring, we get]\n\n$$\n\\begin{aligned}y & =\\sqrt{7}\\operatorname{tan}⁡t \\\\ \\frac{y}{\\sqrt{7}} & =\\operatorname{tan}⁡t \\\\ \\frac{{y}^{2}}{{(\\sqrt{7})}^{2}} & ={tan}^{2}⁡t \\\\ \\frac{{y}^{2}}{7} & ={tan}^{2}⁡t.\\end{aligned}\n$$\n\nSubstituting the two equations into the identity ${tan}^{2}⁡t+1={sec}^{2}⁡t$ and rearranging, we get\n\n$$\n\\begin{aligned}{tan}^{2}⁡t+1 & ={sec}^{2}⁡t \\\\ \\frac{{y}^{2}}{7}+1 & =\\frac{{x}^{2}}{36} \\\\ \\frac{{x}^{2}}{36}-\\frac{{y}^{2}}{7} & =1.\\end{aligned}\n$$\n\nq-39996:\nFirst, we determine the common ratio $r$ for this geometric series:\n\n$$\n\\begin{aligned}r & =\\frac{{a}_{2}}{{a}_{1}} \\\\  & =\\frac{15}{3} \\\\  & =5\\end{aligned}\n$$\n\nThe sum of the first $N$ terms of a geometric series can be determined by the formula\n\n$$\n{S}_{N}=\\frac{{a}_{1}(1-{r}^{N})}{1-r}.\n$$\n\nIn this case ${a}_{1}=3$ and $r=5.$ Substituting these values into the formula for ${S}_{N}$ gives the following:\n\n$$\n\\begin{aligned}{S}_{N} & =\\frac{{a}_{1}(1-{r}^{N})}{1-r} \\\\  & =\\frac{3(1-{5}^{N})}{1-5} \\\\  & =\\frac{3(1-{5}^{N})}{(-4)} \\\\  & =-\\frac{3}{4}(1-{5}^{N}) \\\\  & =\\frac{3}{4}({5}^{N}-1)\\end{aligned}\n$$\n\nq-73425:\nWe use the formula for the $n$th term of a geometric sequence to determine ${a}_{1}:$\n\n$$\n\\begin{aligned}{a}_{n} & ={a}_{1}{r}^{n-1} \\\\ 384 & ={a}_{1}\\cdot {4}^{(4-1)} \\\\ 384 & ={a}_{1}\\cdot {4}^{3} \\\\ 384 & =64{a}_{1} \\\\ {a}_{1} & =6\\end{aligned}\n$$\n\nThe sum of the first $N$ terms of a geometric series can be determined by the formula\n\n$$\n{S}_{N}=\\frac{{a}_{1}(1-{r}^{N})}{1-r}.\n$$\n\nIn this case, ${a}_{1}=6$ and $r=4.$ Substituting our values into the formula for ${S}_{N}$ gives:\n\n$$\n\\begin{aligned}{S}_{N} & =\\frac{6(1-{4}^{N})}{1-4} \\\\  & =\\frac{6}{(-3)}(1-{4}^{N}) \\\\  & =-2(1-{4}^{N}) \\\\  & =2({4}^{N}-1)\\end{aligned}\n$$\n\nq-9608:\nWe use Taylor's formula in the form\n\n$$\nf(x)=f(a)+{f}^{′}(a)(x-a)+\\frac{{f}^{″}(a)}{2!}(x-a)^{2}+⋯,\n$$\n\nwith $a=9.$ \n\nCalculating the necessary derivatives, we get\n\n$$\n\\begin{aligned}f(x) & ={x}^{1/2} \\\\ f(9) & =3 \\\\ {f}^{′}(x) & =\\frac{1}{2}{x}^{-1/2} \\\\ {f}^{′}(9) & =\\frac{1}{6} \\\\ {f}^{″}(x) & =-\\frac{1}{4}{x}^{-3/2} \\\\ {f}^{″}(9) & =-\\frac{1}{108}.\\end{aligned}\n$$\n\nSo, the Taylor series is\n\n$$\n\\begin{aligned}\\sqrt{x} & =3+\\frac{1}{6}(x-9)+\\frac{1}{2!}(-\\frac{1}{108})(x-9)^{2}+⋯ \\\\  & =3+\\frac{1}{6}(x-9)-\\frac{1}{216}(x-9)^{2}+⋯\\,.\\end{aligned}\n$$\n\nWe substitute $x=10$ into the above to approximate $\\sqrt{10}.$ We get\n\n$$\n\\begin{aligned}\\sqrt{10} & ≈3+\\frac{1}{6}(10-9)-\\frac{1}{216}(10-9)^{2} \\\\  & =3+\\frac{1}{6}-\\frac{1}{216} \\\\  & =3.162\\,04,\\end{aligned}\n$$\n\nto five decimal places.\n\nq-126844:\nWe use Taylor's theorem in the form\n\n$$\nf(x)=f(a)+{f}^{′}(a)(x-a)+\\frac{{f}^{″}(a)}{2!}(x-a)^{2}+\\frac{{f}^{‴}(a)}{3!}(x-a)^{3}+⋯,\n$$\n\nwith $f(x)=\\operatorname{ln}⁡(3x)$ and $a=2.$ \n\nComputing the required derivatives, we have\n\n$$\n\\begin{aligned}f(x) & =\\operatorname{ln}⁡(3x) \\\\ f(2) & =\\operatorname{ln}⁡(3\\cdot 2)=\\operatorname{ln}⁡6 \\\\ {f}^{′}(x) & =\\frac{1}{x} \\\\ {f}^{′}(2) & =\\frac{1}{2} \\\\ {f}^{″}(x) & =-\\frac{1}{{x}^{2}} \\\\ {f}^{″}(2) & =-\\frac{1}{{2}^{2}}=-\\frac{1}{4}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}\\operatorname{ln}⁡(3x) & =\\operatorname{ln}⁡6+(\\frac{1}{2})(x-2)+\\frac{1}{2!}(-\\frac{1}{4})(x-2)^{2}+⋯ \\\\  & =\\operatorname{ln}⁡6+\\frac{1}{2}(x-2)-\\frac{1}{8}(x-2)^{2}+⋯\\,.\\end{aligned}\n$$\n\nq-7217:\nTo compute the position vector, we need to integrate the velocity vector:\n\n$$\n\\begin{aligned}r(t) & =\\int v(t)\\,\\text{d}t \\\\  & =\\int ⟨t(3t-2),\\,8{t}^{3}⟩\\,\\text{d}t \\\\  & =⟨\\int t(3t-2)\\,\\text{d}t,\\,\\int 8{t}^{3}\\,\\text{d}t⟩ \\\\  & =⟨{t}^{3}-{t}^{2}+{C}_{1},\\,2{t}^{4}+{C}_{2}⟩\\end{aligned}\n$$\n\nNow, we can solve for the constants of integration using the fact that $r(3)=⟨30,90⟩.$ Substituting $t=3,$ we get\n\n$$\n\\begin{aligned}r(3) & =⟨(3)^{3}-(3)^{2}+{C}_{1},\\,2(3)^{4}+{C}_{2}⟩ \\\\ ⟨30,90⟩ & =⟨18+{C}_{1},162+{C}_{2}⟩,\\end{aligned}\n$$\n\nso we must have ${C}_{1}=12$ and ${C}_{2}=-72.$ Therefore, the position vector is\n\n$$\nr(t)=⟨{t}^{3}-{t}^{2}+12,\\,2{t}^{4}-72⟩.\n$$",
+      "answer_fields": [
+        {
+          "key": "q-123435/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "⟨{e}^{t},\\,-4\\operatorname{cos}⁡t⟩+C",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "⟨{e}^{t+1},\\,4\\operatorname{cos}⁡(3t)⟩+C",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "⟨{e}^{3t},\\,3\\operatorname{sin}⁡(4t)⟩+C",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "⟨{e}^{t-1},\\,-4\\operatorname{cos}⁡(3t)⟩+C",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "⟨{e}^{t+1},\\,-4\\operatorname{cos}⁡(3t)⟩+C",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-18279/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{1}{20}",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "5",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{1}{4}",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "4",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{5}",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-104439/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "-2",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "-1",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "0",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "2",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "1",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-3594/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\operatorname{arctan}⁡(x+4)+C",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "\\operatorname{arcsin}⁡(x-4)+C",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "\\operatorname{arcsin}⁡(\\frac{x-4}{4})+C",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "\\operatorname{arcsin}⁡(x+4)+C",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "\\operatorname{arccos}⁡(\\frac{x-4}{4})+C",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-7196/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "v=⟨t+3,2t+1⟩",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "v=⟨t+4,2t+3⟩",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "v=⟨3t+1,4t+2⟩",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "v=⟨2t+4,4t+2⟩",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "v=⟨4t+3,3t+1⟩",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-51343/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "v=⟨\\frac{1}{2}{e}^{2t}-\\frac{3}{2}{e}^{2},\\frac{1}{3}{e}^{3t}+\\frac{2}{3}{e}^{3}⟩",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "v=⟨\\frac{3}{2}{e}^{2t}+\\frac{3}{2}{e}^{2},\\frac{1}{3}{e}^{3t}+\\frac{2}{3}{e}^{3}⟩",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "v=⟨\\frac{1}{2}{e}^{2t}-\\frac{1}{2}{e}^{2},\\frac{1}{3}{e}^{3t}-\\frac{2}{3}{e}^{3}⟩",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "v=⟨\\frac{1}{2}{e}^{2t}+\\frac{1}{2}{e}^{2},\\frac{1}{3}{e}^{3t}+\\frac{2}{3}{e}^{3}⟩",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "v=⟨\\frac{1}{2}{e}^{2t}+\\frac{3}{2}{e}^{2},\\frac{2}{3}{e}^{3t}+\\frac{2}{3}{e}^{3}⟩",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-31628/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "v(3)=⟨-3,\\,4⟩",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "v(3)=⟨159,\\,1⟩",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "v(3)=⟨6,\\,-3⟩",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "v(3)=⟨162,\\,1⟩",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "v(3)=⟨162,\\,-3⟩",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-83497/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "v(1)=⟨-66,21⟩",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "v(1)=⟨85,-8⟩",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "v(1)=⟨112,10⟩",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "v(1)=⟨32,-49⟩",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "v(1)=⟨121,15⟩",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-31634/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "t=1",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "t=0",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "text",
+              "value": "No stationary points",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "t=5",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "t=-1",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-83506/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "t=0,\\frac{\\pi }{2}",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "t=\\frac{\\pi }{4}",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "t=0",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "t=\\frac{\\pi }{2}",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "text",
+              "value": "No stationary points",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-7988/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{{x}^{2}}{6}-\\frac{{y}^{2}}{\\sqrt{7}}=1",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{x}^{2}}{6}-\\frac{{y}^{2}}{7}=1",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{x}^{2}}{36}-\\frac{{y}^{2}}{\\sqrt{7}}=1",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{x}^{2}}{36}-\\frac{{y}^{2}}{7}=1",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{{x}^{2}}{7}-\\frac{{y}^{2}}{36}=1",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-39996/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{3}{4}({5}^{N}-1)",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{1}{2}({5}^{N}-1)",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{3}{4}(1-{5}^{N})",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{5}{3}({3}^{N}-1)",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{5}{3}(1-{3}^{N})",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-73425/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "{4}^{N}-1",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "3({4}^{N}-1)",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "2({4}^{N}-1)",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "{4}^{N}-3",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "{4}^{N}-2",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-9608/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\sqrt{10}≈3.165\\,12",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "\\sqrt{10}≈3.164\\,39",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "\\sqrt{10}≈3.162\\,04",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "\\sqrt{10}≈3.161\\,97",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "\\sqrt{10}≈3.161\\,12",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-126844/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\operatorname{ln}⁡(3x)=\\operatorname{ln}⁡6+\\frac{1}{2}(x-2)-\\frac{1}{8}(x-2)^{2}+⋯",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "\\operatorname{ln}⁡(3x)=\\operatorname{ln}⁡6+\\frac{1}{2}(x-2)-\\frac{1}{4}(x-2)^{2}+⋯",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "\\operatorname{ln}⁡(3x)=\\operatorname{ln}⁡6+(x-2)-\\frac{1}{3}(x-2)^{2}+⋯",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "\\operatorname{ln}⁡(3x)=\\operatorname{ln}⁡6-(x-2)+\\frac{1}{4}(x-2)^{2}+⋯",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "\\operatorname{ln}⁡(3x)=\\operatorname{ln}⁡6-\\frac{1}{2}(x-2)^{2}+\\frac{1}{8}(x-2)^{4}+⋯",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-7217/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "r=⟨{t}^{3}-2{t}^{2}+2,\\,{t}^{4}-24⟩",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "r=⟨{t}^{3}-{t}^{2}+2,\\,2{t}^{4}-42⟩",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "r=⟨{t}^{3}-{t}^{2}+2,\\,2{t}^{4}-24⟩",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "r=⟨{t}^{3}-{t}^{2},\\,2{t}^{4}-42⟩",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "r=⟨{t}^{3}-{t}^{2}+12,\\,2{t}^{4}-72⟩",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": []
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

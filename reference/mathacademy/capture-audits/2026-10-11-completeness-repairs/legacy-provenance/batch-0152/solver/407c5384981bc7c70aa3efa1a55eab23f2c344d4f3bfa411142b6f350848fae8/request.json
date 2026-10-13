@@ -1,0 +1,142 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-149570\", \"problem\": \"| **Years in the 1st division ($x$)** | $44$ | $38$ | $32$ | $30$ |\\n| --- | --- | --- | --- | --- |\\n| **Number of Championships ($y$)** | $4$ | $3$ | $3$ | $6$ |\\n\\nThe table above shows the number of years four English soccer teams have been in the top division and the number of national championships they have won. \\nCompute the covariance of the data sets.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-149617\", \"problem\": \"Consider the following data sets:\\n\\n$$\\nx=\\\\{6,\\\\,4,\\\\,8,\\\\,6\\\\},\\\\,y=\\\\{4,\\\\,7,\\\\,11,\\\\,14\\\\}\\n$$\\n\\nYou're given that $\\\\overset{―}{x}=6$ and $\\\\overset{―}{y}=9.$ Calculate $\\\\text{Cov}(x,y).$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-5772\", \"problem\": \"What is the expected value of one roll of a ten-sided die?\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-127373\", \"problem\": \"A deck contains $10$ cards labeled with the numbers $4$, $7$, $10,…,31.$ If one card is randomly drawn from the deck, what is its expected value?\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-149570:\nThe (population) covariance of the data sets $x=\\{{x}_{1},{x}_{2},…,{x}_{n}\\}$ and $y=\\{{y}_{1},{y}_{2},…,{y}_{n}\\}$ is given by \n\n$$\n\\text{Cov}(x,y)=\\frac{1}{n}{\\sum }_{i=1}^{n}({x}_{i}-\\overset{―}{x})({y}_{i}-\\overset{―}{y}),\n$$\n\nwhere $\\overset{―}{x}=\\frac{1}{n}{\\sum }_{i=1}^{n}{x}_{i}$ and $\\overset{―}{y}=\\frac{1}{n}{\\sum }_{i=1}^{n}{y}_{i}$ are the means of the data sets.\n\nFirst, we need to compute the means:\n\n$$\n\\begin{aligned}\\overset{―}{x} & =\\frac{1}{n}{\\sum }_{i=1}^{n}{x}_{i} \\\\  & =\\frac{1}{4}\\cdot (44+38+32+30) \\\\  & =\\frac{1}{4}\\cdot 144 \\\\  & =36 \\\\ \\overset{―}{y} & =\\frac{1}{n}{\\sum }_{i=1}^{n}{y}_{i} \\\\  & =\\frac{1}{4}\\cdot (4+3+3+6) \\\\  & =\\frac{1}{4}\\cdot 16 \\\\  & =4\\end{aligned}\n$$\n\nTherefore, the covariance of our data sets is \n\n$$\n\\begin{aligned}\\text{Cov}(x,y) & =\\frac{1}{n}{\\sum }_{i=1}^{n}({x}_{i}-\\overset{―}{x})({y}_{i}-\\overset{―}{y}) \\\\  & =\\frac{1}{4}[(44\\,-\\,36)(4\\,-\\,4)+(38\\,-\\,36)(3\\,-\\,4)+(32\\,-\\,36)(3\\,-\\,4)+(30\\,-\\,36)(6\\,-\\,4)] \\\\  & =\\frac{1}{4}[(8)(0)+(2)(-1)+(-4)(-1)+(-6)(2)] \\\\  & =\\frac{1}{4}[0+(-2)+4+(-12)] \\\\  & =\\frac{1}{4}\\cdot (-10) \\\\  & =-2.5.\\end{aligned}\n$$\n\nq-149617:\nThe (population) covariance of the data sets $x=\\{{x}_{1},{x}_{2},…,{x}_{n}\\}$ and $y=\\{{y}_{1},{y}_{2},…,{y}_{n}\\}$ is given by \n\n$$\n\\text{Cov}(x,y)=\\frac{1}{n}{\\sum }_{i=1}^{n}({x}_{i}-\\overset{―}{x})({y}_{i}-\\overset{―}{y}),\n$$\n\nwhere $\\overset{―}{x}=\\frac{1}{n}{\\sum }_{i=1}^{n}{x}_{i}$ and $\\overset{―}{y}=\\frac{1}{n}{\\sum }_{i=1}^{n}{y}_{i}$ are the means of the data sets.\n\nTherefore, the covariance of our data sets is\n\n$$\n\\begin{aligned}\\text{Cov}(x,y) & =\\frac{1}{n}{\\sum }_{i=1}^{n}({x}_{i}-\\overset{―}{x})({y}_{i}-\\overset{―}{y}) \\\\  & =\\frac{1}{4}[(6-6)(4-9)+(4-6)(7-9)+(8-6)(11-9)+(6-6)(14-9)] \\\\  & =\\frac{1}{4}[(0)(-5)+(-2)(-2)+(2)(2)+(0)(5)] \\\\  & =\\frac{1}{4}[0+4+4+0] \\\\  & =\\frac{1}{4}\\cdot 8 \\\\  & =2.\\end{aligned}\n$$\n\nq-5772:\nThe expected value of a discrete random variable $X$ with probability mass function $f(x)$ defined over a set $S$ is given by\n\n$$\n\\text{E}[X]={\\sum }_{x\\in S}x\\cdot f(x).\n$$\n\nLet $X$ be the roll of a standard ten-sided die. Then the support is $S=\\{1,2,3,4,5,6,7,8,9,10\\},$ and the corresponding probabilities are all $\\frac{1}{10}:$\n\n$$\nf(1)=f(2)=…=f(10)=\\frac{1}{10}\n$$\n\nSumming up the products of each value of $X$ and its associated probability, we get\n\n$$\n\\begin{aligned}\\text{E}[X] & =1\\cdot f(1)+2\\cdot f(2)+…+10\\cdot f(10) \\\\  & =1(\\frac{1}{10})+2(\\frac{1}{10})+…+10(\\frac{1}{10}) \\\\  & =\\frac{1}{10}+\\frac{2}{10}+…+\\frac{10}{10} \\\\  & =\\frac{1+2+3+4+5+6+7+8+9+10}{10} \\\\  & =\\frac{55}{10} \\\\  & =\\frac{11}{2} \\\\  & =5.5.\\end{aligned}\n$$\n\nq-127373:\nThe expected value of a discrete random variable $X$ with probability mass function $f(x)$ defined over a set $S$ is given by\n\n$$\n\\text{E}[X]={\\sum }_{x\\in S}x\\cdot f(x).\n$$\n\nLet $X$ be the number on a randomly drawn card. Then the support is $S=\\{4,7,10,…,31\\},$ and the corresponding probabilities are all $\\frac{1}{10}:$\n\n$$\nf(4)=f(7)=f(10)=…=f(31)=\\frac{1}{10}\n$$\n\nSumming up the products of each value of $X$ and its associated probability, we get\n\n$$\n\\begin{aligned}\\text{E}[X] & =4\\cdot f(4)+7\\cdot f(7)+10\\cdot f(10)+…+31\\cdot f(10) \\\\  & =\\frac{4}{10}+\\frac{7}{10}+\\frac{10}{10}+…+\\frac{31}{10} \\\\  & =\\frac{4+7+10+13+16+19+22+25+28+31}{10} \\\\  & =\\frac{175}{10} \\\\  & =17.5\\,.\\end{aligned}\n$$",
+      "fields": [
+        {
+          "key": "q-149570/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "3"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "3.5"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "-3"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "2.5"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "-2.5"
+            }
+          ]
+        },
+        {
+          "key": "q-149617/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "6"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "-5"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "-3"
+            }
+          ]
+        },
+        {
+          "key": "q-5772/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "5.5"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "4.5"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "5"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "6"
+            }
+          ]
+        },
+        {
+          "key": "q-127373/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "18"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "17.5"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "15"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "17"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "10"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

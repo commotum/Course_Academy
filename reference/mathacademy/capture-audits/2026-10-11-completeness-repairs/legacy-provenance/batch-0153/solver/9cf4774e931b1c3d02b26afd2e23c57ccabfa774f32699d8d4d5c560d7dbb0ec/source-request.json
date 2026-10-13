@@ -1,0 +1,125 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-97519\", \"problem\": \"Given $X∼B(7,0.9),$ compute $P(5\\\\le X\\\\le 6).$ Round your final answer to $4$ decimal places.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-97516\", \"problem\": \"Given $X∼B(6,0.2),$ compute $P(3\\\\le X\\\\le 5).$ Round your final answer to $4$ decimal places.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-97521\", \"problem\": \"Given that $X∼B(7,0.5),$ compute $P(X\\\\le 6).$ Round your final answer to $4$ decimal places.\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-97519:\nFor a binomial random variable $X∼B(n,p),$ where $n$ is the number of trials, and $p$ is the probability of success on each trial,  we have the following probability mass function:\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{n}{x}){p}^{x}(1-p)^{n-x}\n$$\n\nHere, we have $X∼B(7,0.9),$ so $X$ has the probability mass function\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{7}{x})(0.9)^{x}(0.1)^{7-x}.\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}P(5\\le X\\le 6) & =P(X\\in \\{5,6\\}) \\\\  & =f(5)+f(6) \\\\  & =(\\genfrac{}{}{0pt}{}{7}{5})(0.9)^{5}(0.1)^{7-5}+(\\genfrac{}{}{0pt}{}{7}{6})(0.9)^{6}(0.1)^{7-6} \\\\  & =21(0.9)^{5}(0.1)^{2}+7(0.9)^{6}(0.1) \\\\  & ≈0.4960\\end{aligned}\n$$\n\nto $4$ decimal places.\n\nq-97516:\nFor a binomial random variable $X∼B(n,p),$ where $n$ is the number of trials, and $p$ is the probability of success on each trial,  we have the following probability mass function:\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{n}{x}){p}^{x}(1-p)^{n-x}\n$$\n\nHere, we have $X∼B(6,0.2),$ so $X$ has the probability mass function\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{6}{x})(0.2)^{x}(0.8)^{6-x}.\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}P(3\\le X\\le 5) & =P(X\\in \\{3,4,5\\}) \\\\  & =f(3)+f(4)+f(5) \\\\  & =(\\genfrac{}{}{0pt}{}{6}{3})(0.2)^{3}(0.8)^{6-3}+(\\genfrac{}{}{0pt}{}{6}{4})(0.2)^{4}(0.8)^{6-4}+(\\genfrac{}{}{0pt}{}{6}{5})(0.2)^{5}(0.8)^{6-5} \\\\  & =20(0.2)^{3}(0.8)^{3}+15(0.2)^{4}(0.8)^{2}+6(0.2)^{5}(0.8) \\\\  & ≈0.0988\\end{aligned}\n$$\n\nto $4$ decimal places.\n\nq-97521:\nFor a binomial random variable $X∼B(n,p),$ we have the following probability mass function:\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{n}{x}){p}^{x}(1-p)^{n-x}\n$$\n\nHere, we have $X∼B(7,0.5),$ so $X$ has the probability mass function\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{7}{x})(0.5)^{x}(0.5)^{7-x}.\n$$\n\nComputing $P(X\\le 6)$ will require us to compute $f(x)$ at $x=0,1,2,…,6.$ However, if we compute the complement $P(X>6)$ instead, then we will only have to compute $f(x)$ at $x=7,$ which will result in a much faster computation.\n\nComputing $P(X>6),$ we get\n\n$$\n\\begin{aligned}P(X>6) & =P(X\\in \\{7\\}) \\\\  & =f(7) \\\\  & =(\\genfrac{}{}{0pt}{}{7}{7})(0.5)^{7}(0.5)^{7-7} \\\\  & =(0.5)^{7} \\\\  & ≈0.0078\\end{aligned}\n$$\n\nrounded to $4$ decimal places.\n\nTherefore, we have\n\n$$\n\\begin{aligned}P(X\\le 6) & =1-P(X>6) \\\\  & ≈1-0.0078 \\\\  & =0.9922\\end{aligned}\n$$\n\nrounded to $4$ decimal places.",
+      "answer_fields": [
+        {
+          "key": "q-97519/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "0.4280",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "0.3254",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "0.3783",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "0.4960",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "0.4520",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-97516/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "0.1523",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "0.1319",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "0.0784",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "0.1015",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "0.0988",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-97521/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "0.9922",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "0.9375",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "0.9078",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "0.9547",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "0.9625",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": []
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}
