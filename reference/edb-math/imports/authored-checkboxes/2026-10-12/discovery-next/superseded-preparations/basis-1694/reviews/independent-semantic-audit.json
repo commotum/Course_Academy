@@ -1,0 +1,3747 @@
+{
+  "state": "independent_semantic_audit_complete",
+  "basis": 1692,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "counts": {
+    "augmented_matrix_questions": 11,
+    "necessary_augmented_prompt_clarifications": 3,
+    "optional_augmented_clarifications_omitted": 8,
+    "retained_radio_reclassified_convert": 1,
+    "database_writes": 0
+  },
+  "conclusions": {
+    "augmented_matrix_definition": "Conventional REF applies to the entire matrix, including an augmented final column. The source explicitly applies REF to the coefficient block. Existing keys confirm that intended operation in the three distinguishing cases. Explicitly ask about coefficient matrices in those cases rather than silently changing the stored key.",
+    "necessary_clarification_ids": [
+      "q-42028",
+      "q-72574",
+      "q-72575"
+    ],
+    "q_31919": "Convert: finite completions; II and III are equivalent rather than mutually exclusive."
+  },
+  "definition_sources": [
+    {
+      "title": "University of Nebraska–Lincoln, Row Echelon Forms, Definition 1.2.2",
+      "url": "https://mathbooks.unl.edu/LinearAlgebra/Section-Row-Echelon-Forms.html",
+      "support": "REF requires rightward leading entries and zero rows below nonzero rows; it applies to augmented and coefficient matrices separately."
+    }
+  ],
+  "questions": [
+    {
+      "id": 17592186129771,
+      "ma_id": "q-42006",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 3 & -7 & 1 \\\\ 0 & 4 & 3 & -4 \\\\ 0 & 0 & -2 & 5\\end{aligned}],\\,B=[\\begin{aligned}3 & 1 & -3 & 1 \\\\ 0 & 3 & 0 & 2 \\\\ 0 & 0 & 0 & 0\\end{aligned}],\\,C=[\\begin{aligned}0 & 0 & 2 & 2 \\\\ 0 & -4 & 0 & 2 \\\\ -1 & 2 & 3 & 2\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 3 & -7 & 1 \\\\ 0 & 4 & 3 & -4 \\\\ 0 & 0 & -2 & 5\\end{aligned}],\\,B=[\\begin{aligned}3 & 1 & -3 & 1 \\\\ 0 & 3 & 0 & 2 \\\\ 0 & 0 & 0 & 0\\end{aligned}],\\,C=[\\begin{aligned}0 & 0 & 2 & 2 \\\\ 0 & -4 & 0 & 2 \\\\ -1 & 2 & 3 & 2\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "A",
+        "B"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}2 & 3 & -7 & 1 \\\\ 0 & 4 & 3 & -4 \\\\ 0 & 0 & -2 & 5\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}3 & 1 & -3 & 1 \\\\ 0 & 3 & 0 & 2 \\\\ 0 & 0 & 0 & 0\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}0 & 0 & 2 & 2 \\\\ 0 & -4 & 0 & 2 \\\\ -1 & 2 & 3 & 2\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186324041,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186324484,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186324704,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186324985,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186325798,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "A",
+        "B"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              2,
+              3,
+              -7,
+              1
+            ],
+            [
+              0,
+              4,
+              3,
+              -4
+            ],
+            [
+              0,
+              0,
+              -2,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              3
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              3
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              3,
+              1,
+              -3,
+              1
+            ],
+            [
+              0,
+              3,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              null
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              0,
+              0,
+              2,
+              2
+            ],
+            [
+              0,
+              -4,
+              0,
+              2
+            ],
+            [
+              -1,
+              2,
+              3,
+              2
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              3,
+              2,
+              1
+            ],
+            "issues": [
+              "Row 2 leading column 2 is not right of preceding leading column 3.",
+              "Row 3 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              3,
+              2,
+              1
+            ],
+            "issues": [
+              "Row 2 leading column 2 is not right of preceding leading column 3.",
+              "Row 3 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        }
+      ],
+      "necessary_prompt_clarification": false,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Both interpretations give the same subset; optional clarification omitted.",
+      "prompt_repair": null,
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186324985,
+        "value": "$A$ and $B$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the bottom of the matrix.\n- Each leading entry of a row is in a column to the right of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is in row echelon form (both conditions are satisfied).\n\n$$\nA=[\\begin{aligned}2 & 3 & -7 & 1 \\\\ 0 & 4 & 3 & -4 \\\\ 0 & 0 & -2 & 5\\end{aligned}]\n$$\n\n- The matrix $B$ is in row echelon form (both conditions are satisfied).\n\n$$\nB=[\\begin{aligned}3 & 1 & -3 & 1 \\\\ 0 & 3 & 0 & 2 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\n$$\n\n- The matrix $C$ is not in row echelon form since ${c}_{22}\\ne 0$ (condition II is violated).\n\n$$\nC=[\\begin{aligned}0 & 0 & 2 & 2 \\\\ 0 & -4 & 0 & 2 \\\\ -1 & 2 & 3 & 2\\end{aligned}]\n$$\n\nTherefore, only $A$ and $B$ are in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "76060dac0e54abdff79e0b3cffa9ea75121aedda0e79239a02bee5ab6d7a0c30",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186262994,
+      "ma_id": "q-129228",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}4 & 1 & 2 & 0 \\\\ 0 & -6 & 3 & 9 \\\\ 0 & 0 & -8 & 3 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{aligned}],\\,B=[\\begin{aligned}0 & 7 & 0 & 9 \\\\ 0 & 0 & -2 & 0 \\\\ 0 & 0 & 0 & 8 \\\\ 0 & 0 & 0 & 0\\end{aligned}],\\,C=[\\begin{aligned}0 & 9 & -1 & 2 \\\\ 0 & 0 & 1 & -1 \\\\ 0 & 0 & 0 & 2\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}4 & 1 & 2 & 0 \\\\ 0 & -6 & 3 & 9 \\\\ 0 & 0 & -8 & 3 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{aligned}],\\,B=[\\begin{aligned}0 & 7 & 0 & 9 \\\\ 0 & 0 & -2 & 0 \\\\ 0 & 0 & 0 & 8 \\\\ 0 & 0 & 0 & 0\\end{aligned}],\\,C=[\\begin{aligned}0 & 9 & -1 & 2 \\\\ 0 & 0 & 1 & -1 \\\\ 0 & 0 & 0 & 2\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "A",
+        "B",
+        "C"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}4 & 1 & 2 & 0 \\\\ 0 & -6 & 3 & 9 \\\\ 0 & 0 & -8 & 3 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}0 & 7 & 0 & 9 \\\\ 0 & 0 & -2 & 0 \\\\ 0 & 0 & 0 & 8 \\\\ 0 & 0 & 0 & 0\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}0 & 9 & -1 & 2 \\\\ 0 & 0 & 1 & -1 \\\\ 0 & 0 & 0 & 2\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186259937,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186260011,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186260328,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186260666,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186261670,
+          "value": "$A,$ $B,$ and $C$",
+          "labels": [
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "A",
+        "B",
+        "C"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              4,
+              1,
+              2,
+              0
+            ],
+            [
+              0,
+              -6,
+              3,
+              9
+            ],
+            [
+              0,
+              0,
+              -8,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              -1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              3,
+              4,
+              null
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              3,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              0,
+              7,
+              0,
+              9
+            ],
+            [
+              0,
+              0,
+              -2,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              8
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              2,
+              3,
+              4,
+              null
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              2,
+              3,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              0,
+              9,
+              -1,
+              2
+            ],
+            [
+              0,
+              0,
+              1,
+              -1
+            ],
+            [
+              0,
+              0,
+              0,
+              2
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              2,
+              3,
+              4
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              2,
+              3,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        }
+      ],
+      "necessary_prompt_clarification": false,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Both interpretations give the same subset; optional clarification omitted.",
+      "prompt_repair": null,
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186261670,
+        "value": "$A,$ $B,$ and $C$",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the bottom of the matrix.\n- Each leading entry of a row is in a column to the right of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is in row echelon form (both conditions are satisfied).\n\n$$\nA=[\\begin{aligned}4 & 1 & 2 & 0 \\\\ 0 & -6 & 3 & 9 \\\\ 0 & 0 & -8 & 3 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\n$$\n\n- The matrix $B$ is in row echelon form (both conditions are satisfied).\n\n$$\nB=[\\begin{aligned}0 & 7 & 0 & 9 \\\\ 0 & 0 & -2 & 0 \\\\ 0 & 0 & 0 & 8 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\n$$\n\n- The matrix $C$ is in row echelon form (both conditions are satisfied).\n\n$$\nC=[\\begin{aligned}0 & 9 & -1 & 2 \\\\ 0 & 0 & 1 & -1 \\\\ 0 & 0 & 0 & 2\\end{aligned}]\n$$\n\nTherefore, $A,$ $B,$ and $C$ are in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "7ea6c88446c3f4647a68774388dfdd2529518ba7dc28f4e880d5779b122dbd5f",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186262996,
+      "ma_id": "q-129232",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are **not** in row echelon form?\n\n$$\nA=[\\begin{aligned}0 & -4 & 1 & 2 \\\\ 0 & 0 & 3 & -1 \\\\ 0 & 0 & 6 & 7\\end{aligned}],\\,B=[\\begin{aligned}-6 & 3 & 4 & 0 \\\\ 0 & 9 & 6 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & -4 & 6 \\\\ 0 & 0 & 0 & 5\\end{aligned}],\\,C=[\\begin{aligned}0 & 1 & -4 & 5 & 9 \\\\ 0 & 0 & 3 & -7 & 0 \\\\ 0 & 0 & 2 & 0 & -1 \\\\ 0 & 0 & 0 & 5 & 1\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices are **not** in row echelon form?\n\n$$\nA=[\\begin{aligned}0 & -4 & 1 & 2 \\\\ 0 & 0 & 3 & -1 \\\\ 0 & 0 & 6 & 7\\end{aligned}],\\,B=[\\begin{aligned}-6 & 3 & 4 & 0 \\\\ 0 & 9 & 6 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & -4 & 6 \\\\ 0 & 0 & 0 & 5\\end{aligned}],\\,C=[\\begin{aligned}0 & 1 & -4 & 5 & 9 \\\\ 0 & 0 & 3 & -7 & 0 \\\\ 0 & 0 & 2 & 0 & -1 \\\\ 0 & 0 & 0 & 5 & 1\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "A",
+        "B",
+        "C"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}0 & -4 & 1 & 2 \\\\ 0 & 0 & 3 & -1 \\\\ 0 & 0 & 6 & 7\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": true
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}-6 & 3 & 4 & 0 \\\\ 0 & 9 & 6 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & -4 & 6 \\\\ 0 & 0 & 0 & 5\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}0 & 1 & -4 & 5 & 9 \\\\ 0 & 0 & 3 & -7 & 0 \\\\ 0 & 0 & 2 & 0 & -1 \\\\ 0 & 0 & 0 & 5 & 1\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": true
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186260187,
+          "value": "$A,$ $B,$ and $C$",
+          "labels": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186260687,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186261130,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186261327,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186261407,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "A",
+        "B",
+        "C"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              0,
+              -4,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              3,
+              -1
+            ],
+            [
+              0,
+              0,
+              6,
+              7
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              2,
+              3,
+              3
+            ],
+            "issues": [
+              "Row 3 leading column 3 is not right of preceding leading column 3."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              2,
+              3,
+              3
+            ],
+            "issues": [
+              "Row 3 leading column 3 is not right of preceding leading column 3."
+            ]
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              -6,
+              3,
+              4,
+              0
+            ],
+            [
+              0,
+              9,
+              6,
+              -1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              -4,
+              6
+            ],
+            [
+              0,
+              0,
+              0,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              2,
+              null,
+              3,
+              4
+            ],
+            "issues": [
+              "Nonzero row 4 follows a zero row.",
+              "Nonzero row 5 follows a zero row."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              2,
+              null,
+              3,
+              null
+            ],
+            "issues": [
+              "Nonzero row 4 follows a zero row."
+            ]
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              0,
+              1,
+              -4,
+              5,
+              9
+            ],
+            [
+              0,
+              0,
+              3,
+              -7,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              -1
+            ],
+            [
+              0,
+              0,
+              0,
+              5,
+              1
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              2,
+              3,
+              3,
+              4
+            ],
+            "issues": [
+              "Row 3 leading column 3 is not right of preceding leading column 3."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              2,
+              3,
+              3,
+              4
+            ],
+            "issues": [
+              "Row 3 leading column 3 is not right of preceding leading column 3."
+            ]
+          },
+          "selected_under_stored_predicate": true
+        }
+      ],
+      "necessary_prompt_clarification": false,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Both interpretations give the same subset; optional clarification omitted.",
+      "prompt_repair": null,
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186260187,
+        "value": "$A,$ $B,$ and $C$",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\nI. All the zero rows (rows with only zeros), if any, are placed at the *bottom* of the matrix.\n\nII. Each leading entry of a row is in a column *to the right* of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is not in row echelon form since ${a}_{33}\\ne 0$ (condition II is violated).\n\n$$\nA=[\\begin{aligned}0 & -4 & 1 & 2 \\\\ 0 & 0 & 3 & -1 \\\\ 0 & 0 & 6 & 7\\end{aligned}]\n$$\n\n- The matrix $B$ is not in row echelon form since the third row contains only zeros and it is not at the bottom of the matrix (condition I is violated).\n\n$$\nB=[\\begin{aligned}-6 & 3 & 4 & 0 \\\\ 0 & 9 & 6 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & -4 & 6 \\\\ 0 & 0 & 0 & 5\\end{aligned}]\n$$\n\n- The matrix $C$ is not in row echelon form since ${c}_{33}\\ne 0$ (condition II is violated).\n\n$$\nC=[\\begin{aligned}0 & 1 & -4 & 5 & 9 \\\\ 0 & 0 & 3 & -7 & 0 \\\\ 0 & 0 & 2 & 0 & -1 \\\\ 0 & 0 & 0 & 5 & 1\\end{aligned}]\n$$\n\nTherefore, $A,$ $B,$ and $C$ are **not** in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "c1faca7629a8b4f69e4b275346e6567cdba9422570e19e8821043cfcd5555908",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186262997,
+      "ma_id": "q-129233",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are **not** in row echelon form?\n\n$$\nA=[\\begin{aligned}0 & 0 & 0 & 0 & -3 \\\\ 0 & 5 & 0 & 9 & 3 \\\\ 0 & 0 & 0 & 4 & 6\\end{aligned}],\\,B=[\\begin{aligned}9 & 0 & 6 \\\\ 0 & 2 & 5 \\\\ 0 & 0 & -2 \\\\ 0 & 0 & 0\\end{aligned}],\\,C=[\\begin{aligned}1 & 0 & 3 & 6 \\\\ 0 & 2 & 0 & 1 \\\\ 0 & 0 & 3 & 4\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices are **not** in row echelon form?\n\n$$\nA=[\\begin{aligned}0 & 0 & 0 & 0 & -3 \\\\ 0 & 5 & 0 & 9 & 3 \\\\ 0 & 0 & 0 & 4 & 6\\end{aligned}],\\,B=[\\begin{aligned}9 & 0 & 6 \\\\ 0 & 2 & 5 \\\\ 0 & 0 & -2 \\\\ 0 & 0 & 0\\end{aligned}],\\,C=[\\begin{aligned}1 & 0 & 3 & 6 \\\\ 0 & 2 & 0 & 1 \\\\ 0 & 0 & 3 & 4\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "A"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}0 & 0 & 0 & 0 & -3 \\\\ 0 & 5 & 0 & 9 & 3 \\\\ 0 & 0 & 0 & 4 & 6\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": true
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}9 & 0 & 6 \\\\ 0 & 2 & 5 \\\\ 0 & 0 & -2 \\\\ 0 & 0 & 0\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": false
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}1 & 0 & 3 & 6 \\\\ 0 & 2 & 0 & 1 \\\\ 0 & 0 & 3 & 4\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": false
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186259915,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186260258,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186260724,
+          "value": "$B$ only",
+          "labels": [
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186260833,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186261786,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "A"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              0,
+              0,
+              0,
+              0,
+              -3
+            ],
+            [
+              0,
+              5,
+              0,
+              9,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              4,
+              6
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              5,
+              2,
+              4
+            ],
+            "issues": [
+              "Row 2 leading column 2 is not right of preceding leading column 5."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              null,
+              2,
+              4
+            ],
+            "issues": [
+              "Nonzero row 2 follows a zero row.",
+              "Nonzero row 3 follows a zero row."
+            ]
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              9,
+              0,
+              6
+            ],
+            [
+              0,
+              2,
+              5
+            ],
+            [
+              0,
+              0,
+              -2
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              3,
+              null
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              1,
+              0,
+              3,
+              6
+            ],
+            [
+              0,
+              2,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              3
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              3
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": false
+        }
+      ],
+      "necessary_prompt_clarification": false,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Both interpretations give the same subset; optional clarification omitted.",
+      "prompt_repair": null,
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186259915,
+        "value": "$A$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the *bottom* of the matrix.\n- Each leading entry of a row is in a column *to the right* of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is not in row echelon form since the first row contains only zeros and it is not at the bottom of the matrix (condition I is violated).\n\n$$\nA=[\\begin{aligned}0 & 0 & 0 & 0 & -3 \\\\ 0 & 5 & 0 & 9 & 3 \\\\ 0 & 0 & 0 & 4 & 6\\end{aligned}]\n$$\n\n- The matrix $B$ is in row echelon form (both conditions are satisfied).\n\n$$\nB=[\\begin{aligned}9 & 0 & 6 \\\\ 0 & 2 & 5 \\\\ 0 & 0 & -2 \\\\ 0 & 0 & 0\\end{aligned}]\n$$\n\n- The matrix $C$ is in row echelon form (both conditions are satisfied).\n\n$$\nC=[\\begin{aligned}1 & 0 & 3 & 6 \\\\ 0 & 2 & 0 & 1 \\\\ 0 & 0 & 3 & 4\\end{aligned}]\n$$\n\nTherefore, only $A$ is **not** in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "50c0f176434e6c00c342df34cbf4d201b46d52c846133e4979f41fa707daa611",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186326923,
+      "ma_id": "q-42028",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}],\\,\\,C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices have coefficient matrices in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}],\\,\\,C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "C"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186324081,
+          "value": "$B$ only",
+          "labels": [
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186324649,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186325411,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186325480,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186326069,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              2,
+              0,
+              0,
+              5
+            ],
+            [
+              0,
+              0,
+              2,
+              3
+            ],
+            [
+              0,
+              -2,
+              0,
+              4
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              2
+            ],
+            "issues": [
+              "Row 3 leading column 2 is not right of preceding leading column 3."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              2
+            ],
+            "issues": [
+              "Row 3 leading column 2 is not right of preceding leading column 3."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              2,
+              1,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              11
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              4,
+              1,
+              3
+            ],
+            "issues": [
+              "Row 2 leading column 1 is not right of preceding leading column 4."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              null,
+              1,
+              3
+            ],
+            "issues": [
+              "Nonzero row 2 follows a zero row.",
+              "Nonzero row 3 follows a zero row."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              2,
+              4,
+              6,
+              8
+            ],
+            [
+              0,
+              3,
+              3,
+              6
+            ],
+            [
+              0,
+              0,
+              4,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              2,
+              3,
+              null,
+              4
+            ],
+            "issues": [
+              "Nonzero row 5 follows a zero row."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              3,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        }
+      ],
+      "necessary_prompt_clarification": true,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Full augmented matrix REF gives a different subset, requiring an explicit coefficient-matrix question.",
+      "prompt_repair": {
+        "before": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}],\\,\\,C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+        "after": "Which of the following augmented matrices have coefficient matrices in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}],\\,\\,C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+        "reason": "Clarify the explicitly solution-supported coefficient-block predicate and preserve the existing key."
+      },
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186325480,
+        "value": "$C$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the bottom of the matrix.\n- Each leading entry of a row is in a column to the right of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is not in row echelon form since ${a}_{32}\\ne 0$ (condition II is violated). \n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}]\n$$\n\n- The matrix $B$ is not in row echelon form since the first row contains only zeros and it is not at the bottom of the matrix (condition I is violated).\n\n$$\nB=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}]\n$$\n\n- The matrix $C$ is in row echelon form (both conditions are satisfied).\n\n$$\nC=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}]\n$$\n\nTherefore, only $C$ is in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "c1ef1f2f15d4cd33d9dbc29b89d4e3d86617b5a7f370c72e61935700f1e968b5",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186341835,
+      "ma_id": "q-72570",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}1 & 0 & 1 & 4 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & -4 & 9 & 7 \\\\ 0 & 0 & 5 & 3\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 2 & 0 & 2 & 5 \\\\ 0 & 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 11 & 1\\end{aligned}],\\,\\,C=[\\begin{aligned}7 & 6 & 6 & 8 & 2 \\\\ 0 & 1 & 3 & 6 & 3 \\\\ 0 & 0 & 0 & 4 & 6\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}1 & 0 & 1 & 4 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & -4 & 9 & 7 \\\\ 0 & 0 & 5 & 3\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 2 & 0 & 2 & 5 \\\\ 0 & 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 11 & 1\\end{aligned}],\\,\\,C=[\\begin{aligned}7 & 6 & 6 & 8 & 2 \\\\ 0 & 1 & 3 & 6 & 3 \\\\ 0 & 0 & 0 & 4 & 6\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "B",
+        "C"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}1 & 0 & 1 & 4 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & -4 & 9 & 7 \\\\ 0 & 0 & 5 & 3\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}0 & 2 & 0 & 2 & 5 \\\\ 0 & 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 11 & 1\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}7 & 6 & 6 & 8 & 2 \\\\ 0 & 1 & 3 & 6 & 3 \\\\ 0 & 0 & 0 & 4 & 6\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186340274,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186340787,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186340831,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186340968,
+          "value": "$B$ only",
+          "labels": [
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186341325,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "B",
+        "C"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              1,
+              0,
+              1,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              -4,
+              9,
+              7
+            ],
+            [
+              0,
+              0,
+              5,
+              3
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              4,
+              2,
+              3
+            ],
+            "issues": [
+              "Row 3 leading column 2 is not right of preceding leading column 4."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              null,
+              2,
+              3
+            ],
+            "issues": [
+              "Nonzero row 3 follows a zero row.",
+              "Nonzero row 4 follows a zero row."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              0,
+              2,
+              0,
+              2,
+              5
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              11,
+              1
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              2,
+              3,
+              4
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              2,
+              3,
+              4
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              7,
+              6,
+              6,
+              8,
+              2
+            ],
+            [
+              0,
+              1,
+              3,
+              6,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              4,
+              6
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              4
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              4
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        }
+      ],
+      "necessary_prompt_clarification": false,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Both interpretations give the same subset; optional clarification omitted.",
+      "prompt_repair": null,
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186340787,
+        "value": "$B$ and $C$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the bottom of the matrix.\n- Each leading entry of a row is in a column to the right of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is not in row echelon form since the second row contains only zeros and it is not at the bottom of the matrix (condition I is violated).\n\n$$\nA=[\\begin{aligned}1 & 0 & 1 & 4 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & -4 & 9 & 7 \\\\ 0 & 0 & 5 & 3\\end{aligned}]\n$$\n\n- The matrix $B$  is in row echelon form (both conditions are satisfied).\n\n$$\nB=[\\begin{aligned}0 & 2 & 0 & 2 & 5 \\\\ 0 & 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 11 & 1\\end{aligned}]\n$$\n\n- The matrix $C$ is in row echelon form (both conditions are satisfied).\n\n$$\nC=[\\begin{aligned}7 & 6 & 6 & 8 & 2 \\\\ 0 & 1 & 3 & 6 & 3 \\\\ 0 & 0 & 0 & 4 & 6\\end{aligned}]\n$$\n\nTherefore, only $B$ and $C$ are in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "67b59db4e4ded114e671a7ca2541638b630350ab54824877bad7b056358ea99b",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186341837,
+      "ma_id": "q-72574",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}],\\,\\,B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}],\\,\\,C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices have coefficient matrices in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}],\\,\\,B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}],\\,\\,C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "A",
+        "B"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186339954,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186340248,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186340618,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186340814,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186341137,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "A"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              6,
+              0,
+              0,
+              8,
+              2
+            ],
+            [
+              0,
+              4,
+              0,
+              2,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              4
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              4
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              8,
+              7,
+              5,
+              1
+            ],
+            [
+              0,
+              0,
+              4,
+              5
+            ],
+            [
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              9
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              4,
+              4,
+              4
+            ],
+            "issues": [
+              "Row 4 leading column 4 is not right of preceding leading column 4.",
+              "Row 5 leading column 4 is not right of preceding leading column 4."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              3,
+              null,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              0,
+              1,
+              0,
+              7
+            ],
+            [
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              2,
+              1,
+              4
+            ],
+            "issues": [
+              "Row 2 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              2,
+              1,
+              null
+            ],
+            "issues": [
+              "Row 2 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        }
+      ],
+      "necessary_prompt_clarification": true,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Full augmented matrix REF gives a different subset, requiring an explicit coefficient-matrix question.",
+      "prompt_repair": {
+        "before": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}],\\,\\,B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}],\\,\\,C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+        "after": "Which of the following augmented matrices have coefficient matrices in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}],\\,\\,B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}],\\,\\,C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+        "reason": "Clarify the explicitly solution-supported coefficient-block predicate and preserve the existing key."
+      },
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186340248,
+        "value": "$A$ and $B$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the bottom of the matrix.\n- Each leading entry of a row is in a column to the right of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is in row echelon form (both conditions are satisfied). \n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}]\n$$\n\n- The matrix $B$ is in row echelon form (both conditions are satisfied).\n\n$$\nB=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}]\n$$\n\n- The matrix $C$ is not in row echelon form since ${c}_{21}\\ne 0$ (condition  II is violated).\n\n$$\nC=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}]\n$$\n\nTherefore, only $A$ and $B$ are in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "ea208942c5c8af89644764ce0b8d60c5b1687e0ed7fdb060013176738907cf32",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186341838,
+      "ma_id": "q-72576",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 1 & 3 \\\\ 0 & 0 & 5 \\\\ 0 & 2 & -1 \\\\ 0 & 0 & -2\\end{aligned}],\\,B=[\\begin{aligned}1 & 0 & -2 & 1 & 2 \\\\ 0 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 5 & 8 \\\\ 1 & -4 & 0 & 6 \\\\ 0 & 0 & 2 & 4\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 1 & 3 \\\\ 0 & 0 & 5 \\\\ 0 & 2 & -1 \\\\ 0 & 0 & -2\\end{aligned}],\\,B=[\\begin{aligned}1 & 0 & -2 & 1 & 2 \\\\ 0 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 5 & 8 \\\\ 1 & -4 & 0 & 6 \\\\ 0 & 0 & 2 & 4\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "B"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}2 & 1 & 3 \\\\ 0 & 0 & 5 \\\\ 0 & 2 & -1 \\\\ 0 & 0 & -2\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}1 & 0 & -2 & 1 & 2 \\\\ 0 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & 5\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}2 & 0 & 5 & 8 \\\\ 1 & -4 & 0 & 6 \\\\ 0 & 0 & 2 & 4\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186339167,
+          "value": "$B$ only",
+          "labels": [
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186339572,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186339593,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186339980,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186341167,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "B"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              2,
+              1,
+              3
+            ],
+            [
+              0,
+              0,
+              5
+            ],
+            [
+              0,
+              2,
+              -1
+            ],
+            [
+              0,
+              0,
+              -2
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              2,
+              3
+            ],
+            "issues": [
+              "Row 3 leading column 2 is not right of preceding leading column 3."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              null,
+              2,
+              null
+            ],
+            "issues": [
+              "Nonzero row 3 follows a zero row."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              1,
+              0,
+              -2,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              4,
+              5
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              4,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              2,
+              0,
+              5,
+              8
+            ],
+            [
+              1,
+              -4,
+              0,
+              6
+            ],
+            [
+              0,
+              0,
+              2,
+              4
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              1,
+              3
+            ],
+            "issues": [
+              "Row 2 leading column 1 is not right of preceding leading column 1."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              1,
+              3
+            ],
+            "issues": [
+              "Row 2 leading column 1 is not right of preceding leading column 1."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        }
+      ],
+      "necessary_prompt_clarification": false,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Both interpretations give the same subset; optional clarification omitted.",
+      "prompt_repair": null,
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186339167,
+        "value": "$B$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the bottom of the matrix.\n- Each leading entry of a row is in a column to the right of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is not in row echelon form since the second row contains only zeros and it is not at the bottom of the matrix (condition I is violated).\n\n$$\nA=[\\begin{aligned}2 & 1 & 3 \\\\ 0 & 0 & 5 \\\\ 0 & 2 & -1 \\\\ 0 & 0 & -2\\end{aligned}]\n$$\n\n- The matrix $B$ is in row echelon form (both conditions are satisfied).\n\n$$\nB=[\\begin{aligned}1 & 0 & -2 & 1 & 2 \\\\ 0 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & 5\\end{aligned}]\n$$\n\n- The matrix $C$ is not in row echelon form since ${c}_{21}\\ne 0$ (condition II is violated).\n\n$$\nC=[\\begin{aligned}2 & 0 & 5 & 8 \\\\ 1 & -4 & 0 & 6 \\\\ 0 & 0 & 2 & 4\\end{aligned}]\n$$\n\nTherefore, only $B$ is in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "ec4ca3f5a887a489359ed1e319938004774146f11a2ed4bdb102662040e1d9b1",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186400436,
+      "ma_id": "q-129231",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are **not** in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 0 & 1 \\\\ 0 & 0 & 3 \\\\ 0 & 7 & -1 \\\\ 0 & 0 & 0\\end{aligned}],\\,B=[\\begin{aligned}5 & 0 & 2 & 3 \\\\ 0 & 0 & -1 & -3 \\\\ 0 & 0 & 2 & 1\\end{aligned}],\\,C=[\\begin{aligned}1 & -5 & 0 & 1 & 2 \\\\ 0 & 0 & 2 & -3 & 1 \\\\ 0 & 0 & 0 & 1 & -2\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices are **not** in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 0 & 1 \\\\ 0 & 0 & 3 \\\\ 0 & 7 & -1 \\\\ 0 & 0 & 0\\end{aligned}],\\,B=[\\begin{aligned}5 & 0 & 2 & 3 \\\\ 0 & 0 & -1 & -3 \\\\ 0 & 0 & 2 & 1\\end{aligned}],\\,C=[\\begin{aligned}1 & -5 & 0 & 1 & 2 \\\\ 0 & 0 & 2 & -3 & 1 \\\\ 0 & 0 & 0 & 1 & -2\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "A",
+        "B"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}2 & 0 & 1 \\\\ 0 & 0 & 3 \\\\ 0 & 7 & -1 \\\\ 0 & 0 & 0\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": true
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}5 & 0 & 2 & 3 \\\\ 0 & 0 & -1 & -3 \\\\ 0 & 0 & 2 & 1\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}1 & -5 & 0 & 1 & 2 \\\\ 0 & 0 & 2 & -3 & 1 \\\\ 0 & 0 & 0 & 1 & -2\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": false
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186400438,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186400439,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186400440,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186400441,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186400442,
+          "value": "$A,$ $B,$ and $C$",
+          "labels": [
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "A",
+        "B"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              2,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              7,
+              -1
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              2,
+              null
+            ],
+            "issues": [
+              "Row 3 leading column 2 is not right of preceding leading column 3."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              null,
+              2,
+              null
+            ],
+            "issues": [
+              "Nonzero row 3 follows a zero row."
+            ]
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              5,
+              0,
+              2,
+              3
+            ],
+            [
+              0,
+              0,
+              -1,
+              -3
+            ],
+            [
+              0,
+              0,
+              2,
+              1
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              3
+            ],
+            "issues": [
+              "Row 3 leading column 3 is not right of preceding leading column 3."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              3
+            ],
+            "issues": [
+              "Row 3 leading column 3 is not right of preceding leading column 3."
+            ]
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              1,
+              -5,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              2,
+              -3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              -2
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              3,
+              4
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              3,
+              4
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": false
+        }
+      ],
+      "necessary_prompt_clarification": false,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Both interpretations give the same subset; optional clarification omitted.",
+      "prompt_repair": null,
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186400441,
+        "value": "$A$ and $B$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the *bottom* of the matrix.\n- Each leading entry of a row is in a column *to the right* of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is not in row echelon form since the second row contains only zeros and it is not at the bottom of the matrix (condition I is violated).\n\n$$\nA=[\\begin{aligned}2 & 0 & 1 \\\\ 0 & 0 & 3 \\\\ 0 & 7 & -1 \\\\ 0 & 0 & 0\\end{aligned}]\n$$\n\n- The matrix $B$ is not in row echelon form since ${b}_{33}\\ne 0$ (condition II is violated).\n\n$$\nB=[\\begin{aligned}5 & 0 & 2 & 3 \\\\ 0 & 0 & -1 & -3 \\\\ 0 & 0 & 2 & 1\\end{aligned}]\n$$\n\n- The matrix $C$ is in row echelon form (both conditions are satisfied).\n\n$$\nC=[\\begin{aligned}1 & -5 & 0 & 1 & 2 \\\\ 0 & 0 & 2 & -3 & 1 \\\\ 0 & 0 & 0 & 1 & -2\\end{aligned}]\n$$\n\nTherefore, only $A$ and $B$ are **not** in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "6884cf6330382d924f25ad30ae813973c06525541cb8b8b6bfbbc7fbb25ecca0",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186405146,
+      "ma_id": "q-72575",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices have coefficient matrices that are **not** in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}],\\,B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices have coefficient matrices that are **not** in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}],\\,B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "B"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": false
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": false
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186405148,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186405149,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186405150,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186405151,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186405152,
+          "value": "$B$ only",
+          "labels": [
+            "B"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "A",
+        "B"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              1,
+              2,
+              -3,
+              0
+            ],
+            [
+              0,
+              2,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              2,
+              4,
+              4
+            ],
+            "issues": [
+              "Row 4 leading column 4 is not right of preceding leading column 4."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              0,
+              0,
+              4,
+              9
+            ],
+            [
+              0,
+              3,
+              0,
+              1
+            ],
+            [
+              2,
+              1,
+              5,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              3,
+              2,
+              1
+            ],
+            "issues": [
+              "Row 2 leading column 2 is not right of preceding leading column 3.",
+              "Row 3 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              3,
+              2,
+              1
+            ],
+            "issues": [
+              "Row 2 leading column 2 is not right of preceding leading column 3.",
+              "Row 3 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              2,
+              0,
+              0,
+              0,
+              -1,
+              6
+            ],
+            [
+              0,
+              -2,
+              0,
+              0,
+              2,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              -3,
+              1
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              5
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              5
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": false
+        }
+      ],
+      "necessary_prompt_clarification": true,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Full augmented matrix REF gives a different subset, requiring an explicit coefficient-matrix question.",
+      "prompt_repair": {
+        "before": "Which of the following augmented matrices have coefficient matrices that are **not** in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}],\\,B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}].\n$$",
+        "after": "Which of the following augmented matrices have coefficient matrices that are **not** in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}],\\,B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}].\n$$",
+        "reason": "Clarify the explicitly solution-supported coefficient-block predicate and preserve the existing key."
+      },
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186405152,
+        "value": "$B$ only",
+        "solution": "A coefficient matrix, obtained by omitting the final column of its augmented matrix, is in row echelon form if it satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the *bottom* of the matrix.\n- Each leading entry of a row is in a column *to the right* of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The coefficient matrix of $A$ is in row echelon form (both conditions are satisfied).\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}]\n$$\n\n- The coefficient matrix of $B$ is not in row echelon form since the leading entries of its first two rows are in columns $3$ and $2,$ respectively (condition II is violated).\n\n$$\nB=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}]\n$$\n\n- The coefficient matrix of $C$ is in row echelon form (both conditions are satisfied).\n\n$$\nC=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}]\n$$\n\nTherefore, only $B$ has a coefficient matrix that is **not** in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "1fc428d360a3d8f545d53fca3a27ff1febf4c8191b52629d4deff6b348ed8c19",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186413825,
+      "ma_id": "q-129230",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}-5 & 0 & 8 & 4 & 2 \\\\ 0 & 0 & 3 & -5 & 0 \\\\ 0 & 0 & -2 & 0 & 1 \\\\ 0 & 0 & 0 & 0 & -1\\end{aligned}],\\,B=[\\begin{aligned}4 & 0 & 6 & 8 \\\\ 0 & 0 & 3 & -1 \\\\ 0 & 0 & 0 & 2\\end{aligned}],\\,C=[\\begin{aligned}0 & -9 & 0 & -6 \\\\ 0 & 0 & 1 & -7 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 0 & 0\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}-5 & 0 & 8 & 4 & 2 \\\\ 0 & 0 & 3 & -5 & 0 \\\\ 0 & 0 & -2 & 0 & 1 \\\\ 0 & 0 & 0 & 0 & -1\\end{aligned}],\\,B=[\\begin{aligned}4 & 0 & 6 & 8 \\\\ 0 & 0 & 3 & -1 \\\\ 0 & 0 & 0 & 2\\end{aligned}],\\,C=[\\begin{aligned}0 & -9 & 0 & -6 \\\\ 0 & 0 & 1 & -7 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 0 & 0\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "B",
+        "C"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}-5 & 0 & 8 & 4 & 2 \\\\ 0 & 0 & 3 & -5 & 0 \\\\ 0 & 0 & -2 & 0 & 1 \\\\ 0 & 0 & 0 & 0 & -1\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}4 & 0 & 6 & 8 \\\\ 0 & 0 & 3 & -1 \\\\ 0 & 0 & 0 & 2\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}0 & -9 & 0 & -6 \\\\ 0 & 0 & 1 & -7 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 0 & 0\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186413798,
+          "value": "$A,$ $B,$ and $C$",
+          "labels": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186413800,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186413805,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186413806,
+          "value": "$B$ only",
+          "labels": [
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186413817,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "B",
+        "C"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              -5,
+              0,
+              8,
+              4,
+              2
+            ],
+            [
+              0,
+              0,
+              3,
+              -5,
+              0
+            ],
+            [
+              0,
+              0,
+              -2,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              -1
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              3,
+              5
+            ],
+            "issues": [
+              "Row 3 leading column 3 is not right of preceding leading column 3."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              3,
+              null
+            ],
+            "issues": [
+              "Row 3 leading column 3 is not right of preceding leading column 3."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              4,
+              0,
+              6,
+              8
+            ],
+            [
+              0,
+              0,
+              3,
+              -1
+            ],
+            [
+              0,
+              0,
+              0,
+              2
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              3,
+              4
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              3,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              0,
+              -9,
+              0,
+              -6
+            ],
+            [
+              0,
+              0,
+              1,
+              -7
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              2,
+              3,
+              4,
+              null
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              2,
+              3,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        }
+      ],
+      "necessary_prompt_clarification": false,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Both interpretations give the same subset; optional clarification omitted.",
+      "prompt_repair": null,
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186413805,
+        "value": "$B$ and $C$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the bottom of the matrix.\n- Each leading entry of a row is in a column to the right of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is not in row echelon form since ${a}_{33}\\ne 0$ (condition II is violated).\n\n$$\nA=[\\begin{aligned}-5 & 0 & 8 & 4 & 2 \\\\ 0 & 0 & 3 & -5 & 0 \\\\ 0 & 0 & -2 & 0 & 1 \\\\ 0 & 0 & 0 & 0 & -1\\end{aligned}]\n$$\n\n- The matrix $B$ is in row echelon form (both conditions are satisfied).\n\n$$\nB=[\\begin{aligned}4 & 0 & 6 & 8 \\\\ 0 & 0 & 3 & -1 \\\\ 0 & 0 & 0 & 2\\end{aligned}]\n$$\n\n- The matrix $C$ is in row echelon form (both conditions are satisfied).\n\n$$\nC=[\\begin{aligned}0 & -9 & 0 & -6 \\\\ 0 & 0 & 1 & -7 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\n$$\n\nTherefore, only $B$ and $C$ are in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "51d863153a28b2a649d8fc36dd8cbe2695fbbdc3c833be902912d7545408231b",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186401988,
+      "ma_id": "q-31919",
+      "decision": "convert",
+      "classification": "finite_independently_testable_statement_completions",
+      "atomic_options": [
+        {
+          "label": "I",
+          "text": "invertible",
+          "truth": true,
+          "proof": "For A=[[a,b],[c,d]], det(A)=ad-bc!=0 gives inverse (1/det(A))*[[d,-b],[-c,a]], so invertibility always follows."
+        },
+        {
+          "label": "II",
+          "text": "**not ** invertible",
+          "truth": false,
+          "proof": "The explicit inverse exists under the stated nonzero determinant hypothesis, so not invertible is false."
+        },
+        {
+          "label": "III",
+          "text": "singular",
+          "truth": false,
+          "proof": "Singular means not invertible for a square matrix. The hypothesis implies invertibility, so singular is false. A matrix with zero determinant would satisfy both II and III, proving those options are not mutually exclusive."
+        }
+      ],
+      "correct_labels": [
+        "I"
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186401990,
+          "value": "II and III only",
+          "labels": [
+            "II",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186401991,
+          "value": "I only",
+          "labels": [
+            "I"
+          ]
+        },
+        {
+          "answer_eid": 17592186401992,
+          "value": "III only",
+          "labels": [
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186401993,
+          "value": "I and II only",
+          "labels": [
+            "I",
+            "II"
+          ]
+        },
+        {
+          "answer_eid": 17592186401994,
+          "value": "II only",
+          "labels": [
+            "II"
+          ]
+        }
+      ],
+      "proposed_prompt": "Which of the following completes the statement so that it is true:\n\n*If $det(A)\\ne 0,$ where $A$ is a $2\\times 2$-matrix, then $A$ is $\\text{__________}$ .*\n\nI. invertible\n\nII. **not ** invertible\n\nIII. singular\n\nSelect all that apply.",
+      "reason": "The finite list supplies three independently testable completions. II (not invertible) and III (singular) are equivalent predicates for square matrices and can both apply. They are not mutually exclusive. Under det(A)!=0 only I applies, which remains checkbox-eligible and matches determinant/singularity statement migrations.",
+      "key_evidence": {
+        "source": "existing_database_key",
+        "snapshot_path": "reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/review-snapshot.json",
+        "answer_eid": 17592186401991,
+        "value": "I only",
+        "mapped_labels": [
+          "I"
+        ],
+        "solution_confirmation": [
+          "Now, since the fifth part of the invertible matrix theorem is true ($det(A)\\ne 0$), all the other parts of the theorem are true too. Therefore, according to the theorem, only option I gives a true statement:"
+        ],
+        "solution_conflicts": [],
+        "worked_solution": "Recall that given $A=[\\begin{aligned}{a}_{11} & {a}_{12} \\\\ {a}_{21} & {a}_{22}\\end{aligned}]$, then according to the invertible matrix theorem the following statements are equivalent:    \n\n1\\. $A$ is invertible.\n\n2\\. The system $Ax=b$ has exactly one solution for any $2\\times 1$ column vector $b.$\n\n3\\. The system $Ax=0$ has the unique zero solution.\n\n4\\. The lines ${a}_{11}x+{a}_{12}y={b}_{1}$ and ${a}_{21}x+{a}_{22}y={b}_{2}$ intersect at exactly one point.\n\n5\\. $det(A)\\ne 0.$\n\nWith that in mind, let's now check our statements.  \n\nNow, since the fifth part of the invertible matrix theorem is true ($det(A)\\ne 0$), all the other parts of the theorem are true too. Therefore, according to the theorem, only option I gives a true statement:\n\n- *If $det(A)\\ne 0$ , then $A$ is invertible.* $\\,✓$",
+        "verification": "Source-order universe and each old option decoded; existing key semantics preserved. Mathematical truth not independently recalculated unless an exception proof is recorded.",
+        "source_problem_sha256": "c7605ad38c97103bceb1b592519a6641ae9123c970a30ca42bf38829528f9b4e",
+        "worked_solution_sha256": "a0d0dccf878f595090951698f3dca8878fd5045d99b97f7c5dbb8208d6804be5",
+        "source_key_agreement": "confirmed",
+        "independent_proof": "For square A, det(A)≠0 iff A is invertible. Thus I is true, II (not invertible) and III (singular) are false; II and III have the same meaning, not mutually exclusive categories."
+      },
+      "content_repairs": [],
+      "review_flags": [],
+      "solution_needs_manual_review": false,
+      "source_problem": "Which of the following completes the statement so that it is true:\n\n*If $det(A)\\ne 0,$ where $A$ is a $2\\times 2$-matrix, then $A$ is $\\text{__________}$ .*\n\nI. invertible\n\nII. **not ** invertible\n\nIII. singular",
+      "kps": [
+        {
+          "id": 17592186115236,
+          "title": "Completing a True Statement",
+          "topics": [
+            {
+              ":db/id": 17592186050906,
+              ":topic/math-academy-id": 1730,
+              ":topic/title": "The Invertible Matrix Theorem in Terms of 2x2 Systems of Equations"
+            }
+          ]
+        }
+      ],
+      "prompt_repair": null,
+      "basis": 1692,
+      "source_problem_sha256": "c7605ad38c97103bceb1b592519a6641ae9123c970a30ca42bf38829528f9b4e",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    }
+  ],
+  "overlays": [
+    {
+      "id": 17592186326923,
+      "ma_id": "q-42028",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}],\\,\\,C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices have coefficient matrices in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}],\\,\\,C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "C"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186324081,
+          "value": "$B$ only",
+          "labels": [
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186324649,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186325411,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186325480,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186326069,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              2,
+              0,
+              0,
+              5
+            ],
+            [
+              0,
+              0,
+              2,
+              3
+            ],
+            [
+              0,
+              -2,
+              0,
+              4
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              2
+            ],
+            "issues": [
+              "Row 3 leading column 2 is not right of preceding leading column 3."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              2
+            ],
+            "issues": [
+              "Row 3 leading column 2 is not right of preceding leading column 3."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              2,
+              1,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              11
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              4,
+              1,
+              3
+            ],
+            "issues": [
+              "Row 2 leading column 1 is not right of preceding leading column 4."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              null,
+              1,
+              3
+            ],
+            "issues": [
+              "Nonzero row 2 follows a zero row.",
+              "Nonzero row 3 follows a zero row."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              2,
+              4,
+              6,
+              8
+            ],
+            [
+              0,
+              3,
+              3,
+              6
+            ],
+            [
+              0,
+              0,
+              4,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              2,
+              3,
+              null,
+              4
+            ],
+            "issues": [
+              "Nonzero row 5 follows a zero row."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              3,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        }
+      ],
+      "necessary_prompt_clarification": true,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Full augmented matrix REF gives a different subset, requiring an explicit coefficient-matrix question.",
+      "prompt_repair": {
+        "before": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}],\\,\\,C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+        "after": "Which of the following augmented matrices have coefficient matrices in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}],\\,\\,B=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}],\\,\\,C=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+        "reason": "Clarify the explicitly solution-supported coefficient-block predicate and preserve the existing key."
+      },
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186325480,
+        "value": "$C$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the bottom of the matrix.\n- Each leading entry of a row is in a column to the right of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is not in row echelon form since ${a}_{32}\\ne 0$ (condition II is violated). \n\n$$\nA=[\\begin{aligned}2 & 0 & 0 & 5 \\\\ 0 & 0 & 2 & 3 \\\\ 0 & -2 & 0 & 4\\end{aligned}]\n$$\n\n- The matrix $B$ is not in row echelon form since the first row contains only zeros and it is not at the bottom of the matrix (condition I is violated).\n\n$$\nB=[\\begin{aligned}0 & 0 & 0 & 2 \\\\ 2 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 11\\end{aligned}]\n$$\n\n- The matrix $C$ is in row echelon form (both conditions are satisfied).\n\n$$\nC=[\\begin{aligned}2 & 4 & 6 & 8 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 4 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}]\n$$\n\nTherefore, only $C$ is in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "c1ef1f2f15d4cd33d9dbc29b89d4e3d86617b5a7f370c72e61935700f1e968b5",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186341837,
+      "ma_id": "q-72574",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}],\\,\\,B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}],\\,\\,C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices have coefficient matrices in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}],\\,\\,B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}],\\,\\,C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "A",
+        "B"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": false
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186339954,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186340248,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186340618,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186340814,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186341137,
+          "value": "$B$ and $C$ only",
+          "labels": [
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "A"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              6,
+              0,
+              0,
+              8,
+              2
+            ],
+            [
+              0,
+              4,
+              0,
+              2,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              4
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              4
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              8,
+              7,
+              5,
+              1
+            ],
+            [
+              0,
+              0,
+              4,
+              5
+            ],
+            [
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              9
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              3,
+              4,
+              4,
+              4
+            ],
+            "issues": [
+              "Row 4 leading column 4 is not right of preceding leading column 4.",
+              "Row 5 leading column 4 is not right of preceding leading column 4."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              3,
+              null,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              0,
+              1,
+              0,
+              7
+            ],
+            [
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              2,
+              1,
+              4
+            ],
+            "issues": [
+              "Row 2 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              2,
+              1,
+              null
+            ],
+            "issues": [
+              "Row 2 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "selected_under_stored_predicate": false
+        }
+      ],
+      "necessary_prompt_clarification": true,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Full augmented matrix REF gives a different subset, requiring an explicit coefficient-matrix question.",
+      "prompt_repair": {
+        "before": "Which of the following augmented matrices are in row echelon form?\n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}],\\,\\,B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}],\\,\\,C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+        "after": "Which of the following augmented matrices have coefficient matrices in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}],\\,\\,B=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}],\\,\\,C=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}].\n$$",
+        "reason": "Clarify the explicitly solution-supported coefficient-block predicate and preserve the existing key."
+      },
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186340248,
+        "value": "$A$ and $B$ only",
+        "solution": "Remember that an augmented matrix is in row echelon form if its coefficient matrix satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the bottom of the matrix.\n- Each leading entry of a row is in a column to the right of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The matrix $A$ is in row echelon form (both conditions are satisfied). \n\n$$\nA=[\\begin{aligned}6 & 0 & 0 & 8 & 2 \\\\ 0 & 4 & 0 & 2 & 3 \\\\ 0 & 0 & 0 & 1 & 5\\end{aligned}]\n$$\n\n- The matrix $B$ is in row echelon form (both conditions are satisfied).\n\n$$\nB=[\\begin{aligned}8 & 7 & 5 & 1 \\\\ 0 & 0 & 4 & 5 \\\\ 0 & 0 & 0 & 2 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 9\\end{aligned}]\n$$\n\n- The matrix $C$ is not in row echelon form since ${c}_{21}\\ne 0$ (condition  II is violated).\n\n$$\nC=[\\begin{aligned}0 & 1 & 0 & 7 \\\\ 3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 5\\end{aligned}]\n$$\n\nTherefore, only $A$ and $B$ are in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "ea208942c5c8af89644764ce0b8d60c5b1687e0ed7fdb060013176738907cf32",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186405146,
+      "ma_id": "q-72575",
+      "decision": "convert",
+      "classification": "finite_named_matrices",
+      "source_problem": "Which of the following augmented matrices have coefficient matrices that are **not** in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}],\\,B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}].\n$$",
+      "proposed_prompt": "Which of the following augmented matrices have coefficient matrices that are **not** in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}],\\,B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}].\n$$\n\nSelect all that apply.",
+      "correct_labels": [
+        "B"
+      ],
+      "atomic_options": [
+        {
+          "label": "A",
+          "text": "$A=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": false
+        },
+        {
+          "label": "B",
+          "text": "$B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}]$",
+          "truth": true,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=False.",
+          "independent_truth": true
+        },
+        {
+          "label": "C",
+          "text": "$C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}]$",
+          "truth": false,
+          "proof": "Exact nonzero-row pivot indices and bottom-zero-row test on coefficient block: echelon=True.",
+          "independent_truth": false
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186405148,
+          "value": "$A$ and $C$ only",
+          "labels": [
+            "A",
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186405149,
+          "value": "$A$ only",
+          "labels": [
+            "A"
+          ]
+        },
+        {
+          "answer_eid": 17592186405150,
+          "value": "$A$ and $B$ only",
+          "labels": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "answer_eid": 17592186405151,
+          "value": "$C$ only",
+          "labels": [
+            "C"
+          ]
+        },
+        {
+          "answer_eid": 17592186405152,
+          "value": "$B$ only",
+          "labels": [
+            "B"
+          ]
+        }
+      ],
+      "conventional_full_matrix_correct_labels": [
+        "A",
+        "B"
+      ],
+      "matrix_verification": [
+        {
+          "label": "A",
+          "rows": [
+            [
+              1,
+              2,
+              -3,
+              0
+            ],
+            [
+              0,
+              2,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              1,
+              2,
+              4,
+              4
+            ],
+            "issues": [
+              "Row 4 leading column 4 is not right of preceding leading column 4."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              null,
+              null
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": false
+        },
+        {
+          "label": "B",
+          "rows": [
+            [
+              0,
+              0,
+              4,
+              9
+            ],
+            [
+              0,
+              3,
+              0,
+              1
+            ],
+            [
+              2,
+              1,
+              5,
+              5
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              3,
+              2,
+              1
+            ],
+            "issues": [
+              "Row 2 leading column 2 is not right of preceding leading column 3.",
+              "Row 3 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "coefficient_matrix": {
+            "is_ref": false,
+            "leading_columns": [
+              3,
+              2,
+              1
+            ],
+            "issues": [
+              "Row 2 leading column 2 is not right of preceding leading column 3.",
+              "Row 3 leading column 1 is not right of preceding leading column 2."
+            ]
+          },
+          "selected_under_stored_predicate": true
+        },
+        {
+          "label": "C",
+          "rows": [
+            [
+              2,
+              0,
+              0,
+              0,
+              -1,
+              6
+            ],
+            [
+              0,
+              -2,
+              0,
+              0,
+              2,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              -3,
+              1
+            ]
+          ],
+          "full_augmented_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              5
+            ],
+            "issues": []
+          },
+          "coefficient_matrix": {
+            "is_ref": true,
+            "leading_columns": [
+              1,
+              2,
+              5
+            ],
+            "issues": []
+          },
+          "selected_under_stored_predicate": false
+        }
+      ],
+      "necessary_prompt_clarification": true,
+      "reason": "Stored solution explicitly tests coefficient matrix REF. Exact independent computation agrees with the stored key. Full augmented matrix REF gives a different subset, requiring an explicit coefficient-matrix question.",
+      "prompt_repair": {
+        "before": "Which of the following augmented matrices have coefficient matrices that are **not** in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}],\\,B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}].\n$$",
+        "after": "Which of the following augmented matrices have coefficient matrices that are **not** in row echelon form? Treat the final column of each augmented matrix as its constants column.\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}],\\,B=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}],\\,C=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}].\n$$",
+        "reason": "Clarify the explicitly solution-supported coefficient-block predicate and preserve the existing key."
+      },
+      "content_repairs": [],
+      "key_evidence": {
+        "kind": "existing_database_key",
+        "answer_eid": 17592186405152,
+        "value": "$B$ only",
+        "solution": "A coefficient matrix, obtained by omitting the final column of its augmented matrix, is in row echelon form if it satisfies the following conditions:\n\n- All the zero rows (rows with only zeros), if any, are placed at the *bottom* of the matrix.\n- Each leading entry of a row is in a column *to the right* of the leading entry of the row above it.\n\nWith that in mind, let's look at each matrix in turn.\n\n- The coefficient matrix of $A$ is in row echelon form (both conditions are satisfied).\n\n$$\nA=[\\begin{aligned}1 & 2 & -3 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 4\\end{aligned}]\n$$\n\n- The coefficient matrix of $B$ is not in row echelon form since the leading entries of its first two rows are in columns $3$ and $2,$ respectively (condition II is violated).\n\n$$\nB=[\\begin{aligned}0 & 0 & 4 & 9 \\\\ 0 & 3 & 0 & 1 \\\\ 2 & 1 & 5 & 5\\end{aligned}]\n$$\n\n- The coefficient matrix of $C$ is in row echelon form (both conditions are satisfied).\n\n$$\nC=[\\begin{aligned}2 & 0 & 0 & 0 & -1 & 6 \\\\ 0 & -2 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 & 1\\end{aligned}]\n$$\n\nTherefore, only $B$ has a coefficient matrix that is **not** in row echelon form.",
+        "coefficient_block_key_agreement": true
+      },
+      "basis": 1692,
+      "source_problem_sha256": "1fc428d360a3d8f545d53fca3a27ff1febf4c8191b52629d4deff6b348ed8c19",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    },
+    {
+      "id": 17592186401988,
+      "ma_id": "q-31919",
+      "decision": "convert",
+      "classification": "finite_independently_testable_statement_completions",
+      "atomic_options": [
+        {
+          "label": "I",
+          "text": "invertible",
+          "truth": true,
+          "proof": "For A=[[a,b],[c,d]], det(A)=ad-bc!=0 gives inverse (1/det(A))*[[d,-b],[-c,a]], so invertibility always follows."
+        },
+        {
+          "label": "II",
+          "text": "**not ** invertible",
+          "truth": false,
+          "proof": "The explicit inverse exists under the stated nonzero determinant hypothesis, so not invertible is false."
+        },
+        {
+          "label": "III",
+          "text": "singular",
+          "truth": false,
+          "proof": "Singular means not invertible for a square matrix. The hypothesis implies invertibility, so singular is false. A matrix with zero determinant would satisfy both II and III, proving those options are not mutually exclusive."
+        }
+      ],
+      "correct_labels": [
+        "I"
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186401990,
+          "value": "II and III only",
+          "labels": [
+            "II",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186401991,
+          "value": "I only",
+          "labels": [
+            "I"
+          ]
+        },
+        {
+          "answer_eid": 17592186401992,
+          "value": "III only",
+          "labels": [
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186401993,
+          "value": "I and II only",
+          "labels": [
+            "I",
+            "II"
+          ]
+        },
+        {
+          "answer_eid": 17592186401994,
+          "value": "II only",
+          "labels": [
+            "II"
+          ]
+        }
+      ],
+      "proposed_prompt": "Which of the following completes the statement so that it is true:\n\n*If $det(A)\\ne 0,$ where $A$ is a $2\\times 2$-matrix, then $A$ is $\\text{__________}$ .*\n\nI. invertible\n\nII. **not ** invertible\n\nIII. singular\n\nSelect all that apply.",
+      "reason": "The finite list supplies three independently testable completions. II (not invertible) and III (singular) are equivalent predicates for square matrices and can both apply. They are not mutually exclusive. Under det(A)!=0 only I applies, which remains checkbox-eligible and matches determinant/singularity statement migrations.",
+      "key_evidence": {
+        "source": "existing_database_key",
+        "snapshot_path": "reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/review-snapshot.json",
+        "answer_eid": 17592186401991,
+        "value": "I only",
+        "mapped_labels": [
+          "I"
+        ],
+        "solution_confirmation": [
+          "Now, since the fifth part of the invertible matrix theorem is true ($det(A)\\ne 0$), all the other parts of the theorem are true too. Therefore, according to the theorem, only option I gives a true statement:"
+        ],
+        "solution_conflicts": [],
+        "worked_solution": "Recall that given $A=[\\begin{aligned}{a}_{11} & {a}_{12} \\\\ {a}_{21} & {a}_{22}\\end{aligned}]$, then according to the invertible matrix theorem the following statements are equivalent:    \n\n1\\. $A$ is invertible.\n\n2\\. The system $Ax=b$ has exactly one solution for any $2\\times 1$ column vector $b.$\n\n3\\. The system $Ax=0$ has the unique zero solution.\n\n4\\. The lines ${a}_{11}x+{a}_{12}y={b}_{1}$ and ${a}_{21}x+{a}_{22}y={b}_{2}$ intersect at exactly one point.\n\n5\\. $det(A)\\ne 0.$\n\nWith that in mind, let's now check our statements.  \n\nNow, since the fifth part of the invertible matrix theorem is true ($det(A)\\ne 0$), all the other parts of the theorem are true too. Therefore, according to the theorem, only option I gives a true statement:\n\n- *If $det(A)\\ne 0$ , then $A$ is invertible.* $\\,✓$",
+        "verification": "Source-order universe and each old option decoded; existing key semantics preserved. Mathematical truth not independently recalculated unless an exception proof is recorded.",
+        "source_problem_sha256": "c7605ad38c97103bceb1b592519a6641ae9123c970a30ca42bf38829528f9b4e",
+        "worked_solution_sha256": "a0d0dccf878f595090951698f3dca8878fd5045d99b97f7c5dbb8208d6804be5",
+        "source_key_agreement": "confirmed",
+        "independent_proof": "For square A, det(A)≠0 iff A is invertible. Thus I is true, II (not invertible) and III (singular) are false; II and III have the same meaning, not mutually exclusive categories."
+      },
+      "content_repairs": [],
+      "review_flags": [],
+      "solution_needs_manual_review": false,
+      "source_problem": "Which of the following completes the statement so that it is true:\n\n*If $det(A)\\ne 0,$ where $A$ is a $2\\times 2$-matrix, then $A$ is $\\text{__________}$ .*\n\nI. invertible\n\nII. **not ** invertible\n\nIII. singular",
+      "kps": [
+        {
+          "id": 17592186115236,
+          "title": "Completing a True Statement",
+          "topics": [
+            {
+              ":db/id": 17592186050906,
+              ":topic/math-academy-id": 1730,
+              ":topic/title": "The Invertible Matrix Theorem in Terms of 2x2 Systems of Equations"
+            }
+          ]
+        }
+      ],
+      "prompt_repair": null,
+      "basis": 1692,
+      "source_problem_sha256": "c7605ad38c97103bceb1b592519a6641ae9123c970a30ca42bf38829528f9b4e",
+      "evidence": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/snapshot.json",
+          "sha256": "a007a3f5992b4c0c41a54ca2e52e291286fc52a34146d8a978b808702b9fe8b6"
+        }
+      ]
+    }
+  ]
+}
