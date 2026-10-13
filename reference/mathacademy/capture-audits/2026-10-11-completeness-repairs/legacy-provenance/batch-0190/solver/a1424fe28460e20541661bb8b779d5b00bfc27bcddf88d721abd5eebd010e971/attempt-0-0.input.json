@@ -1,0 +1,80 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-332550\", \"problem\": \"Consider the differential equation\\n\\n$$\\n\\\\frac{\\\\text{d}y}{\\\\text{d}x}+y=-{x}^{2}+2x-3.\\n$$\\n\\nFind the general solution to this equation given that the complementary solution is ${y}_{c}(x)=A{e}^{-x},$ where $A$ is an arbitrary constant.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-33662\", \"problem\": \"What is the unit tangent vector to the curve $r(t)=⟨t+1,\\\\,8\\\\operatorname{ln}⁡t,\\\\,2{t}^{2}+3⟩$ at the point $P(2,0,5)?$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-332550:\nTo find the general solution of an inhomogeneous first-order linear equation, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{\\text{d}{y}_{c}}{\\text{d}x}+{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nThe right-hand side of the inhomogeneous equation is a polynomial of degree $2.$ Therefore, we assume that the particular integral is also a polynomial of degree $2,$ i.e.,\n\n$$\n{y}_{p}(x)=\\alpha {x}^{2}+\\beta x+\\gamma \n$$\n\nwhere $\\alpha ,$ $\\beta $, and $\\gamma $ are constants that are to be determined. \n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n\\frac{\\text{d}{y}_{p}}{\\text{d}x}=2\\alpha x+\\beta .\n$$\n\nTo find the values of $\\alpha ,$ $\\beta ,$ and $\\gamma ,$  we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n(2\\alpha x+\\beta )+(\\alpha {x}^{2}+\\beta x+\\gamma )=-{x}^{2}+2x-3\n$$\n\nWe then group the terms on the left-hand side, as follows:\n\n$$\n\\alpha {x}^{2}+(2\\alpha +\\beta )x+(\\beta +\\gamma )=-{x}^{2}+2x-3\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\begin{aligned}\\{\\begin{aligned}\\alpha =-1\\, & (\\text{equating the coefficients of}\\,\\,{x}^{2}) \\\\ 2\\alpha +\\beta =2\\, & (\\text{equating the coefficients of}\\,\\,x) \\\\ \\beta +\\gamma =-3\\, & (\\text{equating the constants})\\end{aligned}\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-1,\\beta =4,\\gamma =-7.$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-{x}^{2}+4x-7.\n$$\n\nNow, since the general solution is given by\n\n$$\ny={y}_{c}+{y}_{p}\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-x}-{x}^{2}+4x-7.\n$$\n\nq-33662:\nFor a curve $r(t)=⟨x(t),y(t),z(t)⟩$, the unit tangent vector $T(t)$ at the point $P(x(t),y(t),z(t))$ is given by\n\n$$\nT(t)=\\frac{{r}^{′}(t)}{‖{r}^{′}(t)‖}.\n$$\n\nFirst, we find the value of $t$ that corresponds to the point $P(2,0,5)$ on the given curve. We know that\n\n$$\n\\begin{aligned}r(t) & =⟨2,0,5⟩ \\\\ ⟨t+1,\\,8\\operatorname{ln}⁡t,\\,2{t}^{2}+3⟩ & =⟨2,0,5⟩.\\end{aligned}\n$$\n\nEquating the respective components gives the system\n\n$$\n\\begin{aligned}\\{\\begin{aligned}t+1=2 \\\\ 8\\operatorname{ln}⁡t=0 \\\\ 2{t}^{2}+3=5.\\end{aligned}\\end{aligned}\n$$\n\nFrom the first equality, $t=1.$ This value also satisfies the other two equations. Therefore, $P(2,0,5)$ is at the tip of $r(1).$ \n\nNow, we calculate ${r}^{′}(t)$ and evaluate it at $t=1:$\n\n$$\n\\begin{aligned}{r}^{′}(t) & =⟨\\frac{\\text{d}}{\\text{d}t}(t+1),\\,\\frac{\\text{d}}{\\text{d}t}(8\\operatorname{ln}⁡t),\\,\\frac{\\text{d}}{\\text{d}t}(2{t}^{2}+3)⟩ \\\\  & =⟨1,\\,\\frac{8}{t},\\,4t⟩ \\\\ {r}^{′}(1) & =⟨1,\\,\\frac{8}{1},\\,4(1)⟩=⟨1,8,4⟩\\end{aligned}\n$$\n\nNext, we calculate the magnitude of ${r}^{′}(1):$\n\n$$\n\\begin{aligned}‖{r}^{′}(1)‖ & =\\sqrt{{1}^{2}+{8}^{2}+{4}^{2}} \\\\  & =\\sqrt{1+64+16} \\\\  & =9\\end{aligned}\n$$\n\nFinally, we normalize ${r}^{′}(1)$ and obtain the unit tangent vector to the given curve at $P(2,0,5):$\n\n$$\n\\begin{aligned}T(1) & =\\frac{{r}^{′}(1)}{‖{r}^{′}(1)‖} \\\\  & =\\frac{1}{9}⟨1,8,4⟩ \\\\  & =⟨\\frac{1}{9},\\frac{8}{9},\\frac{4}{9}⟩\\end{aligned}\n$$",
+      "fields": [
+        {
+          "key": "q-332550/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "y=A{e}^{-x}+{x}^{2}-4x-7"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "y=A{e}^{-x}-{x}^{2}+4x-7"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "y=A{e}^{-x}-3{x}^{2}+4x-7"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "y=A{e}^{-x}-{x}^{2}+2x-7"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "y=A{e}^{-x}-{x}^{2}+4x+7"
+            }
+          ]
+        },
+        {
+          "key": "q-33662/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "⟨\\frac{1}{9},-\\frac{8}{9},\\frac{4}{9}⟩"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "⟨\\frac{1}{\\sqrt{69}},\\frac{8}{\\sqrt{69}},\\frac{2}{\\sqrt{69}}⟩"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "⟨\\frac{2}{9},\\frac{8}{9},\\frac{4}{9}⟩"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "⟨\\frac{1}{9},\\frac{8}{9},\\frac{4}{9}⟩"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "⟨\\frac{1}{\\sqrt{17}},0,\\frac{4}{\\sqrt{17}}⟩"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12ca3-82a1-7d23-844f-a505f429a45a",
+  "previous_failures": []
+}

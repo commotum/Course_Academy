@@ -1,0 +1,236 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-142915\", \"problem\": \"| $f$ | $Y=2$ | $Y=4$ |\\n| --- | --- | --- |\\n| $X=0$ | $0.25$ | $0.1$ |\\n| $X=1$ | $0.3$ | $0.15$ |\\n| $X=2$ | $0.2$ | $0$ |\\n\\nFind the conditional probability mass function ${f}_{X|Y}(x\\\\,|\\\\,4)$ given that the random variables $X$ and $Y$ have the joint probability mass function $f(x,y)$ shown in the table above.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-142928\", \"problem\": \"| $f$ | $Y=0$ | $Y=2$ | $Y=4$ |\\n| --- | --- | --- | --- |\\n| $X=0$ | $0.2$ | $0.1$ | $0.2$ |\\n| $X=2$ | $0.3$ | $0.05$ | $0.15$ |\\n\\nFind the conditional probability mass function ${f}_{Y|X}(y\\\\,|\\\\,0)$ given that the random variables $X$ and $Y$ have the joint probability mass function $f(x,y)$ shown in the table above.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-74536\", \"problem\": \"Consider the following system of linear equations:\\n\\n$$\\n\\\\{\\\\begin{aligned}-x-y-3z=1 \\\\\\\\ 2x+2y+6z=-2 \\\\\\\\ -2x-2y-6z=2\\\\end{aligned}\\n$$\\n\\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-74604\", \"problem\": \"Consider the following system of linear equations:\\n\\n$$\\n\\\\{\\\\begin{aligned} & x-3y=1 \\\\\\\\  & y+2z=1 \\\\\\\\  & 5x-7y+17z=7\\\\end{aligned}\\n$$\\n\\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-10662\", \"problem\": \"Consider the augmented matrix $M$ given by \\n\\n$$\\nM=[\\\\begin{aligned}1 & 1 & 1 & 2 \\\\\\\\ 0 & 1 & -3 & 1 \\\\\\\\ 2 & 1 & 5 & 0\\\\end{aligned}].\\n$$\\n\\nUse the standard method of Gaussian elimination to reduce $M$ to row echelon form, and then find the general solution of the linear system represented by the matrix.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-73958\", \"problem\": \"Consider the augmented matrix $M$ given by \\n\\n$$\\nM=[\\\\begin{aligned}1 & 2 & -6 & 8 \\\\\\\\ -2 & -5 & 0 & 0 \\\\\\\\ 0 & 1 & 12 & 18\\\\end{aligned}].\\n$$\\n\\nUse the standard method of Gaussian elimination to reduce $M$ to row echelon form, and then find the general solution of the linear system represented by the matrix.\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-142915:\nThe conditional probability mass function ${f}_{X|Y}(x\\,|\\,y)$ is defined as\n\n$$\n{f}_{X|Y}(x\\,|\\,y)=P(X=x\\,|\\,Y=y).\n$$\n\nTherefore, we're required to compute the following set of conditional probabilities:\n\n$$\n{f}_{X|Y}(x\\,|\\,4)=P(X=x\\,|\\,Y=4)\n$$\n\nBy the multiplication law for conditional probability, we have\n\n$$\nP(X=x\\,|\\,Y=4)=\\frac{P(X=x,Y=4)}{P(Y=1)}=\\frac{f(x,4)}{{f}_{Y}(4)}\n$$\n\nwhere $f(x,y)$ is the joint probability mass function of $X$ and $Y,$ and ${f}_{Y}(y)$ is the marginal distribution of $Y.$\n\nRecall that the marginal distributions for $X$ and $Y$ correspond to the row and column totals, respectively. So, let's compute these:\n\n| $f$ | $Y=2$ | $Y=4$ | ${f}_{X}(x)$ |\n| --- | --- | --- | --- |\n| $X=0$ | $0.25$ | $0.1$ | $0.35$ |\n| $X=1$ | $0.3$ | $0.15$ | $0.45$ |\n| $X=2$ | $0.2$ | $0$ | $0.2$ |\n| ${f}_{Y}(y)$ | $0.75$ | $0.25$ | $1$ |\n\nTherefore, for $x\\in \\{0,1,2\\},$ we obtain:\n\n$$\n\\begin{aligned}P(X=0\\,|\\,Y=4) & =\\frac{f(0,4)}{{f}_{Y}(4)}=\\frac{0.1}{0.25}=0.4 \\\\ P(X=1\\,|\\,Y=4) & =\\frac{f(1,4)}{{f}_{Y}(4)}=\\frac{0.15}{0.25}=0.6 \\\\ P(X=2\\,|\\,Y=4) & =\\frac{f(2,4)}{{f}_{Y}(4)}=\\frac{0}{0.25}=0\\end{aligned}\n$$\n\nFinally, the conditional probability mass function can be represented by the following table:   \n\n| $x$ | $0$ | $1$ | $2$ |\n| --- | --- | --- | --- |\n| ${f}_{X|Y}(x\\,|\\,4)$ | $0.4$ | $0.6$ | $0$ |\n\nq-142928:\nThe conditional probability mass function ${f}_{X|Y}(x\\,|\\,y)$ is defined as\n\n$$\n{f}_{Y|X}(y\\,|\\,x)=P(Y=y\\,|\\,X=x).\n$$\n\nTherefore, we're required to compute the following set of conditional probabilities:\n\n$$\n{f}_{Y|X}(y\\,|\\,0)=P(Y=y\\,|\\,X=0)\n$$\n\nBy the multiplication law for conditional probability, we have\n\n$$\nP(Y=y\\,|\\,X=0)=\\frac{P(X=0,Y=y)}{P(X=0)}=\\frac{f(0,y)}{{f}_{X}(0)}\n$$\n\nwhere $f(x,y)$ is the joint probability mass function of $X$ and $Y,$ and ${f}_{X}(x)$ is the marginal distribution of $X.$\n\nRecall that the marginal distributions for $X$ and $Y$ correspond to the row and column totals, respectively. So, let's compute these:\n\n| $f$ | $Y=0$ | $Y=2$ | $Y=4$ | ${f}_{X}(x)$ |\n| --- | --- | --- | --- | --- |\n| $X=0$ | $0.2$ | $0.1$ | $0.2$ | $0.5$ |\n| $X=1$ | $0.3$ | $0.05$ | $0.15$ | $0.5$ |\n| ${f}_{Y}(y)$ | $0.5$ | $0.15$ | $0.35$ | $1$ |\n\nTherefore, for $y\\in \\{0,2,4\\},$ we obtain:\n\n$$\n\\begin{aligned}P(X=0\\,|\\,Y=0) & =\\frac{f(0,0)}{{f}_{X}(0)}=\\frac{0.2}{0.5}=0.4 \\\\ P(X=0\\,|\\,Y=2) & =\\frac{f(0,2)}{{f}_{X}(0)}=\\frac{0.1}{0.5}=0.2 \\\\ P(X=0\\,|\\,Y=4) & =\\frac{f(0,4)}{{f}_{X}(0)}=\\frac{0.2}{0.5}=0.4\\end{aligned}\n$$\n\nFinally, the conditional probability mass function can be represented by the following table:   \n\n| $y$ | $0$ | $2$ | $4$ |\n| --- | --- | --- | --- |\n| ${f}_{Y|X}(y\\,|\\,0)$ | $0.4$ | $0.2$ | $0.4$ |\n\nq-74536:\nThe augmented matrix for this system is\n\n$$\nM=[\\begin{aligned}-1 & -1 & -3 & 1 \\\\ 2 & 2 & 6 & -2 \\\\ -2 & -2 & -6 & 2\\end{aligned}].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & ∼[\\begin{aligned}-1 & -1 & -3 & 1 \\\\ 2 & 2 & 6 & -2 \\\\ -2 & -2 & -6 & 2\\end{aligned}] & {R}_{1} & :=-{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 1 & 3 & -1 \\\\ 2 & 2 & 6 & -2 \\\\ -2 & -2 & -6 & 2\\end{aligned}] & {R}_{2} & :={R}_{2}-2{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 1 & 3 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ -2 & -2 & -6 & 2\\end{aligned}] & {R}_{3} & :={R}_{3}+2{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 1 & 3 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nq-74604:\nThe augmented matrix for this system is\n\n$$\nM=[\\begin{aligned}1 & -3 & 0 & 1 \\\\ 0 & 1 & 2 & 1 \\\\ 5 & -7 & 17 & 7\\end{aligned}].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & ∼[\\begin{aligned}1 & -3 & 0 & 1 \\\\ 0 & 1 & 2 & 1 \\\\ 5 & -7 & 17 & 7\\end{aligned}] & {R}_{3} & :={R}_{3}+(-5){R}_{1} \\\\  & ∼[\\begin{aligned}1 & -3 & 0 & 1 \\\\ 0 & 1 & 2 & 1 \\\\ 0 & 8 & 17 & 2\\end{aligned}] & {R}_{3} & :={R}_{3}+(-8){R}_{2} \\\\  & ∼[\\begin{aligned}1 & -3 & 0 & 1 \\\\ 0 & 1 & 2 & 1 \\\\ 0 & 0 & 1 & -6\\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{3} \\\\  & ∼[\\begin{aligned}1 & -3 & 0 & 1 \\\\ 0 & 1 & 0 & 13 \\\\ 0 & 0 & 1 & -6\\end{aligned}] & {R}_{1} & :={R}_{1}+3{R}_{2} \\\\  & ∼[\\begin{aligned}1 & 0 & 0 & 40 \\\\ 0 & 1 & 0 & 13 \\\\ 0 & 0 & 1 & -6\\end{aligned}].\\end{aligned}\n$$\n\nq-10662:\nReducing $M$ to echelon form, we have\n\n$$\n\\begin{aligned}M & ∼[\\begin{aligned}1 & 1 & 1 & 2 \\\\ 0 & 1 & -3 & 1 \\\\ 2 & 1 & 5 & 0\\end{aligned}] & {R}_{3} & :={R}_{3}-2{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 1 & 1 & 2 \\\\ 0 & 1 & -3 & 1 \\\\ 0 & -1 & 3 & -4\\end{aligned}] & {R}_{3} & :={R}_{3}+{R}_{2} \\\\  & ∼[\\begin{aligned}1 & 1 & 1 & 2 \\\\ 0 & 1 & -3 & 1 \\\\ 0 & 0 & 0 & -3\\end{aligned}].\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\{\\begin{aligned}x+y+z=2 \\\\ 0x+y-3z=1 \\\\ 0x+0y+0z=-3\\end{aligned}\n$$\n\nSince there are no such numbers $x,y,z$ that form a solution of the final equation $0x+0y+0z=-3,$ we can conclude that our system has no solution.\n\nq-73958:\nReducing $M$ to echelon form, we have\n\n$$\n\\begin{aligned}M & ∼[\\begin{aligned}1 & 2 & -6 & 8 \\\\ -2 & -5 & 0 & 0 \\\\ 0 & 1 & 12 & 18\\end{aligned}] & {R}_{2} & :={R}_{2}+2{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & -6 & 8 \\\\ 0 & -1 & -12 & 16 \\\\ 0 & 1 & 12 & 18\\end{aligned}] & {R}_{3} & :={R}_{3}+{R}_{2} \\\\  & ∼[\\begin{aligned}1 & 2 & -6 & 8 \\\\ 0 & -1 & -12 & 16 \\\\ 0 & 0 & 0 & 34\\end{aligned}].\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\{\\begin{aligned}x-2y-6z=8 \\\\ 0x-y-12z=16 \\\\ 0x+0y+0z=34\\end{aligned}\n$$\n\nSince there are no such numbers $x,y,z$ that form a solution of the final equation $0x+0y+0z=34,$ we can conclude that our system has no solution.",
+      "answer_fields": [
+        {
+          "key": "q-142915/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "text",
+              "value": "| $x$ | $0$ | $1$ | $2$ |\n| --- | --- | --- | --- |\n| ${f}_{X|Y}(x\\,|\\,4)$ | $0.2$ | $0.5$ | $0.3$ |",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "text",
+              "value": "| $x$ | $0$ | $1$ | $2$ |\n| --- | --- | --- | --- |\n| ${f}_{X|Y}(x\\,|\\,4)$ | $0.5$ | $0.2$ | $0.3$ |",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "text",
+              "value": "| $x$ | $0$ | $1$ | $2$ |\n| --- | --- | --- | --- |\n| ${f}_{X|Y}(x\\,|\\,4)$ | $0.4$ | $0.6$ | $0$ |",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "text",
+              "value": "| $x$ | $0$ | $1$ | $2$ |\n| --- | --- | --- | --- |\n| ${f}_{X|Y}(x\\,|\\,4)$ | $0.25$ | $0.35$ | $0.4$ |",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "text",
+              "value": "| $x$ | $0$ | $1$ | $2$ |\n| --- | --- | --- | --- |\n| ${f}_{X|Y}(x\\,|\\,4)$ | $0.4$ | $0.2$ | $0.4$ |",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-142928/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "text",
+              "value": "| $y$ | $0$ | $2$ | $4$ |\n| --- | --- | --- | --- |\n| ${f}_{Y|X}(y\\,|\\,0)$ | $0.6$ | $0.2$ | $0.6$ |",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "text",
+              "value": "| $y$ | $0$ | $2$ | $4$ |\n| --- | --- | --- | --- |\n| ${f}_{Y|X}(y\\,|\\,0)$ | $0.2$ | $0.5$ | $0.3$ |",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "text",
+              "value": "| $y$ | $0$ | $2$ | $4$ |\n| --- | --- | --- | --- |\n| ${f}_{Y|X}(y\\,|\\,0)$ | $0.25$ | $0.25$ | $0.5$ |",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "text",
+              "value": "| $y$ | $0$ | $2$ | $4$ |\n| --- | --- | --- | --- |\n| ${f}_{Y|X}(y\\,|\\,0)$ | $0.4$ | $0.2$ | $0.4$ |",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "text",
+              "value": "| $y$ | $0$ | $2$ | $4$ |\n| --- | --- | --- | --- |\n| ${f}_{Y|X}(y\\,|\\,0)$ | $0.2$ | $0.3$ | $0.5$ |",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-74536/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1 & 1 & 3 & -1 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 0 & 0\\end{aligned}]",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1 & 0 & 3 & -1 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1 & 1 & 0 & -1 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1 & 1 & 3 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1 & 0 & 0 & -1 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0\\end{aligned}]",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-74604/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "M∼[\\begin{aligned}1 & 0 & 0 & 13 \\\\ 0 & 1 & 0 & 40 \\\\ 0 & 0 & 1 & 6\\end{aligned}]",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "M∼[\\begin{aligned}1 & 0 & 0 & 36 \\\\ 0 & 1 & 0 & 13 \\\\ 0 & 0 & 1 & 7\\end{aligned}]",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "M∼[\\begin{aligned}1 & 0 & 0 & 14 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 1 & -6\\end{aligned}]",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "M∼[\\begin{aligned}1 & 0 & 0 & 40 \\\\ 0 & 1 & 0 & 13 \\\\ 0 & 0 & 1 & -6\\end{aligned}]",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "M∼[\\begin{aligned}1 & 0 & 0 & 7 \\\\ 0 & 1 & 0 & 13 \\\\ 0 & 0 & 1 & -6\\end{aligned}]",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-10662/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}2-y-z \\\\ 4-z \\\\ z\\end{aligned}],\\,z\\in (-\\infty ,\\infty )",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}3y \\\\ y \\\\ 4y-1\\end{aligned}],\\,y\\in (-\\infty ,\\infty )",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1-3y \\\\ y \\\\ 2+y\\end{aligned}],\\,y\\in (-\\infty ,\\infty )",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}2-y-z \\\\ 1+z \\\\ z\\end{aligned}],\\,z\\in (-\\infty ,\\infty )",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "text",
+              "value": "No solution",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-73958/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-4-3z \\\\ 8+6z \\\\ z\\end{aligned}],\\,z\\in (-\\infty ,\\infty )",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "text",
+              "value": "No solution",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}1-3y \\\\ 4-z \\\\ z\\end{aligned}],\\,z\\in (-\\infty ,\\infty )",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}8+6z \\\\ -4-3z \\\\ z\\end{aligned}],\\,z\\in (-\\infty ,\\infty )",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}8-2y+6z \\\\ -4-3z \\\\ z\\end{aligned}],\\,z\\in (-\\infty ,\\infty )",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": []
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-20512\", \"problem\": \"Consider the system of linear equations\\n\\n$$\\n\\\\{\\\\begin{aligned} & x+y+2z=1 \\\\\\\\  & 2x+3y+4z=6 \\\\\\\\  & 3x+3y+4z=11\\\\end{aligned}\\n$$\\n\\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and hence solve the linear system.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-8856\", \"problem\": \"Which of the following represents the solution to the system of linear equations given below?\\n\\n$$\\n\\\\{\\\\begin{aligned}8y=6 \\\\\\\\ -5x+6y=7\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-102807\", \"problem\": \"Which of the following represents the solution to the system of linear equations given below?\\n\\n$$\\n\\\\begin{aligned}\\\\{\\\\begin{aligned}2y=x+3 \\\\\\\\ 7-y=-x\\\\end{aligned}\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-20512:\nThe augmented matrix for this system is\n\n$$\nM=[\\begin{aligned}1 & 1 & 2 & 1 \\\\ 2 & 3 & 4 & 6 \\\\ 3 & 3 & 4 & 11\\end{aligned}].\n$$\n\nReducing $M$ to row echelon form, we have\n\n$$\n\\begin{aligned}M & ∼[\\begin{aligned}1 & 1 & 2 & 1 \\\\ 2 & 3 & 4 & 6 \\\\ 3 & 3 & 4 & 11\\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\\\  & ∼[\\begin{aligned}1 & 1 & 2 & 1 \\\\ 0 & 1 & 0 & 4 \\\\ 3 & 3 & 4 & 11\\end{aligned}] & {R}_{3} & :={R}_{3}+(-3){R}_{1} \\\\  & ∼[\\begin{aligned}1 & 1 & 2 & 1 \\\\ 0 & 1 & 0 & 4 \\\\ 0 & 0 & -2 & 8\\end{aligned}] & {R}_{3} & :=-\\frac{1}{2}{R}_{3} \\\\  & ∼[\\begin{aligned}1 & 1 & 2 & 1 \\\\ 0 & 1 & 0 & 4 \\\\ 0 & 0 & 1 & -4\\end{aligned}].\\end{aligned}\n$$\n\nThe system is now\n\n$$\n\\{\\begin{aligned} & x+y+2z=1 \\\\  & y=4 \\\\  & z=-4\\end{aligned}\n$$\n\nand we can apply back substitution. Substituting both $y=4$ and $z=-4$ into the first equation, we get\n\n$$\nx+(4)+2(-4)=1\\,⟹\\,x=5.\n$$\n\nTherefore, the solution is $x=5,y=4$, and $z=-4.$ Or, in vector form, $⟨5,4,-4⟩.$\n\nq-8856:\nThis system can be written as\n\n$$\n[\\begin{aligned}0 & 8 \\\\ -5 & 6\\end{aligned}][\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}6 \\\\ 7\\end{aligned}].\n$$\n\nTo find the solution, we need to calculate the inverse of the coefficient matrix \n$A=[\\begin{aligned}0 & 8 \\\\ -5 & 6\\end{aligned}].$\nThis gives\n\n$$\n\\begin{aligned}{A}^{-1} & =\\frac{1}{6\\cdot 0-(-5)\\cdot 8}[\\begin{aligned}6 & -8 \\\\ 5 & 0\\end{aligned}] \\\\  & =\\frac{1}{40}[\\begin{aligned}6 & -8 \\\\ 5 & 0\\end{aligned}].\\end{aligned}\n$$\n\nWe can now represent the solution to this system, as follows:\n\n$$\n\\begin{aligned}x & ={A}^{-1}b \\\\  & =\\frac{1}{40}[\\begin{aligned}6 & -8 \\\\ 5 & 0\\end{aligned}][\\begin{aligned}6 \\\\ 7\\end{aligned}]\\end{aligned}\n$$\n\nq-102807:\nFirst, we reorganize the equations so that they are in the right order, to get\n\n$$\n\\begin{aligned}\\{\\begin{aligned}-x+2y=3 \\\\ x-y=-7.\\end{aligned}\\end{aligned}\n$$\n\nNow, we can represent this system of equations in the form $Ax=b:$\n\n$$\n[\\begin{aligned}-1 & 2 \\\\ 1 & -1\\end{aligned}][\\begin{aligned}x \\\\ y\\end{aligned}]=[\\begin{aligned}3 \\\\ -7\\end{aligned}].\n$$\n\nTo find the solution, we need to calculate the inverse of the coefficient matrix $A=[\\begin{aligned}-1 & 2 \\\\ 1 & -1\\end{aligned}].$ This gives\n\n$$\n\\begin{aligned}{A}^{-1} & =\\frac{1}{(-1)\\cdot (-1)-1\\cdot 2}[\\begin{aligned}-1 & -2 \\\\ -1 & -1\\end{aligned}] \\\\  & =\\frac{1}{-1}[\\begin{aligned}-1 & -2 \\\\ -1 & -1\\end{aligned}] \\\\  & =[\\begin{aligned}1 & 2 \\\\ 1 & 1\\end{aligned}].\\end{aligned}\n$$\n\nWe can now find the solution to this system as:\n\n$$\n\\begin{aligned}x & ={A}^{-1}b \\\\  & =[\\begin{aligned}1 & 2 \\\\ 1 & 1\\end{aligned}][\\begin{aligned}3 \\\\ -7\\end{aligned}]\\end{aligned}\n$$",
+      "answer_fields": [
+        {
+          "key": "q-20512/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "⟨13,-4,-4⟩",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "⟨1,4,-2⟩",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "⟨-11,4,4⟩",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "⟨3,2,-2⟩",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "⟨5,4,-4⟩",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-8856/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{40}[\\begin{aligned}6 & -8 \\\\ 5 & 0\\end{aligned}][\\begin{aligned}6 \\\\ 7\\end{aligned}]",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{40}[\\begin{aligned}6 & 8 \\\\ -5 & 0\\end{aligned}][\\begin{aligned}6 \\\\ 7\\end{aligned}]",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{40}[\\begin{aligned}6 & -5 \\\\ 8 & 0\\end{aligned}][\\begin{aligned}6 \\\\ 7\\end{aligned}]",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "x=-\\frac{1}{40}[\\begin{aligned}6 & -8 \\\\ 5 & 0\\end{aligned}][\\begin{aligned}6 \\\\ 7\\end{aligned}]",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "x=-\\frac{1}{40}[\\begin{aligned}6 & 5 \\\\ -8 & 0\\end{aligned}][\\begin{aligned}6 \\\\ 7\\end{aligned}]",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-102807/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}-1 & -2 \\\\ -1 & -1\\end{aligned}][\\begin{aligned}3 \\\\ -7\\end{aligned}]",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{2}[\\begin{aligned}1 & -2 \\\\ -1 & 1\\end{aligned}][\\begin{aligned}3 \\\\ -7\\end{aligned}]",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}1 & 2 \\\\ 1 & 1\\end{aligned}][\\begin{aligned}3 \\\\ -7\\end{aligned}]",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "x=[\\begin{aligned}-1 & 2 \\\\ 1 & -1\\end{aligned}][\\begin{aligned}3 \\\\ -7\\end{aligned}]",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "x=\\frac{1}{2}[\\begin{aligned}1 & 2 \\\\ 1 & 1\\end{aligned}][\\begin{aligned}3 \\\\ -7\\end{aligned}]",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": []
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

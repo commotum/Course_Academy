@@ -1,0 +1,78 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-106896\", \"problem\": \"The eigenvector of $A=[\\\\begin{aligned}2 & 0 \\\\\\\\ 2k+1 & -k\\\\end{aligned}]$ corresponding to the eigenvalue $\\\\lambda =2k$ is  $[\\\\begin{aligned}1 \\\\\\\\ 1\\\\end{aligned}].$ Determine the value of $k.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-158440\", \"problem\": \"Solve for $k$ given that the following function is a probability density function:\\n\\n$$\\nf(x)=\\\\{\\\\begin{aligned}\\\\frac{{x}^{3}}{k},\\\\, & 0\\\\le x<2, \\\\\\\\ 0,\\\\, & \\\\text{otherwise.}\\\\end{aligned}\\n$$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-106896:\nRemember that the eigenvectors of $A$ are the non-zero vectors $v$ such that $Av=\\lambda v.$ So, we have\n\n$$\n\\begin{aligned}Av & =\\lambda v \\\\ [\\begin{aligned}2 & 0 \\\\ 2k+1 & -k\\end{aligned}][\\begin{aligned}1 \\\\ 1\\end{aligned}] & =2k[\\begin{aligned}1 \\\\ 1\\end{aligned}] \\\\ [\\begin{aligned}2 \\\\ k+1\\end{aligned}] & =[\\begin{aligned}2k \\\\ 2k\\end{aligned}].\\end{aligned}\n$$\n\nThis gives us the following system of linear equations:\n\n$$\n\\{\\begin{aligned}2=2k, \\\\ k+1=2k\\end{aligned}\n$$\n\nSolving for $k$ in the first equation, we get\n\n$$\n2=2k\\,⟹\\,k=1.\n$$\n\nNow, substituting $k=1$ into the second equation, we get\n\n$$\n\\begin{aligned}k+1 & =2k \\\\ 1+1 & =2\\cdot 1 \\\\ 2 & =2,\\end{aligned}\n$$\n\nwhich is a true statement.\n\nTherefore, the solution of the system is $k=1.$\n\nq-158440:\nFor a function $f(x)$ to be a valid probability density function on a set $S,$ it must satisfy the following conditions:\n\n- $f(x)\\ge 0$ for all $x\\in S$\n\n- ${\\int }_{S}f(x)\\,\\text{d}x=1$\n\nFor the given function, the second condition states that\n\n$$\n{\\int }_{0}^{2}\\frac{{x}^{3}}{k}\\,\\text{d}x=1.\n$$\n\nComputing the integral on the left-hand side, we get\n\n$$\n\\begin{aligned}{\\int }_{0}^{2}\\frac{{x}^{3}}{k}\\,\\text{d}x & ={[\\frac{{x}^{4}}{4k}]}_{0}^{2} \\\\  & =(\\frac{16}{4k}-0) \\\\  & =\\frac{4}{k}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\frac{4}{k}=1\\,⟹\\,k=4.\n$$",
+      "fields": [
+        {
+          "key": "q-106896/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "-1"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "-2"
+            }
+          ]
+        },
+        {
+          "key": "q-158440/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "8"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "6"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}
