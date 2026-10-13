@@ -1,0 +1,3590 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "c0d07c69-9e19-58d0-936b-6f43dd7769fd",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(3,-4)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\frac{u^{2}}{v}\\\\u v\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}\\frac{2 u}{v}&- \\frac{u^{2}}{v^{2}}\\\\v&u\\end{matrix}\\right|\\\\& =(\\frac{2 u}{v})\\cdot (u)-(- \\frac{u^{2}}{v^{2}})\\cdot (v)\\\\& =\\frac{2u^{2}}{v}+\\frac{u^{2}}{v}\\\\& =\\frac{3u^{2}}{v}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(3,-4)} & =\\left(\\frac{3 u^{2}}{v}\\right)\\big|_{u=3,v=-4}\\\\& =\\frac{3 (3)^{2}}{(-4)}\\\\& =- \\frac{27}{4}\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|- \\frac{27}{4}|\\cdot\\delta A\\\\ & =\\frac{27}{4}\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "58aeee72-76a7-5acb-be2a-cf58603f685f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bb1a80f9-b063-5e47-bd9f-e111a6de7874",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{27}{4}\\,\\delta A"
+            },
+            {
+              ":answer/id": "666fdfdb-49aa-55c0-b5ad-a59795810cd4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{27}{8}\\,\\delta A"
+            },
+            {
+              ":answer/id": "0591f0fb-4a19-546f-8b63-e8013dc734cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{729}{16}\\,\\delta A"
+            },
+            {
+              ":answer/id": "15646888-eb1c-5161-a1de-e9e580931c60",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{27}{2}\\,\\delta A"
+            },
+            {
+              ":answer/id": "118c4b77-8750-5463-96b3-81f833de3463",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4}{27}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bb1a80f9-b063-5e47-bd9f-e111a6de7874"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 0,
+      "difficulty": "easy",
+      "template": "quotient_product",
+      "parameters": {
+        "u0": 3,
+        "v0": -4
+      },
+      "bank_profile": "authored_area_quotient_product",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161885"
+      ],
+      "authored_level": false,
+      "domain": "v!=0",
+      "plot": "none",
+      "parameter_fingerprint": "8e0f3baded070e9cd9cd8eb7edfcccf90fd791a13622e91eb05b2567cf0aaa7c",
+      "exact": {
+        "x": "u**2/v",
+        "y": "u*v",
+        "partials": [
+          "2*u/v",
+          "-u**2/v**2",
+          "v",
+          "u"
+        ],
+        "ad": "2*u**2/v",
+        "bc": "-u**2/v",
+        "jacobian": "3*u**2/v",
+        "jacobian_at_point": "-27/4",
+        "area_scale": "27/4"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "30408fc6-eb78-5a6d-b68d-8903c147bd81",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}v e^{u}\\\\u e^{v}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}v e^{u}&e^{u}\\\\e^{v}&u e^{v}\\end{matrix}\\right|\\\\& =(v e^{u})\\cdot (u e^{v})-(e^{u})\\cdot (e^{v})\\\\& =uv e^{u+v}-e^{u+v}\\\\& =(uv-1)e^{u+v}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,3)} & =\\left(\\left(u v - 1\\right) e^{u} e^{v}\\right)\\big|_{u=-3,v=3}\\\\& =\\left((-3) (3) - 1\\right) e^{(-3)} e^{(3)}\\\\& =-10\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-10|\\cdot\\delta A\\\\ & =10\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9ca485e1-cf5c-5df3-bebd-f0b8a1937577",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c1c61193-fe29-5a6f-a294-754704821c5b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5\\,\\delta A"
+            },
+            {
+              ":answer/id": "a743e64e-9006-5df5-95bf-e24aceb45490",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{10}\\,\\delta A"
+            },
+            {
+              ":answer/id": "257a9921-6bc2-5165-b3ac-e712daff9c39",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "100\\,\\delta A"
+            },
+            {
+              ":answer/id": "befc4848-0d2e-504c-968c-5e2cb9a16835",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20\\,\\delta A"
+            },
+            {
+              ":answer/id": "fe63ba72-2168-5ad2-b772-b9a4aa3bf311",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fe63ba72-2168-5ad2-b772-b9a4aa3bf311"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 1,
+      "difficulty": "easy",
+      "template": "exp_product",
+      "parameters": {
+        "u0": -3,
+        "v0": 3
+      },
+      "bank_profile": "authored_area_exp_product",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161831"
+      ],
+      "authored_level": false,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "3d7c8cf04c5de10bb7c3769a0fb8607f0cc59b896555217e5643403edc4447a5",
+      "exact": {
+        "x": "v*exp(u)",
+        "y": "u*exp(v)",
+        "partials": [
+          "v*exp(u)",
+          "exp(u)",
+          "exp(v)",
+          "u*exp(v)"
+        ],
+        "ad": "u*v*exp(u)*exp(v)",
+        "bc": "exp(u)*exp(v)",
+        "jacobian": "(u*v - 1)*exp(u)*exp(v)",
+        "jacobian_at_point": "-10",
+        "area_scale": "10"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "88aba115-f069-56b0-8ee3-fdf548c6cdbe",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,-3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{2} + v\\\\2 u - v^{3}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 u&1\\\\2&- 3 v^{2}\\end{matrix}\\right|\\\\& =(2 u)\\cdot (- 3 v^{2})-(1)\\cdot (2)\\\\& =-6uv^{2}-2\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,-3)} & =\\left(- 2 \\left(3 u v^{2} + 1\\right)\\right)\\big|_{u=-3,v=-3}\\\\& =- 2 \\left(3 (-3) (-3)^{2} + 1\\right)\\\\& =160\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|160|\\cdot\\delta A\\\\ & =160\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bb8398f7-1713-509e-a7b2-d6bdd5130ff8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "52dc66c7-1c60-5985-9c8d-70cce987112a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "160\\,\\delta A"
+            },
+            {
+              ":answer/id": "3001fae6-8586-5cb0-b0ef-e400a92086ef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "320\\,\\delta A"
+            },
+            {
+              ":answer/id": "5dc008f2-971f-5433-85d1-3edda519a713",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "80\\,\\delta A"
+            },
+            {
+              ":answer/id": "86d3e2e3-6892-55e7-98cd-6d5039efc00c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "25600\\,\\delta A"
+            },
+            {
+              ":answer/id": "c60e1209-b715-58d9-b193-51a0cc36749b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{160}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "52dc66c7-1c60-5985-9c8d-70cce987112a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 2,
+      "difficulty": "easy",
+      "template": "poly_sum",
+      "parameters": {
+        "u0": -3,
+        "v0": -3
+      },
+      "bank_profile": "authored_area_poly_sum",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161788"
+      ],
+      "authored_level": false,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "f024a2bf3478afa942474c178759b58010df9fcb56f00dfcb0fc9a7083a86c6e",
+      "exact": {
+        "x": "u**2 + v",
+        "y": "2*u - v**3",
+        "partials": [
+          "2*u",
+          "1",
+          "2",
+          "-3*v**2"
+        ],
+        "ad": "-6*u*v**2",
+        "bc": "2",
+        "jacobian": "-2*(3*u*v**2 + 1)",
+        "jacobian_at_point": "160",
+        "area_scale": "160"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "ac0a2456-f602-5e2b-ad8b-588bdffceba1",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-2,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}- v + \\frac{1}{u}\\\\u^{2} v\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}- \\frac{1}{u^{2}}&-1\\\\2 u v&u^{2}\\end{matrix}\\right|\\\\& =(- \\frac{1}{u^{2}})\\cdot (u^{2})-(-1)\\cdot (2 u v)\\\\& =-1+2uv\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,2)} & =\\left(2 u v - 1\\right)\\big|_{u=-2,v=2}\\\\& =2 (-2) (2) - 1\\\\& =-9\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-9|\\cdot\\delta A\\\\ & =9\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8d45079b-56f9-5a9c-aa7b-a0183de71545",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "02a10b41-84cb-5341-9526-9d63232a700f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "81\\,\\delta A"
+            },
+            {
+              ":answer/id": "4d987d06-9bec-53f6-abf5-dc5e3a6e94ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9\\,\\delta A"
+            },
+            {
+              ":answer/id": "9119b5d8-606c-590b-b7eb-bff968fa3ed2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{9}\\,\\delta A"
+            },
+            {
+              ":answer/id": "215224f8-f823-5c6e-b479-910a4dc4acea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18\\,\\delta A"
+            },
+            {
+              ":answer/id": "7cc19314-b0a5-574b-a865-3a08ae7c7440",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{2}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4d987d06-9bec-53f6-abf5-dc5e3a6e94ca"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 3,
+      "difficulty": "easy",
+      "template": "reciprocal_product",
+      "parameters": {
+        "u0": -2,
+        "v0": 2
+      },
+      "bank_profile": "authored_area_reciprocal_product",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161873"
+      ],
+      "authored_level": false,
+      "domain": "u!=0",
+      "plot": "none",
+      "parameter_fingerprint": "7e21b5f3700444e31e4e87337f456a32c43ef89a5f513eb584828f1ecd2b1426",
+      "exact": {
+        "x": "-v + 1/u",
+        "y": "u**2*v",
+        "partials": [
+          "-1/u**2",
+          "-1",
+          "2*u*v",
+          "u**2"
+        ],
+        "ad": "-1",
+        "bc": "-2*u*v",
+        "jacobian": "2*u*v - 1",
+        "jacobian_at_point": "-9",
+        "area_scale": "9"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "71745470-f694-5f76-a82f-177cd057824b",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(1,-3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}- v + \\frac{1}{u}\\\\u^{2} v\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}- \\frac{1}{u^{2}}&-1\\\\2 u v&u^{2}\\end{matrix}\\right|\\\\& =(- \\frac{1}{u^{2}})\\cdot (u^{2})-(-1)\\cdot (2 u v)\\\\& =-1+2uv\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(1,-3)} & =\\left(2 u v - 1\\right)\\big|_{u=1,v=-3}\\\\& =2 (-3) (1) - 1\\\\& =-7\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-7|\\cdot\\delta A\\\\ & =7\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5fcab4cc-ab92-5cda-a4c0-262552e6ce0e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ab3e9fb1-56bf-597c-8f67-6bc12ff5fc70",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "49\\,\\delta A"
+            },
+            {
+              ":answer/id": "d817aaf2-d28d-5cbd-ba68-f61000e1096d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{7}\\,\\delta A"
+            },
+            {
+              ":answer/id": "b1745efa-c56b-5885-8e4c-4529c9d013c3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "7\\,\\delta A"
+            },
+            {
+              ":answer/id": "cbe0e2cf-4767-5f28-9500-d9a9c12a64cd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7}{2}\\,\\delta A"
+            },
+            {
+              ":answer/id": "d7988623-9be4-5c64-8f12-4ef9e7c4f5a1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b1745efa-c56b-5885-8e4c-4529c9d013c3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 4,
+      "difficulty": "easy",
+      "template": "reciprocal_product",
+      "parameters": {
+        "u0": 1,
+        "v0": -3
+      },
+      "bank_profile": "authored_area_reciprocal_product",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161873"
+      ],
+      "authored_level": false,
+      "domain": "u!=0",
+      "plot": "none",
+      "parameter_fingerprint": "d3545dc2889ccd7217fa8b8d19bde0320001652c9a7e73938540d08edb25fbf3",
+      "exact": {
+        "x": "-v + 1/u",
+        "y": "u**2*v",
+        "partials": [
+          "-1/u**2",
+          "-1",
+          "2*u*v",
+          "u**2"
+        ],
+        "ad": "-1",
+        "bc": "-2*u*v",
+        "jacobian": "2*u*v - 1",
+        "jacobian_at_point": "-7",
+        "area_scale": "7"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "befbcf91-f192-5c05-9984-02c39d50fb30",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(1,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u + v^{2}\\\\\\sin{\\left(u + v \\right)}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}1&2 v\\\\\\cos{\\left(u + v \\right)}&\\cos{\\left(u + v \\right)}\\end{matrix}\\right|\\\\& =(1)\\cdot (\\cos{\\left(u + v \\right)})-(2 v)\\cdot (\\cos{\\left(u + v \\right)})\\\\& =(1-2v)\\cos(u+v)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(1,-1)} & =\\left(- \\left(2 v - 1\\right) \\cos{\\left(u + v \\right)}\\right)\\big|_{u=1,v=-1}\\\\& =- \\left(2 (-1) - 1\\right) \\cos{\\left((-1) + (1) \\right)}\\\\& =3\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|3|\\cdot\\delta A\\\\ & =3\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cbdcdcee-d076-5dc4-8c68-96be23426244",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8d41e111-645a-5952-af78-40014cd3b102",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{3}\\,\\delta A"
+            },
+            {
+              ":answer/id": "87ac3814-be6f-5ce9-bec5-30f3eb694c0b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6\\,\\delta A"
+            },
+            {
+              ":answer/id": "bf9f4176-29e8-57a0-8c28-db5187fc99a1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9\\,\\delta A"
+            },
+            {
+              ":answer/id": "0b579243-88b3-5092-a8e4-da23ca22bd88",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\,\\delta A"
+            },
+            {
+              ":answer/id": "844a9cba-4797-5bf3-9bfa-15ef2cfc49eb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{2}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0b579243-88b3-5092-a8e4-da23ca22bd88"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 5,
+      "difficulty": "easy",
+      "template": "sin_sum",
+      "parameters": {
+        "u0": 1,
+        "v0": -1
+      },
+      "bank_profile": "authored_area_sin_sum",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161878"
+      ],
+      "authored_level": false,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "6b3a69ba4325c905aa05f104fb30641967b5072015f0088d101e618305733390",
+      "exact": {
+        "x": "u + v**2",
+        "y": "sin(u + v)",
+        "partials": [
+          "1",
+          "2*v",
+          "cos(u + v)",
+          "cos(u + v)"
+        ],
+        "ad": "cos(u + v)",
+        "bc": "2*v*cos(u + v)",
+        "jacobian": "-(2*v - 1)*cos(u + v)",
+        "jacobian_at_point": "3",
+        "area_scale": "3"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "7c781c75-659e-5bc1-ae19-9c0e01560e61",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u + v^{2}\\\\\\sin{\\left(u + v \\right)}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}1&2 v\\\\\\cos{\\left(u + v \\right)}&\\cos{\\left(u + v \\right)}\\end{matrix}\\right|\\\\& =(1)\\cdot (\\cos{\\left(u + v \\right)})-(2 v)\\cdot (\\cos{\\left(u + v \\right)})\\\\& =(1-2v)\\cos(u+v)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,3)} & =\\left(- \\left(2 v - 1\\right) \\cos{\\left(u + v \\right)}\\right)\\big|_{u=-3,v=3}\\\\& =- \\left(2 (3) - 1\\right) \\cos{\\left((-3) + (3) \\right)}\\\\& =-5\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-5|\\cdot\\delta A\\\\ & =5\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ca86b991-dd6b-5838-a1ec-408f07af803f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bce4cf54-efbb-50df-bbad-dfefb6b05782",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "25\\,\\delta A"
+            },
+            {
+              ":answer/id": "d3c414f1-2ef9-563d-b7d9-1aaa1f1f2405",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5}{2}\\,\\delta A"
+            },
+            {
+              ":answer/id": "a30bf0a2-970b-5971-81fb-32904ab7ccbb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10\\,\\delta A"
+            },
+            {
+              ":answer/id": "f523293e-2600-5929-961a-4b5c97c51ce1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5\\,\\delta A"
+            },
+            {
+              ":answer/id": "9120f9ba-aa97-5b8a-b2ac-f0c7a19d32a9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{5}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f523293e-2600-5929-961a-4b5c97c51ce1"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 6,
+      "difficulty": "easy",
+      "template": "sin_sum",
+      "parameters": {
+        "u0": -3,
+        "v0": 3
+      },
+      "bank_profile": "authored_area_sin_sum",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161878"
+      ],
+      "authored_level": false,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "6ec475902eb9427fed88c1c5c6cf76df364a0e6c2dd7936cc9529501a10c13db",
+      "exact": {
+        "x": "u + v**2",
+        "y": "sin(u + v)",
+        "partials": [
+          "1",
+          "2*v",
+          "cos(u + v)",
+          "cos(u + v)"
+        ],
+        "ad": "cos(u + v)",
+        "bc": "2*v*cos(u + v)",
+        "jacobian": "-(2*v - 1)*cos(u + v)",
+        "jacobian_at_point": "-5",
+        "area_scale": "5"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "1cfb29b1-4962-5239-ba4a-f92586809d23",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(0,3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}- v^{2} + \\cos{\\left(u \\right)}\\\\u + v\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}- \\sin{\\left(u \\right)}&- 2 v\\\\1&1\\end{matrix}\\right|\\\\& =(- \\sin{\\left(u \\right)})\\cdot (1)-(- 2 v)\\cdot (1)\\\\& =-\\sin u+2v\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(0,3)} & =\\left(2 v - \\sin{\\left(u \\right)}\\right)\\big|_{u=0,v=3}\\\\& =2 (3) - \\sin{\\left((0) \\right)}\\\\& =6\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|6|\\cdot\\delta A\\\\ & =6\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f9b31030-1176-5a11-907f-dc40aba5240e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "12f7abe0-d42e-5448-bbd7-08fdcd62d622",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36\\,\\delta A"
+            },
+            {
+              ":answer/id": "40266c5b-104c-5172-bfcc-1c7e7997b65b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12\\,\\delta A"
+            },
+            {
+              ":answer/id": "b0cae9cd-000e-5674-b5de-11e3f31de63f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{6}\\,\\delta A"
+            },
+            {
+              ":answer/id": "d624197c-5760-5234-b310-40c298a9eb12",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\,\\delta A"
+            },
+            {
+              ":answer/id": "fdbfc61e-321f-5d6e-8b51-06d750e6ae7f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fdbfc61e-321f-5d6e-8b51-06d750e6ae7f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 7,
+      "difficulty": "easy",
+      "template": "cos_sum",
+      "parameters": {
+        "u0": 0,
+        "v0": 3
+      },
+      "bank_profile": "authored_area_cos_sum",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161875"
+      ],
+      "authored_level": false,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "d17f5730f0747d66f8b23dabab1b5bf6afb4071ff7ed411056263595f07e1f6f",
+      "exact": {
+        "x": "-v**2 + cos(u)",
+        "y": "u + v",
+        "partials": [
+          "-sin(u)",
+          "-2*v",
+          "1",
+          "1"
+        ],
+        "ad": "-sin(u)",
+        "bc": "-2*v",
+        "jacobian": "2*v - sin(u)",
+        "jacobian_at_point": "6",
+        "area_scale": "6"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "0b9a02ca-7c70-5f56-9f0b-121646a36aa8",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(2,3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}- v + \\frac{1}{u}\\\\u^{2} v\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}- \\frac{1}{u^{2}}&-1\\\\2 u v&u^{2}\\end{matrix}\\right|\\\\& =(- \\frac{1}{u^{2}})\\cdot (u^{2})-(-1)\\cdot (2 u v)\\\\& =-1+2uv\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,3)} & =\\left(2 u v - 1\\right)\\big|_{u=2,v=3}\\\\& =2 (2) (3) - 1\\\\& =11\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|11|\\cdot\\delta A\\\\ & =11\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1b20c09f-4c6b-52a4-8750-eb003ed78aa9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "563b2599-340b-58dd-b84f-4ac550bdf451",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "22\\,\\delta A"
+            },
+            {
+              ":answer/id": "810197c8-0b49-5773-8615-7a5054751e4f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "11\\,\\delta A"
+            },
+            {
+              ":answer/id": "4f6e5e88-05bc-5c71-bea6-19ba85d86e60",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{11}\\,\\delta A"
+            },
+            {
+              ":answer/id": "a8cb03e3-5fa5-505c-a633-9e9d1ec12339",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{11}{2}\\,\\delta A"
+            },
+            {
+              ":answer/id": "b3c6fb68-b3ce-5e2d-af51-80078c123a54",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "121\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "810197c8-0b49-5773-8615-7a5054751e4f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 8,
+      "difficulty": "easy",
+      "template": "reciprocal_product",
+      "parameters": {
+        "u0": 2,
+        "v0": 3
+      },
+      "bank_profile": "authored_area_reciprocal_product",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161873"
+      ],
+      "authored_level": false,
+      "domain": "u!=0",
+      "plot": "none",
+      "parameter_fingerprint": "e286b45c6be7d979d63bdb93c29c41f53c967872451edc95b7cebdf6375c7454",
+      "exact": {
+        "x": "-v + 1/u",
+        "y": "u**2*v",
+        "partials": [
+          "-1/u**2",
+          "-1",
+          "2*u*v",
+          "u**2"
+        ],
+        "ad": "-1",
+        "bc": "-2*u*v",
+        "jacobian": "2*u*v - 1",
+        "jacobian_at_point": "11",
+        "area_scale": "11"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "8ecbd865-e176-5f2d-9d64-2cfa94b856c3",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(9,4)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\sqrt{u v}\\\\u v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}\\frac{\\sqrt{u v}}{2 u}&\\frac{\\sqrt{u v}}{2 v}\\\\v^{2}&2 u v\\end{matrix}\\right|\\\\& =(\\frac{\\sqrt{u v}}{2 u})\\cdot (2 u v)-(\\frac{\\sqrt{u v}}{2 v})\\cdot (v^{2})\\\\& =v\\sqrt{uv}-\\frac{1}{2}v\\sqrt{uv}\\\\& =\\frac{1}{2}v\\sqrt{uv}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(9,4)} & =\\left(\\frac{v \\sqrt{u v}}{2}\\right)\\big|_{u=9,v=4}\\\\& =\\frac{(4) \\sqrt{(4) (9)}}{2}\\\\& =12\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|12|\\cdot\\delta A\\\\ & =12\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "04ed50c2-acf2-5330-9abc-a91a31c9e386",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "27fcf3cd-3bbe-5528-babd-33d7bf9ffe7a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{12}\\,\\delta A"
+            },
+            {
+              ":answer/id": "f965e97d-5d4b-55e7-949e-5c3b564d2ce5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24\\,\\delta A"
+            },
+            {
+              ":answer/id": "09343221-ea53-57fb-b4f5-b7556caa74cf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144\\,\\delta A"
+            },
+            {
+              ":answer/id": "3dbe24b9-ae6c-5e4b-83a6-46e984c2c84d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12\\,\\delta A"
+            },
+            {
+              ":answer/id": "befdd754-549c-5126-9686-290cb788c574",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3dbe24b9-ae6c-5e4b-83a6-46e984c2c84d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 9,
+      "difficulty": "easy",
+      "template": "sqrt_product",
+      "parameters": {
+        "u0": 9,
+        "v0": 4
+      },
+      "bank_profile": "authored_area_sqrt_product",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161887"
+      ],
+      "authored_level": false,
+      "domain": "u>0,v>0",
+      "plot": "none",
+      "parameter_fingerprint": "6d13e6ddda8cf3ba5462184bfec0bbc5bc55c9efcaa0e35ecb763b6a77fb541e",
+      "exact": {
+        "x": "sqrt(u*v)",
+        "y": "u*v**2",
+        "partials": [
+          "sqrt(u*v)/(2*u)",
+          "sqrt(u*v)/(2*v)",
+          "v**2",
+          "2*u*v"
+        ],
+        "ad": "v*sqrt(u*v)",
+        "bc": "v*sqrt(u*v)/2",
+        "jacobian": "v*sqrt(u*v)/2",
+        "jacobian_at_point": "12",
+        "area_scale": "12"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "0fed8852-50cc-531d-a0fd-2c5dd29daf4d",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-4,4)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u + v^{2}\\\\\\sin{\\left(u + v \\right)}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}1&2 v\\\\\\cos{\\left(u + v \\right)}&\\cos{\\left(u + v \\right)}\\end{matrix}\\right|\\\\& =(1)\\cdot (\\cos{\\left(u + v \\right)})-(2 v)\\cdot (\\cos{\\left(u + v \\right)})\\\\& =(1-2v)\\cos(u+v)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-4,4)} & =\\left(- \\left(2 v - 1\\right) \\cos{\\left(u + v \\right)}\\right)\\big|_{u=-4,v=4}\\\\& =- \\left(2 (4) - 1\\right) \\cos{\\left((-4) + (4) \\right)}\\\\& =-7\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-7|\\cdot\\delta A\\\\ & =7\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fb075901-b47d-5703-99c4-15a001f1beb3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0ab96b99-823b-5791-8462-e98a52ea1266",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{7}\\,\\delta A"
+            },
+            {
+              ":answer/id": "f33927a9-0ff8-5a4c-a00d-1f02b77a83dc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "49\\,\\delta A"
+            },
+            {
+              ":answer/id": "46560608-b1d8-5520-92f6-21f17243cf0b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7}{2}\\,\\delta A"
+            },
+            {
+              ":answer/id": "a1d56eda-1bc5-5ff9-a76c-1caf5fb22cef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "7\\,\\delta A"
+            },
+            {
+              ":answer/id": "83740134-c0f3-5d5a-b3db-62a19a1a5bb2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a1d56eda-1bc5-5ff9-a76c-1caf5fb22cef"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 10,
+      "difficulty": "easy",
+      "template": "sin_sum",
+      "parameters": {
+        "u0": -4,
+        "v0": 4
+      },
+      "bank_profile": "authored_area_sin_sum",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161878"
+      ],
+      "authored_level": false,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "83e15b9e8ffce13a4cd881e9077ae9dc77a1d71ead86d16ee7c85c30a1323f3b",
+      "exact": {
+        "x": "u + v**2",
+        "y": "sin(u + v)",
+        "partials": [
+          "1",
+          "2*v",
+          "cos(u + v)",
+          "cos(u + v)"
+        ],
+        "ad": "cos(u + v)",
+        "bc": "2*v*cos(u + v)",
+        "jacobian": "-(2*v - 1)*cos(u + v)",
+        "jacobian_at_point": "-7",
+        "area_scale": "7"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "cb992281-730d-57cb-a8e8-c35279af4b40",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(9,9)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\sqrt{u v}\\\\u v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}\\frac{\\sqrt{u v}}{2 u}&\\frac{\\sqrt{u v}}{2 v}\\\\v^{2}&2 u v\\end{matrix}\\right|\\\\& =(\\frac{\\sqrt{u v}}{2 u})\\cdot (2 u v)-(\\frac{\\sqrt{u v}}{2 v})\\cdot (v^{2})\\\\& =v\\sqrt{uv}-\\frac{1}{2}v\\sqrt{uv}\\\\& =\\frac{1}{2}v\\sqrt{uv}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(9,9)} & =\\left(\\frac{v \\sqrt{u v}}{2}\\right)\\big|_{u=9,v=9}\\\\& =\\frac{(9) \\sqrt{(9) (9)}}{2}\\\\& =\\frac{81}{2}\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|\\frac{81}{2}|\\cdot\\delta A\\\\ & =\\frac{81}{2}\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1f415648-52b8-5a32-b254-b293b2f6c5e4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "134bd3b1-f971-5345-9d9f-7ed6d8ee1a1f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{81}{2}\\,\\delta A"
+            },
+            {
+              ":answer/id": "5c57ded8-362d-59bd-8c02-bcd8374e5fa1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "81\\,\\delta A"
+            },
+            {
+              ":answer/id": "470f641d-6b05-59d2-ab6b-ab8c77dd32d2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2}{81}\\,\\delta A"
+            },
+            {
+              ":answer/id": "d3c02d90-bb5a-5e9e-bcd5-d9460fcb8d3d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{81}{4}\\,\\delta A"
+            },
+            {
+              ":answer/id": "eb884f21-30c3-56f8-ba31-e209b558a915",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{6561}{4}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "134bd3b1-f971-5345-9d9f-7ed6d8ee1a1f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 11,
+      "difficulty": "easy",
+      "template": "sqrt_product",
+      "parameters": {
+        "u0": 9,
+        "v0": 9
+      },
+      "bank_profile": "authored_area_sqrt_product",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161887"
+      ],
+      "authored_level": false,
+      "domain": "u>0,v>0",
+      "plot": "none",
+      "parameter_fingerprint": "eaf35783e9cc6e8fa005465f3f552529336f16b98e1d2ddbad1f5a3dd975b170",
+      "exact": {
+        "x": "sqrt(u*v)",
+        "y": "u*v**2",
+        "partials": [
+          "sqrt(u*v)/(2*u)",
+          "sqrt(u*v)/(2*v)",
+          "v**2",
+          "2*u*v"
+        ],
+        "ad": "v*sqrt(u*v)",
+        "bc": "v*sqrt(u*v)/2",
+        "jacobian": "v*sqrt(u*v)/2",
+        "jacobian_at_point": "81/2",
+        "area_scale": "81/2"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "cb09cfa0-6a3e-5f07-aace-372945959b69",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-1,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 u v^{3}\\\\2 u^{2} + 2 v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 v^{3}&6 u v^{2}\\\\4 u&4 v\\end{matrix}\\right|\\\\& =(2 v^{3})\\cdot (4 v)-(6 u v^{2})\\cdot (4 u)\\\\& =- 24 u^{2} v^{2} + 8 v^{4}\\\\& =- 8 v^{2} \\left(3 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,2)} & =\\left(- 8 v^{2} \\left(3 u^{2} - v^{2}\\right)\\right)\\big|_{u=-1,v=2}\\\\& =- 8 (2)^{2} \\left(3 (-1)^{2} - (2)^{2}\\right)\\\\& =32\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|32|\\cdot\\delta A\\\\ & =32\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7d61b191-469d-5e4b-8e12-9baa79d7c715",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f1bc4ed4-4f54-5ce2-954a-f0f1768d1661",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "64\\,\\delta A"
+            },
+            {
+              ":answer/id": "309d9e8d-9150-53fa-b9c8-0ab67afc0ada",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "32\\,\\delta A"
+            },
+            {
+              ":answer/id": "604d86b2-7eee-5eb3-a3c9-70c65e717a97",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16\\,\\delta A"
+            },
+            {
+              ":answer/id": "c64039c6-82a5-598f-9eb3-3f6fc4da3839",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1024\\,\\delta A"
+            },
+            {
+              ":answer/id": "ca55d8c9-71d8-5fc4-ac09-2babd5cb1ec7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{32}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "309d9e8d-9150-53fa-b9c8-0ab67afc0ada"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 0,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "c": 2,
+        "n": 3,
+        "u0": -1,
+        "v0": 2
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "3bd50214f39d0f68fb3f4e27abb23b2f25c8a57d900978d9ba6b20fa58bcf04f",
+      "exact": {
+        "x": "2*u*v**3",
+        "y": "2*u**2 + 2*v**2",
+        "partials": [
+          "2*v**3",
+          "6*u*v**2",
+          "4*u",
+          "4*v"
+        ],
+        "ad": "8*v**4",
+        "bc": "24*u**2*v**2",
+        "jacobian": "-8*v**2*(3*u**2 - v**2)",
+        "jacobian_at_point": "32",
+        "area_scale": "32"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "3f3ddbc9-4fc7-5b9f-b3f2-10196c99a37d",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 u v^{3}\\\\2 u^{2} + 3 v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 v^{3}&6 u v^{2}\\\\4 u&6 v\\end{matrix}\\right|\\\\& =(2 v^{3})\\cdot (6 v)-(6 u v^{2})\\cdot (4 u)\\\\& =- 24 u^{2} v^{2} + 12 v^{4}\\\\& =- 12 v^{2} \\left(2 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,1)} & =\\left(- 12 v^{2} \\left(2 u^{2} - v^{2}\\right)\\right)\\big|_{u=-3,v=1}\\\\& =- 12 (1)^{2} \\left(2 (-3)^{2} - (1)^{2}\\right)\\\\& =-204\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-204|\\cdot\\delta A\\\\ & =204\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "342e8b93-2af6-522c-b730-d1887bd0b667",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "03296696-b8a6-593b-a76a-da72d728da0c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{204}\\,\\delta A"
+            },
+            {
+              ":answer/id": "982ebb40-2ee4-5cdb-86dd-25e5705ec3f6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "408\\,\\delta A"
+            },
+            {
+              ":answer/id": "b3d8b8fb-be6a-5c35-befe-6c3d868f761c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "102\\,\\delta A"
+            },
+            {
+              ":answer/id": "aa044fa6-1965-51c5-b124-245947afd927",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "204\\,\\delta A"
+            },
+            {
+              ":answer/id": "278d99a4-c6cd-5629-9241-e72fb1dc93d9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "41616\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "aa044fa6-1965-51c5-b124-245947afd927"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 1,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "c": 3,
+        "n": 3,
+        "u0": -3,
+        "v0": 1
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "cb84b7dd0a53574ebf09316176aec6eed4b37c2e5ff06bae51b1d3d32167d437",
+      "exact": {
+        "x": "2*u*v**3",
+        "y": "2*u**2 + 3*v**2",
+        "partials": [
+          "2*v**3",
+          "6*u*v**2",
+          "4*u",
+          "6*v"
+        ],
+        "ad": "12*v**4",
+        "bc": "24*u**2*v**2",
+        "jacobian": "-12*v**2*(2*u**2 - v**2)",
+        "jacobian_at_point": "-204",
+        "area_scale": "204"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "5e0bdd1f-99cf-5ddf-976d-0e0acf6f543a",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-1,-2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}3 u v^{3}\\\\3 u^{2} + 2 v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 v^{3}&9 u v^{2}\\\\6 u&4 v\\end{matrix}\\right|\\\\& =(3 v^{3})\\cdot (4 v)-(9 u v^{2})\\cdot (6 u)\\\\& =- 54 u^{2} v^{2} + 12 v^{4}\\\\& =- 6 v^{2} \\left(9 u^{2} - 2 v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,-2)} & =\\left(- 6 v^{2} \\left(9 u^{2} - 2 v^{2}\\right)\\right)\\big|_{u=-1,v=-2}\\\\& =- 6 (-2)^{2} \\left(9 (-1)^{2} - 2 (-2)^{2}\\right)\\\\& =-24\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-24|\\cdot\\delta A\\\\ & =24\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0fcde9ab-3a44-5c21-b717-136c5507e3b0",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b59186ce-4cb8-5677-9464-a713ada2044e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48\\,\\delta A"
+            },
+            {
+              ":answer/id": "12437f29-9765-50b4-b508-55e46e340ecd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24\\,\\delta A"
+            },
+            {
+              ":answer/id": "7f1200d2-db0f-5bba-b6ba-294e401b599f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{24}\\,\\delta A"
+            },
+            {
+              ":answer/id": "2264c079-bfa9-5b2b-8332-c2c25370a605",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "576\\,\\delta A"
+            },
+            {
+              ":answer/id": "235ee0b9-e105-5135-806b-0382ebc3067d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "12437f29-9765-50b4-b508-55e46e340ecd"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 2,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 3,
+        "b": 3,
+        "c": 2,
+        "n": 3,
+        "u0": -1,
+        "v0": -2
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "fe061ad66fd7c62f9d6df576c85333542a3c5ab2bf5c68b19f7bad035e8382fc",
+      "exact": {
+        "x": "3*u*v**3",
+        "y": "3*u**2 + 2*v**2",
+        "partials": [
+          "3*v**3",
+          "9*u*v**2",
+          "6*u",
+          "4*v"
+        ],
+        "ad": "12*v**4",
+        "bc": "54*u**2*v**2",
+        "jacobian": "-6*v**2*(9*u**2 - 2*v**2)",
+        "jacobian_at_point": "-24",
+        "area_scale": "24"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "64ef5b01-6a96-5d5c-b231-bbae63655da6",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(2,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}3 u v^{2}\\\\3 u^{2} + v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 v^{2}&6 u v\\\\6 u&2 v\\end{matrix}\\right|\\\\& =(3 v^{2})\\cdot (2 v)-(6 u v)\\cdot (6 u)\\\\& =- 36 u^{2} v + 6 v^{3}\\\\& =- 6 v \\left(6 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,1)} & =\\left(- 6 v \\left(6 u^{2} - v^{2}\\right)\\right)\\big|_{u=2,v=1}\\\\& =- 6 (1) \\left(- (1)^{2} + 6 (2)^{2}\\right)\\\\& =-138\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-138|\\cdot\\delta A\\\\ & =138\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "eab7929c-c5a2-5e69-8587-9e047c9d07ce",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "27b518eb-c23d-51fc-88af-5f393e76828c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "19044\\,\\delta A"
+            },
+            {
+              ":answer/id": "9a8fbd68-f678-5408-af98-95d89704b55f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "138\\,\\delta A"
+            },
+            {
+              ":answer/id": "7f976003-8f02-5844-8143-06293eacd6d0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "69\\,\\delta A"
+            },
+            {
+              ":answer/id": "b6818986-6218-5071-8053-9ba9aebff4b5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{138}\\,\\delta A"
+            },
+            {
+              ":answer/id": "cbd28c24-57d3-512e-ba10-c89b40c12962",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "276\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9a8fbd68-f678-5408-af98-95d89704b55f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 3,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 3,
+        "b": 3,
+        "c": 1,
+        "n": 2,
+        "u0": 2,
+        "v0": 1
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "d6688819e9f4a2f827d453565e49f3d0a505a31b81752a3ae96c4c125fe15da2",
+      "exact": {
+        "x": "3*u*v**2",
+        "y": "3*u**2 + v**2",
+        "partials": [
+          "3*v**2",
+          "6*u*v",
+          "6*u",
+          "2*v"
+        ],
+        "ad": "6*v**3",
+        "bc": "36*u**2*v",
+        "jacobian": "-6*v*(6*u**2 - v**2)",
+        "jacobian_at_point": "-138",
+        "area_scale": "138"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "76c8db18-7795-5eda-94db-0eefa00e0eca",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(3,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 u v^{2}\\\\u^{2} + v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 v^{2}&4 u v\\\\2 u&2 v\\end{matrix}\\right|\\\\& =(2 v^{2})\\cdot (2 v)-(4 u v)\\cdot (2 u)\\\\& =- 8 u^{2} v + 4 v^{3}\\\\& =- 4 v \\left(2 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(3,1)} & =\\left(- 4 v \\left(2 u^{2} - v^{2}\\right)\\right)\\big|_{u=3,v=1}\\\\& =- 4 (1) \\left(- (1)^{2} + 2 (3)^{2}\\right)\\\\& =-68\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-68|\\cdot\\delta A\\\\ & =68\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a920abcf-37a7-52cf-a908-c94b12d8c4a4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7c1b9dcf-b5b5-5b73-8f9b-a9bf5f70b7a5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "34\\,\\delta A"
+            },
+            {
+              ":answer/id": "67a1bd33-bdfb-5223-9960-02ef8aee31d0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4624\\,\\delta A"
+            },
+            {
+              ":answer/id": "e770cd6e-7f34-57d7-9598-d649530011f8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{68}\\,\\delta A"
+            },
+            {
+              ":answer/id": "4e998789-4241-59ae-8842-8ffe3ed86b78",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "136\\,\\delta A"
+            },
+            {
+              ":answer/id": "fb72d431-9480-50ec-a3b0-a16e03194105",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "68\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fb72d431-9480-50ec-a3b0-a16e03194105"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 4,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 2,
+        "b": 1,
+        "c": 1,
+        "n": 2,
+        "u0": 3,
+        "v0": 1
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "b05fe4b887cc089ecc3f1880b1f4daf57e11d3152204c4e213a8277a6db1937d",
+      "exact": {
+        "x": "2*u*v**2",
+        "y": "u**2 + v**2",
+        "partials": [
+          "2*v**2",
+          "4*u*v",
+          "2*u",
+          "2*v"
+        ],
+        "ad": "4*v**3",
+        "bc": "8*u**2*v",
+        "jacobian": "-4*v*(2*u**2 - v**2)",
+        "jacobian_at_point": "-68",
+        "area_scale": "68"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "dcbcbbb4-f7d9-5611-b219-7e3aa5f7e0b1",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u v^{2}\\\\3 u^{2} + v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}v^{2}&2 u v\\\\6 u&2 v\\end{matrix}\\right|\\\\& =(v^{2})\\cdot (2 v)-(2 u v)\\cdot (6 u)\\\\& =- 12 u^{2} v + 2 v^{3}\\\\& =- 2 v \\left(6 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,1)} & =\\left(- 2 v \\left(6 u^{2} - v^{2}\\right)\\right)\\big|_{u=-3,v=1}\\\\& =- 2 (1) \\left(6 (-3)^{2} - (1)^{2}\\right)\\\\& =-106\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-106|\\cdot\\delta A\\\\ & =106\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bf6c8647-1137-5947-9766-c2fa7374fd6d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "62e29ef8-0cea-53a1-bcbb-9cabb8920562",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "212\\,\\delta A"
+            },
+            {
+              ":answer/id": "b5d729e1-ff3e-5dbb-ad41-495e43ec1b15",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "53\\,\\delta A"
+            },
+            {
+              ":answer/id": "edd72c7f-798e-507e-8275-803dce74bab5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "11236\\,\\delta A"
+            },
+            {
+              ":answer/id": "105e1442-4a5a-5ff7-a179-f5648c80ebef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{106}\\,\\delta A"
+            },
+            {
+              ":answer/id": "0a0cc35b-a21b-57a0-8d49-89381c0915ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "106\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0a0cc35b-a21b-57a0-8d49-89381c0915ca"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 5,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 1,
+        "b": 3,
+        "c": 1,
+        "n": 2,
+        "u0": -3,
+        "v0": 1
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "c11cbc24b330580d8383b1084fc19d784688a6c65d8d9505d913bdcdeb90e2fd",
+      "exact": {
+        "x": "u*v**2",
+        "y": "3*u**2 + v**2",
+        "partials": [
+          "v**2",
+          "2*u*v",
+          "6*u",
+          "2*v"
+        ],
+        "ad": "2*v**3",
+        "bc": "12*u**2*v",
+        "jacobian": "-2*v*(6*u**2 - v**2)",
+        "jacobian_at_point": "-106",
+        "area_scale": "106"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "5aaff1cd-fb55-5393-9612-b59395a010fa",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 u v^{3}\\\\u^{2} + 3 v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 v^{3}&6 u v^{2}\\\\2 u&6 v\\end{matrix}\\right|\\\\& =(2 v^{3})\\cdot (6 v)-(6 u v^{2})\\cdot (2 u)\\\\& =- 12 u^{2} v^{2} + 12 v^{4}\\\\& =- 12 v^{2} \\left(u - v\\right) \\left(u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,-1)} & =\\left(- 12 v^{2} \\left(u - v\\right) \\left(u + v\\right)\\right)\\big|_{u=-3,v=-1}\\\\& =- 12 (-1)^{2} \\left(- (-1) + (-3)\\right) \\left((-1) + (-3)\\right)\\\\& =-96\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-96|\\cdot\\delta A\\\\ & =96\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0b9d46c1-c904-5815-9211-d15c40aab9a3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c754b226-d843-500d-a39b-22f65e1878eb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{96}\\,\\delta A"
+            },
+            {
+              ":answer/id": "2f5f861a-ef37-5015-9325-fa3c675ce319",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9216\\,\\delta A"
+            },
+            {
+              ":answer/id": "97e41f26-2be6-5059-8eb1-978eb378cd7d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "192\\,\\delta A"
+            },
+            {
+              ":answer/id": "b8cc3589-929b-5514-9f60-042de7caf88e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "96\\,\\delta A"
+            },
+            {
+              ":answer/id": "03cd9cfe-b401-5491-9583-056073f666f7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b8cc3589-929b-5514-9f60-042de7caf88e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 6,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 2,
+        "b": 1,
+        "c": 3,
+        "n": 3,
+        "u0": -3,
+        "v0": -1
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "3fe26b03a1003900032fefd8e2530943b733034c6b4cbbb5760714745148e964",
+      "exact": {
+        "x": "2*u*v**3",
+        "y": "u**2 + 3*v**2",
+        "partials": [
+          "2*v**3",
+          "6*u*v**2",
+          "2*u",
+          "6*v"
+        ],
+        "ad": "12*v**4",
+        "bc": "12*u**2*v**2",
+        "jacobian": "-12*v**2*(u - v)*(u + v)",
+        "jacobian_at_point": "-96",
+        "area_scale": "96"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "52cc2a14-9513-5e87-bb9a-b65595ffcad8",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-2,-3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u v^{2}\\\\2 u^{2} + 2 v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}v^{2}&2 u v\\\\4 u&4 v\\end{matrix}\\right|\\\\& =(v^{2})\\cdot (4 v)-(2 u v)\\cdot (4 u)\\\\& =- 8 u^{2} v + 4 v^{3}\\\\& =- 4 v \\left(2 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,-3)} & =\\left(- 4 v \\left(2 u^{2} - v^{2}\\right)\\right)\\big|_{u=-2,v=-3}\\\\& =- 4 (-3) \\left(2 (-2)^{2} - (-3)^{2}\\right)\\\\& =-12\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-12|\\cdot\\delta A\\\\ & =12\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a8abdb71-8112-530c-a2bc-c75f505a14a3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "24e48281-86ce-54a1-9ba9-39e74b43f94b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24\\,\\delta A"
+            },
+            {
+              ":answer/id": "fc5787ad-13b8-5bff-9e6e-d5a56ecf390a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6\\,\\delta A"
+            },
+            {
+              ":answer/id": "70e4658b-cd25-5095-b182-70e092a9efbc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{12}\\,\\delta A"
+            },
+            {
+              ":answer/id": "1e914343-11fc-5b55-a73c-23cd679d63c3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12\\,\\delta A"
+            },
+            {
+              ":answer/id": "df59f992-f266-521f-8db4-23bb706377b8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1e914343-11fc-5b55-a73c-23cd679d63c3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 7,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "c": 2,
+        "n": 2,
+        "u0": -2,
+        "v0": -3
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "2784e0538f3ba07c79cd14382e89cc4520238ae30d4d6328f396b7bd9a0c0f97",
+      "exact": {
+        "x": "u*v**2",
+        "y": "2*u**2 + 2*v**2",
+        "partials": [
+          "v**2",
+          "2*u*v",
+          "4*u",
+          "4*v"
+        ],
+        "ad": "4*v**3",
+        "bc": "8*u**2*v",
+        "jacobian": "-4*v*(2*u**2 - v**2)",
+        "jacobian_at_point": "-12",
+        "area_scale": "12"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "3b078ca4-4986-5c10-b5f7-50fe2fdb9b1a",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-2,-2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}3 u v^{2}\\\\u^{2} + v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 v^{2}&6 u v\\\\2 u&2 v\\end{matrix}\\right|\\\\& =(3 v^{2})\\cdot (2 v)-(6 u v)\\cdot (2 u)\\\\& =- 12 u^{2} v + 6 v^{3}\\\\& =- 6 v \\left(2 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,-2)} & =\\left(- 6 v \\left(2 u^{2} - v^{2}\\right)\\right)\\big|_{u=-2,v=-2}\\\\& =- 6 (-2) \\left(- (-2)^{2} + 2 (-2)^{2}\\right)\\\\& =48\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|48|\\cdot\\delta A\\\\ & =48\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "505e317f-e96a-5fb4-8d08-14fda35ea3df",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "800e2f95-490b-5783-8c0c-550497f06ee4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{48}\\,\\delta A"
+            },
+            {
+              ":answer/id": "51470612-cd07-5ff2-98cd-2d305deff187",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48\\,\\delta A"
+            },
+            {
+              ":answer/id": "fcc92f77-bd7c-50b6-97a5-c764f8278405",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "96\\,\\delta A"
+            },
+            {
+              ":answer/id": "b85df961-58f4-5e4a-a84d-f24ecc05fbac",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24\\,\\delta A"
+            },
+            {
+              ":answer/id": "1e304082-ee3a-5e4b-bd77-439d668a1e15",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2304\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "51470612-cd07-5ff2-98cd-2d305deff187"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 8,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 3,
+        "b": 1,
+        "c": 1,
+        "n": 2,
+        "u0": -2,
+        "v0": -2
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "0c03ee7eba49d61610b0d6874de52bdd00284b26c2b0753ca0bd70c7eb11453d",
+      "exact": {
+        "x": "3*u*v**2",
+        "y": "u**2 + v**2",
+        "partials": [
+          "3*v**2",
+          "6*u*v",
+          "2*u",
+          "2*v"
+        ],
+        "ad": "6*v**3",
+        "bc": "12*u**2*v",
+        "jacobian": "-6*v*(2*u**2 - v**2)",
+        "jacobian_at_point": "48",
+        "area_scale": "48"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "a925d29f-0feb-57fd-82a5-cdb474f61abd",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-2,-2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}3 u v^{3}\\\\u^{2} + 2 v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 v^{3}&9 u v^{2}\\\\2 u&4 v\\end{matrix}\\right|\\\\& =(3 v^{3})\\cdot (4 v)-(9 u v^{2})\\cdot (2 u)\\\\& =- 18 u^{2} v^{2} + 12 v^{4}\\\\& =- 6 v^{2} \\left(3 u^{2} - 2 v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,-2)} & =\\left(- 6 v^{2} \\left(3 u^{2} - 2 v^{2}\\right)\\right)\\big|_{u=-2,v=-2}\\\\& =- 6 (-2)^{2} \\left(- 2 (-2)^{2} + 3 (-2)^{2}\\right)\\\\& =-96\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-96|\\cdot\\delta A\\\\ & =96\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1e114bfa-39bb-5517-b848-9f8ea91f6174",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1bd26925-9fef-5544-b133-1e03f04b0fa2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{96}\\,\\delta A"
+            },
+            {
+              ":answer/id": "d6898395-8c47-5919-896e-217e0d555fc2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "192\\,\\delta A"
+            },
+            {
+              ":answer/id": "dd0fff05-0d3b-5047-9f67-814e62a37cb8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9216\\,\\delta A"
+            },
+            {
+              ":answer/id": "c344ab30-0a69-5de7-bddc-04099d5e5b63",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "96\\,\\delta A"
+            },
+            {
+              ":answer/id": "da0f1368-dc30-5517-9b62-7c11f7505b3f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c344ab30-0a69-5de7-bddc-04099d5e5b63"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 9,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 3,
+        "b": 1,
+        "c": 2,
+        "n": 3,
+        "u0": -2,
+        "v0": -2
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "634edcf0032cc8b2073b51b4c175096e07700dc8c663250863fb02b70c38afb2",
+      "exact": {
+        "x": "3*u*v**3",
+        "y": "u**2 + 2*v**2",
+        "partials": [
+          "3*v**3",
+          "9*u*v**2",
+          "2*u",
+          "4*v"
+        ],
+        "ad": "12*v**4",
+        "bc": "18*u**2*v**2",
+        "jacobian": "-6*v**2*(3*u**2 - 2*v**2)",
+        "jacobian_at_point": "-96",
+        "area_scale": "96"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "92a21cfc-59f4-51fc-968f-725e5223f1b0",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(2,-3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u v^{3}\\\\2 u^{2} + 2 v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}v^{3}&3 u v^{2}\\\\4 u&4 v\\end{matrix}\\right|\\\\& =(v^{3})\\cdot (4 v)-(3 u v^{2})\\cdot (4 u)\\\\& =- 12 u^{2} v^{2} + 4 v^{4}\\\\& =- 4 v^{2} \\left(3 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,-3)} & =\\left(- 4 v^{2} \\left(3 u^{2} - v^{2}\\right)\\right)\\big|_{u=2,v=-3}\\\\& =- 4 (-3)^{2} \\left(- (-3)^{2} + 3 (2)^{2}\\right)\\\\& =-108\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-108|\\cdot\\delta A\\\\ & =108\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "dd8177c9-7187-5bd4-9f2b-a233a52a218d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2fd1f898-c18a-529c-85a5-6add3f529e16",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "216\\,\\delta A"
+            },
+            {
+              ":answer/id": "008c0600-d75b-57bf-9483-ec7a8ffb1d53",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "54\\,\\delta A"
+            },
+            {
+              ":answer/id": "22a4d9bb-3b6c-56a7-b0ce-d1d0b4fcb9a6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{108}\\,\\delta A"
+            },
+            {
+              ":answer/id": "3825c447-230e-57d8-a906-eeae9a246931",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "108\\,\\delta A"
+            },
+            {
+              ":answer/id": "7d64d9e2-0a99-5159-bed6-9b1f210e4bf0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "11664\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3825c447-230e-57d8-a906-eeae9a246931"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 10,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "c": 2,
+        "n": 3,
+        "u0": 2,
+        "v0": -3
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "f0580762e250e83224592d44afcf6e0e494cd8827262b3c17bf2f656f021a3b8",
+      "exact": {
+        "x": "u*v**3",
+        "y": "2*u**2 + 2*v**2",
+        "partials": [
+          "v**3",
+          "3*u*v**2",
+          "4*u",
+          "4*v"
+        ],
+        "ad": "4*v**4",
+        "bc": "12*u**2*v**2",
+        "jacobian": "-4*v**2*(3*u**2 - v**2)",
+        "jacobian_at_point": "-108",
+        "area_scale": "108"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "c6a2f7e4-4a6f-52b8-b84e-8fc3bb6f841b",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 u v^{2}\\\\u^{2} + v^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 v^{2}&4 u v\\\\2 u&2 v\\end{matrix}\\right|\\\\& =(2 v^{2})\\cdot (2 v)-(4 u v)\\cdot (2 u)\\\\& =- 8 u^{2} v + 4 v^{3}\\\\& =- 4 v \\left(2 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,-1)} & =\\left(- 4 v \\left(2 u^{2} - v^{2}\\right)\\right)\\big|_{u=-3,v=-1}\\\\& =- 4 (-1) \\left(- (-1)^{2} + 2 (-3)^{2}\\right)\\\\& =68\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|68|\\cdot\\delta A\\\\ & =68\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a1755f40-5cf7-5edf-a743-7dda1a93b2be",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "916720cd-3836-5476-ab8b-2edf809292c0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{68}\\,\\delta A"
+            },
+            {
+              ":answer/id": "2e01c5e3-77aa-5cb1-8df4-fb8b1fb0b9e7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "136\\,\\delta A"
+            },
+            {
+              ":answer/id": "3a405cf5-7c45-5257-91b3-c689fcfb356f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "68\\,\\delta A"
+            },
+            {
+              ":answer/id": "d6a62c6d-6868-522a-b195-d4b9109bef64",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "34\\,\\delta A"
+            },
+            {
+              ":answer/id": "d91411b5-cb32-5c97-9208-d3d1b2c31a38",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4624\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3a405cf5-7c45-5257-91b3-c689fcfb356f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 11,
+      "difficulty": "moderate",
+      "template": "canonical_monomial",
+      "parameters": {
+        "a": 2,
+        "b": 1,
+        "c": 1,
+        "n": 2,
+        "u0": -3,
+        "v0": -1
+      },
+      "bank_profile": "authored_area_canonical_monomial",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "d760138248519876483430575196e91b15375f43d644ebc95a940409a68b345e",
+      "exact": {
+        "x": "2*u*v**2",
+        "y": "u**2 + v**2",
+        "partials": [
+          "2*v**2",
+          "4*u*v",
+          "2*u",
+          "2*v"
+        ],
+        "ad": "4*v**3",
+        "bc": "8*u**2*v",
+        "jacobian": "-4*v*(2*u**2 - v**2)",
+        "jacobian_at_point": "68",
+        "area_scale": "68"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "cf59b774-3f46-5d71-b46c-8bd6c2e8eee5",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-1,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 \\left(u + v\\right)^{3}\\\\2 \\left(u - 2 v\\right)^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}6 \\left(u + v\\right)^{2}&6 \\left(u + v\\right)^{2}\\\\4 \\left(u - 2 v\\right)&- 8 \\left(u - 2 v\\right)\\end{matrix}\\right|\\\\& =(6 \\left(u + v\\right)^{2})\\cdot (- 8 \\left(u - 2 v\\right))-(6 \\left(u + v\\right)^{2})\\cdot (4 \\left(u - 2 v\\right))\\\\& =- 72 u^{3} + 216 u v^{2} + 144 v^{3}\\\\& =- 72 \\left(u - 2 v\\right) \\left(u + v\\right)^{2}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,2)} & =\\left(- 72 \\left(u - 2 v\\right) \\left(u + v\\right)^{2}\\right)\\big|_{u=-1,v=2}\\\\& =- 72 \\left((-1) - 2 (2)\\right) \\left((-1) + (2)\\right)^{2}\\\\& =360\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|360|\\cdot\\delta A\\\\ & =360\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "544132bb-8b30-5e55-9c78-b9b0230b9394",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6978e642-3c79-5ca2-aeb6-e6be9f0831d9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{360}\\,\\delta A"
+            },
+            {
+              ":answer/id": "bf144492-e2f2-5a38-bd83-f5f162d0f817",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "360\\,\\delta A"
+            },
+            {
+              ":answer/id": "8096d765-2a1e-55ff-b198-79c27b15e102",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "129600\\,\\delta A"
+            },
+            {
+              ":answer/id": "b9b14c2b-d02c-5e49-9005-c514dd929ae3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "720\\,\\delta A"
+            },
+            {
+              ":answer/id": "7fc0a35d-cb31-5072-9be2-bc8ea5efda07",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "180\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bf144492-e2f2-5a38-bd83-f5f162d0f817"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 0,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "p": 1,
+        "q": 1,
+        "r": 1,
+        "s": 2,
+        "m": 3,
+        "n": 2,
+        "u0": -1,
+        "v0": 2
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "09dd8f732b1d8cf50d2fdb1500d5ec05c49184a3a5dca9da89d034ff86df7e13",
+      "exact": {
+        "x": "2*(u + v)**3",
+        "y": "2*(u - 2*v)**2",
+        "partials": [
+          "6*(u + v)**2",
+          "6*(u + v)**2",
+          "4*(u - 2*v)",
+          "-8*(u - 2*v)"
+        ],
+        "ad": "-48*(u - 2*v)*(u + v)**2",
+        "bc": "24*(u - 2*v)*(u + v)**2",
+        "jacobian": "-72*(u - 2*v)*(u + v)**2",
+        "jacobian_at_point": "360",
+        "area_scale": "360"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "0428defb-b304-5560-8ce2-9df6247000e7",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(1,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\left(u + v\\right)^{2}\\\\\\left(u - v\\right)^{3}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 \\left(u + v\\right)&2 \\left(u + v\\right)\\\\3 \\left(u - v\\right)^{2}&- 3 \\left(u - v\\right)^{2}\\end{matrix}\\right|\\\\& =(2 \\left(u + v\\right))\\cdot (- 3 \\left(u - v\\right)^{2})-(2 \\left(u + v\\right))\\cdot (3 \\left(u - v\\right)^{2})\\\\& =- 12 u^{3} + 12 u^{2} v + 12 u v^{2} - 12 v^{3}\\\\& =- 12 \\left(u - v\\right)^{2} \\left(u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(1,2)} & =\\left(- 12 \\left(u - v\\right)^{2} \\left(u + v\\right)\\right)\\big|_{u=1,v=2}\\\\& =- 12 \\left((1) - (2)\\right)^{2} \\left((1) + (2)\\right)\\\\& =-36\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-36|\\cdot\\delta A\\\\ & =36\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a24239d7-dc26-5f68-a20c-c84ca0c0cfc4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b4c9eae7-9271-5d6b-8404-96ee4712a468",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36\\,\\delta A"
+            },
+            {
+              ":answer/id": "449210be-1da0-59a5-8e4d-4c0454c1ee6a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1296\\,\\delta A"
+            },
+            {
+              ":answer/id": "32fc45df-0111-5193-bb64-6c92dfef22f3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72\\,\\delta A"
+            },
+            {
+              ":answer/id": "4b4c85c3-b8e4-584f-b873-dad0e71f965f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{36}\\,\\delta A"
+            },
+            {
+              ":answer/id": "c94a5a8d-3679-511f-be02-d18bb3165b02",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b4c9eae7-9271-5d6b-8404-96ee4712a468"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 1,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "p": 1,
+        "q": 1,
+        "r": 1,
+        "s": 1,
+        "m": 2,
+        "n": 3,
+        "u0": 1,
+        "v0": 2
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "eb0228186824cfbce41b008f8428ae9f6d23889070d6cc0eece73acb9993d298",
+      "exact": {
+        "x": "(u + v)**2",
+        "y": "(u - v)**3",
+        "partials": [
+          "2*(u + v)",
+          "2*(u + v)",
+          "3*(u - v)**2",
+          "-3*(u - v)**2"
+        ],
+        "ad": "-6*(u - v)**2*(u + v)",
+        "bc": "6*(u - v)**2*(u + v)",
+        "jacobian": "-12*(u - v)**2*(u + v)",
+        "jacobian_at_point": "-36",
+        "area_scale": "36"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "437f9828-59e4-525d-b94b-c8204af95945",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-1,-2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\left(2 u + v\\right)^{2}\\\\\\left(u - v\\right)^{3}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}4 \\left(2 u + v\\right)&2 \\left(2 u + v\\right)\\\\3 \\left(u - v\\right)^{2}&- 3 \\left(u - v\\right)^{2}\\end{matrix}\\right|\\\\& =(4 \\left(2 u + v\\right))\\cdot (- 3 \\left(u - v\\right)^{2})-(2 \\left(2 u + v\\right))\\cdot (3 \\left(u - v\\right)^{2})\\\\& =- 36 u^{3} + 54 u^{2} v - 18 v^{3}\\\\& =- 18 \\left(u - v\\right)^{2} \\left(2 u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,-2)} & =\\left(- 18 \\left(u - v\\right)^{2} \\left(2 u + v\\right)\\right)\\big|_{u=-1,v=-2}\\\\& =- 18 \\left((-1) - (-2)\\right)^{2} \\left(2 (-1) + (-2)\\right)\\\\& =72\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|72|\\cdot\\delta A\\\\ & =72\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0e3c1fa4-b500-5706-9dcb-cd78ebd22233",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a66ebe59-e078-550d-9847-38b8b39313a1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{72}\\,\\delta A"
+            },
+            {
+              ":answer/id": "98e61909-e6ce-5690-8050-f40e4605896d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144\\,\\delta A"
+            },
+            {
+              ":answer/id": "4e4fdbe8-c45a-5b6d-9643-35d4958a6add",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72\\,\\delta A"
+            },
+            {
+              ":answer/id": "54d08313-9a08-56fe-a029-b275a97046d7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36\\,\\delta A"
+            },
+            {
+              ":answer/id": "a69fb715-370f-5ab7-976b-f32c361bbe7a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5184\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4e4fdbe8-c45a-5b6d-9643-35d4958a6add"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 2,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "p": 2,
+        "q": 1,
+        "r": 1,
+        "s": 1,
+        "m": 2,
+        "n": 3,
+        "u0": -1,
+        "v0": -2
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "43c20b4aa5132459a42cf433e79b4059742317a2058430ee0237478a9e4c9349",
+      "exact": {
+        "x": "(2*u + v)**2",
+        "y": "(u - v)**3",
+        "partials": [
+          "4*(2*u + v)",
+          "2*(2*u + v)",
+          "3*(u - v)**2",
+          "-3*(u - v)**2"
+        ],
+        "ad": "-12*(u - v)**2*(2*u + v)",
+        "bc": "6*(u - v)**2*(2*u + v)",
+        "jacobian": "-18*(u - v)**2*(2*u + v)",
+        "jacobian_at_point": "72",
+        "area_scale": "72"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "748ef030-4626-5a6f-8c67-483a9d7c80c3",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-1,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 \\left(u + v\\right)^{3}\\\\\\left(u - 2 v\\right)^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}6 \\left(u + v\\right)^{2}&6 \\left(u + v\\right)^{2}\\\\2 \\left(u - 2 v\\right)&- 4 \\left(u - 2 v\\right)\\end{matrix}\\right|\\\\& =(6 \\left(u + v\\right)^{2})\\cdot (- 4 \\left(u - 2 v\\right))-(6 \\left(u + v\\right)^{2})\\cdot (2 \\left(u - 2 v\\right))\\\\& =- 36 u^{3} + 108 u v^{2} + 72 v^{3}\\\\& =- 36 \\left(u - 2 v\\right) \\left(u + v\\right)^{2}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,-1)} & =\\left(- 36 \\left(u - 2 v\\right) \\left(u + v\\right)^{2}\\right)\\big|_{u=-1,v=-1}\\\\& =- 36 \\left(- 2 (-1) + (-1)\\right) \\left((-1) + (-1)\\right)^{2}\\\\& =-144\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-144|\\cdot\\delta A\\\\ & =144\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "852cc736-e5f6-5892-8498-02419d24152e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "758516a0-731e-559e-a095-7bbb522b7c57",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144\\,\\delta A"
+            },
+            {
+              ":answer/id": "cfbc2fdf-70fa-585b-aa14-85eeb1a48594",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20736\\,\\delta A"
+            },
+            {
+              ":answer/id": "5c109adb-7c62-5c35-8d61-90382a8c94b6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72\\,\\delta A"
+            },
+            {
+              ":answer/id": "7244c7ee-d2bb-5568-b0aa-046777824b0e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "288\\,\\delta A"
+            },
+            {
+              ":answer/id": "7ae60cfc-31ea-535e-8afa-44ee13e9f043",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{144}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "758516a0-731e-559e-a095-7bbb522b7c57"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 3,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 2,
+        "b": 1,
+        "p": 1,
+        "q": 1,
+        "r": 1,
+        "s": 2,
+        "m": 3,
+        "n": 2,
+        "u0": -1,
+        "v0": -1
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "c3524f3a1145150c7fde643f7b57f605c81362cf1cbe91cff50bfd52c37d077a",
+      "exact": {
+        "x": "2*(u + v)**3",
+        "y": "(u - 2*v)**2",
+        "partials": [
+          "6*(u + v)**2",
+          "6*(u + v)**2",
+          "2*(u - 2*v)",
+          "-4*(u - 2*v)"
+        ],
+        "ad": "-24*(u - 2*v)*(u + v)**2",
+        "bc": "12*(u - 2*v)*(u + v)**2",
+        "jacobian": "-36*(u - 2*v)*(u + v)**2",
+        "jacobian_at_point": "-144",
+        "area_scale": "144"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "9bffe840-3900-5f43-808d-06eec598c021",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(1,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\left(2 u + v\\right)^{2}\\\\\\left(u - 2 v\\right)^{3}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}4 \\left(2 u + v\\right)&2 \\left(2 u + v\\right)\\\\3 \\left(u - 2 v\\right)^{2}&- 6 \\left(u - 2 v\\right)^{2}\\end{matrix}\\right|\\\\& =(4 \\left(2 u + v\\right))\\cdot (- 6 \\left(u - 2 v\\right)^{2})-(2 \\left(2 u + v\\right))\\cdot (3 \\left(u - 2 v\\right)^{2})\\\\& =- 60 u^{3} + 210 u^{2} v - 120 u v^{2} - 120 v^{3}\\\\& =- 30 \\left(u - 2 v\\right)^{2} \\left(2 u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(1,1)} & =\\left(- 30 \\left(u - 2 v\\right)^{2} \\left(2 u + v\\right)\\right)\\big|_{u=1,v=1}\\\\& =- 30 \\left(- 2 (1) + (1)\\right)^{2} \\left((1) + 2 (1)\\right)\\\\& =-90\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-90|\\cdot\\delta A\\\\ & =90\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cb1e01dd-2f69-58f2-8975-903fa3aa1f5d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5c73c5c4-ecdc-5c4f-bd09-ac611d2245cc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "90\\,\\delta A"
+            },
+            {
+              ":answer/id": "18c05b07-547b-5c48-ae7f-fab437670462",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{90}\\,\\delta A"
+            },
+            {
+              ":answer/id": "7edf6426-9c89-5062-89ef-074790e28be5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "180\\,\\delta A"
+            },
+            {
+              ":answer/id": "b99c055b-d892-5a7e-bf25-8047ab79ee4f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "45\\,\\delta A"
+            },
+            {
+              ":answer/id": "f28c24c6-f82e-567e-a79c-d401553083c2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8100\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5c73c5c4-ecdc-5c4f-bd09-ac611d2245cc"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 4,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "p": 2,
+        "q": 1,
+        "r": 1,
+        "s": 2,
+        "m": 2,
+        "n": 3,
+        "u0": 1,
+        "v0": 1
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "7de4498ebca1dc56bb49de24375ca196575b5aa2840fc810c87b146146b63fbc",
+      "exact": {
+        "x": "(2*u + v)**2",
+        "y": "(u - 2*v)**3",
+        "partials": [
+          "4*(2*u + v)",
+          "2*(2*u + v)",
+          "3*(u - 2*v)**2",
+          "-6*(u - 2*v)**2"
+        ],
+        "ad": "-24*(u - 2*v)**2*(2*u + v)",
+        "bc": "6*(u - 2*v)**2*(2*u + v)",
+        "jacobian": "-30*(u - 2*v)**2*(2*u + v)",
+        "jacobian_at_point": "-90",
+        "area_scale": "90"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "ea7d42d5-3de1-5c35-9db9-1065f2f21891",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(2,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\left(u + v\\right)^{3}\\\\\\left(u - v\\right)^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 \\left(u + v\\right)^{2}&3 \\left(u + v\\right)^{2}\\\\2 \\left(u - v\\right)&- 2 \\left(u - v\\right)\\end{matrix}\\right|\\\\& =(3 \\left(u + v\\right)^{2})\\cdot (- 2 \\left(u - v\\right))-(3 \\left(u + v\\right)^{2})\\cdot (2 \\left(u - v\\right))\\\\& =- 12 u^{3} - 12 u^{2} v + 12 u v^{2} + 12 v^{3}\\\\& =- 12 \\left(u - v\\right) \\left(u + v\\right)^{2}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,-1)} & =\\left(- 12 \\left(u - v\\right) \\left(u + v\\right)^{2}\\right)\\big|_{u=2,v=-1}\\\\& =- 12 \\left(- (-1) + (2)\\right) \\left((-1) + (2)\\right)^{2}\\\\& =-36\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-36|\\cdot\\delta A\\\\ & =36\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0dade00e-beb5-5065-963f-8fd55e247b3b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fa620d68-f960-5015-bd90-9d196af2ee16",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1296\\,\\delta A"
+            },
+            {
+              ":answer/id": "47ac227a-559a-5ea4-b819-30f6b7bbb8f2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72\\,\\delta A"
+            },
+            {
+              ":answer/id": "f2319fee-c5d3-595d-9895-b4cbc5f5caf2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36\\,\\delta A"
+            },
+            {
+              ":answer/id": "4375edf3-acf4-5f5a-b195-06f9c9848223",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18\\,\\delta A"
+            },
+            {
+              ":answer/id": "79e79cc5-b856-5aab-a32f-fda69b534f01",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{36}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f2319fee-c5d3-595d-9895-b4cbc5f5caf2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 5,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "p": 1,
+        "q": 1,
+        "r": 1,
+        "s": 1,
+        "m": 3,
+        "n": 2,
+        "u0": 2,
+        "v0": -1
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "a9178ba83ba8e3e0646d7cb420515f0192d3b0d47cb1134463e50e7b02d6aea8",
+      "exact": {
+        "x": "(u + v)**3",
+        "y": "(u - v)**2",
+        "partials": [
+          "3*(u + v)**2",
+          "3*(u + v)**2",
+          "2*(u - v)",
+          "-2*(u - v)"
+        ],
+        "ad": "-6*(u - v)*(u + v)**2",
+        "bc": "6*(u - v)*(u + v)**2",
+        "jacobian": "-12*(u - v)*(u + v)**2",
+        "jacobian_at_point": "-36",
+        "area_scale": "36"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "978b11ce-2ea7-5550-8171-891c48a68319",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-1,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 \\left(u + v\\right)^{2}\\\\2 \\left(u - v\\right)^{3}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}4 \\left(u + v\\right)&4 \\left(u + v\\right)\\\\6 \\left(u - v\\right)^{2}&- 6 \\left(u - v\\right)^{2}\\end{matrix}\\right|\\\\& =(4 \\left(u + v\\right))\\cdot (- 6 \\left(u - v\\right)^{2})-(4 \\left(u + v\\right))\\cdot (6 \\left(u - v\\right)^{2})\\\\& =- 48 u^{3} + 48 u^{2} v + 48 u v^{2} - 48 v^{3}\\\\& =- 48 \\left(u - v\\right)^{2} \\left(u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,2)} & =\\left(- 48 \\left(u - v\\right)^{2} \\left(u + v\\right)\\right)\\big|_{u=-1,v=2}\\\\& =- 48 \\left((-1) - (2)\\right)^{2} \\left((-1) + (2)\\right)\\\\& =-432\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-432|\\cdot\\delta A\\\\ & =432\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "44a000ee-e9d2-5e76-a0e9-0f955a1977e1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "de6a1682-c837-528c-803b-7f9da5f0f2ab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "432\\,\\delta A"
+            },
+            {
+              ":answer/id": "e142c08b-bac8-5781-b4f3-cf9c5f6bac47",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "216\\,\\delta A"
+            },
+            {
+              ":answer/id": "efdc2b94-01cd-5ed1-afa3-ee8f3849a0f4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "864\\,\\delta A"
+            },
+            {
+              ":answer/id": "7530fa91-5d96-593d-ba87-f96cd1a5e002",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "186624\\,\\delta A"
+            },
+            {
+              ":answer/id": "3600b320-3eb5-5b90-9fa3-d78d64bbae79",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{432}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "de6a1682-c837-528c-803b-7f9da5f0f2ab"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 6,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "p": 1,
+        "q": 1,
+        "r": 1,
+        "s": 1,
+        "m": 2,
+        "n": 3,
+        "u0": -1,
+        "v0": 2
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "92baaa5f2ca1969046d3430c7a19d0aed6eb60924bb1b201fde4212c87ad3b76",
+      "exact": {
+        "x": "2*(u + v)**2",
+        "y": "2*(u - v)**3",
+        "partials": [
+          "4*(u + v)",
+          "4*(u + v)",
+          "6*(u - v)**2",
+          "-6*(u - v)**2"
+        ],
+        "ad": "-24*(u - v)**2*(u + v)",
+        "bc": "24*(u - v)**2*(u + v)",
+        "jacobian": "-48*(u - v)**2*(u + v)",
+        "jacobian_at_point": "-432",
+        "area_scale": "432"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "f141b93c-efbf-5d7d-a637-8f0455519c71",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-1,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 \\left(u + 2 v\\right)^{3}\\\\\\left(u - v\\right)^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}6 \\left(u + 2 v\\right)^{2}&12 \\left(u + 2 v\\right)^{2}\\\\2 \\left(u - v\\right)&- 2 \\left(u - v\\right)\\end{matrix}\\right|\\\\& =(6 \\left(u + 2 v\\right)^{2})\\cdot (- 2 \\left(u - v\\right))-(12 \\left(u + 2 v\\right)^{2})\\cdot (2 \\left(u - v\\right))\\\\& =- 36 u^{3} - 108 u^{2} v + 144 v^{3}\\\\& =- 36 \\left(u - v\\right) \\left(u + 2 v\\right)^{2}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,1)} & =\\left(- 36 \\left(u - v\\right) \\left(u + 2 v\\right)^{2}\\right)\\big|_{u=-1,v=1}\\\\& =- 36 \\left((-1) - (1)\\right) \\left((-1) + 2 (1)\\right)^{2}\\\\& =72\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|72|\\cdot\\delta A\\\\ & =72\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "07308654-1c89-563c-94e1-42f314167f5d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c16170f0-08b8-542a-8d0e-4750152711d0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5184\\,\\delta A"
+            },
+            {
+              ":answer/id": "d1909d82-3194-54c3-8d72-9a9bfa9534dc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144\\,\\delta A"
+            },
+            {
+              ":answer/id": "de99b865-192e-5928-a91d-0c31880fe323",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36\\,\\delta A"
+            },
+            {
+              ":answer/id": "8da7b7cc-6fd2-5e3c-a903-ef02215c6858",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72\\,\\delta A"
+            },
+            {
+              ":answer/id": "6bf76df8-f43f-516a-99f5-dd6469285376",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{72}\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8da7b7cc-6fd2-5e3c-a903-ef02215c6858"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 7,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 2,
+        "b": 1,
+        "p": 1,
+        "q": 2,
+        "r": 1,
+        "s": 1,
+        "m": 3,
+        "n": 2,
+        "u0": -1,
+        "v0": 1
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "051ff96664130299752a59070a32be978db60d464d792c6e196dc2c9ba19d755",
+      "exact": {
+        "x": "2*(u + 2*v)**3",
+        "y": "(u - v)**2",
+        "partials": [
+          "6*(u + 2*v)**2",
+          "12*(u + 2*v)**2",
+          "2*(u - v)",
+          "-2*(u - v)"
+        ],
+        "ad": "-12*(u - v)*(u + 2*v)**2",
+        "bc": "24*(u - v)*(u + 2*v)**2",
+        "jacobian": "-36*(u - v)*(u + 2*v)**2",
+        "jacobian_at_point": "72",
+        "area_scale": "72"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "2e90ae29-ae39-5485-b0bc-1083374b7cdc",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-1,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\left(u + v\\right)^{3}\\\\\\left(u - 2 v\\right)^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 \\left(u + v\\right)^{2}&3 \\left(u + v\\right)^{2}\\\\2 \\left(u - 2 v\\right)&- 4 \\left(u - 2 v\\right)\\end{matrix}\\right|\\\\& =(3 \\left(u + v\\right)^{2})\\cdot (- 4 \\left(u - 2 v\\right))-(3 \\left(u + v\\right)^{2})\\cdot (2 \\left(u - 2 v\\right))\\\\& =- 18 u^{3} + 54 u v^{2} + 36 v^{3}\\\\& =- 18 \\left(u - 2 v\\right) \\left(u + v\\right)^{2}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,-1)} & =\\left(- 18 \\left(u - 2 v\\right) \\left(u + v\\right)^{2}\\right)\\big|_{u=-1,v=-1}\\\\& =- 18 \\left(- 2 (-1) + (-1)\\right) \\left((-1) + (-1)\\right)^{2}\\\\& =-72\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-72|\\cdot\\delta A\\\\ & =72\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "466fb8f0-4d30-51b6-9e23-88bd0c1b7e81",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "88462336-c83c-5d28-a540-d5008c08d93a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72\\,\\delta A"
+            },
+            {
+              ":answer/id": "e9d91d1e-9a61-5ec1-bfd6-ebe7bed24e99",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{72}\\,\\delta A"
+            },
+            {
+              ":answer/id": "57c403d1-8e79-5a0b-9fc3-6a50feddd373",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5184\\,\\delta A"
+            },
+            {
+              ":answer/id": "5d36f55e-864f-5cdb-98ab-307fb50f55f9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36\\,\\delta A"
+            },
+            {
+              ":answer/id": "7c1cb52d-9bc9-5a4b-9777-ab8cff0921c4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "88462336-c83c-5d28-a540-d5008c08d93a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 8,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "p": 1,
+        "q": 1,
+        "r": 1,
+        "s": 2,
+        "m": 3,
+        "n": 2,
+        "u0": -1,
+        "v0": -1
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "e5a186fbd26fa796acd91d26e9377e6efaa050beecac4a2cba25ba31a16d9afb",
+      "exact": {
+        "x": "(u + v)**3",
+        "y": "(u - 2*v)**2",
+        "partials": [
+          "3*(u + v)**2",
+          "3*(u + v)**2",
+          "2*(u - 2*v)",
+          "-4*(u - 2*v)"
+        ],
+        "ad": "-12*(u - 2*v)*(u + v)**2",
+        "bc": "6*(u - 2*v)*(u + v)**2",
+        "jacobian": "-18*(u - 2*v)*(u + v)**2",
+        "jacobian_at_point": "-72",
+        "area_scale": "72"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "e1663056-d85b-52cc-bf13-c856d7c9382e",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-1,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\left(2 u + v\\right)^{2}\\\\2 \\left(2 u - v\\right)^{3}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}4 \\left(2 u + v\\right)&2 \\left(2 u + v\\right)\\\\12 \\left(2 u - v\\right)^{2}&- 6 \\left(2 u - v\\right)^{2}\\end{matrix}\\right|\\\\& =(4 \\left(2 u + v\\right))\\cdot (- 6 \\left(2 u - v\\right)^{2})-(2 \\left(2 u + v\\right))\\cdot (12 \\left(2 u - v\\right)^{2})\\\\& =- 384 u^{3} + 192 u^{2} v + 96 u v^{2} - 48 v^{3}\\\\& =- 48 \\left(2 u - v\\right)^{2} \\left(2 u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,-1)} & =\\left(- 48 \\left(2 u - v\\right)^{2} \\left(2 u + v\\right)\\right)\\big|_{u=-1,v=-1}\\\\& =- 48 \\left(- (-1) + 2 (-1)\\right)^{2} \\left((-1) + 2 (-1)\\right)\\\\& =144\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|144|\\cdot\\delta A\\\\ & =144\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9422591b-8037-593d-822d-ac7af3790022",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5a32e994-38d4-5ce5-9d78-b27a644f5e85",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144\\,\\delta A"
+            },
+            {
+              ":answer/id": "b718badc-4b21-5a59-9b09-21df09d9e57e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72\\,\\delta A"
+            },
+            {
+              ":answer/id": "57e62782-0172-58ef-84e5-f5901db81e64",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{144}\\,\\delta A"
+            },
+            {
+              ":answer/id": "cc5f24ea-3730-55fe-b632-2bd1c4085f1e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "288\\,\\delta A"
+            },
+            {
+              ":answer/id": "7757b202-d553-5e81-a082-1be52aeb56a1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20736\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5a32e994-38d4-5ce5-9d78-b27a644f5e85"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 9,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "p": 2,
+        "q": 1,
+        "r": 2,
+        "s": 1,
+        "m": 2,
+        "n": 3,
+        "u0": -1,
+        "v0": -1
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "584acef930c2c96d68b31058971246a0c846e6c18e4c42589392253db295f15e",
+      "exact": {
+        "x": "(2*u + v)**2",
+        "y": "2*(2*u - v)**3",
+        "partials": [
+          "4*(2*u + v)",
+          "2*(2*u + v)",
+          "12*(2*u - v)**2",
+          "-6*(2*u - v)**2"
+        ],
+        "ad": "-24*(2*u - v)**2*(2*u + v)",
+        "bc": "24*(2*u - v)**2*(2*u + v)",
+        "jacobian": "-48*(2*u - v)**2*(2*u + v)",
+        "jacobian_at_point": "144",
+        "area_scale": "144"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "34791ccf-e11a-52d4-8515-9c921c925ca9",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(2,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\left(u + 2 v\\right)^{2}\\\\\\left(u - v\\right)^{3}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 \\left(u + 2 v\\right)&4 \\left(u + 2 v\\right)\\\\3 \\left(u - v\\right)^{2}&- 3 \\left(u - v\\right)^{2}\\end{matrix}\\right|\\\\& =(2 \\left(u + 2 v\\right))\\cdot (- 3 \\left(u - v\\right)^{2})-(4 \\left(u + 2 v\\right))\\cdot (3 \\left(u - v\\right)^{2})\\\\& =- 18 u^{3} + 54 u v^{2} - 36 v^{3}\\\\& =- 18 \\left(u - v\\right)^{2} \\left(u + 2 v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,1)} & =\\left(- 18 \\left(u - v\\right)^{2} \\left(u + 2 v\\right)\\right)\\big|_{u=2,v=1}\\\\& =- 18 \\left(- (1) + (2)\\right)^{2} \\left(2 (1) + (2)\\right)\\\\& =-72\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-72|\\cdot\\delta A\\\\ & =72\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f93badda-3fd2-50d3-afb1-cacf19a1a388",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ea7c8b0a-3aa8-594c-87a1-dd5b5d8c9753",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{72}\\,\\delta A"
+            },
+            {
+              ":answer/id": "feb80f12-79ab-5919-8e90-49285dc63104",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72\\,\\delta A"
+            },
+            {
+              ":answer/id": "f7fdb9a9-f5ad-5446-b043-c3b6b29536b1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5184\\,\\delta A"
+            },
+            {
+              ":answer/id": "67fa44a3-e7fb-50c7-a5c5-80a5dff751a9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36\\,\\delta A"
+            },
+            {
+              ":answer/id": "871e990b-583c-5343-acf4-191071726324",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "feb80f12-79ab-5919-8e90-49285dc63104"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 10,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "p": 1,
+        "q": 2,
+        "r": 1,
+        "s": 1,
+        "m": 2,
+        "n": 3,
+        "u0": 2,
+        "v0": 1
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "67d25ca78e0126696b8ceba523b772144ab6837b8210c9ce97c1a922b62f4c79",
+      "exact": {
+        "x": "(u + 2*v)**2",
+        "y": "(u - v)**3",
+        "partials": [
+          "2*(u + 2*v)",
+          "4*(u + 2*v)",
+          "3*(u - v)**2",
+          "-3*(u - v)**2"
+        ],
+        "ad": "-6*(u - v)**2*(u + 2*v)",
+        "bc": "12*(u - v)**2*(u + 2*v)",
+        "jacobian": "-18*(u - v)**2*(u + 2*v)",
+        "jacobian_at_point": "-72",
+        "area_scale": "72"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "ea7d42d5-3de1-5c35-9db9-1065f2f21891",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(2,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\left(u + v\\right)^{3}\\\\\\left(u - v\\right)^{2}\\end{aligned}]?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 \\left(u + v\\right)^{2}&3 \\left(u + v\\right)^{2}\\\\2 \\left(u - v\\right)&- 2 \\left(u - v\\right)\\end{matrix}\\right|\\\\& =(3 \\left(u + v\\right)^{2})\\cdot (- 2 \\left(u - v\\right))-(3 \\left(u + v\\right)^{2})\\cdot (2 \\left(u - v\\right))\\\\& =- 12 u^{3} - 12 u^{2} v + 12 u v^{2} + 12 v^{3}\\\\& =- 12 \\left(u - v\\right) \\left(u + v\\right)^{2}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,-1)} & =\\left(- 12 \\left(u - v\\right) \\left(u + v\\right)^{2}\\right)\\big|_{u=2,v=-1}\\\\& =- 12 \\left(- (-1) + (2)\\right) \\left((-1) + (2)\\right)^{2}\\\\& =-36\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-36|\\cdot\\delta A\\\\ & =36\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0dade00e-beb5-5065-963f-8fd55e247b3b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4375edf3-acf4-5f5a-b195-06f9c9848223",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18\\,\\delta A"
+            },
+            {
+              ":answer/id": "f2319fee-c5d3-595d-9895-b4cbc5f5caf2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36\\,\\delta A"
+            },
+            {
+              ":answer/id": "fa620d68-f960-5015-bd90-9d196af2ee16",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1296\\,\\delta A"
+            },
+            {
+              ":answer/id": "79e79cc5-b856-5aab-a32f-fda69b534f01",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{36}\\,\\delta A"
+            },
+            {
+              ":answer/id": "47ac227a-559a-5ea4-b819-30f6b7bbb8f2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f2319fee-c5d3-595d-9895-b4cbc5f5caf2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 11,
+      "difficulty": "hard",
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "p": 1,
+        "q": 1,
+        "r": 1,
+        "s": 1,
+        "m": 3,
+        "n": 2,
+        "u0": 2,
+        "v0": -1
+      },
+      "bank_profile": "authored_area_powers",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [],
+      "authored_level": true,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "a9178ba83ba8e3e0646d7cb420515f0192d3b0d47cb1134463e50e7b02d6aea8",
+      "exact": {
+        "x": "(u + v)**3",
+        "y": "(u - v)**2",
+        "partials": [
+          "3*(u + v)**2",
+          "3*(u + v)**2",
+          "2*(u - v)",
+          "-2*(u - v)"
+        ],
+        "ad": "-6*(u - v)*(u + v)**2",
+        "bc": "6*(u - v)*(u + v)**2",
+        "jacobian": "-12*(u - v)*(u + v)**2",
+        "jacobian_at_point": "-36",
+        "area_scale": "36"
+      }
+    }
+  }
+]

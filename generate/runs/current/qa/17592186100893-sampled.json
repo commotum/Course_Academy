@@ -1,0 +1,3584 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "d7b0d5b9-93a1-5a23-8534-f5674f6d9abb",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=y$  that satisfies $y(6)=1.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =y \\\\ \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x} & =1 \\\\ \\int \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\text{d}x \\\\ \\int \\frac{1}{y}\\,\\text{d}y & =\\int \\,\\text{d}x \\\\ \\operatorname{ln}⁡|y| & =\\left(x - 6\\right)+C\\,.\\end{aligned}\n$$\n\nApplying the exponential function to both sides, we find the general solution:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}⁡|y|} & ={e}^{\\left(x - 6\\right)+C} \\\\ |y| & ={e}^{\\left(x - 6\\right)+C}\\, \\\\ y & =\\pm {e}^{\\left(x - 6\\right)+C} \\\\ y & =K{e}^{\\left(x - 6\\right)}\\,.\\end{aligned}\n$$\n\nwhere $K=\\pm {e}^{C}$ is an arbitrary constant. \n\nWe now apply the condition $y(6)=1$ to find $K:$ \n\n$$\n\\begin{aligned}1 & =K{e}^{0} \\\\ K & =1\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=y$ that satisfies the condition $y(6)=1$ is\n\n$$\ny={e}^{\\left(x - 6\\right)}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "46474ce5-d4e7-5226-8d81-f335e69950b3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2337eba9-202f-59be-9c5f-0d46ca747136",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=x - 5"
+            },
+            {
+              ":answer/id": "4239f429-62c2-54c6-beb8-19acac0cec4f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=1"
+            },
+            {
+              ":answer/id": "c864e81a-f493-5ff0-ab3c-afe87a8f006d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=e^{- x + 6}"
+            },
+            {
+              ":answer/id": "c6f4d572-ecf5-5872-9a2b-2f0abf51dd93",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=e^{x - 6}"
+            },
+            {
+              ":answer/id": "af950fa9-3ad7-5cf5-83ad-984f9617eed2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=e^{2 x - 12}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c6f4d572-ecf5-5872-9a2b-2f0abf51dd93"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 0,
+      "template": "source_8308",
+      "parameters": {
+        "h": "6"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "c6f4d572-ecf5-5872-9a2b-2f0abf51dd93": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=e^{x - 6}",
+          "correct": true
+        },
+        "c864e81a-f493-5ff0-ab3c-afe87a8f006d": {
+          "recipe": "reverse_constant_primitive_sign",
+          "displayed_expression": "y=e^{- x + 6}",
+          "correct": false
+        },
+        "4239f429-62c2-54c6-beb8-19acac0cec4f": {
+          "recipe": "omit_x_primitive",
+          "displayed_expression": "y=1",
+          "correct": false
+        },
+        "af950fa9-3ad7-5cf5-83ad-984f9617eed2": {
+          "recipe": "double_x_primitive",
+          "displayed_expression": "y=e^{2 x - 12}",
+          "correct": false
+        },
+        "2337eba9-202f-59be-9c5f-0d46ca747136": {
+          "recipe": "add_instead_of_exponentiate_primitive",
+          "displayed_expression": "y=x - 5",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-8308"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "1826472de96537e1aa6cc049f3a767eb21c2b9d616cb1f5cdc59b0dd14f14775",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "6",
+        "initial_y": "1",
+        "ode": "y",
+        "lhs": "y",
+        "rhs": "exp(x - 6)",
+        "primitive_y": "log(y)",
+        "primitive_x": "x - 6",
+        "integration_constant": "0",
+        "domain": "y>0; x real",
+        "h": "6"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "3cd3271f-7f0a-5b7f-9e40-e37322bf136c",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The general solution of the differential equation is $T=17+Ke^{-0.03t}.$\n\nLet $\\overset{^}{T}(t)$ be a particular solution of the differential equation from the previous part that satisfies the condition $\\overset{^}{T}(0)=20.$ Find $\\overset{^}{T}(t).$\n\n                            \n                                    \n                                        \n                                            \n\n                                                \n\n                                        \n                                        \n                                        \n\n                                    \n                                \n                                    \n                                        \n                                        $\\overset{^}{T}(t)\\,=\\,$\n\n                                    \n                                \n                                    \n                            \n                                        {{field-1}}",
+      ":question/worked-solution": "Previously, we found that the general solution is\n\n$$\nT=17+K{e}^{-0.03t}.\n$$\n\nwhere $K$ is an arbitrary constant.\n\nWe now apply the condition $T(0)=20$ to find $K:$\n\n$$\n\\begin{aligned}20 & =17+K\\,{e}^{-0.03(0)} \\\\ 20 & =17+K\\,{e}^{0} \\\\ K & =3\\end{aligned}\n$$\n\nThus, the required particular solution is\n\n$$\n\\overset{^}{T}(t)=17+3{e}^{-0.03t}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1c5b4d64-443b-5ec9-8ce7-011daeb470c2",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9f585e3a-7a8d-5caa-9e29-88cb5898982c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "17+3{e}^{-0.03t}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9f585e3a-7a8d-5caa-9e29-88cb5898982c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 1,
+      "template": "source_168078",
+      "parameters": {
+        "ambient": "17",
+        "h": "0"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "9f585e3a-7a8d-5caa-9e29-88cb5898982c": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "17+3{e}^{-0.03t}",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-168078"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "c56accf63a96c182af71dae5ebd8353c53a2d9455b5569af2a53d961de86df0c",
+      "mathematics": {
+        "variable": "t",
+        "initial_x": "0",
+        "initial_y": "20",
+        "ode": "51/100 - 3*y/100",
+        "lhs": "y",
+        "rhs": "17 + 3*exp(-3*t/100)",
+        "domain": "time t; positive decay rate 0.03; initial time 0",
+        "h": "0"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "324d9c0b-e616-542c-8116-f9fb6086664f",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{2\\left(x + 5\\right)}{{y}^{2}}$ that satisfies $y(-3)=\\sqrt[3]{13}.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{2\\left(x + 5\\right)}{{y}^{2}} \\\\ {y}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & =2\\left(x + 5\\right) \\\\ \\int {y}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int 2\\left(x + 5\\right)\\,\\text{d}x \\\\ \\int {y}^{2}\\,\\text{d}y & =\\int 2\\left(x + 5\\right)\\,\\text{d}x \\\\ \\frac{{y}^{3}}{3} & ={\\left(x + 5\\right)}^{2}+{C}_{1} \\\\ {y}^{3} & =3{\\left(x + 5\\right)}^{2}+3{C}_{1}.\\end{aligned}\n$$\n\nWe conclude that the general solution is\n\n$$\n{y}^{3}=3{\\left(x + 5\\right)}^{2}+C,\n$$\n\nwhere $C=3{C}_{1}$  is an arbitrary constant.\n\nWe now apply the condition $y(-3)=\\sqrt[3]{13}$ to find $C:$\n\n$$\n\\begin{aligned}{(\\sqrt[3]{13})}^{3} & =3(2)^{2}+C \\\\ 13 & =12+C \\\\ C & =1\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=\\frac{2\\left(x + 5\\right)}{{y}^{2}}$ that satisfies the condition $y(-3)=\\sqrt[3]{13}$ is\n\n$$\n{y}^{3}=3{\\left(x + 5\\right)}^{2}+1.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "44ea1a69-616c-53fa-a863-cee1c416dc55",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0908bd90-d6b0-5248-9cdb-dd1aad62a5ff",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=3 \\left(x + 5\\right)^{2} - 1"
+            },
+            {
+              ":answer/id": "0d190586-5a56-56ff-b077-2c2014d1a285",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=\\left(x + 5\\right)^{2} + 1"
+            },
+            {
+              ":answer/id": "75597c8b-7d64-5d84-8641-c6fbdf93bab7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=3 \\left(x + 5\\right)^{2} + 13"
+            },
+            {
+              ":answer/id": "cd75331a-1b0e-5638-a6a2-a369f26cd6e2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=\\frac{\\left(x + 5\\right)^{2}}{3} + 1"
+            },
+            {
+              ":answer/id": "c31e528c-1e42-5824-8c75-5c153a9a27b1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=3 \\left(x + 5\\right)^{2} + 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c31e528c-1e42-5824-8c75-5c153a9a27b1"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 2,
+      "template": "source_4019",
+      "parameters": {
+        "h": "-5"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "c31e528c-1e42-5824-8c75-5c153a9a27b1": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y^{3}=3 \\left(x + 5\\right)^{2} + 1",
+          "correct": true
+        },
+        "0d190586-5a56-56ff-b077-2c2014d1a285": {
+          "recipe": "omit_y_integral_multiplier",
+          "displayed_expression": "y^{3}=\\left(x + 5\\right)^{2} + 1",
+          "correct": false
+        },
+        "cd75331a-1b0e-5638-a6a2-a369f26cd6e2": {
+          "recipe": "divide_instead_of_clear_y_denominator",
+          "displayed_expression": "y^{3}=\\frac{\\left(x + 5\\right)^{2}}{3} + 1",
+          "correct": false
+        },
+        "0908bd90-d6b0-5248-9cdb-dd1aad62a5ff": {
+          "recipe": "reverse_initial_constant_sign",
+          "displayed_expression": "y^{3}=3 \\left(x + 5\\right)^{2} - 1",
+          "correct": false
+        },
+        "75597c8b-7d64-5d84-8641-c6fbdf93bab7": {
+          "recipe": "omit_initial_x_primitive",
+          "displayed_expression": "y^{3}=3 \\left(x + 5\\right)^{2} + 13",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-4019"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "e9c42ff9bb1ba4bb7821e642a42dc0ac35205b3a5e916e0e8ccc7ec85977aa03",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-3",
+        "initial_y": "13**(1/3)",
+        "ode": "2*(x + 5)/y**2",
+        "lhs": "y**3",
+        "rhs": "3*(x + 5)**2 + 1",
+        "primitive_y": "y**3/3",
+        "primitive_x": "(x + 5)**2",
+        "integration_constant": "1/3",
+        "domain": "y != 0; connected interval containing initial x, with (x-h)^2*3+1 != 0",
+        "h": "-5"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "8f35a267-5e40-517b-8d5a-29b03bf87bd3",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{\\operatorname{sin}⁡y}$ that satisfies $y(3)=\\frac{\\pi }{2}.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{\\operatorname{sin}⁡y} \\\\ \\operatorname{sin}⁡y\\frac{\\text{d}y}{\\text{d}x} & =1 \\\\ \\int \\operatorname{sin}⁡y\\,\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\text{d}x \\\\ \\int \\operatorname{sin}⁡y\\,\\text{d}y & =\\int \\,\\text{d}x \\\\ -\\operatorname{cos}⁡y & =\\left(x - 3\\right)+C \\\\ \\operatorname{cos}⁡y & =-\\left(x - 3\\right)-C.\\end{aligned}\n$$\n\nWe now apply the condition $y(3)=\\frac{\\pi }{2}$ to find $C:$\n\n$$\n\\begin{aligned}\\operatorname{cos}⁡(\\frac{\\pi }{2}) & =-0-C \\\\ 0 & =0-C \\\\ C & =0\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n\\operatorname{cos}⁡y=-\\left(x - 3\\right)\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5f512eba-5dbb-5ce8-a801-3ccf511bff75",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ab2ca2c5-c6ac-54b4-8561-9f22fdadb830",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=- x + 3"
+            },
+            {
+              ":answer/id": "c5f84fb4-7442-5427-971f-cba3804b0db0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=x - 2"
+            },
+            {
+              ":answer/id": "14cee939-6938-5804-99f7-ebd7ac38d6cc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=- x + \\frac{\\pi}{2} + 3"
+            },
+            {
+              ":answer/id": "90f7d737-76d8-58fb-b5c9-95fc151da4e7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=x - 3"
+            },
+            {
+              ":answer/id": "5b16b233-8598-5c6f-a258-2ecd6752409a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=- 2 x + 6"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ab2ca2c5-c6ac-54b4-8561-9f22fdadb830"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 3,
+      "template": "source_104055",
+      "parameters": {
+        "h": "3"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "ab2ca2c5-c6ac-54b4-8561-9f22fdadb830": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "\\cos{\\left(y \\right)}=- x + 3",
+          "correct": true
+        },
+        "90f7d737-76d8-58fb-b5c9-95fc151da4e7": {
+          "recipe": "lose_sine_primitive_minus",
+          "displayed_expression": "\\cos{\\left(y \\right)}=x - 3",
+          "correct": false
+        },
+        "c5f84fb4-7442-5427-971f-cba3804b0db0": {
+          "recipe": "lose_minus_and_use_initial_sine_constant",
+          "displayed_expression": "\\cos{\\left(y \\right)}=x - 2",
+          "correct": false
+        },
+        "14cee939-6938-5804-99f7-ebd7ac38d6cc": {
+          "recipe": "initial_y_as_constant",
+          "displayed_expression": "\\cos{\\left(y \\right)}=- x + \\frac{\\pi}{2} + 3",
+          "correct": false
+        },
+        "5b16b233-8598-5c6f-a258-2ecd6752409a": {
+          "recipe": "double_x_primitive",
+          "displayed_expression": "\\cos{\\left(y \\right)}=- 2 x + 6",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-104055"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "10ddfa9fbb74fd5f0d10855185662e424a48eb5ee081e69f74f1bef388c1f2ab",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "3",
+        "initial_y": "pi/2",
+        "ode": "1/sin(y)",
+        "lhs": "cos(y)",
+        "rhs": "3 - x",
+        "primitive_y": "-cos(y)",
+        "primitive_x": "x - 3",
+        "integration_constant": "0",
+        "domain": "local branch 0<y<pi; |x-h|<1, initial y=pi/2",
+        "h": "3"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "8c36521e-4d07-5f04-93e2-4eaef2009cdf",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{\\operatorname{sin}⁡y}$ that satisfies $y(-2)=\\frac{\\pi }{2}.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{\\operatorname{sin}⁡y} \\\\ \\operatorname{sin}⁡y\\frac{\\text{d}y}{\\text{d}x} & =1 \\\\ \\int \\operatorname{sin}⁡y\\,\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\text{d}x \\\\ \\int \\operatorname{sin}⁡y\\,\\text{d}y & =\\int \\,\\text{d}x \\\\ -\\operatorname{cos}⁡y & =\\left(x + 2\\right)+C \\\\ \\operatorname{cos}⁡y & =-\\left(x + 2\\right)-C.\\end{aligned}\n$$\n\nWe now apply the condition $y(-2)=\\frac{\\pi }{2}$ to find $C:$\n\n$$\n\\begin{aligned}\\operatorname{cos}⁡(\\frac{\\pi }{2}) & =-0-C \\\\ 0 & =0-C \\\\ C & =0\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n\\operatorname{cos}⁡y=-\\left(x + 2\\right)\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "97da03d9-8464-5cff-bb42-04cc3f54c0c4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8a68c175-f9e9-5bec-93f6-8ebc40b8d8b1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=x + 3"
+            },
+            {
+              ":answer/id": "9d7781ed-87bd-505a-b753-c2308942fdd6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=- 2 x - 4"
+            },
+            {
+              ":answer/id": "0679a4c5-0836-522b-b891-ae086e179251",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=x + 2"
+            },
+            {
+              ":answer/id": "3c2093e8-b121-5a64-a1ec-7a5c2bb20956",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=- x - 2 + \\frac{\\pi}{2}"
+            },
+            {
+              ":answer/id": "3ba5366f-39bd-576c-8cfa-5b449776827e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=- x - 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3ba5366f-39bd-576c-8cfa-5b449776827e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 4,
+      "template": "source_104055",
+      "parameters": {
+        "h": "-2"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "3ba5366f-39bd-576c-8cfa-5b449776827e": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "\\cos{\\left(y \\right)}=- x - 2",
+          "correct": true
+        },
+        "0679a4c5-0836-522b-b891-ae086e179251": {
+          "recipe": "lose_sine_primitive_minus",
+          "displayed_expression": "\\cos{\\left(y \\right)}=x + 2",
+          "correct": false
+        },
+        "8a68c175-f9e9-5bec-93f6-8ebc40b8d8b1": {
+          "recipe": "lose_minus_and_use_initial_sine_constant",
+          "displayed_expression": "\\cos{\\left(y \\right)}=x + 3",
+          "correct": false
+        },
+        "3c2093e8-b121-5a64-a1ec-7a5c2bb20956": {
+          "recipe": "initial_y_as_constant",
+          "displayed_expression": "\\cos{\\left(y \\right)}=- x - 2 + \\frac{\\pi}{2}",
+          "correct": false
+        },
+        "9d7781ed-87bd-505a-b753-c2308942fdd6": {
+          "recipe": "double_x_primitive",
+          "displayed_expression": "\\cos{\\left(y \\right)}=- 2 x - 4",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-104055"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "3651b55eb7efe3279b1fcee4c82e42ea84c087b25fc4047031b76238a819a0a7",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-2",
+        "initial_y": "pi/2",
+        "ode": "1/sin(y)",
+        "lhs": "cos(y)",
+        "rhs": "-x - 2",
+        "primitive_y": "-cos(y)",
+        "primitive_x": "x + 2",
+        "integration_constant": "0",
+        "domain": "local branch 0<y<pi; |x-h|<1, initial y=pi/2",
+        "h": "-2"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "07641100-4f35-558c-afb3-e7af50711aa1",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=y{e}^{-\\left(x - 5\\right)}$ that satisfies $y(5)={e}^{-1}.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =y{e}^{-\\left(x - 5\\right)} \\\\ \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x} & ={e}^{-\\left(x - 5\\right)} \\\\ \\int \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x}\\,dx & =\\int {e}^{-\\left(x - 5\\right)}\\,\\text{d}x \\\\ \\int \\frac{1}{y}\\,\\text{d}y & =\\int {e}^{-\\left(x - 5\\right)}\\,\\text{d}x \\\\ \\operatorname{ln}⁡|y| & =-{e}^{-\\left(x - 5\\right)}+C.\\end{aligned}\n$$\n\nApplying the exponential function to both sides, we find the general solution:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}⁡|y|} & ={e}^{-{e}^{-\\left(x - 5\\right)}+C} \\\\ |y| & ={e}^{-{e}^{-\\left(x - 5\\right)}+C} \\\\ y & =\\pm {e}^{-{e}^{-\\left(x - 5\\right)}+C} \\\\ y & =K{e}^{-{e}^{-\\left(x - 5\\right)}}\\end{aligned}\n$$\n\nwhere $K=\\pm {e}^{C}$ is an arbitrary constant. \n\nWe now apply the condition $y(5)={e}^{-1}$ to find $K:$ \n\n$$\n\\begin{aligned}{e}^{-1} & =K{e}^{-{e}^{-0}} \\\\ {e}^{-1} & =K{e}^{-1} \\\\ K & =1\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=y{e}^{-\\left(x - 5\\right)}$ that satisfies the condition $y(5)={e}^{-1}$ is\n\n$$\ny={e}^{-{e}^{-\\left(x - 5\\right)}}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "297c9678-6a2a-5e08-9d0a-7a6b13833c75",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c9f75014-7a53-5a41-b07c-ca77cbbfd7b1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=e^{- e^{- x + 5} - 1}"
+            },
+            {
+              ":answer/id": "975231e1-228c-5163-9298-d43217f9794d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=e^{- e^{x - 5}}"
+            },
+            {
+              ":answer/id": "df50b436-3776-5412-a0fd-cfbb89e10e0e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=e^{e^{- x + 5}}"
+            },
+            {
+              ":answer/id": "ce7b9484-9704-5591-8e01-17a9b2d86fd4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=e^{- e^{- x + 5}}"
+            },
+            {
+              ":answer/id": "8a37026b-4032-5a9d-9a11-8a1ca8eb3c48",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=e^{- x + 5}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ce7b9484-9704-5591-8e01-17a9b2d86fd4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 5,
+      "template": "source_14312",
+      "parameters": {
+        "h": "5"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "ce7b9484-9704-5591-8e01-17a9b2d86fd4": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=e^{- e^{- x + 5}}",
+          "correct": true
+        },
+        "df50b436-3776-5412-a0fd-cfbb89e10e0e": {
+          "recipe": "reverse_exponential_primitive_sign",
+          "displayed_expression": "y=e^{e^{- x + 5}}",
+          "correct": false
+        },
+        "8a37026b-4032-5a9d-9a11-8a1ca8eb3c48": {
+          "recipe": "report_coefficient_instead_of_exponentiating_primitive",
+          "displayed_expression": "y=e^{- x + 5}",
+          "correct": false
+        },
+        "975231e1-228c-5163-9298-d43217f9794d": {
+          "recipe": "reverse_primitive_exponent_input",
+          "displayed_expression": "y=e^{- e^{x - 5}}",
+          "correct": false
+        },
+        "c9f75014-7a53-5a41-b07c-ca77cbbfd7b1": {
+          "recipe": "omit_initial_primitive_in_constant",
+          "displayed_expression": "y=e^{- e^{- x + 5} - 1}",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-14312"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "9c48ce66b49cdfaa6bff66f5e4952bd65adfb309e2622954b2e83351bce36473",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "5",
+        "initial_y": "exp(-1)",
+        "ode": "y*exp(5 - x)",
+        "lhs": "y",
+        "rhs": "exp(-exp(5 - x))",
+        "primitive_y": "log(y)",
+        "primitive_x": "-exp(5 - x)",
+        "integration_constant": "0",
+        "domain": "positive y; x real",
+        "h": "5"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "79a77137-4981-5bec-824c-3ccc8d190d6b",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}}{\\left(x - 1\\right)}$ that satisfies $y(2)=2.$ Assume that $\\left(x - 1\\right)>0.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}}{\\left(x - 1\\right)} \\\\ \\frac{1}{{y}^{2}}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{\\left(x - 1\\right)} \\\\ \\int \\frac{1}{{y}^{2}}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\frac{1}{\\left(x - 1\\right)}\\,\\text{d}x \\\\ \\int \\frac{1}{{y}^{2}}\\,\\text{d}y & =\\int \\frac{1}{\\left(x - 1\\right)}\\,\\text{d}x \\\\ -\\frac{1}{y} & =\\operatorname{ln}⁡|\\left(x - 1\\right)|+C \\\\ \\frac{1}{y} & =-(\\operatorname{ln}⁡|\\left(x - 1\\right)|+C) \\\\ y & =-\\frac{1}{\\operatorname{ln}⁡|\\left(x - 1\\right)|+C}\\,.\\end{aligned}\n$$\n\nAssuming $\\left(x - 1\\right)>0,$ the general solution is\n\n$$\ny=-\\frac{1}{\\operatorname{ln}⁡\\left(x - 1\\right)+C},\n$$\n\nwhere $C$ is an arbitrary constant.\n\nWe now apply the condition $y(2)=2$ to find $C:$\n\n$$\n\\begin{aligned}y(2) & =2 \\\\ -\\frac{1}{\\operatorname{ln}⁡1+C} & =2 \\\\ -\\frac{1}{C} & =2 \\\\ C & =-\\frac{1}{2}\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}}{\\left(x - 1\\right)}$ that satisfies the condition $y(2)=2$ is\n\n$$\ny=\\frac{-1}{(\\operatorname{ln}⁡\\left(x - 1\\right)-\\frac{1}{2})}=\\frac{2}{1-2\\operatorname{ln}⁡\\left(x - 1\\right)}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "72a0fb15-8175-5810-a67a-9aecaba86dfb",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9d5ea4d4-aa14-5ff7-8484-e89e58d6b17a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2}{2 \\log{\\left(x - 1 \\right)} + 1}"
+            },
+            {
+              ":answer/id": "dbb3b6bb-14c2-5dd2-b5ff-9d46218a8ade",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=- 4 \\log{\\left(x - 1 \\right)} + 2"
+            },
+            {
+              ":answer/id": "0d2d8587-0fad-5184-872c-e3c90a4043ea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2}{- 2 \\log{\\left(x - 1 \\right)} + 2}"
+            },
+            {
+              ":answer/id": "2bdcb058-0a73-5101-8a18-a85d6a0a4707",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=- \\frac{2}{2 \\log{\\left(x - 1 \\right)} - 1}"
+            },
+            {
+              ":answer/id": "f0a5172f-8dbd-5998-b88d-eac17e553e6d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2}{- \\log{\\left(x - 1 \\right)} + 1}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2bdcb058-0a73-5101-8a18-a85d6a0a4707"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 6,
+      "template": "source_8310",
+      "parameters": {
+        "h": "1"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "2bdcb058-0a73-5101-8a18-a85d6a0a4707": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=- \\frac{2}{2 \\log{\\left(x - 1 \\right)} - 1}",
+          "correct": true
+        },
+        "9d5ea4d4-aa14-5ff7-8484-e89e58d6b17a": {
+          "recipe": "reverse_reciprocal_integral_sign",
+          "displayed_expression": "y=\\frac{2}{2 \\log{\\left(x - 1 \\right)} + 1}",
+          "correct": false
+        },
+        "f0a5172f-8dbd-5998-b88d-eac17e553e6d": {
+          "recipe": "omit_initial_amplitude_x_multiplier",
+          "displayed_expression": "y=\\frac{2}{- \\log{\\left(x - 1 \\right)} + 1}",
+          "correct": false
+        },
+        "0d2d8587-0fad-5184-872c-e3c90a4043ea": {
+          "recipe": "initial_y_as_denominator_constant",
+          "displayed_expression": "y=\\frac{2}{- 2 \\log{\\left(x - 1 \\right)} + 2}",
+          "correct": false
+        },
+        "dbb3b6bb-14c2-5dd2-b5ff-9d46218a8ade": {
+          "recipe": "multiply_instead_of_invert_denominator",
+          "displayed_expression": "y=- 4 \\log{\\left(x - 1 \\right)} + 2",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-8310"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "e2b71cf2db2f55f0cad25180ef4b8291b50a369608885531fac578f6be8e30b1",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "2",
+        "initial_y": "2",
+        "ode": "y**2/(x - 1)",
+        "lhs": "y",
+        "rhs": "-2/(2*log(x - 1) - 1)",
+        "primitive_y": "-1/y",
+        "primitive_x": "log(x - 1)",
+        "integration_constant": "-1/2",
+        "domain": "x-h > 0; 1-2*log(x-h) != 0; connected interval containing h+1",
+        "h": "1"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "75da8ef7-6fe8-51fc-8932-08d76d71aa13",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{{\\left(x + 4\\right)}^{2}}{{y}^{2}}$  that satisfies $y(-3)=2.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{\\left(x + 4\\right)}^{2}}{{y}^{2}} \\\\ {y}^{2}\\frac{\\text{d}y}{\\text{d}x} & ={\\left(x + 4\\right)}^{2} \\\\ \\int {y}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int {\\left(x + 4\\right)}^{2}\\,\\text{d}x \\\\ \\int {y}^{2}\\,\\text{d}y & =\\int {\\left(x + 4\\right)}^{2}\\,\\text{d}x \\\\ \\frac{{y}^{3}}{3} & =\\frac{{\\left(x + 4\\right)}^{3}}{3}+{C}_{1} \\\\ {y}^{3} & ={\\left(x + 4\\right)}^{3}+C,\\end{aligned}\n$$\n\nwhere   $C=3{C}_{1}$ is an arbitrary constant.  \n\nWe now apply the condition $y(-3)=2$ to find $C:$\n\n$$\n\\begin{aligned}{2}^{3} & ={1}^{3}+C \\\\ 8-1 & =C \\\\ C & =7\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n{y}^{3}={\\left(x + 4\\right)}^{3}+7.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e9a27c36-0799-59a8-856c-8aac7d6b86f4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "18cd714d-5978-565f-9ea4-7f73ff8b1af2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=3 \\left(x + 4\\right)^{2} + 7"
+            },
+            {
+              ":answer/id": "5ed8b243-130a-58cc-ae1a-596fe964bcbe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=\\left(x + 4\\right)^{3} + 8"
+            },
+            {
+              ":answer/id": "3f519967-30e4-5de4-b266-739fa509c1e4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=\\frac{\\left(x + 4\\right)^{3}}{3} + 7"
+            },
+            {
+              ":answer/id": "82fc9dd2-21be-5462-bc31-d37c67a25670",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=\\left(x + 4\\right)^{3} + 7"
+            },
+            {
+              ":answer/id": "2099afb9-4d3c-5652-aac9-d9d32ae9857f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=\\left(x + 4\\right)^{3} - 7"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "82fc9dd2-21be-5462-bc31-d37c67a25670"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 7,
+      "template": "source_14313",
+      "parameters": {
+        "h": "-4"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "82fc9dd2-21be-5462-bc31-d37c67a25670": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y^{3}=\\left(x + 4\\right)^{3} + 7",
+          "correct": true
+        },
+        "18cd714d-5978-565f-9ea4-7f73ff8b1af2": {
+          "recipe": "omit_x_power_increment_and_clear_y_denominator",
+          "displayed_expression": "y^{3}=3 \\left(x + 4\\right)^{2} + 7",
+          "correct": false
+        },
+        "5ed8b243-130a-58cc-ae1a-596fe964bcbe": {
+          "recipe": "omit_initial_x_primitive",
+          "displayed_expression": "y^{3}=\\left(x + 4\\right)^{3} + 8",
+          "correct": false
+        },
+        "2099afb9-4d3c-5652-aac9-d9d32ae9857f": {
+          "recipe": "reverse_initial_constant_sign",
+          "displayed_expression": "y^{3}=\\left(x + 4\\right)^{3} - 7",
+          "correct": false
+        },
+        "3f519967-30e4-5de4-b266-739fa509c1e4": {
+          "recipe": "omit_clearing_y_integral_denominator",
+          "displayed_expression": "y^{3}=\\frac{\\left(x + 4\\right)^{3}}{3} + 7",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-14313"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "966be739bd206f9df1acca3d9d036727feff83f0d6e4c0861d63cd275896f4d7",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-3",
+        "initial_y": "2",
+        "ode": "(x + 4)**2/y**2",
+        "lhs": "y**3",
+        "rhs": "(x + 4)**3 + 7",
+        "primitive_y": "y**3/3",
+        "primitive_x": "(x + 4)**3/3",
+        "integration_constant": "7/3",
+        "domain": "y != 0; connected interval containing h+1, (x-h)^3+7 != 0",
+        "h": "-4"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "b909676f-ed4e-5012-accd-e9c922fab287",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{\\operatorname{sin}⁡y}$ that satisfies $y(-1)=\\frac{\\pi }{2}.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{\\operatorname{sin}⁡y} \\\\ \\operatorname{sin}⁡y\\frac{\\text{d}y}{\\text{d}x} & =1 \\\\ \\int \\operatorname{sin}⁡y\\,\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\text{d}x \\\\ \\int \\operatorname{sin}⁡y\\,\\text{d}y & =\\int \\,\\text{d}x \\\\ -\\operatorname{cos}⁡y & =\\left(x + 1\\right)+C \\\\ \\operatorname{cos}⁡y & =-\\left(x + 1\\right)-C.\\end{aligned}\n$$\n\nWe now apply the condition $y(-1)=\\frac{\\pi }{2}$ to find $C:$\n\n$$\n\\begin{aligned}\\operatorname{cos}⁡(\\frac{\\pi }{2}) & =-0-C \\\\ 0 & =0-C \\\\ C & =0\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n\\operatorname{cos}⁡y=-\\left(x + 1\\right)\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7bce4ea6-257a-5ec3-b1a2-b128b19e53ca",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "aaeb14b9-4fbe-59f6-b51a-1198b653143a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=- 2 x - 2"
+            },
+            {
+              ":answer/id": "a8b0e0d9-41c2-5847-a79d-0cec6c2c4d22",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=x + 2"
+            },
+            {
+              ":answer/id": "9239f42c-d647-58e8-b716-ec8d102de948",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=- x - 1"
+            },
+            {
+              ":answer/id": "07a5ada3-9745-57e1-b4a2-645e622cc921",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=x + 1"
+            },
+            {
+              ":answer/id": "4bcb3600-d048-5abd-9e19-44764a08dd17",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(y \\right)}=- x - 1 + \\frac{\\pi}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9239f42c-d647-58e8-b716-ec8d102de948"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 8,
+      "template": "source_104055",
+      "parameters": {
+        "h": "-1"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "9239f42c-d647-58e8-b716-ec8d102de948": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "\\cos{\\left(y \\right)}=- x - 1",
+          "correct": true
+        },
+        "07a5ada3-9745-57e1-b4a2-645e622cc921": {
+          "recipe": "lose_sine_primitive_minus",
+          "displayed_expression": "\\cos{\\left(y \\right)}=x + 1",
+          "correct": false
+        },
+        "a8b0e0d9-41c2-5847-a79d-0cec6c2c4d22": {
+          "recipe": "lose_minus_and_use_initial_sine_constant",
+          "displayed_expression": "\\cos{\\left(y \\right)}=x + 2",
+          "correct": false
+        },
+        "4bcb3600-d048-5abd-9e19-44764a08dd17": {
+          "recipe": "initial_y_as_constant",
+          "displayed_expression": "\\cos{\\left(y \\right)}=- x - 1 + \\frac{\\pi}{2}",
+          "correct": false
+        },
+        "aaeb14b9-4fbe-59f6-b51a-1198b653143a": {
+          "recipe": "double_x_primitive",
+          "displayed_expression": "\\cos{\\left(y \\right)}=- 2 x - 2",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-104055"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "31047b9ddd897647475d309127abfbde21622adab3ca5922f4099bf14059696e",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-1",
+        "initial_y": "pi/2",
+        "ode": "1/sin(y)",
+        "lhs": "cos(y)",
+        "rhs": "-x - 1",
+        "primitive_y": "-cos(y)",
+        "primitive_x": "x + 1",
+        "integration_constant": "0",
+        "domain": "local branch 0<y<pi; |x-h|<1, initial y=pi/2",
+        "h": "-1"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "af975c34-2463-5bcd-932d-52fa7b464569",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}}{{\\left(x - 3\\right)}^{2}+1}$  that satisfies $y(4)=1.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}}{{\\left(x - 3\\right)}^{2}+1} \\\\ \\frac{1}{{y}^{2}}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{{\\left(x - 3\\right)}^{2}+1} \\\\ \\int \\frac{1}{{y}^{2}}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\frac{1}{{\\left(x - 3\\right)}^{2}+1}\\,\\text{d}x \\\\ \\int \\frac{1}{{y}^{2}}\\,\\text{d}y & =\\int \\frac{1}{{\\left(x - 3\\right)}^{2}+1}\\,\\text{d}x \\\\ -\\frac{1}{y} & =\\operatorname{arctan}⁡(\\left(x - 3\\right))+C \\\\ \\frac{1}{y} & =-(\\operatorname{arctan}⁡(\\left(x - 3\\right))+C) \\\\ y & =-\\frac{1}{\\operatorname{arctan}⁡(\\left(x - 3\\right))+C}.\\end{aligned}\n$$\n\nWe conclude that the general solution is\n\n$$\ny=-\\frac{1}{\\operatorname{arctan}⁡(\\left(x - 3\\right))+C}.\n$$\n\nwhere $C$ is an arbitrary constant.\n\nWe now apply the condition $y(4)=1$ to find $C:$\n\n$$\n\\begin{aligned}1 & =-\\frac{1}{\\operatorname{arctan}⁡(1)+C} \\\\ 1 & =-\\frac{1}{\\frac{\\pi }{4}+C} \\\\ C & =-\\frac{\\pi }{4}-1\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}}{{\\left(x - 3\\right)}^{2}+1}$ that satisfies the condition $y(4)=1$ is\n\n$$\ny=-\\frac{1}{\\operatorname{arctan}⁡(\\left(x - 3\\right))-\\frac{\\pi }{4}-1}=\\frac{4}{\\pi +4-4\\operatorname{arctan}⁡(\\left(x - 3\\right))}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f104ea9c-a6ee-5ff2-8b43-fead463b3c7d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cb2a6061-cca0-570a-8006-71a092aae3d5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{4}{4 \\operatorname{atan}{\\left(x - 3 \\right)} + \\pi + 4}"
+            },
+            {
+              ":answer/id": "f231fce3-45b8-50bd-b4a4-615ac7cae045",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{4}{- 4 \\operatorname{atan}{\\left(x - 3 \\right)} + 4}"
+            },
+            {
+              ":answer/id": "d6e253c5-4b23-528d-a70f-9ff872741853",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{4}{- 4 \\operatorname{atan}{\\left(x - 3 \\right)} + \\pi + 4}"
+            },
+            {
+              ":answer/id": "eb4cb5d7-6715-5d72-8f29-db681b7e9c14",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=- \\operatorname{atan}{\\left(x - 3 \\right)} + \\frac{\\pi}{4} + 1"
+            },
+            {
+              ":answer/id": "735b549a-e234-5e39-990e-240dcc0d5206",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{4}{- 2 \\operatorname{atan}{\\left(x - 3 \\right)} + \\pi + 4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d6e253c5-4b23-528d-a70f-9ff872741853"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 9,
+      "template": "source_14309",
+      "parameters": {
+        "h": "3"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "d6e253c5-4b23-528d-a70f-9ff872741853": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=\\frac{4}{- 4 \\operatorname{atan}{\\left(x - 3 \\right)} + \\pi + 4}",
+          "correct": true
+        },
+        "cb2a6061-cca0-570a-8006-71a092aae3d5": {
+          "recipe": "reverse_arctangent_primitive_sign",
+          "displayed_expression": "y=\\frac{4}{4 \\operatorname{atan}{\\left(x - 3 \\right)} + \\pi + 4}",
+          "correct": false
+        },
+        "735b549a-e234-5e39-990e-240dcc0d5206": {
+          "recipe": "halve_arctangent_coefficient",
+          "displayed_expression": "y=\\frac{4}{- 2 \\operatorname{atan}{\\left(x - 3 \\right)} + \\pi + 4}",
+          "correct": false
+        },
+        "f231fce3-45b8-50bd-b4a4-615ac7cae045": {
+          "recipe": "omit_initial_arctangent_in_constant",
+          "displayed_expression": "y=\\frac{4}{- 4 \\operatorname{atan}{\\left(x - 3 \\right)} + 4}",
+          "correct": false
+        },
+        "eb4cb5d7-6715-5d72-8f29-db681b7e9c14": {
+          "recipe": "invert_particular_solution",
+          "displayed_expression": "y=- \\operatorname{atan}{\\left(x - 3 \\right)} + \\frac{\\pi}{4} + 1",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-14309"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "1fc1d0314272dfa519ee017f29546fdd5cb7e3831f7325ccc24e5389bcfff9d9",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "4",
+        "initial_y": "1",
+        "ode": "y**2/((x - 3)**2 + 1)",
+        "lhs": "y",
+        "rhs": "4/(-4*atan(x - 3) + pi + 4)",
+        "primitive_y": "-1/y",
+        "primitive_x": "atan(x - 3)",
+        "integration_constant": "-1 - pi/4",
+        "domain": "denominator !=0; connected interval containing h+1",
+        "h": "3"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "c1f0cd7e-9ca2-58e0-9605-0d5cc3a892a0",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{2x}{{y}^{2}}$ that satisfies $y(2)=\\sqrt[3]{13}.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{2x}{{y}^{2}} \\\\ {y}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & =2x \\\\ \\int {y}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int 2x\\,\\text{d}x \\\\ \\int {y}^{2}\\,\\text{d}y & =\\int 2x\\,\\text{d}x \\\\ \\frac{{y}^{3}}{3} & ={x}^{2}+{C}_{1} \\\\ {y}^{3} & =3{x}^{2}+3{C}_{1}.\\end{aligned}\n$$\n\nWe conclude that the general solution is\n\n$$\n{y}^{3}=3{x}^{2}+C,\n$$\n\nwhere $C=3{C}_{1}$  is an arbitrary constant.\n\nWe now apply the condition $y(2)=\\sqrt[3]{13}$ to find $C:$\n\n$$\n\\begin{aligned}{(\\sqrt[3]{13})}^{3} & =3(2)^{2}+C \\\\ 13 & =12+C \\\\ C & =1\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=\\frac{2x}{{y}^{2}}$ that satisfies the condition $y(2)=\\sqrt[3]{13}$ is\n\n$$\n{y}^{3}=3{x}^{2}+1.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a4f3a38e-3597-5d4e-9fa4-980e517bb26d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2a7a55fd-a8c8-50ac-864a-084aeae0a087",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=\\frac{x^{2}}{3} + 1"
+            },
+            {
+              ":answer/id": "bb9be7bc-e7fa-535c-ad17-965d51df992b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=x^{2} + 1"
+            },
+            {
+              ":answer/id": "e5db6102-590a-5eae-9e33-f3a6402b0fbf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=3 x^{2} + 13"
+            },
+            {
+              ":answer/id": "9321fd98-bbe2-54a0-becf-dce911976477",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=3 x^{2} + 1"
+            },
+            {
+              ":answer/id": "a9888b3f-d73e-50c6-a800-77c4ba417226",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y^{3}=3 x^{2} - 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9321fd98-bbe2-54a0-becf-dce911976477"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 10,
+      "template": "source_4019",
+      "parameters": {
+        "h": "0"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "9321fd98-bbe2-54a0-becf-dce911976477": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y^{3}=3 x^{2} + 1",
+          "correct": true
+        },
+        "bb9be7bc-e7fa-535c-ad17-965d51df992b": {
+          "recipe": "omit_y_integral_multiplier",
+          "displayed_expression": "y^{3}=x^{2} + 1",
+          "correct": false
+        },
+        "2a7a55fd-a8c8-50ac-864a-084aeae0a087": {
+          "recipe": "divide_instead_of_clear_y_denominator",
+          "displayed_expression": "y^{3}=\\frac{x^{2}}{3} + 1",
+          "correct": false
+        },
+        "a9888b3f-d73e-50c6-a800-77c4ba417226": {
+          "recipe": "reverse_initial_constant_sign",
+          "displayed_expression": "y^{3}=3 x^{2} - 1",
+          "correct": false
+        },
+        "e5db6102-590a-5eae-9e33-f3a6402b0fbf": {
+          "recipe": "omit_initial_x_primitive",
+          "displayed_expression": "y^{3}=3 x^{2} + 13",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-4019"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "7ea47cf405245a6e592be0965466a635ab0d15d627d292a4a8ab8f4683115bc8",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "2",
+        "initial_y": "13**(1/3)",
+        "ode": "2*x/y**2",
+        "lhs": "y**3",
+        "rhs": "3*x**2 + 1",
+        "primitive_y": "y**3/3",
+        "primitive_x": "x**2",
+        "integration_constant": "1/3",
+        "domain": "y != 0; connected interval containing initial x, with (x-h)^2*3+1 != 0",
+        "h": "0"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "bfbb356d-30d4-5398-a400-c91e68682161",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}}{{\\left(x - 2\\right)}^{2}+1}$  that satisfies $y(3)=1.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}}{{\\left(x - 2\\right)}^{2}+1} \\\\ \\frac{1}{{y}^{2}}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{{\\left(x - 2\\right)}^{2}+1} \\\\ \\int \\frac{1}{{y}^{2}}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\frac{1}{{\\left(x - 2\\right)}^{2}+1}\\,\\text{d}x \\\\ \\int \\frac{1}{{y}^{2}}\\,\\text{d}y & =\\int \\frac{1}{{\\left(x - 2\\right)}^{2}+1}\\,\\text{d}x \\\\ -\\frac{1}{y} & =\\operatorname{arctan}⁡(\\left(x - 2\\right))+C \\\\ \\frac{1}{y} & =-(\\operatorname{arctan}⁡(\\left(x - 2\\right))+C) \\\\ y & =-\\frac{1}{\\operatorname{arctan}⁡(\\left(x - 2\\right))+C}.\\end{aligned}\n$$\n\nWe conclude that the general solution is\n\n$$\ny=-\\frac{1}{\\operatorname{arctan}⁡(\\left(x - 2\\right))+C}.\n$$\n\nwhere $C$ is an arbitrary constant.\n\nWe now apply the condition $y(3)=1$ to find $C:$\n\n$$\n\\begin{aligned}1 & =-\\frac{1}{\\operatorname{arctan}⁡(1)+C} \\\\ 1 & =-\\frac{1}{\\frac{\\pi }{4}+C} \\\\ C & =-\\frac{\\pi }{4}-1\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}}{{\\left(x - 2\\right)}^{2}+1}$ that satisfies the condition $y(3)=1$ is\n\n$$\ny=-\\frac{1}{\\operatorname{arctan}⁡(\\left(x - 2\\right))-\\frac{\\pi }{4}-1}=\\frac{4}{\\pi +4-4\\operatorname{arctan}⁡(\\left(x - 2\\right))}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5d90dc78-ec80-5ff4-8f39-e187a7321779",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ea31affb-b4cd-589d-9436-4e55c8c289ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{4}{4 \\operatorname{atan}{\\left(x - 2 \\right)} + \\pi + 4}"
+            },
+            {
+              ":answer/id": "ac175e43-ab52-5713-a81c-2697128a0ef4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{4}{- 4 \\operatorname{atan}{\\left(x - 2 \\right)} + \\pi + 4}"
+            },
+            {
+              ":answer/id": "d72bd833-ec42-55a3-abf9-9fbe34004c41",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{4}{- 2 \\operatorname{atan}{\\left(x - 2 \\right)} + \\pi + 4}"
+            },
+            {
+              ":answer/id": "44dd6274-e53d-5a68-847f-dabf0c77eb43",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=- \\operatorname{atan}{\\left(x - 2 \\right)} + \\frac{\\pi}{4} + 1"
+            },
+            {
+              ":answer/id": "95fe3a06-0f07-5977-ac85-c1af0c7ff92c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{4}{- 4 \\operatorname{atan}{\\left(x - 2 \\right)} + 4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ac175e43-ab52-5713-a81c-2697128a0ef4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 11,
+      "template": "source_14309",
+      "parameters": {
+        "h": "2"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "ac175e43-ab52-5713-a81c-2697128a0ef4": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=\\frac{4}{- 4 \\operatorname{atan}{\\left(x - 2 \\right)} + \\pi + 4}",
+          "correct": true
+        },
+        "ea31affb-b4cd-589d-9436-4e55c8c289ca": {
+          "recipe": "reverse_arctangent_primitive_sign",
+          "displayed_expression": "y=\\frac{4}{4 \\operatorname{atan}{\\left(x - 2 \\right)} + \\pi + 4}",
+          "correct": false
+        },
+        "d72bd833-ec42-55a3-abf9-9fbe34004c41": {
+          "recipe": "halve_arctangent_coefficient",
+          "displayed_expression": "y=\\frac{4}{- 2 \\operatorname{atan}{\\left(x - 2 \\right)} + \\pi + 4}",
+          "correct": false
+        },
+        "95fe3a06-0f07-5977-ac85-c1af0c7ff92c": {
+          "recipe": "omit_initial_arctangent_in_constant",
+          "displayed_expression": "y=\\frac{4}{- 4 \\operatorname{atan}{\\left(x - 2 \\right)} + 4}",
+          "correct": false
+        },
+        "44dd6274-e53d-5a68-847f-dabf0c77eb43": {
+          "recipe": "invert_particular_solution",
+          "displayed_expression": "y=- \\operatorname{atan}{\\left(x - 2 \\right)} + \\frac{\\pi}{4} + 1",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-14309"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "76f1a375382a533da8cd501bb2ae74e3d5fab510010379811fb7ecb7bb7e77e9",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "3",
+        "initial_y": "1",
+        "ode": "y**2/((x - 2)**2 + 1)",
+        "lhs": "y",
+        "rhs": "4/(-4*atan(x - 2) + pi + 4)",
+        "primitive_y": "-1/y",
+        "primitive_x": "atan(x - 2)",
+        "integration_constant": "-1 - pi/4",
+        "domain": "denominator !=0; connected interval containing h+1",
+        "h": "2"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "909e7408-9d17-541c-a695-164adfe82c09",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation $y\\frac{\\text{d}y}{\\text{d}x}=\\left(x - 6\\right)$  that satisfies  $y(3)=1.$  Assume that $y>0.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}y\\frac{\\text{d}y}{\\text{d}x} & =\\left(x - 6\\right) \\\\ \\int y\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\left(x - 6\\right)\\,\\text{d}x \\\\ \\int y\\text{d}y & =\\int \\left(x - 6\\right)\\text{d}x \\\\ \\frac{{y}^{2}}{2} & =\\frac{{\\left(x - 6\\right)}^{2}}{2}+{C}_{1} \\\\ {y}^{2} & ={\\left(x - 6\\right)}^{2}+2{C}_{1} \\\\ y & =\\pm \\sqrt{{\\left(x - 6\\right)}^{2}+2{C}_{1}}\\end{aligned}\n$$\n\nAssuming $y>0,$ the general solution is\n\n$$\ny=\\sqrt{{\\left(x - 6\\right)}^{2}+C},\n$$\n\nwhere $C$ is an arbitrary constant.\n\nWe now apply the condition $y(3)=1$ to find $C:$\n\n$$\n\\begin{aligned}1 & =\\sqrt{(-3)^{2}+C} \\\\ 1 & =\\sqrt{9+C} \\\\ C & =-8\\end{aligned}\n$$\n\nThus, the particular solution of $y\\frac{\\text{d}y}{\\text{d}x}=\\left(x - 6\\right)$ that satisfies the condition $y(3)=1$ is\n\n$$\ny=\\sqrt{{\\left(x - 6\\right)}^{2}-8}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6d54f3ef-17b5-51ac-ac6f-34d3ed989405",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "20d624b7-77b6-55a5-bc8a-1926da716af7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt{\\left(x - 6\\right)^{2} + 1}"
+            },
+            {
+              ":answer/id": "0b29b012-e768-5090-9b2a-d179c2929367",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt{2 \\left(x - 6\\right)^{2} - 17}"
+            },
+            {
+              ":answer/id": "78a26605-3c5b-52e7-98a0-368f7e751a46",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=- \\sqrt{\\left(x - 6\\right)^{2} - 8}"
+            },
+            {
+              ":answer/id": "fe273e30-7b78-54a3-9519-8372cc58a506",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt{\\left(x - 6\\right)^{2} - 8}"
+            },
+            {
+              ":answer/id": "8d150949-87e3-59da-ac3b-1eb6072ebbad",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt{\\left(x - 6\\right)^{2} + 8}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fe273e30-7b78-54a3-9519-8372cc58a506"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 0,
+      "template": "source_50566",
+      "parameters": {
+        "h": "6"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "fe273e30-7b78-54a3-9519-8372cc58a506": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=\\sqrt{\\left(x - 6\\right)^{2} - 8}",
+          "correct": true
+        },
+        "78a26605-3c5b-52e7-98a0-368f7e751a46": {
+          "recipe": "negative_square_root_branch",
+          "displayed_expression": "y=- \\sqrt{\\left(x - 6\\right)^{2} - 8}",
+          "correct": false
+        },
+        "0b29b012-e768-5090-9b2a-d179c2929367": {
+          "recipe": "omit_x_integral_half_and_fit_initial",
+          "displayed_expression": "y=\\sqrt{2 \\left(x - 6\\right)^{2} - 17}",
+          "correct": false
+        },
+        "8d150949-87e3-59da-ac3b-1eb6072ebbad": {
+          "recipe": "reverse_initial_constant_sign",
+          "displayed_expression": "y=\\sqrt{\\left(x - 6\\right)^{2} + 8}",
+          "correct": false
+        },
+        "20d624b7-77b6-55a5-bc8a-1926da716af7": {
+          "recipe": "omit_initial_x_primitive",
+          "displayed_expression": "y=\\sqrt{\\left(x - 6\\right)^{2} + 1}",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-50566"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "41b0ae67a2b87dabb9950dbd6867e3e40f988d9a35854677e7c803dc2eb9157d",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "3",
+        "initial_y": "1",
+        "ode": "(x - 6)/y",
+        "lhs": "y",
+        "rhs": "sqrt((x - 6)**2 - 8)",
+        "primitive_y": "y**2/2",
+        "primitive_x": "(x - 6)**2/2",
+        "integration_constant": "-4",
+        "domain": "y>0; x-h < -sqrt(8), connected interval containing h-3",
+        "h": "6"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "2dfa2d89-56a3-5cf7-b519-738425358103",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\left(x - 3\\right)y$  that satisfies $y(3)=1.$\n\n$y=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\left(x - 3\\right)y \\\\ \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x} & =\\left(x - 3\\right) \\\\ \\int \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\left(x - 3\\right)\\,\\text{d}x \\\\ \\int \\frac{1}{y}\\,\\text{d}y & =\\int \\,\\left(x - 3\\right)\\,\\text{d}x \\\\ \\operatorname{ln}⁡|y| & =\\frac{1}{2}{\\left(x - 3\\right)}^{2}+C\\,.\\end{aligned}\n$$\n\nApplying the exponential function to both sides, we find the general solution:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}⁡|y|} & ={e}^{{\\left(x - 3\\right)}^{2}/2+C} \\\\ |y| & ={e}^{{\\left(x - 3\\right)}^{2}/2+C}\\, \\\\ y & =\\pm {e}^{{\\left(x - 3\\right)}^{2}/2+C} \\\\ y & =K{e}^{{\\left(x - 3\\right)}^{2}/2}\\,.\\end{aligned}\n$$\n\nwhere $K=\\pm {e}^{C}$ is an arbitrary constant. \n\nWe now apply the condition $y(3)=1$ to find $K:$ \n\n$$\n\\begin{aligned}1 & =K{e}^{0} \\\\ K & =1\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=\\left(x - 3\\right)y$ that satisfies the condition $y(3)=1$ is\n\n$$\ny={e}^{{\\left(x - 3\\right)}^{2}/2}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c00ab372-3f7e-53bc-ab84-b374a5672f68",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "32de0b91-03e7-5b13-b9ed-7dbb3cbe32a8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{e}^{{\\left(x - 3\\right)}^{2}/2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "32de0b91-03e7-5b13-b9ed-7dbb3cbe32a8"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 1,
+      "template": "source_355562",
+      "parameters": {
+        "h": "3"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "32de0b91-03e7-5b13-b9ed-7dbb3cbe32a8": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "{e}^{{\\left(x - 3\\right)}^{2}/2}",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355562"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "71822dbde626933051447dde0292b1dc93a55907dabd41ccce86e2cf5fe6443b",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "3",
+        "initial_y": "1",
+        "ode": "y*(x - 3)",
+        "lhs": "y",
+        "rhs": "exp((x - 3)**2/2)",
+        "primitive_y": "log(y)",
+        "primitive_x": "(x - 3)**2/2",
+        "integration_constant": "0",
+        "domain": "y>0; x real",
+        "h": "3"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "04587275-5d21-516e-a0cd-11cc3c117811",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation\n$\\frac{\\text{d}y}{\\text{d}x}+2{y}^{2}=0$\nthat satisfies the condition $y(-5)=2.$\n\n$y(x)=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x}+2{y}^{2} & =0 \\\\ \\frac{\\text{d}y}{\\text{d}x} & =-2{y}^{2} \\\\ -\\frac{1}{{y}^{2}}\\,\\text{d}y & =2\\,\\text{d}x \\\\ -\\int \\frac{1}{{y}^{2}}\\,\\text{d}y & =\\int 2\\,\\text{d}x \\\\ \\frac{1}{y} & =2\\left(x + 5\\right)+C \\\\ y & =\\frac{1}{2\\left(x + 5\\right)+C}.\\end{aligned}\n$$\n\nWe conclude that the general solution is\n\n$$\ny(x)=\\frac{1}{2\\left(x + 5\\right)+C},\n$$\n\nwhere $C$ is an arbitrary constant.\n\nWe now apply the condition $y(-5)=2$ to find $C:$\n\n$$\n\\begin{aligned}2 & =\\frac{1}{2(0)+C} \\\\ C & =\\frac{1}{2}\\end{aligned}\n$$\n\nThus, the particular solution is\n\n$$\ny(x)=\\frac{2}{4\\left(x + 5\\right)+1}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4501fc0b-6143-551d-a66c-0be752aa9924",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "49e6c5d1-1278-5e32-be3a-6353a57bfd38",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2}{4\\left(x + 5\\right)+1}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "49e6c5d1-1278-5e32-be3a-6353a57bfd38"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 2,
+      "template": "source_347853",
+      "parameters": {
+        "h": "-5"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "49e6c5d1-1278-5e32-be3a-6353a57bfd38": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "\\frac{2}{4\\left(x + 5\\right)+1}",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-347853"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "4a09b4d1a601871fa6703a9e66f80febe04bfecfaa971fc1f9389bdc38fd8e36",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-5",
+        "initial_y": "2",
+        "ode": "-2*y**2",
+        "lhs": "y",
+        "rhs": "2/(4*x + 21)",
+        "primitive_y": "-1/y",
+        "primitive_x": "-2*x - 10",
+        "integration_constant": "-1/2",
+        "domain": "4*(x-h)+1 != 0; connected interval x>h-1/4",
+        "h": "-5"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "7a36f736-dea5-5a6b-a1f4-5b0b4f2e5130",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{{\\left(x - 3\\right)}^{2}}=0$  that satisfies $y(4)=e.$\n\n$y=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{{\\left(x - 3\\right)}^{2}} & =0 \\\\ \\frac{\\text{d}y}{\\text{d}x} & =\\frac{y}{{\\left(x - 3\\right)}^{2}} \\\\ \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{{\\left(x - 3\\right)}^{2}} \\\\ \\int \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\frac{1}{{\\left(x - 3\\right)}^{2}}\\,\\text{d}x \\\\ \\int \\frac{1}{y}\\,\\text{d}y & =\\int \\,\\frac{1}{{\\left(x - 3\\right)}^{2}}\\,\\text{d}x \\\\ \\operatorname{ln}⁡|y| & =-\\frac{1}{\\left(x - 3\\right)}+C\\,.\\end{aligned}\n$$\n\nApplying the exponential function to both sides, we find the general solution:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}⁡|y|} & ={e}^{-1/\\left(x - 3\\right)+C} \\\\ |y| & ={e}^{-1/\\left(x - 3\\right)+C}\\, \\\\ |y| & ={e}^{-1/\\left(x - 3\\right)}\\cdot {e}^{C} \\\\ y & =K{e}^{-1/\\left(x - 3\\right)}\\,.\\end{aligned}\n$$\n\nwhere $K=\\pm {e}^{C}$ is an arbitrary constant. \n\nWe now apply the condition $y(4)=e$ to find $K:$ \n\n$$\n\\begin{aligned}e & =K{e}^{-1} \\\\ K & ={e}^{2}\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{{\\left(x - 3\\right)}^{2}}=0$ that satisfies the condition $y(4)=e$ is\n\n$$\ny={e}^{2-1/\\left(x - 3\\right)}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4494a015-b1ac-5b93-84f7-be8859292627",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1109e339-abf3-5b93-900b-293e0807c783",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{e}^{2-1/\\left(x - 3\\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1109e339-abf3-5b93-900b-293e0807c783"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 3,
+      "template": "source_355578",
+      "parameters": {
+        "h": "3"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "1109e339-abf3-5b93-900b-293e0807c783": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "{e}^{2-1/\\left(x - 3\\right)}",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355578"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "184ec8c87dc78709f329e7841bb566dd8bab02b62be05950255764234ef218d5",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "4",
+        "initial_y": "E",
+        "ode": "y/(x - 3)**2",
+        "lhs": "y",
+        "rhs": "exp((2*x - 7)/(x - 3))",
+        "primitive_y": "log(y)",
+        "primitive_x": "-1/(x - 3)",
+        "integration_constant": "2",
+        "domain": "x>h; initial x=h+1",
+        "h": "3"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "ffd0c7ff-64e9-5a0b-b083-b025f635f732",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{{\\left(x + 2\\right)}^{2}}=0$  that satisfies $y(-1)=e.$\n\n$y=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{{\\left(x + 2\\right)}^{2}} & =0 \\\\ \\frac{\\text{d}y}{\\text{d}x} & =\\frac{y}{{\\left(x + 2\\right)}^{2}} \\\\ \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{{\\left(x + 2\\right)}^{2}} \\\\ \\int \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\frac{1}{{\\left(x + 2\\right)}^{2}}\\,\\text{d}x \\\\ \\int \\frac{1}{y}\\,\\text{d}y & =\\int \\,\\frac{1}{{\\left(x + 2\\right)}^{2}}\\,\\text{d}x \\\\ \\operatorname{ln}⁡|y| & =-\\frac{1}{\\left(x + 2\\right)}+C\\,.\\end{aligned}\n$$\n\nApplying the exponential function to both sides, we find the general solution:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}⁡|y|} & ={e}^{-1/\\left(x + 2\\right)+C} \\\\ |y| & ={e}^{-1/\\left(x + 2\\right)+C}\\, \\\\ |y| & ={e}^{-1/\\left(x + 2\\right)}\\cdot {e}^{C} \\\\ y & =K{e}^{-1/\\left(x + 2\\right)}\\,.\\end{aligned}\n$$\n\nwhere $K=\\pm {e}^{C}$ is an arbitrary constant. \n\nWe now apply the condition $y(-1)=e$ to find $K:$ \n\n$$\n\\begin{aligned}e & =K{e}^{-1} \\\\ K & ={e}^{2}\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{{\\left(x + 2\\right)}^{2}}=0$ that satisfies the condition $y(-1)=e$ is\n\n$$\ny={e}^{2-1/\\left(x + 2\\right)}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "18e752a7-4cd1-5d0a-84c6-67fa8d168a01",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0b40ed77-9d8d-58b9-a8b9-152fd64aab75",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{e}^{2-1/\\left(x + 2\\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0b40ed77-9d8d-58b9-a8b9-152fd64aab75"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 4,
+      "template": "source_355578",
+      "parameters": {
+        "h": "-2"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "0b40ed77-9d8d-58b9-a8b9-152fd64aab75": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "{e}^{2-1/\\left(x + 2\\right)}",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355578"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "e96a0d10440d2652fe5be1ebf218086e4039722eebc24bdb9368f0bd41a55b46",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-1",
+        "initial_y": "E",
+        "ode": "y/(x + 2)**2",
+        "lhs": "y",
+        "rhs": "exp((2*x + 3)/(x + 2))",
+        "primitive_y": "log(y)",
+        "primitive_x": "-1/(x + 2)",
+        "integration_constant": "2",
+        "domain": "x>h; initial x=h+1",
+        "h": "-2"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "e908a941-f8c9-55ef-8d96-3f90c9165d8d",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{y}{\\sqrt{\\left(x - 5\\right)}}$  that satisfies $y(6)={e}^{2}.$\n\n$y=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{y}{\\sqrt{\\left(x - 5\\right)}} \\\\ \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{\\sqrt{\\left(x - 5\\right)}} \\\\ \\int \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\frac{1}{\\sqrt{\\left(x - 5\\right)}}\\,\\text{d}x \\\\ \\int \\frac{1}{y}\\,\\text{d}y & =\\int \\,\\frac{1}{\\sqrt{\\left(x - 5\\right)}}\\,\\text{d}x \\\\ \\operatorname{ln}⁡|y| & =2\\sqrt{\\left(x - 5\\right)}+C\\,.\\end{aligned}\n$$\n\nApplying the exponential function to both sides, we find the general solution:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}⁡|y|} & ={e}^{2\\sqrt{\\left(x - 5\\right)}+C} \\\\ |y| & ={e}^{2\\sqrt{\\left(x - 5\\right)}+C}\\, \\\\ |y| & ={e}^{2\\sqrt{\\left(x - 5\\right)}}\\cdot {e}^{C} \\\\ y & =K{e}^{2\\sqrt{\\left(x - 5\\right)}}\\,.\\end{aligned}\n$$\n\nwhere $K=\\pm {e}^{C}$ is an arbitrary constant. \n\nWe now apply the condition $y(6)={e}^{2}$ to find $K:$ \n\n$$\n\\begin{aligned}{e}^{2} & =K{e}^{2\\sqrt{1}} \\\\ {e}^{2} & =K{e}^{2} \\\\ K & =1\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}=\\frac{y}{\\sqrt{\\left(x - 5\\right)}}$ that satisfies the condition $y(6)={e}^{2}$ is\n\n$$\ny={e}^{2\\sqrt{\\left(x - 5\\right)}}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6d4d4d06-6d9a-5721-9e5a-620f7b1af299",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8a4b2f4b-fad4-560c-aee2-5968c32f9809",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{e}^{2\\sqrt{\\left(x - 5\\right)}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8a4b2f4b-fad4-560c-aee2-5968c32f9809"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 5,
+      "template": "source_355579",
+      "parameters": {
+        "h": "5"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "8a4b2f4b-fad4-560c-aee2-5968c32f9809": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "{e}^{2\\sqrt{\\left(x - 5\\right)}}",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355579"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "63cf18b4c594e184919924ba639eb8138acd284a6a4c4097dba19c5d98429c97",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "6",
+        "initial_y": "exp(2)",
+        "ode": "y/sqrt(x - 5)",
+        "lhs": "y",
+        "rhs": "exp(2*sqrt(x - 5))",
+        "primitive_y": "log(y)",
+        "primitive_x": "2*sqrt(x - 5)",
+        "integration_constant": "0",
+        "domain": "x>h; initial x=h+1",
+        "h": "5"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "9450d35b-0227-5d25-ac17-b39a48fba2dd",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation\n$\\frac{\\text{d}y}{\\text{d}x}=4\\left(x - 1\\right)\\sqrt{y}$\nthat satisfies the condition $y(2)=9.$  Assume that $y>0.$\n\n$y(x)=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =4\\left(x - 1\\right)\\sqrt{y} \\\\ \\frac{1}{\\sqrt{y}}\\,\\text{d}y & =4\\left(x - 1\\right)\\,\\text{d}x \\\\ \\int \\frac{1}{\\sqrt{y}}\\,\\text{d}y & =\\int 4\\left(x - 1\\right)\\,\\text{d}x \\\\ 2\\sqrt{y} & =2{\\left(x - 1\\right)}^{2}+{C}_{1} \\\\ \\sqrt{y} & ={\\left(x - 1\\right)}^{2}+\\frac{{C}_{1}}{2} \\\\ y & ={({\\left(x - 1\\right)}^{2}+\\frac{{C}_{1}}{2})}^{2}.\\end{aligned}\n$$\n\nAssuming $y>0,$ the general solution is\n\n$$\ny(x)=({\\left(x - 1\\right)}^{2}+C)^{2},\n$$\n\nwhere $C=\\frac{{C}_{1}}{2}$ is an arbitrary constant.\n\nWe now apply the condition $y(2)=9$ to find $C:$\n\n$$\n\\begin{aligned}9 & =((1)^{2}+C)^{2} \\\\ 9 & =(1+C)^{2} \\\\ 3 & =1+C \\\\ C & =2\\end{aligned}\n$$\n\nThus, the particular solution is\n\n$$\ny(x)=({\\left(x - 1\\right)}^{2}+2)^{2}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3c353064-9ad2-5a57-b947-a55a71f2f762",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "80b01edf-5042-594b-8941-767c9e7338b4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "({\\left(x - 1\\right)}^{2}+2)^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "80b01edf-5042-594b-8941-767c9e7338b4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 6,
+      "template": "source_355528",
+      "parameters": {
+        "h": "1"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "80b01edf-5042-594b-8941-767c9e7338b4": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "({\\left(x - 1\\right)}^{2}+2)^{2}",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355528"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "c59d06f5911f468a7f729ef2c17f5c50839ec30743bfeffddb23b4fb4b469756",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "2",
+        "initial_y": "9",
+        "ode": "4*sqrt(y)*(x - 1)",
+        "lhs": "y",
+        "rhs": "((x - 1)**2 + 2)**2",
+        "primitive_y": "2*sqrt(y)",
+        "primitive_x": "2*(x - 1)**2",
+        "integration_constant": "4",
+        "domain": "y>0 and (x-h)^2+2>0; x real",
+        "h": "1"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "98a6138f-0dcb-513e-a84f-e6c299fd3cad",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}+{y}^{2}=0$ that satisfies $y(-3)=1.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x}+{y}^{2} & =0 \\\\ \\frac{\\text{d}y}{\\text{d}x} & =-{y}^{2} \\\\ -\\frac{1}{{y}^{2}}\\cdot \\frac{\\text{d}y}{\\text{d}x} & =1 \\\\ -\\int \\frac{1}{{y}^{2}}\\,\\text{d}y & =\\int \\,\\text{d}x \\\\ \\frac{1}{y} & =\\left(x + 4\\right)+C \\\\ y & =\\frac{1}{\\left(x + 4\\right)+C}.\\end{aligned}\n$$\n\nWe conclude that the general solution is\n\n$$\ny=\\frac{1}{\\left(x + 4\\right)+C},\n$$\n\nwhere $C$ is an arbitrary constant.\n\nWe now apply the condition $y(-3)=1$ to find $C:$\n\n$$\n\\begin{aligned}1 & =\\frac{1}{1+C} \\\\ 1+C & =1 \\\\ C & =0.\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}+{y}^{2}=0$ that satisfies the condition $y(-3)=1$ is\n\n$$\ny=\\frac{1}{\\left(x + 4\\right)}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a66a9d88-1e90-5d7a-bed1-a4467173211d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cb019070-388f-5c9f-a9d2-fc18d9f1a53a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{- x - 2}"
+            },
+            {
+              ":answer/id": "2455d545-0091-54fe-9e0b-dc04d9f5d34d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{x + 5}"
+            },
+            {
+              ":answer/id": "0e711d9d-cb73-5143-a320-31181e86997f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=x + 4"
+            },
+            {
+              ":answer/id": "c5af9d15-63e0-53cd-be1e-24f2f433d9dc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{x + 4}"
+            },
+            {
+              ":answer/id": "c77e1bfe-6a82-510d-a111-059f865152b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{2 x + 7}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c5af9d15-63e0-53cd-be1e-24f2f433d9dc"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 7,
+      "template": "source_50220",
+      "parameters": {
+        "h": "-4"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "c5af9d15-63e0-53cd-be1e-24f2f433d9dc": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=\\frac{1}{x + 4}",
+          "correct": true
+        },
+        "cb019070-388f-5c9f-a9d2-fc18d9f1a53a": {
+          "recipe": "reverse_x_integral_sign_and_fit_initial",
+          "displayed_expression": "y=\\frac{1}{- x - 2}",
+          "correct": false
+        },
+        "2455d545-0091-54fe-9e0b-dc04d9f5d34d": {
+          "recipe": "initial_y_as_constant",
+          "displayed_expression": "y=\\frac{1}{x + 5}",
+          "correct": false
+        },
+        "c77e1bfe-6a82-510d-a111-059f865152b0": {
+          "recipe": "double_x_primitive_and_fit_initial",
+          "displayed_expression": "y=\\frac{1}{2 x + 7}",
+          "correct": false
+        },
+        "0e711d9d-cb73-5143-a320-31181e86997f": {
+          "recipe": "omit_reciprocal_inversion",
+          "displayed_expression": "y=x + 4",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-50220"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "21f94a891801b64380a838c2efed20321b9b7b57ae9287b273775a221fa8f3fd",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-3",
+        "initial_y": "1",
+        "ode": "-y**2",
+        "lhs": "y",
+        "rhs": "1/(x + 4)",
+        "primitive_y": "-1/y",
+        "primitive_x": "-x - 4",
+        "integration_constant": "0",
+        "domain": "x>h; initial x=h+1",
+        "h": "-4"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "e2c5d380-d095-552d-a728-b896e1ea57b3",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{{\\left(x + 1\\right)}^{2}}=0$  that satisfies $y(0)=e.$\n\n$y=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{{\\left(x + 1\\right)}^{2}} & =0 \\\\ \\frac{\\text{d}y}{\\text{d}x} & =\\frac{y}{{\\left(x + 1\\right)}^{2}} \\\\ \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{1}{{\\left(x + 1\\right)}^{2}} \\\\ \\int \\frac{1}{y}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\frac{1}{{\\left(x + 1\\right)}^{2}}\\,\\text{d}x \\\\ \\int \\frac{1}{y}\\,\\text{d}y & =\\int \\,\\frac{1}{{\\left(x + 1\\right)}^{2}}\\,\\text{d}x \\\\ \\operatorname{ln}⁡|y| & =-\\frac{1}{\\left(x + 1\\right)}+C\\,.\\end{aligned}\n$$\n\nApplying the exponential function to both sides, we find the general solution:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}⁡|y|} & ={e}^{-1/\\left(x + 1\\right)+C} \\\\ |y| & ={e}^{-1/\\left(x + 1\\right)+C}\\, \\\\ |y| & ={e}^{-1/\\left(x + 1\\right)}\\cdot {e}^{C} \\\\ y & =K{e}^{-1/\\left(x + 1\\right)}\\,.\\end{aligned}\n$$\n\nwhere $K=\\pm {e}^{C}$ is an arbitrary constant. \n\nWe now apply the condition $y(0)=e$ to find $K:$ \n\n$$\n\\begin{aligned}e & =K{e}^{-1} \\\\ K & ={e}^{2}\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{{\\left(x + 1\\right)}^{2}}=0$ that satisfies the condition $y(0)=e$ is\n\n$$\ny={e}^{2-1/\\left(x + 1\\right)}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1b46d8f0-e925-5c06-8c94-c3f978dea181",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "94c78f62-2a37-5c5c-a5b4-62dcc08a842a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{e}^{2-1/\\left(x + 1\\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "94c78f62-2a37-5c5c-a5b4-62dcc08a842a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 8,
+      "template": "source_355578",
+      "parameters": {
+        "h": "-1"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "94c78f62-2a37-5c5c-a5b4-62dcc08a842a": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "{e}^{2-1/\\left(x + 1\\right)}",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355578"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "9e0447921393fe4f5647cca214db4f990143d1a8b6ebaddb518aa6384ca6aa76",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "0",
+        "initial_y": "E",
+        "ode": "y/(x + 1)**2",
+        "lhs": "y",
+        "rhs": "exp((2*x + 1)/(x + 1))",
+        "primitive_y": "log(y)",
+        "primitive_x": "-1/(x + 1)",
+        "integration_constant": "2",
+        "domain": "x>h; initial x=h+1",
+        "h": "-1"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "03a1bc01-3d15-5383-a605-0881e48d61cb",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}+4 y^{2}=0$ that satisfies $y(3)=5.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =- 4 y^{2} \\\\ -\\frac{1}{y^2}\\,\\text{d}y & =4\\,\\text{d}x \\\\ -\\int\\frac{1}{y^2}\\,\\text{d}y & =\\int 4\\,\\text{d}x \\\\ \\frac{1}{y} & =4 x - 12+C \\\\ y & =\\frac{1}{4 x - 12+C}\\end{aligned}\n$$\n\nwhere $C$ is an arbitrary constant.\n\nWe now apply the condition $y(3)=5$ to find $C:$\n\n$$\n\\begin{aligned}5 & =\\frac{1}{C} \\\\ C & =\\frac{1}{5}\\end{aligned}\n$$\n\nThus, the particular solution is\n\n$$\ny=\\frac{5}{20 x - 59}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f17b7905-4f1c-541f-a7be-ba38588cc421",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "26a6659f-d104-5e75-9209-4fcdd123323c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{4 x - 7}"
+            },
+            {
+              ":answer/id": "cf15bdc1-5287-5ded-8343-e8c50eb6b7d5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5}{20 x - 59}"
+            },
+            {
+              ":answer/id": "24ced8cf-657b-5a05-9fb5-74183979beeb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5}{4 x - 11}"
+            },
+            {
+              ":answer/id": "e9d88bc8-6d0e-5b6d-ae55-f8a2958964d1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=100 x - 295"
+            },
+            {
+              ":answer/id": "6df09540-7128-59e4-a822-8085007e5187",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5}{- 20 x + 61}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cf15bdc1-5287-5ded-8343-e8c50eb6b7d5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 9,
+      "template": "reciprocal_initial",
+      "parameters": {
+        "a": "4",
+        "b": "5",
+        "h": "3"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "cf15bdc1-5287-5ded-8343-e8c50eb6b7d5": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=\\frac{5}{20 x - 59}",
+          "correct": true
+        },
+        "6df09540-7128-59e4-a822-8085007e5187": {
+          "recipe": "reverse_x_primitive_sign",
+          "displayed_expression": "y=\\frac{5}{- 20 x + 61}",
+          "correct": false
+        },
+        "24ced8cf-657b-5a05-9fb5-74183979beeb": {
+          "recipe": "omit_initial_amplitude_x_multiplier",
+          "displayed_expression": "y=\\frac{5}{4 x - 11}",
+          "correct": false
+        },
+        "26a6659f-d104-5e75-9209-4fcdd123323c": {
+          "recipe": "initial_y_instead_of_reciprocal_constant",
+          "displayed_expression": "y=\\frac{1}{4 x - 7}",
+          "correct": false
+        },
+        "e9d88bc8-6d0e-5b6d-ae55-f8a2958964d1": {
+          "recipe": "omit_reciprocal_inversion",
+          "displayed_expression": "y=100 x - 295",
+          "correct": false
+        }
+      },
+      "origin": "authored-coefficient-extension",
+      "source_ids": [
+        "q-50220"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "7d5aa993cc8748ca57682252a678f0d7e5ff7d80012d74243a5ac896e1465632",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "3",
+        "initial_y": "5",
+        "ode": "-4*y**2",
+        "lhs": "y",
+        "rhs": "5/(20*x - 59)",
+        "primitive_y": "-1/y",
+        "primitive_x": "12 - 4*x",
+        "integration_constant": "-1/5",
+        "domain": "x>59/20; y>0; connected interval containing initial x=3",
+        "h": "3"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "7e7acb20-a91a-5a14-8555-7be0e40b162f",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation\n$\\frac{\\text{d}y}{\\text{d}x}+2{y}^{2}=0$\nthat satisfies the condition $y(0)=2.$\n\n$y(x)=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x}+2{y}^{2} & =0 \\\\ \\frac{\\text{d}y}{\\text{d}x} & =-2{y}^{2} \\\\ -\\frac{1}{{y}^{2}}\\,\\text{d}y & =2\\,\\text{d}x \\\\ -\\int \\frac{1}{{y}^{2}}\\,\\text{d}y & =\\int 2\\,\\text{d}x \\\\ \\frac{1}{y} & =2x+C \\\\ y & =\\frac{1}{2x+C}.\\end{aligned}\n$$\n\nWe conclude that the general solution is\n\n$$\ny(x)=\\frac{1}{2x+C},\n$$\n\nwhere $C$ is an arbitrary constant.\n\nWe now apply the condition $y(0)=2$ to find $C:$\n\n$$\n\\begin{aligned}2 & =\\frac{1}{2(0)+C} \\\\ C & =\\frac{1}{2}\\end{aligned}\n$$\n\nThus, the particular solution is\n\n$$\ny(x)=\\frac{2}{4x+1}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6b1babb2-ee35-50e9-840e-1e51c9d2d5a9",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7adb6a27-7d85-5c0f-ab3f-ae7e4867f225",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2}{4x+1}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7adb6a27-7d85-5c0f-ab3f-ae7e4867f225"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 10,
+      "template": "source_347853",
+      "parameters": {
+        "h": "0"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "7adb6a27-7d85-5c0f-ab3f-ae7e4867f225": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "\\frac{2}{4x+1}",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-347853"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "69795da49249fa3f0b7a4c2578c16f68292378988da5f407130064bad857160d",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "0",
+        "initial_y": "2",
+        "ode": "-2*y**2",
+        "lhs": "y",
+        "rhs": "2/(4*x + 1)",
+        "primitive_y": "-1/y",
+        "primitive_x": "-2*x",
+        "integration_constant": "-1/2",
+        "domain": "4*(x-h)+1 != 0; connected interval x>h-1/4",
+        "h": "0"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "17eb18b1-e81f-5361-ab83-f5f02488fffc",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}+5 y^{2}=0$ that satisfies $y(2)=6.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =- 5 y^{2} \\\\ -\\frac{1}{y^2}\\,\\text{d}y & =5\\,\\text{d}x \\\\ -\\int\\frac{1}{y^2}\\,\\text{d}y & =\\int 5\\,\\text{d}x \\\\ \\frac{1}{y} & =5 x - 10+C \\\\ y & =\\frac{1}{5 x - 10+C}\\end{aligned}\n$$\n\nwhere $C$ is an arbitrary constant.\n\nWe now apply the condition $y(2)=6$ to find $C:$\n\n$$\n\\begin{aligned}6 & =\\frac{1}{C} \\\\ C & =\\frac{1}{6}\\end{aligned}\n$$\n\nThus, the particular solution is\n\n$$\ny=\\frac{6}{30 x - 59}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9006e94a-b0bd-55c8-8a30-e53cf46bbbe9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "57aed4fa-4bbf-56b1-a04e-362e3e42cbbe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{6}{5 x - 9}"
+            },
+            {
+              ":answer/id": "03d5da92-b2ed-5d69-915b-1f729521a842",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{5 x - 4}"
+            },
+            {
+              ":answer/id": "19b6e2d8-ebef-5749-aecf-381ed4f04a89",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{6}{30 x - 59}"
+            },
+            {
+              ":answer/id": "cb183ee5-6dde-58c6-aca6-301c35774d9d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{6}{- 30 x + 61}"
+            },
+            {
+              ":answer/id": "0800ae46-0cd1-50e3-8b60-da211cb97d51",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=180 x - 354"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "19b6e2d8-ebef-5749-aecf-381ed4f04a89"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 11,
+      "template": "reciprocal_initial",
+      "parameters": {
+        "a": "5",
+        "b": "6",
+        "h": "2"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "19b6e2d8-ebef-5749-aecf-381ed4f04a89": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=\\frac{6}{30 x - 59}",
+          "correct": true
+        },
+        "cb183ee5-6dde-58c6-aca6-301c35774d9d": {
+          "recipe": "reverse_x_primitive_sign",
+          "displayed_expression": "y=\\frac{6}{- 30 x + 61}",
+          "correct": false
+        },
+        "57aed4fa-4bbf-56b1-a04e-362e3e42cbbe": {
+          "recipe": "omit_initial_amplitude_x_multiplier",
+          "displayed_expression": "y=\\frac{6}{5 x - 9}",
+          "correct": false
+        },
+        "03d5da92-b2ed-5d69-915b-1f729521a842": {
+          "recipe": "initial_y_instead_of_reciprocal_constant",
+          "displayed_expression": "y=\\frac{1}{5 x - 4}",
+          "correct": false
+        },
+        "0800ae46-0cd1-50e3-8b60-da211cb97d51": {
+          "recipe": "omit_reciprocal_inversion",
+          "displayed_expression": "y=180 x - 354",
+          "correct": false
+        }
+      },
+      "origin": "authored-coefficient-extension",
+      "source_ids": [
+        "q-50220"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "b4fdaa63294d23ace5264efc5c008071fb250a1087340ffbe00f2f0785be476a",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "2",
+        "initial_y": "6",
+        "ode": "-5*y**2",
+        "lhs": "y",
+        "rhs": "6/(30*x - 59)",
+        "primitive_y": "-1/y",
+        "primitive_x": "10 - 5*x",
+        "integration_constant": "-1/6",
+        "domain": "x>59/30; y>0; connected interval containing initial x=2",
+        "h": "2"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "a5d76aac-7f04-5b62-8088-d9ec32ba8a32",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation ${y}^{′}=\\frac{\\operatorname{sin}⁡(3\\left(x - 6\\right))}{\\operatorname{cos}⁡(2y)}$ that satisfies $y(6)=0.$ Assume that $-\\frac{\\pi }{4}<y<\\frac{\\pi }{4}.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find a particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\operatorname{sin}⁡(3\\left(x - 6\\right))}{\\operatorname{cos}⁡(2y)} \\\\ (\\operatorname{cos}⁡(2y))\\frac{\\text{d}y}{\\text{d}x} & =\\operatorname{sin}⁡(3\\left(x - 6\\right)) \\\\ \\int (\\operatorname{cos}⁡(2y))\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\operatorname{sin}⁡(3\\left(x - 6\\right))\\,\\text{d}x \\\\ \\int \\operatorname{cos}⁡(2y)\\,\\text{d}y & =\\int \\operatorname{sin}⁡(3\\left(x - 6\\right))\\,\\text{d}x \\\\ \\frac{1}{2}\\operatorname{sin}⁡(2y) & =-\\frac{1}{3}\\operatorname{cos}⁡(3\\left(x - 6\\right))+C \\\\ \\operatorname{sin}⁡(2y) & =-\\frac{2}{3}\\operatorname{cos}⁡(3\\left(x - 6\\right))+{C}_{1}\\,,\\end{aligned}\n$$\n\nwhere ${C}_{1}=2C.$\n\nWe now apply the condition $y(6)=0$ to find ${C}_{1}:$\n\n$$\n\\begin{aligned}y(6) & =0 \\\\ \\operatorname{sin}⁡(2\\cdot 0) & =-\\frac{2}{3}\\operatorname{cos}⁡(3\\cdot 0)+{C}_{1} \\\\ \\operatorname{sin}⁡(0) & =-\\frac{2}{3}\\operatorname{cos}⁡(0)+{C}_{1} \\\\ 0 & =-\\frac{2}{3}\\cdot 1+{C}_{1} \\\\ {C}_{1} & =\\frac{2}{3}\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n\\begin{aligned}\\operatorname{sin}⁡(2y) & =\\frac{2}{3}-\\frac{2}{3}\\operatorname{cos}⁡(3\\left(x - 6\\right)) \\\\  & =\\frac{2}{3}(1-\\operatorname{cos}⁡(3\\left(x - 6\\right)))\\end{aligned}\n$$\n\nFinally, we can write the above equation as\n\n$$\n3\\operatorname{sin}⁡(2y)=2(1-\\operatorname{cos}⁡(3\\left(x - 6\\right))).\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1f853650-6622-5988-95bd-7dce89a6cbc6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6ddf1da0-d52f-5ba2-ae84-3a0d1882eeed",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 18 \\right)}"
+            },
+            {
+              ":answer/id": "29980d21-0b7d-5169-b8c6-1e2eb3d33e11",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=- 6 \\cos{\\left(3 x - 18 \\right)} + 6"
+            },
+            {
+              ":answer/id": "2100e8d3-5346-5965-8685-3482da482354",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=- \\cos{\\left(3 x - 18 \\right)} + 1"
+            },
+            {
+              ":answer/id": "fb330cdf-fdf9-545b-bfba-1b514a9b2bf5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=- 2 \\cos{\\left(3 x - 18 \\right)} + 2"
+            },
+            {
+              ":answer/id": "78d660bb-d8e9-54ae-99ef-babfe13c3d62",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 18 \\right)} + 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fb330cdf-fdf9-545b-bfba-1b514a9b2bf5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 0,
+      "template": "source_8309",
+      "parameters": {
+        "h": "6"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "fb330cdf-fdf9-545b-bfba-1b514a9b2bf5": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=- 2 \\cos{\\left(3 x - 18 \\right)} + 2",
+          "correct": true
+        },
+        "2100e8d3-5346-5965-8685-3482da482354": {
+          "recipe": "omit_y_chain_multiplier",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=- \\cos{\\left(3 x - 18 \\right)} + 1",
+          "correct": false
+        },
+        "29980d21-0b7d-5169-b8c6-1e2eb3d33e11": {
+          "recipe": "omit_x_chain_denominator",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=- 6 \\cos{\\left(3 x - 18 \\right)} + 6",
+          "correct": false
+        },
+        "78d660bb-d8e9-54ae-99ef-babfe13c3d62": {
+          "recipe": "reverse_cosine_primitive_sign",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 18 \\right)} + 2",
+          "correct": false
+        },
+        "6ddf1da0-d52f-5ba2-ae84-3a0d1882eeed": {
+          "recipe": "omit_initial_cosine_subtraction",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 18 \\right)}",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-8309"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "cbb1772a72836b4ba9f22c0bf57515a1a3455d45f6ab26ea71109829bd2ec85a",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "6",
+        "initial_y": "0",
+        "ode": "sin(3*x - 18)/cos(2*y)",
+        "lhs": "3*sin(2*y)",
+        "rhs": "2 - 2*cos(3*x - 18)",
+        "primitive_y": "sin(2*y)/2",
+        "primitive_x": "-cos(3*x - 18)/3",
+        "integration_constant": "1/3",
+        "domain": "-pi/4<y<pi/4; cos(3*(x-h))> -1/2; local component containing h",
+        "h": "6"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "9ddcaa02-0e97-5c2c-8db7-6a4ba0962584",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation $\\operatorname{cos}⁡(3y){y}^{′}-\\operatorname{sin}⁡(4\\left(x - 3\\right))=0$ that satisfies $y(\\frac{\\pi}{8} + 3)=0.$ Assume that $-\\frac{\\pi }{6}<y<\\frac{\\pi }{6}.$\n\n$\\operatorname{sin}⁡(3y)=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find a particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\operatorname{cos}⁡(3y)\\frac{\\text{d}y}{\\text{d}x}-\\operatorname{sin}⁡(4\\left(x - 3\\right)) & =0 \\\\ \\operatorname{cos}⁡(3y)\\frac{\\text{d}y}{\\text{d}x} & =\\operatorname{sin}⁡(4\\left(x - 3\\right)) \\\\ \\operatorname{cos}⁡(3y)\\,\\text{d}y & =\\operatorname{sin}⁡(4\\left(x - 3\\right))\\,\\text{d}x \\\\ \\int \\operatorname{cos}⁡(3y)\\,\\text{d}y & =\\int \\operatorname{sin}⁡(4\\left(x - 3\\right))\\,\\text{d}x \\\\ \\frac{1}{3}\\operatorname{sin}⁡(3y) & =-\\frac{1}{4}\\operatorname{cos}⁡(4\\left(x - 3\\right))+{C}_{1} \\\\ \\operatorname{sin}⁡(3y) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\left(x - 3\\right))+C,\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nWe now apply the condition $y(\\frac{\\pi}{8} + 3)=0$ to find $C:$\n\n$$\n\\begin{aligned}y(\\frac{\\pi}{8} + 3) & =0 \\\\ \\operatorname{sin}⁡(3\\cdot 0) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\cdot \\frac{\\pi }{8})+C \\\\ 0 & =-\\frac{3}{4}\\operatorname{cos}⁡(\\frac{\\pi }{2})+C \\\\ 0 & =0+C \\\\ C & =0\\end{aligned}\n$$\n\nSo, we get the particular solution in implicit form:\n\n$$\n\\begin{aligned}\\operatorname{sin}⁡(3y) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\left(x - 3\\right))\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7200350e-ba7e-5977-b475-f820c294683e",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "22cc3256-39ff-58da-b4c0-ea1dde6a77b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\frac{3}{4}\\operatorname{cos}(4\\left(x - 3\\right))"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "22cc3256-39ff-58da-b4c0-ea1dde6a77b0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 1,
+      "template": "source_355525",
+      "parameters": {
+        "h": "3"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "22cc3256-39ff-58da-b4c0-ea1dde6a77b0": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "-\\frac{3}{4}\\operatorname{cos}(4\\left(x - 3\\right))",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355525"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "c5d997e9b3936ea1b1ce21b2bd3130a85ed87ad7639ac6ac62a68212e876745d",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "pi/8 + 3",
+        "initial_y": "0",
+        "ode": "sin(4*x - 12)/cos(3*y)",
+        "lhs": "sin(3*y)",
+        "rhs": "-3*cos(4*x - 12)/4",
+        "primitive_y": "sin(3*y)/3",
+        "primitive_x": "-cos(4*x - 12)/4",
+        "integration_constant": "0",
+        "domain": "-pi/6 < y < pi/6; local interval containing h+pi/8",
+        "h": "3"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "acda0c32-88b5-510c-aeb7-647bb5c8c6a8",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the specific solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}={y}^{2}+1$ given that  $y(-5 + \\frac{\\pi}{2})=1.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x}={y}^{2}+1 \\\\ \\frac{1}{{y}^{2}+1}\\frac{\\text{d}y}{\\text{d}x} & =1 \\\\ \\int \\frac{1}{{y}^{2}+1}\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\,\\text{d}x \\\\ \\int \\frac{1}{{y}^{2}+1}\\,\\text{d}y & =\\int \\,\\text{d}x \\\\ \\operatorname{arctan}⁡(y) & =\\left(x + 5\\right)+C \\\\ y & =\\operatorname{tan}⁡(\\left(x + 5\\right)+C).\\end{aligned}\n$$\n\nWe conclude that the general solution is\n\n$$\ny=\\operatorname{tan}⁡(\\left(x + 5\\right)+C).\n$$\n\nWe now apply the condition $y(-5 + \\frac{\\pi}{2})=1$ to find $C$:\n\n$$\n\\begin{aligned}1 & =\\operatorname{tan}⁡(\\frac{\\pi }{2}+C) \\\\ \\operatorname{arctan}⁡(1) & =\\frac{\\pi }{2}+C \\\\ \\frac{\\pi }{4} & =\\frac{\\pi }{2}+C \\\\ C & =\\frac{\\pi }{4}-\\frac{\\pi }{2} \\\\ C & =-\\frac{\\pi }{4}.\\end{aligned}\n$$\n\nThus, the particular solution of $\\frac{\\text{d}y}{\\text{d}x}={y}^{2}+1$ that satisfies the condition $y(-5 + \\frac{\\pi}{2})=1$ is\n\n$$\ny=\\operatorname{tan}⁡(\\left(x + 5\\right)-\\frac{\\pi }{4}).\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "45266125-e2a1-5c24-9627-20ecd8028195",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cbcfa179-b16b-5e35-a569-5a1ba507dd8b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=- \\cot{\\left(x + 5 \\right)}"
+            },
+            {
+              ":answer/id": "17a6609a-d91a-5c87-b747-38e932e52e3e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\tan{\\left(x + \\frac{\\pi}{4} + 5 \\right)}"
+            },
+            {
+              ":answer/id": "38b247ed-e209-52fc-a6ff-c874e2424b8f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=x - \\frac{\\pi}{4} + 5"
+            },
+            {
+              ":answer/id": "792bbb61-3a39-5a4d-9baa-5a758908ca3c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=- \\tan{\\left(x + \\frac{\\pi}{4} + 5 \\right)}"
+            },
+            {
+              ":answer/id": "84f3ff9b-17a6-5467-82f0-226ec37063d2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=- \\cot{\\left(x + \\frac{\\pi}{4} + 5 \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "84f3ff9b-17a6-5467-82f0-226ec37063d2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 2,
+      "template": "source_14310",
+      "parameters": {
+        "h": "-5"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "84f3ff9b-17a6-5467-82f0-226ec37063d2": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "y=- \\cot{\\left(x + \\frac{\\pi}{4} + 5 \\right)}",
+          "correct": true
+        },
+        "17a6609a-d91a-5c87-b747-38e932e52e3e": {
+          "recipe": "reverse_initial_constant_sign",
+          "displayed_expression": "y=\\tan{\\left(x + \\frac{\\pi}{4} + 5 \\right)}",
+          "correct": false
+        },
+        "792bbb61-3a39-5a4d-9baa-5a758908ca3c": {
+          "recipe": "cot_instead_of_tan_inverse",
+          "displayed_expression": "y=- \\tan{\\left(x + \\frac{\\pi}{4} + 5 \\right)}",
+          "correct": false
+        },
+        "cbcfa179-b16b-5e35-a569-5a1ba507dd8b": {
+          "recipe": "omit_initial_arctangent_value",
+          "displayed_expression": "y=- \\cot{\\left(x + 5 \\right)}",
+          "correct": false
+        },
+        "38b247ed-e209-52fc-a6ff-c874e2424b8f": {
+          "recipe": "omit_inverse_tangent",
+          "displayed_expression": "y=x - \\frac{\\pi}{4} + 5",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-14310"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "9b867310df3b2acfd928c23f83a547ab4c88d7fa80773655d151e326bf5c7db3",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-5 + pi/2",
+        "initial_y": "1",
+        "ode": "y**2 + 1",
+        "lhs": "y",
+        "rhs": "-cot(x + pi/4 + 5)",
+        "primitive_y": "atan(y)",
+        "primitive_x": "x + 5",
+        "integration_constant": "-pi/4",
+        "domain": "tan branch containing h+pi/2; -pi/4 < x-h < 3*pi/4",
+        "h": "-5"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "9ddcaa02-0e97-5c2c-8db7-6a4ba0962584",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation $\\operatorname{cos}⁡(3y){y}^{′}-\\operatorname{sin}⁡(4\\left(x - 3\\right))=0$ that satisfies $y(\\frac{\\pi}{8} + 3)=0.$ Assume that $-\\frac{\\pi }{6}<y<\\frac{\\pi }{6}.$\n\n$\\operatorname{sin}⁡(3y)=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find a particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\operatorname{cos}⁡(3y)\\frac{\\text{d}y}{\\text{d}x}-\\operatorname{sin}⁡(4\\left(x - 3\\right)) & =0 \\\\ \\operatorname{cos}⁡(3y)\\frac{\\text{d}y}{\\text{d}x} & =\\operatorname{sin}⁡(4\\left(x - 3\\right)) \\\\ \\operatorname{cos}⁡(3y)\\,\\text{d}y & =\\operatorname{sin}⁡(4\\left(x - 3\\right))\\,\\text{d}x \\\\ \\int \\operatorname{cos}⁡(3y)\\,\\text{d}y & =\\int \\operatorname{sin}⁡(4\\left(x - 3\\right))\\,\\text{d}x \\\\ \\frac{1}{3}\\operatorname{sin}⁡(3y) & =-\\frac{1}{4}\\operatorname{cos}⁡(4\\left(x - 3\\right))+{C}_{1} \\\\ \\operatorname{sin}⁡(3y) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\left(x - 3\\right))+C,\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nWe now apply the condition $y(\\frac{\\pi}{8} + 3)=0$ to find $C:$\n\n$$\n\\begin{aligned}y(\\frac{\\pi}{8} + 3) & =0 \\\\ \\operatorname{sin}⁡(3\\cdot 0) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\cdot \\frac{\\pi }{8})+C \\\\ 0 & =-\\frac{3}{4}\\operatorname{cos}⁡(\\frac{\\pi }{2})+C \\\\ 0 & =0+C \\\\ C & =0\\end{aligned}\n$$\n\nSo, we get the particular solution in implicit form:\n\n$$\n\\begin{aligned}\\operatorname{sin}⁡(3y) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\left(x - 3\\right))\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7200350e-ba7e-5977-b475-f820c294683e",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "22cc3256-39ff-58da-b4c0-ea1dde6a77b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\frac{3}{4}\\operatorname{cos}(4\\left(x - 3\\right))"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "22cc3256-39ff-58da-b4c0-ea1dde6a77b0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 3,
+      "template": "source_355525",
+      "parameters": {
+        "h": "3"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "22cc3256-39ff-58da-b4c0-ea1dde6a77b0": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "-\\frac{3}{4}\\operatorname{cos}(4\\left(x - 3\\right))",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355525"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "c5d997e9b3936ea1b1ce21b2bd3130a85ed87ad7639ac6ac62a68212e876745d",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "pi/8 + 3",
+        "initial_y": "0",
+        "ode": "sin(4*x - 12)/cos(3*y)",
+        "lhs": "sin(3*y)",
+        "rhs": "-3*cos(4*x - 12)/4",
+        "primitive_y": "sin(3*y)/3",
+        "primitive_x": "-cos(4*x - 12)/4",
+        "integration_constant": "0",
+        "domain": "-pi/6 < y < pi/6; local interval containing h+pi/8",
+        "h": "3"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "d0b5040f-44f9-5dd8-b27d-1b0d998881d0",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation $\\operatorname{cos}⁡(3y){y}^{′}-\\operatorname{sin}⁡(4\\left(x + 2\\right))=0$ that satisfies $y(-2 + \\frac{\\pi}{8})=0.$ Assume that $-\\frac{\\pi }{6}<y<\\frac{\\pi }{6}.$\n\n$\\operatorname{sin}⁡(3y)=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find a particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\operatorname{cos}⁡(3y)\\frac{\\text{d}y}{\\text{d}x}-\\operatorname{sin}⁡(4\\left(x + 2\\right)) & =0 \\\\ \\operatorname{cos}⁡(3y)\\frac{\\text{d}y}{\\text{d}x} & =\\operatorname{sin}⁡(4\\left(x + 2\\right)) \\\\ \\operatorname{cos}⁡(3y)\\,\\text{d}y & =\\operatorname{sin}⁡(4\\left(x + 2\\right))\\,\\text{d}x \\\\ \\int \\operatorname{cos}⁡(3y)\\,\\text{d}y & =\\int \\operatorname{sin}⁡(4\\left(x + 2\\right))\\,\\text{d}x \\\\ \\frac{1}{3}\\operatorname{sin}⁡(3y) & =-\\frac{1}{4}\\operatorname{cos}⁡(4\\left(x + 2\\right))+{C}_{1} \\\\ \\operatorname{sin}⁡(3y) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\left(x + 2\\right))+C,\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nWe now apply the condition $y(-2 + \\frac{\\pi}{8})=0$ to find $C:$\n\n$$\n\\begin{aligned}y(-2 + \\frac{\\pi}{8}) & =0 \\\\ \\operatorname{sin}⁡(3\\cdot 0) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\cdot \\frac{\\pi }{8})+C \\\\ 0 & =-\\frac{3}{4}\\operatorname{cos}⁡(\\frac{\\pi }{2})+C \\\\ 0 & =0+C \\\\ C & =0\\end{aligned}\n$$\n\nSo, we get the particular solution in implicit form:\n\n$$\n\\begin{aligned}\\operatorname{sin}⁡(3y) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\left(x + 2\\right))\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5f07f136-9aff-5ce2-8b74-7637b4c3b42b",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ddb97dac-fe23-5dd2-b1f8-a8bfe3c66c12",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\frac{3}{4}\\operatorname{cos}(4\\left(x + 2\\right))"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ddb97dac-fe23-5dd2-b1f8-a8bfe3c66c12"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 4,
+      "template": "source_355525",
+      "parameters": {
+        "h": "-2"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "ddb97dac-fe23-5dd2-b1f8-a8bfe3c66c12": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "-\\frac{3}{4}\\operatorname{cos}(4\\left(x + 2\\right))",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355525"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "09016a7fbb1c5fcc5d4c1362e4416670d15c3dd188ce3d27893ab006de6a6d64",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-2 + pi/8",
+        "initial_y": "0",
+        "ode": "sin(4*x + 8)/cos(3*y)",
+        "lhs": "sin(3*y)",
+        "rhs": "-3*cos(4*x + 8)/4",
+        "primitive_y": "sin(3*y)/3",
+        "primitive_x": "-cos(4*x + 8)/4",
+        "integration_constant": "0",
+        "domain": "-pi/6 < y < pi/6; local interval containing h+pi/8",
+        "h": "-2"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "42273951-07e2-55a1-8d0a-c9cfb286c0e7",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=-\\frac{\\left(x + 2\\right)y}{\\operatorname{ln}⁡y}$ that satisfies $y(-2)=e.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =-\\frac{\\left(x + 2\\right)y}{\\operatorname{ln}⁡y} \\\\ \\frac{\\operatorname{ln}⁡y}{y}\\cdot \\frac{\\text{d}y}{\\text{d}x} & =-\\left(x + 2\\right) \\\\ \\int \\frac{\\operatorname{ln}⁡y}{y}\\cdot \\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =-\\int \\left(x + 2\\right)\\,\\text{d}x \\\\ \\int \\frac{\\operatorname{ln}⁡y}{y}\\,\\text{d}y & =-\\int \\left(x + 2\\right)\\,\\text{d}x \\\\ \\int \\frac{\\operatorname{ln}⁡y}{y}\\text{d}y & =-\\frac{{\\left(x + 2\\right)}^{2}}{2}+{C}_{1}.\\end{aligned}\n$$\n\nTo calculate the integral in the left-hand side of this equality, we use a substitution $u=\\operatorname{ln}⁡y.$ Then,  we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}y}=\\frac{1}{y}\\,⟹\\,\\text{d}u=\\frac{1}{y}\\,\\text{d}y.\n$$\n\nSo we get\n\n$$\n\\begin{aligned}\\int \\frac{\\operatorname{ln}⁡y}{y}\\text{d}y & =\\int \\operatorname{ln}⁡y(\\frac{1}{y}\\,\\text{d}y) \\\\  & =\\int u\\,\\text{d}u \\\\  & =\\frac{{u}^{2}}{2}+{C}_{2} \\\\  & =\\frac{1}{2}{ln}^{2}⁡y+{C}_{2}.\\end{aligned}\n$$\n\nHence,\n\n$$\n\\begin{aligned}\\frac{1}{2}{ln}^{2}⁡y+{C}_{2} & =-\\frac{{\\left(x + 2\\right)}^{2}}{2}+{C}_{1} \\\\ {ln}^{2}⁡y & =-{\\left(x + 2\\right)}^{2}+2({C}_{1}-{C}_{2}) \\\\ {ln}^{2}⁡y & =C-{\\left(x + 2\\right)}^{2},\\end{aligned}\n$$\n\nwhere $C=2({C}_{1}-{C}_{2})$ is an arbitrary constant.\n\nWe now apply the condition $y(-2)=e$ to find $C:$\n\n$$\n\\begin{aligned}{ln}^{2}⁡e & =C-{0}^{2} \\\\ {1}^{2} & =C \\\\ C & =1\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n{ln}^{2}⁡y=1-{\\left(x + 2\\right)}^{2}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4dc787ab-8005-5615-8e13-fecb8f0ae122",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a9db572c-279d-56d1-a58b-2406db8f75dc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=- \\left(x + 2\\right)^{2} + e"
+            },
+            {
+              ":answer/id": "5f42887f-5d8a-5a81-8541-6ac844e00969",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=\\left(- x - 1\\right)^{2}"
+            },
+            {
+              ":answer/id": "5a283184-04b4-52e5-af63-f4eb69fddb35",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=\\left(x + 2\\right)^{2} + 1"
+            },
+            {
+              ":answer/id": "633f95dd-fece-5c19-a0c5-16004ed94a26",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=- \\left(x + 2\\right)^{2} + 1"
+            },
+            {
+              ":answer/id": "d365d1cb-565f-5683-9e94-8f5958c226c7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=- 2 \\left(x + 2\\right)^{2} + 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "633f95dd-fece-5c19-a0c5-16004ed94a26"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 5,
+      "template": "source_50219",
+      "parameters": {
+        "h": "-2"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "633f95dd-fece-5c19-a0c5-16004ed94a26": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=- \\left(x + 2\\right)^{2} + 1",
+          "correct": true
+        },
+        "5a283184-04b4-52e5-af63-f4eb69fddb35": {
+          "recipe": "reverse_x_primitive_sign",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=\\left(x + 2\\right)^{2} + 1",
+          "correct": false
+        },
+        "d365d1cb-565f-5683-9e94-8f5958c226c7": {
+          "recipe": "double_x_primitive",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=- 2 \\left(x + 2\\right)^{2} + 1",
+          "correct": false
+        },
+        "5f42887f-5d8a-5a81-8541-6ac844e00969": {
+          "recipe": "integrate_both_separated_factors_as_constants_then_square",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=\\left(- x - 1\\right)^{2}",
+          "correct": false
+        },
+        "a9db572c-279d-56d1-a58b-2406db8f75dc": {
+          "recipe": "initial_y_instead_of_log_squared_constant",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=- \\left(x + 2\\right)^{2} + e",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-50219"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "6d2c4593c008cae0728619b0f3094da756305a2151cb2f42385535e36d9a6665",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-2",
+        "initial_y": "E",
+        "ode": "-y*(x + 2)/log(y)",
+        "lhs": "log(y)**2",
+        "rhs": "1 - (x + 2)**2",
+        "primitive_y": "log(y)**2/2",
+        "primitive_x": "-(x + 2)**2/2",
+        "integration_constant": "1/2",
+        "domain": "y>1, |x-h|<1; branch containing initial y=e",
+        "h": "-2"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "c21894bf-a355-57ab-b7a1-c85c109ba08b",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=-\\frac{\\left(x + 5\\right)y}{\\operatorname{ln}⁡y}$ that satisfies $y(-5)=e.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =-\\frac{\\left(x + 5\\right)y}{\\operatorname{ln}⁡y} \\\\ \\frac{\\operatorname{ln}⁡y}{y}\\cdot \\frac{\\text{d}y}{\\text{d}x} & =-\\left(x + 5\\right) \\\\ \\int \\frac{\\operatorname{ln}⁡y}{y}\\cdot \\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =-\\int \\left(x + 5\\right)\\,\\text{d}x \\\\ \\int \\frac{\\operatorname{ln}⁡y}{y}\\,\\text{d}y & =-\\int \\left(x + 5\\right)\\,\\text{d}x \\\\ \\int \\frac{\\operatorname{ln}⁡y}{y}\\text{d}y & =-\\frac{{\\left(x + 5\\right)}^{2}}{2}+{C}_{1}.\\end{aligned}\n$$\n\nTo calculate the integral in the left-hand side of this equality, we use a substitution $u=\\operatorname{ln}⁡y.$ Then,  we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}y}=\\frac{1}{y}\\,⟹\\,\\text{d}u=\\frac{1}{y}\\,\\text{d}y.\n$$\n\nSo we get\n\n$$\n\\begin{aligned}\\int \\frac{\\operatorname{ln}⁡y}{y}\\text{d}y & =\\int \\operatorname{ln}⁡y(\\frac{1}{y}\\,\\text{d}y) \\\\  & =\\int u\\,\\text{d}u \\\\  & =\\frac{{u}^{2}}{2}+{C}_{2} \\\\  & =\\frac{1}{2}{ln}^{2}⁡y+{C}_{2}.\\end{aligned}\n$$\n\nHence,\n\n$$\n\\begin{aligned}\\frac{1}{2}{ln}^{2}⁡y+{C}_{2} & =-\\frac{{\\left(x + 5\\right)}^{2}}{2}+{C}_{1} \\\\ {ln}^{2}⁡y & =-{\\left(x + 5\\right)}^{2}+2({C}_{1}-{C}_{2}) \\\\ {ln}^{2}⁡y & =C-{\\left(x + 5\\right)}^{2},\\end{aligned}\n$$\n\nwhere $C=2({C}_{1}-{C}_{2})$ is an arbitrary constant.\n\nWe now apply the condition $y(-5)=e$ to find $C:$\n\n$$\n\\begin{aligned}{ln}^{2}⁡e & =C-{0}^{2} \\\\ {1}^{2} & =C \\\\ C & =1\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n{ln}^{2}⁡y=1-{\\left(x + 5\\right)}^{2}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "23d1ab31-b968-51f9-9861-ecdd14c60192",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "114b15fa-0acb-5cee-8e33-1f8aa03adfa7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=\\left(x + 5\\right)^{2} + 1"
+            },
+            {
+              ":answer/id": "5742df60-3b0d-5046-9462-0031ed8d72de",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=- \\left(x + 5\\right)^{2} + e"
+            },
+            {
+              ":answer/id": "c7d38d87-93d0-5afd-84d9-e5d43be29395",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=- \\left(x + 5\\right)^{2} + 1"
+            },
+            {
+              ":answer/id": "29f268f7-41ca-52fa-a71a-3bb49cd535b1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=- 2 \\left(x + 5\\right)^{2} + 1"
+            },
+            {
+              ":answer/id": "e59db844-c153-5a4f-a65b-972ed070b3bb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=\\left(- x - 4\\right)^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c7d38d87-93d0-5afd-84d9-e5d43be29395"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 6,
+      "template": "source_50219",
+      "parameters": {
+        "h": "-5"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "c7d38d87-93d0-5afd-84d9-e5d43be29395": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=- \\left(x + 5\\right)^{2} + 1",
+          "correct": true
+        },
+        "114b15fa-0acb-5cee-8e33-1f8aa03adfa7": {
+          "recipe": "reverse_x_primitive_sign",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=\\left(x + 5\\right)^{2} + 1",
+          "correct": false
+        },
+        "29f268f7-41ca-52fa-a71a-3bb49cd535b1": {
+          "recipe": "double_x_primitive",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=- 2 \\left(x + 5\\right)^{2} + 1",
+          "correct": false
+        },
+        "e59db844-c153-5a4f-a65b-972ed070b3bb": {
+          "recipe": "integrate_both_separated_factors_as_constants_then_square",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=\\left(- x - 4\\right)^{2}",
+          "correct": false
+        },
+        "5742df60-3b0d-5046-9462-0031ed8d72de": {
+          "recipe": "initial_y_instead_of_log_squared_constant",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=- \\left(x + 5\\right)^{2} + e",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-50219"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "cc3694ee870af01b54b3233e639c43c3e3df4541cbbff194cbde87111e542d37",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-5",
+        "initial_y": "E",
+        "ode": "-y*(x + 5)/log(y)",
+        "lhs": "log(y)**2",
+        "rhs": "1 - (x + 5)**2",
+        "primitive_y": "log(y)**2/2",
+        "primitive_x": "-(x + 5)**2/2",
+        "integration_constant": "1/2",
+        "domain": "y>1, |x-h|<1; branch containing initial y=e",
+        "h": "-5"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "f975e60c-39da-5182-bff7-57660e865b88",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation ${sec}^{2}⁡(4y){y}^{′}={sec}^{2}⁡(7\\left(x + 4\\right))$ that satisfies $y(-4)=0.$ Assume that $-\\frac{\\pi }{8}<y<\\frac{\\pi }{8}.$\n\n$\\operatorname{tan}⁡(4y)=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find a particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}{sec}^{2}⁡(4y)\\frac{\\text{d}y}{\\text{d}x} & ={sec}^{2}⁡(7\\left(x + 4\\right)) \\\\ {sec}^{2}⁡(4y)\\,\\text{d}y & ={sec}^{2}⁡(7\\left(x + 4\\right))\\,\\text{d}x \\\\ \\int {sec}^{2}⁡(4y)\\,\\text{d}y & =\\int {sec}^{2}⁡(7\\left(x + 4\\right))\\,\\text{d}x \\\\ \\frac{1}{4}\\operatorname{tan}⁡(4y) & =\\frac{1}{7}\\operatorname{tan}⁡(7\\left(x + 4\\right))+{C}_{1} \\\\ \\operatorname{tan}⁡(4y) & =\\frac{4}{7}\\operatorname{tan}⁡(7\\left(x + 4\\right))+C,\\end{aligned}\n$$\n\nwhere $C=4{C}_{1}.$\n\nWe now apply the condition $y(-4)=0$ to find $C:$\n\n$$\n\\begin{aligned}y(-4) & =0 \\\\ \\operatorname{tan}⁡(4\\cdot 0) & =\\frac{4}{7}\\operatorname{tan}⁡(7\\cdot 0)+C \\\\ 0 & =0+C \\\\ C & =0\\end{aligned}\n$$\n\nSo, we get the particular solution in implicit form:\n\n$$\n\\begin{aligned}\\operatorname{tan}⁡(4y) & =\\frac{4}{7}\\operatorname{tan}⁡(7\\left(x + 4\\right))\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7cfd952d-b43c-53a2-9b11-aa69b007d79c",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "41642655-5bc7-54c0-a632-3a156a42a26c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4}{7}\\operatorname{tan}(7\\left(x + 4\\right))"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "41642655-5bc7-54c0-a632-3a156a42a26c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 7,
+      "template": "source_355544",
+      "parameters": {
+        "h": "-4"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "41642655-5bc7-54c0-a632-3a156a42a26c": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "\\frac{4}{7}\\operatorname{tan}(7\\left(x + 4\\right))",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355544"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "84e2ccd472caa389bc9b90b739e29e4e51a24adae4b5a97f6cb5e8875875dbdf",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-4",
+        "initial_y": "0",
+        "ode": "sec(7*x + 28)**2/sec(4*y)**2",
+        "lhs": "tan(4*y)",
+        "rhs": "4*tan(7*x + 28)/7",
+        "primitive_y": "tan(4*y)/4",
+        "primitive_x": "tan(7*x + 28)/7",
+        "integration_constant": "0",
+        "domain": "-pi/8<y<pi/8; cos(7*(x-h)) !=0; -pi/14<x-h<pi/14",
+        "h": "-4"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "a5db97de-ac4b-593c-87b5-db146fa2e7e4",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation $\\operatorname{cos}⁡(3y){y}^{′}-\\operatorname{sin}⁡(4\\left(x + 1\\right))=0$ that satisfies $y(-1 + \\frac{\\pi}{8})=0.$ Assume that $-\\frac{\\pi }{6}<y<\\frac{\\pi }{6}.$\n\n$\\operatorname{sin}⁡(3y)=$\n{{field-1}}",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find a particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\operatorname{cos}⁡(3y)\\frac{\\text{d}y}{\\text{d}x}-\\operatorname{sin}⁡(4\\left(x + 1\\right)) & =0 \\\\ \\operatorname{cos}⁡(3y)\\frac{\\text{d}y}{\\text{d}x} & =\\operatorname{sin}⁡(4\\left(x + 1\\right)) \\\\ \\operatorname{cos}⁡(3y)\\,\\text{d}y & =\\operatorname{sin}⁡(4\\left(x + 1\\right))\\,\\text{d}x \\\\ \\int \\operatorname{cos}⁡(3y)\\,\\text{d}y & =\\int \\operatorname{sin}⁡(4\\left(x + 1\\right))\\,\\text{d}x \\\\ \\frac{1}{3}\\operatorname{sin}⁡(3y) & =-\\frac{1}{4}\\operatorname{cos}⁡(4\\left(x + 1\\right))+{C}_{1} \\\\ \\operatorname{sin}⁡(3y) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\left(x + 1\\right))+C,\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nWe now apply the condition $y(-1 + \\frac{\\pi}{8})=0$ to find $C:$\n\n$$\n\\begin{aligned}y(-1 + \\frac{\\pi}{8}) & =0 \\\\ \\operatorname{sin}⁡(3\\cdot 0) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\cdot \\frac{\\pi }{8})+C \\\\ 0 & =-\\frac{3}{4}\\operatorname{cos}⁡(\\frac{\\pi }{2})+C \\\\ 0 & =0+C \\\\ C & =0\\end{aligned}\n$$\n\nSo, we get the particular solution in implicit form:\n\n$$\n\\begin{aligned}\\operatorname{sin}⁡(3y) & =-\\frac{3}{4}\\operatorname{cos}⁡(4\\left(x + 1\\right))\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6bec9b37-6d49-53d3-be1e-52d30ca1e8b7",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7c2998c6-4166-53bf-99f9-9698c87978a1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\frac{3}{4}\\operatorname{cos}(4\\left(x + 1\\right))"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7c2998c6-4166-53bf-99f9-9698c87978a1"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 8,
+      "template": "source_355525",
+      "parameters": {
+        "h": "-1"
+      },
+      "bank_profile": "blank",
+      "answer_recipes": {
+        "7c2998c6-4166-53bf-99f9-9698c87978a1": {
+          "recipe": "derived_rhs_fragment",
+          "displayed_expression": "-\\frac{3}{4}\\operatorname{cos}(4\\left(x + 1\\right))",
+          "correct": true
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-355525"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "d7062bfd0185b6fd5c9ab227197485a35533f13f676680a1682bf5c1c561767c",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-1 + pi/8",
+        "initial_y": "0",
+        "ode": "sin(4*x + 4)/cos(3*y)",
+        "lhs": "sin(3*y)",
+        "rhs": "-3*cos(4*x + 4)/4",
+        "primitive_y": "sin(3*y)/3",
+        "primitive_x": "-cos(4*x + 4)/4",
+        "integration_constant": "0",
+        "domain": "-pi/6 < y < pi/6; local interval containing h+pi/8",
+        "h": "-1"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "blank RHS fragment",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "07eaca3c-aab7-5cca-82eb-6e50f213bc84",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation ${y}^{′}=\\frac{\\operatorname{sin}⁡(3\\left(x - 3\\right))}{\\operatorname{cos}⁡(2y)}$ that satisfies $y(3)=0.$ Assume that $-\\frac{\\pi }{4}<y<\\frac{\\pi }{4}.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find a particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\operatorname{sin}⁡(3\\left(x - 3\\right))}{\\operatorname{cos}⁡(2y)} \\\\ (\\operatorname{cos}⁡(2y))\\frac{\\text{d}y}{\\text{d}x} & =\\operatorname{sin}⁡(3\\left(x - 3\\right)) \\\\ \\int (\\operatorname{cos}⁡(2y))\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\operatorname{sin}⁡(3\\left(x - 3\\right))\\,\\text{d}x \\\\ \\int \\operatorname{cos}⁡(2y)\\,\\text{d}y & =\\int \\operatorname{sin}⁡(3\\left(x - 3\\right))\\,\\text{d}x \\\\ \\frac{1}{2}\\operatorname{sin}⁡(2y) & =-\\frac{1}{3}\\operatorname{cos}⁡(3\\left(x - 3\\right))+C \\\\ \\operatorname{sin}⁡(2y) & =-\\frac{2}{3}\\operatorname{cos}⁡(3\\left(x - 3\\right))+{C}_{1}\\,,\\end{aligned}\n$$\n\nwhere ${C}_{1}=2C.$\n\nWe now apply the condition $y(3)=0$ to find ${C}_{1}:$\n\n$$\n\\begin{aligned}y(3) & =0 \\\\ \\operatorname{sin}⁡(2\\cdot 0) & =-\\frac{2}{3}\\operatorname{cos}⁡(3\\cdot 0)+{C}_{1} \\\\ \\operatorname{sin}⁡(0) & =-\\frac{2}{3}\\operatorname{cos}⁡(0)+{C}_{1} \\\\ 0 & =-\\frac{2}{3}\\cdot 1+{C}_{1} \\\\ {C}_{1} & =\\frac{2}{3}\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n\\begin{aligned}\\operatorname{sin}⁡(2y) & =\\frac{2}{3}-\\frac{2}{3}\\operatorname{cos}⁡(3\\left(x - 3\\right)) \\\\  & =\\frac{2}{3}(1-\\operatorname{cos}⁡(3\\left(x - 3\\right)))\\end{aligned}\n$$\n\nFinally, we can write the above equation as\n\n$$\n3\\operatorname{sin}⁡(2y)=2(1-\\operatorname{cos}⁡(3\\left(x - 3\\right))).\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0088893c-5654-5116-b0b6-cf037796dc2c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bab46a80-ec58-5d6e-a279-0af31ab78d51",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=- \\cos{\\left(3 x - 9 \\right)} + 1"
+            },
+            {
+              ":answer/id": "a9e438f0-c609-5e03-b1f8-e74d73f359e9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 9 \\right)} + 2"
+            },
+            {
+              ":answer/id": "be35d926-5cb9-5573-a015-18acdf4b6fe1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=- 2 \\cos{\\left(3 x - 9 \\right)} + 2"
+            },
+            {
+              ":answer/id": "23408644-6129-5e96-914b-c60a170e02c8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 9 \\right)}"
+            },
+            {
+              ":answer/id": "b4a62e14-b468-59c6-baa3-96efab5e567b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=- 6 \\cos{\\left(3 x - 9 \\right)} + 6"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "be35d926-5cb9-5573-a015-18acdf4b6fe1"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 9,
+      "template": "source_8309",
+      "parameters": {
+        "h": "3"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "be35d926-5cb9-5573-a015-18acdf4b6fe1": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=- 2 \\cos{\\left(3 x - 9 \\right)} + 2",
+          "correct": true
+        },
+        "bab46a80-ec58-5d6e-a279-0af31ab78d51": {
+          "recipe": "omit_y_chain_multiplier",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=- \\cos{\\left(3 x - 9 \\right)} + 1",
+          "correct": false
+        },
+        "b4a62e14-b468-59c6-baa3-96efab5e567b": {
+          "recipe": "omit_x_chain_denominator",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=- 6 \\cos{\\left(3 x - 9 \\right)} + 6",
+          "correct": false
+        },
+        "a9e438f0-c609-5e03-b1f8-e74d73f359e9": {
+          "recipe": "reverse_cosine_primitive_sign",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 9 \\right)} + 2",
+          "correct": false
+        },
+        "23408644-6129-5e96-914b-c60a170e02c8": {
+          "recipe": "omit_initial_cosine_subtraction",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 9 \\right)}",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-8309"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "cd6dbbf8f1e97daea6ddf3a1a6f1abe1b8fa30fc19ffd57a2dab14d8059bdfae",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "3",
+        "initial_y": "0",
+        "ode": "sin(3*x - 9)/cos(2*y)",
+        "lhs": "3*sin(2*y)",
+        "rhs": "2 - 2*cos(3*x - 9)",
+        "primitive_y": "sin(2*y)/2",
+        "primitive_x": "-cos(3*x - 9)/3",
+        "integration_constant": "1/3",
+        "domain": "-pi/4<y<pi/4; cos(3*(x-h))> -1/2; local component containing h",
+        "h": "3"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "4a8d8d79-c9d0-5a84-b858-310b4c75e9e3",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=-\\frac{\\left(x + 6\\right)y}{\\operatorname{ln}⁡y}$ that satisfies $y(-6)=e.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find the particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =-\\frac{\\left(x + 6\\right)y}{\\operatorname{ln}⁡y} \\\\ \\frac{\\operatorname{ln}⁡y}{y}\\cdot \\frac{\\text{d}y}{\\text{d}x} & =-\\left(x + 6\\right) \\\\ \\int \\frac{\\operatorname{ln}⁡y}{y}\\cdot \\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =-\\int \\left(x + 6\\right)\\,\\text{d}x \\\\ \\int \\frac{\\operatorname{ln}⁡y}{y}\\,\\text{d}y & =-\\int \\left(x + 6\\right)\\,\\text{d}x \\\\ \\int \\frac{\\operatorname{ln}⁡y}{y}\\text{d}y & =-\\frac{{\\left(x + 6\\right)}^{2}}{2}+{C}_{1}.\\end{aligned}\n$$\n\nTo calculate the integral in the left-hand side of this equality, we use a substitution $u=\\operatorname{ln}⁡y.$ Then,  we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}y}=\\frac{1}{y}\\,⟹\\,\\text{d}u=\\frac{1}{y}\\,\\text{d}y.\n$$\n\nSo we get\n\n$$\n\\begin{aligned}\\int \\frac{\\operatorname{ln}⁡y}{y}\\text{d}y & =\\int \\operatorname{ln}⁡y(\\frac{1}{y}\\,\\text{d}y) \\\\  & =\\int u\\,\\text{d}u \\\\  & =\\frac{{u}^{2}}{2}+{C}_{2} \\\\  & =\\frac{1}{2}{ln}^{2}⁡y+{C}_{2}.\\end{aligned}\n$$\n\nHence,\n\n$$\n\\begin{aligned}\\frac{1}{2}{ln}^{2}⁡y+{C}_{2} & =-\\frac{{\\left(x + 6\\right)}^{2}}{2}+{C}_{1} \\\\ {ln}^{2}⁡y & =-{\\left(x + 6\\right)}^{2}+2({C}_{1}-{C}_{2}) \\\\ {ln}^{2}⁡y & =C-{\\left(x + 6\\right)}^{2},\\end{aligned}\n$$\n\nwhere $C=2({C}_{1}-{C}_{2})$ is an arbitrary constant.\n\nWe now apply the condition $y(-6)=e$ to find $C:$\n\n$$\n\\begin{aligned}{ln}^{2}⁡e & =C-{0}^{2} \\\\ {1}^{2} & =C \\\\ C & =1\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n{ln}^{2}⁡y=1-{\\left(x + 6\\right)}^{2}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "95838d27-4c34-5b77-b2b5-2ff27de6fd1c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "77794681-d3b4-5614-aaa6-80c42e0a5cd0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=\\left(x + 6\\right)^{2} + 1"
+            },
+            {
+              ":answer/id": "786f4cdb-2a02-5292-8541-00b827d1f434",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=- \\left(x + 6\\right)^{2} + 1"
+            },
+            {
+              ":answer/id": "5db3d89a-31b0-53ea-9757-af08fa93a47b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=- 2 \\left(x + 6\\right)^{2} + 1"
+            },
+            {
+              ":answer/id": "abe3f5c7-57d6-503c-9c03-a81873eb727f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=- \\left(x + 6\\right)^{2} + e"
+            },
+            {
+              ":answer/id": "9607b28c-21ca-5cfa-bb4e-b05271ccca3a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\log{\\left(y \\right)}^{2}=\\left(- x - 5\\right)^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "786f4cdb-2a02-5292-8541-00b827d1f434"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 10,
+      "template": "source_50219",
+      "parameters": {
+        "h": "-6"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "786f4cdb-2a02-5292-8541-00b827d1f434": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=- \\left(x + 6\\right)^{2} + 1",
+          "correct": true
+        },
+        "77794681-d3b4-5614-aaa6-80c42e0a5cd0": {
+          "recipe": "reverse_x_primitive_sign",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=\\left(x + 6\\right)^{2} + 1",
+          "correct": false
+        },
+        "5db3d89a-31b0-53ea-9757-af08fa93a47b": {
+          "recipe": "double_x_primitive",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=- 2 \\left(x + 6\\right)^{2} + 1",
+          "correct": false
+        },
+        "9607b28c-21ca-5cfa-bb4e-b05271ccca3a": {
+          "recipe": "integrate_both_separated_factors_as_constants_then_square",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=\\left(- x - 5\\right)^{2}",
+          "correct": false
+        },
+        "abe3f5c7-57d6-503c-9c03-a81873eb727f": {
+          "recipe": "initial_y_instead_of_log_squared_constant",
+          "displayed_expression": "\\log{\\left(y \\right)}^{2}=- \\left(x + 6\\right)^{2} + e",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-50219"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "d965f9ca3c1a443c561d6d2060942f702aff006122fcfe3aff39fdd48ccbbc4d",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "-6",
+        "initial_y": "E",
+        "ode": "-y*(x + 6)/log(y)",
+        "lhs": "log(y)**2",
+        "rhs": "1 - (x + 6)**2",
+        "primitive_y": "log(y)**2/2",
+        "primitive_x": "-(x + 6)**2/2",
+        "integration_constant": "1/2",
+        "domain": "y>1, |x-h|<1; branch containing initial y=e",
+        "h": "-6"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186100893,
+      "id": "99112850-043d-53e5-8d61-fecb0317bd11",
+      "title": "Finding Particular Solutions of Differential Equations by Separating the Variables"
+    },
+    "question": {
+      ":question/id": "85e3cf2e-3abd-5ef7-be00-72ad6ca703c6",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the particular solution to the differential equation ${y}^{′}=\\frac{\\operatorname{sin}⁡(3\\left(x - 2\\right))}{\\operatorname{cos}⁡(2y)}$ that satisfies $y(2)=0.$ Assume that $-\\frac{\\pi }{4}<y<\\frac{\\pi }{4}.$",
+      ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find a particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\operatorname{sin}⁡(3\\left(x - 2\\right))}{\\operatorname{cos}⁡(2y)} \\\\ (\\operatorname{cos}⁡(2y))\\frac{\\text{d}y}{\\text{d}x} & =\\operatorname{sin}⁡(3\\left(x - 2\\right)) \\\\ \\int (\\operatorname{cos}⁡(2y))\\frac{\\text{d}y}{\\text{d}x}\\,\\text{d}x & =\\int \\operatorname{sin}⁡(3\\left(x - 2\\right))\\,\\text{d}x \\\\ \\int \\operatorname{cos}⁡(2y)\\,\\text{d}y & =\\int \\operatorname{sin}⁡(3\\left(x - 2\\right))\\,\\text{d}x \\\\ \\frac{1}{2}\\operatorname{sin}⁡(2y) & =-\\frac{1}{3}\\operatorname{cos}⁡(3\\left(x - 2\\right))+C \\\\ \\operatorname{sin}⁡(2y) & =-\\frac{2}{3}\\operatorname{cos}⁡(3\\left(x - 2\\right))+{C}_{1}\\,,\\end{aligned}\n$$\n\nwhere ${C}_{1}=2C.$\n\nWe now apply the condition $y(2)=0$ to find ${C}_{1}:$\n\n$$\n\\begin{aligned}y(2) & =0 \\\\ \\operatorname{sin}⁡(2\\cdot 0) & =-\\frac{2}{3}\\operatorname{cos}⁡(3\\cdot 0)+{C}_{1} \\\\ \\operatorname{sin}⁡(0) & =-\\frac{2}{3}\\operatorname{cos}⁡(0)+{C}_{1} \\\\ 0 & =-\\frac{2}{3}\\cdot 1+{C}_{1} \\\\ {C}_{1} & =\\frac{2}{3}\\end{aligned}\n$$\n\nSo we get the particular solution in implicit form:\n\n$$\n\\begin{aligned}\\operatorname{sin}⁡(2y) & =\\frac{2}{3}-\\frac{2}{3}\\operatorname{cos}⁡(3\\left(x - 2\\right)) \\\\  & =\\frac{2}{3}(1-\\operatorname{cos}⁡(3\\left(x - 2\\right)))\\end{aligned}\n$$\n\nFinally, we can write the above equation as\n\n$$\n3\\operatorname{sin}⁡(2y)=2(1-\\operatorname{cos}⁡(3\\left(x - 2\\right))).\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ea908d13-7cde-5de5-8321-ee0b4ba6cf65",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3835098b-93c6-52e9-9df3-e206eebf5c91",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=- \\cos{\\left(3 x - 6 \\right)} + 1"
+            },
+            {
+              ":answer/id": "7b45d9a1-41fb-5b28-ac6b-7132083aa43e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=- 2 \\cos{\\left(3 x - 6 \\right)} + 2"
+            },
+            {
+              ":answer/id": "405fe0a6-2629-5ee4-84a0-3ad7c7e4e643",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=- 6 \\cos{\\left(3 x - 6 \\right)} + 6"
+            },
+            {
+              ":answer/id": "0cf9b1c3-8125-5add-a5d6-62e3204d428d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 6 \\right)}"
+            },
+            {
+              ":answer/id": "2204a589-07b3-5b7a-b912-144791e1c39e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 6 \\right)} + 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7b45d9a1-41fb-5b28-ac6b-7132083aa43e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "separable-ivp-3",
+      "seed": 11,
+      "template": "source_8309",
+      "parameters": {
+        "h": "2"
+      },
+      "bank_profile": "authored",
+      "answer_recipes": {
+        "7b45d9a1-41fb-5b28-ac6b-7132083aa43e": {
+          "recipe": "correct_separate_integrate_apply_initial_value",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=- 2 \\cos{\\left(3 x - 6 \\right)} + 2",
+          "correct": true
+        },
+        "3835098b-93c6-52e9-9df3-e206eebf5c91": {
+          "recipe": "omit_y_chain_multiplier",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=- \\cos{\\left(3 x - 6 \\right)} + 1",
+          "correct": false
+        },
+        "405fe0a6-2629-5ee4-84a0-3ad7c7e4e643": {
+          "recipe": "omit_x_chain_denominator",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=- 6 \\cos{\\left(3 x - 6 \\right)} + 6",
+          "correct": false
+        },
+        "2204a589-07b3-5b7a-b912-144791e1c39e": {
+          "recipe": "reverse_cosine_primitive_sign",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 6 \\right)} + 2",
+          "correct": false
+        },
+        "0cf9b1c3-8125-5add-a5d6-62e3204d428d": {
+          "recipe": "omit_initial_cosine_subtraction",
+          "displayed_expression": "3 \\sin{\\left(2 y \\right)}=2 \\cos{\\left(3 x - 6 \\right)}",
+          "correct": false
+        }
+      },
+      "origin": "observed",
+      "source_ids": [
+        "q-8309"
+      ],
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "parameter_fingerprint": "f1286934d03dd1d92ebe6881e70a43528ecf62108ed3e18198ba935e5e8bf980",
+      "mathematics": {
+        "variable": "x",
+        "initial_x": "2",
+        "initial_y": "0",
+        "ode": "sin(3*x - 6)/cos(2*y)",
+        "lhs": "3*sin(2*y)",
+        "rhs": "2 - 2*cos(3*x - 6)",
+        "primitive_y": "sin(2*y)/2",
+        "primitive_x": "-cos(3*x - 6)/3",
+        "integration_constant": "1/3",
+        "domain": "-pi/4<y<pi/4; cos(3*(x-h))> -1/2; local component containing h",
+        "h": "2"
+      },
+      "plot_rating": "none",
+      "source_bank_interpretation": "authored operation bank",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  }
+]
