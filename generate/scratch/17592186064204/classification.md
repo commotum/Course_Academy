@@ -1,0 +1,5 @@
+# Classification at math basis 1920
+
+Lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. All nine practice records and the canonical example are retained in reference/source.edn. No generator was registered. Eight complete radio records have one selection field and five math answers. Easy has five distinct Markdown/solution templates and five complete bank profiles; moderate has three templates and three profiles. Templates are kept separate because coefficients, displayed intermediate steps, answer exponents and prompt layouts differ. All plot ratings are none: no plot references or new assets occur. The incomplete q-12499 has no rating, correct answer or solution and is excluded unchanged.
+
+Easy uses positive affine slopes 1, 2, 5 and both intercept signs; moderate uses negative slopes -1, -3, -5 with positive intercepts. Hard has no source practice record, complete template or validated difficulty rule. This bounded version supports easy and moderate only; new evidence reopens classification. Its intercept-only sampling is deliberately narrower than unrestricted parameter sampling and preserves observed method complexity and difficulty.

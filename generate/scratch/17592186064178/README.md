@@ -1,0 +1,9 @@
+# Integrating Sine and Cosine generator
+
+Generator: `generate/scratch/17592186064178.py`. Captured source basis 1874; configured math lineage is recorded in source.json. The UUID is deterministically derived from the existing KP UUID and reused on registration. Dependencies use the repository's existing SymPy runtime; system Python reexecutes that runtime when needed.
+
+Run `.venv/bin/python generate/scratch/17592186064178/validate.py` for exact bank replay, complete finite-domain correctness, solution-step checks, determinism, negative controls and the actual application radio grader. Source bank fidelity is measured independently from correctness and grading. review.md shows exact source replays beside seeded variants. All plots are none.
+
+Run `python3 generate/scratch/17592186064178.py --difficulty moderate --count 5 --seed 19 --format markdown` for local previews. Easy and moderate capacities are 16 and 73 distinct tasks under the verified bounds. q-2161 is a source-only singleton replay; q-17654 is excluded for equivalent distractor families. Unsupported hard and incomplete/undefined-h source records remain explicit in capabilities.json. Batches never pad at exhaustion.
+
+Run `.venv/bin/python generate/scratch/17592186064178/replenish.py` to use the existing integration, contributor and application api.lock. It reconciles exact saved requests before new work, rechecks source stability and current inventory under that lock, validates supplied generated instances if present, filters duplicate integrands against all existing records and the canonical example, and prepares only necessary additive content plus generator registration. It holds the lock through deployed-spec preview, basis-guarded submission and exact-basis readback. Exact EDN, immutable lineage, source, stable key, request, receipt and verification remain in reference/replenishment. No source content, learner facts or other KP is changed.

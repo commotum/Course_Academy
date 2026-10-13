@@ -1,0 +1,5 @@
+# Constant-multiple power derivatives
+
+Run `.venv/bin/python generate/scratch/17592186059862.py --difficulty easy --count 5 --seed 0` or use moderate. `--format markdown` provides a prompt/solution preview. Run `.venv/bin/python generate/scratch/17592186059862/validate.py` to replay complete source banks and test all bounded candidates through SymPy and the application grader. See classification.md, template-extraction.md, capabilities.json, source-replay.json and native-grading.json for limitations and proof. Hard is unsupported.
+
+`.venv/bin/python generate/scratch/17592186059862/replenish.py` rechecks native inventory under api.lock, validates supplied/local output, excludes mathematical duplicates and existing IDs, previews with native predicates, persists the exact basis-guarded request, submits through the installed writer and verifies additive scoped datoms and readback. Existing saved requests are recovered before new submissions. References retain immutable source evidence and durable receipts.

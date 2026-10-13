@@ -1,0 +1,7 @@
+# Integrating Cosecant Squared
+
+Captured math basis 1872, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. The complete scoped EDB read and native inventory are in reference/initial; source.json preserves all 12 practice sources and canonical e-385. No generator or supplied generated file existed at capture. Native inventory reported easy above threshold, moderate 2 available and hard 0. Final mathematical validation and current inventory are rechecked under api.lock.
+
+Easy: three radio profiles in two mathematical prompt families (positive scalar and negative scalar); the unit negative layout is a separate singleton bank. Two blank sources contain undefined v(t), and the rational negative coefficient source has no fields. Moderate: two radio families (factored csc times a sum, and sine minus csc squared); only the first is usable because q-71666 has argument-free csc distractors. A third moderate source has no fields. Hard: one rated three-term sum with no fields. Unrated: two radio banks without correct designation or solutions. All templates have plot rating none; no image references or new plots exist.
+
+classification.json identifies every source, field type and layout, exact prompt, fixed solution, original choice, complete bank profile and recipe. Source values and IDs remain unchanged. The canonical example supports expansion/linearity but is excluded from practice and novelty. No missing records or assets were guessed.

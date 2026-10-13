@@ -1,0 +1,5 @@
+# KP 17592186064181 generator
+
+Run the repository Python environment with ../17592186064181.py --difficulty hard --count 5 --seed 1 --format json. Easy and moderate are supported too; unsupported levels fail and bounded batches never pad. Run validate.py for full source-bank replay, exact derivative and ordered solution-step checks over all finite parameters, deterministic identity tests and actual native radio grading. Hard is an explicit authored bank extension grounded in the rated three-term source, not a recovered original bank.
+
+replenish.py rechecks native inventory plus conservative gradable mathematical tasks, excluding retained presentations and reservations. It holds the application api.lock through preparation, deployed-spec preview, basis-guarded durable submission, exact receipt readback and inventory recheck. Requests and receipts remain in reference/replenishment. All source and learner history are preserved; only this KP receives additive generated content and generator registration.

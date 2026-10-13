@@ -1,0 +1,7 @@
+# Contextual derivative interpretation generator
+
+Run `.venv/bin/python generate/scratch/17592186064153/validate.py` for full evidence regeneration and native grading. Preview with `.venv/bin/python generate/scratch/17592186064153.py --difficulty all --seed 12 --count 2 --format markdown` (or `json`). The API exposes `generate_easy`, `generate_moderate`, `generate_hard`, and `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)`.
+
+Six practice sources at math basis 1356 replay all 30 answer values exactly. Only five have captured correct designations and solutions. Walking's key/solution/easy assignment are explicitly authored; raw ice teaching wording, walking ordinal wording, and car reciprocal-quotient ambiguity are documented in classification/extraction. `profile="observed"` preserves raw evidence. Default authored profiles apply the documented supported repairs. Three additional contexts are authored at the same skill: canonical budget, cooling temperature, and signed visitors with thousands conversion.
+
+All output uses one five-option text-radio selection field. No plots, derivative computation, DB writes, registration, or shared files. Source-only raw teaching defects are excluded from normal output. Review records and correct refs are author data. `validation.json` separates complete-bank fidelity, printed semantic/numeric/solution validation, and native radio grading; `frozen-hashes.json` freezes all delivered evidence after verification.

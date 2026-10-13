@@ -1,0 +1,67 @@
+[
+  {
+    "label": "arbitrary C rescaling",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186064167,
+        "id": "f2a4550c-7ed7-58aa-8928-23dd1cfd0cd7",
+        "title": "Finding the Antiderivative of a Monomial"
+      },
+      "question": {
+        ":question/problem": "Calculate $\\int 1\\,\\text{d}x.$\n\n{{answer}}",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "If we write the integrand as a power of $x$, we have ${x}^{0}=1.$ Therefore, we can use the power rule with $n=0$ and we get\n\n$$\n\\begin{aligned}\\int 1\\,\\text{d}x & =\\int {x}^{0}\\,\\text{d}x \\\\  & =\\frac{{x}^{0+1}}{0+1}+C \\\\  & =x+C.\\end{aligned}\n$$\n\nLet's check by differentiating:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}(x+C) & = \\\\ \\frac{\\text{d}}{\\text{d}x}(x)+\\frac{\\text{d}}{\\text{d}x}(C) & = \\\\ 1+0 & = \\\\ 1\\,\u2713\\end{aligned}\n$$",
+        ":question/id": "154d2760-797e-5d7e-b1b7-5ebd154e1525",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "de0aa858-9d58-5a1d-8c80-1c05b23471b2",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "621b34ca-75b5-5c93-8fc6-a7dce145e3e7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "x+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "621b34ca-75b5-5c93-8fc6-a7dce145e3e7"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "monomial-power-rule-v1",
+        "seed": 11,
+        "template": "constant",
+        "parameters": {
+          "n": 0
+        },
+        "bank_profile": "authored_power",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_id": null,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "difficulty_origin": "authored",
+        "domain": "x real",
+        "mathematical_fingerprint": "e5ab69249067ac8c3d6ea8b90c6f16af9d388ebb4adf3d9545ad2249866f5e10",
+        "content_fingerprint": "456a63ee16b6f444e7639ff4d3cc45bb867774db0bd8bd216117f534110a5a0e",
+        "recipes": [
+          "power_rule"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "submitted": "x^(0+1)/(0+1)+2C",
+        "expected": "rejected",
+        "purpose": "documented native limitation: equivalent complete family under C rescaling"
+      }
+    ]
+  }
+]

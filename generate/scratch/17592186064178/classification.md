@@ -1,0 +1,9 @@
+# Integrating Sine and Cosine
+
+Captured the entire requested KP at math basis 1874, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. No generator or supplied `.generated` artifact existed. All 11 practice records and canonical e-382 are preserved in source.json; initial inventory is retained under reference/initial.
+
+Easy has two supported complete radio structures and one excluded complete source structure: a negative sine coefficient (q-113907), a positive cosine coefficient (q-113908), and a fixed unit negative cosine (q-17654). Each uses one selection field with five choices. The first two have different reciprocal and sign/function banks; the third has squared-function choices with equivalent antiderivative families and is excluded. Moderate has a positive sum with two coefficients (q-113909) and a fixed unit difference (q-2161), both five-choice radio fields. Those are separate templates and banks.
+
+q-71653 and q-71654 are rated easy and moderate respectively but lack answer fields. Their operatorname notation and solution sequences remain separately recorded. q-2033 and q-2034 have unrated What-is prompts, five-choice banks, no correct designation, and no solution; their observed banks remain frozen evidence. q-167331 and q-167785 are easy blanks with a field-1 answer excluding the trailing C. They share a missing h(x) definition, differ in function-parenthesis notation in their solutions, and cannot be generated or counted as gradable.
+
+All captured prompts, choices and solutions contain mathematical text and no plot asset references. Plot rating is none; stages 5 and 7 require no generated assets. Hard has no source-backed capability. See classification.json for every source/field/bank assignment, and capabilities.json for bounded exceptions. Neither canonical nor unrated records enter practice inventory.

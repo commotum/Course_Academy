@@ -1,0 +1,7 @@
+# Integrating Secant Squared generator
+
+17592186064180.py is a pure seeded generator using the five exact, complete source profiles. Run validate.py for full bank replay, exhaustive exact mathematics, all solution lines, boundary/negative controls and application grading. The local check-engine binary is linked to the current application library; engine-build.json records exact hashes and the build command. Fidelity and correctness are separate checks.
+
+replenish.py rechecks the current native inventory and a conservative distinct, mathematically validated pool. It holds api.lock through basis capture, source-stability checks, native-spec preview, guarded durable submission and exact-basis readback. It registers the existing or deterministic generator UUID with question-generator/id, question-generator/script and the KP reference. Identity lookups, complete requests, previews, receipts and verification are retained in reference/replenishment. Only additive generated content and this KP generator reference are permitted; source questions, canonical example and learner history are preserved. Invalid or duplicate supplied artifacts are not counted as new content.
+
+Read classification.md, template-extraction.md, source-analysis.json and capabilities.json for evidence and bounds. Easy and moderate are supported. Hard remains an explicit unsupported capability, nominal shortage 5, pending new verified evidence. No source field is invented from missing evidence.
