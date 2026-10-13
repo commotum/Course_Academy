@@ -1,0 +1,50 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-39033\", \"problem\": \"Given that the polynomial $f(x)=3{x}^{3}+5{x}^{2}-15x-25$ has one of its roots in the interval $(-2,-\\\\frac{1}{2}),$ find the sum of the distinct real roots of $f(x).$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-39033:\nGiven a polynomial with integer coefficients, the rational roots theorem states that any rational roots of the polynomial must take the form\n\n$$\n\\pm \\frac{\\text{factor of the constant term}}{\\text{factor of the leading coefficient}}.\n$$\n\nFor the given polynomial $f(x),$ the constant term is $-25$ and the leading coefficient is $3.$ So, any rational roots of $f(x)$ must take the form\n\n$$\n\\pm \\frac{\\text{factor of }-25}{\\text{factor of }3}.\n$$\n\nTherefore, the possible rational roots are as follows:\n\n$$\n\\pm 1,\\,\\pm 5,\\,\\pm 25,\\,\\pm \\frac{1}{3},\\,\\pm \\frac{5}{3},\\,\\pm \\frac{25}{3}\n$$\n\nOf these roots, the only roots in the interval $(-2,-\\frac{1}{2}),$ are $-1$ and $-\\frac{5}{3}.$\n\nNow, let's use synthetic division to test whether $(x+\\frac{5}{3})$ is a factor of $f(x).$ We get the following:\n\n|  | ${x}^{3}$ | ${x}^{2}$ | ${x}^{1}$ | ${x}^{0}$ |\n| --- | --- | --- | --- | --- |\n| $-\\frac{5}{3}$ | $3$ | $5$ | $-15$ | $-25$ |\n|  | $↓$ | $-5$ | $0$ | $25$ |\n|  | $3$ | $0$ | $-15$ | $0$ |\n\nSince the remainder is $0,$ we conclude that $(x+\\frac{5}{3})$ is indeed a factor of $f(x).$ Moreover, we have\n\n$$\nf(x)=(x+\\frac{5}{3})(3{x}^{2}-15).\n$$\n\nSince the highest-degree factor is now a quadratic, we can continue factoring using the usual methods:\n\n$$\n\\begin{aligned}f(x) & =(x+\\frac{5}{3})(3{x}^{2}-15) \\\\  & =3(x+\\frac{5}{3})({x}^{2}-5) \\\\  & =3(x+\\frac{5}{3})(x+\\sqrt{5})(x-\\sqrt{5})\\end{aligned}\n$$\n\nSetting the factors equal to $0,$ we find the roots $x=-\\frac{5}{3},-\\sqrt{5},\\sqrt{5}.$ Summing these roots, we get\n\n$$\n-\\frac{5}{3}-\\sqrt{5}+\\sqrt{5}=-\\frac{5}{3}.\n$$",
+      "answer_fields": [
+        {
+          "key": "q-39033/selection",
+          "type": "radio",
+          "choices": [
+            {
+              "type": "math",
+              "value": "-\\sqrt{5}",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{5}{3}",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "\\sqrt{5}",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{5}{3}",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "-\\frac{3}{5}",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": []
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}
