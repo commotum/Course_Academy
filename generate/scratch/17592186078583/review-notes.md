@@ -1,0 +1,9 @@
+# Review notes
+
+Reviewed all eight original prompts, complete banks and fixed solution sequences, plus changed-parameter variants of every extracted prose template and observed bank. Review files contain 8 original replays and 42 generated records, including two normal default instances per level and two observed-bank changed instances per source profile. Independent validation checks the actual displayed story/givens, scale, minute wording, difference from equilibrium, derivative sign, all complete equation choices, and both generic/substituted worked equations. Negative controls mutate these displayed components and grading references.
+
+Source q106936 has two equivalent wrong equations. Exact replay preserves the raw profile with the defect explicitly marked; the repaired/default banks are unequal and normal generation never silently chooses the raw profile. Source q105917 has no original key, solution or level; inferred key, shared solution and easy assignment are separate authored records, with the source denominators retained as 7 available keys and 7 available full solutions.
+
+Manual review of normal output prompted context-specific initial-temperature limits applied identically to explicit parameters and sampling: thermometer90–110°F, turkey120–180°F, soup140–212°F, water40–99°C, straightener200–450°F. Hard water also remains40–99°C with ambient below observed below initial. All originals remain valid. h=1 renders “minute”; larger times render “minutes”. All references to the observation are generated from the same complete prose slot. No calendar prose exists in this KP.
+
+No new plots are needed. Native grader checks every displayed option in all original and review records (50 correct selections accepted,200 wrong selections rejected,0 unresolved). Blank-equivalent-entry grading is inapplicable to these radio-only originals and extensions. No database writes, shared file edits, engine changes or nested agents.

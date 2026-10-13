@@ -1,0 +1,7 @@
+# Normal orientation generator
+
+Run `.venv/bin/python generate/scratch/17592186083280/validate.py` from the repository root. Preview `.venv/bin/python generate/scratch/17592186083280.py --difficulty all --seed 42 --count 2 --format json`.
+
+The API offers generate_easy, generate_moderate, generate_hard and generate with template, field_type, parameters and profile. All observed source cases publicly replay using their source-cases.json parameters and `observed:q-…` profiles. Raw replay is evidence-only and preserves absent difficulty/solution/correct refs. Normal defaults sample all supported families and defensible complete banks; hard is an explicitly authored two-period trig extension with six familiar phases and small shifted interval starts. `variety.json` records exhaustive canonical task counts and fingerprints; derivative multipliers, translations and periodic aliases do not count as additional tasks. No plots are needed and no database operations occur. All assets/evidence stay in this private folder. Native engine tests invoke the shared memory-only grader without modifying it.
+
+Known raw-source limits: q-21080 has no designation, rating or solution; q-122946 asks points but supplies parameter answers; some historical scalar banks have opaque intent; source “Do not round” wording causes the captured native grader to reject equivalent unreduced exact entries. Normal records minimally repair the response wording/exact instruction and use method-derived banks. Raw-fidelity counts remain separate from repaired normal correctness/grading.

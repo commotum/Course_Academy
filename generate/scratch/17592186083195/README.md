@@ -1,0 +1,9 @@
+# Upper-limit improper integral generator
+
+Script: `generate/scratch/17592186083195.py`. Validated source basis: 1900. Generator UUID is deterministic under the existing KP UUID and retained by registration. Source questions, canonical example and learner history are immutable here.
+
+Run `python3 generate/scratch/17592186083195.py --difficulty easy --count 5 --seed 42 --format json`. Moderate is also supported. Hard raises an explicit unsupported-level error. Output is an object with instances; each instance carries the existing question/field/owned-answer representation and separate reproducibility metadata. Run `.venv/bin/python generate/scratch/17592186083195/validate.py` for source replay, symbolic verification and actual native grading.
+
+See classification.md, template-extraction.md, templates.json and capabilities.json for bounded coverage; review.md shows originals replayed next to coefficient variants. Validation reports fidelity, correctness and actual grading separately. check-engine was compiled from the existing application harness and current application release library, and does no database operations. Native grading accepts canonical exact values and plain equivalent rational entries, and rejects wrong values. The numeric policy does not require general symbolic-expression grading.
+
+Only fresh, distinct mathematically validated tasks may be committed. Deduplicate by coefficient/exponent/endpoint independently of authored bank and notation. Registration alone can resolve this classify job when supported stock already meets quota; unsupported hard remains explicit in the result. reference/replenishment retains exact requests, speculative previews, durable receipts and exact-basis readback. api.lock serializes the inventory recheck, submission and readback with the application.
