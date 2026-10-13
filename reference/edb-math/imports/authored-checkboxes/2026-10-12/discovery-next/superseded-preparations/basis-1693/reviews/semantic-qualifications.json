@@ -1,0 +1,691 @@
+{
+  "database_writes": 0,
+  "counts": {
+    "reviewed": 6,
+    "necessary_prompt_clarifications": 6,
+    "optional_only": 0,
+    "key_changes": 0,
+    "required_solution_changes": 0
+  },
+  "scope": "Supersedes the earlier nonblocking qualification assessment for these six cases. All must use the exact clarified prompt before preparing a key-preserving checkbox conversion.",
+  "questions": [
+    {
+      "id": 17592186338935,
+      "question_eid": 17592186338935,
+      "ma_id": "q-71391",
+      "decision": "convert_with_necessary_prompt_clarification",
+      "necessary": true,
+      "necessity": "necessary_to_make_the_preserved_database_key_unambiguous",
+      "original_prompt": "The level curves of the function $f(x,y)=\\frac{2{x}^{2}+3{y}^{2}-4}{{y}^{2}}$ are given by $f(x,y)=c.$ Which of the following statements are true?\n\n- $c=3$ gives a hyperbola\n- $c=0$ gives an ellipse\n- $c=1$ gives a circle",
+      "current_prompt": "The level curves of the function $f(x,y)=\\frac{2{x}^{2}+3{y}^{2}-4}{{y}^{2}}$ are given by $f(x,y)=c.$ Which of the following statements are true?\n\n- $c=3$ gives a hyperbola\n- $c=0$ gives an ellipse\n- $c=1$ gives a circle",
+      "conversion_only_prompt": "The level curves of the function $f(x,y)=\\frac{2{x}^{2}+3{y}^{2}-4}{{y}^{2}}$ are given by $f(x,y)=c.$ Which of the following statements are true?\n\nSelect all that apply.\n\n- **I.** $c=3$ gives a hyperbola\n- **II.** $c=0$ gives an ellipse\n- **III.** $c=1$ gives a circle",
+      "correct_labels": [
+        "II",
+        "III"
+      ],
+      "database_key": {
+        ":answer/id": "acd31018-2732-5a9d-97a2-4de86a5828c4",
+        ":answer/type": {
+          ":db/id": 17592186045499,
+          ":db/ident": ":answer.type/text"
+        },
+        ":answer/value": "II and III only",
+        ":db/id": 17592186337585
+      },
+      "key_change": false,
+      "atomic_options": [
+        {
+          "label": "I",
+          "text": "$c=3$ gives a hyperbola",
+          "truth": false,
+          "proof": "On the domain y!=0, f=c gives 2x^2+(3-c)y^2=4. At c=3 this is x=+/-sqrt(2), with y!=0: two punctured vertical lines, not a hyperbola."
+        },
+        {
+          "label": "II",
+          "text": "$c=0$ gives an ellipse",
+          "truth": true,
+          "proof": "At c=0 the implicit conic is 2x^2+3y^2=4, an ellipse. The actual level set omits (+/-sqrt(2),0) because y!=0; the source key uses the standard classification by implicit conic shape."
+        },
+        {
+          "label": "III",
+          "text": "$c=1$ gives a circle",
+          "truth": true,
+          "proof": "At c=1 the implicit conic is x^2+y^2=2, a circle. The actual level set omits (+/-sqrt(2),0); the source key classifies its conic shape."
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186336065,
+          "value": "I and III only",
+          "labels": [
+            "I",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186336427,
+          "value": "I only",
+          "labels": [
+            "I"
+          ]
+        },
+        {
+          "answer_eid": 17592186337585,
+          "value": "II and III only",
+          "labels": [
+            "II",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186337783,
+          "value": "II only",
+          "labels": [
+            "II"
+          ]
+        },
+        {
+          "answer_eid": 17592186338057,
+          "value": "III only",
+          "labels": [
+            "III"
+          ]
+        }
+      ],
+      "original_solution_preserved": "Setting $f(x,y)=c$ gives:\n\n$$\n\\begin{aligned}\\frac{2{x}^{2}+3{y}^{2}-4}{{y}^{2}} & =c \\\\ 2{x}^{2}+3{y}^{2}-4 & =c{y}^{2} \\\\ 2{x}^{2}+(3-c){y}^{2} & =4\\end{aligned}\n$$\n\nTherefore:\n\n- If $c=3$ then the level curves are $x=\\pm \\sqrt{2},$ which consists of two vertical lines.\n\n- If $c=0$ then the level curve is $2{x}^{2}+3{y}^{2}=4,$ which is an ellipse.\n\n- If $c=1$ then the level curve is ${x}^{2}+{y}^{2}=2,$ which is a circle.\n\nSo, only statements II and III are true.",
+      "source_evidence": {
+        "path": "reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/review-snapshot.json",
+        "sha256": "7d58e323ace2b9220039a601a82ee1e5dad9780a006d1ab735775c42181dbccb",
+        "question_eid": 17592186338935
+      },
+      "source_list_preserved": true,
+      "source_equations_preserved": true,
+      "preview_status": "not_prepared",
+      "commit_status": "not_submitted",
+      "issue_kind": "level_set_vs_associated_conic_equation",
+      "rationale": "The current prompt names actual level curves of a rational function. They contain only points in its domain y!=0. The stored II/III key and source solution instead classify the complete conic equations obtained after clearing the denominator. Explicitly asking for these equations resolves the mismatch without changing any equation, listed case or key.",
+      "without_clarification": {
+        "interpretation": "Level curve means the complete set of domain-valid points with f(x,y)=c.",
+        "correct_labels": [],
+        "proof": "c=3 gives two vertical lines each missing its y=0 point, not a hyperbola. c=0 gives the ellipse 2x^2+3y^2=4 minus (+/-sqrt(2),0), so not the entire ellipse. c=1 gives x^2+y^2=2 minus the same two points, so not the entire circle. Under this strict full-locus reading, all three statements are false."
+      },
+      "with_clarification_proof": "Clearing the denominator gives 2x^2+(3-c)y^2=4. In the entire plane, c=3 gives two lines x=+/-sqrt(2), c=0 gives an ellipse, and c=1 gives a circle. Thus exactly II and III apply.",
+      "optional_solution_addition": "The original function has domain y!=0. The statements classify the full conic equations after clearing the denominator; the actual domain-restricted level sets omit (+/-sqrt(2),0).",
+      "solution_change_required": false,
+      "optional_prompt_repairs": [],
+      "proposed_prompt": "For the function $f(x,y)=\\frac{2{x}^{2}+3{y}^{2}-4}{{y}^{2}}$, clear the denominator in $f(x,y)=c$ and classify the resulting conic equation in the entire $xy$-plane, including points excluded from the function's domain. Which of the following statements are true?\n\nSelect all that apply.\n\n- **I.** $c=3$ gives a hyperbola\n- **II.** $c=0$ gives an ellipse\n- **III.** $c=1$ gives a circle",
+      "problem_after": "For the function $f(x,y)=\\frac{2{x}^{2}+3{y}^{2}-4}{{y}^{2}}$, clear the denominator in $f(x,y)=c$ and classify the resulting conic equation in the entire $xy$-plane, including points excluded from the function's domain. Which of the following statements are true?\n\nSelect all that apply.\n\n- **I.** $c=3$ gives a hyperbola\n- **II.** $c=0$ gives an ellipse\n- **III.** $c=1$ gives a circle",
+      "proposed_prompt_clarified_unlabelled": "For the function $f(x,y)=\\frac{2{x}^{2}+3{y}^{2}-4}{{y}^{2}}$, clear the denominator in $f(x,y)=c$ and classify the resulting conic equation in the entire $xy$-plane, including points excluded from the function's domain. Which of the following statements are true?\n\n- $c=3$ gives a hyperbola\n\n- $c=0$ gives an ellipse\n\n- $c=1$ gives a circle"
+    },
+    {
+      "id": 17592186272240,
+      "question_eid": 17592186272240,
+      "ma_id": "q-141209",
+      "decision": "convert_with_necessary_prompt_clarification",
+      "necessary": true,
+      "necessity": "necessary_to_make_the_preserved_database_key_unambiguous",
+      "original_prompt": "Which of the following is an improper integral of the second kind?\n\n- ${\\int }_{0}^{1}\\frac{\\text{d}x}{{x}^{3}-8}\\,$  II. ${\\int }_{-2}^{1}\\frac{\\text{d}x}{{x}^{3}+8}\\,$  III. ${\\int }_{-\\infty }^{1}\\frac{\\text{d}x}{{x}^{3}}$",
+      "current_prompt": "Which of the following is an improper integral of the second kind?\n\n- ${\\int }_{0}^{1}\\frac{\\text{d}x}{{x}^{3}-8}\\,$  II. ${\\int }_{-2}^{1}\\frac{\\text{d}x}{{x}^{3}+8}\\,$  III. ${\\int }_{-\\infty }^{1}\\frac{\\text{d}x}{{x}^{3}}$",
+      "conversion_only_prompt": "Which of the following is an improper integral of the second kind?\n\nSelect all that apply.\n\n- **I.** ${\\int }_{0}^{1}\\frac{\\text{d}x}{{x}^{3}-8}\\,$\n\n- **II.** ${\\int }_{-2}^{1}\\frac{\\text{d}x}{{x}^{3}+8}\\,$\n\n- **III.** ${\\int }_{-\\infty }^{1}\\frac{\\text{d}x}{{x}^{3}}$",
+      "correct_labels": [
+        "II"
+      ],
+      "database_key": {
+        ":answer/id": "26a4ad32-a873-582b-96ae-ed02f26f7e8f",
+        ":answer/type": {
+          ":db/id": 17592186045499,
+          ":db/ident": ":answer.type/text"
+        },
+        ":answer/value": "II only",
+        ":db/id": 17592186269609
+      },
+      "key_change": false,
+      "atomic_options": [
+        {
+          "label": "I",
+          "text": "${\\int }_{0}^{1}\\frac{\\text{d}x}{{x}^{3}-8}\\,$",
+          "truth": false,
+          "proof": "x^3-8 is nonzero on [0,1], so the integral is proper."
+        },
+        {
+          "label": "II",
+          "text": "${\\int }_{-2}^{1}\\frac{\\text{d}x}{{x}^{3}+8}\\,$",
+          "truth": true,
+          "proof": "The finite lower endpoint -2 is a zero of x^3+8 and produces an unbounded integrand."
+        },
+        {
+          "label": "III",
+          "text": "${\\int }_{-\\infty }^{1}\\frac{\\text{d}x}{{x}^{3}}$",
+          "truth": false,
+          "proof": "The infinite lower endpoint makes this an infinite-domain integral in the source taxonomy. It also has an interior pole at 0; the original key uses an exclusive finite-domain definition of second kind."
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186269609,
+          "value": "II only",
+          "labels": [
+            "II"
+          ]
+        },
+        {
+          "answer_eid": 17592186270169,
+          "value": "I, II, and III",
+          "labels": [
+            "I",
+            "II",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186270179,
+          "value": "I and II only",
+          "labels": [
+            "I",
+            "II"
+          ]
+        },
+        {
+          "answer_eid": 17592186270348,
+          "value": "II and III only",
+          "labels": [
+            "II",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186271484,
+          "value": "III only",
+          "labels": [
+            "III"
+          ]
+        }
+      ],
+      "original_solution_preserved": "Let's examine each of the given integrals.\n\n- Integral I is not an improper integral since it has finite limits and the function under the integral is finite at every point $x\\in [0,1].$\n\n- Integral II is an improper integral of the second kind since it has finite limits, and \n\n$$\nf(x)=\\frac{1}{{x}^{3}+8}\\to \\infty \\,\\text{as}\\,x\\to (-2)^{+}.\n$$\n\n- Integral III is an improper integral over an *infinite* domain since its lower limit is infinite.\n\nTherefore, the correct answer is \"II only.\"",
+      "source_evidence": {
+        "path": "reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/review-snapshot.json",
+        "sha256": "7d58e323ace2b9220039a601a82ee1e5dad9780a006d1ab735775c42181dbccb",
+        "question_eid": 17592186272240
+      },
+      "source_list_preserved": true,
+      "source_equations_preserved": true,
+      "preview_status": "not_prepared",
+      "commit_status": "not_submitted",
+      "issue_kind": "mixed_improper_integral_vs_finite_interval_second_kind",
+      "rationale": "The source key uses an exclusive classification: second kind means a finite interval with an unbounded integrand, while an infinite interval is put in the first-kind category even when it also contains poles. The current prompt does not specify exclusivity. Explicit finite bounds state the intended selection predicate and remove dependence on naming conventions.",
+      "without_clarification": {
+        "interpretation": "A singular integrand makes an integral Type II even when it also has an infinite bound; it may be both Type I and Type II.",
+        "correct_labels": [
+          "II",
+          "III"
+        ],
+        "proof": "III has an infinite lower bound and an interior pole at x=0 in 1/x^3. This supplies an additional valid selection under a nonexclusive standard taxonomy."
+      },
+      "with_clarification_proof": "Apply the two explicit conditions, finite bounds and an unbounded integrand, to each displayed integral. x^3-8 is nonzero on [0,1], so the integral is proper. The finite lower endpoint -2 is a zero of x^3+8 and produces an unbounded integrand. The infinite lower endpoint makes this an infinite-domain integral in the source taxonomy. It also has an interior pole at 0; the original key uses an exclusive finite-domain definition of second kind. Therefore the stored subset is correct under the clarified predicate.",
+      "external_definition_evidence": [
+        {
+          "title": "Athabasca University, Mathematics 266 Study Guide, Example 3.49 (printed page 114; PDF page 124)",
+          "url": "https://math266r8.athabascau.ca/266StudyGuide.pdf",
+          "relevance": "This university's own guide classifies the integral of 1/x from zero to infinity as both Type 1 and Type 2. Thus the original prompt cannot rely on universally exclusive categories."
+        }
+      ],
+      "optional_solution_addition": "The infinite-domain option also has singularities. It is excluded here because the question specifically asks for finite bounds; mixed improper integrals can exhibit both kinds of improperness.",
+      "solution_change_required": false,
+      "optional_prompt_repairs": [],
+      "proposed_prompt": "Which of the following integrals have finite bounds of integration and an integrand that is unbounded at an endpoint or an interior point of the interval (improper integrals of the second kind on a finite interval)?\n\nSelect all that apply.\n\n- **I.** ${\\int }_{0}^{1}\\frac{\\text{d}x}{{x}^{3}-8}\\,$\n\n- **II.** ${\\int }_{-2}^{1}\\frac{\\text{d}x}{{x}^{3}+8}\\,$\n\n- **III.** ${\\int }_{-\\infty }^{1}\\frac{\\text{d}x}{{x}^{3}}$",
+      "problem_after": "Which of the following integrals have finite bounds of integration and an integrand that is unbounded at an endpoint or an interior point of the interval (improper integrals of the second kind on a finite interval)?\n\nSelect all that apply.\n\n- **I.** ${\\int }_{0}^{1}\\frac{\\text{d}x}{{x}^{3}-8}\\,$\n\n- **II.** ${\\int }_{-2}^{1}\\frac{\\text{d}x}{{x}^{3}+8}\\,$\n\n- **III.** ${\\int }_{-\\infty }^{1}\\frac{\\text{d}x}{{x}^{3}}$",
+      "proposed_prompt_clarified_unlabelled": "Which of the following integrals have finite bounds of integration and an integrand that is unbounded at an endpoint or an interior point of the interval (improper integrals of the second kind on a finite interval)?\n\n- ${\\int }_{0}^{1}\\frac{\\text{d}x}{{x}^{3}-8}\\,$\n\n- ${\\int }_{-2}^{1}\\frac{\\text{d}x}{{x}^{3}+8}\\,$\n\n- ${\\int }_{-\\infty }^{1}\\frac{\\text{d}x}{{x}^{3}}$"
+    },
+    {
+      "id": 17592186272241,
+      "question_eid": 17592186272241,
+      "ma_id": "q-141212",
+      "decision": "convert_with_necessary_prompt_clarification",
+      "necessary": true,
+      "necessity": "necessary_to_make_the_preserved_database_key_unambiguous",
+      "original_prompt": "Which of the following is an improper integral of the second kind?\n\n- ${\\int }_{0}^{\\infty }\\frac{\\text{d}x}{\\sqrt{x}-1}\\,$  II. ${\\int }_{2}^{4}\\frac{\\text{d}x}{1-\\sqrt{x}}\\,$  III. ${\\int }_{1}^{4}\\frac{\\text{d}x}{\\sqrt{x-1}}$",
+      "current_prompt": "Which of the following is an improper integral of the second kind?\n\n- ${\\int }_{0}^{\\infty }\\frac{\\text{d}x}{\\sqrt{x}-1}\\,$  II. ${\\int }_{2}^{4}\\frac{\\text{d}x}{1-\\sqrt{x}}\\,$  III. ${\\int }_{1}^{4}\\frac{\\text{d}x}{\\sqrt{x-1}}$",
+      "conversion_only_prompt": "Which of the following is an improper integral of the second kind?\n\nSelect all that apply.\n\n- **I.** ${\\int }_{0}^{\\infty }\\frac{\\text{d}x}{\\sqrt{x}-1}\\,$\n\n- **II.** ${\\int }_{2}^{4}\\frac{\\text{d}x}{1-\\sqrt{x}}\\,$\n\n- **III.** ${\\int }_{1}^{4}\\frac{\\text{d}x}{\\sqrt{x-1}}$",
+      "correct_labels": [
+        "III"
+      ],
+      "database_key": {
+        ":answer/id": "e05f83bc-9cbf-50fa-8e83-a22bd0a5bf8b",
+        ":answer/type": {
+          ":db/id": 17592186045499,
+          ":db/ident": ":answer.type/text"
+        },
+        ":answer/value": "III only",
+        ":db/id": 17592186271240
+      },
+      "key_change": false,
+      "atomic_options": [
+        {
+          "label": "I",
+          "text": "${\\int }_{0}^{\\infty }\\frac{\\text{d}x}{\\sqrt{x}-1}\\,$",
+          "truth": false,
+          "proof": "The upper endpoint infinity makes this an infinite-domain integral in the source taxonomy. There is additionally a pole at x=1; the source classifies finite-domain second-kind integrals separately."
+        },
+        {
+          "label": "II",
+          "text": "${\\int }_{2}^{4}\\frac{\\text{d}x}{1-\\sqrt{x}}\\,$",
+          "truth": false,
+          "proof": "1-sqrt(x) does not vanish on [2,4], so the integral is proper."
+        },
+        {
+          "label": "III",
+          "text": "${\\int }_{1}^{4}\\frac{\\text{d}x}{\\sqrt{x-1}}$",
+          "truth": true,
+          "proof": "At the finite lower endpoint 1, 1/sqrt(x-1) is unbounded; second kind."
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186269732,
+          "value": "I, II, and III",
+          "labels": [
+            "I",
+            "II",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186269999,
+          "value": "I and II only",
+          "labels": [
+            "I",
+            "II"
+          ]
+        },
+        {
+          "answer_eid": 17592186270288,
+          "value": "I and III only",
+          "labels": [
+            "I",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186271240,
+          "value": "III only",
+          "labels": [
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186271375,
+          "value": "I only",
+          "labels": [
+            "I"
+          ]
+        }
+      ],
+      "original_solution_preserved": "Let's examine each of the given integrals.\n\n- Integral I is an improper integral over an *infinite* domain since its upper limit is infinite.\n\n- Integral II is not an improper integral since it has finite limits and the function under the integral is finite at every point $x\\in [2,4].$\n\n- Integral III is an improper integral of the second kind since it has finite limits, and \n\n$$\nf(x)=\\frac{1}{\\sqrt{x-1}}\\to \\infty \\,\\text{as}\\,x\\to {1}^{+}.\n$$\n\nTherefore, the correct answer is \"III only.\"",
+      "source_evidence": {
+        "path": "reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/review-snapshot.json",
+        "sha256": "7d58e323ace2b9220039a601a82ee1e5dad9780a006d1ab735775c42181dbccb",
+        "question_eid": 17592186272241
+      },
+      "source_list_preserved": true,
+      "source_equations_preserved": true,
+      "preview_status": "not_prepared",
+      "commit_status": "not_submitted",
+      "issue_kind": "mixed_improper_integral_vs_finite_interval_second_kind",
+      "rationale": "The source key uses an exclusive classification: second kind means a finite interval with an unbounded integrand, while an infinite interval is put in the first-kind category even when it also contains poles. The current prompt does not specify exclusivity. Explicit finite bounds state the intended selection predicate and remove dependence on naming conventions.",
+      "without_clarification": {
+        "interpretation": "A singular integrand makes an integral Type II even when it also has an infinite bound; it may be both Type I and Type II.",
+        "correct_labels": [
+          "I",
+          "III"
+        ],
+        "proof": "I has an infinite upper bound and an interior pole at x=1 in 1/(sqrt(x)-1). This supplies an additional valid selection under a nonexclusive standard taxonomy."
+      },
+      "with_clarification_proof": "Apply the two explicit conditions, finite bounds and an unbounded integrand, to each displayed integral. The upper endpoint infinity makes this an infinite-domain integral in the source taxonomy. There is additionally a pole at x=1; the source classifies finite-domain second-kind integrals separately. 1-sqrt(x) does not vanish on [2,4], so the integral is proper. At the finite lower endpoint 1, 1/sqrt(x-1) is unbounded; second kind. Therefore the stored subset is correct under the clarified predicate.",
+      "external_definition_evidence": [
+        {
+          "title": "Athabasca University, Mathematics 266 Study Guide, Example 3.49 (printed page 114; PDF page 124)",
+          "url": "https://math266r8.athabascau.ca/266StudyGuide.pdf",
+          "relevance": "This university's own guide classifies the integral of 1/x from zero to infinity as both Type 1 and Type 2. Thus the original prompt cannot rely on universally exclusive categories."
+        }
+      ],
+      "optional_solution_addition": "The infinite-domain option also has singularities. It is excluded here because the question specifically asks for finite bounds; mixed improper integrals can exhibit both kinds of improperness.",
+      "solution_change_required": false,
+      "optional_prompt_repairs": [],
+      "proposed_prompt": "Which of the following integrals have finite bounds of integration and an integrand that is unbounded at an endpoint or an interior point of the interval (improper integrals of the second kind on a finite interval)?\n\nSelect all that apply.\n\n- **I.** ${\\int }_{0}^{\\infty }\\frac{\\text{d}x}{\\sqrt{x}-1}\\,$\n\n- **II.** ${\\int }_{2}^{4}\\frac{\\text{d}x}{1-\\sqrt{x}}\\,$\n\n- **III.** ${\\int }_{1}^{4}\\frac{\\text{d}x}{\\sqrt{x-1}}$",
+      "problem_after": "Which of the following integrals have finite bounds of integration and an integrand that is unbounded at an endpoint or an interior point of the interval (improper integrals of the second kind on a finite interval)?\n\nSelect all that apply.\n\n- **I.** ${\\int }_{0}^{\\infty }\\frac{\\text{d}x}{\\sqrt{x}-1}\\,$\n\n- **II.** ${\\int }_{2}^{4}\\frac{\\text{d}x}{1-\\sqrt{x}}\\,$\n\n- **III.** ${\\int }_{1}^{4}\\frac{\\text{d}x}{\\sqrt{x-1}}$",
+      "proposed_prompt_clarified_unlabelled": "Which of the following integrals have finite bounds of integration and an integrand that is unbounded at an endpoint or an interior point of the interval (improper integrals of the second kind on a finite interval)?\n\n- ${\\int }_{0}^{\\infty }\\frac{\\text{d}x}{\\sqrt{x}-1}\\,$\n\n- ${\\int }_{2}^{4}\\frac{\\text{d}x}{1-\\sqrt{x}}\\,$\n\n- ${\\int }_{1}^{4}\\frac{\\text{d}x}{\\sqrt{x-1}}$"
+    },
+    {
+      "id": 17592186272242,
+      "question_eid": 17592186272242,
+      "ma_id": "q-141218",
+      "decision": "convert_with_necessary_prompt_clarification",
+      "necessary": true,
+      "necessity": "necessary_to_make_the_preserved_database_key_unambiguous",
+      "original_prompt": "Which of the following is an improper integral of the second kind?\n\n- ${\\int }_{-\\pi /2}^{0}\\operatorname{csc}⁡x\\,\\text{d}x\\,$  II. ${\\int }_{\\pi /6}^{\\infty }\\operatorname{sec}⁡x\\,\\text{d}x\\,$  III. ${\\int }_{0}^{\\pi /4}\\frac{\\text{d}x}{1-\\operatorname{sin}⁡x}$",
+      "current_prompt": "Which of the following is an improper integral of the second kind?\n\n- ${\\int }_{-\\pi /2}^{0}\\operatorname{csc}⁡x\\,\\text{d}x\\,$  II. ${\\int }_{\\pi /6}^{\\infty }\\operatorname{sec}⁡x\\,\\text{d}x\\,$  III. ${\\int }_{0}^{\\pi /4}\\frac{\\text{d}x}{1-\\operatorname{sin}⁡x}$",
+      "conversion_only_prompt": "Which of the following is an improper integral of the second kind?\n\nSelect all that apply.\n\n- **I.** ${\\int }_{-\\pi /2}^{0}\\operatorname{csc}⁡x\\,\\text{d}x\\,$\n\n- **II.** ${\\int }_{\\pi /6}^{\\infty }\\operatorname{sec}⁡x\\,\\text{d}x\\,$\n\n- **III.** ${\\int }_{0}^{\\pi /4}\\frac{\\text{d}x}{1-\\operatorname{sin}⁡x}$",
+      "correct_labels": [
+        "I"
+      ],
+      "database_key": {
+        ":answer/id": "357e3f3b-92ad-5333-b803-0f7d4d33b7d0",
+        ":answer/type": {
+          ":db/id": 17592186045499,
+          ":db/ident": ":answer.type/text"
+        },
+        ":answer/value": "I only",
+        ":db/id": 17592186269758
+      },
+      "key_change": false,
+      "atomic_options": [
+        {
+          "label": "I",
+          "text": "${\\int }_{-\\pi /2}^{0}\\operatorname{csc}⁡x\\,\\text{d}x\\,$",
+          "truth": true,
+          "proof": "csc(x) tends to -infinity as x->0- on the finite interval [-pi/2,0]; second kind."
+        },
+        {
+          "label": "II",
+          "text": "${\\int }_{\\pi /6}^{\\infty }\\operatorname{sec}⁡x\\,\\text{d}x\\,$",
+          "truth": false,
+          "proof": "The infinite upper endpoint makes this an infinite-domain integral in the source taxonomy. Sec(x) also has poles in this domain; the source uses a finite-domain criterion for second kind."
+        },
+        {
+          "label": "III",
+          "text": "${\\int }_{0}^{\\pi /4}\\frac{\\text{d}x}{1-\\operatorname{sin}⁡x}$",
+          "truth": false,
+          "proof": "On [0,pi/4], 1-sin(x)>=1-sqrt(2)/2>0; the integral is proper."
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186269519,
+          "value": "I and II only",
+          "labels": [
+            "I",
+            "II"
+          ]
+        },
+        {
+          "answer_eid": 17592186269758,
+          "value": "I only",
+          "labels": [
+            "I"
+          ]
+        },
+        {
+          "answer_eid": 17592186270025,
+          "value": "III only",
+          "labels": [
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186271090,
+          "value": "I and III only",
+          "labels": [
+            "I",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186271164,
+          "value": "II only",
+          "labels": [
+            "II"
+          ]
+        }
+      ],
+      "original_solution_preserved": "Let's examine each of the given integrals.\n\n- Integral I is an improper integral of the second kind since it has finite limits, and \n\n$$\nf(x)=\\operatorname{csc}⁡x\\to -\\infty \\,\\text{as}\\,x\\to {0}^{-}.\n$$\n\n- Integral II is an improper integral over an *infinite* domain since its upper limit is infinite.\n\n- Integral III is not an improper integral since it has finite limits and the function under the integral is finite at every point $x\\in [0,\\frac{\\pi }{4}].$\n\nTherefore, the correct answer is \"I only.\"",
+      "source_evidence": {
+        "path": "reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/review-snapshot.json",
+        "sha256": "7d58e323ace2b9220039a601a82ee1e5dad9780a006d1ab735775c42181dbccb",
+        "question_eid": 17592186272242
+      },
+      "source_list_preserved": true,
+      "source_equations_preserved": true,
+      "preview_status": "not_prepared",
+      "commit_status": "not_submitted",
+      "issue_kind": "mixed_improper_integral_vs_finite_interval_second_kind",
+      "rationale": "The source key uses an exclusive classification: second kind means a finite interval with an unbounded integrand, while an infinite interval is put in the first-kind category even when it also contains poles. The current prompt does not specify exclusivity. Explicit finite bounds state the intended selection predicate and remove dependence on naming conventions.",
+      "without_clarification": {
+        "interpretation": "A singular integrand makes an integral Type II even when it also has an infinite bound; it may be both Type I and Type II.",
+        "correct_labels": [
+          "I",
+          "II"
+        ],
+        "proof": "II has an infinite upper bound and interior poles at x=pi/2+k*pi, k>=0, in sec(x). This supplies an additional valid selection under a nonexclusive standard taxonomy."
+      },
+      "with_clarification_proof": "Apply the two explicit conditions, finite bounds and an unbounded integrand, to each displayed integral. csc(x) tends to -infinity as x->0- on the finite interval [-pi/2,0]; second kind. The infinite upper endpoint makes this an infinite-domain integral in the source taxonomy. Sec(x) also has poles in this domain; the source uses a finite-domain criterion for second kind. On [0,pi/4], 1-sin(x)>=1-sqrt(2)/2>0; the integral is proper. Therefore the stored subset is correct under the clarified predicate.",
+      "external_definition_evidence": [
+        {
+          "title": "Athabasca University, Mathematics 266 Study Guide, Example 3.49 (printed page 114; PDF page 124)",
+          "url": "https://math266r8.athabascau.ca/266StudyGuide.pdf",
+          "relevance": "This university's own guide classifies the integral of 1/x from zero to infinity as both Type 1 and Type 2. Thus the original prompt cannot rely on universally exclusive categories."
+        }
+      ],
+      "optional_solution_addition": "The infinite-domain option also has singularities. It is excluded here because the question specifically asks for finite bounds; mixed improper integrals can exhibit both kinds of improperness.",
+      "solution_change_required": false,
+      "optional_prompt_repairs": [],
+      "proposed_prompt": "Which of the following integrals have finite bounds of integration and an integrand that is unbounded at an endpoint or an interior point of the interval (improper integrals of the second kind on a finite interval)?\n\nSelect all that apply.\n\n- **I.** ${\\int }_{-\\pi /2}^{0}\\operatorname{csc}⁡x\\,\\text{d}x\\,$\n\n- **II.** ${\\int }_{\\pi /6}^{\\infty }\\operatorname{sec}⁡x\\,\\text{d}x\\,$\n\n- **III.** ${\\int }_{0}^{\\pi /4}\\frac{\\text{d}x}{1-\\operatorname{sin}⁡x}$",
+      "problem_after": "Which of the following integrals have finite bounds of integration and an integrand that is unbounded at an endpoint or an interior point of the interval (improper integrals of the second kind on a finite interval)?\n\nSelect all that apply.\n\n- **I.** ${\\int }_{-\\pi /2}^{0}\\operatorname{csc}⁡x\\,\\text{d}x\\,$\n\n- **II.** ${\\int }_{\\pi /6}^{\\infty }\\operatorname{sec}⁡x\\,\\text{d}x\\,$\n\n- **III.** ${\\int }_{0}^{\\pi /4}\\frac{\\text{d}x}{1-\\operatorname{sin}⁡x}$",
+      "proposed_prompt_clarified_unlabelled": "Which of the following integrals have finite bounds of integration and an integrand that is unbounded at an endpoint or an interior point of the interval (improper integrals of the second kind on a finite interval)?\n\n- ${\\int }_{-\\pi /2}^{0}\\operatorname{csc}⁡x\\,\\text{d}x\\,$\n\n- ${\\int }_{\\pi /6}^{\\infty }\\operatorname{sec}⁡x\\,\\text{d}x\\,$\n\n- ${\\int }_{0}^{\\pi /4}\\frac{\\text{d}x}{1-\\operatorname{sin}⁡x}$"
+    },
+    {
+      "id": 17592186366052,
+      "question_eid": 17592186366052,
+      "ma_id": "q-38300",
+      "decision": "convert_with_necessary_prompt_clarification",
+      "necessary": true,
+      "necessity": "necessary_to_make_the_preserved_database_key_unambiguous",
+      "original_prompt": "If $T$ maps ${R}^{2}$ onto the line $y=-3x$ then, which of the following statements are true?\n\n- $⟨1,3⟩$ belongs to the range of $T$\n- $\\text{Ker}(T)\\ne {0}$\n- $\\text{Im}(T)={0}$",
+      "current_prompt": "If $T$ maps ${R}^{2}$ onto the line $y=-3x$ then, which of the following statements are true?\n\n- $⟨1,3⟩$ belongs to the range of $T$\n- $\\text{Ker}(T)\\ne {0}$\n- $\\text{Im}(T)={0}$",
+      "conversion_only_prompt": "If $T$ maps ${R}^{2}$ onto the line $y=-3x$ then, which of the following statements are true?\n\nSelect all that apply.\n\n- **I.** $⟨1,3⟩$ belongs to the range of $T$\n\n- **II.** $\\text{Ker}(T)\\ne {0}$\n\n- **III.** $\\text{Im}(T)={0}$",
+      "correct_labels": [
+        "II"
+      ],
+      "database_key": {
+        ":answer/id": "46b993d9-0c06-5c28-8e26-7ee0692c4652",
+        ":answer/type": {
+          ":db/id": 17592186045499,
+          ":db/ident": ":answer.type/text"
+        },
+        ":answer/value": "II only",
+        ":db/id": 17592186366058
+      },
+      "key_change": false,
+      "atomic_options": [
+        {
+          "label": "I",
+          "text": "$⟨1,3⟩$ belongs to the range of $T$",
+          "truth": false,
+          "proof": "(1,3) is not on y=-3x, so it is not in the specified range."
+        },
+        {
+          "label": "II",
+          "text": "$\\text{Ker}(T)\\ne {0}$",
+          "truth": true,
+          "proof": "For the intended linear map R^2 onto a line, rank=1 and rank-nullity gives nullity=1; the kernel is nontrivial."
+        },
+        {
+          "label": "III",
+          "text": "$\\text{Im}(T)={0}$",
+          "truth": false,
+          "proof": "The range is a line containing nonzero vectors, not the zero subspace."
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186366054,
+          "value": "II and III only",
+          "labels": [
+            "II",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186366055,
+          "value": "None of the listed",
+          "labels": []
+        },
+        {
+          "answer_eid": 17592186366056,
+          "value": "I only",
+          "labels": [
+            "I"
+          ]
+        },
+        {
+          "answer_eid": 17592186366057,
+          "value": "All of the listed",
+          "labels": [
+            "I",
+            "II",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186366058,
+          "value": "II only",
+          "labels": [
+            "II"
+          ]
+        }
+      ],
+      "original_solution_preserved": "Recall that when the image of a linear transformation $T$ in ${R}^{2}$ with the standard matrix $T$ is a one-dimensional line, then\n\n$$\n\\text{rank}(T)=\\text{rank}(T)=1\n$$\n\nand, according to the rank-nullity theorem, \n\n$$\n\\begin{aligned}\\text{nullity}(T)=\\text{nullity}(T) & =2-\\text{rank}(T) \\\\  & =2-1 \\\\  & =1.\\end{aligned}\n$$\n\nWith that in mind, let's examine our statements in turn. \n\n- Statement I is false. \nNotice that the point $(1,3)$ does not satisfy the equation of the line $y=-3x$ since $3\\ne -3\\cdot 1.$ Therefore, the vector $⟨1,3⟩\\notin \\text{Im}(T).$\n\n- Statement II is true. Indeed, \nsince $T$ maps ${R}^{2}$ onto a line passing through the origin, we have that the standard matrix $T$ is singular. Hence, $\\text{Ker}(T)\\ne {0}.$\n\n- Statement III is false. \nFor example,  the point $(1,-3)$ satisfies the equation  $y=-3x$ since $-3=-3\\cdot 1.$ Therefore, the vector $⟨1,-3⟩\\in \\text{Im}(T).$ Thus, $\\text{Im}(T)\\ne {0}.$",
+      "source_evidence": {
+        "path": "reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/review-snapshot.json",
+        "sha256": "7d58e323ace2b9220039a601a82ee1e5dad9780a006d1ab735775c42181dbccb",
+        "question_eid": 17592186366052
+      },
+      "source_list_preserved": true,
+      "source_equations_preserved": true,
+      "preview_status": "not_prepared",
+      "commit_status": "not_submitted",
+      "issue_kind": "missing_linear_map_premise",
+      "rationale": "Rank-nullity and matrix nullity require a linear transformation. Onto a line alone neither provides a standard matrix nor guarantees a nontrivial zero fibre. The source solution explicitly invokes linearity, so supplying that premise recovers the intended problem rather than silently assuming an unstated restriction.",
+      "without_clarification": {
+        "interpretation": "T may be any map onto the specified line.",
+        "correct_labels": "underdetermined; II is not implied, and nullity is undefined for a general nonlinear map",
+        "proof": "Define s(u,v)=u if u!=0, and s(0,v)=v^2. This function is onto R and its zero fibre is only (0,0). The nonlinear map T(u,v)=(s,-3s) maps onto the specified line, yet T^{-1}(0)={(0,0)}. Thus even interpreting kernel as the zero fibre does not establish statement II. If kernel/nullity are reserved for linear maps, their use itself needs the missing linearity premise."
+      },
+      "with_clarification_proof": "A linear map R^2 onto the given nonzero line has rank 1. Rank-nullity yields nullity 2-1=1, so its kernel is nontrivial and II is true. (1,3) is not on y=-3x, so it is not in the specified range. The range is a line containing nonzero vectors, not the zero subspace.",
+      "solution_change_required": false,
+      "optional_prompt_repairs": [],
+      "proposed_prompt": "If the linear transformation $T$ maps ${R}^{2}$ onto the line $y=-3x$ then, which of the following statements are true?\n\nSelect all that apply.\n\n- **I.** $⟨1,3⟩$ belongs to the range of $T$\n\n- **II.** $\\text{Ker}(T)\\ne {0}$\n\n- **III.** $\\text{Im}(T)={0}$",
+      "problem_after": "If the linear transformation $T$ maps ${R}^{2}$ onto the line $y=-3x$ then, which of the following statements are true?\n\nSelect all that apply.\n\n- **I.** $⟨1,3⟩$ belongs to the range of $T$\n\n- **II.** $\\text{Ker}(T)\\ne {0}$\n\n- **III.** $\\text{Im}(T)={0}$",
+      "proposed_prompt_clarified_unlabelled": "If the linear transformation $T$ maps ${R}^{2}$ onto the line $y=-3x$ then, which of the following statements are true?\n\n- $⟨1,3⟩$ belongs to the range of $T$\n\n- $\\text{Ker}(T)\\ne {0}$\n\n- $\\text{Im}(T)={0}$"
+    },
+    {
+      "id": 17592186366059,
+      "question_eid": 17592186366059,
+      "ma_id": "q-38305",
+      "decision": "convert_with_necessary_prompt_clarification",
+      "necessary": true,
+      "necessity": "necessary_to_make_the_preserved_database_key_unambiguous",
+      "original_prompt": "If $T$ maps ${R}^{2}$ onto the line $5y=6x$ then, which of the following statements are true?\n\n- $⟨\\frac{6}{5},1⟩\\in \\text{Im}(T)$\n- $\\text{Ker}(T)\\ne {0}$\n- $\\text{nullity}(T)=0$, where $T$ is the standard matrix of $T$",
+      "current_prompt": "If $T$ maps ${R}^{2}$ onto the line $5y=6x$ then, which of the following statements are true?\n\n- $⟨\\frac{6}{5},1⟩\\in \\text{Im}(T)$\n- $\\text{Ker}(T)\\ne {0}$\n- $\\text{nullity}(T)=0$, where $T$ is the standard matrix of $T$",
+      "conversion_only_prompt": "If $T$ maps ${R}^{2}$ onto the line $5y=6x$ then, which of the following statements are true?\n\nSelect all that apply.\n\n- **I.** $⟨\\frac{6}{5},1⟩\\in \\text{Im}(T)$\n\n- **II.** $\\text{Ker}(T)\\ne {0}$\n\n- **III.** $\\text{nullity}(T)=0$, where $T$ is the standard matrix of $T$",
+      "correct_labels": [
+        "II"
+      ],
+      "database_key": {
+        ":answer/id": "e5ff393d-6aa6-52e0-80d1-5e6793a9819d",
+        ":answer/type": {
+          ":db/id": 17592186045499,
+          ":db/ident": ":answer.type/text"
+        },
+        ":answer/value": "II only",
+        ":db/id": 17592186366065
+      },
+      "key_change": false,
+      "atomic_options": [
+        {
+          "label": "I",
+          "text": "$⟨\\frac{6}{5},1⟩\\in \\text{Im}(T)$",
+          "truth": false,
+          "proof": "At (6/5,1), 5y=5 differs from 6x=36/5, so the point is not in the range line."
+        },
+        {
+          "label": "II",
+          "text": "$\\text{Ker}(T)\\ne {0}$",
+          "truth": true,
+          "proof": "For the intended linear map R^2 onto a line, rank=1 and nullity=2-1=1; the kernel is nontrivial."
+        },
+        {
+          "label": "III",
+          "text": "$\\text{nullity}(T)=0$, where $T$ is the standard matrix of $T$",
+          "truth": false,
+          "proof": "Rank-nullity gives nullity 1, not 0."
+        }
+      ],
+      "choice_mapping": [
+        {
+          "answer_eid": 17592186366061,
+          "value": "None of the listed",
+          "labels": []
+        },
+        {
+          "answer_eid": 17592186366062,
+          "value": "I only",
+          "labels": [
+            "I"
+          ]
+        },
+        {
+          "answer_eid": 17592186366063,
+          "value": "I and II only",
+          "labels": [
+            "I",
+            "II"
+          ]
+        },
+        {
+          "answer_eid": 17592186366064,
+          "value": "All of the listed",
+          "labels": [
+            "I",
+            "II",
+            "III"
+          ]
+        },
+        {
+          "answer_eid": 17592186366065,
+          "value": "II only",
+          "labels": [
+            "II"
+          ]
+        }
+      ],
+      "original_solution_preserved": "Recall that when the image of a linear transformation $T$ in ${R}^{2}$ with the standard matrix $T$ is a one-dimensional line, then\n\n$$\n\\text{rank}(T)=\\text{rank}(T)=1\n$$\n\nand, according to the rank-nullity theorem, \n\n$$\n\\begin{aligned}\\text{nullity}(T)=\\text{nullity}(T) & =2-\\text{rank}(T) \\\\  & =2-1 \\\\  & =1.\\end{aligned}\n$$\n\nWith that in mind, let's examine our statements in turn. \n\n- Statement I is false.\nNotice that the point $(\\frac{6}{5},1)$ does not satisfy the equation of the line $5y=6x$ since $5\\cdot 1\\ne \\frac{6}{5}\\cdot 6.$ Therefore, \n$⟨\\frac{6}{5},1⟩\\notin \\text{Im}(T).$\n\n- Statement II is true.\nSince $T$ maps ${R}^{2}$ onto a line passing through the origin, we have that the standard matrix $T$ is singular. So, $\\text{Ker}(T)\\ne {0}.$\n\n- Statement III is false.\nSince  statement II is true we have that $\\text{nullity}(T)=\\text{dim(Ker}(T))\\ne 0.$",
+      "source_evidence": {
+        "path": "reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/review-snapshot.json",
+        "sha256": "7d58e323ace2b9220039a601a82ee1e5dad9780a006d1ab735775c42181dbccb",
+        "question_eid": 17592186366059
+      },
+      "source_list_preserved": true,
+      "source_equations_preserved": true,
+      "preview_status": "not_prepared",
+      "commit_status": "not_submitted",
+      "issue_kind": "missing_linear_map_premise",
+      "rationale": "Rank-nullity and matrix nullity require a linear transformation. Onto a line alone neither provides a standard matrix nor guarantees a nontrivial zero fibre. The source solution explicitly invokes linearity, so supplying that premise recovers the intended problem rather than silently assuming an unstated restriction.",
+      "without_clarification": {
+        "interpretation": "T may be any map onto the specified line.",
+        "correct_labels": "underdetermined; II is not implied, and nullity is undefined for a general nonlinear map",
+        "proof": "Define s(u,v)=u if u!=0, and s(0,v)=v^2. This function is onto R and its zero fibre is only (0,0). The nonlinear map T(u,v)=(5s,6s) maps onto the specified line, yet T^{-1}(0)={(0,0)}. Thus even interpreting kernel as the zero fibre does not establish statement II. If kernel/nullity are reserved for linear maps, their use itself needs the missing linearity premise."
+      },
+      "with_clarification_proof": "A linear map R^2 onto the given nonzero line has rank 1. Rank-nullity yields nullity 2-1=1, so its kernel is nontrivial and II is true. At (6/5,1), 5y=5 differs from 6x=36/5, so the point is not in the range line. Rank-nullity gives nullity 1, not 0.",
+      "solution_change_required": false,
+      "optional_prompt_repairs": [
+        {
+          "description": "Use a separate matrix symbol in statement III to avoid overloading T as both transformation and its standard matrix.",
+          "necessary": false
+        }
+      ],
+      "proposed_prompt": "If the linear transformation $T$ maps ${R}^{2}$ onto the line $5y=6x$ then, which of the following statements are true?\n\nSelect all that apply.\n\n- **I.** $⟨\\frac{6}{5},1⟩\\in \\text{Im}(T)$\n\n- **II.** $\\text{Ker}(T)\\ne {0}$\n\n- **III.** $\\text{nullity}(T)=0$, where $T$ is the standard matrix of $T$",
+      "problem_after": "If the linear transformation $T$ maps ${R}^{2}$ onto the line $5y=6x$ then, which of the following statements are true?\n\nSelect all that apply.\n\n- **I.** $⟨\\frac{6}{5},1⟩\\in \\text{Im}(T)$\n\n- **II.** $\\text{Ker}(T)\\ne {0}$\n\n- **III.** $\\text{nullity}(T)=0$, where $T$ is the standard matrix of $T$",
+      "proposed_prompt_clarified_unlabelled": "If the linear transformation $T$ maps ${R}^{2}$ onto the line $5y=6x$ then, which of the following statements are true?\n\n- $⟨\\frac{6}{5},1⟩\\in \\text{Im}(T)$\n\n- $\\text{Ker}(T)\\ne {0}$\n\n- $\\text{nullity}(T)=0$, where $T$ is the standard matrix of $T$"
+    }
+  ]
+}
