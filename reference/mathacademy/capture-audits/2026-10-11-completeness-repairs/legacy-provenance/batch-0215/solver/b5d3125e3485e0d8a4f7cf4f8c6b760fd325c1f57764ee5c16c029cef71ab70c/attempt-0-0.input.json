@@ -1,0 +1,182 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-36911\", \"problem\": \"Given that $f(x,y)=\\\\operatorname{ln}⁡({x}^{2}+1)+2(y-3)^{2}$, find the points $(x,y)$ where $∇f(x,y)=0.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-36970\", \"problem\": \"Given $h(x,y,z)=xy+x{y}^{2}+{z}^{3}.$ Find the points $(x,y,z)$ where $∇h(x,y,z)=0.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-181683\", \"problem\": \"![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14108214/assets/e2591e9da960008980cf96184975ef19713735814183a97ca8c8f784536fced5.png)\\n\\nDescribe the shaded region shown above using set-builder notation.\\n\\n$$\\n\\\\{(x,y)\\\\in {{field-1}}\\\\,:\\\\,-x-3\\\\,{{field-2}}\\\\,y\\\\,{{field-3}}\\\\,x+4\\\\}\\n$$\", \"field_keys\": [\"field-1\", \"field-2\", \"field-3\"]}]",
+      "worked_solution": "q-36911:\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂f}{∂x} & =\\frac{∂}{∂x}(\\operatorname{ln}⁡({x}^{2}+1)+2(y-3)^{2}) \\\\  & =\\frac{1}{{x}^{2}+1}\\cdot 2x+0 \\\\  & =\\frac{2x}{{x}^{2}+1} \\\\ \\frac{∂f}{∂y} & =\\frac{∂}{∂y}(\\operatorname{ln}⁡(x+1)+2(y-3)^{2}) \\\\  & =0+2\\cdot 2(y-3) \\\\  & =4(y-3)\\end{aligned}\n$$\n\nHence, $∇f(x,y)=\\frac{2x}{{x}^{2}+1}\\,i+4(y-3)\\,j.$\n\nNow, we solve $∇f(x,y)=0:$ \n\n$$\n\\frac{2x}{{x}^{2}+1}\\,i+4(y-3)\\,j=0\\text{ }i+0\\text{ }j\n$$\n\nSo, by equating the coefficients of $i$ and $j,$ we obtain:\n\n$$\n\\{\\begin{aligned}\\frac{2x}{{x}^{2}+1}=0 \\\\ 4(y-3)=0\\end{aligned}\n$$\n\nFrom the first equation, we get $x=0$ and from the second equation, we obtain $y=3.$ \n\nTherefore, $∇f(x,y)=0$ at the point $(0,3).$\n\nq-36970:\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}{h}_{x}(x,y,z) & =\\frac{∂}{∂x}(xy+x{y}^{2}+{z}^{3}) \\\\  & =y+{y}^{2}+0 \\\\  & =y+{y}^{2} \\\\ {h}_{y}(x,y,z) & =\\frac{∂}{∂y}(xy+x{y}^{2}+{z}^{3}) \\\\  & =x+2xy+0 \\\\  & =x+2xy \\\\ {h}_{z}(x,y,z) & =\\frac{∂}{∂z}(xy+x{y}^{2}+{z}^{3}) \\\\  & =0+0+3{z}^{2} \\\\  & =3{z}^{2}\\end{aligned}\n$$\n\nHence, $∇h(x,y,z)=(y+{y}^{2})\\,i+(x+2xy)\\,j+3{z}^{2}\\,k.$\n\nNow, we solve $∇f(x,y,z)=0:$\n\n$$\n\\begin{aligned}(y+{y}^{2})\\,i+(x+2xy)\\,j+3{z}^{2}\\,k & =0\\text{ }i+0\\text{ }j+0\\text{ }j\\end{aligned}\n$$\n\nSo, by equating the coefficients of $i$, $j$, and $k$, we obtain:\n\n$$\n\\{\\begin{aligned}y+{y}^{2}=0 \\\\ x+2xy=0 \\\\ 3{z}^{2}=0\\end{aligned}\n$$\n\nThe first equation can be written as $y(1+y)=0$, which gives $y=0$ or $y=-1.$ Substituting these into the second equation, we obtain:\n\n$$\n\\begin{aligned}x+2x(0) & =0 \\\\ x & =0\\end{aligned}\n$$\n\nor,\n\n$$\n\\begin{aligned}x+2x(-1) & =0 \\\\ x & =0\\end{aligned}\n$$\n\nFinally, from the third equation, we get $z=0.$\n\nTherefore, $∇h(x,y,z)=0$ at two points: $(0,0,0)$ and $(0,-1,0).$\n\nq-181683:\nThe points in our set include all those that lie *above* the line $y=-x-3$ and *below* the line $y=x+4.$\n\nA point $P(x,y)$ lies *inside* the shaded region if the following conditions are satisfied:\n\n$$\ny>-x-3,\\,y<x+4.\n$$\n\n \n\nCombining this into a single condition, we have\n\n$$\n-x-3<y<x+4.\n$$\n\nWe must also include the lines $y=-x-3$ and $y=x+4$ since the boundaries are included in the set (the lines are solid). So, we change the corresponding inequality symbols above as follows:\n\n$$\n-x-3\\le y\\le x+4\n$$\n\nMoreover, since we're considering *every* real value in this region, $x\\in R,y\\in R,$ and therefore \n\n$$\n(x,y)\\in R\\times R={R}^{2}.\n$$\n\nTherefore, we can write the set as\n\n$$\n\\{(x,y)\\in {R}^{2}\\,:\\,-x-3\\le y\\le x+4\\}.\n$$",
+      "fields": [
+        {
+          "key": "q-36911/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "(1,2)"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "(0,0)"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "(\\frac{1}{2},\\frac{3}{4})"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "(3,0)"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "(0,3)"
+            }
+          ]
+        },
+        {
+          "key": "q-36970/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$(0,0,0)$ only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$(0,-1,0)$ only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$(0,0,0)$ and  $(-1,-1,-1)$"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "$(0,0,0)$ and $(0,-1,0)$"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "$(1,-1,1)$ only"
+            }
+          ]
+        },
+        {
+          "key": "q-181683/field-1",
+          "type": "select",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "{R}^{2}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "N"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "R"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "C"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "{C}^{2}"
+            }
+          ]
+        },
+        {
+          "key": "q-181683/field-2",
+          "type": "select",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": ">"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "<"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\le "
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\ne "
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\ge "
+            }
+          ]
+        },
+        {
+          "key": "q-181683/field-3",
+          "type": "select",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\ne "
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": ">"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\le "
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "<"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\ge "
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14108214/assets/e2591e9da960008980cf96184975ef19713735814183a97ca8c8f784536fced5.png",
+          "sha256": "e2591e9da960008980cf96184975ef19713735814183a97ca8c8f784536fced5"
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12cab-671c-75f2-9dd0-10fa65fbd134",
+  "previous_failures": []
+}

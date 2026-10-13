@@ -1,0 +1,142 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-36623\", \"problem\": \"Given that $f(x,y)=\\\\operatorname{arctan}⁡(\\\\frac{x}{y}),$ find the set of values $(x,y)$ on which $\\\\frac{∂f}{∂y}$ exists.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-132639\", \"problem\": \"Given that $f(x,y,z)=\\\\frac{\\\\operatorname{ln}⁡(z)}{x+y},$ find the set of values $(x,y,z)$ on which $\\\\frac{∂f}{∂z}$ exists.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-132655\", \"problem\": \"Given that $f(x,y)=\\\\frac{{e}^{-x}}{y}$ and\\n\\n$$\\n\\\\frac{∂f}{∂x}=-\\\\frac{{e}^{-x}}{y},\\\\,\\\\frac{∂f}{∂y}=-\\\\frac{{e}^{-x}}{{y}^{2}},\\n$$\\n\\nfind the set of values $(x,y)$ where all partial derivatives of $f$ exist.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-65252\", \"problem\": \"Given that $f(x,y)=x\\\\operatorname{ln}⁡(xy)$ and\\n\\n$$\\n\\\\frac{∂f}{∂x}=1+\\\\operatorname{ln}⁡(xy),\\\\,\\\\frac{∂f}{∂y}=\\\\frac{x}{y},\\n$$\\n\\nfind the set of values $(x,y)$ where all partial derivatives of $f$ exist.\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-36623:\nFirst, notice that $f(x,y)$ is not defined when $y=0.$ So, the domain of $f$ is \n\n$$\n{D}_{f}=\\{(x,y)\\,:\\,y\\ne 0\\}.\n$$\n\nNow, we compute the partial derivatives of $f(x,y)$ with respect to $y:$\n\n$$\n\\begin{aligned}{f}_{y}(x,y) & =\\frac{∂}{∂y}(\\operatorname{arctan}⁡(\\frac{x}{y})) \\\\  & =\\frac{-\\frac{x}{{y}^{2}}}{1+{(\\frac{x}{y})}^{2}} \\\\  & =-\\frac{x}{{y}^{2}+{x}^{2}}\\end{aligned}\n$$\n\nThe function ${f}_{y}(x,y)$ is not defined at the point $(0,0).$ So, the domain of ${f}_{y}$ is\n\n$$\n{D}_{{f}_{y}}=\\{(x,y)\\,:\\,{x}^{2}+{y}^{2}\\ne 0\\}.\n$$\n\nFinally, we conclude that the partial derivative of $f$ with respect to $y$ exists on the set\n\n$$\n\\begin{aligned}{D}_{f}\\cap {D}_{{f}_{y}} & =\\{(x,y)\\,:\\,y\\ne 0\\}\\cap \\{(x,y)\\,:\\,{x}^{2}+{y}^{2}\\ne 0\\} \\\\  & =\\{(x,y)\\,:\\,y\\ne 0\\}.\\end{aligned}\n$$\n\nq-132639:\nFirst, notice that $f(x,y,z)$ is defined only when \n\n$$\n\\begin{aligned}z & >0\\,\\text{and}\\,x+y\\ne 0\\end{aligned}\n$$\n\nSo, the domain of $f$ is \n\n$$\n{D}_{f}=\\{(x,y,z)\\,:\\,z>0\\,\\,\\text{and}\\,\\,x+y\\ne 0\\}.\n$$\n\nNow, we compute the partial derivative of $f(x,y,z)$ with respect to $z:$\n\n$$\n\\begin{aligned}{f}_{z}(x,y,z) & =\\frac{∂}{∂z}(\\frac{\\operatorname{ln}⁡(z)}{x+y}) \\\\  & =\\frac{1}{x+y}\\cdot \\frac{1}{z} \\\\  & =\\frac{1}{z(x+y)}\\end{aligned}\n$$\n\nThe function ${f}_{z}(x,y,z)$ is defined only for \n\n$$\n\\begin{aligned}z(x+y) & \\ne 0\\end{aligned}\n$$\n\nSo, the domain of ${f}_{z}$ is\n\n$$\n{D}_{{f}_{z}}=\\{(x,y,z)\\,:\\,z\\ne 0\\,\\,\\text{and}\\,\\,x+y\\ne 0\\}.\n$$\n\nFinally, we conclude that the partial derivative of $f$ with respect to $z$ exists on the set\n\n$$\n\\begin{aligned}{D}_{f}\\cap {D}_{{f}_{z}} & =\\{(x,y,z)\\,:\\,z>0\\,\\,\\text{and}\\,\\,x+y\\ne 0\\}\\cap \\{(x,y,z)\\,:\\,z\\ne 0\\,\\,\\text{and}\\,\\,x+y\\ne 0\\} \\\\  & =\\{(x,y,z)\\,:\\,z>0\\,\\,\\text{and}\\,\\,x+y\\ne 0\\}.\\end{aligned}\n$$\n\nq-132655:\nFirst, notice that $f(x,y)=\\frac{{e}^{-x}}{y}$ is defined only when $y\\ne 0.$ So, the domain of $f$ is \n\n$$\n{D}_{f}=\\{(x,y)\\,:\\,y\\ne 0\\}.\n$$\n\nAs for the partial derivatives, we have the following.\n\n- The function ${f}_{x}(x,y)=-\\frac{{e}^{-x}}{y}$ is defined only when $y\\ne 0.$ So, the domain of ${f}_{x}$ is \n\n$$\n{D}_{{f}_{x}}=\\{(x,y)\\,:\\,y\\ne 0\\}.\n$$\n\n- Similarly, the domain of ${f}_{y}$ is the same: \n\n$$\n{D}_{{f}_{y}}=\\{(x,y)\\,:\\,y\\ne 0\\}\n$$\n\nFinally, we conclude that the partials of $f$ exist on the set\n\n$$\n\\begin{aligned}{D}_{f}\\cap {D}_{{f}_{x}}\\cap {D}_{{f}_{y}} & =\\{(x,y)\\,:\\,y\\ne 0\\}\\cap \\{(x,y)\\,:\\,y\\ne 0\\}\\cap \\{(x,y)\\,:\\,y\\ne 0\\} \\\\  & =\\{(x,y)\\,:\\,y\\ne 0\\}.\\end{aligned}\n$$\n\nq-65252:\nFirst, notice that $f(x,y)=x\\operatorname{ln}⁡(xy)$ is defined only when $xy>0.$ So, the domain of $f$ is \n\n$$\n{D}_{f}=\\{(x,y)\\,:\\,xy>0\\}.\n$$\n\nAs for the partial derivatives, we have the following.\n\n- The function ${f}_{x}(x,y)=1+\\operatorname{ln}⁡(xy)$ is defined only when $xy>0.$ So, the domain of ${f}_{x}$ is \n\n$$\n{D}_{{f}_{x}}=\\{(x,y)\\,:\\,xy>0\\}.\n$$\n\n- The function ${f}_{y}(x,y)=\\frac{x}{y}$ is defined only when $y\\ne 0.$ So, the domain of ${f}_{y}$ is \n\n$$\n{D}_{{f}_{y}}=\\{(x,y)\\,:\\,y\\ne 0\\}.\n$$\n\nFinally, we conclude that the partials of $f$ exist on the set\n\n$$\n\\begin{aligned}{D}_{f}\\cap {D}_{{f}_{x}}\\cap {D}_{{f}_{y}} & =\\{(x,y)\\,:\\,xy>0\\}\\cap \\{(x,y)\\,:\\,xy>0\\}\\cap \\{(x,y)\\,:\\,y\\ne 0\\} \\\\  & =\\{(x,y)\\,:\\,xy>0\\}.\\end{aligned}\n$$",
+      "fields": [
+        {
+          "key": "q-36623/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "${f}_{y}$ exists everywhere on the $xy$-plane"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,x\\ne 0\\}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y\\ne 0\\}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y\\ne -x\\}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y\\ne x\\}"
+            }
+          ]
+        },
+        {
+          "key": "q-132639/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\{(x,y,z)\\,:\\,z>0\\,\\,\\text{and}\\,\\,x+y\\ne 0\\}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\{(x,y,z)\\,:\\,x+y\\ne 0\\}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\{(x,y,z)\\,:\\,z>0\\}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\{(x,y,z)\\,:\\,z\\ne 0\\,\\,\\text{and}\\,\\,x+y\\ne 0\\}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\{(x,y,z)\\,:\\,z>0\\,\\,\\text{and}\\,\\,x+y>0\\}"
+            }
+          ]
+        },
+        {
+          "key": "q-132655/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y>0\\,\\text{and}\\,x>0\\}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y\\ge 0\\}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y\\ne 0\\}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y\\ne 0\\,\\text{and}\\,x\\ge 0\\}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y>0\\}"
+            }
+          ]
+        },
+        {
+          "key": "q-65252/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y>0\\}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,y\\ne 0\\}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,xy<0\\}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,xy>0\\}"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\{(x,y)\\,:\\,xy\\ge 0\\}"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-20966\", \"problem\": \"Consider the augmented matrix $M$ given by \\n\\n$$\\nM=[\\\\begin{aligned}1 & -1 & 4 & -1 \\\\\\\\ 0 & 0 & 0 & 0 \\\\\\\\ 0 & 0 & 0 & 0\\\\end{aligned}].\\n$$\\n\\nFind the general solution of the linear system represented by the matrix.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-73953\", \"problem\": \"Consider the augmented matrix $M$ given by \\n\\n$$\\nM=[\\\\begin{aligned}3 & 5 & 2 & 1 \\\\\\\\ 0 & -2 & 4 & 3 \\\\\\\\ 0 & 0 & 0 & 10\\\\end{aligned}].\\n$$\\n\\nFind the general solution of the linear system represented by the matrix.\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-20966:\nThe system corresponding to $M$ is\n\n$$\n\\{\\begin{aligned}x-y+4z=-1 \\\\ 0x+0y+0z=0 \\\\ 0x+0y+0z=0.\\end{aligned}\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations $0x+0y+0z=0,$ we can remove these equations from the system. So, our system now consists of just a single equation:\n\n$$\nx-y+4z=-1\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables $y$ and $z.$ That means we need to find $x$ in terms of $y,z.$ Doing this, we get\n\n$$\nx=-1+y-4z.\n$$\n\nTherefore, the general solution is\n\n$$\n\\{\\begin{aligned}x=-1+y-4z \\\\ y=y \\\\ z=z,\\end{aligned}\n$$\n\nwhere $y$, $z$ (free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]=[\\begin{aligned}-1+y-4z \\\\ y \\\\ z\\end{aligned}]=[\\begin{aligned}-1 \\\\ 0 \\\\ 0\\end{aligned}]+y[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]+z[\\begin{aligned}-4 \\\\ 0 \\\\ 1\\end{aligned}],\\,y,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$\n\nq-73953:\nThe system corresponding to $M$ is\n\n$$\n\\{\\begin{aligned}3x+5y+2z=1 \\\\ 0x-2y+4z=3 \\\\ 0x+0y+0z=10\\end{aligned}\n$$\n\nSince there are no such numbers $x,y,z$ that form a solution of the final equation $0x+0y+0z=10,$ we can conclude that our system has no solution.",
+      "answer_fields": [
+        {
+          "key": "q-20966/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-1 \\\\ 0 \\\\ 0\\end{aligned}]+y[\\begin{aligned}0 \\\\ 0 \\\\ 1\\end{aligned}]+z[\\begin{aligned}-4 \\\\ 0 \\\\ 1\\end{aligned}],\\,y,z\\in (-\\infty ,\\infty )",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-1 \\\\ 0 \\\\ 0\\end{aligned}]+y[\\begin{aligned}1 \\\\ 0 \\\\ -1\\end{aligned}]+z[\\begin{aligned}4 \\\\ 0 \\\\ 1\\end{aligned}],\\,y,z\\in (-\\infty ,\\infty )",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "text",
+              "value": "No solution",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-1 \\\\ 0 \\\\ 0\\end{aligned}]+y[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]+z[\\begin{aligned}-4 \\\\ 0 \\\\ 1\\end{aligned}],\\,y,z\\in (-\\infty ,\\infty )",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-1 \\\\ 0 \\\\ 0\\end{aligned}]+y[\\begin{aligned}0 \\\\ 1 \\\\ -1\\end{aligned}]+z[\\begin{aligned}4 \\\\ 0 \\\\ 1\\end{aligned}],\\,y,z\\in (-\\infty ,\\infty )",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-73953/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-3 \\\\ 0 \\\\ 0\\end{aligned}]+y[\\begin{aligned}5 \\\\ 0 \\\\ -1\\end{aligned}]+z[\\begin{aligned}3 \\\\ 0 \\\\ 1\\end{aligned}],\\,y,z\\in (-\\infty ,\\infty )",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "text",
+              "value": "No solution",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-2 \\\\ 0 \\\\ 0\\end{aligned}]+y[\\begin{aligned}2 \\\\ 0 \\\\ -1\\end{aligned}]+z[\\begin{aligned}4 \\\\ 0 \\\\ 1\\end{aligned}],\\,y,z\\in (-\\infty ,\\infty )",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-1 \\\\ 0 \\\\ 0\\end{aligned}]+y[\\begin{aligned}2 \\\\ 0 \\\\ -1\\end{aligned}]+z[\\begin{aligned}3 \\\\ 0 \\\\ 1\\end{aligned}],\\,y,z\\in (-\\infty ,\\infty )",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "[\\begin{aligned}-1 \\\\ 0 \\\\ 0\\end{aligned}]+y[\\begin{aligned}1 \\\\ 0 \\\\ -1\\end{aligned}]+z[\\begin{aligned}4 \\\\ 0 \\\\ 1\\end{aligned}],\\,y,z\\in (-\\infty ,\\infty )",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": []
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

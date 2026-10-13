@@ -1,0 +1,80 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-73860\", \"problem\": \"At which points on the surface $z={x}^{3}-3x+{y}^{2}+2y$ is the tangent plane horizontal?\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-37982\", \"problem\": \"At which points on the surface $z=3xy-\\\\operatorname{ln}⁡y$ is the tangent plane perpendicular to the vector  $v\\\\,=\\\\,⟨3,5,-1⟩?$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-73860:\nThe Cartesian equation of the tangent plane to the surface $z=f(x,y)$ at the point $({x}_{0},{y}_{0},{z}_{0})$ on the surface can be written as\n\n$$\nz-{z}_{0}=(x-{x}_{0})\\frac{∂f}{∂x}({x}_{0},{y}_{0})+(y-{y}_{0})\\frac{∂f}{∂y}({x}_{0},{y}_{0}),\n$$\n\nwhere $⟨\\frac{∂f}{∂x}({x}_{0},{y}_{0}),\\frac{∂f}{∂y}({x}_{0},{y}_{0}),-1⟩$ represents a normal vector to the tangent plane.\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂f}{∂x} & =\\frac{∂}{∂x}({x}^{3}-3x+{y}^{2}+2y) \\\\  & =3{x}^{2}-3 \\\\ \\frac{∂f}{∂y} & =\\frac{∂}{∂y}({x}^{3}-3x+{y}^{2}+2y) \\\\  & =2y+2\\end{aligned}\n$$\n\n \n\nHence, the normal vector to the tangent plane is \n\n$$\n⟨3{x}^{2}-3,\\,2y+2,\\,-1⟩.\n$$\n\nNote that the tangent plane is horizontal if and only if the normal vector is vertical. This means that the $x$- and $y$-components of the vector must be $0:$\n\n$$\n\\{\\begin{aligned}\\frac{∂f}{∂x}=0 \\\\ \\frac{∂f}{∂y}=0\\end{aligned}\\,⟹\\,\\{\\begin{aligned}3{x}^{2}-3=0 \\\\ 2y+2=0\\end{aligned}\n$$\n\n \n\nFrom the first equation, we get $x=\\pm 1$ while the second equation gives $y=-1.$ \n\nFinally, substituting $x=-1$ and $y=-1$ into our function, we get\n\n$$\nz=(-1)^{3}-3(-1)+(-1)^{2}+2(-1)=1.\n$$\n\nSubstituting $x=1$ and $y=-1$ into our function, we get\n\n$$\nz=(1)^{3}-3(1)+(-1)^{2}+2(-1)=-3.\n$$\n\nTherefore, the points where the tangent plane is horizontal are $(-1,-1,1)$ and $(1,-1,-3).$\n\nq-37982:\nThe Cartesian equation of the tangent plane to the surface $z=f(x,y)$ at the point $({x}_{0},{y}_{0},{z}_{0})$ on the surface can be written as\n\n$$\nz-{z}_{0}=(x-{x}_{0})\\frac{∂f}{∂x}({x}_{0},{y}_{0})+(y-{y}_{0})\\frac{∂f}{∂y}({x}_{0},{y}_{0}),\n$$\n\nwhere $⟨\\frac{∂f}{∂x}({x}_{0},{y}_{0}),\\frac{∂f}{∂y}({x}_{0},{y}_{0}),-1⟩$ represents a normal vector to the tangent plane.\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂f}{∂x} & =\\frac{∂}{∂x}(3xy-\\operatorname{ln}⁡y) \\\\  & =3y \\\\ \\frac{∂f}{∂y} & =\\frac{∂}{∂y}(3xy-\\operatorname{ln}⁡y) \\\\  & =3x-\\frac{1}{y}\\end{aligned}\n$$\n\nHence, the normal vector to the tangent plane is \n\n$$\n⟨3y,\\,3x-\\frac{1}{y},\\,-1⟩\n$$\n\nOur tangent plane should be perpendicular to $⟨3,5,-1⟩.$ So, the normal vector of that plane must be parallel to that vector. In other words, for some constant $c$, we must have\n\n$$\nc\\cdot ⟨3y,\\,3x-\\frac{1}{y},\\,-1⟩=⟨3,5,-1⟩.\n$$\n\nEquating the corresponding coordinates, we obtain the following system:\n\n$$\n\\{\\begin{aligned}3cy=3 \\\\ 3cx-\\frac{c}{y}=5 \\\\ -c=-1\\end{aligned}\n$$\n\nFrom the third equation, we get $c=1.$ Substituting this into the first equation, we obtain \n\n$$\n3(1)y=3\\,⟹\\,y=1.\n$$\n\nAnd substituting $c=1$ and $y=1$ into the second equation, we have \n\n$$\n3(1)x-\\frac{1}{1}=5\\,⟹\\,x=2.\n$$\n\nFinally, substituting $x=2$ and $y=1$ into our function, we get\n\n$$\n\\begin{aligned}z & =3xy-\\operatorname{ln}⁡y \\\\  & =3(2)(1)-\\operatorname{ln}⁡(1) \\\\  & =6.\\end{aligned}\n$$\n\nTherefore, the tangent plane is perpendicular to the vector  $v$ at $(2,1,6).$",
+      "fields": [
+        {
+          "key": "q-73860/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$(1,-1,-3)$ only"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$(1,-1,2)$ and $(-1,-1,0)$"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$(-1,-1,1)$  only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "$(1,1,0)$ and $(-1,1,2)$"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "$(-1,-1,1)$ and $(1,-1,-3)$"
+            }
+          ]
+        },
+        {
+          "key": "q-37982/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$(0,e,-1)$ and $(1,e,e-1)$"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$(0,1,0)$ only"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$(2,1,6)$ only"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "$(1,1,3)$ and $(0,1,0)$"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "$(2,-1,1)$ only"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12cab-7af4-73c3-9948-0bcb2cbfae5f",
+  "previous_failures": []
+}

@@ -1,0 +1,142 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-89550\", \"problem\": \"![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14100385/assets/d6f00e63a577dff29021e50add69cf916b3f74ed90530b5f4c9f46295950b416.png)\\n\\nEvaluate the double integral ${∬}_{D}{x}^{3}\\\\,dA,\\\\,$\\nwhere $D$ is the region enclosed between the curves $4{x}^{2}+{y}^{2}=4$ and ${x}^{2}+{y}^{2}=4,$ above the $x$-axis, as shown in the picture.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-132561\", \"problem\": \"![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14100385/assets/4de0680e2b6f29892a44fb114653e01433519ae01401d528a1e0263d6577003b.png)\\n\\nEvaluate the double integral ${∬}_{D}3y\\\\,dA,\\\\,$\\nwhere $D$ is the region enclosed between the curves ${x}^{2}+{y}^{2}=5$ and $y=2x,$ above the $x$-axis, as shown in the picture.\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-75659\", \"problem\": \"Consider the following vectors:\\n\\n$$\\n{a}_{1}=[\\\\begin{aligned}1 \\\\\\\\ -1 \\\\\\\\ 2\\\\end{aligned}],\\\\,{a}_{2}=[\\\\begin{aligned}-1 \\\\\\\\ 2 \\\\\\\\ -2\\\\end{aligned}],\\\\,{a}_{3}=[\\\\begin{aligned}0 \\\\\\\\ -2 \\\\\\\\ 1\\\\end{aligned}].\\n$$\\n\\n \\n\\nAssume that ${x}_{1},{x}_{2},$ and ${x}_{3}$ are real numbers. Which of the following statements are true?\\n\\nI. The vectors ${a}_{1},{a}_{2},$ and ${a}_{3}$ are linearly dependent.\\n\\nII. The equation ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=0$ has only the trivial solution ${x}_{1}={x}_{2}={x}_{3}=0.$\\n\\nIII. The vectors ${a}_{1},{a}_{2},$ and ${a}_{3}$ are linearly independent.\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-89550:\nNotice that $D$ is a type II region. Since $x\\ge 0,$ we obtain the following equations in terms of $y:$\n\n$$\n\\begin{aligned}4{x}^{2}+{y}^{2}=4 & \\,⟹\\,x=\\sqrt{1-\\frac{{y}^{2}}{4}} \\\\ {x}^{2}+{y}^{2}=4 & \\,⟹\\,x=\\sqrt{4-{y}^{2}}\\end{aligned}\n$$\n\nNow, let's determine the limits of integration.\n\n- To determine the $y$-limits, we need to find the $y$-coordinates of the points at which the curves intersect. So, we set the following equation and solve it for $y:$\n\n$$\n\\begin{aligned}\\sqrt{1-\\frac{{y}^{2}}{4}} & =\\sqrt{4-{y}^{2}} \\\\ 1-\\frac{{y}^{2}}{4} & =4-{y}^{2} \\\\ 4-{y}^{2} & =16-4{y}^{2} \\\\ 3{y}^{2} & =12 \\\\ {y}^{2} & =4\\end{aligned}\n$$\n\nSo, since our region lies above the $x$-axis, the $y$-limits are \n$0\\le y\\le 2.$\n\n- To determine the left and right functions, we draw a horizontal arrow from left to right through the region, as usual.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14100385/assets/ec8853d64b58c40935b769745d5adb9ebc5c84b7f9407cc93dff4b809ed64ad5.png)\n\nAs a result, we get\n\n$$\nD=\\{(x,y)\\,:\\,0\\le y\\le 2,\\,\\sqrt{1-\\frac{{y}^{2}}{4}}\\le x\\le \\sqrt{4-{y}^{2}}\\}.\n$$\n\nSo, we can express the integral as follows:\n\n$$\n{∬}_{D}{x}^{3}\\,dA={\\int }_{0}^{2}{\\int }_{\\sqrt{1-{y}^{2}/4}}^{\\sqrt{4-{y}^{2}}}\\,{x}^{3}\\,dx\\,dy\n$$\n\nFirst, we evaluate the inner integral by integrating with respect to $x$, treating $y$ as a constant:\n\n$$\n\\begin{aligned}{\\int }_{0}^{2}{\\int }_{\\sqrt{1-{y}^{2}/4}}^{\\sqrt{4-{y}^{2}}}\\,{x}^{3}\\,dx\\,dy & ={\\int }_{0}^{2}[{\\int }_{\\sqrt{1-{y}^{2}/4}}^{\\sqrt{4-{y}^{2}}}\\,{x}^{3}\\,dx]\\,dy \\\\  & ={\\int }_{0}^{2}\\,{[\\,\\frac{1}{4}{x}^{4}\\,]}_{\\sqrt{1-{y}^{2}/4}}^{\\sqrt{4-{y}^{2}}}\\text{ }dy \\\\  & ={\\int }_{0}^{2}\\,\\frac{1}{4}[{(4-{y}^{2})}^{2}-{(1-\\frac{{y}^{2}}{4})}^{2}]dy \\\\  & =\\frac{1}{4}\\,{\\int }_{0}^{2}\\,[(16-8{y}^{2}+{y}^{4})-(1-\\frac{{y}^{2}}{2}+\\frac{{y}^{4}}{16})]dy \\\\  & =\\frac{1}{4}\\,{\\int }_{0}^{2}\\,(15-\\frac{15}{2}{y}^{2}+\\frac{15}{16}{y}^{4})dy \\\\  & =\\frac{15}{4}\\,{\\int }_{0}^{2}\\,(1-\\frac{{y}^{2}}{2}+\\frac{{y}^{4}}{16})dy\\end{aligned}\n$$\n\nThen, we integrate with respect to $y:$\n\n$$\n\\begin{aligned}\\frac{15}{4}\\,{\\int }_{0}^{2}\\,(1-\\frac{{y}^{2}}{2}+\\frac{{y}^{4}}{16})dy & =\\frac{15}{4}{[y-\\frac{{y}^{3}}{6}+\\frac{{y}^{5}}{80}]}_{0}^{2} \\\\  & =\\frac{15}{4}[(2-\\frac{4}{3}+\\frac{2}{5})-0] \\\\  & =4\\end{aligned}\n$$\n\nq-132561:\nNotice that $D$ is a type II region. Since $x\\ge 0,$ we obtain the following equations in terms of $y:$\n\n$$\n\\begin{aligned}{x}^{2}+{y}^{2}=5 & \\,⟹\\,x=\\sqrt{5-{y}^{2}} \\\\ y=2x & \\,⟹\\,x=\\frac{y}{2}\\end{aligned}\n$$\n\nNow, let's determine the limits of integration.\n\n- To determine the $y$-limits, we need to find the $y$-coordinates of the points at which the curves intersect. So, we set the following equation and solve it for $y:$\n\n$$\n\\begin{aligned}\\sqrt{5-{y}^{2}} & =\\frac{y}{2} \\\\ 5-{y}^{2} & =\\frac{{y}^{2}}{4} \\\\ 20-4{y}^{2} & ={y}^{2} \\\\ 5{y}^{2} & =20 \\\\ {y}^{2} & =4 \\\\ y & =\\pm 2\\end{aligned}\n$$\n\nSince our region lies above the $x$-axis, the $y$-limits are \n$0\\le y\\le 2.$\n\n- To determine the left and right functions, we draw a horizontal arrow from left to right through the region, as usual.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14100385/assets/db2d8b0a039490c1065fdb55771f47d36da4b6480e398b8bf8aea952fc2e8012.png)\n\nAs a result, we get\n\n$$\nD=\\{(x,y)\\,:\\,0\\le y\\le 2,\\,\\frac{y}{2}\\le x\\le \\sqrt{5-{y}^{2}}\\}.\n$$\n\nSo, we can express the integral as follows:\n\n$$\n{∬}_{D}3y\\,dA={\\int }_{0}^{2}{\\int }_{y/2}^{\\sqrt{5-{y}^{2}}}3y\\,dx\\,dy\n$$\n\nFirst, we evaluate the inner integral by integrating with respect to $x$, treating $y$ as a constant:\n\n$$\n\\begin{aligned}{\\int }_{0}^{2}{\\int }_{y/2}^{\\sqrt{5-{y}^{2}}}3y\\,dx\\,dy & ={\\int }_{0}^{2}3y[{\\int }_{y/2}^{\\sqrt{5-{y}^{2}}}dx]dy \\\\  & ={\\int }_{0}^{2}3y[x]_{y/2}^{\\sqrt{5-{y}^{2}}}\\,dy \\\\  & ={\\int }_{0}^{2}3y(\\sqrt{5-{y}^{2}}-\\frac{1}{2}y)dy \\\\  & ={\\int }_{0}^{2}(3y\\sqrt{5-{y}^{2}}-\\frac{3}{2}{y}^{2})dy\\end{aligned}\n$$\n\nThen, we integrate with respect to $y:$\n\n$$\n\\begin{aligned}{\\int }_{0}^{2}(3y\\sqrt{5-{y}^{2}}-\\frac{3}{2}{y}^{2})dy & ={[-(5-{y}^{2})^{3/2}-\\frac{1}{2}{y}^{3}]}_{0}^{2} \\\\  & =(-1-4)-(-5\\sqrt{5}-0)) \\\\  & =5\\sqrt{5}-5\\end{aligned}\n$$\n\nq-75659:\nWe say that three vectors ${v}_{1},{v}_{2},$ and ${v}_{3}$ are *linearly independent* if the only solution to the equation\n\n$$\n{x}_{1}{v}_{1}+{x}_{2}{v}_{2}+{x}_{3}{v}_{3}=0\n$$\n\nis ${x}_{1}={x}_{2}={x}_{3}=0.$ Otherwise, the vectors are *linearly dependent*.\n\nWith that in mind, let's examine our statements.\n\nThe equation ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=0$ corresponds to the system \n\n$$\n\\{\\begin{aligned}{x}_{1}-{x}_{2}=0 \\\\ -{x}_{1}+2{x}_{2}-2{x}_{3}=0 \\\\ 2{x}_{1}-2{x}_{2}+{x}_{3}=0.\\end{aligned}\n$$\n\nTo solve the system, we create its augmented matrix and reduce it using Gaussian elimination:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & -1 & 0 & 0 \\\\ -1 & 2 & -2 & 0 \\\\ 2 & -2 & 1 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}1 & -1 & 0 & 0 \\\\ 0 & 1 & -2 & 0 \\\\ 2 & -2 & 1 & 0\\end{aligned}] & {R}_{3} & :={R}_{3}+(-2){R}_{1} \\\\  & ∼[\\begin{aligned}1 & -1 & 0 & 0 \\\\ 0 & 1 & -2 & 0 \\\\ 0 & 0 & 1 & 0\\end{aligned}]\\end{aligned}\n$$\n\nSo, the system is now\n\n$$\n\\{\\begin{aligned}{x}_{1}-{x}_{2}=0 \\\\ {x}_{2}-2{x}_{3}=0 \\\\ {x}_{3}=0.\\end{aligned}\n$$\n\nFrom the third equation, we get ${x}_{3}=0.$ Substituting this into the second equation, we get\n\n$$\n{x}_{2}-2(0)=0\\,⟹\\,{x}_{2}=0\n$$\n\nand, substituting this into the first equation, we obtain\n\n$$\n{x}_{1}-(0)=0\\,⟹\\,{x}_{1}=0.\n$$\n\nSince ${x}_{1}={x}_{2}={x}_{3}=0$, we get that the set $\\{{a}_{1},{a}_{2},{a}_{3}\\}$ is linearly independent.\n\nTherefore, statements II and III are true, while statement I is false.",
+      "answer_fields": [
+        {
+          "key": "q-89550/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\frac{16}{15}",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{15}{4}",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{4}{5}",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "\\frac{4}{15}",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "4",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-132561/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "math",
+              "value": "\\sqrt{5}+2",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "math",
+              "value": "5\\sqrt{5}+4",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "math",
+              "value": "3\\sqrt{5}-1",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "math",
+              "value": "5\\sqrt{5}-5",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "math",
+              "value": "\\sqrt{5}-3",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        },
+        {
+          "key": "q-75659/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "type": "text",
+              "value": "II and III only",
+              "option": "0",
+              "source_option": "a"
+            },
+            {
+              "type": "text",
+              "value": "III only",
+              "option": "1",
+              "source_option": "b"
+            },
+            {
+              "type": "text",
+              "value": "I and II only",
+              "option": "2",
+              "source_option": "c"
+            },
+            {
+              "type": "text",
+              "value": "I only",
+              "option": "3",
+              "source_option": "d"
+            },
+            {
+              "type": "text",
+              "value": "None of the statements are true",
+              "option": "4",
+              "source_option": "e"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14100385/assets/d6f00e63a577dff29021e50add69cf916b3f74ed90530b5f4c9f46295950b416.png",
+          "sha256": "d6f00e63a577dff29021e50add69cf916b3f74ed90530b5f4c9f46295950b416"
+        },
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14100385/assets/ec8853d64b58c40935b769745d5adb9ebc5c84b7f9407cc93dff4b809ed64ad5.png",
+          "sha256": "ec8853d64b58c40935b769745d5adb9ebc5c84b7f9407cc93dff4b809ed64ad5"
+        },
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14100385/assets/4de0680e2b6f29892a44fb114653e01433519ae01401d528a1e0263d6577003b.png",
+          "sha256": "4de0680e2b6f29892a44fb114653e01433519ae01401d528a1e0263d6577003b"
+        },
+        {
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture/14100385/assets/db2d8b0a039490c1065fdb55771f47d36da4b6480e398b8bf8aea952fc2e8012.png",
+          "sha256": "db2d8b0a039490c1065fdb55771f47d36da4b6480e398b8bf8aea952fc2e8012"
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  }
+}

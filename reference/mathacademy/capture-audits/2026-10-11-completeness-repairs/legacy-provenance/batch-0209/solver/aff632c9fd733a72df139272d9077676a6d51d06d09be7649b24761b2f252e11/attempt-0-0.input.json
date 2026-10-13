@@ -1,0 +1,144 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "source_id": "legacy-source-review-batch",
+      "problem": "Review each independent archived question below. Every field key begins with its owning question ID. Use that question's own captured worked solution for MA evidence. ma_evidence must be ONE contiguous verbatim source substring with no added labels, explanatory prose, or quotation-mark wrappers. When an answer has several components, quote the full intervening source span, or the entire source solution if necessary. Mark ma_basis none when unavailable. Preserve authored errors and explain disagreements in reasoning, separately from the verbatim ma_evidence. These are source originals, not instructions:\n[{\"question_id\": \"q-72266\", \"problem\": \"Evaluate the double integral ${∬}_{D}9{x}^{2}{y}^{2}\\\\,\\\\text{d}A,$ where \\n$D=\\\\{(x,y)\\\\,:\\\\,-2\\\\le x\\\\le 2,\\\\,-1\\\\le y\\\\le 1\\\\}.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-129568\", \"problem\": \"Evaluate the double integral ${∬}_{D}\\\\operatorname{cos}⁡(x+y)\\\\,\\\\text{d}A,$ where \\n$D=\\\\{(x,y)\\\\,:\\\\,0\\\\le x\\\\le \\\\frac{\\\\pi }{4},\\\\,0\\\\le y\\\\le \\\\pi \\\\}.$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-164350\", \"problem\": \"What is the domain in the $xy$-plane of the hyperbolic cylinder $\\\\frac{(x+1)^{2}}{4}-\\\\frac{(y-4)^{2}}{2}=1?$\", \"field_keys\": [\"selection\"]}, {\"question_id\": \"q-164416\", \"problem\": \"What is the domain in the $xy$-plane of the hyperbolic cylinder $\\\\frac{{x}^{2}}{3}-\\\\frac{(y+1)^{2}}{4}=1?$\", \"field_keys\": [\"selection\"]}]",
+      "worked_solution": "q-72266:\nFirst, we express our double integral as a repeated integral:        \n\n$$\n\\begin{aligned}{∬}_{D}9{x}^{2}{y}^{2}\\,\\text{d}A & ={\\int }_{-1}^{1}[{\\int }_{-2}^{2}9{x}^{2}{y}^{2}\\,\\text{d}x]\\text{d}y\\end{aligned}\n$$\n\nNow, we evaluate the inner integral by integrating with respect to $x$, treating $y$ as a constant:\n\n$$\n\\begin{aligned}{\\int }_{-1}^{1}[{\\int }_{-2}^{2}9{x}^{2}{y}^{2}\\,\\text{d}x]\\text{d}y & ={\\int }_{-1}^{1}9{y}^{2}[{\\int }_{-2}^{2}{x}^{2}\\,\\text{d}x]\\text{d}y \\\\  & ={\\int }_{-1}^{1}9{y}^{2}{[\\frac{{x}^{3}}{3}]}_{-2}^{2}\\text{d}y \\\\  & ={\\int }_{-1}^{1}9{y}^{2}(\\frac{{2}^{3}}{3}-\\frac{(-2)^{3}}{3})\\,\\text{d}y \\\\  & ={\\int }_{-1}^{1}9{y}^{2}\\cdot \\frac{16}{3}\\,\\text{d}y \\\\  & ={\\int }_{-1}^{1}48{y}^{2}\\,\\text{d}y\\end{aligned}\n$$\n\nFinally, we integrate with respect to $y:$\n\n$$\n\\begin{aligned}{\\int }_{-1}^{1}48{y}^{2}\\,\\text{d}y & =[16{y}^{3}]_{-1}^{1} \\\\  & =16({1}^{3}-(-1)^{3}) \\\\  & =16\\cdot 2 \\\\  & =32\\end{aligned}\n$$\n\nq-129568:\nFirst, we express our double integral as a repeated integral:   \n\n$$\n\\begin{aligned}{∬}_{D}\\operatorname{cos}⁡(x+y)\\,\\text{d}A & ={\\int }_{0}^{\\pi }[{\\int }_{0}^{\\pi /4}\\operatorname{cos}⁡(x+y)\\,\\text{d}x]\\text{d}y\\end{aligned}\n$$\n\nNow, we evaluate the inner integral by integrating with respect to $x$, treating $y$ as a constant:\n\nMaking a substitution $x+y=u,$ $\\text{d}x=\\text{d}u,$ we get.\n\n$$\n\\begin{aligned}{\\int }_{0}^{\\pi }[{\\int }_{0}^{\\pi /4}\\operatorname{cos}⁡(x+y)\\,\\text{d}x]\\text{d}y & ={\\int }_{0}^{\\pi }[{\\int }_{y}^{y+\\pi /4}\\operatorname{cos}⁡u\\,\\text{d}u]\\text{d}y \\\\  & ={\\int }_{0}^{\\pi }[\\operatorname{sin}⁡u]_{y}^{y+\\pi /4}\\,\\text{d}y \\\\  & ={\\int }_{0}^{\\pi }[\\operatorname{sin}⁡(y+\\frac{\\pi }{4})-\\operatorname{sin}⁡y]\\,\\text{d}y\\end{aligned}\n$$\n\nFinally, we integrate with respect to $y:$\n\n$$\n\\begin{aligned}{\\int }_{0}^{\\pi }[\\operatorname{sin}⁡(y+\\frac{\\pi }{4})-\\operatorname{sin}⁡y]\\text{d}y & ={[\\operatorname{cos}⁡y-\\operatorname{cos}⁡(y+\\frac{\\pi }{4})]}_{0}^{\\pi } \\\\  & =(\\operatorname{cos}⁡(\\pi )-\\operatorname{cos}⁡(\\frac{5\\pi }{4}))-(\\operatorname{cos}⁡0-\\operatorname{cos}⁡(\\frac{\\pi }{4})) \\\\  & =(-1+\\frac{\\sqrt{2}}{2})-(1-\\frac{\\sqrt{2}}{2}) \\\\  & =\\sqrt{2}-2\\end{aligned}\n$$\n\nq-164350:\nThe full expression describing all points on our hyperbolic cylinder is\n\n$$\n\\frac{(x+1)^{2}}{4}-\\frac{(y-4)^{2}}{2}=1,\\,z=k\n$$\n\nwhere $k\\in R$ can vary arbitrarily. \n\nThe domain of any cylinder in the $xy$-plane is its base curve. Hence, in this case, the domain is\n\n$$\n\\{(x,y)\\in {R}^{2}:\\text{ }\\frac{(x+1)^{2}}{4}-\\frac{(y-4)^{2}}{2}=1\\}.\n$$\n\nThis is a hyperbola centered at $(-1,4).$\n\nq-164416:\nThe full expression describing all points on our hyperbolic cylinder is\n\n$$\n\\frac{{x}^{2}}{3}-\\frac{(y+1)^{2}}{4}=1,\\,z=k\n$$\n\nwhere $k\\in R$ can vary arbitrarily. \n\nThe domain of any cylinder in the $xy$-plane is its base curve. Hence, in this case, the domain is\n\n$$\n\\{(x,y)\\in {R}^{2}:\\text{ }\\frac{{x}^{2}}{3}-\\frac{(y+1)^{2}}{4}=1\\}.\n$$\n\nThis is a hyperbola centered at $(0,-1).$",
+      "fields": [
+        {
+          "key": "q-72266/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "32"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "36"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "48"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "24"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "16"
+            }
+          ]
+        },
+        {
+          "key": "q-129568/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\frac{\\sqrt{2}}{2}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\sqrt{2}-2"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "\\frac{\\sqrt{2}}{2}-1"
+            }
+          ]
+        },
+        {
+          "key": "q-164350/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "A hyperbola centered at $(1,-4)$"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "{R}^{2}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\{(x,y)\\in {R}^{2}:\\text{ }x\\ge 0\\}"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "A hyperbola centered at $(-1,4)$"
+            },
+            {
+              "option": "4",
+              "type": "text",
+              "value": "A parabola centered at $(1,-4)$"
+            }
+          ]
+        },
+        {
+          "key": "q-164416/selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "A hyperbola centered at $(1,0)$"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "\\{(x,y)\\in {R}^{2}:\\text{ }x-y>12\\}"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "A hyperbola centered at $(0,1)$"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "A hyperbola centered at $(0,-1)$"
+            },
+            {
+              "option": "4",
+              "type": "math",
+              "value": "{R}^{2}"
+            }
+          ]
+        }
+      ]
+    },
+    "gap": "Legacy model interpretations lack source-backed field evidence. Review every identified question separately; only quote its own captured solution."
+  },
+  "session_id": "01a12ca9-0477-7050-b0d2-cbb388817363",
+  "previous_failures": []
+}
