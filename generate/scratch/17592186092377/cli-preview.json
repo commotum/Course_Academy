@@ -1,0 +1,488 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186092377,
+      "id": "4c82bbc8-83bc-55f8-be32-4d63f6db7261",
+      "title": "Finding the Arc Length of a Parametric Curve"
+    },
+    "question": {
+      ":question/id": "58a0260b-20e3-5839-a156-0a5c59c64107",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "![](/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/c33eddd3958fba3820043b090ab24f191ed66ee7608bf866c0b4c7d313a0e0b0.png)\n\nFind the arc length $L$ of the curve defined parametrically as\n\n$$\nx=\\operatorname{cos}\u2061t+t\\operatorname{sin}\u2061t,\\,y=\\operatorname{sin}\u2061t-t\\operatorname{cos}\u2061t,\\,t\\in [0,\\frac{\\pi}{4}].\n$$\n\nGive an exact answer.\n\n$L=$\n{{field-1}}",
+      ":question/worked-solution": "To compute the arc length $L$ of a parametrically defined curve, we use the formula\n\n$$\nL={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t.\n$$\n\nComputing the derivatives of $x$ and $y,$ we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}x}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(\\operatorname{cos}\u2061t+t\\operatorname{sin}\u2061t) \\\\  & =-\\operatorname{sin}\u2061t+(\\operatorname{sin}\u2061t+t\\operatorname{cos}\u2061t) \\\\  & =t\\operatorname{cos}\u2061t,\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(\\operatorname{sin}\u2061t-t\\operatorname{cos}\u2061t) \\\\  & =\\operatorname{cos}\u2061t-(\\operatorname{cos}\u2061t-t\\operatorname{sin}\u2061t) \\\\  & =t\\operatorname{sin}\u2061t.\\end{aligned}\n$$\n\nWe substitute these derivatives in the formula for arc length and get\n\n$$\n\\begin{aligned}L & ={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{4}}\\sqrt{{(t\\operatorname{cos}\u2061t)}^{2}+{(t\\operatorname{sin}\u2061t)}^{2}}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{4}}\\sqrt{{t}^{2}{cos}^{2}\u2061t+{t}^{2}{sin}^{2}\u2061t}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{4}}\\sqrt{{t}^{2}({cos}^{2}\u2061t+{sin}^{2}\u2061t)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{4}}\\sqrt{{t}^{2}}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{4}}t\\,\\text{d}t \\\\  & =\\frac{{t}^{2}}{2}\\,{|}_{0}^{\\frac{\\pi}{4}} \\\\  & =\\frac{(\\frac{\\pi}{4})^{2}}{2}-0 \\\\  & =\\frac{\\pi^{2}}{32}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "40af46bb-2ace-5204-891a-a3ac95bc910f",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7568ca27-4341-5142-84e3-597f0dbd7050",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi^{2}}{32}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7568ca27-4341-5142-84e3-597f0dbd7050"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "arc-length-endpoint-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "template": "q-348088",
+      "seed": 23,
+      "parameters": {
+        "upper": "pi/4",
+        "scale": "1"
+      },
+      "domain": {
+        "lower": "0",
+        "upper": "pi/4",
+        "orientation": "increasing parameter; nonnegative speed"
+      },
+      "bank_profile": "blank",
+      "presentation_profile": "exact_answer_compatibility",
+      "bank_origin": "observed blank shape",
+      "parameter_fingerprint": "b2bd789057528232b5b76203441e1e94cc221757369b2480ba94fb28c9259ee9",
+      "displayed_identity": "c33eddd3958fba3820043b090ab24f191ed66ee7608bf866c0b4c7d313a0e0b0",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "value": "pi**2/32"
+        }
+      ],
+      "math": {
+        "x": "t*sin(t) + cos(t)",
+        "y": "-t*cos(t) + sin(t)",
+        "dx": "t*cos(t)",
+        "dy": "t*sin(t)",
+        "speed": "t",
+        "primitive": "t**2/2",
+        "squared_speed": "t**2*sin(t)**2 + t**2*cos(t)**2",
+        "length": "pi**2/32"
+      },
+      "plot": "/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/c33eddd3958fba3820043b090ab24f191ed66ee7608bf866c0b4c7d313a0e0b0.png",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186092377,
+      "id": "4c82bbc8-83bc-55f8-be32-4d63f6db7261",
+      "title": "Finding the Arc Length of a Parametric Curve"
+    },
+    "question": {
+      ":question/id": "7aacd98e-6281-5504-8f90-87d2872ac608",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "![](/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/8647a3124a6ff8275cee86d5ac2af274014baa0163bb44342afdd8b54faed3c4.png)\n\nFind the arc length of the curve defined parametrically as\n\n$$\nx=2\\left(5\\operatorname{sin}\u2061t-3\\right),\\,y=2\\left(5\\operatorname{cos}\u2061t+1\\right),\\,t\\in [\\frac{\\pi}{5},\\frac{119 \\pi}{120}].\n$$\n\nGive an exact answer.\n\n$L=$\n{{field-1}}",
+      ":question/worked-solution": "To compute the arc length $L$ of a parametrically defined curve, we use the formula\n\n$$\nL={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t.\n$$\n\nComputing the derivatives of $x$ and $y,$ we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}x}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(2\\left(5\\operatorname{sin}\u2061t-3\\right)) \\\\  & =2\\left(5\\operatorname{cos}\u2061t\\right), \\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(2\\left(5\\operatorname{cos}\u2061t+1\\right)) \\\\  & =2\\left(-5\\operatorname{sin}\u2061t\\right). \\end{aligned}\n$$\n\nWe substitute these derivatives in the formula for arc length and get\n\n$$\n\\begin{aligned}L & ={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t \\\\  & ={\\int }_{\\frac{\\pi}{5}}^{\\frac{119 \\pi}{120}}\\sqrt{4\\left({(5\\operatorname{cos}\u2061t)}^{2}+{(-5\\operatorname{sin}\u2061t)}^{2}\\right)}\\,\\text{d}t \\\\  & ={\\int }_{\\frac{\\pi}{5}}^{\\frac{119 \\pi}{120}}\\sqrt{4\\left(25{cos}^{2}\u2061t+25{sin}^{2}\u2061t\\right)}\\,\\text{d}t \\\\  & ={\\int }_{\\frac{\\pi}{5}}^{\\frac{119 \\pi}{120}}\\sqrt{4\\left(25({cos}^{2}\u2061t+{sin}^{2}\u2061t)\\right)}\\,\\text{d}t \\\\  & ={\\int }_{\\frac{\\pi}{5}}^{\\frac{119 \\pi}{120}}\\sqrt{4\\left(25\\right)}\\,\\text{d}t \\\\  & =5\\cdot 2\\cdot {\\int }_{\\frac{\\pi}{5}}^{\\frac{119 \\pi}{120}}\\text{d}t \\\\  & =2\\left(5t\\,\\right){|}_{\\frac{\\pi}{5}}^{\\frac{119 \\pi}{120}} \\\\  & =2\\left(5(\\frac{119 \\pi}{120}-\\frac{\\pi}{5})\\right) \\\\  & =2\\left(5(\\frac{19 \\pi}{24})\\right) \\\\  & =2\\left(\\frac{95 \\pi}{24}\\right). \\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "99f2b88d-e122-5693-91c2-e3829fd02709",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9ac8d108-a58b-50fa-b3de-3261e565e6dd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{95 \\pi}{12}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9ac8d108-a58b-50fa-b3de-3261e565e6dd"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "arc-length-endpoint-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "template": "q-351428",
+      "seed": 24,
+      "parameters": {
+        "upper": "119*pi/120",
+        "scale": "2"
+      },
+      "domain": {
+        "lower": "pi/5",
+        "upper": "119*pi/120",
+        "orientation": "increasing parameter; nonnegative speed"
+      },
+      "bank_profile": "blank",
+      "presentation_profile": "exact_answer_compatibility",
+      "bank_origin": "observed blank shape",
+      "parameter_fingerprint": "cf06f9a5ba0dd789610412f56929d93df0716d7ff52230436e9eafa9ad5b9afe",
+      "displayed_identity": "8647a3124a6ff8275cee86d5ac2af274014baa0163bb44342afdd8b54faed3c4",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "value": "95*pi/12"
+        }
+      ],
+      "math": {
+        "x": "10*sin(t) - 6",
+        "y": "10*cos(t) + 2",
+        "dx": "10*cos(t)",
+        "dy": "-10*sin(t)",
+        "speed": "10",
+        "primitive": "10*t",
+        "squared_speed": "100*sin(t)**2 + 100*cos(t)**2",
+        "length": "95*pi/12"
+      },
+      "plot": "/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/8647a3124a6ff8275cee86d5ac2af274014baa0163bb44342afdd8b54faed3c4.png",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186092377,
+      "id": "4c82bbc8-83bc-55f8-be32-4d63f6db7261",
+      "title": "Finding the Arc Length of a Parametric Curve"
+    },
+    "question": {
+      ":question/id": "9efcb079-c8b6-5347-9f95-0b5a3158929d",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "![](/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/5c324faade66c261500a33ee6b4c59ddaa3efb72861fbccabab3e03e27459994.png)\n\nFind the arc length of the curve $L$ defined parametrically as\n\n$$\nx={e}^{2t}\\operatorname{cos}\u2061t,\\,y={e}^{2t}\\operatorname{sin}\u2061t,\\,t\\in [0,\\frac{\\pi}{12}].\n$$\n\nGive an exact answer.\n\n$L=\\frac{\\sqrt{5}}{2}(${{field-1}}$)$",
+      ":question/worked-solution": "To compute the arc length $L$ of a parametrically defined curve, we use the formula\n\n$$\nL={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t.\n$$\n\nComputing the derivatives of $x$ and $y,$ we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}x}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}({e}^{2t}\\operatorname{cos}\u2061t) \\\\  & =2{e}^{2t}\\operatorname{cos}\u2061t-{e}^{2t}\\operatorname{sin}\u2061t \\\\  & ={e}^{2t}(2\\operatorname{cos}\u2061t-\\operatorname{sin}\u2061t),\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}({e}^{2t}\\operatorname{sin}\u2061t) \\\\  & =2{e}^{2t}\\operatorname{sin}\u2061t+{e}^{2t}\\operatorname{cos}\u2061t \\\\  & ={e}^{2t}(2\\operatorname{sin}\u2061t+\\operatorname{cos}\u2061t).\\end{aligned}\n$$\n\nWe substitute these derivatives in the formula for arc length and get\n\n$$\n\\begin{aligned}L & ={\\int }_{0}^{\\frac{\\pi}{12}}\\sqrt{{({e}^{2t}(2\\operatorname{cos}\u2061t-\\operatorname{sin}\u2061t))}^{2}+{({e}^{2t}(2\\operatorname{sin}\u2061t+\\operatorname{cos}\u2061t))}^{2}}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{12}}\\sqrt{{e}^{4t}{(2\\operatorname{cos}\u2061t-\\operatorname{sin}\u2061t)}^{2}+{e}^{4t}{(2\\operatorname{sin}\u2061t+\\operatorname{cos}\u2061t)}^{2}}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{12}}\\sqrt{{e}^{4t}({(2\\operatorname{cos}\u2061t-\\operatorname{sin}\u2061t)}^{2}+{(2\\operatorname{sin}\u2061t+\\operatorname{cos}\u2061t)}^{2})}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{12}}\\sqrt{{e}^{4t}(4{cos}^{2}\u2061t-4\\operatorname{cos}\u2061t\\operatorname{sin}\u2061t+{sin}^{2}\u2061t+4{sin}^{2}\u2061t+4\\operatorname{sin}\u2061t\\operatorname{cos}\u2061t+{cos}^{2}\u2061t)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{12}}\\sqrt{{e}^{4t}(4({cos}^{2}\u2061t+{sin}^{2}\u2061t)+{sin}^{2}\u2061t+{cos}^{2}\u2061t)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{12}}\\sqrt{5{e}^{4t}}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{12}}\\sqrt{5}\\,{e}^{2t}\\,\\text{d}t \\\\  & =\\sqrt{5}\\cdot \\frac{{e}^{2t}}{2}\\,{|}_{0}^{\\frac{\\pi}{12}} \\\\  & =\\frac{\\sqrt{5}}{2}({e}^{\\frac{\\pi}{6}}-1).\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6c25896f-6199-5353-8b72-224eca416f0a",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0cce70d3-74ac-53c5-935b-deebb9765606",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-1 + {e}^{\\frac{\\pi}{6}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0cce70d3-74ac-53c5-935b-deebb9765606"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "arc-length-endpoint-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "template": "q-351438",
+      "seed": 23,
+      "parameters": {
+        "upper": "pi/12",
+        "scale": "1"
+      },
+      "domain": {
+        "lower": "0",
+        "upper": "pi/12",
+        "orientation": "increasing parameter; nonnegative speed"
+      },
+      "bank_profile": "blank",
+      "presentation_profile": "exact_answer_compatibility",
+      "bank_origin": "observed blank shape",
+      "parameter_fingerprint": "e5b01c8ac55c643dd33271949fcd25993630af6af13ba79b2aeda0fb037d9c12",
+      "displayed_identity": "5c324faade66c261500a33ee6b4c59ddaa3efb72861fbccabab3e03e27459994",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "value": "-1 + exp(pi/6)"
+        }
+      ],
+      "math": {
+        "x": "exp(2*t)*cos(t)",
+        "y": "exp(2*t)*sin(t)",
+        "dx": "-exp(2*t)*sin(t) + 2*exp(2*t)*cos(t)",
+        "dy": "2*exp(2*t)*sin(t) + exp(2*t)*cos(t)",
+        "speed": "sqrt(5)*exp(2*t)",
+        "primitive": "sqrt(5)*exp(2*t)/2",
+        "squared_speed": "5*exp(4*t)*sin(t)**2 + 5*exp(4*t)*cos(t)**2",
+        "length": "-sqrt(5)*(1 - exp(pi/6))/2"
+      },
+      "plot": "/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/5c324faade66c261500a33ee6b4c59ddaa3efb72861fbccabab3e03e27459994.png",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186092377,
+      "id": "4c82bbc8-83bc-55f8-be32-4d63f6db7261",
+      "title": "Finding the Arc Length of a Parametric Curve"
+    },
+    "question": {
+      ":question/id": "c8fea3c7-ecdc-5057-a650-a2dc634fa589",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "![](/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/d68fe7cbb094188018667a9295f33e6ddafa8eb5807da8fa4c28880228393d55.png)\n\nFind the arc length of the curve $L$ defined parametrically as\n\n$$\nx=2\\left(4{cos}^{3}\u2061t\\right),\\,y=2\\left(4{sin}^{3}\u2061t\\right),\\,t\\in [0,\\frac{\\pi}{6}].\n$$\n\nGive an exact answer.\n\n$L=$\n{{field-1}}",
+      ":question/worked-solution": "To compute the arc length $L$ of a parametrically defined curve, we use the formula\n\n$$\nL={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t.\n$$\n\nComputing the derivatives of $x$ and $y,$ we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}x}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(2\\left(4{cos}^{3}\u2061t\\right)) \\\\  & =2\\left(4\\cdot 3{cos}^{2}\u2061t\\cdot (-\\operatorname{sin}\u2061t)\\right) \\\\  & =2\\left(-12\\operatorname{sin}\u2061t{cos}^{2}\u2061t\\right), \\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(2\\left(4{sin}^{3}\u2061t\\right)) \\\\  & =2\\left(4\\cdot 3{sin}^{2}\u2061t\\cdot \\operatorname{cos}\u2061t\\right) \\\\  & =2\\left(12{sin}^{2}\u2061t\\operatorname{cos}\u2061t\\right). \\end{aligned}\n$$\n\nWe substitute these derivatives in the formula for arc length and get\n\n$$\n\\begin{aligned}L & ={\\int }_{0}^{\\frac{\\pi}{6}}\\sqrt{4\\left({(-12\\operatorname{sin}\u2061t{cos}^{2}\u2061t)}^{2}+{(12{sin}^{2}\u2061t\\operatorname{cos}\u2061t)}^{2}\\right)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{6}}\\sqrt{4\\left(144{sin}^{2}\u2061t{cos}^{4}\u2061t+144{sin}^{4}\u2061t{cos}^{2}\u2061t\\right)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{6}}\\sqrt{4\\left(144{sin}^{2}\u2061t{cos}^{2}\u2061t({cos}^{2}\u2061t+{sin}^{2}\u2061t)\\right)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{6}}\\sqrt{4\\left(144{sin}^{2}\u2061t{cos}^{2}\u2061t\\right)}\\,\\text{d}t \\\\  & =2\\cdot {\\int }_{0}^{\\frac{\\pi}{6}}12|\\operatorname{sin}\u2061t\\operatorname{cos}\u2061t|\\,\\text{d}t \\\\  & =2\\cdot {\\int }_{0}^{\\frac{\\pi}{6}}12\\operatorname{sin}\u2061t\\operatorname{cos}\u2061t\\,\\text{d}t \\\\  & =6\\cdot 2\\cdot {\\int }_{0}^{\\frac{\\pi}{6}}\\operatorname{sin}\u2061(2t)\\,\\text{d}t \\\\  & =2\\left(-3\\operatorname{cos}\u2061(2t)\\,\\right){|}_{0}^{\\frac{\\pi}{6}} \\\\  & =2\\left(-3\\operatorname{cos}\u2061(\\frac{\\pi}{3})+3\\operatorname{cos}\u20610\\right) \\\\  & =2\\left(\\frac{3}{2}\\right). \\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "96b0b1a3-6093-5b25-824e-37dc3e167563",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4fb385e2-8790-5a99-8897-45fd8b97357b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4fb385e2-8790-5a99-8897-45fd8b97357b"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "arc-length-endpoint-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "template": "q-351439",
+      "seed": 24,
+      "parameters": {
+        "upper": "pi/6",
+        "scale": "2"
+      },
+      "domain": {
+        "lower": "0",
+        "upper": "pi/6",
+        "orientation": "increasing parameter; nonnegative speed"
+      },
+      "bank_profile": "blank",
+      "presentation_profile": "exact_answer_compatibility",
+      "bank_origin": "observed blank shape",
+      "parameter_fingerprint": "e8021b386d8958a34c1b110bded5981c38b71f7a42b439fc2e314a73ef4f555f",
+      "displayed_identity": "d68fe7cbb094188018667a9295f33e6ddafa8eb5807da8fa4c28880228393d55",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "value": "3"
+        }
+      ],
+      "math": {
+        "x": "8*cos(t)**3",
+        "y": "8*sin(t)**3",
+        "dx": "-24*sin(t)*cos(t)**2",
+        "dy": "24*sin(t)**2*cos(t)",
+        "speed": "24*sin(t)*cos(t)",
+        "primitive": "12*sin(t)**2",
+        "squared_speed": "576*sin(t)**4*cos(t)**2 + 576*sin(t)**2*cos(t)**4",
+        "length": "3"
+      },
+      "plot": "/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/d68fe7cbb094188018667a9295f33e6ddafa8eb5807da8fa4c28880228393d55.png",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186092377,
+      "id": "4c82bbc8-83bc-55f8-be32-4d63f6db7261",
+      "title": "Finding the Arc Length of a Parametric Curve"
+    },
+    "question": {
+      ":question/id": "beeb05b7-ad5f-5058-b5f7-f2938f83f637",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "![](/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/6d3ca609c26e5d80b49882737b10cf3ff84dbfff9f971bf0ba28febee38435a7.png)\n\nFind the arc length of the curve defined parametrically as\n\n$$\nx=2\\operatorname{cos}\u2061t-\\operatorname{cos}\u2061(2t),\\,y=2\\operatorname{sin}\u2061t-\\operatorname{sin}\u2061(2t),\\,t\\in [0,\\frac{\\pi}{3}].\n$$",
+      ":question/worked-solution": "To compute the arc length $L$ of a parametrically defined curve, we use the formula\n\n$$\nL={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t.\n$$\n\nComputing the derivatives of $x$ and $y,$ we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}x}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(2\\operatorname{cos}\u2061t-\\operatorname{cos}\u2061(2t))=-2\\operatorname{sin}\u2061t+2\\operatorname{sin}\u2061(2t)\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(2\\operatorname{sin}\u2061t-\\operatorname{sin}\u2061(2t))=2\\operatorname{cos}\u2061t-2\\operatorname{cos}\u2061(2t).\\end{aligned}\n$$\n\nWe substitute these derivatives in the formula for arc length and get\n\n$$\n\\begin{aligned}L & ={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{3}}\\sqrt{{(-2\\operatorname{sin}\u2061t+2\\operatorname{sin}\u2061(2t))}^{2}+{(2\\operatorname{cos}\u2061t-2\\operatorname{cos}\u2061(2t))}^{2}}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{3}}\\sqrt{4{sin}^{2}\u2061t-8\\operatorname{sin}\u2061t\\operatorname{sin}\u2061(2t)+4{sin}^{2}\u2061(2t)+4{cos}^{2}\u2061t-8\\operatorname{cos}\u2061t\\operatorname{cos}\u2061(2t)+4{cos}^{2}\u2061(2t)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{3}}\\sqrt{4+4-8(\\operatorname{cos}\u2061t\\operatorname{cos}\u2061(2t)+\\operatorname{sin}\u2061t\\operatorname{sin}\u2061(2t))}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{3}}\\sqrt{8-8\\operatorname{cos}\u2061(2t-t)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{\\pi}{3}}\\sqrt{8-8\\operatorname{cos}\u2061t}\\,\\text{d}t.\\end{aligned}\n$$\n\nAccording to the double-angle formula for cosine, $\\operatorname{cos}\u2061(2\\theta )=1-2{sin}^{2}\u2061\\theta .$ Substituting $\\theta =\\frac{t}{2},$ we obtain\n\n$$\n\\begin{aligned}\\operatorname{cos}\u2061(2\\cdot \\frac{t}{2}) & =1-2{sin}^{2}\u2061(\\frac{t}{2}) \\\\ \\operatorname{cos}\u2061t & =1-2{sin}^{2}\u2061(\\frac{t}{2}) \\\\ 1-\\operatorname{cos}\u2061t & =2{sin}^{2}\u2061(\\frac{t}{2}) \\\\ 8-8\\operatorname{cos}\u2061t & =16{sin}^{2}\u2061(\\frac{t}{2})\\end{aligned}\n$$\n\nTherefore, \n\n$$\n\\begin{aligned}{\\int }_{0}^{\\frac{\\pi}{3}}\\sqrt{8-8\\operatorname{cos}\u2061t}\\,\\text{d}t & ={\\int }_{0}^{\\frac{\\pi}{3}}\\sqrt{16{sin}^{2}\u2061(\\frac{t}{2})}\\,\\text{d}t \\\\  & =4{\\int }_{0}^{\\frac{\\pi}{3}}\\operatorname{sin}\u2061(\\frac{t}{2})\\,\\text{d}t \\\\  & =-8{\\operatorname{cos}\u2061(\\frac{t}{2})|}_{0}^{\\frac{\\pi}{3}} \\\\  & =-8(\\operatorname{cos}\u2061(\\frac{\\pi}{6})-\\operatorname{cos}\u20610) \\\\  & =-8(\\frac{\\sqrt{3}}{2}-1) \\\\  & =8 - 4 \\sqrt{3}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "10a92531-5f2e-59ab-acd1-16930b41edf6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0d064602-c4aa-508d-b04e-f762ac36b6e6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 - 4 \\sqrt{3}"
+            },
+            {
+              ":answer/id": "1a3daf80-1668-514a-961a-391ca3b4e191",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 \\sqrt{3} + \\frac{8 \\pi}{3}"
+            },
+            {
+              ":answer/id": "378a223c-f25e-51ca-9902-a339bc504396",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 - 2 \\sqrt{3}"
+            },
+            {
+              ":answer/id": "3870c4a0-73af-5cdf-8134-8afae05cdd6e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16 - 8 \\sqrt{3}"
+            },
+            {
+              ":answer/id": "473215dc-7fb5-52fe-9dca-a6bda562dbc4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\pi}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0d064602-c4aa-508d-b04e-f762ac36b6e6"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "arc-length-endpoint-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "template": "q-10261",
+      "seed": 23,
+      "parameters": {
+        "upper": "pi/3",
+        "scale": "1"
+      },
+      "domain": {
+        "lower": "0",
+        "upper": "pi/3",
+        "orientation": "increasing parameter; nonnegative speed"
+      },
+      "bank_profile": "authored_operations",
+      "presentation_profile": "exact_answer_compatibility",
+      "bank_origin": "authored complete operation bank",
+      "parameter_fingerprint": "311b9f5fc52ed0f0ddc32193758ac275b991b59c6ffa4e74cadcd302a734772b",
+      "displayed_identity": "6d3ca609c26e5d80b49882737b10cf3ff84dbfff9f971bf0ba28febee38435a7",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "value": "8 - 4*sqrt(3)"
+        },
+        {
+          "recipe": "halve_arc_length",
+          "value": "4 - 2*sqrt(3)"
+        },
+        {
+          "recipe": "double_arc_length",
+          "value": "16 - 8*sqrt(3)"
+        },
+        {
+          "recipe": "omit_square_root",
+          "value": "-4*sqrt(3) + 8*pi/3"
+        },
+        {
+          "recipe": "forget_upper_endpoint_integration",
+          "value": "2*pi/3"
+        }
+      ],
+      "math": {
+        "x": "2*cos(t) - cos(2*t)",
+        "y": "2*sin(t) - sin(2*t)",
+        "dx": "-2*sin(t) + 2*sin(2*t)",
+        "dy": "2*cos(t) - 2*cos(2*t)",
+        "speed": "4*sin(t/2)",
+        "primitive": "-8*cos(t/2)",
+        "squared_speed": "4*sin(t)**2 - 8*sin(t)*sin(2*t) + 4*sin(2*t)**2 + 4*cos(t)**2 - 8*cos(t)*cos(2*t) + 4*cos(2*t)**2",
+        "length": "8 - 4*sqrt(3)"
+      },
+      "plot": "/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/6d3ca609c26e5d80b49882737b10cf3ff84dbfff9f971bf0ba28febee38435a7.png",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186092377,
+      "id": "4c82bbc8-83bc-55f8-be32-4d63f6db7261",
+      "title": "Finding the Arc Length of a Parametric Curve"
+    },
+    "question": {
+      ":question/id": "70e894cc-b441-5efe-b77d-a9f8e00eca24",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "![](/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/340a0625e75292a4fb72f581dcad13c165d8c5effebe237f7977376789dad586.png)\n\nFind the arc length of the curve defined parametrically as\n\n$$\nx=5\\left(3\\operatorname{cos}\u2061t-\\operatorname{cos}\u2061(3t)\\right),\\,y=5\\left(3\\operatorname{sin}\u2061t-\\operatorname{sin}\u2061(3t)\\right),\\,t\\in [0,\\frac{5 \\pi}{6}].\n$$\n\nGive an exact answer.\n\n$L=$\n{{field-1}}",
+      ":question/worked-solution": "To compute the arc length $L$ of a parametrically defined curve, we use the formula\n\n$$\nL={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t.\n$$\n\nComputing the derivatives of $x$ and $y,$ we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}x}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(5\\left(3\\operatorname{cos}\u2061t-\\operatorname{cos}\u2061(3t)\\right)) \\\\  & =5\\left(-3\\operatorname{sin}\u2061t+3\\operatorname{sin}\u2061(3t)\\right), \\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(5\\left(3\\operatorname{sin}\u2061t-\\operatorname{sin}\u2061(3t)\\right)) \\\\  & =5\\left(3\\operatorname{cos}\u2061t-3\\operatorname{cos}\u2061(3t)\\right). \\end{aligned}\n$$\n\nWe substitute these derivatives in the formula for arc length and get\n\n$$\n\\begin{aligned}L & ={\\int }_{{t}_{1}}^{{t}_{2}}\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{5 \\pi}{6}}\\sqrt{25\\left({(-3\\operatorname{sin}\u2061t+3\\operatorname{sin}\u2061(3t))}^{2}+{(3\\operatorname{cos}\u2061t-3\\operatorname{cos}\u2061(3t))}^{2}\\right)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{5 \\pi}{6}}\\sqrt{25\\left(9{sin}^{2}\u2061t-18\\operatorname{sin}\u2061t\\operatorname{sin}\u2061(3t)+9{sin}^{2}\u2061(3t)+9{cos}^{2}\u2061t-18\\operatorname{cos}\u2061t\\operatorname{cos}\u2061(3t)+9{cos}^{2}\u2061(3t)\\right)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{5 \\pi}{6}}\\sqrt{25\\left(9+9-18(\\operatorname{cos}\u2061t\\operatorname{cos}\u2061(3t)+\\operatorname{sin}\u2061t\\operatorname{sin}\u2061(3t))\\right)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{5 \\pi}{6}}\\sqrt{25\\left(18-18\\operatorname{cos}\u2061(3t-t)\\right)}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\frac{5 \\pi}{6}}\\sqrt{25\\left(18-18\\operatorname{cos}\u2061(2t)\\right)}\\,\\text{d}t.\\end{aligned}\n$$\n\nAccording to the double-angle formula for cosine, $\\operatorname{cos}\u2061(2t)=1-2{sin}^{2}\u2061t.$ Therefore, we obtain\n\n$$\n\\begin{aligned}\\operatorname{cos}\u2061(2t) & =1-2{sin}^{2}\u2061(t) \\\\ 1-\\operatorname{cos}\u2061(2t) & =2{sin}^{2}\u2061(t) \\\\ 18-18\\operatorname{cos}\u2061(2t) & =36{sin}^{2}\u2061(t)\\end{aligned}\n$$\n\nTherefore, \n\n$$\n\\begin{aligned}{\\int }_{0}^{\\frac{5 \\pi}{6}}\\sqrt{25\\left(18-18\\operatorname{cos}\u2061(2t)\\right)}\\,\\text{d}t & ={\\int }_{0}^{\\frac{5 \\pi}{6}}\\sqrt{25\\left(36{sin}^{2}\u2061(t)\\right)}\\,\\text{d}t \\\\  & =6\\cdot 5\\cdot {\\int }_{0}^{\\frac{5 \\pi}{6}}|\\operatorname{sin}\u2061(t)|\\,\\text{d}t \\\\  & =6\\cdot 5\\cdot {\\int }_{0}^{\\frac{5 \\pi}{6}}\\operatorname{sin}\u2061(t)\\,\\text{d}t \\\\  & =5\\left(-6\\operatorname{cos}\u2061(t)\\,\\right){|}_{0}^{\\frac{5 \\pi}{6}} \\\\  & =5\\left(-6(\\operatorname{cos}\u2061(\\frac{5 \\pi}{6})-\\operatorname{cos}\u20610)\\right) \\\\  & =5\\left(-6(- \\frac{\\sqrt{3}}{2}-1)\\right) \\\\  & =5\\left(3 \\sqrt{3} + 6\\right). \\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "efba8fe6-2d6f-5c89-9dae-7f1ee26a98e2",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "aceb0ce3-d362-5053-9981-e3efdd1693a6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "15 \\sqrt{3} + 30"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "aceb0ce3-d362-5053-9981-e3efdd1693a6"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "arc-length-endpoint-v2",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "template": "q-351471",
+      "seed": 24,
+      "parameters": {
+        "upper": "5*pi/6",
+        "scale": "5"
+      },
+      "domain": {
+        "lower": "0",
+        "upper": "5*pi/6",
+        "orientation": "increasing parameter; nonnegative speed"
+      },
+      "bank_profile": "blank",
+      "presentation_profile": "exact_answer_compatibility",
+      "bank_origin": "observed blank shape",
+      "parameter_fingerprint": "9c7255b414f3f72cd27050bf0afa02dc2068d1ce16327809b943d47110736338",
+      "displayed_identity": "340a0625e75292a4fb72f581dcad13c165d8c5effebe237f7977376789dad586",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "value": "15*sqrt(3) + 30"
+        }
+      ],
+      "math": {
+        "x": "15*cos(t) - 5*cos(3*t)",
+        "y": "15*sin(t) - 5*sin(3*t)",
+        "dx": "-15*sin(t) + 15*sin(3*t)",
+        "dy": "15*cos(t) - 15*cos(3*t)",
+        "speed": "30*sin(t)",
+        "primitive": "-30*cos(t)",
+        "squared_speed": "225*sin(t)**2 - 450*sin(t)*sin(3*t) + 225*sin(3*t)**2 + 225*cos(t)**2 - 450*cos(t)*cos(3*t) + 225*cos(3*t)**2",
+        "length": "15*sqrt(3) + 30"
+      },
+      "plot": "/home/jake/Developer/Course_Academy/generate/scratch/17592186092377/plots/340a0625e75292a4fb72f581dcad13c165d8c5effebe237f7977376789dad586.png",
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    }
+  }
+]

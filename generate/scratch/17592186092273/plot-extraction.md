@@ -1,0 +1,23 @@
+# Plot extraction — individually inspected at original 360 × 304 resolution
+
+## 1. Specific plots
+
+The canonical e-7116 circle has A in quadrant I at 45°, B in II at 135°, a counterclockwise 90° arc, and normalized circle radius about 86 px. q-40920 has A at 45°, B at 120° and the short counterclockwise arc; q-40922 has A at 210°, B at 135° and a clockwise arc through the negative-x direction. q-120593 shows A at 30°, B at 120°, counterclockwise. q-120595 shows A at 150°, B at 120°, clockwise. q-120597 shows A at 150°, B at 315°, a counterclockwise 165° arc through quadrant III. q-120598 shows A at 240°, B at 45°, a clockwise major 195° arc through the negative x and positive y directions. q-277012 similarly shows A at 240°, B at 30°, a clockwise 210° arc. q-277027 shows A at 60°, B at 120°, counterclockwise. q-81221 has A at 210°, B at 60°, a clockwise 150° arc. q-81224 places antipodal A at 60° and B at 240°, with the counterclockwise semicircle on the left of the origin.
+
+Every individual raster was opened at full resolution. All have blue circle outlines, blue filled endpoint dots, blue dashed radii OA/OB, a blue angle arc at O, black horizontal/vertical axes, arrows at positive x/y only, italic x/y/O/A/B labels, white or transparent background and no ticks. There are no arrowheads on the angle arcs; their sweep locates the intended route. O is the origin and both endpoints lie on the circle. The radius and numeric angles are in the prompt, not embedded image labels. No plotted answer choices exist. Source circle radii and arc sizes vary; each original has its own fitted origin/radius in source-geometry.json, not one assumed pixel transform.
+
+## 2. Shared visual pattern
+
+The diagram distinguishes the route between two rays from the same positive-radius origin-centered circle. The final polar angle comes from initial angle ± the illustrated unsigned sweep. Correct Cartesian signs must match B's actual quadrant. Circle size is incidental because axes have no coordinate ticks.
+
+## 3. Components
+
+Background; positive-axis arrowheads; x/y/O labels; unit-radius circle; filled A/B markers; dashed radii; unsigned central arc rendered along the signed route; labels located outside the circle. Every source asset is retained through its original image reference and SHA256 in the geometric evidence; unchanged raw source replay keeps that reference.
+
+## 4. Reusable specification and measured QA
+
+Matplotlib Agg renders a normalized circle with exact alpha and beta=alpha+direction×delta converted to floats only for plotting. Equal axes scaling is mandatory. Changed source radius without changed angular geometry may still use a newly rendered equivalent diagram; normal variants always use generated assets. Current output is 704×640 pixels at configured 160 DPI; sidecars also store the actual PNG saved_dpi read from encoded bytes (159.9946 dpi in the current render, from PNG resolution-field quantization). The transform, pixel endpoints, text bounding boxes, exact semantic geometry, dependency versions and PNG SHA256 are sidecars. Labels are never masked: measured text-to-circle, axes, dashed rays and arc clearances must exceed 2 px, text-to-marker clearances exceed 5 px, and all boxes lie within the saved canvas. Circle raster extents are checked under the actual transform with an 8 px total stroke/antialias allowance; endpoints require actual blue filled-pixel neighborhoods. Arc route is read from blue pixels near its radius. These checks are measurements, not inferred from nominal layout settings.
+
+Rendering uses unique temporary files and atomic final PNG/JSON writes. Cache hits require both files. Fresh concurrent identical and differing render jobs use a new private directory on every validation run; old assets are preserved and the current directory must contain only the two PNG/sidecar pairs after four calls. The validation report records the actual cache path. No direct SVG, image model, shared renderer edit or environment installation is used.
+
+The source geometry verifier composites transparent originals on white, fits each plot's black axes and blue circumference, measures both filled endpoint angles within 3°, and reads the illustrated sweep independently. There is small raster/antialias uncertainty; the exact symbolic angles come from the displayed prompt and endpoint/arc geometry resolves signs and route. Canonical inspection and measured geometry are recorded separately in canonical-geometry.json; ten practice rasters have source-geometry.json entries. The validation command checks all eleven rasters without treating the canonical example as a practice bank.
