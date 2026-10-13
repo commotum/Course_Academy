@@ -1,0 +1,21 @@
+# Four extraction stages
+
+## 1. Specific sources
+
+See extraction.json for every source prompt, solution, field, exact option image value and independently transcribed geometry. 160341 has x=u²-2v²,y=u-v, J=-2u+4v and v<u/2. 160601 has x=u²-v,y=4u-v²,J=4-4uv,uv<1. 161838 has x=u+v,y=u²+v²,J=2v-2u,v<u. 161842 has x=u³-v²/2,y=u-v/3,J=v-u²,v<u². 161843 has x=4u+v²,y=v-u²,J=4+4uv,uv>-1. 161855 has x=e^(uv),y=u²+v,J=e^(uv)(v-2u²),v>2u². 161835 has x=uv,y=u+v,J=v-u,v>u. 161837 has x=u³/3+v,y=uv,J=u³-v,v>u³. 161839 has x=u²-v,y=uv+1,J=2u²+v,v>-2u². 161840 has x=u²+v²,y=v-u,J=2u+2v,v<-u. 161841 has x=e^(u+v),y=-uv,J=e^(u+v)(v-u),v>u. 161856 has x=u²+2v,y=-2u-v²,J=4-4uv,uv>1. All variables range over R², powers remain at most cubic and exponential factors are everywhere positive.
+
+## 2. Shared pattern
+
+Select a shaded open input region where J=x_u y_v-x_v y_u has the sign required by orientation preserving (>0) or reversing (<0). Worked solutions recall the rule, restate T, display the symbolic/numeric determinant, distribute its two products, simplify, solve the strict sign inequality, identify a boundary curve and demonstrate interior test points before showing the final region. Hyperbola families split the inequality by input sign. Keep complete intermediate stages and one fixed solution independent of answer selection.
+
+## 3. Components and banks
+
+extraction.json preserves all 65 raw option values over 13 fields, field ownership, original correct refs (when present), original prose and all stage blocks. It attaches each image's degree/coefficient/shading geometry and the recipe `translate_entire_region(h,k)` to each exact observed value. This is a parameterized geometry pattern, not a claim about distractor intent. Curves appearing unrelated to the assessed determinant remain explicit observed profiles only; no arbitrary fit to coefficients is promoted as default. The two legacy160601 banks have identical complete geometry sets but different answer ownership and order; only the active one has a captured correct ref. Raw evidence remains unchanged.
+
+Normal complete banks contain correct region; opposite sign region; sign-negated boundary; doubled boundary coefficient; doubled coefficient with opposite sign. These correspond to sign reversal, altered sign while solving, omitted factor and compound sign/factor operations, labeled authored rather than recovered author intent. Easy banks use boundary offset t∈{h,k}, opposite side of t, -t,2t,t/2 (shift-sign and derivative-factor errors); t=0 invalidates the whole bank and is rejected. Banks are chosen as complete profiles and whole-instance uniqueness is checked before any rendering. No replacement option pool or option-specific invented feedback exists.
+
+## 4. Reusable templates
+
+Complete transformation outputs and numeric determinant/stage components are mathematical slots. `source_text` substitutes u→u-h and v→v-k only inside numerical mathematics; it protects TeX command names, input basis coordinates and differential labels. Actual coordinate test points become (u0+h,v0+k). This is mathematically consistent with T_hk; unit translation derivatives leave the original distributed determinant sequence intact. At h=k=0 the renderer produces the source Markdown/stages exactly through the same code path. Changing the source bank only changes the complete plot bank/profile, not the fixed worked solution. Each source image profile translates all boundary/shading objects; unchanged exact geometry can reuse its source asset. Authored easy/hard templates render derivatives/products/inequalities from exact SymPy expressions.
+
+Prompt, fixed solution, complete bank, mathematical fingerprint and version determine stable UUID identity; seed/order are omitted. Mathematical fingerprint uses the normalized strict sign-region polynomial, inequality direction and domain, shared across profiles, equivalent positive coefficient scales and irrelevant-coordinate shifts. A separate transformation_fingerprint preserves the complete displayed transformation and orientation. Question/field/answer UUIDs are owned and correct refs use [":answer/id",uuid]. Metadata stays outside learner content. Explicit invalid requests fail; no silent parameter repair. CLI/API outputs are local review JSON, not EDB transaction data.
