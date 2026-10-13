@@ -46,6 +46,18 @@ class TerminalTests(unittest.TestCase):
             self.assertTrue(terminal.profile_busy(config))
         self.assertFalse(terminal.profile_busy(config))
 
+    def test_finish_started_is_forwarded_and_success_does_not_restart(self):
+        self.args.finish_started = True
+        self.assertIn('--finish-started', terminal.child_command(self.args, 'linear'))
+        self.assertIn('--finish-started', shlex.split(terminal.invocation(self.args, 'worker', 'linear')))
+        with patch.object(terminal, 'child_command', return_value=[sys.executable, '-c', 'pass']), \
+             redirect_stdout(io.StringIO()):
+            self.assertEqual(terminal.supervise(self.args, 'linear'), 0)
+        record = read_json(terminal.config_for(self.args, 'linear').state_root / 'worker.json')
+        self.assertEqual(record['restarts'], 0)
+        self.assertEqual(record['exit_code'], 0)
+        self.assertIn('finished_at', record)
+
     def test_shared_browser_endpoint_is_rejected_before_launch(self):
         self.config_path.write_text(json.dumps({'browser_cdp_url': 'http://localhost:9222'}))
         with redirect_stdout(io.StringIO()), patch('sys.stderr', io.StringIO()), self.assertRaises(SystemExit) as error:

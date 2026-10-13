@@ -109,8 +109,26 @@ class BrowserSafety:
             except UnicodeDecodeError:
                 return route.fulfill(response=response)
             cleaned = deduplicate_math_editor(html)
+            root = getattr(self.browser.config, 'output_root', None) or self.browser.directory
+            path = urlparse(request.url).path
+            progress_document = path == '/learn' or bool(re.fullmatch(r'/courses/\d+/progress', path))
+            if progress_document and root is not None:
+                # Retain what MA actually served, independently of client DOM
+                # updates. Only allowlisted cache headers enter the evidence.
+                digest = hashlib.sha256(original).hexdigest()
+                target = root / 'browser-originals' / (digest + '.html')
+                atomic_bytes(target, original)
+                allowed = ('date','age','etag','last-modified','cache-control','x-cache',
+                           'cf-cache-status','server','x-served-by','via')
+                record = {'url':request.url,'captured_at':time.time(),'source_sha256':digest,
+                    'source_file':str(target.resolve()),'status':response.status,
+                    'headers':{key:response.headers[key] for key in allowed if key in response.headers},
+                    'transformation':'remove_identical_duplicate_math_editor_script_tags' if cleaned!=html else None,
+                    'rendered_sha256':hashlib.sha256(cleaned.encode()).hexdigest()}
+                atomic_json(target.with_name(digest+'-'+str(time.time_ns())+'.json'),record)
+                self.original_documents[request.url] = record
+                self.event('progress_document',**record)
             if cleaned != html:
-                root = getattr(self.browser.config, 'output_root', None) or self.browser.directory
                 if root is None:
                     return route.fulfill(response=response)  # Never repair without preserving source.
                 digest = hashlib.sha256(original).hexdigest()
@@ -120,7 +138,8 @@ class BrowserSafety:
                           'source_file': str(target.resolve()), 'transformation': 'remove_identical_duplicate_math_editor_script_tags',
                           'rendered_sha256': hashlib.sha256(cleaned.encode()).hexdigest()}
                 atomic_json(target.with_suffix('.json'), record)
-                self.original_documents[request.url] = record
+                if not progress_document:
+                    self.original_documents[request.url] = record
                 self.event('document_repair', **record)
                 return route.fulfill(response=response, body=cleaned)
             return route.fulfill(response=response)

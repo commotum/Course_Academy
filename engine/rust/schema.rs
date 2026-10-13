@@ -10,7 +10,12 @@ use chrono::{DateTime, SecondsFormat, Timelike, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value, json};
 use sha2::{Digest, Sha256};
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    cell::RefCell,
+    collections::{BTreeMap, BTreeSet},
+    ops::{Deref, DerefMut},
+    sync::Arc,
+};
 
 pub type Record = Map<String, Value>;
 pub fn keyword(value: &str) -> Value {
@@ -101,13 +106,106 @@ fn normalize(record: &Record) -> Result<Record> {
     Ok(out)
 }
 
+type OwnersIndex = BTreeMap<u64, Vec<u64>>;
+type AttributeIndex = BTreeMap<String, Vec<u64>>;
+
+/// Captured records with derived reverse references. Any direct mutable access
+/// invalidates the indexes, including edits to a cloned speculative snapshot.
+#[derive(Clone, Debug, Serialize)]
+#[serde(transparent)]
+pub struct SnapshotRecords {
+    records: BTreeMap<u64, Record>,
+    #[serde(skip)]
+    owners: RefCell<BTreeMap<String, Arc<Result<OwnersIndex>>>>,
+    #[serde(skip)]
+    attributes: RefCell<Option<Arc<AttributeIndex>>>,
+}
+impl Deref for SnapshotRecords {
+    type Target = BTreeMap<u64, Record>;
+    fn deref(&self) -> &Self::Target {
+        &self.records
+    }
+}
+impl DerefMut for SnapshotRecords {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.owners.get_mut().clear();
+        *self.attributes.get_mut() = None;
+        &mut self.records
+    }
+}
+impl PartialEq for SnapshotRecords {
+    fn eq(&self, other: &Self) -> bool {
+        self.records == other.records
+    }
+}
+impl From<BTreeMap<u64, Record>> for SnapshotRecords {
+    fn from(records: BTreeMap<u64, Record>) -> Self {
+        let attributes = Self::index_attributes(&records);
+        Self {
+            records,
+            owners: RefCell::default(),
+            attributes: RefCell::new(Some(Arc::new(attributes))),
+        }
+    }
+}
+impl SnapshotRecords {
+    fn index_attributes(records: &BTreeMap<u64, Record>) -> AttributeIndex {
+        let mut attributes = AttributeIndex::new();
+        for (&eid, record) in records {
+            for attribute in record.keys() {
+                attributes.entry(attribute.clone()).or_default().push(eid);
+            }
+        }
+        attributes
+    }
+
+    pub fn with_attribute(&self, attribute: &str) -> Vec<u64> {
+        if self.attributes.borrow().is_none() {
+            *self.attributes.borrow_mut() = Some(Arc::new(Self::index_attributes(&self.records)));
+        }
+        self.attributes
+            .borrow()
+            .as_ref()
+            .unwrap()
+            .get(attribute)
+            .cloned()
+            .unwrap_or_default()
+    }
+
+    pub fn with_attribute_prefixes(&self, prefixes: &[&str]) -> BTreeSet<u64> {
+        if self.attributes.borrow().is_none() {
+            *self.attributes.borrow_mut() = Some(Arc::new(Self::index_attributes(&self.records)));
+        }
+        self.attributes
+            .borrow()
+            .as_ref()
+            .unwrap()
+            .iter()
+            .filter(|(attribute, _)| prefixes.iter().any(|prefix| attribute.starts_with(prefix)))
+            .flat_map(|(_, members)| members.iter().copied())
+            .collect()
+    }
+}
+impl From<SnapshotRecords> for BTreeMap<u64, Record> {
+    fn from(records: SnapshotRecords) -> Self {
+        records.records
+    }
+}
+impl<'a> IntoIterator for &'a SnapshotRecords {
+    type Item = (&'a u64, &'a Record);
+    type IntoIter = std::collections::btree_map::Iter<'a, u64, Record>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.records.iter()
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct EntitySnapshot {
-    pub entities: BTreeMap<u64, Record>,
+    pub entities: SnapshotRecords,
     pub basis_t: u64,
     pub status_history: Vec<StatusAssertion>,
     idents: BTreeMap<String, u64>,
-    canonical_examples: BTreeSet<u64>,
+    canonical_examples: BTreeMap<u64, usize>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -141,7 +239,7 @@ impl EntitySnapshot {
         }
         let canonical_examples = Self::example_targets(&records);
         Ok(Self {
-            entities: records,
+            entities: records.into(),
             basis_t,
             status_history: vec![],
             idents,
@@ -191,31 +289,93 @@ impl EntitySnapshot {
                 return Err("ident changes require a complete snapshot".into());
             }
         }
+        // Ordinary commits only invalidate reverse indexes for changed
+        // attributes. New task items must not discard the curriculum indexes.
+        for (&eid, record) in &normalized {
+            let old = self.entities.records.get(&eid);
+            let previous_example = old
+                .and_then(|r| r.get("knowledge-point/canonical-example"))
+                .and_then(Value::as_u64);
+            let next_example = record
+                .get("knowledge-point/canonical-example")
+                .and_then(Value::as_u64);
+            if previous_example != next_example {
+                if let Some(example) = previous_example {
+                    if let Some(count) = self.canonical_examples.get_mut(&example) {
+                        *count -= 1;
+                        if *count == 0 {
+                            self.canonical_examples.remove(&example);
+                        }
+                    }
+                }
+                if let Some(example) = next_example {
+                    *self.canonical_examples.entry(example).or_default() += 1;
+                }
+            }
+            self.entities.owners.get_mut().retain(|attr, index| {
+                index.is_ok() && old.and_then(|r| r.get(attr)) == record.get(attr)
+            });
+            if let Some(attributes) = self.entities.attributes.get_mut() {
+                let attributes = Arc::make_mut(attributes);
+                let keys: BTreeSet<_> = old
+                    .into_iter()
+                    .flat_map(|r| r.keys())
+                    .chain(record.keys())
+                    .collect();
+                for attribute in keys {
+                    let had = old.is_some_and(|r| r.contains_key(attribute));
+                    let has = record.contains_key(attribute);
+                    if had == has {
+                        continue;
+                    }
+                    let members = attributes.entry(attribute.clone()).or_default();
+                    match members.binary_search(&eid) {
+                        Ok(index) if !has => {
+                            members.remove(index);
+                        }
+                        Err(index) if has => members.insert(index, eid),
+                        _ => {}
+                    }
+                }
+            }
+        }
+        // Reference resolution also depends on target existence. A cached
+        // successful index must report a now-dangling reference on later reads.
+        for (&eid, record) in &normalized {
+            if record.is_empty() {
+                self.entities.owners.get_mut().retain(|_, index| {
+                    index
+                        .as_ref()
+                        .as_ref()
+                        .is_ok_and(|owners| !owners.contains_key(&eid))
+                });
+            }
+        }
         for (eid, record) in normalized {
             if record.is_empty() {
-                self.entities.remove(&eid);
+                self.entities.records.remove(&eid);
             } else {
-                self.entities.insert(eid, record);
+                self.entities.records.insert(eid, record);
             }
         }
         self.basis_t = basis_t;
-        self.canonical_examples = Self::example_targets(&self.entities);
         Ok(())
     }
-    fn example_targets(entities: &BTreeMap<u64, Record>) -> BTreeSet<u64> {
-        entities
-            .values()
-            .filter_map(|record| {
-                record
-                    .get("knowledge-point/canonical-example")
-                    .and_then(Value::as_u64)
-            })
-            .collect()
+    fn example_targets(entities: &BTreeMap<u64, Record>) -> BTreeMap<u64, usize> {
+        let mut targets = BTreeMap::new();
+        for target in entities.values().filter_map(|record| {
+            record
+                .get("knowledge-point/canonical-example")
+                .and_then(Value::as_u64)
+        }) {
+            *targets.entry(target).or_default() += 1;
+        }
+        targets
     }
     /// The projection must include every canonical-example reference at this basis.
     /// Refresh curriculum records through replace_records to update this derived index.
     pub fn is_example(&self, question: u64) -> bool {
-        self.canonical_examples.contains(&question)
+        self.canonical_examples.contains_key(&question)
     }
     pub fn is_ordinary_question(&self, content: u64) -> Result<bool> {
         Ok(self.entity(content)?.contains_key("question/id") && !self.is_example(content))
@@ -276,20 +436,35 @@ impl EntitySnapshot {
     }
     pub fn owners(&self, target: u64, attr: &str) -> Result<Vec<u64>> {
         self.entity(target)?;
-        let mut owners = vec![];
-        for (&id, record) in &self.entities {
-            if let Some(v) = record.get(attr) {
-                let ids = if v.is_array() {
-                    self.refs(id, attr)?
-                } else {
-                    vec![self.eid(v)?]
-                };
-                if ids.contains(&target) {
-                    owners.push(id);
+        let cached = self.entities.owners.borrow().get(attr).cloned();
+        let index = cached.unwrap_or_else(|| {
+            let index = Arc::new((|| {
+                let mut owners = OwnersIndex::new();
+                for id in self.entities.with_attribute(attr) {
+                    let record = &self.entities[&id];
+                    if let Some(v) = record.get(attr) {
+                        let ids = if v.is_array() {
+                            self.refs(id, attr)?
+                        } else {
+                            vec![self.eid(v)?]
+                        };
+                        for target in ids {
+                            owners.entry(target).or_default().push(id);
+                        }
+                    }
                 }
-            }
+                Ok(owners)
+            })());
+            self.entities
+                .owners
+                .borrow_mut()
+                .insert(attr.into(), index.clone());
+            index
+        });
+        match index.as_ref() {
+            Ok(owners) => Ok(owners.get(&target).cloned().unwrap_or_default()),
+            Err(error) => Err(error.clone()),
         }
-        Ok(owners)
     }
     pub fn types(&self, eid: u64) -> Result<BTreeSet<String>> {
         Ok(self
@@ -1303,6 +1478,103 @@ pub(crate) fn writeback(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn ownership_indexes_follow_mutation_cloning_and_sparse_replacements() {
+        let mut snapshot = EntitySnapshot::from_json(&json!({
+            "basis_t": 10, "entities": {
+                "1": {"knowledge-point/questions": [4,3,3]},
+                "2": {"knowledge-point/questions": [3]},
+                "3": {"question/id": "three"},
+                "4": {"question/id": "four"},
+                "5": {"learner/name": "before"}
+            }
+        }))
+        .unwrap();
+        assert_eq!(
+            snapshot.owners(3, "knowledge-point/questions").unwrap(),
+            vec![1, 2]
+        );
+        let index = snapshot.entities.owners.borrow()["knowledge-point/questions"].clone();
+        let mut changed = snapshot.clone();
+        changed
+            .entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("knowledge-point/questions".into(), json!([4]));
+        assert_eq!(
+            changed.owners(3, "knowledge-point/questions").unwrap(),
+            vec![2]
+        );
+        assert_eq!(
+            snapshot.owners(3, "knowledge-point/questions").unwrap(),
+            vec![1, 2]
+        );
+        snapshot
+            .replace_records(
+                BTreeMap::from([(
+                    5,
+                    json!({"learner/name":"after"}).as_object().unwrap().clone(),
+                )]),
+                11,
+            )
+            .unwrap();
+        assert!(Arc::ptr_eq(
+            &index,
+            &snapshot.entities.owners.borrow()["knowledge-point/questions"]
+        ));
+        snapshot
+            .replace_records(
+                BTreeMap::from([
+                    (
+                        1,
+                        json!({"knowledge-point/questions":[4]})
+                            .as_object()
+                            .unwrap()
+                            .clone(),
+                    ),
+                    (2, Record::new()),
+                ]),
+                12,
+            )
+            .unwrap();
+        assert_eq!(
+            snapshot.owners(3, "knowledge-point/questions").unwrap(),
+            Vec::<u64>::new()
+        );
+        assert_eq!(
+            snapshot.owners(4, "knowledge-point/questions").unwrap(),
+            vec![1]
+        );
+        assert_eq!(
+            snapshot
+                .entities
+                .with_attribute("knowledge-point/questions"),
+            vec![1]
+        );
+        let encoded = serde_json::to_value(&snapshot.entities).unwrap();
+        assert_eq!(encoded.as_object().unwrap().len(), 4);
+    }
+
+    #[test]
+    fn reverse_indexes_preserve_dangling_reference_errors_and_recover_after_repairs() {
+        let mut snapshot = EntitySnapshot::from_json(&json!({
+            "basis_t": 10, "entities": {"1":{"ref/items":[2,3]}, "2":{"item/id":"two"}}
+        }))
+        .unwrap();
+        assert!(snapshot.owners(2, "ref/items").is_err());
+        snapshot
+            .replace_records(
+                BTreeMap::from([(3, json!({"item/id":"three"}).as_object().unwrap().clone())]),
+                11,
+            )
+            .unwrap();
+        assert_eq!(snapshot.owners(2, "ref/items").unwrap(), vec![1]);
+        snapshot
+            .replace_records(BTreeMap::from([(3, Record::new())]), 12)
+            .unwrap();
+        assert!(snapshot.owners(2, "ref/items").is_err());
+    }
+
     #[test]
     fn canonical_references_define_example_roles_and_refresh_with_the_basis() {
         let mut snapshot = EntitySnapshot::from_json(&json!({

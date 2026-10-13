@@ -321,8 +321,8 @@ class MathAcademyBrowser:
         self.state["activity_url"] = self.page.url
         self._save()
 
-    def _read(self, scope, directory, label, prior=None):
-        item = scope.evaluate(EXTRACT)
+    def _read(self, scope, directory, label, prior=None, context=None):
+        item = scope.evaluate(EXTRACT, context or {})
         item = self.assets.collect(item, scope, directory, label, prior=prior)
         # Asset failures retain the section identified by the source extractor.
         for asset in item.get('assets', []):
@@ -511,8 +511,15 @@ class MathAcademyBrowser:
             if view["kind"] in ("question", "example"):
                 observation["question"] = item
             else:
+                # A multistep's step-1 is shared context, not a tutorial ID.
+                # Only explicit content IDs or the lesson's step-t<ID> encode
+                # tutorial identity; retain the DOM label as capture evidence.
+                tutorial_id = (view.get("source_step") or {}).get("content_id")
+                if tutorial_id is None:
+                    match = re.fullmatch(r"step-t(\d+)", item.get("dom_id") or "")
+                    tutorial_id = match[1] if match else None
                 observation["tutorial"] = {**item, "content": item["problem"], "title": item.get("name"),
-                                           "math_academy_id": (view.get("source_step") or {}).get("content_id") or re.sub(r"^step-t", "", item.get("dom_id", ""))}
+                                           "math_academy_id": tutorial_id}
             if self.activity.get("kind") == "multistep":
                 observation.update(self._multistep_context(directory))
                 observation["shared_context"] = "\n\n".join(x["problem"] for x in observation["shared_contexts"])
@@ -570,13 +577,13 @@ class MathAcademyBrowser:
         self._check()
         if self.safety.reconcile_required:
             self._goto(self.page.url)
-            return {"unknown_outcome": True, "not_submitted": True}
+            return {"unknown_outcome": True, "not_submitted": True, "reason": "Reloaded to reconcile browser safety state"}
         current = self._ready_view()
         if current.get("accepted") or current["kind"] == "complete":
-            return {"unknown_outcome": True, "not_submitted": True}  # Already accepted.
+            return {"unknown_outcome": True, "not_submitted": True, "reason": "Question already accepted or activity completed"}
         if (current.get("selector") != observation.get("selector") or
                 current.get("key") != observation.get("key", "").split(":fields:")[0]):
-            return {"unknown_outcome": True, "not_submitted": True}  # Observe the new presentation.
+            return {"unknown_outcome": True, "not_submitted": True, "reason": "Current question differs from the captured presentation"}
         pending = self.state.get("pending_action", {})
         if pending.get("action") in ("submit", "dont_know", "skip") and not self.state.get("restored"):
             # Read-only reload asks the server whether the earlier request took.
@@ -584,12 +591,12 @@ class MathAcademyBrowser:
             self._goto(self.page.url)
             self.state["restored"] = True
             self._save()
-            return {"unknown_outcome": True, "not_submitted": True}
+            return {"unknown_outcome": True, "not_submitted": True, "reason": "Reloaded to reconcile an earlier submission with unknown outcome"}
         scope = self.page.locator(current["selector"])
         expected = observation.get("question") or {}
         live = scope.evaluate(EXTRACT)
         if expected.get("problem") is not None and self._binding(expected) != self._binding(live):
-            return {"unknown_outcome": True, "not_submitted": True}
+            return {"unknown_outcome": True, "not_submitted": True, "reason": "Captured prompt or answer controls do not match the live source before entry"}
         if action in ("dont_know", "skip"):
             button = scope.locator(".questionWidget-skipButton:visible").first
             if not button.count():
@@ -600,7 +607,7 @@ class MathAcademyBrowser:
         else:
             fresh = self._read(scope, directory, observation["key"] + "-before-entry")
             if expected.get("problem") is not None and self._binding(expected) != self._binding(fresh):
-                return {"unknown_outcome": True, "not_submitted": True}
+                return {"unknown_outcome": True, "not_submitted": True, "reason": "Prompt or answer controls changed during the fresh entry read"}
             answers = {a["key"]: a for a in (responses.get("responses", responses.get("answers", [])) if isinstance(responses, dict) else responses)}
             entered = []
             for field in fresh["fields"]:
@@ -614,7 +621,7 @@ class MathAcademyBrowser:
                 visible = self._view()
                 if ((visible.get("key") != current.get("key") and visible["kind"] != "assessment") or
                         (fresh.get("problem") is not None and self._binding(fresh) != self._binding(scope.evaluate(EXTRACT)))):
-                    return {"unknown_outcome": True, "not_submitted": True}
+                    return {"unknown_outcome": True, "not_submitted": True, "reason": "Question changed during answer entry"}
                 entered.append(enter(scope, field, answers[field["key"]]))
             self._intent(observation, "entered", responses=entered)
             if self.activity.get("kind") == "assessment":
@@ -624,7 +631,7 @@ class MathAcademyBrowser:
                 visible = self._view()
                 if (visible["kind"] != "assessment" or (fresh.get("problem") is not None and
                         self._binding(fresh) != self._binding(scope.evaluate(EXTRACT)))):
-                    return {"unknown_outcome": True, "not_submitted": True}
+                    return {"unknown_outcome": True, "not_submitted": True, "reason": "Assessment question changed while entered values settled"}
                 qid = scope.get_attribute("id")
                 self.state.setdefault("assessment_filled", {})[qid] = entered
                 self.state.pop("pending_action", None)
@@ -640,7 +647,7 @@ class MathAcademyBrowser:
             verify_entered(scope, fresh, entered)
             if (self._view().get("key") != current.get("key") or (fresh.get("problem") is not None and
                     self._binding(fresh) != self._binding(scope.evaluate(EXTRACT)))):
-                return {"unknown_outcome": True, "not_submitted": True}
+                return {"unknown_outcome": True, "not_submitted": True, "reason": "Question changed before Submit"}
             if submit.evaluate("n => n.disabled || n.classList.contains('disabledButton')"):
                 raise ValueError("Submit became disabled while answer fields settled")
             response_before = scope.evaluate(RESPONSE_STATE)
@@ -655,24 +662,38 @@ class MathAcademyBrowser:
         # Asset paths are local evidence details; bind to the source prompt and
         # actual choices/field order, without result or editable current values.
         assets = item.get("assets", [])
-        def image_identity(value):
-            asset = next((asset for asset in assets if value in (
-                asset.get("path"), f"@asset-{asset['index']}@")), None)
-            if asset is None:
+        def image_identity(value, source_html=None, part=None):
+            candidates = [asset for asset in assets if value in (
+                asset.get("path"), f"@asset-{asset['index']}@")]
+            # Identical image bytes can belong to distinct source occurrences.
+            # A captured path alone cannot select the first matching asset.
+            if len(candidates) > 1 and part:
+                scoped = [asset for asset in candidates if asset.get('extraction_part') == part]
+                if scoped:
+                    candidates = scoped
+            if len(candidates) > 1 and source_html:
+                scoped = [asset for asset in candidates if asset.get('html') and asset['html'] in source_html]
+                if scoped:
+                    candidates = scoped
+            identities = {fingerprint({k: asset.get(k) for k in
+                ("tag", "source_url", "html")}) for asset in candidates}
+            if not identities:
                 return value
-            return "<source-image:" + fingerprint({k: asset.get(k) for k in
-                ("tag", "source_url", "html")}) + ">"
+            if len(identities) != 1:
+                return '<ambiguous-source-image:' + fingerprint(sorted(identities)) + '>'
+            return "<source-image:" + next(iter(identities)) + ">"
 
-        def clean(value):
+        def clean(value, source_html=None, part=None):
             value = value or ""
             return re.sub(r"!\[[^]]*\]\(([^)]+)\)",
-                          lambda match: image_identity(match[1]), value)
+                          lambda match: image_identity(match[1], source_html, part), value)
 
         def choice_value(choice):
             value = choice.get("value")
-            return image_identity(value) if choice.get("type") == "image" else clean(value)
+            return (image_identity(value, choice.get('html'), 'fields') if choice.get("type") == "image"
+                    else clean(value, choice.get('html'), 'fields'))
         return {"source_id": question_identity(item.get("dom_id"), item.get("html", "")),
-                "problem": clean(item.get("problem")),
+                "problem": clean(item.get("problem"), item.get('html'), 'problem'),
                 "fields": [{**{k: field.get(k) for k in ("key", "type", "tag", "dom_id")},
                             "choices": [{k: choice_value(choice) if k == "value" else choice.get(k)
                                          for k in ("option", "value", "type", "dom_id")} for choice in field.get("choices", [])]}
@@ -717,6 +738,24 @@ class MathAcademyBrowser:
         self.state.pop("pending_action", None)
         self._save()
 
+    def _select_continue_step(self, button):
+        """Continue follows MA's selected step, which scrolling can change."""
+        match = re.fullmatch(r"#continueButton-([teq]?\d+)", button)
+        if not match:
+            return
+        token = match[1]
+        step_button = self.page.locator("#stepButton-" + token)
+        if not step_button.count():
+            return  # Reviews and older lesson layouts need no step selection.
+        control = self.page.locator(button)
+        control.scroll_into_view_if_needed()
+        self.pacer.sleep(getattr(self.config, "settle_ms", 1000) / 1000,
+                         deadline=self.deadline_at)
+        if "current" not in (step_button.get_attribute("class") or "").split():
+            step_button.click()
+            self.page.wait_for_function("id => document.getElementById(id)?.classList.contains('current')",
+                                        arg="stepButton-" + token)
+
     def advance(self, observation, directory):
         current = self._view()
         pending = self.state.get("pending_action", {})
@@ -757,6 +796,7 @@ class MathAcademyBrowser:
             transition["diagnostic_previous_key"] = "diagnostic-" + number[1] if number else None
         self._pause("continue activity")
         self._intent(observation, "advance", button=button, **transition)
+        self._select_continue_step(button)
         self.page.locator(button).click()
         if transition:
             self._wait_diagnostic_transition(transition["diagnostic_previous_key"])
@@ -829,12 +869,18 @@ class MathAcademyBrowser:
                     node.locator(".answerDetails").click()
                 explanation.wait_for(state="visible")
                 self._settle_content(explanation)
-                item = self._read(node, directory, "history-" + info["math_academy_id"])
+                item = self._read(node, directory, "history-" + info["math_academy_id"], context={"history_grade": info["grade"]})
                 solution = self._read(explanation, directory, "history-solution-" + info["math_academy_id"],
                                       prior=self.state.get("live_records", {}).get(info["math_academy_id"]))
                 item["worked_solution"] = solution["worked_solution"]
                 item["assets"] = item.get("assets", []) + solution.get("assets", [])
                 item["errors"] = list(dict.fromkeys(item.get("errors", []) + solution.get("errors", [])))
+                error_history = deepcopy(item.get("extraction_error_history", []))
+                for entry in solution.get("extraction_error_history", []):
+                    if entry not in error_history:
+                        error_history.append(deepcopy(entry))
+                if error_history:
+                    item["extraction_error_history"] = error_history
                 item["extraction_parts"] = sorted(set(item.get("extraction_parts", [])) | set(solution.get("extraction_parts", [])))
                 for error, parts in solution.get('extraction_error_parts', {}).items():
                     current = item.setdefault('extraction_error_parts', {}).get(error, [])
@@ -843,7 +889,7 @@ class MathAcademyBrowser:
             except StopRequested:
                 raise
             except Exception as error:
-                item = self._read(node, directory, "history-" + info["math_academy_id"])
+                item = self._read(node, directory, "history-" + info["math_academy_id"], context={"history_grade": info["grade"]})
                 message = "History expansion: " + str(error)
                 item.setdefault("errors", []).append(message)
                 item.setdefault('extraction_error_parts', {})[message] = ['solution']

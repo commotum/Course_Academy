@@ -18,10 +18,46 @@ def presentation(q, position=0, value='2'):
 
 
 class HistoryBindingTests(unittest.TestCase):
+    def test_multistep_context_keeps_observation_without_creating_a_tutorial(self):
+        capture = self.capture([])
+        capture.activity['kind'] = 'multistep'
+        step = {'kind': 'tutorial', 'key': 'step-1',
+                'tutorial': {'math_academy_id': 'step-1', 'content': 'Shared setup.'}}
+        capture.state['steps'] = [step]
+        content = capture._merge_history({'questions': [],
+            'shared_contexts': [{'id': 'step-1', 'problem': 'Shared setup.'}]})
+        self.assertEqual(content['tutorials'], [])
+        self.assertEqual(content['observed_steps'], [step])
+        self.assertEqual(content['shared_contexts'][0]['problem'], 'Shared setup.')
+
+    def test_paragraph_boundaries_around_math_and_fields_do_not_split_identity(self):
+        live = question(r'Phase space.$\,$' + '\nThe $x$-nullcline.{{field-1}}', 'q-1')
+        history = question('Phase space.\n\n' + r'$\,$' + '\nThe $x$-nullcline.\n\n{{field-1}}', 'q-1')
+        self.assertTrue(ActivityCapture._source_binding_matches(live, history))
+
+    def test_math_tokens_and_internal_whitespace_remain_distinct(self):
+        for before, after in [(r'$1 2$', r'$12$'), (r'$\text{a b}$', r'$\text{ab}$'),
+                              ('{{field-1}} then {{field-2}}', '{{field-2}} then {{field-1}}')]:
+            with self.subTest(before=before):
+                self.assertFalse(ActivityCapture._source_binding_matches(question(before), question(after)))
+
+    def test_reasoning_paragraph_and_empty_table_paragraphs_preserve_identity(self):
+        self.assertTrue(ActivityCapture._source_binding_matches(
+            question('Reasoning below.At $x=0$, choose {{field-1}}.'),
+            question('Reasoning below.\n\nAt $x=0$, choose {{field-1}}.')))
+        self.assertTrue(ActivityCapture._source_binding_matches(
+            question('<table><tr><td>$1$<p></p><p></p></td></tr></table>'),
+            question('<table><tr><td>$1$<p></p></td></tr></table>')))
+        self.assertFalse(ActivityCapture._source_binding_matches(
+            question('Below.At $x=0$, choose {{field-1}}.'),
+            question('Below. At $x=1$, choose {{field-1}}.')))
+        self.assertFalse(ActivityCapture._source_binding_matches(question('$\\text{A.B}$'),question('$\\text{A. B}$')))
+
     def capture(self, records):
         capture = ActivityCapture.__new__(ActivityCapture)
         capture.activity = {'task_id': '1', 'kind': 'diagnostic'}
         capture.state = {'steps': [], 'presentations': {r['key']: r for r in records}}
+        capture.exposures = None
         capture._save = lambda: None
         return capture
 

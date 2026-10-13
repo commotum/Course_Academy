@@ -34,6 +34,12 @@ class SourceGapPreparationTests(unittest.TestCase):
         q['problem'] = r'Compute ${{x}}$ and enter {{field-0}}.'
         self.assertEqual(len(authoritative_question(q)['answer_fields']), 1)
 
+    def test_control_in_an_omitted_authored_body_is_not_a_complete_prompt(self):
+        q=question();q['answer_fields'][0]['key']='field-1'
+        q.update(problem='Select the correct reasoning below.',problem_field_keys=['field-1'])
+        with self.assertRaisesRegex(UnsupportedContent,'Authored problem positions'):
+            authoritative_question(q)
+
     def test_new_gap_and_changed_source_require_new_judgments_but_exact_retries_reuse(self):
         calls = []
         def resolve(task, payload):

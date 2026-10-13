@@ -138,10 +138,17 @@ def parse_lesson_structure(html, topic_id):
 
 
 def parse_xp(value):
-    match = re.search(r"(-?\d+)\s*(?:/|of(?:\s+the\s+task['’]s)?)\s*(\d+)(?:\s*XP)?", value, re.I)
+    match = re.search(r"awarded\s+all\s+of\s+the\s+task['’]s\s*(\d+)\s*XP\b", value, re.I)
+    if match:
+        return {"earned_xp": int(match[1]), "base_xp": int(match[1]), "source_text": value}
+    match = re.search(r"(-?\d+)\s*(?:/|of(?:\s+the\s+task['’]s)?)\s*(\d+)\s*XP\b", value, re.I)
+    # Retain the old standalone XP ratio format, without treating assessment
+    # question counts or scores embedded in completion prose as an XP award.
+    if match is None:
+        match = re.fullmatch(r"\s*(-?\d+)\s*/\s*(\d+)\s*", value)
     if match:
         return {"earned_xp": int(match[1]), "base_xp": int(match[2]), "source_text": value}
-    match = re.search(r"(-?\d+)\s*XP", value, re.I)
+    match = re.search(r"(-?\d+)\s*XP\b", value, re.I)
     return {"earned_xp": int(match[1]) if match else None, "base_xp": None, "source_text": value}
 
 

@@ -26,15 +26,23 @@ def run_fleet(argv):
     script = str(Path(__file__).resolve().parent)
     stop = threading.Event()
     children = {}
+    finished = set()
     with shutdown_signals(stop):
         try:
             while not stop.is_set():
                 for account in ACCOUNTS:
+                    if account in finished:
+                        continue
                     process = children.get(account)
+                    if args.finish_started and process is not None and process.poll() == 0:
+                        finished.add(account)
+                        continue
                     if process is None or process.poll() is not None:
                         if process is not None:
                             logging.warning("Restarting %s from its saved checkpoint (exit %s)", account, process.returncode)
                         children[account] = subprocess.Popen([sys.executable, script, *forwarded, "--account", account], start_new_session=True)
+                if args.finish_started and len(finished) == len(ACCOUNTS):
+                    break
                 wait(stop, 5)
         except StopRequested:
             pass

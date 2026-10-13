@@ -50,6 +50,28 @@ queue serves lessons; review and assessment scheduling is not yet connected to
 this interface. Content without a supported grader or sufficient practice is
 excluded from the queue.
 
+For private remote access, use Tailscale Serve while keeping the app bound to
+localhost. Set `COURSE_ACADEMY_PUBLIC_ORIGIN` to the exact HTTPS origin Serve
+will use, including its port. The user service reads this setting from
+`.local/ui.env`; a manually started server reads it from its environment.
+For example, use port 8443 if another app already uses Tailscale's port 443:
+
+```bash
+# Replace the hostname with this device's Tailscale DNS name.
+mkdir -p .local
+printf '%s\n' 'COURSE_ACADEMY_PUBLIC_ORIGIN=https://your-host.your-tailnet.ts.net:8443' > .local/ui.env
+systemctl --user daemon-reload
+systemctl --user restart course-academy.service
+sudo tailscale serve --bg --https=8443 http://127.0.0.1:8765
+tailscale serve status
+```
+
+On another device connected to the tailnet, open the HTTPS URL with `/home`
+appended. Tailnet access rules must allow that device to reach the host on the
+chosen HTTPS port. The host must remain awake. Serve's background configuration
+persists across reboots. To remove this endpoint, run
+`sudo tailscale serve --bg --https=8443 off`.
+
 Entered mathematical answers use our [Rust symbolic checker](reference/symbolic-grader-2026-10-05/README.md).
 It proves supported equivalences using exact arithmetic and keeps unresolved
 comparisons out of learner progress.

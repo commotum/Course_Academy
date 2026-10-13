@@ -6,8 +6,57 @@ two correct answers in a row for lesson KPs, three for reviews, accepted earned-
 and completed diagnostic retries replacing the original placement evidence.
 The study app uses `learning` for the current generic activity/step schema,
 lesson eligibility, response grading, lesson XP, and per-answer FIRe updates.
-Its durable EDB integration is in `scripts/learning_api.rs`. Review and
-assessment scheduling for that interface remains to be connected.
+`retrieval` connects reviews and timed assessments to the same generic
+activity/step definitions and learner-task/item history. Their durable EDB
+integration is in `scripts/learning_api.rs`; the Study UI uses the same player.
+
+In engine mode, opening Study and finishing a task refresh the recommendations.
+Due reviews require explicitly learned FIRe state and five fresh gradable
+questions; the existing three-correct streak stops a review after at most five
+presentations. A bounded pool of 16 due topics is ranked by FIRe review coverage,
+and up to three new review definitions are prepared per refresh. Obsolete
+unstarted tasks are locked; started and paused work remains resumable in both
+modes. Self-directed mode schedules new lessons from the selected topic set;
+activity-history assessments and reviews for assessment misses remain available.
+Ordinary spaced reviews retain their existing course and engine-mode scope.
+
+Assessments become available after 150 positive finalized practice XP since the
+last assessment completion or expiry. They require at least five distinct
+learned topics with recorded successful learning at least 48 hours ago, without
+a mandatory prior retrieval event. This provisional topic-age floor applies
+only to ordinary assessments; reviews do not restart the learning-age clock,
+and assessment-miss reviews have no age delay. Assessment selection considers
+the learner's whole learned activity history without a course restriction or
+course preference, in either study mode. Newly prepared assessments omit a
+course association, and existing pending assessments survive course switches.
+Imported terminal tasks without a recorded start do not establish
+cadence, mastery dates, or remediation. Assessments select one fresh question
+per topic, favor previously unassessed topics, and freeze the route at start.
+The 15-minute wall-clock limit continues while paused. Answers are graded and
+recorded immediately, but correctness, feedback, and solutions are hidden by
+the task API until completion. Explicit skips create remediation; expiry does
+not fabricate wrong-answer evidence for unanswered or unpresented questions.
+Failed reviews lead to relearning; observed assessment misses lead to immediate
+reviews even when their topics are outside the current course.
+
+Question duration estimates are not yet available in the imported bank. The
+scheduler provisionally budgets 90 seconds per question, selecting up to ten
+questions. Difficulty distributions come from the active policy's owned
+question-weight records, shared with lessons and reviews. Ordinary assessments
+use the initial distribution throughout (seeded at 50/40/10 easy/moderate/hard).
+The assessment record also stores a provisional 45/40/15 remedial distribution;
+`question_selection::weights_for_phase` supports explicitly requesting it for
+future retakes/rechecks. Retake scheduling and adaptive difficulty are not yet
+implemented. A missing assessment record is a configuration error. New selections
+use synchronized database values; already assembled question sets remain fixed.
+Review XP uses a provisional 4.5-minute estimate.
+These estimates affect selection and base XP, not measured FIRe performance.
+All served questions and frozen active retrieval pools are excluded from other
+practice draws. Preparing an unstarted definition records no presentation or
+clock; stale unstarted definitions are replaced when Study is refreshed.
+
+The type-specific `runtime` remains for existing replay/diagnostic tooling; the
+live lesson, review and assessment paths use shared activity and step records.
 
 Target-based planning reads its target set only from `learner/targets`. Linked
 assignments provide deadline context for topics already in that set. Completing

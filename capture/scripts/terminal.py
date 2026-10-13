@@ -24,6 +24,7 @@ from .fleet import ACCOUNTS
 from .monitor import process_running, render, snapshot
 from .runtime import shutdown_signals
 from .storage import atomic_json, file_lock, read_json
+from .profiles import PROFILES, set_account_profile
 
 LEGACY_WINDOWS = dict(zip(ACCOUNTS, ('Mathematical Methods', 'Linear Algebra', 'Multivariable Calculus', 'Differential Equations')))
 SCRIPT = Path(__file__).resolve()
@@ -51,6 +52,8 @@ def options(args):
         result += ['--visible']
     if args.learner_id:
         result += ['--learner-id', args.learner_id]
+    if getattr(args, 'finish_started', False):
+        result += ['--finish-started']
     return result
 
 
@@ -68,25 +71,49 @@ def ensure_layout(args):
     session = args.session
     repo = config_for(args, ACCOUNTS[0]).repo_root
     if tmux('has-session', '-t', '=' + session, check=False).returncode:
-        tmux('new-session', '-d', '-s', session, '-n', course_label(config_for(args, ACCOUNTS[0])), '-c', repo, 'exec bash')
-        tmux('set-window-option', '-t', session + ':', '@capture_account', ACCOUNTS[0])
-        tmux('set-option', '-t', session, '@capture_version', '2')
-    elif tmux('show-options', '-v', '-t', session, '@capture_version', check=False).stdout.strip() != '2':
+        tmux('new-session', '-d', '-s', session, '-n', 'Capture', '-c', repo, invocation(args, 'dashboard'))
+        tmux('set-option', '-t', session, '@capture_version', '3')
+        pane = tmux('list-panes', '-t', '=' + session, '-F', '#{pane_id}').stdout.strip()
+        tmux('set-option', '-p', '-t', pane, '@capture_dashboard', '1')
+    elif tmux('show-options', '-v', '-t', session, '@capture_version', check=False).stdout.strip() not in ('2', '3'):
         raise RuntimeError(f'Session {session!r} belongs to another program; use a different --session')
+    backend = session + '-workers'
+    if tmux('has-session', '-t', '=' + backend, check=False).returncode:
+        tmux('new-session', '-d', '-s', backend, '-n', 'holding', '-c', repo, 'exec bash')
+        tmux('set-option', '-t', backend, '@capture_version', '3')
+        holding = tmux('list-windows', '-t', '=' + backend, '-F', '#{window_id}').stdout.strip()
+    else:
+        if tmux('show-options', '-v', '-t', backend, '@capture_version', check=False).stdout.strip() != '3':
+            raise RuntimeError(f'Session {backend!r} belongs to another program')
+        holding = None
+    # Migrate owned panes without terminating supervisors or their descendants.
     rows = tmux('list-windows', '-t', session, '-F', '#{window_id}\t#{window_name}\t#{@capture_account}').stdout.splitlines()
-    windows, untagged = {}, {}
+    existing = tmux('list-windows', '-t', backend, '-F', '#{@capture_account}').stdout.splitlines()
+    migrations = []
     for row in rows:
         wid, name, account = row.split('\t')
         if account in ACCOUNTS:
-            windows[account] = wid
-        elif not account:
-            untagged[name] = wid
+            panes = [p.split('\t') for p in tmux('list-panes', '-t', wid, '-F', '#{pane_id}\t#{@capture_dashboard}').stdout.splitlines()]
+            workers = [p[0] for p in panes if p[1] != '1']
+            if len(workers) != 1 or account in existing:
+                raise RuntimeError(f'{name}: cannot migrate ambiguous worker panes')
+            migrations.append((wid, workers[0], account, len(panes)))
+    for wid, pane, account, count in migrations:
+        if count == 1:
+            tmux('move-window', '-s', wid, '-t', backend + ':')
+        else:
+            new_window = tmux('break-pane', '-d', '-s', pane, '-t', backend + ':', '-n', account,
+                              '-P', '-F', '#{window_id}').stdout.strip()
+            tmux('set-window-option', '-t', new_window, '@capture_account', account)
+            tmux('set-window-option', '-t', wid, '-u', '@capture_account')
+            tmux('rename-window', '-t', wid, 'Capture')
+    rows = tmux('list-windows', '-t', backend, '-F', '#{window_id}\t#{@capture_account}').stdout.splitlines()
+    windows = {account: wid for wid, account in (r.split('\t') for r in rows) if account in ACCOUNTS}
     panes = {}
     for account in ACCOUNTS:
         name = course_label(config_for(args, account))
         if account not in windows:
-            legacy = untagged.pop(LEGACY_WINDOWS[account], None)
-            windows[account] = legacy or tmux('new-window', '-d', '-P', '-F', '#{window_id}', '-t', session,
+            windows[account] = tmux('new-window', '-d', '-P', '-F', '#{window_id}', '-t', backend,
                                              '-n', name, '-c', repo, 'exec bash').stdout.strip()
         window = windows[account]
         tmux('set-window-option', '-t', window, '@capture_account', account)
@@ -98,15 +125,18 @@ def ensure_layout(args):
         if len(candidates) != 1:
             raise RuntimeError(f'{name}: expected one capture log pane; leave other panes untouched')
         panes[account] = candidates[0]
-    first = windows[ACCOUNTS[0]]
-    rows = tmux('list-panes', '-t', first, '-F', '#{pane_id}\t#{@capture_dashboard}\t#{pane_dead}').stdout.splitlines()
+    if holding:
+        tmux('kill-window', '-t', holding)  # Only the empty placeholder created above.
+    rows = tmux('list-panes', '-s', '-t', session, '-F', '#{pane_id}\t#{@capture_dashboard}\t#{pane_dead}').stdout.splitlines()
     dashboard = next((row.split('\t') for row in rows if row.split('\t')[1] == '1'), None)
     if dashboard is None:
-        pane = tmux('split-window', '-d', '-b', '-v', '-l', '18', '-P', '-F', '#{pane_id}',
-                    '-t', first, '-c', repo, invocation(args, 'dashboard')).stdout.strip()
+        pane = tmux('new-window', '-d', '-P', '-F', '#{pane_id}', '-t', session,
+                    '-n', 'Capture', '-c', repo, invocation(args, 'dashboard')).stdout.strip()
         tmux('set-option', '-p', '-t', pane, '@capture_dashboard', '1')
     elif dashboard[2] == '1':
         tmux('respawn-pane', '-t', dashboard[0], invocation(args, 'dashboard'))
+    tmux('set-option', '-t', session, '@capture_version', '3')
+    tmux('select-pane', '-t', dashboard[0] if dashboard else pane)
     tmux('set-option', '-t', session, 'status-interval', '5')
     tmux('set-option', '-t', session, 'status-right-length', '65')
     tmux('set-option', '-t', session, 'status-right', '#(' + invocation(args, 'status', '--compact') + ')')
@@ -114,7 +144,7 @@ def ensure_layout(args):
 
 
 def refresh_window_titles(args):
-    rows = tmux('list-windows', '-t', args.session, '-F', '#{window_id}\t#{window_name}\t#{@capture_account}', check=False)
+    rows = tmux('list-windows', '-t', args.session + '-workers', '-F', '#{window_id}\t#{window_name}\t#{@capture_account}', check=False)
     for row in rows.stdout.splitlines():
         wid, name, account = row.split('\t')
         if account in ACCOUNTS:
@@ -159,7 +189,8 @@ def start(args, accounts):
                 continue
             extra = ['--dry-run'] if args.dry_run else []
             tmux('respawn-pane', '-k', '-t', pane, '-c', config.repo_root, invocation(args, 'worker', account, *extra))
-            print(f'{account}: starting new capture' + (' (queue inspection only)' if args.dry_run else ''))
+            action = 'finishing started activities' if args.finish_started else 'starting new capture'
+            print(f'{account}: {action}' + (' (queue inspection only)' if args.dry_run else ''))
 
 
 def process_token(pid):
@@ -203,7 +234,8 @@ def supervise(args, account):
                 output.seek(0, os.SEEK_END)
                 position = output.tell()
                 while not stop.is_set():
-                    print(f'{course_label(config)}: new capture starting; checkpoint recovery enabled', flush=True)
+                    action = 'finishing started activities' if getattr(args, 'finish_started', False) else 'new capture starting'
+                    print(f'{course_label(config)}: {action}; checkpoint recovery enabled', flush=True)
                     try:
                         child = subprocess.Popen(record['command'], cwd=config.repo_root, stdout=output,
                                                  stderr=subprocess.STDOUT, start_new_session=True)
@@ -241,7 +273,7 @@ def supervise(args, account):
                     cleanup_group(child.pid)
                     record.update(exit_code=child.returncode)
                     atomic_json(record_path, record)
-                    if stop.is_set() or args.dry_run:
+                    if stop.is_set() or args.dry_run or (getattr(args, 'finish_started', False) and child.returncode == 0):
                         return child.returncode
                     record['restarts'] += 1
                     print(f'Capture exited ({child.returncode}); resuming from its checkpoint in five seconds.', flush=True)
@@ -277,7 +309,7 @@ def stop_workers(args, accounts):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=('start', 'stop', 'status', 'attach', 'layout', 'dashboard', 'worker', 'check'))
+    parser.add_argument('command', choices=('start', 'stop', 'status', 'attach', 'layout', 'dashboard', 'worker', 'check', 'set-profile'))
     parser.add_argument('workers', nargs='*', help='Account names; defaults to all four')
     parser.add_argument('--session', default='ma-capture')
     parser.add_argument('--config', type=Path, help='Shared new capture configuration (not old workers.json)')
@@ -286,8 +318,10 @@ def main(argv=None):
     parser.add_argument('--visible', action='store_true')
     parser.add_argument('--learner-id')
     parser.add_argument('--dry-run', action='store_true', help='Inspect the queue without starting activities')
+    parser.add_argument('--finish-started', action='store_true', help='Finish started activities and stop; do not select new work')
     parser.add_argument('--compact', action='store_true')
     parser.add_argument('--json', action='store_true')
+    parser.add_argument('--answer-profile', choices=PROFILES, help='Profile to persist with set-profile')
     args = parser.parse_intermixed_args(argv)
     accounts = list(dict.fromkeys(args.workers or ACCOUNTS))
     if set(accounts) - set(ACCOUNTS):
@@ -296,6 +330,10 @@ def main(argv=None):
         parser.error('Session name must contain only letters, digits, hyphens, or underscores')
     if args.command == 'worker' and len(accounts) != 1:
         parser.error('worker requires one account')
+    if args.command == 'set-profile' and not args.answer_profile:
+        parser.error('set-profile requires --answer-profile')
+    if args.answer_profile and args.command != 'set-profile':
+        parser.error('--answer-profile is used with set-profile; use capture/scripts run for a run override')
     saved = read_json(args.config, {}) if args.config else {}
     if any(saved.get(key) for key in ('account', 'profile', 'state_root', 'output_root', 'course_id', 'browser_cdp_url')):
         parser.error('tmux uses separate standard account paths; use capture/scripts run for account-specific configuration')
@@ -308,20 +346,26 @@ def main(argv=None):
             return supervise(args, accounts[0])
         elif args.command == 'stop':
             stop_workers(args, accounts)
+        elif args.command == 'set-profile':
+            for account in accounts:
+                set_account_profile(config_for(args, account), args.answer_profile)
+                print(f'{account}: {args.answer_profile} (new decisions; saved decisions are preserved)')
         elif args.command == 'check':
             from .cli import main as capture_main
             return max(capture_main(['check', '--account', account, *options(args)[2:]]) for account in accounts)
         elif args.command == 'status':
-            rows = [snapshot(config_for(args, account)) for account in accounts]
+            rows = [snapshot(config_for(args, account), details=not args.compact) for account in accounts]
             print(json.dumps(rows, indent=2) if args.json else render(rows, compact=args.compact, color=sys.stdout.isatty()))
         elif args.command == 'dashboard':
             try:
+                print('\033[?1049h\033[?25l', end='', flush=True)
                 while True:
                     refresh_window_titles(args)
-                    print('\033[?25l\033[H' + render([snapshot(config_for(args, account)) for account in accounts], color=True) + '\033[J', end='', flush=True)
-                    time.sleep(5)
+                    print('\033[H' + render([snapshot(config_for(args, account)) for account in accounts], color=True,
+                                              include_logs=True) + '\033[J', end='', flush=True)
+                    time.sleep(1)
             finally:
-                print('\033[?25h', end='', flush=True)
+                print('\033[?25h\033[?1049l', end='', flush=True)
         if args.command == 'attach' or (args.command == 'start' and args.attach):
             verb = 'switch-client' if os.environ.get('TMUX') else 'attach-session'
             os.execvp('tmux', ['tmux', verb, '-t', args.session])

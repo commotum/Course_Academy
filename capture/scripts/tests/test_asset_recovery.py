@@ -1,6 +1,7 @@
 """Offline regressions for original-byte recovery and delayed diagram drawing."""
 import base64
 import hashlib
+from io import BytesIO
 from pathlib import Path
 from types import SimpleNamespace
 import tempfile
@@ -50,6 +51,41 @@ class AssetRecovery(unittest.TestCase):
         result = self.capture.collect(item, None, self.directory, 'missing')
         self.assertIn('404', result['assets'][0]['unavailable'])
         self.browser.context.request.get.assert_called_once()
+
+    def test_broken_dom_image_keeps_render_failure_but_decoded_original_restores_capture(self):
+        from PIL import Image
+        output = BytesIO()
+        Image.new('RGB', (3, 4), 'white').save(output, format='PNG')
+        self.browser.context.request.get.return_value = response(data=output.getvalue())
+        self.capture._rendered_assets = Mock(return_value={0:{'error':'Image did not load'}})
+        result = self.capture.collect(self.item(), None, self.directory, 'question')
+        self.assertEqual(result.get('errors'), [])
+        asset = result['assets'][0]
+        self.assertNotIn('render_unavailable', asset)
+        self.assertNotIn('render_ready', asset)
+        self.assertEqual(asset['render_failure'], 'Image did not load')
+        self.assertEqual(asset['original_image_validation']['dimensions'], [3, 4])
+        self.assertEqual(asset['original_image_validation']['source_url'], self.url)
+        self.assertTrue(result['extraction_error_history'])
+
+    def test_invalid_download_cannot_retire_a_rendering_failure(self):
+        self.browser.context.request.get.return_value = response(data=PNG)
+        self.capture._rendered_assets = Mock(return_value={0:{'error':'Image did not load'}})
+        result = self.capture.collect(self.item(), None, self.directory, 'question')
+        self.assertTrue(result['errors'])
+        self.assertEqual(result['assets'][0]['render_unavailable'], 'Image did not load')
+
+    def test_original_recovery_rejects_tampering_and_never_promotes_canvas(self):
+        from scripts.browser.assets import recover_original_raster
+        from PIL import Image
+        path = self.directory/'original.png'
+        Image.new('RGB', (3, 4), 'white').save(path)
+        asset = {'tag':'img','representation':'original','path':str(path),'sha256':'wrong-hash',
+                 'source_url':self.url,'render_unavailable':'Image did not load'}
+        self.assertFalse(recover_original_raster({}, asset))
+        asset.update(tag='canvas',sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+        self.assertFalse(recover_original_raster({}, asset))
+        self.assertIn('render_unavailable',asset)
 
     def test_rate_limit_enters_shared_cooldown_before_retry(self):
         calls = []

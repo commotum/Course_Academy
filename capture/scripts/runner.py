@@ -18,8 +18,9 @@ from .timing import Pacer
 
 
 class CaptureRunner:
-    def __init__(self, config, stop_event, browser_factory=None, capture_factory=None, pipeline_factory=None, *, pacer=None, clock=None):
+    def __init__(self, config, stop_event, browser_factory=None, capture_factory=None, pipeline_factory=None, *, pacer=None, clock=None, finish_started=False):
         self.config, self.stop_event = config, stop_event
+        self.finish_started = finish_started
         self.clock = clock or time.time
         self.pacer = pacer or Pacer(config, stop_event, clock=self.clock)
         if browser_factory is None:
@@ -113,10 +114,35 @@ class CaptureRunner:
     def cycle(self, browser):
         check_stop(self.stop_event)
         active = read_json(self.active_path, None) or self._recover_orphan()
+        if active and self.finish_started:
+            directory = Path(active['directory'])
+            checkpoint = read_json(directory / 'checkpoint.json', {})
+            if not ((directory / 'capture-complete.json').exists() or checkpoint.get('completion')
+                    or checkpoint.get('presentations') or checkpoint.get('steps')):
+                queue = read_queue(browser, self.config.output_root / 'queue')
+                if read_json(self.config.output_root / 'queue/queue.json', {}).get('unreadable'):
+                    raise ValueError('Cannot confirm started activities from unreadable queue cards')
+                saved = next((item for item in queue if item['task_id'] == active['activity']['task_id']), None)
+                if saved is None or not saved.get('started'):
+                    self._status('stopped', reason='saved_selection_not_confirmed_started', active=active)
+                    self.stop_event.set()
+                    return False
         if not active:
             queue = read_queue(browser, self.config.output_root / "queue")
+            if self.finish_started:
+                if read_json(self.config.output_root / 'queue/queue.json', {}).get('unreadable'):
+                    raise ValueError('Cannot confirm started activities from unreadable queue cards')
+                queue = [item for item in queue if item.get('started')]
+                if not queue:
+                    self._status('stopped', reason='all_started_activities_finished')
+                    self.stop_event.set()
+                    return False
             if self._wait_between(queue):
                 queue = read_queue(browser, self.config.output_root / "queue")
+                if self.finish_started:
+                    if read_json(self.config.output_root / 'queue/queue.json', {}).get('unreadable'):
+                        raise ValueError('Cannot confirm started activities from unreadable queue cards')
+                    queue = [item for item in queue if item.get('started')]
             if not any(item.get("started") for item in queue):
                 self._retry_observations(browser)
             completed = read_json(self.config.state_root / "completed.json", {})

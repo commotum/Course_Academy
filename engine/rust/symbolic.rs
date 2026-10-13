@@ -680,6 +680,21 @@ impl Algebra {
         if v.den != Poly::integer(1) {
             return Err("root of a symbolic quotient is unsupported".into());
         }
+        // Give positive rational multiples the same root atom and domain
+        // guard: root(c*p) = root(c)*root(p) for c > 0. Use the magnitude
+        // of the leading coefficient so a negative sign stays INSIDE an
+        // even root. Bound the new factoring work; larger coefficients keep
+        // their existing opaque-root representation.
+        let coefficient = v.num.0.first_key_value().unwrap().1.abs();
+        if !coefficient.is_one()
+            && coefficient.numer() <= &BigInt::from(1_000_000)
+            && coefficient.denom() <= &BigInt::from(1_000_000)
+        {
+            let outside = self.root(&Value::number(coefficient.clone()), degree)?;
+            let normalized = self.value(v.num.scale(&coefficient.recip()), Poly::integer(1))?;
+            let inside = self.root(&normalized, degree)?;
+            return self.mul(&outside, &inside);
+        }
         // A power of one variable can use a common root atom (x^(4/3), etc.).
         if v.num.0.len() == 1 {
             let (m, c) = v.num.0.first_key_value().unwrap();
@@ -1557,6 +1572,63 @@ mod tests {
         ] {
             eq(a, b);
         }
+    }
+    #[test]
+    fn rational_scaling_of_symbolic_radicands_is_exact() {
+        for (a, b) in [
+            (
+                "2\\sqrt{1+\\frac{x^2}{9}}",
+                "\\sqrt{4+\\frac{4x^2}{9}}",
+            ),
+            ("sqrt(4x)", "2sqrt(x)"),
+            ("sqrt(x/9)", "sqrt(x)/3"),
+            ("sqrt(18+9x^2)", "3sqrt(2+x^2)"),
+            ("sqrt(4-4x)", "2sqrt(1-x)"),
+            ("sqrt(-4x)", "2sqrt(-x)"),
+            ("sqrt(4x^2)", "2abs(x)"),
+            ("sqrt(4x^6)", "2abs(x)^3"),
+            ("cbrt(8x)", "2cbrt(x)"),
+            ("\\sqrt[4]{16x}", "2\\sqrt[4]{x}"),
+            ("sqrt(4x)^2", "4sqrt(x)^2"),
+            ("1/sqrt(4x)", "1/(2sqrt(x))"),
+        ] {
+            eq(a, b);
+            eq(b, a);
+        }
+        for scale in 1..=8 {
+            for denominator in 1..=8 {
+                let a = format!("{scale}sqrt(1+x^2/{})", denominator * denominator);
+                let b = format!(
+                    "sqrt({}+{}*x^2/{})",
+                    scale * scale,
+                    scale * scale,
+                    denominator * denominator
+                );
+                eq(&a, &b);
+            }
+        }
+        // Coefficients beyond the new factoring bound remain supported as
+        // opaque roots; normalizing must not narrow the previous parser.
+        assert!(supports("sqrt(1000003+x^2)", Context::default()));
+    }
+    #[test]
+    fn radicand_scaling_preserves_signs_and_domain_obligations() {
+        for (a, b) in [
+            ("sqrt(4+4x^2/9)", "-2sqrt(1+x^2/9)"),
+            ("sqrt(4x^2)", "2x"),
+            ("sqrt(4+4x^2/9)", "sqrt(4+x^2/9)"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} == {b}");
+        }
+        for (a, b) in [
+            ("sqrt(-4x)", "-2sqrt(x)"),
+            ("sqrt(4x)^2", "4x"),
+            ("sqrt(4x/x)", "2"),
+            ("sqrt(4x)/sqrt(4x)", "1"),
+        ] {
+            assert!(compare(a, b, Context::default()).is_err(), "{a} == {b}");
+        }
+        assert!(!supports("sqrt(-4-4x^2)", Context::default()));
     }
     #[test]
     fn domains_limits_and_unknown_identities_are_explicit() {

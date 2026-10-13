@@ -5,6 +5,14 @@ import json
 import re
 
 
+class DropdownUnavailable(ValueError):
+    """The source control is present but has no safe mouse target."""
+
+    def __init__(self, message, layout):
+        super().__init__(message)
+        self.layout = layout
+
+
 def by_id(scope, identifier):
     return scope.locator("[id=" + json.dumps(str(identifier)) + "]")
 
@@ -64,8 +72,11 @@ MATH_FIELD = r'''node => {
 
 def write_math(control, value, keys):
     keys = validated_keys(keys or [])
+    # MathQuill rejects TeX-only spacing commands in otherwise valid answers.
+    # Removing typography does not change the value checked after entry.
+    editor_value = re.sub(r'\\[,;!:]', '', str(value))
     try:
-        observed = control.evaluate("(node,value) => { const field=(" + MATH_FIELD + ")(node); if(!field || typeof field.write!=='function') throw Error('MathQuill editor not ready'); field.focus(); field.select(); field.write(value); return field.latex(); }", str(value))
+        observed = control.evaluate("(node,value) => { const field=(" + MATH_FIELD + ")(node); if(!field || typeof field.write!=='function') throw Error('MathQuill editor not ready'); field.focus(); field.select(); field.write(value); return field.latex(); }", editor_value)
     except Exception:
         if not keys:
             raise
@@ -121,25 +132,83 @@ def choice_content(control):
     }''')
 
 
-def click_dropdown(control, direct=False):
+def click_dropdown(control, direct=False, scroll=True):
     """Use an exposed source element point; never click through an overlay."""
-    control.scroll_into_view_if_needed()
-    if direct:
+    if scroll:
+        control.scroll_into_view_if_needed()
+    if direct and scroll:
         control.evaluate("n=>n.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'})")
-    point = control.evaluate(r'''(n,direct)=>{
+    point = control.evaluate(r'''(n,{direct,scroll})=>{
       const r=n.getBoundingClientRect();
       if(!n.getClientRects().length || getComputedStyle(n).visibility==='hidden') return null;
+      // ElementHandle.click also scrolls partly clipped targets. Refuse before
+      // that action can close MA's open menu through its scroll handlers.
       const xs=direct ? [2,r.width-2,4,r.width-4,r.width/2] : [r.width/2,2,r.width-2,4,r.width-4];
       for(const x of xs) for(const y of [2,r.height-2,4,r.height-4,r.height/2]) {
         if(x<=0 || y<=0 || x>=r.width || y>=r.height) continue;
+        if(r.left+x<0 || r.left+x>=innerWidth || r.top+y<0 || r.top+y>=innerHeight) continue;
         const hit=document.elementFromPoint(r.left+x,r.top+y);
         if(hit && (hit===n || (!direct && n.contains(hit)))) return {x,y};
       }
       return null;
-    }''', direct)
+    }''', {'direct': direct, 'scroll': scroll})
     if point is None:
-        raise ValueError("Dropdown has no exposed " + ("frame" if direct else "option") + " click target")
+        layout = control.evaluate('''n=>{
+          const r=n.getBoundingClientRect(), hit=document.elementFromPoint(
+            Math.max(0,Math.min(innerWidth-1,r.left+r.width/2)),
+            Math.max(0,Math.min(innerHeight-1,r.top+r.height/2)));
+          return {connected:n.isConnected, visibility:getComputedStyle(n).visibility,
+            rect:r.toJSON(), viewport:[innerWidth,innerHeight], scroll:[scrollX,scrollY],
+            hit:hit ? {tag:hit.localName,id:hit.id,class:hit.className?.toString()} : null};
+        }''')
+        raise DropdownUnavailable("Dropdown has no exposed " + ("frame" if direct else "option") + " click target", layout)
     control.click(position=point)
+
+
+def settle_dropdown_scroll(frame, block):
+    # The public MA widget hides and reparents menus on ancestor/window scroll.
+    # Finish that scroll before opening; never scroll the open option itself.
+    frame.evaluate("(n,block)=>n.scrollIntoView({block,inline:'nearest',behavior:'instant'})", block)
+    frame.evaluate("()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))")
+    frame.evaluate('''n=>{
+      const header=document.getElementById('header');
+      if(!header) return;
+      const css=getComputedStyle(header), h=header.getBoundingClientRect(), r=n.getBoundingClientRect();
+      if(!['fixed','sticky'].includes(css.position) || css.visibility==='hidden' || !header.getClientRects().length ||
+        h.top>0 || h.bottom<=0 || h.right<=r.left || h.left>=r.right || r.top>=h.bottom+2) return;
+      let ancestor=n.parentElement;
+      while(ancestor && ancestor!==document.body && ancestor!==document.documentElement) {
+        const style=getComputedStyle(ancestor);
+        if(/^(auto|scroll)$/.test(style.overflowY) && ancestor.scrollHeight>ancestor.clientHeight) break;
+        ancestor=ancestor.parentElement;
+      }
+      const top=r.top-h.bottom-2;
+      if(ancestor && ancestor!==document.body && ancestor!==document.documentElement) {
+        ancestor.scrollBy({top,behavior:'instant'});
+        const remaining=n.getBoundingClientRect().top-header.getBoundingClientRect().bottom-2;
+        if(remaining<0) window.scrollBy({top:remaining,behavior:'instant'});
+      } else window.scrollBy({top,behavior:'instant'});
+    }''')
+    frame.evaluate("()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))")
+
+
+def enter_dropdown(frame, option):
+    """One bounded reopen of the same source nodes after scroll hides a menu."""
+    settle_dropdown_scroll(frame, 'start')
+    for attempt in range(2):
+        click_dropdown(frame, direct=True, scroll=False)
+        try:
+            click_dropdown(option, scroll=False)
+            return
+        except ValueError:
+            # An overlay or a visible offscreen option is not a reason to
+            # scroll an open menu. Reposition only after it is already hidden.
+            scroll_hidden = option.evaluate('''n=>{
+              return n.isConnected && getComputedStyle(n).visibility==='hidden';
+            }''')
+            if attempt or not scroll_hidden:
+                raise
+            settle_dropdown_scroll(frame, 'start')
 
 
 def verify_entered(scope, question, answers):
@@ -218,13 +287,13 @@ def enter(scope, field, response):
             # MA reparents the menu to body as it opens; retain this exact source
             # option node before the field-scoped selector ceases to match it.
             handle = option.element_handle()
-            if handle is None:
+            frame_handle = frame.element_handle()
+            if handle is None or frame_handle is None:
                 raise ValueError("Captured dropdown option is not present")
             expected = choice_content(handle)
             # The window mousedown handler hides menus clicked through a
             # formula child; use the frame itself after bringing it on screen.
-            click_dropdown(frame, direct=True)
-            click_dropdown(handle)
+            enter_dropdown(frame_handle, handle)
             if control.locator(".selectListFrame .selectListSelectedText").count():
                 raise ValueError("Custom select still shows an unselected placeholder")
             if choice_content(frame) != expected:

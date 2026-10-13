@@ -21,8 +21,29 @@ def _number(value):
 
 def _all_correct(content):
     attempts = content.get("attempts", [])
-    return bool(attempts) and all(attempt.get("accepted") and correct_grade(
-        attempt.get("grade", attempt.get("feedback", {}).get("grade"))) for attempt in attempts)
+    # Completion history can confirm a grade after the final response went
+    # straight to the queue, without a live accepted observation.
+    return bool(attempts) and all(correct_grade(
+        attempt.get("grade") or attempt.get("feedback", {}).get("grade")) for attempt in attempts)
+
+
+def record_progress_health(config, activity, observation, comparison):
+    path = config.state_root / 'progress-health.json'
+    health = read_json(path,{}) or {}
+    observed = observation.get('observed_at',0)
+    course = str(observation.get('dashboard',{}).get('course_progress',{}).get('course_id') or activity.get('course_id') or '')
+    if (activity['kind']=='diagnostic' and not observation.get('late_read') and course
+            and observed >= health.get(course,{}).get('observed_at',0)):
+        health[course] = {'observed_at':observed,'warning':None,'reason':'New diagnostic placement observed'}
+    for anomaly in comparison.get('anomalies',[]):
+        key = anomaly['course_id']
+        if observed < health.get(key,{}).get('observed_at',0):
+            continue
+        health[key] = {'warning':'MA progress has large jumps; percentage unverified',
+            'observed_at':observed,'task_id':activity['task_id'],'anomaly':anomaly,
+            'source':observation.get('dashboard',{}).get('html_path')}
+    if health:
+        atomic_json(path,health)
 
 
 def record(config, activity, directory, content, observation):
@@ -83,11 +104,13 @@ def record(config, activity, directory, content, observation):
     if not (directory / "progress-before.json").exists():
         atomic_json(directory / "progress-before.json", prior_progress)
     baseline = read_json(directory / "progress-before.json", {})
-    comparison = compare_progress(baseline, {**observation, 'observed_at': observed_at})
+    comparison = compare_progress(baseline, {**observation, 'observed_at': observed_at}, activity_kind=activity['kind'])
     comparison.update(task_id=task_id, baseline_source='progress-before.json')
     atomic_json(directory / "progress-comparison.json", comparison)
+    record_progress_health(config,activity,observation,comparison)
     if progress and observed_at >= prior_progress.get("observed_at", 0):
-        atomic_json(config.state_root / "progress.json", {"observed_at": observed_at, "progress": progress})
+        atomic_json(config.state_root / "progress.json", {"observed_at": observed_at, "progress": progress,
+            "dashboard_course_progress":observation.get('dashboard',{}).get('course_progress',{})})
     history = list(previous.get("observation_history", []))
     if not history and previous.get("observations") is not None:
         history.append({"observed_at": previous.get("observed_at"), "observations": previous["observations"]})

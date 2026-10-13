@@ -4,6 +4,8 @@ from collections import deque
 import random
 import time
 
+from ..profiles import PROFILES, accuracy, validate_profile
+
 
 def topic_id(value):
     if isinstance(value, dict):
@@ -31,12 +33,14 @@ def prerequisite_distances(course_topics, graph):
 class AnswerPolicy:
     """Mutates the caller's checkpoint; callers persist it before any response."""
 
-    def __init__(self, activity, state, context=None, rng=None, clock=time.time):
+    def __init__(self, activity, state, context=None, rng=None, clock=time.time, *, answer_profile='capture', exposures=None):
         self.activity = activity
         self.state = state
         self.context = context or {}
         self.rng = rng or random.Random()
         self.clock = clock
+        self.answer_profile = validate_profile(answer_profile)
+        self.exposures = exposures
         self.state.setdefault('patterns', {})
         self.state.setdefault('counts', {})
         self.state.setdefault('decisions', {})
@@ -58,6 +62,8 @@ class AnswerPolicy:
         decision = {'planned': 'C', 'action': 'answer', 'delay_seconds': 0,
                     'started_at': self.clock() if started_at is None else started_at,
                     'topic_id': topic_id(question.get('topic_id')), 'policy_version': 1}
+        decision['answer_profile'] = self.answer_profile
+        self.state['answer_profile'] = self.answer_profile
         if kind == 'diagnostic':
             distance = self.state['distances'].get(decision['topic_id'])
             decision['distance'] = distance
@@ -72,6 +78,16 @@ class AnswerPolicy:
             else:
                 bounds = (90, 120) if distance == 1 else (60, 90) if distance == 2 else (30, 60)
                 decision['delay_seconds'] = self.rng.uniform(*bounds)
+        elif self.answer_profile != 'capture':
+            count = self.exposures.count(question) if self.exposures else 0
+            kp = self.exposures.key(question) if self.exposures else None
+            probability = accuracy(self.answer_profile, count)
+            decision.update(policy_version=2, exposure_count=count, exposure_kp_id=kp,
+                            correct_probability=probability, draw=self.rng.random(),
+                            **PROFILES[self.answer_profile])
+            decision['planned'] = 'C' if decision['draw'] < probability else 'W'
+            if kp is None:
+                decision['exposure_note'] = 'KP association unavailable; use the base accuracy without pooling unknown skills'
         elif kind == 'assessment':
             decision['draw'] = self.rng.random()
             decision['planned'] = 'C' if decision['draw'] < .8717 else 'W'
@@ -102,6 +118,28 @@ def answer_fields(question):
     return question.get('fields') or question.get('answer_fields') or []
 
 
+def supports_intentional_error(question, solution):
+    """Require a supported mathematical answer, independently of MA's key."""
+    confidence = solution.get('confidence', 0)
+    if (not isinstance(confidence, (int, float)) or isinstance(confidence, bool)
+            or not .5 <= confidence <= 1 or solution.get('status') == 'source_error'):
+        return False
+    answers = {str(answer['key']): answer for answer in solution.get('answers', [])}
+    active = [(index, field) for index, field in enumerate(answer_fields(question))
+              if not field.get('disabled') and str(field.get('source_result', '')).lower() != 'correct']
+    if not active:
+        return False
+    for index, field in active:
+        answer = answers.get(str(field.get('key', index)), {})
+        value = answer.get('correct_value')
+        if not isinstance(value, str) or not value.strip() or answer.get('disagrees'):
+            return False
+        choices = field.get('choices', [])
+        if choices and not any(str(choice.get('value')) == value for choice in choices):
+            return False
+    return True
+
+
 def choice_token(choice):
     return choice.get('option', choice.get('key', choice.get('id', choice.get('dom_id'))))
 
@@ -125,6 +163,18 @@ def responses_for(question, solution, decision, *, source_preferred=False):
         value_type = answer.get('value_type') or field.get('value_type') or ('math' if field.get('tag') == 'mathquill' else 'text')
         if choices:
             selected = next((c for c in choices if str(c.get('value')) == str(value)), None)
+            if (selected is None and source_preferred and answer.get('ma_value') is not None
+                    and answer.get('ma_basis') == 'worked_solution'
+                    and answer.get('disagrees') is False):
+                # A worked-solution paraphrase may not be a literal control
+                # value. Use the solver's own exact typed source choice only
+                # when it explicitly agrees; this does not rewrite MA evidence.
+                exact = [c for c in choices if answer.get('value_type') is not None
+                         and c.get('type') == answer['value_type']
+                         and c.get('value') == answer.get('correct_value')]
+                if (len(exact) == 1 and (answer.get('correct_option') is None
+                        or choice_token(exact[0]) == answer['correct_option'])):
+                    selected = exact[0]
             # An agent may identify a choice by token, but only on this exact question.
             if selected is None and value is None:
                 selected = next((c for c in choices if choice_token(c) == answer.get('correct_option')), None)
@@ -149,4 +199,8 @@ def responses_for(question, solution, decision, *, source_preferred=False):
         responses.append({'key': key, 'value': value, 'option': option, 'keys': keys, 'value_type': value_type})
     if decision['intended'] == 'W' and not changed:
         override(decision, 'C', 'No demonstrably different valid response is available')
+    if changed and decision['intended'] != 'W':
+        # A later unsupported field can override the decision after an earlier
+        # field was made wrong. Rebuild every field using the final intention.
+        return responses_for(question, solution, decision, source_preferred=source_preferred)
     return responses

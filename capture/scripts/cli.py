@@ -11,6 +11,7 @@ import sys
 import threading
 
 from .config import Config
+from .profiles import PROFILES, account_profile
 from .outbox import DatabaseWorker
 from .runtime import StopRequested, shutdown_signals
 from .storage import file_lock, read_json
@@ -31,6 +32,7 @@ def parser():
     cli.add_argument("--state-root", type=Path)
     cli.add_argument("--output-root", type=Path)
     cli.add_argument("--profile", type=Path)
+    cli.add_argument("--answer-profile", choices=PROFILES, help="Answer behavior; otherwise use the saved account profile, default capture")
     cli.add_argument("--course-id")
     cli.add_argument("--target", action=PersistedTargetsOnly, dest=argparse.SUPPRESS, help=argparse.SUPPRESS)
     cli.add_argument("--learner-id", help="Learner identity whose persisted :learner/targets determine priority")
@@ -53,18 +55,21 @@ def parser():
     cli.add_argument("--retry-delay", type=float)
     cli.add_argument("--recovery-max-delay", type=float)
     cli.add_argument("--recovery-jitter", type=float)
+    cli.add_argument("--database-batch-questions", type=int)
     for kind in ('event', 'answer', 'lesson', 'rest', 'capacity', 'assessment-time'):
         cli.add_argument('--' + kind + '-min', type=float)
         cli.add_argument('--' + kind + '-max', type=float)
     cli.add_argument("--rest-every", type=int)
     cli.add_argument("--seed", type=int)
-    cli.add_argument("--once", action="store_true", help="For drain: process the oldest pending capture once")
+    cli.add_argument("--once", action="store_true", help="For drain: attempt one eligible batch, respecting the question minimum")
+    cli.add_argument("--flush", action="store_true", help="For drain: explicitly allow a batch below the question minimum")
+    cli.add_argument("--finish-started", action="store_true", help="Finish saved or server-started activities, then stop without selecting new work")
     return cli
 
 
 def configuration(args):
     values = vars(args).copy()
-    for key in ("command", "capture_directory", "once", "config"):
+    for key in ("command", "capture_directory", "once", "flush", "config", "finish_started"):
         values.pop(key)
     visible = values.pop("visible")
     if visible is not None:
@@ -84,6 +89,7 @@ def main(argv=None):
     stop = threading.Event()
     if args.command == "status":
         value = {"account": config.account, "capture": read_json(config.state_root / "status.json", {}),
+            "answer_profile": account_profile(config),
             "active": read_json(config.state_root / "active.json"),
             "pending_imports": len(DatabaseWorker(config, stop, None).pending())}
         print(json.dumps(value, indent=2))
@@ -101,7 +107,7 @@ def main(argv=None):
         try:
             if args.command == "run":
                 from .runner import CaptureRunner
-                CaptureRunner(config, stop).run()
+                CaptureRunner(config, stop, finish_started=args.finish_started).run()
             elif args.command == "inspect":
                 from .browser import MathAcademyBrowser
                 from .queue_processing import read_queue
@@ -126,9 +132,9 @@ def main(argv=None):
                 from .database import DatabasePipeline
                 worker = DatabaseWorker(config, stop, lambda: DatabasePipeline(config, stop))
                 if args.once:
-                    print(json.dumps(worker.process_one(), indent=2))
+                    print(json.dumps(worker.process_one(force=args.flush), indent=2))
                 else:
-                    worker.run()
+                    worker.run(force=args.flush)
         except (StopRequested, KeyboardInterrupt):
             stop.set()
         finally:

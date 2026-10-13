@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import base64
 import hashlib
+from html.entities import html5
+from io import BytesIO
 import re
 import time
 from types import SimpleNamespace
@@ -49,6 +51,44 @@ class ImageFetchError(ValueError):
         self.retryable = status in (408, 425, 429) or status >= 500
 
 
+def recover_original_raster(item, asset):
+    """A broken DOM rendering need not discard fully decoded own source bytes."""
+    if (asset.get('tag') != 'img' or asset.get('representation') != 'original'
+            or not asset.get('render_unavailable') or not asset.get('source_url')
+            or not asset.get('path') or not asset.get('sha256')):
+        return False
+    try:
+        data = Path(asset['path']).read_bytes()
+        if hashlib.sha256(data).hexdigest() != asset['sha256']:
+            return False
+        from PIL import Image
+        with Image.open(BytesIO(data)) as image:
+            image.verify()
+        with Image.open(BytesIO(data)) as image:
+            image.load()
+            dimensions, image_format = list(image.size), image.format
+        if image_format not in ('PNG', 'JPEG', 'GIF', 'WEBP') or min(dimensions) <= 0:
+            return False
+    except Exception:
+        return False
+    failure = asset.pop('render_unavailable')
+    asset.pop('render_ready', None)
+    asset['render_failure'] = failure
+    asset['original_image_validation'] = {
+        'original_path':asset['path'], 'original_sha256':asset['sha256'],
+        'source_url':asset['source_url'], 'dimensions':dimensions, 'format':image_format,
+        'binding':'original bytes from the exact captured image source URL'}
+    error = 'Graphic rendering unavailable: ' + asset['source_url']
+    if error in item.get('errors', []):
+        item['errors'] = [e for e in item['errors'] if e != error]
+        parts = item.get('extraction_error_parts', {}).pop(error, [])
+        item.setdefault('extraction_error_history', []).append({
+            'errors':[error], 'parts':parts or [asset.get('extraction_part')],
+            'retired_by':'Fully decoded original raster bytes from the exact source URL',
+            'render_failure':failure, 'original_image_validation':asset['original_image_validation']})
+    return True
+
+
 def image_extension(data, content_type=""):
     if data.startswith(b"\x89PNG\r\n\x1a\n"):
         return "png"
@@ -76,6 +116,13 @@ def standalone_svg(source, page=None):
         declarations += ' xmlns:xlink="http://www.w3.org/1999/xlink"'
     index = opener.end() - (2 if opener[0].endswith('/>') else 1)
     text = source[:index] + declarations + source[index:]
+    # Browser SVG can contain HTML named entities inside foreignObject. XML
+    # accepts only five named entities; numeric references preserve the glyphs.
+    def xml_entities(value):
+        return re.sub(r'&([A-Za-z][A-Za-z0-9]*);', lambda match:
+            match[0] if match[1] in ('amp', 'lt', 'gt', 'quot', 'apos') or match[1] + ';' not in html5
+            else ''.join('&#' + str(ord(char)) + ';' for char in html5[match[1] + ';']), value)
+    text = xml_entities(text)
     root = ET.fromstring(text)
     known = {node.get('id') for node in root.iter() if node.get('id')}
     pending, added = [root], []
@@ -99,6 +146,7 @@ def standalone_svg(source, page=None):
             html = definitions.get(identity)
             if not html:
                 raise ValueError("Inline SVG is missing source definition: " + identity)
+            html = xml_entities(html)
             wrapped = ET.fromstring('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + html + '</svg>')
             definition = wrapped[0]
             known.update(child.get('id') for child in definition.iter() if child.get('id'))
@@ -130,24 +178,63 @@ def solution_image_bindings(item, prior):
     """Recover broken MA history aliases only when the entire solution matches."""
     if not prior or not prior.get("worked_solution"):
         return {}
+    # collect() runs before history metadata is attached; the explanation root
+    # itself supplies the permanent ID. Never use an alias URL to invent it.
+    root = re.fullmatch(r"questionExplanation-(\d+)", item.get("dom_id") or "")
+    if not root:
+        return {}
+    question_id = "q-" + root[1]
+    prior_root = re.fullmatch(r"(?:step-q|question-|questionExplanation-)(\d+)", prior.get("dom_id") or "")
+    prior_id = prior.get("math_academy_id") or ("q-" + prior_root[1] if prior_root else None)
+    if (prior_id != question_id or item.get("math_academy_id", question_id) != question_id or
+            prior_root and "q-" + prior_root[1] != question_id):
+        return {}
     image = r"!\[[^\]]*\]\(([^)]+)\)"
     normalize = lambda value: re.sub(r"\s+", " ", re.sub(image, "![](@image@)", value)).strip()
     previous, current = prior["worked_solution"], item.get("worked_solution", "")
     old_paths, markers = re.findall(image, previous), re.findall(image, current)
     if not old_paths or len(old_paths) != len(markers) or normalize(previous) != normalize(current):
         return {}
-    originals = {a.get("path"): a for a in prior.get("assets", [])}
     result = {}
-    for path, marker in zip(old_paths, markers):
+    for position, (path, marker) in enumerate(zip(old_paths, markers)):
         found = re.fullmatch(r"@asset-(\d+)@", marker)
         if not found:
             continue
         index = int(found[1])
-        asset = next((a for a in item.get("assets", []) if a["index"] == index), {})
-        original = originals.get(path, {})
-        if (re.fullmatch(r"https://mathacademy\.com/graphics/q-\d+-e-\d+", asset.get("source_url") or "")
-                and Path(path).is_file() and original.get("sha256") == hashlib.sha256(Path(path).read_bytes()).hexdigest()):
-            result[index] = original
+        assets = [a for a in item.get("assets", []) if a.get("index") == index]
+        # A correct choice and its solution often share the same raster bytes.
+        # Bind the solution occurrence, rather than treating the choice's reuse
+        # of that storage path as an ambiguous second solution image.
+        originals = [a for a in prior.get("assets", []) if a.get("path") == path
+                     and a.get("extraction_part") == "solution"]
+        if len(assets) != 1 or len(originals) != 1:
+            continue
+        asset, original = assets[0], originals[0]
+        if (asset.get("tag") != "img" or asset.get("extraction_part") != "solution" or
+                original.get("tag") != "img" or original.get("extraction_part") != "solution" or
+                original.get("representation") != "original" or original.get("unavailable") or
+                original.get("render_unavailable") or
+                not re.fullmatch(r"https://mathacademy\.com/graphics/" + question_id + r"-e-\d+", asset.get("source_url") or "")):
+            continue
+        try:
+            data = Path(path).read_bytes()
+            if original.get("sha256") != hashlib.sha256(data).hexdigest():
+                continue
+            from PIL import Image
+            with Image.open(path) as image:
+                image.verify()
+            with Image.open(path) as image:
+                image.load()
+                dimensions, image_format = list(image.size), image.format
+            if image_format not in ("PNG", "JPEG", "GIF", "WEBP") or min(dimensions) <= 0:
+                continue
+        except Exception:
+            continue
+        result[index] = {**original, "original_image_validation": {
+            "question_id": question_id, "solution_image_position": position,
+            "original_path": path, "original_sha256": original["sha256"],
+            "dimensions": dimensions, "format": image_format,
+            "binding": "identical complete solution and corresponding original image position"}}
     return result
 
 
@@ -362,6 +449,7 @@ class AssetCapture:
                 asset.update(path=str(path.resolve()), sha256=digest, content_type=mime,
                              representation=representation, captured_from=evidence_id)
                 asset.pop("unavailable", None)
+                recover_original_raster(item, asset)
                 replacements[f"@asset-{asset['index']}@"] = str(path.resolve())
             except StopRequested:
                 raise
@@ -370,6 +458,25 @@ class AssetCapture:
                 if original:
                     asset.update({k: original[k] for k in ("path", "sha256", "content_type", "representation") if k in original})
                     asset["recovered_from"] = {"source_url": original.get("source_url"), "reason": "identical live and history solution with corresponding image position", "failure": str(error)}
+                    asset["original_image_validation"] = original["original_image_validation"]
+                    # The alias still failed in the DOM. Verified, fully decoded
+                    # own source bytes restore evidence, not browser readiness.
+                    retired = [message for message in item.get("errors", []) if message in (
+                        "Graphic rendering unavailable: " + identity, "Image unavailable: " + identity)]
+                    failure = asset.pop("render_unavailable", None)
+                    asset.pop("unavailable", None)
+                    asset.pop("render_ready", None)
+                    asset["recovered_from"]["render_failure"] = failure
+                    if retired:
+                        item["errors"] = [message for message in item["errors"] if message not in retired]
+                        for message in retired:
+                            item.get("extraction_error_parts", {}).pop(message, None)
+                        item.setdefault("extraction_error_history", []).append({
+                            "errors": retired, "parts": ["solution"],
+                            "retired_by": "Verified original raster bytes bound to the same question and complete solution",
+                            "source_dom_id": item.get("dom_id"), "failed_source_url": source,
+                            "render_failure": failure, "fetch_failure": str(error),
+                            "original_image_validation": original["original_image_validation"]})
                     replacements[f"@asset-{asset['index']}@"] = asset["path"]
                 else:
                     asset["unavailable"] = str(error)

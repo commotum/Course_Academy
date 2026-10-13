@@ -14,12 +14,12 @@ Lesson and Review priority scores are based on the downstream targets their topi
 - Queue Processing handles the activity queue only. Course summaries, the completed-activity list, and XP tracking belong to Post-Activity Processing.
 - Activity Capture includes doing the activity and reviewing its activity history page afterward. Each activity type has its own capture path.
 - Post-Activity Processing contains the general actions shared by all activity types and has its own separate stage.
-- Never quit, defer, or abandon an activity because of runtime problems. Every failure has a default next action. Recover and continue; after an external interruption or manual stop, resume that activity when operation resumes.
+- Retain an unfinished activity through runtime problems and recover automatically. Repeated failures must change the recovery strategy; expose persistent blockers and back off with spaced probes instead of repeating ineffective actions indefinitely. After an external interruption or manual stop, resume that activity when operation resumes.
 - Finish each activity and its question judgments together. A competent agent resolves every question within that process; genuine ambiguity or unavailable evidence receives a final, reasoned finding. Nothing waits for Jake's judgment or a held-question queue.
 - Apply each activity type's answer policy as a default. Override correctness sequences when disagreement, ambiguity, timing, or unexpected behavior requires it to continue; record the planned response, actual response, and reason.
-- Save enough progress to continue after an external interruption or manual stop. After an interruption, check what Math Academy already accepted before repeating an action.
+- Save enough progress to continue after an external interruption or manual stop. Distinguish attempted entry, confirmed submission, grading, and completion. After an interruption, check what Math Academy already accepted before repeating an action; failed entries do not change the planned answer policy.
 - Resolve source-content gaps during Activity Capture's final history and lesson-page review. Database Preparation receives checked source content and handles database mapping and transaction construction.
-- Diagnostic behavior uses course membership and shortest prerequisite distance, with the answer probabilities and timing recorded in `docs/3-Activity-Capture.md`.
+- Diagnostic behavior uses course membership and shortest prerequisite distance, with the answer probabilities and timing recorded in `docs/3-activity-capture.md`.
 - Keep **Activity Capture** in one design file with the shared process followed by each activity type. Draw Post-Activity Processing separately.
 - Keep the writing and charts understandable without reading the code.
 - Resolve runtime ambiguity through scripted defaults and focused agent judgment. Never make asking Jake a requirement for continuing an activity.
@@ -36,7 +36,7 @@ The existing source rules still apply: preserve Math Academy's original content,
 
 **Shared tools, separate activity rules.** Reuse answer-field handling, image collection, page reading, and saved progress. Each activity type specifies its own sequence and answer policy. Avoid one large function containing every activity's exceptions.
 
-The shared process and activity-specific behavior are described in `docs/3-Activity-Capture.md`, including navigation, answer/skip policy, submission timing, and history-page review.
+The shared process and activity-specific behavior are described in `docs/3-activity-capture.md`, including navigation, answer/skip policy, submission timing, and history-page review.
 
 **Python controls the workflow and detects exceptions.** It reads and validates captures, applies policies, performs browser actions, matches known database identities, and builds and submits transactions. It calls agents for mathematical answers, interpretation of source evidence, or ambiguous database identity matches. Each call includes the specific question or detected exception and relevant evidence; the agent returns a structured result that Python checks before acting. Database Commit is entirely scripted.
 
@@ -96,7 +96,7 @@ Activity Capture covers both parts:
 
 Together, these form Activity Capture. Before handing off to Post-Activity Processing, Python checks source completeness and fetches missing evidence. It calls the activity's agent when the evidence needs interpretation, including ambiguous answer evidence, and checks the returned result. Lessons also receive the full topic-page review. Recovery does not change the fact that Math Academy already completed the activity.
 
-Use [3-Activity-Capture.md](docs/3-Activity-Capture.md) as the single design document: shared activity/step and question processes, followed by Lesson, Review, Assessment, Diagnostic, and Multistep.
+Use [3-activity-capture.md](docs/3-activity-capture.md) as the single design document: shared activity/step and question processes, followed by Lesson, Review, Assessment, Diagnostic, and Multistep.
 
 Assessment question counts and time limits belong to Queue Processing. Activity Capture uses those values and observes the current time remaining during a timed activity.
 

@@ -1274,7 +1274,7 @@ mod tests {
                 .filter_map(|(e, r)| r.get("db/ident").map(|i| (snapshot.ident(i).unwrap(), *e)))
                 .collect();
             let mut f = Self {
-                entities: snapshot.entities,
+                entities: snapshot.entities.into(),
                 basis: snapshot.basis_t,
                 enums,
                 history: snapshot.status_history,

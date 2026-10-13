@@ -63,13 +63,14 @@
     const token = continuing[0].id.replace('continueButton-','');
     current = document.getElementById('step-'+token);
   }
+  // Multistep's sidebar can select its shared setup while the first question
+  // is already answerable. Prefer served controls to that scroll selection.
+  if (!current) current = [...document.querySelectorAll('#steps > .step')].find(n => visible(n) &&
+    (visible(n.querySelector('.submitButton')) || visible(n.querySelector('[id^="continueButton-"]'))));
   if (!current) {
     const button = document.querySelector('.stepButton.current');
     if (button) current = document.getElementById(button.id.replace('stepButton-','step-'));
   }
-  // Multistep pages use ordinary .question children and numeric step IDs.
-  if (!current) current = [...document.querySelectorAll('#steps > .step')].find(n => visible(n) &&
-    (visible(n.querySelector('.submitButton')) || visible(n.querySelector('[id^="continueButton-"]'))));
   if (current) {
     const question = current.matches('.questionWidget') ? current : current.querySelector('.question');
     const token = current.id.replace('step-','');

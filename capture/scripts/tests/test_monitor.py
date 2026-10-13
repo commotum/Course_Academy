@@ -58,6 +58,26 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(path.read_text(), '{broken')
         self.assertEqual(list(self.config.state_root.iterdir()), [path])
 
+    def test_original_course_code_stays_with_account_after_course_switch(self):
+        self.save('current-course.json', {'course_id': '113', 'course_name': 'Mathematical Foundations I'})
+        row = snapshot(self.config, running=True, details=False)
+        self.assertEqual(row['original_course_code'], 'LAL')
+        self.assertEqual(row['label'], 'Mathematical Foundations I')
+        self.config.account = 'foundations'
+        self.assertEqual(snapshot(self.config, running=True, details=False)['original_course_code'], 'MF3')
+
+    def test_verified_omissions_are_visible_separately_from_pending_imports(self):
+        atomic_json(self.config.spool_root/'partial.json', {'account':'linear', 'target_id':target_id(self.config),
+            'status':'verified','result':{'omissions':[{'id':'q-1','reason':'Unavailable source'}]}})
+        atomic_json(self.config.spool_root/'pending.json', {'account':'linear', 'target_id':target_id(self.config),
+            'status':'pending','result':{'reason':'Readback failed'}})
+        row=snapshot(self.config)
+        self.assertEqual(row['captures_with_omissions'],1)
+        self.assertEqual(row['pending_imports'],1)
+        self.assertIn('Import: Readback failed',row['errors'])
+        self.assertIn('Pending imports 1',render([row]))
+        self.assertIn('Gaps 1',render([row]))
+
     def test_activity_browser_retry_is_visible_and_completed_capture_changes_stage(self):
         directory = self.config.output_root / '123'
         self.save('active.json', {'activity': {'task_id': '123'}, 'directory': str(directory)})
@@ -68,6 +88,20 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(snapshot(self.config)['stage'], 'Post-activity processing')
         atomic_json(directory / 'post-activity.json', {})
         self.assertEqual(snapshot(self.config)['stage'], 'Saving capture')
+
+    def test_persistent_capture_error_survives_unrelated_log_events(self):
+        directory = self.config.output_root / '123'
+        self.save('active.json', {'activity': {'task_id': '123'}, 'directory': str(directory)})
+        self.save('status.json', {'status': 'capturing'})
+        atomic_json(directory / 'checkpoint.json', {'stage': 'activity',
+            'pending_browser_error': {'error': 'Source binding mismatch'}})
+        append_event(directory / 'activity-events.jsonl', 'page_interpretation', judgment={'action': 'reload'})
+        self.assertIn('Capture: Source binding mismatch', snapshot(self.config)['errors'])
+        atomic_json(directory / 'checkpoint.json', {'stage': 'activity',
+            'pending_capture_blocker': {'error': 'Source binding mismatch'}})
+        row = snapshot(self.config)
+        self.assertEqual(row['stage'], 'Waiting for capture recovery')
+        self.assertIn('Capture: Source binding mismatch', row['errors'])
 
     def test_solver_dependency_reason_remains_visible_while_activity_is_pinned(self):
         self.save('status.json', {'status': 'waiting_for_solver_dependency',
@@ -103,7 +137,7 @@ class MonitorTests(unittest.TestCase):
         self.assertIn('Review 123', text)
         self.assertIn('Error: A source read failed', text)
         self.assertNotIn('\033', text)
-        self.assertLessEqual(len(text.splitlines()), 18)
+        self.assertLessEqual(len(text.splitlines()), 30)
         self.assertIn('Today — XP', text)
         self.assertIn('1/4 running', render(rows, compact=True))
         self.assertTrue(all(len(line) == 100 for line in text.splitlines()))

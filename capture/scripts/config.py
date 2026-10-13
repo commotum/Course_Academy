@@ -24,6 +24,7 @@ class Config:
     source: str = ":org/Math-Academy"
     derived_source: str | None = None
     profile: Path | None = None
+    answer_profile: str | None = None
     course_id: str | None = None
     headless: bool = True
     timeout_ms: int = 45000
@@ -50,12 +51,18 @@ class Config:
     retry_delay: float = 30.0
     recovery_max_delay: float = 180.0
     recovery_jitter: float = 5.0
+    database_batch_questions: int = 200
+    database_batch_max_bytes: int = 8 * 1024 * 1024
+    database_batch_max_ops: int = 50000
     seed: int | None = None
     capture_only: bool = False
     browser_cdp_url: str | None = None
     learner_id: str = "59d5cf13-351c-4114-be19-4c3bb64ee051"
 
     def __post_init__(self):
+        from .profiles import validate_profile
+        if self.answer_profile is not None:
+            validate_profile(self.answer_profile)
         self.repo_root = Path(self.repo_root).resolve()
         if not self.account or any(c not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" for c in self.account):
             raise ValueError("Account name must contain letters, digits, hyphens, or underscores")
@@ -73,6 +80,11 @@ class Config:
         self.course_id = str(self.course_id or enrolled.get("course_id") or auth.get("course_id") or defaults.get(self.account) or "") or None
         if self.source != ":org/Math-Academy":
             raise ValueError("Original captured content must use :org/Math-Academy")
+        batch_counts = (self.database_batch_questions, self.database_batch_max_bytes, self.database_batch_max_ops)
+        if (any(type(value) is not int or value < 1 for value in batch_counts)
+                or self.database_batch_max_bytes >= 16 * 1024 * 1024
+                or self.database_batch_max_ops >= 100000):
+            raise ValueError("Invalid database batch minimum or safety limits")
         if any(not math.isfinite(value) or value <= 0 for value in
                (self.timeout_ms, self.solver_timeout, self.retry_delay, self.recovery_max_delay)):
             raise ValueError("Timeouts and retry delays must be positive")
@@ -102,6 +114,12 @@ class Config:
     @classmethod
     def from_file(cls, path, **overrides):
         data = read_json(path, {}) if path else {}
+        # Retired automatic flush settings cannot override the question floor,
+        # including when an older JSON configuration is used after upgrading.
+        for key in ('database_batch_max_age', 'database_batch_max_activities',
+                    'database_batch_target_bytes', 'database_batch_target_ops'):
+            data.pop(key, None)
+            overrides.pop(key, None)
         if data.pop("targets", None):
             raise ValueError("Configure priority topics in :learner/targets, not capture targets")
         if overrides.pop("targets", None):

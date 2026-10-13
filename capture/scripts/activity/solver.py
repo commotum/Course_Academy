@@ -81,6 +81,10 @@ the same value as correct_value. Provide a demonstrably wrong entered value wher
 
 For solve_question, give a best supported valid response even if ambiguous, but mark uncertainty.
 Never label a guess confirmed. A confident mathematical solution is still not proof of MA's key.
+For solve_question, confidence measures mathematical confidence in the current correct_value
+answers, independently of whether MA's answer key is captured. Missing MA answer evidence can
+leave status ambiguous or unavailable while mathematical confidence is high. When the mathematics
+itself is unresolved or necessary problem evidence is missing, report confidence below 0.5.
 For judge_question, reach a FINAL judgment now: confirmed, source_error, ambiguous, or unavailable.
 Reconcile your earlier answer with the revealed grade, source answer, and worked solution.
 Do not leave a question for human review. A reasoned unavailable finding is a valid final judgment.
@@ -89,6 +93,9 @@ and explain the disagreement. ma_basis must be none unless there is actual captu
 explicit_answer, correct_grade for the submitted value actually graded correct, or worked_solution.
 For worked_solution, ma_evidence must quote a precise verbatim span of the captured worked solution
 that states the answer, not merely a problem premise. Never invent a quote or reconstruct MA choices.
+Return that span alone: do not add quotation marks, labels, explanations, or combine separate spans.
+When an answer has several components, quote one contiguous span containing the intervening source.
+Keep explanations and authored source errors in reasoning, preserving MA's answer separately.
 An answer can be equivalent to the stated solution without being in the same display form, but
 explain the equivalence. Merely being the only plausible choice is not captured MA answer evidence.
 

@@ -1,11 +1,14 @@
 """EDB CLI transport and reads pinned to one immutable database basis."""
 from __future__ import annotations
 import hashlib
+import copy
+from concurrent.futures import Future
 import os
 import re
 import shlex
 import subprocess
 import tempfile
+import threading
 import uuid
 from pathlib import Path
 from .edn import dumps, loads, kw
@@ -16,13 +19,64 @@ QUESTION_PULL = '''[* {:question/difficulty [:db/id :db/ident]}
  {:knowledge-point/_canonical-example [:db/id :knowledge-point/id :knowledge-point/title]}
  {:question/answer-fields [* {:answer-field/type [:db/id :db/ident]}
  {:answer-field/correct [* {:answer/type [:db/id :db/ident]}]}
- {:answer-field/choices [* {:answer/type [:db/id :db/ident]}]}]}]'''
+ {:answer-field/choices [* {:answer/type [:db/id :db/ident]}
+ {:task-item/_responses [:db/id]}]}]}]'''
 CONTENT_PULL = '''[* {:knowledge-point/canonical-example [:db/id :question/id :question/math-academy-id]}
  {:assigned-problem/content [* {:multistep/steps [* {:step/content [:db/id :question/id :question/math-academy-id]}]}]}]'''
 ACTIVITY_PULL = '[* {:activity/type [:db/id :db/ident]} {:activity/scope [:db/id :topic/id :topic/math-academy-id]} {:activity/steps [* {:step/content ' + CONTENT_PULL + '}]}]'
 
 class StaleBasis(RuntimeError):
     pass
+
+
+class SnapshotReads:
+    """Reuse identical readonly queries within one immutable batch value."""
+    def __init__(self, client, basis):
+        self.client, self.basis = client, basis
+        self.identity = client.status()
+        self.cache, self.lock = {}, threading.Lock()
+
+    def status(self):
+        return dict(self.identity)
+
+    def snapshot(self, content, directory, basis):
+        if basis != self.basis:
+            raise ValueError('Cached snapshot reads require their original basis')
+        return EDBClient.snapshot(self, content, directory, basis)
+
+    def query(self, source, inputs, directory, name, basis=None):
+        from ..runtime import check_stop
+        stop = getattr(self.client, 'stop_event', None)
+        if stop is not None:
+            check_stop(stop)
+        if basis != self.basis:
+            raise ValueError('Cached queries require an explicit matching basis')
+        key = (source, dumps(inputs))
+        with self.lock:
+            owner = key not in self.cache
+            future = self.cache.setdefault(key, Future())
+        directory = Path(directory)
+        directory.mkdir(parents=True, exist_ok=True)
+        if owner:
+            try:
+                result = self.client.query(source, inputs, directory, name, basis)
+                path = directory / (name + '.edn')
+                text = path.read_text() if path.exists() else dumps(result)
+                future.set_result((result, text))
+            except BaseException as error:
+                future.set_exception(error)
+                raise
+        result, text = future.result()
+        if stop is not None:
+            check_stop(stop)
+        if not owner:
+            atomic_text(directory / (name + '-query.edn'), source)
+            atomic_text(directory / (name + '-inputs.edn'), dumps(inputs))
+            atomic_text(directory / (name + '.edn'), text)
+        # Pull structures may be enriched during preparation; never let one
+        # activity mutate the cached value used to prepare another activity.
+        return copy.deepcopy(result)
+
 
 class EDBClient:
     def __init__(self, config, stop_event):
@@ -76,6 +130,9 @@ class EDBClient:
     def basis(self):
         return self.status()['basis']
 
+    def snapshot_reader(self, basis):
+        return SnapshotReads(self, basis)
+
     def query(self, source, inputs, directory, name, basis=None):
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
@@ -99,11 +156,15 @@ class EDBClient:
         if content.get('topic_id'):
             topics.add(int(content['topic_id']))
         topic_rows = []
-        for tid in sorted(topics):
+        topic_ids = sorted(topics)
+        # Assessments can span hundreds of topics. Read bounded relations at
+        # the same immutable basis instead of launching two CLI calls per topic.
+        for start in range(0, len(topic_ids), 25):
+            group = topic_ids[start:start + 25]
             topic_rows += self.query('''[:find (pull ?t [* {:topic/knowledge-points [*
               {:knowledge-point/canonical-example [:db/id :question/id :question/math-academy-id]}
               {:knowledge-point/questions [:db/id :question/id :question/math-academy-id]}]}])
-              :in $ ?id :where [?t :topic/math-academy-id ?id]]''', [tid], directory, 'topic-' + str(tid), basis)
+              :in $ [?id ...] :where [?t :topic/math-academy-id ?id]]''', [group], directory, 'topic-batch-' + str(start), basis)
         # Unreconciled live originals remain capture evidence. They have no
         # verified source identity to query and will receive explicit omissions.
         mids = {q['math_academy_id'] for q in content.get('questions', []) + content.get('canonical_examples', [])
@@ -120,18 +181,19 @@ class EDBClient:
             questions += self.query('[:find (pull ?q ' + QUESTION_PULL + ') :in $ [?id ...] :where [?q :question/math-academy-id ?id]]',
                                     [sorted(mids)[start:start + 100]], directory, 'questions-' + str(start), basis)
         activities = []
-        for tid in sorted(topics):
-            activities += self.query('[:find (pull ?a ' + ACTIVITY_PULL + ''') :in $ ?id
-              :where [?t :topic/math-academy-id ?id] [?a :activity/scope ?t]]''', [tid], directory, 'activities-' + str(tid), basis)
+        for start in range(0, len(topic_ids), 25):
+            activities += self.query('[:find (pull ?a ' + ACTIVITY_PULL + ''') :in $ [?id ...]
+              :where [?t :topic/math-academy-id ?id] [?a :activity/scope ?t]]''',
+              [topic_ids[start:start + 25]], directory, 'activities-batch-' + str(start), basis)
         definition_id = content.get('activity_definition_id')
         if definition_id:
             activities += self.query('[:find (pull ?a ' + ACTIVITY_PULL + ') :in $ ?id :where [?a :activity/math-academy-id ?id]]',
                                      [int(definition_id)], directory, 'activity-definition', basis)
         if content.get('multistep_id'):
             from .prepare import source_uuid
-            identity = source_uuid('multistep-activity', content['multistep_id'])
+            multistep_identity = source_uuid('multistep-activity', content['multistep_id'])
             activities += self.query('[:find (pull ?a ' + ACTIVITY_PULL + ') :in $ ?id :where [?a :activity/id ?id]]',
-                                     [identity], directory, 'multistep-activity', basis)
+                                     [multistep_identity], directory, 'multistep-activity', basis)
         kind = content.get('task_type') or content.get('kind')
         if kind in ('review', 'assessment', 'diagnostic') and not definition_id:
             from .prepare import activity_identity
@@ -141,7 +203,11 @@ class EDBClient:
         if content.get('course_id'):
             course_rows = self.query('[:find (pull ?c [:db/id :course/id :course/math-academy-id]) :in $ ?id :where [?c :course/math-academy-id ?id]]',
                                      [int(content['course_id'])], directory, 'course', basis)
-        tutorial_ids = [int(t['math_academy_id']) for t in content.get('tutorials', [])]
+        # Older multistep captures also listed their shared context as a
+        # tutorial with a DOM ID (step-1). It belongs to multistep/context,
+        # never the tutorial catalog. Read lesson tutorials only so those
+        # saved captures remain importable without rewriting source evidence.
+        tutorial_ids = [int(t['math_academy_id']) for t in content.get('tutorials', [])] if kind == 'lesson' else []
         tutorials = self.query('[:find (pull ?t [*]) :in $ [?id ...] :where [?t :tutorial/math-academy-id ?id]]',
                                [tutorial_ids], directory, 'tutorials', basis) if tutorial_ids else []
         attributes = self.query('[:find ?a ?ident ?type ?card :where [?a :db/ident ?ident] [?a :db/valueType ?vt] [?vt :db/ident ?type] [?a :db/cardinality ?c] [?c :db/ident ?card]]',

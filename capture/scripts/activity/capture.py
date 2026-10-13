@@ -12,10 +12,17 @@ import time
 from ..runtime import StopRequested, backoff, check_stop, wait
 from ..storage import append_event, atomic_json, read_json
 from ..timing import Pacer
+from ..profiles import ExposureStore, account_profile
+from ..database.evidence import authoritative_question, UnsupportedContent
 from .evidence import capture_gaps, finalize_answers, merge_question, question_key
-from .policy import AnswerPolicy, answer_fields, override, responses_for, topic_id
+from .policy import AnswerPolicy, answer_fields, override, responses_for, supports_intentional_error, topic_id
 from .solver import SolverClient, SolverUnavailable, validate_result
 from .task_payload import task_payload, semantic_identity, feedback_evidence
+
+
+class ResponseNotSubmitted(Exception):
+    """A guarded browser return is a failed entry, not a successful action."""
+    submitted = False
 
 
 class ActivityCapture:
@@ -24,6 +31,7 @@ class ActivityCapture:
         self.config, self.browser, self.stop_event = config, browser, stop_event
         self.context_provider = context_provider
         self.solver = solver
+        self.exposures = None
         self.clock = clock
         self.sleep = sleeper or (lambda seconds: wait(stop_event, seconds))
         self.rng = rng or random.Random(config.seed)
@@ -59,7 +67,13 @@ class ActivityCapture:
                 # graph is an explicit unknown-topic diagnostic action, not a halt.
                 self.state['context'] = {'unavailable': str(error), 'snapshot_unavailable': True}
             self._save()
-        self.policy = AnswerPolicy(activity, self.state['policy'], self.state['context'], self.rng, self.clock)
+        name = account_profile(self.config)
+        self.exposures = ExposureStore(self.config) if (name != 'capture' or
+            (self.config.state_root / 'learning-exposures.json').exists()) else None
+        if self.exposures:
+            self.exposures.reconcile(self.state)
+        self.policy = AnswerPolicy(activity, self.state['policy'], self.state['context'], self.rng, self.clock,
+                                   answer_profile=name, exposures=self.exposures)
         if self.state['stage'] == 'activity':
             self._browser_call('open', activity, self.directory, self.state)
             self._execute()
@@ -252,6 +266,8 @@ class ActivityCapture:
             check_stop(self.stop_event)
             try:
                 result = getattr(self.browser, method)(*args)
+                if method == 'respond' and isinstance(result, dict) and result.get('not_submitted'):
+                    raise ResponseNotSubmitted(result.get('reason') or 'Response was not submitted; reread the current page')
                 pending = self.state.get('pending_browser_error') or {}
                 observed_progress = method == 'observe' and isinstance(result, dict) and (
                     (result.get('accepted') and pending.get('method') == 'respond')
@@ -277,9 +293,15 @@ class ActivityCapture:
                 failures[failure_key] = attempts
                 self.state['recoveries'] += 1
                 self.state['pending_browser_error'] = {'method': method, 'error': str(error), 'attempt': attempts,
-                    'observation_key': key, 'failure_key': failure_key}
+                    'observation_key': key, 'failure_key': failure_key,
+                    'not_submitted': isinstance(error, ResponseNotSubmitted),
+                    'entry_failed': getattr(error, 'submitted', None) is False,
+                    'error_type': type(error).__name__}
+                if getattr(error, 'layout', None) is not None:
+                    self.state['pending_browser_error']['layout'] = error.layout
                 self._save()
-                self._event('browser_retry', method=method, error=str(error), attempt=attempts)
+                self._event('browser_retry', method=method, error=str(error), attempt=attempts,
+                            layout=getattr(error, 'layout', None))
                 logging.warning('%s task %s: %s; retrying', method, self.activity['task_id'], error)
                 delay = self.pacer.backoff(attempts, retry_after=getattr(error, 'retry_after', 0))
                 available = self._remaining_seconds()
@@ -292,7 +314,8 @@ class ActivityCapture:
                 # Return to observation before ANY further state-changing action.
                 if method in ('respond', 'advance', 'recover'):
                     return {'unknown_outcome': True, 'error': str(error),
-                            'entry_failed': getattr(error, 'submitted', None) is False}
+                            'entry_failed': getattr(error, 'submitted', None) is False,
+                            'not_submitted': isinstance(error, ResponseNotSubmitted)}
                 if method == 'observe' and available is not None and self._remaining_seconds() <= self._submission_reserve():
                     # Preserve the last known page for final submission even if
                     # optional capture work can no longer fit before expiry.
@@ -321,9 +344,25 @@ class ActivityCapture:
             if observation.get('shared_contexts'):
                 self.state['shared_context'] = observation['shared_contexts']
             signature = self._signature(observation)
+            blocker = self.state.get('pending_capture_blocker')
+            if blocker and blocker['signature'] != signature:
+                self.state.pop('pending_capture_blocker')
+                self._event('capture_progress_resumed', observation_key=observation.get('key'))
+                self._save()
             repeated = repeated + 1 if signature == last_signature else 0
             last_signature = signature
             kind = observation.get('kind', 'unknown')
+            blocker = self.state.get('pending_capture_blocker')
+            if blocker and kind != 'complete':
+                if self._submit_if_due(observation):
+                    continue
+                delay = blocker['retry_at'] - self.clock()
+                if delay > 0:
+                    remaining = self._remaining_seconds(observation)
+                    if remaining is not None:
+                        delay = min(delay, max(0, remaining - self._submission_reserve()))
+                    self.sleep(min(60, delay))
+                    continue
             if kind == 'complete':
                 self.state.update(stage='history', completion=observation, completed_at=self.clock())
                 self._set_browser_deadline()
@@ -361,7 +400,9 @@ class ActivityCapture:
         shape = [(f.get('key'), f.get('disabled'), [(c.get('value'), c.get('option')) for c in f.get('choices', [])])
                  for f in answer_fields(question)]
         return json.dumps([observation.get('kind'), observation.get('key'), observation.get('accepted'),
-                           observation.get('grade'), shape], sort_keys=True, default=str)
+                           observation.get('grade'), question.get('problem'),
+                           [(a.get('tag'), a.get('source_url'), a.get('html')) for a in question.get('assets', [])],
+                           shape], sort_keys=True, default=str)
 
     def _record_step(self, observation):
         key = str(observation.get('key') or self._signature(observation))
@@ -416,6 +457,8 @@ class ActivityCapture:
                 if self.activity['kind'] == 'diagnostic' and str(observation['grade']).lower() in ('correct', 'full credit', 'skipped question'):
                     self.state['diagnostic_retry_active'] = False
             self._save()
+            if self.exposures:
+                self.exposures.reconcile(self.state)
             failure = self.state.get('pending_browser_error') or {}
             if (repeated >= 3 and failure.get('method') == 'advance'
                     and failure.get('attempt', 0) > record.get('continuation_recovery_attempt', 0)):
@@ -430,6 +473,11 @@ class ActivityCapture:
         if self.activity['kind'] == 'diagnostic' and key not in self.state['policy']['decisions']:
             self._classify(question, observation)
             record['question'] = merge_question(record['question'], question)
+        self.policy.answer_profile = account_profile(self.config)
+        if self.policy.answer_profile != 'capture' and self.exposures is None:
+            self.exposures = ExposureStore(self.config)
+            self.exposures.reconcile(self.state)
+            self.policy.exposures = self.exposures
         decision = self.policy.decide(key, question, record['started_at'])
         record['decision'] = decision
         self._prepare_answer_pacing(record, observation)
@@ -446,7 +494,7 @@ class ActivityCapture:
         solution = record.get('solution')
         current_binding = self._answer_binding(question)
         failure = self.state.get('pending_browser_error') or {}
-        if failure.get('method') == 'respond' and failure.get('attempt', 0) >= 4:
+        if failure.get('method') == 'respond' and failure.get('attempt', 0) >= 4 and not failure.get('not_submitted'):
             recovery_key = failure.get('failure_key', '') + ':' + current_binding
             attempts = record.setdefault('entry_reconsiderations', {}).get(recovery_key, 0)
             if attempts < 2:
@@ -473,9 +521,23 @@ class ActivityCapture:
             self._save()
         if self._submit_if_due(observation):
             return
-        if (solution.get('status') in ('ambiguous', 'unavailable', 'source_error') or solution.get('confidence', 1) < .5) and decision['intended'] == 'W':
+        supports_wrong = supports_intentional_error(question, solution)
+        obsolete_overrides = (
+            'Resolve uncertainty using the best supported response instead of an intentional error',
+            "Use Math Academy's revealed expected response to advance")
+        actual_attempts = any(submission.get('outcome') not in ('entry_failed', 'not_submitted')
+                              for submission in record['submissions'])
+        # A paused, unsubmitted response may carry the old source-key override.
+        # Restore its original draw only when the current mathematics supports it.
+        if (supports_wrong and not actual_attempts and decision.get('planned') == 'W'
+                and decision.get('intended') == 'C'
+                and decision.get('deviation_reason') in obsolete_overrides):
+            previous_reason = decision['deviation_reason']
+            override(decision, 'W', 'Restore the planned wrong response; missing MA key does not make the mathematics uncertain')
+            self._event('answer_policy_restored', key=key, previous_reason=previous_reason)
+        if not supports_wrong and decision['intended'] == 'W':
             override(decision, 'C', 'Resolve uncertainty using the best supported response instead of an intentional error')
-        source_preferred = bool(record['submissions']) and any(a.get('ma_value') is not None for a in solution.get('answers', []))
+        source_preferred = actual_attempts and any(a.get('ma_value') is not None for a in solution.get('answers', []))
         if source_preferred:
             override(decision, 'C', "Use Math Academy's revealed expected response to advance")
         source_rejection = bool(question.get('proof_feedback')) or any(
@@ -485,7 +547,6 @@ class ActivityCapture:
             'feedback': feedback_evidence(question),
             'fields': [{'key': field.get('key'), 'source_result': field.get('source_result'),
                         'source_selected': field.get('source_selected')} for field in answer_fields(question)]})
-        actual_attempts = any(submission.get('outcome') not in ('entry_failed', 'not_submitted') for submission in record['submissions'])
         if (source_rejection and actual_attempts
                 and record.get('reconsidered_feedback') != feedback_binding):
             # A rejected/partial response gets new observed evidence and a focused
@@ -645,6 +706,36 @@ class ActivityCapture:
     def _recover_page(self, observation, repeated):
         if self._submit_if_due(observation):
             return
+        failure = self.state.get('pending_browser_error') or {}
+        rendering_key = observation.get('key')
+        rendering_reloads = self.state.setdefault('rendering_reloads', {})
+        if (repeated >= 3 and str(rendering_key or '').startswith('unready-')
+                and observation.get('readiness_errors')
+                and self.activity['kind'] not in ('assessment', 'diagnostic')
+                and not rendering_reloads.get(rendering_key) and hasattr(self.browser, 'open')):
+            # A missing widget script cannot recover by waiting on its empty
+            # placeholder. Reload once, then reread the pinned server activity.
+            rendering_reloads[rendering_key] = {'at':self.clock()}
+            self._save()
+            self._event('source_rendering_reload', observation_key=rendering_key,
+                        errors=observation['readiness_errors'])
+            self._browser_call('open', self.activity, self.directory, self.state)
+            return
+        reloads = self.state.setdefault('dropdown_reloads', {})
+        failure_key = failure.get('failure_key')
+        if (repeated >= 3 and failure.get('attempt', 0) >= 2
+                and failure.get('method') == 'respond' and failure.get('entry_failed')
+                and failure.get('error_type') == 'DropdownUnavailable' and failure_key
+                and self.activity['kind'] not in ('assessment', 'diagnostic')
+                and not reloads.get(failure_key) and hasattr(self.browser, 'open')):
+            # A page reload can clear stale widget state; asking the solver for
+            # another answer cannot. Reobserve server state before any entry.
+            reloads[failure_key] = {'at': self.clock(), 'observation_key': observation.get('key')}
+            self._save()
+            self._event('dropdown_layout_reload', observation_key=observation.get('key'),
+                        failure_key=failure_key, layout=failure.get('layout'))
+            self._browser_call('open', self.activity, self.directory, self.state)
+            return
         self._event('page_recovery', observation_key=observation.get('key'), repeated=repeated)
         action = 'reload' if repeated >= 3 else 'wait'
         result = None
@@ -653,6 +744,18 @@ class ActivityCapture:
                    'question': observation.get('question')}
         identity = semantic_identity('interpret_page', task_payload('interpret_page', payload))
         attempts = self.state.setdefault('page_recovery_attempts', {}).get(identity, 0)
+        if repeated >= 3 and attempts >= 2:
+            # The same evidence exhausted focused recovery. Keep the task pinned,
+            # expose the blocker, and permit only spaced probes until it changes.
+            action = 'wait'
+            previous = self.state.get('pending_capture_blocker') or {}
+            probes = previous.get('probes', 0) + 1
+            error = (self.state.get('pending_browser_error') or {}).get('error') or 'Activity did not advance after focused recovery'
+            self.state['pending_capture_blocker'] = {'signature': self._signature(observation),
+                'observation_key': observation.get('key'), 'error': error, 'probes': probes,
+                'retry_at': self.clock() + self.pacer.backoff(probes + 3)}
+            if not previous:
+                self._event('capture_stalled', observation_key=observation.get('key'), error=error)
         if repeated >= 2 and attempts < 2:
             try:
                 self.state['page_recovery_attempts'][identity] = attempts + 1
@@ -686,6 +789,8 @@ class ActivityCapture:
                     'browser_error': self.state.get('pending_browser_error'), 'retry': attempts + 1}
                 self._save()
         else:
+            if self.state.get('pending_capture_blocker'):
+                return  # The execution loop observes, waits, and probes safely.
             delay = self.pacer.backoff(repeated + 1)
             remaining = self._remaining_seconds(observation)
             self.sleep(min(delay, max(0, remaining - self._submission_reserve())) if remaining is not None else delay)
@@ -745,27 +850,75 @@ class ActivityCapture:
                     self.state['judgments'][key] = judgment
                     self._save()
                     self._event('judgment_saved', question=key, status=judgment['status'])
-                content[name][index] = finalize_answers(question, presentations, judgment)
+                content[name][index] = self._validate_final_answers(question, presentations, judgment, payload, name, key, content)
         content['lesson_workload_sample'] = self._lesson_sample(content)
+        content['answer_validation_version'] = 1
         return content
+
+    def _validate_final_answers(self, question, presentations, judgment, payload, name, key, content):
+        finalized = finalize_answers(question, presentations, judgment)
+        try:
+            checked = authoritative_question(finalized, example=name == 'canonical_examples')
+        except UnsupportedContent as error:
+            gap = str(error)
+            repair_payload = task_payload('judge_question', {**payload, 'question': finalized,
+                'gap': gap, 'recovery': 'Final source validation failed. For each unsupported field, return the exact current typed choice and one contiguous verbatim worked-solution span alone, without added quotation marks, labels, or explanation, or identify its captured visible answer. Quote the intervening source when several answer components are needed. Explain authored source errors separately in reasoning. Do not attribute an unbound grade to a response.'})
+            evidence_hash = semantic_identity('judge_question', repair_payload)
+            repairs = self.state.setdefault('answer_evidence_reviews', {})
+            repair = repairs.get(evidence_hash)
+            if repair is None:
+                repair = self.solver.request('judge_question', repair_payload)
+                repair = {**repair, 'question_id': question.get('math_academy_id'),
+                    'capture_key': question_key(question), 'record_kind': name,
+                    'gap': gap, 'evidence_hash': evidence_hash, 'final': True, 'judged_at': self.clock()}
+                repairs[evidence_hash] = repair
+                self._save()
+            finalized = finalize_answers(finalized, presentations, repair)
+            self.state['judgments'][key] = repair
+            self._save()
+            try:
+                checked = authoritative_question(finalized, example=name == 'canonical_examples')
+            except UnsupportedContent as final_error:
+                finalized['answer_validation'] = {'status': 'unavailable', 'gap': str(final_error),
+                    'evidence_hash': evidence_hash, 'judgment': repair, 'final': True}
+                content['source_limitations'].append({'question': question_key(question), 'record_kind': name,
+                    'reason': str(final_error), 'judgment': repair, 'final': True})
+                return finalized
+        checked['answer_validation'] = {'status': 'supported', 'version': 1,
+            'evidence_hash': semantic_identity('finalized_source', checked)}
+        return checked
 
     @staticmethod
     def _source_binding_matches(before, after):
         """History positions and permanent IDs still need matching source content."""
         def binding(question):
-            def text(value):
+            def text(value, *, boundaries=False):
                 value = str(value) if value is not None else ''
                 for asset in question.get('assets', []):
                     if asset.get('sha256'):
                         for name in ('path', 'source_url'):
                             if asset.get(name):
                                 value = value.replace(asset[name], '@image:' + asset['sha256'])
+                if boundaries:
+                    # Live/history paragraph wrappers can move whitespace next
+                    # to a formula or input without changing authored content.
+                    # Keep each mathematical span intact: "1 2" is not "12".
+                    value = re.sub(r'(?<!\\)(\$\$.*?(?<!\\)\$\$|\$(?:\\.|[^$])*?(?<!\\)\$|\{\{field-\d+\}\})',
+                                   lambda match: ' ' + match[0] + ' ', value, flags=re.S)
+                    # Live reasoning is adjacent to its introduction; history
+                    # wraps it in a paragraph. Compare that prose boundary,
+                    # retaining whitespace and punctuation inside mathematics.
+                    spans = re.split(r'(?<!\\)(\$\$.*?(?<!\\)\$\$|\$(?:\\.|[^$])*?(?<!\\)\$)', value, flags=re.S)
+                    value = ''.join(span if index % 2 else
+                        re.sub(r'(?<=[.!?])(?=[A-Za-z])', ' ',
+                            re.sub(r'<p>\s*</p>', '', span))
+                        for index, span in enumerate(spans))
                 return re.sub(r'\s+', ' ', value).strip()
             fields = [{'key': str(field.get('key', index)), 'type': field.get('type'),
                        'choices': sorted((str(choice.get('type')), text(choice.get('value')))
                                          for choice in field.get('choices', []))}
                       for index, field in enumerate(answer_fields(question))]
-            return text(question.get('problem')), sorted(fields, key=lambda field: field['key'])
+            return text(question.get('problem'), boundaries=True), sorted(fields, key=lambda field: field['key'])
         return bool(before.get('problem') and after.get('problem')) and binding(before) == binding(after)
 
     @classmethod
@@ -847,11 +1000,14 @@ class ActivityCapture:
 
         live = {'questions': questions,
                 'canonical_examples': [s['question'] for s in self.state['steps'] if s.get('kind') == 'example' and s.get('question')],
-                'tutorials': [s.get('tutorial', s) for s in self.state['steps'] if s.get('kind') == 'tutorial']}
+                'tutorials': [s.get('tutorial', s) for s in self.state['steps']
+                              if s.get('kind') == 'tutorial' and self.activity['kind'] != 'multistep']}
         content = self._merge_content(content, live)
         self._save()
         content = self._merge_content(content, history)
         content['source_limitations'] = content.get('source_limitations', []) + limitations
+        if self.exposures:
+            self.exposures.reconcile(self.state)
         return content
 
     @staticmethod

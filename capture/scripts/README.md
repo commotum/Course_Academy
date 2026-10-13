@@ -48,12 +48,35 @@ New environments need Python 3.10+, [requirements.txt](requirements.txt), Playwr
 | Browser access | `browser/` | Read source pages, enter and verify responses, navigate, and collect original images. |
 | Post-Activity Processing | `post_activity.py`, `progress.py` | Save dashboard/progress observations, compare topic colors and bands by course, count XP once, and retain retake instructions. |
 | Database Preparation | `database/prepare.py`, `images.py`, `difficulty.py` | Resolve identities, prepare content and relationships, localize images, and calculate lesson difficulty. |
-| Database Commit | `database/commit.py`, `client.py`, `pipeline.py` | Preview, submit, recover exact requests, and verify receipts and content. |
+| Database Commit | `database/batch.py`, `commit.py`, `client.py`, `pipeline.py` | Batch complete activities, preview, recover exact requests, and verify receipts and content. |
 | Continuous operation | `runner.py`, `outbox.py`, `fleet.py`, `terminal.py`, `monitor.py`, `storage.py` | Pin the current activity, save checkpoints, recover failures, and serialize imports across accounts. |
 
 The implementation has no runtime dependency on `scripts/question_capture`.
 
 ## State and evidence
+
+The `cap` / `scripts/ma-workers start --attach` view is one full-window dashboard.
+Each account has fixed capture metrics above its own rolling log tail. Wide
+terminals use a 2×2 layout; tall narrower terminals stack the accounts, and small
+terminals shorten the tails. The dashboard shows earned/base XP, daily activity
+counts (`L/R/Q/M/D`), daily unique new/existing database questions, course
+completion, the last 20 earned-XP awards, answer profile, active task, pending
+imports, omissions, and current errors. `↓` indicates an XP penalty, `·` a zero
+award, `?` an unknown award, and `*` a partial total. XP charts use the displayed
+scale for each account, ordered oldest to newest.
+
+The viewer reads saved evidence and bounded console-log tails. It refreshes once
+per second after collecting metrics; receipt-derived counts are cached in memory.
+It makes no database or Math Academy requests and never treats pending imports as
+verified question yield. Unknown course progress and unavailable import evidence
+remain marked as unknown. "Last write" reports log freshness, not proof of work.
+
+Supervisors run in the separate `<session>-workers` tmux session (normally
+`ma-capture-workers`). Start and Stop still address accounts as before. The owned
+older four-window layout migrates by moving panes/windows, retaining supervisor
+PIDs, browsers, checkpoints, and log files. The main `ma-capture` session contains
+the dashboard; worker windows remain available in the worker session for detailed
+inspection. Detaching with `Ctrl+b d` leaves capture running.
 
 | Location | Contents |
 |---|---|
@@ -65,7 +88,11 @@ The implementation has no runtime dependency on `scripts/question_capture`.
 | `reference/mathacademy/capture-database/` | Ordered pending imports shared by all accounts. |
 | `/media/jake/SSD/EDB/math/images/<first-two-hash-characters>/<sha256>.<extension>` | Original image bytes, deduplicated by SHA-256. Content uses relative `images/...` references. |
 
-`capture-complete.json` means source review and question judgments are saved. `import-status.json` separately records whether the database import is pending or verified. A database outage does not cause the activity to be repeated or block the next capture. An unknown commit outcome blocks later database writes until its exact saved request is resolved.
+`capture-complete.json` means source review and question judgments are saved. It does not erase source limitations. `import-status.json` separately records whether the database import is pending or verified. The dashboard reports missing source evidence as **Gaps**, independently of **Protected** existing agent corrections. Pending repaired captures retain their previous gap warnings until the replacement import is verified. A database outage does not cause the activity to be repeated or block the next capture. An unknown commit outcome blocks later database writes until its exact saved request is resolved.
+
+`PYTHONPATH=capture python -m scripts.recovery sources --account ACCOUNT DIRECTORY` repairs a finished capture from its saved source and queues the complete revised activity for the ordinary 200-question batch. Use `--prepare-only` to validate without publishing the revision. Recovery preserves original evidence and account XP/completion/exposure ledgers. It refuses changes to an active capture or an unresolved database request. `reprocess` also queues its revision; it does not automatically perform a small individual commit.
+
+Large short-term percentage jumps accompanied by widespread topic-color changes after an ordinary activity flag Math Academy's percentage as unverified. The original percentage and color observations remain available, while progress comparisons explicitly disable attribution to that activity. Original Learn/progress HTTP bodies and allowlisted cache headers are retained separately from rendered DOM evidence; authentication headers are excluded.
 
 An agent's final finding that source evidence is unavailable stays with the capture. Preparation excludes the unsupported entity and dependent references, preserves the reason, and continues with supported content. Submitted guesses never become confirmed source answers.
 
@@ -76,6 +103,54 @@ Original content uses `:org/Math-Academy`, including source errors. Agent correc
 ## Configuration and saved captures
 
 Use `--config path/to/config.json` for fields defined in [config.py](config.py); command-line options override them. Account-specific `run` commands accept separate state, output, profile, and course paths. `fleet` reserves those settings for its four account processes.
+
+### Answer profiles
+
+All accounts default to `capture`, preserving the existing lesson/review patterns,
+all-correct multisteps and failed-lesson/review retakes, and 87.17% assessment draws.
+The nine learner profiles combine a learning speed with a starting accuracy:
+
+| Learning speed | Shaky: 50% | Solid: 75% | Strong: 90% |
+|---|---|---|---|
+| Slow: 36 exposures per error halving | `slow-shaky` | `slow-solid` | `slow-strong` |
+| Steady: 12 exposures per error halving | `steady-shaky` | `steady-solid` | `steady-strong` |
+| Fast: 4 exposures per error halving | `fast-shaky` | `fast-solid` | `fast-strong` |
+
+For each question, independently draw correct/wrong with probability
+`p = 1 - (1 - base_accuracy) * 2 ** (-exposures / error_half_life)`.
+These are simulation settings, not measured human learning rates. All profiles
+approach the same 100% limit. Learner profiles apply to lessons, reviews,
+multisteps, and assessments, including retakes; they do not switch to all-correct
+to force progression. The existing diagnostic policy and timing apply to all ten
+profiles, and diagnostics do not contribute practice exposures.
+
+```bash
+# Persist a profile for one account. Other accounts retain their settings.
+scripts/ma-workers set-profile linear --answer-profile fast-strong
+scripts/ma-workers set-profile linear --answer-profile capture
+
+# Override the saved profile for a particular run.
+/home/jake/Developer/MA/.venv/bin/python capture/scripts run --account linear --answer-profile steady-shaky
+```
+
+`--profile` still means the browser directory; `--answer-profile` means answer
+behavior. The account setting is `.local/capture/<account>/answer-profile.json`.
+New decisions read that setting while running; already saved decisions retain
+their draw and policy on resume. A process running code from before profiles were
+introduced needs one restart to load the implementation. Status JSON and the
+dashboard expose the selected profile.
+
+The account's `learning-exposures.json` retains counts and deduplicated events by
+source KP and activity/question presentation. At first use, it includes earlier
+confirmed practice from that account's saved captures. Correct and incorrect
+graded questions each count once; browser retries, failed entries, examples, and
+unanswered questions do not count. Assessment exposures arrive only after
+completion and bound history grades. Existing ledgers continue tracking practice
+when the account returns to `capture`. Profiles and courses share that account's
+KP history; other accounts' practice does not transfer. Questions without a known
+KP association use the base rate, with that limitation recorded, rather than
+pooling unrelated unknown skills. Each decision records its profile, rate
+parameters, exposure count, probability, and random draw in the capture evidence.
 
 All accounts default to the logical EDB database `math` in the SSD PostgreSQL cluster at `/tmp/edb-math:55432`, with writes through `/tmp/edb-math/writer.sock` and images under `/media/jake/SSD/EDB/math/images`. A database rebuild may retain those paths while changing its immutable lineage. New capture requests record that lineage and refuse to replay against a different database; already verified imports remain verified.
 
@@ -106,7 +181,13 @@ The default solver starts a read-only Codex session per activity and resumes it 
 /home/jake/Developer/MA/.venv/bin/python capture/scripts drain
 ```
 
-`prepare` expects the new capture format. It can save prepared files and canonical images, and call an agent for identity ambiguity. It does not replay old migration EDNs. `drain --once` makes one attempt on the oldest eligible pending capture.
+`prepare` expects the new capture format. It can save prepared files and canonical images, and call an agent for identity ambiguity. It does not replay old migration EDNs. `drain --once` makes one attempt on an eligible batch and respects the question minimum; retries still honor backoff. Explicit `drain --flush` (optionally with `--once`) permits a smaller batch when deliberately clearing remaining work.
+
+Runners accumulate completed activities across accounts until a compatible group has at least 200 distinct supported questions (practice plus canonical examples, including existing questions). An old queue never triggers a smaller automatic commit. The last whole activity may take the group above 200. Preparation enforces 8 MiB / 50,000-operation safety limits using actual EDN and expanded operations; it retains work instead of committing below the floor or splitting activities to fit. Conflicting revisions and dependent later activities stay in order while unrelated captures can fill the group. EDB defines capacity defaults, not recommended batch sizes.
+
+Use `--database-batch-questions` to tune the minimum. JSON configuration also accepts `database_batch_max_bytes` and `database_batch_max_ops`. Retired settings `database_batch_max_age`, `database_batch_max_activities`, `database_batch_target_bytes`, and `database_batch_target_ops` are ignored when reading older JSON configurations; they cannot reinstate automatic small flushes. The group manifest, exact request, and receipt live in `capture-database/batches/`; each member also retains its receipt in its usual `database/requests/` archive. An unresolved submitted group blocks later imports while live capture continues, and previously saved requests still recover even if they were below the new floor. No answer policy changes with batching.
+
+Completed batch archives can be compacted with `python3 scripts/compact_completed_batches.py BATCH_DIRECTORY` from the repository root. The tool requires final status, no pending or active request, matching original capture files and imported hashes, and verified no-op reimport evidence. It replaces duplicate content snapshots with references and hashes, stores shared receipts once, and divides activity records between `manifest.part-1.json` and `manifest.part-2.json`. A small `manifest.json` indexes the parts with checksums. The batch reader reconstructs the original completed results without replaying an import. An identical `.previous` checkpoint is removed; distinct prior content is retained by refusing compaction. Pending batch manifests retain their existing format.
 
 ## Tests
 

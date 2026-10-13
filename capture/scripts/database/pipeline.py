@@ -11,6 +11,8 @@ from .edn import dumps, loads
 from .images import ImageLibrary
 from .prepare import Preparation, digest, MA_SOURCE
 from ..storage import atomic_json, atomic_text, read_json
+from ..activity.evidence import question_key
+from ..activity.task_payload import semantic_identity
 
 
 def jsonable(value):
@@ -59,8 +61,16 @@ class DatabasePipeline:
 
     def _prepare(self, content, directory, basis):
         snapshot = self.client.snapshot(content, directory / ('snapshot-' + str(basis)), basis)
+        return self._prepare_snapshot(content, directory, snapshot)
+
+    def _prepare_snapshot(self, content, directory, snapshot):
         library = ImageLibrary(self.config.math_root, directory.parent)
-        prepared = Preparation(snapshot, resolve=self._resolver(directory)).prepare(
+        def record_source_evidence(proof):
+            path = directory / 'source-evidence' / (digest(proof) + '.edn')
+            atomic_text(path, dumps(proof))
+            return str(path.resolve())
+        prepared = Preparation(snapshot, resolve=self._resolver(directory),
+                               record_source_evidence=record_source_evidence).prepare(
             content, library, getattr(self.config, 'derived_source', None))
         return prepared, snapshot
 
@@ -100,6 +110,35 @@ class DatabasePipeline:
             'task_id': str(content['task_id']), 'source_text': completion.get('source_text')}
         return supplemented
 
+    def _persist_source_repairs(self, capture_directory, directory, repairs):
+        """After verification, retain source-backed preparation repairs in capture."""
+        if not repairs or (directory / 'request.json').exists():
+            return
+        path = Path(capture_directory) / 'content.json'
+        content = read_json(path)
+        updated = copy.deepcopy(content)
+        applied = []
+        for repair in repairs:
+            records = updated.get(repair['record_kind'], [])
+            original = next((q for q in records if question_key(q) == repair['capture_key']), None)
+            if original is None or semantic_identity('preparation_source', original) != repair['source_evidence_hash']:
+                continue
+            original['answer_fields'] = copy.deepcopy(repair['question']['answer_fields'])
+            original.pop('fields', None)
+            original['preparation_answer_repair'] = {'source_evidence_hash': repair['source_evidence_hash'],
+                'judgment': copy.deepcopy(repair['judgment']), 'source_file': str(directory / 'source-repairs.json')}
+            original.pop('answer_validation', None)
+            original['answer_validation'] = {'status': 'supported', 'version': 1,
+                'evidence_hash': semantic_identity('finalized_source', original),
+                'method': 'verified_preparation_repair'}
+            applied.append(repair)
+        if applied:
+            archive = directory / 'source-repairs' / digest(content)
+            if not (archive / 'original-content.json').exists():
+                atomic_json(archive / 'original-content.json', content)
+            atomic_json(directory / 'source-repairs.json', applied)
+            atomic_json(path, updated)
+
     def process(self, capture_directory, apply=True):
         directory = Path(capture_directory) / 'database'
         directory.mkdir(parents=True, exist_ok=True)
@@ -114,7 +153,7 @@ class DatabasePipeline:
             if str(self.config.source) != MA_SOURCE:
                 raise ValueError('Math Academy originals require :org/Math-Academy')
             raw_hash = digest(content)
-            results = []
+            results, source_repairs = [], []
             for attempt in range(6):
                 request = committer.pending()
                 if request:
@@ -135,12 +174,15 @@ class DatabasePipeline:
                     results.append(self._verify(committer, request, receipt, original, directory))
                 basis = self.client.basis()
                 prepared, snapshot = self._prepare(content, directory, basis)
+                source_repairs.extend(prepared.get('source_repairs', []))
                 atomic_json(directory / 'preparation.json', jsonable({k:v for k,v in prepared.items() if k != 'batches'}))
                 atomic_text(directory / 'prepared-batches.edn', dumps(prepared['batches']))
                 if not prepared['batches']:
                     result = {'status': 'verified' if results else 'no_changes', 'basis': basis,
                               'receipts': results, 'omissions': prepared['omissions'], 'calibration': prepared['calibration']}
                     atomic_json(directory / 'result.json', result)
+                    if apply:
+                        self._persist_source_repairs(capture_directory, directory, source_repairs)
                     return result
                 batch = prepared['batches'][0]
                 try:
@@ -169,3 +211,7 @@ class DatabasePipeline:
                       'request_key': request.get('request_key') if request else None}
             atomic_json(directory / 'pending.json', {**result, 'traceback': traceback.format_exc()})
             return result
+
+    def process_batch(self, capture_directories, batch_directory, *, allow_underfilled=False):
+        from .batch import ActivityBatch
+        return ActivityBatch(self, batch_directory).process(capture_directories, allow_underfilled=allow_underfilled)

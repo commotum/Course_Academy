@@ -1,5 +1,6 @@
 // Pure DOM extraction. No application state, answer keys, or network calls.
-element => {
+(element, context = {}) => {
+  context ||= {};
   const errors = [], errorParts = {};
   let part = 'fields';
   const fail = message => {
@@ -43,6 +44,9 @@ element => {
   // outside this question node. Keep the observed answer position as a field
   // instead of folding its displayed value into the source problem.
   const historyQuestion = element.matches('.question[id^="question-"]');
+  const terminalGrades = ['Correct','Incorrect','Full Credit','Partial Credit','No Credit','Skipped Question'];
+  const finalResult = element.querySelector('.questionWidget-result,.correctAnswerText,.incorrectAnswerText')?.textContent.trim()
+    || (historyQuestion ? context.history_grade : null);
   const nodes = [...element.querySelectorAll('.matheditor-wrapper-answer, .selectList, input:not([type="hidden"]), textarea, select, [contenteditable="true"]' +
     (historyQuestion || ['Correct','Incorrect','Skipped Question'].includes(element.querySelector('.questionWidget-result')?.textContent.trim()) ? ', .freeResponseTextbox' : ''))]
     .filter(n => !n.closest('.questionWidget-explanation, .exampleExplanation, .questionExplanation, .studentAnswer, .studentAnswerHeader') &&
@@ -60,10 +64,11 @@ element => {
       if (!n.querySelector('.mq-editable-field .mq-textarea textarea')) fail('Unsupported math editor: ' + n.id);
     } else if (n.matches('.selectList')) {
       f.tag = 'custom-select';
-      const graded = ['Correct','Incorrect','Partial Credit','Skipped Question'].includes(element.querySelector('.questionWidget-result')?.textContent.trim());
+      const graded = terminalGrades.includes(finalResult);
       const frame = n.querySelector('.selectListFrame') || n.querySelector(
         graded ? '.selectListFrameDisabled' : '.selectListFrameDisabled.correctSelection, .selectListFrameDisabled.correctSelectionMultipleAttempts');
       f.frame_id = frame?.id;
+      if (historyQuestion && frame?.matches('.selectListFrameDisabled')) f.disabled = true;
       if (!f.frame_id) fail('Select frame has no ID: ' + n.id);
     } else if (n.matches('.freeResponseTextbox')) {
       f.disabled = true;
@@ -77,8 +82,49 @@ element => {
   }
   const greek = {'α':'\\alpha ','β':'\\beta ','γ':'\\gamma ','δ':'\\delta ','θ':'\\theta ','λ':'\\lambda ','μ':'\\mu ','π':'\\pi ','ρ':'\\rho ','σ':'\\sigma ','φ':'\\phi ','ω':'\\omega ','∞':'\\infty '};
   const ops = {'∫':'\\int ','∑':'\\sum ','∏':'\\prod ','⋅':'\\cdot ','×':'\\times ','−':'-', '±':'\\pm ','≤':'\\le ','≥':'\\ge ','≠':'\\ne ','→':'\\to ','∈':'\\in ','∉':'\\notin ','∪':'\\cup ','∩':'\\cap '};
+  // Literal MathML brace glyphs are delimiters, not TeX grouping syntax.
+  const literalFence = value => value === '{' ? '\\{' : value === '}' ? '\\}' : value;
   let formulaFields = new Map();
-  function m(n) {
+  const mathColor = value => /^(?:[a-z]+|#[0-9a-f]{3}|#[0-9a-f]{6})$/i.test(value || '') &&
+    !/^(?:inherit|initial|unset|revert|revertlayer|currentcolor)$/i.test(value) && CSS.supports('color', value);
+  const metadataAttribute = name => name.startsWith('data-mjx-');
+  function decoratedPhantom(n) {
+    // Only explicit source decoration makes an otherwise invisible phantom
+    // relevant. Do not turn unstyled spacing samples into visible answers.
+    if (!n.querySelector('mphantom') || !['mstyle','mpadded'].includes(n.localName)) return null;
+    const background = n.getAttribute('mathbackground');
+    const style = n.getAttribute('style');
+    if (background === null && style === null) return null;
+    const reject = reason => { fail('Unsupported decorated MathML phantom: ' + reason); return ''; };
+    if (n.localName !== 'mstyle' || [...n.attributes].some(a => !['mathbackground','style'].includes(a.name) && !metadataAttribute(a.name)))
+      return reject('container attributes');
+    let border = style?.trim().replace(/;$/, '').trim();
+    if (background !== null && !mathColor(background)) return reject('background');
+    if (style !== null) {
+      // MathJax emits both "1pt solid black" and "solid black 1pt".
+      // CSS shorthand order changes no geometry; reject any extra declaration.
+      const match = /^border:\s*([^:;]+)$/i.exec(border);
+      const tokens = match?.[1].trim().split(/\s+/) || [];
+      const widths = tokens.filter(t => /^\d+(?:pt|px|em|ex|in|cm|mm)$/i.test(t));
+      const colors = tokens.filter(t => mathColor(t));
+      if (tokens.length !== 3 || widths.length !== 1 || colors.length !== 1 ||
+          tokens.filter(t => t.toLowerCase()==='solid').length !== 1) return reject('border style');
+      border = 'border:' + widths[0] + ' solid ' + colors[0];
+    }
+    const padded = n.children.length === 1 && n.children[0];
+    if (!padded || padded.localName !== 'mpadded' || [...padded.attributes].some(a => !['height','depth','lspace','width'].includes(a.name) && !metadataAttribute(a.name)))
+      return reject('padding container');
+    // MathJax 3.2.2 bbox doubles padding with parseInt. Decimal padding would
+    // silently alter the source width, so only exact integer dimensions bind.
+    const pad = /^(\d+)(pt|px|em|ex|in|cm|mm)$/.exec(padded.getAttribute('lspace') || '');
+    if (!pad || Number(pad[1]) <= 0 || padded.getAttribute('height') !== '+' + pad[0] || padded.getAttribute('depth') !== '+' + pad[0] ||
+        padded.getAttribute('width') !== '+' + (2 * Number(pad[1])) + pad[2]) return reject('asymmetric or unsupported padding');
+    const options = [pad[0]];
+    if (background !== null) options.push(background);
+    if (style !== null) options.push(border);
+    return '\\bbox[' + options.join(',') + ']{' + [...padded.childNodes].map(child => m(child, true)).join('') + '}';
+  }
+  function m(n, preservePhantom = false) {
     if (n.nodeType === 3) return greek[n.textContent] || n.textContent;
     if (n.nodeType !== 1) return '';
     const t = n.localName.toLowerCase();
@@ -89,18 +135,50 @@ element => {
       n.children[0].textContent === '{' && n.children[2].textContent === '}' &&
       n.children[1].localName === 'msub' && n.children[1].children[1]?.textContent.match(/^\(S(\d+)\)$/);
     if (marker && formulaFields.has(marker[1])) return '{{' + formulaFields.get(marker[1]) + '}}';
-    // Phantom content only reserves space; none of its descendants are visible.
-    if (t === 'mphantom') return '';
-    const cs = [...n.childNodes].map(m);
+    const decorated = decoratedPhantom(n);
+    if (decorated !== null) return decorated;
+    // A verified visible enclosure also depends on this hidden width. Bare
+    // phantom samples elsewhere retain the previous source extraction behavior.
+    const enclosure = t === 'menclose' && n.querySelector('mphantom') &&
+      (n.getAttribute('notation') === null || n.getAttribute('notation') === 'longdiv');
+    if (t === 'mphantom' && !preservePhantom) return '';
+    const cs = [...n.childNodes].map(child => m(child, preservePhantom || enclosure));
+    if (preservePhantom && (n.closest('mphantom') || n.querySelector('mphantom'))) {
+      if (!['mphantom','mi','mstyle','mrow','mn','mo','msup','msub'].includes(t))
+        fail('Unsupported decorated MathML phantom: hidden node ' + t);
+      const styled = ['mi','mstyle'].includes(t);
+      // MathJax emits stretchy="false" for a fixed glyph inside \phantom.
+      // TeX's ordinary glyph has that same fixed size. A stretchy operator
+      // or any other geometry attribute still requires explicit support.
+      const fixedOperator = a => t === 'mo' && a.name === 'stretchy' && a.value === 'false';
+      if ([...n.attributes].some(a => !(styled && ['mathcolor','mathvariant'].includes(a.name)) && !fixedOperator(a) && !metadataAttribute(a.name)))
+        fail('Unsupported decorated MathML phantom: hidden geometry attributes');
+      let content = cs.join('');
+      if (n.hasAttribute('mathvariant')) {
+        if (n.getAttribute('mathvariant') !== 'bold') fail('Unsupported decorated MathML phantom: hidden mathvariant');
+        else content = '\\mathbf{' + content + '}';
+      }
+      if (n.hasAttribute('mathcolor')) {
+        if (!mathColor(n.getAttribute('mathcolor'))) fail('Unsupported decorated MathML phantom: hidden color');
+        else content = '\\color{' + n.getAttribute('mathcolor') + '}{' + content + '}';
+      }
+      if (styled) return content;
+    }
+    if (t === 'mphantom') return '\\phantom{' + cs.join('') + '}';
     // MathJax may attach a script to just the closing fence glyph. Wrapping
     // that glyph in braces obscures the fence boundary in extracted LaTeX.
-    const scriptBase = [')',']','}'].includes(cs[0]) ? cs[0] : '{' + cs[0] + '}';
+    const scriptBase = [')',']','}','\\}'].includes(cs[0]) ? cs[0] : '{' + cs[0] + '}';
     switch(t) {
-      case 'mfrac':
+      case 'mfrac': {
         // A zero-rule fraction is a stack, not division. Keep the source's rule.
-        return /^0(?:\.0+)?(?:[a-z%]+)?$/i.test(n.getAttribute('linethickness') || '') ?
-          '\\genfrac{}{}{0pt}{}{' + cs[0] + '}{' + cs[1] + '}' :
-          '\\frac{' + cs[0] + '}{' + cs[1] + '}';
+        const thickness = n.getAttribute('linethickness')?.trim();
+        const length = /^(\+?(?:\d+(?:\.\d*)?|\.\d+))(em|ex|px|in|cm|mm|pt|pc|%)?$/i.exec(thickness || '');
+        if (length && Number(length[1]) === 0)
+          return '\\genfrac{}{}{0pt}{}{' + cs[0] + '}{' + cs[1] + '}';
+        if (thickness && !length && !/^(thin|medium|thick)$/.test(thickness))
+          fail('Unsupported MathML fraction line thickness: ' + thickness);
+        return '\\frac{' + cs[0] + '}{' + cs[1] + '}';
+      }
       case 'msup': return scriptBase + '^{' + cs[1] + '}';
       case 'msub': return scriptBase + '_{' + cs[1] + '}';
       case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';
@@ -111,7 +189,7 @@ element => {
       case 'mroot': return '\\sqrt[' + cs[1] + ']{' + cs[0] + '}';
       case 'mspace': return '\\,';
       case 'mtext': return '\\text{' + n.textContent + '}';
-      case 'mo': return ops[n.textContent] || greek[n.textContent] || n.textContent;
+      case 'mo': return ops[n.textContent] || greek[n.textContent] || literalFence(n.textContent);
       case 'mi':
         // The local MathML application marker identifies this whole node as
         // a function name. Keep its boundary when adjacent factors share no space.
@@ -131,7 +209,7 @@ element => {
         if (n.getAttribute('notation') === 'box') return '\\boxed{' + cs.join('') + '}';
         if (n.getAttribute('notation')?.includes('strike')) return '\\cancel{' + cs.join('') + '}';
         fail('Unsupported MathML enclosure'); return cs.join('');
-      case 'mfenced': return (n.getAttribute('open') || '(') + cs.join(n.getAttribute('separators') || ',') + (n.getAttribute('close') || ')');
+      case 'mfenced': return literalFence(n.getAttribute('open') || '(') + cs.join(n.getAttribute('separators') || ',') + literalFence(n.getAttribute('close') || ')');
       case 'semantics': return cs[0] || '';
       case 'annotation': case 'annotation-xml': return '';
       case 'math': case 'mrow': case 'mn': case 'mtd': case 'mstyle': case 'mpadded': return cs.join('');
@@ -140,13 +218,17 @@ element => {
   }
   function render(n) {
     if (!n) return '';
-    if (n.nodeType === 3) return n.textContent;
+    // Live proof widgets sometimes concatenate the next prose sentence with
+    // the prompt ("below.From"); history separates the same sentences into
+    // sections. Normalize that prose boundary; MathML is rendered by m().
+    if (n.nodeType === 3) return n.textContent.replace(/([a-z][.!?])(?=[A-Z][a-z]{2,}\b)/g, '$1 ');
     if (n.nodeType !== 1) return '';
     const t = n.localName.toLowerCase();
     if (emptyFormula(n)) return '';
     if (['script','style','mjx-assistive-mml'].includes(t)) return '';
     if (n.matches('.stepHeader,.helpButton,[id^="continueButton-"],[id^="submitButton-"]')) return '';
     if (n.matches('.studentAnswer, .studentAnswerHeader')) return '';
+    if (part === 'problem' && n.matches('.questionWidget-explanation,.exampleExplanation,.questionExplanation,.questionWidget-feedback,.questionWidget-result,.questionWidget-header,.questionHeader,.answerDetails,.questionWidget-choicesTable')) return '';
     if (fieldNodes.has(n)) return '{{' + fieldNodes.get(n) + '}}';
     if (assets.includes(n)) return '![](@asset-' + assets.indexOf(n) + '@)';
     if (t === 'svg' && n.closest('.mjpage, mjx-container, .MathJax')) {
@@ -172,7 +254,57 @@ element => {
       return n.getAttribute('display') === 'true' ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';
     }
     if (t === 'table') {
-      const rows = [...n.querySelectorAll('tr')].map(row => [...row.children]
+      if (n.querySelector('table, [rowspan], [colspan]')) {
+        // Markdown has no cell spans or nested-table ownership. Rebuild only
+        // source structure and safe authored attributes, with rendered content.
+        const escapeHTML = value => String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        const structural = new Set(['table','thead','tbody','tfoot','tr','td','th','caption','colgroup','col']);
+        const attrs = ['rowspan','colspan','span','scope','align','valign','width','height','cellpadding','cellspacing','border','rules','frame','bgcolor'];
+        function tableHTML(node) {
+          if (node.nodeType === 3) return escapeHTML(render(node));
+          if (node.nodeType !== 1) return '';
+          const tag = node.localName.toLowerCase();
+          if (node.matches('.studentAnswer,.studentAnswerHeader,.stepHeader,.helpButton,[id^="continueButton-"],[id^="submitButton-"]')) return '';
+          if (part === 'problem' && node.matches('.questionWidget-explanation,.exampleExplanation,.questionExplanation,.questionWidget-feedback,.questionWidget-result,.questionWidget-header,.questionHeader,.answerDetails,.questionWidget-choicesTable')) return '';
+          if (fieldNodes.has(node)) return render(node);
+          if (assets.includes(node)) return '<img src="@asset-' + assets.indexOf(node) + '@" alt="">';
+          if (['mjx-container','math'].includes(tag) || tag === 'svg' && node.closest('.mjpage, mjx-container, .MathJax')) return render(node);
+          if (['script','style','mjx-assistive-mml'].includes(tag)) return '';
+          const content = () => [...node.childNodes].map(tableHTML).join('');
+          if (structural.has(tag)) {
+            const layout = getComputedStyle(node);
+            if (/grid|flex/.test(layout.display) || node.style?.gridColumn || node.style?.gridRow ||
+                ['absolute','fixed'].includes(layout.position)) {
+              fail('Unsupported table layout style');
+            }
+            const attributes = attrs.filter(name => node.hasAttribute(name)).map(name => {
+              const value = node.getAttribute(name);
+              if (['rowspan','colspan','span'].includes(name) && !/^\d+$/.test(value)) fail('Unsupported table span: ' + name + '=' + value);
+              return ' ' + name + '="' + escapeHTML(value) + '"';
+            });
+            if (!node.hasAttribute('align') && ['left','center','right','justify'].includes(node.style?.textAlign)) attributes.push(' align="' + node.style.textAlign + '"');
+            return '<' + tag + attributes.join('') + '>' + content() + (tag === 'col' ? '' : '</' + tag + '>');
+          }
+          if (tag === 'br') return '<br>';
+          if (['b','strong','i','em','sup','sub','p'].includes(tag)) return '<' + tag + '>' + content() + '</' + tag + '>';
+          if (tag === 'ul' || tag === 'ol') {
+            const attributes = ['type','start','reversed'].filter(name => node.hasAttribute(name))
+              .map(name => ' ' + name + '="' + escapeHTML(node.getAttribute(name)) + '"');
+            if (tag === 'ol' && !node.hasAttribute('type')) {
+              const style = getComputedStyle(node).listStyleType;
+              const type = {'upper-roman':'I','lower-roman':'i','upper-alpha':'A','lower-alpha':'a','decimal':'1'}[style];
+              if (node.matches('.questionStatements') && style === 'decimal' && !node.style.listStyleType) attributes.push(' type="I"');
+              else if (type) attributes.push(' type="' + type + '"');
+              else fail('Unsupported ordered list style: ' + style);
+            }
+            return '<' + tag + attributes.join('') + '>' + content() + '</' + tag + '>';
+          }
+          if (tag === 'li') return '<li' + (node.hasAttribute('value') ? ' value="' + escapeHTML(node.getAttribute('value')) + '"' : '') + '>' + content() + '</li>';
+          return content();
+        }
+        return '\n\n' + tableHTML(n) + '\n\n';
+      }
+      const rows = [...n.querySelectorAll('tr')].filter(row => row.closest('table') === n).map(row => [...row.children]
         .filter(c => ['td','th'].includes(c.localName)).map(c => text(c)));
       const width = Math.max(0,...rows.map(r => r.length));
       if (width) {
@@ -181,12 +313,55 @@ element => {
         return '\n\n' + lines.join('\n') + '\n\n';
       }
     }
+    if (t === 'ol') {
+      const items = [...n.children].filter(child => child.localName === 'li');
+      const styles = {'1':'decimal', 'I':'upper-roman', 'i':'lower-roman', 'A':'upper-alpha', 'a':'lower-alpha'};
+      let style = getComputedStyle(n).listStyleType;
+      // Saved question fragments omit app.css. Its authored rule is
+      // ol.questionStatements { list-style-type: upper-roman; } (app.css?v=2).
+      // Preserve that verified class meaning, not an inferred choice label.
+      if (style === 'decimal' && n.matches('ol.questionStatements') && !n.hasAttribute('type') && !n.style.listStyleType) style = 'upper-roman';
+      if (!style) style = styles[n.getAttribute('type')] || 'decimal';
+      const label = value => {
+        if (style === 'none') return '';
+        if (['upper-roman','lower-roman'].includes(style) && value > 0 && value < 4000) {
+          let roman = '', remaining = value;
+          for (const [number, glyph] of [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']]) {
+            while (remaining >= number) { roman += glyph; remaining -= number; }
+          }
+          return style === 'lower-roman' ? roman.toLowerCase() : roman;
+        }
+        if (['upper-alpha','lower-alpha','upper-latin','lower-latin'].includes(style) && value > 0) {
+          let alpha = '', remaining = value;
+          while (remaining > 0) { remaining--; alpha = String.fromCharCode(65 + remaining % 26) + alpha; remaining = Math.floor(remaining / 26); }
+          return style.startsWith('lower') ? alpha.toLowerCase() : alpha;
+        }
+        if (style === 'decimal-leading-zero') return value >= 0 && value < 10 ? '0' + value : String(value);
+        if (['decimal','upper-roman','lower-roman','upper-alpha','lower-alpha','upper-latin','lower-latin'].includes(style)) return String(value);
+        fail('Unsupported ordered list style: ' + style);
+        return '';
+      };
+      const step = n.hasAttribute('reversed') ? -1 : 1;
+      let ordinal = n.hasAttribute('start') ? n.start : step === -1 ? items.length : 1;
+      const lines = [...n.childNodes].map(item => {
+        if (item.nodeType !== 1 || item.localName !== 'li') return render(item).trim();
+        if (item.hasAttribute('value')) ordinal = item.value;
+        const marker = label(ordinal);
+        ordinal += step;
+        const body = [...item.childNodes].map(render).join('').trim();
+        // Escape decimal dots so Markdown cannot silently renumber explicit
+        // li[value] resets. Roman/alpha labels are already literal prose.
+        const prefix = marker ? marker + (/^-?\d+$/.test(marker) ? '\\.' : '.') + ' ' : '';
+        return prefix + body.split('\n').map((line, index) => index && line ? '  ' + line : line).join('\n');
+      }).filter(Boolean);
+      return '\n\n' + lines.join('\n\n') + '\n\n';
+    }
     const children = [...n.childNodes].map(render).join('');
     if (t === 'br') return '\n';
     if (t === 'li') return '- ' + children.trim() + '\n';
     if (t === 'b' || t === 'strong') return '**' + children + '**';
     if (t === 'i' || t === 'em') return '*' + children + '*';
-    if (['p','div','ul','ol'].includes(t)) return '\n\n' + children + '\n\n';
+    if (['p','div','ul','ol'].includes(t) || n.matches('.proofSection')) return '\n\n' + children + '\n\n';
     return children;
   }
   const text = n => render(n).replace(/\n{3,}/g,'\n\n').trim();
@@ -229,18 +404,35 @@ element => {
   const instructions = element.querySelector('.questionWidget-calculatorInstructions, .calculatorInstructions');
   const solution = element.matches('.questionExplanation') ? element : element.querySelector('.exampleExplanation, .questionWidget-explanation, .questionExplanation');
   const staged = !!element.querySelector('.proofSection,.questionWidget-healthFrame');
-  const finalResult = element.querySelector('.questionWidget-result,.correctAnswerText,.incorrectAnswerText')?.textContent.trim();
   const fieldErrors = errors.length;
-  const problem = readPart('problem', () => [text(graphic),text(prompt)].filter(Boolean).join('\n\n'));
+  const candidates = [...new Set([graphic, ...element.querySelectorAll('.exampleQuestion,.questionWidget-text,.questionText,.questionWidget-body,.questionBody'),
+    ...(prompt === element ? [element] : [])].filter(Boolean))];
+  const sections = candidates.filter(n => !candidates.some(other => other !== n && other.contains(n)));
+  const problem = readPart('problem', () => sections.map(text).filter(Boolean).join('\n\n'));
+  const problemFieldKeys = [...fieldNodes].filter(([n]) => sections.some(section => section.contains(n))).map(([,key]) => key);
+  const proofSectionsComplete = [...element.querySelectorAll('.proofSection')].every(section => {
+    // A section may inherit a hidden stage wrapper. Inspect only this question,
+    // not the surrounding history accordion whose expansion is handled by UI.
+    for (let node = section; node && element.contains(node); node = node.parentElement) {
+      const style = getComputedStyle(node);
+      if (node.hidden || style.display === 'none' || ['hidden','collapse'].includes(style.visibility)) return false;
+      if (node === element) break;
+    }
+    return true;
+  });
+  const historyProofComplete = !historyQuestion || (proofSectionsComplete && fields.every(f =>
+    f.tag !== 'custom-select' || ['Correct','Incorrect'].includes(f.source_result) ||
+      (finalResult === 'No Credit' && f.disabled && f.frame_id && f.choices.length > 1)));
   const workedSolution = readPart('solution', () => text(solution));
   const calculatorInstructions = readPart('problem', () => text(instructions));
   const parts = [];
-  if (prompt || graphic || instructions) parts.push('problem');
+  if (sections.length || instructions) parts.push('problem');
   if (fields.length) parts.push('fields');
   if (solution) parts.push('solution');
   return {dom_id:element.id, name:element.querySelector('.stepName,.questionWidget-title')?.textContent.trim(),
     problem, worked_solution:workedSolution, calculator_instructions:calculatorInstructions, fields,
-    answer_fields_complete:fields.length ? fieldErrors === 0 && (!staged || ['Correct','Incorrect','Partial Credit','Skipped Question'].includes(finalResult)) : null,
+    problem_field_keys:problemFieldKeys,
+    answer_fields_complete:fields.length ? fieldErrors === 0 && (!staged || (terminalGrades.includes(finalResult) && historyProofComplete)) : null,
     result:element.querySelector('.questionWidget-result, .correctAnswerText, .incorrectAnswerText')?.textContent.trim(),
     proof_feedback:element.querySelector('.questionWidget-feedback')?.textContent.trim(),
     html:element.outerHTML, errors:[...new Set(errors)],

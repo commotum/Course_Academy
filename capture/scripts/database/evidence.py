@@ -98,6 +98,9 @@ def authoritative_question(original: dict, *, example=False) -> dict:
     missing = placeholders - {field.get('key') for field in q['answer_fields']}
     if missing:
         raise UnsupportedContent('Source answer fields are missing captured controls: ' + ', '.join(sorted(missing)))
+    unplaced = set(q.get('problem_field_keys', [])) - placeholders
+    if unplaced:
+        raise UnsupportedContent('Authored problem positions are missing answer controls: ' + ', '.join(sorted(unplaced)))
     if example and not q.get('worked_solution'):
         raise UnsupportedContent('Canonical example requires its worked solution')
     keys = set()

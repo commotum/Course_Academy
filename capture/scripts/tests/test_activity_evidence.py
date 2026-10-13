@@ -5,6 +5,19 @@ from scripts.activity.evidence import capture_gaps, finalize_answers, merge_ques
 
 
 class Evidence(unittest.TestCase):
+    def test_multistep_setup_needs_content_but_no_invented_lesson_title(self):
+        setup = {'dom_id':'step-1','problem':'Carla is organizing a nut sale.',
+                 'content':'Carla is organizing a nut sale.', 'fields':[], 'assets':[],
+                 'errors':[], 'source_step':{'type':None}}
+        content = {'kind':'multistep','tutorials':[setup], 'multistep':{'shared_contexts':[setup]}}
+        self.assertEqual(capture_gaps(content),[])
+        content['tutorials'][0]['errors'] = ['Source image missing']
+        self.assertIn('extraction_errors',capture_gaps(content)[0]['missing'])
+        content['tutorials'][0]['errors'] = []
+        content['kind'] = 'review'
+        self.assertIn('title',capture_gaps(content)[0]['missing'])
+        self.assertIn('source_tutorial_id',capture_gaps(content)[0]['missing'])
+
     def setUp(self):
         self.question = {'math_academy_id': 'q-1', 'problem': 'One plus one?', 'worked_solution': 'The answer is 2.',
                          'html_path': '/source.html', 'fields': [{'key': 'x', 'type': 'blank'}]}

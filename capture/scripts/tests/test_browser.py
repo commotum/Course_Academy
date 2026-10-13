@@ -25,6 +25,31 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 
 class SourceParsingTests(unittest.TestCase):
+    def test_svg_html_entities_are_preserved_as_xml_character_references(self):
+        import xml.etree.ElementTree as ET
+        svg='<svg><foreignObject><div xmlns="http://www.w3.org/1999/xhtml">A&nbsp;B &amp; C &ThinSpace; D</div></foreignObject></svg>'
+        data,_=standalone_svg(svg)
+        root=ET.fromstring(data)
+        self.assertIn('A\u00a0B & C \u2009 D',''.join(root.itertext()))
+        with self.assertRaises(ET.ParseError):
+            standalone_svg('<svg><text>&inventedEntity;</text></svg>')
+    def test_laplace_prompt_and_option_share_bytes_but_keep_source_identity(self):
+        captured = json.loads((FIXTURES / 'laplace-duplicate-images.json').read_text())
+        raw = deepcopy(captured)
+        raw['problem'] = raw['problem'].replace(captured['assets'][0]['path'], '@asset-0@')
+        for index, choice in enumerate(raw['fields'][0]['choices'], 1):
+            choice['value'] = f'@asset-{index}@'
+        self.assertEqual(captured['assets'][0]['path'], captured['assets'][3]['path'])
+        self.assertNotEqual(captured['assets'][0]['source_url'], captured['assets'][3]['source_url'])
+        self.assertEqual(MathAcademyBrowser._binding(raw), MathAcademyBrowser._binding(captured))
+        changed = deepcopy(raw)
+        changed['assets'][3]['source_url'] = 'https://mathacademy.com/graphics/different-choice'
+        self.assertNotEqual(MathAcademyBrowser._binding(changed), MathAcademyBrowser._binding(captured))
+        ambiguous = deepcopy(captured)
+        ambiguous['assets'][3]['extraction_part'] = 'problem'
+        ambiguous['fields'][0]['choices'][2].pop('html', None)
+        self.assertNotEqual(MathAcademyBrowser._binding(raw), MathAcademyBrowser._binding(ambiguous))
+
     def test_image_binding_matches_captured_paths_but_rejects_changed_source(self):
         for tag, source, html in [('img', 'https://mathacademy.com/graphics/q-1-a-1', '<img src="/graphics/q-1-a-1">'),
                                   ('svg', None, '<svg><path d="M0 0L1 1"/></svg>')]:
@@ -149,6 +174,21 @@ class SourceParsingTests(unittest.TestCase):
             self.assertEqual(parsed['base_xp'],10)
             self.assertEqual(parsed['source_text'],source)
 
+    def test_quiz_score_does_not_replace_explicit_xp_award(self):
+        for apostrophe in ("'", "’"):
+            source = ("Congratulations! You answered 8 of 9 questions correctly for a score of 89%.\n"
+                      "You've been awarded all of the task" + apostrophe + "s 15 XP.\nCONTINUE")
+            parsed = parse_xp(source)
+            self.assertEqual((parsed['earned_xp'], parsed['base_xp']), (15, 15))
+            self.assertEqual(parsed['source_text'], source)
+        parsed = parse_xp("You answered 7 of 11 questions correctly for a score of 64%.\nYou've been awarded 8 XP.")
+        self.assertEqual((parsed['earned_xp'], parsed['base_xp']), (8, None))
+
+    def test_quiz_score_without_xp_award_is_not_an_xp_observation(self):
+        for source in ("You answered 8 of 9 questions correctly.", "Your score is 8 / 9 questions."):
+            parsed = parse_xp(source)
+            self.assertEqual((parsed['earned_xp'], parsed['base_xp']), (None, None))
+
     def test_math_editor_notation_changes_do_not_change_scope(self):
         self.assertEqual(normalized_math("x/2"), normalized_math(r"\frac{x}{2}"))
         self.assertEqual(normalized_math("x^2"), normalized_math("x^{2}"))
@@ -195,6 +235,22 @@ class OfflineBrowserTests(unittest.TestCase):
         self.context.close()
         self.temporary.cleanup()
 
+    def test_tex_spacing_in_mixed_number_is_removed_before_mathquill_entry(self):
+        self.page.set_content('<div id="wrapper"><span class="mq-editable-field"></span></div>')
+        self.page.evaluate(r'''() => {
+          let latex='';const field={focus(){},select(){},write(v){latex=v.includes('\\,')?'':v},latex(){return latex}};
+          window.MathQuill={getInterface:()=>()=>field};
+        }''')
+        self.assertEqual(write_math(self.page.locator('#wrapper'),r'2\,\frac{2}{5}',[]),r'2\frac{2}{5}')
+
+    def test_partially_visible_dropdown_option_uses_an_exposed_point_without_scrolling(self):
+        from scripts.browser.entry import click_dropdown
+        self.page.set_viewport_size({'width':600,'height':300})
+        self.page.set_content('<button id="option" style="position:fixed;top:295px;left:20px;height:30px" onclick="this.dataset.selected=1">Choose</button>')
+        click_dropdown(self.page.locator('#option'),scroll=False)
+        self.assertEqual(self.page.locator('#option').get_attribute('data-selected'),'1')
+        self.assertEqual(self.page.evaluate('scrollY'),0)
+
     def test_saved_radio_keeps_math_and_all_choices(self):
         self.page.set_content((FIXTURES / "q-1396-before.html").read_text())
         item = self.page.locator("#step-q1396").evaluate(EXTRACT)
@@ -228,6 +284,23 @@ class OfflineBrowserTests(unittest.TestCase):
         self.assertTrue(example["worked_solution"])
         self.assertNotIn("Continue", tutorial["problem"])
 
+    def test_fixed_phantom_spacing_does_not_invalidate_full_lesson_definition(self):
+        html = '''<h1 id="topicName">Long division</h1><div id="steps">
+          <div class="step" id="step-71" stepid="71" steptype="example" contentid="10">
+          <span class="stepName">Example: Divide</span>
+          <div class="exampleQuestion">Divide 504 by 8.</div>
+          <div class="exampleExplanation"><math><menclose notation="longdiv"><mn>5</mn>
+          <mphantom><mo stretchy="false">|</mo></mphantom><mn>0</mn>
+          <mphantom><mo stretchy="false">|</mo></mphantom><mn>4</mn></menclose></math>
+          The quotient is 63.</div></div></div>'''
+        self.adapter._goto = lambda url, page: page.set_content(html)
+        self.adapter._settle_content = lambda *args: None
+        result = self.adapter._lesson({'topic_id': '1'}, self.directory)
+        self.assertTrue(result['lesson_definition']['complete'])
+        self.assertEqual(result['lesson_definition']['issues'], [])
+        self.assertEqual(result['canonical_examples'][0]['errors'], [])
+        self.assertIn(r'\phantom{|}', result['canonical_examples'][0]['worked_solution'])
+
     def test_saved_assessment_and_multistep_keep_field_structure(self):
         for filename, expected in [("assessment-105178-question.html", "q-105178"),
                                    ("multistep-128186-question.html", "q-128186")]:
@@ -241,6 +314,45 @@ class OfflineBrowserTests(unittest.TestCase):
         context = self.page.locator('.step').evaluate(EXTRACT)
         self.assertIn("initial value problem", context["problem"])
         self.assertFalse(context["fields"])
+
+    def test_multistep_question_controls_precede_selected_shared_context(self):
+        self.adapter.activity['kind'] = 'multistep'
+        self.page.set_content('''<div id="stepButton-1" class="stepButton current"></div>
+          <button id="stepButton-2" class="stepButton" onclick="
+            document.getElementById('stepButton-1').classList.remove('current');
+            this.classList.add('current')">Question 1</button>
+          <div id="steps">
+          <div id="step-1" class="step">Carla is organizing a nut sale.</div>
+          <div id="step-2" class="step"><div id="question-134231" class="question">
+            <div class="questionText">How many bags?</div><input id="answer"/>
+            <button class="submitButton">Submit</button>
+            <div class="correctAnswerText" style="display:none"></div></div>
+            <button id="continueButton-2" style="display:none"
+              onclick="if(document.getElementById('stepButton-2').classList.contains('current')) {
+                this.style.display='none';document.getElementById('step-3').style.display='block';
+              }">Continue</button></div>
+          <div id="step-3" class="step" style="display:none">
+            <div id="question-134232" class="question"><div class="questionText">Next part?</div>
+              <input/><button class="submitButton">Submit</button></div></div></div>''')
+        observation = self.adapter.observe(self.directory)
+        self.assertEqual(observation['kind'], 'question')
+        self.assertEqual(observation['key'], 'step-2')
+        self.assertEqual(observation['question']['math_academy_id'], 'q-134231')
+        self.assertEqual(observation['shared_context'], 'Carla is organizing a nut sale.')
+        self.assertEqual(len(observation['part_order']), 2)
+        # The source can keep the setup selected after grading the first part.
+        self.page.evaluate('''() => {
+          document.querySelector('#step-2 .submitButton').style.display='none';
+          document.querySelector('#step-2 .correctAnswerText').textContent='Correct';
+          document.querySelector('#step-2 .correctAnswerText').style.display='block';
+          document.getElementById('continueButton-2').style.display='block';
+        }''')
+        graded = self.adapter.observe(self.directory)
+        self.assertTrue(graded['accepted'])
+        self.assertEqual(graded['next'], '#continueButton-2')
+        self.adapter._pause = lambda *args, **kwargs: None
+        self.adapter.advance(graded, self.directory)
+        self.assertEqual(self.adapter._view()['key'], 'step-3')
 
     def test_graded_question_is_not_submitted_again(self):
         self.page.set_content('''<div class="step questionWidget" id="step-q1">
@@ -279,6 +391,33 @@ class OfflineBrowserTests(unittest.TestCase):
         self.assertEqual(len(reloads), 1)
         self.assertIsNone(self.page.evaluate("window.clicked"))
         self.assertTrue(result["not_submitted"])
+
+    def test_continue_selects_its_step_after_scrolling_to_a_short_tutorial(self):
+        # MA selects the step occupying most of the viewport on scroll. Its
+        # Continue handler advances from that selection, not the button's ID.
+        self.page.set_content('''<style>body{margin:0}.step{display:block}
+          #step-q1{height:1800px}#step-t2{height:100px}
+          #stepButton-t2{position:fixed;top:10px;right:10px}</style>
+          <div id="stepButton-q1" class="stepButton current"></div>
+          <button id="stepButton-t2" class="stepButton"
+            onmousedown="select('t2')">Tutorial</button>
+          <div class="step" id="step-q1"><p>Earlier accepted question</p></div>
+          <div class="step" id="step-t2"><p>Short tutorial.</p>
+          <button id="continueButton-t2" onmousedown="setTimeout(()=>{
+            window.continues=(window.continues||0)+1;
+            if(document.querySelector('.stepButton.current').id==='stepButton-t2'){
+              document.getElementById('step-t3').style.display='block';
+              this.style.display='none';}else{select('t2');}},10)">Continue</button></div>
+          <div class="step" id="step-t3" style="display:none"><p>Next tutorial</p>
+          <button id="continueButton-t3">Continue</button></div>
+          <script>function select(id){document.querySelector('.stepButton.current').classList.remove('current');
+            document.getElementById('stepButton-'+id).classList.add('current');}
+            window.addEventListener('scroll',()=>select('q1'));</script>''')
+        observation = self.adapter._view()
+        self.adapter._pause = lambda *args, **kwargs: None
+        self.adapter.advance(observation, self.directory)
+        self.assertEqual(self.adapter._view()['key'], 'step-t3')
+        self.assertEqual(self.page.evaluate('window.continues'), 1)
 
     def test_pending_continue_reloads_before_clicking_again(self):
         self.page.set_content('<div class="step" id="step-t1"><p>Read this.</p><button id="continueButton-t1" onclick="window.clicked=true">Continue</button></div>')
@@ -333,6 +472,17 @@ class OfflineBrowserTests(unittest.TestCase):
         self.assertEqual(item["question"]["problem"], "Find x.")
         self.assertEqual(item["shared_context"], "A shared setup.")
         self.assertEqual(item["part_order"][0]["math_academy_id"], "q-7")
+
+    def test_multistep_context_dom_id_is_not_a_tutorial_identity(self):
+        self.adapter.activity['kind'] = 'multistep'
+        self.page.set_content('''<div id="steps"><div class="step" id="step-1">
+          <p>A shared setup.</p><button id="continueButton-1">Continue</button>
+          </div></div>''')
+        item = self.adapter.observe(self.directory)
+        self.assertEqual(item['kind'], 'tutorial')
+        self.assertIsNone(item['tutorial']['math_academy_id'])
+        self.assertEqual(item['tutorial']['dom_id'], 'step-1')
+        self.assertEqual(item['shared_context'], 'A shared setup.')
 
     def test_late_postprocessing_never_borrows_newer_activity_xp(self):
         self.adapter.state = {"task_id": "2", "completion": {"earned_xp": 99, "base_xp": 100}}
@@ -429,6 +579,185 @@ class OfflineBrowserTests(unittest.TestCase):
         response = enter(self.page.locator('#question'), field, {"value": "One"})
         self.assertEqual(response["value"], "One")
         self.assertEqual(self.page.locator('.selectListFrame').inner_text(), "One")
+
+    def scroll_dropdown(self):
+        """Own q184176 options with the archived public widget's event handlers."""
+        saved = json.loads((FIXTURES / 'scroll-dropdown-q184176.json').read_text())
+        self.page.set_viewport_size({'width': 730, 'height': 300})
+        self.page.set_content('''<style>body{margin:0}.selectListFrame{height:21px;width:190px;border:1px solid}
+          .selectListOptions{position:absolute;visibility:hidden;background:white;width:190px}
+          .selectListOption{height:21px}mjx-assistive-mml{display:none}
+          #scroll{position:absolute;top:40px;height:240px;width:600px;overflow:auto}</style>
+          <div id="scroll"><div style="height:1000px"></div><div id="question">''' + saved['html'] +
+          '''</div><div style="height:1000px"></div></div>''')
+        self.page.add_script_tag(content=(FIXTURES / 'public-select-list.js').read_text())
+        self.page.evaluate('''()=>{
+          window.Core={findLeft:n=>n.getBoundingClientRect().left+scrollX,
+            findTop:n=>n.getBoundingClientRect().top+document.querySelector('#scroll').scrollTop+scrollY,
+            getHeight:n=>n.getBoundingClientRect().height};
+          const w=Object.create(SelectList.prototype);
+          w.element=document.querySelector('.selectList');w.frame=w.element.querySelector('.selectListFrame');
+          w.optionsDiv=w.element.querySelector('.selectListOptions');w.options=[...w.optionsDiv.children];
+          w.options.forEach((n,i)=>{n.index=i;n.onmousedown=w.onMouseDownOption.bind(w)});
+          w.selectedOption=w.options[0];w.locked=false;w.onSelect=()=>{};window.widget=w;window.opens=0;
+          w.frame.onmousedown=()=>{window.opens++;w.showOptions()};
+          window.addEventListener('mousedown',e=>{if(e.target!==w.element&&e.target!==w.frame)w.hideOptions()});
+          w.attchedScrollEventHandlers();
+        }''')
+        question = self.page.locator('#question').evaluate(EXTRACT)
+        return question['fields'][0], saved
+
+    def test_own_ninth_dropdown_option_positions_before_open_without_scrolling_open_menu(self):
+        field, saved = self.scroll_dropdown()
+        response = enter(self.page.locator('#question'), field, {'value': saved['value']})
+        self.assertEqual(response['option'], saved['option'])
+        self.assertEqual(self.page.evaluate('widget.getSelectedIndex()'), 8)
+        self.assertEqual(self.page.evaluate('window.opens'), 1)
+        self.assertEqual(self.page.locator('.selectListFrame').evaluate('n=>n.innerHTML'),
+                         self.page.evaluate('widget.options[8].innerHTML'))
+
+    def test_partly_clipped_ninth_row_is_positioned_before_open(self):
+        field, saved = self.scroll_dropdown()
+        self.page.set_viewport_size({'width': 730, 'height': 360})
+        # The old center-before-open location exposes the ninth row's top but
+        # clips its bottom; Playwright's ordinary click would scroll/hide it.
+        self.page.evaluate('''()=>{
+          widget.frame.scrollIntoView({block:'center'});
+        }''')
+        self.page.evaluate("()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))")
+        self.page.evaluate('''()=>{widget.showOptions();window.partial=widget.options[8].getBoundingClientRect().toJSON();
+          widget.hideOptions();window.openMenuScrolls=0;
+          window.addEventListener('scroll',()=>{
+            if(getComputedStyle(widget.optionsDiv).visibility==='visible')window.openMenuScrolls++;
+          },true);
+        }''')
+        partial = self.page.evaluate('window.partial')
+        self.assertLess(partial['top'], 360)
+        self.assertGreater(partial['bottom'], 360)
+        enter(self.page.locator('#question'), field, {'value': saved['value']})
+        self.assertEqual(self.page.evaluate('widget.getSelectedIndex()'), 8)
+        self.assertEqual(self.page.evaluate('window.opens'), 1)
+        self.assertEqual(self.page.evaluate('window.openMenuScrolls'), 0)
+
+    def test_scroll_hidden_menu_reopens_same_nodes_once(self):
+        field, saved = self.scroll_dropdown()
+        self.page.evaluate('''()=>{const show=widget.showOptions.bind(widget);widget.showOptions=()=>{
+          show();if(window.opens===1)widget.hideOptions();
+        }}''')
+        enter(self.page.locator('#question'), field, {'value': saved['value']})
+        self.assertEqual(self.page.evaluate('window.opens'), 2)
+        self.assertEqual(self.page.evaluate('widget.getSelectedIndex()'), 8)
+
+    def test_visible_partly_clipped_option_selects_exposed_part_without_scroll_or_reopen(self):
+        field, saved = self.scroll_dropdown()
+        self.page.evaluate('''()=>{const show=widget.showOptions.bind(widget);window.openMenuScrolls=0;
+          window.addEventListener('scroll',()=>{
+            if(getComputedStyle(widget.optionsDiv).visibility==='visible')window.openMenuScrolls++;
+          },true);
+          widget.showOptions=()=>{show();
+            widget.optionsDiv.style.top=(innerHeight-10-widget.options[8].offsetTop)+'px';
+          };
+        }''')
+        enter(self.page.locator('#question'), field, {'value': saved['value']})
+        self.assertEqual(self.page.evaluate('widget.getSelectedIndex()'), 8)
+        self.assertEqual(self.page.evaluate('window.opens'), 1)
+        self.assertEqual(self.page.evaluate('window.openMenuScrolls'), 0)
+
+    def test_hidden_reopen_cannot_switch_to_replacement_frame(self):
+        field, saved = self.scroll_dropdown()
+        self.page.evaluate('''()=>{const show=widget.showOptions.bind(widget);widget.showOptions=()=>{
+          show();widget.hideOptions();widget.frame.replaceWith(widget.frame.cloneNode(true));
+        }}''')
+        with self.assertRaisesRegex(ValueError, 'no exposed frame'):
+            enter(self.page.locator('#question'), field, {'value': saved['value']})
+        self.assertEqual(self.page.evaluate('widget.getSelectedIndex()'), 0)
+        self.assertEqual(self.page.evaluate('window.opens'), 1)
+
+    def test_actual_public_lesson_header_insets_window_scroll_before_open(self):
+        field, saved = self.scroll_dropdown()
+        self.page.set_viewport_size({'width': 1280, 'height': 800})
+        self.page.add_style_tag(content=(FIXTURES / 'public-student-lesson.css').read_text())
+        self.page.evaluate('''header=>{
+          document.body.insertAdjacentHTML('afterbegin',header);
+          document.querySelector('#scroll').id='lessonContent';
+          widget.scrollableAncestor=widget.findScrollableParent();
+          Core.findTop=n=>n.getBoundingClientRect().top+scrollY;
+          widget.frame.scrollIntoView({block:'start'});
+          window.openMenuScrolls=0;window.headerTopAtOpen=null;
+          const show=widget.showOptions.bind(widget);widget.showOptions=()=>{
+            window.headerTopAtOpen=widget.frame.getBoundingClientRect().top;show();
+          };
+          window.addEventListener('scroll',()=>{
+            if(getComputedStyle(widget.optionsDiv).visibility==='visible')window.openMenuScrolls++;
+          },true);
+        }''', (FIXTURES / 'public-lesson-header.html').read_text())
+        header_bottom = self.page.locator('#header').evaluate('n=>n.getBoundingClientRect().bottom')
+        self.assertGreater(header_bottom, 0)
+        self.assertEqual(self.page.locator('#header').evaluate("n=>getComputedStyle(n).position"), 'fixed')
+        self.assertLess(self.page.locator('.selectListFrame').evaluate('n=>n.getBoundingClientRect().top'), header_bottom)
+        enter(self.page.locator('#question'), field, {'value': saved['value']})
+        self.assertGreaterEqual(self.page.evaluate('window.headerTopAtOpen'), header_bottom + 2)
+        self.assertEqual(self.page.evaluate('widget.getSelectedIndex()'), 8)
+        self.assertEqual(self.page.evaluate('window.openMenuScrolls'), 0)
+
+    def test_actual_public_header_insets_nested_scroller_only_when_needed(self):
+        for below_header in (False, True):
+            with self.subTest(below_header=below_header):
+                field, saved = self.scroll_dropdown()
+                self.page.set_viewport_size({'width': 1280, 'height': 800})
+                self.page.add_style_tag(content=(FIXTURES / 'public-student-lesson.css').read_text())
+                self.page.evaluate('''header=>{
+                  document.body.insertAdjacentHTML('afterbegin',header);
+                  window.windowScrolls=0;window.addEventListener('scroll',e=>{
+                    if(e.target===document)window.windowScrolls++;
+                  });
+                }''', (FIXTURES / 'public-lesson-header.html').read_text())
+                if below_header:
+                    self.page.locator('#scroll').evaluate("n=>n.style.top=(document.querySelector('#header').getBoundingClientRect().bottom+20)+'px'")
+                enter(self.page.locator('#question'), field, {'value': saved['value']})
+                self.assertGreaterEqual(self.page.locator('.selectListFrame').evaluate('n=>n.getBoundingClientRect().top'),
+                                        self.page.locator('#header').evaluate('n=>n.getBoundingClientRect().bottom') + 2)
+                self.assertEqual(self.page.evaluate('window.windowScrolls'), 0)
+                self.assertEqual(self.page.evaluate('widget.getSelectedIndex()'), 8)
+
+    def test_header_container_scroll_limit_uses_window_only_for_remaining_inset(self):
+        field, saved = self.scroll_dropdown()
+        self.page.set_viewport_size({'width': 1280, 'height': 800})
+        self.page.add_style_tag(content=(FIXTURES / 'public-student-lesson.css').read_text())
+        self.page.evaluate('''header=>{
+          document.body.insertAdjacentHTML('afterbegin',header);
+          const container=document.querySelector('#scroll');container.style.top='500px';
+          container.firstElementChild.remove();document.body.insertAdjacentHTML('beforeend','<div style="height:2000px"></div>');
+          window.scrollTo(0,500);
+        }''', (FIXTURES / 'public-lesson-header.html').read_text())
+        enter(self.page.locator('#question'), field, {'value': saved['value']})
+        self.assertEqual(self.page.locator('#scroll').evaluate('n=>n.scrollTop'), 0)
+        self.assertGreaterEqual(self.page.locator('.selectListFrame').evaluate('n=>n.getBoundingClientRect().top'),
+                                self.page.locator('#header').evaluate('n=>n.getBoundingClientRect().bottom') + 2)
+        self.assertEqual(self.page.evaluate('widget.getSelectedIndex()'), 8)
+
+    def test_dropdown_overlay_cannot_trigger_reopen_or_click_through(self):
+        field, saved = self.scroll_dropdown()
+        self.page.evaluate('''()=>{const original=widget.showOptions.bind(widget);widget.showOptions=()=>{
+          original();const r=widget.frame.getBoundingClientRect();const overlay=document.createElement('div');
+          overlay.style.cssText=`position:fixed;inset:0;z-index:10000`;document.body.appendChild(overlay);
+        }}''')
+        with self.assertRaisesRegex(ValueError, 'no exposed'):
+            enter(self.page.locator('#question'), field, {'value': saved['value']})
+        self.assertEqual(self.page.evaluate('widget.getSelectedIndex()'), 0)
+        self.assertLessEqual(self.page.evaluate('window.opens'), 1)
+
+    def test_scroll_dropdown_rejects_changed_frame_readback(self):
+        field, saved = self.scroll_dropdown()
+        self.page.evaluate("()=>widget.onSelect=()=>widget.frame.textContent='changed source content'")
+        with self.assertRaisesRegex(ValueError, 'readback differs'):
+            enter(self.page.locator('#question'), field, {'value': saved['value']})
+
+    def test_scroll_dropdown_does_not_reenter_accepted_field(self):
+        field, saved = self.scroll_dropdown()
+        field['source_result'] = 'Correct'
+        self.assertTrue(enter(self.page.locator('#question'), field, {'value': saved['value']})['already_accepted'])
+        self.assertEqual(self.page.evaluate('window.opens'), 0)
 
 
 if __name__ == "__main__":

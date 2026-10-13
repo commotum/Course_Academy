@@ -53,6 +53,7 @@ def scalar(value):
 class Snapshot:
     def __init__(self, data):
         self.basis = data['basis']
+        self.lineage = data.get('lineage')
         self.entities = {e[':db/id']: e for e in data.get('entities', [])}
         self.idents = {str(ident): eid for eid, ident in data.get('idents', [])}
         self.attributes = {str(r[1]).lstrip(':'): {'id': r[0], 'type': str(r[2]), 'many': str(r[3]) == ':db.cardinality/many'}
@@ -112,11 +113,14 @@ class Plan:
             if replace and previous is not None:
                 self.retract(target, attr, self.snapshot.enum(previous))
             return
+        # A later observation supersedes an earlier planned scalar even when
+        # it agrees with the snapshot. Otherwise successive preparations can
+        # alternate between the two values forever.
+        self.assertions = [row for row in self.assertions if not (row[0] == target and row[1] == kw(attr))]
+        self.retractions = [row for row in self.retractions if not (row[0] == target and row[1] == kw(attr))]
+        self.updates.setdefault(target, {kw('db/id'): target}).pop(kw(attr), None)
         if self.snapshot.enum(previous) != self.snapshot.enum(desired) or not self.snapshot.sourced(target, attr, desired, self.source):
             self.updates.setdefault(target, {kw('db/id'): target})[kw(attr)] = desired
-            # Several questions can name the same KP. Only the final scalar
-            # value is emitted by the entity map, so its guard must match it.
-            self.assertions = [row for row in self.assertions if not (row[0] == target and row[1] == kw(attr))]
             self.assertions.append([target, kw(attr), desired])
             if previous is not None and self.snapshot.enum(previous) != self.snapshot.enum(desired):
                 self.retractions.append([target, kw(attr), self.snapshot.enum(previous)])
@@ -144,9 +148,10 @@ class Plan:
 
 
 class Preparation:
-    def __init__(self, snapshot, *, resolve=None):
+    def __init__(self, snapshot, *, resolve=None, record_source_evidence=None):
         self.snapshot = Snapshot(snapshot)
         self.resolve = resolve
+        self.record_source_evidence = record_source_evidence
         self.decisions, self.omissions = [], []
         self.gap_judgments = {}
 
@@ -208,6 +213,73 @@ class Preparation:
             return self.choose(attr, {'source_id': value}, matches)
         return matches[0] if matches else None
 
+    def existing_ma_answer(self, question, judgment):
+        """Corroborate a contradictory worksheet against an existing MA key."""
+        if (judgment.get('status') != 'source_error' or not self.record_source_evidence
+                or not self.snapshot.has_facts or not self.snapshot.lineage):
+            return None
+        mid = question.get('math_academy_id')
+        matches = self.snapshot.find('question/math-academy-id', mid)
+        if not mid or len(matches) != 1:
+            return None
+        old = matches[0]
+        # Only the exact gray sizing placeholder dropped by the legacy
+        # extractor may differ; preserve all other math, cells and prose.
+        blank = r'\bbox[2pt,lightgray]{\phantom{a}}'
+        if markdown(question.get('problem', '')).replace(blank, '') != str(old.get(':question/problem', '')).replace(blank, ''):
+            return None
+        if not self.snapshot.sourced(old[':db/id'], 'question/math-academy-id', mid, MA_SOURCE):
+            return None
+        fields = question.get('answer_fields', question.get('fields', []))
+        existing = {str(f.get(':answer-field/key')):f for f in old.get(':question/answer-fields', [])}
+        answers = {str(a.get('key')):a for a in judgment.get('answers', [])}
+        if not fields or len(existing) != len(fields):
+            return None
+        bound = []
+        for field in fields:
+            previous, answer = existing.get(str(field.get('key'))), answers.get(str(field.get('key')), {})
+            if not previous or field.get('type') not in ('radio', 'select'):
+                return None
+            old_type = previous.get(':answer-field/type') or {}
+            if not isinstance(old_type, dict) or str(old_type.get(':db/ident', '')).rsplit('/', 1)[-1] != field['type']:
+                return None
+            choices = [(c.get('type'), c.get('value')) for c in field.get('choices', [])]
+            old_choices = [(str(c.get(':answer/type', {}).get(':db/ident', '')).rsplit('/', 1)[-1],
+                            c.get(':answer/value')) for c in previous.get(':answer-field/choices', [])]
+            if (any(t not in ('math', 'text') or not isinstance(v, str) for t,v in choices + old_choices)
+                    or len(choices) != len(old_choices) or len(set(choices)) != len(choices)
+                    or set(choices) != set(old_choices)):
+                return None
+            correct = previous.get(':answer-field/correct') or {}
+            value_type = str(correct.get(':answer/type', {}).get(':db/ident', '')).rsplit('/', 1)[-1]
+            value = correct.get(':answer/value')
+            if (answer.get('disagrees') is not True or answer.get('ma_value') is None
+                    or (answer.get('value_type'), answer['ma_value']) in choices
+                    or (value_type, value) != (answer.get('value_type'), answer.get('correct_value'))
+                    or (value_type, value) not in choices
+                    or scalar(correct) not in [scalar(c) for c in previous.get(':answer-field/choices', [])]):
+                return None
+            if not all(self.snapshot.sourced(eid, attr, val, MA_SOURCE) for eid, attr, val in (
+                    (previous[':db/id'], 'answer-field/correct', correct),
+                    (correct[':db/id'], 'answer/value', value),
+                    (correct[':db/id'], 'answer/type', correct[':answer/type']))):
+                return None
+            bound.append((previous, correct, value_type, value))
+        ids = {old[':db/id'], *(p[':db/id'] for p,_,_,_ in bound), *(c[':db/id'] for _,c,_,_ in bound)}
+        proof = {'basis':self.snapshot.basis, 'lineage':self.snapshot.lineage, 'source':MA_SOURCE,
+                 'question':old, 'facts':[list(f) for f in sorted(self.snapshot.facts, key=str) if f[0] in ids],
+                 'source_id':mid, 'judgment':copy.deepcopy(judgment)}
+        source_file = self.record_source_evidence(proof)
+        repaired = copy.deepcopy(question)
+        for field, (previous, correct, value_type, value) in zip(
+                repaired.get('answer_fields', repaired.get('fields', [])), bound):
+            field.update(correct_value=value, value_type=value_type, correct_type=value_type,
+                evidence={'kind':'ma_answer', 'value':value, 'source_file':source_file,
+                          'source_kind':'existing_edb_math_academy_answer', 'basis':self.snapshot.basis,
+                          'lineage':self.snapshot.lineage, 'question_eid':old[':db/id'],
+                          'field_eid':previous[':db/id'], 'answer_eid':correct[':db/id']})
+        return repaired
+
     def prepare(self, content, library=None, derived_source=None):
         content = copy.deepcopy(content)
         if not content.get('question_order'):
@@ -222,7 +294,7 @@ class Preparation:
                     ids.append(identity)
             content['lesson_workload_sample'] = {'questions_by_knowledge_point': groups,
                 'selection': 'first-two-distinct-practice-questions-in-captured-order', 'base_xp': content.get('base_xp')}
-        records = []
+        records, source_repairs = [], []
         for bucket, example in (('questions', False), ('canonical_examples', True)):
             seen = set()
             kept = []
@@ -256,8 +328,12 @@ class Preparation:
                             field.update(correct_value=answer['ma_value'], evidence={
                                 'kind': 'worked_solution', 'value': answer['ma_value'],
                                 'solution_quote': evidence, 'source_file': source, 'matches_worked_solution': True})
+                    corroborated = self.existing_ma_answer(repaired, judgment)
+                    if corroborated is not None:
+                        repaired = corroborated
                     try:
                         q = authoritative_question(repaired, example=example)
+                        source_q = copy.deepcopy(q)
                         if library:
                             q = library.question(q)
                         for key in ('problem', 'worked_solution', 'local_problem'):
@@ -265,6 +341,9 @@ class Preparation:
                                 q[key] = markdown(q[key])
                         kept.append(q)
                         records.append((q, example))
+                        source_repairs.append({'record_kind': bucket, 'capture_key': capture_key,
+                            'source_evidence_hash': semantic_identity('preparation_source', original),
+                            'question': source_q, 'judgment': copy.deepcopy(judgment)})
                     except (UnsupportedContent, MissingImage) as final_error:
                         # A checked answer repair can expose a different source
                         # gap. Close that finding too, without another repair loop.
@@ -309,8 +388,19 @@ class Preparation:
             points = [self.snapshot.entities.get(scalar(p), p) for p in topic.get(':topic/knowledge-points', [])]
             points = [p for p in points if isinstance(p, dict)]
             existing = self.exact('question/math-academy-id', q['math_academy_id'])
-            point = point_map.get((tid, kid))
+            # History can omit the KP identity. An empty key must not make
+            # different question owners share the first resolved point.
+            point = point_map.get((tid, kid)) if kid else None
             source_example = q['math_academy_id'] if example else examples.get(kid, {}).get('math_academy_id')
+            if not kid and not example:
+                # A captured canonical example is stronger identity evidence
+                # than a possibly stale practice-pool membership.
+                title = q.get('knowledge_point') or q.get('kp_title')
+                matching_examples = [r for r, ex in records if ex and title
+                    and int(r.get('topic_id') or content.get('topic_id') or 0) == tid
+                    and (r.get('knowledge_point') or r.get('kp_title')) == title]
+                if len(matching_examples) == 1:
+                    source_example = matching_examples[0]['math_academy_id']
             try:
                 if point is None:
                     candidates = [p for p in points if str(p.get(':knowledge-point/id')) == kid]
@@ -336,7 +426,8 @@ class Preparation:
                         point = {':knowledge-point/id': identity, ':knowledge-point/title': q.get('knowledge_point') or q.get('kp_title') or ''}
                         if not point[':knowledge-point/title']:
                             raise UnsupportedContent('New KP title unavailable')
-                    point_map[(tid, kid)] = point
+                    if kid:
+                        point_map[(tid, kid)] = point
                 if example and not existing and ':db/id' in point:
                     previous = point.get(':knowledge-point/canonical-example')
                     if previous:
@@ -351,6 +442,29 @@ class Preparation:
         for q, example, topic, point, existing in resolved:
             if not example and existing and (existing[':db/id'] in canonical_ids or existing.get(':knowledge-point/_canonical-example')):
                 self.omissions.append({'kind': 'question', 'id': q['math_academy_id'], 'reason': 'Canonical example cannot enter a practice pool', 'final': True})
+                continue
+            try:
+                self.check_source_attribution(existing)
+            except UnsupportedContent as error:
+                self.omissions.append({'kind': 'question', 'id': q['math_academy_id'],
+                    'reason': str(error), 'constraint': 'separately_attributed_correction', 'final': True})
+                if not example and existing and existing.get(':question/math-academy-id') == q['math_academy_id']:
+                    # The corrected entity is usable as an activity reference.
+                    # Preserve every corrected fact and learner response; only
+                    # point the complete activity at its existing question ID.
+                    question_targets[q['math_academy_id']] = existing[':db/id']
+                elif (example and existing and ':db/id' in point
+                        and scalar(point.get(':knowledge-point/canonical-example')) == existing[':db/id']):
+                    example_targets[q['math_academy_id']] = (point[':db/id'],point)
+                continue
+            try:
+                self.check_response_ownership(q, existing)
+            except UnsupportedContent as error:
+                # This is a proven database-history constraint, not a missing
+                # mathematical judgment or a transient writer failure. Do not
+                # mutate the question/KP plan or keep retrying this package.
+                self.omissions.append({'kind': 'question', 'id': q['math_academy_id'],
+                    'reason': str(error), 'constraint': 'historical_response_ownership', 'final': True})
                 continue
             old_point = point if ':db/id' in point else None
             pt = plan.entity('knowledge-point', point[':knowledge-point/id'], old_point)
@@ -404,7 +518,8 @@ class Preparation:
                 calibration = {'not_transacted': str(error)}
         return {'basis': self.snapshot.basis, 'batches': [b for b in batches if b['forms']],
                 'content': content, 'omissions': self.omissions, 'identity_decisions': self.decisions,
-                'calibration': calibration, 'images': library.saved if library else {}}
+                'calibration': calibration, 'images': library.saved if library else {},
+                'source_repairs': source_repairs}
 
     def final_judgment(self, content, question, error, record_kind=None):
         judgments = content.get('judgments', [])
@@ -446,7 +561,86 @@ class Preparation:
         self.omissions.append({'kind': 'question', 'id': question.get('math_academy_id'),
                                'reason': str(error), 'judgment': judgment, 'final': True})
 
+    def check_source_attribution(self, old):
+        """Original-content imports cannot replace separately authored content."""
+        if not old or not self.snapshot.has_facts:
+            return
+        current = set()
+        def include(reference, kind):
+            eid = scalar(reference)
+            entity = self.snapshot.entities.get(eid, reference if isinstance(reference, dict) else {})
+            for attr in ALLOWED:
+                if not attr.startswith(kind + '/') or attr == kind + '/id':
+                    continue  # UUID attribution alone does not establish a correction.
+                value = entity.get(':' + attr)
+                if value is None:
+                    continue
+                values = value if isinstance(value, list) else [value]
+                current.update((eid, attr, dumps(self.snapshot.enum(v))) for v in values)
+            return entity
+        question = include(old, 'question')
+        for reference in question.get(':question/answer-fields', []):
+            field = include(reference, 'answer-field')
+            for answer in field.get(':answer-field/choices', []):
+                include(answer, 'answer')
+            if field.get(':answer-field/correct') is not None:
+                include(field[':answer-field/correct'], 'answer')
+        ma_source = self.snapshot.idents.get(MA_SOURCE)
+        for eid, attr, value, source in self.snapshot.facts:
+            if (eid, attr, value) in current and source != ma_source:
+                ident = next((name for name, entity_id in self.snapshot.idents.items() if entity_id == source), str(source))
+                raise UnsupportedContent('Existing question has separately attributed content from ' + ident + ' on ' + attr)
+
+    def check_response_ownership(self, question, old):
+        # Response answers retain field ownership. A changed authored option
+        # cannot orphan an existing learner response during a content import.
+        incoming = {field['key']: field for field in question.get('answer_fields', [])}
+        complete = question.get('answer_fields_complete', question.get('fields_complete', False))
+        previous_fields = (old or {}).get(':question/answer-fields', [])
+        by_identity = {}
+        for candidate in previous_fields:
+            ctype = candidate.get(':answer-field/type', {})
+            ctype = ctype.get(':db/ident') if isinstance(ctype, dict) else next((k for k,v in self.snapshot.idents.items() if v == ctype), '')
+            identity = (candidate.get(':answer-field/key'), str(ctype).rsplit('/',1)[-1])
+            by_identity.setdefault(identity, []).append(candidate)
+        for (key, ctype), candidates in by_identity.items():
+            field = incoming.get(key)
+            if (field is not None and field['type'] == ctype and len(candidates) > 1
+                    and any(answer.get(':task-item/_responses') for candidate in candidates
+                            for answer in candidate.get(':answer-field/choices', []))):
+                # Even an exact match would detach the other same-key fields
+                # from the question. Their response owners cannot be guessed.
+                raise UnsupportedContent('Source field revision has ambiguous historical response ownership in field ' + str(key))
+        for candidate in previous_fields:
+            key = candidate.get(':answer-field/key')
+            field = incoming.get(key)
+            if field is None and not complete:
+                continue  # Partial source updates retain unobserved fields.
+            ctype = candidate.get(':answer-field/type', {})
+            ctype = ctype.get(':db/ident') if isinstance(ctype, dict) else next((k for k,v in self.snapshot.idents.items() if v == ctype), '')
+            continuing = field is not None and str(ctype).rsplit('/',1)[-1] == field['type']
+            if continuing and field['type'] == 'blank':
+                continue  # Entered values keep their existing field ownership.
+            if continuing:
+                by_choice = {}
+                for answer in candidate.get(':answer-field/choices', []):
+                    signature = (answer[':answer/type'][':db/ident'].rsplit('/',1)[-1], answer[':answer/value'])
+                    by_choice.setdefault(signature, []).append(answer)
+                if any(len(answers) > 1 and any(answer.get(':task-item/_responses') for answer in answers)
+                       for answers in by_choice.values()):
+                    # Radio/select replacement keeps one entity per typed
+                    # value. A typed match cannot establish which duplicate
+                    # owns history, so refuse before any Plan mutation.
+                    raise UnsupportedContent('Source field revision has ambiguous historical response ownership among duplicate choices in field ' + str(key))
+            wanted = {(c['type'], c['value']) for c in field['choices']} if continuing else set()
+            for answer in candidate.get(':answer-field/choices', []):
+                signature = (answer[':answer/type'][':db/ident'].rsplit('/',1)[-1], answer[':answer/value'])
+                if signature not in wanted and answer.get(':task-item/_responses'):
+                    raise UnsupportedContent('Source field revision would orphan a historical response in field ' + str(key))
+
     def question(self, plan, question, old, example):
+        self.check_source_attribution(old)
+        self.check_response_ownership(question, old)
         mid = question['math_academy_id']
         identity = old[':question/id'] if old else source_uuid('question', mid)
         target = plan.entity('question', identity, old)
@@ -463,6 +657,7 @@ class Preparation:
         for field in question.get('answer_fields', []):
             signature = [field['key'], field['type'], sorted({(c['type'], c['value']) for c in field['choices']}), field['correct_type'], field['correct_value']]
             previous = None
+            compatible = []
             for candidate in (old or {}).get(':question/answer-fields', []):
                 ctype = candidate.get(':answer-field/type', {})
                 ctype = ctype.get(':db/ident') if isinstance(ctype, dict) else next((k for k,v in self.snapshot.idents.items() if v == ctype), '')
@@ -470,10 +665,15 @@ class Preparation:
                 choices = [(c[':answer/type'][':db/ident'].rsplit('/',1)[-1], c[':answer/value']) for c in candidate.get(':answer-field/choices', [])]
                 correct_type = correct.get(':answer/type', {}).get(':db/ident', '').rsplit('/',1)[-1]
                 stored = [candidate.get(':answer-field/key'), str(ctype).rsplit('/',1)[-1], sorted(set(choices)), correct_type, correct.get(':answer/value')]
+                if stored[:2] == signature[:2]:
+                    compatible.append(candidate)
                 if stored == signature:
                     previous = candidate
                     break
-            fid = previous[':answer-field/id'] if previous else source_uuid('answer-field', str(identity) + ':' + digest(signature))
+            if previous is None and compatible:
+                previous = compatible[0] if len(compatible) == 1 else self.choose(
+                    'answer-field', {'question_id': mid, **field}, compatible)
+            fid = previous[':answer-field/id'] if previous else source_uuid('answer-field', str(identity) + ':' + digest(signature[:2]))
             ft = plan.entity('answer-field', fid, previous)
             choices, correct = [], None
             for ctype, value in signature[2]:
@@ -487,7 +687,9 @@ class Preparation:
                     correct = at
             for attr, value in (('answer-field/key',field['key']), ('answer-field/type',kw('answer-field.type/' + field['type'])), ('answer-field/correct',correct)):
                 plan.set(ft, previous, attr, value)
-            plan.set(ft, previous, 'answer-field/choices', choices, many=True)
+            # Blank choices include distinct entered values, not display
+            # options. Keep their ownership when the canonical answer changes.
+            plan.set(ft, previous, 'answer-field/choices', choices, many=True, replace=field['type'] != 'blank')
             fields.append(ft)
         if fields or not example:
             if not question.get('answer_fields_complete', question.get('fields_complete', False)):

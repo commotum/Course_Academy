@@ -149,6 +149,21 @@ class WorkflowResilienceTests(unittest.TestCase):
                {'completion': {'earned_xp': 5}})
         self.assertFalse(read_json(self.config.state_root / 'retakes.json')['lesson:8']['force_correct'])
 
+    def test_completed_retake_history_grade_clears_rule_without_live_acceptance(self):
+        first, second = self.config.output_root / '1', self.config.output_root / '2'
+        atomic_json(first / 'capture-complete.json', {'completed_at': 100})
+        atomic_json(second / 'capture-complete.json', {'completed_at': 200})
+        record(self.config, self.activity(), first, {}, {'completion': {'earned_xp': -5}})
+        retake = self.activity('2')
+        retake['details']['force_correct'] = True
+        for attempt in ({'accepted': True}, {'accepted': False, 'feedback': {'grade': 'Incorrect'}}):
+            record(self.config, retake, second, {'attempts': [attempt]}, {'completion': {'earned_xp': 5}})
+            self.assertTrue(read_json(self.config.state_root / 'retakes.json')['lesson:8']['force_correct'])
+        record(self.config, retake, second,
+               {'attempts': [{'accepted': False, 'grade': None, 'feedback': {'grade': 'Correct'}}]},
+               {'completion': {'earned_xp': 5}})
+        self.assertFalse(read_json(self.config.state_root / 'retakes.json')['lesson:8']['force_correct'])
+
     def test_missing_observation_retry_rotates_and_stamps_the_actual_late_read(self):
         for task in ['1', '2']:
             directory = self.config.output_root / task

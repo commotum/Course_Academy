@@ -79,7 +79,7 @@ def _index(snapshot):
                           for course, topic in sorted(duplicates)]
 
 
-def compare_progress(baseline, observation):
+def compare_progress(baseline, observation, *, activity_kind=None):
     """Compare only source topics present in both reads; absences are not losses."""
     before, before_issues = _index(baseline)
     after, after_issues = _index(observation)
@@ -117,4 +117,27 @@ def compare_progress(baseline, observation):
     if not result['comparison_available']:
         result['unavailable_reason'] = ('no_baseline_topics' if not before else
                                         'no_current_topics' if not after else 'no_comparable_topic_colors')
+    result['anomalies'] = []
+    elapsed = (observation.get('observed_at') or 0) - (baseline.get('observed_at') or 0)
+    prior_percentage = baseline.get('dashboard_course_progress',{})
+    current_percentage = observation.get('dashboard',{}).get('course_progress',{})
+    def percentage(value):
+        match = re.fullmatch(r'\s*(\d+(?:\.\d+)?)\s*%\s*',str(value.get('displayed_progress') or ''))
+        return float(match[1]) if match else None
+    previous, current = percentage(prior_percentage),percentage(current_percentage)
+    if activity_kind in ('lesson','review','multistep') and 0 <= elapsed <= 3600:
+        for course in sorted({key[0] for key in before.keys() & after.keys()}):
+            compared = sum(key[0] == course for key in before.keys() & after.keys())
+            changes = [change for change in result['changes'] if change['course_id'] == course]
+            # Generalization can legitimately change many prerequisite colors.
+            # Flag the combined abrupt percentage/color switch for this same
+            # enrolled course, rather than assuming every large propagation is bad.
+            if (str(prior_percentage.get('course_id')) == str(current_percentage.get('course_id')) == course
+                    and previous is not None and current is not None and abs(current-previous)>=20
+                    and len(changes) >= 50 and len(changes) >= compared * .25):
+                result['anomalies'].append({'course_id':course,'changed_topics':len(changes),
+                    'compared_topics':compared,'elapsed_seconds':elapsed,
+                    'previous_percentage':previous,'current_percentage':current,
+                    'reason':'Abrupt Math Academy percentage switch with widespread topic-color changes'})
+    result['attribution_available'] = result['comparison_available'] and not result['anomalies'] and not result['late_read']
     return result

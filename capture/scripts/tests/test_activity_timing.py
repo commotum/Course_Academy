@@ -169,3 +169,45 @@ class ActivityTimingTests(unittest.TestCase):
         with self.assertRaises(StopRequested):
             capture._pace_answer({'decision':{'submit_at':1200}}, {})
         self.assertEqual(self.delays,[])
+
+    def test_stale_dropdown_reloads_pinned_activity_once_without_another_answer(self):
+        browser = Browser([])
+        capture = self.capture(browser)
+        failure = {'method':'respond', 'attempt':3, 'entry_failed':True,
+                   'error_type':'DropdownUnavailable', 'failure_key':'same-widget',
+                   'error':'Dropdown has no exposed option click target'}
+        capture.state['pending_browser_error'] = failure
+        observation = {'key':'q-1', 'kind':'question'}
+        capture._recover_page(observation, 5)
+        self.assertEqual(browser.opens, 1)
+        self.assertEqual(browser.responses, [])
+        self.assertEqual(capture.solver.calls, [])
+        self.assertEqual(capture.state['pending_browser_error'], failure)
+        # An unchanged failure after reload follows bounded ordinary recovery.
+        capture.state['page_recovery_attempts'] = {}
+        capture._recover_page(observation, 6)
+        self.assertEqual(browser.opens, 1)
+
+    def test_dropdown_reload_requires_proven_unsubmitted_entry_and_excludes_tests(self):
+        for kind, entry_failed in [('assessment',True), ('diagnostic',True), ('review',False)]:
+            with self.subTest(kind=kind, entry_failed=entry_failed):
+                browser = Browser([])
+                capture = self.capture(browser, activity={'task_id':'99','kind':kind,'details':{}})
+                capture.state['pending_browser_error'] = {
+                    'method':'respond','attempt':3,'entry_failed':entry_failed,
+                    'error_type':'DropdownUnavailable','failure_key':'same-widget',
+                    'error':'Dropdown has no exposed option click target'}
+                capture._recover_page({'key':'q-1','kind':'question'},3)
+                self.assertEqual(browser.opens,0)
+
+    def test_unrendered_source_reloads_once_before_waiting_on_missing_widget(self):
+        browser = Browser([])
+        capture = self.capture(browser)
+        observation = {'kind':'unknown','key':'unready-step-q1',
+                       'readiness_errors':['widget script HTTP 502']}
+        capture._recover_page(observation,3)
+        self.assertEqual(browser.opens,1)
+        self.assertEqual(browser.responses,[])
+        self.assertEqual(capture.solver.calls,[])
+        capture._recover_page(observation,4)
+        self.assertEqual(browser.opens,1)

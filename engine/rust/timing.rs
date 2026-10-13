@@ -156,7 +156,27 @@ pub fn elapsed(snapshot: &EntitySnapshot, item: u64, at: DateTime<Utc>) -> Resul
                 "task-item.status/started" => {
                     current == "task-item.status/paused" || terminal(&current)
                 }
-                "task-item.status/paused" => current == "task-item.status/started",
+                "task-item.status/paused" => {
+                    current == "task-item.status/started"
+                        || terminal(&current)
+                            && snapshot
+                                .owners(item, "learner-task/items")?
+                                .iter()
+                                .any(|task| {
+                                    snapshot
+                                        .reference(*task, "learner-task/activity")
+                                        .ok()
+                                        .and_then(|a| {
+                                            snapshot
+                                                .entity(a)
+                                                .ok()?
+                                                .get("activity/type")
+                                                .and_then(|v| snapshot.ident(v).ok())
+                                        })
+                                        .as_deref()
+                                        == Some("activity.type/assessment")
+                                })
+                }
                 _ => false,
             };
             if !valid {

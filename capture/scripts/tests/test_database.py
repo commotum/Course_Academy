@@ -170,6 +170,59 @@ class PrepareTests(unittest.TestCase):
         self.assertEqual([r[2] for r in batch['assertions'] if r[1]==':knowledge-point/title'],['Last captured title'])
         self.assertNotIn('First captured title',dumps(batch['forms']))
 
+    def test_final_scalar_equal_to_snapshot_cancels_earlier_change(self):
+        snapshot = source_snapshot(); old = snapshot['entities'][1]
+        plan = Plan(Snapshot(snapshot)); target = plan.entity('knowledge-point', old[':knowledge-point/id'], old)
+        plan.set(target, old, 'knowledge-point/title', 'Other observed title')
+        plan.set(target, old, 'knowledge-point/title', old[':knowledge-point/title'])
+        batch = plan.finish()
+        self.assertEqual(batch['forms'], [])
+        self.assertEqual(batch['assertions'], [])
+        self.assertEqual(batch['retractions'], [])
+
+    def test_history_without_kp_ids_resolves_each_observed_title(self):
+        snapshot = source_snapshot()
+        second = copy.deepcopy(snapshot['entities'][1])
+        second.update({':db/id': 4, ':knowledge-point/id': source_uuid('kp', 2),
+                       ':knowledge-point/title': 'Subtraction',
+                       ':knowledge-point/canonical-example': {':db/id': 5,
+                           ':question/math-academy-id': 'e-20'}})
+        snapshot['entities'].append(second)
+        snapshot['entities'][0][':topic/knowledge-points'].append(second)
+        first, other = question('q-11'), question('q-12')
+        for q in (first, other):
+            q.pop('knowledge_point_id')
+        other['knowledge_point'] = 'Subtraction'
+        result = Preparation(snapshot).prepare({'questions': [first, other]})
+        self.assertEqual([q['knowledge_point_id'] for q in result['content']['questions']],
+                         [str(snapshot['entities'][1][':knowledge-point/id']), str(second[':knowledge-point/id'])])
+        self.assertFalse(any(row[1] == ':knowledge-point/title'
+                             for batch in result['batches'] for row in batch['assertions']))
+
+    def test_missing_kp_id_uses_captured_example_over_stale_pool_owner(self):
+        snapshot = source_snapshot()
+        second = copy.deepcopy(snapshot['entities'][1])
+        second.update({':db/id': 4, ':knowledge-point/id': source_uuid('kp', 2),
+                       ':knowledge-point/title': 'Subtraction',
+                       ':knowledge-point/canonical-example': {':db/id': 5,
+                           ':question/math-academy-id': 'e-20'}})
+        snapshot['entities'].append(second)
+        snapshot['entities'][0][':topic/knowledge-points'].append(second)
+        snapshot['entities'].append({':db/id': 6, ':question/id': source_uuid('question', 12),
+            ':question/math-academy-id': 'q-12',
+            ':knowledge-point/_questions': [snapshot['entities'][1]]})
+        snapshot['entities'].append({':db/id': 5, ':question/id': source_uuid('question', 20),
+                                    ':question/math-academy-id': 'e-20'})
+        example, practice = question('e-20'), question('q-12')
+        example['knowledge_point_id'] = 'source-20'
+        for q in (example, practice):
+            q['knowledge_point'] = 'Subtraction'
+        practice.pop('knowledge_point_id')
+        result = Preparation(snapshot).prepare({'canonical_examples': [example], 'questions': [practice]})
+        self.assertEqual(result['content']['questions'][0]['knowledge_point_id'], str(second[':knowledge-point/id']))
+        self.assertFalse(any(row[0] == 2 and row[1] == ':knowledge-point/title'
+                             for batch in result['batches'] for row in batch['assertions']))
+
     def test_full_answer_fields_and_kp_membership(self):
         snap=source_snapshot(); q=question(); q['knowledge_point_id']=str(snap['entities'][1][':knowledge-point/id'])
         result=Preparation(snap).prepare({'questions':[q],'task_type':'lesson'})
@@ -237,11 +290,13 @@ class FakeClient:
     def basis(self):return self.t
     def status(self):return {'database':self.database,'lineage':self.lineage,'basis':self.t}
     def snapshot(self,content,directory,basis):
+        by_entity={}
+        for (eid,attr),values in self.facts.items():
+            by_entity.setdefault(eid,[]).append((attr,values))
         def pull(eid, depth=0):
             result={':db/id':eid}
             if eid in self.idents.values():result[':db/ident']=kw(next(k for k,v in self.idents.items() if v==eid))
-            for (e,a),values in self.facts.items():
-                if e!=eid:continue
+            for a,values in by_entity.get(eid,[]):
                 vals=[pull(v,depth+1) if self.attrs[a]['type']==':db.type/ref' and depth<5 else v for v,s in values]
                 result[':'+a]=vals if self.attrs[a]['many'] else vals[-1]
             return result
@@ -315,15 +370,16 @@ class QueryBackedFakeClient(FakeClient):
             if isinstance(value,dict):
                 result={k:shallow(v) for k,v in value.items()}
                 if ':question/id' in result:
-                    result[':question/answer-fields']=[{':db/id':f[':db/id']} for f in result.get(':question/answer-fields',[])]
+                    result[':question/answer-fields']=[{':db/id':f[':db/id'] if isinstance(f,dict) else f}
+                                                     for f in result.get(':question/answer-fields',[])]
                     if isinstance(result.get(':question/difficulty'),dict):
                         result[':question/difficulty']={':db/id':result[':question/difficulty'][':db/id']}
                 return result
             return [shallow(v) for v in value] if isinstance(value,list) else value
-        if name.startswith('topic-'):return rows(':topic/math-academy-id',inputs)
+        if name.startswith('topic-'):return rows(':topic/math-academy-id',inputs[0])
         if name.startswith('questions-'):return rows(':question/math-academy-id',inputs[0])
         if name.startswith('activities-'):
-            tids={e[':db/id'] for e in entities if e.get(':topic/math-academy-id') in inputs}
+            tids={e[':db/id'] for e in entities if e.get(':topic/math-academy-id') in inputs[0]}
             return shallow([[e] for e in entities if ':activity/id' in e and e.get(':activity/scope',{}).get(':db/id') in tids])
         if name in ('activity-route','multistep-activity'):return shallow(rows(':activity/id',inputs))
         if name=='activity-definition':return shallow(rows(':activity/math-academy-id',inputs))
@@ -336,6 +392,43 @@ class QueryBackedFakeClient(FakeClient):
 
 
 class PipelineTests(unittest.TestCase):
+    def test_legacy_multistep_context_is_not_queried_as_a_tutorial(self):
+        client=QueryBackedFakeClient()
+        content={'kind':'multistep','topic_id':1,'multistep_id':20,
+                 'questions':[{'math_academy_id':'q-11','topic_id':1}],
+                 'tutorials':[{'math_academy_id':'step-1','content':'Shared setup.'}]}
+        with tempfile.TemporaryDirectory() as directory:
+            client.snapshot(content,Path(directory),1)
+        self.assertFalse(any(name=='tutorials' for name,_,_ in client.queries))
+        self.assertEqual(content['tutorials'][0]['math_academy_id'],'step-1')
+
+    def test_lesson_tutorial_catalog_identity_is_still_queried(self):
+        client=QueryBackedFakeClient()
+        content={'kind':'lesson','topic_id':1,'questions':[],
+                 'tutorials':[{'math_academy_id':'20','content':'Introduction.'}]}
+        with tempfile.TemporaryDirectory() as directory:
+            client.snapshot(content,Path(directory),1)
+        self.assertIn(('tutorials',[[20]],1),client.queries)
+
+    def test_wide_snapshot_batches_topics_at_one_basis_and_keeps_multistep_lineage(self):
+        client=QueryBackedFakeClient()
+        for tid in range(2,58):
+            eid=1000+tid
+            client.facts[(eid,'topic/id')]=[(source_uuid('topic',tid),900)]
+            client.facts[(eid,'topic/math-academy-id')]=[(tid,900)]
+        content={'questions':[{'math_academy_id':'q-'+str(tid),'topic_id':tid}
+                              for tid in range(1,58)],'multistep_id':20}
+        with tempfile.TemporaryDirectory() as directory:
+            snapshot=client.snapshot(content,Path(directory),1)
+        self.assertEqual(snapshot['lineage'],client.lineage)
+        self.assertEqual({e[':topic/math-academy-id'] for e in snapshot['entities']
+                          if ':topic/math-academy-id' in e},set(range(1,58)))
+        for prefix in ('topic-batch-','activities-batch-'):
+            reads=[q for q in client.queries if q[0].startswith(prefix)]
+            self.assertEqual(len(reads),3)
+            self.assertEqual([tid for _,inputs,_ in reads for tid in inputs[0]],list(range(1,58)))
+        self.assertTrue(all(basis==1 for _,_,basis in client.queries))
+
     def setup(self, directory):
         root=Path(directory); capture=root/'capture';capture.mkdir()
         cfg=SimpleNamespace(database='math',endpoint='test',math_root=root/'math',postgres_url='',source=':org/Math-Academy',derived_source=None,state_root=root/'state')
@@ -351,18 +444,160 @@ class PipelineTests(unittest.TestCase):
             self.assertEqual(client.t,2)
             self.assertEqual(pipeline.process(capture)['status'],'no_changes')
             self.assertEqual(client.t,2)
-    def test_changed_answer_replaces_fields_preserving_old_values(self):
+    def test_changed_answer_reuses_field_preserving_old_answer_values(self):
         with tempfile.TemporaryDirectory() as d:
             capture,cfg=self.setup(d);client=FakeClient();pipeline=DatabasePipeline(cfg,threading.Event(),client=client)
             self.assertEqual(pipeline.process(capture)['status'],'verified')
             before={e:values for (e,a),values in client.facts.items() if a=='answer/value'}
+            field_ids={e:values for (e,a),values in client.facts.items() if a=='answer-field/id'}
             content=json.loads((capture/'content.json').read_text())
             field=content['questions'][0]['answer_fields'][0]
             field.update(correct_value='3',choices=[{'type':'math','value':'3'}],evidence={'kind':'ma_answer','value':'3','source_file':'history.html'})
             atomic_json(capture/'content.json',content)
             result=pipeline.process(capture);self.assertEqual(result['status'],'verified',result)
             self.assertTrue(all(client.facts[(e,'answer/value')]==values for e,values in before.items()))
+            self.assertEqual({e:values for (e,a),values in client.facts.items() if a=='answer-field/id'},field_ids)
+            active_choices={value for (e,a),values in client.facts.items() if a=='answer-field/choices' for value,_ in values}
+            self.assertTrue(all(e in active_choices for e in before))
             self.assertEqual(pipeline.process(capture)['status'],'no_changes')
+
+    def test_correct_choice_change_reuses_field_and_unchanged_answers(self):
+        with tempfile.TemporaryDirectory() as d:
+            capture,cfg=self.setup(d);client=FakeClient();pipeline=DatabasePipeline(cfg,threading.Event(),client=client)
+            client.idents[':answer-field.type/radio']=909
+            content=json.loads((capture/'content.json').read_text())
+            field=content['questions'][0]['answer_fields'][0]
+            field.update(type='radio',choices=[{'type':'math','value':v} for v in ('2','3')])
+            atomic_json(capture/'content.json',content)
+            self.assertEqual(pipeline.process(capture)['status'],'verified')
+            ids={key:value for key,value in client.facts.items() if key[1] in ('answer-field/id','answer/id','answer-field/choices')}
+            field.update(correct_value='3',evidence={'kind':'ma_answer','value':'3','source_file':'history.html'})
+            atomic_json(capture/'content.json',content)
+            result=pipeline.process(capture);self.assertEqual(result['status'],'verified',result)
+            self.assertEqual({key:value for key,value in client.facts.items() if key[1] in ('answer-field/id','answer/id','answer-field/choices')},ids)
+            self.assertEqual(pipeline.process(capture)['status'],'no_changes')
+
+    def test_radio_choice_removal_cannot_orphan_historical_response(self):
+        snapshot=source_snapshot();old_choice={':db/id':20,':answer/id':source_uuid('answer',20),
+            ':answer/type':{':db/ident':kw('answer.type/math')},':answer/value':'3',':task-item/_responses':[{':db/id':30}]}
+        field={':db/id':10,':answer-field/id':source_uuid('field',10),':answer-field/key':'x',
+            ':answer-field/type':{':db/ident':kw('answer-field.type/radio')},':answer-field/choices':[old_choice]}
+        old={':db/id':5,':question/id':source_uuid('question',5),':question/answer-fields':[field]}
+        q=question();q['answer_fields'][0].update(type='radio',correct_type='math',choices=[{'type':'math','value':v} for v in ('1','2')])
+        prep=Preparation(snapshot);plan=Plan(prep.snapshot)
+        with self.assertRaisesRegex(UnsupportedContent,'historical response'):
+            prep.question(plan,q,old,False)
+        self.assertEqual(plan.finish()['forms'],[])
+
+    def duplicate_typed_choices(self, field_type, *, owned=False, owned_first=False):
+        first={':db/id':20,':answer/id':source_uuid('answer',20),
+               ':answer/type':{':db/ident':kw('answer.type/math')},':answer/value':'2'}
+        second={**copy.deepcopy(first),':db/id':21,':answer/id':source_uuid('answer',21)}
+        if owned:
+            (first if owned_first else second)[':task-item/_responses']=[{':db/id':30}]
+        field={':db/id':10,':answer-field/id':source_uuid('field',10),':answer-field/key':'x',
+               ':answer-field/type':{':db/ident':kw('answer-field.type/'+field_type)},
+               ':answer-field/choices':[first,second],':answer-field/correct':first}
+        old={':db/id':5,':question/id':source_uuid('question',5),':question/answer-fields':[field]}
+        q=question();q['answer_fields'][0].update(type=field_type,correct_type='math',choices=[{'type':'math','value':'2'}])
+        return q,old
+
+    def test_response_owned_duplicate_typed_choice_refuses_before_plan_mutation(self):
+        for field_type in ('radio','select'):
+            for owned_first in (False,True):
+                with self.subTest(field_type=field_type,owned_first=owned_first):
+                    q,old=self.duplicate_typed_choices(field_type,owned=True,owned_first=owned_first)
+                    prep=Preparation(source_snapshot());plan=Plan(prep.snapshot)
+                    with self.assertRaisesRegex(UnsupportedContent,'ambiguous historical response ownership among duplicate choices'):
+                        prep.question(plan,q,old,False)
+                    self.assertEqual(plan.finish()['forms'],[])
+
+    def test_unowned_duplicate_typed_choice_reuses_original_field_and_answer(self):
+        for field_type in ('radio','select'):
+            with self.subTest(field_type=field_type):
+                q,old=self.duplicate_typed_choices(field_type)
+                prep=Preparation(source_snapshot());plan=Plan(prep.snapshot)
+                prep.question(plan,q,old,False);forms=plan.finish()['forms']
+                self.assertIn([kw(':db/retract'),10,kw(':answer-field/choices'),21],forms)
+                self.assertFalse(any(isinstance(f,dict) and any(str(k) in (':answer/id',':answer-field/id') for k in f) for f in forms))
+                self.assertFalse(any(isinstance(f,list) and str(f[2]) in (':answer/id',':answer/value',':answer/type') for f in forms))
+
+    def test_blank_duplicate_typed_response_values_keep_all_ownership(self):
+        q,old=self.duplicate_typed_choices('blank',owned=True)
+        prep=Preparation(source_snapshot());plan=Plan(prep.snapshot)
+        prep.question(plan,q,old,False);forms=plan.finish()['forms']
+        self.assertFalse(any(isinstance(f,list) and str(f[2])==':answer-field/choices' for f in forms))
+
+    def test_owned_duplicate_choice_omits_revision_but_imports_supported_sibling(self):
+        class OwnedDuplicateClient(FakeClient):
+            def snapshot(self,*args):
+                result=super().snapshot(*args)
+                def annotate(value):
+                    if isinstance(value,dict):
+                        if value.get(':db/id')==10000:value[':task-item/_responses']=[{':db/id':30}]
+                        for child in list(value.values()):annotate(child)
+                    elif isinstance(value,list):
+                        for child in value:annotate(child)
+                annotate(result['entities']);return result
+        with tempfile.TemporaryDirectory() as d:
+            capture,cfg=self.setup(d);client=OwnedDuplicateClient();client.idents[':answer-field.type/radio']=909
+            pipeline=DatabasePipeline(cfg,threading.Event(),client=client)
+            content=json.loads((capture/'content.json').read_text());q=content['questions'][0]
+            q['answer_fields'][0].update(type='radio',choices=[{'type':'math','value':v} for v in ('2','3')])
+            atomic_json(capture/'content.json',content);self.assertEqual(pipeline.process(capture)['status'],'verified')
+            fid=next(e for (e,a),values in client.facts.items() if a=='answer-field/key' and values[0][0]=='x')
+            client.facts[(10000,'answer/id')]=[(source_uuid('answer','owned-duplicate'),900)]
+            client.facts[(10000,'answer/type')]=[(902,900)];client.facts[(10000,'answer/value')]=[('2',900)]
+            client.facts[(fid,'answer-field/choices')].append((10000,900))
+            q['problem']='A revision with ambiguous duplicate response ownership.'
+            sibling=question('q-12');sibling['knowledge_point_id']=q['knowledge_point_id'];content['questions'].append(sibling)
+            atomic_json(capture/'content.json',content);result=pipeline.process(capture)
+            self.assertEqual(result['status'],'verified',result)
+            self.assertEqual(result['omissions'][0]['constraint'],'historical_response_ownership')
+            self.assertIn('among duplicate choices',result['omissions'][0]['reason'])
+            self.assertIn((10000,900),client.facts[(fid,'answer-field/choices')])
+            self.assertFalse(any(value==q['problem'] for (e,a),values in client.facts.items() if a=='question/problem' for value,_ in values))
+            self.assertTrue(any(value=='q-12' for (e,a),values in client.facts.items() if a=='question/math-academy-id' for value,_ in values))
+            self.assertEqual(pipeline.process(capture)['status'],'no_changes')
+
+    def test_referenced_field_deletion_and_type_change_are_blocked(self):
+        answer={':answer/type':{':db/ident':kw('answer.type/math')},':answer/value':'2',':task-item/_responses':[{':db/id':30}]}
+        old={':question/answer-fields':[{':answer-field/key':'x',':answer-field/type':{':db/ident':kw('answer-field.type/blank')},':answer-field/choices':[answer]}]}
+        for incoming in ([],[{**question()['answer_fields'][0],'type':'radio'}]):
+            q=question();q.update(answer_fields=incoming,answer_fields_complete=True)
+            with self.subTest(incoming=incoming),self.assertRaisesRegex(UnsupportedContent,'historical response'):
+                Preparation(source_snapshot()).check_response_ownership(q,old)
+
+    def test_history_constraint_is_terminal_omission_and_siblings_import(self):
+        class ReferencedClient(FakeClient):
+            def snapshot(self,*args):
+                result=super().snapshot(*args)
+                def mark(value):
+                    if isinstance(value,dict):
+                        if value.get(':answer/value')=='3':value[':task-item/_responses']=[{':db/id':30}]
+                        for child in list(value.values()):mark(child)
+                    elif isinstance(value,list):
+                        for child in value:mark(child)
+                mark(result['entities']);return result
+        with tempfile.TemporaryDirectory() as d:
+            capture,cfg=self.setup(d);client=ReferencedClient();client.idents[':answer-field.type/radio']=909
+            pipeline=DatabasePipeline(cfg,threading.Event(),client=client)
+            content=json.loads((capture/'content.json').read_text());q=content['questions'][0]
+            q.update(answer_fields_complete=True)
+            q['answer_fields'][0].update(type='radio',choices=[{'type':'math','value':v} for v in ('2','3')])
+            atomic_json(capture/'content.json',content)
+            self.assertEqual(pipeline.process(capture)['status'],'verified')
+            q['problem']='A revision that removes a used option.'
+            q['answer_fields'][0]['choices']=[{'type':'math','value':v} for v in ('2','4')]
+            sibling=question('q-12');sibling['knowledge_point_id']=q['knowledge_point_id'];content['questions'].append(sibling)
+            atomic_json(capture/'content.json',content)
+            result=pipeline.process(capture)
+            self.assertEqual(result['status'],'verified',result)
+            self.assertEqual(result['omissions'][0]['constraint'],'historical_response_ownership')
+            self.assertEqual(pipeline.process(capture)['status'],'no_changes')
+            stored={value for (e,a),values in client.facts.items() if a=='question/math-academy-id' for value,_ in values}
+            self.assertIn('q-12',stored)
+            self.assertFalse(any(value==q['problem'] for (e,a),values in client.facts.items() if a=='question/problem' for value,_ in values))
 
     def test_lesson_and_multistep_are_idempotent(self):
         for kind in ('lesson','multistep'):
@@ -378,7 +613,8 @@ class PipelineTests(unittest.TestCase):
                         canonical_examples=[{'math_academy_id':'e-10','topic_id':1,'knowledge_point_id':content['questions'][0]['knowledge_point_id'],
                             'knowledge_point':'Addition','problem':'Example','worked_solution':'$1+1=2$','answer_fields':[]}])
                 else:
-                    content.update(multistep_id=20,question_order=['q-11'],shared_contexts=[{'problem':'Shared setup'}])
+                    content.update(multistep_id=20,question_order=['q-11'],shared_contexts=[{'problem':'Shared setup'}],
+                                   tutorials=[{'math_academy_id':'step-1','content':'Shared setup'}])
                     content['questions'][0]['local_problem']=content['questions'][0]['problem']
                 atomic_json(capture/'content.json',content)
                 result=pipeline.process(capture);self.assertEqual(result['status'],'verified',result)

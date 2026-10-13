@@ -48,8 +48,13 @@ fn nonempty(s: &EntitySnapshot, eid: u64, attr: &str) -> Result<()> {
 /// The current learner player supports linear lessons, including adaptive KP
 /// expansion. Reject malformed routes instead of silently omitting content.
 pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>> {
-    if ident(s, activity, "activity/type")? != "activity.type/lesson" {
-        return Err("the progressive player requires a lesson activity".into());
+    let kind = ident(s, activity, "activity/type")?;
+    let retrieval = matches!(
+        kind.as_str(),
+        "activity.type/review" | "activity.type/assessment"
+    );
+    if kind != "activity.type/lesson" && !retrieval {
+        return Err("the progressive player requires a lesson, review or assessment".into());
     }
     let members: BTreeSet<_> = s.refs(activity, "activity/steps")?.into_iter().collect();
     let mut current = Some(s.reference(activity, "activity/first-step")?);
@@ -61,6 +66,14 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
         }
         let content = s.reference(step, "step/content")?;
         let r = s.entity(content)?;
+        if retrieval {
+            validate_question(s, content)?;
+            if kind == "activity.type/review"
+                && s.topic_for_question(content)? != s.reference(activity, "activity/scope")?
+            {
+                return Err("Review questions must belong to its scope topic".into());
+            }
+        }
         let mut entry = LessonStep {
             step,
             content,
@@ -105,10 +118,25 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
     if visited != members {
         return Err("lesson contains unreachable steps".into());
     }
+    if retrieval {
+        let questions: BTreeSet<_> = result.iter().map(|step| step.content).collect();
+        if questions.len() != result.len() {
+            return Err("Retrieval questions must be unique".into());
+        }
+        if kind == "activity.type/assessment" {
+            let topics = questions
+                .into_iter()
+                .map(|q| s.topic_for_question(q))
+                .collect::<Result<BTreeSet<_>>>()?;
+            if topics.len() != result.len() {
+                return Err("Assessment needs one question per topic".into());
+            }
+        }
+    }
     Ok(result)
 }
 
-fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()> {
+pub(crate) fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()> {
     validate_response_question(s, question)?;
     if has_free_fields(s, question)? {
         return Err("free responses do not supply correctness observations for practice".into());
@@ -214,7 +242,7 @@ pub fn validate_response_question(s: &EntitySnapshot, question: u64) -> Result<(
     Ok(())
 }
 
-fn seen_questions(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
+pub(crate) fn seen_questions(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
     let mut seen = BTreeSet::new();
     for task in s.refs(learner, "learner/activity")? {
         for item in s.refs(task, "learner-task/items")? {
@@ -258,6 +286,54 @@ pub fn ordered_presentations(s: &EntitySnapshot, task: u64) -> Result<Vec<u64>> 
         return Err("Disconnected presentations".into());
     }
     Ok(out)
+}
+
+/// Fresh supply also excludes frozen questions in active retrieval attempts.
+/// Reserving a definition alone does not constitute a learner observation.
+pub fn reserved_retrieval_questions(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
+    let mut reserved = BTreeSet::new();
+    for task in s.refs(learner, "learner/activity")? {
+        if !s.entity(task)?.contains_key("learner-task/status") {
+            continue;
+        }
+        if matches!(
+            ident(s, task, "learner-task/status")?.as_str(),
+            "learner-task.status/started" | "learner-task.status/paused"
+        ) {
+            let activity = s.reference(task, "learner-task/activity")?;
+            if crate::retrieval::supported(s, activity)? {
+                for step in s.refs(activity, "activity/steps")? {
+                    reserved.insert(s.reference(step, "step/content")?);
+                }
+            }
+        }
+    }
+    Ok(reserved)
+}
+pub fn unavailable_questions(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
+    let mut unavailable = seen_questions(s, learner)?;
+    unavailable.extend(reserved_retrieval_questions(s, learner)?);
+    // A fixed future lesson question cannot be swapped after the task starts.
+    for task in s.refs(learner, "learner/activity")? {
+        if !s.entity(task)?.contains_key("learner-task/status") {
+            continue;
+        }
+        if matches!(
+            ident(s, task, "learner-task/status")?.as_str(),
+            "learner-task.status/started" | "learner-task.status/paused"
+        ) {
+            let activity = s.reference(task, "learner-task/activity")?;
+            if ident(s, activity, "activity/type")? == "activity.type/lesson" {
+                for step in s.refs(activity, "activity/steps")? {
+                    let content = s.reference(step, "step/content")?;
+                    if s.is_ordinary_question(content)? {
+                        unavailable.insert(content);
+                    }
+                }
+            }
+        }
+    }
+    Ok(unavailable)
 }
 
 fn task_learner(s: &EntitySnapshot, items: &[u64]) -> Result<Option<u64>> {
@@ -327,7 +403,7 @@ fn consume_instruction(
     }
 }
 
-fn question_outcome(s: &EntitySnapshot, item: u64) -> Result<Option<Option<bool>>> {
+pub(crate) fn question_outcome(s: &EntitySnapshot, item: u64) -> Result<Option<Option<bool>>> {
     match ident(s, item, "task-item/status")?.as_str() {
         "task-item.status/correct" => Ok(Some(Some(true))),
         "task-item.status/incorrect" => Ok(Some(Some(false))),
@@ -347,6 +423,9 @@ fn position_after(
     items: &[u64],
     completed_item: Option<u64>,
 ) -> Result<Position> {
+    if crate::retrieval::supported(s, activity)? {
+        return crate::retrieval::position(s, activity, items);
+    }
     position_with_deferral(s, activity, items, completed_item, None)
 }
 
@@ -358,10 +437,14 @@ fn position_with_deferral(
     deferred_item: Option<u64>,
 ) -> Result<Position> {
     let mut seen = task_learner(s, items)?
-        .map(|l| seen_questions(s, l))
+        .map(|l| unavailable_questions(s, l))
         .transpose()?
         .unwrap_or_default();
     let steps = lesson_steps(s, activity)?;
+    let actual_seen = task_learner(s, items)?
+        .map(|l| seen_questions(s, l))
+        .transpose()?
+        .unwrap_or_default();
     let mut cursor = 0;
     let mut all_correct = true;
     let mut deferred = BTreeSet::new();
@@ -388,7 +471,7 @@ fn position_with_deferral(
                 }
                 "question" => {
                     let Some(item) = items.get(cursor) else {
-                        if seen.contains(&step.content) {
+                        if actual_seen.contains(&step.content) {
                             return Err("This authored question was already presented. Fresh content is needed; the lesson is not failed.".into());
                         }
                         return Ok(current(Some(step.content), None, false, &deferred));
@@ -529,6 +612,12 @@ pub fn continuation_state(
     complete_instruction: bool,
     defer: bool,
 ) -> Result<Position> {
+    if crate::retrieval::supported(s, activity)? {
+        if complete_instruction || defer {
+            return Err("Retrieval questions must be answered or skipped".into());
+        }
+        return crate::retrieval::position(s, activity, items);
+    }
     let item = items.last().copied();
     if complete_instruction {
         let content = s.entity(s.reference(
@@ -575,7 +664,7 @@ pub fn deferred_resume_step(
         return Ok(None);
     }
     let seen = task_learner(s, items)?
-        .map(|l| seen_questions(s, l))
+        .map(|l| unavailable_questions(s, l))
         .transpose()?
         .unwrap_or_default();
     Ok(lesson_steps(s, activity)?
@@ -603,10 +692,17 @@ pub fn next_content(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<
 /// The first presentation has no task owner yet. Check its learner history
 /// explicitly; later adaptive draws recover ownership from existing items.
 pub fn first_content(s: &EntitySnapshot, activity: u64, learner: u64) -> Result<Option<u64>> {
+    if crate::retrieval::supported(s, activity)? && !crate::retrieval::fresh(s, learner, activity)?
+    {
+        return Err(
+            "These reserved questions were presented elsewhere. Refresh Study for a fresh activity"
+                .into(),
+        );
+    }
     let next = next_content(s, activity, &[])?;
     if let Some(q) = next
         && s.is_ordinary_question(q)?
-        && seen_questions(s, learner)?.contains(&q)
+        && unavailable_questions(s, learner)?.contains(&q)
     {
         return Err("This authored question was already presented. Fresh content is needed; the lesson is not failed.".into());
     }
@@ -627,6 +723,18 @@ pub fn continuation(
     complete_instruction: bool,
     base: i64,
 ) -> Result<(Option<u64>, bool, i64)> {
+    if crate::retrieval::supported(s, activity)? {
+        let p = crate::retrieval::position(s, activity, items)?;
+        return Ok((
+            p.next,
+            p.passed,
+            if p.next.is_none() {
+                crate::retrieval::xp(s, activity, items, base)?
+            } else {
+                0
+            },
+        ));
+    }
     let completed = if complete_instruction {
         let item = *items.last().ok_or("instruction presentation required")?;
         let content_id = s.reference(item, "task-item/content")?;
@@ -694,9 +802,9 @@ enum StudyScope {
 fn topic_layers(s: &EntitySnapshot) -> Result<BTreeMap<u64, usize>> {
     let mut layers: BTreeMap<_, _> = s
         .entities
-        .iter()
-        .filter(|(_, record)| record.contains_key("topic/id"))
-        .map(|(&topic, _)| (topic, 0usize))
+        .with_attribute("topic/id")
+        .into_iter()
+        .map(|topic| (topic, 0usize))
         .collect();
     let mut remaining: BTreeMap<_, _> = layers.keys().map(|&topic| (topic, 0usize)).collect();
     let mut outgoing = BTreeMap::new();
@@ -778,7 +886,20 @@ pub fn queue_candidates(
             candidate.reason = "Selected for your queue".into();
         }
     }
-    Ok(plan)
+    plan.extend(crate::retrieval::candidates(s, learner, course, at, false)?);
+    plan.sort_by(|a, b| {
+        (b.priority >= 10000.0)
+            .cmp(&(a.priority >= 10000.0))
+            .then_with(|| (b.priority >= 5000.0).cmp(&(a.priority >= 5000.0)))
+            .then_with(|| {
+                if a.priority >= 5000.0 && b.priority >= 5000.0 {
+                    b.priority.total_cmp(&a.priority)
+                } else {
+                    std::cmp::Ordering::Equal
+                }
+            })
+    });
+    crate::scheduling::filter_candidates(s, learner, plan)
 }
 
 /// Engine eligibility is independent of explicit queue membership and mode.
@@ -829,7 +950,20 @@ pub fn engine_candidates(
             break;
         }
     }
-    Ok(ongoing)
+    ongoing.extend(crate::retrieval::candidates(s, learner, course, at, true)?);
+    ongoing.sort_by(|a, b| {
+        (b.priority >= 10000.0)
+            .cmp(&(a.priority >= 10000.0))
+            .then_with(|| (b.priority >= 5000.0).cmp(&(a.priority >= 5000.0)))
+            .then_with(|| {
+                if a.priority >= 5000.0 && b.priority >= 5000.0 {
+                    b.priority.total_cmp(&a.priority)
+                } else {
+                    std::cmp::Ordering::Equal
+                }
+            })
+    });
+    crate::scheduling::filter_candidates(s, learner, ongoing)
 }
 
 /// Compatibility wrapper for callers that only need the ordered activity IDs.
@@ -965,7 +1099,120 @@ fn target_support(
     Ok(support)
 }
 
-fn plan_candidates_with_supply(
+/// Same lesson priority score, before eligibility or fresh-supply filtering.
+fn inventory_priority_score(repetitions: f64, target_count: usize, remaining_topics: usize,
+    nearest_target_steps: Option<usize>, due: Option<DateTime<Utc>>, at: DateTime<Utc>) -> f64 {
+    let mut priority = 1.0 / (1.0 + repetitions);
+    if target_count > 0 {
+        priority += 1000.0 * target_count as f64 / (1.0 + target_count as f64)
+            + 100.0 / (1.0 + remaining_topics as f64)
+            + 100.0 / (1.0 + nearest_target_steps.unwrap_or(0) as f64);
+    }
+    if let Some(due) = due {
+        // Whole hours avoid a priority write on every queue refresh.
+        let days = (due - at).num_hours().max(0) as f64 / 24.0;
+        priority += 250.0 / (1.0 + days);
+    }
+    priority
+}
+
+#[derive(Clone, Debug)]
+pub struct InventoryPriority {
+    pub priority: f64,
+    pub target_count: usize,
+    pub ongoing: bool,
+    pub due: Option<DateTime<Utc>>,
+}
+
+/// Rank replenishment even when a topic's bank prevents a lesson being offered.
+/// Uses the planner's target/deadline support and operational FIRe readiness.
+pub fn inventory_priorities(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>)
+    -> Result<BTreeMap<u64, InventoryPriority>> {
+    let mut ready = BTreeSet::new();
+    let mut repetitions = BTreeMap::new();
+    let thresholds: Vec<_> = s
+        .entities
+        .with_attribute("policy/id")
+        .into_iter()
+        .filter_map(|id| {
+            s.entities[&id]
+                .get("policy/review-threshold")
+                .and_then(Value::as_f64)
+        })
+        .collect();
+    let threshold = if thresholds.len() == 1 {
+        Some(thresholds[0])
+    } else {
+        None
+    };
+    let now = timestamp_days(at);
+    for progress in s.refs(learner, "learner/knowledge-profile")? {
+        let topic = s.reference(progress, "progress/topic")?;
+        let r = s.entity(progress)?;
+        let reps = r
+            .get("progress/repetitions")
+            .and_then(Value::as_f64)
+            .unwrap_or(0.0);
+        if !reps.is_finite() || reps < 0.0 {
+            return Err("invalid imported repetition position".into());
+        }
+        repetitions.insert(topic, reps);
+        if COMPLETE_PROGRESS.iter().all(|key| r.contains_key(*key)) {
+            if r.get("progress/learned") == Some(&json!(true)) {
+                let threshold =
+                    threshold.ok_or("operational readiness needs one configured FIRe policy")?;
+                let memory = r["progress/memory"].as_f64().ok_or("invalid retention")?;
+                let interval = r["progress/interval-days"]
+                    .as_f64()
+                    .ok_or("invalid interval")?;
+                let observed = crate::schema::instant_days(&r["progress/memory-at"])?;
+                if !memory.is_finite() || memory < 0.0 || !interval.is_finite() || interval <= 0.0 {
+                    return Err("invalid operational retention state".into());
+                }
+                if now >= observed
+                    && memory * 2.0_f64.powf(-(now - observed) / interval) > threshold
+                {
+                    ready.insert(topic);
+                }
+            }
+        } else if reps > 0.0 {
+            ready.insert(topic);
+        }
+    }
+    let mut prerequisites: BTreeMap<u64, BTreeSet<u64>> = BTreeMap::new();
+    for topic in s.entities.with_attribute("topic/id") {
+        for next in s.refs(topic, "topic/next")? {
+            prerequisites.entry(next).or_default().insert(topic);
+        }
+        for kp in s.refs(topic, "topic/knowledge-points")? {
+            prerequisites
+                .entry(topic)
+                .or_default()
+                .extend(s.refs(kp, "knowledge-point/key-prerequisites")?);
+        }
+    }
+    let support = target_support(s, learner, &prerequisites, &ready)?;
+    let mut ongoing = BTreeSet::new();
+    for task in s.refs(learner, "learner/activity")? {
+        if matches!(ident(s, task, "learner-task/status")?.as_str(),
+            "learner-task.status/started" | "learner-task.status/paused") {
+            let activity = s.reference(task, "learner-task/activity")?;
+            if let Some(topic) = s.optional_ref(activity, "activity/scope")? { ongoing.insert(topic); }
+        }
+    }
+    Ok(s.entities.with_attribute("topic/id").into_iter().map(|topic| {
+        let target = support.get(&topic);
+        let target_count = target.map_or(0, |t| t.targets.len());
+        let ongoing = ongoing.contains(&topic);
+        let priority = inventory_priority_score(repetitions.get(&topic).copied().unwrap_or(0.0),
+            target_count, target.and_then(|t| t.remaining).unwrap_or(0),
+            target.and_then(|t| t.distance), target.and_then(|t| t.due), at)
+            + if ongoing { 10000.0 } else { 0.0 };
+        (topic, InventoryPriority { priority, target_count, ongoing, due: target.and_then(|t| t.due) })
+    }).collect())
+}
+
+pub(crate) fn plan_candidates_with_supply(
     s: &EntitySnapshot,
     learner: u64,
     course: u64,
@@ -1013,9 +1260,13 @@ fn plan_candidates_in_scope(
     let mut repetitions = BTreeMap::new();
     let thresholds: Vec<_> = s
         .entities
-        .values()
-        .filter(|r| r.contains_key("policy/id"))
-        .filter_map(|r| r.get("policy/review-threshold").and_then(Value::as_f64))
+        .with_attribute("policy/id")
+        .into_iter()
+        .filter_map(|id| {
+            s.entities[&id]
+                .get("policy/review-threshold")
+                .and_then(Value::as_f64)
+        })
         .collect();
     let threshold = if thresholds.len() == 1 {
         Some(thresholds[0])
@@ -1069,17 +1320,15 @@ fn plan_candidates_in_scope(
         }
     }
     let mut prerequisites: BTreeMap<u64, BTreeSet<u64>> = BTreeMap::new();
-    for (&topic, r) in &s.entities {
-        if r.contains_key("topic/id") {
-            for next in s.refs(topic, "topic/next")? {
-                prerequisites.entry(next).or_default().insert(topic);
-            }
-            for kp in s.refs(topic, "topic/knowledge-points")? {
-                prerequisites
-                    .entry(topic)
-                    .or_default()
-                    .extend(s.refs(kp, "knowledge-point/key-prerequisites")?);
-            }
+    for topic in s.entities.with_attribute("topic/id") {
+        for next in s.refs(topic, "topic/next")? {
+            prerequisites.entry(next).or_default().insert(topic);
+        }
+        for kp in s.refs(topic, "topic/knowledge-points")? {
+            prerequisites
+                .entry(topic)
+                .or_default()
+                .extend(s.refs(kp, "knowledge-point/key-prerequisites")?);
         }
     }
     let support = if selection == StudyScope::Targets {
@@ -1088,13 +1337,20 @@ fn plan_candidates_in_scope(
         BTreeMap::new()
     };
     scope.extend(support.keys().copied());
-    let seen = seen_questions(s, learner)?;
+    let seen = unavailable_questions(s, learner)?;
+    let relearn = crate::retrieval::relearn_topics(s, learner)?;
+    practiced.retain(|topic| !relearn.contains(topic));
     let mut finished = BTreeSet::new();
     let mut active = BTreeMap::new();
     for task in s.refs(learner, "learner/activity")? {
         let status = ident(s, task, "learner-task/status")?;
         if status == "learner-task.status/completed" {
-            finished.insert(s.reference(task, "learner-task/activity")?);
+            let activity = s.reference(task, "learner-task/activity")?;
+            if s.optional_ref(activity, "activity/scope")?
+                .is_none_or(|topic| !relearn.contains(&topic))
+            {
+                finished.insert(activity);
+            }
         } else if matches!(
             status.as_str(),
             "learner-task.status/started" | "learner-task.status/paused"
@@ -1102,10 +1358,10 @@ fn plan_candidates_in_scope(
             active.insert(s.reference(task, "learner-task/activity")?, task);
         }
     }
+    let lifecycle = crate::scheduling::lifecycle(s, learner)?;
     let mut result = vec![];
-    for (&activity, r) in &s.entities {
-        if !r.contains_key("activity/id")
-            || ident(s, activity, "activity/type")? != "activity.type/lesson"
+    for activity in s.entities.with_attribute("activity/id") {
+        if ident(s, activity, "activity/type")? != "activity.type/lesson"
             || finished.contains(&activity)
         {
             continue;
@@ -1113,25 +1369,29 @@ fn plan_candidates_in_scope(
         let Some(topic) = s.optional_ref(activity, "activity/scope")? else {
             continue;
         };
+        if lifecycle.lesson_blocked(s, topic)?
+            || (selection != StudyScope::Queue && !lifecycle.retry_ready(topic))
+        {
+            continue;
+        }
         if active.contains_key(&activity) {
-            if (selection != StudyScope::Queue || scope.contains(&topic))
-                && lesson_steps(s, activity).is_ok()
-                && {
-                    let chain = ordered_presentations(s, active[&activity])?;
-                    if !chain
-                        .iter()
-                        .any(|i| s.entities[i].contains_key("task-item/deferred-step"))
-                    {
-                        true
-                    } else {
-                        let p = position(s, activity, &chain)?;
-                        p.next.is_some()
-                            || p.shortage.is_some()
-                            || p.deferred.is_empty()
-                            || deferred_resume_step(s, activity, &chain)?.is_some()
-                    }
+            // Saved attempts remain resumable when changing modes or removing
+            // their topic from the queue. Scope only limits new lessons.
+            if lesson_steps(s, activity).is_ok() && {
+                let chain = ordered_presentations(s, active[&activity])?;
+                if !chain
+                    .iter()
+                    .any(|i| s.entities[i].contains_key("task-item/deferred-step"))
+                {
+                    true
+                } else {
+                    let p = position(s, activity, &chain)?;
+                    p.next.is_some()
+                        || p.shortage.is_some()
+                        || p.deferred.is_empty()
+                        || deferred_resume_step(s, activity, &chain)?.is_some()
                 }
-            {
+            } {
                 result.push((activity, topic));
             }
             continue;
@@ -1188,17 +1448,10 @@ fn plan_candidates_in_scope(
             // 0..100 each for remaining work and graph proximity, 0..250 for
             // deadline urgency (overdue is capped), and <=1 for course ordering.
             // Ongoing work adds 10000, so it always precedes new lessons.
-            let mut priority = 1.0 / (1.0 + repetitions.get(&topic).copied().unwrap_or(0.0));
-            if target_count > 0 {
-                priority += 1000.0 * target_count as f64 / (1.0 + target_count as f64)
-                    + 100.0 / (1.0 + remaining_topics as f64)
-                    + 100.0 / (1.0 + nearest_target_steps.unwrap_or(0) as f64);
-            }
-            if let Some(due) = due {
-                // Whole hours avoid a priority write on every queue refresh.
-                let days = (due - at).num_hours().max(0) as f64 / 24.0;
-                priority += 250.0 / (1.0 + days);
-            }
+            let mut priority = inventory_priority_score(
+                repetitions.get(&topic).copied().unwrap_or(0.0), target_count,
+                remaining_topics, nearest_target_steps, due, at,
+            );
             let mut reason = if active.contains_key(&activity) {
                 priority += 10000.0;
                 "Continue your lesson".into()
@@ -1246,7 +1499,7 @@ pub fn candidate_diagnostics(s: &EntitySnapshot, learner: u64, course: u64) -> R
             counts.push(json!({"minimum_fresh":minimum_fresh,"exclude_practiced":exclude_practiced,"count":ids.len(),"activities":ids}));
         }
     }
-    let seen = seen_questions(s, learner)?;
+    let seen = unavailable_questions(s, learner)?;
     let mut ready_unlearned = vec![];
     for activity in candidates_with_supply(s, learner, course, 0, true)? {
         let mut kps = vec![];
@@ -1325,58 +1578,64 @@ pub fn grade(s: &EntitySnapshot, question: u64, responses: &BTreeMap<u64, String
     }
     let mut correct = true;
     for field in fields {
-        let submitted = &responses[&field];
-        if submitted.trim().is_empty() {
-            return Err("answer every field before submitting".into());
+        correct &= grade_field(s, question, field, &responses[&field])?;
+    }
+    Ok(correct)
+}
+
+/// Compare one submitted field using the same choice/text/symbolic rules as
+/// question grading. Read projections use this only after feedback is revealed.
+pub fn grade_field(s: &EntitySnapshot, question: u64, field: u64, submitted: &str) -> Result<bool> {
+    if submitted.trim().is_empty() {
+        return Err("answer every field before submitting".into());
+    }
+    if submitted.len() > 4096 {
+        return Err("answer exceeds 4096 bytes".into());
+    }
+    let expected = s.reference(field, "answer-field/correct")?;
+    let canonical = s
+        .entity(expected)?
+        .get("answer/value")
+        .and_then(|value| value.as_str())
+        .ok_or("Canonical answer needs a string value")?;
+    let field_kind = ident(s, field, "answer-field/type")?;
+    if field_kind != "answer-field.type/blank" {
+        let selected: u64 = submitted
+            .parse()
+            .map_err(|_| "selected answer must identify an authored choice")?;
+        if !s.refs(field, "answer-field/choices")?.contains(&selected) {
+            return Err("selected answer does not belong to this field".into());
         }
-        if submitted.len() > 4096 {
-            return Err("answer exceeds 4096 bytes".into());
-        }
-        let expected = s.reference(field, "answer-field/correct")?;
-        let canonical = s.entity(expected)?["answer/value"].as_str().unwrap();
-        let field_kind = ident(s, field, "answer-field/type")?;
-        if field_kind != "answer-field.type/blank" {
-            let selected: u64 = submitted
-                .parse()
-                .map_err(|_| "selected answer must identify an authored choice")?;
-            if !s.refs(field, "answer-field/choices")?.contains(&selected) {
-                return Err("selected answer does not belong to this field".into());
+        Ok(selected == expected)
+    } else {
+        Ok(match ident(s, expected, "answer/type")?.as_str() {
+            "answer.type/math" => {
+                // Form-sensitive prompts must match their authored answer
+                // representation. Numeric equivalence alone cannot verify
+                // rounding, significant figures, or reduced-form work.
+                let prompt = s
+                    .entity(question)?
+                    .get("question/problem")
+                    .and_then(|value| value.as_str())
+                    .ok_or("Question needs a problem statement")?
+                    .to_lowercase();
+                compare_math_in_context(submitted, canonical, &prompt, math_context(s, question)?)?
             }
-            correct &= selected == expected;
-        } else {
-            correct &= match ident(s, expected, "answer/type")?.as_str() {
-                "answer.type/math" => {
-                    // Form-sensitive prompts must match their authored answer
-                    // representation. Numeric equivalence alone cannot verify
-                    // rounding, significant figures, or reduced-form work.
-                    let prompt = s.entity(question)?["question/problem"]
-                        .as_str()
-                        .unwrap()
-                        .to_lowercase();
-                    compare_math_in_context(
-                        submitted,
-                        canonical,
-                        &prompt,
-                        math_context(s, question)?,
-                    )?
-                }
-                "answer.type/text" => {
-                    submitted
+            "answer.type/text" => {
+                submitted
+                    .split_whitespace()
+                    .collect::<Vec<_>>()
+                    .join(" ")
+                    .to_lowercase()
+                    == canonical
                         .split_whitespace()
                         .collect::<Vec<_>>()
                         .join(" ")
                         .to_lowercase()
-                        == canonical
-                            .split_whitespace()
-                            .collect::<Vec<_>>()
-                            .join(" ")
-                            .to_lowercase()
-                }
-                _ => submitted == canonical,
-            };
-        }
+            }
+            _ => submitted == canonical,
+        })
     }
-    Ok(correct)
 }
 
 /// Final lesson XP uses the shared whole-task accuracy rule, including failures.
@@ -1468,23 +1727,32 @@ pub fn compare_math_in_context(
     prompt: &str,
     context: symbolic::Context,
 ) -> Result<bool> {
-    let prompt = prompt.to_lowercase();
-    if [
-        "round",
-        "decimal place",
-        "significant figure",
-        "significant digit",
-        "simplest form",
-        "lowest terms",
-        "reduced fraction",
-    ]
-    .iter()
-    .any(|term| prompt.contains(term))
-    {
+    if requires_answer_form(prompt) {
         Ok(normalize_math(a) == normalize_math(b))
     } else {
         compare_math(a, b, context)
     }
+}
+
+fn requires_answer_form(prompt: &str) -> bool {
+    use std::sync::LazyLock;
+    // An exact-answer instruction is not a rounding instruction. Remove only
+    // the negated rounding phrase, so a separate instruction to round the final
+    // answer or to give a reduced fraction still constrains its representation.
+    static NEGATED_ROUNDING: LazyLock<regex::Regex> = LazyLock::new(|| {
+        regex::Regex::new(
+            r"\b(?:do\s+not|don['’]t|without|avoid|no|not(?:\s+be)?)\s+round(?:ed|ing)?\b",
+        )
+        .expect("valid negated rounding expression")
+    });
+    static REQUIRED_FORM: LazyLock<regex::Regex> = LazyLock::new(|| {
+        regex::Regex::new(
+            r"\b(?:round(?:ed|ing)?|decimal\s+places?|significant\s+(?:figures?|digits?)|simplest\s+form|lowest\s+terms|reduced\s+fraction)\b",
+        )
+        .expect("valid answer form expression")
+    });
+    let prompt = prompt.to_lowercase();
+    REQUIRED_FORM.is_match(&NEGATED_ROUNDING.replace_all(&prompt, ""))
 }
 
 /// Prompt and owning KP wording determine the interpretation of i and indices.
@@ -1694,13 +1962,12 @@ const COMPLETE_PROGRESS: &[&str] = &[
     "progress/practice-mass",
 ];
 
-fn learning_runtime(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>) -> Result<LoadedRuntime> {
-    let policies: Vec<_> = s
-        .entities
-        .iter()
-        .filter(|(_, r)| r.contains_key("policy/id"))
-        .map(|(eid, _)| *eid)
-        .collect();
+pub(crate) fn learning_runtime(
+    s: &EntitySnapshot,
+    learner: u64,
+    at: DateTime<Utc>,
+) -> Result<LoadedRuntime> {
+    let policies = s.entities.with_attribute("policy/id");
     if policies.len() != 1 {
         return Err("learning requires exactly one explicitly configured FIRe policy".into());
     }
@@ -1719,6 +1986,7 @@ fn learning_runtime(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>) -> Resu
     // load_runtime validates, while avoiding two clones of the whole catalog
     // for each submitted answer.
     let runtime_prefixes = [
+        "db/ident",
         "topic/",
         "module/",
         "knowledge-point/",
@@ -1733,16 +2001,9 @@ fn learning_runtime(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>) -> Resu
     ];
     let entities = s
         .entities
-        .iter()
-        .filter(|(_, record)| {
-            record.contains_key("db/ident")
-                || record.keys().any(|key| {
-                    runtime_prefixes
-                        .iter()
-                        .any(|prefix| key.starts_with(prefix))
-                })
-        })
-        .map(|(eid, record)| (*eid, record.clone()))
+        .with_attribute_prefixes(&runtime_prefixes)
+        .into_iter()
+        .map(|eid| (eid, s.entities[&eid].clone()))
         .collect();
     let mut captured = EntitySnapshot::new(entities, s.basis_t)?;
     captured.status_history = s.status_history.clone();
@@ -1759,11 +2020,9 @@ fn learning_runtime(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>) -> Resu
         .unwrap()
         .insert("learner/knowledge-profile".into(), json!(all_progress));
     let mut progress_owners: BTreeMap<u64, Vec<u64>> = BTreeMap::new();
-    for (&owner, record) in &s.entities {
-        if record.contains_key("learner/knowledge-profile") {
-            for progress in s.refs(owner, "learner/knowledge-profile")? {
-                progress_owners.entry(progress).or_default().push(owner);
-            }
+    for owner in s.entities.with_attribute("learner/knowledge-profile") {
+        for progress in s.refs(owner, "learner/knowledge-profile")? {
+            progress_owners.entry(progress).or_default().push(owner);
         }
     }
     for p in all_progress {
@@ -1817,6 +2076,11 @@ pub fn credit(
     event_id: &str,
     at: DateTime<Utc>,
 ) -> Result<Vec<Value>> {
+    if crate::retrieval::supported(s, activity)? {
+        return crate::retrieval::credit(
+            s, learner, activity, question, correct, completed, event_id, at,
+        );
+    }
     if question.is_none() && !completed {
         return Ok(vec![]);
     }
@@ -1881,7 +2145,7 @@ pub fn credit(
 }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
     use crate::core::Policy;
 
@@ -1891,7 +2155,7 @@ mod tests {
     fn put(entities: &mut BTreeMap<u64, serde_json::Map<String, Value>>, eid: u64, value: Value) {
         entities.insert(eid, value.as_object().unwrap().clone());
     }
-    fn fixture() -> EntitySnapshot {
+    pub(crate) fn fixture() -> EntitySnapshot {
         let mut entities = BTreeMap::new();
         for (i, name) in [
             "activity.type/lesson",
@@ -2093,7 +2357,7 @@ mod tests {
             43,
             json!({"question/id":id(43),"question/problem":"Later example","question/worked-solution":"Explanation"}),
         );
-        s = EntitySnapshot::new(s.entities.clone(), s.basis_t).unwrap();
+        s = EntitySnapshot::new(s.entities.clone().into(), s.basis_t).unwrap();
         present(&mut s, 40, "completed");
         present(&mut s, 42, "completed");
         present(&mut s, 100, "correct");
@@ -2355,10 +2619,13 @@ mod tests {
             .get_mut(&1)
             .unwrap()
             .insert("learner/activity".into(), json!([9]));
-        assert!(
+        assert_eq!(
             study_candidates(&s, 1, 5, planning_time())
                 .unwrap()
-                .is_empty()
+                .iter()
+                .map(|p| p.activity)
+                .collect::<Vec<_>>(),
+            [20]
         );
         s.entities
             .get_mut(&1)
@@ -2372,6 +2639,55 @@ mod tests {
             study_candidates(&s, 1, 5, planning_time()).unwrap()[0].reason,
             "Continue your lesson"
         );
+    }
+
+    #[test]
+    fn self_directed_queue_resumes_unselected_attempts_before_new_cross_course_lessons() {
+        for state in ["started", "paused"] {
+            let mut s = planning_fixture(&[]);
+            let selected = planning_lesson(&mut s, 80, &[]);
+            let unselected = planning_lesson(&mut s, 81, &[]);
+            put(
+                &mut s.entities,
+                601,
+                json!({"learner-task/activity":unselected,"learner-task/status":format!("learner-task.status/{state}"),"learner-task/items":[]}),
+            );
+            s.entities.get_mut(&1).unwrap().extend(
+                json!({"learner/activity":[601],"learner/queue":[80]})
+                    .as_object()
+                    .unwrap()
+                    .clone(),
+            );
+            let before = s.entities.clone();
+            let plan = study_candidates(&s, 1, 5, planning_time()).unwrap();
+            assert_eq!(
+                plan.iter().map(|p| p.activity).collect::<Vec<_>>(),
+                [unselected, selected]
+            );
+            assert_eq!(plan[0].reason, "Continue your lesson");
+            assert_eq!(s.entities, before);
+            s.entities
+                .get_mut(&1)
+                .unwrap()
+                .insert("learner/queue".into(), json!([]));
+            assert_eq!(
+                study_candidates(&s, 1, 5, planning_time())
+                    .unwrap()
+                    .iter()
+                    .map(|p| p.activity)
+                    .collect::<Vec<_>>(),
+                [unselected]
+            );
+            s.entities.get_mut(&601).unwrap().insert(
+                "learner-task/status".into(),
+                json!("learner-task.status/completed"),
+            );
+            assert!(
+                study_candidates(&s, 1, 5, planning_time())
+                    .unwrap()
+                    .is_empty()
+            );
+        }
     }
 
     #[test]
@@ -2870,7 +3186,7 @@ mod tests {
             .get_mut(&2)
             .unwrap()
             .insert("policy/question-selection-weights".into(), json!([1200]));
-        s = EntitySnapshot::new(s.entities, s.basis_t).unwrap();
+        s = EntitySnapshot::new(s.entities.into(), s.basis_t).unwrap();
         present(&mut s, 40, "completed");
         present(&mut s, 42, "completed");
         for slot in 0..4 {
@@ -2976,6 +3292,8 @@ mod tests {
     #[test]
     fn grading_checks_all_fields_choice_membership_and_exact_rational_math() {
         let mut s = fixture();
+        assert!(grade_field(&s, 100, 200, "0.5").unwrap());
+        assert!(!grade_field(&s, 100, 200, "0.6").unwrap());
         assert!(grade(&s, 100, &BTreeMap::from([(200, "0.5".into())])).unwrap());
         assert!(
             !grade(
@@ -3011,6 +3329,8 @@ mod tests {
             .unwrap()
             .insert("answer-field/choices".into(), json!([300, 399]));
         assert!(!grade(&s, 100, &BTreeMap::from([(200, "399".into())])).unwrap());
+        assert!(grade_field(&s, 100, 200, "300").unwrap());
+        assert!(!grade_field(&s, 100, 200, "399").unwrap());
         for (a, b) in [
             ("1/2", "\\frac{2}{4}"),
             ("−2^2", "-4"),
@@ -3130,10 +3450,79 @@ mod tests {
     }
 
     #[test]
+    fn exact_answer_instructions_accept_equivalent_blank_entries() {
+        let mut s = fixture();
+        for prompt in [
+            "Find the tangent slope. Do not round the answer.",
+            "Find the arc length without rounding.",
+            "Don't round the answer.",
+            "Don’t round the answer.",
+            "The answer must not be rounded.",
+            "Give an unrounded answer.",
+            "Find the distance around the curve.",
+        ] {
+            s.entities
+                .get_mut(&100)
+                .unwrap()
+                .insert("question/problem".into(), json!(prompt));
+            for (canonical, equivalent, wrong) in [
+                ("1/5", "4/20", "3/20"),
+                (
+                    "\\frac{\\pi^{2}}{2}",
+                    "\\frac{2\\pi^{2}}{4}",
+                    "\\frac{3\\pi^{2}}{4}",
+                ),
+            ] {
+                s.entities
+                    .get_mut(&300)
+                    .unwrap()
+                    .insert("answer/value".into(), json!(canonical));
+                assert_eq!(
+                    grade(&s, 100, &BTreeMap::from([(200, equivalent.into())])),
+                    Ok(true),
+                    "{prompt}: {equivalent} should equal {canonical}"
+                );
+                assert_eq!(
+                    grade(&s, 100, &BTreeMap::from([(200, wrong.into())])),
+                    Ok(false),
+                    "{prompt}: incorrect {wrong}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn negated_rounding_preserves_separate_answer_form_requirements() {
+        for prompt in [
+            "Do not round intermediate values; round the final answer to two decimal places.",
+            "Do not round. Give the answer to three significant figures.",
+            "Give the exact answer without rounding, in lowest terms.",
+            "Give a reduced fraction. Do not round the answer.",
+            "Give your answer in simplest form.",
+        ] {
+            assert_eq!(
+                compare_math_in_context("4/20", "1/5", prompt, symbolic::Context::default()),
+                Ok(false),
+                "{prompt} must still enforce the required answer form"
+            );
+        }
+    }
+
+    #[test]
     fn symbolic_grading_keeps_unknown_comparisons_out_of_learner_results() {
         let mut s = fixture();
         for (canonical, submitted, expected) in [
             ("2\\sqrt{10}", "\\sqrt{40}", true),
+            (
+                "2\\sqrt{1+\\frac{x^2}{9}}",
+                "\\sqrt{4+\\frac{4x^2}{9}}",
+                true,
+            ),
+            (
+                "2\\sqrt{1+\\frac{x^2}{9}}",
+                "-\\sqrt{4+\\frac{4x^2}{9}}",
+                false,
+            ),
             ("sin(x)", "-sin(x)", false),
             ("2e^x", "3e^x", false),
             ("\\le", "<=", true),

@@ -32,7 +32,7 @@ def compact_question(question):
     """Keep all normalized math and field/source evidence exactly once."""
     result = _pick(question, ('math_academy_id', 'source_id', 'sequence_position', 'problem',
         'worked_solution', 'calculator_instructions', 'requires_calculator', 'answer_fields_complete',
-        'proof_feedback', 'result', 'grade', 'source_grade', 'field_grades', 'errors',
+        'proof_feedback', 'result', 'grade', 'source_grade', 'field_grades', 'errors', 'problem_field_keys',
         'html_path', 'source_file', 'source_url', 'solution_evidence', 'screenshot', 'screenshot_path'))
     fields = []
     for index, field in enumerate(answer_fields(question)):

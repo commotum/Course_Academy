@@ -36,6 +36,12 @@ def prepare(record):
 
 
 class RecaptureErrorTests(unittest.TestCase):
+    def test_verified_reread_retires_decorated_phantom_parser_failure(self):
+        error='Unsupported decorated MathML phantom: border style'
+        before=captured(errors=[error],extraction_error_parts={error:['problem']})
+        recovered=merge_question(before,captured(errors=[]))
+        self.assertEqual(recovered['errors'],[])
+        self.assertEqual(recovered['extraction_error_history'][0]['errors'],[error])
     def test_clean_full_read_replaces_legacy_failure_and_preserves_source_history(self):
         before = captured()
         before.pop('extraction_error_parts')
@@ -116,6 +122,7 @@ class RecaptureErrorTests(unittest.TestCase):
         self.assertEqual(merge_question(before, captured(math_academy_id='q-99', errors=[]))['errors'], [MATH_ERROR])
         record = {'key': 'live', 'question': before, 'observed_position': 0, 'submissions': []}
         capture = ActivityCapture.__new__(ActivityCapture)
+        capture.exposures = None
         capture.activity = {'task_id': '1', 'kind': 'diagnostic'}
         capture.state = {'steps': [], 'presentations': {'live': record}}
         capture._save = lambda: None
@@ -241,6 +248,7 @@ class OfflineExtractionScopesTests(unittest.TestCase):
                                 'submissions': []}
                 history.append(item)
         capture = ActivityCapture.__new__(ActivityCapture)
+        capture.exposures = None
         capture.activity = {'task_id': '14114793', 'kind': 'review'}
         capture.state = {'steps': [], 'presentations': records}
         capture._save = lambda: None
@@ -315,6 +323,7 @@ class OfflineExtractionScopesTests(unittest.TestCase):
         record = {'key': 'live', 'question': before, 'observed_position': 0,
                   'submissions': [{'outcome': 'observe_to_confirm', 'responses': [{'key': 'field-1', 'value': '9'}]}]}
         capture = ActivityCapture.__new__(ActivityCapture)
+        capture.exposures = None
         capture.activity = {'task_id': '1', 'kind': 'diagnostic'}
         capture.state = {'steps': [], 'presentations': {'live': record}}
         capture._save = lambda: None

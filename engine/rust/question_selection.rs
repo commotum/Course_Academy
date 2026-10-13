@@ -6,6 +6,14 @@ use std::collections::BTreeSet;
 
 const BANDS: [&str; 3] = ["easy", "moderate", "hard"];
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Phase {
+    Initial,
+    Remedial,
+}
+
+/// Lessons and reviews use their existing question-count phase rules.
+/// Assessments must request a phase explicitly: a long quiz is not remedial.
 pub fn weights(
     s: &EntitySnapshot,
     policy: u64,
@@ -15,7 +23,32 @@ pub fn weights(
     let initial_count = match activity_type {
         "lesson" => 2,
         "review" => 3,
-        _ => return Err("weighted selection supports lessons and reviews".into()),
+        _ => return Err("question-count phases support lessons and reviews; assessments require an explicit phase".into()),
+    };
+    weights_for_phase(
+        s,
+        policy,
+        activity_type,
+        if answered < initial_count {
+            Phase::Initial
+        } else {
+            Phase::Remedial
+        },
+    )
+}
+
+pub fn weights_for_phase(
+    s: &EntitySnapshot,
+    policy: u64,
+    activity_type: &str,
+    phase: Phase,
+) -> Result<Option<[f64; 3]>> {
+    if !matches!(activity_type, "lesson" | "review" | "assessment") {
+        return Err("unsupported question-weight activity type".into());
+    }
+    let selected_phase = match phase {
+        Phase::Initial => "initial",
+        Phase::Remedial => "remedial",
     };
     let mut types = BTreeSet::new();
     let mut selected = None;
@@ -28,7 +61,7 @@ pub fn weights(
         ))?;
         if !matches!(
             kind.as_str(),
-            "activity.type/lesson" | "activity.type/review"
+            "activity.type/lesson" | "activity.type/review" | "activity.type/assessment"
         ) || !types.insert(kind.clone())
         {
             return Err(
@@ -53,14 +86,7 @@ pub fn weights(
                     "each question-weight distribution needs a positive finite total".into(),
                 );
             }
-            if kind == format!("activity.type/{activity_type}")
-                && phase
-                    == if answered < initial_count {
-                        "initial"
-                    } else {
-                        "remedial"
-                    }
-            {
+            if kind == format!("activity.type/{activity_type}") && phase == selected_phase {
                 selected = Some(distribution);
             }
         }
@@ -69,12 +95,7 @@ pub fn weights(
 }
 
 pub fn active_policy(s: &EntitySnapshot) -> Result<u64> {
-    let policies: Vec<_> = s
-        .entities
-        .iter()
-        .filter(|(_, r)| r.contains_key("policy/id"))
-        .map(|(id, _)| *id)
-        .collect();
+    let policies = s.entities.with_attribute("policy/id");
     match policies.as_slice() {
         [policy] => Ok(*policy),
         _ => Err("question selection requires exactly one configured policy".into()),
@@ -251,7 +272,7 @@ mod tests {
     #[test]
     fn phases_and_activity_types_are_independent_and_bad_configuration_fails() {
         let mut s = snapshot();
-        for (id, kind) in [(300, "lesson"), (301, "review")] {
+        for (id, kind) in [(300, "lesson"), (301, "review"), (302, "assessment")] {
             s.entities.insert(
                 id,
                 json!({"db/ident":{"$keyword":format!("activity.type/{kind}")}})
@@ -265,7 +286,7 @@ mod tests {
         }
         s.entities.insert(
             400,
-            json!({"policy/question-selection-weights":[310,311]})
+            json!({"policy/question-selection-weights":[310,311,312]})
                 .as_object()
                 .unwrap()
                 .clone(),
@@ -286,6 +307,48 @@ mod tests {
             weights(&s, 400, "review", 3).unwrap(),
             Some([4.0, 5.0, 0.0])
         );
+        assert_eq!(
+            weights_for_phase(&s, 400, "assessment", Phase::Initial).unwrap(),
+            Some([1.0, 2.0, 3.0])
+        );
+        assert_eq!(
+            weights_for_phase(&s, 400, "assessment", Phase::Remedial).unwrap(),
+            Some([4.0, 5.0, 0.0])
+        );
+        assert!(weights(&s, 400, "assessment", 100).is_err());
+        let good = s.clone();
+        // Even unused assessment remedial weights must be valid.
+        s.entities
+            .get_mut(&312)
+            .unwrap()
+            .remove("question-weights/remedial-hard");
+        assert!(weights(&s, 400, "lesson", 0).is_err());
+        s = good.clone();
+        for band in BANDS {
+            s.entities
+                .get_mut(&312)
+                .unwrap()
+                .insert(format!("question-weights/remedial-{band}"), json!(0.0));
+        }
+        assert!(weights_for_phase(&s, 400, "assessment", Phase::Initial).is_err());
+        s = good.clone();
+        let duplicate = s.entities[&312].clone();
+        s.entities.insert(313, duplicate);
+        s.entities.get_mut(&400).unwrap().insert(
+            "policy/question-selection-weights".into(),
+            json!([310, 311, 312, 313]),
+        );
+        assert!(weights_for_phase(&s, 400, "assessment", Phase::Initial).is_err());
+        s = good.clone();
+        s.entities.insert(
+            401,
+            json!({"policy/question-selection-weights":[312]})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        assert!(weights_for_phase(&s, 400, "assessment", Phase::Initial).is_err());
+        s = good;
         s.entities
             .get_mut(&311)
             .unwrap()

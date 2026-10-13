@@ -6,6 +6,7 @@ import json
 import re
 
 from .policy import answer_fields
+from ..database.evidence import evidence_value, UnsupportedContent
 
 
 def question_key(question):
@@ -41,7 +42,7 @@ def _error_parts(error, record):
     elif error.startswith(('Unsupported math editor:', 'Select frame has no ID:',
                            'Unsupported input type:', 'Choice circle has no observed ID')):
         needed = {'fields'}
-    elif error.startswith(('Unsupported MathML', 'SVG formula has no local title or MathML',
+    elif error.startswith(('Unsupported MathML', 'Unsupported decorated MathML phantom', 'SVG formula has no local title or MathML',
                            'MathJax formula has no assistive MathML', 'Image unavailable:',
                            'Graphic rendering unavailable:', 'Visual asset is not rendered',
                            'Source rendering remained incomplete:', 'Lesson source rendering:')):
@@ -173,6 +174,38 @@ def source_file(question):
     return question.get('solution_evidence') or question.get('source_file') or question.get('html_path') or (evidence.get('html') if isinstance(evidence, dict) else None)
 
 
+def _current_answer_evidence(field, question):
+    """Separate preserved source facts from a usable current field answer."""
+    evidence = field.get('evidence') or {}
+    if not isinstance(evidence, dict) or evidence.get('kind') not in (
+            'ma_answer', 'ma_correct_grade', 'worked_solution', 'radio_image_filename'):
+        return False, False
+    checked = deepcopy(field)
+    try:
+        value = evidence_value(checked, question)
+    except UnsupportedContent:
+        return False, False
+    if not isinstance(value, str):
+        return False, False
+    if value != field.get('correct_value'):
+        if not checked.get('evidence', {}).get('source_choice_quote'):
+            return False, False
+        # Reuse the validator's narrow exact-source-choice repair; never add
+        # a mathematical equivalence or TeX normalization rule here.
+        field['correct_value'] = value
+        field['evidence'] = checked['evidence']
+    # Explicit source keys and correctly bound grades remain source facts even
+    # if MA authored an answer absent from its options. A quoted interpretation
+    # that does not select a current typed choice must allow focused review.
+    if evidence['kind'] != 'worked_solution' or not field.get('choices'):
+        return True, True
+    value_type = field.get('correct_type') or field.get('value_type')
+    matches = {(choice.get('type'), choice.get('value')) for choice in field['choices']
+               if choice.get('value') == value and
+               (not value_type or choice.get('type') == value_type)}
+    return True, len(matches) == 1
+
+
 def finalize_answers(question, presentations, judgment):
     """Authoritative field values need observed grading, direct MA, or quoted solution evidence."""
     result = deepcopy(question)
@@ -183,10 +216,10 @@ def finalize_answers(question, presentations, judgment):
         evidence = field.get('evidence') or field.get('correct_evidence') or {}
         if evidence:
             field['evidence'] = deepcopy(evidence)
-        # A parser-supplied value is retained only with source evidence attached.
-        supported = isinstance(evidence, dict) and evidence.get('kind') in (
-            'ma_answer', 'ma_correct_grade', 'worked_solution', 'radio_image_filename')
-        if not supported:
+        # Recheck a saved quotation against this solution and typed choice set.
+        # Its kind alone must not suppress a fresh focused source judgment.
+        source_fact, supported = _current_answer_evidence(field, question)
+        if not source_fact:
             field.pop('correct_value', None)
             field.pop('correct_option', None)
         for presentation in presentations:
@@ -220,21 +253,42 @@ def finalize_answers(question, presentations, judgment):
                                      'presentation_key': presentation.get('key'), 'grade': 'correct', 'observed_grade': grade}
                 supported = True
         answer = judged.get(key, {})
-        if not supported and answer.get('ma_basis') == 'worked_solution' and answer.get('ma_value') is not None:
-            quote = answer.get('ma_evidence', '').strip()
+        if answer.get('ma_basis') == 'worked_solution' and answer.get('ma_value') is not None:
+            raw_quote = answer.get('ma_evidence', '')
+            quote = raw_quote.strip() if isinstance(raw_quote, str) else ''
             solution = str(question.get('worked_solution') or '')
             if quote and quote in solution:
                 value = answer['ma_value']
                 choices = field.get('choices', [])
+                value_type = answer.get('value_type', field.get('value_type', 'math'))
+                typed_choices = {(c.get('type'), c.get('value')) for c in choices
+                                 if c.get('value') == value and c.get('type') == value_type}
+                # A quotation can be literally present yet describe a premise,
+                # not the answer. A fresh checked interpretation of the current
+                # typed choice may supersede an older solution interpretation.
+                # Direct keys, bound correct grades, and filename facts retain
+                # precedence over the agent's interpretation of prose.
+                current_evidence = field.get('evidence')
+                reviewed_source_error = judgment.get('status') == 'source_error' and answer.get('disagrees') is True
+                reviewed_solution = (isinstance(current_evidence, dict) and current_evidence.get('kind') == 'worked_solution'
+                                     and value_type in ('math', 'text', 'image')
+                                     and (len(typed_choices) == 1 or reviewed_source_error
+                                          or (not choices and field.get('type') == 'blank')))
+                if supported and not reviewed_solution:
+                    continue
                 # Preserve an explicit MA error even when no available choice matches;
                 # preparation validates how that answer can be stored by the schema.
                 field['correct_value'] = value
-                field['value_type'] = answer.get('value_type', field.get('value_type', 'math'))
+                field.pop('correct_option', None)
+                field['value_type'] = value_type
+                if len(typed_choices) == 1:
+                    field['correct_type'] = field['value_type']
                 field['evidence'] = {'kind': 'worked_solution', 'value': value,
                                      'source_file': source_file(question), 'solution_quote': quote,
                                      'matches_worked_solution': True,
-                                     'choice_present': not choices or any(str(c.get('value')) == str(value) for c in choices)}
+                                     'choice_present': not choices or len(typed_choices) == 1}
                 supported = True
+                field.pop('source_answer_status', None)
         if not supported:
             field['source_answer_status'] = 'unavailable'
     result['answer_fields'] = fields
@@ -295,7 +349,12 @@ def capture_gaps(content):
             if question.get('answer_fields_complete') is False:
                 missing.append('answer_fields_complete')
             keys = [str(field.get('key', '')) for field in fields]
-            placeholders = set(re.findall(r'\{\{([^{}]+)\}\}', str(question.get('problem', ''))))
+            # Only the browser's known field-N control tokens are placeholders.
+            # Literal nested sets and TeX groups may also have doubled braces.
+            # Match the same source-control grammar as authoritative_question.
+            placeholders = set(re.findall(r'\{\{(field-\d+)\}\}', str(question.get('problem', ''))))
+            if set(question.get('problem_field_keys', [])) - placeholders:
+                missing.append('answer_field_positions')
             if (any(not key for key in keys) or len(keys) != len(set(keys)) or
                     placeholders - set(keys) or any(not f.get('type') for f in fields)):
                 missing.append('answer_field_structure')
@@ -319,17 +378,20 @@ def capture_gaps(content):
                 seen[str(identity)] = question
             append(question, name, missing, **({'errors': question['errors']} if question.get('errors') else {}))
 
+    kind = content.get('kind') or content.get('task_type')
     for tutorial in content.get('tutorials', []):
         missing = source_gaps(tutorial)
         if not str(tutorial.get('content') or tutorial.get('problem') or '').strip():
             missing.append('content')
-        if not tutorial.get('title'):
+        # Legacy multistep captures store their unnamed shared setup here.
+        # It is source context, not a titled lesson tutorial entity.
+        setup = kind == 'multistep' and not (tutorial.get('source_step') or {}).get('type')
+        if not setup and not tutorial.get('title'):
             missing.append('title')
-        if not tutorial.get('math_academy_id'):
+        if not setup and not tutorial.get('math_academy_id'):
             missing.append('source_tutorial_id')
         append(tutorial, 'tutorials', missing, **({'errors': tutorial['errors']} if tutorial.get('errors') else {}))
 
-    kind = content.get('kind') or content.get('task_type')
     if kind == 'lesson':
         definition = content.get('lesson_definition') or {}
         if not definition:

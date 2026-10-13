@@ -3,6 +3,11 @@ import re
 import time
 from .storage import atomic_json, read_json
 
+# Original fleet enrollments, independent of subsequent course switches.
+# Codes agree with the Math Academy Courses.csv catalog.
+ORIGINAL_COURSE_CODES = {'foundations': 'MF3', 'linear': 'LAL',
+                         'multivariable': 'MVC', 'differential': 'DEQ'}
+
 
 def parse_current_course(html):
     from bs4 import BeautifulSoup
