@@ -1,0 +1,379 @@
+// Pure DOM extraction. No application state, answer keys, or network calls.
+(element, context = {}) => {
+  context ||= {};
+  const errors = [], errorParts = {};
+  let part = 'fields';
+  const fail = message => {
+    errors.push(message);
+    errorParts[message] = [...new Set([...(errorParts[message] || []), part])];
+  };
+  const readPart = (name, read) => {
+    const previous = part;
+    part = name;
+    try { return read(); } finally { part = previous; }
+  };
+  const emptyFormula = n => n?.localName === 'svg' && n.closest('.mjpage, mjx-container, .MathJax') &&
+    n.getAttribute('width') === '0' && n.getAttribute('viewBox')?.trim().split(/\s+/)[2] === '0' &&
+    !n.textContent.trim() && !n.querySelector('path,use,text,line,polyline,polygon,circle,ellipse,rect,image,foreignObject');
+  // MathJax can render part of an SVG's TeX title again as nested MathML.
+  // That MathML describes only the inner fragment (e.g. phantom spacing),
+  // not the surrounding visible fbox. Preserve the whole rendered formula.
+  const mixedTitle = n => {
+    const title = n?.querySelector('title');
+    return title?.querySelector('math') && [...title.childNodes].some(child =>
+      child.nodeType === 3 && child.textContent.trim());
+  };
+  const assets = [...element.querySelectorAll('img, canvas, svg')].filter(n => {
+    if (emptyFormula(n)) return false;
+    if (n.closest('.questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') ||
+        n.parentElement?.closest('svg')) return false;
+    const formula = n.closest('.mjpage, mjx-container, .MathJax');
+    if (!formula) return true;
+    if (n.localName === 'svg' && mixedTitle(n)) return true;
+    // Some server-rendered formulas have only SVG paths, with no local TeX or
+    // assistive MathML. Preserve their visible rendering as a formula image.
+    return n.localName === 'svg' && !formula.querySelector('mjx-assistive-mml math') &&
+      !n.querySelector('title')?.textContent.trim();
+  });
+  const fields = [], fieldNodes = new Map();
+  const rows = [...element.querySelectorAll('.questionWidget-choicesTable tr, tr:has(.choiceLetterCircle)')]
+    .filter(row => row.closest('table')?.matches('.questionWidget-choicesTable') ||
+      [...row.querySelectorAll('.choiceLetterCircle')].some(circle => circle.closest('tr') === row));
+  if (rows.length) fields.push({key:'selection', type:'radio', choices:[]});
+  // History renders blank responses as static boxes, with the overall grade
+  // outside this question node. Keep the observed answer position as a field
+  // instead of folding its displayed value into the source problem.
+  const historyQuestion = element.matches('.question[id^="question-"]');
+  const terminalGrades = ['Correct','Incorrect','Full Credit','Partial Credit','No Credit','Skipped Question'];
+  const finalResult = element.querySelector('.questionWidget-result,.correctAnswerText,.incorrectAnswerText')?.textContent.trim()
+    || (historyQuestion ? context.history_grade : null);
+  const nodes = [...element.querySelectorAll('.matheditor-wrapper-answer, .selectList, input:not([type="hidden"]), textarea, select, [contenteditable="true"]' +
+    (historyQuestion || ['Correct','Incorrect','Skipped Question'].includes(element.querySelector('.questionWidget-result')?.textContent.trim()) ? ', .freeResponseTextbox' : ''))]
+    .filter(n => !n.closest('.questionWidget-explanation, .exampleExplanation, .questionExplanation, .studentAnswer, .studentAnswerHeader') &&
+      !n.parentElement?.closest('.matheditor-wrapper-answer, .selectList, .freeResponseTextbox, [contenteditable="true"]'));
+  for (const n of nodes) {
+    const key = 'field-' + (fields.filter(f => f.key !== 'selection').length + 1);
+    let type = n.matches('.selectList, select') ? 'select' : 'blank';
+    const f = {key, type, dom_id:n.id, tag:n.tagName.toLowerCase(), choices:[],
+      dom_index:nodes.indexOf(n), disabled:!!n.disabled};
+    if (n.matches('.matheditor-wrapper-answer')) {
+      f.tag = 'mathquill';
+      f.dom_index = [...element.querySelectorAll('.matheditor-wrapper-answer')].indexOf(n);
+      f.input_html = n.outerHTML;
+      f.rendered_text = n.querySelector('.mq-root-block')?.textContent || '';
+      if (!n.querySelector('.mq-editable-field .mq-textarea textarea')) fail('Unsupported math editor: ' + n.id);
+    } else if (n.matches('.selectList')) {
+      f.tag = 'custom-select';
+      const graded = terminalGrades.includes(finalResult);
+      const frame = n.querySelector('.selectListFrame') || n.querySelector(
+        graded ? '.selectListFrameDisabled' : '.selectListFrameDisabled.correctSelection, .selectListFrameDisabled.correctSelectionMultipleAttempts');
+      f.frame_id = frame?.id;
+      if (historyQuestion && frame?.matches('.selectListFrameDisabled')) f.disabled = true;
+      if (!f.frame_id) fail('Select frame has no ID: ' + n.id);
+    } else if (n.matches('.freeResponseTextbox')) {
+      f.disabled = true;
+      f.input_html = n.outerHTML;
+      f.rendered_text = n.textContent.trim();
+      f.readonly_history = historyQuestion;
+    } else if (n.matches('input') && !['text','number',''].includes(n.getAttribute('type') || '')) {
+      fail('Unsupported input type: ' + n.getAttribute('type'));
+    }
+    fields.push(f); fieldNodes.set(n, key);
+  }
+  const greek = {'α':'\\alpha ','β':'\\beta ','γ':'\\gamma ','δ':'\\delta ','θ':'\\theta ','λ':'\\lambda ','μ':'\\mu ','π':'\\pi ','ρ':'\\rho ','σ':'\\sigma ','φ':'\\phi ','ω':'\\omega ','∞':'\\infty '};
+  const ops = {'∫':'\\int ','∑':'\\sum ','∏':'\\prod ','⋅':'\\cdot ','×':'\\times ','−':'-', '±':'\\pm ','≤':'\\le ','≥':'\\ge ','≠':'\\ne ','→':'\\to ','∈':'\\in ','∉':'\\notin ','∪':'\\cup ','∩':'\\cap '};
+  // Literal MathML brace glyphs are delimiters, not TeX grouping syntax.
+  const literalFence = value => value === '{' ? '\\{' : value === '}' ? '\\}' : value;
+  let formulaFields = new Map();
+  function m(n) {
+    if (n.nodeType === 3) return greek[n.textContent] || n.textContent;
+    if (n.nodeType !== 1) return '';
+    const t = n.localName.toLowerCase();
+    // The site's rendered math embeds select controls in place of local S-index
+    // markers. The assistive MathML still contains the unselected sample value.
+    // Bind only markers with a matching observed control in this formula.
+    const marker = t === 'mrow' && n.children.length === 3 &&
+      n.children[0].textContent === '{' && n.children[2].textContent === '}' &&
+      n.children[1].localName === 'msub' && n.children[1].children[1]?.textContent.match(/^\(S(\d+)\)$/);
+    if (marker && formulaFields.has(marker[1])) return '{{' + formulaFields.get(marker[1]) + '}}';
+    // Phantom content only reserves space; none of its descendants are visible.
+    if (t === 'mphantom') return '';
+    const cs = [...n.childNodes].map(m);
+    // MathJax may attach a script to just the closing fence glyph. Wrapping
+    // that glyph in braces obscures the fence boundary in extracted LaTeX.
+    const scriptBase = [')',']','}','\\}'].includes(cs[0]) ? cs[0] : '{' + cs[0] + '}';
+    switch(t) {
+      case 'mfrac': {
+        // A zero-rule fraction is a stack, not division. Keep the source's rule.
+        const thickness = n.getAttribute('linethickness')?.trim();
+        const length = /^(\+?(?:\d+(?:\.\d*)?|\.\d+))(em|ex|px|in|cm|mm|pt|pc|%)?$/i.exec(thickness || '');
+        if (length && Number(length[1]) === 0)
+          return '\\genfrac{}{}{0pt}{}{' + cs[0] + '}{' + cs[1] + '}';
+        if (thickness && !length && !/^(thin|medium|thick)$/.test(thickness))
+          fail('Unsupported MathML fraction line thickness: ' + thickness);
+        return '\\frac{' + cs[0] + '}{' + cs[1] + '}';
+      }
+      case 'msup': return scriptBase + '^{' + cs[1] + '}';
+      case 'msub': return scriptBase + '_{' + cs[1] + '}';
+      case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';
+      case 'munder': return '{' + cs[0] + '}_{' + cs[1] + '}';
+      case 'mover': return '\\overset{' + cs[1] + '}{' + cs[0] + '}';
+      case 'munderover': return '{' + cs[0] + '}_{' + cs[1] + '}^{' + cs[2] + '}';
+      case 'msqrt': return '\\sqrt{' + cs.join('') + '}';
+      case 'mroot': return '\\sqrt[' + cs[1] + ']{' + cs[0] + '}';
+      case 'mspace': return '\\,';
+      case 'mtext': return '\\text{' + n.textContent + '}';
+      case 'mo': return ops[n.textContent] || greek[n.textContent] || literalFence(n.textContent);
+      case 'mi':
+        // The local MathML application marker identifies this whole node as
+        // a function name. Keep its boundary when adjacent factors share no space.
+        if (/^[A-Za-z]+$/.test(n.textContent) &&
+            n.nextElementSibling?.localName === 'mo' && n.nextElementSibling.textContent === '\u2061') {
+          return '\\operatorname{' + n.textContent + '}';
+        }
+        return greek[n.textContent] || n.textContent;
+      case 'mtable': return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
+      case 'mtr': case 'mlabeledtr': return cs.join(' & ');
+      case 'menclose':
+        // The two borders group the synthetic-division root; retain both.
+        if (n.getAttribute('notation') === 'bottom right') return '\\enclose{bottom right}{' + cs.join('') + '}';
+        if (n.getAttribute('notation') === null || n.getAttribute('notation') === 'longdiv') return '\\enclose{longdiv}{' + cs.join('') + '}';
+        if (n.getAttribute('notation') === 'left right') return '\\left|' + cs.join('') + '\\right|';
+        if (n.getAttribute('notation') === 'right') return '\\left.' + cs.join('') + '\\right|';
+        if (n.getAttribute('notation') === 'box') return '\\boxed{' + cs.join('') + '}';
+        if (n.getAttribute('notation')?.includes('strike')) return '\\cancel{' + cs.join('') + '}';
+        fail('Unsupported MathML enclosure'); return cs.join('');
+      case 'mfenced': return literalFence(n.getAttribute('open') || '(') + cs.join(n.getAttribute('separators') || ',') + literalFence(n.getAttribute('close') || ')');
+      case 'semantics': return cs[0] || '';
+      case 'annotation': case 'annotation-xml': return '';
+      case 'math': case 'mrow': case 'mn': case 'mtd': case 'mstyle': case 'mpadded': return cs.join('');
+      default: fail('Unsupported MathML node: ' + t); return cs.join('');
+    }
+  }
+  function render(n) {
+    if (!n) return '';
+    // Live proof widgets sometimes concatenate the next prose sentence with
+    // the prompt ("below.From"); history separates the same sentences into
+    // sections. Normalize that prose boundary; MathML is rendered by m().
+    if (n.nodeType === 3) return n.textContent.replace(/([a-z][.!?])(?=[A-Z][a-z]{2,}\b)/g, '$1 ');
+    if (n.nodeType !== 1) return '';
+    const t = n.localName.toLowerCase();
+    if (emptyFormula(n)) return '';
+    if (['script','style','mjx-assistive-mml'].includes(t)) return '';
+    if (n.matches('.stepHeader,.helpButton,[id^="continueButton-"],[id^="submitButton-"]')) return '';
+    if (n.matches('.studentAnswer, .studentAnswerHeader')) return '';
+    if (part === 'problem' && n.matches('.questionWidget-explanation,.exampleExplanation,.questionExplanation,.questionWidget-feedback,.questionWidget-result,.questionWidget-header,.questionHeader,.answerDetails,.questionWidget-choicesTable')) return '';
+    if (fieldNodes.has(n)) return '{{' + fieldNodes.get(n) + '}}';
+    if (assets.includes(n)) return '![](@asset-' + assets.indexOf(n) + '@)';
+    if (t === 'svg' && n.closest('.mjpage, mjx-container, .MathJax')) {
+      const title = n.querySelector('title');
+      const math = title?.querySelector('mjx-assistive-mml math, math');
+      const tex = math ? m(math) : title?.textContent?.trim();
+      if (!tex) fail('SVG formula has no local title or MathML');
+      return n.closest('.mjpage__block') ? '\n\n$$\n' + (tex || '') + '\n$$\n\n' : '$' + (tex || '') + '$';
+    }
+    if (t === 'mjx-container' || t === 'math') {
+      if (t === 'mjx-container' && mixedTitle(n.querySelector('svg')) &&
+          assets.includes(n.querySelector('svg'))) return render(n.querySelector('svg'));
+      const math = t === 'math' ? n : [...n.querySelectorAll('mjx-assistive-mml math')]
+        .find(math => math.closest('.selectList') === n.closest('.selectList'));
+      if (!math && emptyFormula(n.querySelector('svg'))) return '';
+      if (!math && assets.includes(n.querySelector('svg'))) return render(n.querySelector('svg'));
+      if (!math) { fail('MathJax formula has no assistive MathML'); return ''; }
+      const previous = formulaFields;
+      formulaFields = new Map([...fieldNodes].filter(([control]) => n.contains(control))
+        .map(([control,key]) => [control.id.match(/-(\d+)$/)?.[1], key]));
+      const tex = m(math);
+      formulaFields = previous;
+      return n.getAttribute('display') === 'true' ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';
+    }
+    if (t === 'table') {
+      if (n.querySelector('table, [rowspan], [colspan]')) {
+        // Markdown has no cell spans or nested-table ownership. Rebuild only
+        // source structure and safe authored attributes, with rendered content.
+        const escapeHTML = value => String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        const structural = new Set(['table','thead','tbody','tfoot','tr','td','th','caption','colgroup','col']);
+        const attrs = ['rowspan','colspan','span','scope','align','valign','width','height','cellpadding','cellspacing','border','rules','frame','bgcolor'];
+        function tableHTML(node) {
+          if (node.nodeType === 3) return escapeHTML(render(node));
+          if (node.nodeType !== 1) return '';
+          const tag = node.localName.toLowerCase();
+          if (node.matches('.studentAnswer,.studentAnswerHeader,.stepHeader,.helpButton,[id^="continueButton-"],[id^="submitButton-"]')) return '';
+          if (part === 'problem' && node.matches('.questionWidget-explanation,.exampleExplanation,.questionExplanation,.questionWidget-feedback,.questionWidget-result,.questionWidget-header,.questionHeader,.answerDetails,.questionWidget-choicesTable')) return '';
+          if (fieldNodes.has(node)) return render(node);
+          if (assets.includes(node)) return '<img src="@asset-' + assets.indexOf(node) + '@" alt="">';
+          if (['mjx-container','math'].includes(tag) || tag === 'svg' && node.closest('.mjpage, mjx-container, .MathJax')) return render(node);
+          if (['script','style','mjx-assistive-mml'].includes(tag)) return '';
+          const content = () => [...node.childNodes].map(tableHTML).join('');
+          if (structural.has(tag)) {
+            const layout = getComputedStyle(node);
+            if (/grid|flex/.test(layout.display) || node.style?.gridColumn || node.style?.gridRow ||
+                ['absolute','fixed'].includes(layout.position)) {
+              fail('Unsupported table layout style');
+            }
+            const attributes = attrs.filter(name => node.hasAttribute(name)).map(name => {
+              const value = node.getAttribute(name);
+              if (['rowspan','colspan','span'].includes(name) && !/^\d+$/.test(value)) fail('Unsupported table span: ' + name + '=' + value);
+              return ' ' + name + '="' + escapeHTML(value) + '"';
+            });
+            if (!node.hasAttribute('align') && ['left','center','right','justify'].includes(node.style?.textAlign)) attributes.push(' align="' + node.style.textAlign + '"');
+            return '<' + tag + attributes.join('') + '>' + content() + (tag === 'col' ? '' : '</' + tag + '>');
+          }
+          if (tag === 'br') return '<br>';
+          if (['b','strong','i','em','sup','sub','p'].includes(tag)) return '<' + tag + '>' + content() + '</' + tag + '>';
+          if (tag === 'ul' || tag === 'ol') {
+            const attributes = ['type','start','reversed'].filter(name => node.hasAttribute(name))
+              .map(name => ' ' + name + '="' + escapeHTML(node.getAttribute(name)) + '"');
+            if (tag === 'ol' && !node.hasAttribute('type')) {
+              const style = getComputedStyle(node).listStyleType;
+              const type = {'upper-roman':'I','lower-roman':'i','upper-alpha':'A','lower-alpha':'a','decimal':'1'}[style];
+              if (node.matches('.questionStatements') && style === 'decimal' && !node.style.listStyleType) attributes.push(' type="I"');
+              else if (type) attributes.push(' type="' + type + '"');
+              else fail('Unsupported ordered list style: ' + style);
+            }
+            return '<' + tag + attributes.join('') + '>' + content() + '</' + tag + '>';
+          }
+          if (tag === 'li') return '<li' + (node.hasAttribute('value') ? ' value="' + escapeHTML(node.getAttribute('value')) + '"' : '') + '>' + content() + '</li>';
+          return content();
+        }
+        return '\n\n' + tableHTML(n) + '\n\n';
+      }
+      const rows = [...n.querySelectorAll('tr')].filter(row => row.closest('table') === n).map(row => [...row.children]
+        .filter(c => ['td','th'].includes(c.localName)).map(c => text(c)));
+      const width = Math.max(0,...rows.map(r => r.length));
+      if (width) {
+        const lines = rows.map(row => '| ' + row.concat(Array(width-row.length).fill('')).join(' | ') + ' |');
+        lines.splice(1,0,'| ' + Array(width).fill('---').join(' | ') + ' |');
+        return '\n\n' + lines.join('\n') + '\n\n';
+      }
+    }
+    if (t === 'ol') {
+      const items = [...n.children].filter(child => child.localName === 'li');
+      const styles = {'1':'decimal', 'I':'upper-roman', 'i':'lower-roman', 'A':'upper-alpha', 'a':'lower-alpha'};
+      let style = getComputedStyle(n).listStyleType;
+      // Saved question fragments omit app.css. Its authored rule is
+      // ol.questionStatements { list-style-type: upper-roman; } (app.css?v=2).
+      // Preserve that verified class meaning, not an inferred choice label.
+      if (style === 'decimal' && n.matches('ol.questionStatements') && !n.hasAttribute('type') && !n.style.listStyleType) style = 'upper-roman';
+      if (!style) style = styles[n.getAttribute('type')] || 'decimal';
+      const label = value => {
+        if (style === 'none') return '';
+        if (['upper-roman','lower-roman'].includes(style) && value > 0 && value < 4000) {
+          let roman = '', remaining = value;
+          for (const [number, glyph] of [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']]) {
+            while (remaining >= number) { roman += glyph; remaining -= number; }
+          }
+          return style === 'lower-roman' ? roman.toLowerCase() : roman;
+        }
+        if (['upper-alpha','lower-alpha','upper-latin','lower-latin'].includes(style) && value > 0) {
+          let alpha = '', remaining = value;
+          while (remaining > 0) { remaining--; alpha = String.fromCharCode(65 + remaining % 26) + alpha; remaining = Math.floor(remaining / 26); }
+          return style.startsWith('lower') ? alpha.toLowerCase() : alpha;
+        }
+        if (style === 'decimal-leading-zero') return value >= 0 && value < 10 ? '0' + value : String(value);
+        if (['decimal','upper-roman','lower-roman','upper-alpha','lower-alpha','upper-latin','lower-latin'].includes(style)) return String(value);
+        fail('Unsupported ordered list style: ' + style);
+        return '';
+      };
+      const step = n.hasAttribute('reversed') ? -1 : 1;
+      let ordinal = n.hasAttribute('start') ? n.start : step === -1 ? items.length : 1;
+      const lines = [...n.childNodes].map(item => {
+        if (item.nodeType !== 1 || item.localName !== 'li') return render(item).trim();
+        if (item.hasAttribute('value')) ordinal = item.value;
+        const marker = label(ordinal);
+        ordinal += step;
+        const body = [...item.childNodes].map(render).join('').trim();
+        // Escape decimal dots so Markdown cannot silently renumber explicit
+        // li[value] resets. Roman/alpha labels are already literal prose.
+        const prefix = marker ? marker + (/^-?\d+$/.test(marker) ? '\\.' : '.') + ' ' : '';
+        return prefix + body.split('\n').map((line, index) => index && line ? '  ' + line : line).join('\n');
+      }).filter(Boolean);
+      return '\n\n' + lines.join('\n\n') + '\n\n';
+    }
+    const children = [...n.childNodes].map(render).join('');
+    if (t === 'br') return '\n';
+    if (t === 'li') return '- ' + children.trim() + '\n';
+    if (t === 'b' || t === 'strong') return '**' + children + '**';
+    if (t === 'i' || t === 'em') return '*' + children + '*';
+    if (['p','div','ul','ol'].includes(t) || n.matches('.proofSection')) return '\n\n' + children + '\n\n';
+    return children;
+  }
+  const text = n => render(n).replace(/\n{3,}/g,'\n\n').trim();
+  function choice(n, option, dom_id=null) {
+    const value = text(n);
+    const mathOnly = /^\$[^$]+\$$/.test(value);
+    const imageOnly = /^!\[\]\(@asset-\d+@\)$/.test(value);
+    return {option, dom_id, type:mathOnly?'math':imageOnly?'image':'text',
+      value:mathOnly?value.slice(1,-1):imageOnly?value.slice(4,-1):value, html:n.innerHTML};
+  }
+  if (rows.length) fields[0].choices = rows.map(row => {
+    const circle = row.querySelector('.questionWidget-choiceLetterCircle, [id^="questionWidget-choiceLetterCircle-"], .choiceLetterCircle');
+    if (!circle?.id) fail('Choice circle has no observed ID');
+    return choice(row.querySelector('.questionWidget-choiceText, .choiceText'), circle?.textContent.trim(), circle?.id);
+  });
+  for (const [node,key] of fieldNodes) {
+    const f = fields.find(f => f.key === key);
+    if (f.type === 'select') f.choices = [...node.querySelectorAll('option, .selectListOptions > .selectListOption')]
+      .filter(n => n.textContent.trim() && !(n.localName === 'option' && n.disabled))
+      .map((n,i) => choice(n, n.localName === 'option' ? n.value : String(i), n.id || null));
+  }
+  for (const field of fields) {
+    field.choices_complete = ['radio','select'].includes(field.type) && field.choices.length > 0 && errors.length === 0;
+    if (field.tag === 'custom-select') {
+      const frame = [...fieldNodes].find(([,key]) => key === field.key)?.[0]
+        .querySelector('.selectListFrame, .selectListFrameDisabled');
+      if (frame && !frame.querySelector('.selectListSelectedText')) {
+        const selected = choice(frame, null);
+        field.source_selected = {type:selected.type, value:selected.value};
+      }
+      if (frame?.matches('.correctSelection, .correctSelectionMultipleAttempts, .incorrectSelection')) {
+        field.source_result = frame.matches('.incorrectSelection') ? 'Incorrect' : 'Correct';
+        if (field.source_result === 'Correct') field.source_correct = field.source_selected;
+      }
+    }
+  }
+  const prompt = element.querySelector('.exampleQuestion, .questionWidget-text, .questionText') ||
+    (element.matches('.step:not(:has(.question)):not(:has(.questionWidget-text))') ? element : null);
+  const graphic = element.querySelector('.questionWidget-graphic, #questionGraphic, .questionGraphicFrame');
+  const instructions = element.querySelector('.questionWidget-calculatorInstructions, .calculatorInstructions');
+  const solution = element.matches('.questionExplanation') ? element : element.querySelector('.exampleExplanation, .questionWidget-explanation, .questionExplanation');
+  const staged = !!element.querySelector('.proofSection,.questionWidget-healthFrame');
+  const fieldErrors = errors.length;
+  const candidates = [...new Set([graphic, ...element.querySelectorAll('.exampleQuestion,.questionWidget-text,.questionText,.questionWidget-body,.questionBody'),
+    ...(prompt === element ? [element] : [])].filter(Boolean))];
+  const sections = candidates.filter(n => !candidates.some(other => other !== n && other.contains(n)));
+  const problem = readPart('problem', () => sections.map(text).filter(Boolean).join('\n\n'));
+  const problemFieldKeys = [...fieldNodes].filter(([n]) => sections.some(section => section.contains(n))).map(([,key]) => key);
+  const proofSectionsComplete = [...element.querySelectorAll('.proofSection')].every(section => {
+    // A section may inherit a hidden stage wrapper. Inspect only this question,
+    // not the surrounding history accordion whose expansion is handled by UI.
+    for (let node = section; node && element.contains(node); node = node.parentElement) {
+      const style = getComputedStyle(node);
+      if (node.hidden || style.display === 'none' || ['hidden','collapse'].includes(style.visibility)) return false;
+      if (node === element) break;
+    }
+    return true;
+  });
+  const historyProofComplete = !historyQuestion || (proofSectionsComplete && fields.every(f =>
+    f.tag !== 'custom-select' || ['Correct','Incorrect'].includes(f.source_result) ||
+      (finalResult === 'No Credit' && f.disabled && f.frame_id && f.choices.length > 1)));
+  const workedSolution = readPart('solution', () => text(solution));
+  const calculatorInstructions = readPart('problem', () => text(instructions));
+  const parts = [];
+  if (sections.length || instructions) parts.push('problem');
+  if (fields.length) parts.push('fields');
+  if (solution) parts.push('solution');
+  return {dom_id:element.id, name:element.querySelector('.stepName,.questionWidget-title')?.textContent.trim(),
+    problem, worked_solution:workedSolution, calculator_instructions:calculatorInstructions, fields,
+    problem_field_keys:problemFieldKeys,
+    answer_fields_complete:fields.length ? fieldErrors === 0 && (!staged || (terminalGrades.includes(finalResult) && historyProofComplete)) : null,
+    result:element.querySelector('.questionWidget-result, .correctAnswerText, .incorrectAnswerText')?.textContent.trim(),
+    proof_feedback:element.querySelector('.questionWidget-feedback')?.textContent.trim(),
+    html:element.outerHTML, errors:[...new Set(errors)],
+    extraction_parts:parts, extraction_error_parts:errorParts,
+    assets:assets.map((n,index) => ({index, tag:n.localName, html:n.outerHTML,
+      extraction_part:n.closest('.exampleExplanation,.questionWidget-explanation,.questionExplanation') ? 'solution' :
+        n.closest('.questionWidget-choicesTable,.choiceText,.questionWidget-choiceText,.selectList,select') ? 'fields' : 'problem',
+      dom_index:[...element.querySelectorAll(n.localName)].indexOf(n),
+      source_url:n.localName==='img' ? n.currentSrc || n.src : null}))};
+}
