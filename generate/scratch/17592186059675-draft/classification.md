@@ -1,0 +1,15 @@
+# Classification, frozen basis 2275
+
+KP 17592186059675, Finding the Derivative of an Expression With Sine or Cosine Trigonometric Functions. Lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Source/topic/current lesson wrappers are copied byte-for-byte from refresh-2026-10-14. Baseline numeric script and its entire evidence path set are retained; only draft script/directory are owned by this work.
+
+The frozen pool contains 15 records: **10 Math Academy originals** (seven easy, one moderate, two unrated) and **five independently authored inventory** records (one easy, four moderate) created by the prior amplitude generator. The latter are independently authored inventory, with relationship_to_source_templates: positive amplitude transport of q-1900 and q-47985. They are replayed separately and never counted as Math Academy evidence. The canonical example is lesson context, not practice inventory.
+
+Easy original families: q-1847 two trig terms, radio, five choices; q-30991 factored monomial minus cosine plus constant, radio, five choices; q-341383 sine and monomial with rational coefficients, blank RHS; q-47985 cosine plus negative power, radio, five choices. Each radio family has one observed complete bank profile. q-167324, q-167778 and q-166071 have a derivative-answer blank but omit the supplied h; raw-only evidence, no reconstructed source prompt. Their solutions/answers suggest the same -4 sin(x) input and are not counted as distinct usable tasks.
+
+Moderate original q-1900: radio slope query, linear term minus cosine, differentiate then substitute pi/6; one complete five-choice bank. Normalized source replay corrects the source's f-prime(30) label to y-prime(pi/6) and f-prime(x) to y-prime(x). Raw replay retains both errors verbatim. The five prior generated records use the old amplitude template and are exact independent-inventory replay.
+
+Unrated originals q-47906 and q-47908 have no difficulty, correct reference, or worked solution. q-47906 also contains two equivalent incorrect choices. Both are exact raw-only public replay; neither is silently assigned a difficulty, repaired source bank, or inferred solution.
+
+Hard has no original or prior inventory. The independently authored hard family combines four direct additive terms: cosine, sine, a positive monomial and a negative monomial. It uses the exact sine/cosine, sum, constant multiple, and power rules evidenced by e-3631 and q-47985; no chain, product, or quotient rule. Its hard designation is authored, not observed. The four-term workload stays fixed throughout the band, with no instructional progression.
+
+All templates have plot rating **none**. No prompt, answer, solution or lesson asset carries a required mathematical plot. No plot generator is needed. Prerequisite is The Sum and Constant Multiple Rules for Differentiation. The current lesson introduces standard trig derivatives and direct sums, then justifies them with limits. Product rule and higher derivatives are next topics; quotient rule is explicitly future work. Those rules are excluded from this generator.
