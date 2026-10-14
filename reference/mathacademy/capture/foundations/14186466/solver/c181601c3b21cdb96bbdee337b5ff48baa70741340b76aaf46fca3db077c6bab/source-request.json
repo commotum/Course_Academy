@@ -1,0 +1,89 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-345277",
+      "sequence_position": 11,
+      "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14186466/assets/3c08141f91eea5b2d2006926de5239f91630de139fae970147d8267d46429392.png)\n\nConsider the RCL circuit shown above. Given that the current $I(t)$ in the circuit at time $t$ seconds is given by\n\n$$\nI(t)=A{e}^{-2t}+B{e}^{-t}+\\frac{P}{13}\\operatorname{cos}⁡(3t)+\\frac{Q}{13}\\operatorname{sin}⁡(3t),\n$$\n\nwhere $A,$ $B,$ $P,$ and $Q$ are constants, find the value of $P+Q.$\n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+      "worked_solution": "The diagram shows a series RCL circuit with a source electromotive force (EMF) of $20\\operatorname{sin}⁡(3t)\\,\\text{V},$ a resistor of resistance $6\\,Ω,$ a capacitor of capacitance $0.25\\,\\text{F},$ and an inductor of inductance $2\\,\\text{H}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs.\n\n$$\nI=\\frac{dq}{dt}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RCL circuit, there are three voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=6\\,Ω.$ So,\n\n$$\n{V}_{R}=6I.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{C}=\\frac{q}{0.25}=4q.\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=2\\,\\text{H}.$ Hence,\n\n$$\n{V}_{L}=2\\,\\frac{dI}{dt}.\n$$\n\nTherefore, by Kirchhoff's voltage law, these values are related by the equation\n\n$$\n20\\operatorname{sin}⁡(3t)=6I+4q+2\\,\\frac{dI}{dt}.\n$$\n\nDifferentiating with respect to $t,$ the differential equation governing the current in the circuit is\n\n$$\n\\begin{aligned}\\frac{d}{dt}(20\\operatorname{sin}⁡(3t)) & =\\frac{d}{dt}(6I+4q+2\\,\\frac{dI}{dt}) \\\\ 60\\operatorname{cos}⁡(3t) & =6\\,\\frac{dI}{dt}+4I+2\\,\\frac{{d}^{2}I}{d{t}^{2}},\\end{aligned}\n$$\n\nwhich, when substituting in $I=\\frac{dq}{dt},$ gives\n\n$$\n\\frac{{d}^{2}I}{d{t}^{2}}+3\\cdot \\frac{dI}{dt}+2I=30\\operatorname{cos}⁡(3t).\n$$\n\nThe given equation is a second-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution ${I}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{{d}^{2}{I}_{c}}{d{t}^{2}}+3\\cdot \\frac{d{I}_{c}}{dt}+2{I}_{c}=0.\n$$\n\nSolving using an integration technique, such as a trial solution, we obtain the complementary solution\n\n$$\n{I}_{c}(t)=A{e}^{-2t}+B{e}^{-t},\n$$\n\nwhere $A$ and $B$ are constants.\n\n- Next, we find a particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $3t.$ So, we assume that the particular solution is also sinusoidal with argument $3t,$ i.e.,\n\n$$\n{I}_{p}(t)=\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute this, as well as\n\n$$\n\\begin{aligned}\\frac{d{I}_{p}}{dt} & =-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t), \\\\ \\frac{{d}^{2}{I}_{p}}{d{t}^{2}} & =-9\\alpha \\operatorname{cos}⁡(3t)-9\\beta \\operatorname{sin}⁡(3t).\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}(-9\\alpha \\operatorname{cos}⁡(3t)-9\\beta \\operatorname{sin}⁡(3t))+3(-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t))\\,\\,\\, \\\\ +2(\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t)) & =30\\operatorname{cos}⁡(3t) \\\\ (-7\\alpha +9\\beta )\\operatorname{cos}⁡(3t)+(-9\\alpha -7\\beta )\\operatorname{sin}⁡(3t) & =30\\operatorname{cos}⁡(3t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\{\\begin{aligned}-7\\alpha +9\\beta =30\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}⁡(3t)) \\\\ -9\\alpha -7\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}⁡(3t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{21}{13}$ and $\\beta =\\frac{27}{13}.$ Therefore, the particular solution is\n\n$$\n{I}_{p}(t)=-\\frac{21}{13}\\operatorname{cos}⁡(3t)+\\frac{27}{13}\\operatorname{sin}⁡(3t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nI(t)={I}_{c}(t)+{I}_{p}(t)=A{e}^{-2t}+B{e}^{-t}-\\frac{21}{13}\\operatorname{cos}⁡(3t)+\\frac{27}{13}\\operatorname{sin}⁡(3t).\n$$\n\nTherefore, we have $P=-21$ and $Q=27,$ and\n\n$$\nP+Q=-21+27=6.\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14186466/observations/history-q-345277-a40e970ba9a1b76fef03.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14186466",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14186466/observations/history-solution-q-345277-0d1316f091beff2c0f60.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "3"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "-6"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "6"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "9"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "12"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14186466/assets/3c08141f91eea5b2d2006926de5239f91630de139fae970147d8267d46429392.png",
+          "sha256": "3c08141f91eea5b2d2006926de5239f91630de139fae970147d8267d46429392",
+          "source_url": "https://mathacademy.com/graphics/q-345277",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q345277",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "3",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "The diagram shows a series RCL circuit with a source electromotive force (EMF) of $20\\operatorname{sin}⁡(3t)\\,\\text{V},$ a resistor of resistance $6\\,Ω,$ a capacitor of capacitance $0.25\\,\\text{F},$ and an inductor of inductance $2\\,\\text{H}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs.\n\n$$\nI=\\frac{dq}{dt}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RCL circuit, there are three voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=6\\,Ω.$ So,\n\n$$\n{V}_{R}=6I.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{C}=\\frac{q}{0.25}=4q.\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=2\\,\\text{H}.$ Hence,\n\n$$\n{V}_{L}=2\\,\\frac{dI}{dt}.\n$$\n\nTherefore, by Kirchhoff's voltage law, these values are related by the equation\n\n$$\n20\\operatorname{sin}⁡(3t)=6I+4q+2\\,\\frac{dI}{dt}.\n$$\n\nDifferentiating with respect to $t,$ the differential equation governing the current in the circuit is\n\n$$\n\\begin{aligned}\\frac{d}{dt}(20\\operatorname{sin}⁡(3t)) & =\\frac{d}{dt}(6I+4q+2\\,\\frac{dI}{dt}) \\\\ 60\\operatorname{cos}⁡(3t) & =6\\,\\frac{dI}{dt}+4I+2\\,\\frac{{d}^{2}I}{d{t}^{2}},\\end{aligned}\n$$\n\nwhich, when substituting in $I=\\frac{dq}{dt},$ gives\n\n$$\n\\frac{{d}^{2}I}{d{t}^{2}}+3\\cdot \\frac{dI}{dt}+2I=30\\operatorname{cos}⁡(3t).\n$$\n\nThe given equation is a second-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution ${I}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{{d}^{2}{I}_{c}}{d{t}^{2}}+3\\cdot \\frac{d{I}_{c}}{dt}+2{I}_{c}=0.\n$$\n\nSolving using an integration technique, such as a trial solution, we obtain the complementary solution\n\n$$\n{I}_{c}(t)=A{e}^{-2t}+B{e}^{-t},\n$$\n\nwhere $A$ and $B$ are constants.\n\n- Next, we find a particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $3t.$ So, we assume that the particular solution is also sinusoidal with argument $3t,$ i.e.,\n\n$$\n{I}_{p}(t)=\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute this, as well as\n\n$$\n\\begin{aligned}\\frac{d{I}_{p}}{dt} & =-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t), \\\\ \\frac{{d}^{2}{I}_{p}}{d{t}^{2}} & =-9\\alpha \\operatorname{cos}⁡(3t)-9\\beta \\operatorname{sin}⁡(3t).\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}(-9\\alpha \\operatorname{cos}⁡(3t)-9\\beta \\operatorname{sin}⁡(3t))+3(-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t))\\,\\,\\, \\\\ +2(\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t)) & =30\\operatorname{cos}⁡(3t) \\\\ (-7\\alpha +9\\beta )\\operatorname{cos}⁡(3t)+(-9\\alpha -7\\beta )\\operatorname{sin}⁡(3t) & =30\\operatorname{cos}⁡(3t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\{\\begin{aligned}-7\\alpha +9\\beta =30\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}⁡(3t)) \\\\ -9\\alpha -7\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}⁡(3t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{21}{13}$ and $\\beta =\\frac{27}{13}.$ Therefore, the particular solution is\n\n$$\n{I}_{p}(t)=-\\frac{21}{13}\\operatorname{cos}⁡(3t)+\\frac{27}{13}\\operatorname{sin}⁡(3t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nI(t)={I}_{c}(t)+{I}_{p}(t)=A{e}^{-2t}+B{e}^{-t}-\\frac{21}{13}\\operatorname{cos}⁡(3t)+\\frac{27}{13}\\operatorname{sin}⁡(3t).\n$$\n\nTherefore, we have $P=-21$ and $Q=27,$ and\n\n$$\nP+Q=-21+27=6.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14186466/observations/step-q345277-4695ae440f77764ae4c8.html"
+        }
+      }
+    ]
+  }
+}
