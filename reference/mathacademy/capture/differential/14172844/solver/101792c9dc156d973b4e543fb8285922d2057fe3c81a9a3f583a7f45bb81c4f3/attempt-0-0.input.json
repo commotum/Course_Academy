@@ -1,0 +1,46 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "e-12664",
+      "problem": "Find the minimum value of $Q(\\mathbf{x})=16x_1^2+16x_1x_2+x_2^2$ given that $16x_1^2 + x_2^2=16,$ and find the vector $\\mathbf{x}$ at which the minimum is obtained.",
+      "worked_solution": "First, we write down the matrix of our quadratic form:\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/assets/ef4c1994a6c3980934ab8b95a92be32293c434fa84a0ffb70dc82cf3198367b2.svg)\n\nNotice that we can write the constraint equation as follows:\n\n$$\n\\dfrac{x_1^2}{1^2}+\\dfrac{x_2^2}{4^2}=1\n$$\n\nThis is an ellipse with semiaxes $a=1$ (along the $x_1$-axis) and $b=4$ (along the $x_2$-axis). \n\nIf we introduce new variables\n\n$\\qquad$ $y_1={x_1} \\quad$ and $\\quad y_2 = \\dfrac{x_2}{4},$\n\nthe equation of the ellipse will transform into $y_1^2+y_2^2 = 1,$ or $\\|\\mathbf{y}\\|=1.$\n\nSo, introducing a change-of-coordinates matrix \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/assets/dfa724469e02e9851ec5dc895fe7dda810836745d3a1781a8c60f01d09fbd32b.svg) \n\nwe obtain that $\\mathbf{x} = P \\mathbf{y}.$ Substituting this into the expression of the quadratic form, we get\n\n$$\nQ(\\mathbf{x}) = \\mathbf{x}^T \\! A \\mathbf{x} = (P\\mathbf{y})^T A \\, (P\\mathbf{y}) = \\mathbf{y}^T \\! (P^TAP) \\mathbf{y}= Q'(\\mathbf{y}).\n$$\n\nAs a result, since $P^T=P,$ the matrix of our quadratic form in new coordinates is \n\n$$\n\\begin{aligned}B & ={P}^{T}\\,AP \\\\  & =PAP \\\\  & =[\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}][\\begin{aligned}16 & 8 \\\\ 8 & 1\\end{aligned}][\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}16 & 8 \\\\ 32 & 4\\end{aligned}][\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}16 & 32 \\\\ 32 & 16\\end{aligned}].\\end{aligned}\n$$\n\n \n\nNow, we minimise $Q'(\\mathbf{y})$ when $\\| \\mathbf{y} \\|=1,$ as usual. Calculating the eigenvalues $B,$ we obtain the following:\n\n$$\n\\begin{aligned}|B-\\lambda I| & =0 \\\\ |\\begin{aligned}16-\\lambda  & 32 \\\\ 32 & 16-\\lambda \\end{aligned}| & =0 \\\\ (16-\\lambda )(16-\\lambda )-1\\,024 & =0 \\\\ {\\lambda }^{2}-32\\lambda -768 & =0 \\\\ (\\lambda -48)(\\lambda +16) & =0 \\\\ \\lambda  & =48,\\,-16\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\min \\{ Q'(\\mathbf{y}) \\: | \\: \\| \\mathbf{y} \\|=1 \\} = \\lambda_{\\textrm{min}} = -16.\n$$\n\nNext, we need the unit eigenvector that corresponds to the eigenvalue $\\lambda_{\\textrm{min}}=-16{:}$\n\n$$\n\\begin{aligned}B-(-16I) & =[\\begin{aligned}16 & 32 \\\\ 32 & 16\\end{aligned}]+16[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}32 & 32 \\\\ 32 & 32\\end{aligned}]\\end{aligned}\n$$\n\nSeeking a non-zero solution of $(B-(-16I))\\mathbf{y}=\\mathbf{0}$ gives the eigenvector ![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/assets/49d16ecc1b8c785d665bd961f24f5627f18fceec2a74dee5b2b1f4c39f2864a8.svg) Dividing $\\mathbf{v}$ by its norm $\\| \\mathbf{v} \\| = \\sqrt{2},$ we get \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/assets/18d7c92aca6dc096a79cf0ae8ea6ef99e058da58481689af353f430e726b69a5.svg) \n\nFinally, we map this vector back to the initial coordinate  system using the change-of-coordinates matrix:\n\n$$\n\\begin{aligned}{x}_{\\text{min}} & =P{u}_{\\text{min}} \\\\  & =[\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}]\\cdot \\frac{1}{\\sqrt{2}}[\\begin{aligned}-1 \\\\ 1\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{2}}[\\begin{aligned}-1 \\\\ 4\\end{aligned}]\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/observations/lesson-step-45757-df7631b1ff960da51265.html",
+      "source_url": "https://mathacademy.com/topics/4238",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/observations/lesson-step-45757-df7631b1ff960da51265.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/assets/ef4c1994a6c3980934ab8b95a92be32293c434fa84a0ffb70dc82cf3198367b2.svg",
+          "sha256": "ef4c1994a6c3980934ab8b95a92be32293c434fa84a0ffb70dc82cf3198367b2",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/assets/dfa724469e02e9851ec5dc895fe7dda810836745d3a1781a8c60f01d09fbd32b.svg",
+          "sha256": "dfa724469e02e9851ec5dc895fe7dda810836745d3a1781a8c60f01d09fbd32b",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/assets/49d16ecc1b8c785d665bd961f24f5627f18fceec2a74dee5b2b1f4c39f2864a8.svg",
+          "sha256": "49d16ecc1b8c785d665bd961f24f5627f18fceec2a74dee5b2b1f4c39f2864a8",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 3,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14172844/assets/18d7c92aca6dc096a79cf0ae8ea6ef99e058da58481689af353f430e726b69a5.svg",
+          "sha256": "18d7c92aca6dc096a79cf0ae8ea6ef99e058da58481689af353f430e726b69a5",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  },
+  "session_id": "01a135e4-cd0d-7c60-8f25-e773be7e892a",
+  "previous_failures": []
+}
