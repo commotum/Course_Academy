@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-80481",
+      "sequence_position": 19,
+      "problem": "Find matrices $P$ and $D$ such that $PD{P}^{-1}=B,$ where $D$ is a diagonal matrix and $B=[\\begin{aligned}1 & 2 \\\\ -1 & -2\\end{aligned}].$",
+      "worked_solution": "We apply the diagonalization algorithm.\n\n**Step 1.** We need to find the eigenvalues of the matrix $B$ using its characteristic equation $det(B-\\lambda I)=0:$\n\n$$\n\\begin{aligned}|\\begin{aligned}1-\\lambda  & 2 \\\\ -1 & -2-\\lambda \\end{aligned}| & =0 \\\\ (1-\\lambda )(-2-\\lambda )-2\\cdot (-1) & =0 \\\\ {\\lambda }^{2}+\\lambda  & =0 \\\\ \\lambda (\\lambda +1) & =0\\end{aligned}\n$$\n\nSo, the eigenvalues of $B$ are ${\\lambda }_{1}=0$ and ${\\lambda }_{2}=-1.$ \n\n**Step 2.** Now, we need to find an eigenvector basis of $B.$\n\n- For ${\\lambda }_{1}=0,$ we have\n\n$$\n\\begin{aligned}B-0I & =[\\begin{aligned}1 & 2 \\\\ -1 & -2\\end{aligned}]-0[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}1 & 2 \\\\ -1 & -2\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & 2 & 0 \\\\ -1 & -2 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-2{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-2{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=-1,$ we get the eigenvector ${v}_{1}=[\\begin{aligned}2 \\\\ -1\\end{aligned}].$\n\n- For ${\\lambda }_{2}=-1,$ we have\n\n$$\n\\begin{aligned}B-(-1)I & =[\\begin{aligned}1 & 2 \\\\ -1 & -2\\end{aligned}]-(-1)[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}2 & 2 \\\\ -1 & -1\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}2 & 2 & 0 \\\\ -1 & -1 & 0\\end{aligned}] & {R}_{2} & ={R}_{2}+(\\frac{1}{2}){R}_{1} \\\\  & ∼[\\begin{aligned}2 & 2 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=-1,$ we get the eigenvector ${v}_{2}=[\\begin{aligned}1 \\\\ -1\\end{aligned}].$\n\n**Step 3.** We construct the diagonal matrix $D$ and the invertible matrix $P$ as follows:\n\n$$\nD=[\\begin{aligned}0 & 0 \\\\ 0 & -1\\end{aligned}],\\,P=[\\begin{aligned}2 & 1 \\\\ -1 & -1\\end{aligned}]\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14152180/observations/history-q-80481-be2a174bf5fd1c9d878a.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14152180",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14152180/observations/history-solution-q-80481-9e8d4c5329f1eccbe24a.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$D=[\\begin{aligned}2 & 0 \\\\ 0 & -1\\end{aligned}]$ and\n$P=[\\begin{aligned}2 & 1 \\\\ -1 & 1\\end{aligned}]$"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "$D=[\\begin{aligned}0 & 0 \\\\ 0 & -1\\end{aligned}]$ and\n$P=[\\begin{aligned}2 & 1 \\\\ -1 & -1\\end{aligned}]$"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & -1\\end{aligned}]$ and\n$P=[\\begin{aligned}2 & 1 \\\\ -1 & -1\\end{aligned}]$"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "$D=[\\begin{aligned}0 & 0 \\\\ 0 & 1\\end{aligned}]$ and\n$P=[\\begin{aligned}-2 & 3 \\\\ -1 & -1\\end{aligned}]$"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "$D=[\\begin{aligned}0 & 0 \\\\ 0 & -1\\end{aligned}]$ and\n$P=[\\begin{aligned}2 & 0 \\\\ -1 & -1\\end{aligned}]$"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q80481",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "$D=[\\begin{aligned}2 & 0 \\\\ 0 & -1\\end{aligned}]$ and\n$P=[\\begin{aligned}2 & 1 \\\\ -1 & 1\\end{aligned}]$",
+                "option": "a",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "We apply the diagonalization algorithm.\n\n**Step 1.** We need to find the eigenvalues of the matrix $B$ using its characteristic equation $det(B-\\lambda I)=0:$\n\n$$\n\\begin{aligned}|\\begin{aligned}1-\\lambda  & 2 \\\\ -1 & -2-\\lambda \\end{aligned}| & =0 \\\\ (1-\\lambda )(-2-\\lambda )-2\\cdot (-1) & =0 \\\\ {\\lambda }^{2}+\\lambda  & =0 \\\\ \\lambda (\\lambda +1) & =0\\end{aligned}\n$$\n\nSo, the eigenvalues of $B$ are ${\\lambda }_{1}=0$ and ${\\lambda }_{2}=-1.$ \n\n**Step 2.** Now, we need to find an eigenvector basis of $B.$\n\n- For ${\\lambda }_{1}=0,$ we have\n\n$$\n\\begin{aligned}B-0I & =[\\begin{aligned}1 & 2 \\\\ -1 & -2\\end{aligned}]-0[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}1 & 2 \\\\ -1 & -2\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & 2 & 0 \\\\ -1 & -2 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-2{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-2{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=-1,$ we get the eigenvector ${v}_{1}=[\\begin{aligned}2 \\\\ -1\\end{aligned}].$\n\n- For ${\\lambda }_{2}=-1,$ we have\n\n$$\n\\begin{aligned}B-(-1)I & =[\\begin{aligned}1 & 2 \\\\ -1 & -2\\end{aligned}]-(-1)[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}2 & 2 \\\\ -1 & -1\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}2 & 2 & 0 \\\\ -1 & -1 & 0\\end{aligned}] & {R}_{2} & ={R}_{2}+(\\frac{1}{2}){R}_{1} \\\\  & ∼[\\begin{aligned}2 & 2 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=-1,$ we get the eigenvector ${v}_{2}=[\\begin{aligned}1 \\\\ -1\\end{aligned}].$\n\n**Step 3.** We construct the diagonal matrix $D$ and the invertible matrix $P$ as follows:\n\n$$\nD=[\\begin{aligned}0 & 0 \\\\ 0 & -1\\end{aligned}],\\,P=[\\begin{aligned}2 & 1 \\\\ -1 & -1\\end{aligned}]\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14152180/observations/step-q80481-dbe17a5a5f9ab4ea9953.html"
+        }
+      }
+    ]
+  }
+}
