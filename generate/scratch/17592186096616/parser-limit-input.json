@@ -1,0 +1,58 @@
+[
+  {
+    "label": "Euler scientific tokenization demonstration",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186096616,
+        "id": "cef7fc21-23f4-5d6a-a208-9963ef23c784",
+        "title": "Calculating the Slope of the Tangent Line of a Logarithmic Function at a Point"
+      },
+      "question": {
+        ":question/id": "b5648562-405a-5800-af99-c18fcada8995",
+        ":question/problem": "Given that $y=8e^x+4\\ln x$, find the slope of the tangent at $x=1$.\n\n{{field-1}}",
+        ":question/worked-solution": "The derivative is $\\frac{\\mathrm{d}y}{\\mathrm{d}x}=8e^x+\\frac{4}{x}$. At $x=1$, the slope is $8\\cdot e+4$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c9899934-b08d-57a1-8b53-a67d74d2bac9",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "47478b14-72f6-595c-8958-e21f5852c9b3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "8\\cdot e+4"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "47478b14-72f6-595c-8958-e21f5852c9b3"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "template": "parser-limit-fixture",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "purpose": "native parser notation probe; not a generator output or source question"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "8\\cdot e+4",
+        "expected": "accepted",
+        "purpose": "explicit multiplication supported equivalent"
+      },
+      {
+        "submitted": "8e+4",
+        "expected": "rejected",
+        "purpose": "actual engine interprets scalar scientific notation rather than Euler multiplication"
+      },
+      {
+        "submitted": "4+8e",
+        "expected": "accepted",
+        "purpose": "reordered independently equivalent Euler expression"
+      }
+    ]
+  }
+]
