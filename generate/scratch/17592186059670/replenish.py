@@ -185,6 +185,8 @@ def finish(path,gid,verified,inv):
     stock=counts(current,path/'current-inventory',inv['basis'])
     remaining={l:max(0,5-stock['distinct_available'][l]) for l in LEVELS}
     caps=json.loads((HERE/'capabilities.json').read_text());exceptions=caps['capability_exceptions']
+    if (path/'preparation.json').exists():
+        exceptions += json.loads((path/'preparation.json').read_text())['capability_exceptions']
     result={'outcome':'finite-limit' if any(remaining.values()) else 'generated','knowledgePoint':KP,'generator_path':SCRIPT,'generator_id':gid,'generator_registered':True,'lineage':LINEAGE,'verified_commit_basis':verified.get('basis_after'),'new_questions':verified['new_questions'],'new_questions_by_level':verified['by_level'],'supported_levels':list(LEVELS),'observed_levels':list(LEVELS),'authored_levels':[],'unsupported_levels':caps['unsupported_levels'],'unsupported_levels_filled':False,'available_by_level':stock['distinct_available'],'shortage_by_level':dict(remaining,hard=5),'unsupported_shortage_by_level':{'hard':5},'capability_exceptions':exceptions,'inventory_recheck_basis':inv['basis'],'remaining_jobs':[j for j in inv['jobs'] if j['knowledgePoint']==KP],'evidence':[str(p.relative_to(ROOT)) for p in (HERE/'validation.json',HERE/'freeze.json',HERE/'capabilities.json',HERE/'classification.md',HERE/'template-extraction.md',HERE/'review.md',path/'generated.json',path/'preparation.json',path/'transaction.edn',path/'commit-intent.json',path/'preview.edn',path/'commit.edn',path/'verification.json',path/'native-report.json',path/'inventory-after.json',path/'current-inventory/available-counts.json') if p.exists()], 'note':'Created source-bound extrema generator. Eight complete source bank profiles verified; four fieldless sources preserved and excluded. Hard remains explicitly unsupported. Unchanged source graphs reused. Exact retained request and receipt verified under api.lock; no original questions or learner history altered.'}
     save(path/'outcome.json',result);save(JOB.with_suffix('.result'),result)
     print(json.dumps({k:result[k] for k in ('outcome','verified_commit_basis','new_questions','available_by_level','remaining_jobs')}),flush=True)
@@ -206,6 +208,8 @@ def main():
                 finish(path,intent['generator_id'],verified,inventory(path/'inventory-after.json'));return
         inv=inventory(OUT/'inventory-before.json');b=inv['basis']
         assert DB.basis()==b and LINEAGE in DB.command('status')
+        for asset in json.loads((HERE/'assets.json').read_text()):
+            assert sha(Path('/media/jake/SSD/EDB/math')/asset['path']) == asset['sha256']
         path=OUT/('basis-'+str(b));path.mkdir(exist_ok=True)
         kp=read_kp(path,b);assert str(kp[':knowledge-point/id'])==g.KP_UUID
         original=g.SOURCE['record'];current={q[':db/id']:q for q in kp[':knowledge-point/questions']}

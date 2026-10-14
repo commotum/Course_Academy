@@ -1,0 +1,5 @@
+# Corresponding points on transformed curves
+
+Run `.venv/bin/python generate/scratch/17592186059669/validate.py` for source replay, independent printed-mathematics checks, slot variation, corruption controls and the existing native learner grader. Run `.venv/bin/python generate/scratch/17592186059669.py --difficulty moderate --count 5 --seed 42 --format json` for previews; hard is also supported, easy fails explicitly. `--profile`, `--template`, and JSON `--parameters` select a source family or deterministic replay. JSON separates question records from provenance and parameters. Markdown previews show the concrete worked solution and bank.
+
+replenish.py reuses the application Database integration, captures inventory under api.lock, protects the basis in the durable request, previews writer-native specs and verifies readback at the exact committed basis. Only this KP's generator reference and new content can change. Exact intent, EDN, receipts and verification are retained in reference/replenishment/. No source or learner data are edited. Grader binary is reused from the existing package, without modifying it.

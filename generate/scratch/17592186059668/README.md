@@ -1,0 +1,9 @@
+# Finding a point on a transformed curve
+
+Run `.venv/bin/python generate/scratch/17592186059668.py --difficulty moderate --count 5 --seed 20261014 --format json` from the repository root. Add `--template numeric_shift --parameters '{"a":2,"b":5,"h":-3,"k":4}'` for exact replay. `--format markdown` shows the prompt, bank and fixed worked solution. Easy and moderate are supported; hard is excluded.
+
+`source.json`, `classification.md`, `template-extraction.md`, `validation.json` and `review.md` retain the source evidence, recipes, independent mathematical checks, actual learner grading and side-by-side review. Source-free instances are never admitted. All six complete bank profiles replay at original parameters. Missing source fields and the observed source solution typo are documented, with originals preserved.
+
+Run `.venv/bin/python generate/scratch/17592186059668/validate.py` for source replay, parameter/slot boundary checks, independent parsing of rendered mathematics and every aligned solution row, and actual application radio grading. The existing generic `generate/scratch/17592186059711/check-engine` binary is used read-only; no other KP package is edited. It constructs isolated in-memory snapshots and calls `learning::grade_field`; no database access occurs. Dependencies: Python 3.13, SymPy (exact version recorded per instance).
+
+Run `.venv/bin/python generate/scratch/17592186059668/replenish.py` to recheck inventory, validate distinct new instances, prepare an additive transaction, register the stable generator identity, preview with the installed specs, journal the exact guarded request, submit via the existing EDB writer and verify receipt-basis readback under `api.lock`. Saved requests are reconciled before fresh work. No learner records or original questions are modified. Hard's reserve remains explicitly unfilled. All durable evidence stays under this package's `reference/replenishment`.
