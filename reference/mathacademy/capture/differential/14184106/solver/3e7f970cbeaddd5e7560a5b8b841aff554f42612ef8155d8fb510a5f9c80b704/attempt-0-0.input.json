@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-142983",
+      "sequence_position": 12,
+      "problem": "Given that the random variables \n\n$$\n{X}_{1}∼N(2,2),\\,{X}_{2}∼N(1,{3}^{2}),\\,{X}_{3}∼N(3,8)\n$$\n\nare mutually independent and $Y=4{X}_{1}+3{X}_{2}-{X}_{3},$ calculate $P(5<Y<10).$ \n\n*Hint: A table of values of $Φ(z)$ for different values of $z$ is given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.06\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.07\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.08\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.6\\,$</th><td align=\"center\"> $\\,0.2546\\,$ </td><td align=\"center\"> $\\,0.2514\\,$ </td><td align=\"center\"> $\\,0.2483\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.4\\,$</th><td align=\"center\"> $\\,0.3228\\,$ </td><td align=\"center\"> $\\,0.3192\\,$ </td><td align=\"center\"> $\\,0.3156\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.2\\,$</th><td align=\"center\"> $\\,0.3974\\,$ </td><td align=\"center\"> $\\,0.3936\\,$ </td><td align=\"center\"> $\\,0.3897\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.07\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.08\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.09\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.1\\,$</th><td align=\"center\"> $\\,0.5675\\,$ </td><td align=\"center\"> $\\,0.5714\\,$ </td><td align=\"center\"> $\\,0.5753\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.3\\,$</th><td align=\"center\"> $\\,0.6443\\,$ </td><td align=\"center\"> $\\,0.6480\\,$ </td><td align=\"center\"> $\\,0.6517\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.5\\,$</th><td align=\"center\"> $\\,0.7157\\,$ </td><td align=\"center\"> $\\,0.7190\\,$ </td><td align=\"center\"> $\\,0.7224\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Recall that if ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent random variables, where \n\n$$\n{X}_{1}∼N({\\mu }_{1},{\\sigma }_{1}^{2}),\\,{X}_{2}∼N({\\mu }_{2},{\\sigma }_{2}^{2}),\\,{X}_{3}∼N({\\mu }_{3},{\\sigma }_{3}^{2}),\n$$\n\nand ${a}_{1},{a}_{2},{a}_{3}$ are real constants,  then \n\n$$\n\\begin{aligned}Y & ={a}_{1}{X}_{1}+{a}_{2}{X}_{2}+{a}_{3}{X}_{3} \\\\  & ∼N({a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3},\\,{a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2}).\\end{aligned}\n$$\n\nIn our case, we have\n\n$$\n{X}_{1}∼N(2,2),\\,{X}_{2}∼N(1,{3}^{2}),\\,{X}_{3}∼N(3,8),\n$$\n\nand\n\n$$\nY=4{X}_{1}+3{X}_{2}-{X}_{3}.\n$$\n\nSince ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent, we have\n\n$$\n\\begin{aligned}\\text{E}[Y] & ={a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3} \\\\  & =4\\cdot 2+3\\cdot 1+(-1)\\cdot 3 \\\\  & =8, \\\\ \\text{Var}[Y] & ={a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2} \\\\  & ={4}^{2}\\cdot 2+{3}^{2}\\cdot {3}^{2}+(-1)^{2}\\cdot 8 \\\\  & =16\\cdot 2+9\\cdot 9+1\\cdot 8 \\\\  & =121.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}Y∼N(8,121).\\end{aligned}\n$$\n\nWe want to find $P(5<Y<10).$ Thus, we convert $Y$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(5<Y<10) & =P(\\frac{5-8}{\\sqrt{121}}<Z<\\frac{10-8}{\\sqrt{121}}) \\\\  & ≈P(-0.27<Z<0.18) \\\\  & =P(Z<0.18)-P(Z<-0.27) \\\\  & =Φ(0.18)-Φ(-0.27)\\end{aligned}\n$$\n\nUsing the $z$-table, we see that\n\n$$\n\\begin{aligned}Φ(-0.27)≈0.3936,\\,Φ(0.18)≈0.5714.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(5<Y<10) & =Φ(0.18)-Φ(-0.27) \\\\  & ≈0.5714-0.3936 \\\\  & =0.1778.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14184106/observations/history-q-142983-0448cd164b38c0d225d4.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14184106",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14184106/observations/history-solution-q-142983-3f3d5a0551481e3ba281.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.3936"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.5714"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.1078"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.2408"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.1778"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q142983",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.3936",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Recall that if ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent random variables, where \n\n$$\n{X}_{1}∼N({\\mu }_{1},{\\sigma }_{1}^{2}),\\,{X}_{2}∼N({\\mu }_{2},{\\sigma }_{2}^{2}),\\,{X}_{3}∼N({\\mu }_{3},{\\sigma }_{3}^{2}),\n$$\n\nand ${a}_{1},{a}_{2},{a}_{3}$ are real constants,  then \n\n$$\n\\begin{aligned}Y & ={a}_{1}{X}_{1}+{a}_{2}{X}_{2}+{a}_{3}{X}_{3} \\\\  & ∼N({a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3},\\,{a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2}).\\end{aligned}\n$$\n\nIn our case, we have\n\n$$\n{X}_{1}∼N(2,2),\\,{X}_{2}∼N(1,{3}^{2}),\\,{X}_{3}∼N(3,8),\n$$\n\nand\n\n$$\nY=4{X}_{1}+3{X}_{2}-{X}_{3}.\n$$\n\nSince ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent, we have\n\n$$\n\\begin{aligned}\\text{E}[Y] & ={a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3} \\\\  & =4\\cdot 2+3\\cdot 1+(-1)\\cdot 3 \\\\  & =8, \\\\ \\text{Var}[Y] & ={a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2} \\\\  & ={4}^{2}\\cdot 2+{3}^{2}\\cdot {3}^{2}+(-1)^{2}\\cdot 8 \\\\  & =16\\cdot 2+9\\cdot 9+1\\cdot 8 \\\\  & =121.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}Y∼N(8,121).\\end{aligned}\n$$\n\nWe want to find $P(5<Y<10).$ Thus, we convert $Y$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(5<Y<10) & =P(\\frac{5-8}{\\sqrt{121}}<Z<\\frac{10-8}{\\sqrt{121}}) \\\\  & ≈P(-0.27<Z<0.18) \\\\  & =P(Z<0.18)-P(Z<-0.27) \\\\  & =Φ(0.18)-Φ(-0.27)\\end{aligned}\n$$\n\nUsing the $z$-table, we see that\n\n$$\n\\begin{aligned}Φ(-0.27)≈0.3936,\\,Φ(0.18)≈0.5714.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(5<Y<10) & =Φ(0.18)-Φ(-0.27) \\\\  & ≈0.5714-0.3936 \\\\  & =0.1778.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14184106/observations/step-q142983-7dabc017050f01e195c5.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a136af-5ab1-7e72-bd62-a1b320d2d4b1",
+  "previous_failures": []
+}

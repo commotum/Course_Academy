@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-143129",
+      "sequence_position": 15,
+      "problem": "Given that the random variables \n\n$$\n{X}_{1}∼N(7,15),\\,{X}_{2}∼N(-2,5),\\,{X}_{3}∼N(12,16)\n$$\n\nare mutually independent and $Y=-{X}_{1}-{X}_{2}-{X}_{3},$ calculate $P(|Y|<6).$ \n\n*Hint: A table of values of $Φ(z)$ for different values of $z$ is given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.03\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,3.6\\,$</th><td align=\"center\"> $\\,0.9998\\,$ </td><td align=\"center\"> $\\,0.9999\\,$ </td><td align=\"center\"> $\\,0.9999\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,3.7\\,$</th><td align=\"center\"> $\\,0.9999\\,$ </td><td align=\"center\"> $\\,0.9999\\,$ </td><td align=\"center\"> $\\,0.9999\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,3.8\\,$</th><td align=\"center\"> $\\,0.9999\\,$ </td><td align=\"center\"> $\\,0.9999\\,$ </td><td align=\"center\"> $\\,0.9999\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.03\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.8\\,$</th><td align=\"center\"> $\\,0.9649\\,$ </td><td align=\"center\"> $\\,0.9656\\,$ </td><td align=\"center\"> $\\,0.9664\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.9\\,$</th><td align=\"center\"> $\\,0.9719\\,$ </td><td align=\"center\"> $\\,0.9726\\,$ </td><td align=\"center\"> $\\,0.9732\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,2.0\\,$</th><td align=\"center\"> $\\,0.9778\\,$ </td><td align=\"center\"> $\\,0.9783\\,$ </td><td align=\"center\"> $\\,0.9788\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Recall that if ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent random variables, where \n\n$$\n{X}_{1}∼N({\\mu }_{1},{\\sigma }_{1}^{2}),\\,{X}_{2}∼N({\\mu }_{2},{\\sigma }_{2}^{2}),\\,{X}_{3}∼N({\\mu }_{3},{\\sigma }_{3}^{2}),\n$$\n\nand ${a}_{1},{a}_{2},{a}_{3}$ are real constants,  then \n\n$$\n\\begin{aligned}Y & ={a}_{1}{X}_{1}+{a}_{2}{X}_{2}+{a}_{3}{X}_{3} \\\\  & ∼N({a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3},\\,{a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2}).\\end{aligned}\n$$\n\nIn our case, we have\n\n$$\n{X}_{1}∼N(7,15),\\,{X}_{2}∼N(-2,5),\\,{X}_{3}∼N(12,16),\n$$\n\nand\n\n$$\nY=-{X}_{1}-{X}_{2}-{X}_{3}.\n$$\n\nSince ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent, we have\n\n$$\n\\begin{aligned}\\text{E}[Y] & ={a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3} \\\\  & =(-1)\\cdot 7+(-1)\\cdot (-2)+(-1)\\cdot 12 \\\\  & =-17, \\\\ \\text{Var}[Y] & ={a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2} \\\\  & =(-1)^{2}\\cdot 15+(-1)^{2}\\cdot 5+(-1)^{2}\\cdot 16 \\\\  & =15+5+16 \\\\  & =36.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}Y∼N(-17,36).\\end{aligned}\n$$\n\nWe want to find $P(|Y|<6)=P(-6<Y<6).$ Thus, we convert $Y$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(-6<Y<6) & =P(\\frac{-6-(-17)}{\\sqrt{36}}<Z<\\frac{6-(-17)}{\\sqrt{36}}) \\\\  & ≈P(1.83<Z<3.83) \\\\  & =P(Z<3.83)-P(Z<1.83) \\\\  & =Φ(3.83)-Φ(1.83)\\end{aligned}\n$$\n\nUsing the $z$-table, we see that\n\n$$\n\\begin{aligned}Φ(3.83)≈0.9999,\\,Φ(1.83)≈0.9664.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(|Y|<6) & =Φ(3.83)-Φ(1.83) \\\\  & ≈0.9999-0.9664 \\\\  & =0.0335.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14184106/observations/history-q-143129-1cf523367b19b41f600e.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14184106",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14184106/observations/history-solution-q-143129-7cb08bd429c063f9adc3.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.9999"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.9664"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.8723"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.6425"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.0335"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q143129",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.0335",
+                "option": "e",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that if ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent random variables, where \n\n$$\n{X}_{1}∼N({\\mu }_{1},{\\sigma }_{1}^{2}),\\,{X}_{2}∼N({\\mu }_{2},{\\sigma }_{2}^{2}),\\,{X}_{3}∼N({\\mu }_{3},{\\sigma }_{3}^{2}),\n$$\n\nand ${a}_{1},{a}_{2},{a}_{3}$ are real constants,  then \n\n$$\n\\begin{aligned}Y & ={a}_{1}{X}_{1}+{a}_{2}{X}_{2}+{a}_{3}{X}_{3} \\\\  & ∼N({a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3},\\,{a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2}).\\end{aligned}\n$$\n\nIn our case, we have\n\n$$\n{X}_{1}∼N(7,15),\\,{X}_{2}∼N(-2,5),\\,{X}_{3}∼N(12,16),\n$$\n\nand\n\n$$\nY=-{X}_{1}-{X}_{2}-{X}_{3}.\n$$\n\nSince ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent, we have\n\n$$\n\\begin{aligned}\\text{E}[Y] & ={a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3} \\\\  & =(-1)\\cdot 7+(-1)\\cdot (-2)+(-1)\\cdot 12 \\\\  & =-17, \\\\ \\text{Var}[Y] & ={a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2} \\\\  & =(-1)^{2}\\cdot 15+(-1)^{2}\\cdot 5+(-1)^{2}\\cdot 16 \\\\  & =15+5+16 \\\\  & =36.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}Y∼N(-17,36).\\end{aligned}\n$$\n\nWe want to find $P(|Y|<6)=P(-6<Y<6).$ Thus, we convert $Y$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(-6<Y<6) & =P(\\frac{-6-(-17)}{\\sqrt{36}}<Z<\\frac{6-(-17)}{\\sqrt{36}}) \\\\  & ≈P(1.83<Z<3.83) \\\\  & =P(Z<3.83)-P(Z<1.83) \\\\  & =Φ(3.83)-Φ(1.83)\\end{aligned}\n$$\n\nUsing the $z$-table, we see that\n\n$$\n\\begin{aligned}Φ(3.83)≈0.9999,\\,Φ(1.83)≈0.9664.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(|Y|<6) & =Φ(3.83)-Φ(1.83) \\\\  & ≈0.9999-0.9664 \\\\  & =0.0335.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14184106/observations/step-q143129-d779f886893ae3fdf318.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a136af-5ab1-7e72-bd62-a1b320d2d4b1",
+  "previous_failures": []
+}
