@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-95758",
+      "sequence_position": 2,
+      "problem": "It is known that $43%$ of the users of a newspaper's website purchase a digital subscription. Using the normal approximation to the binomial distribution, estimate the probability that in a random sample of $200$ users, more than $80$ but less than $105$ of them purchase a digital subscription. Give your final answer to three decimal places.\n\n*Hint: The data below is taken from the table of values of the cumulative distribution function $Φ(z)$ for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.07\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.08\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.09\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.8\\,$</th><td align=\"center\"> $\\,0.1922\\,$ </td><td align=\"center\"> $\\,0.1894\\,$ </td><td align=\"center\"> $\\,0.1867\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.7\\,$</th><td align=\"center\"> $\\,0.2206\\,$ </td><td align=\"center\"> $\\,0.2177\\,$ </td><td align=\"center\"> $\\,0.2148\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.6\\,$</th><td align=\"center\"> $\\,0.2514\\,$ </td><td align=\"center\"> $\\,0.2483\\,$ </td><td align=\"center\"> $\\,0.2451\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.03\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.04\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,2.5\\,$</th><td align=\"center\"> $\\,0.9941\\,$ </td><td align=\"center\"> $\\,0.9943\\,$ </td><td align=\"center\"> $\\,0.9945\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,2.6\\,$</th><td align=\"center\"> $\\,0.9956\\,$ </td><td align=\"center\"> $\\,0.9957\\,$ </td><td align=\"center\"> $\\,0.9959\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,2.7\\,$</th><td align=\"center\"> $\\,0.9967\\,$ </td><td align=\"center\"> $\\,0.9968\\,$ </td><td align=\"center\"> $\\,0.9969\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Given a binomial random variable $X∼B(n,p),$ if \n\n- $np>5,$ and\n\n- $n(1-p)>5,$\n\nwe can approximate $X$ as a normal random variable $Y$ with mean $\\mu =np$ and variance ${\\sigma }^{2}=np(1-p),$ that is, \n\n$$\nY∼N(np,np(1-p)).\n$$\n\nHere, we have $n=200$ and $p=0.43.$ Therefore, \n\n$$\n\\begin{aligned}np & =200\\cdot 0.43 \\\\  & =86 \\\\  & >5\\,✓ \\\\ n(1-p) & =200\\cdot (1-0.43) \\\\  & =114 \\\\  & >5.\\,✓\\end{aligned}\n$$\n\nSo, we can approximate our binomial random variable $X$ with a normal random variable $Y$ with mean\n\n$$\n\\mu =np=(200)(0.43)=86\n$$\n\nand variance\n\n$$\n{\\sigma }^{2}=np(1-p)=(200)(0.43)(1-0.43)=49.02.\n$$\n\nThat is, we can approximate $X$ by $Y∼N(86,49.02).$\n\nNow, we can estimate the desired probability $P(80<X<105).$ Using a continuity correction, we have\n\n$$\nP(80<X<105)=P(81\\le X\\le 104)≈P(80.5\\le Y\\le 104.5).\n$$\n\nTo compute this probability, we transform to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(80.5\\le Y<104.5) & =P(\\frac{80.5-86}{\\sqrt{49.02}}\\le Z\\le \\frac{104.5-86}{\\sqrt{49.02}}) \\\\  & ≈P(-0.79\\le Z\\le 2.64) \\\\  & =P(Z\\le 2.64)-P(Z<-0.79) \\\\  & =P(Z\\le 2.64)-P(Z\\le -0.79) \\\\  & =Φ(2.64)-Φ(-0.79) \\\\  & =0.9959-0.2148 \\\\  & =0.7811\\end{aligned}\n$$\n\nTherefore,\n\n$$\nP(80<X<105)≈0.781.\n$$\n\nNote: Using a software package for the approximation gives a probability of\n$0.7798.$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14193205/observations/history-q-95758-05bdc6123d3ca79e0181.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14193205",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14193205/observations/history-solution-q-95758-f7ed43601714f53aca07.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.775"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.789"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.792"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.781"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.693"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q95758",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.775",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Given a binomial random variable $X∼B(n,p),$ if \n\n- $np>5,$ and\n\n- $n(1-p)>5,$\n\nwe can approximate $X$ as a normal random variable $Y$ with mean $\\mu =np$ and variance ${\\sigma }^{2}=np(1-p),$ that is, \n\n$$\nY∼N(np,np(1-p)).\n$$\n\nHere, we have $n=200$ and $p=0.43.$ Therefore, \n\n$$\n\\begin{aligned}np & =200\\cdot 0.43 \\\\  & =86 \\\\  & >5\\,✓ \\\\ n(1-p) & =200\\cdot (1-0.43) \\\\  & =114 \\\\  & >5.\\,✓\\end{aligned}\n$$\n\nSo, we can approximate our binomial random variable $X$ with a normal random variable $Y$ with mean\n\n$$\n\\mu =np=(200)(0.43)=86\n$$\n\nand variance\n\n$$\n{\\sigma }^{2}=np(1-p)=(200)(0.43)(1-0.43)=49.02.\n$$\n\nThat is, we can approximate $X$ by $Y∼N(86,49.02).$\n\nNow, we can estimate the desired probability $P(80<X<105).$ Using a continuity correction, we have\n\n$$\nP(80<X<105)=P(81\\le X\\le 104)≈P(80.5\\le Y\\le 104.5).\n$$\n\nTo compute this probability, we transform to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(80.5\\le Y<104.5) & =P(\\frac{80.5-86}{\\sqrt{49.02}}\\le Z\\le \\frac{104.5-86}{\\sqrt{49.02}}) \\\\  & ≈P(-0.79\\le Z\\le 2.64) \\\\  & =P(Z\\le 2.64)-P(Z<-0.79) \\\\  & =P(Z\\le 2.64)-P(Z\\le -0.79) \\\\  & =Φ(2.64)-Φ(-0.79) \\\\  & =0.9959-0.2148 \\\\  & =0.7811\\end{aligned}\n$$\n\nTherefore,\n\n$$\nP(80<X<105)≈0.781.\n$$\n\nNote: Using a software package for the approximation gives a probability of\n$0.7798.$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14193205/observations/step-q95758-18cbde36902d6bf86945.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a1382a-2340-74e3-87b2-cc545de702a6",
+  "previous_failures": []
+}
