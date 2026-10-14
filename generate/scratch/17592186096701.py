@@ -4,11 +4,11 @@
 Observed profiles replay all 14 sources via complete math-slot masks and explicit
 option-to-target ratios. Ratios record banks but do not claim recovered errors.
 Normal authored banks use missing normalization, reciprocal, sign and endpoint
-errors. Hard is authored: construct a positive fractional oblique known vector,
-read its endpoint, subtract horizontally, and normalize a fractional residual.
+errors. Easy and moderate are supported. The previous hard proposal is excluded
+from production because it added coordinate and arithmetic solution stages.
 The next direction-reversal KP is excluded: both combination coefficients >0.
 Private Matplotlib renderer uses read-only cached Python3.10 dependencies.
-No registration, database writes, or asset pruning. See private README.md.
+Generator itself performs no database writes. See README.md and capabilities.json.
 """
 from pathlib import Path
 import argparse,hashlib,json,random,uuid,subprocess,tempfile,os,math
@@ -16,7 +16,9 @@ import sympy as sp
 KP_ID=17592186096701
 KP_UUID='2fbb8f19-f35a-59c4-9b77-8f6c3542ef28'
 TITLE='Finding a Scalar Factor in a Linear Combination'
-VERSION='positive-scalar-1'
+VERSION='positive-scalar-2'
+GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
+SUPPORTED_LEVELS=('easy','moderate')
 HERE=Path(__file__).with_suffix('');PROFILES={p['source_id']:p for p in json.loads((HERE/'profiles.json').read_text())}
 TEMPLATES={'known_unit':'easy','known_multiple':'moderate','fractional_known':'hard'}
 
@@ -106,6 +108,7 @@ def default_masks(p,field_type,level):
  return pm,sm
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: hard proposal added coordinate and arithmetic solution stages absent from source backbone; see capabilities.json')
  rng=random.Random(seed);old=PROFILES.get(profile)
  if profile and not old and profile!='authored_operations':raise ValueError('Unknown complete profile')
  if old and level!=old['level']:raise ValueError('Observed profile level mismatch')
@@ -163,7 +166,7 @@ def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
- levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
+ levels=list(SUPPORTED_LEVELS) if args.difficulty=='all' else [args.difficulty]
  records=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in levels for i in range(args.count)]
  if args.format=='json':print(json.dumps(records,indent=2))
  else:

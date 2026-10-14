@@ -1,3 +1,5 @@
+Current capability decision (2026-10-14): easy/moderate supported; hard proposal below is historical and excluded from production. See `capabilities.json`.
+
 # Four extraction stages
 
 ## 1. Each specific source

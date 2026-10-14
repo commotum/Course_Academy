@@ -114,7 +114,7 @@ def main():
   r=g.generate(c['level'],profile=c['profile'],parameters=c['parameters']);banks+=fidelity(old,r);records.append(r);review.append({'label':'original replay '+c['source_id'],'record':r,'original':old})
   p=copy.deepcopy(c['parameters']);p['scalar']=str(sp.Rational(p['scalar'])+(1 if sp.Rational(p['scalar']).q==3 else sp.Rational(1,2)))
   variant=g.generate(c['level'],seed=91,profile=c['profile'],parameters=p);independent(variant);records.append(variant);review.append({'label':'generated observed-profile variant '+c['source_id'],'record':variant})
- for level in ('easy','moderate','hard'):
+ for level in g.SUPPORTED_LEVELS:
   for seed in (40,41,42,43):
    r=g.generate(level,seed=seed,field_type='radio' if seed%2==0 else 'blank');independent(r);records.append(r);review.append({'label':'authored '+level+' seed '+str(seed),'record':r})
    same=g.generate(level,seed=seed+99,field_type=r['question'][':question/answer-fields'][0][':answer-field/type'].split('/')[-1],parameters=r['generation']['parameters']);require(r['question'][':question/id']==same['question'][':question/id'],'Seed order cannot alter identity')
@@ -137,7 +137,7 @@ def main():
  require(not list((H/'plots').glob('.render-*')) and not list((H/'plots').glob('.atomic-*')),'Private renderer input/atomic temporary leak')
  # Conservative mathematical domain enumeration, separate from rendered records.
  domain={}
- for level in ('easy','moderate','hard'):
+ for level in g.SUPPORTED_LEVELS:
   identities=set()
   for seed in range(3000):
    try:
@@ -166,6 +166,6 @@ def main():
  subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(H/'engine-input.json'),str(H/'engine-report.json')],check=True)
  native=json.load(open(H/'engine-report.json'))
  subprocess.run([str(ROOT/'.venv/bin/python'),str(H/'render.py'),'audit'],check=True)
- report={'passed':True,'source_provenance':{k:source[k] for k in ('database','basis','lineage')},'source_questions':14,'full_prompt_matches':14,'full_ordered_solution_matches':14,'full_mathematical_bank_matches':14,'source_options_matched':banks,'correct_designations_matched':14,'raw_exact_banks':14,'presentation_normalized_banks':0,'normalized_double_slash_fraction_values':0,'mathematical_repairs':0,'authored_missing_levels':['hard'],'generated_records_checked':len(records),'generated_authored_records':12,'meaningful_generated_tasks':{l:len({r['generation']['mathematical_fingerprint'] for r in records if r['question'][':question/difficulty'].endswith('/'+l)}) for l in ('easy','moderate','hard')},'meaningful_domain_lower_bound_3000_seeds':domain,'native':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'engine_sha256':hashlib.sha256((ROOT/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256((ROOT/'generate/runs/current/check-engine.rs').read_bytes()).hexdigest(),'source_distractors_matched':40,'source_distractors_total':40,'source_options_total':54,'source_banks_total':14,'concurrent_fresh_render_requests':4,'raster_audit':json.load(open(H/'raster-audit.json')),'unresolved_findings':[]}
+ report={'passed':True,'source_provenance':{k:source[k] for k in ('database','basis','lineage')},'source_questions':14,'full_prompt_matches':14,'full_ordered_solution_matches':14,'full_mathematical_bank_matches':14,'source_options_matched':banks,'correct_designations_matched':14,'raw_exact_banks':14,'presentation_normalized_banks':0,'normalized_double_slash_fraction_values':0,'mathematical_repairs':0,'authored_missing_levels':[],'unsupported_levels':['hard'],'generated_records_checked':len(records),'generated_authored_records':8,'meaningful_generated_tasks':{l:len({r['generation']['mathematical_fingerprint'] for r in records if r['question'][':question/difficulty'].endswith('/'+l)}) for l in g.SUPPORTED_LEVELS},'meaningful_domain_lower_bound_3000_seeds':domain,'native':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'engine_sha256':hashlib.sha256((ROOT/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256((ROOT/'generate/runs/current/check-engine.rs').read_bytes()).hexdigest(),'source_distractors_matched':40,'source_distractors_total':40,'source_options_total':54,'source_banks_total':14,'concurrent_fresh_render_requests':4,'raster_audit':json.load(open(H/'raster-audit.json')),'unresolved_findings':[]}
  (H/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

@@ -1,3 +1,5 @@
+Current capability decision (2026-10-14): easy/moderate supported; hard proposal below is historical and excluded from production. See `capabilities.json`.
+
 # Rendered geometry review
 
 All fourteen original prompt/solution pairs were independently inspected in `source-contact.png`. Full-size reads resolved q-275120's two-square a and two-square diagonal b, and the moderate diagonals q-20435, q-327049 and q-77230. `source-geometry.json` records these manual grid displacement readings; their positive coefficient combinations agree with every original displayed answer and worked path.

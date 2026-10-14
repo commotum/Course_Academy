@@ -1,3 +1,5 @@
+Current capability decision (2026-10-14): easy/moderate supported; hard proposal below is historical and excluded from production. See `capabilities.json`.
+
 # Plot extraction and specification
 
 All fourteen prompt and solution diagrams were inspected in `source-contact.png`, with individual full-resolution inspection of the ambiguous scales. Original PNGs are copied unchanged under `originals/`. Source prompt diagrams show a square grid, blue a, gold b and black c from a common origin. Easy mostly uses horizontal a and vertical b, with integer, half, or third target ratios. Moderate uses oblique b (and one oblique a), requiring a translated known multiple. Worked diagrams add O, C, A/B or P labels and colored dashed path components. Direction arrowheads on a, b and c matter; guide paths need not introduce additional arrows. No plotted answer choices exist.

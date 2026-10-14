@@ -1,11 +1,11 @@
-# Positive scalar factor generator
+# Scalar factor generator
 
-Verification: `.venv/bin/python generate/scratch/17592186096701/validate.py`
+Run `.venv/bin/python generate/scratch/17592186096701/validate.py` to replay all 14 original banks and validate supported variants with the native learner grader.
 
-Preview: `.venv/bin/python generate/scratch/17592186096701.py --difficulty all --seed 40 --count 2 --format json`
+Preview: `.venv/bin/python generate/scratch/17592186096701.py --difficulty all --seed 40 --count 2 --format json`.
 
-API: `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)` and the three named level entrypoints. Source replay profiles are the fourteen `q-*` IDs. Normal profile is `authored_operations`. Templates: `known_unit`, `known_multiple`, `fractional_known`; radio and scalar blank formats are supported. Explicit parameters must have `unknown`, `known`, `scalar`, `a`, `b`; invalid workloads are rejected without replacement.
+The stable generator UUID is recorded in `capabilities.json`. Supported difficulties are easy and moderate, using the existing known-unit/known-multiple path and coefficient-matching method. Radio and scalar blank fields are supported. The fourteen named source profiles preserve original prompts, ordered solutions, complete banks and original parameter replay. Normal banks are explicitly authored complete operation profiles; bank/profile/seed/order changes never establish distinct mathematical questions.
 
-Fourteen complete source banks, full prompt/solution masks and both diagram roles are preserved. All fourteen source banks retain exact original option spellings; no mathematical or presentation source repairs are needed. Hard is authored from the pre-reversal path/uniqueness method. All coefficients stay positive and only one scalar is assessed. No database writes, preparation, registration, engine changes or asset pruning.
+Hard is unsupported for this version: the former fractional-known proposal added coordinate and arithmetic stages absent from the source backbone. Its prior code and validation evidence remain in `historical-positive-scalar-1/`. The nominal five-question hard reserve remains unfilled and must not be counted as supplied. New source evidence can reopen classification.
 
-Validation reads back displayed vector equations and ordered stages, source banks and layout, hard printed point coordinates and arithmetic, full identities, explicit boundaries, and invokes the real native grader. Meaningful domain counts are conservative finite samples of normalized mathematical parameters, reported separately from actually rendered checked records. Parent independently reviews rendered images before registration is considered.
+The generator renders Matplotlib PNGs into its own package without writing the database. `replenish.py` rechecks inventory, registers the validated generator with the configured application contributor, retains requests/receipts, and holds the application's `api.lock` through guarded submission and exact-basis readback.

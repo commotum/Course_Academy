@@ -1,3 +1,7 @@
+Fresh EDB recheck: basis 2238, same lineage and all fourteen source prompts, answer fields, banks, worked solutions and canonical example unchanged. Exact readback at registration basis 2239 retained all source content. Seven distinct fresh gradable tasks per supported band; no supported reserve deficit.
+
+Current capability decision (2026-10-14): easy/moderate supported; hard proposal below is historical and excluded from production. See `capabilities.json`.
+
 # Classification
 
 Read-only database `math`, basis **1356**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Raw wrapper is `source.json`; fourteen practice questions: seven easy, seven moderate, no hard or unrated sources. Every question has one owned field and a correct designation. Ten radios have five math choices; four blanks have one math fragment.

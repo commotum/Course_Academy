@@ -1,6 +1,10 @@
 # Tangent oddness generator
 
-Local script: `../17592186176058.py`. Database capture: math basis 1356. No DB writes, registrations, or shared engine edits.
+Local generator: `../17592186176058.py`. Source capture: math basis 1356. The generator itself performs no database writes.
+
+Replenishment reused this package and committed ten distinct questions at math basis **2240**, from preparation basis **2239**: two easy, five moderate, and three hard. The verified fresh inventory is five per level. Generator UUID `ee2be17c-7ff2-5ace-8a40-875aced950b8` is registered at `generate/scratch/17592186176058.py`. Moderate is an authored workload label; easy and hard have observed labels. All six source questions and the canonical example remain unchanged, and the receipt contains only additive scoped content datoms attributed to `:application/ca-engine`.
+
+`replenish.py` retains the exact request, native-spec preview, receipt, grading checks, and exact-basis verification in `reference/replenishment/basis-2239/`. It holds the application's `api.lock` through the current inventory check, preparation, submission, and readback. No application code or other KPs were changed.
 
 ```sh
 .venv/bin/python generate/scratch/17592186176058/validate.py
