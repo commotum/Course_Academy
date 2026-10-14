@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-109672",
+      "sequence_position": 13,
+      "problem": "If ${X}_{1}∼N(2,7)$ and ${X}_{2}∼N(1,4)$ are independent and $Y=2{X}_{1}-3{X}_{2},$ calculate $P(-4.6<Y<3.48).$ Round your final answer to two decimal places.\n\n*Hint: A table of values of $Φ(z)$ for different values of $z$ is given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.03\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.04\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.2\\,$</th><td align=\"center\"> $\\,0.5793\\,$ </td><td align=\"center\"> $\\,0.5832\\,$ </td><td align=\"center\"> $\\,0.5871\\,$ </td><td align=\"center\"> $\\,0.5910\\,$ </td><td align=\"center\"> $\\,0.5948\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.3\\,$</th><td align=\"center\"> $\\,0.6179\\,$ </td><td align=\"center\"> $\\,0.6217\\,$ </td><td align=\"center\"> $\\,0.6255\\,$ </td><td align=\"center\"> $\\,0.6293\\,$ </td><td align=\"center\"> $\\,0.6331\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.4\\,$</th><td align=\"center\"> $\\,0.6554\\,$ </td><td align=\"center\"> $\\,0.6591\\,$ </td><td align=\"center\"> $\\,0.6628\\,$ </td><td align=\"center\"> $\\,0.6664\\,$ </td><td align=\"center\"> $\\,0.6700\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.03\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.7\\,$</th><td align=\"center\"> $\\,0.2420\\,$ </td><td align=\"center\"> $\\,0.2389\\,$ </td><td align=\"center\"> $\\,0.2358\\,$ </td><td align=\"center\"> $\\,0.2327\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.6\\,$</th><td align=\"center\"> $\\,0.2743\\,$ </td><td align=\"center\"> $\\,0.2709\\,$ </td><td align=\"center\"> $\\,0.2676\\,$ </td><td align=\"center\"> $\\,0.2643\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.5\\,$</th><td align=\"center\"> $\\,0.3085\\,$ </td><td align=\"center\"> $\\,0.3050\\,$ </td><td align=\"center\"> $\\,0.3015\\,$ </td><td align=\"center\"> $\\,0.2981\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Recall that if ${X}_{1}$ and ${X}_{2}$ are independent random variables, where ${X}_{1}∼N({\\mu }_{1},{\\sigma }_{1}^{2})$ and ${X}_{2}∼N({\\mu }_{2},{\\sigma }_{2}^{2}),$ and $a$ and $b$ are constants, then \n\n$$\na{X}_{1}+b{X}_{2}∼N(a{\\mu }_{1}+b{\\mu }_{2},{a}^{2}{\\sigma }_{1}^{2}+{b}^{2}{\\sigma }_{2}^{2}).\n$$\n\nSince ${X}_{1}$ and ${X}_{2}$ are independent, the distribution of $Y$ is given by\n\n$$\n\\begin{aligned}Y=2{X}_{1}-3{X}_{2} & ∼N(2{\\mu }_{1}-3{\\mu }_{2},4{\\sigma }_{1}^{2}+9{\\sigma }_{2}^{2}) \\\\  & ∼N(4-3,28+36) \\\\  & ∼N(1,64).\\end{aligned}\n$$\n\nTherefore, $Y$ is normally distributed with mean $\\mu =1$ and standard deviation $\\sigma =\\sqrt{64}=8.$ \n\nWe want to find $P(-4.6<Y<3.48).$ Thus, we convert $Y$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(-4.6<Y<3.48) & =P(\\frac{-4.6-1}{8}<Z<\\frac{3.48-1}{8}) \\\\  & =P(-0.70<Z<0.31) \\\\  & =P(Z<0.31)-P(Z<-0.70) \\\\  & =Φ(0.31)-Φ(-0.70)\\end{aligned}\n$$\n\nUsing the $z$-table, we see that\n\n$$\n\\begin{aligned}Φ(0.31) & ≈0.6217 \\\\ Φ(-0.70) & ≈0.2420.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(-4.6<Y<3.48) & ≈Φ(0.31)-Φ(-0.70) \\\\  & ≈0.6217-0.2420 \\\\  & ≈0.3797.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14181123/observations/history-q-109672-94cf5e9090a7208f3198.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14181123",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14181123/observations/history-solution-q-109672-6585a66f525397d55d37.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.3164"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.4297"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.3797"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.3429"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.2847"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q109672",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.3164",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Recall that if ${X}_{1}$ and ${X}_{2}$ are independent random variables, where ${X}_{1}∼N({\\mu }_{1},{\\sigma }_{1}^{2})$ and ${X}_{2}∼N({\\mu }_{2},{\\sigma }_{2}^{2}),$ and $a$ and $b$ are constants, then \n\n$$\na{X}_{1}+b{X}_{2}∼N(a{\\mu }_{1}+b{\\mu }_{2},{a}^{2}{\\sigma }_{1}^{2}+{b}^{2}{\\sigma }_{2}^{2}).\n$$\n\nSince ${X}_{1}$ and ${X}_{2}$ are independent, the distribution of $Y$ is given by\n\n$$\n\\begin{aligned}Y=2{X}_{1}-3{X}_{2} & ∼N(2{\\mu }_{1}-3{\\mu }_{2},4{\\sigma }_{1}^{2}+9{\\sigma }_{2}^{2}) \\\\  & ∼N(4-3,28+36) \\\\  & ∼N(1,64).\\end{aligned}\n$$\n\nTherefore, $Y$ is normally distributed with mean $\\mu =1$ and standard deviation $\\sigma =\\sqrt{64}=8.$ \n\nWe want to find $P(-4.6<Y<3.48).$ Thus, we convert $Y$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(-4.6<Y<3.48) & =P(\\frac{-4.6-1}{8}<Z<\\frac{3.48-1}{8}) \\\\  & =P(-0.70<Z<0.31) \\\\  & =P(Z<0.31)-P(Z<-0.70) \\\\  & =Φ(0.31)-Φ(-0.70)\\end{aligned}\n$$\n\nUsing the $z$-table, we see that\n\n$$\n\\begin{aligned}Φ(0.31) & ≈0.6217 \\\\ Φ(-0.70) & ≈0.2420.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(-4.6<Y<3.48) & ≈Φ(0.31)-Φ(-0.70) \\\\  & ≈0.6217-0.2420 \\\\  & ≈0.3797.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14181123/observations/step-q109672-e0e2fcb024cfa59d8da2.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13668-3faa-7e71-84a3-5713bebd8624",
+  "previous_failures": []
+}
