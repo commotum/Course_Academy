@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-95775",
+      "sequence_position": 10,
+      "problem": "Given that the random variable $X∼B(120,0.6),$ use the normal approximation to the binomial distribution to approximate $P(X=80).$ Give your final answer to three decimal places\n\n*Hint: The data below is taken from the table of values of the cumulative distribution function $Φ(z)$ for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.3\\,$</th><td align=\"center\"> $\\,0.9032\\,$ </td><td align=\"center\"> $\\,0.9049\\,$ </td><td align=\"center\"> $\\,0.9066\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.4\\,$</th><td align=\"center\"> $\\,0.9192\\,$ </td><td align=\"center\"> $\\,0.9207\\,$ </td><td align=\"center\"> $\\,0.9222\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.5\\,$</th><td align=\"center\"> $\\,0.9332\\,$ </td><td align=\"center\"> $\\,0.9345\\,$ </td><td align=\"center\"> $\\,0.9357\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.07\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.08\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.09\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.3\\,$</th><td align=\"center\"> $\\,0.9147\\,$ </td><td align=\"center\"> $\\,0.9162\\,$ </td><td align=\"center\"> $\\,0.9177\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.4\\,$</th><td align=\"center\"> $\\,0.9292\\,$ </td><td align=\"center\"> $\\,0.9306\\,$ </td><td align=\"center\"> $\\,0.9319\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.5\\,$</th><td align=\"center\"> $\\,0.9418\\,$ </td><td align=\"center\"> $\\,0.9429\\,$ </td><td align=\"center\"> $\\,0.9441\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Given a binomial random variable $X∼B(n,p),$ if \n\n- $np>5,$ and\n\n- $n(1-p)>5,$\n\nwe can approximate $X$ as a normal random variable $Y$ with mean $\\mu =np$ and variance ${\\sigma }^{2}=np(1-p),$ that is, \n\n$$\nY∼N(np,np(1-p)).\n$$\n\nHere, we have $n=120$ and $p=0.6.$ Therefore, \n\n$$\n\\begin{aligned}np & =120\\cdot 0.6 \\\\  & =72 \\\\  & >5\\,✓ \\\\ n(1-p) & =12\\cdot (1-0.6) \\\\  & =48 \\\\  & >5.\\,✓\\end{aligned}\n$$\n\nSo, we can approximate our binomial random variable $X$ with a normal random variable $Y$ with mean\n\n$$\n\\mu =np=(120)(0.6)=72\n$$\n\nand variance\n\n$$\n{\\sigma }^{2}=np(1-p)=(120)(0.6)(1-0.6)=28.8.\n$$\n\nThat is, we can approximate $X$ by $Y∼N(72,28.8).$\n\nNow, we can approximate the desired probability $P(X=80).$ Using a continuity correction, we have\n\n$$\nP(X=80)≈P(79.5\\le Y\\le 80.5).\n$$\n\nTo compute this probability, we transform to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(79.5\\le Y\\le 80.5) & =P(\\frac{79.5-72}{\\sqrt{28.8}}\\le Z\\le \\frac{80.5-72}{\\sqrt{28.8}}) \\\\  & ≈P(1.40\\le Z\\le 1.58) \\\\  & =P(Z\\le 1.58)-P(Z<1.40) \\\\  & =P(Z\\le 1.58)-P(Z\\le 1.40) \\\\  & =Φ(1.58)-Φ(1.40) \\\\  & =0.9429-0.9192 \\\\  & =0.0237\\end{aligned}\n$$\n\nTherefore,\n\n$$\nP(X=80)≈0.024.\n$$\n\nNote: Using a software package for the approximation gives a probability of $0.0245.$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14179860/observations/history-q-95775-4841a98b837eeef1996b.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14179860",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14179860/observations/history-solution-q-95775-a34929820516590b1603.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.024"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.042"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.402"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.204"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.244"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q95775",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.024",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Given a binomial random variable $X∼B(n,p),$ if \n\n- $np>5,$ and\n\n- $n(1-p)>5,$\n\nwe can approximate $X$ as a normal random variable $Y$ with mean $\\mu =np$ and variance ${\\sigma }^{2}=np(1-p),$ that is, \n\n$$\nY∼N(np,np(1-p)).\n$$\n\nHere, we have $n=120$ and $p=0.6.$ Therefore, \n\n$$\n\\begin{aligned}np & =120\\cdot 0.6 \\\\  & =72 \\\\  & >5\\,✓ \\\\ n(1-p) & =12\\cdot (1-0.6) \\\\  & =48 \\\\  & >5.\\,✓\\end{aligned}\n$$\n\nSo, we can approximate our binomial random variable $X$ with a normal random variable $Y$ with mean\n\n$$\n\\mu =np=(120)(0.6)=72\n$$\n\nand variance\n\n$$\n{\\sigma }^{2}=np(1-p)=(120)(0.6)(1-0.6)=28.8.\n$$\n\nThat is, we can approximate $X$ by $Y∼N(72,28.8).$\n\nNow, we can approximate the desired probability $P(X=80).$ Using a continuity correction, we have\n\n$$\nP(X=80)≈P(79.5\\le Y\\le 80.5).\n$$\n\nTo compute this probability, we transform to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(79.5\\le Y\\le 80.5) & =P(\\frac{79.5-72}{\\sqrt{28.8}}\\le Z\\le \\frac{80.5-72}{\\sqrt{28.8}}) \\\\  & ≈P(1.40\\le Z\\le 1.58) \\\\  & =P(Z\\le 1.58)-P(Z<1.40) \\\\  & =P(Z\\le 1.58)-P(Z\\le 1.40) \\\\  & =Φ(1.58)-Φ(1.40) \\\\  & =0.9429-0.9192 \\\\  & =0.0237\\end{aligned}\n$$\n\nTherefore,\n\n$$\nP(X=80)≈0.024.\n$$\n\nNote: Using a software package for the approximation gives a probability of $0.0245.$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14179860/observations/step-q95775-25abf255813648e7dce8.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a1364e-9567-7b11-bc73-42d48b9d9e6e",
+  "previous_failures": []
+}
