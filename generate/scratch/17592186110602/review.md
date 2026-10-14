@@ -1,6 +1,6 @@
 # Axis-perpendicular generator review
 
-Source snapshot: math basis 1356. Authored numeric policies for M/H have no observed difficulty labels; categorical workload is constant.
+Source snapshot: math basis 1356. Only easy is supported. M/H examples are archived representation experiments, not supported difficulty bands.
 
 ## Original q-215418
 
@@ -410,7 +410,7 @@ The perpendicular line needs to go through the point $(0,-2),$ which has an $x$-
 
 ---
 
-## authored default easy/line_first_vertical_radio/0
+## supported easy/line_first_vertical_radio/0
 
 ## Generated easy — line_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy easy.
@@ -431,7 +431,7 @@ The perpendicular line needs to go through the point $(0,12),$ which has a $y$-c
 
 ---
 
-## authored default easy/line_first_vertical_radio/1
+## supported easy/line_first_vertical_radio/1
 
 ## Generated easy — line_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy easy.
@@ -452,7 +452,7 @@ The perpendicular line needs to go through the point $(-8,6),$ which has a $y$-c
 
 ---
 
-## authored default easy/line_first_horizontal_radio/0
+## supported easy/line_first_horizontal_radio/0
 
 ## Generated easy — line_first_horizontal_radio
 Profile: `authored_zero_coordinate`; numeric policy easy.
@@ -473,7 +473,7 @@ The perpendicular line needs to go through the point $(0,12),$ which has an $x$-
 
 ---
 
-## authored default easy/line_first_horizontal_radio/1
+## supported easy/line_first_horizontal_radio/1
 
 ## Generated easy — line_first_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy easy.
@@ -494,7 +494,7 @@ The perpendicular line needs to go through the point $(-8,6),$ which has an $x$-
 
 ---
 
-## authored default easy/point_first_vertical_radio/0
+## supported easy/point_first_vertical_radio/0
 
 ## Generated easy — point_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy easy.
@@ -515,7 +515,7 @@ The perpendicular line needs to go through the point $(0,12),$ which has a $y$-c
 
 ---
 
-## authored default easy/point_first_vertical_radio/1
+## supported easy/point_first_vertical_radio/1
 
 ## Generated easy — point_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy easy.
@@ -536,7 +536,7 @@ The perpendicular line needs to go through the point $(-8,6),$ which has a $y$-c
 
 ---
 
-## authored default easy/determine_horizontal_radio/0
+## supported easy/determine_horizontal_radio/0
 
 ## Generated easy — determine_horizontal_radio
 Profile: `authored_zero_coordinate`; numeric policy easy.
@@ -557,7 +557,7 @@ The perpendicular line needs to go through the point $(0,12),$ which has an $x$-
 
 ---
 
-## authored default easy/determine_horizontal_radio/1
+## supported easy/determine_horizontal_radio/1
 
 ## Generated easy — determine_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy easy.
@@ -578,7 +578,7 @@ The perpendicular line needs to go through the point $(-8,6),$ which has an $x$-
 
 ---
 
-## authored default easy/standard_horizontal_blank/0
+## supported easy/standard_horizontal_blank/0
 
 ## Generated easy — standard_horizontal_blank
 Profile: `None`; numeric policy authored.
@@ -597,7 +597,7 @@ The perpendicular line needs to go through the point $(0,12),$ which has an $x$-
 
 ---
 
-## authored default easy/standard_horizontal_blank/1
+## supported easy/standard_horizontal_blank/1
 
 ## Generated easy — standard_horizontal_blank
 Profile: `None`; numeric policy authored.
@@ -616,7 +616,7 @@ The perpendicular line needs to go through the point $(-8,6),$ which has an $x$-
 
 ---
 
-## authored default easy/standard_vertical_blank/0
+## supported easy/standard_vertical_blank/0
 
 ## Generated easy — standard_vertical_blank
 Profile: `None`; numeric policy authored.
@@ -635,7 +635,7 @@ The perpendicular line needs to go through the point $(0,12),$ which has a $y$-c
 
 ---
 
-## authored default easy/standard_vertical_blank/1
+## supported easy/standard_vertical_blank/1
 
 ## Generated easy — standard_vertical_blank
 Profile: `None`; numeric policy authored.
@@ -654,7 +654,7 @@ The perpendicular line needs to go through the point $(-8,6),$ which has a $y$-c
 
 ---
 
-## authored default moderate/line_first_vertical_radio/0
+## unsupported experimental moderate/line_first_vertical_radio/0
 
 ## Generated moderate — line_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -675,7 +675,7 @@ The perpendicular line needs to go through the point $(0,\frac{17}{3}),$ which h
 
 ---
 
-## authored default moderate/line_first_vertical_radio/1
+## unsupported experimental moderate/line_first_vertical_radio/1
 
 ## Generated moderate — line_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -696,7 +696,7 @@ The perpendicular line needs to go through the point $(6,-\frac{14}{3}),$ which 
 
 ---
 
-## authored default moderate/line_first_horizontal_radio/0
+## unsupported experimental moderate/line_first_horizontal_radio/0
 
 ## Generated moderate — line_first_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -717,7 +717,7 @@ The perpendicular line needs to go through the point $(\frac{17}{3},0),$ which h
 
 ---
 
-## authored default moderate/line_first_horizontal_radio/1
+## unsupported experimental moderate/line_first_horizontal_radio/1
 
 ## Generated moderate — line_first_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -738,7 +738,7 @@ The perpendicular line needs to go through the point $(-\frac{14}{3},6),$ which 
 
 ---
 
-## authored default moderate/point_first_vertical_radio/0
+## unsupported experimental moderate/point_first_vertical_radio/0
 
 ## Generated moderate — point_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -759,7 +759,7 @@ The perpendicular line needs to go through the point $(0,\frac{17}{3}),$ which h
 
 ---
 
-## authored default moderate/point_first_vertical_radio/1
+## unsupported experimental moderate/point_first_vertical_radio/1
 
 ## Generated moderate — point_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -780,7 +780,7 @@ The perpendicular line needs to go through the point $(6,-\frac{14}{3}),$ which 
 
 ---
 
-## authored default moderate/determine_horizontal_radio/0
+## unsupported experimental moderate/determine_horizontal_radio/0
 
 ## Generated moderate — determine_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -801,7 +801,7 @@ The perpendicular line needs to go through the point $(\frac{17}{3},0),$ which h
 
 ---
 
-## authored default moderate/determine_horizontal_radio/1
+## unsupported experimental moderate/determine_horizontal_radio/1
 
 ## Generated moderate — determine_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -822,7 +822,7 @@ The perpendicular line needs to go through the point $(-\frac{14}{3},6),$ which 
 
 ---
 
-## authored default moderate/standard_horizontal_blank/0
+## unsupported experimental moderate/standard_horizontal_blank/0
 
 ## Generated moderate — standard_horizontal_blank
 Profile: `None`; numeric policy authored.
@@ -843,7 +843,7 @@ In standard form, this is $3x=17.$
 
 ---
 
-## authored default moderate/standard_horizontal_blank/1
+## unsupported experimental moderate/standard_horizontal_blank/1
 
 ## Generated moderate — standard_horizontal_blank
 Profile: `None`; numeric policy authored.
@@ -864,7 +864,7 @@ In standard form, this is $3x=-14.$
 
 ---
 
-## authored default moderate/standard_vertical_blank/0
+## unsupported experimental moderate/standard_vertical_blank/0
 
 ## Generated moderate — standard_vertical_blank
 Profile: `None`; numeric policy authored.
@@ -885,7 +885,7 @@ In standard form, this is $3y=17.$
 
 ---
 
-## authored default moderate/standard_vertical_blank/1
+## unsupported experimental moderate/standard_vertical_blank/1
 
 ## Generated moderate — standard_vertical_blank
 Profile: `None`; numeric policy authored.
@@ -906,7 +906,7 @@ In standard form, this is $3y=-14.$
 
 ---
 
-## authored default hard/line_first_vertical_radio/0
+## unsupported experimental hard/line_first_vertical_radio/0
 
 ## Generated hard — line_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -927,7 +927,7 @@ The perpendicular line needs to go through the point $(-11,0.36),$ which has a $
 
 ---
 
-## authored default hard/line_first_vertical_radio/1
+## unsupported experimental hard/line_first_vertical_radio/1
 
 ## Generated hard — line_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -948,7 +948,7 @@ The perpendicular line needs to go through the point $(12,\frac{40}{7}),$ which 
 
 ---
 
-## authored default hard/line_first_horizontal_radio/0
+## unsupported experimental hard/line_first_horizontal_radio/0
 
 ## Generated hard — line_first_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -969,7 +969,7 @@ The perpendicular line needs to go through the point $(0.36,-11),$ which has an 
 
 ---
 
-## authored default hard/line_first_horizontal_radio/1
+## unsupported experimental hard/line_first_horizontal_radio/1
 
 ## Generated hard — line_first_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -990,7 +990,7 @@ The perpendicular line needs to go through the point $(\frac{40}{7},12),$ which 
 
 ---
 
-## authored default hard/point_first_vertical_radio/0
+## unsupported experimental hard/point_first_vertical_radio/0
 
 ## Generated hard — point_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -1011,7 +1011,7 @@ The perpendicular line needs to go through the point $(-11,0.36),$ which has a $
 
 ---
 
-## authored default hard/point_first_vertical_radio/1
+## unsupported experimental hard/point_first_vertical_radio/1
 
 ## Generated hard — point_first_vertical_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -1032,7 +1032,7 @@ The perpendicular line needs to go through the point $(12,\frac{40}{7}),$ which 
 
 ---
 
-## authored default hard/determine_horizontal_radio/0
+## unsupported experimental hard/determine_horizontal_radio/0
 
 ## Generated hard — determine_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -1053,7 +1053,7 @@ The perpendicular line needs to go through the point $(0.36,-11),$ which has an 
 
 ---
 
-## authored default hard/determine_horizontal_radio/1
+## unsupported experimental hard/determine_horizontal_radio/1
 
 ## Generated hard — determine_horizontal_radio
 Profile: `authored_coordinate_sign`; numeric policy authored.
@@ -1074,7 +1074,7 @@ The perpendicular line needs to go through the point $(\frac{40}{7},12),$ which 
 
 ---
 
-## authored default hard/standard_horizontal_blank/0
+## unsupported experimental hard/standard_horizontal_blank/0
 
 ## Generated hard — standard_horizontal_blank
 Profile: `None`; numeric policy authored.
@@ -1095,7 +1095,7 @@ In standard form, this is $25x=9.$
 
 ---
 
-## authored default hard/standard_horizontal_blank/1
+## unsupported experimental hard/standard_horizontal_blank/1
 
 ## Generated hard — standard_horizontal_blank
 Profile: `None`; numeric policy authored.
@@ -1116,7 +1116,7 @@ In standard form, this is $7x=40.$
 
 ---
 
-## authored default hard/standard_vertical_blank/0
+## unsupported experimental hard/standard_vertical_blank/0
 
 ## Generated hard — standard_vertical_blank
 Profile: `None`; numeric policy authored.
@@ -1137,7 +1137,7 @@ In standard form, this is $25y=9.$
 
 ---
 
-## authored default hard/standard_vertical_blank/1
+## unsupported experimental hard/standard_vertical_blank/1
 
 ## Generated hard — standard_vertical_blank
 Profile: `None`; numeric policy authored.

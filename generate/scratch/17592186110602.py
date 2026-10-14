@@ -22,6 +22,7 @@ KP_ID = 17592186110602
 KP_UUID = 'a6fee8d5-e1f7-599d-a74c-abc44d973065'
 TITLE = 'Finding Equations of Perpendicular Horizontal and Vertical Lines'
 VERSION = 'axis-perpendicular-1'
+SUPPORTED_LEVELS = ('easy',)
 SOURCE = {'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 
 @dataclass(frozen=True)
@@ -206,7 +207,8 @@ def assemble(level,name,p,seed,profile):
         fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+spec.kind,':answer-field/choices':answers,':answer-field/correct':[':answer/id',correctid]})
     return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':fields},'generation':{'version':VERSION,'seed':seed,'template':name,'parameters':canonical_p,'bank_profile':profile,'bank_origin':'observed' if profile in PROFILES else 'authored' if profile else 'none','authored_level':level!='easy' or spec.kind=='blank','source_analysis':SOURCE|{'question_ids':[PROFILES[profile][2]] if profile in PROFILES else list(spec.sources)},'answer_origin':'mathematically_derived_missing_source_refs' if spec.kind=='blank' else 'derived','parameter_fingerprint':math_fingerprint,'content_fingerprint':content_key,'plot_rating':'none','plot_assets':{},'domain':'rational coordinate plane','distractor_recipes':[r for _,_,r in options],'sympy_version':sp.__version__}}
 
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def experimental_generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+    """Legacy representation research; mathematical validity is not band support."""
     if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
     if field_type is not None and field_type not in ('radio','blank'):raise ValueError('Unknown field type')
     if profile in PROFILES:
@@ -230,17 +232,37 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             if parameters is not None:raise
     raise ValueError('Bounded whole-bank rejection did not find a valid instance')
 
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+    if level not in SUPPORTED_LEVELS:
+        raise ValueError(f'{level} is unsupported: no validated difficulty backbone; see capabilities.json')
+    return experimental_generate(level,seed,template,field_type,parameters,profile)
+
+def batch(level,count,seed=0,template=None,field_type=None,profile=None):
+    if level not in SUPPORTED_LEVELS:
+        raise ValueError(f'{level} is unsupported; shortage remains explicit')
+    if count<0 or count>50:
+        raise ValueError('Finite limit: at most 50 distinct easy target lines in this policy')
+    records=[]
+    seen=set()
+    for attempt in range(max(1,count*200)):
+        if len(records)==count:return records
+        rec=generate(level,seed+attempt,template,field_type,profile=profile)
+        fp=rec['generation']['parameter_fingerprint']
+        if fp not in seen:
+            seen.add(fp);records.append(rec)
+    raise ValueError(f'Finite limit: found {len(records)} distinct tasks of {count} requested; no duplicates emitted')
+
 # EASY: observed integer-coordinate method plus explicitly assigned unrated blanks.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):
     return generate('easy',seed,template,field_type,parameters,profile)
 
 # MODERATE: authored bounded signed fractions; identical categorical operation.
-def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):
-    return generate('moderate',seed,template,field_type,parameters,profile)
+def experimental_generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):
+    return experimental_generate('moderate',seed,template,field_type,parameters,profile)
 
 # HARD: authored less familiar fractions/exact decimals; no new line algebra.
-def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):
-    return generate('hard',seed,template,field_type,parameters,profile)
+def experimental_generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):
+    return experimental_generate('hard',seed,template,field_type,parameters,profile)
 
 def markdown(record):
     q,g=record['question'],record['generation']
@@ -262,8 +284,8 @@ def main():
     parser.add_argument('--field-type',choices=('radio','blank'))
     args=parser.parse_args()
     if args.count<1:parser.error('Count must be positive')
-    levels=('easy','moderate','hard') if args.difficulty=='all' else (args.difficulty,)
-    try:records=[generate(level,args.seed+i,args.template,args.field_type,profile=args.profile) for level in levels for i in range(args.count)]
+    levels=SUPPORTED_LEVELS if args.difficulty=='all' else (args.difficulty,)
+    try:records=[record for level in levels for record in batch(level,args.count,args.seed,args.template,args.field_type,args.profile)]
     except ValueError as exc:parser.error(str(exc))
     print(json.dumps(records,indent=2) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,records)))
 

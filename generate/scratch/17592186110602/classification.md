@@ -1,3 +1,7 @@
+# Operational capability revision — 2026-10-14
+
+Only **easy** is supported for registration and inventory. The previous moderate/hard numeric policies below are retained as representation research, and no longer constitute difficulty support. All eight captured source questions remain unchanged at current discovery basis 2231. Six complete rated radio sources replay and grade; two unrated incomplete blanks remain excluded from inventory. The easy method is orientation reversal followed by coordinate selection; greater denominator size alone supplies no supported moderate/hard band. See `capabilities.json` for bounded evidence, explicit shortages and reopening conditions.
+
 # Classification (step 3)
 
 Math database basis **1356**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`; owning topic 17592186048357 / MA 1427. Immutable capture is preserved byte-for-byte in source.json. Eight practice questions are analyzed; the canonical example e-14365 is method context, not practice coverage.

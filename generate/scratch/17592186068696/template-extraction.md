@@ -34,3 +34,26 @@ Mathematical fingerprints unify equivalent coordinate-set tasks across radio/bla
 - Several raw math choices contain two adjacent decoded backslashes before `pm`. This was verified by testing decoded substring membership and counting ord(92) runs, not by interpreting JSON serialization. q48087's nested correct value has one slash while its actual choice has two, but its correct UUID selects that choice. Raw choice spelling and designation are preserved; normal authored set strings avoid this malformed TeX. Source correctness and raw formatting are not conflated.
 
 Verified raw denominators: **17/17 complete prompts and full worked solutions**, **19/19 field banks**, **71/71 displayed choices**, **18/18 present correct designations**. The one absent designation, one absent fields attribute and four omitted widgets are preserved and separately reported. DB numeric IDs and original MA IDs are provenance, not reused identities for newly generated records. Runtime UUID/enum normalization and lookup-ref representation follow the established local generator format.
+
+
+## Current checkbox source supplement (basis 2230)
+
+Seven current prompts append “Select all that apply” and Roman-labelled scalar
+x-coordinate candidates to the original graph-reading prompt. Each candidate
+owns a two-value text bank `{true,false}`; its key is true exactly when the
+candidate coordinate belongs to the graph's independently read break set.
+This is a separate current response layout, not a recovered historical radio
+distractor recipe. Every current candidate, field, Boolean choice and correct
+designation is retained in the live EDN capture; the independent validator parses
+the Roman labels and coordinates and checks each complete Boolean bank against
+open markers and vertical asymptotes. The source's worked-solution sequence and
+full original wording remain unchanged. The seven profiles are q-48080, q-48090,
+q-104020, q-104023, q-48087, q-104025 and q-48088. Their respective candidate
+counts are 3, 3, 3, 3, 5, 4 and 5.
+
+This replenishment executes the frozen generator's already validated moderate
+and hard authored coordinate-set radio templates. Those templates and their
+complete subset-bank recipes remain explicitly authored extensions with the
+previously reviewed same-method scope and difficulty guards; they do not claim
+fidelity to the newer checkbox layout. Every new coordinate triple is distinct
+and includes noninteger coordinates absent from the easy source tasks.

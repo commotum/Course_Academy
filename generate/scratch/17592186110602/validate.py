@@ -135,7 +135,7 @@ def main():
     fidelity=[]
     for case in cases:
         source=sources[case['source_id']]
-        record=g.generate(case['level'],17,case['template'],parameters=case['parameters'],profile=case.get('bank_profile'))
+        record=g.experimental_generate(case['level'],17,case['template'],parameters=case['parameters'],profile=case.get('bank_profile'))
         display_check(record)
         q=record['question']
         assert q[':question/problem']==source[':question/problem'],case['source_id']
@@ -156,7 +156,7 @@ def main():
         native.append({'label':'source replay '+case['source_id'],'record':record,'checks':checks(record)})
         # Changed parameters from the ordinary sampler and the same whole profile.
         for variant_seed in range(41,101):
-            variant=g.generate('easy',variant_seed,case['template'],profile=case.get('bank_profile'))
+            variant=g.experimental_generate('easy',variant_seed,case['template'],profile=case.get('bank_profile'))
             if variant['generation']['parameter_fingerprint']!=record['generation']['parameter_fingerprint']:break
         else:raise AssertionError('No substantive changed-coordinate source variant')
         assert variant['generation']['parameters']!=record['generation']['parameters']
@@ -169,17 +169,17 @@ def main():
     for level in fingerprints:
         for template in g.TEMPLATES:
             for seed in range(100):
-                record=g.generate(level,seed,template)
+                record=g.experimental_generate(level,seed,template)
                 display_check(record)
                 fingerprints[level].add(record['generation']['parameter_fingerprint'])
                 tested+=1
                 if seed<2:
-                    label=f'authored default {level}/{template}/{seed}'
+                    label=f'{"supported" if level=="easy" else "unsupported experimental"} {level}/{template}/{seed}'
                     review.append({'label':label,'role':'authored_default','record':record})
                     native.append({'label':label,'record':record,'checks':checks(record)})
                 q=record['question']
                 fixed=record['generation']['parameters']
-                shuffled=g.generate(level,seed+123,template,parameters=fixed,profile=record['generation']['bank_profile'])
+                shuffled=g.experimental_generate(level,seed+123,template,parameters=fixed,profile=record['generation']['bank_profile'])
                 assert q[':question/id']==shuffled['question'][':question/id']
                 assert record['generation']['content_fingerprint']==shuffled['generation']['content_fingerprint']
                 if len(q[':question/answer-fields'])==1:
@@ -193,8 +193,8 @@ def main():
         variant=g.generate_easy(1,name,parameters=p,profile=profile)
         assert variant['generation']['parameter_fingerprint']==baseline['generation']['parameter_fingerprint']
         assert variant['question'][':question/id']!=baseline['question'][':question/id']
-    fraction=g.generate_hard(0,'standard_vertical_blank',parameters={'a':4,'b':'7/10','c':2})
-    decimal=g.generate_hard(1,'standard_vertical_blank',parameters={'a':4,'b':'7/10','c':2,'style':'decimal'})
+    fraction=g.experimental_generate_hard(0,'standard_vertical_blank',parameters={'a':4,'b':'7/10','c':2})
+    decimal=g.experimental_generate_hard(1,'standard_vertical_blank',parameters={'a':4,'b':'7/10','c':2,'style':'decimal'})
     assert fraction['generation']['parameter_fingerprint']==decimal['generation']['parameter_fingerprint']
     assert fraction['question'][':question/id']!=decimal['question'][':question/id']
     # Exercise zero coordinate explicitly (sign-reversal would be ambiguous).
@@ -203,18 +203,18 @@ def main():
     native.append({'label':'authored zero bank','record':zero,'checks':checks(zero)})
     invalid=[('easy',{'a':1,'b':1,'c':2},'authored_coordinate_sign'),('easy',{'a':1,'b':'1/2','c':2},None),('moderate',{'a':1,'b':7,'c':2},None),('moderate',{'a':1,'b':'-25/2','c':2},None),('moderate',{'a':1,'b':'-25/3','c':2},None),('hard',{'a':1,'b':'7/5','c':2},None),('hard',{'a':1,'b':'-61/7','c':2},None),('hard',{'a':1,'b':'1/3','c':2,'style':'decimal'},None)]
     for level,p,profile in invalid:
-        try:g.generate(level,0,'line_first_vertical_radio',parameters=p,profile=profile)
+        try:g.experimental_generate(level,0,'line_first_vertical_radio',parameters=p,profile=profile)
         except (ValueError,TypeError):pass
         else:raise AssertionError(('invalid explicit parameters accepted',level,p))
     write('review.json',review)
     write('engine-input.json',native)
-    run=subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(HERE/'engine-input.json'),str(HERE/'native-grading.json')],check=True,capture_output=True,text=True)
+    run=subprocess.run([str(HERE/'reference/validation/check-engine'),str(HERE/'engine-input.json'),str(HERE/'native-grading.json')],check=True,capture_output=True,text=True)
     print(run.stdout.strip())
-    provenance={str(p.relative_to(REPO)):hashlib.sha256(p.read_bytes()).hexdigest() for p in (HERE.with_suffix('.py'),HERE/'validate.py',REPO/'generate/runs/current/check-engine',REPO/'generate/runs/current/check-engine.rs')}
+    provenance={str(p.relative_to(REPO)):hashlib.sha256(p.read_bytes()).hexdigest() for p in (HERE.with_suffix('.py'),HERE/'validate.py',HERE/'reference/validation/check-engine',REPO/'generate/runs/current/check-engine.rs')}
     write('native-grader-provenance.json',{'entry_point':'course_academy_engine::learning::grade_field','hashes':provenance,'database_writes':0})
     # Originals plus clearly marked generated variants; no claim of raw-correct
     # blank values/solutions that the snapshot never captured.
-    prose=['# Axis-perpendicular generator review','', 'Source snapshot: math basis 1356. Authored numeric policies for M/H have no observed difficulty labels; categorical workload is constant.','']
+    prose=['# Axis-perpendicular generator review','', 'Source snapshot: math basis 1356. Only easy is supported. M/H examples are archived representation experiments, not supported difficulty bands.','']
     for item in review:
         if item['role']=='source_replay':
             source=sources[item['source_id']]
@@ -224,7 +224,7 @@ def main():
             prose+=['',source.get(':question/worked-solution','No worked solution captured; replay solution is authored from the canonical method.'),'']
         prose+=['## '+item['label'],'',g.markdown(item['record']),'','---','']
     (HERE/'review.md').write_text('\n'.join(prose))
-    report={'status':'passed','basis':1356,'source_coverage':{'practice_questions':8,'replayed':8,'exact_prompts':8,'exact_field_layouts':8,'radio_banks_matched':6,'radio_banks_total':6,'choice_values_matched':30,'choice_values_total':30,'distractors_matched':24,'distractors_total':24,'observed_correct_refs_matched':6,'observed_correct_refs_total':6,'missing_correct_refs_derived_not_matched':4,'exact_observed_solutions':6,'observed_solutions_total':6,'missing_solutions_authored':2},'source_cases':fidelity,'generated_math_checks':tested,'distinct_sampled_mathematical_tasks':{level:len(s) for level,s in fingerprints.items()},'correct_choice_positions':sorted(positions),'explicit_invalid_rejections':len(invalid),'native_grading':json.loads((HERE/'native-grading.json').read_text()),'known_limitations':['No observed moderate/hard labels; harder numeric representations do not make a categorical axis decision an intrinsically hard skill.','Blank fragments are graded independently; scalar-equivalent whole equations with both fragments changed are outside canonical field grading.','Observed distractor operations reproduce banks, but original authoring intent is not identified.'],'plots':'none','database_writes':0}
+    report={'status':'passed','basis':1356,'source_coverage':{'practice_questions':8,'replayed':8,'exact_prompts':8,'exact_field_layouts':8,'radio_banks_matched':6,'radio_banks_total':6,'choice_values_matched':30,'choice_values_total':30,'distractors_matched':24,'distractors_total':24,'observed_correct_refs_matched':6,'observed_correct_refs_total':6,'missing_correct_refs_derived_not_matched':4,'exact_observed_solutions':6,'observed_solutions_total':6,'missing_solutions_authored':2},'source_cases':fidelity,'generated_math_checks':tested,'distinct_sampled_mathematical_tasks':{level:len(s) for level,s in fingerprints.items()},'correct_choice_positions':sorted(positions),'explicit_invalid_rejections':len(invalid),'native_grading':json.loads((HERE/'native-grading.json').read_text()),'supported_levels':['easy'],'unsupported_levels':['moderate','hard'],'experimental_representation_checks_do_not_support_difficulty':True,'known_limitations':['No observed moderate/hard labels; harder numeric representations do not make a categorical axis decision an intrinsically hard skill.','Blank fragments are graded independently; scalar-equivalent whole equations with both fragments changed are outside canonical field grading.','Observed distractor operations reproduce banks, but original authoring intent is not identified.'],'plots':'none','database_writes':0}
     write('validation.json',report)
     print(f'Passed: all 8 sources; 6 banks / 30 choices / 24 distractors; {tested} displayed-math instances; native grader passed.')
 

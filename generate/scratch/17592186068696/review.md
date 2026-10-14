@@ -1259,6 +1259,7 @@ Therefore, the correct answer is $x=-3$ and $x=-0.5$ and $x=1.5$.
 
 
 
+
 ## Parent QA true-origin correction
 
 Version `graph-discontinuity-2-zero-axes` extends the viewport to include actual x=0 and y=0; curve coordinates and correct answers retain their affine transformation. The original failing single blank at scale2/shift+3 now shows the true origin and the break at x=7. Its axis begins before 0, while the curve begins at x=3. Axis labels are attached to the true positive axes.

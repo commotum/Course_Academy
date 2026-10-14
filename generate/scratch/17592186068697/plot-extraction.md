@@ -1,3 +1,7 @@
+# Current production scope
+
+For neighborhood-checkbox-finite-3, all figures below are reused unchanged as the current source content-addressed PNGs. Plot-generation rating: none. No translated raster or authored fractional plot is production output. Source image bytes, visible local topology and reference availability were verified at basis 2228 and rechecked during locked preparation. The historical extraction below preserves topology evidence; its transform/rendering descriptions apply to archived v2 only.
+
 # Plot extraction and specification
 
 ## 1. Native inspection

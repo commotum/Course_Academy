@@ -17,3 +17,24 @@ Introduction (69567) → Continuity at a Point (69576) → determining continuit
 The introduction supplies the pencil-break criterion and a jump; the preceding KP includes an asymptote; this KP's canonical example has breaks at 0, 1 and 2.5. The following KP separately asks definedness and one-sided limit behavior. Authored levels stay before that boundary: they never ask for a limit, its existence/value, derivatives, formulas, or discontinuity classifications.
 
 The missing-level workload claims are authored, not recovered source labels. Easy retains its observed integer-coordinate workload, even where three breaks are shown. Moderate requires all three mixed graphical breaks and reading exactly one half-unit coordinate from half-unit labelled ticks. Hard requires exactly two midpoints from unit labelled ticks plus ignoring a continuous corner. Signed coordinates and minimum separation 1.5 are mandatory; explicit inputs obey the same constraints. Each level is an unordered same-workload family, not a progression within a level.
+
+
+## Current inventory reclassification (basis 2230)
+
+The live source still contains 17 practice questions. Seven coordinate-set
+questions now have checkbox fields; five remain five-image radio questions, four
+remain one/two-blank records without captured graphs, and one has no answer fields.
+The complete live read, including every field-owned Boolean bank and correct
+reference, is retained in `reference/replenishment/initial.edn` and
+`basis-2230/before.edn`. `basis-2230/current-classification.json` assigns every
+source to a profile, reports field types/counts and eligibility, and records the
+10 distinct fresh usable easy tasks after historical exposure/reservation reads.
+The fieldless and four missing-widget records are preserved and excluded.
+
+The checkbox migration changes the response layout; it does not change the
+underlying graph or worked solution. Historical radio evidence at basis 1356 and
+its complete-bank fidelity reports remain valid historical evidence, separately
+from these current Boolean-bank checks. This job samples only the existing
+validated authored moderate/hard templates and does not replace a live checkbox
+question with a radio question. Source graph locations and all 17 worked
+solutions are unchanged. All plots remain heavy.
