@@ -38,7 +38,12 @@ def task_fingerprint(level,kind,a,h,ivs):
 def tex(v):return sp.latex(sp.sympify(v)).replace('\\log','\\ln')
 def signed(v):return ('+' if v>0 else '-')+tex(abs(v)) if v else ''
 def endpoint(s):
- s=s.strip();return -sp.oo if s==r'-\infty' else sp.oo if s==r'\infty' else sp.sympify(s.replace(r'\sqrt{2}','sqrt(2)').replace(r'\frac','frac'),rational=True)
+ s=s.strip()
+ if s==r'-\infty':return -sp.oo
+ if s==r'\infty':return sp.oo
+ s=re.sub(r'\\frac\{([^{}]+)\}\{([^{}]+)\}',r'((\1)/(\2))',s)
+ s=re.sub(r'\\sqrt\{([^{}]+)\}',r'sqrt(\1)',s)
+ return sp.sympify(s,rational=True)
 def parse_interval(s):
  m=re.search(r'([\[(])\s*(.*?)\s*,\s*(.*?)\s*([\])])',s)
  if not m:raise ValueError('Invalid interval '+s)
@@ -208,7 +213,7 @@ def authored(level,template,p,seed):
  q={':question/id':uid(content),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[make_field('selection',bank,correct,content)]}
  return q,{'version':VERSION,'seed':seed,'template':template,'bank_profile':'authored','parameters':p,'family':kind,'origin':'authored missing-level extension' if level=='hard' else 'authored same-level extension','eligible_for_learning':True,'evidence_only':False,'missing_keys':[],'plot_rating':'none','plot_sidecars':[],'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},'content_fingerprint':content,'parameter_fingerprint':task_fingerprint(level,kind,a,h,ivs)}
 
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def generate_legacy(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard') or field_type not in (None,'radio'):raise ValueError('Supported difficulty and field type required')
  rng=random.Random(seed)
  eligible=[s for s,v in SPECS.items() if v[0]==level ]
@@ -237,6 +242,46 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  for f in q.get(':question/answer-fields',[]):random.Random(seed).shuffle(f[':answer-field/choices'])
  g.update({'python_version':sys.version.split()[0],'sympy_version':sp.__version__})
  return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':q,'generation':g}
+
+# Current database response contract: one checkbox per supplied interval.
+CURRENT_SNAPSHOT=json.loads((HERE/'current-source.json').read_text())
+CURRENT=CURRENT_SNAPSHOT['record']
+CURRENT_SOURCES={q[':question/math-academy-id']:q for q in CURRENT[':knowledge-point/questions']}
+CURRENT_VERSION='1.1.0-checkbox'
+ROMANS=('I','II','III')
+def mathematical_fingerprint(level,kind,a,h,ivs):
+ # Unordered topology: interval/Roman permutation, folded formula family,
+ # reflection, translation and numeric aliases cannot replenish inventory.
+ if kind=='linear':return digest([level,'nonzero_line' if a else 'constant'])
+ topology=[[str(sp.sign(lo-h)),str(sp.sign(hi-h)),lo==-sp.oo,hi==sp.oo,l,r] for lo,hi,l,r in ivs]
+ return digest([level,'folded',sorted(topology,key=lambda z:json.dumps(z))])
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ if field_type not in (None,'checkbox'):raise ValueError('Current field type is checkbox')
+ if profile and profile.startswith('current:'):
+  import copy
+  q=copy.deepcopy(CURRENT_SOURCES[profile.split(':',1)[1]])
+  if q[':question/difficulty'][':db/ident']!=':question.difficulty/'+level:raise ValueError('Source level mismatch')
+  return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':CURRENT_VERSION,'seed':seed,'template':profile,'bank_profile':'current boolean bank','source_replay':True,'evidence_only':True,'eligible_for_learning':False}}
+ r=generate_legacy(level,seed,template,None,parameters,profile)
+ q,meta=r['question'],r['generation']
+ if not meta['eligible_for_learning']:return r
+ selected=next(a for a in q[':question/answer-fields'][0][':answer-field/choices'] if a[':answer/id']==q[':question/answer-fields'][0][':answer-field/correct'][1])
+ correct=choice_subset(selected[':answer/value'])
+ supplied=re.findall(r'\$([^$]*\\in[^$]*)\$',q[':question/problem'])
+ assert len(supplied)==3
+ prompt=q[':question/problem'].splitlines()[0]+'\n\nSelect all that apply.\n\n'+('\n\n' if meta['template'] in CURRENT_SOURCES and '\n\n- **II.**' in CURRENT_SOURCES[meta['template']][':question/problem'] else '\n').join('- **'+label+'.** $'+text+'$' for label,text in zip(ROMANS,supplied))
+ content=digest([CURRENT_VERSION,level,prompt,q[':question/worked-solution'],sorted(correct)])
+ q[':question/id']=uid(content);q[':question/problem']=prompt;fields=[]
+ for label in ROMANS:
+  fid=uid(content+':checkbox:'+label)
+  answers=[{':answer/id':uid(fid+':'+value),':answer/type':':answer.type/text',':answer/value':value} for value in ('false','true')]
+  desired='true' if label in correct else 'false'
+  fields.append({':answer-field/id':fid,':answer-field/key':label,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':answers,':answer-field/correct':[':answer/id',next(a[':answer/id'] for a in answers if a[':answer/value']==desired)]})
+ q[':question/answer-fields']=fields
+ ivs=[parse_interval(t) for t in supplied]
+ pars=meta['parameters'];kind=meta['family'];a=pars.get('a',0 if kind=='linear' else 1);h=sp.sympify(pars.get('h',0))
+ meta.update({'version':CURRENT_VERSION,'legacy_sampling_profile':meta['bank_profile'],'bank_profile':'field-owned boolean','mathematical_fingerprint':mathematical_fingerprint(level,kind,a,h,ivs),'current_source_basis':CURRENT_SNAPSHOT['basis'],'current_source_lineage':CURRENT_SNAPSHOT['lineage'],'assets':{str(i):path for i,path in enumerate(re.findall(r'!\[\]\((/[^)]+)\)',q[':question/worked-solution']))}})
+ return r
 
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):
  """Easy: four observed nonzero-line layouts or authored constant contrast."""

@@ -122,7 +122,7 @@ def main():
  for name,source in g.SOURCES.items():
   level,kind,a,h,k,_=g.SPECS[name];params={'a':a,'h':h,'k':k,'offset':0};profile='raw' if name=='q-66785' else 'observed'
   case={'source_id':name,'template':name,'difficulty':level,'parameters':params,'bank_profile':profile};cases.append(case)
-  r=g.generate(level,template=name,parameters=params,profile=profile);q=r['question'];inspect(r)
+  r=g.generate_legacy(level,template=name,parameters=params,profile=profile);q=r['question'];inspect(r)
   assert q[':question/problem']==source[':question/problem']
   assert q[':question/worked-solution']==source[':question/worked-solution']
   assert (':question/answer-fields' in q)==(':question/answer-fields' in source)
@@ -138,44 +138,44 @@ def main():
   for variant in (1,2):
    pp={'a':int(sp.sign(a))*(variant+1) if kind=='linear' else a,'h':int(sp.sign(h))*(abs(h)+variant) if h else 0,'k':int(sp.sign(k))*(abs(k)+variant) if k else 0,'offset':variant if kind=='linear' else 0}
    # Ensure variants stay at equal-level bounds; source k=4 ->6 maximum.
-   rr=g.generate(level,variant,template=name,parameters=pp,profile='repaired' if name=='q-66785' else 'observed');inspect(rr);review.append(rr)
+   rr=g.generate_legacy(level,variant,template=name,parameters=pp,profile='repaired' if name=='q-66785' else 'observed');inspect(rr);review.append(rr)
  for template in ('constant','integer_quadratic','integer_absolute','rational_quadratic','rational_absolute'):
   level='easy' if template=='constant' else 'moderate' if template.startswith('integer_') else 'hard'
-  for seed in (11,29):r=g.generate(level,seed,template=template);inspect(r);review.append(r)
+  for seed in (11,29):r=g.generate_legacy(level,seed,template=template);inspect(r);review.append(r)
  # Default sampling must serve every supported family/template.
- defaults=[g.generate(level,seed) for level in ('easy','moderate','hard') for seed in range(48)]
+ defaults=[g.generate_legacy(level,seed) for level in ('easy','moderate','hard') for seed in range(48)]
  for r in defaults:inspect(r)
  assert {r['generation']['template'] for r in defaults if r['question'][':question/difficulty'].endswith('/moderate')}==({n for n,s in g.SPECS.items() if s[0]=='moderate'}|{'integer_quadratic','integer_absolute'})
  # Fixed parameters/profile and domains preserve identities through seed shuffles.
  for r in review:
   gg=r['generation'];level=r['question'][':question/difficulty'].split('/')[-1]
-  twin=g.generate(level,10001,gg['template'],parameters=gg['parameters'],profile=gg['bank_profile'])
+  twin=g.generate_legacy(level,10001,gg['template'],parameters=gg['parameters'],profile=gg['bank_profile'])
   assert r['question'][':question/id']==twin['question'][':question/id'] and gg['parameter_fingerprint']==twin['generation']['parameter_fingerprint']
  # Mathematical parameter spelling cannot change displayed identity.
- original=g.generate('moderate',0,'q-36010',parameters={'a':1,'h':3,'k':2,'offset':0})
- alias=g.generate('moderate',91,'q-36010',parameters={'a':'1','h':'3','k':'2','offset':'0'})
+ original=g.generate_legacy('moderate',0,'q-36010',parameters={'a':1,'h':3,'k':2,'offset':0})
+ alias=g.generate_legacy('moderate',91,'q-36010',parameters={'a':'1','h':'3','k':'2','offset':'0'})
  assert original['question'][':question/id']==alias['question'][':question/id']
  # Every finite hard catalog element: 6 choose 2 branch types * 6 positions =90.
  catalog=[list(order) for pair in itertools.combinations([t for t in g.HARD_TYPES if t!='X'],2) for order in itertools.permutations([*pair,'X'])]
  fingerprints=set()
  for types in catalog:
-  r=g.generate('hard',template='rational_quadratic',parameters={'h':'1/2','k':0,'types':types});inspect(r);fingerprints.add(r['generation']['parameter_fingerprint'])
+  r=g.generate_legacy('hard',template='rational_quadratic',parameters={'h':'1/2','k':0,'types':types});inspect(r);fingerprints.add(r['generation']['parameter_fingerprint'])
  assert len(fingerprints)==90
  moderate_catalog=[list(order) for half in g.MODERATE_TYPES for finite in g.HARD_TYPES if finite!='X' for order in itertools.permutations([half,finite,'X'])]
  moderate_fingerprints=set()
  for types in moderate_catalog:
-  rr=g.generate('moderate',template='integer_absolute',parameters={'h':2,'k':-1,'types':types});inspect(rr);moderate_fingerprints.add(rr['generation']['parameter_fingerprint'])
+  rr=g.generate_legacy('moderate',template='integer_absolute',parameters={'h':2,'k':-1,'types':types});inspect(rr);moderate_fingerprints.add(rr['generation']['parameter_fingerprint'])
  assert len(moderate_fingerprints)==72
  # Explicit guards apply equally to random and fixed inputs.
  rejects=[('hard','rational_quadratic',{'h':'1','k':0,'types':['L','R','X']}),('hard','rational_absolute',{'h':'1/5','k':0,'types':['L','R','X']}),('easy','constant',{'k':7,'offset':0}),('moderate','q-66482',{'a':1,'h':1,'k':2,'offset':0})]
  for level,temp,pars in rejects:
-  try:g.generate(level,template=temp,parameters=pars)
+  try:g.generate_legacy(level,template=temp,parameters=pars)
   except ValueError:pass
   else:raise AssertionError('Invalid explicit workload accepted')
  # Concurrent calls share no mutable input file; fresh content uses unique names.
  pars=[{'a':1,'h':5,'k':5,'offset':0},{'a':1,'h':6,'k':6,'offset':0}]
  with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
-  concurrent_rs=list(pool.map(lambda pp:g.generate('moderate',33,'q-36010',parameters=pp),[pars[0],pars[0],pars[1]]))
+  concurrent_rs=list(pool.map(lambda pp:g.generate_legacy('moderate',33,'q-36010',parameters=pp),[pars[0],pars[0],pars[1]]))
  for r in concurrent_rs:inspect(r)
  assert concurrent_rs[0]['question'][':question/id']==concurrent_rs[1]['question'][':question/id']!=concurrent_rs[2]['question'][':question/id']
  assert not list((HERE/'plots').glob('tmp*.json'))
