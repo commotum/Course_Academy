@@ -974,8 +974,9 @@ async function renderTask(data) {
         : el('p', 'continue-hint', 'Waiting for new questions. You can return to this lesson from Study.'));
     }
     const earned = data.xpEarned ?? data.xp?.earned ?? (typeof data.xp === 'number' ? data.xp : null);
+    const base = data.xpBase ?? data.xp?.base;
     if (earned !== null && earned !== undefined) {
-      const xp = el('div', 'completion-xp', `${earned >= 0 ? '+' : ''}${earned} `); xp.append(el('small', '', 'XP')); done.append(xp);
+      const xp = el('div', 'completion-xp', `${earned}${base != null ? '/' + base : ''} `); xp.append(el('small', '', 'XP')); done.append(xp);
     }
     if (data.assessmentScore) done.append(el('p', '', `${data.assessmentScore.correct} of ${data.assessmentScore.total} correct · ${data.assessmentScore.unanswered} unanswered`));
     const completionActions = el('div', 'completion-actions');

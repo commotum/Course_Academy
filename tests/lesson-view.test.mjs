@@ -245,7 +245,7 @@ test('resuming in a fresh session restores the database presentation chain as re
 test('a completed attempt reopens as a full read-only lesson history without restarting its timer', async () => {
   const f = fixture();
   await f.h.render(activity(2, 3, {
-    status: 'completed', xp: 7,
+    status: 'completed', xp: 7, xpBase: 10,
     step: { ...activity(2).step, status: 'completed' },
     history: [{ order: 1, number: 1, total: 3, step: question(1, 'correct') }],
     progress: { stepNumber: 3, totalSteps: 3, presented: 2 },
@@ -254,6 +254,7 @@ test('a completed attempt reopens as a full read-only lesson history without res
   assert.equal(f.h.view.history.size, 2);
   assert.equal(f.h.view.feed.children.length, 3);
   assert.match(f.h.view.current.textContent, /Activity complete/);
+  assert.equal(f.h.view.current.querySelector('.completion-xp').textContent, '7/10 XP');
   for (const node of f.h.view.feed.children.slice(0, 2)) {
     assert.equal(node.dataset.history, 'true');
     assert.equal(node.querySelector('.answer-actions'), null);

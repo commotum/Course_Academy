@@ -1,0 +1,341 @@
+{
+  "q-2035": {
+    "level": "easy",
+    "parameters": {
+      "a": 3
+    },
+    "record_mask": {
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@\\cot z + C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@\\sec z\\tan z + C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@\\tan z + C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@\\sec z + C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@\\csc z + C"
+            }
+          ],
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio"
+        }
+      ],
+      ":question/problem": "What is $\\displaystyle \\int@a@\\sec^{2} zdz$?"
+    },
+    "evidence_only": true,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "Complete observed expression bank and operative source stages."
+  },
+  "q-49118": {
+    "level": "moderate",
+    "parameters": {
+      "a": 8
+    },
+    "record_mask": {
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\csc x - @a@\\cot x + C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sec x + @a@\\tan x + C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\sec x + @half@\\csc x + C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@\\sec x\\tan x + C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-@a@\\sec x\\csc x + C"
+            }
+          ],
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio"
+        }
+      ],
+      ":question/problem": "What is $\\displaystyle \\int\\sec x(\\tan x + @a@\\sec x)dx$?"
+    },
+    "evidence_only": true,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "q-49118 half-scale/cross-function opaque; retained expression pattern only, no claimed recovered error intent."
+  },
+  "q-113935": {
+    "level": "easy",
+    "parameters": {
+      "n": 3,
+      "d": 2
+    },
+    "record_mask": {
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "$\\int -\\frac{@n@}{@d@}{sec}^{2}x\\,\\text{d}x=$",
+      ":question/worked-solution": "Recall that \n\n$$\n\\int {sec}^{2}x\\,\\text{d}x=\\operatorname{tan}x+C\n$$\n\nTherefore, we get\n\n$$\n\\begin{aligned}\\begin{aligned}\\int -\\frac{@n@}{@d@}{sec}^{2}x\\,\\text{d}x & =-\\frac{@n@}{@d@}\\int {sec}^{2}x\\,\\text{d}x \\\\  & =-\\frac{@n@}{@d@}(\\operatorname{tan}x)+C \\\\  & =-\\frac{@n@}{@d@}\\operatorname{tan}x+C.\\end{aligned}\\end{aligned}\n$$"
+    },
+    "evidence_only": true,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "Complete observed expression bank and operative source stages."
+  },
+  "q-2162": {
+    "level": "moderate",
+    "parameters": {
+      "a": 2
+    },
+    "record_mask": {
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "$\\int (@a@{sec}^{2}x-\\operatorname{sin}x)\\,\\text{d}x=$",
+      ":question/worked-solution": "Recall that\n\n$$\n\\begin{aligned}\\int \\operatorname{sin}x\\,\\text{d}x & =-\\operatorname{cos}x+C, \\\\ \\int {sec}^{2}x\\,\\text{d}x & =\\operatorname{tan}x+C.\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\begin{aligned}\\int (@a@{sec}^{2}x-\\operatorname{sin}x)\\,\\text{d}x & =\\int @a@{sec}^{2}x\\,\\text{d}x-\\int \\operatorname{sin}x\\,\\text{d}x \\\\  & =@a@\\operatorname{tan}x-(-\\operatorname{cos}x)+C \\\\  & =@a@\\operatorname{tan}x+\\operatorname{cos}x+C.\\end{aligned}\\end{aligned}\n$$"
+    },
+    "evidence_only": true,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "Complete observed expression bank and operative source stages."
+  },
+  "q-2165": {
+    "level": "moderate",
+    "parameters": {
+      "b": 1
+    },
+    "record_mask": {
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "$\\int (\\operatorname{sec}x\\operatorname{tan}x-@coef@{sec}^{2}x)\\,\\text{d}x=$",
+      ":question/worked-solution": "Recall that\n\n$$\n\\begin{aligned}\\int \\operatorname{sec}x\\operatorname{tan}x\\,\\text{d}x & =\\operatorname{sec}x+C, \\\\ \\int {sec}^{2}x\\,\\text{d}x & =\\operatorname{tan}x+C.\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\begin{aligned}\\int (\\operatorname{sec}x\\operatorname{tan}x-@coef@{sec}^{2}x)\\,\\text{d}x & =\\int \\operatorname{sec}x\\operatorname{tan}x\\,\\text{d}x-@coef@\\int {sec}^{2}x\\,\\text{d}x \\\\  & =\\operatorname{sec}x-@coef@\\operatorname{tan}x+C.\\end{aligned}\\end{aligned}\n$$"
+    },
+    "evidence_only": true,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "Complete observed expression bank and operative source stages."
+  },
+  "q-113936": {
+    "level": "easy",
+    "parameters": {
+      "a": 2
+    },
+    "record_mask": {
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@sec⁡\\theta +C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-@a@csc⁡\\theta +C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-{csc}^{2}⁡\\theta +C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{tan}^{2}⁡\\theta +C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@tan⁡\\theta +C"
+            }
+          ],
+          ":answer-field/correct": "@a@tan⁡\\theta +C",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio"
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "$\\int @a@{sec}^{2}⁡\\theta \\,\\text{d}\\theta =$",
+      ":question/worked-solution": "Recall that \n\n$$\n\\int {sec}^{2}⁡\\theta \\,\\text{d}\\theta =tan⁡\\theta +C\n$$\n\nTherefore, we get\n\n$$\n\\begin{aligned}\\begin{aligned}\\int @a@{sec}^{2}⁡\\theta \\,\\text{d}\\theta  & =@a@\\int {sec}^{2}⁡\\theta \\,\\text{d}\\theta  \\\\  & =@a@tan⁡\\theta +C.\\end{aligned}\\end{aligned}\n$$"
+    },
+    "evidence_only": false,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "Complete observed expression bank and operative source stages."
+  },
+  "q-113937": {
+    "level": "easy",
+    "parameters": {
+      "a": 4
+    },
+    "record_mask": {
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-@a@sec⁡z+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@tan⁡z+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@{sec}^{2}⁡z+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@cot⁡z+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-@a@tan⁡z+C"
+            }
+          ],
+          ":answer-field/correct": "-@a@tan⁡z+C",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio"
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "$\\int -@a@{sec}^{2}⁡z\\,\\text{d}z=$",
+      ":question/worked-solution": "Recall that \n\n$$\n\\int {sec}^{2}⁡z\\,\\text{d}z=tan⁡z+C\n$$\n\nTherefore, we get\n\n$$\n\\begin{aligned}\\begin{aligned}\\int -@a@{sec}^{2}⁡z\\,\\text{d}z & =-@a@\\int {sec}^{2}⁡z\\,\\text{d}z \\\\  & =-@a@(tan⁡z)+C \\\\  & =-@a@tan⁡z+C.\\end{aligned}\\end{aligned}\n$$"
+    },
+    "evidence_only": false,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "Complete observed expression bank and operative source stages."
+  },
+  "q-113944": {
+    "level": "moderate",
+    "parameters": {
+      "b": 2
+    },
+    "record_mask": {
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{tan}⁡x+@b@\\operatorname{csc}⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{cot}⁡x-@b@{csc}^{2}⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{tan}⁡x-@b@\\operatorname{cot}⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{cot}⁡x+@b@\\operatorname{csc}⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\operatorname{tan}⁡x+@b@{csc}^{2}⁡x+C"
+            }
+          ],
+          ":answer-field/correct": "\\operatorname{tan}⁡x+@b@\\operatorname{csc}⁡x+C",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio"
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "$\\int ({sec}^{2}⁡x-@b@\\operatorname{csc}⁡x\\operatorname{cot}⁡x)\\,\\text{d}x=$",
+      ":question/worked-solution": "Recall that\n\n$$\n\\begin{aligned}\\int \\operatorname{csc}⁡x\\operatorname{cot}⁡x\\,\\text{d}x & =-\\operatorname{csc}⁡x+C \\\\ \\int {sec}^{2}⁡x\\,\\text{d}x & =\\operatorname{tan}⁡x+C.\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\begin{aligned}\\int ({sec}^{2}⁡x-@b@\\operatorname{csc}⁡x\\operatorname{cot}⁡x)\\,\\text{d}x & =\\int {sec}^{2}⁡x\\,\\text{d}x-@b@\\int \\operatorname{csc}⁡x\\operatorname{cot}⁡x\\,\\text{d}x \\\\  & =\\operatorname{tan}⁡x-@b@(-\\operatorname{csc}⁡x)+C \\\\  & =\\operatorname{tan}⁡x+@b@\\operatorname{csc}⁡x+C.\\end{aligned}\\end{aligned}\n$$"
+    },
+    "evidence_only": false,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "Complete observed expression bank and operative source stages."
+  },
+  "q-2164": {
+    "level": "moderate",
+    "parameters": {
+      "b": 4
+    },
+    "record_mask": {
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@b@csc⁡x+tan⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-@b@csc⁡x-tan⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@b@csc⁡x+sec⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-@b@cot⁡x+tan⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-@b@csc⁡x+tan⁡x+C"
+            }
+          ],
+          ":answer-field/correct": "-@b@csc⁡x+tan⁡x+C",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio"
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "$\\int (@b@csc⁡xcot⁡x+{sec}^{2}⁡x)\\,\\text{d}x=$",
+      ":question/worked-solution": "Recall that\n\n$$\n\\begin{aligned}\\int csc⁡xcot⁡x\\,\\text{d}x & =-csc⁡x+C \\\\ \\int {sec}^{2}⁡x\\,\\text{d}x & =tan⁡x+C.\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\begin{aligned}\\int (@b@csc⁡xcot⁡x+{sec}^{2}⁡x)\\,\\text{d}x & =\\int @b@csc⁡xcot⁡x\\,\\text{d}x+\\int {sec}^{2}⁡x\\,\\text{d}x \\\\  & =@b@(-csc⁡x)+tan⁡x+C \\\\  & =-@b@csc⁡x+tan⁡x+C.\\end{aligned}\\end{aligned}\n$$"
+    },
+    "evidence_only": false,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "Complete observed expression bank and operative source stages."
+  },
+  "q-49122": {
+    "level": "moderate",
+    "parameters": {
+      "a": 7,
+      "b": 4
+    },
+    "record_mask": {
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-@a@tan⁡x+@b@csc⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-@a@tan⁡x-@b@csc⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@tan⁡x+@b@sec⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@cot⁡x+@b@sec⁡x+C"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "@a@cot⁡x-@b@sec⁡x+C"
+            }
+          ],
+          ":answer-field/correct": "@a@tan⁡x+@b@sec⁡x+C",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio"
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Calculate $\\int sec⁡x(@a@sec⁡x+@b@tan⁡x)\\text{d}x.$",
+      ":question/worked-solution": "Recall that\n\n$$\n\\begin{aligned}\\int sec⁡xtan⁡x\\,\\text{d}x & =sec⁡x+C, \\\\ \\int {sec}^{2}⁡x\\,\\text{d}x & =tan⁡x+C.\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\begin{aligned}\\int sec⁡x(@a@sec⁡x+@b@tan⁡x)\\text{d}x & =\\int (@a@{sec}^{2}⁡x+@b@sec⁡xtan⁡x)\\text{d}x \\\\  & =\\int @a@{sec}^{2}⁡x\\,\\text{d}x+\\int @b@sec⁡xtan⁡x\\,\\text{d}x \\\\  & =@a@\\int {sec}^{2}⁡x\\,\\text{d}x+@b@\\int sec⁡xtan⁡x\\,\\text{d}x \\\\  & =@a@tan⁡x+@b@sec⁡x+C.\\end{aligned}\\end{aligned}\n$$"
+    },
+    "evidence_only": false,
+    "parameter_constraints": "positive magnitudes 1..9; nonunit easy coefficient a>=2; reduced fractions n,d in 2..9, n!=d; q-49118 even a to preserve integral half-coefficient",
+    "interpretation": "Complete observed expression bank and operative source stages."
+  }
+}
