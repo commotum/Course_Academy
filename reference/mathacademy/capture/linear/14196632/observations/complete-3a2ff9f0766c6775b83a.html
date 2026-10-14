@@ -1,0 +1,1171 @@
+<!DOCTYPE html><html><head>
+        <title>Math Academy</title>
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="/img/favicon.ico">
+        <link rel="stylesheet" href="/css/app.css?v=2">
+        <link rel="stylesheet" href="/css/mathquill.css">
+        <link rel="stylesheet" href="/css/math-editor.css">
+
+        <link rel="stylesheet" href="/css/prism.css">
+        <script type="text/javascript" src="/js/prism.js"></script>
+
+        <script type="text/javascript" src="/js/jquery.1.11.0.min.js"></script>
+
+        <script>
+            $.noConflict();
+            // Code that uses other library's $ can follow here.
+        </script>
+
+        <script type="text/javascript" src="/js/mathquill.v2.1.min.js"></script>
+        <script type="text/javascript" src="/js/math-editor.js"></script> 
+        <script type="text/javascript" src="/js/mathjax-config.js?v=2"></script>
+        <script type="text/javascript" id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="loadMathJaxFallback()"></script>
+        <!--
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>        
+        <script type="text/javascript" src="/js/katex-config.js"></script>
+        -->
+
+        <script>
+            function showSupportDialog() {
+                const dlg = new SupportDialog();
+                dlg.show();
+            }            
+        </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+        <script type="text/javascript" src="/js/commonFunctions.js"></script>
+        <script type="text/javascript" src="/js/core.js"></script>
+        <script type="text/javascript" src="/js/core-ui.js"></script>
+        <script type="text/javascript" src="/js/api.js"></script>
+        <script type="text/javascript" src="/js/api-new.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+        <script type="text/javascript" src="/js/jdom.js"></script>
+        <script type="text/javascript" src="/js/header.js"></script>
+
+        <script>
+            var userTimeZone = 'America/Los_Angeles';
+            checkTimeZone(userTimeZone);
+        </script>
+
+        <style>
+            div#courseNameHeader {
+                margin-top: 50px;
+            }            
+        </style>        
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/color.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/enclose.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/bbox.js" charset="UTF-8"></script></head>
+
+    <body>
+        
+        <div id="topRibbon"></div>
+        
+
+        <div id="wrap">
+
+            
+            <div id="topBarContainer">
+
+                <table style="width: 1080px;">
+                    <tbody><tr>
+                        <td style="width: 100px;">
+                            <a href="/"><img class="logo" src="/img/math-academy-350-logo.png"></a>
+                        </td>
+                        <td>
+                            <div id="headerLinks">
+                                
+                                    
+                                        <a id="learnHeaderLink" class="headerLink" href="/learn">LEARN</a>
+                                        
+                                     
+
+                                         
+
+                                                                     
+                                                                                        
+                                                                                                   
+                                                    
+                                             
+                                    
+                                             
+
+                                                                          
+                                        <a id="coursesHeaderLink" class="headerLink" onmouseover="showCoursesMenu(this, 'coursesMenu');">COURSES</a>  
+                                      
+                                  
+                            </div>
+
+                            
+
+                            <div id="coursesMenu">
+                                <table id="coursesMenu-coursesTable" cellspacing="0" cellpadding="0">
+                                <tbody><tr>
+                                    <td class="coursesMenu-categoryList" style="padding-right: 15px;">
+                                        <div class="coursesMenu-categoryHeader">Elementary School</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/4th-grade-math">4th Grade Math</a></div>                                             
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/5th-grade-math">5th Grade Math</a></div>         
+                                        
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Middle School</div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/6th-grade-math">6th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/7th-grade-math">7th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/8th-grade-math">8th Grade Math</a></div>         
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/prealgebra">Prealgebra</a></div>
+                                
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">High School</div>
+
+                                        <div class="coursesMenu-courseSequence" style="margin-top: 20px;">Traditional</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-i">Algebra I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/geometry">Geometry</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-ii">Algebra II</a></div>       
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i">Integrated Math I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii">Integrated Math II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii">Integrated Math III</a></div>   
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+                                
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math (Honors)</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i-honors">Integrated Math I (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii-honors">Integrated Math II (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii-honors">Integrated Math III (Honors)</a></div>                                     
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Test Prep</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-fundamentals">SAT Math Fundamentals</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-prep">SAT Math Prep</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/act-math">ACT Math</a> *</div>
+                                    </td>
+                                    <td class="coursesMenu-categoryList">
+
+                                        <div class="coursesMenu-categoryHeader">AP Courses</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-ab">AP Calculus AB</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-bc">AP Calculus BC</a></div>
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Foundations Series</div>
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-i">Mathematical Foundations I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-ii">Mathematical Foundations II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-iii">Mathematical Foundations III</a></div>                                        
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">University</div>            
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-i">Calculus I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-ii">Calculus II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/linear-algebra">Linear Algebra</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/multivariable-calculus">Multivariable Calculus</a></div>                                     
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/methods-of-proof">Methods of Proof</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/differential-equations">Differential Equations</a></div>                                           
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/discrete-mathematics">Discrete Mathematics</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/probability-and-statistics">Probability &amp; Statistics</a></div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematics-for-machine-learning">Mathematics For Machine Learning</a></div>      
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-i">Mathematical Methods for the Physical Sciences I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-ii">Mathematical Methods for the Physical Sciences II</a></div>                                                                             
+                                                            
+                                        <div class="coursesMenu-course">
+                                            <a class="coursesMenu-courseLink" href="/courses/abstract-algebra">Abstract Algebra</a> *
+                                        </div>        
+                                    </td>
+                                </tr>
+                                </tbody></table>
+
+                                <div style="margin-top: 20px;">
+                                    * <span id="coursesMenu-underDevelopment">Currently under development</span> 
+                                </div>                            
+                            </div>                        
+                        </td>
+                        <td style="width: 250px;">
+                            <div id="topMenu">
+                                
+                                    
+
+                                        
+
+                                        
+                                            <div id="userHeader" onmouseover="showMenu(this, 'userMenu');">HC</div>
+                                        
+
+                                        <div id="userMenu">
+                                            <div id="userMenu-info">
+                                                <div id="userMenu-name">Harrison Charles</div>
+                                                
+                                                    <div id="userMenu-username">linearharrison</div>
+                                                
+                                            </div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/settings/profile');">Settings</div>
+
+                                            
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/help');">Help</div>
+
+                                            <div class="headerMenuItem" onmousedown="showSupportDialog();">Support</div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/logout');">Logout</div>                                        
+                                        </div>
+                                    
+                                                            
+                            </div> 
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+            
+
+            <div id="mathjaxCommands" style="display: none;">
+                $
+                \newcommand{\sech}{\mathop{\rm sech}\nolimits}
+                \newcommand{\csch}{\mathop{\rm csch}\nolimits}
+                \newcommand{\coth}{\mathop{\rm coth}\nolimits}
+                \newcommand{\arsinh}{\mathop{\rm arsinh}\nolimits}
+                \newcommand{\arcosh}{\mathop{\rm arcosh}\nolimits}
+                \newcommand{\artanh}{\mathop{\rm artanh}\nolimits}
+                \newcommand{\arsech}{\mathop{\rm arsech}\nolimits}
+                \newcommand{\arcsch}{\mathop{\rm arcsch}\nolimits}
+                \newcommand{\arcoth}{\mathop{\rm arcoth}\nolimits}
+                $
+            </div>
+
+            <div id="content">
+                <style>
+div#courseName {
+    width: 600px;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(64, 64, 64);
+    text-transform: uppercase;
+}
+
+div#pageTitle {
+    margin-top: 5px;
+    width: 600px;
+    font-size: 28px;
+    color: #0577c7;
+}
+
+div.message {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgb(128, 128, 128);
+}
+
+div.testDetails {
+    margin-left: 15px;
+    margin-top: 30px;
+    font-size: 14px;
+    padding-bottom: 30px;
+} 
+
+div.message {
+    margin-left: 5px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgb(128, 128, 128);
+}
+
+div.courseFrame {
+    padding: 15px;
+    border: 1px solid rgb(224, 224, 224);
+    margin-bottom: 20px;
+}
+
+div.courseHeader {
+    margin-bottom: 20px;
+    font-size: 18px; 
+    font-weight: bold;
+    color: rgb(64, 64, 64);    
+}
+
+div.progressBarFrame {
+    position: relative;
+    width: 1015px;
+    height: 6px;
+    background: rgb(240, 241, 242);
+    border-radius: 3px;
+}
+
+div.progressBar {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 6px;
+    border-radius: 3px;
+    background-color: rgb(202, 203, 204);
+}
+
+div.topicsInCourse {
+    width: 1015px;
+    padding-top: 5px;
+    margin-bottom: 15px;
+    text-align: right;
+    font-size: 13px; 
+    color: rgb(164, 164, 164);
+}
+
+div.unitHeader {
+    padding-top: 20px; 
+    padding-bottom: 10px; 
+    font-size: 14px; 
+    font-weight: bold;
+    color: rgb(64, 64, 64);
+}
+
+div.unitNumTopics {
+    margin-top: 4px;
+    margin-bottom: 10px;
+    font-size: 13px; 
+    font-weight: normal;
+    color: rgb(164, 164, 164);
+}
+
+div.topic {
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+div.correctAnswer {
+    display: inline-block;
+    width: 70px;
+    color: green;
+}
+
+div.incorrectAnswer {
+    display: inline-block;
+    width: 70px;
+    color: red;
+}
+</style>
+    
+    <script src="/js/disable-back-button.js"></script>
+    
+    <div style="margin-left: 20px; padding-top: 30px;">
+        <div id="courseName">Mathematical Foundations II: Placement Exam</div>
+    
+        <div id="tabList" style="padding-top: 40px;">
+            <div class="tabSelected">Analysis</div>
+            <!--
+            <div class="tab" onmousedown="Core.navigate('/tasks/14196632/diagnostics/387593/results');">Questions</div>
+            -->
+        </div>
+    
+        <div class="testDetails">
+    
+            
+                <div class="courseFrame">
+                    <div class="courseHeader">
+                        Mathematical Foundations I
+                    </div>    
+
+
+                    
+                        <div class="unitHeader">
+                            V. Equations &amp; Inequalities
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/modeling-with-linear-equations-426">23.2. Modeling With Linear Equations</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            XII. Geometry Fundamentals
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/areas-of-circles-1745">42.4. Areas of Circles</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            VI. Two-Variable Equations
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/solving-systems-of-linear-equations-using-elimination-two-transformations-4236">28.5. Solving Systems of Linear Equations Using Elimination: Two Transformations</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            VIII. Functions
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/constructing-linear-functions-6219">32.13. Constructing Linear Functions</a>
+                            </div> 
+                            
+                        
+                    
+                </div>
+            
+                <div class="courseFrame">
+                    <div class="courseHeader">
+                        Mathematical Foundations II
+                    </div>    
+
+
+                    
+                        <div class="unitHeader">
+                            III. Number Systems
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/sums-and-products-of-rational-and-irrational-numbers-2034">8.2. Sums and Products of Rational and Irrational Numbers</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/multiplying-complex-numbers-33">9.5. Multiplying Complex Numbers</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/the-magnitude-of-a-complex-number-34">10.2. The Magnitude of a Complex Number</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            XI. Limits &amp; Continuity
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/finding-the-existence-of-a-limit-using-one-sided-limits-625">40.3. Finding the Existence of a Limit Using One-Sided Limits</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/the-product-and-quotient-rules-for-limits-1246">41.3. The Product and Quotient Rules for Limits</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            XIV. Probability &amp; Combinatorics
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/the-likelihood-of-an-event-7221">50.5. The Likelihood of an Event</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/venn-diagrams-in-probability-793">50.9. Venn Diagrams in Probability</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/computing-probabilities-of-events-containing-complements-using-venn-diagrams-4361">51.5. Computing Probabilities of Events Containing Complements Using Venn Diagrams</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/the-rules-of-sum-and-product-161">52.1. The Rules of Sum and Product</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/computing-probabilities-using-combinatorics-132">52.7. Computing Probabilities Using Combinatorics</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            X. Vectors
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/unit-vectors-1104">38.6. Unit Vectors</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            XIII. Statistics
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/estimating-means-and-variances-for-grouped-data-126">48.3. Estimating Means and Variances For Grouped Data</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/residuals-and-residual-plots-3595">49.7. Residuals and Residual Plots</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            IX. Trigonometry
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/trigonometric-functions-of-complementary-angles-510">30.7. Trigonometric Functions of Complementary Angles</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/the-area-of-a-general-triangle-1275">31.3. The Area of a General Triangle</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/angles-in-the-coordinate-plane-1848">32.1. Angles in the Coordinate Plane</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/angles-in-the-coordinate-plane-1848">32.1. Angles in the Coordinate Plane</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/extending-the-trigonometric-ratios-using-angles-in-radians-4037">32.7. Extending the Trigonometric Ratios Using Angles in Radians</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/finding-trigonometric-ratios-of-quadrantal-angles-269">33.1. Finding Trigonometric Ratios of Quadrantal Angles</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            II. Polynomials
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/closure-properties-of-polynomials-942">3.1. Closure Properties of Polynomials</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/factoring-higher-order-polynomials-as-a-difference-of-squares-660">4.2. Factoring Higher-Order Polynomials as a Difference of Squares</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/multiplicities-of-the-roots-of-polynomials-88">6.5. Multiplicities of the Roots of Polynomials</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/the-remainder-theorem-847">6.6. The Remainder Theorem</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            IV. Functions
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/the-arithmetic-of-functions-140">11.1. The Arithmetic of Functions</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/introduction-to-inverse-functions-753">11.6. Introduction to Inverse Functions</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/invertible-functions-1889">11.10. Invertible Functions</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/even-and-odd-functions-725">11.13. Even and Odd Functions</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/horizontal-translations-of-functions-1584">12.2. Horizontal Translations of Functions</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/constructing-functions-using-transformations-3845">12.9. Constructing Functions Using Transformations</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            VII. Sequences
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/fibonacci-sequences-73">24.3. Fibonacci Sequences</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/determining-indexes-of-terms-in-arithmetic-sequences-672">25.7. Determining Indexes of Terms in Arithmetic Sequences</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/finding-the-common-ratio-of-a-geometric-sequence-given-two-terms-2534">26.5. Finding the Common Ratio of a Geometric Sequence Given Two Terms</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            V. Exponentials &amp; Logarithms
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/converting-from-exponential-to-logarithmic-form-379">13.1. Converting From Exponential to Logarithmic Form</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/the-natural-logarithm-818">13.4. The Natural Logarithm</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/the-natural-logarithm-818">13.4. The Natural Logarithm</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/the-change-of-base-formula-for-logarithms-28">14.5. The Change of Base Formula for Logarithms</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/solving-exponential-equations-using-the-zero-product-property-2979">15.5. Solving Exponential Equations Using the Zero-Product Property</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/vertical-translations-of-exponential-decay-functions-456">17.2. Vertical Translations of Exponential Decay Functions</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            XII. Introduction to Calculus
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/the-instantaneous-rate-of-change-of-a-function-at-a-point-337">44.3. The Instantaneous Rate of Change of a Function at a Point</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/the-power-rule-for-differentiation-35">44.5. The Power Rule for Differentiation</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/calculating-the-equation-of-a-tangent-line-using-differentiation-986">44.8. Calculating the Equation of a Tangent Line Using Differentiation</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/interpreting-the-meaning-of-the-derivative-in-context-296">44.10. Interpreting the Meaning of the Derivative in Context</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            VI. Radical &amp; Rational Functions
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/adding-rational-expressions-with-no-common-factors-in-the-denominator-3739">19.3. Adding Rational Expressions With No Common Factors in the Denominator</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/inverses-of-reciprocal-functions-3944">21.5. Inverses of Reciprocal Functions</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/further-rationalizing-denominators-of-algebraic-expressions-6185">22.3. Further Rationalizing Denominators of Algebraic Expressions</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/roots-of-transformed-radical-functions-3530">23.9. Roots of Transformed Radical Functions</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            I. Quadratics
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/equating-polynomial-coefficients-6092">1.17. Equating Polynomial Coefficients</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/writing-the-equation-of-a-parabola-in-vertex-form-3546">2.9. Writing the Equation of a Parabola in Vertex Form</a>
+                            </div> 
+                            
+                        
+                    
+                        <div class="unitHeader">
+                            VIII. Geometry
+                        </div> 
+    
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/midpoints-in-the-coordinate-plane-485">27.4. Midpoints in the Coordinate Plane</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/rigid-motions-and-congruence-2218">28.11. Rigid Motions and Congruence</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/similarity-transformations-491">28.13. Similarity Transformations</a>
+                            </div> 
+                            
+                        
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="incorrectAnswer">Incorrect</div>
+                                
+                                
+                                <a href="/topics/identifying-three-dimensional-shapes-2467">29.1. Identifying Three-Dimensional Shapes</a>
+                            </div> 
+                            
+        
+                            <div class="topic">            
+                                
+                                    <div class="correctAnswer">Correct</div>
+                                
+                                
+                                <a href="/topics/volumes-of-rectangular-solids-1753">29.6. Volumes of Rectangular Solids</a>
+                            </div> 
+                            
+                        
+                    
+                </div>
+                
+        </div>
+    </div>
+        
+                    
+            </div> 
+        </div>
+
+        <link rel="stylesheet" href="/css/support-dialog.css">
+
+<script type="text/javascript" src="/js/support-dialog.js"></script>
+
+<div id="supportDialog">
+    <div id="supportDialog-title">Support</div>
+
+    <div id="supportDialog-message">
+        If you need support, please email <b>support@mathacademy.com</b>.
+    </div>
+
+    <div id="supportDialog-buttons">
+        <div id="supportDialog-closeButton">Close</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/xp-goals-dialog.css">
+
+<script type="text/javascript" src="/js/xp-goals-dialog.js"></script>
+
+<div id="xpGoalsDialog">
+    <div id="xpGoalsDialog-title">XP Goals</div>
+
+    <table id="xpGoalsDialog-goals" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+            <td class="xpGoalsDialog-dayOfWeek">Sun</td>
+            <td class="xpGoalsDialog-dayOfWeek">Mon</td>
+            <td class="xpGoalsDialog-dayOfWeek">Tue</td>
+            <td class="xpGoalsDialog-dayOfWeek">Wed</td>
+            <td class="xpGoalsDialog-dayOfWeek">Thu</td>
+            <td class="xpGoalsDialog-dayOfWeek">Fri</td>
+            <td class="xpGoalsDialog-dayOfWeek">Sat</td>
+        </tr>
+        <tr>
+            <td><input id="xpGoalsDialog-sunGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-monGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-tueGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-wedGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-thuGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-friGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-satGoal" class="xpGoalsDialog-goal" type="text"> </td>
+        </tr> 
+    </tbody></table>
+
+
+    <div id="xpGoalsDialog-courseCompletionText"></div>
+
+    <div id="xpGoalsDialog-pausedFrame">
+        <input id="xpGoalsDialog-paused" name="xpGoalsDialog-paused" type="checkbox"> 
+        <label id="xpGoalsDialog-pausedLabel" for="xpGoalsDialog-paused">Paused</label>
+    </div>
+
+    <div id="xpGoalsDialog-buttonBar">
+        <div id="xpGoalsDialog-submitButton">SUBMIT</div>
+        <div id="xpGoalsDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/course-dialog.css">
+
+<script type="text/javascript" src="/js/course-dialog.js"></script>
+
+<div id="courseDialog">
+    <div id="courseDialog-title">Change Course</div>
+
+    <div id="courseDialog-course">
+        <label id="courseDialog-courseLabel">Course</label>
+
+        <select id="courseDialog-courseSelect">
+            <option selected="">-</option>
+        </select>
+    </div>
+
+    <div id="courseDialog-buttonBar">
+        <div id="courseDialog-submitButton">SUBMIT</div>
+        <div id="courseDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+
+                
+
+                                    
+    
+              
+    
+</body></html>
