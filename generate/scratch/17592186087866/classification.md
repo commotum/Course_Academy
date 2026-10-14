@@ -1,19 +1,24 @@
-# Writing first-order linear ODEs in standard form
+# Classification at math basis 1356
 
-Source capture: `reference/source.json`, database math, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`, basis 2006. All nine practice questions, both fields of q-16400, and the canonical example were pulled together. Available inventory at that basis: easy 6, hard 1, moderate 0. Canonical examples never count as available practice.
+Database `math`, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Frozen source, topic and lesson wrappers are `source.json`, `topic.json`, and `lesson.json`. Old evidence under `reference/` belongs to earlier work and is not the current source basis.
 
-| Difficulty | Practice sources | Complete field layout | Templates | New plots |
-| --- | --- | --- | --- | --- |
-| Easy | q-16400, q-8359, q-103349, q-103354, q-16396, q-79697, q-79699, q-8360 | One radio `selection`, five mathematical equations | 8 | none, each template |
-| Hard | q-16401 | One radio `selection`, five mathematical equations | 1 | none |
-| Moderate | None | No observed field/layout | 0 | none |
+There are nine practice sources: eight labeled easy, one labeled hard, none labeled moderate. All fields are radio with five complete-equation choices. q-16400 has two legacy fields sharing `selection`; the first lacks a correct reference. Raw replay preserves both and this missing attribute. Normal output uses one supported five-choice field. No blank field is present; native complete-equation blank parser restrictions therefore do not affect this generator.
 
-Every template has its own complete source bank profile, named by source ID. q-16400 additionally has a duplicate `selection` field without a correct reference. Its values are retained as evidence and checked against the complete profile, but this malformed field is not reproduced in gradable output. No source field, question, or learner record is changed.
+| Level | Source / template | Mathematical backbone | Rows | Banks | Plots |
+|---|---|---|---:|---:|---|
+| easy | q-16400 | Move forcing and y term; divide constant leading coefficient | 3 | 2 legacy layouts | none |
+| easy | q-8359 | Split quotient; move y term; cancel x in forcing | 4 | 1 | none |
+| easy | q-103349 | Move forcing; divide exponential leading coefficient | 3 | 1 | none |
+| easy | q-103354 | Move forcing; divide cosine; double-angle expansion/cancellation | 5 | 1 | none |
+| easy | q-16396 | Collect; factor y; cancel nonzero y; isolate forcing | 6 | 1 | none |
+| easy | q-79697 | Invert derivative coefficient; cancel x; distribute; collect | 6 | 1 | none |
+| easy | q-79699 | Collect; factor -y; cancel y; multiply inverse exponential; collect | 8 | 1 | none |
+| easy | q-8360 | Move forcing; identify coefficient/forcing | 3 | 1 | none |
+| hard | q-16401 | Expand a square, cancel matching quadratic terms, collect linear term | 4 | 1 | none |
+| moderate, authored | rational-collect | Collect y terms from both sides, divide ax; two nontrivial rational coefficients | 3 | 1 authored | none |
 
-Easy templates respectively require rearranging a trig equation and dividing a constant, collecting a rational coefficient, dividing an exponential coefficient, dividing a trig coefficient and simplifying sin(2x), canceling a nonzero dependent factor, clearing a rational derivative coefficient, canceling a nonzero dependent factor and exponential coefficient, and rearranging cotangent terms. Hard expands a square, cancels the quadratic terms, and collects the remaining linear term. These different solution sequences remain separate templates even where the resulting normalized equations overlap.
+The raw source field count is ten; nine have original correct designations. Every source option is retained and compared, including the missing-correct legacy bank. Values are full equations; strict standard-form eligibility is distinct from ODE equivalence. q-8359 and q-8360 intentionally contain equivalent rearrangements which are not in the requested standard form. They are legitimate distractors, not ambiguous correct answers.
 
-The canonical example rearranges y' + y sin(x) - cos(x) = 0. The captured lesson narrative (`generate/runs/current/lessons/17592186050608.json`, historical basis 1356) teaches division by the derivative coefficient and recognition of P(x), Q(x). The prerequisite is Introduction to Differential Equations. Generated questions do not solve the ODE or introduce integrating factors.
+Lesson order follows first-step/next: Introduction → Standard Form tutorial → this KP → Identifying First-Order Linear ODEs → Homogeneous/Inhomogeneous tutorial → Identifying Homogeneous/Inhomogeneous ODEs. The prerequisite is Introduction to Differential Equations (topic 3215). Integrating factors belong to a later topic and are excluded, as are solving equations, classifying linearity, and homogeneous/inhomogeneous classification.
 
-Moderate is unsupported by this frozen package: the nine rated practice sources and the canonical example do not establish a separate moderate workload or response layout. The bounded classification examines all current source practice questions and the captured lesson context; it does not prove that no moderate template could ever be authored. New source evidence reopens classification. Moderate availability remains zero and is not called filled.
-
-All observed easy and hard templates are implemented. Positive integer coefficient/frequency bounds are documented sampling extensions, preserving the source algebra and workload rather than claiming recovered sampling rules. No negative source parameters were observed. Changing frequency inside a trig or exponential function creates a different mathematical coefficient. Common equation/dependent scaling, choice order, seeds, UUIDs and alternative rearrangements are excluded by semantic deduplication.
+Moderate is an explicit design claim, not a recovered source label: the canonical example collects a constant forcing term; the lesson defines P=b/a and Q=f/a; the authored moderate combines collection from both sides with division by a nonconstant ax. Nonzero d and c ensure neither rational coefficient loses its reciprocal-x contribution. There is no within-level progression.

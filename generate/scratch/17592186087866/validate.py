@@ -1,116 +1,161 @@
-"""Read displayed equations independently and exercise native radio grading."""
-import importlib.util,itertools,json,re,subprocess,sys,hashlib
+"""Independent displayed-ODE, complete-bank, stage and native-grader checks."""
+import copy, hashlib, importlib.util, itertools, json, re, subprocess, sys
 from pathlib import Path
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2]
 def module(name,path):
  spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
-g=module('standard_form',HERE.with_suffix('.py'));p=module('independent_scalar',ROOT/'generate/runs/current/ode-scalar-parser.py');s=g.s
+g=module('standard_form',HERE.with_suffix('.py'));p=module('display_parser',ROOT/'generate/runs/current/ode-scalar-parser.py');s=g.s
 MATH=re.compile(r'\$\$(.*?)\$\$',re.S)
 def strip_annotation(t):
  for tag in ('_{⏟}','_{P(x)}','_{Q(x)}'):t=t.replace(tag,'')
- # Underbrace is presentation only. Retain its grouped mathematical argument.
- t=t.replace(r'\underbrace','')
- return t
+ return t.replace(r'\underbrace','')
 def expression(t):
- t=re.sub(r'\\(?:dfrac|frac)\s*\{\\(?:textrm|text)\{d\}y\}\s*\{\\(?:textrm|text)\{d\}x\}', 'z', strip_annotation(t)).replace(r'\frac{\text{d}y}{\text{d}x}','z').replace(r'\frac{dy}{dx}','z')
- return p.scalar(t).subs(p.z,g.D)
+ for d in (r'\frac{\text{d}y}{\text{d}x}',r'\frac{dy}{dx}'):
+  t=t.replace(d,'z')
+ return p.scalar(strip_annotation(t)).subs(p.z,g.D)
 def equation(t):
- t=t.replace('&','').strip().rstrip('.,').removesuffix(r'\,')
- l,r=t.split('=');return expression(l),expression(r)
+ t=t.replace('&','').strip().rstrip('.,');t=t.split(r'\,,')[0]
+ t=re.sub(r'(?:,|\\,|\s)*[xy]\\ne.*','',t)
+ t=t.rstrip('.,').removesuffix(r'\,')
+ left,right=t.split('=');return expression(left),expression(right)
 def same(a,b):return s.simplify(s.trigsimp(a-b))==0
 def equivalent(a,b):return same(g.normalized(a),g.normalized(b))
-def fingerprint(q):
- block=re.sub(r'(?:,|\\,|\s)*[xy]\\ne.*','',MATH.findall(q[':question/problem'])[0].split(r'\,,')[0])
- e=equation(block);r=g.normalized(e);P=s.expand(r).coeff(g.y);Q=-r.subs({g.D:0,g.y:0})
- t=None
- for sid,q0 in g.SOURCES.items():
-  if str(q.get(':question/id'))==q0[':question/id']:t=sid
- canonical=g.REC[':knowledge-point/canonical-example']
- if str(q.get(':question/id'))==canonical[':question/id']:
-  # Canonical only: determine normalized equation directly; its domain is real.
-  domain='real x,y'
- else:
-  # Domain is a mathematical restriction, inferred from the actual derivative
-  # coefficient and rational terms; never a template/seed identity.
-  L,R=e;coeff=s.expand(L-R).coeff(g.D)
-  if coeff.has(s.cos) and not coeff.has(g.y):
-   arg=next(iter(coeff.atoms(s.cos))).args[0];domain='cos('+str(arg).replace(' ','')+') != 0'
-  elif (L-R).has(s.cot):domain='sin(x) != 0'
-  elif (L-R).has(1/g.x):domain='x != 0'
-  elif coeff.has(g.y):domain='y != 0'
-  else:domain='real x,y'
- return g.semantic(P,Q,domain)
-def native(rec):
- f=rec['question'][':question/answer-fields'][0]
- return {'label':rec['question'][':question/id'],'record':rec,'checks':[{'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Source-shaped complete radio bank'} for a in f[':answer-field/choices']]}
+def rows(q):
+ aligned=q[':question/worked-solution'].split(r'\begin{aligned}',1)[1].split(r'\end{aligned}',1)[0]
+ return aligned.split(r'\\')
+def formatting(q):
+ def walk(o):
+  if isinstance(o,dict):
+   for k,v in o.items():
+    if k in (':question/problem',':question/worked-solution',':answer/value'):
+     assert not any(ord(c)<32 and c not in '\n\t\r' for c in v),'C0 control character'
+     assert v.count('$')%2==0,'Unbalanced math delimiters'
+     depth=0
+     for ch in v:
+      if ch=='{':depth+=1
+      if ch=='}':depth-=1
+      assert depth>=0,'Unbalanced TeX group'
+     assert depth==0,'Unbalanced TeX group'
+    else:walk(v)
+  elif isinstance(o,list):
+   for v in o:walk(v)
+ walk(q)
 def check(rec):
- meta=rec['generation'];level=rec['question'][':question/difficulty'].split('/')[-1]
- assert level in g.LEVELS and meta['template'] in g.FAMILIES[level]
- replay=g.generate(level,meta['seed'],meta['template'],meta['parameters'],meta['bank_profile']);expected=json.loads(json.dumps(rec));expected['generation'].pop('inventory_fingerprint',None);assert replay==expected
- q=rec['question'];prompt=equation(MATH.findall(q[':question/problem'])[0].split(r'\,,')[0]);P=s.expand(g.normalized(prompt)).coeff(g.y);Q=-g.normalized(prompt).subs({g.D:0,g.y:0})
- fields=q[':question/answer-fields'];assert len(fields)==1
- f=fields[0];answers=[equation(a[':answer/value']) for a in f[':answer-field/choices']]
- assert len(answers)==5 and len({a[':answer/id'] for a in f[':answer-field/choices']})==5
- good=[g.standard(a) and equivalent(a,prompt) for a in answers];correct=[a[':answer/id']==f[':answer-field/correct'][1] for a in f[':answer-field/choices']]
- assert sum(good)==1 and good==correct
- # Ensure distinct displayed forms even for legitimate equivalent rearrangements.
- assert not any(same(a[0],b[0]) and same(a[1],b[1]) for a,b in itertools.combinations(answers,2))
- blocks=MATH.findall(q[':question/worked-solution']);alignment=next(b for b in blocks if r'\begin{aligned}' in b)
- rows=alignment.split(r'\begin{aligned}',1)[1].split(r'\end{aligned}')[0].split(r'\\')
- assert len(rows)==len(g.data(meta['template'],meta['parameters'])['stages'])
- for row in rows:assert equivalent(equation(row),prompt),(meta,row)
- final=q[':question/worked-solution'].split('Now, the equation',1)[1]
- cp=re.search(r'\$P\(x\)=(.*?)\$',final)[1];cq=re.search(r'\$Q\(x\)=(.*?)\.\$',final)[1]
+ q=rec['question'];m=rec['generation'];level=m['difficulty'];t=m['template']
+ assert set(rec['knowledge_point'])=={'db_id','id','title'}
+ assert m['python']==sys.version.split()[0]
+ assert level in g.LEVELS and t in g.FAMILIES[level]
+ assert q[':question/difficulty']==':question.difficulty/'+level
+ formatting(q)
+ prompt=equation(MATH.findall(q[':question/problem'])[0]);res=g.normalized(prompt)
+ P=s.expand(res).coeff(g.y);Q=-res.subs({g.D:0,g.y:0})
+ assert same(res,g.D+P*g.y-Q)
+ for f in q[':question/answer-fields']:
+  assert f[':answer-field/type']==':answer-field.type/radio' and f[':answer-field/key']=='selection'
+  answers=[equation(a[':answer/value']) for a in f[':answer-field/choices']]
+  assert len(answers)==5 and len({a[':answer/id'] for a in f[':answer-field/choices']})==5
+  eligible=[g.standard(a) and equivalent(a,prompt) for a in answers]
+  if ':answer-field/correct' in f:
+   correct=[a[':answer/id']==f[':answer-field/correct'][1] for a in f[':answer-field/choices']]
+   assert sum(eligible)==1 and eligible==correct,(t,eligible,correct)
+  assert not any(g.standard(a) and g.standard(b) and equivalent(a,b) for a,b in itertools.combinations(answers,2))
+ for row in rows(q):assert equivalent(equation(row),prompt),(t,row)
+ conclusion=q[':question/worked-solution'].split('Now, the equation',1)[1]
+ cp=re.search(r'\$P\(x\)=(.*?)\$',conclusion)[1];cq=re.search(r'\$Q\(x\)=(.*?)\.\$',conclusion)[1]
  assert same(expression(cp),P) and same(expression(cq),Q)
- assert meta['mathematical_fingerprint']==g.semantic(P,Q,meta['domains'])
- return len(rows)
+ if not m['evidence_only']:
+  expected=g.stage_rows(t,m['parameters'],g.data(t,m['parameters']))
+  assert [r.replace('&','').strip() for r in rows(q)]==expected,'Operative stage mask lost'
+  # Original denominator and common-factor restrictions are enforced before CAS.
+  if t in ('q-8359','q-79697','rational-collect'):assert r'x\ne 0' in q[':question/problem'] and m['domains']=='x != 0'
+  if t in ('q-16396','q-79699'):assert r'y\ne 0' in q[':question/problem'] and m['domains']=='y != 0'
+  if t=='q-103354':assert r'\ne 0' in q[':question/problem'] and m['domains']==str(s.cos(m['parameters']['n']*g.x))+' != 0'
+  if t=='q-8360':assert r'\sin x\ne 0' in q[':question/problem']
+  assert m['mathematical_fingerprint']==g.semantic(P,Q,m['domains'],t),(t,m['parameters'],P,Q)
+ return len(rows(q))
+def source_compare(t,r):
+ old=g.SOURCES[t];new=r['question']
+ for k in (':question/problem',':question/worked-solution'):
+  assert (k in old)==(k in new);assert old[k]==new[k]
+ assert (':question/difficulty' in old)==(':question/difficulty' in new)
+ assert (':question/answer-fields' in old)==(':question/answer-fields' in new)
+ assert len(old[':question/answer-fields'])==len(new[':question/answer-fields'])
+ total=0;corrects=0
+ for f,h in zip(old[':question/answer-fields'],new[':question/answer-fields']):
+  assert f[':answer-field/key']==h[':answer-field/key']
+  assert f[':answer-field/type'][':db/ident']==h[':answer-field/type']
+  assert (':answer-field/correct' in f)==(':answer-field/correct' in h)
+  assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in h[':answer-field/choices'])
+  if ':answer-field/correct' in f:
+   got=next(a[':answer/value'] for a in h[':answer-field/choices'] if a[':answer/id']==h[':answer-field/correct'][1]);assert got==f[':answer-field/correct'][':answer/value'];corrects+=1
+  total+=len(f[':answer-field/choices'])
+ return total,corrects
+def native(rec):
+ # Legacy raw field has no key; retain it in evidence but create a documented
+ # grading fixture for each completed field. Never infer a raw correct ref.
+ fixture=copy.deepcopy(rec);fixture['question'][':question/answer-fields']=[f for f in fixture['question'][':question/answer-fields'] if ':answer-field/correct' in f]
+ checks=[]
+ for fi,f in enumerate(fixture['question'][':question/answer-fields']):
+  for a in f[':answer-field/choices']:
+   checks.append({'field_index':fi,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Every owned radio option; legacy missing-correct field excluded only from fixture'})
+ return {'label':rec['question'][':question/id'],'record':fixture,'checks':checks}
+def expect_failure(rec,mutate):
+ broken=copy.deepcopy(rec);mutate(broken['question'])
+ try:check(broken)
+ except (AssertionError,ValueError,IndexError):return
+ raise AssertionError('Required mutation accepted')
 def main():
- report={'source_basis':g.RAW['basis'],'lineage':g.RAW['lineage'],'source_fidelity':{'complete_banks':0,'matched_distractors':0,'total_distractors':0,'banks':[],'excluded_fields':[]},'validation':{}}
- records=[];reviews=[];rows=0
- for t,q in g.SOURCES.items():
-  level='hard' if t=='q-16401' else 'easy';r=g.generate(level,template=t,parameters=g.ORIGINAL[t]);rows+=check(r)
-  prompt=equation(re.sub(r'(?:,|\\,|\s)*[xy]\\ne.*', '', MATH.findall(q[':question/problem'])[0]));assert equivalent(prompt,equation(MATH.findall(r['question'][':question/problem'])[0].split(r'\,,')[0]))
-  for f in q[':question/answer-fields']:
-   complete=':answer-field/correct' in f
-   old=[equation(a[':answer/value']) for a in f[':answer-field/choices']];new=[equation(a[':answer/value']) for a in r['question'][':question/answer-fields'][0][':answer-field/choices']]
-   matches=[]
-   for i,a in enumerate(old):
-    candidates=[j for j,b in enumerate(new) if same(a[0],b[0]) and same(a[1],b[1]) and equivalent(a,b)]
-    assert len(candidates)==1,(t,f[':db/id'],a,candidates);matches.append(candidates[0])
-   assert len(set(matches))==len(old)==len(new)==5
-   if complete:
-    oc=next(i for i,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][':answer/id']);assert matches[oc]==g.data(t,g.ORIGINAL[t])['correct']
-    report['source_fidelity']['complete_banks']+=1;report['source_fidelity']['matched_distractors']+=4;report['source_fidelity']['total_distractors']+=4
-   else:report['source_fidelity']['excluded_fields'].append({'source_id':t,'field_db_id':f[':db/id'],'reason':'Missing correct reference and duplicate selection key; original preserved, omitted from generated response layout','matched_options':5})
-   report['source_fidelity']['banks'].append({'source_id':t,'field_db_id':f[':db/id'],'options_matched':5,'complete':complete,'missing':[],'extra':[]})
-  # Independently check every original worked-solution equation too.
-  aligned=q[':question/worked-solution'].split(r'\begin{aligned}',1)[1].split(r'\end{aligned}',1)[0]
-  for row in aligned.split(r'\\'):assert equivalent(equation(row),prompt),(t,row)
-  records.append(r);reviews.append('## '+t+'\n\nOriginal:\n\n'+q[':question/problem']+'\n\n'+q[':question/worked-solution']+'\n\nReplayed:\n\n'+g.markdown(r))
- # Parameter boundaries and multiple changed parameters for every complete bank.
- for level,templates in g.FAMILIES.items():
-  for t in templates:
-   endpoints=[dict(zip(g.ORIGINAL[t],v)) for v in itertools.product(*[(2,5) if t=='q-16400' and k=='a' else (1,5) if t=='q-16400' and k in ('b','c') else (1,8) if t=='q-16400' else (1,6) if k in ('a','n') else (1,4) if t=='q-16401' else (2,8) if t=='q-79699' else (1,8) for k in g.ORIGINAL[t]])]
-   for par in endpoints:
-    r=g.generate(level,template=t,parameters=par);rows+=check(r);records.append(r)
+ report={'basis':g.RAW['basis'],'lineage':g.RAW['lineage'],'runtime':{'python':sys.version.split()[0],'sympy':s.__version__},'source_fidelity':{},'authored_missing_levels':['moderate']}
+ cases=[];records=[];reviews=[];nrows=0;options=corrects=0
+ for t in g.SOURCES:
+  level='hard' if t=='q-16401' else 'easy'
+  case={'source_id':t,'difficulty':level,'template':t,'parameters':{'n':1},'bank_profile':'observed-raw'};cases.append(case)
+  raw=g.generate(level,template=t,parameters=case['parameters'],profile='observed-raw');nrows+=check(raw);a,b=source_compare(t,raw);options+=a;corrects+=b;records.append(raw)
+  changed=g.generate(level,template=t,parameters={'n':2},profile='observed-raw');nrows+=check(changed);records.append(changed)
+  observed=g.generate(level,template=t,parameters=g.ORIGINAL[t],profile=t);nrows+=check(observed);records.append(observed)
+  reviews.append('## Original '+t+' (basis 1356)\n\n'+g.markdown(raw)+'\n\n### Generated observed-family variant\n\n'+g.markdown(g.generate(level,17,template=t)))
+ for level in g.LEVELS:
+  for t in g.FAMILIES[level]:
    for seed in range(4):
-    r=g.generate(level,seed,template=t);rows+=check(r);records.append(r)
-   reviews.append('## Changed '+t+'\n\n'+g.markdown(records[-1]))
-   try:g.generate(level,template=t,parameters={k:0 for k in g.ORIGINAL[t]})
-   except ValueError:pass
-   else:raise AssertionError('Out-of-domain parameters accepted')
- try:g.generate('moderate')
- except ValueError:pass
- else:raise AssertionError('Unsupported band accepted')
- # Same mathematical task cannot count twice from dependent scaling, seed or IDs.
- a=g.generate('hard',5,parameters={'a':2,'b':2,'n':2});b=g.generate('hard',99,parameters={'a':4,'b':1,'n':2})
- assert a['generation']['mathematical_fingerprint']==b['generation']['mathematical_fingerprint']
- input_path=HERE/'native-input.json';input_path.write_text(json.dumps([native(r) for r in records],indent=2))
- subprocess.run([str(HERE/'check-current-engine'),str(input_path),str(HERE/'native-report.json')],check=True)
- native_report=json.loads((HERE/'native-report.json').read_text());assert native_report['documented_unresolved_checks']==0
- report['validation']={'instances':len(records),'independently_parsed_solution_rows':rows,'all_source_solution_rows_checked':True,'all_supported_profiles_exercised':True,'invalid_parameter_rejection':True,'scaling_alias_rejection':True,'seed_replay':True,'complete_equation_and_standard_form_eligibility_checked':True}
- report['fidelity_notes']=['Source instructional prose and ordered operations preserved. SymPy normalizes mathematical notation and grouping; exact byte/notation fidelity is not claimed. Explicit domains added where division requires them. Empty source math blocks omitted.','The missing-correct duplicate field in q-16400 is evidence only; the other complete field is the supported five-choice bank.','q-16396 and q-79697 wrong-answer transformations have opaque intent. Explicit generalized expressions are labeled hypotheses in extraction; original bank replay matches all values.']
- report['native_engine']=native_report;report['native_engine_sha256']=hashlib.sha256((HERE/'check-current-engine').read_bytes()).hexdigest();report['pass']=True
- (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n');(HERE/'review.md').write_text('# Original and generated review\n\n'+'\n\n---\n\n'.join(reviews)+'\n')
- print(json.dumps({'pass':True,'instances':len(records),'source_complete_banks':report['source_fidelity']['complete_banks'],'source_distractors':report['source_fidelity']['matched_distractors'],'solution_rows':rows}))
+    r=g.generate(level,seed,template=t);nrows+=check(r);records.append(r)
+   for seed in (31,47):
+    r=g.generate(level,seed,template=t);nrows+=check(r);records.append(r);reviews.append('## Generated '+level+' '+t+' seed '+str(seed)+'\n\n'+g.markdown(r))
+  # Two independent entrypoint examples per level.
+  assert len({r['generation']['mathematical_fingerprint'] for r in records if r['generation']['difficulty']==level and not r['generation']['evidence_only']})>=2
+ # Exercise every documented parameter boundary for each public normal family.
+ limits={'q-16400':{'a':(2,5),'b':(1,5),'c':(1,5),'h':(1,8)},'q-16401':{'a':(1,6),'b':(1,4),'n':(1,6)},'rational-collect':{'a':(2,8),'b':(1,8),'c':(1,8),'d':(1,8),'h':(1,8)}}
+ for t,pars in g.ORIGINAL.items():
+  level='hard' if t=='q-16401' else 'moderate' if t=='rational-collect' else 'easy'
+  limits.setdefault(t,{k:((2,8) if t=='q-79699' else (1,8)) for k in pars})
+  for k,(lo,hi) in limits[t].items():
+   for value in (lo,hi):
+    par=dict(pars);par[k]=value;r=g.generate(level,template=t,parameters=par);nrows+=check(r);records.append(r)
+   for value in (lo-1,hi+1):
+    par=dict(pars);par[k]=value
+    try:g.generate(level,template=t,parameters=par)
+    except ValueError:pass
+    else:raise AssertionError(('Bounds bypass',t,k,value))
+ # Identities depend on complete content, never seed/option order/profile aliases.
+ for level in g.LEVELS:
+  t=g.FAMILIES[level][0];par=g.ORIGINAL[t]
+  a=g.generate(level,3,template=t,parameters=par);b=g.generate(level,83,template=t,parameters=par)
+  assert a['question'][':question/id']==b['question'][':question/id']
+  assert a['generation']['mathematical_fingerprint']==b['generation']['mathematical_fingerprint']
+ assert g.generate_moderate(parameters={'a':2,'b':2,'c':1,'d':1,'h':1})['generation']['mathematical_fingerprint']==g.generate_moderate(parameters={'a':4,'b':4,'c':2,'d':2,'h':2})['generation']['mathematical_fingerprint']
+ # Default sampling must serve every source-supported family.
+ coverage={level:{g.generate(level,k)['generation']['template'] for k in range(24)} for level in g.LEVELS}
+ assert all(coverage[level]==set(g.FAMILIES[level]) for level in g.LEVELS)
+ a=g.generate_easy(template='q-79697',parameters={'k':3})
+ expect_failure(a,lambda q:q.__setitem__(':question/problem',q[':question/problem'].replace('x+3 y','x+4 y')))
+ expect_failure(a,lambda q:q.__setitem__(':question/worked-solution',q[':question/worked-solution'].replace('x(x+3 y)',r'x^{2}+3xy')))
+ expect_failure(a,lambda q:q.__setitem__(':question/worked-solution',q[':question/worked-solution']+'\x0c'))
+ a=g.generate_hard(parameters={'a':2,'b':3,'n':2})
+ expect_failure(a,lambda q:q.__setitem__(':question/worked-solution',q[':question/worked-solution'].replace('-12 y', '-11 y')))
+ # Native engine is separate from mathematics: every correct and wrong choice.
+ (HERE/'native-input.json').write_text(json.dumps([native(r) for r in records],indent=2))
+ subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
+ engine=json.loads((HERE/'native-report.json').read_text());assert engine['documented_unresolved_checks']==0
+ report.update({'source_fidelity':{'source_questions':9,'raw_exact_prompts':9,'raw_exact_solutions':9,'full_banks':10,'all_option_values':options,'matched_correct_designations':corrects,'missing_correct_designations':1,'distractors_with_original_designations':36,'raw_presence_parity':True},'native_engine':engine,'native_engine_sha256':hashlib.sha256((ROOT/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'checks':{'instances':len(records),'printed_solution_rows':nrows,'source_coordinate_changes':9,'all_default_families':{l:sorted(v) for l,v in coverage.items()},'parameter_boundaries':True,'mutation_regressions':4,'seed_order_identity':True,'common_scaling_deduplication':True},'pass':True,'findings':['q-16400 legacy duplicate field preserves missing correct ref in raw; omitted from supported default and native fixture. No source key was fabricated.','All original fields are radio, so complete-equation blank parser limitations do not affect this KP.','Normal mathematical notation is normalized; exact raw source strings are counted separately. Empty source display blocks are removed in normal output.','Original opaque banks are public evidence; normal defaults use separately labeled method-derived complete banks.']})
+ (HERE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n');(HERE/'review.json').write_text(json.dumps(records,indent=2)+'\n');(HERE/'review.md').write_text('# Original and generated questions\n\n'+'\n\n---\n\n'.join(reviews)+'\n');(HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
+ print(json.dumps({'pass':True,'instances':len(records),'raw_sources':9,'options_matched':options,'native_checks':engine.get('checks'),'solution_rows':nrows}))
 if __name__=='__main__':main()

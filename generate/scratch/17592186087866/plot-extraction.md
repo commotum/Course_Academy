@@ -1,3 +1,3 @@
-# Plot extraction and generation
+# Plot extraction
 
-Every current practice source, both q-16400 fields, and the canonical example were inspected as Markdown and answer values in the captured source. They contain only standalone mathematical notation, with no graph, diagram or asset references. All nine template ratings are **none**. Stages 5 and 7 therefore require no plot renderer or publication.
+All nine source practice questions, their 50 displayed choices, and their worked solutions contain algebraic TeX only. The canonical example and relevant lesson tutorial also have no mathematical plots. Plot rating: none. No renderer/assets are required or generated.

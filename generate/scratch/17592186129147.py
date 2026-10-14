@@ -147,10 +147,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if profile and template and t!=template:raise ValueError('template/profile mismatch')
  rng=random.Random(seed)
  if t is None:t=rng.choice([k for k,v in DATA.items() if v['level']==level])
- if t not in DATA:raise ValueError('unknown complete profile')
+ if t not in DATA or (raw and t not in SOURCES):raise ValueError('unknown complete profile')
  d=DATA[t]
  # Correct object is constructed first; the already-selected complete bank follows.
- p=parameters or {'roots':sorted(rng.sample(range(-4,5),len(d['roots']))),'m':d['m'][:],'a':rng.choice([-1,1])}
+ p=parameters if parameters is not None else {'roots':sorted(rng.sample(range(-4,5),len(d['roots']))),'m':d['m'][:],'a':rng.choice([-1,1])}
  p=json.loads(dump(p));validate_parameters(level,t,p);correct=polynomial(p);banks=graph_bank(t,p)
  if raw and t in SOURCES and p=={k:d[k] for k in ['roots','m','a']}:
   rel=re.search(r'!\[\]\(([^)]+)\)',SOURCES[t][':question/problem'])[1]

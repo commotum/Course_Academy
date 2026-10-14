@@ -24,7 +24,7 @@ def parse(v):
 def same(a,b):assert S.simplify(a-b)==0,(a,b)
 def learner(r):return r['question'][':question/problem']+'\n'+r['question'][':question/worked-solution']+'\n'+'\n'.join(a[':answer/value'] for f in r['question'][':question/answer-fields'] for a in f[':answer-field/choices'])
 def formatting(r):
- z=learner(r);assert not any(ord(c)<32 and c not in '\n\t\r' for c in z);assert z.count('$')%2==0
+ z=learner(r);assert not re.search(r'[+-]\s*-',z), 'ungrouped adjacent signs in displayed learner content';assert not any(ord(c)<32 and c not in '\n\t\r' for c in z);assert z.count('$')%2==0
  depth=0
  for i,c in enumerate(z):
   if c in '{}' and (i==0 or z[i-1]!='\\'):depth+=1 if c=='{' else -1;assert depth>=0
@@ -81,7 +81,8 @@ def check_source_structure(meta,sol):
   primitive=lambda a:ev(expectedG,'x',a[0],a[1])+r'\cdot '+ev(expectedH,'y',a[2],a[3])
   ends=lambda a:g.endpoint(G,x,a[0],a[1])+r'\cdot '+g.endpoint(H,y,a[2],a[3])
   collected=lambda a:g.par(G.subs(x,a[1])-G.subs(x,a[0]))+r'\cdot '+g.par(H.subs(y,a[3])-H.subs(y,a[2]))
-  required=[r'\iint_{\Delta_1}'+g.tex(C)+r'\,\mathrm dA-\iint_{\Delta_2}'+g.tex(C)+r'\,\mathrm dA',repeated(A)+'-'+repeated(B),separated(A)+'-'+separated(B),primitive(A)+'-'+primitive(B),ends(A)+'-'+ends(B),collected(A)+'-'+collected(B)]
+  sub=lambda u,v:u+'-'+(r'\left('+v+r'\right)' if v.lstrip().startswith('-') else v)
+  required=[r'\iint_{\Delta_1}'+g.tex(C)+r'\,\mathrm dA-\iint_{\Delta_2}'+g.tex(C)+r'\,\mathrm dA',sub(repeated(A),repeated(B)),sub(separated(A),separated(B)),sub(primitive(A),primitive(B)),sub(ends(A),ends(B)),sub(collected(A),collected(B))]
  assert_order(required)
  return required
 
@@ -190,6 +191,22 @@ def main():
     checks=[{'submitted':'0','expected':'accepted','purpose':'canonical zero'},{'submitted':'1-1','expected':'accepted','purpose':'equivalent zero'},{'submitted':'1','expected':'rejected','purpose':'incorrect nonzero'}]
    else:checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==correct else 'rejected','purpose':'complete bank ID'} for a in fd[':answer-field/choices']]
    native.append({'label':f+':'+str(seed),'record':z,'checks':checks})
+ signed_grammar=[]
+ for f,d in g.FAMILIES.items():
+  if d[0]!='hard':continue
+  baseline=g.generate_hard(91,template=f)['generation']['parameters']
+  for coefficient in (-3,-2,-1,1,2,3):
+   parameters={**baseline,'c':coefficient};rec=g.generate_hard(91,template=f,parameters=parameters);check_math(rec)
+   assert '--' not in learner(rec) and '+-' not in learner(rec)
+   field=rec['question'][':question/answer-fields'][0];checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==field[':answer-field/correct'][1] else 'rejected','purpose':'signed-grammar full bank'} for a in field[':answer-field/choices']]
+   native.append({'label':f+':signed:'+str(coefficient),'record':rec,'checks':checks});signed_grammar.append({'template':f,'coefficient':coefficient,'public_generate':True,'adjacent_signs_absent':True,'record':rec})
+ (ROOT/'signed-grammar-review.json').write_text(json.dumps(signed_grammar,indent=2)+'\n')
+ # Reverting a complete grouped hole primitive to bare subtraction must fail.
+ rec=g.generate_hard(91,template='rectangle_y2',parameters={**g.generate_hard(91,template='rectangle_y2')['generation']['parameters'],'c':-2});hole=rec['generation']['parameters']['hole'];stages=rec['generation']['stages'];product=g.evaluate(stages['primitive_tex']['x'],'x',hole[0],hole[1])+r'\cdot '+g.evaluate(stages['primitive_tex']['y'],'y',hole[2],hole[3]);grouped=r'\left('+product+r'\right)';assert '-'+grouped in rec['question'][':question/worked-solution']
+ bad=json.loads(json.dumps(rec));bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace('-'+grouped,'-'+product,1)
+ try:formatting(bad)
+ except AssertionError:pass
+ else:raise AssertionError('negative-hole-product grouping mutation escaped')
  for level in ('easy','moderate','hard'):
   observed={g.generate(level,seed)['generation']['template'] for seed in range(80)};assert observed=={f for f,d in g.FAMILIES.items() if d[0]==level}
  # Identity is invariant to seed/order with fixed mathematics/presentation.
@@ -238,7 +255,7 @@ def main():
  assert results[0]['generation']['plot']==results[1]['generation']['plot'] and results[0]['generation']['plot']!=results[2]['generation']['plot']
  (ROOT/'source-cases.json').write_text(json.dumps(sourcecases,indent=2)+'\n');(ROOT/'review.json').write_text(json.dumps(review,indent=2)+'\n');(ROOT/'native-input.json').write_text(json.dumps(native,indent=2)+'\n')
  subprocess.run(['generate/runs/current/check-engine',str(ROOT/'native-input.json'),str(ROOT/'native-results.json')],check=True)
- engine=json.loads((ROOT/'native-results.json').read_text());result={'pass':True,'source_fidelity':counts,'authored_easy':True,'normal_families_checked':sorted(families),'normal_checks':96,'normal_source_solution_fidelity':{'anchor_cases':11,'changed_cases':11,'ordered_source_operations':True,'equivalent_stage_mutations_rejected':6},'meaningful_tasks_in_checks':len(fingerprints),'native':{k:engine[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'source_anomalies':['q-126645 duplicate legacy selection lacks correct: preserved raw; one field normal','q-126937 singular ln(sin²y): raw premise invalid; normal ln(1+sin²y)','q-126939 wrong +cos primitive: raw retained; normal -cos','q-126938 intermediate upper bound2 typo: raw retained; normal outer bound3'],'source_mathematical_eligibility':{'valid_sources':10,'invalid_premises':1},'source_presentation_normalizations':{'q-169207':'remove stray differential after an evaluated primitive product; raw retained','radial_substitutions':'explicitly group full sum under the polar Jacobian','notation':'standard TeX commands and grouped signed products'},'native_ungradeable_original_fields':{'count':1,'reason':'duplicate legacy selection lacks original correct ref; raw replay retains absence'},'database_writes':0,'runtime':{'python':sys.version.split()[0],'sympy':S.__version__,'matplotlib':g.matplotlib.__version__}}
+ engine=json.loads((ROOT/'native-results.json').read_text());result={'pass':True,'source_fidelity':counts,'authored_easy':True,'normal_families_checked':sorted(families),'normal_checks':96,'signed_hard_grammar_regression':{'families':5,'coefficients':[-3,-2,-1,1,2,3],'public_cases':30,'grouping_mutation_rejected':True},'normal_source_solution_fidelity':{'anchor_cases':11,'changed_cases':11,'ordered_source_operations':True,'equivalent_stage_mutations_rejected':6},'meaningful_tasks_in_checks':len(fingerprints),'native':{k:engine[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'source_anomalies':['q-126645 duplicate legacy selection lacks correct: preserved raw; one field normal','q-126937 singular ln(sin²y): raw premise invalid; normal ln(1+sin²y)','q-126939 wrong +cos primitive: raw retained; normal -cos','q-126938 intermediate upper bound2 typo: raw retained; normal outer bound3'],'source_mathematical_eligibility':{'valid_sources':10,'invalid_premises':1},'source_presentation_normalizations':{'q-169207':'remove stray differential after an evaluated primitive product; raw retained','radial_substitutions':'explicitly group full sum under the polar Jacobian','notation':'standard TeX commands and grouped signed products'},'native_ungradeable_original_fields':{'count':1,'reason':'duplicate legacy selection lacks original correct ref; raw replay retains absence'},'database_writes':0,'runtime':{'python':sys.version.split()[0],'sympy':S.__version__,'matplotlib':g.matplotlib.__version__}}
  (ROOT/'validation.json').write_text(json.dumps(result,indent=2)+'\n')
  lines=['# Review: raw originals and generated variants','','Original raw records preserve source mistakes and legacy-field presence. Historical amplitude variants are evidence-only empirical banks; normal generated variants use complete method-derived banks. Easy is authored supplied-curl scope. All source/bank repairs are documented in template-extraction.md.','']
  for entry in review:

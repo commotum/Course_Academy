@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 315**, **queued: 65**, **working: 4**.
+**qa_passed: 315**, **queued: 62**, **working: 7**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -331,9 +331,9 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186068697](../../scratch/17592186068697.py) | Determining Continuity from Graphs | Determining the Behavior of a Function in the Neighborhood of a Point | 11 / 0 / 0 / 1 | working | — |
 | [17592186129145](../../scratch/17592186129145.py) | Graphing General Polynomials | Identifying the Factored Polynomial Shown in a Graph | 4 / 5 / 0 / 1 | working | — |
 | [17592186129147](../../scratch/17592186129147.py) | Graphing General Polynomials | Identifying the Graph of a Factored Polynomial | 0 / 5 / 2 / 0 | working | — |
-| 17592186129154 | Graphing General Polynomials | Identifying True Statements Regarding the Graph of a Given Polynomial | 5 / 3 / 0 / 2 | queued | — |
-| 17592186129253 | Graphing General Polynomials | Identifying Multiplicity of a Root Given a Graph | 5 / 0 / 0 / 2 | queued | — |
-| [17592186087866](../../scratch/17592186087866.py) | Introduction to First-Order Linear ODEs | Writing First-Order Linear ODEs in Standard Form | 8 / 0 / 1 / 0 | queued | — |
+| [17592186129154](../../scratch/17592186129154.py) | Graphing General Polynomials | Identifying True Statements Regarding the Graph of a Given Polynomial | 5 / 3 / 0 / 2 | working | — |
+| [17592186129253](../../scratch/17592186129253.py) | Graphing General Polynomials | Identifying Multiplicity of a Root Given a Graph | 5 / 0 / 0 / 2 | working | — |
+| [17592186087866](../../scratch/17592186087866.py) | Introduction to First-Order Linear ODEs | Writing First-Order Linear ODEs in Standard Form | 8 / 0 / 1 / 0 | working | — |
 | [17592186087868](../../scratch/17592186087868.py) | Introduction to First-Order Linear ODEs | Identifying Homogeneous and Inhomogeneous ODEs | 6 / 6 / 0 / 0 | queued | — |
 | [17592186096613](../../scratch/17592186096613.py) | Differentiating Logarithmic Functions | Differentiating the Product of a Constant and the Natural Logarithm Function | 7 / 0 / 0 / 2 | queued | — |
 | 17592186096614 | Differentiating Logarithmic Functions | Differentiating a Sum Containing a Natural Logarithm Function | 6 / 1 / 3 / 1 | queued | — |

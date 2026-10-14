@@ -103,6 +103,10 @@ def integ(lo,hi,z,var):return r'\int_{'+tex(lo)+'}^{'+tex(hi)+'}'+z+r'\,\mathrm 
 def evaluate(z,var,a,b):return z+r'\big|_{'+tex(a)+'}^{'+tex(b)+'}'
 def endpoint(e,var,a,b):return '('+par(e.subs(var,b))+'-'+par(e.subs(var,a))+')'
 def bound(a):return r'\{(x,y):'+tex(a[0])+r'\le x\le '+tex(a[1])+','+tex(a[2])+r'\le y\le '+tex(a[3])+r'\}'
+def subtract_display(left,right):
+ # Parentheses cover the COMPLETE negative-leading hole product. Positive
+ # source anchors keep their original subtraction presentation unchanged.
+ return left+'-'+(r'\left('+right+r'\right)' if right.lstrip().startswith('-') else right)
 def rect_solution(f,p,P,Q,Py,Qx,C):
  # Per-family split factors reproduce the source's primitive conventions.
  gx,gy={'rectangle_y2':(1,y**2),'rectangle_x3y2':(x**3,y**2),'rectangle_xy':(2*x,y),'rectangle_shift':(2*x,2*y),'rectangle_x2y3':(x**2,4*y**3)}[f];gx=S.sympify(gx)*p['c'];gy=S.sympify(gy);G=S.integrate(gx,x);H=S.integrate(gy,y);A=p['outer'];B=p['hole']
@@ -115,7 +119,7 @@ def rect_solution(f,p,P,Q,Py,Qx,C):
  def diffs(a):return [S.simplify(G.subs(x,a[1])-G.subs(x,a[0])),S.simplify(H.subs(y,a[3])-H.subs(y,a[2]))]
  av,bv=diffs(A),diffs(B);outer=S.prod(av);hole=S.prod(bv);ans=outer-hole
  sol='The region $D$ can be represented in Cartesian coordinates as $\\Delta_1\\setminus\\Delta_2,$ where\n\n- $\\Delta_1='+bound(A)+'$ is the region enclosed by the outer curve, and\n\n- $\\Delta_2='+bound(B)+'$ is the region enclosed by the inner curve.\n\nTherefore, our double integral becomes\n\n'
- sol+=aligned([r'\iint_D '+tex(C)+r'\,\mathrm dA & =\iint_{\Delta_1}'+tex(C)+r'\,\mathrm dA-\iint_{\Delta_2}'+tex(C)+r'\,\mathrm dA',repeated(A)+'-'+repeated(B),product(A)+'-'+product(B),prim(A)+'-'+prim(B),ends(A)+'-'+ends(B),par(av[0])+r'\cdot '+par(av[1])+'-'+par(bv[0])+r'\cdot '+par(bv[1]),tex(ans)])
+ sol+=aligned([r'\iint_D '+tex(C)+r'\,\mathrm dA & =\iint_{\Delta_1}'+tex(C)+r'\,\mathrm dA-\iint_{\Delta_2}'+tex(C)+r'\,\mathrm dA',subtract_display(repeated(A),repeated(B)),subtract_display(product(A),product(B)),subtract_display(prim(A),prim(B)),subtract_display(ends(A),ends(B)),par(av[0])+r'\cdot '+par(av[1])+'-'+par(bv[0])+r'\cdot '+par(bv[1]),tex(ans)])
  return sol,ans,outer,hole,{'gx':str(gx),'gy':str(gy),'G':str(G),'H':str(H),'primitive_tex':{'x':GT,'y':HT},'endpoint_components':[[str(G.subs(x,a[1])),str(G.subs(x,a[0])),str(H.subs(y,a[3])),str(H.subs(y,a[2]))] for a in (A,B)]}
 def held_scale(c,base):
  return base if c==1 else tex(c)+r'\cdot\left('+base+r'\right)'

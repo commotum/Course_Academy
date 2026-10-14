@@ -1,15 +1,9 @@
-# Writing first-order linear ODEs in standard form
+# Writing First-Order Linear ODEs in Standard Form
 
-Validated generator: `generate/scratch/17592186087866.py`. Observed bands: easy and hard. Moderate generation fails explicitly. The CLI uses the repository virtual environment when invoked by a system Python without SymPy.
+Frozen math basis 1356; all nine source practices retained. Easy and hard use observed families. Moderate is a lesson-supported authored collection/division workload. Scope ends at algebraic standard form; it does not solve an ODE.
 
-```sh
-python3 generate/scratch/17592186087866.py --difficulty hard --count 5 --seed 19 --format json
-.venv/bin/python generate/scratch/17592186087866/validate.py
-.venv/bin/python generate/scratch/17592186087866/replenish.py
-```
+Run `.venv/bin/python generate/scratch/17592186087866/validate.py` from the repo root. Preview: `.venv/bin/python generate/scratch/17592186087866.py --difficulty all --seed 23 --count 6 --format markdown`.
 
-Explicit source replay uses `--template SOURCE_ID --parameters JSON`. Original parameter shapes are in `source-cases.json`; the complete selected profile is the template's source ID. There are eight easy templates and one hard template. All source banks are replayed as full mathematical equations, with source field errors excluded explicitly. SymPy normalizes typography; byte-identical source notation is not claimed.
+Public API: `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)`, plus three named level entrypoints. The default profile is the complete method-derived bank. `profile="observed-raw"` uses the n coordinate-component slot and preserves original field/correct presence; all raw profiles are ineligible evidence. `profile=<source-id>` is a source-bank symbolic replay profile and is also ineligible evidence. Raw q-16400 has two duplicate-key fields and one missing designation; its missing-correct field remains visible and is omitted only from a documented native fixture.
 
-`classification.md`, `template-extraction.md/json`, `plot-extraction.md`, `review.md`, `validation.json`, and `capabilities.json` separate source observations, recipe hypotheses, mathematical validation, actual application grading and bounded exceptions. Hard has 90 distinct normalized tasks in its frozen parameter domain; easy has 526. These counts exclude seed/choice/identity/dependent-scale aliases and precede source/canonical/learner-history exclusions. Each replenishment rechecks the actual database before selecting new tasks.
-
-`replenish.py` uses the existing EDB integration and configured application contributor. It acquires `.local/learning/requests/math/api.lock` before basis/inventory reads and holds it through preview, basis-guarded submission, exact-basis readback and post-commit inventory. Each durable request and receipt stays in `replenishment/basis-N/`. Recovery uses the original request key and exact EDN. Datom checks permit only additive content in this KP and its generator registration, preserving all originals and learner history.
+`source-cases.json` maps all source replays; `bank-map.json` accounts for every option; `review.json` and `review.md` show original records and changed examples, including at least two for every level. `validation.json` separates raw fidelity, independent displayed mathematics and real native grading. Earlier `reference/` and `replenishment/` artifacts are historical and were not used or changed by this work.

@@ -38,6 +38,7 @@ def coordinates(s):
 
 def check(rec):
  assert set(rec['knowledge_point'])=={'db_id','id','title'}
+ assert rec['knowledge_point']=={'db_id':g.RECORD[':db/id'],'id':g.RECORD[':knowledge-point/id'],'title':g.RECORD[':knowledge-point/title']}
  q=rec['question'];field=q[':question/answer-fields'][0];p=rec['generation']['parameters']
  balanced(q[':question/problem']);balanced(q[':question/worked-solution'])
  f=displayed(rec);assert f==sp.expand(g.polynomial(p))
@@ -88,6 +89,7 @@ def run():
   assert prompt==rec['question'][':question/problem'];assert src[':question/worked-solution']==rec['question'][':question/worked-solution']
   sf=src[':question/answer-fields'][0];rf=rec['question'][':question/answer-fields'][0]
   assert sorted((a[':answer/value'],a[':answer/type'][':db/ident']) for a in sf[':answer-field/choices'])==sorted((a[':answer/value'],a[':answer/type']) for a in rf[':answer-field/choices'])
+  assert sf[':answer-field/key']==rf[':answer-field/key'] and sf[':answer-field/type'][':db/ident']==rf[':answer-field/type']
   assert sf[':answer-field/correct'][':answer/value']==r'\text{'+proof['correct']+'}'
   bank_report.append({'source_id':t,'complete_bank':True,'choices_matched':5,'graphs_mapped':4,'all_wrong_wrong_and_correct_wrong_pairs':proof['pairs'],'observed_key':proof['correct'],'raw_native_asset':rec['generation']['plot']['prompt']})
  # Two changed-parameter records for every profile, including authored easy.
@@ -101,7 +103,14 @@ def run():
    pp={**p,'a':p['a']*5};alias=g.generate(d['level'],parameters=pp,profile=t);assert alias['generation']['mathematical_fingerprint']==rec['generation']['mathematical_fingerprint'];assert alias['question'][':question/id']!=rec['question'][':question/id']
    # Structural stage fidelity is independent of value rendering.
    if t in g.SOURCES:
-    src=g.SOURCES[t][':question/worked-solution'];assert len(rec['question'][':question/worked-solution'].split('\n\n'))==len(src.split('\n\n'))
+    src=g.SOURCES[t][':question/worked-solution']
+    def prose_mask(text):
+     text=re.sub(r'x=[^$]+(?=\$)','x=@@ROOT@@',text)
+     text=text.replace('coefficient is positive','coefficient is @@SIGN@@').replace('coefficient is negative','coefficient is @@SIGN@@')
+     text=text.replace(r'$-\infty .$','$@@END@@ .$').replace(r'$\infty .$','$@@END@@ .$')
+     return text
+    assert prose_mask(src)==prose_mask(rec['question'][':question/worked-solution']),'complete shared prose/stage fidelity'
+    assert len(rec['question'][':question/worked-solution'].split('\n\n'))==len(src.split('\n\n'))
     assert [len(re.findall(r'\$[^$]+\$',para)) for para in rec['question'][':question/worked-solution'].split('\n\n')]==[len(re.findall(r'\$[^$]+\$',para)) for para in src.split('\n\n')]
  # Exact finite domain: all roots, signs and complete profiles; no rendered identity inflation.
  meaningful={l:set() for l in ['easy','moderate','hard']};domain_instances=0
@@ -112,7 +121,7 @@ def run():
     sigs=[poly_signature(g.polynomial(z)) for z in b];assert len(set(sigs))==4 and sigs.count(poly_signature(g.polynomial(p)))==1
     meaningful[d['level']].add(g.fingerprint(poly_signature(g.polynomial(p))));domain_instances+=1
  for t,d in g.DATA.items():
-  for p in [{'roots':d['roots'],'m':[1]*len(d['m']),'a':0},{'roots':[5]*len(d['roots']),'m':d['m'],'a':1},{'roots':d['roots'],'m':d['m'],'a':6}]:
+  for p in [{},{'roots':d['roots'],'m':[1]*len(d['m']),'a':0},{'roots':[5]*len(d['roots']),'m':d['m'],'a':1},{'roots':d['roots'],'m':d['m'],'a':6}]:
    try:g.generate(d['level'],profile=t,parameters=p)
    except ValueError:pass
    else:raise AssertionError('explicit scope guard')

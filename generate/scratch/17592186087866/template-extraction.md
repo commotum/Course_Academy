@@ -1,29 +1,46 @@
 # Template extraction
 
-The exact originals, all choices, field identities, solutions and domain restrictions are retained in `reference/source.json`. `template-extraction.json` describes every original separately, including every choice's owning field and correct status. No plots occur anywhere in these questions, banks, or solutions; no image publication is needed.
+## 1. Specific observed questions
 
-Write D = dy/dx below. The shared task is to express the same ODE as D + P(x)y = Q(x). An algebraically equivalent rearrangement can be an incorrect response when it is not in this requested form. Consequently the validator compares complete normalized equations and separately checks response shape; it never treats equation equivalence alone as correctness.
+The exact source payload is preserved in `source.json`; every prompt, worked solution, field, option, and correct-presence attribute is reproduced through public `generate(..., profile="observed-raw", parameters={"n":1})`. `source-cases.json` maps all nine practice sources. `bank-map.json` records every original option separately, including both q-16400 banks and their full expressions.
 
-Each source ID names a complete bank profile. Banks below are ordered as the generator's bank; source order is irrelevant. C denotes the correct slot. All parameter values are integer; the original values and proposed bounds are separate.
+q-16400 has leading 2, moved cosine coefficient 3, constant 1 and moved sine-y coefficient 4. q-8359 supplies the already isolated derivative (2x-y)/x and requires a quotient split before collection. q-103349 has e^(2x), 2e^x and forcing x. q-103354 divides cosine and uses sin(2x)=2sin(x)cos(x), keeping the uncancelled quotient. q-16396 supplies a common nonzero y and a quadratic y²x term; factoring/cancellation reveals the linear equation. q-79697 has reciprocal derivative coefficient 1/x² and quotient (x+y)/x. q-79699 has 5y², -ye^(-x) times the derivative and forcing y, with y≠0. q-8360 supplies cotangent coefficient 2 and forcing sin(2x) on the left. q-16401 has matching y²cos² terms and the square (1-ycos x)².
 
-| Source/template | Original parameters | Proposed bounds | Prompt | Correct P; Q | Complete bank recipes |
-| --- | --- | --- | --- | --- | --- |
-| q-16400 | a=2,b=3,c=1,h=4 | a=2..5,b,c=1..5,h=1..8 | aD-b cos x=c-hy sin x | h sin x/a; (c+b cos x)/a | D+h sin(x)y=c+b cos x; D+h cos(x)y=c+b sin x; **C** D+Py=Q; D+Q=Py; D+Py=c+(b/a)cos x |
-| q-8359 | k=1 | k=1..8 | D=(2x-ky)/x | k/x; 2 | ky=2x-xD; D+(k/x)y-2=0; xD+ky=2x; D=-(k/x)y+2; **C** D+(k/x)y=2 |
-| q-103349 | n=1 | n=1..6 | exp(2nx)D+2exp(nx)y-x=0 | 2exp(-nx); x exp(-2nx) | D+exp(-2nx)y-x exp(-nx)=0; **C** D+Py=Q; D+Py-Q=0; D-y=Q; D+2y=Q |
-| q-103354 | n=1 | n=1..6 | cos(nx)D+sin(2nx)-sin(nx)y=0 | -tan(nx); -2sin(nx) | D+2sin(nx)=tan(nx)y; D-cot(nx)y=2cos(nx); D+sec(nx)y=-2sin(2nx); D+sin(2nx)=sec(nx)y; **C** D-tan(nx)y=-2sin(nx) |
-| q-16396 | k=1 | k=1..8 | yD+x²y=ky²x, y != 0 | -kx; -x² | D+((k-x²)/(k+x²))y=k; D-ky=-2kx; **C** D-kxy=-x²; D=-x²; D+x²y=kx |
-| q-79697 | k=1 | k=1..8 | D/x²=(x+ky)/x, x != 0 | -kx; x² | D-kxy=2x; D-(1+kx)y=0; **C** D-kxy=x²; D-ky=-x²; D+kxy=1/x |
-| q-79699 | k=5 | k=2..8 | ky²-y exp(-x)D=y, y != 0 | -k exp(x); -exp(x) | **C** D-k exp(x)y=-exp(x); D+ky=-exp(x); D-k exp(x)y=x; D+k exp(-x)y=exp(-x); D-kxy=-exp(-x) |
-| q-8360 | k=2 | k=1..8 | D+ky cot x+sin(2x)=0 | k cot x; -sin(2x) | D+sin(2x)=-ky cot x; D=-ky cot x-sin(2x); ky cot x=-D-sin(2x); y=-D/(k cot x)-sin(2x)/(k cot x); **C** D+k cot(x)y=-sin(2x) |
-| q-16401 | a=b=n=1 | a=1..6,b=1..4,n=1..6 | D+b²y²cos²(nx)=(a-by cos(nx))² | 2ab cos(nx); a² | **C** D+2ab cos(nx)y=a²; D+b cos(nx)y=a²-ab cos(nx); D+b²cos²(nx)y=(a-b cos(nx))²; D=a²; D+4ab cos(nx)y=a² |
+## 2. Shared purpose
 
-These recipes reproduce every complete source bank at its original parameters. The incomplete additional field of q-16400 has the same mathematical bank, so its five options are also mapped, but its absent correct reference cannot be certified. The complete field supplies the gradable representation for generated questions.
+Write the supplied ODE as derivative + P(x)y = Q(x), using algebra only. The derivative coefficient is exactly one; P and Q do not depend on y. Preserve each family's supplied arrangement and ordered algebraic operations, rather than introducing an integrating factor or solving for y(x).
 
-The intention of q-16396 and q-79697's arbitrary-looking wrong equations is unresolved. Their observed whole-expression patterns are retained, and the k generalizations are explicitly hypotheses rather than recovered psychological error recipes. No bank is pooled or mixed and no inferred feedback is displayed. All generalized banks must still pass exact correctness, response-form eligibility, distinct displayed choices and native grading.
+## 3. Components and complete banks
 
-Fixed components: instructional prompt sentence; standard-form definition; x and y roles; one five-choice radio field named selection; the original template's solution sequence; the source concluding P(x), Q(x) sentence. Variable components: the expressions and coefficient/frequency slots above. Conditional components: explicit nonzero domain conditions for x, y, cos(nx), or sin(x), and P/Q annotations. No optional fields or plots are introduced.
+`bank-map.json` contains the original field IDs, field type/key, full answer fragments, correct presence, original correct ID, and a coordinate-component recipe for every option. A raw profile transforms complete algebraic x components to nx consistently in the prompt, bank, intermediate rows and conclusion. Complete derivatives and formal P(x)/Q(x) labels are protected; bare trigonometric arguments such as sin(2x) become sin(2nx), not a product of sin(2) and nx. n=1 is an ordinary recipe parameter and does not trigger a copied-output branch. No original option is dropped.
 
-Worked steps are the ordered stages in `data()`, with the same rearrangement, division, factor cancellation, trig identity or square expansion sequence as each source. Source prose and math-block layout are reused as masks, empty math blocks are removed, and SymPy prints expressions with normalized grouping, derivative notation and underbraces. Exact source bytes and typography are not claimed as fidelity. `review.md` puts every original beside its parameter replay and a changed instance. `validate.py` independently reads all original and generated displayed equations, including the final prose values.
+This coordinate recipe is a faithful symbolic extension of an observed expression, not an inferred learner-error explanation. Historical bank intention is underdetermined, especially q-16396 and q-79697. All raw profiles are evidence-only and ineligible for learner sampling. The normal `profile=<source-id>` reuses the previous symbolic source-bank patterns; it is also evidence-only because some patterns have opaque intent. The default method-derived bank has explicit, method-grounded wrong operations and is eligible.
 
-Domains are essential: division by x needs x != 0; cancellation of y needs y != 0; division by cos(nx) requires cos(nx) != 0; cot(x) requires sin(x) != 0. Exponential coefficients never vanish. The generators operate on intervals in these domains. Positive coefficients avoid degenerate banks, while full bank rejection protects explicit and sampled parameters equally.
+Normal complete method banks, selected with the family before parameter sampling:
+
+- q-16400: correct; omit all constant division; omit division of constant forcing only; fail to change moved y sign; fail to change moved cosine sign.
+- q-8359: correct; isolate y; leave forcing on left with zero right; leave derivative coefficient x; leave y term on right. All share the same ODE, but only one satisfies strict standard form.
+- q-103349: correct; omit division of both remaining terms; reverse both exponent subtractions; omit division of forcing only; omit coefficient 2.
+- q-103354: correct; omit dividing by cosine; invert tangent ratio; wrong forcing sign; wrong y coefficient sign.
+- q-16396: correct; wrong moved y sign; wrong forcing sign; use x² in the y coefficient; omit y coefficient.
+- q-79697: correct; fail inverse multiplication by x²; wrong moved y sign; cancel an extra forcing x; multiply y coefficient by x² rather than x.
+- q-79699: correct; fail to invert exponential; wrong y sign; wrong forcing sign; omit exponential multiplication on both remaining terms.
+- q-8360: correct; leave forcing on left and y on right; isolate derivative; isolate y coefficient; solve algebraically for y. These ineligible response forms retain the observed complete bank.
+- q-16401: correct; omit cross-term factor 2; double it to 4; omit cross term; wrong sign of cross term.
+- rational-collect: correct; add rather than subtract right-side y coefficient; wrong moved forcing sign; omit division of forcing; omit division of the collected y coefficient.
+
+There is one fixed worked solution per instance, independent of the chosen wrong option. There is no learner-facing distractor diagnosis. A complete-bank collision rejects the entire instance; explicit invalid parameters raise rather than being silently changed.
+
+## 4. Backbone, slots and bounds
+
+Normal source-shaped samplers preserve positive integer number forms. q-16400: a=2..5, b,c=1..5, h=1..8. q-8359: k=1..8. q-103349/q-103354: frequency n=1..8. q-16396/q-79697: k=1..8. q-79699: k=2..8. q-8360: k=1..8. Hard: a=1..6, b=1..4, n=1..6. Raw coordinate-component slot n=1..8 is explicitly evidence-only. Authored moderate: a=2..8; b,c,d,h=1..8. The moderate prompt is ax y′ + bx y - hx = c + dy; the two coefficients are (bx-d)/(ax) and (c+hx)/(ax). c,d>0 keep both denominator tasks nontrivial. All bounds apply to explicit calls as well as sampling.
+
+Easy variation changes coefficients/frequencies inside each observed operative family; each sampled instance has its family's same rows and operators. Moderate requires two symbolic coefficient divisions after collection and excludes expansion/cancellation. Hard always starts with a quadratic square, explicitly expands the constant/quadratic/cross terms, cancels the matching quadratic term and moves the linear term. Its four row stages are frozen at changed inputs. The family is not reduced to an easy supplied-linear-equation question.
+
+Normal source stage masks preserve quotient split, inverse multiplication, common-factor extraction, uncancelled trigonometric quotient, expansion and cancellation before collection. Annotations occur once; final unannotated rows stay distinct where present in the original. Source shared prose is retained. Normal notation/grouping is normalized and empty source displays omitted; raw-exact source replay is counted separately.
+
+Domain restrictions are attached before CAS cancellation: x≠0 for reciprocal-x and authored moderate; y≠0 for common-y cancellation; cos(nx)≠0 for cosine division; sin(x)≠0 for cotangent. Exponentials have no real zero. Correct coefficients, wrong bank, all rows and final P/Q come from the same exact integer/Rational instance.
+
+Mathematical fingerprints use normalized P,Q, domain and the supplied operative workload. They exclude bank, profile, seed, notation and whole-equation constant scaling. Q's actual coefficients remain meaningful for conversion; changing forcing is not discarded as an arbitrary y-scaling alias. Content identities use actual prompt, fixed solution, difficulty and complete bank. Option shuffling cannot create identity.
+
+Meaningful normal tasks: q-16400 has at most 800 coefficient tuples before common scaling aliases; the smaller fixed-format easy families have 7–8 values each, for a total exceeding 800 alongside other families. Moderate has 7·8⁴=28,672 tuples before common scaling aliases, with no additional arithmetic operators. Hard has 6·4·6=144 tuples. These are bounded catalogs, not unlimited source recovery claims. `variety.json` independently enumerates normalized task counts without option order or bank aliases.
