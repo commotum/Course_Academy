@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-37389",
+      "sequence_position": 11,
+      "problem": "A poultry farmer has egg-laying chickens. She knows that her farm can produce a maximum of $500$ eggs a day; however, it is far behind it.\nSince she started monitoring, the chickens laid $390$ eggs and $400$ eggs on days $3$ and $6,$ respectively. How many eggs do the chickens lay on day $42?$\nRound your answer to the nearest integer.\n\n*Hint: You may assume that the egg production $E(t)$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+      "worked_solution": "The rate at which the egg production $E(t)$ changes is proportional to the difference between the maximum possible egg production and its current egg production. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dE}{dt}=k(a-E),\n$$\n\nwhere $a$ is the maximum production of the farm, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=500$ eggs, and we have\n\n$$\n\\frac{dE}{dt}=k(500-E).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dE}{500-E} & =k\\,dt \\\\ \\int \\frac{dE}{500-E} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|500-E| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $500-E>0$ for all $t\\ge 0.$ Next, we solve for $E(t),$ as follows:\n\n$$\n\\begin{aligned}500-E & ={e}^{-kt-C} \\\\ 500-E & ={e}^{-C}{e}^{-kt} \\\\ 500-E & =K{e}^{-kt} \\\\ E & =500-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $3,$ the egg production was $390$ eggs. So, applying the condition $E(3)=390,$ we have\n\n$$\n\\begin{aligned}E(3) & =390 \\\\ 500-K{e}^{-3k} & =390 \\\\ K{e}^{-3k} & =110.\\end{aligned}\n$$\n\nWe're also told that, on day $6,$ the egg production was $400$ eggs. So, applying the condition $E(6)=400,$ we get\n\n$$\n\\begin{aligned}E(6) & =400 \\\\ 500-K{e}^{-6k} & =400 \\\\ K{e}^{-6k} & =100.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-3k}}{K{e}^{-6k}} & =\\frac{110}{100} \\\\ {e}^{3k} & =\\frac{11}{10} \\\\ 3k & =\\operatorname{ln}⁡(\\frac{11}{10}) \\\\ k & =\\frac{1}{3}\\operatorname{ln}⁡(\\frac{11}{10})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-3\\cdot (1/3)\\operatorname{ln}⁡(11/10)} & =110 \\\\ K & =110{e}^{\\operatorname{ln}⁡(11/10)} \\\\ K & =121\\end{aligned}\n$$\n\nTherefore, we have the following expression for $E(t):$\n\n$$\nE(t)=500-121{e}^{-(t/3)\\operatorname{ln}⁡(11/10)}\n$$\n\nFinally, the number of eggs laid on day $t=42$ is\n\n$$\nE(42)=500-121{e}^{-(42/3)\\operatorname{ln}⁡(11/10)}≈468\\,\\text{eggs},\n$$\n\n rounded to nearest integer.",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14150136/observations/history-q-37389-63e295ba92e0718a79ad.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14150136",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14150136/observations/history-solution-q-37389-7b67c7dd148386fe3317.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$442$ eggs"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "$468$ eggs"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "$489$ eggs"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "$420$ eggs"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "$486$ eggs"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q37389",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "$468$ eggs",
+                "option": "b",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The rate at which the egg production $E(t)$ changes is proportional to the difference between the maximum possible egg production and its current egg production. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dE}{dt}=k(a-E),\n$$\n\nwhere $a$ is the maximum production of the farm, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=500$ eggs, and we have\n\n$$\n\\frac{dE}{dt}=k(500-E).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dE}{500-E} & =k\\,dt \\\\ \\int \\frac{dE}{500-E} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|500-E| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $500-E>0$ for all $t\\ge 0.$ Next, we solve for $E(t),$ as follows:\n\n$$\n\\begin{aligned}500-E & ={e}^{-kt-C} \\\\ 500-E & ={e}^{-C}{e}^{-kt} \\\\ 500-E & =K{e}^{-kt} \\\\ E & =500-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $3,$ the egg production was $390$ eggs. So, applying the condition $E(3)=390,$ we have\n\n$$\n\\begin{aligned}E(3) & =390 \\\\ 500-K{e}^{-3k} & =390 \\\\ K{e}^{-3k} & =110.\\end{aligned}\n$$\n\nWe're also told that, on day $6,$ the egg production was $400$ eggs. So, applying the condition $E(6)=400,$ we get\n\n$$\n\\begin{aligned}E(6) & =400 \\\\ 500-K{e}^{-6k} & =400 \\\\ K{e}^{-6k} & =100.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-3k}}{K{e}^{-6k}} & =\\frac{110}{100} \\\\ {e}^{3k} & =\\frac{11}{10} \\\\ 3k & =\\operatorname{ln}⁡(\\frac{11}{10}) \\\\ k & =\\frac{1}{3}\\operatorname{ln}⁡(\\frac{11}{10})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-3\\cdot (1/3)\\operatorname{ln}⁡(11/10)} & =110 \\\\ K & =110{e}^{\\operatorname{ln}⁡(11/10)} \\\\ K & =121\\end{aligned}\n$$\n\nTherefore, we have the following expression for $E(t):$\n\n$$\nE(t)=500-121{e}^{-(t/3)\\operatorname{ln}⁡(11/10)}\n$$\n\nFinally, the number of eggs laid on day $t=42$ is\n\n$$\nE(42)=500-121{e}^{-(42/3)\\operatorname{ln}⁡(11/10)}≈468\\,\\text{eggs},\n$$\n\n rounded to nearest integer.",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14150136/observations/step-q37389-56b9414062fe158560d2.html"
+        }
+      }
+    ]
+  }
+}

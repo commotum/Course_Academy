@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-335644",
+      "sequence_position": 14,
+      "problem": "A coastal research station is monitoring the population of brine shrimp in a controlled seawater tank. The tank can sustain a maximum population of $500$ shrimp, but the population is still below this limit. Since researchers began tracking the growth, the population reached $452$ shrimp on day $3$ and $473$ shrimp on day $9.$ On what day will the population reach $490$ shrimp? Round your answer to the nearest integer.\n\n*Hint: You may assume that the population of shrimp, $P(t),$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in days.*",
+      "worked_solution": "The rate at which the population $P(t)$ changes is proportional to the difference between the maximum population and its current population. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the maximum population the habitat can sustain, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=500$ shrimp, and we have\n\n$$\n\\frac{dP}{dt}=k(500-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{500-P} & =k\\,dt \\\\ \\int \\frac{dP}{500-P} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|500-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $500-P>0$ for all $t\\ge 0.$ Next, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}500-P & ={e}^{-kt-C} \\\\ 500-P & ={e}^{-C}{e}^{-kt} \\\\ 500-P & =K{e}^{-kt} \\\\ P & =500-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $3,$ the population was $452$ shrimp. So, applying the condition $P(3)=452,$ we have\n\n$$\n\\begin{aligned}P(3) & =452 \\\\ 500-K{e}^{-3k} & =452 \\\\ K{e}^{-3k} & =48.\\end{aligned}\n$$\n\nWe're also told that, on day $9,$ the population was $473$ shrimp. So, applying the condition $P(9)=473,$ we get\n\n$$\n\\begin{aligned}P(9) & =473 \\\\ 500-K{e}^{-9k} & =473 \\\\ K{e}^{-9k} & =27.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-3k}}{K{e}^{-9k}} & =\\frac{48}{27} \\\\ {e}^{6k} & =\\frac{16}{9} \\\\ 6k & =\\operatorname{ln}⁡(\\frac{16}{9}) \\\\ k & =\\frac{1}{6}\\operatorname{ln}⁡(\\frac{16}{9})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-3\\cdot (1/6)\\operatorname{ln}⁡(16/9)} & =48 \\\\ K & =48{e}^{(1/2)\\operatorname{ln}⁡(16/9)} \\\\ K & =48\\sqrt{\\frac{16}{9}} \\\\ K & =48\\cdot \\frac{4}{3} \\\\ K & =64\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=500-64{e}^{-(t/6)\\operatorname{ln}⁡(16/9)}.\n$$\n\nFinally, let $d$ be the day when the population reaches $490$ shrimp. Then, we have\n\n$$\n\\begin{aligned}P(d) & =490 \\\\ 500-64{e}^{-kd} & =490 \\\\ 10 & =64{e}^{-kd} \\\\ {e}^{-kd} & =\\frac{10}{64}=\\frac{5}{32} \\\\ -kd & =\\operatorname{ln}⁡(\\frac{5}{32}) \\\\ d & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{5}{32}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the population will be $490$ shrimp on day\n\n$$\nd=\\frac{-\\operatorname{ln}⁡(\\frac{5}{32})}{\\frac{1}{6}\\operatorname{ln}⁡(\\frac{16}{9})}=19.3578…≈19,\n$$\n\nrounded to the nearest day.",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14150136/observations/history-q-335644-4a50fd67f694b30cf5c2.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14150136",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14150136/observations/history-solution-q-335644-80b86dffb6696bcb58f9.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$17\\text{th}$ day"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "$25\\text{th}$ day"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "$22\\text{th}$ day"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "$19\\text{th}$ day"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "$15\\text{th}$ day"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q335644",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "$17\\text{th}$ day",
+                "option": "a",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "The rate at which the population $P(t)$ changes is proportional to the difference between the maximum population and its current population. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the maximum population the habitat can sustain, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=500$ shrimp, and we have\n\n$$\n\\frac{dP}{dt}=k(500-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{500-P} & =k\\,dt \\\\ \\int \\frac{dP}{500-P} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|500-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $500-P>0$ for all $t\\ge 0.$ Next, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}500-P & ={e}^{-kt-C} \\\\ 500-P & ={e}^{-C}{e}^{-kt} \\\\ 500-P & =K{e}^{-kt} \\\\ P & =500-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on day $3,$ the population was $452$ shrimp. So, applying the condition $P(3)=452,$ we have\n\n$$\n\\begin{aligned}P(3) & =452 \\\\ 500-K{e}^{-3k} & =452 \\\\ K{e}^{-3k} & =48.\\end{aligned}\n$$\n\nWe're also told that, on day $9,$ the population was $473$ shrimp. So, applying the condition $P(9)=473,$ we get\n\n$$\n\\begin{aligned}P(9) & =473 \\\\ 500-K{e}^{-9k} & =473 \\\\ K{e}^{-9k} & =27.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-3k}}{K{e}^{-9k}} & =\\frac{48}{27} \\\\ {e}^{6k} & =\\frac{16}{9} \\\\ 6k & =\\operatorname{ln}⁡(\\frac{16}{9}) \\\\ k & =\\frac{1}{6}\\operatorname{ln}⁡(\\frac{16}{9})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-3\\cdot (1/6)\\operatorname{ln}⁡(16/9)} & =48 \\\\ K & =48{e}^{(1/2)\\operatorname{ln}⁡(16/9)} \\\\ K & =48\\sqrt{\\frac{16}{9}} \\\\ K & =48\\cdot \\frac{4}{3} \\\\ K & =64\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=500-64{e}^{-(t/6)\\operatorname{ln}⁡(16/9)}.\n$$\n\nFinally, let $d$ be the day when the population reaches $490$ shrimp. Then, we have\n\n$$\n\\begin{aligned}P(d) & =490 \\\\ 500-64{e}^{-kd} & =490 \\\\ 10 & =64{e}^{-kd} \\\\ {e}^{-kd} & =\\frac{10}{64}=\\frac{5}{32} \\\\ -kd & =\\operatorname{ln}⁡(\\frac{5}{32}) \\\\ d & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{5}{32}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the population will be $490$ shrimp on day\n\n$$\nd=\\frac{-\\operatorname{ln}⁡(\\frac{5}{32})}{\\frac{1}{6}\\operatorname{ln}⁡(\\frac{16}{9})}=19.3578…≈19,\n$$\n\nrounded to the nearest day.",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14150136/observations/step-q335644-e26b21a6507c39456cd3.html"
+        }
+      }
+    ]
+  }
+}
