@@ -209,7 +209,12 @@ async function mutation(path, values) {
       catch (error) {
         // The last visible Next/Check button can outlive a pause from another
         // tab or an unload request. Recover only a confirmed state rejection.
-        if (error.code === 'assessment-expired') {
+        if (error.code === 'basis-conflict' && path === '/api/answer' && !document.hidden && revision === settingsRevision && !modeChanging && !isDeveloperMode()) {
+          // A concurrent publisher's confirmed conflict did not save the
+          // answer. Replan once, retaining the original submission cutoff.
+          body.requestId = crypto.randomUUID();
+          result = await api(path, body);
+        } else if (error.code === 'assessment-expired') {
           expireBody ||= { taskId: body.taskId, requestId: crypto.randomUUID() };
           result = await api('/api/expire', expireBody);
         } else {
@@ -243,6 +248,9 @@ async function mutation(path, values) {
       // Only a confirmed rejection may get a fresh request identity. An uncertain
       // network failure must replay the original request to avoid duplicate credit.
       if (error.code === 'basis-conflict') body.requestId = crypto.randomUUID();
+      if (path === '/api/answer' && error.code === 'validation' && task?.step?.itemId === body.itemId && short(task.status) === 'started' && !document.hidden) {
+        clock.at = Date.now(); clock.running = true;
+      }
       showError(error, run);
     } finally { if (revision === settingsRevision) { setBusy(false); void syncAfterVisibility(); } }
   };

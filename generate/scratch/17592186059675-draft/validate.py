@@ -21,9 +21,20 @@ def check(r):
  assert len(vals)==len(set(map(str,vals)))
  assert sum(sp.simplify(v-correct)==0 for v in vals)==1
  for a,v in zip(f[':answer-field/choices'],vals):assert (sp.simplify(v-correct)==0)==(a[':answer/id']==f[':answer-field/correct'][1])
+ # Independently read every formal derivative input in the worked solution.
+ prefix=r'\frac{\text{d}}{\text{d}x}('
+ sol='\n'.join(re.findall(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',q[':question/worked-solution'],re.S));offset=0
+ while prefix in sol[offset:]:
+  start=sol.index(prefix,offset)+len(prefix);depth=1;end=start
+  while depth:
+   depth+=(sol[end]=='(')-(sol[end]==')');end+=1
+  assert sp.expand(printed.scalar(sol[start:end-1])-expr)==0,'stale formal derivative input'
+  offset=end
  # Read all independently printed equality stages, excluding formal derivative inputs.
  for block in re.findall(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',q[':question/worked-solution'],re.S):
   rows=block.split('\\\\');lhs=rows[0].split('&',1)[0];target=correct if point is not None and 'x' not in lhs else d
+  if point is not None and 'x' not in lhs:
+   argument=lhs.split('(',1)[1].rsplit(')',1)[0];assert sp.simplify(printed.scalar(argument)-point)==0,'stale evaluation point'
   for row in rows:
    rhs=re.split(r'&\s*=',row)[-1].strip().rstrip('.')
    if r'\frac{\text{d}}' in rhs or '′' in rhs:continue
@@ -31,6 +42,7 @@ def check(r):
    assert sp.simplify(printed.scalar(rhs)-target)==0,(r['generation']['template'],rhs,target)
  for block in re.findall(r'\$\$\n(.*?)\n\$\$',q[':question/worked-solution'],re.S):
   if r'y^{\prime}(' in block and ')=' in block and r'\begin' not in block:
+   argument=block.split(r'y^{\prime}(',1)[1].split(')=',1)[0];assert sp.simplify(printed.scalar(argument)-point)==0
    for v in block.split(')=',1)[1].rstrip('.').split('='):assert sp.simplify(printed.scalar(v)-correct)==0
  g.validate_generated_record(r)
  return r
@@ -39,18 +51,31 @@ def native(r,label):
  f=r['question'][':question/answer-fields'][0];right=f[':answer-field/correct'][1]
  if f[':answer-field/type'].endswith('/radio'):checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==right else 'rejected','purpose':'actual field-owned ID choice'} for a in f[':answer-field/choices']]
  else:
-  v=f[':answer-field/choices'][0][':answer/value'];checks=[{'submitted':a,'expected':b,'purpose':c} for a,b,c in [(v,'accepted','canonical blank'),('('+v+')+0','accepted','equivalent entry'),('2('+v+')/2','accepted','equivalent scaled entry'),('('+v+')+1','rejected','wrong additive term'),('-('+v+')','rejected','wrong sign')]]
+  v=f[':answer-field/choices'][0][':answer/value'];checks=[{'submitted':a,'expected':b,'purpose':c} for a,b,c in [(v,'accepted','canonical blank'),('('+v+')+0','accepted','equivalent entry'),('2('+v+')/2','accepted','equivalent scaled entry'),('('+v+')+1','rejected','wrong additive term'),(('1' if printed.scalar(v)==0 else '-('+v+')'),'rejected','wrong sign or nonzero for zero key')]]
  return {'record':r,'label':label,'checks':checks}
 
 def main():
  cases=[];raw=[];inventory=[]
  for sid,q in g.SOURCES.items():
-  level=q.get(':question/difficulty',{}).get(':db/ident','unrated').rsplit('/',1)[-1];r=g.generate(level,template=sid,profile='observed_raw');assert r['question']==q
+  level=q.get(':question/difficulty',{}).get(':db/ident','unrated').rsplit('/',1)[-1];r=g.generate(level,template=sid,profile='observed_raw');assert r['question']==q;assert r['generation']['evidence_only'] and not r['generation']['eligible_for_learning'] and not r['generation']['normal_eligible']
   result={'source_id':sid,'raw_exact':True,'attrs_and_omissions_exact':True,'normal_eligible':r['generation']['normal_eligible'],'question':q}
   if sid in g.MA_SOURCES:cases.append({'source_id':sid,'template':sid,'level':level,'parameters':None,'profile':'observed_raw'});raw.append(result)
   else:inventory.append({'role':'independently authored inventory','relationship_to_source_templates':r['generation']['relationship_to_source_templates'],**result})
  save('source-cases.json',cases);save('source-replay.json',{'passed':True,'MA_originals':10,'complete_banks':10,'total_bank_values':34,'matched_bank_values':34,'matched_distractors':24,'total_distractors':24,'raw_question_results':raw,'raw_source_errors_preserved':g.SOURCE_ERRORS})
  save('independent-inventory-replay.json',inventory)
+ wrapper={'basis':g.SOURCE['basis'],'lineage':g.SOURCE['lineage'],'questions':[{'record':q,'role':'independently authored inventory','relationship_to_source_templates':g.source_replay(sid)['generation']['relationship_to_source_templates']} for sid,q in g.INVENTORY.items()]}
+ save('independent-inventory.json',wrapper)
+ assert [x['record'] for x in wrapper['questions']]==list(g.INVENTORY.values())
+ supported=[]
+ for t,(level,p) in g.PROFILES.items():
+  old=g.SOURCES[t];r=g.generate(level,template=t,parameters=p);q=r['question'];f=q[':question/answer-fields'][0];of=old[':question/answer-fields'][0]
+  assert q[':question/problem']==g.normalize_prose(old[':question/problem'])
+  entries=[]
+  for i,(a,b) in enumerate(zip(of[':answer-field/choices'],f[':answer-field/choices'])):
+   assert g.normalize_tex(a[':answer/value'])==b[':answer/value']
+   entries.append({'source_answer_id':a[':answer/id'],'original_value':a[':answer/value'],'generated_value':b[':answer/value'],'recipe_index':i,'exact_math_matched':True,'correct':a[':answer/id']==of[':answer-field/correct'][':answer/id']})
+  supported.append({'source_id':t,'original_parameters':p,'prompt_normalized_exact':True,'solution_normalized_exact':q[':question/worked-solution']==g.normalize_prose(old[':question/worked-solution']),'documented_solution_correction':g.SOURCE_ERRORS.get(t),'bank_matched':True,'matched_values':len(entries),'total_values':len(entries),'matched_distractors':len(entries)-1,'total_distractors':len(entries)-1,'missing_or_extra_options':[],'answers':entries})
+ save('supported-source-replay.json',{'passed':True,'complete_banks_matched':5,'complete_banks_total':5,'matched_values':21,'total_values':21,'matched_distractors':16,'total_distractors':16,'results':supported})
  samples=[];counts={};slotcoverage={};seen_by_level={l:set() for l in g.SUPPORTED_LEVELS}
  inventory_math=[]
  for sid in g.INVENTORY:
@@ -110,7 +135,7 @@ def main():
   else:raise AssertionError('Bad bounds accepted')
  # Structural mutation tests modify printed dependent input, answer and solution.
  r=check(g.generate('hard',template='independent-hard',parameters={'a':1,'b':1,'c':1,'d':1,'n':2,'m':1}));mutations=[]
- for label,mutate in [('wrong-answer',lambda q:q[':question/answer-fields'][0][':answer-field/choices'][0].update({':answer/value':'0'})),('stale-power-input',lambda q:q.update({':question/problem':q[':question/problem'].replace('x^{2}','x^{3}')})),('stale-worked-intermediate',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace('2 x','3 x')}))]:
+ for label,mutate in [('stale-formal-derivative-input',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace('x^{2}','x^{3}',1)})),('wrong-answer',lambda q:q[':question/answer-fields'][0][':answer-field/choices'][0].update({':answer/value':'0'})),('stale-power-input',lambda q:q.update({':question/problem':q[':question/problem'].replace('x^{2}','x^{3}')})),('stale-worked-intermediate',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace('2 x','3 x')}))]:
   bad=copy.deepcopy(r);mutate(bad['question'])
   try:check(bad)
   except AssertionError:mutations.append({'mutation':label,'rejected':True})

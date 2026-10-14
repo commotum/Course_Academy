@@ -106,12 +106,12 @@ def run():
             if sourcefields[0].get(':answer-field/correct'):
                 original=g.parse(sourcefields[0][':answer-field/correct'][':answer/value'])
                 field=record['question'][':question/answer-fields'][0];a=next(a for a in field[':answer-field/choices'] if a[':answer/id']==field[':answer-field/correct'][1]);equal(original,g.parse(a[':answer/value']));designation+=1
-        if record['question'][':question/problem']==raw[':question/problem']:exact_prompt+=1
+        if record['question'][':question/problem']==g.normalize_prose(raw[':question/problem']):exact_prompt+=1
         if raw.get(':question/worked-solution'):
             if record['question'][':question/worked-solution']==raw[':question/worked-solution']:exact_solution+=1
             # Whole prose and ordered sequence fidelity under separately
             # documented component notation normalization.
-            expected=g.masked(raw[':question/worked-solution'],g.source_data(t,case['parameters'])[2])
+            expected=g.normalize_prose(g.masked(raw[':question/worked-solution'],g.source_data(t,case['parameters'])[2]))
             assert record['question'][':question/worked-solution']==expected
             normalized_solution+=1
         source_review.append({'source_id':t,'original':raw,'generated_replay':record})
@@ -152,7 +152,7 @@ def run():
     else:raise AssertionError('Unsupported field layout admitted')
     save('review.json',{'sources':source_review,'generated_variants':generated})
     save('engine-input.json',engine)
-    tool=HERE.parents[1]/'runs/current/check-engine'
+    tool=HERE/'check-current-engine'
     subprocess.run([str(tool),str(HERE/'engine-input.json'),str(HERE/'engine-validation.json')],check=True)
     engine_report=json.loads((HERE/'engine-validation.json').read_text())
     result={'pass':True,'source_provenance':{k:g.CAPTURE[k] for k in ('database','basis','lineage')},'practice_sources':10,'complete_source_banks_matched':9,'complete_radio_source_banks_matched':4,'source_blank_values_matched':5,'source_choice_values_matched':bank_values,'observed_correct_designations_matched':designation,'correct_designations_missing_repaired':2,'fieldless_sources_repaired':1,'raw_exact_prompts':exact_prompt,'raw_exact_existing_solutions':exact_solution,'component_notation_normalized_existing_solutions':normalized_solution,'source_solution_count':8,'source_mathematical_solution_error_preserved_raw':1,'normal_solutions_repaired':1,'generated_variants_reviewed':len(generated),'sample_cases_per_observed_template':12,'independent_displayed_record_readbacks':300,'seed_identity_checks':144,'meaningful_sample_fingerprints':{k:len(v) for k,v in fingerprints.items()},'bounded_parameter_domains':{'easy_presentations':126,'moderate_parameter_sets':576,'hard_parameter_sets':4608},'limitations':['No chain rule, composed trig, tangent slope, or plot families.','Moderate/hard difficulty levels are authored scope judgments, not observed labels.','The finite parameter-domain size is a design bound; only reported sampled fingerprints were independently validated.','q-47965 odd wrong expressions are generalized observed shapes; original author intent is not recoverable.'],'native_grader':engine_report,'engine_sha256':hashlib.sha256(tool.read_bytes()).hexdigest()}

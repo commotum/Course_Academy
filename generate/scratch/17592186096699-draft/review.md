@@ -1,16 +1,16 @@
 # Basis-2275 particular-solution draft review
 
-Original replay preserves missing attributes and documented source errors. Bank values use declared standard-TeX normalization from complete scaling recipes. Source strings remain in source.json and notation-audit.json. All observed banks are evidence-only. Independent inventory is separately labeled.
+Original replay preserves missing attributes and documented source errors. Original raw banks retain all captured bytes at unit scale and wrap complete expression prototypes under changed scale. Repaired and normal values use standard-TeX normalization separately. Decoded format diagnostics remain in source-format-audit.json. All observed banks are evidence-only. Independent inventory is separately labeled.
 
 ## q-119078 — unrated original raw replay
 
 Find the particular solution to the differential equation $(x - 1)^{2}y^{′} =-2$ that satisfies the condition $y(2) = 1$.
 
-- $y=-1 + \frac{2}{x - 1}$
-- $y=\frac{1}{2} + \frac{1}{x - 1}$
-- $y=\frac{3}{2} - \frac{1}{2 x - 2}$
-- $y=3 + \frac{2}{x - 1}$
-- $y=\frac{1}{x - 1}$
+- $y = \frac{2}{x - 1} - 1$
+- $y = \frac{1}{x - 1} + \frac{1}{2}$
+- $y = - (1)/(2(x - 1)) + \frac{3}{2}$
+- $y = \frac{2}{x - 1} + 3$
+- $y = \frac{1}{x - 1}$
 
 [No captured worked solution.]
 
@@ -88,11 +88,11 @@ Find the particular solution to the differential equation below that satisfies t
 
 $2f^{′}(x) + e^{x} = 0$.
 
-- $f(x)=1 - \frac{e^{x}}{2}$
-- $f(x)=e^{x} - 2$
-- $f(x)=\frac{e^{x}}{2} - 1$
-- $f(x)=- \frac{e^{x}}{2} - \frac{1}{2}$
-- $f(x)=\frac{e^{x}}{2} - \frac{3}{2}$
+- $f(x) =-\frac{1}{2}e^{x} + 1$
+- $f(x) = e^{x} - 2$
+- $f(x) = \frac{1}{2}e^{x} - 1$
+- $f(x) =-\frac{1}{2}(e^{x} + 1)$
+- $f(x) = \frac{1}{2}(e^{x} - 3)$
 
 [No captured worked solution.]
 
@@ -172,11 +172,11 @@ $$
 
 Find the particular solution to the differential equation ${f}^{′}(x)+2\operatorname{cos}⁡x=0$ that satisfies the condition $f(0)=-1.$
 
-- $f(x)=\frac{\sin{(x )}}{2} - 1$
-- $f(x)=2 \cos{(x )} - 3$
-- $f(x)=- 2 \sin{(x )} - 1$
-- $f(x)=1 - 2 \cos{(x )}$
-- $f(x)=2 \sin{(x )} - 3$
+- $f(x)=\frac{1}{2}\operatorname{sin}⁡x-1$
+- $f(x)=2\operatorname{cos}⁡x-3$
+- $f(x)=-2\operatorname{sin}⁡x-1$
+- $f(x)=-2\operatorname{cos}⁡x+1$
+- $f(x)=2\operatorname{sin}⁡x-3$
 
 First, we rearrange the equation to give
 
@@ -274,11 +274,11 @@ $$
 
 Find the particular solution to the differential equation ${f}^{′}(x)-4x=1$ that satisfies the condition $f(1)=-1.$
 
-- $f(x)=x^{2} + 2 x - 4$
-- $f(x)=x^{2} - 2 x$
-- $f(x)=2 x^{2} + x - 4$
-- $f(x)=2 x^{2} + x - 1$
-- $f(x)=2 x^{2} + 3 x - 6$
+- $f(x)={x}^{2}+2x-4$
+- $f(x)={x}^{2}-2x$
+- $f(x)=2{x}^{2}+x-4$
+- $f(x)=2{x}^{2}+x-1$
+- $f(x)=2{x}^{2}+3x-6$
 
 First, we rearrange the equation to give
 
@@ -376,11 +376,11 @@ $$
 
 Find the particular solution to the differential equation ${y}^{′}+{e}^{-2x}=8x$ that satisfies the condition $y(0)=1.$
 
-- $y=2 x^{2} + \frac{1}{2} + \frac{e^{- 2 x}}{2}$
-- $y=8 x^{2} - 1 + 2 e^{- 2 x}$
-- $y=2 x^{2} + 3 - 2 e^{- 2 x}$
-- $y=4 x^{2} + \frac{1}{2} + \frac{e^{- 2 x}}{2}$
-- $y=4 x^{2} - \frac{3}{2} + \frac{e^{- 2 x}}{2}$
+- $y=2{x}^{2}+\frac{{e}^{-2x}}{2}+\frac{1}{2}$
+- $y=8{x}^{2}+2{e}^{-2x}-1$
+- $y=2{x}^{2}-2{e}^{-2x}+3$
+- $y=4{x}^{2}+\frac{{e}^{-2x}}{2}+\frac{1}{2}$
+- $y=4{x}^{2}+\frac{{e}^{-2x}}{2}-\frac{3}{2}$
 
 First, we rearrange the equation to give
 
@@ -478,11 +478,11 @@ $$
 
 Find the particular solution to the differential equation ${y}^{′}-2x={e}^{x/2}$ that satisfies the condition $y(0)=2.$
 
-- $y=2 x + e^{\frac{x}{2}} + 1$
-- $y=x^{2} + 2 e^{\frac{x}{2}} + 2$
-- $y=x - \frac{e^{\frac{x}{2}}}{2} + \frac{5}{2}$
-- $y=x^{2} + \frac{e^{\frac{x}{2}}}{2} + \frac{3}{2}$
-- $y=x^{2} + 2 e^{\frac{x}{2}}$
+- $y=2x+{e}^{x/2}+1$
+- $y={x}^{2}+2{e}^{x/2}+2$
+- $y=x-\frac{{e}^{x/2}}{2}+\frac{5}{2}$
+- $y={x}^{2}+\frac{{e}^{x/2}}{2}+\frac{3}{2}$
+- $y={x}^{2}+2{e}^{x/2}$
 
 First, we rearrange the equation to give
 
@@ -582,7 +582,7 @@ Find the particular solution to the differential equation $8x-\frac{\text{d}y}{\
 
 $y=-\frac{{x}^{3}}{3}\,+${{field-1}}
 
-- $4 x^{2} - \frac{25}{3}$
+- $4{x}^{2}-\frac{25}{3}$
 
 First, we rearrange the equation to give
 
@@ -678,7 +678,7 @@ Find the particular solution to the differential equation $(x-3)^{2}{y}^{′}=8$
 
 $y=\,${{field-1}}
 
-- $9 - \frac{8}{x - 3}$
+- $-\frac{8}{x-3}+9$
 
 First, we rearrange the equation to give
 
@@ -774,7 +774,7 @@ Find the particular solution to the differential equation $\sqrt{x+1}\,{y}^{′}
 
 $y=\,${{field-1}}
 
-- $8 \sqrt{x + 1} - 6$
+- $8\sqrt{x+1}-6$
 
 First, we rearrange the equation to give
 
@@ -870,7 +870,7 @@ Find the particular solution to the differential equation ${f}^{′}(x)+3\operat
 
 $f(x)=\,${{field-1}}
 
-- $3 \cos{(x )} - 1$
+- $3\operatorname{cos}x-1$
 
 First, we rearrange the equation to give
 
@@ -969,11 +969,11 @@ $$
 x\cdot \frac{\text{d}y}{\text{d}x}=6{x}^{3}.
 $$
 
-- $y=x^{3} + 3$
-- $y=4 - 2 x^{2}$
-- $y=6 x^{3} + 8$
-- $y=2 x^{3} + 4$
-- $y=3 x^{2} - 1$
+- $y={x}^{3}+3$
+- $y=-2{x}^{2}+4$
+- $y=6{x}^{3}+8$
+- $y=2{x}^{3}+4$
+- $y=3{x}^{2}-1$
 
 First, we rearrange the equation to give
 
@@ -1085,11 +1085,11 @@ $$
 2x+\frac{\text{d}y}{\text{d}x}={x}^{2}+4x.
 $$
 
-- $y=x^{3} + 2 x^{2} - 2$
-- $y=\frac{x^{3}}{3} + x^{2} - \frac{1}{3}$
-- $y=x^{3} + x^{2} - 1$
-- $y=\frac{x^{3}}{3} + 2 x^{2} - \frac{4}{3}$
-- $y=\frac{x^{3}}{3} - x^{2} + \frac{5}{3}$
+- $y={x}^{3}+2{x}^{2}-2$
+- $y=\frac{{x}^{3}}{3}+{x}^{2}-\frac{1}{3}$
+- $y={x}^{3}+{x}^{2}-1$
+- $y=\frac{{x}^{3}}{3}+2{x}^{2}-\frac{4}{3}$
+- $y=\frac{{x}^{3}}{3}-{x}^{2}+\frac{5}{3}$
 
 First, we rearrange the equation to give
 
@@ -1199,11 +1199,11 @@ $$
 (1+2x){f}^{′}(x)-2=0.
 $$
 
-- $f(x)=\ln{(|{2 x + 1}| )} - 1$
-- $f(x)=\ln{(|{2 x + 1}| )} - 2$
-- $f(x)=2 \ln{(|{2 x + 1}| )} - 2$
-- $f(x)=2 x^{2} + x - 2$
-- $f(x)=2 x - 2$
+- $f(x)=\operatorname{ln}⁡|1+2x|-1$
+- $f(x)=\operatorname{ln}⁡|1+2x|-2$
+- $f(x)=2\operatorname{ln}⁡|1+2x|-2$
+- $f(x)=2{x}^{2}+x-2$
+- $f(x)=2x-2$
 
 First, we rearrange the equation to give
 
@@ -1327,10 +1327,10 @@ $$
 
 Find the specific solution to the differential equation $\frac{\text{d}y}{\text{d}x}+4=0$ given that $y(-1)=4.$
 
-- $y=- 4 x$
+- $y=-4x$
 - $y=4$
-- $y=4 x^{2}$
-- $y=- 2 x - 2$
+- $y=4{x}^{2}$
+- $y=-2x-2$
 - $y=-4$
 
 First, we rearrange the equation to give

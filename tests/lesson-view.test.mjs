@@ -597,6 +597,35 @@ test('stale Next never advances the new item after another tab has already advan
   assert.equal(f.h.view.current.dataset.stepDbId,9002);
 });
 
+test('submitting an answer freezes working time while grading waits and the next item restarts it', async () => {
+  const f = fixture(); f.server = activity(1, 1, { step: question(1) });
+  await f.h.render(structuredClone(f.server));
+  let release; f.delay = new Promise(resolve => { release = resolve; });
+  f.server = activity(1, 1, { elapsedSeconds: 13, step: question(1, 'correct') });
+  f.now += 3000;
+  const save = f.h.mutation('/api/answer', { taskId: 123, itemId: 1, responses: [{ fieldId: 30, choiceId: 41 }] });
+  assert.equal(f.h.clock.running, false); assert.equal(f.h.clock.elapsed, 13);
+  f.now += 60000; f.h.updateTaskTimer(); assert.equal(f.h.view.timer.textContent, '0:13');
+  release(); await save; assert.equal(f.h.view.timer.textContent, '0:13');
+  assert.equal(f.calls[0].body.submissionId, f.calls[0].body.requestId);
+  f.delay = null; f.server = activity(2, 2, { elapsedSeconds: 13, step: question(2) });
+  await f.h.mutation('/api/continue', { taskId: 123, itemId: 1 });
+  assert.equal(f.h.clock.running, true);
+  f.now += 2000; f.h.updateTaskTimer(); assert.equal(f.h.view.timer.textContent, '0:15');
+});
+
+test('an answer retries a confirmed concurrent basis conflict once while preserving its submission identity', async () => {
+  const f=fixture(); f.server=activity(1,1,{step:question(1,'correct')});
+  await f.h.render(activity(1,1,{step:question(1)}));
+  let attempts=0;
+  f.respond=async()=> ++attempts===1 ? {ok:false,status:409,json:async()=>({error:'Content changed',code:'basis-conflict'})} : null;
+  await f.h.mutation('/api/answer',{taskId:123,itemId:1,responses:[{fieldId:30,choiceId:41}]});
+  assert.equal(f.calls.length,2);
+  assert.notEqual(f.calls[0].body.requestId,f.calls[1].body.requestId);
+  assert.equal(f.calls[0].body.submissionId,f.calls[1].body.submissionId);
+  assert.equal(f.h.clock.running,false);
+});
+
 test('unknown save outcomes keep the original request identity and do not resume or retry automatically', async () => {
   const f=fixture();f.server=activity(1);await f.h.render(structuredClone(f.server));
   f.respond=async()=>{throw new Error('Network unavailable');};

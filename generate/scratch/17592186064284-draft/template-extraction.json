@@ -1,0 +1,1159 @@
+{
+  "basis": 2275,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "symbol_definitions": {
+    "z": "x+b",
+    "a": "outer coefficient",
+    "u": "inner trig result, plus phase only for hard"
+  },
+  "families": [
+    {
+      "source_id": "q-31356",
+      "exact_prompt": "Find the derivative of $y = \\cot (\\cos x)$.",
+      "exact_solution": null,
+      "observed_operators": {
+        "outer": "cot",
+        "inner": "cos"
+      },
+      "original_parameters": {
+        "b": 0
+      },
+      "response": "whole derivative source radio",
+      "components": [
+        {
+          "field_key": "selection",
+          "answer_id": "b8138f99-7ec9-5256-bd35-e33c7e848dfc",
+          "exact_captured_value": "\\sin x\\cot^{2} (\\cos x)",
+          "recipe": "sin(z) cot(cos(z))^2",
+          "whole_bank_profile": "q-31356",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "bfe44e20-3664-5950-8af4-4d1829f581e0",
+          "exact_captured_value": "\\sin x\\csc^{2} (\\cos x)",
+          "recipe": "sin(z) csc(cos(z))^2 [correct; designation missing]",
+          "whole_bank_profile": "q-31356",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "ecca65a3-9b8e-59f8-b57a-ab7326ffb1c5",
+          "exact_captured_value": "\\csc x\\sin^{2} (\\cos x)",
+          "recipe": "csc(z) sin(cos(z))^2",
+          "whole_bank_profile": "q-31356",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "3f9ff75e-9b68-51c0-ab7d-23b5bb2fa18b",
+          "exact_captured_value": "\\sin x\\cos^{2} (\\csc x)",
+          "recipe": "sin(z) cos(csc(z))^2",
+          "whole_bank_profile": "q-31356",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "679060c0-1bb6-505c-82ad-9ea21f50f18b",
+          "exact_captured_value": "\\csc x\\cos^{2} (\\sin x)",
+          "recipe": "csc(z) cos(sin(z))^2",
+          "whole_bank_profile": "q-31356",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        }
+      ],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": [
+        ":question/difficulty",
+        ":question/worked-solution",
+        "selection"
+      ]
+    },
+    {
+      "source_id": "q-48643",
+      "exact_prompt": "Find the derivative of $y=\\operatorname{sin}\u2061(\\operatorname{cos}\u2061x).$",
+      "exact_solution": "First, we express $y$ as the composite function\n\n$$\ny=\\operatorname{sin}\u2061u,\\,u=\\operatorname{cos}\u2061x.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}=\\operatorname{cos}\u2061u,\\,\\frac{\\text{d}u}{\\text{d}x}=-\\operatorname{sin}\u2061x.\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & =\\operatorname{cos}\u2061u\\cdot (-\\operatorname{sin}\u2061x) \\\\  & =-\\operatorname{sin}\u2061x\\operatorname{cos}\u2061(\\operatorname{cos}\u2061x).\\end{aligned}\n$$",
+      "observed_operators": {
+        "outer": "sin",
+        "inner": "cos"
+      },
+      "original_parameters": {
+        "b": 0
+      },
+      "response": "whole derivative source radio",
+      "components": [
+        {
+          "field_key": "selection",
+          "answer_id": "2b27ffe2-7676-50cf-8f85-63acc6816398",
+          "exact_captured_value": "-\\operatorname{cos}\u2061x\\operatorname{sin}\u2061(\\operatorname{cos}\u2061x)",
+          "recipe": "-cos(z) sin(cos(z))",
+          "whole_bank_profile": "q-48643",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "446323eb-ee99-55ba-b53a-c33b7f83bceb",
+          "exact_captured_value": "-\\operatorname{sin}\u2061x\\operatorname{cos}\u2061(\\operatorname{cos}\u2061x)",
+          "recipe": "-sin(z) cos(cos(z)) [correct]",
+          "whole_bank_profile": "q-48643",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "6e31cdb3-4a26-586a-a124-b350d2c5b39e",
+          "exact_captured_value": "-\\operatorname{sin}\u2061x\\operatorname{cos}\u2061(\\operatorname{sin}\u2061x)",
+          "recipe": "-sin(z) cos(sin(z))",
+          "whole_bank_profile": "q-48643",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "a5306166-8267-56b7-84f3-d958abd6020b",
+          "exact_captured_value": "-\\operatorname{cos}\u2061x\\operatorname{cos}\u2061(\\operatorname{sin}\u2061x)",
+          "recipe": "-cos(z) cos(sin(z))",
+          "whole_bank_profile": "q-48643",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "ad3ebbc8-ea7e-59c1-b950-2b9dc34de1a6",
+          "exact_captured_value": "-\\operatorname{sin}\u2061x\\operatorname{sin}\u2061(\\operatorname{cos}\u2061x)",
+          "recipe": "-sin(z) sin(cos(z))",
+          "whole_bank_profile": "q-48643",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        }
+      ],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": []
+    },
+    {
+      "source_id": "q-48644",
+      "exact_prompt": "Find the equation of the tangent to the curve $y =\\cos \\left(\\sin x \\right)$ at the point $\\left(0,1 \\right).$",
+      "exact_solution": "First, the slope of $y = f(x)$ at $x = 0$ is given by $f'(0).$\n\nWe will calculate $f'(x)$ using the chain rule. First, we express $f(x)$ as the composite function\n\n\\[\nf = \\cos{u}, \\qquad u = \\sin x.\n\\]\n\nDifferentiating gives\n\n\\[\n\\dfrac{\\textrm d f}{\\textrm d u} = -\\sin{u}, \\qquad \\dfrac{\\textrm d u}{\\textrm d x} =\\cos x.\n\\]\n\nWe now apply the chain rule, and get\n\n\\begin{align*}\n \\dfrac{\\textrm d f}{\\textrm d x} &= \\dfrac{\\textrm d f}{\\textrm d u} \\cdot \\dfrac{\\textrm d u}{\\textrm d x}\\\\[5pt]\n&=-\\sin u \\cdot (\\cos x)\\\\[5pt]\n&=-\\cos x \\sin (\\sin x).\n\\end{align*}\n\nEvaluating at $x=0,$ we find\n\\[\n\t\\eqalign{\n\tf'(0)&=-\\cos (0) \\sin (\\sin (0))\\\\[3pt]\n\t&=-1 \\cdot 0 \\\\[3pt]\n        &=0.\n}\n\\]\n\nFinally, we find the equation of the tangent at the point $(0,1) \\mathbin{:}$\n\n\\begin{align}\ny-y_1 &= m(x-x_1)\\\\[3pt]\ny-1 &= (0)\\cdot\\left(x-0\\right)\\\\[3pt]\ny&=1.\n\\end{align}",
+      "observed_operators": {
+        "outer": "cos",
+        "inner": "sin"
+      },
+      "original_parameters": {
+        "a": 1,
+        "b": 0,
+        "phase": "0"
+      },
+      "response": "tangent equation RHS authored completion",
+      "components": [],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -3,
+            0,
+            3
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        },
+        "a": {
+          "role": "Authored hard outer coefficient",
+          "bounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "dependencies": [
+            "outer function binding",
+            "df/du or dy/du",
+            "prompt",
+            "scaled bank",
+            "coefficient blank",
+            "point height and slope for hard"
+          ]
+        },
+        "phase": {
+          "role": "Authored special-angle outer input offset",
+          "bounds": [
+            "0",
+            "1/6",
+            "1/4",
+            "1/3",
+            "1/2",
+            "2/3",
+            "3/4",
+            "5/6",
+            "1",
+            "-1/6",
+            "-1/4",
+            "-1/3",
+            "-1/2"
+          ],
+          "dependencies": [
+            "curve",
+            "inner binding",
+            "substituted derivative",
+            "point height",
+            "slope evaluation rows",
+            "point-slope equation",
+            "final tangent RHS"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument",
+        "evaluate slope at supplied point",
+        "point-slope equation",
+        "simplify tangent equation"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": [
+        ":question/answer-fields"
+      ]
+    },
+    {
+      "source_id": "q-72163",
+      "exact_prompt": "Find the derivative of $y=\\operatorname{sin}(\\operatorname{sec}x).$",
+      "exact_solution": "First, we express $y$ as the composite function\n\n$$\ny=\\operatorname{sin}u,\\,u=\\operatorname{sec}x.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}=\\operatorname{cos}u,\\,\\frac{\\text{d}u}{\\text{d}x}=\\operatorname{sec}x\\operatorname{tan}x.\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & =\\operatorname{cos}u\\cdot (\\operatorname{sec}x\\operatorname{tan}x) \\\\  & =\\operatorname{sec}x\\operatorname{tan}x\\operatorname{cos}(\\operatorname{sec}x).\\end{aligned}\n$$",
+      "observed_operators": {
+        "outer": "sin",
+        "inner": "sec"
+      },
+      "original_parameters": {
+        "b": 0
+      },
+      "response": "authored full derivative blank completion",
+      "components": [],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": [
+        ":question/answer-fields"
+      ]
+    },
+    {
+      "source_id": "q-72170",
+      "exact_prompt": "Find the derivative of $y =\\csc ( \\cos x).$",
+      "exact_solution": "First, we express $y$ as the composite function\n\n\\[\ny = \\csc{u}, \\qquad u = \\cos{x}.\n\\]\n\nDifferentiating gives\n\n\\[\n\\dfrac{\\textrm d y}{\\textrm d u} = -\\csc{u}\\cot u,\\qquad \\dfrac{\\textrm{d}u}{\\textrm d x} = -\\sin{x}.\n\\]\n\nWe now apply the chain rule, and get\n\n\\begin{align*}\n\\dfrac{\\textrm d y}{\\textrm d x} &= \\dfrac{\\textrm d y}{\\textrm d u} \\cdot \\dfrac{\\textrm d u}{\\textrm d x}\\\\[5pt]\n\n&=-\\csc u \\cot u \\cdot  (-\\sin x)\\\\[5pt]\n\n&=\\sin x\\csc \\left(\\cos x\\right) \\cot \\left(\\cos x\\right).\n\\end{align*}",
+      "observed_operators": {
+        "outer": "csc",
+        "inner": "cos"
+      },
+      "original_parameters": {
+        "b": 0
+      },
+      "response": "authored full derivative blank completion",
+      "components": [],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": [
+        ":question/answer-fields"
+      ]
+    },
+    {
+      "source_id": "q-341223",
+      "exact_prompt": "Given that $y=4\\operatorname{cos}\u2061(\\operatorname{sin}\u2061(x)),$ we have\n\n$\\frac{\\text{d}y}{\\text{d}x}=$\n{{field-1}}$\\cdot \\operatorname{sin}\u2061($\n{{field-2}} $).$",
+      "exact_solution": "First, we express $y$ as the composite function\n\n$$\ny=4\\operatorname{cos}\u2061(u),\\,u=\\operatorname{sin}\u2061(x).\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}=-4\\operatorname{sin}\u2061(u),\\,\\frac{\\text{d}u}{\\text{d}x}=\\operatorname{cos}\u2061(x).\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & =-4\\operatorname{sin}\u2061(u)\\cdot \\operatorname{cos}\u2061(x) \\\\  & =-4\\operatorname{cos}\u2061(x)\\cdot \\operatorname{sin}\u2061(\\operatorname{sin}\u2061(x)).\\end{aligned}\n$$",
+      "observed_operators": {
+        "outer": "cos",
+        "inner": "sin"
+      },
+      "original_parameters": {
+        "a": 4,
+        "b": 0
+      },
+      "response": "exact source derivative fragments",
+      "components": [
+        {
+          "field_key": "field-1",
+          "answer_id": "cc286831-208d-5612-9363-4e8460161c19",
+          "exact_captured_value": "-4\\operatorname{cos}(x)",
+          "recipe": "-a cos(z)",
+          "whole_bank_profile": null,
+          "original_parameters": {
+            "a": 4,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "field-2",
+          "answer_id": "231f91ac-3de6-59a3-862f-b8057c01af56",
+          "exact_captured_value": "\\operatorname{sin}(x)",
+          "recipe": "sin(z)",
+          "whole_bank_profile": null,
+          "original_parameters": {
+            "a": 4,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        }
+      ],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        },
+        "a": {
+          "role": "Observed outer coefficient",
+          "bounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "dependencies": [
+            "outer function binding",
+            "df/du or dy/du",
+            "prompt",
+            "scaled bank",
+            "coefficient blank",
+            "point height and slope for hard"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": []
+    },
+    {
+      "source_id": "q-342436",
+      "exact_prompt": "Given that $y=\\operatorname{tan}\u2061(\\operatorname{tan}\u2061(x)),$ we have\n\n$\\frac{\\text{d}y}{\\text{d}x}={sec}^{2}\u2061(x)\\,\\cdot $\n{{field-1}}.",
+      "exact_solution": "First, we express $y$ as the composite function\n\n$$\ny=\\operatorname{tan}\u2061(u),\\,u=\\operatorname{tan}\u2061(x).\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}={sec}^{2}\u2061(u),\\,\\frac{\\text{d}u}{\\text{d}x}={sec}^{2}\u2061(x).\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & ={sec}^{2}\u2061(u)\\cdot {sec}^{2}\u2061(x) \\\\  & ={sec}^{2}\u2061(x)\\cdot {sec}^{2}\u2061(\\operatorname{tan}\u2061(x)).\\end{aligned}\n$$",
+      "observed_operators": {
+        "outer": "tan",
+        "inner": "tan"
+      },
+      "original_parameters": {
+        "b": 0
+      },
+      "response": "exact source derivative fragments",
+      "components": [
+        {
+          "field_key": "field-1",
+          "answer_id": "0b3638de-2232-5b1b-8cad-82466c730a8a",
+          "exact_captured_value": "{sec}^{2}(\\operatorname{tan}(x))",
+          "recipe": "sec(tan(z))^2",
+          "whole_bank_profile": null,
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        }
+      ],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": []
+    },
+    {
+      "source_id": "q-342443",
+      "exact_prompt": "Given that $y=4\\operatorname{sec}\u2061(\\operatorname{sin}\u2061(x)),$ we have\n\n$\\frac{\\text{d}y}{\\text{d}x}=$\n{{field-1}}$\\operatorname{sec}\u2061($\n{{field-2}} $)\\operatorname{tan}\u2061($\n{{field-3}} $).$",
+      "exact_solution": "First, we express $y$ as the composite function\n\n$$\ny=4\\operatorname{sec}\u2061(u),\\,u=\\operatorname{sin}\u2061(x).\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}=4\\operatorname{sec}\u2061(u)\\operatorname{tan}\u2061(u),\\,\\frac{\\text{d}u}{\\text{d}x}=\\operatorname{cos}\u2061x.\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & =4\\operatorname{sec}\u2061(u)\\operatorname{tan}\u2061(u)\\cdot \\operatorname{cos}\u2061x \\\\  & =4\\operatorname{cos}\u2061x\\operatorname{sec}\u2061(\\operatorname{sin}\u2061(x))\\operatorname{tan}\u2061(\\operatorname{sin}\u2061(x)).\\end{aligned}\n$$",
+      "observed_operators": {
+        "outer": "sec",
+        "inner": "sin"
+      },
+      "original_parameters": {
+        "a": 4,
+        "b": 0
+      },
+      "response": "exact source derivative fragments",
+      "components": [
+        {
+          "field_key": "field-3",
+          "answer_id": "23b31fbe-14ab-5c3d-8b9a-02859f8e2640",
+          "exact_captured_value": "\\operatorname{sin}(x)",
+          "recipe": "sin(z)",
+          "whole_bank_profile": null,
+          "original_parameters": {
+            "a": 4,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "field-2",
+          "answer_id": "937de51f-ef0a-5577-95ef-6a8fef931e80",
+          "exact_captured_value": "\\operatorname{sin}(x)",
+          "recipe": "sin(z)",
+          "whole_bank_profile": null,
+          "original_parameters": {
+            "a": 4,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "field-1",
+          "answer_id": "3a7553de-ae66-58dc-a54c-8fcb1941ce52",
+          "exact_captured_value": "4\\operatorname{cos}x",
+          "recipe": "a cos(z)",
+          "whole_bank_profile": null,
+          "original_parameters": {
+            "a": 4,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        }
+      ],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        },
+        "a": {
+          "role": "Observed outer coefficient",
+          "bounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "dependencies": [
+            "outer function binding",
+            "df/du or dy/du",
+            "prompt",
+            "scaled bank",
+            "coefficient blank",
+            "point height and slope for hard"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": []
+    },
+    {
+      "source_id": "q-342445",
+      "exact_prompt": "Given that $y=\\operatorname{sec}\u2061(\\operatorname{csc}\u2061(x)),$ we have\n\n$\\frac{\\text{d}y}{\\text{d}x}=$\n{{field-1}}$\\cdot \\,\\operatorname{sec}\u2061(\\operatorname{csc}\u2061(x))\\cdot \\operatorname{tan}\u2061($\n{{field-2}} $).$",
+      "exact_solution": "First, we express $y$ as the composite function\n\n$$\ny=\\operatorname{sec}\u2061(u),\\,u=\\operatorname{csc}\u2061(x).\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}=\\operatorname{sec}\u2061(u)\\operatorname{tan}\u2061(u),\\,\\frac{\\text{d}u}{\\text{d}x}=-\\operatorname{csc}\u2061x\\operatorname{cot}\u2061x.\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & =\\operatorname{sec}\u2061(u)\\operatorname{tan}\u2061(u)\\cdot (-\\operatorname{csc}\u2061x\\operatorname{cot}\u2061x) \\\\  & =-\\operatorname{csc}\u2061x\\operatorname{cot}\u2061x\\cdot \\operatorname{sec}\u2061(\\operatorname{csc}\u2061(x))\\cdot \\operatorname{tan}\u2061(\\operatorname{csc}\u2061(x)).\\end{aligned}\n$$",
+      "observed_operators": {
+        "outer": "sec",
+        "inner": "csc"
+      },
+      "original_parameters": {
+        "b": 0
+      },
+      "response": "exact source derivative fragments",
+      "components": [
+        {
+          "field_key": "field-1",
+          "answer_id": "fd80f4fc-d66d-5918-905b-16bb0d321fbc",
+          "exact_captured_value": "-\\operatorname{csc}x\\operatorname{cot}x",
+          "recipe": "-csc(z) cot(z)",
+          "whole_bank_profile": null,
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "field-2",
+          "answer_id": "cb68a3a2-59aa-56c5-bc1b-c4aa4acceb78",
+          "exact_captured_value": "\\operatorname{csc}(x)",
+          "recipe": "csc(z)",
+          "whole_bank_profile": null,
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        }
+      ],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": []
+    },
+    {
+      "source_id": "q-72161",
+      "exact_prompt": "Find the derivative of $y=\\operatorname{cot}\u2061(\\operatorname{sin}\u2061x).$",
+      "exact_solution": "First, we express $y$ as the composite function\n\n$$\ny=\\operatorname{cot}\u2061u,\\,u=\\operatorname{sin}\u2061x.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}=-{csc}^{2}\u2061u,\\,\\frac{\\text{d}u}{\\text{d}x}=\\operatorname{cos}\u2061x.\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & =-{csc}^{2}\u2061u\\cdot (\\operatorname{cos}\u2061x) \\\\  & =-\\operatorname{cos}\u2061x{csc}^{2}\u2061(\\operatorname{sin}\u2061x).\\end{aligned}\n$$",
+      "observed_operators": {
+        "outer": "cot",
+        "inner": "sin"
+      },
+      "original_parameters": {
+        "b": 0
+      },
+      "response": "whole derivative source radio",
+      "components": [
+        {
+          "field_key": "selection",
+          "answer_id": "2ad365d4-359a-52c4-805a-c1687b51bf98",
+          "exact_captured_value": "-\\operatorname{cos}\u2061x{csc}^{2}\u2061(\\operatorname{cos}\u2061x)",
+          "recipe": "-cos(z) csc(cos(z))^2",
+          "whole_bank_profile": "q-72161",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "646e64f6-f63d-5208-9dad-bae8b2423826",
+          "exact_captured_value": "-\\operatorname{cos}\u2061x{csc}^{2}\u2061(\\operatorname{sin}\u2061x)",
+          "recipe": "-cos(z) csc(sin(z))^2 [correct]",
+          "whole_bank_profile": "q-72161",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "785f85d3-99ed-5869-bb7a-14c4604ec1c8",
+          "exact_captured_value": "-{csc}^{2}\u2061(\\operatorname{sin}\u2061x)",
+          "recipe": "-csc(sin(z))^2",
+          "whole_bank_profile": "q-72161",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "7d2e4cd6-fb63-51c7-b9f4-288b7402ef9a",
+          "exact_captured_value": "{csc}^{2}\u2061(\\operatorname{cos}\u2061x)",
+          "recipe": "csc(cos(z))^2",
+          "whole_bank_profile": "q-72161",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "e3ac1cf5-ef67-52e6-b531-518c01f08c90",
+          "exact_captured_value": "\\operatorname{cos}\u2061x{csc}^{2}\u2061(\\operatorname{cos}\u2061x)",
+          "recipe": "cos(z) csc(cos(z))^2",
+          "whole_bank_profile": "q-72161",
+          "original_parameters": {
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        }
+      ],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": []
+    },
+    {
+      "source_id": "q-72173",
+      "exact_prompt": "Find the derivative of $y=3\\operatorname{sec}\u2061(\\operatorname{cos}\u2061x).$",
+      "exact_solution": "First, we express $y$ as the composite function\n\n$$\ny=3\\operatorname{sec}\u2061u,\\,u=\\operatorname{cos}\u2061x.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}=3\\operatorname{sec}\u2061u\\operatorname{tan}\u2061u,\\,\\frac{\\text{d}u}{\\text{d}x}=-\\operatorname{sin}\u2061x.\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & =3\\operatorname{sec}\u2061u\\operatorname{tan}\u2061u\\cdot (-\\operatorname{sin}\u2061x) \\\\  & =-3\\operatorname{sin}\u2061x\\operatorname{sec}\u2061(\\operatorname{cos}\u2061x)\\operatorname{tan}\u2061(\\operatorname{cos}\u2061x).\\end{aligned}\n$$",
+      "observed_operators": {
+        "outer": "sec",
+        "inner": "cos"
+      },
+      "original_parameters": {
+        "a": 3,
+        "b": 0
+      },
+      "response": "whole derivative source radio",
+      "components": [
+        {
+          "field_key": "selection",
+          "answer_id": "35d0b5a0-960c-537b-b36b-f81b09719172",
+          "exact_captured_value": "3\\operatorname{sec}\u2061x\\operatorname{tan}\u2061(-\\operatorname{sin}\u2061x)",
+          "recipe": "a sec(z) tan(-sin(z))",
+          "whole_bank_profile": "q-72173",
+          "original_parameters": {
+            "a": 3,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "8659cf38-7f28-521b-9eb6-a1f4bb5d55a9",
+          "exact_captured_value": "3\\operatorname{sin}\u2061x\\operatorname{sec}\u2061(-\\operatorname{sin}\u2061x)\\operatorname{tan}\u2061(-\\operatorname{sin}\u2061x)",
+          "recipe": "a sin(z) sec(-sin(z)) tan(-sin(z))",
+          "whole_bank_profile": "q-72173",
+          "original_parameters": {
+            "a": 3,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "cf2b4496-4d43-50c5-b8f4-50cbe3748941",
+          "exact_captured_value": "3\\operatorname{cos}\u2061x\\operatorname{sec}\u2061(\\operatorname{cos}\u2061x)\\operatorname{tan}\u2061(\\operatorname{cos}\u2061x)",
+          "recipe": "a cos(z) sec(cos(z)) tan(cos(z))",
+          "whole_bank_profile": "q-72173",
+          "original_parameters": {
+            "a": 3,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "e5a21dd0-44ef-54d6-bc1c-1c98a20cbcd7",
+          "exact_captured_value": "3\\operatorname{sin}\u2061x\\operatorname{sec}\u2061x\\operatorname{tan}\u2061(\\operatorname{cos}\u2061x)",
+          "recipe": "a sin(z) sec(z) tan(cos(z))",
+          "whole_bank_profile": "q-72173",
+          "original_parameters": {
+            "a": 3,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        },
+        {
+          "field_key": "selection",
+          "answer_id": "f7b439b8-4fb4-5bd2-b82d-c5283f54f75b",
+          "exact_captured_value": "-3\\operatorname{sin}\u2061x\\operatorname{sec}\u2061(\\operatorname{cos}\u2061x)\\operatorname{tan}\u2061(\\operatorname{cos}\u2061x)",
+          "recipe": "-a sin(z) sec(cos(z)) tan(cos(z)) [correct]",
+          "whole_bank_profile": "q-72173",
+          "original_parameters": {
+            "a": 3,
+            "b": 0
+          },
+          "reproduces_complete_value": true,
+          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+        }
+      ],
+      "slots": {
+        "b": {
+          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "bounds": [
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "dependencies": [
+            "prompt inner argument",
+            "inner binding",
+            "du/dx trig arguments",
+            "chain inner factor",
+            "substituted derivative",
+            "entire bank",
+            "each inner-argument blank",
+            "domain poles"
+          ]
+        },
+        "a": {
+          "role": "Observed outer coefficient",
+          "bounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "dependencies": [
+            "outer function binding",
+            "df/du or dy/du",
+            "prompt",
+            "scaled bank",
+            "coefficient blank",
+            "point height and slope for hard"
+          ]
+        }
+      },
+      "source_solution_stages": [
+        "outer/inner decomposition",
+        "differentiate with respect to u and x",
+        "formal chain rule",
+        "multiply evaluated outer/inner factors",
+        "substitute inner argument"
+      ],
+      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "raw_preserves_missing": []
+    }
+  ],
+  "authored_easy": {
+    "curve": "a sin(sin(x+b))",
+    "a": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "b": [
+      -8,
+      -7,
+      -6,
+      -5,
+      -4,
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "field": "one blank whole derivative",
+    "solution_stages": [
+      "decompose y=a sin(u), u=sin(x+b)",
+      "dy/du=a cos(u), du/dx=cos(x+b)",
+      "formal chain rule",
+      "evaluated outer/inner multiplication",
+      "substitution"
+    ],
+    "grounding": [
+      "MA q-48643 common two-layer sine/cosine composition",
+      "KP canonical e-735 tan(sin(x)) establishes composition rather than affine-only chain rule",
+      "topic lesson introduction and basic trig derivative prerequisites"
+    ],
+    "authored_provenance": "No easy MA practice is captured; fixed sine/sine operators and two one-factor trig derivatives conservatively reduce moderate reciprocal/signed derivative work."
+  },
+  "bank_policy": "Select the entire source profile by template before parameters. Preserve all five patterns, then reject the whole instance on any mathematical collision. No pooled candidate list or fitted offsets."
+}

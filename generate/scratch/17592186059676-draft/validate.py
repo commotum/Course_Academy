@@ -164,7 +164,8 @@ def main():
  subprocess.run([sys.executable,str(HERE/'validate-cli.py')],check=True)
  for name,info in json.load(open(HERE/'frozen-snapshots.json')).items():
   assert sha(HERE/name)==info['sha256']==sha(ROOT/info['frozen_path']) and json.load(open(HERE/name))['basis']==2275
- inventory=json.load(open(HERE/'independent-inventory.json'));independent=[q for q in g.SOURCE['record'][':knowledge-point/questions'] if ':question/math-academy-id' not in q]
+ inventory_wrapper=json.load(open(HERE/'independent-inventory.json'));assert inventory_wrapper['basis']==2275 and inventory_wrapper['lineage']==g.LINEAGE
+ inventory=inventory_wrapper['questions'];independent=[q for q in g.SOURCE['record'][':knowledge-point/questions'] if ':question/math-academy-id' not in q]
  assert [q['record'] for q in inventory]==independent and all(q['role']=='independently authored inventory' and q['relationship_to_source_templates'] for q in inventory)
  build();inputs=[];checks=[];replay=[];mappings=[];reviews=[];counts={l:set() for l in g.SUPPORTED_LEVELS};slotcoverage={}
  # Exact source attrs/omissions replay, including unrated records, independent inventory separate.

@@ -158,7 +158,7 @@ Original complete bank:
 
 Differentiate ${e}^{x}\operatorname{sin}x.$
 
-$((e^{x})(\sin{\left(x \right)}))'= $ {{field-1}}
+$((e^{x})(\sin{\left(x \right)}))'=$ {{field-1}}
 
 Here, we have the product of the two functions $u(x)={e}^{x}$ and $v(x)=\operatorname{sin}x.$ So, we apply the product rule:
 
@@ -492,7 +492,7 @@ $$
 
 Differentiate $4{e}^{x}\operatorname{sin}x.$
 
-$((4 e^{x})(\sin{\left(x \right)}))'= $ {{field-1}}
+$((4 e^{x})(\sin{\left(x \right)}))'=$ {{field-1}}
 
 Here, we have the product of the two functions $u(x)=4{e}^{x}$ and $v(x)=\operatorname{sin}x.$ So, we apply the product rule:
 
@@ -506,7 +506,7 @@ $$
 
 Differentiate $2{e}^{x}\operatorname{sin}x.$
 
-$((2 e^{x})(\sin{\left(x \right)}))'= $ {{field-1}}
+$((2 e^{x})(\sin{\left(x \right)}))'=$ {{field-1}}
 
 Here, we have the product of the two functions $u(x)=2{e}^{x}$ and $v(x)=\operatorname{sin}x.$ So, we apply the product rule:
 

@@ -1,0 +1,9 @@
+# Classification
+
+Basis2275, lineage01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1; snapshot root verified in manifest.source_snapshot_roots. source.json is byte-identical to the frozen current source wrapper. Its11 original Math Academy questions are the only source templates;5 previously generated records are copied exactly into independent-inventory.json with independent-inventory role and relationship statements. Canonical examplee-732 supports authored easy scope, never counts as practice.
+
+Original counts:2unrated,4moderate,5hard. There are5radio banks of5 choices and3 single-answer blanks;3 hard questions have no captured fields. Eight fields contain28 source values. q-1943/q-1946 omit worked solutions and correct refs; raw replay retains these omissions. No graph/image/plot is involved.
+
+Every source has a separately identified Markdown/solution template in classification.json, preserving their differing contexts: cosine quadratic derivative, tangent affine derivative, tangent shifted quartic derivative, sine special-angle slope, sine affine slope, cosine-affine plus cubic derivative, sine pi-quadratic slope, sine quadratic slope at0, affine cosine horizontal tangent, cubic cosine horizontal tangent, amplitude cosine horizontal tangent.
+
+Observed moderate/hard sources mix workloads. Explicit source compatibility profiles retain these original tasks and stages for replay/review. The default practice sampler fixes one workload at each level: easy amplitude sine of affine argument; moderate tangent of one shifted quartic polynomial; hard slope of sine of pi times one quadratic at1. Source compatibility is selected explicitly and is excluded from default batch sampling. None uses nested inner chain rules, reciprocal-trig differentiation, trig powers, inverse trig, products/quotients, or trig-of-trig composition.

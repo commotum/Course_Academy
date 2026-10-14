@@ -1,0 +1,5 @@
+# Calculating the Value of a Scalar
+
+Only this KP's easy generator and additive generated content are in scope. source.json is an immutable captured source snapshot; reference/source-basis.json records the capture basis. classification.json, template-extraction.md, choice-recipes.json and capabilities.json document extraction, source corrections and bounded unsupported bands. No plots or external assets are required.
+
+Run `.venv/bin/python generate/scratch/17592186059741/validate.py` to replay every supported complete source bank, validate numeric/target slots and exercise the actual application grader. review.md shows replay and sampled variants side by side. Run `.venv/bin/python generate/scratch/17592186059741/replenish.py` to recheck inventory under api.lock, prepare additive typed EDN, preview native entity specs, retain exact durable request, submit with basis guard, and verify the exact receipt basis. Receipts remain in reference/replenishment. The legacy unclassified source remains visible because this task preserves source content.

@@ -492,7 +492,7 @@ fn inventory_cache_duration(review_lifetime:Duration, mastered:impl Iterator<Ite
 }
 
 fn trace(stage: &str, started: Instant) {
-    if std::env::var_os("LEARNING_TRACE").is_some() {
+    if std::env::var_os("LEARNING_TRACE").is_some() || started.elapsed()>Duration::from_millis(250) || matches!(stage,"grade"|"plan"|"durable-write-and-open-receipt"|"observe-commit") {
         eprintln!(
             "Learning {stage}: {:.3} ms",
             started.elapsed().as_secs_f64() * 1000.
@@ -2214,7 +2214,9 @@ fn mutate_with_selection(
             if submitted.len() != fields.len() {
                 return Err("Answer every current question field before submitting".into());
             }
+            let grading=Instant::now();
             let correct = learning::grade(s, content, &submitted)?;
+            trace("grade",grading);
             for response in response_refs {
                 forms.push(add(json!(i), "task-item/responses", response));
             }

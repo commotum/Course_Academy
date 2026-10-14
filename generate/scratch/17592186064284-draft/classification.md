@@ -1,0 +1,7 @@
+# Basis-2275 trig-composition classification
+
+The manifest source_snapshot_roots["2275"] resolves to refresh-2026-10-14. The source wrapper is preserved in source.json. Eleven MA practice records comprise nine observed moderate, one observed hard, and one unrated record. There are no easy MA practice records. Five independently authored hard inventory records are exact captured records in independent-inventory.json and do not support source templates or source-fidelity counts.
+
+The derivative backbone is two nested trigonometric operators, decomposition through u, two formal derivatives, evaluated-factor multiplication and substitution. Source radios have four complete five-option profiles. Four source blank layouts have respectively two, one, three, and two field-owned fragments. Two moderate derivative records and the hard tangent record omit fields. The unrated cot(cos x) radio omits designation and solution. Raw replay preserves every omission. Normal completions explicitly author those missing contracts, ratings and solutions.
+
+Hard retains cosine of sine, derivative calculation, point evaluation, and point-slope conversion. Easy explicitly authors coefficient-scaled sine of sine with the same derivative stages and a full derivative blank. Each easy instance has identical operators, composition depth, number of factors and reasoning stages. Every template has plot rating none. Per-source details and all exact banks are in classification.json and template-extraction.json.

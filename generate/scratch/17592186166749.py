@@ -13,12 +13,15 @@ import argparse,hashlib,json,random,re,sys,uuid
 from importlib.metadata import version as package_version
 from pathlib import Path
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import checked_math_content,normalize_prose,normalize_tex
 ROOT=Path(__file__).with_suffix('');VERSION='two-independent-chain-rule-1'
 CAPTURE=json.loads((ROOT/'source.json').read_text());SOURCE=CAPTURE['record']
 KP_ID=17592186166749;KP_UUID=SOURCE[':knowledge-point/id'];TITLE=SOURCE[':knowledge-point/title']
 x,y,s,t=sp.symbols('x y s t',real=True)
 SOURCES={q[':question/math-academy-id']:q for q in SOURCE[':knowledge-point/questions']}
 FAMILIES={'zero_exponential':'q-37205','quadratic_linear':'q-94448','trig_sum_product':'q-170672','exponential_product':'q-170673','expanded_polynomial':'q-37138','reciprocal_exponential':'q-94747','trig_product':'q-94749','log_norm':'q-94751','quadratic_trig':'q-37201','cubic_product':'q-94748'}
+FAMILIES.update({'linear_trig':'q-94745','exponential_trig_sum':'q-94752'})
 TEMPLATES={k:SOURCES[v][':question/difficulty'][':db/ident'].split('/')[-1] for k,v in FAMILIES.items()};TEMPLATES['affine_two_maps']='easy'
 PROFILES={**{'observed:'+v:{'template':k,'eligible':False,'origin':'observed value-pattern; intention unresolved'} for k,v in FAMILIES.items()},**{'operations:'+k:{'template':k,'eligible':True,'origin':'authored complete method bank'} for k in TEMPLATES}}
 class SampleRejected(ValueError):pass
@@ -36,7 +39,7 @@ def equal(a,b):
  return sp.simplify(d)==0
 
 def base(name):
- return {'zero_exponential':(2*x+x*y,s*sp.exp(s),t*sp.exp(s),t),'quadratic_linear':(x**2-4*y,2*s*t,s**2*t,s),'trig_sum_product':(x*y,sp.cos(t)+sp.sin(s),sp.sin(t),t),'exponential_product':(y*sp.exp(x),t+s,t*s,s),'expanded_polynomial':(x*y**2-2*y,s*t**2,s**3-t,s),'reciprocal_exponential':(1/x+1/y,sp.exp(s*t),sp.exp(-s*t),s),'trig_product':(x*y,sp.sin(s*t),sp.cos(s*t),t),'log_norm':(sp.log(x*x+y*y),t*sp.exp(s),t*sp.exp(-s),t),'quadratic_trig':(x*x-2*y*y,s*sp.sin(t),t*sp.sin(s),s),'cubic_product':(y*x*x,t*s,s-t,t)}[name]
+ return {'zero_exponential':(2*x+x*y,s*sp.exp(s),t*sp.exp(s),t),'quadratic_linear':(x**2-4*y,2*s*t,s**2*t,s),'trig_sum_product':(x*y,sp.cos(t)+sp.sin(s),sp.sin(t),t),'exponential_product':(y*sp.exp(x),t+s,t*s,s),'expanded_polynomial':(x*y**2-2*y,s*t**2,s**3-t,s),'reciprocal_exponential':(1/x+1/y,sp.exp(s*t),sp.exp(-s*t),s),'trig_product':(x*y,sp.sin(s*t),sp.cos(s*t),t),'log_norm':(sp.log(x*x+y*y),t*sp.exp(s),t*sp.exp(-s),t),'quadratic_trig':(x*x-2*y*y,s*sp.sin(t),t*sp.sin(s),s),'cubic_product':(y*x*x,t*s,s-t,t),'linear_trig':(x-y,-s*sp.cos(t),s*sp.sin(t),s),'exponential_trig_sum':(sp.exp(x+y),s*sp.sin(t),s*sp.cos(t),t)}[name]
 def derivative(v,w):return r'\frac{∂'+v+'}{∂'+w+'}'
 def block(rows):return '$$\n'+r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}'+'\n$$'
 def mul(a,b):return '('+tex(a)+r')\cdot ('+tex(b)+')'
@@ -103,7 +106,7 @@ def operation_bank(name,f,X,Y,v):
   if any(equal(z,w) for w in vals[:i]):raise SampleRejected('Complete operation bank collision')
  return [tex(z) for z in vals],recipes
 
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def _generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('Unknown level')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only radio fields supported')
  rng=random.Random(seed)
@@ -128,11 +131,24 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    if parameters is not None:raise
  else:raise SampleRejected('Bounded whole-bank sampling exhausted')
  correct=sp.diff(f.subs({x:X,y:Y},simultaneous=True),v)
+ if not raw:
+  prompt=normalize_prose(prompt);sol=normalize_prose(sol);values=[normalize_tex(z) for z in values]
  mathematical=digest({'family':name,'assessed_derivative':sp.srepr(sp.cancel(sp.expand(correct))),'level':level,**({'composed_affine_function':sp.srepr(sp.expand(f.subs({x:X,y:Y},simultaneous=True))),'held_coordinate_partial':str(v)} if name=='affine_two_maps' else {})})
  content=digest({'version':VERSION,'level':level,'prompt':prompt,'solution':sol,'bank':sorted((z,i==ci) for i,z in enumerate(values))})
  qid=uid(content);fid=uid(content+'selection');answers=[{':answer/id':uid(fid+z),':answer/type':':answer.type/math',':answer/value':z} for z in values];correct_id=answers[ci][':answer/id'];rng.shuffle(answers)
  question={':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':sol,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}]}
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'seed':seed,'template':name,'parameters':p,'bank_profile':profile,'bank_origin':PROFILES[profile]['origin'],'evidence_only':raw,'eligible_for_learning':not raw,'authored_extension':level=='easy' or not raw,'mathematical_fingerprint':mathematical,'parameter_fingerprint':mathematical,'content_fingerprint':content,'recipes':recipes,'source_analysis':{'database':'math','basis':1356,'lineage':CAPTURE['lineage'],'question_ids':[FAMILIES[name]] if name in FAMILIES else [],'topic_db_id':17592186050031},'domain':'s,t real; t != '+str(-p['k']) if name=='log_norm' else 's,t real','plot_rating':'none','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':package_version('matplotlib')}}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'seed':seed,'template':name,'parameters':p,'bank_profile':profile,'bank_origin':PROFILES[profile]['origin'],'evidence_only':raw,'eligible_for_learning':not raw,'authored_extension':level=='easy' or not raw,'mathematical_fingerprint':mathematical,'parameter_fingerprint':mathematical,'content_fingerprint':content,'recipes':recipes,'source_analysis':{'database':'math','basis':CAPTURE['basis'],'lineage':CAPTURE['lineage'],'question_ids':[FAMILIES[name]] if name in FAMILIES else [],'topic_db_id':17592186050031},'domain':'s,t real; t != '+str(-p['k']) if name=='log_norm' else 's,t real','plot_rating':'none','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':package_version('matplotlib')}}}
+
+@checked_math_content
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ if profile and profile.startswith('observed:'):
+  raise ValueError('Immutable raw evidence uses replay_source, not the learning generator')
+ return _generate(level,seed,template,field_type,parameters,profile)
+
+def replay_source(level,seed=0,template=None,parameters=None,profile=None):
+ if profile not in PROFILES or PROFILES[profile]['eligible']:
+  raise ValueError('An observed evidence-only profile is required')
+ return _generate(level,seed,template,parameters=parameters,profile=profile)
 
 # EASY — authored missing level: linear f, two affine coordinate maps, both terms.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):

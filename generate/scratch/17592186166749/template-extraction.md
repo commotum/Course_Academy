@@ -529,3 +529,99 @@ Linear f=ax+by; x=cs+dt; y=es+gt, with each signed coefficient nonzero and magni
 ## Scope and inference limits
 
 Observed shifts provide a finite bank; incidental shifts that disappear from the derivative do not inflate mathematical fingerprints. Default banks are authored and method-derived, historical raw banks are evidence-only. A handful of visually escaped backslashes in JSON is not a source anomaly: direct decoded substring checks show one command backslash; line separators have two as intended. All source mathematical chains and designated values are independently checked from their displayed expressions. No source mathematical/presentation correction is needed.
+
+## linear_trig — refreshed source q-94745 at basis 2505
+
+1. Specific source: Let $f(x,y)=x-y,$ where $x=-s\operatorname{cos}⁡t$ and $y=s\operatorname{sin}⁡t.$ Calculate $\frac{∂f}{∂s}.$
+
+2. Shared pattern: compute both outer partials, substitute both maps, hold the other coordinate fixed while differentiating maps, then add two products and collect the source conclusion. One selection radio field, five math choices.
+
+3. Complete bank mapping: each observed expression below is translated simultaneously by s→s+h and t→t+k. The original profile is evidence-only; intent of incorrect choices remains unresolved.
+
+- incorrect: $2\operatorname{cos}⁡t$; source choice 5011f4d0-0c40-5764-9ee2-dff49de39782; profile observed:q-94745; complete-expression translation recipe.
+- incorrect: $s(\operatorname{sin}⁡t-\operatorname{cos}⁡t)$; source choice 639601fb-cc44-52a3-bcb1-718c744fd6ec; profile observed:q-94745; complete-expression translation recipe.
+- incorrect: $s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)$; source choice cbb75712-99aa-5d77-a9d1-0d236df66a51; profile observed:q-94745; complete-expression translation recipe.
+- correct: $-(\operatorname{cos}⁡t+\operatorname{sin}⁡t)$; source choice cd89300c-6a2b-5a80-9770-886f817b90fb; profile observed:q-94745; complete-expression translation recipe.
+- incorrect: $\operatorname{cos}⁡t-\operatorname{sin}⁡t$; source choice f132c264-24c8-5558-941c-11fddb4def73; profile observed:q-94745; complete-expression translation recipe.
+
+4. Backbone/slots: fixed outer function, coordinate-map function families, requested coordinate, radio field key and source solution rows. h,k are independent integer input translations in -2..2, inserted as grouped complete arguments throughout prompt/solution/bank. These shifts add no differentiation stages. In linear_trig, h cancels from the assessed partial, so there are five assessed variants, indexed by k; canceled h does not create fresh questions. In exponential_trig_sum both shifts affect the assessed partial. Normal profile operations:linear_trig has correct U+V, U, V, U−V and f_x+f_y after substitution, where U=f_x x_v and V=f_y y_v. Select this whole bank and reject collisions. Every source displayed solution block is retained as an expression mask:
+
+![](images/21/21cec766fe72965697304ef4288ffb2b090ddfca179210165dbcfd42ec490b27.png)
+
+The chain rule for a multivariable function $f(x,y)$ with two independent variables $s$ and $t,$ where $x=x(s,t)$ and $y=y(s,t),$ can be expressed as follows:
+
+$$
+\frac{∂f}{∂s}=\frac{∂f}{∂x}\cdot \frac{∂x}{∂s}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂s}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x}=1,\,\frac{∂f}{∂y}=-1\end{aligned}
+$$
+
+Writing the above results in terms of $s$ and $t,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =1, \\ \frac{∂f}{∂y} & =-1.\end{aligned}
+$$
+
+Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
+
+$$
+\begin{aligned}\frac{∂x}{∂s} & =-\operatorname{cos}⁡t, \\ \frac{∂y}{∂s} & =\operatorname{sin}⁡t.\end{aligned}
+$$
+
+Finally, substituting all of our derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{∂f}{∂s} & =\frac{∂f}{∂x}\cdot \frac{∂x}{∂s}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂s} \\  & =(1)(-\operatorname{cos}⁡t)+(-1)(\operatorname{sin}⁡t) \\  & =-(\operatorname{cos}⁡t+\operatorname{sin}⁡t).\end{aligned}
+$$
+
+## exponential_trig_sum — refreshed source q-94752 at basis 2505
+
+1. Specific source: Let $f(x,y)={e}^{x+y},$ where $x=s\operatorname{sin}⁡t$ and $y=s\operatorname{cos}⁡t.$ Calculate $\frac{∂f}{∂t}.$
+
+2. Shared pattern: compute both outer partials, substitute both maps, hold the other coordinate fixed while differentiating maps, then add two products and collect the source conclusion. One selection radio field, five math choices.
+
+3. Complete bank mapping: each observed expression below is translated simultaneously by s→s+h and t→t+k. The original profile is evidence-only; intent of incorrect choices remains unresolved.
+
+- correct: $s(\operatorname{cos}⁡t-\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$; source choice 2d654e2f-f3fc-5258-a49f-2d34c0fe2e84; profile observed:q-94752; complete-expression translation recipe.
+- incorrect: $(\operatorname{cos}⁡t-\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$; source choice 43c4c48d-421f-5939-a191-17a25a99baca; profile observed:q-94752; complete-expression translation recipe.
+- incorrect: $s(\operatorname{cos}⁡t+\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$; source choice 629974f2-9b87-5ba0-9a3b-689b12569330; profile observed:q-94752; complete-expression translation recipe.
+- incorrect: $(\operatorname{cos}⁡t+\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$; source choice b5c2f672-c569-5344-b958-fc7c3946d8cf; profile observed:q-94752; complete-expression translation recipe.
+- incorrect: ${s}^{2}(\operatorname{cos}⁡t+\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$; source choice e8b45a28-1354-55e5-892b-95b377da47a5; profile observed:q-94752; complete-expression translation recipe.
+
+4. Backbone/slots: fixed outer function, coordinate-map function families, requested coordinate, radio field key and source solution rows. h,k are independent integer input translations in -2..2, inserted as grouped complete arguments throughout prompt/solution/bank. These shifts add no differentiation stages. In linear_trig, h cancels from the assessed partial, so there are five assessed variants, indexed by k; canceled h does not create fresh questions. In exponential_trig_sum both shifts affect the assessed partial. Normal profile operations:exponential_trig_sum has correct U+V, U, V, U−V and f_x+f_y after substitution, where U=f_x x_v and V=f_y y_v. Select this whole bank and reject collisions. Every source displayed solution block is retained as an expression mask:
+
+![](images/11/118759b163a4410f66d5855d7b7b1fd9c2ee4be585e778a759997036bd95f765.png)
+
+The chain rule for a multivariable function $f(x,y)$ with two independent variables $s$ and $t,$ where $x=x(s,t)$ and $y=y(s,t),$ can be expressed as follows:
+
+$$
+\frac{∂f}{∂t}=\frac{∂f}{∂x}\cdot \frac{∂x}{∂t}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂t}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x}={e}^{x+y},\,\frac{∂f}{∂y}={e}^{x+y}\end{aligned}
+$$
+
+Writing the above results in terms of $s$ and $t,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & ={e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t}, \\ \frac{∂f}{∂y} & ={e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t}.\end{aligned}
+$$
+
+Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
+
+$$
+\begin{aligned}\frac{∂x}{∂t} & =s\operatorname{cos}⁡t, \\ \frac{∂y}{∂t} & =-s\operatorname{sin}⁡t.\end{aligned}
+$$
+
+Finally, substituting all of our derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{∂f}{∂t} & =\frac{∂f}{∂x}\cdot \frac{∂x}{∂t}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂t} \\  & =({e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t})(s\operatorname{cos}⁡t)+({e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t})(-s\operatorname{sin}⁡t) \\  & =(s\operatorname{cos}⁡t-s\operatorname{sin}⁡t){e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t} \\  & =s(\operatorname{cos}⁡t-\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}.\end{aligned}
+$$

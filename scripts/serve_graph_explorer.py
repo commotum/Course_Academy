@@ -31,7 +31,6 @@ import subprocess
 import sys
 import threading
 import time
-import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 from inventory_jobs import InventoryJobs
@@ -137,6 +136,14 @@ def admit_answer(body: dict, directory: Path, learner: str, received: int) -> di
     """Keep the first server-observed submission time across retries and conflicts."""
     if body.get('action') != 'answer':
         return body
+    request = body.get('requestId', '')
+    if isinstance(request, str) and 8 <= len(request) <= 128 and all(c.isascii() and (c.isalnum() or c == '-') for c in request):
+        journal = directory / f'{learner}-{request}.json'
+        if journal.exists():
+            saved_input = json.loads(journal.read_text()).get('input')
+            if saved_input == body:
+                # Existing receipts retain their exact input across deployment.
+                return body
     key = body.get('submissionId', body.get('requestId', ''))
     if not isinstance(key, str) or not 8 <= len(key) <= 128 or not all(c.isascii() and (c.isalnum() or c == '-') for c in key):
         raise ValueError('A stable submission ID is required')
@@ -444,7 +451,10 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 page_read = body.get("action") in {"assignments", "activity-history", "study-stats"}
                 # Immutable list reads have their own peer and never record
                 # learner state. Scheduler/write admission must not block them.
-                with (nullcontext() if page_read else (directory / "api.lock").open("a")) as lock:
+                # Publishers can spend minutes validating under api.lock. Answers
+                # use the held native peer's mutex plus EDB's exact basis/status
+                # guards, so they may proceed while content is being prepared.
+                with (nullcontext() if page_read or body.get('action') == 'answer' else (directory / "api.lock").open("a")) as lock:
                     if lock is not None:
                         fcntl.flock(lock, fcntl.LOCK_EX)
                     admitted = time.monotonic()
@@ -470,6 +480,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     print(f"Learning request {body.get('action')} {body.get('requestId', '')}: admission={(admitted-request_started)*1000:.1f} ms worker={(finished-admitted)*1000:.1f} ms total={(time.monotonic()-request_started)*1000:.1f} ms", file=sys.stderr)
             except (subprocess.SubprocessError, OSError, ValueError) as error:
                 self.log_error("Learning request failed (%s)", type(error).__name__)
+                self.log_error("Learning %s request ended after %.1f ms", body.get('action'), (time.monotonic()-request_started)*1000)
                 self.send_bytes(503, b'{"error":"Could not reach the local learning database. Retry the same request."}', "application/json")
 
         def mode_request(self, body: dict | None = None) -> None:

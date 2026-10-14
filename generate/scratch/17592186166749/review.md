@@ -65,7 +65,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2+y,\,\frac{∂f}{∂y}=x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2+y,\,\frac{∂f}{∂y}=x\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -107,7 +107,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2+y,\,\frac{∂f}{∂y}=x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2+y,\,\frac{∂f}{∂y}=x\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -191,7 +191,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2x,\,\frac{∂f}{∂y}=-4\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2x,\,\frac{∂f}{∂y}=-4\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -233,7 +233,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2x,\,\frac{∂f}{∂y}=-4\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2x,\,\frac{∂f}{∂y}=-4\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -317,7 +317,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=y,\,\frac{∂f}{∂y}=x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=y,\,\frac{∂f}{∂y}=x\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -359,7 +359,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=y,\,\frac{∂f}{∂y}=x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=y,\,\frac{∂f}{∂y}=x\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -443,7 +443,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=y{e}^{x},\,\frac{∂f}{∂y}={e}^{x}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=y{e}^{x},\,\frac{∂f}{∂y}={e}^{x}\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -485,7 +485,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=y{e}^{x},\,\frac{∂f}{∂y}={e}^{x}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=y{e}^{x},\,\frac{∂f}{∂y}={e}^{x}\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -569,7 +569,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$
 
 $$
-\begin{aligned}\frac{∂f}{∂x}={y}^{2},\,\frac{∂f}{∂y}=2xy-2\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &={y}^{2},\,\frac{∂f}{∂y}=2xy-2\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -611,7 +611,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$
 
 $$
-\begin{aligned}\frac{∂f}{∂x}={y}^{2},\,\frac{∂f}{∂y}=2xy-2\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &={y}^{2},\,\frac{∂f}{∂y}=2xy-2\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -695,7 +695,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-\frac{1}{{x}^{2}},\,\frac{∂f}{∂y}=-\frac{1}{{y}^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-\frac{1}{{x}^{2}},\,\frac{∂f}{∂y}=-\frac{1}{{y}^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -737,7 +737,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-\frac{1}{{x}^{2}},\,\frac{∂f}{∂y}=-\frac{1}{{y}^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-\frac{1}{{x}^{2}},\,\frac{∂f}{∂y}=-\frac{1}{{y}^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -821,7 +821,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=y,\,\frac{∂f}{∂y}=x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=y,\,\frac{∂f}{∂y}=x\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -863,7 +863,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=y,\,\frac{∂f}{∂y}=x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=y,\,\frac{∂f}{∂y}=x\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -947,7 +947,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{2x}{{x}^{2}+{y}^{2}},\,\frac{∂f}{∂y}=\frac{2y}{{x}^{2}+{y}^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{2x}{{x}^{2}+{y}^{2}},\,\frac{∂f}{∂y}=\frac{2y}{{x}^{2}+{y}^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -989,7 +989,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{2x}{{x}^{2}+{y}^{2}},\,\frac{∂f}{∂y}=\frac{2y}{{x}^{2}+{y}^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{2x}{{x}^{2}+{y}^{2}},\,\frac{∂f}{∂y}=\frac{2y}{{x}^{2}+{y}^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -1073,7 +1073,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2x,\,\frac{∂f}{∂y}=-4y\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2x,\,\frac{∂f}{∂y}=-4y\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -1115,7 +1115,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2x,\,\frac{∂f}{∂y}=-4y\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2x,\,\frac{∂f}{∂y}=-4y\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -1199,7 +1199,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2xy,\,\frac{∂f}{∂y}={x}^{2}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2xy,\,\frac{∂f}{∂y}={x}^{2}\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -1241,7 +1241,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2xy,\,\frac{∂f}{∂y}={x}^{2}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2xy,\,\frac{∂f}{∂y}={x}^{2}\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -1260,6 +1260,258 @@ Finally, substituting all of our derivatives into the multivariable chain rule, 
 
 $$
 \begin{aligned}\frac{∂f}{∂t} & =\frac{∂f}{∂x}\cdot \frac{∂x}{∂t}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂t} \\  & =(2\left(t-2\right){\left(s+1\right)}^{2}-2\left(s+1\right){\left(t-2\right)}^{2})(\left(s+1\right))+({\left(t-2\right)}^{2}{\left(s+1\right)}^{2})(-1) \\  & =2\left(t-2\right){\left(s+1\right)}^{3}-2{\left(s+1\right)}^{2}{\left(t-2\right)}^{2}-{\left(t-2\right)}^{2}{\left(s+1\right)}^{2} \\  & =2\left(t-2\right){\left(s+1\right)}^{3}-3{\left(t-2\right)}^{2}{\left(s+1\right)}^{2} \\  & =\left(t-2\right){\left(s+1\right)}^{2}(2\left(s+1\right)-3\left(t-2\right)).\end{aligned}
+$$
+
+## Original complete raw replay q-94745
+
+Let $f(x,y)=x-y,$ where $x=-s\operatorname{cos}⁡t$ and $y=s\operatorname{sin}⁡t.$ Calculate $\frac{∂f}{∂s}.$
+
+- $s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)$
+- $s(\operatorname{sin}⁡t-\operatorname{cos}⁡t)$
+- $2\operatorname{cos}⁡t$
+- $\operatorname{cos}⁡t-\operatorname{sin}⁡t$
+- $-(\operatorname{cos}⁡t+\operatorname{sin}⁡t)$ **correct**
+
+![](images/21/21cec766fe72965697304ef4288ffb2b090ddfca179210165dbcfd42ec490b27.png)
+
+The chain rule for a multivariable function $f(x,y)$ with two independent variables $s$ and $t,$ where $x=x(s,t)$ and $y=y(s,t),$ can be expressed as follows:
+
+$$
+\frac{∂f}{∂s}=\frac{∂f}{∂x}\cdot \frac{∂x}{∂s}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂s}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x}=1,\,\frac{∂f}{∂y}=-1\end{aligned}
+$$
+
+Writing the above results in terms of $s$ and $t,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =1, \\ \frac{∂f}{∂y} & =-1.\end{aligned}
+$$
+
+Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
+
+$$
+\begin{aligned}\frac{∂x}{∂s} & =-\operatorname{cos}⁡t, \\ \frac{∂y}{∂s} & =\operatorname{sin}⁡t.\end{aligned}
+$$
+
+Finally, substituting all of our derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{∂f}{∂s} & =\frac{∂f}{∂x}\cdot \frac{∂x}{∂s}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂s} \\  & =(1)(-\operatorname{cos}⁡t)+(-1)(\operatorname{sin}⁡t) \\  & =-(\operatorname{cos}⁡t+\operatorname{sin}⁡t).\end{aligned}
+$$
+
+## Generated source-shaped normal linear_trig {'h': -2, 'k': 1}
+
+Let $f(x,y)=x-y,$ where $x=-\left(s-2\right)\operatorname{cos}⁡\left(t+1\right)$ and $y=\left(s-2\right)\operatorname{sin}⁡\left(t+1\right).$ Calculate $\frac{∂f}{∂s}.$
+
+- $- \sin{\left(t + 1 \right)}$
+- $- \cos{\left(t + 1 \right)}$
+- $- \sin{\left(t + 1 \right)} - \cos{\left(t + 1 \right)}$ **correct**
+- $0$
+- $\sin{\left(t + 1 \right)} - \cos{\left(t + 1 \right)}$
+
+![](images/21/21cec766fe72965697304ef4288ffb2b090ddfca179210165dbcfd42ec490b27.png)
+
+The chain rule for a multivariable function $f(x,y)$ with two independent variables $s$ and $t,$ where $x=x(s,t)$ and $y=y(s,t),$ can be expressed as follows:
+
+$$
+\frac{∂f}{∂s}=\frac{∂f}{∂x}\cdot \frac{∂x}{∂s}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂s}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &=1,\,\frac{∂f}{∂y}=-1\end{aligned}
+$$
+
+Writing the above results in terms of $s$ and $t,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =1, \\ \frac{∂f}{∂y} & =-1.\end{aligned}
+$$
+
+Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
+
+$$
+\begin{aligned}\frac{∂x}{∂s} & =-\operatorname{cos}⁡\left(t+1\right), \\ \frac{∂y}{∂s} & =\operatorname{sin}⁡\left(t+1\right).\end{aligned}
+$$
+
+Finally, substituting all of our derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{∂f}{∂s} & =\frac{∂f}{∂x}\cdot \frac{∂x}{∂s}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂s} \\  & =(1)(-\operatorname{cos}⁡\left(t+1\right))+(-1)(\operatorname{sin}⁡\left(t+1\right)) \\  & =-(\operatorname{cos}⁡\left(t+1\right)+\operatorname{sin}⁡\left(t+1\right)).\end{aligned}
+$$
+
+## Generated source-shaped normal linear_trig {'h': 1, 'k': -2}
+
+Let $f(x,y)=x-y,$ where $x=-\left(s+1\right)\operatorname{cos}⁡\left(t-2\right)$ and $y=\left(s+1\right)\operatorname{sin}⁡\left(t-2\right).$ Calculate $\frac{∂f}{∂s}.$
+
+- $- \sin{\left(t - 2 \right)}$
+- $- \cos{\left(t - 2 \right)}$
+- $- \sin{\left(t - 2 \right)} - \cos{\left(t - 2 \right)}$ **correct**
+- $0$
+- $\sin{\left(t - 2 \right)} - \cos{\left(t - 2 \right)}$
+
+![](images/21/21cec766fe72965697304ef4288ffb2b090ddfca179210165dbcfd42ec490b27.png)
+
+The chain rule for a multivariable function $f(x,y)$ with two independent variables $s$ and $t,$ where $x=x(s,t)$ and $y=y(s,t),$ can be expressed as follows:
+
+$$
+\frac{∂f}{∂s}=\frac{∂f}{∂x}\cdot \frac{∂x}{∂s}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂s}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &=1,\,\frac{∂f}{∂y}=-1\end{aligned}
+$$
+
+Writing the above results in terms of $s$ and $t,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =1, \\ \frac{∂f}{∂y} & =-1.\end{aligned}
+$$
+
+Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
+
+$$
+\begin{aligned}\frac{∂x}{∂s} & =-\operatorname{cos}⁡\left(t-2\right), \\ \frac{∂y}{∂s} & =\operatorname{sin}⁡\left(t-2\right).\end{aligned}
+$$
+
+Finally, substituting all of our derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{∂f}{∂s} & =\frac{∂f}{∂x}\cdot \frac{∂x}{∂s}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂s} \\  & =(1)(-\operatorname{cos}⁡\left(t-2\right))+(-1)(\operatorname{sin}⁡\left(t-2\right)) \\  & =-(\operatorname{cos}⁡\left(t-2\right)+\operatorname{sin}⁡\left(t-2\right)).\end{aligned}
+$$
+
+## Original complete raw replay q-94752
+
+Let $f(x,y)={e}^{x+y},$ where $x=s\operatorname{sin}⁡t$ and $y=s\operatorname{cos}⁡t.$ Calculate $\frac{∂f}{∂t}.$
+
+- $s(\operatorname{cos}⁡t+\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$
+- $(\operatorname{cos}⁡t-\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$
+- $s(\operatorname{cos}⁡t-\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$ **correct**
+- ${s}^{2}(\operatorname{cos}⁡t+\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$
+- $(\operatorname{cos}⁡t+\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}$
+
+![](images/11/118759b163a4410f66d5855d7b7b1fd9c2ee4be585e778a759997036bd95f765.png)
+
+The chain rule for a multivariable function $f(x,y)$ with two independent variables $s$ and $t,$ where $x=x(s,t)$ and $y=y(s,t),$ can be expressed as follows:
+
+$$
+\frac{∂f}{∂t}=\frac{∂f}{∂x}\cdot \frac{∂x}{∂t}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂t}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x}={e}^{x+y},\,\frac{∂f}{∂y}={e}^{x+y}\end{aligned}
+$$
+
+Writing the above results in terms of $s$ and $t,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & ={e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t}, \\ \frac{∂f}{∂y} & ={e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t}.\end{aligned}
+$$
+
+Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
+
+$$
+\begin{aligned}\frac{∂x}{∂t} & =s\operatorname{cos}⁡t, \\ \frac{∂y}{∂t} & =-s\operatorname{sin}⁡t.\end{aligned}
+$$
+
+Finally, substituting all of our derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{∂f}{∂t} & =\frac{∂f}{∂x}\cdot \frac{∂x}{∂t}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂t} \\  & =({e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t})(s\operatorname{cos}⁡t)+({e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t})(-s\operatorname{sin}⁡t) \\  & =(s\operatorname{cos}⁡t-s\operatorname{sin}⁡t){e}^{s\operatorname{sin}⁡t+s\operatorname{cos}⁡t} \\  & =s(\operatorname{cos}⁡t-\operatorname{sin}⁡t){e}^{s(\operatorname{sin}⁡t+\operatorname{cos}⁡t)}.\end{aligned}
+$$
+
+## Generated source-shaped normal exponential_trig_sum {'h': -2, 'k': 1}
+
+Let $f(x,y)={e}^{x+y},$ where $x=\left(s-2\right)\operatorname{sin}⁡\left(t+1\right)$ and $y=\left(s-2\right)\operatorname{cos}⁡\left(t+1\right).$ Calculate $\frac{∂f}{∂t}.$
+
+- $- \left(s - 2\right) e^{\left(s - 2\right) \sin{\left(t + 1 \right)} + \left(s - 2\right) \cos{\left(t + 1 \right)}} \sin{\left(t + 1 \right)}$
+- $\left(s - 2\right) e^{\left(s - 2\right) \sin{\left(t + 1 \right)} + \left(s - 2\right) \cos{\left(t + 1 \right)}} \cos{\left(t + 1 \right)}$
+- $- \left(s - 2\right) e^{\left(s - 2\right) \sin{\left(t + 1 \right)} + \left(s - 2\right) \cos{\left(t + 1 \right)}} \sin{\left(t + 1 \right)} + \left(s - 2\right) e^{\left(s - 2\right) \sin{\left(t + 1 \right)} + \left(s - 2\right) \cos{\left(t + 1 \right)}} \cos{\left(t + 1 \right)}$ **correct**
+- $2 e^{\left(s - 2\right) \sin{\left(t + 1 \right)} + \left(s - 2\right) \cos{\left(t + 1 \right)}}$
+- $\left(s - 2\right) e^{\left(s - 2\right) \sin{\left(t + 1 \right)} + \left(s - 2\right) \cos{\left(t + 1 \right)}} \sin{\left(t + 1 \right)} + \left(s - 2\right) e^{\left(s - 2\right) \sin{\left(t + 1 \right)} + \left(s - 2\right) \cos{\left(t + 1 \right)}} \cos{\left(t + 1 \right)}$
+
+![](images/11/118759b163a4410f66d5855d7b7b1fd9c2ee4be585e778a759997036bd95f765.png)
+
+The chain rule for a multivariable function $f(x,y)$ with two independent variables $s$ and $t,$ where $x=x(s,t)$ and $y=y(s,t),$ can be expressed as follows:
+
+$$
+\frac{∂f}{∂t}=\frac{∂f}{∂x}\cdot \frac{∂x}{∂t}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂t}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &={e}^{x+y},\,\frac{∂f}{∂y}={e}^{x+y}\end{aligned}
+$$
+
+Writing the above results in terms of $s$ and $t,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & ={e}^{\left(s-2\right)\operatorname{sin}⁡\left(t+1\right)+\left(s-2\right)\operatorname{cos}⁡\left(t+1\right)}, \\ \frac{∂f}{∂y} & ={e}^{\left(s-2\right)\operatorname{sin}⁡\left(t+1\right)+\left(s-2\right)\operatorname{cos}⁡\left(t+1\right)}.\end{aligned}
+$$
+
+Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
+
+$$
+\begin{aligned}\frac{∂x}{∂t} & =\left(s-2\right)\operatorname{cos}⁡\left(t+1\right), \\ \frac{∂y}{∂t} & =-\left(s-2\right)\operatorname{sin}⁡\left(t+1\right).\end{aligned}
+$$
+
+Finally, substituting all of our derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{∂f}{∂t} & =\frac{∂f}{∂x}\cdot \frac{∂x}{∂t}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂t} \\  & =({e}^{\left(s-2\right)\operatorname{sin}⁡\left(t+1\right)+\left(s-2\right)\operatorname{cos}⁡\left(t+1\right)})(\left(s-2\right)\operatorname{cos}⁡\left(t+1\right))+({e}^{\left(s-2\right)\operatorname{sin}⁡\left(t+1\right)+\left(s-2\right)\operatorname{cos}⁡\left(t+1\right)})(-\left(s-2\right)\operatorname{sin}⁡\left(t+1\right)) \\  & =(\left(s-2\right)\operatorname{cos}⁡\left(t+1\right)-\left(s-2\right)\operatorname{sin}⁡\left(t+1\right)){e}^{\left(s-2\right)\operatorname{sin}⁡\left(t+1\right)+\left(s-2\right)\operatorname{cos}⁡\left(t+1\right)} \\  & =\left(s-2\right)(\operatorname{cos}⁡\left(t+1\right)-\operatorname{sin}⁡\left(t+1\right)){e}^{\left(s-2\right)(\operatorname{sin}⁡\left(t+1\right)+\operatorname{cos}⁡\left(t+1\right))}.\end{aligned}
+$$
+
+## Generated source-shaped normal exponential_trig_sum {'h': 1, 'k': -2}
+
+Let $f(x,y)={e}^{x+y},$ where $x=\left(s+1\right)\operatorname{sin}⁡\left(t-2\right)$ and $y=\left(s+1\right)\operatorname{cos}⁡\left(t-2\right).$ Calculate $\frac{∂f}{∂t}.$
+
+- $- \left(s + 1\right) e^{\left(s + 1\right) \sin{\left(t - 2 \right)} + \left(s + 1\right) \cos{\left(t - 2 \right)}} \sin{\left(t - 2 \right)}$
+- $\left(s + 1\right) e^{\left(s + 1\right) \sin{\left(t - 2 \right)} + \left(s + 1\right) \cos{\left(t - 2 \right)}} \cos{\left(t - 2 \right)}$
+- $- \left(s + 1\right) e^{\left(s + 1\right) \sin{\left(t - 2 \right)} + \left(s + 1\right) \cos{\left(t - 2 \right)}} \sin{\left(t - 2 \right)} + \left(s + 1\right) e^{\left(s + 1\right) \sin{\left(t - 2 \right)} + \left(s + 1\right) \cos{\left(t - 2 \right)}} \cos{\left(t - 2 \right)}$ **correct**
+- $2 e^{\left(s + 1\right) \sin{\left(t - 2 \right)} + \left(s + 1\right) \cos{\left(t - 2 \right)}}$
+- $\left(s + 1\right) e^{\left(s + 1\right) \sin{\left(t - 2 \right)} + \left(s + 1\right) \cos{\left(t - 2 \right)}} \sin{\left(t - 2 \right)} + \left(s + 1\right) e^{\left(s + 1\right) \sin{\left(t - 2 \right)} + \left(s + 1\right) \cos{\left(t - 2 \right)}} \cos{\left(t - 2 \right)}$
+
+![](images/11/118759b163a4410f66d5855d7b7b1fd9c2ee4be585e778a759997036bd95f765.png)
+
+The chain rule for a multivariable function $f(x,y)$ with two independent variables $s$ and $t,$ where $x=x(s,t)$ and $y=y(s,t),$ can be expressed as follows:
+
+$$
+\frac{∂f}{∂t}=\frac{∂f}{∂x}\cdot \frac{∂x}{∂t}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂t}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &={e}^{x+y},\,\frac{∂f}{∂y}={e}^{x+y}\end{aligned}
+$$
+
+Writing the above results in terms of $s$ and $t,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & ={e}^{\left(s+1\right)\operatorname{sin}⁡\left(t-2\right)+\left(s+1\right)\operatorname{cos}⁡\left(t-2\right)}, \\ \frac{∂f}{∂y} & ={e}^{\left(s+1\right)\operatorname{sin}⁡\left(t-2\right)+\left(s+1\right)\operatorname{cos}⁡\left(t-2\right)}.\end{aligned}
+$$
+
+Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
+
+$$
+\begin{aligned}\frac{∂x}{∂t} & =\left(s+1\right)\operatorname{cos}⁡\left(t-2\right), \\ \frac{∂y}{∂t} & =-\left(s+1\right)\operatorname{sin}⁡\left(t-2\right).\end{aligned}
+$$
+
+Finally, substituting all of our derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{∂f}{∂t} & =\frac{∂f}{∂x}\cdot \frac{∂x}{∂t}+\frac{∂f}{∂y}\cdot \frac{∂y}{∂t} \\  & =({e}^{\left(s+1\right)\operatorname{sin}⁡\left(t-2\right)+\left(s+1\right)\operatorname{cos}⁡\left(t-2\right)})(\left(s+1\right)\operatorname{cos}⁡\left(t-2\right))+({e}^{\left(s+1\right)\operatorname{sin}⁡\left(t-2\right)+\left(s+1\right)\operatorname{cos}⁡\left(t-2\right)})(-\left(s+1\right)\operatorname{sin}⁡\left(t-2\right)) \\  & =(\left(s+1\right)\operatorname{cos}⁡\left(t-2\right)-\left(s+1\right)\operatorname{sin}⁡\left(t-2\right)){e}^{\left(s+1\right)\operatorname{sin}⁡\left(t-2\right)+\left(s+1\right)\operatorname{cos}⁡\left(t-2\right)} \\  & =\left(s+1\right)(\operatorname{cos}⁡\left(t-2\right)-\operatorname{sin}⁡\left(t-2\right)){e}^{\left(s+1\right)(\operatorname{sin}⁡\left(t-2\right)+\operatorname{cos}⁡\left(t-2\right))}.\end{aligned}
 $$
 
 ## Authored missing-level easy 0
@@ -1283,7 +1535,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=1,\,\frac{∂f}{∂y}=-3\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=1,\,\frac{∂f}{∂y}=-3\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get
@@ -1325,7 +1577,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=3,\,\frac{∂f}{∂y}=1\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=3,\,\frac{∂f}{∂y}=1\end{aligned}
 $$
 
 Writing the above results in terms of $s$ and $t,$ we get

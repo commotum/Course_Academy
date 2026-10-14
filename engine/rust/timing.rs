@@ -298,6 +298,21 @@ mod tests {
     }
 
     #[test]
+    fn submitted_items_exclude_processing_time_and_import_checkpoints_are_not_cut_twice() {
+        let active=captured("task-item/status",&[("started",10),("paused",20),("started",40)],Some(10.));
+        assert_eq!(elapsed_until(&active,1,at(100),at(50)).unwrap(),20.);
+        let mut completed=captured("task-item/status",&[("started",10),("paused",20),("started",40),("correct",100)],Some(20.));
+        completed.entities.get_mut(&1).unwrap().insert("task-item/working-ended-at".into(),instant_value(at(50)));
+        assert_eq!(elapsed(&completed,1,at(120)).unwrap(),20.);
+        let imported=captured("task-item/status",&[("paused",10),("started",20),("paused",40),("started",50)],Some(38.789));
+        assert!((elapsed_until(&imported,1,at(100),at(30)).unwrap()-28.789).abs()<1e-9);
+        let mut imported_completed=captured("task-item/status",&[("paused",10),("started",20),("paused",40),("started",50),("correct",100)],Some(28.789));
+        imported_completed.entities.get_mut(&1).unwrap().insert("task-item/working-ended-at".into(),instant_value(at(30)));
+        assert_eq!(elapsed(&imported_completed,1,at(120)).unwrap(),28.789);
+        assert!(elapsed_until(&active,1,at(100),at(101)).is_err());
+    }
+
+    #[test]
     fn imported_durations_use_the_latest_checkpoint_once() {
         let paused = captured("task-item/status", &[("paused", 10)], Some(38.789));
         assert_eq!(elapsed(&paused, 1, at(100)).unwrap(), 38.789);

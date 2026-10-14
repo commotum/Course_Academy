@@ -20,3 +20,7 @@ Lesson route follows activity/first-step then step/next: introduction → one-in
 | cubic_product | q-94748 | hard | none: unchanged dependency tree |
 
 Every source solution begins with one of two static dependency-tree images. They contain symbolic derivative edges and highlighted s or t branches, never parameter-specific geometry; their content is reusable unchanged. Both original rasters were inspected at original 412×272 resolution. No evaluated point or plot is assessed. Steps 5 and 7 require inspection/reuse, not rendering.
+
+## Current-source refresh — basis 2505
+
+The live KP has twelve practice sources: seven moderate and five hard, each one radio field with five math choices. The earlier ten source records remain identical; their exact capture is archived at reference/source-basis-1356.json. Two newly captured moderate templates are linear_trig (q-94745: linear outer difference, signed trigonometric maps, partial in s) and exponential_trig_sum (q-94752: exponential of a sum, two trig maps, partial in t). Each has one separate complete observed bank. Neither needs new plots. Easy remains an explicitly authored affine reduction at the same curriculum branch. All twelve sources are replayed and independently checked before registration.

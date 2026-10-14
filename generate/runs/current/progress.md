@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 335**, **queued: 205**, **working: 4**.
+**needs_revalidation: 36**, **qa_passed: 340**, **queued: 201**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -112,20 +112,20 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186096697](../../scratch/17592186096697.py) | Solving First-Order ODEs Using Direct Integration | Finding the General Solution of a Second Order Differential Equation by Integrating Twice | 4 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186096697.json) |
 | [17592186096698](../../scratch/17592186096698.py) | Solving First-Order ODEs Using Direct Integration | Sketching the Solution Curves of a Differential Equation | 7 / 4 / 0 / 0 | qa_passed | [Report](qa/17592186096698.json) |
 | [17592186096611](../../scratch/17592186096611.py) | Differentiating Exponential Functions | Differentiating the Product of a Constant and the Exponential Function, Plus a Polynomial | 5 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186096611.json) |
-| [17592186096699](../../scratch/17592186096699-draft.py) | Solving First-Order ODEs Using Direct Integration | Finding the Solution of a Differential Equation With a Given Condition | 10 / 2 / 0 / 2 | working | [Report](qa/17592186096699.json) |
-| [17592186166813](../../scratch/17592186166813-draft.py) | Introduction to Differential Equations | Identifying the Order of an Ordinary Differential Equation | 7 / 7 / 0 / 0 | working | — |
-| [17592186166814](../../scratch/17592186166814-draft.py) | Introduction to Differential Equations | Determining Whether an Ordinary Differential Equation is Autonomous or Nonautonomous | 8 / 7 / 0 / 0 | working | [Report](qa/17592186166814.json) |
+| [17592186096699](../../scratch/17592186096699-draft.py) | Solving First-Order ODEs Using Direct Integration | Finding the Solution of a Differential Equation With a Given Condition | 10 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186096699.json) |
+| [17592186166813](../../scratch/17592186166813-draft.py) | Introduction to Differential Equations | Identifying the Order of an Ordinary Differential Equation | 7 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186166813.json) |
+| [17592186166814](../../scratch/17592186166814-draft.py) | Introduction to Differential Equations | Determining Whether an Ordinary Differential Equation is Autonomous or Nonautonomous | 8 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186166814.json) |
 | [17592186166815](../../scratch/17592186166815.py) | Introduction to Differential Equations | Initial Value Problems and Initial Conditions | 11 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186166815.json) |
 | [17592186087819](../../scratch/17592186087819.py) | Introduction to Matrices | Matrices for Route Planning | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186087819.json) |
 | [17592186087713](../../scratch/17592186087713.py) | Introduction to Matrices | Identifying a Matrix by Its Description | 0 / 6 / 0 / 2 | qa_passed | [Report](qa/17592186087713.json) |
-| [17592186059676](../../scratch/17592186059676.py) | Differentiating Trigonometric Functions | Finding the Derivative of an Expression With the Tangent Trigonometric Function | 5 / 5 / 0 / 2 | working | — |
-| [17592186059675](../../scratch/17592186059675.py) | Differentiating Trigonometric Functions | Finding the Derivative of an Expression With Sine or Cosine Trigonometric Functions | 8 / 5 / 0 / 2 | queued | — |
+| [17592186059676](../../scratch/17592186059676-draft.py) | Differentiating Trigonometric Functions | Finding the Derivative of an Expression With the Tangent Trigonometric Function | 5 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186059676.json) |
+| [17592186059675](../../scratch/17592186059675-draft.py) | Differentiating Trigonometric Functions | Finding the Derivative of an Expression With Sine or Cosine Trigonometric Functions | 8 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186059675.json) |
 | [17592186096616](../../scratch/17592186096616.py) | Differentiating Logarithmic Functions | Calculating the Slope of the Tangent Line of a Logarithmic Function at a Point | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096616.json) |
 | [17592186096614](../../scratch/17592186096614.py) | Differentiating Logarithmic Functions | Differentiating a Sum Containing a Natural Logarithm Function | 6 / 1 / 3 / 1 | qa_passed | [Report](qa/17592186096614.json) |
 | [17592186096615](../../scratch/17592186096615.py) | Differentiating Logarithmic Functions | Differentiating a Logarithmic Function With a General Base | 9 / 0 / 1 / 2 | qa_passed | [Report](qa/17592186096615.json) |
-| 17592186064282 | The Chain Rule With Trigonometric Functions | Differentiating a Reciprocal Trigonometric Function Using the Chain Rule | 3 / 5 / 3 / 2 | queued | — |
-| [17592186064281](../../scratch/17592186064281.py) | The Chain Rule With Trigonometric Functions | Differentiating a Trigonometric Function Using the Chain Rule | 0 / 5 / 9 / 2 | queued | — |
-| [17592186064284](../../scratch/17592186064284.py) | The Chain Rule With Trigonometric Functions | Differentiating a Composition of Trigonometric Functions Using the Chain Rule | 0 / 9 / 6 / 1 | queued | — |
+| [17592186064282](../../scratch/17592186064282.py) | The Chain Rule With Trigonometric Functions | Differentiating a Reciprocal Trigonometric Function Using the Chain Rule | 3 / 5 / 3 / 2 | working | — |
+| [17592186064281](../../scratch/17592186064281.py) | The Chain Rule With Trigonometric Functions | Differentiating a Trigonometric Function Using the Chain Rule | 0 / 5 / 9 / 2 | working | — |
+| [17592186064284](../../scratch/17592186064284.py) | The Chain Rule With Trigonometric Functions | Differentiating a Composition of Trigonometric Functions Using the Chain Rule | 0 / 9 / 6 / 1 | working | — |
 | [17592186064283](../../scratch/17592186064283.py) | The Chain Rule With Trigonometric Functions | Differentiating a Power of a Trigonometric Function Using the Chain Rule | 8 / 6 / 0 / 1 | queued | — |
 | [17592186096845](../../scratch/17592186096845.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using the Chain and Product Rules | 7 / 10 / 0 / 2 | queued | — |
 | [17592186096742](../../scratch/17592186096742.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using Multiple Instances of the Chain Rule | 5 / 5 / 6 / 2 | queued | — |

@@ -84,7 +84,7 @@ def engine(r,label):
 def main():
  review=[];native=[];cases=[];fidelity=[];eqs=0;instances=0;fingerprints={l:set() for l in ('easy','moderate','hard')}
  for name,sid in g.FAMILIES.items():
-  print('Validating '+name,flush=True);level=g.TEMPLATES[name];q=g.SOURCES[sid];r=g.generate(level,template=name,parameters={'h':0,'k':0},profile='observed:'+sid);eqs+=check(r);instances+=1
+  print('Validating '+name,flush=True);level=g.TEMPLATES[name];q=g.SOURCES[sid];r=g.replay_source(level,template=name,parameters={'h':0,'k':0},profile='observed:'+sid);eqs+=check(r);instances+=1
   assert r['question'][':question/problem']==q[':question/problem'];assert r['question'][':question/worked-solution']==q[':question/worked-solution']
   assert set(r['question'])-{':question/id'}==set(q)-{':question/id',':db/id',':question/math-academy-id'}
   f=q[':question/answer-fields'][0];rf=r['question'][':question/answer-fields'][0]
@@ -98,17 +98,18 @@ def main():
   for h,k in itertools.product(range(-2,3),repeat=2):
    p={'h':h,'k':k}
    for profile in ('operations:'+name,'observed:'+sid):
-    rr=g.generate(level,template=name,parameters=p,profile=profile);eqs+=check(rr);instances+=1
+    fn=g.replay_source if profile.startswith('observed:') else g.generate
+    rr=fn(level,template=name,parameters=p,profile=profile);eqs+=check(rr);instances+=1
     # Shared source prose/structural rows remain unchanged: only expressions vary.
     sol=rr['question'][':question/worked-solution'];original=q[':question/worked-solution']
     mask=lambda z:re.sub(r'\$\$.*?\$\$','<BLOCK>',z,flags=re.S)
     assert mask(sol)==mask(original)
     assert [len(ss) for _,ss in rows(sol,printed(rr)[3])]==[len(ss) for _,ss in rows(original,printed(r)[3])]
     if not rr['generation']['evidence_only']:fingerprints[level].add(rr['generation']['mathematical_fingerprint'])
-    rr2=g.generate(level,seed=91,template=name,parameters=p,profile=profile);assert rr['question'][':question/id']==rr2['question'][':question/id']
+    rr2=fn(level,seed=91,template=name,parameters=p,profile=profile);assert rr['question'][':question/id']==rr2['question'][':question/id']
    if (h,k) in ((-2,1),(1,-2)):
     review.append({'label':'Generated source-shaped normal '+name+' '+str(p),'record':rr if not rr['generation']['evidence_only'] else g.generate(level,template=name,parameters=p)});native.append(engine(review[-1]['record'],'normal/'+name+'/'+str(p)))
-  normal=g.generate(level,template=name,parameters={'h':0,'k':0});assert normal['question'][':question/worked-solution']==q[':question/worked-solution']
+  normal=g.generate(level,template=name,parameters={'h':0,'k':0});assert normal['question'][':question/worked-solution']==g.normalize_prose(q[':question/worked-solution'])
  for seed in range(120):
   rr=g.generate_easy(seed);eqs+=check(rr);instances+=1;fingerprints['easy'].add(rr['generation']['mathematical_fingerprint'])
   if seed in (0,1):review.append({'label':'Authored missing-level easy '+str(seed),'record':rr});native.append(engine(rr,'easy/'+str(seed)))
@@ -127,7 +128,7 @@ def main():
   except ValueError:pass
   else:raise AssertionError('Invalid easy workload accepted')
  write('source-cases.json',cases);write('source-fidelity.json',fidelity);write('review.json',review);write('engine-input.json',native)
- subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(ROOT/'engine-input.json'),str(ROOT/'engine-validation.json')],check=True)
+ subprocess.run([str(ROOT/'reference/native/check-engine'),str(ROOT/'engine-input.json'),str(ROOT/'engine-validation.json')],check=True)
  report=json.loads((ROOT/'engine-validation.json').read_text())
  easy_catalog=set();easy_valid_presentations=0
  for aa,bb,cc,dd,ee,gg in itertools.product((-3,-2,-1,1,2,3),repeat=6):
@@ -137,7 +138,7 @@ def main():
    if len({U+V,other,U-V,U,V})!=5:continue
    easy_valid_presentations+=1
    easy_catalog.add((aa*cc+bb*ee,aa*dd+bb*gg,v))
- write('validation.json',{'passed':True,'source_basis':1356,'source_questions':10,'source_levels':{'moderate':5,'hard':5,'easy':0},'raw_complete_banks_exact':10,'raw_answer_values_exact':50,'raw_prompt_exact':10,'raw_solution_exact':10,'raw_correct_designations_matched':10,'attribute_presence_parity':10,'normal_source_chains_exact_at_original_parameters':10,'displayed_stage_equalities_checked':eqs,'mathematically_checked_instances':instances,'finite_observed_parameter_pairs_per_family':25,'meaningful_unique_observed_tasks':{l:len(fingerprints[l]) for l in ('moderate','hard')},'sampled_unique_easy_tasks':len(fingerprints['easy']),'exhaustive_easy_reduced_affine_tasks':len(easy_catalog),'exhaustive_easy_valid_coefficient_presentations':easy_valid_presentations,'native_report':'engine-validation.json','native_checks':len(native)*5,'review_records':len(review),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.package_version('matplotlib')},'generator_sha256':hashlib.sha256(ROOT.with_suffix('.py').read_bytes()).hexdigest(),'source_sha256':hashlib.sha256((ROOT/'source.json').read_bytes()).hexdigest(),'grader_sha256':hashlib.sha256((REPO/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'unresolved_limits':['Source distractor intentions are not recovered; complete raw translated banks are evidence-only.','Authored easy difficulty is grounded in the held-coordinate tutorial, not an observed easy rating.','No typed-answer engine equivalence applies: all source and authored fields are radio.','Input translations form a deliberately bounded same-workload family; no claim of recovered original parameter samplers.'],'database_writes':0})
+ write('validation.json',{'passed':True,'source_basis':g.CAPTURE['basis'],'source_questions':len(g.FAMILIES),'source_levels':{l:sum(k==l for k in g.TEMPLATES.values()) for l in ('moderate','hard')}|{'easy':0},'raw_complete_banks_exact':len(g.FAMILIES),'raw_answer_values_exact':5*len(g.FAMILIES),'raw_prompt_exact':len(g.FAMILIES),'raw_solution_exact':len(g.FAMILIES),'raw_correct_designations_matched':len(g.FAMILIES),'attribute_presence_parity':len(g.FAMILIES),'normal_source_chains_exact_at_original_parameters':len(g.FAMILIES),'displayed_stage_equalities_checked':eqs,'mathematically_checked_instances':instances,'finite_observed_parameter_pairs_per_family':25,'meaningful_unique_observed_tasks':{l:len(fingerprints[l]) for l in ('moderate','hard')},'sampled_unique_easy_tasks':len(fingerprints['easy']),'exhaustive_easy_reduced_affine_tasks':len(easy_catalog),'exhaustive_easy_valid_coefficient_presentations':easy_valid_presentations,'native_report':'engine-validation.json','native_checks':len(native)*5,'review_records':len(review),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.package_version('matplotlib')},'generator_sha256':hashlib.sha256(ROOT.with_suffix('.py').read_bytes()).hexdigest(),'source_sha256':hashlib.sha256((ROOT/'source.json').read_bytes()).hexdigest(),'grader_sha256':hashlib.sha256((ROOT/'reference/native/check-engine').read_bytes()).hexdigest(),'unresolved_limits':['Source distractor intentions are not recovered; complete raw translated banks are evidence-only.','Authored easy difficulty is grounded in the held-coordinate tutorial, not an observed easy rating.','No typed-answer engine equivalence applies: all source and authored fields are radio.','Input translations form a deliberately bounded same-workload family; no claim of recovered original parameter samplers.'],'database_writes':0})
  lines=['# Review: two independent variables','Original replay banks are evidence-only. Normal variants retain every source solution stage and use authored complete method banks. Easy variants are explicitly authored.']
  for item in review:lines+=['## '+item['label'],g.markdown(item['record'])]
  (ROOT/'review.md').write_text('\n\n'.join(lines)+'\n')
