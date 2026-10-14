@@ -907,11 +907,10 @@ fn queue_preparation(
                     Some("started" | "paused")
                 )
             })
-            && !course_academy_engine::inventory::ready(
+            && !course_academy_engine::inventory::lesson_ready(
                 s,
                 &s.refs(candidate.topic, "topic/knowledge-points")?,
                 &learning::unavailable_questions(s, l)?,
-                true,
             )?
         {
             continue;
@@ -1943,6 +1942,16 @@ fn mutate(
                 _ => {}
             }
         }
+        if retrieval::kind(s,a)? == "lesson" {
+            let topic=s.reference(a,"activity/scope")?;
+            let shortages=course_academy_engine::inventory::lesson_shortages(
+                s,&s.refs(topic,"topic/knowledge-points")?,&learning::unavailable_questions(s,l)?)?;
+            if !shortages.is_empty() {
+                let details=shortages.into_iter().map(|(kp,count)|format!("{} has {count} (needs {} more)",
+                    text(s,kp,"knowledge-point/title"),5-count)).collect::<Vec<_>>().join("; ");
+                return Err(format!("Lesson needs at least five fresh, gradable questions per skill: {details}").into());
+            }
+        }
         if !learning::study_candidates(s, l, course(s, l)?, at)?
             .iter()
             .any(|p| p.activity == a)
@@ -2580,6 +2589,8 @@ fn envelope(result: Result<Json>) -> Json {
             eprintln!("Learning API: {error}");
             let mut code = if error.to_string() == "Assessment deadline has elapsed" {
                 "assessment-expired"
+            } else if error.to_string().starts_with("Lesson needs at least five fresh, gradable questions per skill:") {
+                "lesson-supply-shortage"
             } else if error.to_string() == "Resume the lesson before continuing" {
                 "lesson-paused"
             } else {
@@ -2805,6 +2816,23 @@ mod study_queue_tests {
     use super::*;
 
     #[test]
+    #[ignore = "read-only admission check against the configured live database"]
+    fn live_lesson_admission_without_recording() -> Result<()> {
+        let topic=std::env::var("LESSON_TEST_TOPIC")?.parse::<u64>()?;
+        let database=std::env::var("EDB_DATABASE")?;
+        let learner=std::env::var("LESSON_TEST_LEARNER")?;
+        let app=Application::connect(database,learner,std::env::var("EDB_ENDPOINT")?)?;
+        let s=&app.snapshot;
+        let unavailable=learning::unavailable_questions(s,app.learner_eid)?;
+        let kps=s.refs(topic,"topic/knowledge-points")?;
+        assert!(course_academy_engine::inventory::lesson_ready(s,&kps,&unavailable)?);
+        let (forms,result)=mutate(s,app.learner_eid,"study-topic",&json!({"topicId":topic}),Utc::now())?;
+        assert!(!forms.is_empty() || result.get("taskId").is_some());
+        println!("Topic {topic} can start at basis {}; {} proposed forms, no writes",s.basis_t,forms.len());
+        Ok(())
+    }
+
+    #[test]
     fn standalone_questions_and_saved_items_include_their_shared_function() -> Result<()> {
         let s = EntitySnapshot::new(BTreeMap::from([
             (1, json!({"question/id":"part","question/problem":"Calculate $f'(x)$.\n\n$f'(x)={{field-1}}$"}).as_object().unwrap().clone()),
@@ -2918,6 +2946,46 @@ mod study_queue_tests {
             );
         }
         EntitySnapshot::new(records, 42).unwrap()
+    }
+
+    fn usable_small_bank_fixture() -> EntitySnapshot {
+        let mut s=fixture();
+        for (id,band) in [(1100,"easy"),(1101,"moderate"),(1102,"hard")] {
+            s.entities.insert(id,json!({"db/ident":kw(&format!("question.difficulty/{band}"))}).as_object().unwrap().clone());
+        }
+        let template=s.entities[&71].clone();
+        for (q,band) in [(71,1100),(74,1100),(75,1101),(76,1101),(77,1102)] {
+            let mut row=template.clone();
+            row.insert("question/id".into(),json!(format!("question-{q}")));
+            row.insert("question/difficulty".into(),json!(band));
+            s.entities.insert(q,row);
+        }
+        s.entities.insert(72,json!({"knowledge-point/id":"skill","knowledge-point/title":"Small skill bank",
+            "knowledge-point/canonical-example":73,"knowledge-point/questions":[71,74,75,76,77]}).as_object().unwrap().clone());
+        s.entities.insert(73,json!({"question/id":"example","question/problem":"Find x.","question/worked-solution":"x=2"}).as_object().unwrap().clone());
+        s.entities.get_mut(&6).unwrap().insert("topic/knowledge-points".into(),json!([72]));
+        s.entities.get_mut(&61).unwrap().insert("step/content".into(),json!(72));
+        EntitySnapshot::new(s.entities.into(),s.basis_t).unwrap()
+    }
+
+    #[test]
+    fn study_now_and_queue_allow_five_total_questions_without_full_band_reserves() {
+        let s=usable_small_bank_fixture();
+        assert!(!course_academy_engine::inventory::ready(&s,&[72],&BTreeSet::new(),true).unwrap());
+        let (forms,result)=mutate(&s,1,"study-topic",&json!({"topicId":6}),Utc::now()).unwrap();
+        assert_eq!(result["taskId"],81);
+        assert!(forms.contains(&cas(&s,81,"learner-task/status","learner-task.status/started").unwrap()));
+        let (_,plan)=queue_preparation(&s,1,Utc::now()).unwrap();
+        assert!(plan.iter().any(|p|p.activity==51));
+    }
+
+    #[test]
+    fn study_now_names_a_real_total_supply_shortage() {
+        let mut s=usable_small_bank_fixture();
+        s.entities.get_mut(&72).unwrap().insert("knowledge-point/questions".into(),json!([71,74,75,76]));
+        let error=mutate(&s,1,"study-topic",&json!({"topicId":6}),Utc::now()).unwrap_err();
+        assert!(error.to_string().contains("Small skill bank has 4 (needs 1 more)"));
+        assert_eq!(envelope(Err(error))["code"],"lesson-supply-shortage");
     }
 
     #[test]

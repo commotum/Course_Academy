@@ -1191,6 +1191,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=3 x^{2} y$ and $Q(x,y)=- 3 x y^{2}.$ So,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(3 x^{2} y\right)=\left(3 x^{2}\right)=3 x^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- 3 x y^{2}\right)=\left(- 3 y^{2}\right)=- 3 y^{2}.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=3 x^{2},\qquad\frac{\partial Q}{\partial x}=- 3 y^{2}.$$
 
 Therefore, applying Green's theorem, we get
@@ -1239,6 +1245,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=- x^{2} y$ and $Q(x,y)=x y^{2}.$ So,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- x^{2} y\right)=\left(- x^{2}\right)=- x^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(x y^{2}\right)=\left(y^{2}\right)=y^{2}.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=- x^{2},\qquad\frac{\partial Q}{\partial x}=y^{2}.$$
 
@@ -1289,6 +1301,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 As we saw earlier, we can use Green's theorem to write our line integral in polar coordinates. Holding the other coordinate fixed, we have that $P(x,y)=- 9 x y^{2}$ and $Q(x,y)=3 y^{3}.$ So,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- 9 x y^{2}\right)=\left(- 18 x y\right)=- 18 x y\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(3 y^{3}\right)=\left(0\right)=0.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=- 18 x y,\qquad\frac{\partial Q}{\partial x}=0.$$
 
 Therefore, applying Green's theorem, we get
@@ -1337,6 +1355,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 As we saw earlier, we can use Green's theorem to write our line integral in polar coordinates. Holding the other coordinate fixed, we have that $P(x,y)=3 x y^{2}$ and $Q(x,y)=- y^{3}.$ So,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(3 x y^{2}\right)=\left(6 x y\right)=6 x y\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- y^{3}\right)=\left(0\right)=0.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=6 x y,\qquad\frac{\partial Q}{\partial x}=0.$$
 
@@ -1387,6 +1411,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=3 x^{4} y + x^{2} y^{3}$ and $Q(x,y)=- x^{3} y^{2} - 3 x y^{4}.$ So,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(3 x^{4} y + x^{2} y^{3}\right)=\left(3 x^{4}\right)+\left(3 x^{2} y^{2}\right)=3 x^{4} + 3 x^{2} y^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- x^{3} y^{2} - 3 x y^{4}\right)=\left(- 3 y^{4}\right)+\left(- 3 x^{2} y^{2}\right)=- 3 x^{2} y^{2} - 3 y^{4}.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=3 x^{4} + 3 x^{2} y^{2},\qquad\frac{\partial Q}{\partial x}=- 3 x^{2} y^{2} - 3 y^{4}.$$
 
 Therefore, applying Green's theorem, we get
@@ -1435,6 +1465,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=- x^{4} y - \frac{x^{2} y^{3}}{3}$ and $Q(x,y)=\frac{x^{3} y^{2}}{3} + x y^{4}.$ So,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- x^{4} y - \frac{x^{2} y^{3}}{3}\right)=\left(- x^{4}\right)+\left(- x^{2} y^{2}\right)=- x^{4} - x^{2} y^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(\frac{x^{3} y^{2}}{3} + x y^{4}\right)=\left(y^{4}\right)+\left(x^{2} y^{2}\right)=x^{2} y^{2} + y^{4}.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=- x^{4} - x^{2} y^{2},\qquad\frac{\partial Q}{\partial x}=x^{2} y^{2} + y^{4}.$$
 
@@ -1485,6 +1521,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=- y^{3} - 3 \cos{\left(x \right)}$ and $Q(x,y)=x^{3} - 3 \ln{\left(\sin^{2}{\left(y \right)} + 1 \right)}.$ So,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- y^{3} - 3 \cos{\left(x \right)}\right)=\left(- 3 y^{2}\right)+\left(0\right)=- 3 y^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(x^{3} - 3 \ln{\left(\sin^{2}{\left(y \right)} + 1 \right)}\right)=\left(3 x^{2}\right)+\left(0\right)=3 x^{2}.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=- 3 y^{2},\qquad\frac{\partial Q}{\partial x}=3 x^{2}.$$
 
 Therefore, applying Green's theorem, we get
@@ -1533,6 +1575,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=\frac{y^{3}}{3} + \cos{\left(x \right)}$ and $Q(x,y)=- \frac{x^{3}}{3} + \ln{\left(\sin^{2}{\left(y \right)} + 1 \right)}.$ So,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(\frac{y^{3}}{3} + \cos{\left(x \right)}\right)=\left(y^{2}\right)+\left(0\right)=y^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- \frac{x^{3}}{3} + \ln{\left(\sin^{2}{\left(y \right)} + 1 \right)}\right)=\left(- x^{2}\right)+\left(0\right)=- x^{2}.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=y^{2},\qquad\frac{\partial Q}{\partial x}=- x^{2}.$$
 
@@ -1583,6 +1631,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=- 3 x^{2} + 3 y^{4}$ and $Q(x,y)=- 3 x^{3} y + 3 x y^{3}.$ So,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- 3 x^{2} + 3 y^{4}\right)=\left(0\right)+\left(12 y^{3}\right)=12 y^{3}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- 3 x^{3} y + 3 x y^{3}\right)=\left(- 9 x^{2} y\right)+\left(3 y^{3}\right)=- 9 x^{2} y + 3 y^{3}.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=12 y^{3},\qquad\frac{\partial Q}{\partial x}=- 9 x^{2} y + 3 y^{3}.$$
 
 Therefore, applying Green's theorem, we get
@@ -1631,6 +1685,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=x^{2} - y^{4}$ and $Q(x,y)=x^{3} y - x y^{3}.$ So,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(x^{2} - y^{4}\right)=\left(0\right)+\left(- 4 y^{3}\right)=- 4 y^{3}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(x^{3} y - x y^{3}\right)=\left(3 x^{2} y\right)+\left(- y^{3}\right)=3 x^{2} y - y^{3}.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=- 4 y^{3},\qquad\frac{\partial Q}{\partial x}=3 x^{2} y - y^{3}.$$
 
@@ -1681,6 +1741,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=3 x^{2} y + 3 y^{3}$ and $Q(x,y)=- 3 x^{3} - 3 x y^{2}.$ So,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(3 x^{2} y + 3 y^{3}\right)=\left(9 y^{2}\right)+\left(3 x^{2}\right)=3 x^{2} + 9 y^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- 3 x^{3} - 3 x y^{2}\right)=\left(- 9 x^{2}\right)+\left(- 3 y^{2}\right)=- 9 x^{2} - 3 y^{2}.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=3 x^{2} + 9 y^{2},\qquad\frac{\partial Q}{\partial x}=- 9 x^{2} - 3 y^{2}.$$
 
 Therefore, applying Green's theorem, we get
@@ -1729,6 +1795,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=- x^{2} y - y^{3}$ and $Q(x,y)=x^{3} + x y^{2}.$ So,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- x^{2} y - y^{3}\right)=\left(- 3 y^{2}\right)+\left(- x^{2}\right)=- x^{2} - 3 y^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(x^{3} + x y^{2}\right)=\left(3 x^{2}\right)+\left(y^{2}\right)=3 x^{2} + y^{2}.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=- x^{2} - 3 y^{2},\qquad\frac{\partial Q}{\partial x}=3 x^{2} + y^{2}.$$
 
@@ -1779,6 +1851,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=- 3 x y^{2}$ and $Q(x,y)=- 3 x^{2} y - 3 x y^{2}.$ Therefore,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- 3 x y^{2}\right)=\left(- 6 x y\right)=- 6 x y\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- 3 x^{2} y - 3 x y^{2}\right)=\left(- 3 y^{2}\right)+\left(- 6 x y\right)=- 6 x y - 3 y^{2}.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=- 6 x y,\qquad\frac{\partial Q}{\partial x}=- 6 x y - 3 y^{2}.$$
 
 Therefore, applying Green's theorem, we get
@@ -1823,6 +1901,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=x y^{2}$ and $Q(x,y)=x^{2} y + x y^{2}.$ Therefore,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(x y^{2}\right)=\left(2 x y\right)=2 x y\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(x^{2} y + x y^{2}\right)=\left(y^{2}\right)+\left(2 x y\right)=2 x y + y^{2}.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=2 x y,\qquad\frac{\partial Q}{\partial x}=2 x y + y^{2}.$$
 
@@ -1869,6 +1953,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=- 3 x^{3} y^{3} - 3 x$ and $Q(x,y)=- 3 x^{4} y^{2} + 3 y.$ Therefore,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- 3 x^{3} y^{3} - 3 x\right)=\left(0\right)+\left(- 9 x^{3} y^{2}\right)=- 9 x^{3} y^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- 3 x^{4} y^{2} + 3 y\right)=\left(0\right)+\left(- 12 x^{3} y^{2}\right)=- 12 x^{3} y^{2}.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=- 9 x^{3} y^{2},\qquad\frac{\partial Q}{\partial x}=- 12 x^{3} y^{2}.$$
 
 Therefore, applying Green's theorem, we get
@@ -1913,6 +2003,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=x^{3} y^{3} + x$ and $Q(x,y)=x^{4} y^{2} - y.$ Therefore,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(x^{3} y^{3} + x\right)=\left(0\right)+\left(3 x^{3} y^{2}\right)=3 x^{3} y^{2}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(x^{4} y^{2} - y\right)=\left(0\right)+\left(4 x^{3} y^{2}\right)=4 x^{3} y^{2}.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=3 x^{3} y^{2},\qquad\frac{\partial Q}{\partial x}=4 x^{3} y^{2}.$$
 
@@ -1959,6 +2055,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=- 3 x^{3} - 3 x y^{2}$ and $Q(x,y)=- 6 x^{2} y + 3 y^{3}.$ Therefore,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- 3 x^{3} - 3 x y^{2}\right)=\left(0\right)+\left(- 6 x y\right)=- 6 x y\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- 6 x^{2} y + 3 y^{3}\right)=\left(0\right)+\left(- 12 x y\right)=- 12 x y.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=- 6 x y,\qquad\frac{\partial Q}{\partial x}=- 12 x y.$$
 
 Therefore, applying Green's theorem, we get
@@ -2003,6 +2105,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=x^{3} + x y^{2}$ and $Q(x,y)=2 x^{2} y - y^{3}.$ Therefore,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(x^{3} + x y^{2}\right)=\left(0\right)+\left(2 x y\right)=2 x y\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(2 x^{2} y - y^{3}\right)=\left(0\right)+\left(4 x y\right)=4 x y.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=2 x y,\qquad\frac{\partial Q}{\partial x}=4 x y.$$
 
@@ -2049,6 +2157,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=- 3 y^{2} \left(x + 1\right)$ and $Q(x,y)=- 9 x^{2} y - 6 x y.$ Therefore,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- 3 y^{2} \left(x + 1\right)\right)=\left(- 6 y \left(x + 1\right)\right)=- 6 y \left(x + 1\right)\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- 9 x^{2} y - 6 x y\right)=\left(- 6 y\right)+\left(- 18 x y\right)=- 18 x y - 6 y.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=- 6 y \left(x + 1\right),\qquad\frac{\partial Q}{\partial x}=- 18 x y - 6 y.$$
 
 Therefore, applying Green's theorem, we get
@@ -2093,6 +2207,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=y^{2} \left(x + 1\right)$ and $Q(x,y)=3 x^{2} y + 2 x y.$ Therefore,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(y^{2} \left(x + 1\right)\right)=\left(2 y \left(x + 1\right)\right)=2 y \left(x + 1\right)\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(3 x^{2} y + 2 x y\right)=\left(2 y\right)+\left(6 x y\right)=6 x y + 2 y.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=2 y \left(x + 1\right),\qquad\frac{\partial Q}{\partial x}=6 x y + 2 y.$$
 
@@ -2139,6 +2259,12 @@ Green's theorem can be extended to include regions containing holes. In such cas
 
 We have that $P(x,y)=- 6 x^{2} y^{4} + 3 x$ and $Q(x,y)=- 12 x^{3} y^{3} + 3 y^{2}.$ Therefore,
 
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(- 6 x^{2} y^{4} + 3 x\right)=\left(0\right)+\left(- 24 x^{2} y^{3}\right)=- 24 x^{2} y^{3}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(- 12 x^{3} y^{3} + 3 y^{2}\right)=\left(0\right)+\left(- 36 x^{2} y^{3}\right)=- 36 x^{2} y^{3}.\end{aligned}
+$$
+
 $$\frac{\partial P}{\partial y}=- 24 x^{2} y^{3},\qquad\frac{\partial Q}{\partial x}=- 36 x^{2} y^{3}.$$
 
 Therefore, applying Green's theorem, we get
@@ -2183,6 +2309,12 @@ $$
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
 We have that $P(x,y)=2 x^{2} y^{4} - x$ and $Q(x,y)=4 x^{3} y^{3} - y^{2}.$ Therefore,
+
+For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
+
+$$
+\begin{aligned}\frac{\partial P}{\partial y} & =\frac{\partial}{\partial y}\left(2 x^{2} y^{4} - x\right)=\left(0\right)+\left(8 x^{2} y^{3}\right)=8 x^{2} y^{3}\\ \frac{\partial Q}{\partial x} & =\frac{\partial}{\partial x}\left(4 x^{3} y^{3} - y^{2}\right)=\left(0\right)+\left(12 x^{2} y^{3}\right)=12 x^{2} y^{3}.\end{aligned}
+$$
 
 $$\frac{\partial P}{\partial y}=8 x^{2} y^{3},\qquad\frac{\partial Q}{\partial x}=12 x^{2} y^{3}.$$
 

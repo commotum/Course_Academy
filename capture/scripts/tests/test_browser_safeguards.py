@@ -9,11 +9,38 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
-from scripts.browser.adapter import BrowserUnavailable, EXTRACT, MathAcademyBrowser
+from scripts.browser.adapter import BrowserUnavailable, EXTRACT, MathAcademyBrowser, SubmissionHTTPError
 from scripts.browser.safety import BrowserSafety, deduplicate_math_editor, retry_after_seconds
 
 
 class BrowserSafetyTests(unittest.TestCase):
+    def test_submission_timeout_reports_only_its_fresh_http_failure(self):
+        browser = MathAcademyBrowser(SimpleNamespace(timeout_ms=1000), threading.Event())
+        browser.activity = {'task_id':'99','topic_id':'7'}
+        browser.state = {'pending_action':{'action':'submit'}}
+        observation = {'question':{'math_academy_id':'q-12'}}
+        url = 'https://mathacademy.com/api/tasks/12/lessons/7/submit-answer'
+        with patch('scripts.browser.adapter.time.time', return_value=100):
+            for at, method, source, typed in [(100,'POST',url,True), (99,'POST',url,False),
+                    (100,'GET',url,False), (100,'POST',url.replace('/7/','/8/'),False),
+                    (100,'POST',url.replace('/12/','/13/'),False)]:
+                with self.subTest(at=at, method=method, source=source):
+                    browser.safety.events = [{'kind':'http_error','at':at,'method':method,'url':source,'status':500}]
+                    browser._respond = Mock(side_effect=TimeoutError('Timeout 45000ms'))
+                    with self.assertRaises(SubmissionHTTPError if typed else TimeoutError) as raised:
+                        browser.respond(observation, [], '/unused')
+                    self.assertTrue(raised.exception.submitted)
+                    if typed:
+                        self.assertEqual(raised.exception.http_status, 500)
+
+    def test_manual_stop_is_not_changed_into_a_submission_error(self):
+        from scripts.runtime import StopRequested
+        browser = MathAcademyBrowser(SimpleNamespace(timeout_ms=1000), threading.Event())
+        browser.state = {'pending_action':{'action':'submit'}}
+        browser._respond = Mock(side_effect=StopRequested())
+        with self.assertRaises(StopRequested):
+            browser.respond({}, [], '/unused')
+
     def test_retry_after_numeric_and_http_date(self):
         self.assertEqual(retry_after_seconds('120', now=100), 120)
         date = format_datetime(datetime.fromtimestamp(220, timezone.utc), usegmt=True)

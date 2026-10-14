@@ -165,15 +165,22 @@ def task_key(level,f,p,Py,Qx,C):
 def raw_generate(level,f,p,profile,seed):
  sid=profile.removeprefix('raw:');q=QUESTIONS[sid];assert f==BY_SOURCE[sid]
  if set(p)!={'amplitude'} or not isinstance(p['amplitude'],int) or not 1<=abs(p['amplitude'])<=3:raise ValueError('raw replay accepts integer amplitude |amplitude|<=3')
- c=p['amplitude'];fields=[]
+ c=p['amplitude'];fields=[];d=FAMILIES[f];mathp=({'c':c,'inner':d[4],'outer':d[5]} if f.startswith('annulus') else {'c':c,'outer':d[4],'hole':d[5]});Py=S.diff(c*d[2],y);Qx=S.diff(c*d[3],x);curl=S.factor(Qx-Py)
+ if f.startswith('annulus'):
+  polar=S.trigsimp(curl.subs({x:r*S.cos(t),y:r*S.sin(t)})*r);expected=S.integrate(S.integrate(polar,(r,d[4],d[5])),(t,0,2*S.pi))
+ else:
+  def integral(B):return S.integrate(curl,(x,B[0],B[1]),(y,B[2],B[3]))
+  expected=integral(d[4])-integral(d[5])
+ for field in q[':question/answer-fields']:
+  if ':answer-field/correct' in field:assert S.simplify(c*scalar(field[':answer-field/correct'][':answer/value'])-expected)==0
+
  for v in q[':question/answer-fields']:
-  choices=[{':answer/id':a[':answer/id'],':answer/type':a[':answer/type'][':db/ident'],':answer/value':a[':answer/value'] if c==1 else tex(c*scalar(a[':answer/value']))} for a in v[':answer-field/choices']];fd={':answer-field/id':v[':answer-field/id'],':answer-field/key':v[':answer-field/key'],':answer-field/type':v[':answer-field/type'][':db/ident'],':answer-field/choices':choices}
+  choices=[{':answer/id':a[':answer/id'],':answer/type':a[':answer/type'][':db/ident'],':answer/value':a[':answer/value'] if c==1 else tex(expected if a[':answer/id']==v.get(':answer-field/correct',{}).get(':answer/id') else c*scalar(a[':answer/value']))} for a in v[':answer-field/choices']];fd={':answer-field/id':v[':answer-field/id'],':answer-field/key':v[':answer-field/key'],':answer-field/type':v[':answer-field/type'][':db/ident'],':answer-field/choices':choices}
   if ':answer-field/correct' in v:fd[':answer-field/correct']=[':answer/id',v[':answer-field/correct'][':answer/id']]
   fields.append(fd)
- d=FAMILIES[f];mathp=({'c':c,'inner':d[4],'outer':d[5]} if f.startswith('annulus') else {'c':c,'outer':d[4],'hole':d[5]});Py=S.diff(c*d[2],y);Qx=S.diff(c*d[3],x)
  prompt=raw_text(q[':question/problem'],c)
  if c!=1:prompt=re.sub(r'!\[\]\([^)]*\)',lambda m:'![]('+render_plot(f,mathp)+')',prompt,count=1)
- return record(level,f,p,profile,prompt,raw_text(q[':question/worked-solution'],c),fields,seed,task_key(level,f,mathp,Py,Qx,S.factor(Qx-Py)),{'evidence_only':True,'source_id':sid,'raw_shape':True,'source_geometry_parameters':mathp})
+ return record(level,f,p,profile,prompt,raw_text(q[':question/worked-solution'],c),fields,seed,task_key(level,f,mathp,Py,Qx,S.factor(Qx-Py)),{'evidence_only':True,'source_id':sid,'raw_shape':True,'source_geometry_parameters':mathp,'derived_formal_integral':str(expected),'invalid_premise':sid=='q-126937'})
 def build(level,f,p,profile,seed):
  parameters_guard(f,p);c=p['c'];d=FAMILIES[f];P=c*d[2];Q=c*d[3];Py=S.diff(P,y);Qx=S.diff(Q,x);C=S.factor(Qx-Py)
  if f=='annulus_supplied':C=c*(x*x+y*y)

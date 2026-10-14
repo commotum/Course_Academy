@@ -299,6 +299,8 @@ class ActivityCapture:
                     'error_type': type(error).__name__}
                 if getattr(error, 'layout', None) is not None:
                     self.state['pending_browser_error']['layout'] = error.layout
+                if getattr(error, 'http_status', None) is not None:
+                    self.state['pending_browser_error']['http_status'] = error.http_status
                 self._save()
                 self._event('browser_retry', method=method, error=str(error), attempt=attempts,
                             layout=getattr(error, 'layout', None))
@@ -314,6 +316,7 @@ class ActivityCapture:
                 # Return to observation before ANY further state-changing action.
                 if method in ('respond', 'advance', 'recover'):
                     return {'unknown_outcome': True, 'error': str(error),
+                            'http_status': getattr(error, 'http_status', None),
                             'entry_failed': getattr(error, 'submitted', None) is False,
                             'not_submitted': isinstance(error, ResponseNotSubmitted)}
                 if method == 'observe' and available is not None and self._remaining_seconds() <= self._submission_reserve():
@@ -468,6 +471,20 @@ class ActivityCapture:
                 return
             self._browser_call('advance', observation, self.directory)
             return
+        server_failures = record.get('submission_server_failures') or {}
+        if (self.activity['kind'] not in ('assessment', 'diagnostic')
+                and server_failures.get('count', 0) >= 3
+                and server_failures.get('binding') == self._answer_binding(question)):
+            # A reload can clear local spinner state without fixing the server.
+            # Observe this pinned question, but stop repeating unconfirmed POSTs
+            # or asking the mathematics agent to solve a transport failure.
+            self.state['pending_capture_blocker'] = {
+                'signature': self._signature(observation), 'observation_key': observation.get('key'),
+                'error': server_failures['error'] + '; repeated submissions held pending recovery',
+                'retry_at': self.clock() + self.config.recovery_max_delay,
+                'submission_server_failure': True}
+            self._save()
+            return
         # A source-visible editable question means an unknown response did not
         # advance it. Reconcile its current shape before choosing another action.
         if self.activity['kind'] == 'diagnostic' and key not in self.state['policy']['decisions']:
@@ -603,6 +620,14 @@ class ActivityCapture:
                                  'unknown' if isinstance(result, dict) and result.get('unknown_outcome') else 'observe_to_confirm')
         if isinstance(result, dict) and result.get('error'):
             submission['browser_error'] = result['error']
+        http_status = result.get('http_status') if isinstance(result, dict) else None
+        if http_status is not None and http_status >= 500:
+            submission['http_status'] = result['http_status']
+            binding = self._answer_binding(observation.get('question') or record['question'])
+            previous = record.get('submission_server_failures') or {}
+            record['submission_server_failures'] = {'binding': binding,
+                'count': previous.get('count', 0) + 1 if previous.get('binding') == binding else 1,
+                'error': result['error'], 'http_status': result['http_status']}
         self._save()
 
     @staticmethod

@@ -7,6 +7,7 @@ import unittest
 
 from scripts.activity.capture import ActivityCapture
 from scripts.activity.policy import AnswerPolicy
+from scripts.browser.adapter import SubmissionHTTPError
 from scripts.config import Config
 from scripts.storage import read_json
 from scripts.tests.test_activity_capture import Agent, Browser, question
@@ -57,6 +58,51 @@ class ActivityRecoveryRegressions(unittest.TestCase):
         restored._browser_call('advance', observation, restored.directory)
         self.assertEqual(self.delays, [30, 60, 90, 120])
         self.assertEqual(restored.state['pending_browser_error']['attempt'], 4)
+
+    def test_repeated_server_errors_hold_question_across_reload_and_resume(self):
+        class ServerError(Browser):
+            def respond(self, observation, responses, directory):
+                self.responses.append(deepcopy(responses))
+                error = SubmissionHTTPError(500, 'https://mathacademy.com/api/tasks/12/lessons/7/submit-answer')
+                error.submitted = True
+                raise error
+        browser = ServerError([question()])
+        capture = self.capture(browser, kind='lesson')
+        for _ in range(3):
+            capture._question(browser.observe(capture.directory), 0)
+            # A successful page reload/reconciliation can clear the transient
+            # error, but must not reset the durable failed-submission budget.
+            capture.state.pop('pending_browser_error', None)
+        restored = self.capture(browser, kind='lesson')
+        restored.state = read_json(capture.checkpoint_path)
+        restored.policy = AnswerPolicy(restored.activity, restored.state['policy'], rng=restored.rng,
+                                       clock=lambda:self.now)
+        restored._question(browser.observe(restored.directory), 0)
+        self.assertEqual(len(browser.responses), 3)
+        self.assertTrue(restored.state['pending_capture_blocker']['submission_server_failure'])
+        self.assertEqual(restored.solver.calls, [])
+        browser.accepted = True
+        restored._question(browser.observe(restored.directory), 0)
+        self.assertEqual(browser.advances, 1)
+
+    def test_server_error_hold_does_not_apply_to_diagnostics_or_changed_content(self):
+        for kind, changed in [('diagnostic',False),('lesson',True)]:
+            with self.subTest(kind=kind, changed=changed):
+                browser = Browser([question()], kind=kind)
+                capture = self.capture(browser, kind=kind)
+                capture.state['context'] = {}
+                observation = browser.observe(capture.directory)
+                capture.state['presentations']['presentation-0'] = {
+                    'key':'presentation-0','question':deepcopy(observation['question']),
+                    'started_at':self.now,'submissions':[],
+                    'submission_server_failures':{'count':3,'error':'HTTP 500',
+                        'binding':capture._answer_binding(observation['question'])}}
+                if changed:
+                    browser.questions[0]['problem'] = 'A changed source prompt'
+                    observation = browser.observe(capture.directory)
+                capture._question(observation, 0)
+                self.assertNotIn('pending_capture_blocker', capture.state)
+                self.assertEqual(len(browser.responses), 1)
 
     def test_continue_failure_uses_agent_recovery_and_restarts_same_activity(self):
         class RecoverableContinue(Browser):

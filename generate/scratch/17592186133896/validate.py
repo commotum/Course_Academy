@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Independent displayed-math, exact replay, complete integral and native grader QA."""
-import concurrent.futures,importlib.util,json,math,re,subprocess,sys,hashlib,platform
+import concurrent.futures,importlib.util,json,math,re,subprocess,sys,hashlib,platform,tempfile
 from pathlib import Path
 import sympy as sp
 ROOT=Path(__file__).resolve().parent
@@ -119,20 +119,30 @@ def main():
    pairs=[{'values':[f[':answer-field/choices'][i][':answer/value'],f[':answer-field/choices'][j][':answer/value']],'integral':str(integrals[i])} for i in range(5) for j in range(i) if g.equivalent_scalar(integrals[i],integrals[j])]
    collisions.append({'field_index':i,'complete_integral_collisions':pairs})
   source_results.append({'source_id':case['source_id'],'prompt_exact':True,'solution_exact':':question/worked-solution' in source,'correct_designations_matched':sum(':answer-field/correct' in f for f in source[':question/answer-fields']),'bank_exact':True,'raw_learner_eligible':False,'full_value_findings':collisions})
- records=[];math_results=[]
+ records=[];math_results=[];changed_raw=[]
  for template,(level,sid,params) in g.TEMPLATES.items():
-  for seed in [31,67]:
+  for seed in [31,43]:
    r=g.generate(level,seed,template=template);iv=verify(r);records.append(r);math_results.append({'template':template,'seed':seed,'integral_values':iv})
    p=r['generation']['parameters'];other=g.generate(level,seed+100,template=template,parameters=p)
    assert other['question'][':question/id']==r['question'][':question/id']
    assert other['generation']['mathematical_fingerprint']==r['generation']['mathematical_fingerprint']
+ # Exercise documented coefficient and power boundary workloads explicitly.
+ boundaries=[('easy','circle_cw',{'a':6,'b':6}),('moderate','ellipse_ccw',{'a':6,'b':1}),('hard','power',{'a':6,'b':1,'m':3}),('hard','power',{'a':2,'b':6,'m':7}),('hard','exp_cw',{'a':1,'b':6}),('hard','double_sine',{'a':6,'b':1}),('hard','double_cos',{'a':1,'b':6})]
+ for level,template,p in boundaries:
+  r=g.generate(level,1001,template=template,parameters=p);iv=verify(r);records.append(r);math_results.append({'template':template,'boundary_parameters':p,'integral_values':iv})
+ # Normalized evidence profile exists publicly but is never learner-eligible.
+ for case in cases:
+  r=g.generate(case['level'],template=case['template'],parameters=case['parameters'],profile='observed')
+  assert not r['generation']['learner_eligible']
+  assert len(r['question'][':question/answer-fields'])==1
  # Changed-parameter public raw replays preserve bank and whole solution masks.
  for case in cases:
   p=dict(case['parameters']);p['a']=2 if p['a']!=2 else 3;p['b']=4
   r=g.generate(case['level'],19,template=case['template'],parameters=p,profile='observed_raw')
   assert r['generation']['parameters']==p
+  changed_raw.append(r)
  # Strict explicit bounds and authored bank collision rejection.
- invalid=[('easy','circle_cw',{'a':5,'b':5}),('moderate','ellipse_ccw',{'a':3,'b':3}),('hard','power',{'a':2,'b':3,'m':4}),('hard','exp_cw',{'a':2,'b':1})]
+ invalid=[('easy','circle_cw',{'a':7,'b':7}),('moderate','ellipse_ccw',{'a':3,'b':3}),('hard','power',{'a':2,'b':3,'m':4}),('hard','exp_cw',{'a':2,'b':1})]
  for level,template,p in invalid:
   try:g.generate(level,template=template,parameters=p)
   except ValueError:pass
@@ -143,7 +153,8 @@ def main():
  assert r1['generation']['mathematical_fingerprint']==r2['generation']['mathematical_fingerprint']
  assert r1['question'][':question/id']!=r2['question'][':question/id']
  # Fresh concurrent asset writes use private unique temporary paths.
- concurrent_dir=ROOT/'concurrent-plots';concurrent_dir.mkdir(exist_ok=True)
+ concurrent_parent=ROOT/'concurrent-plots';concurrent_parent.mkdir(exist_ok=True)
+ concurrent_dir=Path(tempfile.mkdtemp(prefix='qa-',dir=concurrent_parent))
  with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
   args=[('ellipse_ccw',{'a':4,'b':5}),('ellipse_ccw',{'a':4,'b':5}),('double_cos',{'a':3,'b':2})]
   result=list(pool.map(lambda pair:g.render_plots(*pair,output_dir=concurrent_dir),args))
@@ -158,12 +169,14 @@ def main():
  binary=ROOT.parents[1]/'runs/current/check-engine'
  subprocess.run([str(binary),str(ROOT/'engine-input.json'),str(ROOT/'engine.json')],check=True)
  native=json.loads((ROOT/'engine.json').read_text())
- report={'passed':True,'version':g.VERSION,'source_provenance':{k:v for k,v in g.SOURCE.items() if k!='record'},'source_coverage':{'questions':8,'prompt_exact':prompt_matched,'existing_solutions_exact':solution_matched,'existing_solutions_total':7,'fields_exact':fields_matched,'fields_total':9,'displayed_choices_exact':choices_matched,'displayed_choices_total':45,'correct_designations_exact':correct_matched,'correct_designations_total':7,'absent_correct_refs_retained':2,'absent_difficulty_retained':1,'absent_solution_retained':1},'source_results':source_results,'generated_records_checked':len(records),'levels':['easy','moderate','hard'],'generated_math_results':math_results,'grading':{'accepted':native['accepted_checks'],'rejected':native['rejected_checks'],'unresolved':native['documented_unresolved_checks'],'binary_sha256':hashlib.sha256(binary.read_bytes()).hexdigest()},'runtime':{'python':platform.python_version(),'sympy':sp.__version__},'authored_scope':'easy clockwise circles; hard unrated exp_ccw difficulty; outer positive scales and odd powers 3,5,7. Full operation bank authored for unique definite-integral values.','unresolved_findings':['No original correct ref/solution/difficulty for q-42221; repaired values and level are authored, not source fidelity.','Raw q-42238 duplicate legacy field retained only in evidence profile.','Ambiguous complete-integral source banks are evidence-only; full-value collisions reported per field.'],'database_writes':0}
+ report={'passed':True,'version':g.VERSION,'source_provenance':{k:v for k,v in g.SOURCE.items() if k!='record'},'source_coverage':{'questions':8,'prompt_exact':prompt_matched,'existing_solutions_exact':solution_matched,'existing_solutions_total':7,'fields_exact':fields_matched,'fields_total':9,'displayed_choices_exact':choices_matched,'displayed_choices_total':45,'correct_designations_exact':correct_matched,'correct_designations_total':7,'absent_correct_refs_retained':2,'absent_difficulty_retained':1,'absent_solution_retained':1},'source_results':source_results,'generated_records_checked':len(records),'levels':['easy','moderate','hard'],'generated_math_results':math_results,'grading':{'accepted':native['accepted_checks'],'rejected':native['rejected_checks'],'unresolved':native['documented_unresolved_checks'],'binary_sha256':hashlib.sha256(binary.read_bytes()).hexdigest()},'runtime':{'python':platform.python_version(),'sympy':sp.__version__,'matplotlib':__import__('matplotlib').__version__},'authored_scope':'easy clockwise circles; hard unrated exp_ccw difficulty; outer positive scales and odd powers 3,5,7. Full operation bank authored for unique definite-integral values.','unresolved_findings':['No original correct ref/solution/difficulty for q-42221; repaired values and level are authored, not source fidelity.','Raw q-42238 duplicate legacy field retained only in evidence profile.','Ambiguous complete-integral source banks are evidence-only; full-value collisions reported per field.'],'database_writes':0}
  (ROOT/'validation.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n')
- (ROOT/'review.json').write_text(json.dumps({'original_replays':raw,'generated_variants':records},indent=2,ensure_ascii=False)+'\n')
+ (ROOT/'review.json').write_text(json.dumps({'original_replays':raw,'generated_evidence_variants':changed_raw,'generated_variants':records},indent=2,ensure_ascii=False)+'\n')
  md='# Green’s theorem area setup: original evidence and generated variants\n\nRaw originals preserve the captured banks and missing attributes; they are evidence-only. Generated variants use a complete authored bank whose full integral values are pairwise unequal. Correctness, repair and fidelity are counted separately in validation.json.\n\n'
  for r in raw:
   md+='### Original '+r['generation']['source_id']+' — raw evidence\n\n'+g.markdown(r)+'\n'
+ for r in changed_raw:
+  md+='### Generated changed-parameter evidence — source bank '+r['generation']['source_id']+' (learner-ineligible)\n\n'+g.markdown(r)+'\n'
  for r in records:
   md+='### Generated variant — '+r['question'][':question/difficulty'].split('/')[-1]+'\n\n'+g.markdown(r)+'\n'
  (ROOT/'review.md').write_text(md)

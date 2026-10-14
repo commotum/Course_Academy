@@ -186,8 +186,9 @@ def finish(path,verified,inv):
             'supported_levels':list(LEVELS),'available_after':verified['distinct_available'],
             'shortage_remaining':remaining,'unsupported_levels_filled':False,
             'inventory_recheck_basis':inv['basis'],'remaining_jobs':[j for j in inv['jobs'] if j['knowledgePoint']==KP],
-            'evidence':[str(p.relative_to(ROOT)) for p in [H/'validation.json',H/'classification.md',H/'template-extraction.md',H/'freeze.json',path/'preparation.json',path/'transaction.edn',path/'commit-intent.json',path/'commit.edn',path/'preview.edn',path/'verification.json',path/'inventory-after.json',path/'native-report.json']],
-            'note':'Three authored difficulty bands. Both unrated incomplete originals and canonical example preserved. Historical opaque bank remains evidence only. New content uses validated authored method errors or the observed two-blank layout.'}
+            'evidence':[str(p.relative_to(ROOT)) for p in [H/'validation.json',H/'classification.md',H/'template-extraction.md',H/'freeze.json',H/'current-source.json',H/'current-source-validation.json',H/'current-source-native-report.json',path/'generated.json',path/'preparation.json',path/'transaction.edn',path/'commit-intent.json',path/'commit.edn',path/'preview.edn',path/'verification.json',path/'inventory-after.json',path/'native-report.json']],
+            'bounded_template_exclusions':[{'template':'current aligned b=13 blank / first-row substitution','reason':'Outside narrower generator presentation policy; valid captured source still counted. This does not restrict the requested variant count.'}],
+            'note':'New question ratings follow authored bounds; hard lacks a captured rating. All three current source questions, canonical example, original historical source snapshot, and learner history preserved. Historical opaque bank remains evidence only; new choices use validated authored method errors.'}
     save(path/'outcome.json',result);save(JOB.with_suffix('.result'),result)
     print(json.dumps({k:result[k] for k in ['outcome','verified_commit_basis','new_questions','available_after','remaining_jobs']}),flush=True)
 

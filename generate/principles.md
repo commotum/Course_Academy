@@ -12,6 +12,8 @@ Reproduce the observed prompts, answer-field types, complete answer banks, and w
 
 Faithful replication is the starting requirement. Assess whether the recovered templates can produce enough meaningfully different questions for repeated practice. When source coverage is too narrow, add variations grounded in the same mathematical method and instructional purpose. Distinguish authored extensions from observed templates, and validate their answers, distractors, and worked solutions with the same care.
 
+Use a stable mathematical and instructional backbone with explicitly defined variable slots. Preserve the method, expression structure, answer-field contract, and ordered worked-solution stages. Sample values or eligible targets within those slots, then derive every dependent part from the same instance. An example's particular target or position is not automatically a template constraint; keep it fixed when its role is essential to the assessed method. Define the permitted variations before implementation, and do not invent new operators, response formats, or reasoning steps merely to increase variety. When the evidence is sparse, use conservative same-method variations and record their limits.
+
 ## 3. Stay within scope
 
 Check proposed variations against the lesson context, prerequisites, and the reasoning required at the intended difficulty. Vary the application while keeping the assessed skill and workload comparable; do not introduce other topics, additional skills, or branches that expand the knowledge point’s scope. Variations within one difficulty level have no instructional progression. Each question should stand on its own as another instance of the same skill at the same level.

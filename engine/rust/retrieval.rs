@@ -491,11 +491,10 @@ pub fn schedule(
                         && s.optional_ref(*a, "activity/scope").ok().flatten() == Some(topic)
                 });
             if let Some(activity) = activity {
-                if crate::inventory::ready(
+                if crate::inventory::lesson_ready(
                     s,
                     &s.refs(topic, "topic/knowledge-points")?,
                     &seen,
-                    true,
                 )? && learning::first_content(s, activity, learner)?.is_some()
                 {
                     definitions.push(Definition {

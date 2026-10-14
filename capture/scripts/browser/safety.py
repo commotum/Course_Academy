@@ -71,7 +71,8 @@ class BrowserSafety:
             return
         if response.status >= 400:
             self.event('http_error', url=response.url, status=response.status,
-                       resource_type=response.request.resource_type)
+                       resource_type=response.request.resource_type,
+                       method=getattr(response.request, 'method', None))
         if response.status == 429:
             headers = response.headers
             delay = retry_after_seconds(headers.get('retry-after'), default=getattr(self.browser.config, 'retry_delay', 30))

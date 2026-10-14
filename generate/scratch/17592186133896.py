@@ -8,7 +8,7 @@ These evidence profiles are explicitly ineligible for learner delivery. Normal
 profiles repair presentation and legacy fields, with repair counts separate.
 
 Easy (authored, canonical-example anchored): clockwise circles, one coefficient
-1..4 and P=-y,Q=0. Moderate (observed): counterclockwise ellipses with unequal
+1..6 and P=-y,Q=0. Moderate (observed): counterclockwise ellipses with unequal
 positive integer semiaxes 1..6, P=0,Q=x. Hard (observed): same source curve/field
 families, positive outer scales 1..6, or odd trig powers 3,5,7. Variations remain
 fixed-workload setup tasks; no primitive or evaluated area is requested.
@@ -23,7 +23,7 @@ profile=None), generate_easy/moderate/hard. CLI: --difficulty --seed --count
 --format markdown|json --template --profile. No EDB operations or registrations.
 """
 from __future__ import annotations
-import argparse, hashlib, json, math, os, random, re, tempfile, uuid
+import argparse, hashlib, json, math, os, random, re, tempfile, uuid, threading
 from functools import lru_cache
 from pathlib import Path
 import sympy as sp
@@ -163,7 +163,7 @@ def authored_bank(template,p):
  scale=p['b'] if d['field']=='P' else p['a']
  coordinate=d['x'] if d['field']=='P' else d['y']
  vals=[d['correct'],-d['correct'],d['correct']/scale,2*d['correct'],d['first']*coordinate]
- return [(name,sp.latex(value)) for name,value in zip(['correct','reverse_orientation','omit_first_coordinate_scale','double_derivative','use_coordinate_in_place_of_derivative'],vals)]
+ return [(name,sp.latex(sp.expand(value,power_exp=False))) for name,value in zip(['correct','reverse_orientation','omit_first_coordinate_scale','double_derivative','use_coordinate_in_place_of_derivative'],vals)]
 
 @lru_cache(maxsize=4096)
 def integral_value(expr,domain):
@@ -203,8 +203,8 @@ def parse_math(value):
  from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
  s=value.replace('\\\\','\\').replace('⁡','').replace(r'\,','').replace(r'\cdot','*')
  s=s.replace(r'\left','').replace(r'\right','')
- s=re.sub(r'(\\(?:sin|cos)(?:\^\{\d+\})?)\{\((2?)t\s*\)\}',r'\1\2t',s)
- s=re.sub(r'(\\(?:sin|cos)(?:\^\{\d+\})?)\((2?)t\)',r'\1\2t',s)
+ s=re.sub(r'(\\(?:sin|cos)(?:\^\{\d+\})?)\{\((2?)\s*t\s*\)\}',r'\1\2t',s)
+ s=re.sub(r'(\\(?:sin|cos)(?:\^\{\d+\})?)\((2?)\s*t\s*\)',r'\1\2t',s)
  s=re.sub(r'\\operatorname\{(sin|cos)\}',r'\\\1',s)
  s=re.sub(r'\{(sin|cos)\}',r'\\\1',s)
  # Every trig input in the source is t or 2t; function powers precede the input.
@@ -252,10 +252,16 @@ def standard_solution(template,p):
  f'Substituting $P(x,y)={P}$ and $Q(x,y)={Q},$ we get\n\n$$\n'+sign+r'\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)=\oint_C'+boundary+'.\n$$\n\nThe derivative of $r(t)$ is\n\n$$\n'+r"r'(t)="+c['derivative']+'.\n$$\n\nTherefore, we can write our line integral as\n\n$$\n'+r'\begin{aligned}\oint_C'+boundary+'&='+integ(c['product'])+r'\\&='+integ(c['final'])+r'.\end{aligned}'+'\n$$')
 
 
+_PLOT_LOCK=threading.RLock()
+
 def render_plots(template,p,output_dir=None):
+ with _PLOT_LOCK:
+  return _render_plots(template,p,output_dir)
+
+def _render_plots(template,p,output_dir=None):
  """Render same-instance closed curve with four increasing-t traversal arrows."""
  output_dir=Path(output_dir or ROOT/'plots');output_dir.mkdir(parents=True,exist_ok=True)
- key=digest({'renderer':'matplotlib-v1','template':template,'parameters':p})
+ key=digest({'renderer':'matplotlib-v2','template':template,'parameters':p})
  path=output_dir/(key+'.png');sidecar=output_dir/(key+'.json')
  if path.exists() and sidecar.exists():return {'prompt':str(path),'data':str(sidecar)}
  os.environ.setdefault('MPLCONFIGDIR',str(ROOT/'mpl-cache'))
@@ -273,7 +279,10 @@ def render_plots(template,p,output_dir=None):
  ax.spines['left'].set_position('zero');ax.spines['bottom'].set_position('zero')
  ax.plot(xmax,0,'>k',clip_on=False,markersize=4);ax.plot(0,ymax,'^k',clip_on=False,markersize=4)
  ax.text(xmax,.035*span,'$x$');ax.text(.035*span,ymax,'$y$')
- ax.text(float(xx.mean()),float(yy.mean()),'$D$',color='#286caa',fontsize=12)
+ label_x,label_y=float(xx.mean()),float(yy.mean())
+ if abs(label_x)<.03*xr:label_x=.03*xr
+ if abs(label_y)<.03*yr:label_y=.03*yr
+ ax.text(label_x,label_y,'$D$',color='#286caa',fontsize=12)
  ci=110;ax.text(float(xx[ci])+.04*span,float(yy[ci])+.04*span,'$C$',color='#df9000',fontsize=12)
  arrows=[]
  for i in [130,370,620,860]:
@@ -294,7 +303,7 @@ def render_plots(template,p,output_dir=None):
 def guard(level,template,p):
  if set(p)!=({'a','b','m'} if template=='power' else {'a','b'}):raise ValueError('parameters must exactly match template slots')
  if any(type(p[z]) is not int or not 1<=p[z]<=6 for z in ('a','b')):raise ValueError('outer scales must be integers 1..6')
- if level=='easy' and (p['a']!=p['b'] or p['a']>4):raise ValueError('easy requires circles of radius 1..4')
+ if level=='easy' and (p['a']!=p['b'] or p['a']>6):raise ValueError('easy requires circles of radius 1..6')
  if level=='moderate' and p['a']==p['b']:raise ValueError('moderate requires unequal semiaxes')
  if template=='power' and p['m'] not in (3,5,7):raise ValueError('hard power workload uses odd m=3,5,7')
 
@@ -312,9 +321,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if level=='easy' and profile!='authored':raise ValueError('circle level is authored; no observed easy evidence')
  raw=profile=='observed_raw';source_id=TEMPLATES[template][1];source=QUESTIONS[source_id]
  for attempt in range(100):
-  p=dict(parameters) if parameters is not None else {'a':rng.randint(1,4 if level=='easy' else 6),'b':rng.randint(1,6)}
+  p=dict(parameters) if parameters is not None else {'a':rng.randint(1,6),'b':rng.randint(1,6)}
   if parameters is None:
-   if profile=='authored':p['a']=rng.randint(2,4 if level=='easy' else 6)
+   if profile=='authored':p['a']=rng.randint(2,6)
    if level=='easy':p['b']=p['a']
    if template=='power':p['m']=rng.choice((3,5,7))
   try:

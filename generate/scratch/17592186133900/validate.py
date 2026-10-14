@@ -47,6 +47,18 @@ def check_math(rec):
   same(S.diff(P,y),parse(deriv[1]));same(S.diff(Q,x),parse(deriv[2].removesuffix('.')))
   for var,field in ((y,P),(x,Q)):assert r'\frac{\partial}{\partial '+str(var)+'}'+g.par(field) in sol
   assert 'including zero contributions' in sol
+  formal=re.search(r'The component derivatives, including zero contributions, are\s*\$\$(.*?)\$\$',sol,re.S)[1].strip().replace(r'\begin{aligned}','').replace(r'.\end{aligned}','')
+  rows=formal.split(r'\\ ');assert len(rows)==2
+  for row,var,field in zip(rows,(y,x),(P,Q)):
+   pieces=row.split('=');assert len(pieces)==4
+   contribution=pieces[2];components=[];depth=0;start=0
+   for i,ch in enumerate(contribution):
+    if ch in '({':depth+=1
+    elif ch in ')}':depth-=1
+    elif ch=='+' and depth==0:components.append(contribution[start:i]);start=i+1
+   components.append(contribution[start:]);expected=[S.diff(p['c']*term,var) for term in S.Add.make_args(field/p['c'])];assert len(components)==len(expected)
+   for displayed,required in zip(components,expected):same(parse(displayed),required)
+   same(parse(pieces[2]),S.diff(field,var));same(parse(pieces[3]),S.diff(field,var))
   assert 'partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}' in sol
  same(C,S.sympify(meta['curl'],locals={'x':x,'y':y}))
  if f!='annulus_supplied':assert r'\iint_D\left('+g.tex(parse(deriv[2].removesuffix('.')))+'-('+g.tex(parse(deriv[1]))+r')\right)\,\mathrm dA' in sol
@@ -122,6 +134,10 @@ def main():
  try:check_math(bad)
  except AssertionError:pass
  else:raise AssertionError('primitive mutation escaped')
+ bad=g.generate_hard(91,template='rectangle_xy');bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace(r'\left(0\right)',r'\left(1\right)',1)
+ try:check_math(bad)
+ except AssertionError:pass
+ else:raise AssertionError('individual zero-component mutation escaped')
  bad=json.loads(json.dumps(z));bad['question'][':question/problem']+='\x0c'
  try:formatting(bad)
  except AssertionError:pass

@@ -12,6 +12,8 @@ When [Inventory](2-inventory.md) finds a shortage and no generator exists for th
 
 Treat changed numbers as variants of one template. Keep different prompt structures, worked-solution sequences, answer shapes, and field layouts separate; a blank expecting an equation's left-hand side differs from one expecting its right-hand side.
 
+Classify by the mathematical and instructional backbone, including the roles of the supplied and requested objects. Eligible target cells, edges, points, or terms can be parameter slots within one template when changing their identities preserves those roles and the same reasoning steps. A different cell location alone does not require a separate template; a changed answer fragment or mathematical operation does. Do not infer that a position is essential merely because the available examples use the same position.
+
 A shared prompt and worked solution can have several choice-bank profiles. Track those profiles separately from the Markdown/value template count, with every source question assigned to a profile; blanks have no distractor profile.
 
 Plots include mathematical graphs and diagrams. **None** means no new plots are needed, including templates that reuse unchanged assets. **Light** means occasional simple figures; **moderate** means recurring figures that carry part of the problem; **heavy** means plots are central to most variants or require substantial construction. Inspect plot content and its role; plot counts alone do not establish the rating. Standalone math rendered from LaTeX does not count as a plot.

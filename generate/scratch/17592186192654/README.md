@@ -15,3 +15,11 @@ Raw profiles replay the source attributes at original parameters after projectin
 Source evidence is frozen at math basis1356; runtime dependencies are Python/SymPy only, with actual versions and native binary hash in validation.json. No plots, database writes or shared engine edits.
 
 Parent interface/variety correction: public raw fields and answers use enum ident strings, while the captured full Pull objects remain unchanged in source.json. Global coefficient-sign aliases share a mathematical fingerprint; actual nonunit division operands remain because they define the authored workload. Exhaustive meaningful task domains are24 easy,36 moderate,36 hard.
+
+## Current inventory registration
+
+The refreshed basis-2158 source capture and its independent validation are in `current-source.json`, `check-current-source.py` and `current-source-validation.json`. `current-classification.md` and `current-template-extraction.md` document the newer aligned sources, preserved ratings, and bounded exclusions. The full generator validation was rerun before registration.
+
+`registration.json` records the stable generator UUID, repository-relative script path and verified commit basis. `reference/replenishment/basis-2186/` retains the locked preparation, 13 distinct accepted instances, native grading, exact basis-guarded request, preview, durable receipt and basis-2187 readback. There are five distinct available questions at each supported authored level, using the two existing moderate sources. The `.generated` job file was absent. No source records or learner state were changed.
+
+The finite domains remain 24 easy, 36 moderate and 36 hard tasks under the documented target operand bounds. Exhaustion must produce a finite-limit outcome with the remaining shortage explicit; incidental coefficient changes, variable aliases and option shuffling cannot replenish those domains.

@@ -59,6 +59,14 @@ class SourceUnavailable(BrowserUnavailable):
     """The source explicitly says a completed activity's content no longer exists."""
 
 
+class SubmissionHTTPError(BrowserUnavailable):
+    """An answer request failed; its learner outcome still needs reconciliation."""
+
+    def __init__(self, status, url):
+        self.http_status, self.request_url = status, url
+        super().__init__(f"Math Academy answer submission returned HTTP {status}; outcome unconfirmed ({url})")
+
+
 def fingerprint(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:20]
 
@@ -560,6 +568,7 @@ class MathAcademyBrowser:
         self._save()
 
     def respond(self, observation, responses, directory):
+        started = time.time()
         try:
             return self._respond(observation, responses, directory)
         except Exception as error:
@@ -567,6 +576,19 @@ class MathAcademyBrowser:
             # Entry/readback failures before that point are not learner attempts.
             error.submitted = self.state.get("pending_action", {}).get("action") in (
                 "submit", "dont_know", "skip", "submit_assessment")
+            if error.submitted and type(error).__name__ == 'TimeoutError':
+                topic_id = str((self.activity or {}).get('topic_id') or '')
+                question_id = str((observation.get('question') or {}).get('math_academy_id') or '').removeprefix('q-')
+                source_ids = {str((self.activity or {}).get('task_id') or ''), question_id} - {''}
+                failure = next((event for event in reversed(self.safety.events)
+                    if event.get('kind') == 'http_error' and event.get('at', 0) >= started
+                    and event.get('method') == 'POST'
+                    and event.get('url') in {f'https://mathacademy.com/api/tasks/{identifier}/lessons/{topic_id}/submit-answer'
+                                             for identifier in source_ids}), None)
+                if failure:
+                    cause = SubmissionHTTPError(failure['status'], failure['url'])
+                    cause.submitted = True
+                    raise cause from error
             raise
 
     def _respond(self, observation, responses, directory):

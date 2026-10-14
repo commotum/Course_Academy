@@ -272,12 +272,11 @@ pub fn filter_candidates(
                     && matches!(state(s, *t).ok().as_deref(), Some("started" | "paused"))
             });
         ongoing
-            || crate::inventory::ready(
+            || crate::inventory::lesson_ready(
                 s,
                 &s.refs(p.topic, "topic/knowledge-points")
                     .unwrap_or_default(),
                 &seen,
-                true,
             )
             .unwrap_or(false)
     });

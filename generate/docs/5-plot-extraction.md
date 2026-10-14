@@ -12,3 +12,5 @@ Include mathematical content embedded in plots. Distinguish meaningful geometry,
 Identify assets that can be reused unchanged and plots that must be generated for each variant. Carry forward or revise the template's **none**, **light**, **moderate**, or **heavy** plot rating using the extracted evidence.
 
 Keep labels, plotted values, correct answers, and solution plots tied to the same mathematical parameters. Attach the plot specification and source examples to the extracted template, then return to [Template Generator](6-template-generator.md).
+
+Distinguish the diagram's required relationships from the source instance's particular selected objects and locations. Vary only the geometric or relational slots defined by Template Extraction, preserving their instructional roles and workload. Derive highlighted or queried objects, label assignments, and associated table entries from the same sampled targets. Preserve topology, orientation, or placement when it is part of the method; do not invent diagram variations independently to add visual variety.
