@@ -410,47 +410,47 @@ Therefore, the solution to the system of equations is $a=4, \,b=3$, which can be
 
 ## AUTHORED moderate radio_solution variant seed 2
 
-Find the solution $(x, y)$ to the following system of equations using the elimination method:
+Find the solution $(a, b)$ to the following system of equations using the elimination method:
 
-$\{4x - 5y = 3; 2x + 7y = -27$
+$\{2a - b = -10; 8a + 2b = -16$
 
-*Hint: Eliminate the variable $x$.*
+*Hint: Eliminate the variable $a$.*
 
-selection: (- \frac{681}{38}, \frac{24}{19}), (- \frac{453}{4}, \frac{57}{2}), (-24, -3), (-3, -3), (- \frac{435}{19}, \frac{51}{19})
+selection: (- \frac{29}{3}, - \frac{28}{3}), (7, 24), (-3, 4), (-7, 4), (- \frac{43}{6}, - \frac{13}{3})
 
-Notice that the coefficient of $x$ in the first equation is $4$, while in the second equation it is $2$.
+Notice that the coefficient of $a$ in the first equation is $2$, while in the second equation it is $8$.
 
-If we multiply the second equation by $-2$, then the $x$-coefficient will become $-4$, which will cancel with the coefficient of $4$ in the first equation.
-
-$$
-\{4x - 5y = 3; (2x + 7y = -27) \cdot (-2)
-$$
-
-Now, when we add the two equations, the variable $x$ will be eliminated:
+If we multiply the first equation by $-4$, then the $a$-coefficient will become $-8$, which will cancel with the coefficient of $8$ in the second equation.
 
 $$
-\begin{aligned}
-4x - 5y &= 3 \\
--4x - 14y &= 54 \\
-(-5y - 14y) &= (3 + 54) \\
--19y &= 57 \\
-y &= -3
-\end{aligned}
+\{(2a - b = -10) \cdot (-4); 8a + 2b = -16
 $$
 
-So, the solution must have $y = -3$. However, we still need to find $x$. To do this, we substitute $y = -3$ back into one of the equations. Let's choose the second equation:
+Now, when we add the two equations, the variable $a$ will be eliminated:
 
 $$
 \begin{aligned}
-2x + 7y &= -27 \\
-2x + 7(-3) &= -27 \\
-2x - 21 &= -27 \\
-2x &= -6 \\
-x &= -3
+-8a + 4b &= 40 \\
+8a + 2b &= -16 \\
+(4b + 2b) &= (40 - 16) \\
+6b &= 24 \\
+b &= 4
 \end{aligned}
 $$
 
-Therefore, the solution to the system of equations is $x=-3, \,y=-3$, which can be expressed as $(-3,-3)$.
+So, the solution must have $b = 4$. However, we still need to find $a$. To do this, we substitute $b = 4$ back into one of the equations. Let's choose the first equation:
+
+$$
+\begin{aligned}
+2a - b &= -10 \\
+2a - (4) &= -10 \\
+2a - 4 &= -10 \\
+2a &= -6 \\
+a &= -3
+\end{aligned}
+$$
+
+Therefore, the solution to the system of equations is $a=-3, \,b=4$, which can be expressed as $(-3,4)$.
 
 ---
 
@@ -458,28 +458,28 @@ Therefore, the solution to the system of equations is $x=-3, \,y=-3$, which can 
 
 Find the solution $(x, y)$ to the following system of equations using the elimination method:
 
-$\{4x + 7y = -20; -2x - 3y = 8$
+$\{6x + 7y = -16; -2x - 3y = 8$
 
 *Hint: Eliminate the variable $x$.*
 
-selection: (50, -36), (- \frac{5}{2}, -1), (-10, -4), (14, -12), (2, -4)
+selection: (-34, 20), (-7, 2), (-10, -4), (-10, 4), (2, -4)
 
-Notice that the coefficient of $x$ in the first equation is $4$, while in the second equation it is $-2$.
+Notice that the coefficient of $x$ in the first equation is $6$, while in the second equation it is $-2$.
 
-If we multiply the second equation by $2$, then the $x$-coefficient will become $-4$, which will cancel with the coefficient of $4$ in the first equation.
+If we multiply the second equation by $3$, then the $x$-coefficient will become $-6$, which will cancel with the coefficient of $6$ in the first equation.
 
 $$
-\{4x + 7y = -20; (-2x - 3y = 8) \cdot (2)
+\{6x + 7y = -16; (-2x - 3y = 8) \cdot (3)
 $$
 
 Now, when we add the two equations, the variable $x$ will be eliminated:
 
 $$
 \begin{aligned}
-4x + 7y &= -20 \\
--4x - 6y &= 16 \\
-(7y - 6y) &= (-20 + 16) \\
-y &= -4 \\
+6x + 7y &= -16 \\
+-6x - 9y &= 24 \\
+(7y - 9y) &= (-16 + 24) \\
+-2y &= 8 \\
 y &= -4
 \end{aligned}
 $$
@@ -503,9 +503,9 @@ Therefore, the solution to the system of equations is $x=2, \,y=-4$, which can b
 ## AUTHORED moderate blank_solution variant seed 2
 
 Consider the following system of equations:
-$\{3u + 5v = 29; 9u - 4v = 11$
+$\{2a - b = -10; 8a + 2b = -16$
 
-Find the solution $(u, v)$ to this system by eliminating the variable $u$.
+Find the solution $(a, b)$ to this system by eliminating the variable $a$.
 
 The solution is $($
 {{field-1}}
@@ -513,50 +513,50 @@ $,$
 {{field-2}}
 $)$.
 
-field-1: 3
+field-1: -3
 
 field-2: 4
 
-Notice that the coefficient of $u$ in the first equation is $3$, while in the second equation it is $9$.
+Notice that the coefficient of $a$ in the first equation is $2$, while in the second equation it is $8$.
 
-If we multiply the first equation by $-3$, then the $u$-coefficient will become $-9$, which will cancel with the coefficient of $9$ in the second equation.
-
-$$
-\{(3u + 5v = 29) \cdot (-3); 9u - 4v = 11
-$$
-
-Now, when we add the two equations, the variable $u$ will be eliminated:
+If we multiply the first equation by $-4$, then the $a$-coefficient will become $-8$, which will cancel with the coefficient of $8$ in the second equation.
 
 $$
-\begin{aligned}
--9u - 15v &= -87 \\
-9u - 4v &= 11 \\
-(-15v - 4v) &= (-87 + 11) \\
--19v &= -76 \\
-v &= 4
-\end{aligned}
+\{(2a - b = -10) \cdot (-4); 8a + 2b = -16
 $$
 
-So, the solution must have $v = 4$. However, we still need to find $u$. To do this, we substitute $v = 4$ back into one of the equations. Let's choose the first equation:
+Now, when we add the two equations, the variable $a$ will be eliminated:
 
 $$
 \begin{aligned}
-3u + 5v &= 29 \\
-3u + 5(4) &= 29 \\
-3u + 20 &= 29 \\
-3u &= 9 \\
-u &= 3
+-8a + 4b &= 40 \\
+8a + 2b &= -16 \\
+(4b + 2b) &= (40 - 16) \\
+6b &= 24 \\
+b &= 4
 \end{aligned}
 $$
 
-Therefore, the solution to the system of equations is $u=3, \,v=4$, which can be expressed as $(3,4)$.
+So, the solution must have $b = 4$. However, we still need to find $a$. To do this, we substitute $b = 4$ back into one of the equations. Let's choose the first equation:
+
+$$
+\begin{aligned}
+2a - b &= -10 \\
+2a - (4) &= -10 \\
+2a - 4 &= -10 \\
+2a &= -6 \\
+a &= -3
+\end{aligned}
+$$
+
+Therefore, the solution to the system of equations is $a=-3, \,b=4$, which can be expressed as $(-3,4)$.
 
 ---
 
 ## AUTHORED moderate blank_solution variant seed 11
 
 Consider the following system of equations:
-$\{4x + 7y = -20; -2x - 3y = 8$
+$\{-9x - 7y = -17; -3x - 4y = -14$
 
 Find the solution $(x, y)$ to this system by eliminating the variable $x$.
 
@@ -566,43 +566,43 @@ $,$
 {{field-2}}
 $)$.
 
-field-1: 2
+field-1: -2
 
-field-2: -4
+field-2: 5
 
-Notice that the coefficient of $x$ in the first equation is $4$, while in the second equation it is $-2$.
+Notice that the coefficient of $x$ in the first equation is $-9$, while in the second equation it is $-3$.
 
-If we multiply the second equation by $2$, then the $x$-coefficient will become $-4$, which will cancel with the coefficient of $4$ in the first equation.
+If we multiply the second equation by $-3$, then the $x$-coefficient will become $9$, which will cancel with the coefficient of $-9$ in the first equation.
 
 $$
-\{4x + 7y = -20; (-2x - 3y = 8) \cdot (2)
+\{-9x - 7y = -17; (-3x - 4y = -14) \cdot (-3)
 $$
 
 Now, when we add the two equations, the variable $x$ will be eliminated:
 
 $$
 \begin{aligned}
-4x + 7y &= -20 \\
--4x - 6y &= 16 \\
-(7y - 6y) &= (-20 + 16) \\
-y &= -4 \\
-y &= -4
+-9x - 7y &= -17 \\
+9x + 12y &= 42 \\
+(-7y + 12y) &= (-17 + 42) \\
+5y &= 25 \\
+y &= 5
 \end{aligned}
 $$
 
-So, the solution must have $y = -4$. However, we still need to find $x$. To do this, we substitute $y = -4$ back into one of the equations. Let's choose the second equation:
+So, the solution must have $y = 5$. However, we still need to find $x$. To do this, we substitute $y = 5$ back into one of the equations. Let's choose the second equation:
 
 $$
 \begin{aligned}
--2x - 3y &= 8 \\
--2x - 3(-4) &= 8 \\
--2x + 12 &= 8 \\
--2x &= -4 \\
-x &= 2
+-3x - 4y &= -14 \\
+-3x - 4(5) &= -14 \\
+-3x - 20 &= -14 \\
+-3x &= 6 \\
+x &= -2
 \end{aligned}
 $$
 
-Therefore, the solution to the system of equations is $x=2, \,y=-4$, which can be expressed as $(2,-4)$.
+Therefore, the solution to the system of equations is $x=-2, \,y=5$, which can be expressed as $(-2,5)$.
 
 ---
 

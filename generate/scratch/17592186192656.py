@@ -16,9 +16,15 @@ Radio defaults use one whole bank of four explicit method errors, not offsets.
 CLI/JSON are local review records; this script performs no database operations.
 """
 from __future__ import annotations
-import argparse, copy, hashlib, json, random, sys, uuid
+import argparse, copy, hashlib, json, os, random, sys, uuid
 from pathlib import Path
-import sympy as sp
+try:
+    import sympy as sp
+except ModuleNotFoundError:
+    runtime=Path(__file__).resolve().parents[2]/'.venv/bin/python'
+    if __name__=='__main__' and runtime.is_file():
+        os.execv(str(runtime),[str(runtime),str(Path(__file__).resolve()),*sys.argv[1:]])
+    raise
 KP_ID=17592186192656
 KP_UUID='2dbf4e1a-2c87-562d-8c4d-41fd32e79b86'
 TITLE='Solving a System of Equations by Eliminating the First Variable'
@@ -31,6 +37,7 @@ ANCHORS={'q-18787':dict(a1=4,b1=-5,c1=0,a2=2,b2=-3,c2=2,variables='xy'),
 TEMPLATES={'radio_solution':'radio','blank_solution':'blank'}
 SOURCE_TEMPLATE={'q-18787':'radio_solution','q-208816':'blank_solution'}
 NS=uuid.UUID(KP_UUID)
+GENERATOR_ID=str(uuid.uuid5(NS,'question-generator'))
 def digest(obj):return hashlib.sha256(json.dumps(obj,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def uid(value):return str(uuid.uuid5(NS,value))
 def tex(value):return sp.latex(sp.Rational(value))
@@ -161,7 +168,9 @@ def worked_solution(p):
        f'Therefore, the solution to the system of equations is ${x}={tex(X)}, \\,{y}={tex(Y)}$, which can be expressed as $({tex(X)},{tex(Y)})$.')
 
 def sample(level,rng):
-    lo,hi=(2,7) if level=='easy' else ((2,4) if level=='moderate' else (5,7))
+    # Fresh captured evidence rates the ratio-2 source as easy. Keep historical
+    # explicit replays intact; use ratio 3–4 for new moderate practice.
+    lo,hi=(2,7) if level=='easy' else ((3,4) if level=='moderate' else (5,7))
     small=1 if level=='easy' else rng.randint(2,3)
     coefficients=[small,small*rng.randint(lo,hi)];rng.shuffle(coefficients)
     nonzero=[i for i in range(-7,8) if i]

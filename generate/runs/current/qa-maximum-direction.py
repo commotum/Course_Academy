@@ -67,7 +67,11 @@ def check(rec,old):
   assert unit and all(c>0 for c in coords);h=s.Matrix([1/u,G[1],G[2]]);errors=[G,G/(N*N),h/s.sqrt(h.dot(h))]
  wanted=[target,-target,*[sign*e for e in errors]];assert all(sum(veq(value,e) for e in wanted)==1 for value in values);C['choices']+=5;C['whole_method_banks']+=1
  if old and ':question/worked-solution' in old:
-  assert len(rows(re.findall(r'\$\$\s*(.*?)\s*\$\$',old[':question/worked-solution'],re.S)[0]))==len(rows(B[0]));C['shared_source_masks']+=1
+  assert len(rows(re.findall(r'\$\$\s*(.*?)\s*\$\$',old[':question/worked-solution'],re.S)[0]))==len(rows(B[0]))
+  original=old[':question/worked-solution']
+  if sign<0:original=original.replace('increases most rapidly in the direction of its gradient at that point.','decreases most rapidly in the direction opposite to that of its gradient.').replace('Therefore, the function increases most rapidly','Therefore, the function decreases most rapidly')
+  prose=lambda text:re.sub(r'\s+',' ',re.sub(r'\$\$.*?\$\$|\$.*?\$','',text,flags=re.S)).strip()
+  assert prose(sol)==prose(original);C['shared_source_masks']+=1
  C['records']+=1
 if __name__=='__main__':
  g=load(D.with_suffix('.py'),'parent_max_direction_generator');frozen=json.load(open(R/f'sources/{K}.json'));assert json.load(open(D/'source.json'))==frozen;originals={q[':db/id']:q for q in frozen['record'][':knowledge-point/questions']};S=dict(prompts=0,solutions=0,fields=0,values=0,refs=0,missing_refs=0,unrated=0)

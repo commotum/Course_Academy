@@ -4,7 +4,8 @@ symbolic sign row, ordered substitution operands, final scalar and each bank.
 Native choice grading is separately exercised, never treated as math proof.
 """
 from pathlib import Path
-import copy,hashlib,importlib.util,itertools,json,re,subprocess,sys
+import copy,hashlib,importlib.util,itertools,json,re,subprocess,sys,tempfile
+from concurrent.futures import ThreadPoolExecutor
 from fractions import Fraction
 import sympy as sp
 HERE=Path(__file__).resolve().parent
@@ -166,6 +167,21 @@ def meaningful_count():
         result[level]={'meaningful_tasks':len(seen),'eligible_ordered_bank_instances':eligible_profiles,'incidental_excluded':'diagram, template alias, bank profile, C2/C3 simultaneous operand/orientation relabeling'}
     return result
 
+def plot_concurrency():
+    # Fresh private cache, never prune or overwrite assets used in review.
+    previous=g.HERE
+    with tempfile.TemporaryDirectory(prefix='circulation-plot-') as directory:
+        g.HERE=Path(directory)
+        try:
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                paths=list(pool.map(lambda _:g.legacy_solution_asset(),range(4)))
+            assert len(set(paths))==1
+            path=Path(paths[0]);assert path.is_file() and path.with_suffix('.json').is_file()
+            assert not list(path.parent.glob('tmp*.png')) and not list(path.parent.glob('tmp*.json'))
+            assert json.loads(path.with_suffix('.json').read_text())['holes'][0]['center']==[.25,.25]
+            return {'fresh_concurrent_calls':4,'unique_atomic_target':True,'no_private_temporary_leaks':True}
+        finally:g.HERE=previous
+
 def main():
     cases=json.loads((HERE/'source-cases.json').read_text());replays=[];fidelity=[]
     for case in cases:
@@ -183,19 +199,27 @@ def main():
         # Genuine changed-parameter public replay, full raw operations checked.
         changed=copy.deepcopy(case['parameters']);changed['values']=[str(sp.Rational(v)*sp.Rational(3,2)) for v in changed['values']]
         variant=g.generate(case['level'],template=case['template'],parameters=changed,profile=case['bank_profile']);check_record(variant,raw=True);check_prose(variant)
-    records=[];coverage={};identities=0
+    records=[];coverage={};diagram_coverage={};identities=0
     for level in ('easy','moderate','hard'):
         for seed in range(160):
             record=g.generate(level,seed);check_record(record);check_prose(record);records.append(record)
             coverage.setdefault(level,set()).add(record['generation']['template'])
+            diagram_coverage.setdefault(level,set()).add(record['generation']['source_id'])
         expected={f for f,s in g.FAMILIES.items() if s['level']==('moderate' if level=='hard' else level)}
         assert coverage[level]==expected,'normal default family coverage'
+        assert diagram_coverage[level]=={sid for family in expected for sid in g.FAMILIES[family]['sources']},'normal source-shaped diagram coverage'
         for family in expected:
             for profile in g.METHOD_PROFILES:
                 r=g.generate(level,template=family,profile=profile,seed=37);check_record(r);check_prose(r)
                 r2=g.generate(level,seed=999,template=family,profile=profile,parameters=r['generation']['parameters'])
                 assert r['question'][':question/id']==r2['question'][':question/id'];identities+=1
     mutations=rejection_regressions(records[0])
+    reviewed=json.loads((HERE/'review.json').read_text())
+    for item in reviewed:
+        record=item['record'];check_record(record,raw=record['generation']['evidence_only']);check_prose(record)
+    plots=plot_concurrency()
+    correct_positions={next(i for i,a in enumerate(r['question'][':question/answer-fields'][0][':answer-field/choices']) if a[':answer/id']==r['question'][':question/answer-fields'][0][':answer-field/correct'][1]) for r in records}
+    assert correct_positions==set(range(5)),'normal choices not shuffled across all positions'
     # Boundary/invalid inputs must reject, never silently resample.
     rejected=0
     for level,template,values in [('easy','positive',[1,2,3]),('easy','positive',[1,-2,'1/2']),('moderate','outer_reverse',[11,-2,3]),('moderate','inner2_reverse',['1/2',-2,3]),('hard','outer_reverse',[1,-2,3]),('hard','outer_reverse',['1/2','-3/2','5/2']),('hard','outer_reverse',['1/2','-2/3','31/3'])]:
@@ -214,7 +238,7 @@ def main():
     assert completed.returncode==0,completed.stderr+completed.stdout
     native=json.loads(output_path.read_text())
     counts=meaningful_count()
-    report={'status':'passed','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_provenance':{k:g.WRAPPER[k] for k in ('database','basis','lineage')},'source_coverage':fidelity,'fidelity':{'source_questions':11,'exact_prompts':11,'exact_present_solutions':10,'absent_solutions_preserved':1,'exact_bank_values':55,'complete_banks':11,'correct_designations_matched':10,'missing_designation_not_counted':1,'raw_presence_parity':11},'generated_readback_records':len(records),'changed_raw_replays':11,'native_fixtures':len(fixtures),'native_checks':sum(len(f['checks']) for f in fixtures),'native_report':native,'native_engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'default_family_coverage':{k:sorted(v) for k,v in coverage.items()},'identity_checks':identities,'explicit_rejections':rejected,'mutation_regressions':mutations,'finite_meaningful_variation':counts,'authored_hard':True,'unresolved_source_findings':['q-126558 lacks difficulty, worked solution and correct reference; raw replay preserves all absences; default completes sum=4 and authored easy designation.','Three historical scalar responses (2π, -5,12) have underdetermined intent and remain common-scaling evidence only; all raw banks are ineligible for normal learning.']}
+    report={'status':'passed','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'renderer':json.loads((HERE/'plots/legacy-positive.json').read_text())},'source_provenance':{k:g.WRAPPER[k] for k in ('database','basis','lineage')},'source_coverage':fidelity,'fidelity':{'source_questions':11,'exact_prompts':11,'exact_present_solutions':10,'absent_solutions_preserved':1,'exact_bank_values':55,'complete_banks':11,'correct_designations_matched':10,'missing_designation_not_counted':1,'raw_presence_parity':11},'generated_readback_records':len(records),'review_records_readback':len(reviewed),'changed_raw_replays':11,'native_fixtures':len(fixtures),'native_checks':sum(len(f['checks']) for f in fixtures),'native_report':native,'native_engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'default_family_coverage':{k:sorted(v) for k,v in coverage.items()},'default_source_diagram_coverage':{k:sorted(v) for k,v in diagram_coverage.items()},'identity_checks':identities,'explicit_rejections':rejected,'mutation_regressions':mutations,'plot_concurrency':plots,'correct_choice_positions':sorted(correct_positions),'finite_meaningful_variation':counts,'authored_hard':True,'unresolved_source_findings':['q-126558 lacks difficulty, worked solution and correct reference; raw replay preserves all absences; default completes sum=4 and authored easy designation.','Three historical scalar responses (2π, -5,12) have underdetermined intent and remain common-scaling evidence only; all raw banks are ineligible for normal learning.']}
     (HERE/'validation.json').write_text(json.dumps(report,indent=2));print(json.dumps({k:report[k] for k in ('status','fidelity','generated_readback_records','native_checks','finite_meaningful_variation')},indent=2))
 
 if __name__=='__main__':main()

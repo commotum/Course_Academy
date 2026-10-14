@@ -20,3 +20,9 @@ Unresolved historical interpretation: four observed wrong tuples lack defensible
 Displayed and independently primitive-normalized rows must both satisfy their authored level bounds. Global or individual factors cannot promote an easy task to moderate/hard. Same-level row factors remain allowed but deduplicate canonically; learner solutions gain no preliminary simplification step.
 
 Normal authored radio banks retain their five method-derived recipes and reject the whole instance unless at least one wrong tuple is entirely integer, preventing selection by the correct pair's integer form alone. Rational wrong tuples can remain; this is an authored bank extension. `integer-shortcut-regression.json` contains four rejected parent parameter sets and proofs that their blank instances remain eligible.
+
+## Inventory registration and live source refresh
+
+`replenish.py` uses the existing EDB integration and application contributor, obtains `api.lock`, captures current inventory, deduplicates mathematical tasks, tests selected records with the native engine, previews with deployed validation predicates, persists exact basis-guarded intent, submits, and verifies exact receipt-basis readback. `freeze.json` records the registered UUID and executable/validation hashes. The script falls back to the repository Python environment when the application's ordinary Python lacks SymPy.
+
+Current source evidence at basis 2154 updates the radio original to easy and adds a moderate two-blank source. Those captured ratings supersede the old source-label suggestions. `current-source-validation.json` and its native report verify their complete banks/fields and worked arithmetic. New moderate sampling uses multipliers 3–4. Exact fidelity to the newly captured aligned b=13 blank template is outside this generator's narrower policy; that valid source still contributes to inventory. Hard remains an authored, source-anchored workload band.
