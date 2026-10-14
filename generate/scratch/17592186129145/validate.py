@@ -62,9 +62,19 @@ def check(r,raster=True):
   path=Path(re.search(r'!\[\]\((.*?)\)',q[':question/problem']).group(1));im=np.array(Image.open(path).convert('RGB'))
   red=(im[:,:,0]>150)&(im[:,:,1]<100)&(im[:,:,2]<110)
   assert red.sum()>1000
+  black=(im[:,:,0]<80)&(im[:,:,1]<80)&(im[:,:,2]<80)
+  # Independently derive zero axes from fixed physical layout and actual bounds,
+  # then locate long black axis strokes in raster rather than trusting sidecar.
+  expected_x=im.shape[1]*(.06+(0-lo)/(hi-lo)*.88)
+  expected_y=im.shape[0]*(1-(.1+(0-yl)/(yh-yl)*.84))
+  assert abs(int(black.sum(0).argmax())-expected_x)<3,'raster vertical axis not zero'
+  assert abs(int(black.sum(1).argmax())-expected_y)<3,'raster horizontal axis not zero'
   for point in plot['raster_points']:
    z=point['x'];yy=float(correct.eval(z));assert abs(yy-point['y'])<1e-7*max(1,abs(yy))
-   px,py=map(round,point['pixel']);region=red[max(0,py-4):py+5,max(0,px-4):px+5]
+   expected_px=im.shape[1]*(.06+(z-lo)/(hi-lo)*.88)
+   expected_py=im.shape[0]*(1-(.1+(yy-yl)/(yh-yl)*.84))
+   assert abs(point['pixel'][0]-expected_px)<2 and abs(point['pixel'][1]-expected_py)<2
+   px,py=map(round,[expected_px,expected_py]);region=red[max(0,py-4):py+5,max(0,px-4):px+5]
    assert region.any(),'missing raster point'
  return True
 
@@ -137,7 +147,7 @@ def main():
  (HERE/'source-cases.json').write_text(json.dumps(cases,indent=2));(HERE/'review.json').write_text(json.dumps(reviews,indent=2));(HERE/'native-input.json').write_text(json.dumps(native,indent=2))
  engine=ROOT/'generate/runs/current/check-engine'
  subprocess.run([str(engine),str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
- result={'status':'pass_with_documented_raw_bank_ineligibility','original_raster_root_points_checked':original_root_pixels,'source_total':10,'source_replayed':10,'original_banks_matched':8,'original_options_matched':40,'original_correct_designations_matched':7,'missing_correct_designation':1,'authored_fields':2,'source_solution_prose_stages_matched':9,'source_solution_prose_stages_total':9,'source_full_exact_solutions':sum(z['solution_full_exact'] for z in fidelity),'graphically_colliding_raw_banks':['q-38671','q-38774'],'all_normal_banks_graphically_distinct':True,'finite_mathematical_tasks':{l:len(v) for l,v in finite.items()},'exhaustive_bank_instances':operations,'native_checks':sum(len(z['checks']) for z in native),'review_count':len(reviews),'mutations_rejected':mutation_count,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'fidelity':fidelity}
+ result={'status':'pass_with_documented_raw_bank_ineligibility','original_raster_root_points_checked':original_root_pixels,'source_total':10,'source_replayed':10,'original_banks_matched':8,'original_options_matched':40,'original_correct_designations_matched':7,'missing_correct_designation':1,'authored_fields':2,'source_solution_prose_stages_matched':9,'source_solution_prose_stages_total':9,'source_full_exact_solutions':sum(z['solution_full_exact'] for z in fidelity),'graphically_colliding_raw_banks':['q-38671','q-38774'],'all_normal_banks_graphically_distinct':True,'finite_mathematical_tasks':{l:len(v) for l,v in finite.items()},'exhaustive_bank_instances':operations,'native_checks':sum(len(z['checks']) for z in native),'review_count':len(reviews),'independent_raster_zero_axes_checked':len(reviews),'raster_points_use_independent_fixed_layout':True,'mutations_rejected':mutation_count,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'fidelity':fidelity}
  (HERE/'validation.json').write_text(json.dumps(result,indent=2))
  # Complete review originals (all banks) and variants, no withheld answer data.
  parts=['# Review — Identifying the Factored Polynomial Shown in a Graph\n\nSource math basis 1356. Original omission/normalization and bank ineligibility are recorded in template-extraction.md.']

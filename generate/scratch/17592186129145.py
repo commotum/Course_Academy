@@ -7,8 +7,8 @@ variable slots; exact anchors are ordinary parameter values, not source-payload
 branches. Hard is authored: four roots including a simple, an even multiple and
 an odd multiple root, using the same ordered graph-reading method.
 
-Public replay profiles retain original factor typography and explicitly repair
-actual double backslashes before frac (raw bytes retained in source.json).
+Public replay profiles retain original factor typography. Decoded source math
+contains single TeX command backslashes; JSON escaping needs no source repair.
 No DB writes. See adjoining extraction and validation evidence.
 """
 from __future__ import annotations
@@ -236,7 +236,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),str(parse_polynomial(z).as_expr()))),':answer/type':':answer.type/math',':answer/value':z} for z in values]
     correctid=answers[ci][':answer/id'];rng.shuffle(answers)
     mathkey={'roots':roots,'categories':list(map(category,mults)),'leading_sign':int(sp.sign(c)),'assessed_information':'unscaled graph local root behavior'}
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correctid]}]},'generation':{'version':VERSION,'seed':seed,'template':sid,'profile':sid,'parameters':p,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_ids':[sid] if sid in QS else [],'raw_graphical_pair_collision':sid in RAW_COLLISION_PROFILES,'eligible_default':sid not in RAW_COLLISION_PROFILES,'authored_bank':sid.endswith('-authored') or sid in ('q-38763','q-38765') or level=='hard','authored_hard':level=='hard','authored_field':sid in ('q-38763','q-38765'),'inferred_missing_key':sid=='q-38668','math_fingerprint':hashlib.sha256(json.dumps(mathkey,sort_keys=True).encode()).hexdigest(),'math_task':mathkey,'plot':plot,'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__}}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correctid]}]},'generation':{'version':VERSION,'seed':seed,'template':sid,'profile':sid,'parameters':p,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_ids':[base] if base in QS else [],'raw_graphical_pair_collision':sid in RAW_COLLISION_PROFILES,'eligible_default':sid not in RAW_COLLISION_PROFILES,'authored_bank':sid.endswith('-authored') or sid in ('q-38763','q-38765') or level=='hard','authored_hard':level=='hard','authored_field':sid in ('q-38763','q-38765'),'inferred_missing_key':sid=='q-38668','math_fingerprint':hashlib.sha256(json.dumps(mathkey,sort_keys=True).encode()).hexdigest(),'math_task':mathkey,'plot':plot,'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__}}
 
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)

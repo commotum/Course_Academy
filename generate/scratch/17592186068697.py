@@ -24,8 +24,23 @@ def uid(s):return str(uuid.uuid5(NS,s))
 def digest(x):return hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def tex(x):return sp.latex(sp.Rational(str(x)))
 def answer_name(bits):return SUBSETS[{(1,0,0):0,(0,1,0):1,(0,0,1):2,(1,1,0):3,(1,0,1):4,(0,1,1):5,(1,1,1):6,(0,0,0):7}[tuple(int(v) for v in bits)]]
+SOURCE_CRITERIA={
+ 'q-48042':['left_finite','right_finite','discontinuous'],
+ 'q-48064':['defined','limit_exists','continuous'],
+ 'q-48063':['defined','left_exists','continuous'],
+ 'q-104049':['defined','limit_unequal_value','discontinuous'],
+ 'q-104051':['defined','limit_exists','discontinuous'],
+ 'q-104052':['not_defined','limit_exists','continuous'],
+ 'q-104124':['not_defined','limit_equals_value','continuous'],
+ 'q-48040':['defined','limit_exists','continuous'],
+ 'q-48062':['defined','limit_exists','continuous'],
+ 'q-48065':['defined','limit_equals_value','continuous'],
+ 'q-48067':['defined','limit_equals_value','continuous'],
+ 'q-48068':['left_finite','right_not_finite','secondary_continuous']}
 def source_truth(sid):
- return {'q-48042':[0,1,1],'q-48064':[1,0,0],'q-48063':[1,1,0],'q-104049':[1,0,0],'q-104051':[1,0,1],'q-104052':[1,1,0],'q-104124':[0,1,1],'q-48040':[1,0,0],'q-48062':[0,1,0],'q-48065':[1,1,1],'q-48067':[1,1,1],'q-48068':[1,0,1]}[sid]
+ z=SPECS[sid];left_finite=not isinstance(z['left'],str);right_finite=not isinstance(z['right'],str);exists=left_finite and right_finite and z['left']==z['right'];defined=z['value'] is not None;equal=exists and defined and z['left']==z['value'];continuous=equal
+ predicates={'left_finite':left_finite,'right_finite':right_finite,'right_not_finite':not right_finite,'left_exists':left_finite,'limit_exists':exists,'defined':defined,'not_defined':not defined,'limit_equals_value':equal,'limit_unequal_value':exists and defined and z['left']!=z['value'],'continuous':continuous,'discontinuous':not continuous,'secondary_continuous':z['b']!=z['a'] and any(m[0]==z['b'] and m[2] for m in z['markers']) and not any(m[0]==z['b'] and not m[2] for m in z['markers'])}
+ return [predicates[c] for c in SOURCE_CRITERIA[sid]]
 def render_source(sid,shift):
  s=SPECS[sid];ox,oy,sx,sy=s['axes']; im=np.array(Image.open(s['image']).convert('RGBA').convert('RGB')); yy,xx=np.where((im[:,:,0]>180)&(im[:,:,1]<140)&(im[:,:,2]<140))
  x=(xx-ox)/sx+shift;y=(oy-yy)/sy
@@ -79,22 +94,10 @@ def task_fingerprint(level,template,p):
  # Task identity excludes banks, raster pixels, variable aliases, and incidental
  # numeric translations/ordinates when the requested predicates ignore them.
  if template in SPECS:
-  z=SPECS[template];criteria={
-   'q-48042':['left_finite','right_finite','discontinuous'],
-   'q-48064':['defined','limit_exists','continuous'],
-   'q-48063':['defined','left_exists','continuous'],
-   'q-104049':['defined','limit_unequal_value','discontinuous'],
-   'q-104051':['defined','limit_exists','discontinuous'],
-   'q-104052':['not_defined','limit_exists','continuous'],
-   'q-104124':['not_defined','limit_equals_value','continuous'],
-   'q-48040':['defined','limit_exists','continuous'],
-   'q-48062':['defined','limit_exists','continuous'],
-   'q-48065':['defined','limit_equals_value','continuous'],
-   'q-48067':['defined','limit_equals_value','continuous'],
-   'q-48068':['left_finite','right_not_finite','secondary_continuous']}[template]
+  z=SPECS[template];criteria=SOURCE_CRITERIA[template]
   props={'criteria':criteria,'left_finite':not isinstance(z['left'],str),'right_finite':not isinstance(z['right'],str),'equal_limits':z['left']==z['right'],'defined':z['value'] is not None,'value_on_left':z['value'] is not None and z['value']==z['left'],'value_on_right':z['value'] is not None and z['value']==z['right'],'grid':1}
  else:
-  props={'criteria':['defined','limit_equals_value','continuous'] if level=='moderate' else ['left_finite','right_not_finite','secondary_continuous'],'left_finite':not isinstance(p['left'],str),'right_finite':not isinstance(p['right'],str),'equal_limits':p['left']==p['right'],'defined':p['value'] is not None if level=='moderate' else 'unassessed','value_matches':p['value']==p['left'] if level=='moderate' else 'unassessed','second_continuous':p.get('b_continuous','unassessed'),'second_orientation':int(sp.sign(sp.Rational(str(p['b']))-sp.Rational(str(p['a'])))) if level=='hard' else 'same','grid':.5 if level=='moderate' else .25}
+  props={'criteria':['defined','limit_equals_value','continuous'] if level=='moderate' else ['left_finite','right_not_finite','secondary_continuous'],'left_finite':not isinstance(p['left'],str),'right_finite':not isinstance(p['right'],str),'equal_limits':p['left']==p['right'] if level=='moderate' else 'unassessed','defined':p['value'] is not None if level=='moderate' else 'unassessed','value_matches':p['value']==p['left'] if level=='moderate' and p['left']==p['right'] else 'unassessed','second_continuous':p.get('b_continuous','unassessed'),'second_orientation':int(sp.sign(sp.Rational(str(p['b']))-sp.Rational(str(p['a'])))) if level=='hard' else 'same','grid':.5 if level=='moderate' else .25}
  return digest({'level':level,'assessed_relations':props})
 def make_record(level,seed,template,profile,p,problem,solution,bank,correct,raw,spec=None,geometry=None):
  ident=digest({'version':VERSION,'difficulty':None if raw and ':question/difficulty' not in spec['presence'] else level,'problem':problem,'solution':solution,'bank':sorted(bank)})

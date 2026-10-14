@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 314**, **queued: 65**, **working: 5**.
+**qa_passed: 315**, **queued: 65**, **working: 4**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -325,12 +325,12 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186133900](../../scratch/17592186133900.py) | Extending Green's Theorem | Applying Green's Theorem to Regions With Holes: Advanced Cases | 0 / 6 / 5 / 0 | working | — |
 | [17592186133895](../../scratch/17592186133895.py) | Using Green's Theorem to Calculate Area | Identifying Vector Fields That Satisfy the Unit Curl Property | 2 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186133895.json) |
 | [17592186133896](../../scratch/17592186133896.py) | Using Green's Theorem to Calculate Area | Expressing the Area Bounded by a Closed Curve Using Green’s Theorem | 0 / 1 / 6 / 1 | qa_passed | [Report](qa/17592186133896.json) |
-| [17592186133897](../../scratch/17592186133897.py) | Using Green's Theorem to Calculate Area | Calculating an Area Using Green's Theorem | 0 / 4 / 3 / 1 | working | — |
+| [17592186133897](../../scratch/17592186133897.py) | Using Green's Theorem to Calculate Area | Calculating an Area Using Green's Theorem | 0 / 4 / 3 / 1 | qa_passed | [Report](qa/17592186133897.json) |
 | [17592186068695](../../scratch/17592186068695.py) | Determining Continuity from Graphs | Determining Whether a Function Is Continuous at a Given Point | 4 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186068695.json) |
 | [17592186068696](../../scratch/17592186068696.py) | Determining Continuity from Graphs | Identifying Points of Discontinuity | 17 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186068696.json) |
 | [17592186068697](../../scratch/17592186068697.py) | Determining Continuity from Graphs | Determining the Behavior of a Function in the Neighborhood of a Point | 11 / 0 / 0 / 1 | working | — |
 | [17592186129145](../../scratch/17592186129145.py) | Graphing General Polynomials | Identifying the Factored Polynomial Shown in a Graph | 4 / 5 / 0 / 1 | working | — |
-| 17592186129147 | Graphing General Polynomials | Identifying the Graph of a Factored Polynomial | 0 / 5 / 2 / 0 | working | — |
+| [17592186129147](../../scratch/17592186129147.py) | Graphing General Polynomials | Identifying the Graph of a Factored Polynomial | 0 / 5 / 2 / 0 | working | — |
 | 17592186129154 | Graphing General Polynomials | Identifying True Statements Regarding the Graph of a Given Polynomial | 5 / 3 / 0 / 2 | queued | — |
 | 17592186129253 | Graphing General Polynomials | Identifying Multiplicity of a Root Given a Graph | 5 / 0 / 0 / 2 | queued | — |
 | [17592186087866](../../scratch/17592186087866.py) | Introduction to First-Order Linear ODEs | Writing First-Order Linear ODEs in Standard Form | 8 / 0 / 1 / 0 | queued | — |

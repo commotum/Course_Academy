@@ -31,6 +31,10 @@ def check(r):
   assert int(coords[0])==(orig['b']+sh if sid=='q-48068' else target)
   # Independent source mathematical facts from marker/limit transcription.
   v=orig['value'];l=orig['left'];rr=orig['right'];exists=l==rr and not isinstance(l,str);cont=exists and v is not None and l==v
+  for coord in re.findall(r'f\((-?\d+)\)',sol):assert int(coord)==target,(sid,coord,target)
+  for coord in re.findall(r'x\\to \\\\,(-?\{?\d+\}?)',sol):assert int(coord.replace('{','').replace('}',''))==target,(sid,coord,target)
+  expected_prose=re.sub(r'\$\$.*?\$\$|\$.*?\$','',q_source(sid).get(':question/worked-solution',''),flags=re.S)
+  if expected_prose:assert re.sub(r'\$\$.*?\$\$|\$.*?\$','',sol,flags=re.S)==expected_prose
   bits={'q-48042':[not isinstance(l,str),not isinstance(rr,str),not cont],'q-48064':[v is not None,exists,cont],'q-48063':[v is not None,not isinstance(l,str),cont],'q-104049':[v is not None,exists and l!=v,not cont],'q-104051':[v is not None,exists,not cont],'q-104052':[v is None,exists,cont],'q-104124':[v is None,exists and l==v,cont],'q-48040':[v is not None,exists,cont],'q-48062':[v is not None,exists,cont],'q-48065':[v is not None,exists and l==v,cont],'q-48067':[v is not None,exists and l==v,cont],'q-48068':[True,False,True]}[sid]
  else:
   # Read point/branch markers and plotted limit values independently from the printed graph data.
@@ -46,6 +50,7 @@ def check(r):
  for i,b in enumerate(bits):assert f'Statement {"I"*(i+1)} is {"true" if b else "false"}' in sol
  plot=Path(re.search(r'!\[\]\((.*?)\)',s)[1]);assert plot.exists()
  if plot.with_suffix('.json').exists():raster(plot,geom)
+def q_source(sid):return next(q for q in source if q[':question/math-academy-id']==sid)
 def subset(s):return set(re.findall(r'\bIII\b|\bII\b|\bI\b',s))
 def raster(path,geom):
  m=json.loads(path.with_suffix('.json').read_text());im=np.array(Image.open(path).convert('RGB'));T=np.array(m['transform']);h=im.shape[0]
@@ -80,6 +85,14 @@ def main():
   for seed in range(16):
    r=g.generate(level,seed);check(r);out.append(r);add_engine(r,level+'/'+str(seed))
    if seed<3:reviews.append({'label':'Generated authored '+level+'/'+str(seed),'record':r})
+ # Exhaust finite hard structural topology catalog at one nonincidental grid.
+ hard_tasks=set()
+ for left,right in [('-inf',1),(1,'+inf'),('-inf','+inf')]:
+  for orient in [-1,1]:
+   for continuous in [False,True]:
+    p={'a':.25,'left':left,'right':right,'value':2,'b':.25+orient,'b_continuous':continuous}
+    r=g.generate('hard',parameters=p);check(r);out.append(r);add_engine(r,'hard/finite-catalog');hard_tasks.add(r['generation']['mathematical_fingerprint'])
+ assert len(hard_tasks)==12
  # Default family coverage (selection precedes all source parameter sampling).
  seen={g.generate('easy',seed)['generation']['template'] for seed in range(128)}
  assert seen==set(g.SPECS)
@@ -92,14 +105,25 @@ def main():
   else:raise AssertionError('explicit workload guard absent')
  # Mutations prove marker and criterion checks reject actual wrong output.
  mutated=copy.deepcopy(out[0]);mutated['question'][':question/answer-fields'][0][':answer-field/correct'][1]=mutated['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/id']
- if mutated['question'][':question/answer-fields'][0][':answer-field/correct']!=out[0]['question'][':question/answer-fields'][0][':answer-field/correct']:
+ # Always select a genuinely incorrect option for the mutation.
+ original_correct=out[0]['question'][':question/answer-fields'][0][':answer-field/correct'][1]
+ mutated['question'][':question/answer-fields'][0][':answer-field/correct'][1]=next(a[':answer/id'] for a in mutated['question'][':question/answer-fields'][0][':answer-field/choices'] if a[':answer/id']!=original_correct)
+ if True:
   try:check(mutated)
   except AssertionError:pass
   else:raise AssertionError('correct-choice mutation undetected')
+ control=copy.deepcopy(out[0]);control['question'][':question/worked-solution']+='\x0c'
+ try:check(control)
+ except AssertionError:pass
+ else:raise AssertionError('control character mutation undetected')
+ collision=copy.deepcopy(out[0]);f=collision['question'][':question/answer-fields'][0];f[':answer-field/choices'][1][':answer/value']=f[':answer-field/choices'][0][':answer/value']
+ try:check(collision)
+ except AssertionError:pass
+ else:raise AssertionError('whole-bank collision mutation undetected')
  (ROOT/'native-input.json').write_text(json.dumps(engine));subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(ROOT/'native-input.json'),str(ROOT/'native-report.json')],check=True)
  native=json.loads((ROOT/'native-report.json').read_text());(ROOT/'review.json').write_text(json.dumps(reviews,indent=2));md=[]
  for item in reviews:
   q=item['record']['question'];md.extend(['## '+item['label'],q[':question/problem'],'Choices: '+', '.join(a[':answer/value'] for f in q.get(':question/answer-fields',[]) for a in f[':answer-field/choices']),q.get(':question/worked-solution','Original omitted worked solution.'),''])
- (ROOT/'review.md').write_text('\n\n'.join(md));report={'status':'passed','source_coverage':coverage,'normal_records':len(out),'native':native,'dependencies':out[0]['generation']['dependencies'],'raw_designation_inference':'q-48064 absent; no designation fidelity claimed. Normal independent derivation I only.','semantic_tasks_sampled':{l:len({r['generation']['mathematical_fingerprint'] for r in out if r['question'][':question/difficulty']==':question.difficulty/'+l}) for l in ['easy','moderate','hard']},'default_easy_families':sorted(seen),'finite_variety':'Easy 12 source graph/statement presentations × 9 coordinate shifts. Moderate 3 local topologies × 4 signed half-grid targets × 5 labelled ordinate anchors. Hard 3 infinity arrangements × 8 quarter-grid targets × 2 second-neighborhood states × 2 relative target orientations. Coordinates/grid affect reading; categorical topology counts separately: 12/3/12.','concurrency':json.loads((ROOT/'concurrency-report.json').read_text()),'plot_method':'Matplotlib; native source traces retain unknown algebra uncertainty; independent markers and calibrations; marker-center pixel checks.','db_writes':0}
- (ROOT/'validation.json').write_text(json.dumps(report,indent=2));print(json.dumps({'status':'passed','source_coverage':coverage,'normal_records':len(out),'native_accepted':native.get('accepted_checks'),'native_rejected':native.get('rejected_checks')}))
+ (ROOT/'review.md').write_text('\n\n'.join(md));report={'status':'passed','source_coverage':coverage,'hard_structural_catalog':len(hard_tasks),'normal_records':len(out),'native':native,'dependencies':out[0]['generation']['dependencies'],'raw_designation_inference':'q-48064 absent; no designation fidelity claimed. Normal independent derivation I only.','semantic_tasks_sampled':{l:len({r['generation']['mathematical_fingerprint'] for r in out if r['question'][':question/difficulty']==':question.difficulty/'+l}) for l in ['easy','moderate','hard']},'default_easy_families':sorted(seen),'finite_variety':'Easy 12 source graph/statement presentations × 9 coordinate shifts. Moderate 3 local topologies × 4 signed half-grid targets × 5 labelled ordinate anchors. Hard 3 infinity arrangements × 8 quarter-grid targets × 2 second-neighborhood states × 2 relative target orientations. Coordinates/grid affect reading; canonical categorical tasks separately: easy11 (continuous equality sources65/67 deduplicate), moderate3, hard12; pure coordinate shifts and incidental ordinates are excluded from canonical task fingerprints.','concurrency':json.loads((ROOT/'concurrency-report.json').read_text()),'plot_method':'Matplotlib; native source traces retain unknown algebra uncertainty; independent markers and calibrations; marker-center pixel checks.','db_writes':0}
+ (ROOT/'validation.json').write_text(json.dumps(report,indent=2));print(json.dumps({'status':'passed','source_coverage':coverage,'hard_structural_catalog':len(hard_tasks),'normal_records':len(out),'native_accepted':native.get('accepted_checks'),'native_rejected':native.get('rejected_checks')}))
 if __name__=='__main__':main()
