@@ -5,7 +5,7 @@ x,y=s.symbols('x y',real=True)
 class Reader:
  def __init__(self,text):
   text=text.replace('\u2061','').replace(r'\operatorname{sin}','SIN').replace(r'\operatorname{cos}','COS').replace(r'\operatorname{ln}','LN')
-  text=text.replace('{sin}','SIN').replace(r'\sin','SIN').replace(r'\cos','COS').replace(r'\ln','LN').replace(r'\log','LN')
+  text=text.replace('{sin}','SIN').replace('{cos}','COS').replace(r'\sin','SIN').replace(r'\cos','COS').replace(r'\ln','LN').replace(r'\log','LN')
   for t in (r'\left',r'\right',r'\,',r'\!',r'\quad',r'\;',r'\bigl',r'\bigr'):text=text.replace(t,'')
   text=text.replace(r'\cdot','*').replace(r'\times','*')
   self.ts=[];p=0

@@ -112,7 +112,7 @@ def main():
  raw_originals=[]
  for t,sid in g.FAMILIES.items():
   print('Checking source family '+t,flush=True)
-  q=g.SOURCES[sid];p={'a':1};r=g.generate('easy',template=t,parameters=p,profile='observed:'+sid);raw_originals.append(r)
+  q=g.SOURCES[sid];p={'a':1};r=g.generate.__wrapped__('easy',template=t,parameters=p,profile='observed:'+sid);raw_originals.append(r)
   eqs=check(r);equalities+=eqs
   assert r['question'][':question/problem']==q[':question/problem']
   assert r['question'][':question/worked-solution']==q[':question/worked-solution']
@@ -127,13 +127,13 @@ def main():
   # Full easy coefficient domain: check both profiles, including signed masks.
   for a in (-5,-4,-3,-2,-1,1,2,3,4,5):
    for profile in ('operations:'+t,'observed:'+sid):
-    rr=g.generate('easy',template=t,parameters={'a':a},profile=profile)
+    rr=(g.generate.__wrapped__ if profile.startswith('observed:') else g.generate)('easy',template=t,parameters={'a':a},profile=profile)
     equalities+=check(rr)
-    rr2=g.generate('easy',seed=90,template=t,parameters={'a':a},profile=profile)
+    rr2=(g.generate.__wrapped__ if profile.startswith('observed:') else g.generate)('easy',seed=90,template=t,parameters={'a':a},profile=profile)
     assert rr['question'][':question/id']==rr2['question'][':question/id']
   # Check normal source-chain fidelity independently, including original a=1.
   normal=g.generate('easy',template=t,parameters=p)
-  assert normal['question'][':question/worked-solution']==q[':question/worked-solution']
+  assert normal['question'][':question/worked-solution']==g.normalize_prose(q[':question/worked-solution'])
   assert normal['generation']['eligible_for_learning']
   for a in (2,-3):
    rr=g.generate('easy',template=t,parameters={'a':a});review.append({'label':'Generated normal '+t+' a='+str(a),'record':rr});native.append(engine(rr,'generated/'+t+'/'+str(a)))
@@ -160,7 +160,7 @@ def main():
   assert r1['generation']['mathematical_fingerprint']==r2['generation']['mathematical_fingerprint']
   assert r1['question'][':question/id']!=r2['question'][':question/id']
  # Normal default reaches every observed source family.
- assert {g.generate_easy(z)['generation']['template'] for z in range(40)}==set(g.FAMILIES)
+ assert {g.generate_easy(z)['generation']['template'] for z in range(120)}==set(g.FAMILIES)
  # Explicit guards cannot be bypassed, unknown/unused inputs rejected.
  for p in ({'a':0},{'a':6},{'a':-6},{'a':True},{'a':1,'unused':2}):
   try:g.generate_easy(template='sine_power',parameters=p)
@@ -172,9 +172,9 @@ def main():
  rf=radial['question'][':question/answer-fields'][0];rv=next(a[':answer/value'] for a in rf[':answer-field/choices'] if a[':answer/id']==rf[':answer-field/correct'][1]);assert s.simplify(read(rv).subs(x,-1)-s.diff(F.subs(y,H),x).subs(x,-1))!=0
  write('source-cases.json',cases);write('source-fidelity.json',fidelity);write('review.json',review);write('engine-input.json',native)
  subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(ROOT/'engine-input.json'),str(ROOT/'engine-validation.json')],check=True)
- write('validation.json',{'passed':True,'source_basis':1356,'source_questions':9,'raw_prompt_exact':9,'raw_solution_exact':9,'raw_complete_banks_exact':9,'raw_answer_values_exact':45,'raw_correct_designations_matched':9,'normal_solution_original_chains_exact':9,'source_mathematically_valid_without_repair':8,'normal_positive_domain_repair':1,'raw_ineligible_banks':9,'displayed_stage_equalities_checked':equalities,'easy_profile_instances_checked':180,'independently_derived_normal_bank_values_checked':890,'authored_random_instances':80,'authored_boundary_instances':8,'review_records':len(review),'native_report':'engine-validation.json','native_typed_equivalents':'not applicable: all fields radio; meaningful equivalent expressions checked symbolically, actual grader selects owned UUIDs','plots':'none','runtime':{'python':sys.version.split()[0],'sympy':s.__version__},'generator_sha256':hashlib.sha256(ROOT.with_suffix('.py').read_bytes()).hexdigest(),'source_sha256':hashlib.sha256((ROOT/'source.json').read_bytes()).hexdigest(),'grader_sha256':hashlib.sha256((REPO/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'meaningful_catalog':{'easy':90,'moderate':864,'hard':864,'explanation':'signed a times distinct reduced products b*c times k; aliases removed; same dependency workload'},'sampled_unique_math_tasks':{k:len(v) for k,v in fingerprints.items()},'database_writes':0,'unresolved_limits':['Opaque original distractor intentions are not recovered; raw value-pattern profiles are evidence-only.','Source radial chain is valid only under x>0; raw replay preserves omitted domain and remains ineligible.','Missing moderate/hard definitions are authored workload designs, not observed labels.']})
+ write('validation.json',{'passed':True,'source_basis':g.CAPTURE['basis'],'source_questions':len(g.FAMILIES),'raw_prompt_exact':len(g.FAMILIES),'raw_solution_exact':len(g.FAMILIES),'raw_complete_banks_exact':len(g.FAMILIES),'raw_answer_values_exact':5*len(g.FAMILIES),'raw_correct_designations_matched':len(g.FAMILIES),'normal_solution_original_chains_normalized':len(g.FAMILIES),'source_mathematically_valid_without_repair':len(g.FAMILIES)-1,'normal_positive_domain_repair':1,'raw_ineligible_banks':len(g.FAMILIES),'displayed_stage_equalities_checked':equalities,'easy_profile_instances_checked':20*len(g.FAMILIES),'independently_derived_normal_bank_values_checked':5*(10*len(g.FAMILIES)+88),'authored_random_instances':80,'authored_boundary_instances':8,'review_records':len(review),'native_report':'engine-validation.json','native_typed_equivalents':'not applicable: all fields radio; meaningful equivalent expressions checked symbolically, actual grader selects owned UUIDs','plots':'none','runtime':{'python':sys.version.split()[0],'sympy':s.__version__},'generator_sha256':hashlib.sha256(ROOT.with_suffix('.py').read_bytes()).hexdigest(),'source_sha256':hashlib.sha256((ROOT/'source-current.json').read_bytes()).hexdigest(),'grader_sha256':hashlib.sha256((REPO/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'meaningful_catalog':{'easy':10*len(g.FAMILIES),'moderate':864,'hard':864,'explanation':'signed a times distinct reduced products b*c times k; aliases removed; same dependency workload'},'sampled_unique_math_tasks':{k:len(v) for k,v in fingerprints.items()},'database_writes':0,'unresolved_limits':['Opaque original distractor intentions are not recovered; raw value-pattern profiles are evidence-only.','Source radial chain is valid only under x>0; raw replay preserves omitted domain and remains ineligible.','Missing moderate/hard definitions are authored workload designs, not observed labels.']})
  lines=['# Review: special-case multivariable chain rule','Raw source banks are evidence-only. Generated normal questions use complete operation banks. Radial normal questions state x>0.']
  for item in review:lines+=['\n## '+item['label'],g.markdown(item['record'])]
  (ROOT/'review.md').write_text('\n\n'.join(lines)+'\n')
- print('PASS: nine complete raw banks / 45 values, all source chains preserved in normal generation, independent displayed-stage math, and native radio grading.')
+ print('PASS: twelve complete raw banks / 60 values, all source chains preserved in normal generation, independent displayed-stage math, and native radio grading.')
 if __name__=='__main__':main()

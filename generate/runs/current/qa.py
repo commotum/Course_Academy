@@ -92,5 +92,12 @@ def main():
   qids=maids
  result={'kp_id':kp,'automated_parent_checks':'passed','source_case_coverage':len(qids),'levels':by_level,'native_grading':str(qa/f'{kp}-engine.json'),'database_writes':0,
   'manual_review_required':['source-bank mathematical equivalence and correctness designation','shared worked-solution fidelity and intermediate math','curriculum scope of observed and authored levels','plots and source repairs where present']}
- dump(qa/f'{kp}.json',result);print(json.dumps(result))
+ previous_path=qa/f'{kp}.json'
+ if previous_path.exists():
+  previous=load(previous_path)
+  if previous.get('parent_review')=='passed' and previous.get('generator_sha256'):
+   archive=qa/'approved-history';archive.mkdir(exist_ok=True)
+   archived=archive/f"{kp}-{previous['generator_sha256']}.json"
+   if not archived.exists():dump(archived,previous)
+ dump(previous_path,result);print(json.dumps(result))
 if __name__=='__main__':main()

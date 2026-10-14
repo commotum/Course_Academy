@@ -39,3 +39,9 @@ Hard (authored): the same polynomial/exponential outer families, with y=c x sin(
 Easy: nine observed families, scaled whole f by signed nonzero integer |a|≤5. The added scalar changes every partial/final stage but never creates a new template or skill. Each source family retains its original dependency and its entire original chain.
 
 No plots: steps 5/7 are explicitly not applicable; no rendering environment or raster measurements are claimed.
+
+## Current source audit (2026-10-14)
+
+Basis 2407, same lineage. Twelve practice records are now captured in `source-current.json`; all are easy, single selection/radio fields, five math choices, with complete solutions. The original basis-1356 capture remains in `source.json`. Added templates: q-170671, trigonometric identity simplification of (1-y²) sin x with y=cos x; q-95123, square root of xy-4 with y=x²; q-95120, log(x+y) with y=exp(2x). Each has a distinct complete observed bank. All use the original formal-rule, partials, substitution, dependency derivative, and final collection stages, with no plots. Square-root differentiation requires x³>4; logarithm requires x+exp(2x)>0. The radial source domain defect remains excluded.
+
+All twelve original banks and solutions are replayed before normal variants are checked. Moderate/hard retain the separately authored workload definitions above, with no claim of observed labels. Their finite capacities are 864 canonical composed tasks per level; easy has 120 bounded tasks before existing inventory is subtracted. Current pool and native grading checks, not raw record counts, determine replenishment.

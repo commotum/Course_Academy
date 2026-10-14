@@ -10,11 +10,11 @@ from pathlib import Path
 import sympy as sp
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'scripts/question_capture'))
-from math_format import matrix_tex, normalize_prose, normalize_tex, validate_generated_record
+from math_format import matrix_tex, normalize_prose, normalize_tex, validate_generated_record, validate_prose, validate_tex, FORMAT_VERSION
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 KP_ID=17592186054648; KP_UUID=SOURCE['record'][':knowledge-point/id']
-TITLE=SOURCE['record'][':knowledge-point/title']; VERSION='2.0.0-draft'
+TITLE=SOURCE['record'][':knowledge-point/title']; VERSION='2.1.0-draft'
 LEVELS=('easy','moderate','hard')
 TEMPLATES={'named-radio':{'field_type':'radio'},'inline-question':{'field_type':'radio'},'inline-equality':{'field_type':'radio'},'cell-blanks':{'field_type':'blank'}}
 MATRIX=re.compile(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',re.S)
@@ -44,7 +44,18 @@ OBSERVED_RECIPES={
 AUTHORED_RECIPES={
  'authored-correspondence':['entrywise A+B','entrywise A-B','entrywise B-A','retain A without adding B','transpose the complete sum'],
  'authored-signs':['entrywise A+B','add absolute B entries','add absolute A entries to B','negate the complete sum','add transposed B instead of corresponding B']}
-BANK_PROFILES={**{k:{'origin':'observed-evidence-only','recipes':v} for k,v in OBSERVED_RECIPES.items()},**{k:{'origin':'authored','recipes':v} for k,v in AUTHORED_RECIPES.items()}}
+# Field-presence contracts are extracted independently of prompt/solution/value recipes.
+# Raw API assembly never returns a captured question payload or literal choice bank.
+RAW_PROFILES={}
+for _q in SOURCE['record'][':knowledge-point/questions']:
+ _ma=_q.get(':question/math-academy-id');_name='raw-'+(_ma or 'independent-'+str(_q[':db/id']))
+ _template='inline-question' if _ma=='q-101' else 'inline-equality' if _ma=='q-100' else 'cell-blanks' if '{{field-' in _q[':question/problem'] else 'named-radio'
+ RAW_PROFILES[_name]={'template':_template,'bank':'observed-'+_ma if _template!='cell-blanks' else None,
+  'difficulty':_q.get(':question/difficulty',{}).get(':db/ident'),'solution_present':':question/worked-solution' in _q,
+  'fields':[{'key':_f[':answer-field/key'],'type':_f[':answer-field/type'][':db/ident'].split('/')[-1],'correct_present':':answer-field/correct' in _f} for _f in _q.get(':question/answer-fields',[])],
+  'source_db_id':_q[':db/id'],'role':'MA original' if _ma else 'independently authored inventory'}
+BANK_PROFILES={**{k:{'origin':'observed-completed-evidence-only','recipes':v} for k,v in OBSERVED_RECIPES.items()},**{k:{'origin':'authored','recipes':v} for k,v in AUTHORED_RECIPES.items()},**{k:{'origin':'raw-evidence-only','recipes':OBSERVED_RECIPES[v['bank']] if v['bank'] else []} for k,v in RAW_PROFILES.items()}}
+
 def bank(profile,p):
  if profile.startswith('observed-'):return observed_bank(profile,p)
  a,b=p['a'],p['b'];c=addition(p)
@@ -116,23 +127,22 @@ def prompt_solution(template,p):
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in LEVELS:raise ValueError('Supported levels: easy, moderate, hard')
  if profile is not None and profile not in BANK_PROFILES:raise ValueError('Unknown bank profile')
- if profile and profile.startswith('observed-'):
-  if parameters is None:raise ValueError('Observed evidence-only banks require explicit parameters')
-  if level!='easy':raise ValueError('Observed banks are easy or authored easy for unrated source')
-  inferred={'observed-q-101':'inline-question','observed-q-100':'inline-equality'}.get(profile,'named-radio')
+ raw=RAW_PROFILES.get(profile)
+ if raw or profile and profile.startswith('observed-'):
+  if parameters is None:raise ValueError('Raw/observed evidence-only profiles require explicit parameters')
+  if level!='easy':raise ValueError('Observed profiles use the easy dispatch band; raw absence of rating is preserved')
+  inferred=raw['template'] if raw else {'observed-q-101':'inline-question','observed-q-100':'inline-equality'}.get(profile,'named-radio')
   if template and template!=inferred:raise ValueError('Observed profile/backbone mismatch')
   template=inferred
  eligible=[t for t,v in TEMPLATES.items() if not field_type or v['field_type']==field_type]
  if template and template not in eligible:raise ValueError('Unsupported template/field type')
  if not eligible:raise ValueError('Unsupported field type')
- # Fixed parameters select the same default template/profile independently of seed.
  fixed=canonical_parameters(parameters) if parameters is not None else None
  select=random.Random(digest([level,fixed])) if fixed is not None else random.Random(seed)
- template=template or select.choice(eligible)
- radio=TEMPLATES[template]['field_type']=='radio'
- if not radio and profile:raise ValueError('Blanks have no choice-bank profile')
- profile=(profile or select.choice(list(AUTHORED_RECIPES))) if radio else None
- # Bank selection precedes parameter sampling; no pooling/replacing individual options.
+ template=template or select.choice(eligible);radio=TEMPLATES[template]['field_type']=='radio'
+ if not radio and profile and not raw:raise ValueError('Normal blanks have no choice-bank profile')
+ profile=(profile or select.choice(list(AUTHORED_RECIPES))) if radio else profile
+ effective_profile=raw['bank'] if raw else profile
  rng=random.Random(seed)
  for _ in range(1024):
   p=fixed or sample(level,rng)
@@ -140,35 +150,59 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   except ValueError:
    if fixed is not None:raise
    continue
-  values=bank(profile,p) if radio else [[x] for x in addition(p)]
+  values=bank(effective_profile,p) if radio else [[x] for x in addition(p)]
   if radio and (len(values)!=5 or len(set(map(tuple,values)))!=5):
    if fixed is not None:raise SampleRejected('Complete bank has equivalent options')
    continue
   prompt,solution=prompt_solution(template,p);c=addition(p)
   strings=[normalize_tex(latex(v)) for v in values] if radio else [str(x) for x in c]
-  # Actual presentation: full prompt, fixed solution, unordered complete banks + key.
-  identity_fields=[{'key':'selection','type':'radio','bank':sorted(strings),'correct':latex(c)}] if radio else [{'key':'field-'+str(i+1),'type':'blank','bank':[s],'correct':s} for i,s in enumerate(strings)]
-  content=digest([VERSION,level,prompt,solution,identity_fields]);qid=uid(KP_UUID,content);fields=[]
-  for i in range(1 if radio else 4):
-   key='selection' if radio else 'field-'+str(i+1);fid=uid(qid,key)
-   vals=strings if radio else [strings[i]]
-   answers=[{':answer/id':uid(fid,s),':answer/type':':answer.type/math',':answer/value':s} for s in vals]
-   correct=latex(c) if radio else strings[i]
-   if radio:random.Random(seed).shuffle(answers)
-   fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+('radio' if radio else 'blank'),':answer-field/choices':answers,':answer-field/correct':[':answer/id',uid(fid,correct)]})
-  mathematical=digest(sorted([p['a'],p['b']])) # all four cells assessed; operand exchange equivalent
-  record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':fields},'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'profile':profile,'bank_origin':BANK_PROFILES[profile]['origin'] if profile else 'no-bank','bank_recipes':BANK_PROFILES[profile]['recipes'] if profile else [],'authored_level':level!='easy','evidence_only':bool(profile and profile.startswith('observed-')),'source_database':SOURCE['database'],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'content_fingerprint':content,'mathematical_fingerprint':mathematical,'parameter_fingerprint':mathematical,'dependencies':{'sympy':sp.__version__},'plot_rating':'none','assets':[]}}
+  contracts=raw['fields'] if raw else ([{'key':'selection','type':'radio','correct_present':True}] if radio else [{'key':'field-'+str(i+1),'type':'blank','correct_present':True} for i in range(4)])
+  identity_fields=[]
+  for contract in contracts:
+   key=contract['key'];slot=int(key.split('-')[-1])-1 if contract['type']=='blank' else 0
+   vals=strings if radio else [strings[slot]];correct=latex(c) if radio else strings[slot]
+   row={'key':key,'type':contract['type'],'bank':sorted(vals)}
+   if contract['correct_present']:row['correct']=correct
+   identity_fields.append(row)
+  difficulty=raw['difficulty'] if raw else ':question.difficulty/'+level
+  displayed_solution=solution if not raw or raw['solution_present'] else None
+  # Attribute presence, displayed grade, full prompt/solution and whole keyed banks
+  # enter identity; profile aliases, generation seed and choice order do not.
+  content=digest([VERSION,difficulty,prompt,displayed_solution,sorted(identity_fields,key=lambda f:json.dumps(f,sort_keys=True))]);qid=uid(KP_UUID,content);fields=[]
+  for i,contract in enumerate(contracts):
+   key=contract['key'];slot=int(key.split('-')[-1])-1 if contract['type']=='blank' else 0
+   # Duplicate raw keys have separate field ownership; normal unique keys stay stable.
+   occurrence=sum(x['key']==key for x in contracts[:i]);fid=uid(qid,key if occurrence==0 else key+'#'+str(occurrence))
+   vals=strings if radio else [strings[slot]];answers=[{':answer/id':uid(fid,v),':answer/type':':answer.type/math',':answer/value':v} for v in vals]
+   if radio:random.Random(seed+i).shuffle(answers)
+   field={':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+contract['type'],':answer-field/choices':answers}
+   if contract['correct_present']:field[':answer-field/correct']=[':answer/id',uid(fid,latex(c) if radio else strings[slot])]
+   fields.append(field)
+  question={':question/id':qid,':question/problem':prompt,':question/answer-fields':fields}
+  if difficulty is not None:question[':question/difficulty']=difficulty
+  if displayed_solution is not None:question[':question/worked-solution']=displayed_solution
+  mathematical=digest(sorted([p['a'],p['b']]))
+  record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'profile':profile,'operation_profile':effective_profile,'bank_origin':BANK_PROFILES[profile]['origin'] if profile else 'no-bank','bank_recipes':BANK_PROFILES[profile]['recipes'] if profile else [],'authored_level':not raw and level!='easy','raw_replay':bool(raw),'raw_source_role':raw['role'] if raw else None,'raw_source_db_id':raw['source_db_id'] if raw else None,'evidence_only':bool(raw or profile and profile.startswith('observed-')),'native_eligible':not raw or all(contract['correct_present'] for contract in contracts),'source_database':SOURCE['database'],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'content_fingerprint':content,'mathematical_fingerprint':mathematical,'parameter_fingerprint':mathematical,'dependencies':{'sympy':sp.__version__,'python':sys.version.split()[0]},'plot_rating':'none','assets':[]}}
+  if raw:
+   # Raw absent attributes stay absent; shared format checks run on every present item.
+   validate_prose(prompt)
+   if displayed_solution is not None:validate_prose(displayed_solution)
+   for field in fields:
+    for answer in field[':answer-field/choices']:validate_tex(answer[':answer/value'])
+   record['generation']['math_format']=FORMAT_VERSION
+   return record
   return validate_generated_record(record)
  raise SampleRejected('Complete bank failed bounded parameter sampling')
+
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('moderate',seed,template,field_type,parameters,profile)
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)
 def markdown(r):
  q=r['question'];s=q[':question/problem']+'\n\n'
  for f in q[':question/answer-fields']:
-  correct=f[':answer-field/correct'][1]
+  correct=f.get(':answer-field/correct',[None,None])[1]
   s+='\n'+f[':answer-field/key']+':\n'+'\n'.join('- $'+a[':answer/value']+'$'+(' **Correct**' if a[':answer/id']==correct else '') for a in f[':answer-field/choices'])+'\n'
- return s+'\nWorked solution:\n\n'+q[':question/worked-solution']
+ return s+'\nWorked solution:\n\n'+q.get(':question/worked-solution','Absent in raw source evidence.')
 def main():
  parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--difficulty',choices=(*LEVELS,'all'),default='all');parser.add_argument('--seed',type=int,default=0);parser.add_argument('--count',type=int,default=1);parser.add_argument('--template',choices=tuple(TEMPLATES));parser.add_argument('--profile',choices=tuple(BANK_PROFILES));parser.add_argument('--parameters',help='JSON operand/notation slots; required for evidence profiles');parser.add_argument('--field-type',choices=('radio','blank'));parser.add_argument('--format',choices=('markdown','json'),default='markdown');a=parser.parse_args()
  if a.count<1:parser.error('--count must be positive')

@@ -17,15 +17,17 @@ from __future__ import annotations
 import argparse, hashlib, json, random, re, sys, uuid
 from pathlib import Path
 import sympy as s
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import normalize_prose, normalize_tex, checked_math_content
 KP_ID=17592186166748
 ROOT=Path(__file__).with_suffix('')
-CAPTURE=json.loads((ROOT/'source.json').read_text())
+CAPTURE=json.loads((ROOT/'source-current.json').read_text())
 SOURCE=CAPTURE['record']
 KP_UUID=SOURCE[':knowledge-point/id'];TITLE=SOURCE[':knowledge-point/title']
-VERSION='special-case-chain-rule-1'
+VERSION='special-case-chain-rule-2'
 X,Y=s.symbols('x y',real=True)
 SOURCES={q[':question/math-academy-id']:q for q in SOURCE[':knowledge-point/questions']}
-FAMILIES={'sine_power':'q-94588','x_log_sum':'q-95121','y_log_power':'q-170670','reciprocal_exp':'q-95088','radial_power':'q-95114','x_exp_sine':'q-95117','polynomial_sine':'q-95118','cosine_reciprocal':'q-95119','quotient_power':'q-95122'}
+FAMILIES={'sine_power':'q-94588','x_log_sum':'q-95121','y_log_power':'q-170670','reciprocal_exp':'q-95088','radial_power':'q-95114','x_exp_sine':'q-95117','polynomial_sine':'q-95118','cosine_reciprocal':'q-95119','quotient_power':'q-95122','trig_identity':'q-170671','sqrt_product':'q-95123','log_exp_sum':'q-95120'}
 TEMPLATES={**{k:'easy' for k in FAMILIES},'weighted_polynomial_sine':'moderate','weighted_x_exp_sine':'moderate','polynomial_product_dependency':'hard','exponential_product_dependency':'hard'}
 # Select a complete profile before sampling parameters. Never fill from a pool.
 PROFILES={**{f'observed:{q}':{'template':t,'eligible':False,'origin':'observed opaque bank; explicit value-pattern scaling'} for t,q in FAMILIES.items()},**{f'operations:{t}':{'template':t,'eligible':True,'origin':'authored whole operation bank'} for t in TEMPLATES}}
@@ -53,7 +55,7 @@ def equal(a,b):
 
 def base(t):
  """Exact source function/dependency, independent of the TeX renderer."""
- return {'sine_power':(s.sin(X**2+Y),X**2),'x_log_sum':(X*s.log(X+Y),X**2),'y_log_power':(Y*s.log(X**2+1),X**2+1),'reciprocal_exp':(1/(X+Y),s.exp(-X)),'radial_power':(s.sqrt(X**2+Y**2),X**3),'x_exp_sine':(X*s.exp(Y),s.sin(X)),'polynomial_sine':(X**2+X*Y,s.sin(X)),'cosine_reciprocal':(s.cos(X**2+Y),1/X),'quotient_power':(Y/(X+1),X**3)}[t]
+ return {'sine_power':(s.sin(X**2+Y),X**2),'x_log_sum':(X*s.log(X+Y),X**2),'y_log_power':(Y*s.log(X**2+1),X**2+1),'reciprocal_exp':(1/(X+Y),s.exp(-X)),'radial_power':(s.sqrt(X**2+Y**2),X**3),'x_exp_sine':(X*s.exp(Y),s.sin(X)),'polynomial_sine':(X**2+X*Y,s.sin(X)),'cosine_reciprocal':(s.cos(X**2+Y),1/X),'quotient_power':(Y/(X+1),X**3),'trig_identity':((1-Y**2)*s.sin(X),s.cos(X)),'sqrt_product':(s.sqrt(X*Y-4),X**2),'log_exp_sum':(s.log(X+Y),s.exp(2*X))}[t]
 
 def validate_parameters(t,p):
  if t in FAMILIES:
@@ -146,6 +148,7 @@ def operation_bank(f,h,t):
   if any(equal(a,b) for b in vals[:i]):raise SampleRejected('Ambiguous complete bank')
  return [tex(v) for v in vals],['correct','omit_y_chain','reverse_y_chain','omit_dependency_derivative','omit_x_partial' if t=='reciprocal_exp' else 'substitute_y_for_y_prime']
 
+@checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('Unknown level')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only observed radio response type supported')
@@ -173,8 +176,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   except SampleRejected:
    if parameters is not None:raise
  else:raise SampleRejected('No eligible complete bank')
- domain='x>0' if template=='radial_power' else ('x+x^2>0' if template=='x_log_sum' else 'x!=0' if template=='cosine_reciprocal' else 'x!=-1' if template=='quotient_power' else 'x+exp(-x)!=0' if template=='reciprocal_exp' else 'real x')
+ domain='x>0' if template=='radial_power' else ('x+x^2>0' if template=='x_log_sum' else 'x!=0' if template=='cosine_reciprocal' else 'x!=-1' if template=='quotient_power' else 'x+exp(-x)!=0' if template=='reciprocal_exp' else 'x^3>4' if template=='sqrt_product' else 'x+exp(2*x)>0' if template=='log_exp_sum' else 'real x')
  identity=digest({'version':VERSION,'level':level,'prompt':prompt,'solution':sol,'bank':sorted(values),'domain':domain})
+ if not raw:
+  prompt=normalize_prose(prompt);sol=normalize_prose(sol);values=[normalize_tex(v) for v in values]
+  identity=digest({'version':VERSION,'level':level,'prompt':prompt,'solution':sol,'bank':sorted(values),'domain':domain})
  question_id=uid(identity);field_id=uid(question_id+':selection')
  choices=[{':answer/id':uid(field_id+':'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
  correct_id=choices[correct][':answer/id'];r.shuffle(choices)

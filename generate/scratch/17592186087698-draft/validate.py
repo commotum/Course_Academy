@@ -53,6 +53,9 @@ def inspect(rec):
  kp,q,meta=rec['knowledge_point'],rec['question'],rec['generation'];t=meta['template'];level=meta['level'];raw=meta['evidence_only']
  require(kp=={'db_id':g.KP_ID,'id':g.KP_UUID,'title':g.TITLE},'Plain outer KP keys')
  uuid.UUID(q[':question/id']);ms=displayed(q[':question/problem']);names=re.findall(r'([A-Z])\s*=\s*\\begin\{bmatrix\}',q[':question/problem'])
+ text=q[':question/problem']
+ rendered_task='classification' if 'best describes' in text else 'columns' if 'are column vectors' in text else ('rows' if q[':question/answer-fields'][0][':answer-field/type'].endswith('/checkbox') else 'row_sets') if 'are row vectors' in text else None
+ require(rendered_task==t,'Actual prompt criterion agrees with assessed metadata')
  require(names==meta['parameters']['names'],'All actual name slots')
  require(len(ms)==(1 if t=='classification' else 3),'Full assessed object count')
  require(ms==[[[g.scalar(x) for x in row] for row in m] for m in meta['parameters']['matrices']],'Actual displayed parameters')

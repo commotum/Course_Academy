@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 41**, **qa_passed: 313**, **queued: 219**, **working: 7**.
+**needs_revalidation: 41**, **qa_passed: 322**, **queued: 214**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Existing approved work is preserved; other ready drafts await QA until these13 pass. Then finish any coverage-report KPs and the remaining script-ranked candidates.
 
@@ -44,15 +44,15 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186054695](../../scratch/17592186054695-draft.py) | Graphing Linear Equations | Sketching a Line Using Two Points | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186054695.json) |
 | [17592186054802](../../scratch/17592186054802-draft.py) | Graphing Linear Equations | Identifying a Line Given a Graph | 0 / 0 / 5 / 2 | qa_passed | [Report](qa/17592186054802.json) |
 | [17592186059714](../../scratch/17592186059714-draft.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating the Magnitude of a Vector Given in Component Form | 7 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059714.json) |
-| [17592186059715](../../scratch/17592186059715-draft.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Vector From Position Vectors and then Computing its Magnitude | 0 / 8 / 0 / 2 | working | — |
-| [17592186059826](../../scratch/17592186059826-draft.py) | Interval Notation | Converting Between Intervals and Inequalities: Open Intervals | 5 / 0 / 0 / 2 | working | [Report](qa/17592186059826.json) |
-| [17592186059713](../../scratch/17592186059713-draft.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Given in Alternative Notation | 7 / 0 / 0 / 2 | working | [Report](qa/17592186059713.json) |
-| [17592186087696](../../scratch/17592186087696.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Square Matrix | 5 / 0 / 0 / 1 | working | — |
-| [17592186087697](../../scratch/17592186087697.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Special Square Matrix | 5 / 0 / 0 / 1 | working | — |
-| [17592186087698](../../scratch/17592186087698.py) | Zero, Square, Diagonal and Identity Matrices | Identifying Other Matrices | 5 / 0 / 0 / 2 | working | — |
-| [17592186054648](../../scratch/17592186054648.py) | Adding and Subtracting Matrices | Adding Square Matrices | 6 / 0 / 0 / 1 | working | — |
-| [17592186054649](../../scratch/17592186054649.py) | Adding and Subtracting Matrices | Subtracting Matrices | 5 / 0 / 0 / 2 | queued | — |
-| [17592186054650](../../scratch/17592186054650.py) | Adding and Subtracting Matrices | Adding Non-Square Matrices | 5 / 0 / 0 / 2 | queued | — |
+| [17592186059715](../../scratch/17592186059715-draft.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Vector From Position Vectors and then Computing its Magnitude | 0 / 8 / 0 / 2 | qa_passed | [Report](qa/17592186059715.json) |
+| [17592186059826](../../scratch/17592186059826-draft.py) | Interval Notation | Converting Between Intervals and Inequalities: Open Intervals | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059826.json) |
+| [17592186059713](../../scratch/17592186059713-draft.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Given in Alternative Notation | 7 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059713.json) |
+| [17592186087696](../../scratch/17592186087696-draft.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Square Matrix | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186087696.json) |
+| [17592186087697](../../scratch/17592186087697-draft.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Special Square Matrix | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186087697.json) |
+| [17592186087698](../../scratch/17592186087698-draft.py) | Zero, Square, Diagonal and Identity Matrices | Identifying Other Matrices | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087698.json) |
+| [17592186054648](../../scratch/17592186054648-draft.py) | Adding and Subtracting Matrices | Adding Square Matrices | 6 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186054648.json) |
+| [17592186054649](../../scratch/17592186054649-draft.py) | Adding and Subtracting Matrices | Subtracting Matrices | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186054649.json) |
+| [17592186054650](../../scratch/17592186054650-draft.py) | Adding and Subtracting Matrices | Adding Non-Square Matrices | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186054650.json) |
 | [17592186059655](../../scratch/17592186059655.py) | Simplifying Expressions Using the Pythagorean Identity | Simplifying an Expression by Expanding Parentheses and Using the Pythagorean Identity | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059655.json) |
 | [17592186087655](../../scratch/17592186087655.py) | Equations of Circles | Finding the Equation of a Circle Given the Center and the Radius | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087655.json) |
 | [17592186129121](../../scratch/17592186129121.py) | Properties of Transformed Sine and Cosine Functions | Determining the Amplitude of a Transformed Sinusoidal Function | 4 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186129121.json) |
@@ -66,14 +66,14 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186073777](../../scratch/17592186073777.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Intersection Points of Two Lines | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073777.json) |
 | [17592186073778](../../scratch/17592186073778.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073778.json) |
 | [17592186092217](../../scratch/17592186092217.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given in Polar Coordinates | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186092217.json) |
-| [17592186110754](../../scratch/17592186110754.py) | Using the Pythagorean Identity in the First Quadrant | Using the Pythagorean Theorem on the Unit Circle | 5 / 0 / 0 / 2 | queued | — |
-| [17592186110756](../../scratch/17592186110756.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Reciprocal Ratio Using the Pythagorean Identity | 0 / 5 / 0 / 1 | queued | — |
+| [17592186110754](../../scratch/17592186110754-draft.py) | Using the Pythagorean Identity in the First Quadrant | Using the Pythagorean Theorem on the Unit Circle | 5 / 0 / 0 / 2 | working | — |
+| [17592186110756](../../scratch/17592186110756-draft.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Reciprocal Ratio Using the Pythagorean Identity | 0 / 5 / 0 / 1 | working | — |
 | [17592186176057](../../scratch/17592186176057.py) | Describing Properties of the Cosine Function | Utilizing the Evenness Property of the Cosine Function | 3 / 1 / 1 / 1 | qa_passed | [Report](qa/17592186176057.json) |
 | [17592186129268](../../scratch/17592186129268.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Shifted Cylindrical Solid | 0 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186129268.json) |
 | [17592186105903](../../scratch/17592186105903.py) | The Area of a General Triangle | Calculating the Area of a Triangle | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186105903.json) |
 | [17592186083244](../../scratch/17592186083244.py) | Calculating Tangent and Normal Lines with Parametric Equations | Computing the Tangent Line to a Parametric Curve | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186083244.json) |
 | [17592186172038](../../scratch/17592186172038.py) | Slope Fields for Nonautonomous Differential Equations | Sketching the Slope Field of a Differential Equation at Some Isolated Points | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186172038.json) |
-| [17592186100992](../../scratch/17592186100992.py) | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices Using Distributivity | 5 / 1 / 0 / 1 | queued | — |
+| [17592186100992](../../scratch/17592186100992.py) | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices Using Distributivity | 5 / 1 / 0 / 1 | working | — |
 | [17592186087888](../../scratch/17592186087888.py) | Homogeneous First-Order ODEs | Identifying Homogeneous Differential Equations | 3 / 3 / 0 / 0 | qa_passed | [Report](qa/17592186087888.json) |
 | [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | qa_passed | [Report](qa/17592186133827.json) |
 | [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133829.json) |
@@ -347,7 +347,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186129278](../../scratch/17592186129278.py) | Triple Integrals in Cylindrical Polar Coordinates | Evaluating a Triple Integral by Converting to Cylindrical Coordinates | 0 / 3 / 5 / 2 | qa_passed | [Report](qa/17592186129278.json) |
 | 17592186087742 | Parametric Equations of Circles | Finding the Parametric Equations of a Circle Centered at the Origin | 5 / 5 / 0 / 2 | queued | — |
 | 17592186087743 | Parametric Equations of Circles | Finding the Parametric Equations of a Circle Centered at a General Point | 5 / 7 / 0 / 1 | queued | — |
-| 17592186087786 | Parametric Equations of Circles | Finding the Cartesian Equation of a Parametrized Circle | 0 / 4 / 11 / 1 | queued | — |
+| [17592186087786](../../scratch/17592186087786.py) | Parametric Equations of Circles | Finding the Cartesian Equation of a Parametrized Circle | 0 / 4 / 11 / 1 | queued | — |
 | [17592186152187](../../scratch/17592186152187.py) | Parametric Equations of Ellipses | The Parametric Equations of an Ellipse Centered at the Origin | 5 / 7 / 0 / 1 | qa_passed | [Report](qa/17592186152187.json) |
 | [17592186152189](../../scratch/17592186152189.py) | Parametric Equations of Ellipses | The Parametric Equations of an Ellipse Centered at a General Point | 0 / 5 / 9 / 1 | qa_passed | [Report](qa/17592186152189.json) |
 | [17592186152188](../../scratch/17592186152188.py) | Parametric Equations of Ellipses | The Cartesian Equation of an Ellipse | 0 / 10 / 5 / 0 | qa_passed | [Report](qa/17592186152188.json) |

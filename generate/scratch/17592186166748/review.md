@@ -71,7 +71,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2\cdot \left(2x\operatorname{cos}⁡({x}^{2}+y)\right),\,\frac{∂f}{∂y}=2\cdot \left(\operatorname{cos}⁡({x}^{2}+y)\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(2x\operatorname{cos}⁡({x}^{2}+y)\right),\,\frac{∂f}{∂y}=2\cdot \left(\operatorname{cos}⁡({x}^{2}+y)\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -116,7 +116,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-3\cdot \left(2x\operatorname{cos}⁡({x}^{2}+y)\right),\,\frac{∂f}{∂y}=-3\cdot \left(\operatorname{cos}⁡({x}^{2}+y)\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(2x\operatorname{cos}⁡({x}^{2}+y)\right),\,\frac{∂f}{∂y}=-3\cdot \left(\operatorname{cos}⁡({x}^{2}+y)\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -206,7 +206,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2\cdot \left(\operatorname{ln}⁡(x+y)+\frac{x}{x+y}\right),\,\frac{∂f}{∂y}=2\cdot \left(\frac{x}{x+y}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(\operatorname{ln}⁡(x+y)+\frac{x}{x+y}\right),\,\frac{∂f}{∂y}=2\cdot \left(\frac{x}{x+y}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -251,7 +251,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-3\cdot \left(\operatorname{ln}⁡(x+y)+\frac{x}{x+y}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\frac{x}{x+y}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(\operatorname{ln}⁡(x+y)+\frac{x}{x+y}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\frac{x}{x+y}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -341,7 +341,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2\cdot \left(\frac{2xy}{{x}^{2}+1}\right),\,\frac{∂f}{∂y}=2\cdot \left(\operatorname{ln}⁡({x}^{2}+1)\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(\frac{2xy}{{x}^{2}+1}\right),\,\frac{∂f}{∂y}=2\cdot \left(\operatorname{ln}⁡({x}^{2}+1)\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -386,7 +386,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-3\cdot \left(\frac{2xy}{{x}^{2}+1}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\operatorname{ln}⁡({x}^{2}+1)\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(\frac{2xy}{{x}^{2}+1}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\operatorname{ln}⁡({x}^{2}+1)\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -476,7 +476,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2\cdot \left(-\frac{1}{(x+y)^{2}}\right),\,\frac{∂f}{∂y}=2\cdot \left(-\frac{1}{(x+y)^{2}}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(-\frac{1}{(x+y)^{2}}\right),\,\frac{∂f}{∂y}=2\cdot \left(-\frac{1}{(x+y)^{2}}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -521,7 +521,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-3\cdot \left(-\frac{1}{(x+y)^{2}}\right),\,\frac{∂f}{∂y}=-3\cdot \left(-\frac{1}{(x+y)^{2}}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(-\frac{1}{(x+y)^{2}}\right),\,\frac{∂f}{∂y}=-3\cdot \left(-\frac{1}{(x+y)^{2}}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -611,7 +611,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2\cdot \left(\frac{x}{\sqrt{{x}^{2}+{y}^{2}}}\right),\,\frac{∂f}{∂y}=2\cdot \left(\frac{y}{\sqrt{{x}^{2}+{y}^{2}}}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(\frac{x}{\sqrt{{x}^{2}+{y}^{2}}}\right),\,\frac{∂f}{∂y}=2\cdot \left(\frac{y}{\sqrt{{x}^{2}+{y}^{2}}}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -656,7 +656,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-3\cdot \left(\frac{x}{\sqrt{{x}^{2}+{y}^{2}}}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\frac{y}{\sqrt{{x}^{2}+{y}^{2}}}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(\frac{x}{\sqrt{{x}^{2}+{y}^{2}}}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\frac{y}{\sqrt{{x}^{2}+{y}^{2}}}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -746,7 +746,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2\cdot \left({e}^{y}\right),\,\frac{∂f}{∂y}=2\cdot \left(x{e}^{y}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left({e}^{y}\right),\,\frac{∂f}{∂y}=2\cdot \left(x{e}^{y}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -791,7 +791,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-3\cdot \left({e}^{y}\right),\,\frac{∂f}{∂y}=-3\cdot \left(x{e}^{y}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left({e}^{y}\right),\,\frac{∂f}{∂y}=-3\cdot \left(x{e}^{y}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -881,7 +881,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2\cdot \left(2x+y\right),\,\frac{∂f}{∂y}=2\cdot \left(x\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(2x+y\right),\,\frac{∂f}{∂y}=2\cdot \left(x\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -926,7 +926,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-3\cdot \left(2x+y\right),\,\frac{∂f}{∂y}=-3\cdot \left(x\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(2x+y\right),\,\frac{∂f}{∂y}=-3\cdot \left(x\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1016,7 +1016,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2\cdot \left(-2x\operatorname{sin}⁡({x}^{2}+y)\right),\,\frac{∂f}{∂y}=2\cdot \left(-\operatorname{sin}⁡({x}^{2}+y)\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(-2x\operatorname{sin}⁡({x}^{2}+y)\right),\,\frac{∂f}{∂y}=2\cdot \left(-\operatorname{sin}⁡({x}^{2}+y)\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1061,7 +1061,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-3\cdot \left(-2x\operatorname{sin}⁡({x}^{2}+y)\right),\,\frac{∂f}{∂y}=-3\cdot \left(-\operatorname{sin}⁡({x}^{2}+y)\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(-2x\operatorname{sin}⁡({x}^{2}+y)\right),\,\frac{∂f}{∂y}=-3\cdot \left(-\operatorname{sin}⁡({x}^{2}+y)\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1151,7 +1151,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2\cdot \left(-\frac{y}{(x+1)^{2}}\right),\,\frac{∂f}{∂y}=2\cdot \left(\frac{1}{x+1}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(-\frac{y}{(x+1)^{2}}\right),\,\frac{∂f}{∂y}=2\cdot \left(\frac{1}{x+1}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1196,7 +1196,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=-3\cdot \left(-\frac{y}{(x+1)^{2}}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\frac{1}{x+1}\right)\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(-\frac{y}{(x+1)^{2}}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\frac{1}{x+1}\right)\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1215,6 +1215,411 @@ Finally, putting the derivatives into the multivariable chain rule, we get
 
 $$
 \begin{aligned}\frac{\text{d}f}{\text{d}x} & =-3\cdot \left(-\frac{{x}^{3}}{(x+1)^{2}}+\frac{1}{x+1}\cdot 3{x}^{2}\right) \\  & =-3\cdot \left(\frac{3{x}^{2}}{x+1}-\frac{{x}^{3}}{(x+1)^{2}}\right) \\  & =-3\cdot \left(\frac{3{x}^{2}(x+1)-{x}^{3}}{(x+1)^{2}}\right) \\  & =-3\cdot \left(\frac{3{x}^{3}+3{x}^{2}-{x}^{3}}{(x+1)^{2}}\right) \\  & =-3\cdot \left(\frac{{x}^{2}(2x+3)}{(x+1)^{2}}\right).\end{aligned}
+$$
+
+
+## Raw source replay q-170671
+
+If $f(x,y)=(1-{y}^{2})\operatorname{sin}⁡x$ and $y=\operatorname{cos}⁡x,$ compute $\frac{\text{d}f}{\text{d}x}.$
+
+- -3\operatorname{sin}⁡x{cos}^{2}⁡x
+
+- \operatorname{sin}⁡x{cos}^{2}⁡x
+
+- {sin}^{2}⁡x\operatorname{cos}⁡x
+
+- 3{sin}^{2}⁡x\operatorname{cos}⁡x [correct]
+
+- \operatorname{sin}⁡x\operatorname{cos}⁡x
+
+The chain rule for a multivariable function $f(x,y)$ in the case where $y=y(x)$ can be expressed as follows:
+
+$$
+\frac{\text{d}f}{\text{d}x}=\frac{∂f}{∂x}+\frac{∂f}{∂y}\cdot \frac{\text{d}y}{\text{d}x}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x}=(1-{y}^{2})\operatorname{cos}⁡x,\,\frac{∂f}{∂y}=-2y\operatorname{sin}⁡x\end{aligned}
+$$
+
+Writing the above results in terms of $x,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =(1-{cos}^{2}⁡x)\operatorname{cos}⁡x={sin}^{2}⁡x\operatorname{cos}⁡x, \\ \frac{∂f}{∂y} & =-2\operatorname{cos}⁡x\operatorname{sin}⁡x\end{aligned}
+$$
+
+Next, we take the derivative $y$ with respect to $x,$ and we get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =-\operatorname{sin}⁡x.\end{aligned}
+$$
+
+Finally, putting the derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{\text{d}f}{\text{d}x} & ={sin}^{2}⁡x\operatorname{cos}⁡x+(-2\operatorname{cos}⁡x\operatorname{sin}⁡x)\cdot (-\operatorname{sin}⁡x) \\  & ={sin}^{2}⁡x\operatorname{cos}⁡x+2{sin}^{2}⁡x\operatorname{cos}⁡x \\  & =3{sin}^{2}⁡x\operatorname{cos}⁡x.\end{aligned}
+$$
+
+
+## Generated normal trig_identity a=2
+
+If $f(x,y)=2\cdot \left((1-{y}^{2})\operatorname{sin}⁡x\right)$ and $y=\operatorname{cos}⁡x,$ compute $\frac{\text{d}f}{\text{d}x}.$
+
+- 2 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)} - 4 \sin^{2}{\left(x \right)} \cos{\left(x \right)}
+
+- 2 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)}
+
+- 2 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)} + 4 \sin^{2}{\left(x \right)} \cos{\left(x \right)} [correct]
+
+- 2 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)} - 4 \sin{\left(x \right)} \cos^{2}{\left(x \right)}
+
+- 2 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)} - 4 \sin{\left(x \right)} \cos{\left(x \right)}
+
+The chain rule for a multivariable function $f(x,y)$ in the case where $y=y(x)$ can be expressed as follows:
+
+$$
+\frac{\text{d}f}{\text{d}x}=\frac{∂f}{∂x}+\frac{∂f}{∂y}\cdot \frac{\text{d}y}{\text{d}x}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left((1-{y}^{2})\operatorname{cos}⁡x\right),\,\frac{∂f}{∂y}=2\cdot \left(-2y\operatorname{sin}⁡x\right)\end{aligned}
+$$
+
+Writing the above results in terms of $x,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =2\cdot \left((1-{cos}^{2}⁡x)\operatorname{cos}⁡x\right)=2\cdot \left({sin}^{2}⁡x\operatorname{cos}⁡x\right), \\ \frac{∂f}{∂y} & =2\cdot \left(-2\operatorname{cos}⁡x\operatorname{sin}⁡x\right)\end{aligned}
+$$
+
+Next, we take the derivative $y$ with respect to $x,$ and we get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =-\operatorname{sin}⁡x.\end{aligned}
+$$
+
+Finally, putting the derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{\text{d}f}{\text{d}x} & =2\cdot \left({sin}^{2}⁡x\operatorname{cos}⁡x+(-2\operatorname{cos}⁡x\operatorname{sin}⁡x)\cdot (-\operatorname{sin}⁡x)\right) \\  & =2\cdot \left({sin}^{2}⁡x\operatorname{cos}⁡x+2{sin}^{2}⁡x\operatorname{cos}⁡x\right) \\  & =2\cdot \left(3{sin}^{2}⁡x\operatorname{cos}⁡x\right).\end{aligned}
+$$
+
+
+## Generated normal trig_identity a=-3
+
+If $f(x,y)=-3\cdot \left((1-{y}^{2})\operatorname{sin}⁡x\right)$ and $y=\operatorname{cos}⁡x,$ compute $\frac{\text{d}f}{\text{d}x}.$
+
+- - 3 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)} + 6 \sin^{2}{\left(x \right)} \cos{\left(x \right)}
+
+- - 3 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)}
+
+- - 3 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)} - 6 \sin^{2}{\left(x \right)} \cos{\left(x \right)} [correct]
+
+- - 3 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)} + 6 \sin{\left(x \right)} \cos^{2}{\left(x \right)}
+
+- - 3 \left(1 - \cos^{2}{\left(x \right)}\right) \cos{\left(x \right)} + 6 \sin{\left(x \right)} \cos{\left(x \right)}
+
+The chain rule for a multivariable function $f(x,y)$ in the case where $y=y(x)$ can be expressed as follows:
+
+$$
+\frac{\text{d}f}{\text{d}x}=\frac{∂f}{∂x}+\frac{∂f}{∂y}\cdot \frac{\text{d}y}{\text{d}x}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left((1-{y}^{2})\operatorname{cos}⁡x\right),\,\frac{∂f}{∂y}=-3\cdot \left(-2y\operatorname{sin}⁡x\right)\end{aligned}
+$$
+
+Writing the above results in terms of $x,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =-3\cdot \left((1-{cos}^{2}⁡x)\operatorname{cos}⁡x\right)=-3\cdot \left({sin}^{2}⁡x\operatorname{cos}⁡x\right), \\ \frac{∂f}{∂y} & =-3\cdot \left(-2\operatorname{cos}⁡x\operatorname{sin}⁡x\right)\end{aligned}
+$$
+
+Next, we take the derivative $y$ with respect to $x,$ and we get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =-\operatorname{sin}⁡x.\end{aligned}
+$$
+
+Finally, putting the derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{\text{d}f}{\text{d}x} & =-3\cdot \left({sin}^{2}⁡x\operatorname{cos}⁡x+(-2\operatorname{cos}⁡x\operatorname{sin}⁡x)\cdot (-\operatorname{sin}⁡x)\right) \\  & =-3\cdot \left({sin}^{2}⁡x\operatorname{cos}⁡x+2{sin}^{2}⁡x\operatorname{cos}⁡x\right) \\  & =-3\cdot \left(3{sin}^{2}⁡x\operatorname{cos}⁡x\right).\end{aligned}
+$$
+
+
+## Raw source replay q-95123
+
+If $f(x,y)=\sqrt{xy-4}$ and $y={x}^{2},$ compute $\frac{\text{d}f}{\text{d}x}.$
+
+- \frac{3{x}^{3}}{\sqrt{{x}^{3}-4}}
+
+- \frac{2x}{\sqrt{{x}^{3}-4}}
+
+- \frac{3{x}^{2}}{2\sqrt{{x}^{3}-4}} [correct]
+
+- \frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}
+
+- \frac{x}{2\sqrt{{x}^{3}-4}}
+
+The chain rule for a multivariable function $f(x,y)$ in the case where $y=y(x)$ can be expressed as follows:
+
+$$
+\frac{\text{d}f}{\text{d}x}=\frac{∂f}{∂x}+\frac{∂f}{∂y}\cdot \frac{\text{d}y}{\text{d}x}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x}=\frac{y}{2\sqrt{xy-4}},\,\frac{∂f}{∂y}=\frac{x}{2\sqrt{xy-4}}\end{aligned}
+$$
+
+Writing the above results in terms of $x,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =\frac{{x}^{2}}{2\sqrt{x\cdot {x}^{2}-4}}=\frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}, \\ \frac{∂f}{∂y} & =\frac{x}{2\sqrt{x\cdot {x}^{2}-4}}=\frac{x}{2\sqrt{{x}^{3}-4}}.\end{aligned}
+$$
+
+Next, we take the derivative $y$ with respect to $x,$ and we get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =2x.\end{aligned}
+$$
+
+Finally, putting the derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{\text{d}f}{\text{d}x} & =\frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}+\frac{x}{2\sqrt{{x}^{3}-4}}\cdot 2x \\  & =\frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}+\frac{2{x}^{2}}{2\sqrt{{x}^{3}-4}} \\  & =\frac{3{x}^{2}}{2\sqrt{{x}^{3}-4}}.\end{aligned}
+$$
+
+
+## Generated normal sqrt_product a=2
+
+If $f(x,y)=2\cdot \left(\sqrt{xy-4}\right)$ and $y={x}^{2},$ compute $\frac{\text{d}f}{\text{d}x}.$
+
+- - \frac{x^{2}}{\sqrt{x^{3} - 4}}
+
+- \frac{x^{2}}{\sqrt{x^{3} - 4}}
+
+- \frac{3 x^{2}}{\sqrt{x^{3} - 4}} [correct]
+
+- \frac{x^{3}}{\sqrt{x^{3} - 4}} + \frac{x^{2}}{\sqrt{x^{3} - 4}}
+
+- \frac{x^{2}}{\sqrt{x^{3} - 4}} + \frac{x}{\sqrt{x^{3} - 4}}
+
+The chain rule for a multivariable function $f(x,y)$ in the case where $y=y(x)$ can be expressed as follows:
+
+$$
+\frac{\text{d}f}{\text{d}x}=\frac{∂f}{∂x}+\frac{∂f}{∂y}\cdot \frac{\text{d}y}{\text{d}x}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(\frac{y}{2\sqrt{xy-4}}\right),\,\frac{∂f}{∂y}=2\cdot \left(\frac{x}{2\sqrt{xy-4}}\right)\end{aligned}
+$$
+
+Writing the above results in terms of $x,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =2\cdot \left(\frac{{x}^{2}}{2\sqrt{x\cdot {x}^{2}-4}}\right)=2\cdot \left(\frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}\right), \\ \frac{∂f}{∂y} & =2\cdot \left(\frac{x}{2\sqrt{x\cdot {x}^{2}-4}}\right)=2\cdot \left(\frac{x}{2\sqrt{{x}^{3}-4}}\right).\end{aligned}
+$$
+
+Next, we take the derivative $y$ with respect to $x,$ and we get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =2x.\end{aligned}
+$$
+
+Finally, putting the derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{\text{d}f}{\text{d}x} & =2\cdot \left(\frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}+\frac{x}{2\sqrt{{x}^{3}-4}}\cdot 2x\right) \\  & =2\cdot \left(\frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}+\frac{2{x}^{2}}{2\sqrt{{x}^{3}-4}}\right) \\  & =2\cdot \left(\frac{3{x}^{2}}{2\sqrt{{x}^{3}-4}}\right).\end{aligned}
+$$
+
+
+## Generated normal sqrt_product a=-3
+
+If $f(x,y)=-3\cdot \left(\sqrt{xy-4}\right)$ and $y={x}^{2},$ compute $\frac{\text{d}f}{\text{d}x}.$
+
+- \frac{3 x^{2}}{2 \sqrt{x^{3} - 4}}
+
+- - \frac{3 x^{2}}{2 \sqrt{x^{3} - 4}}
+
+- - \frac{9 x^{2}}{2 \sqrt{x^{3} - 4}} [correct]
+
+- - \frac{3 x^{3}}{2 \sqrt{x^{3} - 4}} - \frac{3 x^{2}}{2 \sqrt{x^{3} - 4}}
+
+- - \frac{3 x^{2}}{2 \sqrt{x^{3} - 4}} - \frac{3 x}{2 \sqrt{x^{3} - 4}}
+
+The chain rule for a multivariable function $f(x,y)$ in the case where $y=y(x)$ can be expressed as follows:
+
+$$
+\frac{\text{d}f}{\text{d}x}=\frac{∂f}{∂x}+\frac{∂f}{∂y}\cdot \frac{\text{d}y}{\text{d}x}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(\frac{y}{2\sqrt{xy-4}}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\frac{x}{2\sqrt{xy-4}}\right)\end{aligned}
+$$
+
+Writing the above results in terms of $x,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =-3\cdot \left(\frac{{x}^{2}}{2\sqrt{x\cdot {x}^{2}-4}}\right)=-3\cdot \left(\frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}\right), \\ \frac{∂f}{∂y} & =-3\cdot \left(\frac{x}{2\sqrt{x\cdot {x}^{2}-4}}\right)=-3\cdot \left(\frac{x}{2\sqrt{{x}^{3}-4}}\right).\end{aligned}
+$$
+
+Next, we take the derivative $y$ with respect to $x,$ and we get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =2x.\end{aligned}
+$$
+
+Finally, putting the derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{\text{d}f}{\text{d}x} & =-3\cdot \left(\frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}+\frac{x}{2\sqrt{{x}^{3}-4}}\cdot 2x\right) \\  & =-3\cdot \left(\frac{{x}^{2}}{2\sqrt{{x}^{3}-4}}+\frac{2{x}^{2}}{2\sqrt{{x}^{3}-4}}\right) \\  & =-3\cdot \left(\frac{3{x}^{2}}{2\sqrt{{x}^{3}-4}}\right).\end{aligned}
+$$
+
+
+## Raw source replay q-95120
+
+If $f(x,y)=\operatorname{ln}⁡(x+y)$ and $y={e}^{2x},$ compute $\frac{\text{d}f}{\text{d}x}.$
+
+- \frac{1+{e}^{2x}}{x+{e}^{2x}}
+
+- \frac{1}{1+2{e}^{2x}}
+
+- \frac{2{e}^{2x}}{x+{e}^{2x}}
+
+- \frac{1+2{e}^{2x}}{x+{e}^{2x}} [correct]
+
+- \frac{{e}^{2x}}{x+{e}^{2x}}
+
+The chain rule for a multivariable function $f(x,y)$ in the case where $y=y(x)$ can be expressed as follows:
+
+$$
+\frac{\text{d}f}{\text{d}x}=\frac{∂f}{∂x}+\frac{∂f}{∂y}\cdot \frac{\text{d}y}{\text{d}x}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x}=\frac{1}{x+y},\,\frac{∂f}{∂y}=\frac{1}{x+y}\end{aligned}
+$$
+
+Writing the above results in terms of $x,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =\frac{∂f}{∂y}=\frac{1}{x+{e}^{2x}}.\end{aligned}
+$$
+
+Next, we take the derivative $y$ with respect to $x,$ and we get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =2{e}^{2x}.\end{aligned}
+$$
+
+Finally, putting the derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{\text{d}f}{\text{d}x} & =\frac{1}{x+{e}^{2x}}+\frac{1}{x+{e}^{2x}}\cdot 2{e}^{2x} \\  & =\frac{1}{x+{e}^{2x}}+\frac{2{e}^{2x}}{x+{e}^{2x}} \\  & =\frac{1+2{e}^{2x}}{x+{e}^{2x}}.\end{aligned}
+$$
+
+
+## Generated normal log_exp_sum a=2
+
+If $f(x,y)=2\cdot \left(\operatorname{ln}⁡(x+y)\right)$ and $y={e}^{2x},$ compute $\frac{\text{d}f}{\text{d}x}.$
+
+- - \frac{4 e^{2 x}}{x + e^{2 x}} + \frac{2}{x + e^{2 x}}
+
+- \frac{2}{x + e^{2 x}}
+
+- \frac{4 e^{2 x}}{x + e^{2 x}} + \frac{2}{x + e^{2 x}} [correct]
+
+- \frac{2 e^{2 x}}{x + e^{2 x}} + \frac{2}{x + e^{2 x}}
+
+- \frac{4}{x + e^{2 x}}
+
+The chain rule for a multivariable function $f(x,y)$ in the case where $y=y(x)$ can be expressed as follows:
+
+$$
+\frac{\text{d}f}{\text{d}x}=\frac{∂f}{∂x}+\frac{∂f}{∂y}\cdot \frac{\text{d}y}{\text{d}x}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &=2\cdot \left(\frac{1}{x+y}\right),\,\frac{∂f}{∂y}=2\cdot \left(\frac{1}{x+y}\right)\end{aligned}
+$$
+
+Writing the above results in terms of $x,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =2\cdot \left(\frac{1}{x+{e}^{2x}}\right).\end{aligned}
+$$
+
+Next, we take the derivative $y$ with respect to $x,$ and we get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =2{e}^{2x}.\end{aligned}
+$$
+
+Finally, putting the derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{\text{d}f}{\text{d}x} & =2\cdot \left(\frac{1}{x+{e}^{2x}}+\frac{1}{x+{e}^{2x}}\cdot 2{e}^{2x}\right) \\  & =2\cdot \left(\frac{1}{x+{e}^{2x}}+\frac{2{e}^{2x}}{x+{e}^{2x}}\right) \\  & =2\cdot \left(\frac{1+2{e}^{2x}}{x+{e}^{2x}}\right).\end{aligned}
+$$
+
+
+## Generated normal log_exp_sum a=-3
+
+If $f(x,y)=-3\cdot \left(\operatorname{ln}⁡(x+y)\right)$ and $y={e}^{2x},$ compute $\frac{\text{d}f}{\text{d}x}.$
+
+- \frac{6 e^{2 x}}{x + e^{2 x}} - \frac{3}{x + e^{2 x}}
+
+- - \frac{3}{x + e^{2 x}}
+
+- - \frac{6 e^{2 x}}{x + e^{2 x}} - \frac{3}{x + e^{2 x}} [correct]
+
+- - \frac{3 e^{2 x}}{x + e^{2 x}} - \frac{3}{x + e^{2 x}}
+
+- - \frac{6}{x + e^{2 x}}
+
+The chain rule for a multivariable function $f(x,y)$ in the case where $y=y(x)$ can be expressed as follows:
+
+$$
+\frac{\text{d}f}{\text{d}x}=\frac{∂f}{∂x}+\frac{∂f}{∂y}\cdot \frac{\text{d}y}{\text{d}x}
+$$
+
+First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
+
+$$
+\begin{aligned}\frac{∂f}{∂x} &=-3\cdot \left(\frac{1}{x+y}\right),\,\frac{∂f}{∂y}=-3\cdot \left(\frac{1}{x+y}\right)\end{aligned}
+$$
+
+Writing the above results in terms of $x,$ we get
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =-3\cdot \left(\frac{1}{x+{e}^{2x}}\right).\end{aligned}
+$$
+
+Next, we take the derivative $y$ with respect to $x,$ and we get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =2{e}^{2x}.\end{aligned}
+$$
+
+Finally, putting the derivatives into the multivariable chain rule, we get
+
+$$
+\begin{aligned}\frac{\text{d}f}{\text{d}x} & =-3\cdot \left(\frac{1}{x+{e}^{2x}}+\frac{1}{x+{e}^{2x}}\cdot 2{e}^{2x}\right) \\  & =-3\cdot \left(\frac{1}{x+{e}^{2x}}+\frac{2{e}^{2x}}{x+{e}^{2x}}\right) \\  & =-3\cdot \left(\frac{1+2{e}^{2x}}{x+{e}^{2x}}\right).\end{aligned}
 $$
 
 
@@ -1241,7 +1646,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=4 x - 3 y,\,\frac{∂f}{∂y}=- 3 x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=4 x - 3 y,\,\frac{∂f}{∂y}=- 3 x\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1286,7 +1691,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=- 8 x + 4 y,\,\frac{∂f}{∂y}=4 x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=- 8 x + 4 y,\,\frac{∂f}{∂y}=4 x\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1331,7 +1736,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2 e^{- 3 y},\,\frac{∂f}{∂y}=- 6 x e^{- 3 y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2 e^{- 3 y},\,\frac{∂f}{∂y}=- 6 x e^{- 3 y}\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1376,7 +1781,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=- 4 e^{4 y},\,\frac{∂f}{∂y}=- 16 x e^{4 y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=- 4 e^{4 y},\,\frac{∂f}{∂y}=- 16 x e^{4 y}\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1421,7 +1826,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=4 x - 3 y,\,\frac{∂f}{∂y}=- 3 x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=4 x - 3 y,\,\frac{∂f}{∂y}=- 3 x\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1466,7 +1871,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=- 8 x + 4 y,\,\frac{∂f}{∂y}=4 x\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=- 8 x + 4 y,\,\frac{∂f}{∂y}=4 x\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1511,7 +1916,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2 e^{- 3 y},\,\frac{∂f}{∂y}=- 6 x e^{- 3 y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2 e^{- 3 y},\,\frac{∂f}{∂y}=- 6 x e^{- 3 y}\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get
@@ -1556,7 +1961,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=- 4 e^{4 y},\,\frac{∂f}{∂y}=- 16 x e^{4 y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=- 4 e^{4 y},\,\frac{∂f}{∂y}=- 16 x e^{4 y}\end{aligned}
 $$
 
 Writing the above results in terms of $x,$ we get

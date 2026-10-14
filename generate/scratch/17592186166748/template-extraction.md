@@ -504,3 +504,15 @@ Identities: seed/choice order excluded; actual prompt, fixed solution, complete 
 q-95114 cancels sqrt(x²)=x and designates a positive answer without stating x>0. At x=−1 the true derivative and designated answer have opposite signs. Raw public replay retains every value and solution sentence unchanged and is ineligible. Normal generation makes the minimal supported presentation/domain repair: append Assume x>0. It does not silently alter the answer bank or cancellation chain. Exact replay denominators are 9/9 prompts, 9/9 complete chains and 45/45 values; source correctness without the supported domain repair is 8/9.
 
 Decoded source-byte audit found no adjacent slashes and no literal \u2061 sequences in option values: JSON tool serialization was not a TeX defect. No escaping repairs were applied. All raw original profiles remain evidence-only because wrong-operation intent is not claimed as recovered. Native grading is owned radio selection; algebraically equivalent typed entries are not an available response shape. Independent symbolic QA checks all displayed choices and every equality, and native grading is reported separately.
+
+## Additional source templates at basis 2407
+
+Exact prompt, solution, field and all five answer values for each additional record are retained in `source-current.json`, with per-option replay in `source-fidelity.json` and side-by-side records in `review.json`/`review.md`.
+
+| Source | Function and dependency | Domain | Correct derivative | Distinct backbone |
+|---|---|---|---|---|
+| q-170671 | (1-y²) sin x; y=cos x | real x | 3 sin²x cos x | identity simplifies first substituted partial, then collect three equal contributions |
+| q-95123 | sqrt(xy-4); y=x² | x³>4 | 3x²/(2 sqrt(x³-4)) | two partial-root denominators, substitute powers, collect common denominator |
+| q-95120 | log(x+y); y=exp(2x) | x+exp(2x)>0 | (1+2exp(2x))/(x+exp(2x)) | equal reciprocal partials and exponential dependency derivative |
+
+For each added source, the sole easy variable slot is the signed nonzero whole-function scalar a, |a|≤5. All partial and final RHS expressions scale by a; the dependency derivative and formal rule remain fixed. Original parameter a=1 and complete original bank replay are retained. Each observed option recipe scales its exact captured expression by a and remains evidence-only: opaque error intent is explicitly unresolved. Normal variants select the complete authored operation profile before sampling, derive every choice from the printed function, and reject all equivalent pairs. The expected complete banks are differentiated symbolically and compared one-to-one; this is recorded separately from raw source fidelity. Normal prose/answer math is normalized before hashing, with mathematical stages compared separately from layout.
