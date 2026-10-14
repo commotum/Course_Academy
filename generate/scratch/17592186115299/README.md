@@ -1,5 +1,9 @@
 # Classification generator evidence
 
+Current version: classification-2. `classification-current.md` documents the basis-2304 source recheck, 14 migrated checkbox layouts and the added q-74834 radio template. Run `.venv/bin/python generate/scratch/17592186115299/validate_current.py` for the current source replay, independent math and native grading validation. `validation-current.json` is the current freeze. Historical evidence below remains retained, and its older freeze does not validate version 2.
+
+Run `.venv/bin/python generate/scratch/17592186115299/replenish.py` for this KP's additive replenishment and registration. It rechecks current stock under the application's api.lock, retains exact guarded requests and receipts in `reference/replenishment/`, and verifies the committed result at its exact basis. Re-running recovers an existing request before preparing new content. The historical source questions and learner history are never mutated.
+
 Scope: steps 3–7 for KP 17592186115299, database math basis 1356. No database writes, shared engine edits, commits, or registration.
 
 Run from repository root:

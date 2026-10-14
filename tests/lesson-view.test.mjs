@@ -136,7 +136,8 @@ test('pause controls are hidden for previews, completed lessons, and fixed-deadl
   assert.equal(f.h.view.pause.hidden, true);
   await f.h.toggleLessonPause();
   assert.equal(f.calls.length, 0);
-  await f.h.preview({activityId:500,type:'lesson',learner:{id:'test'},steps:[{...question(1),fields:[]}]},0);
+  f.dev = true;
+  await f.h.preview({ activityId: 500, type: 'lesson', learner: { id: 'test' }, steps: [{ ...question(1), fields: [] }] }, 0);
   assert.equal(f.h.view.pause.hidden, true);
   assert.match(f.h.view.timer.title, /Nothing recorded/);
 });

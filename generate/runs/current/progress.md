@@ -4,9 +4,9 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 41**, **qa_passed: 299**, **queued: 236**, **working: 4**.
+**needs_revalidation: 41**, **qa_passed: 299**, **queued: 233**, **working: 7**.
 
-Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). Finish existing workers, then follow updated ranks; coverage-report priorities remain first and are already approved.
+Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Existing approved work is preserved; other ready drafts await QA until these13 pass. Then finish any coverage-report KPs and the remaining script-ranked candidates.
 
 Cumulative counts retain seven earlier KPs outside the latest list. Only qa_passed jobs have current parent verification; queued, working and needs_revalidation jobs are not complete. Captured counts can include independently authored inventory as well as original MA examples; per-KP evidence separates them. Source anomalies and authored missing-level designs are recorded with each KP.
 
@@ -60,8 +60,8 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186129123](../../scratch/17592186129123.py) | Properties of Transformed Sine and Cosine Functions | Finding the Midline of a Transformed Sinusoidal Function | 7 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186129123.json) |
 | [17592186129124](../../scratch/17592186129124.py) | Properties of Transformed Sine and Cosine Functions | Finding the Range of a Transformed Sinusoidal Function | 4 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186129124.json) |
 | [17592186092260](../../scratch/17592186092260.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Linear Exponent | 2 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186092260.json) |
-| 17592186059740 | Scalar Multiplication of Matrices | Multiplying a Matrix by a Scalar | 5 / 0 / 0 / 2 | queued | — |
-| 17592186059742 | Scalar Multiplication of Matrices | Calculating a Linear Combination of Two Matrices | 0 / 3 / 3 / 2 | queued | — |
+| 17592186059740 | Scalar Multiplication of Matrices | Multiplying a Matrix by a Scalar | 5 / 0 / 0 / 2 | working | — |
+| 17592186059742 | Scalar Multiplication of Matrices | Calculating a Linear Combination of Two Matrices | 0 / 3 / 3 / 2 | working | — |
 | [17592186073776](../../scratch/17592186073776.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Solutions to a System | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186073776.json) |
 | [17592186073777](../../scratch/17592186073777.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Intersection Points of Two Lines | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073777.json) |
 | [17592186073778](../../scratch/17592186073778.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073778.json) |
@@ -74,7 +74,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186083244](../../scratch/17592186083244.py) | Calculating Tangent and Normal Lines with Parametric Equations | Computing the Tangent Line to a Parametric Curve | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186083244.json) |
 | [17592186172038](../../scratch/17592186172038.py) | Slope Fields for Nonautonomous Differential Equations | Sketching the Slope Field of a Differential Equation at Some Isolated Points | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186172038.json) |
 | [17592186100992](../../scratch/17592186100992.py) | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices Using Distributivity | 5 / 1 / 0 / 1 | queued | — |
-| 17592186087888 | Homogeneous First-Order ODEs | Identifying Homogeneous Differential Equations | 3 / 3 / 0 / 0 | queued | — |
+| 17592186087888 | Homogeneous First-Order ODEs | Identifying Homogeneous Differential Equations | 3 / 3 / 0 / 0 | working | — |
 | [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | qa_passed | [Report](qa/17592186133827.json) |
 | [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133829.json) |
 | [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186133830.json) |

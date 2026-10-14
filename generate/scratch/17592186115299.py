@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
-"""KP classification generator, steps 3–7; no database writes.
+"""KP classification generator; this module never writes to the database.
 
 Basis 1356 source masks contain full mathematical-component slots. Column scales
 and variable translations parameterize *every* observed matrix/equation stage;
 row operations are executed exactly, never replayed by returning source payloads.
-14 observed moderate layouts retain fixed prose and complete five-choice banks.
+15 observed moderate layouts preserve current checkbox/radio response contracts.
 q-32242's unstated R1 negation is repaired (raw evidence retained). Easy 2x2 and
 hard 3x3 are authored scope claims anchored to the lesson's Gaussian elimination
 and pivot/free-variable definitions. Read the evidence README for validation.
 """
 from __future__ import annotations
-import argparse,hashlib,json,random,re,uuid
+import argparse,hashlib,json,random,re,sys,uuid
 from pathlib import Path
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
 KP_ID=17592186115299
 KP_UUID='f9469d5c-e097-590c-8ddb-2c7fda353fac'
 TITLE='Classifying a System as Consistent Dependent, Consistent Independent, or Inconsistent'
-VERSION='classification-1'
+VERSION='classification-2'
 D=Path(__file__).with_suffix('')
 TEMPLATES=json.loads((D/'templates.json').read_text())
 X=sp.symbols('x y z')
@@ -188,7 +188,7 @@ def sample(level,name,rng):
 
 def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def generate_legacy(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ['easy','moderate','hard']:raise ValueError('Unknown level')
  if field_type not in [None,'radio',':answer-field.type/radio']:raise ValueError('Only observed radio layout is supported')
  rng=random.Random(seed)
@@ -219,6 +219,47 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  cid=next(a[':answer/id'] for a in answers if a[':answer/value']==correct);rng.shuffle(answers)
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':str(qid),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':str(fid),':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',cid]}]},'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile,'mathematical_fingerprint':mf,'parameter_fingerprint':mf,'content_fingerprint':cf,'authored_extension':level!='moderate','parameter_extension':level=='moderate' and any(v!=1 for v in p['scales']) or level=='moderate' and any(p['translations']),'source_analysis':{'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','question_ids':[template] if level=='moderate' else [],'curriculum_topic':17592186048445},'source_repairs':(['q-32242 unstated R1 negation removed'] if template=='q-32242' else [])+(['Unmatched unescaped system opening brace escaped'] if template in TEMPLATES and any(re.search(r'(?<!\\)\{(?=\\begin\{aligned\})',c) for c in TEMPLATES[template]['math_components']) else []),'plot_rating':'none','plot_assets':{},'operations':ops,'stages':[[[str(v) for v in row] for row in z.tolist()] for z in st],'classification':classify(m)}}
 
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ """Preserve the captured current response contract, with field-owned identities.
+
+ Historical radio banks remain replayable through generate_legacy. Current
+ checkbox templates have three Boolean banks; the added q-74834 remains radio.
+ Easy/hard use the current three-checkbox contract as a documented extension.
+ """
+ rec=generate_legacy(level,seed,template,None,parameters,profile)
+ q=rec['question'];meta=rec['generation'];name=meta['template']
+ layouts=json.loads((D/'current-layouts.json').read_text())
+ kind=layouts[name]['type'] if level=='moderate' else 'checkbox'
+ truth=next(a[':answer/value'].split()[0] for f in q[':question/answer-fields'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])
+ if field_type not in [None,kind,':answer-field.type/'+kind]:raise ValueError('Field type differs from current template')
+ if kind=='checkbox':
+  prefix,tail=q[':question/problem'].split('Which of the following statements are true?',1)
+  lines=[s for s in tail.splitlines() if re.match(r'^(?:-|I\.|II\.|III\.) ',s)]
+  texts=[re.sub(r'^(?:-|I\.|II\.|III\.)\s*','',s) for s in lines]
+  q[':question/problem']=prefix+'Which of the following statements are true?\n\nSelect all that apply.\n\n'+'\n'.join('- **'+roman+'.** '+value for roman,value in zip(ROMAN,texts))
+ # Use standard matrix notation as in the current source capture.
+ q[':question/worked-solution']=re.sub(MATRIX_RE,lambda m:r'\begin{bmatrix}'+m[1]+r'\end{bmatrix}',q[':question/worked-solution'],flags=re.S)
+ cf=digest({'version':VERSION,'mathematical_fingerprint':meta['mathematical_fingerprint'],'problem':q[':question/problem'],'solution':q[':question/worked-solution'],'response':kind,'bank':sorted(BANKS[meta['bank_profile']]) if kind=='radio' else ['false','true']})
+ qid=uuid.uuid5(uuid.NAMESPACE_URL,KP_UUID+'/'+cf);q[':question/id']=str(qid)
+ if kind=='checkbox':
+  fields=[]
+  for roman in ROMAN:
+   fid=uuid.uuid5(qid,roman)
+   answers=[{':answer/id':str(uuid.uuid5(fid,value)),':answer/type':':answer.type/text',':answer/value':value} for value in ['false','true']]
+   correct='true' if roman==truth else 'false'
+   fields.append({':answer-field/id':str(fid),':answer-field/key':roman,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':answers,':answer-field/correct':[':answer/id',str(uuid.uuid5(fid,correct))]})
+  q[':question/answer-fields']=fields
+ else:
+  f=q[':question/answer-fields'][0];old=f[':answer-field/correct'][1];correct=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==old)
+  fid=uuid.uuid5(qid,'selection');f[':answer-field/id']=str(fid)
+  for a in f[':answer-field/choices']:a[':answer/id']=str(uuid.uuid5(fid,a[':answer/value']))
+  f[':answer-field/correct']=[':answer/id',str(uuid.uuid5(fid,correct))]
+ meta.update(content_fingerprint=cf,response_layout=kind,current_source_basis=2304)
+ meta['source_analysis']['basis']=2304
+ meta['dependencies']={'python':sys.version.split()[0],'sympy':sp.__version__}
+ meta['domain']='Real linear systems; exact rational Gaussian elimination. Arithmetic and parameter bounds: classification-current.md and template-extraction.md.'
+ return rec
+
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
@@ -226,6 +267,8 @@ def render_plots(instance,output_dir=None):return {}
 
 def markdown(record):
  q=record['question'];f=q[':question/answer-fields'][0]
+ if f[':answer-field/type']==':answer-field.type/checkbox':
+  return q[':question/problem']+'\n\nWorked solution:\n\n'+q[':question/worked-solution']
  return q[':question/problem']+'\n\n'+'\n'.join('- '+a[':answer/value'] for a in f[':answer-field/choices'])+'\n\nWorked solution:\n\n'+q[':question/worked-solution']
 
 if __name__=='__main__':

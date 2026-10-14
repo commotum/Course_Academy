@@ -1,0 +1,5 @@
+# Classification at math basis 2275
+
+Immutable lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Six original MA practice questions, zero independent questions. Five rated easy; q-122567 is unrated and lacks correct ref and solution. All are single radio fields with key `selection`, five scalar math choices, no feedback. There are five observed prompt/solution families: semicircle, vertical, horizontal, diagonal without helper, diagonal with helper. The helper family contains two numerical variants with different complete banks. Six original complete bank profiles, four authored complete geometric banks (diagonal layouts share the method bank). Plot rating moderate for every family: geometry is recurring and supplies endpoint/length information.
+
+Normal easy covers all five source family masks. Moderate and hard are authored diagonal arithmetic bands; the current capture supplies no rated moderate/hard evidence. They retain the same supplied graph, required scalar length, one radio, and Pythagorean chain. They do not infer difficulty from signed coordinates or simplified nonsquare radicals, both already easy in the source.
