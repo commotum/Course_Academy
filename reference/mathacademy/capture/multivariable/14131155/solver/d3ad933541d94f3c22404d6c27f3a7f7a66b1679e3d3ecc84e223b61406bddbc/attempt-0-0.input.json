@@ -1,0 +1,214 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-343860",
+      "sequence_position": 2,
+      "problem": "Select the missing parts in a particular solution of the differential equation ${y}^{′}-5y=f(x),$ where the Fourier series of the $6$-periodic forcing function is given by\n\n$$\nf(x)∼-5+{\\sum }_{n=1}^{\\infty }\\frac{2(-1)^{n+1}}{n\\pi }\\operatorname{sin}⁡(\\frac{n\\pi x}{3}).\n$$\n\nThe Fourier series of a particular solution is\n\n$$\n\\begin{aligned}{y}_{p}∼{{field-1}} & +{\\sum }_{n=1}^{\\infty }\\,{{field-2}}\\cdot \\operatorname{cos}⁡(\\frac{n\\pi x}{3}) \\\\  & +{\\sum }_{n=1}^{\\infty }\\,{{field-3}}\\cdot \\operatorname{sin}⁡(\\frac{n\\pi x}{3})\\end{aligned}\n$$",
+      "worked_solution": "We assume that a solution of our equation has the following Fourier series:\n\n$$\n{y}_{p}∼\\frac{{a}_{0}}{2}+{\\sum }_{n=1}^{\\infty }{a}_{n}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})+{b}_{n}\\operatorname{sin}⁡(\\frac{n\\pi x}{3}).\n$$\n\nNow, we compute the derivative:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & ∼\\frac{\\text{d}}{\\text{d}x}(\\frac{{a}_{0}}{2}+{\\sum }_{n=1}^{\\infty }{a}_{n}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})+{b}_{n}\\operatorname{sin}⁡(\\frac{n\\pi x}{3})) \\\\  & ∼0+{\\sum }_{n=1}^{\\infty }{a}_{n}\\cdot (-\\frac{n\\pi }{3}\\operatorname{sin}⁡(\\frac{n\\pi x}{3}))+{b}_{n}\\cdot \\frac{n\\pi }{3}\\operatorname{cos}⁡(\\frac{n\\pi x}{3}) \\\\  & ∼{\\sum }_{n=1}^{\\infty }-\\frac{{a}_{n}n\\pi }{3}\\operatorname{sin}⁡(\\frac{n\\pi x}{3})+\\frac{{b}_{n}n\\pi }{3}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})\\end{aligned}\n$$\n\nNext, we substitute the expressions for ${y}_{p}^{′}$ and ${y}_{p}$ into the equation:\n\n$$\n\\begin{aligned} & ({\\sum }_{n=1}^{\\infty }-\\frac{{a}_{n}n\\pi }{3}\\operatorname{sin}⁡(\\frac{n\\pi x}{3})+\\frac{{b}_{n}n\\pi }{3}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})) \\\\  & \\,-5(\\frac{{a}_{0}}{2}+{\\sum }_{n=1}^{\\infty }{a}_{n}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})+{b}_{n}\\operatorname{sin}⁡(\\frac{n\\pi x}{3})) \\\\  & \\,\\,=-5+{\\sum }_{n=1}^{\\infty }\\frac{2(-1)^{n+1}}{n\\pi }\\operatorname{sin}⁡(\\frac{n\\pi x}{3})\\end{aligned}\n$$\n\nRearranging the terms, we get \n\n$$\n\\begin{aligned} & -5\\cdot \\frac{{a}_{0}}{2}+{\\sum }_{n=1}^{\\infty }(\\frac{{b}_{n}n\\pi }{3}-5{a}_{n})\\operatorname{cos}⁡(\\frac{n\\pi x}{3}) \\\\  & \\,\\,+{\\sum }_{n=1}^{\\infty }(-\\frac{{a}_{n}n\\pi }{3}-5{b}_{n})\\operatorname{sin}⁡(\\frac{n\\pi x}{3}) \\\\  & \\,\\,\\,\\,=-5+{\\sum }_{n=1}^{\\infty }\\frac{2(-1)^{n+1}}{n\\pi }\\operatorname{sin}⁡(\\frac{n\\pi x}{3}).\\end{aligned}\n$$\n\nNow, equating the free terms and the coefficients next to sines and cosines, we obtain the following system:\n\n$$\n\\{\\begin{aligned}-5\\cdot \\frac{{a}_{0}}{2}=-5 \\\\ \\frac{{b}_{n}n\\pi }{3}-5{a}_{n}=0 \\\\ -\\frac{{a}_{n}n\\pi }{3}-5{b}_{n}=\\frac{2(-1)^{n+1}}{n\\pi }\\end{aligned}\n$$\n\nFrom the first equation, ${a}_{0}=2,$ which means the constant term is given by\n\n$$\n\\frac{{a}_{0}}{2}=1.\n$$\n\nNext, from the second equation, ${b}_{n}=\\frac{15{a}_{n}}{n\\pi }.$ Substituting this into the third equation, gives\n\n$$\n-\\frac{{a}_{n}n\\pi }{3}-5(\\frac{15{a}_{n}}{n\\pi })=\\frac{2(-1)^{n+1}}{n\\pi }\\,⇒\\,{a}_{n}=\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}.\n$$\n\nTherefore, for ${a}_{n}$ with $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{b}_{n} & =\\frac{15{a}_{n}}{n\\pi } \\\\  & =\\frac{15}{n\\pi }\\cdot \\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225} \\\\  & =\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}.\\end{aligned}\n$$\n\nTherefore, our particular solution is\n\n$$\n\\begin{aligned}{y}_{p}∼1 & +{\\sum }_{n=1}^{\\infty }\\,\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}\\cdot \\operatorname{cos}⁡(\\frac{n\\pi x}{3}) \\\\  & +{\\sum }_{n=1}^{\\infty }\\,\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}\\cdot \\operatorname{sin}⁡(\\frac{n\\pi x}{3}).\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1",
+        "field-2",
+        "field-3"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/history-q-343860-0b44fb1bf10f1fb1f523.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14131155",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/history-solution-q-343860-517e41abbe5939f0d363.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "math",
+            "value": "1"
+          },
+          "source_correct": {
+            "type": "math",
+            "value": "1"
+          },
+          "source_result": "Correct",
+          "correct_value": "1",
+          "value_type": "math",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "1",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/step-q343860-84418cf01d75e53be988.html",
+            "presentation_key": "step-q343860"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/history-q-343860-0b44fb1bf10f1fb1f523.html",
+            "value": "1"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "-2"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "-1"
+            }
+          ]
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "math",
+            "value": "\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}"
+          },
+          "source_correct": {
+            "type": "math",
+            "value": "\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}"
+          },
+          "source_result": "Correct",
+          "correct_value": "\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}",
+          "value_type": "math",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/step-q343860-84418cf01d75e53be988.html",
+            "presentation_key": "step-q343860"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/history-q-343860-0b44fb1bf10f1fb1f523.html",
+            "value": "\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "-\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\frac{30(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}"
+            }
+          ]
+        },
+        {
+          "key": "field-3",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "math",
+            "value": "\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}"
+          },
+          "source_correct": {
+            "type": "math",
+            "value": "\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}"
+          },
+          "source_result": "Correct",
+          "correct_value": "\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}",
+          "value_type": "math",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/step-q343860-84418cf01d75e53be988.html",
+            "presentation_key": "step-q343860"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/history-q-343860-0b44fb1bf10f1fb1f523.html",
+            "value": "\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "-\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\frac{18(-1)^{n}}{{n}^{2}\\pi ({n}^{2}{\\pi }^{2}+225)}"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q343860",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "1",
+                "option": "0",
+                "value_type": "math"
+              },
+              {
+                "key": "field-2",
+                "value": "\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}",
+                "option": "2",
+                "value_type": "math"
+              },
+              {
+                "key": "field-3",
+                "value": "\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}",
+                "option": "1",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "We assume that a solution of our equation has the following Fourier series:\n\n$$\n{y}_{p}∼\\frac{{a}_{0}}{2}+{\\sum }_{n=1}^{\\infty }{a}_{n}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})+{b}_{n}\\operatorname{sin}⁡(\\frac{n\\pi x}{3}).\n$$\n\nNow, we compute the derivative:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & ∼\\frac{\\text{d}}{\\text{d}x}(\\frac{{a}_{0}}{2}+{\\sum }_{n=1}^{\\infty }{a}_{n}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})+{b}_{n}\\operatorname{sin}⁡(\\frac{n\\pi x}{3})) \\\\  & ∼0+{\\sum }_{n=1}^{\\infty }{a}_{n}\\cdot (-\\frac{n\\pi }{3}\\operatorname{sin}⁡(\\frac{n\\pi x}{3}))+{b}_{n}\\cdot \\frac{n\\pi }{3}\\operatorname{cos}⁡(\\frac{n\\pi x}{3}) \\\\  & ∼{\\sum }_{n=1}^{\\infty }-\\frac{{a}_{n}n\\pi }{3}\\operatorname{sin}⁡(\\frac{n\\pi x}{3})+\\frac{{b}_{n}n\\pi }{3}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})\\end{aligned}\n$$\n\nNext, we substitute the expressions for ${y}_{p}^{′}$ and ${y}_{p}$ into the equation:\n\n$$\n\\begin{aligned} & ({\\sum }_{n=1}^{\\infty }-\\frac{{a}_{n}n\\pi }{3}\\operatorname{sin}⁡(\\frac{n\\pi x}{3})+\\frac{{b}_{n}n\\pi }{3}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})) \\\\  & \\,-5(\\frac{{a}_{0}}{2}+{\\sum }_{n=1}^{\\infty }{a}_{n}\\operatorname{cos}⁡(\\frac{n\\pi x}{3})+{b}_{n}\\operatorname{sin}⁡(\\frac{n\\pi x}{3})) \\\\  & \\,\\,=-5+{\\sum }_{n=1}^{\\infty }\\frac{2(-1)^{n+1}}{n\\pi }\\operatorname{sin}⁡(\\frac{n\\pi x}{3})\\end{aligned}\n$$\n\nRearranging the terms, we get \n\n$$\n\\begin{aligned} & -5\\cdot \\frac{{a}_{0}}{2}+{\\sum }_{n=1}^{\\infty }(\\frac{{b}_{n}n\\pi }{3}-5{a}_{n})\\operatorname{cos}⁡(\\frac{n\\pi x}{3}) \\\\  & \\,\\,+{\\sum }_{n=1}^{\\infty }(-\\frac{{a}_{n}n\\pi }{3}-5{b}_{n})\\operatorname{sin}⁡(\\frac{n\\pi x}{3}) \\\\  & \\,\\,\\,\\,=-5+{\\sum }_{n=1}^{\\infty }\\frac{2(-1)^{n+1}}{n\\pi }\\operatorname{sin}⁡(\\frac{n\\pi x}{3}).\\end{aligned}\n$$\n\nNow, equating the free terms and the coefficients next to sines and cosines, we obtain the following system:\n\n$$\n\\{\\begin{aligned}-5\\cdot \\frac{{a}_{0}}{2}=-5 \\\\ \\frac{{b}_{n}n\\pi }{3}-5{a}_{n}=0 \\\\ -\\frac{{a}_{n}n\\pi }{3}-5{b}_{n}=\\frac{2(-1)^{n+1}}{n\\pi }\\end{aligned}\n$$\n\nFrom the first equation, ${a}_{0}=2,$ which means the constant term is given by\n\n$$\n\\frac{{a}_{0}}{2}=1.\n$$\n\nNext, from the second equation, ${b}_{n}=\\frac{15{a}_{n}}{n\\pi }.$ Substituting this into the third equation, gives\n\n$$\n-\\frac{{a}_{n}n\\pi }{3}-5(\\frac{15{a}_{n}}{n\\pi })=\\frac{2(-1)^{n+1}}{n\\pi }\\,⇒\\,{a}_{n}=\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}.\n$$\n\nTherefore, for ${a}_{n}$ with $n\\ge 1,$ we have\n\n$$\n\\begin{aligned}{b}_{n} & =\\frac{15{a}_{n}}{n\\pi } \\\\  & =\\frac{15}{n\\pi }\\cdot \\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225} \\\\  & =\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}.\\end{aligned}\n$$\n\nTherefore, our particular solution is\n\n$$\n\\begin{aligned}{y}_{p}∼1 & +{\\sum }_{n=1}^{\\infty }\\,\\frac{6(-1)^{n}}{{n}^{2}{\\pi }^{2}+225}\\cdot \\operatorname{cos}⁡(\\frac{n\\pi x}{3}) \\\\  & +{\\sum }_{n=1}^{\\infty }\\,\\frac{90(-1)^{n}}{n\\pi ({n}^{2}{\\pi }^{2}+225)}\\cdot \\operatorname{sin}⁡(\\frac{n\\pi x}{3}).\\end{aligned}\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/history-solution-q-343860-517e41abbe5939f0d363.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14131155/observations/history-q-343860-0b44fb1bf10f1fb1f523.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12e99-0d70-7232-8328-2b46c3763377",
+  "previous_failures": []
+}
