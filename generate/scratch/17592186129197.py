@@ -1,0 +1,319 @@
+#!/usr/bin/env python3
+"""Basis-1356 local generator, steps 3–7 only. See private evidence directory.
+Raw profiles retain all captured omissions and source mistakes, marked ineligible.
+Normal families share the source's four stages, with exact integration arithmetic.
+"""
+from __future__ import annotations
+import argparse, copy, hashlib, json, os, random, re, sys, tempfile, uuid, threading
+from pathlib import Path
+import sympy as sp
+os.environ.setdefault('MPLCONFIGDIR',str(ROOT_CACHE := Path('/tmp/typei-mpl-cache')))
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+KP=17592186129197
+ROOT=Path(__file__).with_suffix('')
+SRC=json.loads((ROOT/'source.json').read_text())
+R=SRC['record']; TITLE=R[':knowledge-point/title']; VERSION='type-I-area-1'
+Q={q[':question/math-academy-id']:q for q in R[':knowledge-point/questions']}
+x,y,u,v=sp.symbols('x y u v', real=True)
+FAMILIES={'simple':('q-38374','easy'), 'mixed':(None,'moderate'),'quartic':('q-82874','hard'),'hyper_y':('q-160885','hard'),'down':('q-82878','hard'),'up':('q-83943','hard'),'vertical':('q-83947','hard'),'hyper_x':('q-160710','hard')}
+ANCHORS={'q-38374':{'a':1,'h':1,'k':0},'q-82874':{'a':1,'h':1,'k':0},'q-160885':{'a':2,'h':4,'k':1},'q-82878':{'a':1,'h':2,'k':1},'q-83943':{'a':2,'h':1,'k':2},'q-83947':{'a':3,'h':4,'k':-3},'q-160710':{'a':1,'h':2,'k':1}}
+def tex(z):
+ return sp.latex(z).replace(r'\log',r'\ln')
+def digest(z):return hashlib.sha256(json.dumps(z,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+def uid(s):return str(uuid.uuid5(uuid.NAMESPACE_URL,f'{KP}/{s}'))
+def eq(a,b):return sp.simplify(a-b)==0
+def parse(z):
+ z=z.replace(r'\left','').replace(r'\right','').replace(r'\,','').replace('⁡','').replace(r'\operatorname{ln}',r'\ln').replace(' ', '')
+ while '\\frac' in z:
+  start=z.index('\\frac'); i=start+5
+  def group(i):
+   if z[i]!='{':raise ValueError(z)
+   depth=1;j=i+1
+   while depth:
+    depth+=(z[j]=='{')-(z[j]=='}');j+=1
+   return z[i+1:j-1],j
+  aa,j=group(i);bb,k=group(j);z=z[:start]+'(('+aa+')/('+bb+'))'+z[k:]
+ z=re.sub(r'\\sqrt\{([^{}]+)\}',r'sqrt(\1)',z)
+ z=re.sub(r'\\ln(?:\{([^{}]+)\}|([0-9]+))',lambda m:'log('+str(m[1] or m[2])+')',z)
+ z=z.replace(r'\ln','log');z=z.replace('{','(').replace('}',')').replace('^','**')
+ from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
+ return parse_expr(z,local_dict={'u':u,'v':v,'x':x,'y':y},transformations=standard_transformations+(implicit_multiplication_application,))
+def format_ok(s):
+ assert not any(ord(c)<32 and c not in '\n\t' for c in s),'control characters'
+ assert s.count('$$')%2==0 and s.replace('$$','').count('$')%2==0,'math delimiters'
+ # Escaped set glyphs are not TeX grouping braces.
+ z=re.sub(r'\\[{}]','',s);depth=0
+ for c in z:
+  depth+=(c=='{')-(c=='}');assert depth>=0,'closing brace'
+ assert depth==0,'opening brace'
+def aligned(rows):return r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}'
+def display(s):return '$$\n'+s+'\n$$'
+def swap_math(text,scale):
+ """Similarity source recipe: complete math variables x,y become x/s,y/s.
+ At s=1 every mask reinserts its original single variable, preserving raw bytes.
+ """
+ def sub(m):
+  t=m.group();s=tex(scale)
+  if scale!=1 and '∂' not in t and r'\to' not in t:
+   t=re.sub(r'(?<![A-Za-z\\])([xy])(?![A-Za-z])',lambda n:rf'\frac{{{n[1]}}}{{{s}}}',t)
+  return t
+ return re.sub(r'\$\$[\s\S]*?\$\$|\$[^$]*\$',sub,text)
+def raw_generate(level,seed,source,parameters):
+ q=Q[source]; p=dict(parameters or {'scale':1})
+ if set(p)!={'scale'} or not isinstance(p['scale'],int) or not 1<=p['scale']<=4:raise ValueError('raw scale: integer 1..4 only')
+ s=sp.Integer(p['scale']); out={k:copy.deepcopy(val) for k,val in q.items() if k not in [':db/id',':question/math-academy-id',':question/id',':question/answer-fields']}
+ if ':question/difficulty' in out:out[':question/difficulty']=out[':question/difficulty'][':db/ident']
+ out[':question/problem']=swap_math(q[':question/problem'],s)
+ if ':question/worked-solution' in q:
+  sol=swap_math(q[':question/worked-solution'],s)
+  # Source solution is a full math/prose template. A similarity scales the
+  # forward determinant by s² and every area-chain RHS by s². All transformations
+  # are applied to complete blocks, never scattered numeric literals.
+  family=next(f for f,z in FAMILIES.items() if z[0]==source)
+  m=model(family,ANCHORS[source]); det=m['det']; inv=m['J']
+  if s!=1:
+   start=sol.index('**Step 2**'); end=sol.index('**Step 3**')
+   sec=sol[start:end]
+   matrix=[sp.diff(m[z],t)/s for z in ['U','V'] for t in [x,y]]
+   block=aligned([r'\frac{∂(u,v)}{∂(x,y)} &=\left|\begin{matrix}\frac{∂u}{∂x}&\frac{∂u}{∂y}\\\frac{∂v}{∂x}&\frac{∂v}{∂y}\end{matrix}\right|', r'&=\left|\begin{matrix}'+tex(matrix[0])+'&'+tex(matrix[1])+r'\\'+tex(matrix[2])+'&'+tex(matrix[3])+r'\end{matrix}\right|',r'&='+tex(det/(s*s))+'.'])
+   sec=re.sub(r'\$\$[\s\S]*?\$\$',lambda _:display(block),sec,count=1)
+   sol=sol[:start]+sec+sol[end:]
+   start=sol.index('**Step 3**');end=sol.index('**Step 4**');sec=sol[start:end]
+   sec=re.sub(r'\$\$[\s\S]*?\$\$',lambda _:display(r'\frac{∂(x,y)}{∂(u,v)}=(\frac{∂(u,v)}{∂(x,y)})^{-1}=('+tex(det/(s*s))+r')^{-1}='+tex(inv*s*s)+'.'),sec,count=1)
+   sol=sol[:start]+sec+sol[end:]
+   start=sol.index('**Step 4**');sec=sol[start:]
+   # Keep inner integrations and arithmetic as original ordered stages; scale
+   # each complete RHS after the generic change-of-variables row.
+   def scaled_chain(match):
+    block=match.group();rows=block.split(r'\\')
+    for i in range(1,len(rows)):
+     rows[i]=rows[i].replace('& =','& ='+tex(s*s)+r'\cdot ',1)
+    return r'\\'.join(rows)
+   sec=re.sub(r'\$\$[\s\S]*?\$\$',scaled_chain,sec)
+   sol=sol[:start]+sec
+  out[':question/worked-solution']=sol
+ bank=[parse(a[':answer/value'])*s*s for a in q[':question/answer-fields'][0][':answer-field/choices']]
+ spell=[a[':answer/value'] if s==1 else tex(z) for a,z in zip(q[':question/answer-fields'][0][':answer-field/choices'],bank)]
+ original_correct=q[':question/answer-fields'][0].get(':answer-field/correct')
+ correct=parse(original_correct[':answer/value'])*s*s if original_correct else None
+ return record(out,bank,correct,spell,level,seed,source,p,'raw:'+source,False,{'source_omissions':sorted(set([':question/difficulty',':question/worked-solution'])-set(q)), 'source_field_omissions':sorted(set([':answer-field/correct'])-set(q[':question/answer-fields'][0]))})
+def model(f,p):
+ a,h,k=map(sp.Integer,(p['a'],p['h'],p['k']))
+ if f in ['simple','down','up']:
+  U=x-a*y;V=y+(k if f=='down' else 0);det=1
+ elif f=='mixed':U=a*x-2*y;V=x+y;det=a+2
+ elif f=='vertical':U=y+a*x;V=x;det=-1
+ elif f=='quartic':U=x+a*y;V=x-a*y;det=-2*a
+ elif f=='hyper_y':U=y+a*x;V=y-a*x;det=2*a
+ else:U=x-a*y;V=x+a*y;det=2*a
+ if f in ['hyper_x','hyper_y']:
+  lo=k;hi=h/k;low=k;high=h/u;prim=h*sp.log(u)-k*u
+ elif f=='quartic':
+  lo=0;hi=h;low=u**4/h**3;high=u;prim=u**2/2-u**5/(5*h**3)
+ else:
+  lo=-sp.sqrt(h);hi=sp.sqrt(h)
+  if f=='down':low=k;high=k+h-u*u
+  else:low=u*u+k;high=k+h
+  prim=h*u-u**3/3
+ J=1/sp.Integer(det);width=sp.expand(high-low);A=sp.simplify(abs(J)*sp.integrate(width,(u,lo,hi)))
+ return dict(U=U,V=V,det=det,J=J,lo=lo,hi=hi,low=low,high=high,prim=prim,A=A,width=width)
+def guards(f,p):
+ if set(p)!={'a','h','k'} or any(type(p[t]) is not int for t in p):raise ValueError('parameters must be integer a,h,k')
+ a,h,k=p['a'],p['h'],p['k']
+ if not 1<=a<=8:raise ValueError('a:1..8')
+ if f=='simple' and (h not in [1,4,9,16,25,36] or k!=0):raise ValueError('easy: square gap and zero shift')
+ if f=='mixed' and (h not in [1,4,9,16,25,36] or k!=0 or a<2):raise ValueError('moderate: square gap, zero shift, nonunit determinant')
+ if f in ['up','vertical'] and (h not in [1,2,3,4,5,6,7,8,9,10,12,16] or k==0 or abs(k)>5):raise ValueError('hard parabola: nonzero signed shift')
+ if f=='down' and (h not in [2,3,5,6,7,8,10,12] or not 1<=k<=4):raise ValueError('hard downward: positive translation, nonsquare gap')
+ if f=='quartic' and (h not in [1,2,3] or k!=0):raise ValueError('quartic: endpoint 1..3 and k=0')
+ if f.startswith('hyper') and (not 1<=k<=3 or not 2<=h<=12 or h<=k*k):raise ValueError('hyperbola requires h>k²')
+def sample(f,rng):
+ a=rng.randint(1,8)
+ if f=='simple':return {'a':a,'h':rng.choice([1,4,9,16,25,36]),'k':0}
+ if f=='mixed':return {'a':rng.randint(2,8),'h':rng.choice([1,4,9,16,25,36]),'k':0}
+ if f=='quartic':return {'a':a,'h':rng.randint(1,3),'k':0}
+ if f.startswith('hyper'):
+  k=rng.randint(1,3);return {'a':a,'h':rng.randint(k*k+1,12),'k':k}
+ if f=='down':return {'a':a,'h':rng.choice([2,3,5,6,7,8,10,12]),'k':rng.randint(1,4)}
+ return {'a':a,'h':rng.choice([1,2,3,4,5,6,7,8,9,10,12,16]),'k':rng.choice([-5,-4,-3,-2,-1,1,2,3,4,5])}
+def recipes(f,d,p,profile):
+ A,J=d['A'],abs(d['J']);P=d['prim'];lo,hi=d['lo'],d['hi'];width=d['width']
+ # Whole method-derived banks. All five operations are selected before p.
+ if profile!='method':raise ValueError('normal profile is method')
+ if f.startswith('hyper'):
+  h,k=sp.Integer(p['h']),sp.Integer(p['k']);L=h*sp.log(hi/lo);D=k*(hi-lo)
+  return [A,J*(L+D),-A,J*L,-J*D]
+ if f=='quartic':
+  h=sp.Integer(p['h']);L=h**2/2;D=h**2/5
+  return [A,J*(L+D),-A,J*L,J*D]
+ h=sp.Integer(p['h']);r=sp.sqrt(h);L=2*h*r;D=2*r**3/3
+ return [A,J*(L+D),-A,J*L,J*D]
+RENDERER_VERSION='type-I-region-pixel-calibration-2'
+_PLOT_LOCK=threading.RLock()
+def plot(f,p,d,output_dir=None):
+ # Matplotlib's global mathtext parser is not thread-safe. Serialize rendering
+ # within one process; independent process calls still use unique atomic files.
+ with _PLOT_LOCK:return _plot_impl(f,p,d,output_dir)
+def _plot_impl(f,p,d,output_dir=None):
+ folder=Path(output_dir) if output_dir else ROOT/'plots';folder.mkdir(parents=True,exist_ok=True)
+ key=digest({'renderer_version':RENDERER_VERSION,'f':f,'p':p,'geometry':str((d['lo'],d['hi'],d['low'],d['high']))})[:24]
+ dst=folder/(key+'.png');side=folder/(key+'.json')
+ if dst.exists() and side.exists():return str(dst.resolve())
+ us=np.linspace(float(d['lo']),float(d['hi']),401)
+ evals=lambda z:np.full_like(us,float(z)) if not z.has(u) else np.asarray(sp.lambdify(u,z,'numpy')(us),dtype=float)
+ yl,yh=evals(d['low']),evals(d['high']);xmin=min(0,float(us.min()));xmax=max(0,float(us.max()));ymin=min(0,float(yl.min()));ymax=max(0,float(yh.max()))
+ dx=max(xmax-xmin,1);dy=max(ymax-ymin,1)
+ # Each axis is calibrated independently; source geometry need not use equal units.
+ fig,ax=plt.subplots(figsize=(5.2,4.2),dpi=130)
+ ax.fill_between(us,yl,yh,color='#dce9f1');ax.plot(us,yl,color='red',lw=1.5);ax.plot(us,yh,color='blue',lw=1.5)
+ if f.startswith('hyper'):ax.plot([us[0],us[0]],[yl[0],yh[0]],color='red',lw=1.5)
+ ax.axhline(0,color='black',lw=0.8);ax.axvline(0,color='black',lw=0.8)
+ ax.set_xlim(xmin-.18*dx,xmax+.18*dx);ax.set_ylim(ymin-.15*dy,ymax+.22*dy)
+ ax.set_xlabel('$u$');ax.set_ylabel('$v$',rotation=0)
+ ax.set_xticks(sorted(set([0,float(d['lo']),float(d['hi'])])));ax.set_xticklabels([f'${tex(sp.nsimplify(n))}$' for n in sorted(set([sp.Integer(0),d['lo'],d['hi']]))])
+ ax.set_yticks(sorted(set([0,float(d['low'].subs(u,d['lo'])),float(d['high'].subs(u,d['lo']))])))
+ mid=(float(d['lo'])+float(d['hi']))/2;bottom=float(d['low'].subs(u,mid));top=float(d['high'].subs(u,mid))
+ region_label=ax.text(mid,bottom+.45*(top-bottom),r'$\Delta$',ha='center',color='#226aaa',fontsize=13)
+ arrow_head=(mid-.12*dx,bottom+.88*(top-bottom));arrow_tail=(mid-.12*dx,bottom+.12*(top-bottom))
+ slice_arrow=ax.annotate('',xy=arrow_head,xytext=arrow_tail,arrowprops={'arrowstyle':'->','lw':1})
+ upper_label=ax.text(.03,.96,f'$v={tex(d["high"])}$',transform=ax.transAxes,va='top',color='blue',fontsize=11,bbox={'facecolor':'white','alpha':.8,'edgecolor':'none'})
+ lower_label=ax.text(.98,.06,f'$v={tex(d["low"])}$',transform=ax.transAxes,ha='right',color='red',fontsize=11,bbox={'facecolor':'white','alpha':.8,'edgecolor':'none'})
+ for z in ['top','right']:ax.spines[z].set_visible(False)
+ fig.tight_layout();fig.canvas.draw()
+ renderer=fig.canvas.get_renderer();width_px,height_px=fig.canvas.get_width_height()
+ def image_point(point):
+  px,py=ax.transData.transform(point)
+  return [float(px),float(height_px-py)]
+ def image_bbox(bbox):
+  bx,by,bw,bh=map(float,bbox.bounds)
+  return [bx,float(height_px-by-bh),bw,bh]
+ labels=[]
+ for role,artist,coordinates in [('region',region_label,'data'),('upper_boundary',upper_label,'axes'),('lower_boundary',lower_label,'axes'),('u_axis',ax.xaxis.label,'axes-label'),('v_axis',ax.yaxis.label,'axes-label')]+[('u_tick',z,'tick-label')for z in ax.get_xticklabels()]+[('v_tick',z,'tick-label')for z in ax.get_yticklabels()]:
+  bbox=artist.get_window_extent(renderer)
+  labels.append({'role':role,'text':artist.get_text(),'position':list(map(float,artist.get_position())),'coordinate_system':coordinates,'bbox_display':list(map(float,bbox.bounds)),'bbox_pixel':image_bbox(bbox),'color':artist.get_color(),'visible':artist.get_visible()})
+ transform=ax.transData.get_affine().get_matrix()
+ to_image=np.array([[1,0,0],[0,-1,height_px],[0,0,1]],dtype=float)@transform
+ axes_bbox=ax.get_window_extent(renderer)
+ data={'renderer':'Matplotlib','renderer_version':RENDERER_VERSION,'version':matplotlib.__version__,'python':sys.version.split()[0],'runtime':{'python':sys.version.split()[0],'matplotlib':matplotlib.__version__,'sympy':sp.__version__},'family':f,'parameters':p,'bounds':[str(d[t]) for t in ['lo','hi','low','high']],'axis_calibration':{'xlim':list(map(float,ax.get_xlim())),'ylim':list(map(float,ax.get_ylim()))},'axes_bbox_display':list(map(float,axes_bbox.bounds)),'axes_pixel_bbox':image_bbox(axes_bbox),'origin_display':list(map(float,ax.transData.transform((0,0)))),'origin_pixel':image_point((0,0)),'data_to_display_matrix':transform.tolist(),'data_to_pixel_matrix':to_image.tolist(),'pixel_coordinate_convention':'top-left origin, x rightward, y downward; display coordinates use bottom-left origin','artist_labels':labels,'slice_arrow':{'tail_data':list(map(float,arrow_tail)),'head_data':list(map(float,arrow_head)),'tail_pixel':image_point(arrow_tail),'head_pixel':image_point(arrow_head),'artist_bbox_pixel':image_bbox(slice_arrow.arrow_patch.get_window_extent(renderer))},'boundaries':'all bounding segments included/solid','arrow':'vertical upward slice','pixel_size':[width_px,height_px]}
+ fd,tmp=tempfile.mkstemp(prefix=key+'-',suffix='.png',dir=folder);os.close(fd)
+ fig.savefig(tmp);plt.close(fig);os.replace(tmp,dst)
+ fd,tmp=tempfile.mkstemp(prefix=key+'-',suffix='.json',dir=folder);os.close(fd);Path(tmp).write_text(json.dumps(data,indent=2));os.replace(tmp,side)
+ return str(dst.resolve())
+def prompt(f,p,d):
+ U,V=tex(d['U']),tex(d['V']);h,k=sp.Integer(p['h']),sp.Integer(p['k'])
+ if f.startswith('hyper'):
+  first,second=(V,U)if f=='hyper_x'else(U,V)
+  eqs=f'the lines ${first}={tex(k)},$ ${second}={tex(k)}$ and the curve ${tex(sp.expand(d["U"]*d["V"]))}={tex(h)}.$'
+ elif f=='quartic':
+  power=f'({U})^{{4}}' if h==1 else rf'\frac{{({U})^{{4}}}}{{{tex(h**3)}}}'
+  eqs=f'the curve ${power}{tex(-d["V"])}=0$ and the line $y=0.$'
+ elif f=='down':eqs=f'the curve $({U})^{{2}}+y={tex(h)}$ and the line $y=0.$'
+ else:eqs=f'the curve $({U})^{{2}}-({V})={tex(-k)}$ and the line ${V}={tex(k+h)}.$'
+ return 'Using the change of variables \n\n'+display(f'u={U},\\,v={V},')+'\n\ncalculate the area of the finite region $D$ bounded by '+eqs
+# Shared prose is the captured source template with complete mathematical blocks.
+def solution(f,p,d,asset):
+ anchor=FAMILIES[f][0] or 'q-83943';src=Q[anchor].get(':question/worked-solution',Q['q-83943'][':question/worked-solution'])
+ opening=src[:src.index('**Step 1**')]
+ opening=re.sub(r'\$\$\nu=.*?\n\$\$',lambda m:display('u='+tex(d['U'])+r',\,v='+tex(d['V'])),opening,flags=re.S)
+ U,V=tex(d['U']),tex(d['V']);h,k=sp.Integer(p['h']),sp.Integer(p['k']);lo,hi=d['lo'],d['hi'];J=d['J'];weight=abs(J);pr=d['prim']
+ out=opening+'**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\n'
+ if f.startswith('hyper'):
+  first_expr,first_var,second_expr,second_var=(V,'v',U,'u')if f=='hyper_x'else(U,'u',V,'v')
+  out+=f'Substituting ${first_expr}={first_var}$ into the equation of the first line, we get\n\n'+display(f'{first_expr}={tex(k)}\\,⟹\\,{first_var}={tex(k)}.')
+  out+=f'\n\nwhile substituting ${second_expr}={second_var}$ into the equation of the second line, we obtain\n\n'+display(f'{second_expr}={tex(k)}\\,⟹\\,{second_var}={tex(k)}.')
+  out+='\n\nSubstituting into the equation of the curve, we get\n\n'+display(f'{tex(sp.expand(d["U"]*d["V"]))}={tex(h)}\\,⟹\\,({U})({V})={tex(h)}\\,⟹\\,uv={tex(h)}.')
+  out+=f'\n\nThe intersection point of the two lines in the $uv$-plane is $({tex(k)},{tex(k)}).$'
+  for fixed,unknown in ([('v','u'),('u','v')]if f=='hyper_x'else[('u','v'),('v','u')]):
+   out+='\n\nTo find the intersection of the curve with the line in the $uv$-plane, we solve the following system:\n\n'+display(aligned([f'\\left\\{{\\begin{{aligned}}uv={tex(h)} \\\\ {fixed}={tex(k)}\\end{{aligned}}\\right.\\,⟹\\,\\left\\{{\\begin{{aligned}}{fixed}={tex(k)} \\\\ {unknown}={tex(h/k)}\\end{{aligned}}\\right.']))
+  pts=f'$({tex(k)},{tex(k)}),$ $({tex(k)},{tex(h/k)})$ and $({tex(h/k)},{tex(k)}).$'
+ else:
+  out+=f'Substituting ${U}=u$ and ${V}=v$ into the equation of the first curve, we get\n\n'
+  if f=='quartic':
+   power=f'({U})^{{4}}'if h==1 else rf'\frac{{({U})^{{4}}}}{{{tex(h**3)}}}'
+   out+=display(power+tex(-d['V'])+r'=0\,⟹\,'+power+f'-({V})=0'+r'\,⟹\,v='+tex(d['low'])+'.')
+   inverse_y=rf'\frac{{u-v}}{{{tex(2*sp.Integer(p["a"]))}}}'
+   out+='\n\nNow,\n\n'+display(aligned([r'\left\{\begin{aligned}'+U+r'=u \\ '+V+r'=v\end{aligned}\right.\,⟹\,y='+inverse_y+'.']))
+   out+='\n\nSubstituting this value into the equation of the given line yields:\n\n'+display(r'y=0\,⟹\,'+inverse_y+r'=0\,⟹\,v=u.')
+   sys=f'u(u^{{3}}-{tex(h**3)})=0';pts=f'$(0,0)$ and $({tex(h)},{tex(h)}).$'
+  else:
+   curve=f'({U})^{{2}}+y={tex(h)}' if f=='down' else f'({U})^{{2}}-({V})={tex(-k)}'
+   transformed=f'v={tex(d["high"] if f=="down" else d["low"])}'
+   middle=(f'(y+{tex(k)})={tex(h+k)}-({U})^{{2}}' if f=='down' else f'u^{{2}}-v={tex(-k)}')
+   out+=display(curve+r'\,⟹\,'+middle+r'\,⟹\,'+transformed+'.')
+   out+=f'\n\nwhile substituting ${V}=v$ into the equation of the line, we obtain\n\n'+display(f'v={tex(k if f=="down" else k+h)}.')
+   sys=f'u=\\pm {tex(hi)}';pts=f'$(\\pm {tex(hi)},{tex(k if f=="down" else k+h)}).$'
+  out+='\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n'+display(aligned([r'\left\{\begin{aligned}v='+tex(d['low'])+r' \\ v='+tex(d['high'])+r'\end{aligned}\right.\,⟹\,'+sys]))
+ out+='\n\nSo, the intersection points are '+pts+'\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n'+display(r'Δ=\{(u,v)\,:\,'+tex(lo)+r'\le u\le '+tex(hi)+r',\,'+tex(d['low'])+r'\le v\le '+tex(d['high'])+r'\}.')+'\n\n![]('+asset+')\n\n'
+ out+='**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n'
+ mat=[sp.diff(d[z],t) for z in ['U','V'] for t in [x,y]]
+ out+=display(aligned([r'\frac{∂(u,v)}{∂(x,y)} & =\left|\begin{matrix}\frac{∂u}{∂x}&\frac{∂u}{∂y}\\\frac{∂v}{∂x}&\frac{∂v}{∂y}\end{matrix}\right|',r'&=\left|\begin{matrix}'+tex(mat[0])+'&'+tex(mat[1])+r'\\'+tex(mat[2])+'&'+tex(mat[3])+r'\end{matrix}\right|',r'&='+tex(d['det'])]))
+ out+='\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n'+display(r'\frac{∂(x,y)}{∂(u,v)}={(\frac{∂(u,v)}{∂(x,y)})}^{-1}=('+tex(d['det'])+r')^{-1}='+tex(J)+'.')
+ out+='\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n'
+ # Separate structural masks: inner integration, boundary substitution, width,
+ # primitive, every endpoint component, collection, final exact scalar.
+ t=tex;factor=t(weight);bounds='_{'+t(lo)+'}^{'+t(hi)+'}'
+ low,high=t(d['low']),t(d['high'])
+ if f.startswith('hyper'):components=[h*sp.log(u),-k*u]
+ elif f=='quartic':components=[u**2/2,-u**5/(5*h**3)]
+ else:components=[h*u,-u**3/3]
+ def endpoint(z):return '('+'+'.join('('+t(c.subs(u,z))+')' for c in components)+')'
+ substituted='('+high+')-('+low+')'
+ rows=[r'\iint_D dxdy &=\iint_Δ |\frac{∂(x,y)}{∂(u,v)}|\,dudv',r'&=\iint_Δ |'+t(J)+r'|\,dudv',r'&='+factor+r'\int'+bounds+r'[\int_{'+low+'}^{'+high+r'}dv]du',r'&='+factor+r'\int'+bounds+r'[v]_{'+low+'}^{'+high+r'}du',r'&='+factor+r'\int'+bounds+substituted+'du']
+ if f not in ['hyper_x','hyper_y','quartic']:rows+=[r'&='+factor+r'\int'+bounds+'('+t(d['width'])+')du']
+ rows+=[r'&='+factor+'['+t(pr)+']'+bounds,r'&='+factor+'('+endpoint(hi)+'-'+endpoint(lo)+')',r'&='+factor+'('+t(sp.simplify(pr.subs(u,hi)-pr.subs(u,lo)))+')',r'&='+t(d['A'])]
+ out+=display(aligned(rows))
+ return out
+
+def record(question,bank,correct,spelling,level,seed,f,p,profile,eligible,extra=None):
+ content={'version':VERSION,'question':question,'bank':sorted(spelling),'correct':tex(correct)if correct is not None else None,'field_type':'radio','level':question.get(':question/difficulty')}
+ fp=digest(content);qid=uid(fp);fid=uid(fp+'/selection')
+ answers=[{':answer/id':uid(fid+'/'+val),':answer/type':':answer.type/math',':answer/value':val} for val in spelling]
+ cid=next(z[':answer/id'] for z,m in zip(answers,bank) if eq(m,correct)) if correct is not None else None;random.Random(seed).shuffle(answers)
+ field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',cid]}
+ if cid is None:field.pop(':answer-field/correct')
+ question[':question/id']=qid;question[':question/answer-fields']=[field]
+ task=digest({'f':f,'p':p,'level':question.get(':question/difficulty')})
+ meta={'version':VERSION,'template':f,'profile':profile,'seed':seed,'parameters':p,'mathematical_fingerprint':task,'content_fingerprint':fp,'source':{k:SRC[k] for k in ['database','basis','lineage']},'eligible_for_learning':eligible,'evidence_only':not eligible,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__}}
+ meta.update(extra or {})
+ return {'knowledge_point':{'db_id':KP,'id':R[':knowledge-point/id'],'title':TITLE},'question':question,'generation':meta}
+
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ if level not in ['easy','moderate','hard']:raise ValueError('level')
+ if field_type not in [None,'radio',':answer-field.type/radio']:raise ValueError('radio only')
+ rng=random.Random(seed)
+ if profile and profile.startswith('raw:'):
+  sid=profile[4:]
+  if sid not in Q:raise ValueError('source id')
+  return raw_generate(level,seed,sid,parameters)
+ allowed=[f for f,z in FAMILIES.items() if z[1]==level]
+ f=template or rng.choice(allowed)
+ if f not in allowed:raise ValueError('family difficulty mismatch')
+ selected=profile or 'method' # Complete bank is fixed before parameter sampling.
+ if selected!='method':raise ValueError('profile')
+ for _ in range(1000):
+  p=dict(parameters) if parameters is not None else sample(f,rng);guards(f,p);d=model(f,p);bank=recipes(f,d,p,selected)
+  if all(not eq(bank[i],bank[j]) for i in range(5) for j in range(i)):
+   asset=plot(f,p,d);sol=solution(f,p,d,asset);pr=prompt(f,p,d)
+   for z in [pr,sol]+list(map(tex,bank)):format_ok(z)
+   q={':question/problem':pr,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+level}
+   return record(q,bank,d['A'],list(map(tex,bank)),level,seed,f,p,selected,True,{'source_question':FAMILIES[f][0],'plot':asset,'domain':{z:str(d[z]) for z in ['lo','hi','low','high']}})
+  if parameters is not None:raise ValueError('complete bank collision')
+ raise ValueError('no eligible instance')
+# Easy: authored unit-determinant, zero-shift square-gap family.
+def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
+# Moderate: authored canonical mixed map and nonunit determinant.
+def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
+# Hard: six observed backbones, with their distinct operative stages.
+def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
+def markdown(r):
+ q=r['question'];s=q[':question/problem']+'\n\n'
+ for a in q.get(':question/answer-fields',[{}])[0].get(':answer-field/choices',[]):s+='- $'+a[':answer/value']+'$\n'
+ if ':question/worked-solution'in q:s+='\n'+q[':question/worked-solution']
+ return s
+if __name__=='__main__':
+ a=argparse.ArgumentParser();a.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--format',choices=['markdown','json'],default='markdown');a.add_argument('--template');a.add_argument('--profile');args=a.parse_args()
+ results=[generate(l,args.seed+i,template=args.template,profile=args.profile)for l in (['easy','moderate','hard']if args.difficulty=='all'else[args.difficulty])for i in range(args.count)]
+ print(json.dumps(results,indent=2,ensure_ascii=False)if args.format=='json'else'\n\n---\n\n'.join(map(markdown,results)))
