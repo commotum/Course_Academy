@@ -27,6 +27,20 @@ def check_record(rec):
     assert set(rec['knowledge_point'])=={'db_id','id','title'}
     assert rec['knowledge_point']['db_id']==g.KP_ID
     q=rec['question'];gen=rec['generation'];t=g.TEMPLATES[gen['template']];mats=read_display(q[':question/problem'])
+    assert set(mats)==set(t['labels']),'Displayed label slots'
+    inspected=sum(m.rows*m.cols for m in mats.values())
+    for i,label in enumerate(t['labels']):
+        m=mats[label];pr=independent_properties(m);role=t['roles'][i]
+        assert 1<=m.rows<=5 and 1<=m.cols<=5,'Actual displayed shape scope'
+        assert all(v.q==1 and -3<=v<=7 for v in m),'Actual displayed entry scope'
+        if role=='identity':assert pr['identity']
+        elif role=='diagonal':assert pr['diagonal']
+        elif role=='rectangular':assert not pr['square']
+        else:assert pr['square'] and sum(m[a,b]!=0 for a in range(m.rows) for b in range(m.cols) if a!=b)==t['counts'][i]
+    if gen['bank_profile'].startswith('raw-'):assert inspected<=36
+    else:
+        actual_level=q[':question/difficulty'].split('/')[-1];lo,hi={'easy':(3,36),'moderate':(37,45),'hard':(46,60)}[actual_level]
+        assert lo<=inspected<=hi,'Actual displayed workload scope'
     kind='identity' if 'identity matrices?' in q[':question/problem'] else 'diagonal'
     assert kind==t['kind'];truth={l:independent_properties(m)[kind] for l,m in mats.items()}
     for s in [q[':question/problem'],q.get(':question/worked-solution',''),*[a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices']]]:
@@ -125,11 +139,12 @@ def main():
             assert (k in q)==(k in old),'Source attribute presence: '+sid+' '+k
         assert q[':question/problem']==old[':question/problem'],'Raw-exact prompt: '+sid
         assert q.get(':question/worked-solution')==old.get(':question/worked-solution'),'Full shared prose/stage sequence: '+sid
+        if ':question/difficulty' in old:assert q[':question/difficulty']==old[':question/difficulty'][':db/ident']
         of={f[':answer-field/key']:f for f in old[':question/answer-fields']};assert len(of)==len(q[':question/answer-fields'])
         for f in q[':question/answer-fields']:
             prev=of[f[':answer-field/key']]
             assert f[':answer-field/type']==prev[':answer-field/type'][':db/ident']
-            assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in prev[':answer-field/choices'])
+            assert sorted((a[':answer/type'],a[':answer/value']) for a in f[':answer-field/choices'])==sorted((a[':answer/type'][':db/ident'],a[':answer/value']) for a in prev[':answer-field/choices'])
             assert (':answer-field/correct' in f)==(':answer-field/correct' in prev)
             if ':answer-field/correct' in prev:assert selected(f)==prev[':answer-field/correct'][':answer/value'];designation_count+=1
             option_count+=len(f[':answer-field/choices'])
@@ -206,13 +221,16 @@ def main():
     assert ra['question'][':question/id']!=rb['question'][':question/id']
     mutation_count=0
     base=next(v for v in variants if v['generation']['template']=='q-11562')
-    for mutation in ['stage','witness','key','control','conclusion']:
+    for mutation in ['stage','witness','key','control','conclusion','scope','bank-equivalence']:
         bad=copy.deepcopy(base);q=bad['question']
         if mutation=='stage':q[':question/worked-solution']=q[':question/worked-solution'].replace("It's a square matrix since it has the same number of rows and columns. ",'',1)
         elif mutation=='witness':q[':question/worked-solution']=re.sub(r'(\$\{[a-z]\}_\{)\d\d',r'\g<1>11',q[':question/worked-solution'],count=1)
         elif mutation=='key':
             f=q[':question/answer-fields'][0];f[':answer-field/correct']=[':answer/id',next(a[':answer/id'] for a in f[':answer-field/choices'] if a[':answer/id']!=f[':answer-field/correct'][1])]
         elif mutation=='control':q[':question/problem']+='\x0c'
+        elif mutation=='scope':q[':question/difficulty']=':question.difficulty/hard'
+        elif mutation=='bank-equivalence':
+            f=q[':question/answer-fields'][0];f[':answer-field/choices'][0][':answer/value']=f[':answer-field/choices'][1][':answer/value']
         else:q[':question/worked-solution']=q[':question/worked-solution'].rsplit('Therefore,',1)[0]+'Therefore, none of the given are diagonal matrices.'
         try:check_record(bad)
         except (AssertionError,ValueError):mutation_count+=1
@@ -241,7 +259,7 @@ def main():
     baseline=json.loads((HERE/'baseline-hashes.json').read_text());assert all(hashlib.sha256((ROOT/k).read_bytes()).hexdigest()==v for k,v in baseline.items()),'Registered baseline changed'
     current=[str(p.relative_to(ROOT)) for p in (ROOT/'generate/scratch/17592186087697').rglob('*') if p.is_file()]+['generate/scratch/17592186087697.py']
     assert set(current)==set(baseline),'Registered evidence files added/deleted'
-    report={'pass':True,'database':'math','basis':2275,'lineage':src['lineage'],'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_coverage':{'original_questions':len(cases),'captured_originals':len(sources),'independent_inventory':0,'raw_exact_prompts':len(cases),'raw_exact_present_solutions':5,'present_solutions':5,'full_banks':6,'matched_options':option_count,'total_options':option_count,'matched_existing_correct_designations':designation_count,'existing_correct_designations':15,'missing_original_correct_designations':1,'missing_original_difficulties':1,'missing_original_solutions':1},'fidelity':fidelity,'generated_math_records':tested,'exhaustive_rendered_finite_component_records':finite_component_records,'generated_examples_per_level':12,'meaningful_sampled_tasks':{k:len(v) for k,v in unique.items()},'finite_semantic_capacities_per_template':capacities(),'capacity_notes':'Finite offdiagonal zero/nonzero masks for diagonal criteria; additional diagonal one/nonone masks for identity. Rectangular matrices count shape alone. Repeated equal-role matrix slots unordered. No labels, seeds, banks, diagonal values irrelevant to the criterion, or arbitrary nonzero magnitudes counted. Counts are per template; do not sum them as a deduplicated cross-template union.','slot_coverage':slot_coverage,'default_template_coverage':default_coverage,'mutation_regressions_rejected':mutation_count,'explicit_cross_level_rejections':rejected,'changed_target_fixed_entries':True,'overlap_and_1x1_checks':4,'native_grading':{'accepted':engine['accepted_checks'],'rejected':engine['rejected_checks'],'unresolved':engine['documented_unresolved_checks'],'raw_missing_key_q7829':'Not gradable as captured; public raw evidence remains ineligible. Completed method profile independently keyed to D only.'},'registered_baseline_unchanged':True,'registered_baseline_hashes':baseline,'authored_grade_uncertainty':'Only easy is observed. Moderate/hard split total inspected entries without new methods. No empirical MA grade calibration is claimed.','remaining_limits':['Raw q-7829 has no original key, level or solution; inference cannot count as original designation fidelity.','Authored moderate/hard inspection workload is a conservative design claim, not recovered difficulty evidence.','No human/native UI render inspection; shared UI TeX helper validates structure.'],'plot_rating':'none'}
+    report={'pass':True,'database':'math','basis':2275,'lineage':src['lineage'],'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_coverage':{'original_questions':len(cases),'captured_originals':len(sources),'independent_inventory':0,'raw_exact_prompts':len(cases),'raw_exact_present_solutions':5,'present_solutions':5,'full_banks':6,'matched_options':option_count,'total_options':option_count,'matched_existing_correct_designations':designation_count,'existing_correct_designations':15,'missing_original_correct_designations':1,'missing_original_difficulties':1,'missing_original_solutions':1},'fidelity':fidelity,'generated_math_records':tested,'exhaustive_rendered_finite_component_records':finite_component_records,'generated_examples_per_level':12,'meaningful_sampled_tasks':{k:len(v) for k,v in unique.items()},'finite_semantic_capacities_per_template':capacities(),'capacity_notes':'Finite offdiagonal zero/nonzero masks for diagonal criteria; additional diagonal one/nonone masks for identity. Rectangular matrices count shape alone. Repeated equal-role matrix slots unordered. No labels, seeds, banks, diagonal values irrelevant to the criterion, or arbitrary nonzero magnitudes counted. Counts are per template; do not sum them as a deduplicated cross-template union.','slot_coverage':slot_coverage,'default_template_coverage':default_coverage,'mutation_regressions_rejected':mutation_count,'explicit_cross_level_rejections':rejected,'changed_target_fixed_entries':True,'overlap_and_1x1_checks':4,'native_grading':{'accepted':engine['accepted_checks'],'rejected':engine['rejected_checks'],'unresolved':engine['documented_unresolved_checks'],'raw_missing_key_q7829':'Not gradable as captured; public raw evidence remains ineligible. Completed method profile independently keyed to D only.'},'registered_baseline_unchanged':True,'draft_script_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'registered_baseline_hashes':baseline,'authored_grade_uncertainty':'Only easy is observed. Moderate/hard split total inspected entries without new methods. No empirical MA grade calibration is claimed.','remaining_limits':['Raw q-7829 has no original key, level or solution; inference cannot count as original designation fidelity.','Authored moderate/hard inspection workload is a conservative design claim, not recovered difficulty evidence.','No human/native UI render inspection; shared UI TeX helper validates structure.'],'plot_rating':'none'}
     (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
     (HERE/'review.json').write_text(json.dumps({'original_replays':originals,'generated_variants':variants},indent=2)+'\n')
     md=['# Private draft review','Basis 2275. Raw original replay and authored generated variants are labeled separately.','']

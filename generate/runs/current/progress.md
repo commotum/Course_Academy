@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 41**, **qa_passed: 313**, **queued: 220**, **working: 6**.
+**needs_revalidation: 41**, **qa_passed: 313**, **queued: 219**, **working: 7**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Existing approved work is preserved; other ready drafts await QA until these13 pass. Then finish any coverage-report KPs and the remaining script-ranked candidates.
 
@@ -50,7 +50,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186087696](../../scratch/17592186087696.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Square Matrix | 5 / 0 / 0 / 1 | working | — |
 | [17592186087697](../../scratch/17592186087697.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Special Square Matrix | 5 / 0 / 0 / 1 | working | — |
 | [17592186087698](../../scratch/17592186087698.py) | Zero, Square, Diagonal and Identity Matrices | Identifying Other Matrices | 5 / 0 / 0 / 2 | working | — |
-| [17592186054648](../../scratch/17592186054648.py) | Adding and Subtracting Matrices | Adding Square Matrices | 6 / 0 / 0 / 1 | queued | — |
+| [17592186054648](../../scratch/17592186054648.py) | Adding and Subtracting Matrices | Adding Square Matrices | 6 / 0 / 0 / 1 | working | — |
 | [17592186054649](../../scratch/17592186054649.py) | Adding and Subtracting Matrices | Subtracting Matrices | 5 / 0 / 0 / 2 | queued | — |
 | [17592186054650](../../scratch/17592186054650.py) | Adding and Subtracting Matrices | Adding Non-Square Matrices | 5 / 0 / 0 / 2 | queued | — |
 | [17592186059655](../../scratch/17592186059655.py) | Simplifying Expressions Using the Pythagorean Identity | Simplifying an Expression by Expanding Parentheses and Using the Pythagorean Identity | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059655.json) |

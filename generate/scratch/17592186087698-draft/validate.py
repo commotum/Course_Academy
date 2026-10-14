@@ -96,8 +96,8 @@ def inspect(rec):
    require(sol==g.normalize_prose(expected),'Whole classification solution sentences/stages')
  content={'version':g.VERSION,'level':None if raw else level,'prompt':q[':question/problem'],'solution':None if raw else q[':question/worked-solution'],'fields':[(f[':answer-field/key'],f[':answer-field/type'],sorted(a[':answer/value'] for a in f[':answer-field/choices']),None if raw else next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])) for f in fields]}
  require(meta['content_fingerprint']==g.digest(content) and q[':question/id']==g.uid(g.digest(content)),'Actual prompt/stages/full-bank content ID')
- if t in ('rows','row_sets'):assessed={'task':'row_membership','objects':[{'rows':sp.Matrix(m).rows,'one_column':sp.Matrix(m).cols==1} for m in ms]}
- elif t=='columns':assessed={'task':'column_membership','objects':[{'columns':sp.Matrix(m).cols,'one_row':sp.Matrix(m).rows==1} for m in ms]}
+ if t in ('rows','row_sets'):assessed={'task':'row_membership','objects':sorted([{'rows':sp.Matrix(m).rows,'one_column':sp.Matrix(m).cols==1} for m in ms],key=g.stable)}
+ elif t=='columns':assessed={'task':'column_membership','objects':sorted([{'columns':sp.Matrix(m).cols,'one_row':sp.Matrix(m).rows==1} for m in ms],key=g.stable)}
  else:assessed={'task':'best_category','shape':list(sp.Matrix(ms[0]).shape),'predicates':props(ms[0])}
  require(meta['mathematical_fingerprint']==g.digest(assessed),'Actual predicate/object mathematical fingerprint')
  return ms
@@ -144,6 +144,10 @@ def main():
  # Level bands truly change the inspected object's relevant count; report overlap.
  overlap={a+'-'+b:len(identities[a]&identities[b]) for a,b in itertools.combinations(g.LEVELS,2)}
  require(not any(overlap.values()),'Authored levels cannot simply relabel identical semantic tasks')
+ # A role permutation changes presentation but cannot inflate mathematical capacity.
+ p={'names':list('ABC'),'matrices':[[['1','0']],[['1'],['0']],[['0','1'],['1','0']]]}
+ a=g.generate('easy',profile='rows',parameters=p);p['matrices'][0],p['matrices'][1]=p['matrices'][1],p['matrices'][0];b=g.generate('easy',profile='rows',parameters=p)
+ require(a['generation']['mathematical_fingerprint']==b['generation']['mathematical_fingerprint'] and a['question'][':question/id']!=b['question'][':question/id'],'Matrix permutation is presentation only')
  # API aliases and raw profiles use the same normal renderer and field-owned IDs.
  for case in cases:
   r1=g.generate('easy',parameters=case['parameters'],profile=case['profile']);r2=g.generate('easy',parameters=case['parameters'],profile=case['source_id']);require(r1['question']==r2['question'],'Profile alias content identity')
@@ -166,9 +170,9 @@ def main():
    rec=g.generate('easy',profile=t,parameters={'names':list('ABC'),'matrices':ms});inspect(rec);native.append({'label':f'checkbox-mask-{t}-{mask}','record':rec,'checks':native_checks(rec)});membership_probes+=1
  # Changed target role with entries held: transpose swaps row/column membership.
  for t in ('rows','columns'):
-  p={'names':list('ABC'),'matrices':[[['1','0']],[['1'],['0']],[['0','1'],['1','0']]]};r1=g.generate('easy',profile=t,parameters=p);p['matrices']=[list(map(list,zip(*m))) for m in p['matrices']];r2=g.generate('easy',profile=t,parameters=p);inspect(r1);inspect(r2);require(r1['generation']['mathematical_fingerprint']!=r2['generation']['mathematical_fingerprint'],'Actual changed role is assessed')
+  p={'names':list('ABC'),'matrices':[[['1','0']],[['1'],['0']],[['0','1'],['1','0']]]};r1=g.generate('easy',profile=t,parameters=p);p['matrices']=[list(map(list,zip(*m))) for m in p['matrices']];r2=g.generate('easy',profile=t,parameters=p);inspect(r1);inspect(r2);require(next(a[':answer/value'] for a in r1['question'][':question/answer-fields'][0][':answer-field/choices'] if a[':answer/id']==r1['question'][':question/answer-fields'][0][':answer-field/correct'][1])!=next(a[':answer/value'] for a in r2['question'][':question/answer-fields'][0][':answer-field/choices'] if a[':answer/id']==r2['question'][':question/answer-fields'][0][':answer-field/correct'][1]),'Actual changed role changes displayed field key')
  # Finite inspected shape/property basis for all classification profiles and levels.
- finite=[]
+ finite=[];finite_union={level:set() for level in g.LEVELS}
  for level,(lo,hi) in g.BOUNDS.items():
   for pf in ('row','diagonal','other','legacy_other_repaired'):
    fps=set();valid=invalid=0
@@ -179,9 +183,32 @@ def main():
      for m in candidates:
       p={'names':['M'],'matrices':[m]};truth=[v for v in [a[':answer/value'] for a in g.ORIGINALS[g.PROFILE_SOURCE[pf]][':question/answer-fields'][0][':answer-field/choices']] if category_truth(v,[[sp.Integer(x) for x in row] for row in m],[a[':answer/value'] for a in g.ORIGINALS[g.PROFILE_SOURCE[pf]][':question/answer-fields'][0][':answer-field/choices']])]
       if len(truth)==1:
-       rec=g.generate(level,parameters=p,profile=pf);inspect(rec);fps.add(rec['generation']['mathematical_fingerprint']);valid+=1
+       rec=g.generate(level,parameters=p,profile=pf);inspect(rec);fps.add(rec['generation']['mathematical_fingerprint']);finite_union[level].add(rec['generation']['mathematical_fingerprint']);valid+=1
       else:rejects(lambda:g.generate(level,parameters=p,profile=pf));invalid+=1
    finite.append({'level':level,'profile':pf,'representative_instances':valid+invalid,'valid':valid,'whole_bank_rejections':invalid,'semantic_tasks_in_shape_property_basis':len(fps)})
+ # Exhaust the finite three-object predicate/count domain modulo object order.
+ membership_capacities=[]
+ for level,(lo,hi) in g.BOUNDS.items():
+  for t in ('rows','columns','row_sets'):
+   representatives={}
+   for r in range(1,hi+1):
+    for c in range(1,hi+1):
+     if not lo<=max(r,c)<=hi:continue
+     n=c if t=='columns' else r
+     if level!='easy' and n!=1 and not lo<=n<=hi:continue
+     m=[['1']*c for _ in range(r)]
+     key=(n,r==1) if t=='columns' else (n,c==1)
+     representatives.setdefault(key,m)
+   semantic_tasks=set();instances=0
+   for triplet in itertools.combinations_with_replacement(representatives.values(),3):
+    good=sum((len(m[0])==1 if t=='columns' else len(m)==1) for m in triplet)
+    if level!='easy' and good==3:continue
+    if t=='row_sets' and good not in (1,2):continue
+    ms=list(triplet)
+    if t=='row_sets':ms.sort(key=lambda m:len(m)!=1)
+    rec=g.generate(level,profile='row_sets_repaired' if t=='row_sets' else t,parameters={'names':list('EFG') if t=='row_sets' else list('ABC'),'matrices':ms});inspect(rec);instances+=1;semantic_tasks.add(rec['generation']['mathematical_fingerprint']);finite_union[level].add(rec['generation']['mathematical_fingerprint'])
+   require(instances==len(semantic_tasks),'No object-order capacity inflation')
+   membership_capacities.append({'level':level,'template':t,'single_object_semantic_classes':len(representatives),'exhaustive_unordered_semantic_capacity':len(semantic_tasks),'tested':instances})
  # Bounds and malformed input are enforced on explicit public calls.
  for level in g.LEVELS:
   p=g.generate(level,profile='rows')['generation']['parameters'];p['matrices'][0]=[['1']*11];rejects(lambda:g.generate(level,profile='rows',parameters=p))
@@ -196,6 +223,6 @@ def main():
  for item in review:
   q=item['record']['question'];lines+=['','## '+item['label'],'',q[':question/problem'],'','; '.join(f[':answer-field/key']+': '+', '.join(a[':answer/value'] for a in f[':answer-field/choices']) for f in q[':question/answer-fields']),'',q.get(':question/worked-solution','Original has no key or worked solution.')]
  (HERE/'review.md').write_text('\n'.join(lines)+'\n')
- report={'status':'passed','source_basis':g.SOURCE['basis'],'source_fidelity':source_rows,'totals':{'source_questions':7,'observed_easy':5,'unrated':2,'source_options_matched':37,'source_fields':11,'observed_designations_matched':9,'missing_designations':2,'source_solutions_matched':5,'missing_solutions':2},'samples_checked':len(all_samples),'slot_coverage':slot_coverage,'cross_level_semantic_overlap':overlap,'finite_shape_property_basis':finite,'binary_overlap_probes':overlap_probes,'checkbox_masks_checked':membership_probes,'native_records':len(native),'native_checks':sum(len(n['checks']) for n in native),'registered_baseline_files_unchanged':len(baseline),'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256((engine.with_suffix('.rs')).read_bytes()).hexdigest(),'runtime':{'python':sys.version,'sympy':sp.__version__},'limits':['Moderate/hard are authored dimension inspection policies, not observed ratings or new mathematical classes.','Only 7 practice source records; 2 have no observed designation/solution.','Categorical scalar magnitudes do not create semantic tasks; finite capacity remains.','Raw missing-key profiles cannot be graded and are ineligible for learning.','Radio incomparable true categories reject; 1x1 membership is independently tested without arbitrary most-specific tie breaking.']}
+ report={'status':'passed','source_basis':g.SOURCE['basis'],'source_fidelity':source_rows,'totals':{'source_questions':7,'observed_easy':5,'unrated':2,'source_options_matched':37,'source_fields':11,'observed_designations_matched':9,'missing_designations':2,'source_solutions_matched':5,'missing_solutions':2},'samples_checked':len(all_samples),'slot_coverage':slot_coverage,'cross_level_semantic_overlap':overlap,'finite_shape_property_basis':finite,'finite_membership_capacities':membership_capacities,'finite_total_unordered_semantic_capacities':{level:len(fps) for level,fps in finite_union.items()},'binary_overlap_probes':overlap_probes,'checkbox_masks_checked':membership_probes,'native_records':len(native),'native_checks':sum(len(n['checks']) for n in native),'registered_baseline_files_unchanged':len(baseline),'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256((engine.with_suffix('.rs')).read_bytes()).hexdigest(),'runtime':{'python':sys.version,'sympy':sp.__version__},'limits':['Moderate/hard are authored dimension inspection policies, not observed ratings or new mathematical classes.','Only 7 practice source records; 2 have no observed designation/solution.','Categorical scalar magnitudes do not create semantic tasks; finite capacity remains.','Raw missing-key profiles cannot be graded and are ineligible for learning.','Radio incomparable true categories reject; 1x1 membership is independently tested without arbitrary most-specific tie breaking.']}
  save('validation.json',report);print(json.dumps({'status':'passed','samples':len(all_samples),'native_checks':report['native_checks'],'baseline_files':len(baseline),'sources':7}))
 if __name__=='__main__':main()

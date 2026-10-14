@@ -110,6 +110,7 @@ def sample(pf,level,rng):
   else:
    r,c=k,rng.randint(2,hi)
    if r==c:c=2 if r!=2 else 3
+   if t=='classification' and rng.randrange(2):r,c=c,r
   return make_matrix(r,c,kind,rng)
  if t=='classification':
   kinds={'row':('row','column','identity','square','zero'),'diagonal':('diagonal','identity','row','column','other'),'other':('row','identity','square','zero','other'),'legacy_other_raw':('row','column','identity','zero','other'),'legacy_other_repaired':('row','column','identity','zero','other')}[pf]
@@ -172,8 +173,8 @@ def solution(p,pf,banks):
 def semantic(p,t):
  # Entries matter only through equality to zero/one and categorical predicates.
  # Shape is the inspected object; labels/banks/seed/magnitudes are incidental.
- if t in ('rows','row_sets'):return {'task':'row_membership','objects':[{'rows':len(m),'one_column':len(m[0])==1} for m in p['matrices']]}
- if t=='columns':return {'task':'column_membership','objects':[{'columns':len(m[0]),'one_row':len(m)==1} for m in p['matrices']]}
+ if t in ('rows','row_sets'):return {'task':'row_membership','objects':sorted([{'rows':len(m),'one_column':len(m[0])==1} for m in p['matrices']],key=stable)}
+ if t=='columns':return {'task':'column_membership','objects':sorted([{'columns':len(m[0]),'one_row':len(m)==1} for m in p['matrices']],key=stable)}
  m=p['matrices'][0];return {'task':'best_category','shape':[len(m),len(m[0])],'predicates':predicates(m)}
 
 def generate(level='easy',seed=0,template=None,field_type=None,parameters=None,profile=None):

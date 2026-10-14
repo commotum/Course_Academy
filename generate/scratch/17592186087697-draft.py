@@ -181,11 +181,12 @@ def generate(level='easy',seed=0,template=None,field_type=None,parameters=None,p
         if template is not None and BANK_PROFILES[profile]['template']!=template:raise ValueError('Profile/template mismatch')
         template=BANK_PROFILES[profile]['template']
     eligible=[k for k,t in TEMPLATES.items() if field_type is None or field_type==('radio' if t.get('radio') else 'checkbox')]
-    if template is not None and template not in eligible:raise ValueError('Unsupported template/field combination')
+    if not eligible or template is not None and template not in eligible:raise ValueError('Unsupported template/field combination')
     rng=random.Random(seed);template=template or rng.choice(eligible);t=TEMPLATES[template]
     profile=profile or 'method-'+template;raw=profile.startswith('raw-')
     if raw and level!='easy':raise ValueError('Raw source level cannot be relabeled')
     p=json.loads(json.dumps(parameters)) if parameters is not None else sample(level,t,rng,raw)
+    if set(p)!={'matrices','witnesses'}:raise ValueError('Exactly matrices and witnesses are required')
     p['matrices']=[[list(map(lambda x:str(sp.Rational(x)),row)) for row in m] for m in p['matrices']]
     cells=validate_parameters(level,t,p,raw)
     problem=normalize_prose(prompt(t,p,raw));worked=None if raw and t.get('radio') else normalize_prose(solution(t,p))
