@@ -1,0 +1,13 @@
+# Identifying a Square Matrix — inventory package
+
+The easy generator at `generate/scratch/17592186087696.py` is validated and registered as UUID `f20a5d14-60af-544d-9fe2-6d3be4c21992`. The guarded application-contributor transaction committed at **2197 → 2198**, holding `.local/learning/requests/math/api.lock` through authoritative inventory/basis reads, preview, submission and exact-basis readback.
+
+Rechecking current stock found **five distinct, fresh, gradable easy questions** already available. Therefore **zero new questions** were required or committed. All six original practice questions and the canonical example are unchanged, including the incomplete unrated radio source. No learner or engine facts were changed. Native inventory after registration returned no remaining job for this KP.
+
+The source-backed template has three checkbox fields for three matrices. Mathematical identity uses an unordered multiset of their dimensions; entries, label changes, ordering and seed do not create new tasks. The conservative dimension domain is 1 through 5 for each axis, giving 2925 possible shape multisets. Moderate and hard remain unsupported with explicit nominal shortages of five each; matrix size and entry complexity are not treated as a new difficulty level.
+
+Validation exactly replayed five source prompts and solutions, 15 complete banks and 30 choices. It checked 238 instances, every dimension pair in every position, and all eight selection patterns. Actual engine grading passed 714 accepted and 714 rejected checks. Checkbox submissions use field-owned answer identities; the initial boolean-string probe was rejected and corrected before validation passed. Side-by-side originals and variants are in `review.md`; source cases retain exact matrices and parameters. No plots or external assets are needed.
+
+`reference/replenishment/basis-2197/` retains preparation, exact EDN, request key, native preview, confirmed receipt, exact-basis readback, attribution/scope verification, and inventory results. `replenish.py` recovers saved requests before new intent and validates any supplied `.generated` instances before selection. Repeat preparation at the committed state produces no content changes. `freeze-hashes.json` protects the validated generator, source evidence, validation code, classifications, capabilities and replenisher.
+
+Outcome JSON is saved both in this package and at the requested inventory job's `.result` path. Its `generated` outcome means successful generator creation/registration and sufficient supported stock; `new_questions: 0` is explicit. Unsupported bands are not marked filled.

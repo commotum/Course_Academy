@@ -1,0 +1,23 @@
+# Matrix recognition templates
+
+Every source's full prompt, field key/type, field-owned original choices, correct designation, solution, UUID, and source ID is retained in source.json. source-components.json gives the parameter/choice mapping. The operative method is inspection of matrix shape, square status and main-diagonal entries. Numerical magnitudes are incidental when they do not change these properties.
+
+| Template / source | Specific supplied structure | Response | Solution stages |
+|---|---|---|---|
+| row / q-11563 | A = [1 2 3], one row, three columns, nonzero | Radio “A row vector” | Only one row; hence row vector |
+| diagonal / q-126293 | P = diag(1,1,-1,-1), four rows/columns | Radio “A diagonal matrix” | Square; offdiagonal zeros; diagonal entries not all one; hence diagonal |
+| other / q-7830 | E, four rows/five columns, leading identity entries and extra zero column | Radio “Other” | No special name |
+| rows / q-68751 | A 2×5 general, B 4×1 column, C 1×2 row | Three checkbox fields false,false,true | Explain A's multiple rows, B's single column and four rows, C's single row; conclude C only |
+| columns / q-126287 | A 1×2 row, B 3×1 column, C 2×2 general | Three checkbox fields false,true,false | Explain A's single row, B's single column, C's multiple columns; conclude B only |
+
+Prompt backbone, field types and keys, bank sizes, exact source bank profiles, and these ordered explanation stages remain fixed. Radio letters stay fixed because cosmetic labels add no assessed relation. Three-matrix selection keeps one row, one column and one general matrix and three ordered explanations; assignment of those roles to A/B/C may vary, with conditional solution language and keys derived together. Increasing the number of matrices, selecting different operations, or adding multiplication/entry arithmetic is excluded.
+
+Variable slots: each matrix's dimensions and entries, constrained by its role. Row lengths and column lengths are 2–6; diagonal size is 2–6; rectangular Other uses unequal dimensions 2–6. Checkbox general matrices sample dimensions 2–5, narrower than explicit validation's 2–6. Entries are integers; normal sampling uses -5…5 for dense matrices and nonzero -4…4 for diagonal entries. No 1×1 overlap, zero vector/matrix, identity-diagonal overlap, or ragged input is allowed. Explicit inputs allow integers of absolute value at most 12, matching source replay. Diagonal nonidentity and nonzero constraints apply to every sample. Offdiagonal zeros are structural; diagonal unit/sign examples may vary without changing the recognition method. Other must remain rectangular with multiple rows and columns; diagonal/identity/zero exceptions cannot enter this template.
+
+These dimension and entry bounds are conservative same-method generalizations, not observed source sampling bounds. Source replay retains every observed dimension and exact entry. Original source wording is reproduced at original parameters; generalized checkbox solution branches retain the source sentences with sampled dimensions and targets substituted. No learner-choice-dependent solution or new feedback is added.
+
+Radio distractors are fixed named matrix classes supplied together by each source, not inferred arithmetic-error recipes. Their exact values and predicates are mapped in source-components.json. The diagonal source spells its distractor “A column matrix”; retain this literal rather than silently correcting it. For row, all five choices remain distinct and only row applies. For diagonal, zero/identity excluded, one column/row excluded by size, Other false. For Other, square/identity/zero/row false. No mixed source banks are used. Checkbox values false/true are the exact complete per-field bank.
+
+Distinctness uses task dimensions and classification properties (zero, diagonal, identity), or the queried row/column criterion and the multiset of three dimension pairs. It ignores entry magnitude, seed, source bank, labels, option order, and matrix permutations. The normal sampler has a conservative finite domain of 830 task fingerprints: 5 row + 5 diagonal + 20 Other + 400 row-selection + 400 column-selection. This is a domain limit, not a promise of 830 fresh questions: existing source/generated tasks and learner exposure remove candidates. Search exhaustion leaves an explicit shortage rather than duplicating tasks.
+
+Plot extraction/generation: none. bmatrix arrays carry the supplied mathematics without raster/vector assets. See review.md for every original and two variants and review.json for same-data changed query examples. Validation separates complete bank/prompt/solution fidelity, independently parsed displayed mathematics, slot coverage, and native learner grading.

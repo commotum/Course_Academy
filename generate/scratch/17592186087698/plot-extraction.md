@@ -1,0 +1,1 @@
+All five supported families use only bmatrix mathematical notation. No external plot or diagram appears in prompt, choices or solution, and no plot must be generated or published. Rating: none. Matrix dimensions and entries are rendered from the shared instance parameters.
