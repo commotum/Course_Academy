@@ -19,6 +19,59 @@ let assessmentClock = null;
 let typesetting = Promise.resolve();
 let mathLoader = null;
 const drafts = new Map();
+const manuallyPausedTasks = new Set();
+let timerPausePending = false;
+function manualPauseKey(id) { return 'course-academy.manual-pause.' + String(id); }
+function pausedDraftKey(id) { return 'course-academy.paused-draft.' + String(id); }
+function isManuallyPaused(id) {
+  if (manuallyPausedTasks.has(String(id))) return true;
+  try { return sessionStorage.getItem(manualPauseKey(id)) === 'true'; } catch { return false; }
+}
+function setManualPause(id, paused) {
+  if (paused) manuallyPausedTasks.add(String(id)); else manuallyPausedTasks.delete(String(id));
+  try {
+    if (paused) {
+      sessionStorage.setItem(manualPauseKey(id), 'true');
+      sessionStorage.setItem(pausedDraftKey(id), JSON.stringify({ itemId: task?.step?.itemId, responses: drafts.get(task?.step?.itemId) || [] }));
+    } else {
+      sessionStorage.removeItem(manualPauseKey(id)); sessionStorage.removeItem(pausedDraftKey(id));
+    }
+  } catch { /* Keep the in-page pause. */ }
+}
+function restorePausedDraft(data) {
+  if (!isManuallyPaused(data.taskId)) return;
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(pausedDraftKey(data.taskId)) || 'null');
+    if (saved?.itemId === data.step?.itemId && Array.isArray(saved.responses)) {
+      drafts.set(saved.itemId, saved.responses.filter(response => data.step.fields?.some(field => field.id === response.fieldId)));
+    }
+  } catch { /* Ignore an unavailable or malformed local draft. */ }
+}
+function preloadLessonRendering() {
+  void loadMath().catch(() => {});
+  void loadMathInputs().catch(() => {});
+}
+function refreshPauseControl() {
+  const control = lessonView?.pause;
+  if (!control) return;
+  const paused = short(task?.status) === 'paused';
+  control.textContent = paused ? 'Resume' : 'Pause';
+  control.setAttribute('aria-label', paused ? 'Resume lesson working time' : 'Pause lesson working time');
+  control.setAttribute('aria-pressed', String(paused));
+  control.dataset.unavailable = String(timerPausePending);
+  control.disabled = busy || timerPausePending;
+  if (control.hidden) return;
+  lessonView.timer.dataset.paused = String(paused);
+  lessonView.timer.title = paused ? 'Working time is paused' : 'Working time';
+}
+async function toggleLessonPause() {
+  if (busy || timerPausePending || !task || isDeveloperMode() || modeChanging || terminal(short(task.status)) || task.type === 'assessment') return;
+  const paused = short(task.status) === 'paused';
+  if (!paused) { setManualPause(task.taskId, true); stopClock(); updateTaskTimer(); }
+  timerPausePending = true;
+  refreshPauseControl();
+  await mutation(paused ? '/api/resume' : '/api/pause', { taskId: task.taskId });
+}
 let pendingPause = null;
 let assessmentSaveTimer = null;
 let assessmentSave = Promise.resolve();
@@ -124,6 +177,7 @@ function setBusy(value) {
   for (const control of document.querySelectorAll('[data-answer-input]')) {
     control.disabled = value || control.dataset.readOnly === 'true';
   }
+  refreshPauseControl();
 }
 function actionButton(text, className, action, enabled = true) {
   const node = button(text, className, action);
@@ -135,7 +189,7 @@ function actionButton(text, className, action, enabled = true) {
 async function mutation(path, values) {
   if (isDeveloperMode() || modeChanging) return;
   if (busy) return;
-  if (path === '/api/start' || path === '/api/study-topic') void loadMath().catch(() => {});
+  if (path === '/api/start' || path === '/api/study-topic') preloadLessonRendering();
   const body = { ...values, requestId: crypto.randomUUID() };
   const revision = settingsRevision;
   let resumeBody = null;
@@ -174,6 +228,8 @@ async function mutation(path, values) {
       }
       if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
       task = result.task || result;
+      if (path === '/api/resume' || path === '/api/start' || path === '/api/study-topic') setManualPause(task.taskId, false);
+      if (path === '/api/pause' || path === '/api/resume') timerPausePending = false;
       history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(task.taskId));
       await renderTask(task);
       announce(answered(task.step?.status) ? (task.step.status === 'correct' ? 'Correct.' : task.step.status === 'incorrect' ? 'Incorrect.' : task.step.status === 'submitted' ? 'Answer saved.' : 'Skipped.') : task.step?.title || 'Progress saved.');
@@ -328,6 +384,7 @@ function lessonCompletedSteps(number, total, complete = false) {
 function lessonShell(data, { preview = false, number, total, complete = false } = {}) {
   const key = `${preview ? 'preview' : 'task'}:${data.learner?.id || 'learner'}:${preview ? data.activityId : data.taskId}`;
   if (lessonView?.key !== key) {
+    timerPausePending = false;
     resetMain('lesson-main');
     const heading = el('h1', 'sr-only', data.title || 'Lesson');
     attachStepMenu(heading, data.activityId, null, { kind: 'activity' });
@@ -342,10 +399,12 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
     const timer = el('span', 'timer', preview ? 'Preview' : duration(clock.elapsed));
     if (!preview) { timer.id = 'taskTimer'; timer.setAttribute('aria-label', 'Working time'); }
     else timer.title = 'Developer mode · Nothing recorded';
-    toolbar.append(exit, track, position, timer);
+    const pause = actionButton('Pause', 'lesson-pause text-button', toggleLessonPause);
+    const timing = el('div', 'lesson-timing'); timing.append(timer, pause);
+    toolbar.append(exit, track, position, timing);
     const feed = el('div', 'lesson-feed');
     $('main').append(heading, toolbar, feed);
-    lessonView = { key, feed, track, fill, position, timer, current: null, currentId: null, history: new Map() };
+    lessonView = { key, feed, track, fill, position, timer, pause, current: null, currentId: null, history: new Map() };
   }
   const maximum = Number(total) || 1;
   const completed = lessonCompletedSteps(number, total, complete);
@@ -356,6 +415,8 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
   lessonView.fill.style.width = `${completed / maximum * 100}%`;
   lessonView.position.textContent = total ? `${String(number || 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}` : '';
   lessonView.timer.textContent = preview ? 'Preview' : duration(clock.elapsed);
+  lessonView.pause.hidden = preview || complete || data.awaitingQuestions || data.type === 'assessment';
+  refreshPauseControl();
   return lessonView;
 }
 
@@ -537,7 +598,7 @@ async function openTask(id) {
   homeController?.abort(); homeController = null; homeRequest = null;
   homeRendered = false;
   clearError(); setBusy(true);
-  void loadMath().catch(() => {});
+  preloadLessonRendering();
   const revision = settingsRevision;
   try {
     let data = await api('/api/task?taskId=' + encodeURIComponent(id));
@@ -549,7 +610,7 @@ async function openTask(id) {
     if ((data.task || data).expired) {
       data = await api('/api/expire', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() });
     }
-    if (!document.hidden && short((data.task || data).status) === 'paused') {
+    if (!document.hidden && short((data.task || data).status) === 'paused' && !isManuallyPaused(id)) {
       try { data = await api('/api/resume', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() }); }
       catch (error) {
         if (error.code !== 'assessment-expired') throw error;
@@ -558,6 +619,7 @@ async function openTask(id) {
       if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
     }
     task = data.task || data;
+    restorePausedDraft(task);
     history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(id));
     await renderTask(task);
   } catch (error) { if (revision === settingsRevision) showError(error, () => openTask(id)); }
@@ -782,7 +844,7 @@ function taskContent(data, step, number, total, archived = false) {
     const draft = drafts.get(step.itemId) || [];
     mountInlineFields(prompt, fieldList, fields, field => {
       const saved = draft.find(response => response.fieldId === field.id);
-      return fieldControl(!readOnly && saved ? { ...field, response: saved } : field, readOnly, step.itemId, step.markdown ?? step.problem, step.status);
+      return fieldControl(!isAnswered && saved ? { ...field, response: saved } : field, readOnly, step.itemId, step.markdown ?? step.problem, step.status);
     });
     form.append(prompt, fieldList);
     if (!readOnly) {

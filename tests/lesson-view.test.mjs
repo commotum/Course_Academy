@@ -91,7 +91,7 @@ function fixture(storage = new Map()) {
     loadMath = async () => {};
     return {
       get view() { return lessonView; }, get clock() { return clock; }, get pending() { return pendingPause; },
-      updateTaskTimer, mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home,
+      updateTaskTimer, mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home, toggleLessonPause, retry: () => retryOperation?.(),
       render: async data => { task = data; await renderTask(data); },
       preview: async (data, index) => { task = data; previewStepIndex = index; await renderPreview(); },
     };
@@ -120,11 +120,25 @@ test('lesson frame has a compact progress bar and timer, and hides the topic hea
   assert.equal(main.querySelector('h1').className, 'sr-only');
   assert.equal(main.querySelector('.lesson-heading'), null);
   assert.equal(main.querySelector('.pause-panel'), null);
-  assert.equal(main.querySelectorAll('button').some(node => node.textContent === 'Pause'), false);
+  assert.equal(f.h.view.pause.textContent, 'Pause');
+  assert.equal(f.h.view.pause.hidden, false);
   assert.equal(f.h.view.track.getAttribute('aria-valuenow'), '0');
   assert.equal(f.h.view.timer.textContent, '0:10');
   assert.equal(f.h.view.feed.children.length, 1);
   assert.equal(f.scrolls.length, 1);
+});
+
+test('pause controls are hidden for previews, completed lessons, and fixed-deadline assessments', async () => {
+  const f = fixture();
+  await f.h.render(activity(1, 1, { status: 'completed' }));
+  assert.equal(f.h.view.pause.hidden, true);
+  await f.h.render(activity(2, 1, { type: 'assessment', remainingSeconds: 900 }));
+  assert.equal(f.h.view.pause.hidden, true);
+  await f.h.toggleLessonPause();
+  assert.equal(f.calls.length, 0);
+  await f.h.preview({activityId:500,type:'lesson',learner:{id:'test'},steps:[{...question(1),fields:[]}]},0);
+  assert.equal(f.h.view.pause.hidden, true);
+  assert.match(f.h.view.timer.title, /Nothing recorded/);
 });
 
 test('Study now starts the selected graph topic directly in the progressive lesson view', async () => {
@@ -304,6 +318,56 @@ test('hidden lessons pause after an in-flight save and automatically resume when
   assert.equal(resume.body.taskId, 123);
   assert.equal(f.h.clock.running, true);
   assert.equal(f.h.view.timer.textContent, '0:13');
+});
+
+test('manual pause stops working time, preserves a draft, and stays paused across visibility and reload', async () => {
+  const f = fixture();
+  const step = { ...question(1), markdown: 'Enter {{value}}.', fields: [{ id: 30, key: 'value', type: 'blank', answerType: 'text' }] };
+  f.server = activity(1, 1, { step });
+  await f.h.render(structuredClone(f.server));
+  f.h.view.current.querySelector('input').value = 'typed draft';
+  f.h.view.current.querySelector('form').dispatchEvent(new Event('input'));
+  f.now += 3000;
+  await f.h.toggleLessonPause();
+  assert.equal(f.h.clock.running, false);
+  assert.equal(f.h.clock.elapsed, 13);
+  assert.equal(f.h.view.pause.textContent, 'Resume');
+  assert.equal(f.h.view.current.querySelector('input').value, 'typed draft');
+  assert.equal(f.h.view.current.querySelector('input').disabled, true);
+  f.now += 60000; f.h.updateTaskTimer();
+  assert.equal(f.h.view.timer.textContent, '0:13');
+  f.document.hidden = true; await f.h.pauseWhenHidden();
+  f.document.hidden = false; await f.h.refreshPageOnReturn();
+  assert.equal(f.calls.filter(call => call.path === '/api/resume').length, 0);
+  const reopened = fixture(f.storage); reopened.server = structuredClone(f.server);
+  await reopened.h.openTask(123);
+  assert.equal(reopened.calls.some(call => call.path === '/api/resume'), false);
+  assert.equal(reopened.h.view.current.querySelector('input').value, 'typed draft');
+  assert.equal(reopened.h.view.pause.textContent, 'Resume');
+  await reopened.h.toggleLessonPause();
+  assert.equal(reopened.calls.filter(call => call.path === '/api/resume').length, 1);
+  assert.equal(reopened.h.clock.running, true);
+  assert.equal(reopened.h.view.current.querySelector('input').value, 'typed draft');
+  assert.equal(reopened.h.view.current.querySelector('input').disabled, false);
+});
+
+test('an uncertain manual pause stops the local clock and retries the same request', async () => {
+  const f = fixture(); f.server = activity(1);
+  await f.h.render(structuredClone(f.server));
+  let attempts = 0;
+  f.respond = async path => {
+    if (path === '/api/pause' && ++attempts === 1) throw new Error('Reply lost');
+    return null;
+  };
+  f.now += 3000; await f.h.toggleLessonPause();
+  assert.equal(f.h.clock.running, false);
+  assert.equal(f.h.view.pause.disabled, true);
+  const first = f.calls.find(call => call.path === '/api/pause').body;
+  await f.h.retry();
+  const requests = f.calls.filter(call => call.path === '/api/pause');
+  assert.equal(requests.length, 2); assert.deepEqual(requests[1].body, first);
+  assert.equal(f.h.view.pause.textContent, 'Resume');
+  assert.equal(f.h.view.pause.disabled, false);
 });
 
 test('Study shows saved lesson progress with the same fraction as the player', async () => {

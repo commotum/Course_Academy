@@ -795,6 +795,10 @@ enum StudyScope {
     Targets,
     Course,
     Queue,
+    Topic(u64),
+}
+impl StudyScope {
+    fn explicit(self) -> bool { matches!(self, Self::Queue | Self::Topic(_)) }
 }
 
 /// Zero-based global prerequisite layers, matching the graph's L01… badges.
@@ -869,7 +873,29 @@ pub fn queue_candidates(
     course: u64,
     at: DateTime<Utc>,
 ) -> Result<Vec<PlannedActivity>> {
-    let mut plan = plan_candidates_in_scope(s, learner, course, at, 2, false, StudyScope::Queue)?;
+    queue_candidates_in_scope(s, learner, course, at, StudyScope::Queue)
+}
+
+/// Apply manual selection rules to one topic without copying the captured
+/// database or changing the learner's queue and Study-mode preference.
+pub fn selected_topic_candidates(
+    s: &EntitySnapshot,
+    learner: u64,
+    course: u64,
+    topic: u64,
+    at: DateTime<Utc>,
+) -> Result<Vec<PlannedActivity>> {
+    queue_candidates_in_scope(s, learner, course, at, StudyScope::Topic(topic))
+}
+
+fn queue_candidates_in_scope(
+    s: &EntitySnapshot,
+    learner: u64,
+    course: u64,
+    at: DateTime<Utc>,
+    selection: StudyScope,
+) -> Result<Vec<PlannedActivity>> {
+    let mut plan = plan_candidates_in_scope(s, learner, course, at, 2, false, selection)?;
     if !plan.is_empty() {
         let layers = topic_layers(s)?;
         plan.sort_by(|a, b| {
@@ -1241,8 +1267,9 @@ fn plan_candidates_in_scope(
     selection: StudyScope,
 ) -> Result<Vec<PlannedActivity>> {
     let mut scope = BTreeSet::new();
-    if selection == StudyScope::Queue {
-        for topic in s.refs(learner, "learner/queue")? {
+    if selection.explicit() {
+        let topics = if let StudyScope::Topic(topic) = selection { vec![topic] } else { s.refs(learner, "learner/queue")? };
+        for topic in topics {
             if !s.entity(topic)?.contains_key("topic/id") {
                 return Err("learner/queue must reference topics".into());
             }
@@ -1285,7 +1312,7 @@ fn plan_candidates_in_scope(
             return Err("invalid imported repetition position".into());
         }
         repetitions.insert(topic, reps);
-        if selection == StudyScope::Queue {
+        if selection.explicit() {
             continue;
         }
         // A complete local state explicitly records whether learning has been
@@ -1370,7 +1397,7 @@ fn plan_candidates_in_scope(
             continue;
         };
         if lifecycle.lesson_blocked(s, topic)?
-            || (selection != StudyScope::Queue && !lifecycle.retry_ready(topic))
+            || (!selection.explicit() && !lifecycle.retry_ready(topic))
         {
             continue;
         }
@@ -1400,7 +1427,7 @@ fn plan_candidates_in_scope(
             continue;
         }
         if (exclude_practiced && practiced.contains(&topic))
-            || (selection != StudyScope::Queue
+            || (!selection.explicit()
                 && prerequisites
                     .get(&topic)
                     .is_some_and(|required| !required.is_subset(&ready)))
@@ -2507,6 +2534,27 @@ pub(crate) mod tests {
             json!({"question/id":id(question),"question/problem":"$2x=1$","question/answer-fields":[200]}),
         );
         activity
+    }
+
+    #[test]
+    fn explicit_topic_planning_matches_manual_queue_override_without_editing_records() {
+        let mut s = planning_fixture(&[]);
+        planning_lesson(&mut s, 80, &[81]);
+        planning_lesson(&mut s, 81, &[]);
+        let at = Utc::now();
+        for directed in [false, true] {
+            s.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(), json!(directed));
+            for topic in [80, 81] {
+                let before = s.entities.clone();
+                let direct = selected_topic_candidates(&s, 1, 2, topic, at).unwrap();
+                let mut overridden = s.clone();
+                overridden.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(), json!(true));
+                overridden.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([topic]));
+                let expected = queue_candidates(&overridden, 1, 2, at).unwrap();
+                assert_eq!(serde_json::to_value(direct).unwrap(), serde_json::to_value(expected).unwrap());
+                assert_eq!(s.entities, before);
+            }
+        }
     }
 
     fn planning_time() -> DateTime<Utc> {

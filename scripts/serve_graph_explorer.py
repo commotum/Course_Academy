@@ -294,6 +294,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
 
     inventory_jobs = InventoryJobs(ROOT, ROOT / '.local/learning/inventory' / database / learner, learner, environment)
     scheduler_stop = threading.Event()
+    inventory_refresh = threading.Event()
 
     def inventory_hook():
         response = learning_worker.request({'action': 'inventory'})
@@ -327,6 +328,27 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
             except (OSError, ValueError) as error:
                 print(f'Inventory worker deferred: {error}', file=sys.stderr)
             scheduler_stop.wait(5)
+
+    def inventory_refresh_loop():
+        # Inventory admission is read-only background work, not part of the
+        # response to a saved lesson. Coalesce requests and yield to API writes.
+        while not scheduler_stop.is_set():
+            if not inventory_refresh.wait(1):
+                continue
+            try:
+                request_directory.mkdir(parents=True, exist_ok=True)
+                with (request_directory / 'api.lock').open('a') as lock:
+                    try:
+                        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    except BlockingIOError:
+                        scheduler_stop.wait(.1)
+                        continue
+                    inventory_refresh.clear()
+                    if not developer_mode(mode_path):
+                        inventory_hook()
+            except (OSError, ValueError) as error:
+                print(f'Inventory handoff deferred: {error}', file=sys.stderr)
+                scheduler_stop.wait(1)
 
     class Handler(BaseHTTPRequestHandler):
         def send_bytes(self, status: int, body: bytes, content_type: str, *, cache: bool = False) -> None:
@@ -397,13 +419,11 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         body = {**body, "preview": developer_mode(mode_path)}
                     body = assignment_request(body, directory, learner)
                     response = (page_worker if page_read else learning_worker).request(body)
-                    if response.get('ok') and (body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path):
-                        try:
-                            inventory_hook()
-                        except (OSError, ValueError) as error:
-                            self.log_error("Saved activity; inventory handoff deferred: %s", error)
+                    refresh_inventory = response.get('ok') and (body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
                 if response.get("ok"):
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
+                    if refresh_inventory:
+                        inventory_refresh.set()
                 else:
                     self.log_error("Learning request failed (%s)", response.get("code", "validation"))
                     self.send_bytes(503 if response.get("code") == "unavailable" else 409, json.dumps({"error": response.get("error", "The request could not be completed."), "code": response.get("code", "validation")}).encode(), "application/json; charset=utf-8")
@@ -609,7 +629,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
 
     Handler.workers = (graph_worker, learning_worker, page_worker)
     Handler.scheduler_stop = scheduler_stop
-    Handler.background = (scheduler_loop, generator_loop) if learning_worker else ()
+    Handler.inventory_refresh = inventory_refresh
+    Handler.background = (scheduler_loop, generator_loop, inventory_refresh_loop) if learning_worker else ()
     return Handler
 
 

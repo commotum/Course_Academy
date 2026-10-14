@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bounded source-faithful hard line-identification families with exact arithmetic."""
+"""Private all-level graph recognition draft with parameterized complete original raw banks."""
 import argparse
 import hashlib
 import importlib.util
@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 KP_ID = 17592186054802
 KP_UUID = '3986a3cd-c543-54e9-8d55-f744d9436313'
 TITLE = 'Identifying a Line Given a Graph'
-VERSION = 'graph-line-all3-local-draft-v3'
+VERSION = 'graph-line-all3-local-draft-v4'
 PACKAGE = Path(__file__).with_suffix('')
 GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
 SOURCE = json.loads((PACKAGE / 'source.json').read_text())
@@ -38,29 +38,8 @@ def digest(value):
 def ident(value):
     return str(uuid.uuid5(uuid.UUID(KP_UUID), digest(value)))
 
-def candidates(profile):
-    # Explicit bounded extension of the observed positive intercepts and negative slopes.
-    if profile == 'q-71837':
-        return [{'b': k*t, 't': t} for k in (2, 3, 4, 5) for t in (1, 2, 3, 4)]
-    if profile == 'q-54293':
-        return [{'b': b, 't': t} for b in (1, 2, 3, 4) for t in (2, 3, 4, 6, 8)]
-    raise ValueError('Unrated source profile is not a supported difficulty')
-
-def line(parameters):
-    b, t = sp.Rational(parameters['b']), sp.Rational(parameters['t'])
-    return -b/t, b
-
-def task_key(parameters):
-    return digest([str(z) for z in line(parameters)])
-
 def tex(value):
     return sp.latex(sp.Rational(value))
-
-def objects(profile, p):
-    m, b = line(p)
-    if profile == 'q-71837':
-        return [(m, b)] * 3
-    return [(-b, -m), (m, b), (-m, b)]
 
 def equations(profile, p):
     b, t = p['b'], p['t']
@@ -69,47 +48,6 @@ def equations(profile, p):
         k = int(c)
         return [f'y+{k}x={b}', rf'\frac{{1}}{{{k}}}y+x={t}', f'y=-{k}x+{b}']
     return [rf'y=-{b}x+{tex(c)}', rf'y=-{tex(c)}x+{b}', rf'y={tex(c)}x+{b}']
-
-def plot(profile, p, role):
-    q = PROFILES[profile]
-    old = re.findall(r'!\[.*?\]\((.*?)\)', q[':question/problem' if role == 'prompt' else ':question/worked-solution'])[0]
-    if p == SOURCE_CASES[profile]:
-        return old, None
-    m, b = line(p)
-    t = p['t']
-    signature = digest({'version': VERSION, 'line': [str(m), str(b)], 'role': role})
-    local = PACKAGE / 'assets' / (signature + '.png')
-    local.parent.mkdir(exist_ok=True)
-    xmin, xmax = -2, max(6, t+2)
-    ymin, ymax = -2, int(b)+2
-    fig, ax = plt.subplots(figsize=(4.6, 4.6), dpi=120)
-    ax.set(xlim=(xmin, xmax), ylim=(ymin, ymax))
-    ax.set_aspect('equal', adjustable='box')
-    ax.set_xticks(range(xmin, xmax+1)); ax.set_yticks(range(ymin, ymax+1))
-    ax.grid(color='#c8c8c8', linewidth=.65)
-    ax.set_axisbelow(True)
-    ax.spines[['right', 'top']].set_visible(False)
-    ax.spines[['left', 'bottom']].set_position('zero')
-    ax.tick_params(length=0, labelsize=8, pad=4)
-    ax.set_xticklabels(['' if z == 0 else str(z) for z in range(xmin, xmax+1)])
-    ax.set_yticklabels(['' if z == 0 else str(z) for z in range(ymin, ymax+1)])
-    ax.plot([xmin, xmax], [float(m*xmin+b), float(m*xmax+b)], color='red', linewidth=1.7)
-    ax.plot(xmax, 0, '>k', clip_on=False, markersize=5)
-    ax.plot(0, ymax, '^k', clip_on=False, markersize=5)
-    ax.annotate('$x$', (xmax, 0), xytext=(10, -2), textcoords='offset points')
-    ax.annotate('$y$', (0, ymax), xytext=(0, 10), textcoords='offset points')
-    if role == 'solution':
-        ax.scatter([0, t], [float(b), 0], color='blue', s=22, zorder=5)
-        ax.annotate('$A$', (0, float(b)), xytext=(5, 7), textcoords='offset points')
-        ax.annotate('$B$', (t, 0), xytext=(5, 7), textcoords='offset points')
-    fig.tight_layout(pad=2)
-    fig.savefig(local, metadata={'Software': VERSION})
-    plt.close(fig)
-    sha = hashlib.sha256(local.read_bytes()).hexdigest()
-    path = f'images/{sha[:2]}/{sha}.png'
-    return path, {'local': str(local), 'path': path, 'sha256': sha, 'role': role,
-                  'line': [str(m), str(b)], 'points': [[0, p['b']], [t, 0]],
-                  'limits': [xmin, xmax, ymin, ymax], 'renderer': 'matplotlib'}
 
 def aligned(rows):
     return '$$\n' + r'\begin{aligned}' + r' \\ '.join(rows) + r'\end{aligned}' + '\n$$'
@@ -250,19 +188,24 @@ def plot(profile,p,role):
         ax.plot(xmax,0,'>k',clip_on=False,markersize=5);ax.plot(0,ymax,'^k',clip_on=False,markersize=5)
         ax.annotate('$x$',(xmax,0),xytext=(13,-3),textcoords='offset points',fontsize=12)
         ax.annotate('$y$',(0,ymax),xytext=(-3,13),textcoords='offset points',fontsize=12)
+        marker_labels=[]
         if role=='solution':
             for label,(u,v) in zip(('A','B'),points):
                 ax.scatter([float(u)],[float(v)],color='blue',s=24,zorder=5)
-                ax.annotate('$'+label+'$',(float(u),float(v)),xytext=(9,10),textcoords='offset points',fontsize=11,zorder=6)
+                offset=(24,(10 if m<0 else -14)) if v==0 else (24,-6)
+                marker_labels.append(ax.annotate('$'+label+'$',(float(u),float(v)),xytext=offset,textcoords='offset points',fontsize=11,zorder=6))
         fig.canvas.draw();renderer=fig.canvas.get_renderer()
         origin=ax.transData.transform((0,0));unit=ax.transData.transform((1,1))-origin
         boxes=[list(t.get_window_extent(renderer).bounds) for t in ax.get_xticklabels()+ax.get_yticklabels() if t.get_text()]
+        marker_boxes=[list(t.get_window_extent(renderer).bounds) for t in marker_labels]
+        marker_clearance=min([min(xx-origin[0],(yy-origin[1]) if yy>origin[1] else origin[1]-(yy+hh)) for xx,yy,ww,hh in marker_boxes],default=999)
+        if marker_clearance<4:raise ValueError('Marker label too close to a zero axis')
         w,h=fig.canvas.get_width_height()
         # Native pixel calibration independent of PNG curve pixels, retained for readback.
         meta={'local':str(local),'path':str(local),'role':role,'renderer':'matplotlib','dimensions':[w,h],
               'origin_pixels':[float(origin[0]),float(h-origin[1])],'unit_pixels':[float(unit[0]),float(unit[1])],
               'limits':[xmin,xmax,ymin,ymax],'points':[[str(z) for z in a] for a in points],
-              'line':[str(m),str(b)],'tick_bboxes_display':boxes,'glyph_min_axis_clearance_px':min([origin[1]-(y+hh) for x,y,ww,hh in boxes[:len([t for t in ax.get_xticklabels() if t.get_text()])]]+[origin[0]-(x+ww) for x,y,ww,hh in boxes[len([t for t in ax.get_xticklabels() if t.get_text()]):]])}
+              'line':[str(m),str(b)],'tick_bboxes_display':boxes,'marker_bboxes_display':marker_boxes,'marker_min_axis_clearance_px':float(marker_clearance),'glyph_min_axis_clearance_px':min([origin[1]-(y+hh) for x,y,ww,hh in boxes[:len([t for t in ax.get_xticklabels() if t.get_text()])]]+[origin[0]-(x+ww) for x,y,ww,hh in boxes[len([t for t in ax.get_xticklabels() if t.get_text()]):]])}
         fd,temp=tempfile.mkstemp(prefix=signature+'-',suffix='.png',dir=directory);os.close(fd)
         try:fig.savefig(temp,metadata={'Software':VERSION});os.replace(temp,local)
         finally:
@@ -320,7 +263,7 @@ def generate(level='hard',seed=0,template=None,field_type=None,parameters=None,p
     raw=requested_profile.endswith('-raw')
     profile=requested_profile[:-4] if raw else requested_profile
     if raw and profile not in PROFILES:raise ValueError('Raw replay only for original MA profiles')
-    if template and requested_profile!=template:raise ValueError('Template/profile mismatch')
+    if template and template not in (profile,requested_profile):raise ValueError('Template/profile mismatch')
     if profile in PROFILES and SOURCE_LEVELS[profile]!=level:raise ValueError('Source profile assigned different authored/sourced level')
     if profile not in PROFILES and profile!='authored-'+level:raise ValueError('Level scope mismatch')
     # Normalize exact numeric spelling; no alias can create extra mathematical tasks.

@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 43**, **qa_passed: 295**, **queued: 238**, **working: 4**.
+**needs_revalidation: 41**, **qa_passed: 299**, **queued: 236**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). Finish existing workers, then follow updated ranks; coverage-report priorities remain first and are already approved.
 
@@ -39,14 +39,14 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186175922](../../scratch/17592186175922.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Perpendicular Line | 1 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186175922.json) |
 | [17592186064171](../../scratch/17592186064171.py) | Integrating Exponential Functions | Integrating the Exponential Function | 3 / 1 / 1 / 1 | qa_passed | [Report](qa/17592186064171.json) |
 | [17592186064172](../../scratch/17592186064172.py) | Integrating Exponential Functions | Integrating an Exponential Function With a General Base | 2 / 2 / 1 / 1 | qa_passed | [Report](qa/17592186064172.json) |
-| [17592186064206](../../scratch/17592186064206-draft.py) | Integrating Linear Rational Functions Using Substitution | Integrating a Linear Rational Function | 5 / 0 / 0 / 1 | working | — |
-| [17592186054694](../../scratch/17592186054694-draft.py) | Graphing Linear Equations | Plotting a Line Using a Table | 5 / 0 / 0 / 1 | working | — |
-| [17592186054695](../../scratch/17592186054695-draft.py) | Graphing Linear Equations | Sketching a Line Using Two Points | 5 / 0 / 0 / 2 | working | — |
-| [17592186054802](../../scratch/17592186054802-draft.py) | Graphing Linear Equations | Identifying a Line Given a Graph | 0 / 0 / 5 / 2 | working | — |
-| [17592186059714](../../scratch/17592186059714.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating the Magnitude of a Vector Given in Component Form | 7 / 0 / 0 / 2 | queued | — |
-| [17592186059715](../../scratch/17592186059715.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Vector From Position Vectors and then Computing its Magnitude | 0 / 8 / 0 / 2 | queued | — |
-| [17592186059826](../../scratch/17592186059826.py) | Interval Notation | Converting Between Intervals and Inequalities: Open Intervals | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059826.json) |
-| [17592186059713](../../scratch/17592186059713.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Given in Alternative Notation | 2 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059713.json) |
+| [17592186064206](../../scratch/17592186064206-draft.py) | Integrating Linear Rational Functions Using Substitution | Integrating a Linear Rational Function | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186064206.json) |
+| [17592186054694](../../scratch/17592186054694-draft.py) | Graphing Linear Equations | Plotting a Line Using a Table | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186054694.json) |
+| [17592186054695](../../scratch/17592186054695-draft.py) | Graphing Linear Equations | Sketching a Line Using Two Points | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186054695.json) |
+| [17592186054802](../../scratch/17592186054802-draft.py) | Graphing Linear Equations | Identifying a Line Given a Graph | 0 / 0 / 5 / 2 | qa_passed | [Report](qa/17592186054802.json) |
+| [17592186059714](../../scratch/17592186059714-draft.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating the Magnitude of a Vector Given in Component Form | 7 / 0 / 0 / 2 | working | — |
+| [17592186059715](../../scratch/17592186059715-draft.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Vector From Position Vectors and then Computing its Magnitude | 0 / 8 / 0 / 2 | working | — |
+| [17592186059826](../../scratch/17592186059826-draft.py) | Interval Notation | Converting Between Intervals and Inequalities: Open Intervals | 5 / 0 / 0 / 2 | working | [Report](qa/17592186059826.json) |
+| [17592186059713](../../scratch/17592186059713-draft.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Given in Alternative Notation | 7 / 0 / 0 / 2 | working | [Report](qa/17592186059713.json) |
 | [17592186087696](../../scratch/17592186087696.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Square Matrix | 5 / 0 / 0 / 1 | queued | — |
 | [17592186087697](../../scratch/17592186087697.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Special Square Matrix | 5 / 0 / 0 / 1 | queued | — |
 | [17592186087698](../../scratch/17592186087698.py) | Zero, Square, Diagonal and Identity Matrices | Identifying Other Matrices | 5 / 0 / 0 / 2 | queued | — |

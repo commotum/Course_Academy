@@ -142,7 +142,7 @@ The line has intercepts (0,4) and (4,0), so its equation is y=4-x, statement III
 
 ## Authored normal: authored-easy {'m': 1, 'b': 3, 'u': 2}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/4ba56e4ad85dfc7d935726289398dc20148c59586c86035c95442c38fdb91387.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/5968f266ba59d39680893bc485f22a46981633bc16a7d40e391ab6d674574bd1.png)
 
 Which of the following gives the graph of the straight line above?
 
@@ -158,7 +158,7 @@ III: false, true
 
 Let's pick two distinct points on the line. For example, $A$ and $B$ with coordinates $(0,3)$ and $(2,5)$, respectively.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/2691aff906fb6496421f93d0695303acc2309186247c7b6d8e7cdcb20ce2ae2a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/f0cbada15bb90301a236eb837ce6b34ad91d4bccfcc0ff9681d6f6e1d5e81235.png)
 
 Now, we substitute the coordinates of both points in our equations. If both points satisfy an equation, then we can conclude that the equation represents the line in the graph. Otherwise, if any point does *not* satisfy the equation, then we can conclude that the equation does *not* represent the line in the graph.
 
@@ -195,7 +195,7 @@ The equations representing the line are I.
 
 ## Authored normal: authored-easy {'m': -2, 'b': -4, 'u': 2}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/27d526ffa6146d9cf22c11f234be7dafa8d13dcca30063dc93099dafb923c812.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/1d5d1b9e2526f21fd8a74ee28115e4314b4bb79cf3904d630eb97235912f611e.png)
 
 Which of the following gives the graph of the straight line above?
 
@@ -211,7 +211,7 @@ III: false, true
 
 Let's pick two distinct points on the line. For example, $A$ and $B$ with coordinates $(0,-4)$ and $(2,-8)$, respectively.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/fdb476d794fa733e9ef8502acd2d8bc3f4ffa0dd1ca02f0af4f1491e30c16b7e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/30cc6ba6c3938155b0eb2998de2509eef014b5b365b5ad42117cdf26aaee7ac9.png)
 
 Now, we substitute the coordinates of both points in our equations. If both points satisfy an equation, then we can conclude that the equation represents the line in the graph. Otherwise, if any point does *not* satisfy the equation, then we can conclude that the equation does *not* represent the line in the graph.
 
@@ -248,7 +248,7 @@ The equations representing the line are I.
 
 ## Authored normal: authored-moderate {'m': '1/2', 'b': 3, 'u': 2}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/f4f4d6294d862f54a944936213533b7c9a8527aa90965bb30bc3ea30dd105af2.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/7742ef31de4e0f730ac7ac0355d408d3af136d4703da661d50d3669bcbd368f1.png)
 
 Which of the following gives the graph of the straight line above?
 
@@ -264,7 +264,7 @@ III: false, true
 
 Let's pick two distinct points on the line. For example, $A$ and $B$ with coordinates $(0,3)$ and $(2,4)$, respectively.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/58ee1eaa7741f0763c43e92d67cdf703b1d7f5c10bee81ed07128a130e2437c4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/999516451c895882fb0a7b7931cd8971232723ed93845af15943891e79d02acb.png)
 
 Now, we substitute the coordinates of both points in our equations. If both points satisfy an equation, then we can conclude that the equation represents the line in the graph. Otherwise, if any point does *not* satisfy the equation, then we can conclude that the equation does *not* represent the line in the graph.
 
@@ -301,7 +301,7 @@ The equations representing the line are II.
 
 ## Authored normal: authored-moderate {'m': '-2/3', 'b': -4, 'u': 3}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/4c909da8664eb8a8a7ab0e7db8353a47a60832340a53c57c01f1262f76831d72.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/181713a10768a1e2cdc34b676ef3c7550fc8e9bb4de794171715328a622745a1.png)
 
 Which of the following gives the graph of the straight line above?
 
@@ -317,7 +317,7 @@ III: false, true
 
 Let's pick two distinct points on the line. For example, $A$ and $B$ with coordinates $(0,-4)$ and $(3,-6)$, respectively.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/fbdd76354409724d6622fc142732dee74cb0ae516abad3e26d4b64741bc44c87.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/2a7c2af76f3efa6c170bf3f9d7e0cce90bde8b35bc6c43ff136c31dbb9089210.png)
 
 Now, we substitute the coordinates of both points in our equations. If both points satisfy an equation, then we can conclude that the equation represents the line in the graph. Otherwise, if any point does *not* satisfy the equation, then we can conclude that the equation does *not* represent the line in the graph.
 
@@ -354,7 +354,7 @@ The equations representing the line are II.
 
 ## Authored normal: authored-hard {'m': 3, 'b': 2, 'u': 2}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/01ab5c1f819ab017e9eabee83cdd464ab3d02c8d9b967df0e045bd0cfdb34bcc.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/4770449d149b4b2a89ea512f1683b281c28651c02cf69e76ccfbd31bf026d78e.png)
 
 Which of the following gives the graph of the straight line above?
 
@@ -370,7 +370,7 @@ III: false, true
 
 Let's pick two distinct points on the line. For example, $A$ and $B$ with coordinates $(0,2)$ and $(2,8)$, respectively.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/18c90e4fc531c76e6d1e868afc3047712ab856bbdff69c25105315cea2a61638.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/88eb561722d3aff15c9723e22b9f74083ea15a8e65ca9f113a4c41fc952c1031.png)
 
 Now, we substitute the coordinates of both points in our equations. If both points satisfy an equation, then we can conclude that the equation represents the line in the graph. Otherwise, if any point does *not* satisfy the equation, then we can conclude that the equation does *not* represent the line in the graph.
 
@@ -407,7 +407,7 @@ The equations representing the line are I, III.
 
 ## Authored normal: authored-hard {'m': -4, 'b': -3, 'u': 2}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/d4d9367b17f075cdfdf936f739f34f0f31c36a8b0d8580ffb117c97606f95297.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/096ce6885e5206e4f148a8a2c58a4f84dd03fc72c4027936457ad6f53e77b9ca.png)
 
 Which of the following gives the graph of the straight line above?
 
@@ -423,7 +423,7 @@ III: false, true
 
 Let's pick two distinct points on the line. For example, $A$ and $B$ with coordinates $(0,-3)$ and $(2,-11)$, respectively.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/7c0f64571b8715d5f47f4d3293a1730156cef4b97f203d0babaf460e95d1d742.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186054802-draft/assets/057ccfcc1b545a2eb44b2ecc561cd5bf17bbe4dfb5a6710b25a819487d4af06e.png)
 
 Now, we substitute the coordinates of both points in our equations. If both points satisfy an equation, then we can conclude that the equation represents the line in the graph. Otherwise, if any point does *not* satisfy the equation, then we can conclude that the equation does *not* represent the line in the graph.
 

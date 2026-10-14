@@ -12,13 +12,58 @@ element => {
     return title?.querySelector('math') && [...title.childNodes].some(child =>
       child.nodeType === 3 && child.textContent.trim());
   };
+  // Some old SVG titles wrap complete MathML in a redundant eqalign, or put
+  // just the fences outside its MathML table. These known wrappers
+  // can be recovered without turning the equations into screenshot assets.
+  const recoverableTitle = n => {
+    const title = n?.querySelector('title');
+    if (!title || title.children.length !== 1) return null;
+    const math = title.querySelector('math');
+    if (!math || title.querySelectorAll('math').length !== 1) return null;
+    const children = [...title.childNodes], index = children.indexOf(title.children[0]);
+    const literal = nodes => nodes.filter(child => child.nodeType === 3).map(child => child.textContent).join('').replace(/\s+/g, '');
+    const before = literal(children.slice(0, index)), after = literal(children.slice(index + 1));
+    if (before === '\\eqalign{' && after === '}') return {math};
+    if (before === '\\left\\{' && after === '\\right.' && math.children.length === 1 && math.children[0].localName === 'mtable') {
+      return {math: math.children[0], environment: 'cases'};
+    }
+    if (before === '\\left[' && after === '\\right]' && math.children.length === 1 &&
+        math.children[0].localName === 'mtable' &&
+        (math.children[0].getAttribute('columnalign') || 'center').split(/\s+/).every(value => value === 'center')) {
+      return {math: math.children[0], environment: 'bmatrix'};
+    }
+    return null;
+  };
+  function legacyMatrixTex(value) {
+    let source = value, match;
+    const command = /\\matrix\s*\{/g;
+    while ((match = command.exec(source))) {
+      const opening = command.lastIndex - 1;
+      let depth = 1, end = opening + 1;
+      for (; end < source.length && depth; end++) {
+        if (source[end] === '\\' && ['\\', '{', '}'].includes(source[end + 1])) { end++; continue; }
+        if (source[end] === '{') depth++;
+        else if (source[end] === '}') depth--;
+      }
+      if (depth) { errors.push('Unclosed legacy TeX matrix'); break; }
+      // Archived SVG titles can retain only one slash before a physical row
+      // newline. A TeX backslash-space on the same line is not a row break.
+      const body = source.slice(opening + 1, end - 1).replace(/\\cr\b/g, ' \\\\ ')
+        .replace(/(?<!\\)\\[ \t]*\r?\n/g, ' \\\\\n')
+        .replace(/\\\\\s*$/, '');
+      const replacement = '\\begin{matrix}' + body + '\\end{matrix}';
+      source = source.slice(0, match.index) + replacement + source.slice(end);
+      command.lastIndex = match.index + '\\begin{matrix}'.length;
+    }
+    return source;
+  }
   const assets = [...element.querySelectorAll('img, canvas, svg')].filter(n => {
     if (emptyFormula(n)) return false;
     if (n.closest('.questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') ||
         n.parentElement?.closest('svg')) return false;
     const formula = n.closest('.mjpage, mjx-container, .MathJax');
     if (!formula) return true;
-    if (n.localName === 'svg' && mixedTitle(n)) return true;
+    if (n.localName === 'svg' && mixedTitle(n) && !recoverableTitle(n)) return true;
     // Some server-rendered formulas have only SVG paths, with no local TeX or
     // assistive MathML. Preserve their visible rendering as a formula image.
     return n.localName === 'svg' && !formula.querySelector('mjx-assistive-mml math') &&
@@ -232,8 +277,9 @@ element => {
     if (assets.includes(n)) return '![](@asset-' + assets.indexOf(n) + '@)';
     if (t === 'svg' && n.closest('.mjpage, mjx-container, .MathJax')) {
       const title = n.querySelector('title');
-      const math = title?.querySelector('mjx-assistive-mml math, math');
-      const tex = math ? m(math) : title?.textContent?.trim();
+      const recovered = recoverableTitle(n);
+      const math = recovered?.math || title?.querySelector('mjx-assistive-mml math, math');
+      const tex = math ? m(math, recovered?.environment) : legacyMatrixTex(title?.textContent?.trim() || '');
       if (!tex) errors.push('SVG formula has no local title or MathML');
       return n.closest('.mjpage__block') ? '\n\n$$\n' + (tex || '') + '\n$$\n\n' : '$' + (tex || '') + '$';
     }

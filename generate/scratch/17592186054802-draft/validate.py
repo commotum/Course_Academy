@@ -69,7 +69,7 @@ def curve_readback(asset,points,calibration=None):
         assert [w,h]==calibration['dimensions']
     else:
         ox,oy=asset['origin_pixels'];sx,sy=asset['unit_pixels']
-        assert [w,h]==asset['dimensions'];assert asset['glyph_min_axis_clearance_px']>=4
+        assert [w,h]==asset['dimensions'];assert asset['glyph_min_axis_clearance_px']>=4;assert asset['marker_min_axis_clearance_px']>=4
         # Physical gray grid spacing must support the declared native scale.
         gray=(pixels[:,:,0]>140)&(pixels[:,:,0]<230)&(np.max(pixels,axis=2)-np.min(pixels,axis=2)<5)
         cols=np.where(gray.sum(axis=0)>h*.45)[0]
@@ -201,7 +201,7 @@ def main():
     cases=json.loads((D/'source-cases.json').read_text());assert {c['source_id'] for c in cases}==set(g.PROFILES)
     originals=[];ledger=[];native=[];maths=[];pixels=[];allrec=[]
     for case in cases:
-        profile=case['source_id'];rec=g.generate(case['level'],profile=case['bank_profile'],parameters=case['parameters']);result=structural(rec);maths.append(result)
+        profile=case['source_id'];rec=g.generate(case['level'],template=case['template'],profile=case['bank_profile'],parameters=case['parameters']);result=structural(rec);maths.append(result)
         old=g.PROFILES[profile];q=rec['question'];assert q[':question/problem']==old[':question/problem']
         expected=old[':question/worked-solution'];repair=[]
         if profile=='q-54293':repair=['Raw source preserves wrong -1 operand with explicit ineligible flag; normal profile minimally repairs to -2.']
@@ -224,6 +224,21 @@ def main():
             values+=len(after[':answer-field/choices'])
         ledger.append({'source_id':profile,'prompt_exact':True,'raw_solution_exact':True,'solution_exact_after_documented_operand_repair':True,'matched_fields':len(q[':question/answer-fields']),'matched_values':values,'complete_bank':True,'correct_refs_matched':len(q[':question/answer-fields']),'repairs':repair,'missing_or_extra':[]})
         originals.append(rec);native.append({'label':'original '+profile,'record':rec,'checks':checks(rec)})
+    # Exercise the public call exactly as source-cases declares it. The base
+    # template and its raw evidence profile are compatible; other families are not.
+    guard_baseline=json.loads((D/'template-profile-regression-baseline.json').read_text())
+    for case,rec in zip(cases,originals):
+        expected=next(r for r in guard_baseline['raw'] if r['source_id']==case['source_id'])
+        assert hashlib.sha256(json.dumps(rec,sort_keys=True).encode()).hexdigest()==expected['record_sha256']
+        wrong_template='q-54293' if case['template']!='q-54293' else 'q-71837'
+        try:g.generate(case['level'],template=wrong_template,profile=case['bank_profile'],parameters=case['parameters'])
+        except ValueError as exc:assert str(exc)=='Template/profile mismatch'
+        else:raise AssertionError('True template/profile mismatch accepted')
+    for old in guard_baseline['normal']:
+        new=g.generate(old['level'],seed=17,profile=old['profile'],parameters=old['parameters'])
+        assert new['question'][':question/id']==old['question_id']
+    guard_report={'status':'pass','declared_source_case_calls':len(cases),'true_mismatches_rejected':len(cases),'raw_records_unchanged':len(guard_baseline['raw']),'normal_question_identities_unchanged':len(guard_baseline['normal'])}
+    write('template-profile-regression.json',guard_report)
     domains={};samples={};fingerprints={};review=originals[:]
     for profile in list(g.PROFILES)+['authored-easy','authored-moderate','authored-hard']:
         level=g.SOURCE_LEVELS.get(profile,profile.split('-')[-1]);domain=g.candidates(profile);domains[profile]=len(domain)
@@ -282,6 +297,7 @@ def main():
     report={'status':'pass','basis':g.SOURCE['basis'],'lineage':g.SOURCE['lineage'],'original_MA_questions':4,'independent_inventory_questions':3,
       'source_fidelity':{'complete_banks_matched':4,'total_banks':4,'fields_matched':8,'values_matched':22,'distractors_matched':14,'correct_refs_matched':8,'statements_matched':12,'raw_exact_prompts':4,'raw_exact_solutions':4,'normal_unchanged_solutions':3,'documented_operand_repaired_solutions':1,'feedback_presence_matched_fields':8,'native_original_prompt_plots':4,'native_original_solution_plots':2,'missing_ratings':2,'missing_correct_refs':0,'ungradable_source_fields':0,'unresolved':[]},
       'mathematics':{'instances_checked':len(maths),'numeric_rows_checked':sum(v['numeric_rows'] for v in maths),'whole_statements_checked':3*len(maths),'domain_coverage':domains,'distinct_graph_tasks_per_family':fingerprints,'source_calibration_from_native_pixels':True,'all_native_variant_curve_probes':True,'same_and_different_concurrent_instances':4,'mutation_regressions_rejected':len(mutations)},
+      'template_profile_contract':guard_report,
       'native_grading':{k:engine[k] for k in ('entry_point','accepted_checks','rejected_checks','documented_unresolved_checks')},
       'authored_scope':{'easy':'integer substitution at two read graph points; three directly written equations; checkbox subset','moderate':'simple rational substitution at two read graph points; swapped scale/sign claims; checkbox subset','hard':'same three-claim point-testing workload with equation rearrangements; original radio replay plus checkbox authored extension','within_level_progression':False},
       'hashes':{'script':sha(D.with_suffix('.py')),'validator':sha(__file__),'source':sha(D/'source.json'),'topic':sha(D/'topic.json'),'lesson':sha(D/'lesson.json'),'engine':sha(ROOT/'generate/runs/current/check-engine')},

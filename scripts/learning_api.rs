@@ -1731,12 +1731,27 @@ fn mutate(
     body: &Json,
     at: DateTime<Utc>,
 ) -> Result<(Vec<Json>, Json)> {
+    mutate_with_selection(s, l, action, body, at, None)
+}
+
+fn mutate_with_selection(
+    s: &EntitySnapshot,
+    l: u64,
+    action: &str,
+    body: &Json,
+    at: DateTime<Utc>,
+    selected_topic: Option<u64>,
+) -> Result<(Vec<Json>, Json)> {
     if matches!(
         action,
         "start" | "resume" | "study-topic" | "assignment-focus" | "assignment-answer"
     ) {
         let course = course(s, l)?;
-        let plan = learning::study_candidates(s, l, course, at)?;
+        let plan = if let Some(topic) = selected_topic {
+            learning::selected_topic_candidates(s, l, course, topic, at)?
+        } else {
+            learning::study_candidates(s, l, course, at)?
+        };
         let gated = plan.iter().any(|p| p.priority >= 11000.0);
         let requested = body["activityId"]
             .as_u64()
@@ -1914,11 +1929,7 @@ fn mutate(
         // Explicit study uses the manual selection rules without persisting a
         // queue membership, preference change, or engine unlock. Starting and
         // resuming still use the same guarded, replayable lesson lifecycle.
-        let mut selection = s.clone();
-        let learner = selection.entities.get_mut(&l).ok_or("Learner not found")?;
-        learner.insert("learner/queue".into(), json!([topic]));
-        learner.insert("learner/self-directed".into(), json!(true));
-        return mutate(&selection, l, "start", &json!({"activityId":activity}), at);
+        return mutate_with_selection(s, l, "start", &json!({"activityId":activity}), at, Some(topic));
     }
     if action == "start" {
         let a = required(body, "activityId")?;
@@ -1934,7 +1945,7 @@ fn mutate(
                 return mutate(s, l, "expire", &json!({"taskId":task}), at);
             }
             match status(s, task, "learner-task/status")?.as_str() {
-                "paused" => return mutate(s, l, "resume", &json!({"taskId":task}), at),
+                "paused" => return mutate_with_selection(s, l, "resume", &json!({"taskId":task}), at, selected_topic),
                 "started" => {
                     pause_other_lessons(s, l, Some(task), at, &mut forms)?;
                     return Ok((forms, json!({"taskId":task})));
@@ -1952,7 +1963,12 @@ fn mutate(
                 return Err(format!("Lesson needs at least five fresh, gradable questions per skill: {details}").into());
             }
         }
-        if !learning::study_candidates(s, l, course(s, l)?, at)?
+        let candidates = if let Some(topic) = selected_topic {
+            learning::selected_topic_candidates(s, l, course(s,l)?, topic, at)?
+        } else {
+            learning::study_candidates(s, l, course(s,l)?, at)?
+        };
+        if !candidates
             .iter()
             .any(|p| p.activity == a)
         {
@@ -2946,6 +2962,46 @@ mod study_queue_tests {
             );
         }
         EntitySnapshot::new(records, 42).unwrap()
+    }
+
+    #[test]
+    #[ignore = "read-only performance measurement against the configured database"]
+    fn profile_study_now_reads() -> Result<()> {
+        let app = Application::connect(
+            std::env::var("EDB_DATABASE")?,
+            std::env::var("PAGE_TEST_LEARNER")?,
+            std::env::var("EDB_ENDPOINT").unwrap_or_default(),
+        )?;
+        let s = &app.snapshot;
+        let l = app.learner_eid;
+        eprintln!("Profile basis={} entities={} status_events={}", s.basis_t, s.entities.len(), s.status_history.len());
+        let started = Instant::now();
+        let mut copy = s.clone();
+        eprintln!("Profile snapshot-clone: {:.3} ms", started.elapsed().as_secs_f64()*1000.);
+        let db = app.conn.db();
+        let started = Instant::now();
+        refresh_history(&db, &mut copy)?;
+        eprintln!("Profile status-history-refresh: {:.3} ms", started.elapsed().as_secs_f64()*1000.);
+        let topics: Vec<u64> = std::env::var("LEARNING_PROFILE_TOPICS")?
+            .split(',').map(str::parse).collect::<std::result::Result<_, _>>()?;
+        for topic in topics {
+            let activity = topic_lesson(s, topic)?;
+            for run in 0..2 {
+                let started = Instant::now();
+                let result = mutate(s, l, "study-topic", &json!({"topicId":topic}), Utc::now());
+                eprintln!("Profile study-now topic={} title={} run={} planning={:.3} ms outcome={}", topic,
+                    text(s,activity,"activity/title"),run,started.elapsed().as_secs_f64()*1000.,
+                    match &result {Ok((forms,_))=>format!("{} speculative forms",forms.len()),Err(error)=>error.to_string()});
+                if let Ok((_, result)) = result {
+                    if let Some(task) = result["taskId"].as_u64() {
+                        let started = Instant::now();
+                        let view = task_json(s, l, task)?;
+                        eprintln!("Profile task-response: {:.3} ms bytes={}", started.elapsed().as_secs_f64()*1000.,serde_json::to_vec(&view)?.len());
+                    }
+                }
+            }
+        }
+        Ok(())
     }
 
     fn usable_small_bank_fixture() -> EntitySnapshot {

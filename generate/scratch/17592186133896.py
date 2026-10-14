@@ -20,7 +20,10 @@ Matplotlib writes only private, atomically committed PNG/JSON assets.
 
 API: generate(level, seed=0, template=None, field_type=None, parameters=None,
 profile=None), generate_easy/moderate/hard. CLI: --difficulty --seed --count
---format markdown|json --template --profile. No EDB operations or registrations.
+--format markdown|json --template --profile. No EDB operations or registrations in the generator itself. Replenishment uses
+the scoped companion runner. v5 suspends authored exp_ccw at hard because current
+basis-2301 source evidence rates that family moderate; raw historical evidence
+replay remains available. Registration retains the same KP generator identity.
 """
 from __future__ import annotations
 import argparse, hashlib, json, math, os, random, re, tempfile, uuid, threading
@@ -31,7 +34,7 @@ import sympy as sp
 KP_ID=17592186133896
 KP_UUID='8644454b-ee25-59fd-ae65-9770a0b44442'
 TITLE='Expressing the Area Bounded by a Closed Curve Using Green’s Theorem'
-VERSION='green-area-setup-v4'
+VERSION='green-area-setup-v5'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -312,9 +315,10 @@ def guard(level,template,p):
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('invalid difficulty')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('sources support radio only')
- rng=random.Random(seed);eligible=[k for k,v in TEMPLATES.items() if v[0]==level]
+ profile=profile or 'authored'
+ rng=random.Random(seed);eligible=[k for k,v in TEMPLATES.items() if v[0]==level and (profile!='authored' or k!='exp_ccw')]
  if template is None:template=rng.choice(eligible)
- if template not in eligible:raise ValueError('template not eligible at requested level')
+ if template not in eligible:raise ValueError('template not eligible at requested level; authored exp_ccw hard rating superseded by current moderate source evidence')
  # Select one complete bank BEFORE sampling. Authored circles inherit the
  # documented canonical shape; defaults use all observed source-shaped families.
  profile=profile or 'authored'
