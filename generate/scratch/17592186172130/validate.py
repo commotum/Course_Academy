@@ -16,7 +16,15 @@ def nonnegative_norm(expr,domain):
     symbols={g.u:sp.Symbol('U',nonnegative=True),g.v:sp.Symbol('V',nonnegative=True)} if domain in ['u>=0','v>=0'] else {}
     return sp.simplify(expr.xreplace(symbols))
 def equal(a,b,domain='real u,v'):
-    return sp.simplify(nonnegative_norm(a-b,domain))==0
+    diff=sp.expand(a-b)
+    if diff==0:return True
+    # A nonzero exact value at an admissible positive rational point proves
+    # nonequivalence; it avoids expensive simplification of unrelated radicals.
+    # Equality still requires independent full symbolic simplification.
+    for U,V in [(2,3),(3,2)]:
+        probe=sp.simplify(diff.subs({g.u:U,g.v:V,g.x:2,g.y:3,g.z:5}))
+        if probe.is_zero is False:return False
+    return sp.simplify(nonnegative_norm(diff,domain))==0
 
 def formatting(record):
     assert set(record['knowledge_point'])=={'db_id','id','title'}
@@ -103,6 +111,9 @@ def native_item(label,record):
     return {'label':label,'record':record,'checks':checks}
 
 def main():
+    import source_math_audit
+    from types import SimpleNamespace
+    source_math_checked=source_math_audit.run(SimpleNamespace(g=g,HERE=HERE,equal=equal))
     source_cases=[];reviews=[];native=[];values=refs=rawsol=0
     for name,source in g.BY_NAME.items():
         level=g.LEVELS[name];case={'source_id':source[':db/id'],'template':name,'level':level,'parameters':{'k':1},'bank_profile':'observed'};source_cases.append(case)
@@ -123,7 +134,9 @@ def main():
             for orig in source[':question/answer-fields'][fi][':answer-field/choices']:
                 assert any(equal(g.read_math(a[':answer/value']),2*g.read_math(orig[':answer/value'])) for a in f[':answer-field/choices'])
         for i,par in enumerate([{'a':1,'p':1,'q':3 if name=='product' else 1},{'a':2,'p':3,'q':1 if name in ['saddle','powers'] else 2}]):
-            normal=g.generate(level,i,template=name,parameters=par);audit(normal);reviews.append({'kind':'generated variant','source_id':source[':db/id'],'record':normal});native.append(native_item('variant '+name+' '+str(i),normal))
+            normal=g.generate(level,i,template=name,parameters=par);audit(normal)
+            if i==0:assert normal['generation']['mathematical_fingerprint']==record['generation']['mathematical_fingerprint']
+            reviews.append({'kind':'generated variant','source_id':source[':db/id'],'record':normal});native.append(native_item('variant '+name+' '+str(i),normal))
     for i in range(2):
         r=g.generate_hard(i,parameters={'a':i+1,'b':2,'c':i+1,'d':2,'p':2,'q':3});audit(r);reviews.append({'kind':'authored hard variant','record':r});native.append(native_item('hard '+str(i),r))
     # Enumerate full modest parameter domains; variety counts are actual canonical
@@ -167,7 +180,7 @@ def main():
     (HERE/'source-cases.json').write_text(json.dumps(source_cases,indent=2)+'\n');(HERE/'review.json').write_text(json.dumps(reviews,indent=2,ensure_ascii=False)+'\n');(HERE/'native-input.json').write_text(json.dumps(native,indent=2,ensure_ascii=False)+'\n')
     subprocess.run([str(HERE.parents[1]/'runs/current/check-engine'),str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
     report=json.loads((HERE/'native-report.json').read_text())
-    result={'pass':True,'source':{k:g.CAPTURE[k] for k in ['database','basis','lineage']},'source_questions':12,'complete_banks':13,'source_values_matched':values,'source_values_total':65,'source_correct_designations_matched':refs,'source_correct_designations_present':12,'source_correct_designations_missing':1,'raw_exact_solutions':rawsol,'source_normal_math_repairs':5,'raw_native_ungradable_records':1,'raw_native_ungradable_reason':'q160711 retains duplicate legacy field without correct ref; harness requires refs for every field','normal_families':13,'explicit_parameter_instances_constructed':tested,'valid_math_tasks_by_family':counts,'whole_bank_rejections':rejections,'default_family_coverage':{l:sorted(a) for l,a in coverage.items()},'native_accepted':report['accepted_checks'],'native_rejected':report['rejected_checks'],'native_unresolved':report['documented_unresolved_checks'],'native_binary_sha256':hashlib.sha256((HERE.parents[1]/'runs/current/check-engine').read_bytes()).hexdigest(),'python':sys.version.split()[0],'sympy':sp.__version__,'mutation_checks':['C0 control','held coordinate','same-row-count removed norm expansion'],'lesson_route':g.lesson_route(),'limitations':['Historical bank intentions partly opaque; public observed profiles evidence-only.','Raw q160712/q161134/q161286 omit necessary half-plane restrictions; repaired normal output.','Raw q160712/q161286/q161135 contain erroneous solution components; normal repaired.','No native raw fixture possible for q160711 missing legacy correct ref.']}
+    result={'pass':True,'source':{k:g.CAPTURE[k] for k in ['database','basis','lineage']},'source_questions':12,'independently_checked_source_banks':len(source_math_checked),'canonical_profile_fingerprint_checks':12,'complete_banks':13,'source_values_matched':values,'source_values_total':65,'source_correct_designations_matched':refs,'source_correct_designations_present':12,'source_correct_designations_missing':1,'raw_exact_solutions':rawsol,'source_records_with_normal_repairs':5,'source_records_with_mathematical_repairs':4,'source_records_with_field_repairs':1,'raw_native_ungradable_records':1,'raw_native_ungradable_reason':'q160711 retains duplicate legacy field without correct ref; harness requires refs for every field','normal_families':13,'explicit_parameter_instances_constructed':tested,'valid_math_tasks_by_family':counts,'whole_bank_rejections':rejections,'default_family_coverage':{l:sorted(a) for l,a in coverage.items()},'native_accepted':report['accepted_checks'],'native_rejected':report['rejected_checks'],'native_unresolved':report['documented_unresolved_checks'],'native_binary_sha256':hashlib.sha256((HERE.parents[1]/'runs/current/check-engine').read_bytes()).hexdigest(),'python':sys.version.split()[0],'sympy':sp.__version__,'mutation_checks':['C0 control','held coordinate','same-row-count removed norm expansion'],'lesson_route':g.lesson_route(),'limitations':['Historical bank intentions partly opaque; public observed profiles evidence-only.','Raw q160712/q161134/q161286 omit necessary half-plane restrictions; repaired normal output.','Raw q160712/q161286/q161135 contain erroneous solution components; normal repaired.','No native raw fixture possible for q160711 missing legacy correct ref.']}
     (HERE/'validation.json').write_text(json.dumps(result,indent=2)+'\n')
     md=['# Source and generated review','Raw captures use explicit observed profile, including legacy omissions. Generated variants use method-derived banks and repaired learner content.']
     for item in reviews:

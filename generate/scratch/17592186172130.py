@@ -38,14 +38,20 @@ def read_math(s):
                 if t[k]=='{':depth+=1
                 if t[k]=='}':depth-=1
                 k+=1
-            t=t[:i]+'sqrt('+groups(t[j:k-1])+')'+t[k:]
+            t=t[:i]+' sqrt('+groups(t[j:k-1])+')'+t[k:]
         return t
     s=groups(s).replace('{','(').replace('}',')')
-    return parse_expr(s,local_dict={'u':u,'v':v,'x':x,'y':y,'z':z,'sqrt':sp.sqrt},transformations=TRANS)
+    result=parse_expr(s.strip(),local_dict={'u':u,'v':v,'x':x,'y':y,'z':z,'sqrt':sp.sqrt},transformations=TRANS)
+    if not result.free_symbols <= {u,v,x,y,z}:raise ValueError('Unrecognized displayed symbols: '+str(result.free_symbols))
+    return result
 
 def tex(e):return sp.latex(e, mul_symbol=None)
 def vec(parts):return '⟨'+r',\,'.join(map(tex,parts))+'⟩'
-def same(a,b):return sp.simplify(a-b)==0
+def same(a,b):
+    # Every authored member is a polynomial times the common metric radical,
+    # or a polynomial without it. Expanding gives an exact ring comparison;
+    # independent displayed-form validation also uses full simplify below.
+    return sp.expand(a-b)==0
 
 def display_blocks(s):return re.findall(r'\$\$\n(.*?)\n\$\$',s,re.S)
 def block(s):return '$$\n'+s+'\n$$'
@@ -260,7 +266,9 @@ def construct(level,seed,name,par,profile):
     if raw:
         for k in [':question/difficulty',':question/worked-solution',':question/answer-fields']:
             if k not in source:question.pop(k,None)
-    if raw:mathematical=digest([name,tex(read_math(re.search(r'\$f\(x,y,z\)=(.*?)\$',prompt).group(1)))])
+    if raw:
+        printed_r=display_blocks(prompt)[1].split('=',1)[1]
+        mathematical=digest([level,[tex(read_math(t)) for t in printed_r[1:-1].split(r',\,')],tex(read_math(re.search(r'\$f\(x,y,z\)=(.*?)\$',prompt).group(1))),'norm_given' if level=='easy' else 'compute_norm'])
     else:mathematical=digest([level,[tex(t) for t in m['r']],tex(m['f']),'norm_given' if level=='easy' else 'compute_norm'])
     return {'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'level':level,'template':name,'parameters':par,'profile':profile,'seed':seed,'source':{k:CAPTURE[k] for k in ['database','basis','lineage']},'source_id':source[':db/id'] if source else None,'authored_level':level=='hard','evidence_only':raw,'eligible_for_learning':eligible,'recipes':recipes,'mathematical_fingerprint':mathematical,'content_fingerprint':key,'python':sys.version.split()[0],'sympy':sp.__version__,'domain': 'u>=0' if name=='powers' else 'v>=0' if name in ['cancel','fold'] else 'real u,v','plot_rating':'none'}}
 

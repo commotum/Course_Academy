@@ -32,11 +32,15 @@ DATA={
 DATA={k:(list(map(s.sympify,a)),s.sympify(b),list(map(s.sympify,c)),s.sympify(d),s.sympify(e),f) for k,(a,b,c,d,e,f) in DATA.items()}
 LEVEL={k:SOURCES[k][':question/difficulty'][':db/ident'].split('/')[-1] for k in DATA}
 ORIGINAL={k:dict(zip(('ua','ub','va','vb'),map(str,d[2]))) for k,d in DATA.items()}
+ORIGINAL['q-167649']['k']='1'
 
 def tex(e):return s.latex(s.sympify(e)).replace(' ','')
+def scalar_factor(e):
+    e=s.sympify(e);return '('+tex(e)+')' if e.could_extract_minus_sign() else tex(e)
+
 def uid(e):return str(uuid.uuid5(uuid.NAMESPACE_URL,VERSION+':'+e))
 def scalar_parse(t):
-    t=t.strip().replace(' ', '')
+    t=t.strip().replace(' ', '').replace(r'\theta','theta')
     def group(i):
         assert t[i]=='{'; j=i+1;depth=1
         while depth:
@@ -56,16 +60,19 @@ def scalar_parse(t):
     return parse_expr(out.replace('{','(').replace('}',')').replace('^','**'),local_dict={'u':u,'v':v,'x':x,'y':y,'z':z,'theta':theta},transformations=standard_transformations+(implicit_multiplication_application,))
 
 def mathematics(t,p):
-    R,F,B,C,H,style=DATA[t];a,b,c,d=[s.sympify(p[k]) for k in ('ua','ub','va','vb')];aa,bb=(x,theta) if style=='charge' else (u,v)
+    R,F,B,C,H,style=DATA[t]
+    if style=='charge':F=F*s.sympify(p['k']);H=H*s.sympify(p['k'])
+    a,b,c,d=[s.sympify(p[k]) for k in ('ua','ub','va','vb')];aa,bb=(x,theta) if style=='charge' else (u,v)
     ru=s.Matrix(R).diff(aa);rv=s.Matrix(R).diff(bb);cross=ru.cross(rv);norm=s.sqrt(s.trigsimp(cross.dot(cross)))
     pull=s.simplify(F.subs({x:R[0],y:R[1],z:R[2]}, simultaneous=True))
     J=s.integrate(H,(aa,a,b));P=s.integrate(J,bb);value=s.simplify(C*s.integrate(J,(bb,c,d)))
-    return dict(R=R,F=F,ru=ru,rv=rv,cross=cross,norm=norm,pull=pull,H=H,C=C,J=J,P=P,value=value,bounds=(a,b,c,d),variables=(aa,bb),style=style)
+    return dict(R=R,F=F,ru=ru,rv=rv,cross=cross,norm=norm,pull=pull,H=H,C=C,J=J,P=P,value=value,bounds=(a,b,c,d),variables=(aa,bb),style=style,k=s.sympify(p.get('k',1)))
 
 def validate_parameters(t,p):
-    if set(p)!=set(('ua','ub','va','vb')):raise ValueError('exact rectangle parameter keys required')
+    if set(p)!=set(('ua','ub','va','vb','k') if t=='q-167649' else ('ua','ub','va','vb')):raise ValueError('exact rectangle parameter keys required')
     a,b,c,d=map(s.sympify,[p[k] for k in ('ua','ub','va','vb')])
     if t=='q-167649':
+        if not s.sympify(p['k']).is_Integer or not 1<=s.sympify(p['k'])<=8:raise ValueError('charge density coefficient 1..8')
         if a!=0 or b not in (s.Rational(1,2),1,s.Rational(3,2),2) or c!=0 or d!=2*s.pi:raise ValueError('charge x endpoint/angle bounds')
     else:
         if any(not e.is_Rational or abs(e)>3 or e.q>2 for e in (a,b,c,d)) or not(a<b and c<d) or b-a>3 or d-c>3:raise ValueError('rational half-unit endpoints, magnitude/width at most 3')
@@ -75,10 +82,10 @@ def validate_parameters(t,p):
     return {k:str(s.sympify(p[k])) for k in p}
 
 def sample(t,rng):
-    if t=='q-167649':return dict(zip(('ua','ub','va','vb'),map(str,[0,rng.choice([s.Rational(1,2),1,s.Rational(3,2),2]),0,2*s.pi])))
-    vals=[s.Rational(i,2) for i in range(-4,7)]; a=rng.choice(vals[:-1]); b=rng.choice([e for e in vals if a<e and e-a<=3]);c=rng.choice(vals[:-1]);d=rng.choice([e for e in vals if c<e and e-c<=3])
-    if DATA[t][5] in ('split2','separated'):a=c=0;b=rng.choice(vals[5:]);d=rng.choice(vals[5:])
-    if t in ('q-161127','q-161181','q-161245'):b=rng.choice(vals[5:8]);a=-b
+    if t=='q-167649':return dict(zip(('ua','ub','va','vb','k'),map(str,[0,rng.choice([s.Rational(1,2),1,s.Rational(3,2),2]),0,2*s.pi,rng.randrange(1,9)])))
+    vals=[s.Rational(i,2) for i in range(-6,7)]; a=rng.choice(vals[:-1]); b=rng.choice([e for e in vals if a<e and e-a<=3]);c=rng.choice(vals[:-1]);d=rng.choice([e for e in vals if c<e and e-c<=3])
+    if DATA[t][5] in ('split2','separated'):a=c=0;b=rng.choice(vals[7:]);d=rng.choice(vals[7:])
+    if t in ('q-161127','q-161181','q-161245'):b=rng.choice(vals[7:10]);a=-b
     return dict(zip(('ua','ub','va','vb'),map(str,[a,b,c,d])))
 
 def mask_bounds(text,p):
@@ -86,12 +93,16 @@ def mask_bounds(text,p):
         text=re.sub(r'-?\d+\\le '+var+r'\\le -?\d+',lambda m:tex(p[lo])+r'\le '+var+r'\le '+tex(p[hi]),text)
     return text
 
-def polytex(expr,var,ascending=False):
+def polytex(expr,var,ascending=False,rational_inline=False):
     terms=s.Poly(s.expand(expr),var).terms();terms=sorted(terms,key=lambda e:e[0][0],reverse=not ascending)
     out=''
     for (power,),coeff in terms:
         if coeff==0:continue
-        term=tex(abs(coeff)) if power==0 else ('' if abs(coeff)==1 else tex(abs(coeff)))+('{' +str(var)+'}^{'+str(power)+'}' if power!=1 else str(var))
+        varpart=('{' +str(var)+'}^{'+str(power)+'}' if power!=1 else str(var))
+        if power and abs(coeff).is_Rational and abs(coeff).q!=1 and not rational_inline:
+            numerator=('' if abs(coeff).p==1 else str(abs(coeff).p))+varpart
+            term=r'\frac{'+numerator+'}{'+str(abs(coeff).q)+'}'
+        else:term=tex(abs(coeff)) if power==0 else ('' if abs(coeff)==1 else tex(abs(coeff)))+varpart
         out+=('-' if coeff.could_extract_minus_sign() else ('+' if out else ''))+term
     return out or '0'
 
@@ -101,15 +112,22 @@ def evaluated_components(P,var,end):
     values=[s.simplify(coeff*end**power[0]) for power,coeff in terms]
     return '+'.join('('+tex(e)+')' if e.could_extract_minus_sign() else tex(e) for e in values) or '0'
 
+def source_arithmetic_components(P,var,end):
+    values=[s.simplify(coef*end**power[0]) for power,coef in sorted(s.Poly(s.expand(P),var).terms(),key=lambda e:e[0][0])]
+    return ''.join(('-' if e.could_extract_minus_sign() else '+' if i else '')+tex(-e if e.could_extract_minus_sign() else e) for i,e in enumerate(values)) or '0'
+
 def integral_mask(t,m,raw=False):
     """Parameterize source final block, retaining every factorization/order/primitive row."""
     block=SOURCES[t][':question/worked-solution'].split('$$')[-2];rows=block.replace('\\begin{aligned}','').replace('\\end{aligned}','').strip().split(r' \\ ')
     a,b,c,d=m['bounds'];C,H,J,P,style=m['C'],m['H'],m['J'],m['P'],m['style'];aa,bb=m['variables']
+    if style=='charge':
+        k=m['k']
+        for i in range(1,5):rows[i]=rows[i].replace(r'4{x}^{5}',tex(4*k)+r'{x}^{5}').replace(r'8{x}^{7}',tex(8*k)+r'{x}^{7}').replace(r'[{x}^{8}]','['+('' if k==1 else tex(k))+r'{x}^{8}]')
     def ints(row):
         found=list(re.finditer(r'\{\\int \}_\{[^{}]*\}\^\{[^{}]*\}',row));order=[bb,aa] if len(found)==2 and style=='nested' or len(found)==2 and style=='separated' and rows.index(row)==3 else [aa,bb]
         if len(found)==1:order=[bb] if style=='nested' else [aa]
         for match,var in reversed(list(zip(found,order))):
-            lo,hi=(a,b) if var==aa else (c,d);row=row[:match.start()]+r'{\int }_{'+tex(lo)+'}^{'+tex(hi)+'}'+row[match.end():]
+            lo,hi=(a,b) if var==aa else (c,d);row=row[:match.start()]+r'{\int }_{'+tex(lo)+'}^{'+tex(hi)+(' ' if hi.has(s.pi) else '')+'}'+row[match.end():]
         return row
     for i,row in enumerate(rows):
         if i>=3:rows[i]=ints(row)
@@ -118,23 +136,30 @@ def integral_mask(t,m,raw=False):
         def bracket(match):
             body=match.group(1);var=aa if ('u' in body or style=='charge' and 'x' in body) else bb
             if t=='q-160834' and body=='u' and r'\cdot [u]' in row:var=bb
-            lo,hi=(a,b) if var==aa else(c,d);return '['+body+']_{'+tex(lo)+'}^{'+tex(hi)+'}'
+            lo,hi=(a,b) if var==aa else(c,d);return '['+body+']_{'+tex(lo)+'}^{'+tex(hi)+(' ' if hi.has(s.pi) else '')+'}'
         rows[i]=re.sub(r'\[(.*?)\]_\{[^{}]*\}\^\{[^{}]*\}',bracket,row)
     if style=='nested':
-        rows[5]=r' & ='+tex(C)+r'{\int }_{'+tex(c)+'}^{'+tex(d)+'}('+polytex(J,bb)+r')\text{d}v'
-        # Preserve the source outer primitive convention: terms ascend in v.
-        rows[6]=r' & ='+tex(C)+(r'\cdot ' if t=='q-161245' else '')+'{['+polytex(P,bb,True)+']}_{'+tex(c)+'}^{'+tex(d)+'}'
-        endpoint=tex(s.simplify(P.subs(bb,d)-P.subs(bb,c)))
-        if t in ('q-161127','q-161180','q-161182','q-161209'):
-            rows[7]=r' & ='+tex(C)+'[('+evaluated_components(P,bb,d)+')-('+evaluated_components(P,bb,c)+')]'
-        else:rows[7]=r' & ='+tex(C)+r'\cdot ('+endpoint+')'
+        oldJ={'q-161127':r'\frac{2}{3}+2{v}^{2}','q-161180':r'\frac{5}{2}+v','q-161182':r'\frac{v}{3}+\frac{{v}^{2}}{2}','q-161209':r'\frac{1}{3}-{v}^{2}','q-161245':r'2-6{v}^{2}','q-161181':r'0-2v','q-161179':r'\frac{1}{2}+v'}[t]
+        newJ=polytex(J,bb,True)
+        if t=='q-161181' and newJ.startswith('-'):newJ='0'+newJ
+        rows[5]=rows[5].replace(oldJ,newJ)
+        oldP={'q-161127':r'\frac{2}{3}v+\frac{2}{3}{v}^{3}','q-161180':r'\frac{5v}{2}+\frac{{v}^{2}}{2}','q-161182':r'\frac{{v}^{2}}{6}+\frac{{v}^{3}}{6}','q-161209':r'\frac{v}{3}-\frac{{v}^{3}}{3}','q-161245':r'2v-2{v}^{3}','q-161181':r'-{v}^{2}','q-161179':r'\frac{v}{2}+\frac{{v}^{2}}{2}'}[t]
+        rows[6]=rows[6].replace(oldP,polytex(P,bb,True,t=='q-161127'))
+        rows[6]=re.sub(r'(\]\}?)_\{[^{}]*\}\^\{[^{}]*\}',lambda hit:hit[1]+'_{'+tex(c)+'}^{'+tex(d)+'}',rows[6])
+        high=source_arithmetic_components(P,bb,d);low=source_arithmetic_components(P,bb,c);lowvalue=s.simplify(P.subs(bb,c))
+        endpoint=tex(s.simplify(P.subs(bb,d)-lowvalue))
+        if t=='q-161127':rows[7]=r' & ='+tex(C)+'('+high+')-'+('0' if lowvalue==0 else tex(C)+'('+low+')')
+        elif t in ('q-161180','q-161209'):rows[7]=r' & ='+tex(C)+'['+high+(('-('+low+')') if lowvalue!=0 else '')+']'
+        elif t=='q-161182':rows[7]=r' & ='+tex(C)+'('+high+(('-('+low+')') if lowvalue!=0 else '')+')'
+        elif t=='q-161245':rows[7]=r' & ='+tex(C)+r'\cdot ('+endpoint+')'
+        else:rows[7]=r' & ='+tex(C)+r'\cdot '+scalar_factor(s.sympify(P.subs(bb,d)-lowvalue))
     elif style in ('split2','separated','product'):
         f1=2*u if style=='split2' else u if style=='separated' else H
         f2=2*v if style=='split2' else v if style=='separated' else s.Integer(1)
         i1=s.integrate(f1,(u,a,b));i2=s.integrate(f2,(v,c,d));idx=6 if style=='separated' else 5
-        rows[idx]=r' & ='+tex(C)+r'\cdot ('+tex(i1)+r')\cdot ('+tex(i2)+')'
-    else:rows[5]=r' & =('+tex(b**8)+'-'+tex(a**8)+r')\cdot ('+tex(d)+'-'+tex(c)+')'
-    rows[-1]=r' & ='+tex(m['value'])+('.' if rows[-1].endswith('.') else '')
+        rows[idx]=r' & ='+tex(C)+r'\cdot '+scalar_factor(i1)+r'\cdot '+scalar_factor(i2)
+    else:rows[5]=r' & =('+tex(s.sympify(m.get('k',1))*b**8)+'-'+tex(s.sympify(m.get('k',1))*a**8)+r')\cdot ('+tex(d)+' -'+tex(c)+')'
+    rows[-1]=r' & ='+tex(m['value'])+(' ' if t=='q-167649' else '')+('.' if rows[-1].endswith('.') else '')
     # Add component-wise BOTH-endpoint evaluation without replacing source operations.
     if not raw:
         if style=='nested':
@@ -150,7 +175,14 @@ def integral_mask(t,m,raw=False):
 
 def source_solution(t,m,p,raw):
     sol=SOURCES[t][':question/worked-solution'];old=sol.split('$$')[-2];sol=sol.replace(old,integral_mask(t,m,raw));sol=mask_bounds(sol,p)
-    if t=='q-167649':sol=sol.replace('x\\in [0,1]','x\\in [0,'+tex(p['ub'])+']')
+    if t=='q-167649':
+        sol=sol.replace('x\\in [0,1]','x\\in [0,'+tex(p['ub'])+']')
+        k=s.sympify(p['k'])
+        last=sol.rfind('$$');start=sol.rfind('$$',0,last);prefix=sol[:start];final=sol[start:]
+        prefix=prefix.replace(r'\frac{x({y}^{2}+{z}^{2})}',r'\frac{'+tex(k*x)+r'({y}^{2}+{z}^{2})}')
+        prefix=prefix.replace(r'\frac{x((2',r'\frac{'+tex(k*x)+r'((2')
+        prefix=prefix.replace(r'4{x}^{5}',tex(4*k)+r'{x}^{5}').replace(r'8{x}^{7}',tex(8*k)+r'{x}^{7}').replace(r'[{x}^{8}]','['+('' if k==1 else tex(k))+r'{x}^{8}]')
+        sol=prefix+final
     if not raw:
         sol=sol.replace(r'\sqrt{{1}^{2}+-{1}^{2}+-{1}^{2}}',r'\sqrt{{1}^{2}+(-1)^{2}+(-1)^{2}}')
         sol=sol.replace(r'\cdot [u]_',r'\cdot [v]_') if t=='q-160834' else sol
@@ -167,6 +199,9 @@ def operation_bank(t,m):
         return [correct,no_metric,squared_metric,integ(u*v*norm),integ(4*pull*norm)]
     if t=='q-161181':return [correct,no_metric,integ((u-v)*norm),0,-correct]
     terms=s.Add.make_args(s.expand(pull));first=terms[0];last=terms[-1]
+    if t in ('q-161127','q-161182','q-161179'):
+        nodiv=sum(coef*(powers[0]+1)*(powers[1]+1)*u**powers[0]*v**powers[1] for powers,coef in s.Poly(pull,u,v).terms())
+        return [correct,no_metric,squared_metric,integ((pull-first)*norm),integ(nodiv*norm)]
     if t=='q-161209':return [correct,no_metric,squared_metric,integ((u*u+v*v)*norm),3*correct]
     return [correct,no_metric,squared_metric,integ((pull-first)*norm),integ((pull-last)*norm)]
 
@@ -209,6 +244,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if level=='easy':return generate_easy(seed,template,field_type,parameters,profile)
     if level not in ('moderate','hard'):raise ValueError('unknown level')
     candidates=[t for t in DATA if LEVEL[t]==level and (field_type is None or field_type in ('blank',':answer-field.type/blank') and t=='q-167649' or field_type in ('radio',':answer-field.type/radio') and t!='q-167649')]
+    if not candidates:raise ValueError('unknown/unsupported field selector')
     rng=random.Random(seed);t=template or rng.choice(candidates)
     if t not in candidates:raise ValueError('template/field/difficulty mismatch')
     raw=profile in ('observed','observed:'+t)
@@ -216,7 +252,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     for attempt in range(400):
         p=validate_parameters(t,parameters if parameters is not None else sample(t,rng));m=mathematics(t,p);prompt=mask_bounds(SOURCES[t][':question/problem'],p)
         if t=='q-167649' and not raw:
-            prompt='A shell is parametrized by $r(x,\\theta)=⟨x,2x^2\\cos\\theta,2x^2\\sin\\theta⟩$ for $0\\le x\\le '+tex(p['ub'])+'$ and $0\\le\\theta<2\\pi$. Its charge density is $d(x,y,z)=\\frac{x(y^2+z^2)}{\\sqrt{16x^2+1}}$, and $‖r_x′\\times r_\\theta′‖=2x^2\\sqrt{16x^2+1}$. Evaluate $Q=\\iint_S d\\,\\text{d}S$.\n\n{{field-1}}'
+            prompt='A shell is parametrized by $r(x,\\theta)=⟨x,2x^2\\cos\\theta,2x^2\\sin\\theta⟩$ for $0\\le x\\le '+tex(p['ub'])+'$ and $0\\le\\theta<2\\pi$. Its charge density is $d(x,y,z)=\\frac{'+tex(s.sympify(p['k'])*x)+'(y^2+z^2)}{\\sqrt{16x^2+1}}$, and $‖r_x′\\times r_\\theta′‖=2x^2\\sqrt{16x^2+1}$. Evaluate $Q=\\iint_S d\\,\\text{d}S$.\n\n{{field-1}}'
+        if not raw and 'D={' in prompt:prompt=re.sub(r'D=\{\(u,v\)(.*?)\}\.\$',lambda m:r'D=\{(u,v)'+m[1]+r'\}.$',prompt)
         sol=source_solution(t,m,p,raw)
         if raw:
             anchor=mathematics(t,ORIGINAL[t])['value'];bank=[s.simplify(scalar_parse(a[':answer/value'])/anchor*m['value']) for a in SOURCES[t][':question/answer-fields'][0][':answer-field/choices']]

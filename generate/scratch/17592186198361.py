@@ -21,7 +21,7 @@ import sympy as sp
 KP_ID=17592186198361
 KP_UUID='9fed8ac2-8d21-5bc9-b1cc-df20760cfbfb'
 TITLE='Performing a Change of Variables'
-VERSION='change-variables-1'
+VERSION='change-variables-2'
 HERE=Path(__file__).with_suffix('')
 TEMPLATES=json.loads((HERE/'templates.json').read_text())
 RAW=json.loads((HERE/'source.json').read_text())
@@ -41,6 +41,18 @@ def filled(t,p):
     for k,val in p.items():t=t.replace('@@'+k+'@@',str(val))
     if '@@' in t:raise ValueError('unfilled complete component slot')
     return t
+
+def visible_sets(text):
+    # Source outer set braces are TeX groups; normal output needs visible glyphs.
+    starts=list(re.finditer(r'(?<!\\)\{\([xu],\s*[yv]\)',text))
+    for match in reversed(starts):
+        start=match.start();depth=1;end=start+1
+        while depth:
+            if text[end]=='{' and text[end-1]!='\\':depth+=1
+            elif text[end]=='}' and text[end-1]!='\\':depth-=1
+            end+=1
+        text=text[:start]+r'\{'+text[start+1:end-1]+r'\}'+text[end:]
+    return text
 
 def check_bounds(level,p,template,raw=False):
     if set(p)!= {'ul','uh','vl','vh'}:raise ValueError('exactly ul,uh,vl,vh required')
@@ -234,7 +246,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             vals={**p,'ulcoef':''}
             if template=='ratio_product':vals['chain'],vals['result']=ratio_chain(p)
             q[':question/worked-solution']=filled(base[':question/worked-solution'],vals)
-    else:q[':question/worked-solution']=normal_solution(template,p)
+    else:
+        prompt=visible_sets(prompt);q[':question/problem']=prompt
+        q[':question/worked-solution']=visible_sets(normal_solution(template,p))
     # Sorted banks give order-independent content identity; metadata aliases cannot change it.
     content=dict(version=VERSION,level=q.get(':question/difficulty'),problem=prompt,solution=q.get(':question/worked-solution'),bank=sorted(choices),correct=None if correct is None else choices[correct])
     identity=digest(content);qid=uid('question/'+identity);fid=uid(qid+'/selection')

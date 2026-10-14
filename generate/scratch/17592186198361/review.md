@@ -534,7 +534,7 @@ $$
 
 Consider the finite region $D$ in the $xy$-plane, given by
 
-$D = {(x, y): -4 \le x + y \le 0, -3 \le y - x \le 1}$.
+$D = \{(x, y): -4 \le x + y \le 0, -3 \le y - x \le 1\}$.
 
 By performing the change of variables
 $u = x + y$
@@ -592,7 +592,7 @@ $$\begin{aligned}\iint_D(y^2-x^2)\,dx\,dy&=\iint_Δ\left[\left(\frac{u+v}{2}\rig
 
 Consider the finite region $D$ in the $xy$-plane, given by
 
-$D = {(x, y): -3 \le x + y \le -1, -2 \le y - x \le 1}$.
+$D = \{(x, y): -3 \le x + y \le -1, -2 \le y - x \le 1\}$.
 
 By performing the change of variables
 $u = x + y$
@@ -651,7 +651,7 @@ $$\begin{aligned}\iint_D(y^2-x^2)\,dx\,dy&=\iint_Δ\left[\left(\frac{u+v}{2}\rig
 Consider the region $D$ in the $xy$-plane, given by
 
 $$
-D={(x,y)\,:\,-4\le 2x+y\le 0,\,-3\le y\le 1}.
+D=\{(x,y)\,:\,-4\le 2x+y\le 0,\,-3\le y\le 1\}.
 $$
 
   
@@ -707,7 +707,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,-4\le u\le 0,\,-3\le v\le 1}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,-4\le u\le 0,\,-3\le v\le 1\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -758,7 +758,7 @@ $$
 Consider the region $D$ in the $xy$-plane, given by
 
 $$
-D={(x,y)\,:\,-3\le 2x+y\le -1,\,-2\le y\le 1}.
+D=\{(x,y)\,:\,-3\le 2x+y\le -1,\,-2\le y\le 1\}.
 $$
 
   
@@ -814,7 +814,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,-3\le u\le -1,\,-2\le v\le 1}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,-3\le u\le -1,\,-2\le v\le 1\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -865,7 +865,7 @@ $$
 Consider the region $D$ in the $xy$-plane, given by
 
 $$
-D={(x,y)\,:\,-4\le y-x\le 0,\,-3\le x+y\le 1}.
+D=\{(x,y)\,:\,-4\le y-x\le 0,\,-3\le x+y\le 1\}.
 $$
 
 By performing the change of variables $u=y-x$ and $v=x+y,$ the integral
@@ -919,7 +919,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,-4\le u\le 0,\,-3\le v\le 1}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,-4\le u\le 0,\,-3\le v\le 1\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -970,7 +970,7 @@ $$
 Consider the region $D$ in the $xy$-plane, given by
 
 $$
-D={(x,y)\,:\,-3\le y-x\le -1,\,-2\le x+y\le 1}.
+D=\{(x,y)\,:\,-3\le y-x\le -1,\,-2\le x+y\le 1\}.
 $$
 
 By performing the change of variables $u=y-x$ and $v=x+y,$ the integral
@@ -1024,7 +1024,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,-3\le u\le -1,\,-2\le v\le 1}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,-3\le u\le -1,\,-2\le v\le 1\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -1075,7 +1075,7 @@ $$
 Consider the region $D$ in the $xy$-plane, given by
 
 $$
-D={(x,y)\,:\,-4\le 2x+5y\le 0,\,-3\le x+3y\le 1}.
+D=\{(x,y)\,:\,-4\le 2x+5y\le 0,\,-3\le x+3y\le 1\}.
 $$
 
 By performing the change of variables $u=2x+5y$ and $v=x+3y,$ the integral
@@ -1129,7 +1129,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,-4\le u\le 0,\,-3\le v\le 1}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,-4\le u\le 0,\,-3\le v\le 1\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -1180,7 +1180,7 @@ $$
 Consider the region $D$ in the $xy$-plane, given by
 
 $$
-D={(x,y)\,:\,-3\le 2x+5y\le -1,\,-2\le x+3y\le 1}.
+D=\{(x,y)\,:\,-3\le 2x+5y\le -1,\,-2\le x+3y\le 1\}.
 $$
 
 By performing the change of variables $u=2x+5y$ and $v=x+3y,$ the integral
@@ -1234,7 +1234,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,-3\le u\le -1,\,-2\le v\le 1}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,-3\le u\le -1,\,-2\le v\le 1\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -1285,7 +1285,7 @@ $$
 Consider the region $D$ in the $xy$-plane, given by
 
 $$
-D={(x,y)\,:\,-4\le x+y\le 0,\,-3\le y-x\le 1}.
+D=\{(x,y)\,:\,-4\le x+y\le 0,\,-3\le y-x\le 1\}.
 $$
 
 By performing the change of variables $u=x+y$ and $v=y-x,$ the integral
@@ -1339,7 +1339,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,-4\le u\le 0,\,-3\le v\le 1}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,-4\le u\le 0,\,-3\le v\le 1\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -1375,7 +1375,7 @@ $$
 Consider the region $D$ in the $xy$-plane, given by
 
 $$
-D={(x,y)\,:\,-3\le x+y\le -1,\,-2\le y-x\le 1}.
+D=\{(x,y)\,:\,-3\le x+y\le -1,\,-2\le y-x\le 1\}.
 $$
 
 By performing the change of variables $u=x+y$ and $v=y-x,$ the integral
@@ -1429,7 +1429,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,-3\le u\le -1,\,-2\le v\le 1}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,-3\le u\le -1,\,-2\le v\le 1\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -1468,7 +1468,7 @@ $$
 {∬}_{D}xy\,dx\,dy,
 $$
 
-where $D={(x,y)\,:\,{x}^{2}\le y\le 9{x}^{2},\,1\le xy\le 8}.$
+where $D=\{(x,y)\,:\,{x}^{2}\le y\le 9{x}^{2},\,1\le xy\le 8\}.$
 
 - $\frac{1022 \ln{\left(3 \right)}}{9}$
 - $21 \ln{\left(3 \right)}$
@@ -1512,7 +1512,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,1\le u\le 9,\,1\le v\le 8}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,1\le u\le 9,\,1\le v\le 8\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -1551,7 +1551,7 @@ $$
 {∬}_{D}xy\,dx\,dy,
 $$
 
-where $D={(x,y)\,:\,{x}^{2}\le y\le 4{x}^{2},\,2\le xy\le 5}.$
+where $D=\{(x,y)\,:\,{x}^{2}\le y\le 4{x}^{2},\,2\le xy\le 5\}.$
 
 - $26 \ln{\left(2 \right)}$
 - $- 7 \ln{\left(2 \right)}$
@@ -1595,7 +1595,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,1\le u\le 4,\,2\le v\le 5}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,1\le u\le 4,\,2\le v\le 5\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -1634,7 +1634,7 @@ $$
 {∬}_{D}(xy)^{2}\,dx\,dy,
 $$
 
-where $D={(x,y)\,:\,{x}^{2}\le y\le 9{x}^{2},\,1\le xy\le 5}.$
+where $D=\{(x,y)\,:\,{x}^{2}\le y\le 9{x}^{2},\,1\le xy\le 5\}.$
 
 - $104 \ln{\left(3 \right)}$
 - $- \frac{248 \ln{\left(3 \right)}}{9}$
@@ -1678,7 +1678,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,1\le u\le 9,\,1\le v\le 5}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,1\le u\le 9,\,1\le v\le 5\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
@@ -1717,7 +1717,7 @@ $$
 {∬}_{D}(xy)^{2}\,dx\,dy,
 $$
 
-where $D={(x,y)\,:\,{x}^{2}\le y\le 4{x}^{2},\,2\le xy\le 5}.$
+where $D=\{(x,y)\,:\,{x}^{2}\le y\le 4{x}^{2},\,2\le xy\le 5\}.$
 
 - $\frac{203 \ln{\left(2 \right)}}{2}$
 - $- 26 \ln{\left(2 \right)}$
@@ -1761,7 +1761,7 @@ To compute the required integral, we proceed as follows:
 Our domain in the $uv$-plane is
 
 $$
-\begin{aligned}Δ & ={(u,v)\,:\,1\le u\le 4,\,2\le v\le 5}.\end{aligned}
+\begin{aligned}Δ & =\{(u,v)\,:\,1\le u\le 4,\,2\le v\le 5\}.\end{aligned}
 $$
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$

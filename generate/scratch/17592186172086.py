@@ -22,7 +22,7 @@ import sympy as sp
 KP_ID=17592186172086
 TITLE='Finding the Domain of a Vector Field'
 KP_UUID='67b7ea90-38e0-54b5-b76e-816beb0d48f9'
-VERSION='vector-field-domain-4'
+VERSION='vector-field-domain-5'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -221,7 +221,13 @@ def render_graph(g):
   for v in [-a,a]:ax.plot([v,v],[lo,b],color=blue,ls='-' if g['cx'] else '--',lw=1.5)
   for v,included in [(lo,g.get('lower_closed',g['cy'])),(b,g['cy'])]:ax.plot([-a,a],[v,v],color=blue,ls='-' if included else '--',lw=1.5)
   if not(g['cx'] and g['cy']):ax.plot([-a,a,-a,a],[lo,lo,b,b],'o',mfc='white',mec=blue,ms=4,zorder=8)
-  ax.set_xticks([-a,a]);ax.set_yticks([lo,b])
+  # Pixel-offset labels sit outside the region even for tall/narrow rectangles.
+  # Axis-centered tick labels can otherwise overlap the marked corners.
+  ax.set_xticks([]);ax.set_yticks([])
+  for v in [-a,a]:
+   ax.annotate('$'+str(v)+'$',(v,0),xytext=(0,-8),textcoords='offset points',ha='center',va='top',fontsize=9)
+  for v in [lo,b]:
+   ax.annotate('$'+str(v)+'$',(-a,v),xytext=(-8,0),textcoords='offset points',ha='right',va='center',fontsize=9)
  elif g['shape']=='plane':
   if g.get('line'):ax.plot([-lim,lim],[-g['line']*lim,g['line']*lim],ls='--',color=blue)
   if g.get('puncture'):ax.plot(0,0,'o',mfc='white',mec=blue,ms=5,zorder=8)

@@ -27,7 +27,7 @@ def integrals(raw):
   cursor+=4;assert raw[cursor]=='_';lo,cursor=p.group(raw,cursor+1);assert raw[cursor]=='^';hi,cursor=p.group(raw,cursor+1);vals.append((math(lo),math(hi)))
  return vals,re.sub(r'\\,d(?:z|r|\\theta)','',raw[cursor:])
 def bracket(raw):
- start=raw.index('[');end=raw.rindex(']');factor=math(raw[:start]) if start else s.Integer(1);primitive=math(raw[start+1:end]);tail=raw[end+1:];assert tail.startswith('_{');lo,i=p.group(tail,1);assert tail[i]=='^';hi,i=p.group(tail,i+1);lv,lo=lo.split('=',1);hv,hi=hi.split('=',1);assert lv==hv;var={r'\theta':theta,'r':r,'z':z}[lv];return factor,primitive,var,math(lo),math(hi)
+ start=raw.index('[');end=raw.rindex(']');factor=math(raw[:start].strip().removesuffix(r'\cdot').strip()) if start else s.Integer(1);primitive=math(raw[start+1:end]);tail=raw[end+1:];assert tail.startswith('_{');lo,i=p.group(tail,1);assert tail[i]=='^';hi,i=p.group(tail,i+1);lv,lo=lo.split('=',1);hv,hi=hi.split('=',1);assert lv==hv;var={r'\theta':theta,'r':r,'z':z}[lv];return factor,primitive,var,math(lo),math(hi)
 def operands(raw):
  out=[];i=0
  while i<len(raw):
@@ -57,14 +57,20 @@ def check(rec):
   else:
    actual=math(expr);expected=fn if num==3 else ze if num==2 else rr if num==1 else value;assert eq(actual,expected),(fam,expr,actual,expected)
    if rad_index is not None and idx in (rad_index+1,rad_index+2):
-    terms=last_prim[r].as_ordered_terms() if last_prim[r].is_Add else [last_prim[r]];observed=operands(expr);required=[term.subs(r,v) for term in terms for v in (rad,0)];assert len(observed)==len(required) and all(eq(u,v) for u,v in zip(observed,required));C['radial_endpoint_components']+=len(observed)
+    terms=last_prim[r].as_ordered_terms() if last_prim[r].is_Add else [last_prim[r]]
+    if fam=='half_linear':
+     assert expr.startswith('(');depth=1;j=1
+     while depth:depth+=(expr[j]=='(')-(expr[j]==')');j+=1
+     multiplier=math(expr[j:].removeprefix(r'\cdot '));observed=[v*multiplier for v in operands(expr[1:j-1])]
+    else:observed=operands(expr)
+    required=[term.subs(r,v) for term in terms for v in (rad,0)];assert len(observed)==len(required) and all(eq(u,v) for u,v in zip(observed,required));C['radial_endpoint_components']+=len(observed)
    if theta_index is not None and idx==theta_index+1 and fam!='half_linear':
     terms=last_prim[theta].as_ordered_terms() if last_prim[theta].is_Add else [last_prim[theta]];observed=operands(expr);required=[term.subs(theta,v) for term in terms for v in (d,a)];assert len(observed)==len(required) and all(eq(u,v) for u,v in zip(observed,required));C['angular_endpoint_components']+=len(observed)
    if theta_index is not None and fam=='half_linear' and idx==theta_index+2:
-    terms=s.expand(last_prim[theta]).as_ordered_terms();observed=operands(expr);required=[term.subs(theta,v) for term in terms for v in (d,a)];assert len(observed)==len(required) and all(eq(u,v) for u,v in zip(observed,required));C['angular_endpoint_components']+=len(observed)
+    terms=[last_factor[theta]*s.sin(theta),last_factor[theta]*s.cos(theta)];observed=operands(expr);required=[term.subs(theta,v) for term in terms for v in (d,a)];assert len(observed)==len(required) and all(eq(u,v) for u,v in zip(observed,required));C['angular_endpoint_components']+=len(observed)
   if bounds:C['integral_stages']+=1
  if fam=='half_linear':
-  assert r'(\cos(\theta)-\sin(\theta))' in chain or r'(\cos\theta-\sin\theta)' in chain;assert last_factor[theta]!=1;C['source_factorization_checks']+=1
+  assert r'(\cos(\theta)-\sin(\theta))' in chain or r'(\cos\theta-\sin\theta)' in chain;assert r'\cdot (' in chain and r'\sin(\theta)+\cos(\theta)' in chain;C['source_factorization_checks']+=1
  wrong_extra=s.integrate(s.integrate(ze*r**(2 if fam=='reciprocal' else 1),(r,0,rad)),(theta,a,d));half=s.integrate(s.integrate(ze,(r,0,rad/2)),(theta,a,d));double=s.integrate(rr,(theta,a,a+2*(d-a)))
  wrong=s.integrate(rr,(theta,0,s.pi)) if fam=='half_linear' else s.integrate(s.integrate(s.expand_trig(ze).subs(s.cos(theta)**2,s.Integer(1)),(r,0,rad)),(theta,a,d)) if fam=='reciprocal' else s.integrate(rr,(theta,a,(a+d)/2))
  # Reciprocal source error replaces cos(2theta) by1; do not use cos² alone.
