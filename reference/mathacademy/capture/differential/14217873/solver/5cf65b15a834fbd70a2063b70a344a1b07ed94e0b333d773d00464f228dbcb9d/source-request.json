@@ -1,0 +1,175 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-355842",
+      "sequence_position": 10,
+      "problem": "Suppose we have a dataset consisting of $5$ datapoints with $3$ features in the form of the $5\\times 3$ matrix\n\n$$\nX=[\\begin{aligned}-0.42 & -0.33 & -0.4 \\\\ -0.94 & 1.07 & -0.08 \\\\ 1.11 & 0.12 & 1.71 \\\\ -0.79 & -1.51 & -0.9 \\\\ 1.04 & 0.66 & -0.32\\end{aligned}]\n$$\n\nwhere the data has been standardized (the mean of each feature is $0$ and the standard deviation is $1$).\nWe are also given the SVD decomposition $X=UΣ{V}^{T}$ where:\n\n$$\n\\begin{aligned}U & =[\\begin{aligned}-0.244 & 0.013 & 0.022 & -0.603 & 0.759 \\\\ -0.051 & -0.763 & 0.397 & 0.405 & 0.307 \\\\ 0.671 & 0.439 & 0.394 & 0.235 & 0.383 \\\\ -0.644 & 0.452 & 0.021 & 0.57 & 0.237 \\\\ 0.272 & -0.144 & -0.828 & 0.305 & 0.355\\end{aligned}] \\\\ Σ & =[\\begin{aligned}2.730 & 0 & 0 \\\\ 0 & 1.751 & 0 \\\\ 0 & 0 & 1.210 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{aligned}] \\\\ V & =[\\begin{aligned}0.617 & 0.395 & -0.68 \\\\ 0.461 & -0.882 & -0.095 \\\\ 0.638 & 0.255 & 0.727\\end{aligned}]\\end{aligned}\n$$\n\nWe will use principal component analysis to reduce the dimensionality of the dataset. \n\nIn order to reduce the dimensionality of the dataset, we will project the data onto the first few principal components.\n\nWe should pick components based on \n{{field-1}}.\n\nIf we wish to preserve $85%$ of the variance, we should reduce the dataset to \n{{field-2}}.",
+      "worked_solution": "In reducing the dimensionality of the dataset, we aim to preserve as much of the original variance as possible. \n\nWe should pick components based on $\\text{the amount of cumulative variance preserved}.$\n\nThe variance along a principal component is equal to the corresponding eigenvalue of the covariance matrix, which is proportional to the square of the corresponding singular value of the data matrix.\n\nIn our example, the singular values are\n\n$$\n{\\sigma }_{1}=2.730,\\,{\\sigma }_{2}=1.751,\\,{\\sigma }_{3}=1.210.\n$$\n\nLet us now compute the cumulative variance preserved for different numbers of components.\n\n- The fraction of variance preserved by projecting the data onto the first principal component is \n\n$$\n\\frac{{\\sigma }_{1}^{2}}{{\\sum }_{i=1}^{3}{\\sigma }_{i}^{2}}=\\frac{{2.730}^{2}}{{2.730}^{2}+{1.751}^{2}+{1.210}^{2}}≈62.2%.\n$$\n\n- The fraction of variance preserved by projecting the data onto the first two principal components is \n\n$$\n\\frac{{\\sum }_{i=1}^{2}{\\sigma }_{i}^{2}}{{\\sum }_{i=1}^{3}{\\sigma }_{i}^{2}}=\\frac{{2.730}^{2}+{1.751}^{2}}{{2.730}^{2}+{1.751}^{2}+{1.210}^{2}}≈87.8%.\n$$\n\nThus, we obtain that\n\n- reducing the dataset to $1$ dimension would preserve $62.2%$ of the variance, while\n\n- reducing the dataset to $2$ dimensions would preserve $87.8%$ of the variance.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/b2f5cc8cae6fac8d24e20c045990d39d088a34df26402a7f1e5137070579de03.png)\n\nTherefore, we should reduce the dataset to $2\\text{ dimensions},$ since this is the minimum number of components that preserves at least $85%$ of the variance.",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Full Credit",
+      "problem_field_keys": [
+        "field-1",
+        "field-2"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/history-q-355842-19b8170127043f563158.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14217873",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/history-solution-q-355842-97c3a488e03c82a5aad9.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "the amount of cumulative variance preserved"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "the amount of cumulative variance preserved"
+          },
+          "source_result": "Correct",
+          "correct_value": "the amount of cumulative variance preserved",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "the amount of cumulative variance preserved",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/step-q355842-3b0ae5c14ba70bb2152e.html",
+            "presentation_key": "step-q355842"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/history-q-355842-19b8170127043f563158.html",
+            "value": "the amount of cumulative variance preserved"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "the amount of cumulative variance preserved"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "if the singular value is greater than $1$"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "the original number of features"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "if the eigenvalue is smaller than average"
+            }
+          ]
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "$2$ dimensions"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "$2$ dimensions"
+          },
+          "source_result": "Correct",
+          "correct_value": "$2$ dimensions",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "$2$ dimensions",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/step-q355842-3b0ae5c14ba70bb2152e.html",
+            "presentation_key": "step-q355842"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/history-q-355842-19b8170127043f563158.html",
+            "value": "$2$ dimensions"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$2$ dimensions"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$1$ dimension"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$3$ dimensions"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/b2f5cc8cae6fac8d24e20c045990d39d088a34df26402a7f1e5137070579de03.png",
+          "sha256": "b2f5cc8cae6fac8d24e20c045990d39d088a34df26402a7f1e5137070579de03",
+          "source_url": "https://mathacademy.com/graphics/34c1f76a6dc86b3d085af26b9531d35a",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q355842",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "the amount of cumulative variance preserved",
+                "option": "3",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          },
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-2",
+                "value": "$2$ dimensions",
+                "option": "2",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Full Credit",
+          "result": "Correct",
+          "worked_solution": "In reducing the dimensionality of the dataset, we aim to preserve as much of the original variance as possible. \n\nWe should pick components based on $\\text{the amount of cumulative variance preserved}.$\n\nThe variance along a principal component is equal to the corresponding eigenvalue of the covariance matrix, which is proportional to the square of the corresponding singular value of the data matrix.\n\nIn our example, the singular values are\n\n$$\n{\\sigma }_{1}=2.730,\\,{\\sigma }_{2}=1.751,\\,{\\sigma }_{3}=1.210.\n$$\n\nLet us now compute the cumulative variance preserved for different numbers of components.\n\n- The fraction of variance preserved by projecting the data onto the first principal component is \n\n$$\n\\frac{{\\sigma }_{1}^{2}}{{\\sum }_{i=1}^{3}{\\sigma }_{i}^{2}}=\\frac{{2.730}^{2}}{{2.730}^{2}+{1.751}^{2}+{1.210}^{2}}≈62.2%.\n$$\n\n- The fraction of variance preserved by projecting the data onto the first two principal components is \n\n$$\n\\frac{{\\sum }_{i=1}^{2}{\\sigma }_{i}^{2}}{{\\sum }_{i=1}^{3}{\\sigma }_{i}^{2}}=\\frac{{2.730}^{2}+{1.751}^{2}}{{2.730}^{2}+{1.751}^{2}+{1.210}^{2}}≈87.8%.\n$$\n\nThus, we obtain that\n\n- reducing the dataset to $1$ dimension would preserve $62.2%$ of the variance, while\n\n- reducing the dataset to $2$ dimensions would preserve $87.8%$ of the variance.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/b2f5cc8cae6fac8d24e20c045990d39d088a34df26402a7f1e5137070579de03.png)\n\nTherefore, we should reduce the dataset to $2\\text{ dimensions},$ since this is the minimum number of components that preserves at least $85%$ of the variance.",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/history-solution-q-355842-97c3a488e03c82a5aad9.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/history-q-355842-19b8170127043f563158.html"
+        }
+      }
+    ]
+  }
+}

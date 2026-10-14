@@ -1,0 +1,54 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "e-18840",
+      "problem": "Suppose we have a dataset consisting of $5$ datapoints with $3$ features in the form of the $5 \\times 3$ matrix\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/83365da559075cf32eaebf67a12eef548f40585a84a3226aad488327de8e9e84.svg)\nwhere the data has been standardized (the mean of each feature is $0$ and the standard deviation is $1$).\nWe are also given the SVD decomposition $X = U \\Sigma V^T$ where:\n\n$$\n\\begin{aligned}U & =[\\begin{aligned}-0.75 & 0.177 & 0.014 & 0.637 & -0.004 \\\\ 0.275 & -0.054 & -0.847 & 0.36 & 0.274 \\\\ -0.213 & -0.653 & 0.171 & -0.068 & 0.703 \\\\ 0.542 & -0.181 & 0.459 & 0.678 & -0.05 \\\\ 0.15 & 0.711 & 0.206 & -0.022 & 0.655\\end{aligned}] \\\\ Σ & =[\\begin{aligned}2.272 & 0 & 0 \\\\ 0 & 2.031 & 0 \\\\ 0 & 0 & 1.659 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{aligned}] \\\\ V & =[\\begin{aligned}0.724 & 0.019 & 0.69 \\\\ 0.422 & 0.779 & -0.464 \\\\ 0.546 & -0.627 & -0.555\\end{aligned}]\\end{aligned}\n$$\n\nWe will use principal component analysis to reduce the dimensionality of the dataset. \n\nIn order to reduce the dimensionality of the dataset, we will project the data onto the first few principal components.\n\nFill in the blanks below:\n\nWe should pick components based on \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/21182b5f0667421011af540ed046b0924b738d74d6a09f574320bd4768df7c38.svg)\n\nIf we wish to preserve $75\\%$ of the variance, we should reduce the dataset to \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/abbb30d852a431e139075cbe6686ea1aafd697e5d52351e1f23730545ea2d661.svg).",
+      "worked_solution": "In reducing the dimensionality of the dataset, we aim to preserve as much of the original variance as possible. \n\nWe should pick components based on $\\bbox[4pt,border: 1px solid lightgray]{\\text{the amount of cumulative variance preserved}}.$\n\nThe variance along a principal component is equal to the corresponding eigenvalue of the covariance matrix, which is proportional to the square of the corresponding singular value of the data matrix.\n\nIn our example, the singular values are\n\n$$\n\\sigma_1 = 2.272, \\qquad\n\\sigma_2 = 2.031, \\qquad\n\\sigma_3 = 1.659.\n$$\n\nLet us now compute the cumulative variance preserved for different numbers of components.\n\n- The fraction of variance preserved by projecting the data onto the first principal component is \n\n$$\n\\dfrac{\\sigma_1^2}{\\sum\\limits_{i=1}^3 \\sigma_i^2} =\n\\dfrac{2.272^2}{2.272^2 + 2.031^2 + 1.659^2} \\approx 42.9\\%.\n$$\n\n- The fraction of variance preserved by projecting the data onto the first two principal components is \n\n$$\n\\dfrac{\\sum\\limits_{i=1}^2 \\sigma_i^2}{\\sum\\limits_{i=1}^3 \\sigma_i^2} =\n\\dfrac{2.272^2 + 2.031^2}{2.272^2 + 2.031^2 + 1.659^2} \\approx 77.1\\%.\n$$\n\nThus, we obtain that\n\n- reducing the dataset to $1$ dimension would preserve $42.9\\%$ of the variance, while\n\n- reducing the dataset to $2$ dimensions would preserve $77.1\\%$ of the variance.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/f35a54aa598a0c65fc14ae807b60ddd6dcb68a36dd4f0ba5089fae12ec7a9495.png)\n\nTherefore, we should reduce the dataset to ![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/8d0e762e494aa7a29af18cae486e8fca07aa9e6fb1c68e1204b8e1765caee8c2.svg) since this is the minimum number of components that preserves at least $75\\%$ of the variance.",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/lesson-step-629556-b84d48ace45955b93706.html",
+      "source_url": "https://mathacademy.com/topics/5289",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/lesson-step-629556-b84d48ace45955b93706.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/83365da559075cf32eaebf67a12eef548f40585a84a3226aad488327de8e9e84.svg",
+          "sha256": "83365da559075cf32eaebf67a12eef548f40585a84a3226aad488327de8e9e84",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/21182b5f0667421011af540ed046b0924b738d74d6a09f574320bd4768df7c38.svg",
+          "sha256": "21182b5f0667421011af540ed046b0924b738d74d6a09f574320bd4768df7c38",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/abbb30d852a431e139075cbe6686ea1aafd697e5d52351e1f23730545ea2d661.svg",
+          "sha256": "abbb30d852a431e139075cbe6686ea1aafd697e5d52351e1f23730545ea2d661",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 3,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/f35a54aa598a0c65fc14ae807b60ddd6dcb68a36dd4f0ba5089fae12ec7a9495.png",
+          "sha256": "f35a54aa598a0c65fc14ae807b60ddd6dcb68a36dd4f0ba5089fae12ec7a9495",
+          "source_url": "https://mathacademy.com/graphics/768df8ee7443b3e922bc46dd104181dc",
+          "content_type": "image/png",
+          "representation": "original"
+        },
+        {
+          "index": 4,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/8d0e762e494aa7a29af18cae486e8fca07aa9e6fb1c68e1204b8e1765caee8c2.svg",
+          "sha256": "8d0e762e494aa7a29af18cae486e8fca07aa9e6fb1c68e1204b8e1765caee8c2",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  },
+  "session_id": "01a13c98-58cc-72a0-bdd4-a85f578b2e7c",
+  "previous_failures": []
+}

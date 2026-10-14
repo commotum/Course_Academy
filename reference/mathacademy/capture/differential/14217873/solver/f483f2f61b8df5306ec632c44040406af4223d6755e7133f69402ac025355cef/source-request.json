@@ -1,0 +1,37 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "e-18786",
+      "problem": "Suppose we have a dataset consisting of $4$ datapoints with $2$ features in the form of the $4 \\times 2$ matrix\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/232f6bffd41437d85b7a0f09ec268d459009656ef77fba4b4fb445b52dd13a1d.svg)\nwhere the data has been standardized (the mean of each feature is $0$ and the standard deviation is $1$).\nWe are also given the SVD decomposition $X = U \\Sigma V^T$ where:\n\n$$\n\\begin{aligned}U & =[\\begin{aligned}-0.689 & -0.424 & 0.495 & 0.318 \\\\ 0.143 & -0.241 & -0.524 & 0.804 \\\\ 0.695 & -0.188 & 0.650 & 0.244 \\\\ -0.149 & 0.853 & 0.241 & 0.439\\end{aligned}] \\\\ Σ & =[\\begin{aligned}2.075 & 0 \\\\ 0 & 1.294 \\\\ 0 & 0 \\\\ 0 & 0\\end{aligned}] \\\\ V & =[\\begin{aligned}-0.709 & -0.706 \\\\ 0.706 & -0.709\\end{aligned}]\\end{aligned}\n$$\n\nFind the one-dimensional version of the data that preserves the most variance.",
+      "worked_solution": "The one-dimensional version of the data that preserves the most variance is the projection onto the first principal component.\n\nRecall that the principal components are the eigenvectors of the covariance matrix $X^TX.$ Using the SVD $X = U\\Sigma V^T$ and the orthogonality of $U,$ we have\n\n$$\n\\begin{aligned}{X}^{T}X & =(UΣ{V}^{T})^{T}(UΣ{V}^{T}) \\\\  & =V{Σ}^{T}{U}^{T}UΣ{V}^{T} \\\\  & =V{Σ}^{T}Σ{V}^{T}.\\end{aligned}\n$$\n\nSince $\\Sigma^T\\Sigma$ is diagonal with the squared singular values on the diagonal, the eigenvectors of $X^TX$ are the columns of $V,$ and the eigenvalues are the squared singular values. The largest eigenvalue corresponds to the first singular value $\\sigma_1 = 2.075,$ so the first principal component is $v_1,$ the first column of $V{:}$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/e91c75818de82c4564584df51a72432ebc97c90dd5a1c8687b24bd31998d9910.svg)\n\nTo obtain the one-dimensional version of the data, we project $X$ onto $v_1$ by computing\n\n$$\n\\begin{aligned}X{v}_{1} & =[\\begin{aligned}1.40 & -0.62 \\\\ 0.01 & 0.43 \\\\ -0.85 & 1.19 \\\\ -0.56 & -1.00\\end{aligned}][\\begin{aligned}-0.709 \\\\ 0.706\\end{aligned}] \\\\  & =[\\begin{aligned}-1.43 \\\\ 0.30 \\\\ 1.44 \\\\ -0.31\\end{aligned}].\\end{aligned}\n$$\n\nEquivalently, we can compute this projection using $u_1 \\sigma_1,$ where $u_1$ is the first column of $U.$ Indeed, from the SVD,\n\n$$\n\\begin{aligned}X{v}_{1} & =UΣ{V}^{T}{v}_{1}=UΣ[\\begin{aligned}1 \\\\ 0\\end{aligned}]=U[\\begin{aligned}{\\sigma }_{1} \\\\ 0 \\\\ 0 \\\\ 0\\end{aligned}]={u}_{1}{\\sigma }_{1}.\\end{aligned}\n$$\n\nSubstituting $u_1$ and $\\sigma_1 = 2.075,$ we get\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/148bc9bd4289245d9ada00da68f7b6e0666bfa9c3fffd47fde79164b177732d8.svg)\n\nwhich confirms the result.\n\n**Watch out!** The vector $v_1$ itself is the first principal component *direction* — a unit vector in feature space. It is not a one-dimensional representation of the data. The one-dimensional representation is $Xv_1$ (or equivalently $u_1\\sigma_1$), which is a $4 \\times 1$ vector containing the projection of each data point onto this direction.",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/lesson-step-629552-f5fabca32bbb48b1873b.html",
+      "source_url": "https://mathacademy.com/topics/5289",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/lesson-step-629552-f5fabca32bbb48b1873b.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/232f6bffd41437d85b7a0f09ec268d459009656ef77fba4b4fb445b52dd13a1d.svg",
+          "sha256": "232f6bffd41437d85b7a0f09ec268d459009656ef77fba4b4fb445b52dd13a1d",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/e91c75818de82c4564584df51a72432ebc97c90dd5a1c8687b24bd31998d9910.svg",
+          "sha256": "e91c75818de82c4564584df51a72432ebc97c90dd5a1c8687b24bd31998d9910",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/assets/148bc9bd4289245d9ada00da68f7b6e0666bfa9c3fffd47fde79164b177732d8.svg",
+          "sha256": "148bc9bd4289245d9ada00da68f7b6e0666bfa9c3fffd47fde79164b177732d8",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-355831",
+      "sequence_position": 5,
+      "problem": "Suppose we have a dataset consisting of $4$ datapoints with $2$ features in the form of the $4\\times 2$ matrix\n\n$$\nX=[\\begin{aligned}-0.27 & 0.39 \\\\ -0.99 & -1.23 \\\\ -0.13 & -0.28 \\\\ 1.39 & 1.12\\end{aligned}]\n$$\n\nwhere the data has been standardized (the mean of each feature is $0$ and the standard deviation is $1$).\nWe are also given the SVD decomposition $X=UΣ{V}^{T}$ where:\n\n$$\n\\begin{aligned}U & =[\\begin{aligned}0.035 & 0.86 & 0.132 & 0.491 \\\\ -0.657 & -0.314 & -0.208 & 0.653 \\\\ -0.121 & -0.196 & 0.969 & 0.092 \\\\ 0.743 & -0.351 & -0.032 & 0.569\\end{aligned}] \\\\ Σ & =[\\begin{aligned}2.389 & 0 \\\\ 0 & 0.542 \\\\ 0 & 0 \\\\ 0 & 0\\end{aligned}] \\\\ V & =[\\begin{aligned}0.707 & -0.707 \\\\ 0.707 & 0.707\\end{aligned}]\\end{aligned}\n$$\n\nWhich of the following matrices corresponds to the one-dimensional version of the data that preserves the most variance?\n\nI. $[\\begin{aligned}0.035 \\\\ -0.657 \\\\ -0.121 \\\\ 0.743\\end{aligned}]\\cdot 2.389$\n\nII. $[\\begin{aligned}0.707 \\\\ 0.707\\end{aligned}]$\n\nIII. $[\\begin{aligned}0.035 \\\\ 0.86 \\\\ 0.132 \\\\ 0.491\\end{aligned}]\\cdot 2.389$",
+      "worked_solution": "The one-dimensional version of the data that preserves the most variance is the projection onto the first principal component.\n\nRecall that the principal components are the eigenvectors of the covariance matrix ${X}^{T}X.$\n\nUsing the SVD and the fact that $U$ is orthogonal (i.e., ${U}^{T}U=I$), we get that\n\n$$\n\\begin{aligned}{X}^{T}X & =(UΣ{V}^{T})^{T}(UΣ{V}^{T}) \\\\  & =V{Σ}^{T}{U}^{T}UΣ{V}^{T} \\\\  & =V{Σ}^{T}Σ{V}^{T}.\\end{aligned}\n$$\n\nNow, since $Σ$ is a diagonal matrix, and so is ${Σ}^{T}Σ,$ we know that the eigenvectors of ${X}^{T}X$ are the columns of $V.$\n\nIn particular, the first principal component is the eigenvector of ${X}^{T}X$ corresponding to the largest eigenvalue. \nAnd since $Σ$ contains the corresponding singular values (square roots of the eigenvalues) in decreasing order, the first principal component is ${v}_{1},$ the first column of $V.$\n\nWith that in mind, let's examine the given options.\n\n- Option I corresponds to the one-dimensional version of the data that preserves the most variance. Notice that it represents ${u}_{1}\\cdot {\\sigma }_{1},$ where ${u}_{1}$ is the first column of $U$ and ${\\sigma }_{1}$ is the first singular value. But this equals  $X\\cdot {v}_{1}:$\n\n$$\n\\begin{aligned}X\\cdot {v}_{1} & =UΣ{V}^{T}\\cdot {v}_{1}=UΣ\\cdot [\\begin{aligned}1 \\\\ 0\\end{aligned}]=U\\cdot [\\begin{aligned}{\\sigma }_{1} \\\\ 0 \\\\ 0 \\\\ 0\\end{aligned}]={u}_{1}\\cdot {\\sigma }_{1}\\end{aligned}\n$$\n\n- Option II represents ${v}_{1},$ which is the first principal component. It represents a direction in feature space, not a version of the data. Notice that it is also dimensionally incorrect, since it is a $2\\times 1$ matrix instead of $4\\times 1.$\n\n- Option III uses the values of the first row of $U$ multiplied by ${\\sigma }_{1}.$ However, the projection corresponds to the first column of $U.$ Thus, using the row vector is incorrect.\n\nTherefore, the correct answer is \"I only.\"",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/history-q-355831-e23c64b65f4867b5612c.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14217873",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/history-solution-q-355831-672278c3ff5cd48b7fef.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "III only"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "II only"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "II and III only"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q355831",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "I only",
+                "option": "a",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The one-dimensional version of the data that preserves the most variance is the projection onto the first principal component.\n\nRecall that the principal components are the eigenvectors of the covariance matrix ${X}^{T}X.$\n\nUsing the SVD and the fact that $U$ is orthogonal (i.e., ${U}^{T}U=I$), we get that\n\n$$\n\\begin{aligned}{X}^{T}X & =(UΣ{V}^{T})^{T}(UΣ{V}^{T}) \\\\  & =V{Σ}^{T}{U}^{T}UΣ{V}^{T} \\\\  & =V{Σ}^{T}Σ{V}^{T}.\\end{aligned}\n$$\n\nNow, since $Σ$ is a diagonal matrix, and so is ${Σ}^{T}Σ,$ we know that the eigenvectors of ${X}^{T}X$ are the columns of $V.$\n\nIn particular, the first principal component is the eigenvector of ${X}^{T}X$ corresponding to the largest eigenvalue. \nAnd since $Σ$ contains the corresponding singular values (square roots of the eigenvalues) in decreasing order, the first principal component is ${v}_{1},$ the first column of $V.$\n\nWith that in mind, let's examine the given options.\n\n- Option I corresponds to the one-dimensional version of the data that preserves the most variance. Notice that it represents ${u}_{1}\\cdot {\\sigma }_{1},$ where ${u}_{1}$ is the first column of $U$ and ${\\sigma }_{1}$ is the first singular value. But this equals  $X\\cdot {v}_{1}:$\n\n$$\n\\begin{aligned}X\\cdot {v}_{1} & =UΣ{V}^{T}\\cdot {v}_{1}=UΣ\\cdot [\\begin{aligned}1 \\\\ 0\\end{aligned}]=U\\cdot [\\begin{aligned}{\\sigma }_{1} \\\\ 0 \\\\ 0 \\\\ 0\\end{aligned}]={u}_{1}\\cdot {\\sigma }_{1}\\end{aligned}\n$$\n\n- Option II represents ${v}_{1},$ which is the first principal component. It represents a direction in feature space, not a version of the data. Notice that it is also dimensionally incorrect, since it is a $2\\times 1$ matrix instead of $4\\times 1.$\n\n- Option III uses the values of the first row of $U$ multiplied by ${\\sigma }_{1}.$ However, the projection corresponds to the first column of $U.$ Thus, using the row vector is incorrect.\n\nTherefore, the correct answer is \"I only.\"",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14217873/observations/step-q355831-327b9d031a7b7def9acb.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13c98-58cc-72a0-bdd4-a85f578b2e7c",
+  "previous_failures": []
+}
