@@ -1,0 +1,57 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-337541",
+      "problem": "Consider the following differential equation.\n\n$$\n{y}^{″}+{y}^{′}-12y=14x{e}^{-4x}\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x)=A{e}^{-4x}+B{e}^{3x}+g(x),\n$$\n\nwhere $A$ and $B$ are constants. Which of the following could be the function $g(x)?$\n\n*Hint: Use the variation of parameters method. You may also wish to make use of the following result (integration constants omitted):*\n\n$$\n\\int x{e}^{-7x}\\,\\text{d}x=-\\frac{1}{49}(7x+1){e}^{-7x}\n$$",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14191625/observations/step-q337541-7199d826ff58e334418d.html",
+      "source_url": "https://mathacademy.com/tasks/14191625/topics/6704/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "-({x}^{2}+\\frac{3x}{7}){e}^{-4x}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "-({x}^{2}+\\frac{2x}{5}){e}^{-4x}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "-({x}^{2}+\\frac{2x}{7}){e}^{-4x}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "-({x}^{2}+\\frac{x}{3}){e}^{-4x}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "-({x}^{2}+\\frac{x}{7}){e}^{-4x}"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-6618",
+      "problem": "Consider the following differential equation.\n\n$$\ny'' - 2y' + y = 18x e^{x}\n$$\n\nThe general solution to this equation can be written as\n\n$$\ny(x) = A e^{x} + B x e^{x} + g(x),\n$$\n\nwhere $A$ and $B$ are constants. What could be the function $g(x)?$",
+      "worked_solution": "Suppose we have a second-order linear differential equation with linearly independent fundamental solutions $y_1(x)$ and $y_2(x)$. Then, according to the method of variation of parameters, we can seek a particular solution $y_p$ may be written as\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}(x){y}_{1}(x)+{u}_{2}(x){y}_{2}(x),\\end{aligned}\n$$\n\nwhere $u_1$ and $u_2$ satisfy the following system:\n\n$$\n\\{\\begin{aligned}{u}_{1}^{′}{y}_{1}^{′}+{u}_{2}^{′}{y}_{2}^{′}=f(x) \\\\ {u}_{1}^{′}{y}_{1}+{u}_{2}^{′}{y}_{2}=0\\end{aligned}\n$$\n\nThe solution to this system is\n\n$$\nu_1(x) = -\\int \\dfrac{f(x)y_2(x)}{W(y_1,y_2)}\\,dx,\n\\qquad\nu_2(x) = \\int \\dfrac{f(x)y_1(x)}{W(y_1,y_2)}\\,dx,\n$$\n\nwhere $W(y_1,y_2)$ is the Wronskian.\n\nFrom the given information, we see that the complementary solution is\n\n$$\ny_c(x) = A e^{x} + B x e^{x}.\n$$\n\nTherefore, the fundamental solutions to the corresponding homogeneous equation are\n\n$$\ny_1(x) = e^{x}, \\qquad y_2(x) = x e^{x}.\n$$\n\nWe can use the method of variation of parameters if these solutions are independent. So, let's first compute the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{′} & {y}_{2}^{′}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{′}-{y}_{1}^{′}{y}_{2} \\\\  & =({e}^{x})(x{e}^{x})^{′}-({e}^{x})^{′}(x{e}^{x}) \\\\  & =({e}^{x})({e}^{x}+x{e}^{x})-({e}^{x})(x{e}^{x}) \\\\  & ={e}^{2x}+x{e}^{2x}-x{e}^{2x} \\\\  & ={e}^{2x}\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions  $y_1(x)$ and $y_2(x)$ are independent.\n\nNow compute $u_1(x)$ and $u_2(x)$:\n\n$$\n\\begin{aligned}{u}_{1}(x) & =-\\int \\frac{18x{e}^{x}\\cdot x{e}^{x}}{{e}^{2x}}\\,dx \\\\  & =-18\\int {x}^{2}\\,dx \\\\  & =-6{x}^{3} \\\\ {u}_{2}(x) & =\\int \\frac{18x{e}^{x}\\cdot {e}^{x}}{{e}^{2x}}\\,dx \\\\  & =18\\int x\\,dx \\\\  & =9{x}^{2}\\end{aligned}\n$$\n\nTherefore, the particular solution is\n\n$$\n\\begin{aligned}{y}_{p}(x) & ={u}_{1}{y}_{1}+{u}_{2}{y}_{2} \\\\  & =(-6{x}^{3}){e}^{x}+(9{x}^{2})(x{e}^{x}) \\\\  & =-6{x}^{3}{e}^{x}+9{x}^{3}{e}^{x} \\\\  & =3{x}^{3}{e}^{x}.\\end{aligned}\n$$\n\nThe general solution is the sum of the complementary and particular solutions, and can be written as follows:\n\n$$\n\\begin{aligned}y(x) & ={y}_{c}(x)+{y}_{p}(x) \\\\  & =A{e}^{x}+Bx{e}^{x}+{{3{x}^{3}{e}^{x}}_{⏟}}_{g(x)}\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\ng(x) = 3x^3 e^{x}.\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14191625/observations/step-e6618-5285f71fdb7896032f39.html",
+      "source_url": "https://mathacademy.com/tasks/14191625/topics/6704/lesson"
+    }
+  },
+  "session_id": null,
+  "previous_failures": [],
+  "conversation": []
+}

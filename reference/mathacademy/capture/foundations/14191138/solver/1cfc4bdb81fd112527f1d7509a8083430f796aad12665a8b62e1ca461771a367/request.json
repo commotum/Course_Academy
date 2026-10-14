@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-338347",
+      "sequence_position": 8,
+      "problem": "Consider the differential equation \n\n$$\n{y}^{″}+4y=2x.\n$$\n\nThe corresponding homogeneous equation has the fundamental solutions ${y}_{1}(x)=\\operatorname{cos}⁡(2x)$ and ${y}_{2}=\\operatorname{sin}⁡(2x).$ \n\nAccording to the method of variation of parameters, we should seek a particular solution \n\n$$\n{y}_{p}(x)={u}_{1}(x){y}_{1}+{u}_{2}(x){y}_{2}\n$$\n\nthat satisfies the following constraints:\n\n$$\n\\begin{aligned}\\{\\begin{aligned}{u}_{1}^{′}{y}_{1}^{′}+{u}_{2}^{′}{y}_{2}^{′}=2x \\\\ {u}_{1}^{′}{y}_{1}+{u}_{2}^{′}{y}_{2}=0\\end{aligned}\\end{aligned}\n$$\n\nGiven that ${u}_{1}(x)=-\\int g(x)\\,\\text{d}x,$ find the function $g.$",
+      "worked_solution": "We notice that the forcing term is $f(x)=2x.$ Additionally, we're given the fundamental solutions\n\n$$\n{y}_{1}(x)=\\operatorname{cos}⁡(2x),\\,{y}_{2}(x)=\\operatorname{sin}⁡(2x).\n$$\n\nFirst, let's verify that the fundamental solutions ${y}_{1}$ and ${y}_{2}$ are independent by computing the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{′} & {y}_{2}^{′}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{′}-{y}_{1}^{′}{y}_{2} \\\\  & =(\\operatorname{cos}⁡(2x))(\\operatorname{sin}⁡(2x))^{′}-(\\operatorname{cos}⁡(2x))^{′}(\\operatorname{sin}⁡(2x)) \\\\  & =(\\operatorname{cos}⁡(2x))(2\\operatorname{cos}⁡(2x))-(-2\\operatorname{sin}⁡(2x))(\\operatorname{sin}⁡(2x)) \\\\  & =2{cos}^{2}⁡(2x)+2{sin}^{2}⁡(2x) \\\\  & =2\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1}(x)$ and ${y}_{2}(x)$ are linearly independent. \n\nNow, we have the following constraints:\n\n$$\n\\begin{aligned}\\{\\begin{aligned}{u}_{1}^{′}{(\\operatorname{cos}⁡(2x))}^{′}+{u}_{2}^{′}{(\\operatorname{sin}⁡(2x))}^{′}=2x \\\\ {u}_{1}^{′}\\operatorname{cos}⁡(2x)+{u}_{2}^{′}\\operatorname{sin}⁡(2x)=0\\end{aligned}\\,⟹\\,\\{\\begin{aligned}-2{u}_{1}^{′}\\operatorname{sin}⁡(2x)+2{u}_{2}^{′}\\operatorname{cos}⁡(2x)=2x \\\\ {u}_{1}^{′}\\operatorname{cos}⁡(2x)+{u}_{2}^{′}\\operatorname{sin}⁡(2x)=0\\end{aligned}\\end{aligned}\n$$\n\nWe wish to find an integral expression for ${u}_{1}.$ We start by eliminating ${u}_{2}^{′}$ from the second equation:\n\n$$\n{u}_{2}^{′}=-\\frac{{u}_{1}^{′}\\operatorname{cos}⁡(2x)}{\\operatorname{sin}⁡(2x)}.\n$$\n\nSubstituting this into the first equation, we get\n\n$$\n\\begin{aligned}-2{u}_{1}^{′}\\operatorname{sin}⁡(2x)+2{u}_{2}^{′}\\operatorname{cos}⁡(2x) & =2x \\\\ -2{u}_{1}^{′}\\operatorname{sin}⁡(2x)+2(-\\frac{{u}_{1}^{′}\\operatorname{cos}⁡(2x)}{\\operatorname{sin}⁡(2x)})\\operatorname{cos}⁡(2x) & =2x \\\\ -2{u}_{1}^{′}\\operatorname{sin}⁡(2x)-2{u}_{1}^{′}\\frac{{cos}^{2}⁡(2x)}{\\operatorname{sin}⁡(2x)} & =2x \\\\ -2{u}_{1}^{′}\\frac{{sin}^{2}⁡(2x)+{cos}^{2}⁡(2x)}{\\operatorname{sin}⁡(2x)} & =2x \\\\ -2{u}_{1}^{′}\\frac{1}{\\operatorname{sin}⁡(2x)} & =2x \\\\ {u}_{1}^{′} & =-x\\operatorname{sin}⁡(2x).\\end{aligned}\n$$\n\nIntegrating both sides with respect to $x,$ we have\n\n$$\n\\begin{aligned}\\int {u}_{1}^{′}\\,\\text{d}x & =\\int -x\\operatorname{sin}⁡(2x)\\,\\text{d}x \\\\ {u}_{1} & =-\\int x\\operatorname{sin}⁡(2x)\\,\\text{d}x.\\end{aligned}\n$$\n\nFinally, we conclude that $g(x)=x\\operatorname{sin}⁡(2x).$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14191138/observations/history-q-338347-6286fdf04e7108ea2978.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14191138",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14191138/observations/history-solution-q-338347-7c6f67721a48f53dc2fd.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "x\\operatorname{sin}⁡(2x)"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "{x}^{2}\\operatorname{sin}⁡(2x)"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\operatorname{sin}⁡(2x)"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "2x\\operatorname{sin}⁡(2x)"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "x\\operatorname{cos}⁡(2x)"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q338347",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "{x}^{2}\\operatorname{sin}⁡(2x)",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "We notice that the forcing term is $f(x)=2x.$ Additionally, we're given the fundamental solutions\n\n$$\n{y}_{1}(x)=\\operatorname{cos}⁡(2x),\\,{y}_{2}(x)=\\operatorname{sin}⁡(2x).\n$$\n\nFirst, let's verify that the fundamental solutions ${y}_{1}$ and ${y}_{2}$ are independent by computing the Wronskian:\n\n$$\n\\begin{aligned}W({y}_{1},{y}_{2}) & =|\\begin{aligned}{y}_{1} & {y}_{2} \\\\ {y}_{1}^{′} & {y}_{2}^{′}\\end{aligned}| \\\\  & ={y}_{1}{y}_{2}^{′}-{y}_{1}^{′}{y}_{2} \\\\  & =(\\operatorname{cos}⁡(2x))(\\operatorname{sin}⁡(2x))^{′}-(\\operatorname{cos}⁡(2x))^{′}(\\operatorname{sin}⁡(2x)) \\\\  & =(\\operatorname{cos}⁡(2x))(2\\operatorname{cos}⁡(2x))-(-2\\operatorname{sin}⁡(2x))(\\operatorname{sin}⁡(2x)) \\\\  & =2{cos}^{2}⁡(2x)+2{sin}^{2}⁡(2x) \\\\  & =2\\ne 0\\end{aligned}\n$$\n\nSince the Wronskian is not equal to zero, this confirms that the functions ${y}_{1}(x)$ and ${y}_{2}(x)$ are linearly independent. \n\nNow, we have the following constraints:\n\n$$\n\\begin{aligned}\\{\\begin{aligned}{u}_{1}^{′}{(\\operatorname{cos}⁡(2x))}^{′}+{u}_{2}^{′}{(\\operatorname{sin}⁡(2x))}^{′}=2x \\\\ {u}_{1}^{′}\\operatorname{cos}⁡(2x)+{u}_{2}^{′}\\operatorname{sin}⁡(2x)=0\\end{aligned}\\,⟹\\,\\{\\begin{aligned}-2{u}_{1}^{′}\\operatorname{sin}⁡(2x)+2{u}_{2}^{′}\\operatorname{cos}⁡(2x)=2x \\\\ {u}_{1}^{′}\\operatorname{cos}⁡(2x)+{u}_{2}^{′}\\operatorname{sin}⁡(2x)=0\\end{aligned}\\end{aligned}\n$$\n\nWe wish to find an integral expression for ${u}_{1}.$ We start by eliminating ${u}_{2}^{′}$ from the second equation:\n\n$$\n{u}_{2}^{′}=-\\frac{{u}_{1}^{′}\\operatorname{cos}⁡(2x)}{\\operatorname{sin}⁡(2x)}.\n$$\n\nSubstituting this into the first equation, we get\n\n$$\n\\begin{aligned}-2{u}_{1}^{′}\\operatorname{sin}⁡(2x)+2{u}_{2}^{′}\\operatorname{cos}⁡(2x) & =2x \\\\ -2{u}_{1}^{′}\\operatorname{sin}⁡(2x)+2(-\\frac{{u}_{1}^{′}\\operatorname{cos}⁡(2x)}{\\operatorname{sin}⁡(2x)})\\operatorname{cos}⁡(2x) & =2x \\\\ -2{u}_{1}^{′}\\operatorname{sin}⁡(2x)-2{u}_{1}^{′}\\frac{{cos}^{2}⁡(2x)}{\\operatorname{sin}⁡(2x)} & =2x \\\\ -2{u}_{1}^{′}\\frac{{sin}^{2}⁡(2x)+{cos}^{2}⁡(2x)}{\\operatorname{sin}⁡(2x)} & =2x \\\\ -2{u}_{1}^{′}\\frac{1}{\\operatorname{sin}⁡(2x)} & =2x \\\\ {u}_{1}^{′} & =-x\\operatorname{sin}⁡(2x).\\end{aligned}\n$$\n\nIntegrating both sides with respect to $x,$ we have\n\n$$\n\\begin{aligned}\\int {u}_{1}^{′}\\,\\text{d}x & =\\int -x\\operatorname{sin}⁡(2x)\\,\\text{d}x \\\\ {u}_{1} & =-\\int x\\operatorname{sin}⁡(2x)\\,\\text{d}x.\\end{aligned}\n$$\n\nFinally, we conclude that $g(x)=x\\operatorname{sin}⁡(2x).$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14191138/observations/step-q338347-ff65802f93d2f0117bcb.html"
+        }
+      }
+    ]
+  }
+}
