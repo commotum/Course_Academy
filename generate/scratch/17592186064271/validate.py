@@ -91,84 +91,87 @@ def check_record(r,raw_solution=False):
  assert sol.count('The derivative')==1 and sol.count('ratio of the units')==1
  assert sol.count(r'\begin{aligned}')==2
 
-source=json.loads((D/'source.json').read_text())
-assert source['basis']==1356
-originals={q[':question/math-academy-id']:q for q in source['record'][':knowledge-point/questions']}
-cases=json.loads((D/'source-cases.json').read_text())
-metrics={'source_questions':len(cases),'exact_prompts':0,'exact_solutions':0,'available_solutions':0,'exact_banks':0,'available_banks':0,'matched_choices':0,'available_choices':0,'exact_designations':0,'available_designations':0}
-review=[];source_reports=[];engine=[]
-def add_engine(r,label):
- f=r['question'][':question/answer-fields'][0];right=f[':answer-field/correct'][1]
- engine.append({'label':label,'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==right else 'rejected','purpose':'owned radio choice; displayed units checked independently'} for a in f[':answer-field/choices']]})
-for case in cases:
- q=originals[case['source_id']];r=g.generate(case['level'],template=case['template'],parameters=case['parameters'],profile=case['bank_profile'])
- check_record(r,raw_solution=case['template']=='website')
- assert r['question'][':question/problem']==q[':question/problem'];metrics['exact_prompts']+=1
- if ':question/worked-solution' in q:
-  metrics['available_solutions']+=1
-  assert r['question'][':question/worked-solution']==q[':question/worked-solution'];metrics['exact_solutions']+=1
- fields=q.get(':question/answer-fields',[])
- if fields:
-  metrics['available_banks']+=1;bank=fields[0][':answer-field/choices'];rb=r['question'][':question/answer-fields'][0][':answer-field/choices']
-  assert sorted(a[':answer/value'] for a in bank)==sorted(a[':answer/value'] for a in rb)
-  metrics['exact_banks']+=1;metrics['matched_choices']+=len(bank);metrics['available_choices']+=len(bank)
-  if ':answer-field/correct' in fields[0]:
-   metrics['available_designations']+=1
-   cf=r['question'][':question/answer-fields'][0][':answer-field/correct'][1]
-   assert next(a[':answer/value'] for a in rb if a[':answer/id']==cf)==fields[0][':answer-field/correct'][':answer/value'];metrics['exact_designations']+=1
- source_reports.append({'source_id':case['source_id'],'exact_prompt':True,'solution_status':'raw exact teaching anomaly' if case['template']=='website' else 'exact' if ':question/worked-solution' in q else 'authored missing-source solution','bank_status':'raw exact invalid bank' if case['template']=='farmer' else 'authored missing-field bank' if not fields else 'exact','original_designation_present':bool(fields and ':answer-field/correct' in fields[0])})
- review.append({'label':'Original replay '+case['source_id'],'record':r})
- normal=g.generate(case['level'],template=case['template'],parameters=case['parameters'])
- check_record(normal);add_engine(normal,'Normal '+case['source_id'])
- # Changed-parameter instance per every observed context/profile.
- varied=g.generate(case['level'],seed=24,template=case['template']);check_record(varied)
- review.append({'label':'Generated variant '+case['template'],'record':varied});add_engine(varied,'Variant '+case['template'])
- if case['template'] in ('farmer','website'):review.append({'label':'Minimal source repair '+case['source_id'],'record':normal})
+def main():
+ source=json.loads((D/'source.json').read_text())
+ assert source['basis']==1356
+ originals={q[':question/math-academy-id']:q for q in source['record'][':knowledge-point/questions']}
+ cases=json.loads((D/'source-cases.json').read_text())
+ metrics={'source_questions':len(cases),'exact_prompts':0,'exact_solutions':0,'available_solutions':0,'exact_banks':0,'available_banks':0,'matched_choices':0,'available_choices':0,'exact_designations':0,'available_designations':0}
+ review=[];source_reports=[];engine=[]
+ def add_engine(r,label):
+  f=r['question'][':question/answer-fields'][0];right=f[':answer-field/correct'][1]
+  engine.append({'label':label,'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==right else 'rejected','purpose':'owned radio choice; displayed units checked independently'} for a in f[':answer-field/choices']]})
+ for case in cases:
+  q=originals[case['source_id']];r=g.generate(case['level'],template=case['template'],parameters=case['parameters'],profile=case['bank_profile'])
+  check_record(r,raw_solution=case['template']=='website')
+  assert r['question'][':question/problem']==q[':question/problem'];metrics['exact_prompts']+=1
+  if ':question/worked-solution' in q:
+   metrics['available_solutions']+=1
+   assert r['question'][':question/worked-solution']==q[':question/worked-solution'];metrics['exact_solutions']+=1
+  fields=q.get(':question/answer-fields',[])
+  if fields:
+   metrics['available_banks']+=1;bank=fields[0][':answer-field/choices'];rb=r['question'][':question/answer-fields'][0][':answer-field/choices']
+   assert sorted(a[':answer/value'] for a in bank)==sorted(a[':answer/value'] for a in rb)
+   metrics['exact_banks']+=1;metrics['matched_choices']+=len(bank);metrics['available_choices']+=len(bank)
+   if ':answer-field/correct' in fields[0]:
+    metrics['available_designations']+=1
+    cf=r['question'][':question/answer-fields'][0][':answer-field/correct'][1]
+    assert next(a[':answer/value'] for a in rb if a[':answer/id']==cf)==fields[0][':answer-field/correct'][':answer/value'];metrics['exact_designations']+=1
+  source_reports.append({'source_id':case['source_id'],'exact_prompt':True,'solution_status':'raw exact teaching anomaly' if case['template']=='website' else 'exact' if ':question/worked-solution' in q else 'authored missing-source solution','bank_status':'raw exact invalid bank' if case['template']=='farmer' else 'authored missing-field bank' if not fields else 'exact','original_designation_present':bool(fields and ':answer-field/correct' in fields[0])})
+  review.append({'label':'Original replay '+case['source_id'],'record':r})
+  normal=g.generate(case['level'],template=case['template'],parameters=case['parameters'])
+  check_record(normal);add_engine(normal,'Normal '+case['source_id'])
+  # Changed-parameter instance per every observed context/profile.
+  varied=g.generate(case['level'],seed=24,template=case['template']);check_record(varied)
+  review.append({'label':'Generated variant '+case['template'],'record':varied});add_engine(varied,'Variant '+case['template'])
+  if case['template'] in ('farmer','website'):review.append({'label':'Minimal source repair '+case['source_id'],'record':normal})
+ 
+ # Exhaust the finite meaningful unit domains; context/seed are not counted as
+ # extra mathematical tasks. Identical mathematical objects share fingerprints.
+ mathcounts={};records={}
+ for template,desc in g.TEMPLATES.items():
+  if template in g.DEFS:
+   domain=g.DEFS[template]['eligible'];keys=list(domain)
+   params=[dict(zip(keys,combo)) for combo in itertools.product(*(domain[k] for k in keys))]
+   params=[p for p in params if not ('alt' in p and ((template=='cupcake' and p['alt']!={'gram':'kilogram','kilogram':'gram'}[p['u']]) or (template=='milk' and p['alt']!={'liter':'milliliter','milliliter':'liter'}[p['v']]))) ]
+  elif template=='non_time_power':params=[{'u':u,'v':v,'power':p} for u,v,p in itertools.product(('centimeter','meter'),('item','package','ticket','cupcake'),(2,3))]
+  else:params=[{'u':u,'v':v,'power':1} for u,v in itertools.product(('ton','kilogram','liter','meter','item','package','ticket','cupcake'),('dollar','euro'))]
+  fingerprints=set()
+  for p in params:
+   r=g.generate(desc['level'],template=template,parameters=p);check_record(r)
+   r2=g.generate(desc['level'],seed=125,template=template,parameters=p)
+   assert r['question'][':question/id']==r2['question'][':question/id']
+   assert sorted(a[':answer/id'] for a in r['question'][':question/answer-fields'][0][':answer-field/choices'])==sorted(a[':answer/id'] for a in r2['question'][':question/answer-fields'][0][':answer-field/choices'])
+   fingerprints.add(r['generation']['mathematical_fingerprint']);records[r['generation']['content_fingerprint']]=r
+  mathcounts[template]=len(fingerprints)
+ for level in ('easy','moderate','hard'):
+  for n in (0,1):
+   r=g.generate(level,n);check_record(r);review.append({'label':'Generated '+level+' example '+str(n+1),'record':r})
+ for n,r in enumerate(records.values()):add_engine(r,'Exhaustive instance '+str(n))
+ # Every sampling path and explicit bounds are checked, including shuffled
+ # correct positions. No numerical derivation is smuggled into the prompt.
+ positions=set()
+ for level in ('easy','moderate','hard'):
+  for n in range(80):
+   r=g.generate(level,n);check_record(r)
+   f=r['question'][':question/answer-fields'][0];positions.add(next(j for j,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][1]))
+ assert positions==set(range(5))
+ for kw in [dict(level='moderate',parameters={'u':'meter','v':'minute','power':2}),dict(level='hard',parameters={'u':'ton','v':'dollar','power':2}),dict(level='easy',template='cupcake',parameters={'u':'gram','v':'cupcake','alt':'gram'}),dict(level='hard',profile='observed')]:
+  try:g.generate(**kw)
+  except ValueError:pass
+  else:raise AssertionError('Invalid explicit parameters accepted')
+ (D/'engine-input.json').write_text(json.dumps(engine,indent=2)+'\n')
+ root=D.parents[2];grader=root/'generate/runs/current/check-engine'
+ subprocess.run([str(grader),str(D/'engine-input.json'),str(D/'engine-report.json')],check=True)
+ engine_result=json.loads((D/'engine-report.json').read_text())
+ (D/'review.json').write_text(json.dumps(review,indent=2)+'\n')
+ text=['# Original source evidence and generated units questions','Raw source is preserved in source.json; records below distinguish exact evidence replay from normal repairs.']
+ for case in cases:
+  q=originals[case['source_id']];text+=['\n## Original '+case['source_id'],q[':question/problem'],q.get(':question/worked-solution','(No source solution captured.)'),'\nBank: '+', '.join(a[':answer/value'] for f in q.get(':question/answer-fields',[]) for a in f[':answer-field/choices'])]
+ for r in review:text+=['\n## '+r['label'],g.markdown(r['record'])]
+ (D/'review.md').write_text('\n\n'.join(text)+'\n')
+ report={'status':'pass','generator_version':g.VERSION,'database_writes':0,'source_fidelity':metrics,'source_reports':source_reports,'normal_correctness':'all displayed units, exact scales, formal ratio stages and conclusion independently checked','raw_invalid_cases':['q-48557: no correct option','q-110040: raw worked solution says visitors instead of visits'],'minimal_math_bank_repairs':{'questions':1,'choices_changed':1,'raw_exact_choices':35,'normal_exact_original_choices':34},'missing_correct_designation_repairs':['q-48557','q-48613'],'missing_field_repairs':['q-110040','q-72091'],'authored_missing_levels':['moderate','hard'],'finite_meaningful_tasks_by_template':mathcounts,'distinct_mathematical_tasks_by_level':{level:len({r['generation']['mathematical_fingerprint'] for r in records.values() if r['generation']['level']==level}) for level in ('easy','moderate','hard')},'exhaustive_normal_instances':len(records),'random_normal_instances':240,'native_grading':{k:engine_result[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'engine_sha256':hashlib.sha256(grader.read_bytes()).hexdigest(),'python':sys.version,'sympy':sp.__version__}
+ (D/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
+ print(json.dumps(report,indent=2))
 
-# Exhaust the finite meaningful unit domains; context/seed are not counted as
-# extra mathematical tasks. Identical mathematical objects share fingerprints.
-mathcounts={};records={}
-for template,desc in g.TEMPLATES.items():
- if template in g.DEFS:
-  domain=g.DEFS[template]['eligible'];keys=list(domain)
-  params=[dict(zip(keys,combo)) for combo in itertools.product(*(domain[k] for k in keys))]
-  params=[p for p in params if not ('alt' in p and ((template=='cupcake' and p['alt']!={'gram':'kilogram','kilogram':'gram'}[p['u']]) or (template=='milk' and p['alt']!={'liter':'milliliter','milliliter':'liter'}[p['v']]))) ]
- elif template=='non_time_power':params=[{'u':u,'v':v,'power':p} for u,v,p in itertools.product(('centimeter','meter'),('item','package','ticket','cupcake'),(2,3))]
- else:params=[{'u':u,'v':v,'power':1} for u,v in itertools.product(('ton','kilogram','liter','meter','item','package','ticket','cupcake'),('dollar','euro'))]
- fingerprints=set()
- for p in params:
-  r=g.generate(desc['level'],template=template,parameters=p);check_record(r)
-  r2=g.generate(desc['level'],seed=125,template=template,parameters=p)
-  assert r['question'][':question/id']==r2['question'][':question/id']
-  assert sorted(a[':answer/id'] for a in r['question'][':question/answer-fields'][0][':answer-field/choices'])==sorted(a[':answer/id'] for a in r2['question'][':question/answer-fields'][0][':answer-field/choices'])
-  fingerprints.add(r['generation']['mathematical_fingerprint']);records[r['generation']['content_fingerprint']]=r
- mathcounts[template]=len(fingerprints)
-for level in ('easy','moderate','hard'):
- for n in (0,1):
-  r=g.generate(level,n);check_record(r);review.append({'label':'Generated '+level+' example '+str(n+1),'record':r})
-for n,r in enumerate(records.values()):add_engine(r,'Exhaustive instance '+str(n))
-# Every sampling path and explicit bounds are checked, including shuffled
-# correct positions. No numerical derivation is smuggled into the prompt.
-positions=set()
-for level in ('easy','moderate','hard'):
- for n in range(80):
-  r=g.generate(level,n);check_record(r)
-  f=r['question'][':question/answer-fields'][0];positions.add(next(j for j,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][1]))
-assert positions==set(range(5))
-for kw in [dict(level='moderate',parameters={'u':'meter','v':'minute','power':2}),dict(level='hard',parameters={'u':'ton','v':'dollar','power':2}),dict(level='easy',template='cupcake',parameters={'u':'gram','v':'cupcake','alt':'gram'}),dict(level='hard',profile='observed')]:
- try:g.generate(**kw)
- except ValueError:pass
- else:raise AssertionError('Invalid explicit parameters accepted')
-(D/'engine-input.json').write_text(json.dumps(engine,indent=2)+'\n')
-root=D.parents[2];grader=root/'generate/runs/current/check-engine'
-subprocess.run([str(grader),str(D/'engine-input.json'),str(D/'engine-report.json')],check=True)
-engine_result=json.loads((D/'engine-report.json').read_text())
-(D/'review.json').write_text(json.dumps(review,indent=2)+'\n')
-text=['# Original source evidence and generated units questions','Raw source is preserved in source.json; records below distinguish exact evidence replay from normal repairs.']
-for case in cases:
- q=originals[case['source_id']];text+=['\n## Original '+case['source_id'],q[':question/problem'],q.get(':question/worked-solution','(No source solution captured.)'),'\nBank: '+', '.join(a[':answer/value'] for f in q.get(':question/answer-fields',[]) for a in f[':answer-field/choices'])]
-for r in review:text+=['\n## '+r['label'],g.markdown(r['record'])]
-(D/'review.md').write_text('\n\n'.join(text)+'\n')
-report={'status':'pass','generator_version':g.VERSION,'database_writes':0,'source_fidelity':metrics,'source_reports':source_reports,'normal_correctness':'all displayed units, exact scales, formal ratio stages and conclusion independently checked','raw_invalid_cases':['q-48557: no correct option','q-110040: raw worked solution says visitors instead of visits'],'minimal_math_bank_repairs':{'questions':1,'choices_changed':1,'raw_exact_choices':35,'normal_exact_original_choices':34},'missing_correct_designation_repairs':['q-48557','q-48613'],'missing_field_repairs':['q-110040','q-72091'],'authored_missing_levels':['moderate','hard'],'finite_meaningful_tasks_by_template':mathcounts,'distinct_mathematical_tasks_by_level':{level:len({r['generation']['mathematical_fingerprint'] for r in records.values() if r['generation']['level']==level}) for level in ('easy','moderate','hard')},'exhaustive_normal_instances':len(records),'random_normal_instances':240,'native_grading':{k:engine_result[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'engine_sha256':hashlib.sha256(grader.read_bytes()).hexdigest(),'python':sys.version,'sympy':sp.__version__}
-(D/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
-print(json.dumps(report,indent=2))
+if __name__ == "__main__":main()

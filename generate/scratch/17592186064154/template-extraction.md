@@ -507,3 +507,12 @@ No original prompt, bank or solution in this KP has a mathematical plot or diagr
 ## Parent QA correction
 
 The drug, battery and elephant solution introductions now use the complete generated elapsed-time slot rather than fixed original 5/8 values; the krill origin year also uses its supplied slot. Original-parameter prose remains unchanged. Validation reads these actual prose substitutions in changed-parameter questions.
+
+
+## Replenishment source refresh
+
+Current snapshot at basis 2252 retains all eleven original practice identities. q-48935 now has moderate difficulty, its correct answer, and a mathematically valid four-stage solution (one extra exact numerical evaluation). All other captured facts remain compatible with basis 1356 evidence. Complete original banks replay 37/37 choices, seven radio banks and two blank fields. The current-source validator permits only this observed additional exact stage; generated crocodile solutions retain the extracted three-stage backbone.
+
+Strict usable stock excludes the two fieldless sources, the unrated pool, and the two stock prompts with missing function context. It contains three easy and three moderate questions before replenishment. These originals and the canonical example are also excluded from new mathematical tasks. Hard is explicitly authored as the canonical clock-to-elapsed-time move applied to the factory supplied-rate backbone. No source or learner facts are changed. capabilities.json documents the bounds and distinctions.
+
+q-48935 also has normalized LaTeX and spacing in its current prompt. The displayed functions, elapsed time and complete answer bank are mathematically unchanged. reference/initial/source-refresh.json retains both exact versions. Preparation checks against the refreshed full source snapshot rather than treating the earlier literal prompt as current.

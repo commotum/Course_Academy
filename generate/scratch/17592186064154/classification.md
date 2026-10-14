@@ -51,3 +51,12 @@ q112382 and q48608 have no captured fields. No exact newer widget IDs were found
 q142994 and q167562 omit stock value-function context. Local capture 296 contains neither newer widget; exact-ID searches across MA Lessons do not locate them. Only the recorded endpoint expressions are authoritative. Authored supplied functions h′(x)=1/(a√x), a=2…5, and g′(x)=1/√x, x>0, make normal questions self-contained. Their original parameters reproduce every original solution stage and exact blank. The global form is an inference/design, not uniquely determined by the source.
 
 All signs and rounding remain faithful: rate of decrease is a positive magnitude, while entry-minus-exit net rates can be negative.
+
+
+## Replenishment source refresh
+
+Current snapshot at basis 2252 retains all eleven original practice identities. q-48935 now has moderate difficulty, its correct answer, and a mathematically valid four-stage solution (one extra exact numerical evaluation). All other captured facts remain compatible with basis 1356 evidence. Complete original banks replay 37/37 choices, seven radio banks and two blank fields. The current-source validator permits only this observed additional exact stage; generated crocodile solutions retain the extracted three-stage backbone.
+
+Strict usable stock excludes the two fieldless sources, the unrated pool, and the two stock prompts with missing function context. It contains three easy and three moderate questions before replenishment. These originals and the canonical example are also excluded from new mathematical tasks. Hard is explicitly authored as the canonical clock-to-elapsed-time move applied to the factory supplied-rate backbone. No source or learner facts are changed. capabilities.json documents the bounds and distinctions.
+
+q-48935 also has normalized LaTeX and spacing in its current prompt. The displayed functions, elapsed time and complete answer bank are mathematically unchanged. reference/initial/source-refresh.json retains both exact versions. Preparation checks against the refreshed full source snapshot rather than treating the earlier literal prompt as current.

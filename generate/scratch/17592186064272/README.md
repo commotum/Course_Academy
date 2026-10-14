@@ -1,6 +1,6 @@
 # Derivative-to-supplied-rate generator
 
-Script: `../17592186064272.py`. Read-only math snapshot basis 1356. All writes are confined to this KP's evidence; no database operations.
+Script: `../17592186064272.py`. Original extraction uses math snapshot basis 1356. The generator itself performs no database operations. Scoped inventory commits use `replenish.py` and the application's existing EDB integration.
 
 ```sh
 .venv/bin/python generate/scratch/17592186064272/validate.py
@@ -15,3 +15,9 @@ Coverage: nine exact prompts; six complete raw-exact banks, 30/30 raw-exact choi
 Verification independently parses the actual displayed equations and rate definitions, checks every complete choice and mathematical solution relation, rejects equivalent full-equation banks, checks ordered source prose/stages, parameter guards, formatting and stable identities. It invokes the actual `learning::grade_field` through the shared memory-only check-engine. No blank questions exist, so blank-equivalence grading is inapplicable. `engine-report.json` and `validation.json` keep native grading separate from mathematical and fidelity results.
 
 `review.md` pairs every raw original with two changed-parameter source-template peers and labels all authored presentations; `review.json` has those generated records. `replay.json` holds all supported source replays. Mathematical diversity is explicitly finite: growth, positive loss, positive net magnitude and signed net contribution (four structures). Letters, stories and physical units provide presentation variety; they do not increase the four-task count. Choices are shuffled deterministically without changing content IDs. Full presentation identities include actual prompt/solution/bank, mathematical fingerprints exclude bank and incidental notation.
+
+`capabilities.json` records supported levels, the stable registration identity and bounded exceptions. Replenishment checks the current inventory and all current KP content before selecting unused mathematical structures. It preserves source questions and excludes even ungradable originals and canonical examples from new authorship by mathematical task, so changing labels or repairing fields cannot create a new task. Existing easy and moderate net-flow labels are retained.
+
+At initial recheck basis 2251, q-48923 has a complete five-choice radio and a Unicode-prime solution normalization added after the original capture. Its full bank matches `net_standard`; all current complete source banks and correct references are independently checked. Original source evidence remains intact. No plots or asset publications are needed.
+
+Run `.venv/bin/python generate/scratch/17592186064272/replenish.py` to recover a retained request or perform the scoped replenishment. It holds `.local/learning/requests/math/api.lock` across the current-basis recheck, preparation, native-spec preview, guarded submission and exact-basis readback. `reference/replenishment/basis-*/` retains exact EDN, source, lineage, request key, expected basis, native grading, receipt, readback and the finite-limit result. Only additive content and generator registration for this KP are permitted by its receipt checks. Re-running a verified package recovers its exact receipt and verifies it without creating another transaction.

@@ -95,7 +95,7 @@ def independent(record):
   else:assert S.simplify(v-result)==0,(name,row,v,result)
  # Stage count/shape distinguishes power reduction and individual arithmetic evaluation.
  count={'drug':3,'battery':4,'bacteria':4,'krill':3,'muons':3,'stock_h':3,'stock_g':2,'elephants':3,'crocodiles':3,'pool':3,'factory':4,'clock_factory':4}[name]
- assert len(rows)==count,(name,len(rows))
+ assert len(rows)==(4 if g.get('current_source_id')=='q-48935' else count),(name,len(rows))
  assert '('+G.num(time)+')' in rows[0] or name.startswith('stock')
  if name in ['battery','bacteria']:assert r'\frac' in rows[2] if name=='battery' else r'\cdot' in rows[2]
  if name in ['factory','clock_factory']:assert ('sin⁡' if name=='factory' else r'\sin') in rows[1] and 'sin' not in rows[2]
@@ -130,56 +130,59 @@ def native(r,label):
   checks.append({'submitted':eq,'expected':'rejected' if rounded else 'accepted','purpose':'unreduced equivalent; genuine rounded numeric instruction retains form sensitivity' if rounded else 'unreduced exact equivalent'})
  engine.append({'label':label,'record':r,'checks':checks})
 
-for c in cases:
- r=G.generate(c['level'],template=c['template'],parameters=c['parameters'],profile=c['bank_profile']);independent(r);native(r,c['source_id']);review.append({'label':'Original parameter replay '+c['source_id'],'record':r})
- src=sources[c['source_id']];q=r['question'];f=q[':question/answer-fields'][0];old=src.get(':question/answer-fields',[])
- if old:
-  originals=sorted(a[':answer/value'] for a in old[0][':answer-field/choices']);generated=sorted(a[':answer/value'] for a in f[':answer-field/choices']);assert originals==generated,(c['source_id'],originals,generated)
-  report['options']+=len(originals);report['banks']+=1
-  report['radio_banks' if f[':answer-field/type'].endswith('/radio') else 'blank_fields']+=1
-  if old[0].get(':answer-field/correct'):
-   ov=old[0][':answer-field/correct'][':answer/value'];nv=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);assert ov==nv;report['original_correct_designations']+=1
-  else:report['repaired_correct_designations']+=1
- else:report['source_field_repairs']+=1
- if q[':question/problem']==src[':question/problem']:report['raw_prompt_exact']+=1
- else:
-  assert c['template'].startswith('stock') or not old
-  report['supported_prompt_repairs']+=1
- if ':question/worked-solution' not in src:report['authored_missing_solutions']+=1
- elif q[':question/worked-solution']==src[':question/worked-solution']:report['raw_solution_exact']+=1
- else:
-  assert norm(q[':question/worked-solution'])==norm(src[':question/worked-solution']),(c['source_id'],'full prose/stage fidelity mismatch')
-  report['notation_normalized_solutions']+=1
- # Explicit changed-parameter replay of each observed bank through public API.
- if c['bank_profile'].startswith('observed_'):
-  changed=dict(c['parameters']);changed['a']=G.num(G.exact(changed['a'])*S.Rational(3,2))
-  if 'b' in changed:changed['b']=G.num(G.exact(changed['b'])*S.Rational(3,2))
-  if c['template']=='pool':changed['k']=str(G.exact(changed['k'])*S.Rational(3,2))
-  if 'amp' in changed:changed['amp']=int(changed['amp']*S.Rational(3,2))
-  if c['template']=='battery':changed['a']=100;changed['base']=4
-  rr=G.generate(c['level'],template=c['template'],parameters=changed,profile=c['bank_profile']);independent(rr);native(rr,c['template']+' observed profile variant');review.append({'label':'Generated observed-profile variant '+c['template'],'record':rr})
+def main():
+ for c in cases:
+  r=G.generate(c['level'],template=c['template'],parameters=c['parameters'],profile=c['bank_profile']);independent(r);native(r,c['source_id']);review.append({'label':'Original parameter replay '+c['source_id'],'record':r})
+  src=sources[c['source_id']];q=r['question'];f=q[':question/answer-fields'][0];old=src.get(':question/answer-fields',[])
+  if old:
+   originals=sorted(a[':answer/value'] for a in old[0][':answer-field/choices']);generated=sorted(a[':answer/value'] for a in f[':answer-field/choices']);assert originals==generated,(c['source_id'],originals,generated)
+   report['options']+=len(originals);report['banks']+=1
+   report['radio_banks' if f[':answer-field/type'].endswith('/radio') else 'blank_fields']+=1
+   if old[0].get(':answer-field/correct'):
+    ov=old[0][':answer-field/correct'][':answer/value'];nv=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);assert ov==nv;report['original_correct_designations']+=1
+   else:report['repaired_correct_designations']+=1
+  else:report['source_field_repairs']+=1
+  if q[':question/problem']==src[':question/problem']:report['raw_prompt_exact']+=1
+  else:
+   assert c['template'].startswith('stock') or not old
+   report['supported_prompt_repairs']+=1
+  if ':question/worked-solution' not in src:report['authored_missing_solutions']+=1
+  elif q[':question/worked-solution']==src[':question/worked-solution']:report['raw_solution_exact']+=1
+  else:
+   assert norm(q[':question/worked-solution'])==norm(src[':question/worked-solution']),(c['source_id'],'full prose/stage fidelity mismatch')
+   report['notation_normalized_solutions']+=1
+  # Explicit changed-parameter replay of each observed bank through public API.
+  if c['bank_profile'].startswith('observed_'):
+   changed=dict(c['parameters']);changed['a']=G.num(G.exact(changed['a'])*S.Rational(3,2))
+   if 'b' in changed:changed['b']=G.num(G.exact(changed['b'])*S.Rational(3,2))
+   if c['template']=='pool':changed['k']=str(G.exact(changed['k'])*S.Rational(3,2))
+   if 'amp' in changed:changed['amp']=int(changed['amp']*S.Rational(3,2))
+   if c['template']=='battery':changed['a']=100;changed['base']=4
+   rr=G.generate(c['level'],template=c['template'],parameters=changed,profile=c['bank_profile']);independent(rr);native(rr,c['template']+' observed profile variant');review.append({'label':'Generated observed-profile variant '+c['template'],'record':rr})
 
-fingerprints={};random_count=0
-for template,level in G.TEMPLATES.items():
- ids=set();tasks=set()
- for seed in range(80):
-  r=G.generate(level,seed,template);independent(r);random_count+=1;ids.add(r['question'][':question/id']);tasks.add(r['generation']['mathematical_fingerprint'])
-  rr=G.generate(level,seed+999,template,parameters=r['generation']['parameters'],profile=r['generation']['profile']);assert rr['question'][':question/id']==r['question'][':question/id'];assert sorted(a[':answer/id'] for a in rr['question'][':question/answer-fields'][0][':answer-field/choices'])==sorted(a[':answer/id'] for a in r['question'][':question/answer-fields'][0][':answer-field/choices'])
-  if seed<2:native(r,template+' generated '+str(seed));review.append({'label':'Generated default variant '+template+' '+str(seed),'record':r})
- assert len(tasks)>=(15 if template=='stock_g' else 25),(template,'too little substantive variation',len(tasks))
- fingerprints[template]={'unique_content':len(ids),'unique_math_tasks':len(tasks),'samples':80}
-# Invalid hard/easy collapse and sign/time domains must reject explicit calls.
-for name,changes in [('clock_factory',{'t':'7','period':14}),('clock_factory',{'amp':0}),('stock_h',{'t':0}),('battery',{'a':200}),('factory',{'t':'1/2'}),('elephants',{'k':0})]:
- p=G.sample(name,__import__('random').Random(1));p.update(changes)
- try:G.generate(G.TEMPLATES[name],template=name,parameters=p)
- except ValueError:pass
- else:raise AssertionError('invalid workload accepted '+name)
-(R/'engine-input.json').write_text(json.dumps(engine,indent=2,ensure_ascii=False)+'\n');subprocess.run(['generate/runs/current/check-engine',str(R/'engine-input.json'),str(R/'engine-report.json')],check=True)
-(R/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False)+'\n')
-text=['# Review — Determining a Rate of Change','Immutable source math basis 1356. Originals retain raw evidence below; generated replay includes explicitly supported repairs.']
-for c in cases:
- src=sources[c['source_id']];text+=['## Raw source '+c['source_id'],src[':question/problem'],'Source worked solution: '+src.get(':question/worked-solution','(absent)'), 'Source values: '+json.dumps([[a[':answer/value'] for a in f.get(':answer-field/choices',[])] for f in src.get(':question/answer-fields',[])],ensure_ascii=False),'Documented repairs: '+str(c['repairs'])]
-for r in review:text+=['## '+r['label'],G.markdown(r['record'])]
-(R/'review.md').write_text('\n\n'.join(text)+'\n')
-report.update(status='pass',random_instances=random_count,variation=fingerprints,native_grading=json.loads((R/'engine-report.json').read_text()),displayed_math='Every supplied prompt function, independently recovered time, every displayed stage and choice parsed and checked.',plots='none',unresolved_findings=['Original intent behind coefficient-scale replay distractors cannot be inferred; those profiles are opt-in and are never default.','No exact-ID newer original MA stock widget available locally. Only one derivative endpoint expression each is captured; global reciprocal-root supplied families are authored generalizations, and original h/g definitions are unavailable.','Native rounded numeric entries reject equivalent unreduced fractions, as genuine rounding is form-sensitive.'],engine_sha256=hashlib.sha256(pathlib.Path('generate/runs/current/check-engine').read_bytes()).hexdigest())
-(R/'validation.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');print(json.dumps({k:v for k,v in report.items() if k not in ['native_grading','variation']},indent=2))
+ fingerprints={};random_count=0
+ for template,level in G.TEMPLATES.items():
+  ids=set();tasks=set()
+  for seed in range(80):
+   r=G.generate(level,seed,template);independent(r);random_count+=1;ids.add(r['question'][':question/id']);tasks.add(r['generation']['mathematical_fingerprint'])
+   rr=G.generate(level,seed+999,template,parameters=r['generation']['parameters'],profile=r['generation']['profile']);assert rr['question'][':question/id']==r['question'][':question/id'];assert sorted(a[':answer/id'] for a in rr['question'][':question/answer-fields'][0][':answer-field/choices'])==sorted(a[':answer/id'] for a in r['question'][':question/answer-fields'][0][':answer-field/choices'])
+   if seed<2:native(r,template+' generated '+str(seed));review.append({'label':'Generated default variant '+template+' '+str(seed),'record':r})
+  assert len(tasks)>=(15 if template=='stock_g' else 25),(template,'too little substantive variation',len(tasks))
+  fingerprints[template]={'unique_content':len(ids),'unique_math_tasks':len(tasks),'samples':80}
+ # Invalid hard/easy collapse and sign/time domains must reject explicit calls.
+ for name,changes in [('clock_factory',{'t':'7','period':14}),('clock_factory',{'amp':0}),('stock_h',{'t':0}),('battery',{'a':200}),('factory',{'t':'1/2'}),('elephants',{'k':0})]:
+  p=G.sample(name,__import__('random').Random(1));p.update(changes)
+  try:G.generate(G.TEMPLATES[name],template=name,parameters=p)
+  except ValueError:pass
+  else:raise AssertionError('invalid workload accepted '+name)
+ (R/'engine-input.json').write_text(json.dumps(engine,indent=2,ensure_ascii=False)+'\n');subprocess.run(['generate/runs/current/check-engine',str(R/'engine-input.json'),str(R/'engine-report.json')],check=True)
+ (R/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False)+'\n')
+ text=['# Review — Determining a Rate of Change','Immutable source math basis 1356. Originals retain raw evidence below; generated replay includes explicitly supported repairs.']
+ for c in cases:
+  src=sources[c['source_id']];text+=['## Raw source '+c['source_id'],src[':question/problem'],'Source worked solution: '+src.get(':question/worked-solution','(absent)'), 'Source values: '+json.dumps([[a[':answer/value'] for a in f.get(':answer-field/choices',[])] for f in src.get(':question/answer-fields',[])],ensure_ascii=False),'Documented repairs: '+str(c['repairs'])]
+ for r in review:text+=['## '+r['label'],G.markdown(r['record'])]
+ (R/'review.md').write_text('\n\n'.join(text)+'\n')
+ report.update(status='pass',random_instances=random_count,variation=fingerprints,native_grading=json.loads((R/'engine-report.json').read_text()),displayed_math='Every supplied prompt function, independently recovered time, every displayed stage and choice parsed and checked.',plots='none',unresolved_findings=['Original intent behind coefficient-scale replay distractors cannot be inferred; those profiles are opt-in and are never default.','No exact-ID newer original MA stock widget available locally. Only one derivative endpoint expression each is captured; global reciprocal-root supplied families are authored generalizations, and original h/g definitions are unavailable.','Native rounded numeric entries reject equivalent unreduced fractions, as genuine rounding is form-sensitive.'],engine_sha256=hashlib.sha256(pathlib.Path('generate/runs/current/check-engine').read_bytes()).hexdigest())
+ (R/'validation.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');print(json.dumps({k:v for k,v in report.items() if k not in ['native_grading','variation']},indent=2))
+
+if __name__=='__main__':main()

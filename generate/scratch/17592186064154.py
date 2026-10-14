@@ -10,7 +10,14 @@ values. No differentiation, integration, plots, or database access. See evidence
 from __future__ import annotations
 import argparse, hashlib, json, random, uuid, sys
 from pathlib import Path
-import sympy as S
+try:
+ import sympy as S
+except ModuleNotFoundError:
+ if __name__!='__main__':raise
+ import os
+ runner=Path(__file__).resolve().parents[2]/'.venv/bin/python'
+ if not runner.is_file():raise
+ os.execv(str(runner),[str(runner),str(Path(__file__).resolve()),*sys.argv[1:]])
 KP_ID=17592186064154
 KP_UUID='c7df31c9-b27a-5ce2-93c8-178ba96da000'
 TITLE='Determining a Rate of Change'
